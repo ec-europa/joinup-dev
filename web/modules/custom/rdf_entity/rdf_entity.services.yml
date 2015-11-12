@@ -1,0 +1,9 @@
+services:
+  entity.query.sparql:
+    class: \Drupal\rdf_entity\Entity\Query\Sparql\QueryFactory
+    arguments: ['@sparql_endpoint']
+    tags:
+      - { name: backend_overridable }
+  sparql_endpoint:
+    class: Drupal\rdf_entity\Database\Driver\sparql\Connection
+    arguments: [default]

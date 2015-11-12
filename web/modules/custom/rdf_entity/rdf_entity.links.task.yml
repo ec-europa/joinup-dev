@@ -1,0 +1,22 @@
+# Define the 'local' links for the module
+
+rdf.settings_tab:
+  route_name: rdf_entity.rdf_entity_settings
+  title: Settings
+  base_route: rdf_entity.rdf_entity_settings
+
+rdf.view:
+  route_name: entity.rdf_entity_rdf.canonical
+  base_route: entity.rdf_entity_rdf.canonical
+  title: View
+
+rdf.page_edit:
+  route_name: entity.rdf_entity_rdf.edit_form
+  base_route: entity.rdf_entity_rdf.canonical
+  title: Edit
+
+rdf.delete_confirm:
+  route_name:  entity.rdf_entity_rdf.delete_form
+  base_route:  entity.rdf_entity_rdf.canonical
+  title: Delete
+  weight: 10

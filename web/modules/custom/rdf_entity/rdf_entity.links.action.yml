@@ -1,0 +1,11 @@
+# All action links for this module
+
+rdf_entity.rdf_add:
+  # Which route will be called by the link
+  route_name: rdf_entity.rdf_add
+  title: 'Add RDF'
+
+  # Where will the link appear, defined by route name.
+  appears_on:
+    - entity.rdf_entity.collection
+    - entity.rdf_entity.canonical
