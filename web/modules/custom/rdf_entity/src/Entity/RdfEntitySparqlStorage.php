@@ -23,6 +23,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * {@inheritdoc}
    */
   public function loadMultiple(array $ids = NULL) {
+    // @todo Rewrite to use ids.
     $sparql = new \EasyRdf_Sparql_Client('http://localhost:8890/sparql');
     $results = $sparql->query(
       'SELECT ?entity ?lang ?desc ' .
@@ -36,15 +37,17 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
     foreach ($results as $result) {
       $values = array(
+        'rid' => array('x-default' => 'admssw_softwareproject'),
         'id' => array('x-default' => str_replace('/', '\\' ,(string) $result->entity)),
         //'id' => array('x-default' => $i),
-        'name' => array('x-default' => (string) $result->lang),
+        'name' => array('x-default' => str_replace('/', '\\' ,(string) $result->entity)),
+        // 'name' => array('x-default' => (string) $result->lang),
         'first_name' => array('x-default' => (string) $result->desc),
         'gender' => array('x-default' => 'male'),
         'user_id' => array('x-default' => 1),
         'langcode' => array('x-default' => 'und'),
       );
-      $entity = new Rdf($values, 'rdf_entity');
+      $entity = new Rdf($values, 'rdf_entity', 'admssw_softwareproject');
       $entities[] = $entity;
     }
     return $entities;
@@ -82,7 +85,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       );
     }
     if ($values) {
-      return new Rdf($values, 'rdf_entity');
+      return new Rdf($values, 'rdf_entity', 'admssw_softwareproject');
     }
   }
 
@@ -204,5 +207,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   public function hasData() {
     return FALSE;
   }
+
 
 }

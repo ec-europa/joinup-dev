@@ -55,3 +55,53 @@ rdf_entity.rdf_entity_settings:
     _title: 'RDF Settings'
   requirements:
     _permission: 'administer rdf entity'
+
+entity.rdf_type.collection:
+  path: '/admin/structure/rdf_type'
+  defaults:
+    _entity_list: 'rdf_type'
+    _title: 'Rdf type'
+  requirements:
+    _permission: 'administer rdf_type'
+
+entity.rdf_type.add_form:
+  path: '/admin/structure/rdf_type/add'
+  defaults:
+    _entity_form: 'rdf_type'
+    _title: 'Add Rdf type'
+  requirements:
+    _entity_create_access: 'rdf_type'
+
+entity.rdf_type.edit_form:
+  path: '/admin/structure/rdf_type/manage/{rdf_type}'
+  defaults:
+    _entity_form: 'rdf_type.default'
+    _title: '@todo Write proper title callback'
+   #  _title_callback: '\Drupal\taxonomy\Controller\TaxonomyController::vocabularyTitle'
+  requirements:
+    _entity_access: 'rdf_type.update'
+
+entity.rdf_type.delete_form:
+  path: '/admin/structure/rdf_type/manage/{rdf_type}/delete'
+  defaults:
+    _entity_form: 'rdf_type.delete'
+    _title: 'Delete Rdf type'
+  requirements:
+    _entity_access: 'rdf_type.delete'
+
+entity.rdf_type.reset_form:
+  path: '/admin/structure/rdf_type/manage/{rdf_type}/reset'
+  defaults:
+    _entity_form: 'rdf_type.reset'
+    _title: 'Reset'
+  requirements:
+    _permission: 'administer rdf_type'
+
+entity.rdf_type.overview_form:
+  path: '/admin/structure/rdf_type/manage/{rdf_type}/overview'
+  defaults:
+    _form: 'Drupal\rdf_entity\Form\OverviewRdf'
+    _title: '@todo Write proper title callback'
+    #_title_callback: 'Drupal\taxonomy\Controller\TaxonomyController::vocabularyTitle'
+  requirements:
+    _entity_access: 'rdf_type.view'

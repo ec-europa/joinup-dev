@@ -43,6 +43,7 @@ class RdfListBuilder extends EntityListBuilder {
    */
   public function buildHeader() {
     $header['id'] = $this->t('URI');
+    $header['rid'] = $this->t('Bundle');
     $header['name'] = $this->t('Name');
     $header['first_name'] = $this->t('First Name');
     $header['gender'] = $this->t('Gender');
@@ -55,6 +56,7 @@ class RdfListBuilder extends EntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     /* @var $entity \Drupal\rdf_entity\Entity\Rdf */
     $row['id'] = $entity->id();
+    $row['rid'] = $entity->rid();
     $row['name'] = $entity->link();
     $row['first_name'] = $entity->first_name->value;
     $row['gender'] = $entity->gender->value;
