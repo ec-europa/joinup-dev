@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d78d6c66ffa069259b9aa2303f72c2cf",
-    "content-hash": "832687e82d46968425dcc32cf1cf6a99",
+    "hash": "31bf23ee1c4b76a380bd25a93839e6d3",
+    "content-hash": "3fa465bf7f69e9e694fe57cf94cec55a",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -4824,6 +4824,16 @@
             "description": "Virtual file system to mock the real file system in unit tests.",
             "homepage": "http://vfs.bovigo.org/",
             "time": "2015-10-06 16:59:57"
+        },
+        {
+            "name": "pfrenssen/phpcs-pre-push",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://gist.github.com/498fc52fea3f965f6640.git",
+                "reference": "master"
+            },
+            "type": "git-hook"
         },
         {
             "name": "phing/phing",
