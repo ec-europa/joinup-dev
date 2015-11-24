@@ -11,7 +11,9 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Class ContentEntityExampleSettingsForm.
+ *
  * @package Drupal\content_entity_example\Form
+ *
  * @ingroup content_entity_example
  */
 class RdfSettingsForm extends FormBase {
@@ -28,9 +30,9 @@ class RdfSettingsForm extends FormBase {
   /**
    * Form submission handler.
    *
-   * @param FormStateInterface $form
+   * @param array $form
    *   An associative array containing the structure of the form.
-   * @param array $form_state
+   * @param FormStateInterface $form_state
    *   An associative array containing the current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
@@ -40,16 +42,18 @@ class RdfSettingsForm extends FormBase {
 
   /**
    * Define the form used for ContentEntityExample settings.
-   * @return array
-   *   Form definition array.
    *
    * @param array $form
    *   An associative array containing the structure of the form.
    * @param FormStateInterface $form_state
    *   An associative array containing the current state of the form.
+   *
+   * @return array
+   *   Form definition array.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // $form['rdf_settings']['#markup'] = 'Settings form for RDF entity. Manage field settings here.';
     return $form;
   }
+
 }
