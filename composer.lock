@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "414acda9ffbfa8cf1bc02fd69529a55a",
-    "content-hash": "053857afd205c70b0ee7177c56f5e740",
+    "hash": "d78d6c66ffa069259b9aa2303f72c2cf",
+    "content-hash": "832687e82d46968425dcc32cf1cf6a99",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -666,12 +666,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "3ee385e60b7c7d0c66150bed91615f769421d7a6"
+                "reference": "37b7b9a4fffe4efc2fe783c962c350b059002893"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/3ee385e60b7c7d0c66150bed91615f769421d7a6",
-                "reference": "3ee385e60b7c7d0c66150bed91615f769421d7a6",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/37b7b9a4fffe4efc2fe783c962c350b059002893",
+                "reference": "37b7b9a4fffe4efc2fe783c962c350b059002893",
                 "shasum": ""
             },
             "require": {
@@ -742,7 +742,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2015-11-23 15:53:52"
+            "time": "2015-11-24 07:18:31"
         },
         {
             "name": "drupal/core",
@@ -915,12 +915,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "80c73f472b4fb78d03805a588c5862721350a1db"
+                "reference": "fdc782250ea6f80b449a8af33bb6c2b9577893b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/80c73f472b4fb78d03805a588c5862721350a1db",
-                "reference": "80c73f472b4fb78d03805a588c5862721350a1db",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/fdc782250ea6f80b449a8af33bb6c2b9577893b5",
+                "reference": "fdc782250ea6f80b449a8af33bb6c2b9577893b5",
                 "shasum": ""
             },
             "require": {
@@ -1004,7 +1004,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2015-11-23 16:11:11"
+            "time": "2015-11-23 21:29:16"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -4394,7 +4394,7 @@
             "source": {
                 "type": "git",
                 "url": "http://git.drupal.org/project/devel",
-                "reference": "6f676e2a2d431794012a0ca14126145292e35c03"
+                "reference": "bc2696da3f5f1bc8694c0e362052940834aa9683"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -4429,7 +4429,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2015-11-22 15:04:36"
+            "time": "2015-11-24 00:34:47"
         },
         {
             "name": "drupal/drupal-driver",
@@ -4538,11 +4538,11 @@
         },
         {
             "name": "drupal/phing-drush-task",
-            "version": "1.2",
+            "version": "1.0",
             "source": {
                 "type": "git",
                 "url": "http://git.drupal.org/project/phingdrushtask.git",
-                "reference": "7.x-1.2"
+                "reference": "7.x-1.0"
             },
             "type": "library",
             "autoload": {
@@ -4923,12 +4923,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "e955837e887ca4d5ce27aabab43807e4d427721c"
+                "reference": "32a879f4f35019d78d568db2885d7779ca084a33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/e955837e887ca4d5ce27aabab43807e4d427721c",
-                "reference": "e955837e887ca4d5ce27aabab43807e4d427721c",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/32a879f4f35019d78d568db2885d7779ca084a33",
+                "reference": "32a879f4f35019d78d568db2885d7779ca084a33",
                 "shasum": ""
             },
             "require": {
@@ -4989,7 +4989,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2015-11-23 02:05:05"
+            "time": "2015-11-23 21:30:59"
         },
         {
             "name": "symfony/browser-kit",
