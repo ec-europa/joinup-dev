@@ -204,6 +204,8 @@ environment. Make sure to never commit this file.
 
 ### Run coding standards checks
 
+#### Run checks manually
+
 The coding standards checks can then be run as follows:
 
 ```
@@ -213,6 +215,38 @@ $ ./vendor/bin/phpcs
 # Scan only a single folder.
 $ ./vendor/bin/phpcs web/modules/custom/mymodule
 ```
+
+#### Run checks automatically when pushing
+
+To save yourself the embarrassment of pushing non-compliant code to the git
+repository you can put the following line in your `build.properties.local`:
+
+```
+# Whether or not to run a coding standards check before doing a git push. Note
+# that this will abort the push if the coding standards check fails.
+phpcs.prepush.enable = 1
+```
+
+and then regenerate your PHP CodeSniffer configuration:
+
+```
+$ ./vendor/bin/phing setup-php-codesniffer
+```
+
+If your project requires all team members to follow coding standards, put this
+line in the project configuration (`build.properties`) instead.
+
+Note that this will not allow you to push any code that fails the coding
+standards check. If you really need to push in a hurry, then you can disable
+the coding standards check by executing this Phing target:
+
+```
+$ ./vendor/bin/phing disable-pre-push
+```
+
+The pre-push hook will be reinstated when the `setup-php-codesniffer` target
+is executed.
+
 
 ### Customize configuration
 
@@ -241,3 +275,7 @@ For more information on configuring the ruleset see [Annotated ruleset](http://p
 ### Should I commit the contrib modules I download
 
 Composer recommends **no**. They provide [argumentation against but also workrounds if a project decides to do it anyway](https://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md).
+
+### How can I apply patches to downloaded modules?
+
+If you need to apply patches (depending on the project being modified, a pull request is often a better solution), you can do so with the [composer-patches](https://github.com/cweagans/composer-patches) plugin.
