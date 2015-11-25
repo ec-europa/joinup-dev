@@ -56,7 +56,7 @@ class RdfListBuilder extends EntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     /* @var $entity \Drupal\rdf_entity\Entity\Rdf */
     $row['id'] = $entity->id();
-    $row['rid'] = $entity->rid();
+    $row['rid'] = $entity->bundle();
     $row['name'] = $entity->link();
     $row['first_name'] = $entity->first_name->value;
     $row['gender'] = $entity->gender->value;

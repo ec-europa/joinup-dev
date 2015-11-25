@@ -5,3 +5,32 @@
  * Contains Drupal\rdf_entity\rdf_entity.module
  */
 
+use \Drupal\Core\Form\FormStateInterface;
+use \Drupal\field_ui\Form\FieldStorageConfigEditForm;
+use \Drupal\field\Entity\FieldStorageConfig;
+/**
+ * Implements hook_form_alter().
+ */
+function rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id != 'field_storage_config_edit_form') {
+    return;
+  }
+  // Only add mapping form element to rdf entities fields.
+  if ($form_state->get('entity_type_id') != 'rdf_entity') {
+    return;
+  }
+  $form_obj = $form_state->getFormObject();
+  /** @var FieldStorageConfig $entity */
+  $entity = $form_obj->getEntity();
+
+  $form['rdf_field_property'] = array(
+    '#type' => 'textfield',
+    '#title' => t('The RDF property this field maps to'),
+    '#default_value' => $entity->getThirdPartySetting('rdf_entity', 'rdf_mapping', FALSE),
+  );
+  $form['#entity_builders'][] = 'rdf_entity_form_alter_builder';
+}
+
+function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity, FieldStorageConfigEditForm &$form, FormStateInterface $form_state) {
+  $entity->setThirdPartySetting('rdf_entity', 'rdf_mapping', $form_state->getValue('rdf_field_property'));
+}
