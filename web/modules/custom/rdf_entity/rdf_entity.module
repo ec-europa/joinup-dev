@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\rdf_entity\rdf_entity.module
+ * Main functions and hook implementations of the RDF Entity module.
  */
 
 use \Drupal\Core\Form\FormStateInterface;

@@ -30,7 +30,7 @@ class RdfDeleteForm extends ContentEntityConfirmFormBase {
    *
    * If the delete command is canceled, return to the Rdf list.
    */
-  public function getCancelURL() {
+  public function getCancelUrl() {
     return new Url('entity.rdf_entity_rdf.collection');
   }
 
