@@ -96,7 +96,6 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *     "id" = "id",
  *     "bundle" = "rid",
  *     "label" = "name",
- *     "uuid" = "uuid"
  *   },
  *   bundle_entity_type = "rdf_type",
  *   links = {
@@ -226,118 +225,6 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setDescription(t('The Rdf type of this entity.'))
       ->setSetting('target_type', 'rdf_type');
 
-    // Standard field, unique outside of the scope of the current project.
-    $fields['uuid'] = BaseFieldDefinition::create('uuid')
-      ->setLabel(t('UUID'))
-      ->setDescription(t('The UUID of the Contact entity.'))
-      ->setReadOnly(TRUE);
-
-    // Name field for the contact.
-    // We set display options for the view as well as the form.
-    // Users with correct privileges can change the view and edit configuration.
-    $fields['name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Contact entity.'))
-      ->setSettings(array(
-        'default_value' => '',
-        'max_length' => 255,
-        'text_processing' => 0,
-      ))
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -6,
-      ))
-      ->setDisplayOptions('form', array(
-        'type' => 'string',
-        'weight' => -6,
-      ))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    $fields['first_name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('First Name'))
-      ->setDescription(t('The first name of the Contact entity.'))
-      ->setSettings(array(
-        'default_value' => '',
-        'max_length' => 255,
-        'text_processing' => 0,
-      ))
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -5,
-      ))
-      ->setDisplayOptions('form', array(
-        'type' => 'string',
-        'weight' => -5,
-      ))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Gender field for the contact.
-    // ListTextType with a drop down menu widget.
-    // The values shown in the menu are 'male' and 'female'.
-    // In the view the field content is shown as string.
-    // In the form the choices are presented as options list.
-    $fields['gender'] = BaseFieldDefinition::create('list_string')
-      ->setLabel(t('Gender'))
-      ->setDescription(t('The gender of the Contact entity.'))
-      ->setSettings(array(
-        'allowed_values' => array(
-          'female' => 'female',
-          'male' => 'male',
-        ),
-      ))
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
-      ))
-      ->setDisplayOptions('form', array(
-        'type' => 'options_select',
-        'weight' => -4,
-      ))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Owner field of the contact.
-    // Entity reference field, holds the reference to the user object.
-    // The view shows the user name field of the user.
-    // The form presents a auto complete field for the user name.
-    $fields['user_id'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('User Name'))
-      ->setDescription(t('The Name of the associated user.'))
-      ->setSetting('target_type', 'user')
-      ->setSetting('handler', 'default')
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-        'type' => 'entity_reference',
-        'weight' => -3,
-      ))
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-        'weight' => -3,
-      ))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    $fields['langcode'] = BaseFieldDefinition::create('language')
-      ->setLabel(t('Language code'))
-      ->setDescription(t('The language code of ContentEntityExample entity.'));
-    $fields['created'] = BaseFieldDefinition::create('created')
-      ->setLabel(t('Created'))
-      ->setDescription(t('The time that the entity was created.'));
-
-    $fields['changed'] = BaseFieldDefinition::create('changed')
-      ->setLabel(t('Changed'))
-      ->setDescription(t('The time that the entity was last edited.'));
-
     return $fields;
   }
 
@@ -365,6 +252,10 @@ class Rdf extends ContentEntityBase implements RdfInterface {
 
   public function getType() {
     return $this->bundle();
+  }
+
+  public function label() {
+    return $this->id();
   }
 
 }

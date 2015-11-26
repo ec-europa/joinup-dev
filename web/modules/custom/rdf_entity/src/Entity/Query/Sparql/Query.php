@@ -61,7 +61,7 @@ class Query  extends QueryBase implements QueryInterface {
       'SELECT ?entity ' .
       'WHERE{' .
       '?entity rdf:type ' . $this->rdf_base . '.'.
-      '} LIMIT 50';
+      '} LIMIT 10';
     $uris = [];
     /** @var \EasyRdf_Http_Response $results */
     $results = $this->connection->query($query);

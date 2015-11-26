@@ -14,6 +14,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -27,10 +28,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
-  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager) {
+  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager) {
     parent::__construct($entity_type, $entity_manager, $cache);
     $this->sparql = $sparql;
     $this->languageManager = $language_manager;
+    $this->entityTypeManager = $entity_type_manager;
     // $this->initTableLayout();
   }
 
@@ -42,6 +44,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $entity_type,
       $container->get('sparql_endpoint'),
       $container->get('entity.manager'),
+      $container->get('entity_type.manager'),
       $container->get('cache.entity'),
       $container->get('language_manager')
     );
@@ -51,28 +54,27 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   public function loadMultiple(array $ids = NULL) {
     // @todo Rewrite to use ids.
-    $results = $this->sparql->query(
-      'SELECT ?entity ?lang ?desc ' .
-      'WHERE{' .
-        '?entity rdf:type admssw:SoftwareProject.'.
-        '?entity admssw:programmingLanguage ?lang.'.
-        '?entity dct:description ?desc'.
-      '} LIMIT 50'
-    );
+    if (!$ids) {
+      drupal_set_message('Fallback behaviour loadMultiple: return 10 SoftwareProjects.');
+      $results = $this->sparql->query(
+        'SELECT ?uri' .
+        'WHERE{' .
+        '?uri rdf:type admssw:SoftwareProject.' .
+        '} LIMIT 10'
+      );
+      foreach ($results as $result) {
+        $ids[] = (string) $result->entity;
+      }
+    }
+    dpm($ids, '$ids');
     $entities = array();
     $values = array();
-
-    foreach ($results as $result) {
+    $bundles = $this->getBundlesByIds($ids);
+    foreach ($ids as $id) {
+      $safe_id = str_replace('/', '\\' ,(string) $id);
       $values[] = array(
-        'rid' => array('x-default' => 'admssw_softwareproject'),
-        'id' => array('x-default' => str_replace('/', '\\' ,(string) $result->entity)),
-        //'id' => array('x-default' => $i),
-        'name' => array('x-default' => str_replace('/', '\\' ,(string) $result->entity)),
-        // 'name' => array('x-default' => (string) $result->lang),
-        'first_name' => array('x-default' => (string) $result->desc),
-        'gender' => array('x-default' => 'male'),
-        'user_id' => array('x-default' => 1),
-        'langcode' => array('x-default' => 'und'),
+        'rid' => array('x-default' => $bundles[$id]),
+        'id' => array('x-default' => $safe_id),
       );
       $this->loadFromDedicatedTables($values, FALSE);
 
@@ -94,63 +96,63 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * {@inheritdoc}
    */
   public function load($id_sanitized) {
+    // @todo Write a route handler to inject a proper id here.
     $id = str_replace('\\', '/', $id_sanitized);
-    $sparql = new \EasyRdf_Sparql_Client('http://localhost:8890/sparql');
-    $results = $sparql->query(
-      "SELECT ?lang ?desc " .
-      'WHERE{' .
-      "<$id> admssw:programmingLanguage ?lang.".
-      "<$id> dct:description ?desc".
-      '} LIMIT 1'
-    );
-    $values = NULL;
-    foreach ($results as $result) {
-      $bundle = $this->getBundlebyId($id);
-      $values[] = array(
-        'rid' => array('x-default' => 'admssw_softwareproject'),
+    $bundles = $this->getBundlesByIds(array($id));
+    $bundle = $bundles[$id];
+    $values = array(
+      $id => array(
+        'rid' => array('x-default' => $bundle),
         'id' => array('x-default' => $id_sanitized),
-        'name' => array('x-default' => (string) $result->lang),
-        'first_name' => array('x-default' => (string) $result->desc),
-        'gender' => array('x-default' => 'male'),
-        'user_id' => array('x-default' => 1),
-        'langcode' => array('x-default' => 'und'),
-      );
-      $this->loadFromDedicatedTables($values, FALSE);
-    }
+      ),
+    );
+    $this->loadFromDedicatedTables($values, FALSE);
     foreach ($values as $entity_values) {
-      return new Rdf($entity_values, 'rdf_entity', 'admssw_softwareproject');
+      $entity = new Rdf($entity_values, 'rdf_entity', $bundle);
+      return $entity;
     }
   }
 
-  protected function getBundlebyId($id) {
-    $query =
-    'SELECT ?bundle
-      WHERE{
-      <' . $id . '> rdf:type ?bundle.
-    } LIMIT 1';
-
-    $results = $this->sparql->query($query);
-
-    $values = array(
-      'targetEntityType' => 'rdf_entity',
-      'bundle' => 'admssw_softwareproject',
-    );
-
-    $entity_type = 'rdf_mapping';
-    // $bundles = new RdfEntityType($values, $entity_type);
-    $rdf_bundles = $this->entityManager->getBundleInfo('rdf_entity');
-
-    foreach ($results as $result) {
-      $rdf_bundle = (string) $result->bundle;
+  protected function getRdfBundleMapping() {
+    $bundle_rdf_bundle_mapping = array();
+    /** @var  $entity */
+    foreach ($this->entityTypeManager->getStorage('rdf_type')->loadMultiple() as $entity) {
+      $bundle_rdf_bundle_mapping[$entity->rdftype] = $entity->id();
     }
-    // Look in bundle settings for matching bundle.
-    foreach ($rdf_bundles as $bundle => $bundle_info) {
+    return $bundle_rdf_bundle_mapping;
+  }
 
-      if ($bundle_info['label'] == $rdf_bundle) {
-        return $bundle;
+  protected function getBundlesByIds($ids) {
+    $bundle_mapping = $this->getRdfBundleMapping();
+
+    $ids_rdf_mapping = array();
+    foreach ($ids as $id) {
+      // @todo Optimize this to do ONE query (move out foreach).
+      $query =
+        'SELECT ?bundle
+        WHERE{
+          <' . $id . '> rdf:type ?bundle.
+        } LIMIT 1';
+      $results = $this->sparql->query($query);
+      $results = $results->getArrayCopy();
+      if (is_array($results)) {
+        $result = array_shift($results);
+      }
+      elseif (is_object($results)) {
+        $result = $results;
+      }
+      else {
+        throw new EntityMalformedException('Unable to query bundle type from Sparql endpoint.');
+      }
+      $rdf_bundle = (string) $result->bundle;
+      if (isset($bundle_mapping[$rdf_bundle])) {
+        $ids_rdf_mapping[$id] = $bundle_mapping[$rdf_bundle];
+      }
+      else {
+        throw new EntityMalformedException('Id has no corresponding Drupal bundle.');
       }
     }
-    // throw new EntityMalformedException(t('Unable to match bundle.'));
+    return $ids_rdf_mapping;
   }
 
   /**
@@ -317,18 +319,18 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       }
       // @todo Optimize for speed later. This is really not the way to go, but let's start somewhere.
       // This is where I should slap myself in the face, as it will melt the triplestore.
-      foreach ($values as $entity_id => &$entity_values) {
-        // @todo Get this through the service container.
+      foreach ($values as $entity_id => $entity_values) {
         $query =
           'SELECT ?field_value ' .
           'WHERE{' .
-          '<' . str_replace('\\', '/', $entity_values['id'][LanguageInterface::LANGCODE_DEFAULT]) . '> <' . $table . '>  ?field_value'.
+          '<' . $entity_id . '> <' . $table . '>  ?field_value'.
           '} LIMIT 50';
         /** @var \EasyRdf_Sparql_Result $results */
         $results = $this->sparql->query($query);
+        $values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT] = array();
         foreach ($results as $result) {
           $field_value = (string) $result->field_value;
-          $entity_values[$field_name][LanguageInterface::LANGCODE_DEFAULT][] = $field_value;
+          $values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT][] = $field_value;
         }
       }
       $results = array();
