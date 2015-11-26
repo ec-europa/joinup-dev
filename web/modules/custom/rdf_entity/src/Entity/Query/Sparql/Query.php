@@ -57,11 +57,33 @@ class Query  extends QueryBase implements QueryInterface {
     return $this;
   }
   protected function result() {
-    $query =
-      'SELECT ?entity ' .
+
+    if ($this->count) {
+      $query = 'SELECT count(?entity) AS ?count ';
+    }
+    else {
+      $query = 'SELECT ?entity ';
+    }
+    $query .=
       'WHERE{' .
-      '?entity rdf:type ' . $this->rdf_base . '.'.
-      '} LIMIT 10';
+      '?entity rdf:type ?bundle.'.
+      '?bundle rdfs:isDefinedBy <http://joinup.ec.europa.eu/asset/adms_foss/release/release100>.'.
+      '}';
+
+    $this->initializePager();
+    if (!$this->count && $this->range) {
+      $query .= '
+      LIMIT ' . $this->range['length'] . '
+      OFFSET ' . $this->range['start'];
+    }
+
+
+    if ($this->count) {
+      $results = $this->connection->query($query);
+      foreach ($results as $result) {
+        return (string) $result->count;
+      }
+    }
     $uris = [];
     /** @var \EasyRdf_Http_Response $results */
     $results = $this->connection->query($query);

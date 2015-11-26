@@ -17,6 +17,7 @@ use Drupal\Core\Url;
  * @ingroup content_entity_example
  */
 class RdfListBuilder extends EntityListBuilder {
+  protected $limit = 20;
 
   /**
    * {@inheritdoc}

@@ -22,9 +22,7 @@ use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Defines a null entity storage.
- *
- * Used for content entity types that have no storage.
+ * Defines a entity storage backend that uses a Sparql endpoint.
  */
 class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
@@ -53,34 +51,19 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * {@inheritdoc}
    */
   public function loadMultiple(array $ids = NULL) {
-    // @todo Rewrite to use ids.
-    if (!$ids) {
-      drupal_set_message('Fallback behaviour loadMultiple: return 10 SoftwareProjects.');
-      $results = $this->sparql->query(
-        'SELECT ?uri' .
-        'WHERE{' .
-        '?uri rdf:type admssw:SoftwareProject.' .
-        '} LIMIT 10'
-      );
-      foreach ($results as $result) {
-        $ids[] = (string) $result->entity;
-      }
-    }
-    dpm($ids, '$ids');
     $entities = array();
     $values = array();
     $bundles = $this->getBundlesByIds($ids);
     foreach ($ids as $id) {
       $safe_id = str_replace('/', '\\' ,(string) $id);
-      $values[] = array(
+      $values[$id] = array(
         'rid' => array('x-default' => $bundles[$id]),
         'id' => array('x-default' => $safe_id),
       );
       $this->loadFromDedicatedTables($values, FALSE);
-
     }
-    foreach ($values as $entity_values) {
-      $entity = new Rdf($entity_values, 'rdf_entity', 'admssw_softwareproject');
+    foreach ($values as $id => $entity_values) {
+      $entity = new Rdf($entity_values, 'rdf_entity', $bundles[$id]);
       $entities[] = $entity;
     }
     return $entities;
@@ -115,7 +98,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
   protected function getRdfBundleMapping() {
     $bundle_rdf_bundle_mapping = array();
-    /** @var  $entity */
     foreach ($this->entityTypeManager->getStorage('rdf_type')->loadMultiple() as $entity) {
       $bundle_rdf_bundle_mapping[$entity->rdftype] = $entity->id();
     }
@@ -149,7 +131,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
         $ids_rdf_mapping[$id] = $bundle_mapping[$rdf_bundle];
       }
       else {
-        throw new EntityMalformedException('Id has no corresponding Drupal bundle.');
+        $ids_rdf_mapping[$id] = 'unknown_bundle: ' . $rdf_bundle;
+        //throw new EntityMalformedException('Id has no corresponding Drupal bundle.');
       }
     }
     return $ids_rdf_mapping;
