@@ -1,0 +1,6 @@
+SELECT ?property ?type
+WHERE {
+  <http://www.w3.org/ns/adms#AssetRepository> ?property ?obj.
+  ?property <http://www.w3.org/2000/01/rdf-schema#range> ?type
+}
+GROUP BY (?pred)

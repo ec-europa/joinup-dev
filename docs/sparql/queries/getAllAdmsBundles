@@ -1,0 +1,4 @@
+SELECT ?bundles
+WHERE {
+  ?bundles rdfs:isDefinedBy <http://joinup.ec.europa.eu/asset/adms_foss/release/release100>.
+}
