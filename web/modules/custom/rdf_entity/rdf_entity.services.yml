@@ -6,4 +6,11 @@ services:
       - { name: backend_overridable }
   sparql_endpoint:
     class: Drupal\rdf_entity\Database\Driver\sparql\Connection
-    arguments: [default]
+    factory: Drupal\Core\Database\Database::getConnection
+    arguments: [sparql, sparql_default]
+
+  webprofiler.sparql:
+    class: \Drupal\rdf_entity\DataCollector\SparqlDataCollector
+    arguments: ['@sparql_endpoint', '@config.factory']
+    tags:
+      - { name: data_collector, template:'@rdf_entity/Collector/sparql.html.twig', id:'sparql', title:'Sparql', priority: 60 }
