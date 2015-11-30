@@ -8,7 +8,7 @@ use Drupal\Core\Entity\Query\Sql\ConditionAggregate;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 
 class Query  extends QueryBase implements QueryInterface {
-  protected $rdf_base = NULL;
+  protected $sort_query = NULL;
   /**
    * Constructs a query object.
    *
@@ -31,8 +31,6 @@ class Query  extends QueryBase implements QueryInterface {
    * Implements \Drupal\Core\Entity\Query\QueryInterface::execute().
    */
   public function execute() {
-    // @todo Get this from entity bundle.
-    $this->rdf_base = 'admssw:SoftwareProject';
     return $this
       ->setPrefixes()
       ->compile()
@@ -59,13 +57,17 @@ class Query  extends QueryBase implements QueryInterface {
     if ($this->count) {
       $this->sort = array();
     }
-    // Gather the SQL field aliases first to make sure every field table
-    // necessary is added. This might change whether the query is simple or
-    // not. See below for more on simple queries.
-    $sort = array();
+    // Simple sorting. For the POC, only uri's and bundles are supported.
+    // @todo Implement sorting on bundle fields.
     if ($this->sort) {
-      foreach ($this->sort as $key => $data) {
-        // @todo Sort logic...
+      $sort = array_pop($this->sort);
+      switch ($sort['field']) {
+        case 'id':
+          $this->sort_query = 'ORDER BY ' . $sort['direction'] . ' (?entity)';
+          break;
+        case 'rid':
+          $this->sort_query = 'ORDER BY ' . $sort['direction'] . ' (?bundle)';
+          break;
       }
     }
     return $this;
@@ -87,6 +89,9 @@ class Query  extends QueryBase implements QueryInterface {
       '?bundle <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://www.w3.org/TR/vocab-adms/>.'.
       '}';
 
+    if ($this->sort_query) {
+      $query .= $this->sort_query;
+    }
     $this->initializePager();
     if (!$this->count && $this->range) {
       $query .= '
@@ -95,15 +100,16 @@ class Query  extends QueryBase implements QueryInterface {
     }
 
 
+    /** @var \EasyRdf_Http_Response $results */
+    $results = $this->connection->query($query);
     if ($this->count) {
-      $results = $this->connection->query($query);
+
       foreach ($results as $result) {
         return (string) $result->count;
       }
     }
     $uris = [];
-    /** @var \EasyRdf_Http_Response $results */
-    $results = $this->connection->query($query);
+
     foreach ($results as $result) {
       $uri = (string) $result->entity;
       $uris[$uri] = $uri;
