@@ -95,7 +95,7 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *   entity_keys = {
  *     "id" = "id",
  *     "bundle" = "rid",
- *     "label" = "name",
+ *     "label" = "label",
  *   },
  *   bundle_entity_type = "rdf_type",
  *   links = {
@@ -225,6 +225,23 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setDescription(t('The Rdf type of this entity.'))
       ->setSetting('target_type', 'rdf_type');
 
+    $fields['label'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Title'))
+      ->setRequired(TRUE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSetting('max_length', 255)
+      ->setDisplayOptions('view', array(
+        'label' => 'hidden',
+        'type' => 'string',
+        'weight' => -5,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -5,
+      ))
+      ->setDisplayConfigurable('form', TRUE);
+
     return $fields;
   }
 
@@ -254,8 +271,6 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     return $this->bundle();
   }
 
-  public function label() {
-    return $this->id();
-  }
+
 
 }

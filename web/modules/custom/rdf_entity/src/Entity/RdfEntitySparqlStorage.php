@@ -60,8 +60,9 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
         'rid' => array('x-default' => $bundles[$id]),
         'id' => array('x-default' => $safe_id),
       );
-      $this->loadFromDedicatedTables($values, FALSE);
     }
+    $this->loadFromBaseTable($values);
+    $this->loadFromDedicatedTables($values, FALSE);
     foreach ($values as $id => $entity_values) {
       $entity = new Rdf($entity_values, 'rdf_entity', $bundles[$id]);
       $entities[] = $entity;
@@ -81,19 +82,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   public function load($id_sanitized) {
     // @todo Write a route handler to inject a proper id here.
     $id = str_replace('\\', '/', $id_sanitized);
-    $bundles = $this->getBundlesByIds(array($id));
-    $bundle = $bundles[$id];
-    $values = array(
-      $id => array(
-        'rid' => array('x-default' => $bundle),
-        'id' => array('x-default' => $id_sanitized),
-      ),
-    );
-    $this->loadFromDedicatedTables($values, FALSE);
-    foreach ($values as $entity_values) {
-      $entity = new Rdf($entity_values, 'rdf_entity', $bundle);
-      return $entity;
-    }
+    $entities = $this->loadMultiple(array($id));
+    return array_shift($entities);
   }
 
   protected function getRdfBundleMapping() {
@@ -254,6 +244,44 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   public function hasData() {
     return FALSE;
+  }
+
+  /**
+   * Loads values of fields stored in dedicated tables for a group of entities.
+   *
+   * @param array &$values
+   *   An array of values keyed by entity ID.
+   */
+  protected function loadFromBaseTable(array &$values) {
+    // @todo Find a way to move query out of loop.
+    foreach ($values as $entity_id => $entity_values) {
+      $query =
+        'SELECT ?label ' .
+        'WHERE{' .
+        '{<' . $entity_id . '> <http://www.w3.org/2000/01/rdf-schema#label>  ?label.}'.
+        'UNION'.
+        '{ <' . $entity_id . '> <http://usefulinc.com/ns/doap#name> ?label. }'.
+        '} LIMIT 1';
+      /** @var \EasyRdf_Sparql_Result $results */
+      $results = $this->sparql->query($query);
+      $results = $results->getArrayCopy();
+      if (is_array($results)) {
+        $result = array_shift($results);
+      }
+      elseif (is_object($results)) {
+        $result = $results;
+      }
+      else {
+        throw new EntityMalformedException('Unable to query bundle type from Sparql endpoint.');
+      }
+      $label = (string) $result->label;
+      if ($label) {
+        $values[$entity_id]['label'][LanguageInterface::LANGCODE_DEFAULT] = $label;
+      }
+      else {
+        $values[$entity_id]['label'][LanguageInterface::LANGCODE_DEFAULT] = $entity_id;
+      }
+    }
   }
 
   /**

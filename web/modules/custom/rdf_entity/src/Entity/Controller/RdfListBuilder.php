@@ -21,6 +21,23 @@ class RdfListBuilder extends EntityListBuilder {
 
   /**
    * {@inheritdoc}
+   */
+  public function load() {
+    $query = $this->getStorage()->getQuery()
+      ->sort($this->entityType->getKey('id'));
+
+    // Only add the pager if a limit is specified.
+    if ($this->limit) {
+      $query->pager($this->limit);
+    }
+    $header = $this->buildHeader();
+    $query->tableSort($header);
+    $rids = $query->execute();
+    return $this->storage->loadMultiple($rids);
+  }
+
+  /**
+   * {@inheritdoc}
    *
    * We override ::render() so that we can add our own content above the table.
    * parent::render() is where EntityListBuilder creates the table using our
@@ -43,8 +60,18 @@ class RdfListBuilder extends EntityListBuilder {
    * and inserts the 'edit' and 'delete' links as defined for the entity type.
    */
   public function buildHeader() {
-    $header['id'] = $this->t('URI');
-    $header['rid'] = $this->t('Bundle');
+    $header = array(
+      'id' => array(
+        'data' => $this->t('URI'),
+        'field' => 'id',
+        'specifier' => 'id',
+      ),
+      'rid' => array(
+        'data' => $this->t('Bundle'),
+        'field' => 'rid',
+        'specifier' => 'rid',
+      ),
+    );
     return $header + parent::buildHeader();
   }
 

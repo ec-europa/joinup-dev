@@ -49,10 +49,27 @@ class Query  extends QueryBase implements QueryInterface {
     return $this;
   }
 
+  /**
+   * Adds the sort to the build query.
+   *
+   * @return \Drupal\rdf_entity\Entity\Query\Sparql\Query
+   *   Returns the called object.
+   */
   protected function addSort() {
+    if ($this->count) {
+      $this->sort = array();
+    }
+    // Gather the SQL field aliases first to make sure every field table
+    // necessary is added. This might change whether the query is simple or
+    // not. See below for more on simple queries.
+    $sort = array();
+    if ($this->sort) {
+      foreach ($this->sort as $key => $data) {
+        // @todo Sort logic...
+      }
+    }
     return $this;
   }
-
   protected function finish() {
     return $this;
   }
@@ -67,7 +84,7 @@ class Query  extends QueryBase implements QueryInterface {
     $query .=
       'WHERE{' .
       '?entity rdf:type ?bundle.'.
-      '?bundle rdfs:isDefinedBy <http://joinup.ec.europa.eu/asset/adms_foss/release/release100>.'.
+      '?bundle <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://www.w3.org/TR/vocab-adms/>.'.
       '}';
 
     $this->initializePager();
