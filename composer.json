@@ -23,13 +23,19 @@
         "php": ">=5.5.9"
     },
     "require-dev": {
+        "behat/mink": "~1.6",
+        "behat/mink-goutte-driver": "~1.2",
         "drupal/coder": "dev-8.x-2.x",
         "drupal/config_update": "8.1.*@dev",
         "drupal/devel": "8.1.*@dev",
         "drupal/drupal-extension": "~3.0",
         "drupal/phing-drush-task": "1.0",
+        "jcalderonzumba/gastonjs": "^1.1@dev",
+        "jcalderonzumba/mink-phantomjs-driver": "dev-master#10d7c48c9a4129463052321b52450d98983c4332",
         "mikey179/vfsStream": "~1.2",
+        "pfrenssen/phpcs-pre-push": "1.0",
         "phing/phing": "~2.10",
+        "phpunit/phpunit": "~4.8",
         "symfony/css-selector": "2.7.*"
     },
     "minimum-stability": "dev",
@@ -41,7 +47,7 @@
         }
     },
     "scripts": {
-        "post-install-cmd": "scripts/composer/post-install.sh"
+        "post-install-cmd": "sh ./scripts/composer/post-install.sh"
     },
     "extra": {
         "installer-paths": {
@@ -73,6 +79,19 @@
               },
               "autoload": { "classmap": [ "DrushTask.php" ] },
               "include-path": [ "." ]
+          }
+      },
+      {
+          "type": "package",
+          "package": {
+              "name": "pfrenssen/phpcs-pre-push",
+              "version": "1.0",
+              "type": "git-hook",
+              "source": {
+                  "url": "https://gist.github.com/498fc52fea3f965f6640.git",
+                  "type": "git",
+                  "reference": "master"
+              }
           }
       }
   ]
