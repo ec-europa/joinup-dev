@@ -6,7 +6,7 @@ entity.rdf_entity.canonical:
   defaults:
   # Calls the view controller, defined in the annotation of the rdf entity
     _entity_view: 'rdf_entity'
-    _title: 'RDF Content'
+    _title_callback: '\Drupal\rdf_entity\Controller\RdfController::rdfTitle'
   requirements:
   # Calls the access controller of the entity, $operation 'view'
     _entity_access: 'rdf_entity.view'
@@ -76,8 +76,7 @@ entity.rdf_type.edit_form:
   path: '/admin/structure/rdf_type/manage/{rdf_type}'
   defaults:
     _entity_form: 'rdf_type.default'
-    _title: '@todo Write proper title callback'
-   #  _title_callback: '\Drupal\taxonomy\Controller\TaxonomyController::vocabularyTitle'
+    _title_callback: '\Drupal\rdf_entity\Controller\RdfController::rdfTypeTitle'
   requirements:
     _entity_access: 'rdf_type.update'
 
@@ -101,7 +100,6 @@ entity.rdf_type.overview_form:
   path: '/admin/structure/rdf_type/manage/{rdf_type}/overview'
   defaults:
     _form: 'Drupal\rdf_entity\Form\OverviewRdf'
-    _title: '@todo Write proper title callback'
-    #_title_callback: 'Drupal\taxonomy\Controller\TaxonomyController::vocabularyTitle'
+    _title_callback: '\Drupal\rdf_entity\Controller\RdfController::rdfTypeTitle'
   requirements:
     _entity_access: 'rdf_type.view'

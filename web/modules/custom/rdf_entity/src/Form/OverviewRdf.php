@@ -7,11 +7,11 @@
 
 namespace Drupal\rdf_entity\Form;
 
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\taxonomy\VocabularyInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -73,13 +73,13 @@ class OverviewRdf extends FormBase {
    *   An associative array containing the structure of the form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
-   * @param \Drupal\taxonomy\VocabularyInterface $taxonomy_vocabulary
+   * @param \Drupal\Core\Config\Entity\ConfigEntityInterface $rdf_type
    *   The vocabulary to display the overview form for.
    *
    * @return array
    *   The form structure.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, VocabularyInterface $taxonomy_vocabulary = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ConfigEntityInterface $rdf_type = NULL) {
 
     return $form;
   }

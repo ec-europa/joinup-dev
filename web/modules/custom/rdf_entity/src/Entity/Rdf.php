@@ -83,7 +83,7 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *     "form" = {
  *       "add" = "Drupal\rdf_entity\Form\RdfForm",
  *       "edit" = "Drupal\rdf_entity\Form\RdfForm",
- *       "delete" = "Drupal\rdf_entity\Form\RdfDeleteForm",
+ *       "delete" = "\Drupal\rdf_entity\Form\RdfDeleteForm",
  *     },
  *     "access" = "Drupal\rdf_entity\RdfAccessControlHandler",
  *   },

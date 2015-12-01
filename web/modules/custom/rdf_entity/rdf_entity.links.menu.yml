@@ -8,5 +8,5 @@ entity.rdf_entity.collection:
 rdf_entity_rdf.admin.structure.settings:
   title: RDF Settings
   description: 'Configure RDF entity'
-  route_name:  rdf_entity.rdf_entity_settings
+  route_name:  entity.rdf_type.collection
   parent: system.admin_structure

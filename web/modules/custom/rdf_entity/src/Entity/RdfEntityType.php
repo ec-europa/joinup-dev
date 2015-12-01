@@ -13,19 +13,15 @@ use Drupal\rdf_entity\RdfEntityTypeInterface;
 /**
  * Defines the Rdf models.
  *
- * Disabled for now :-)
- * "storage" = "Drupal\taxonomy\VocabularyStorage",
- *
  * @ConfigEntityType(
  *   id = "rdf_type",
  *   label = @Translation("Rdf entity type"),
  *   handlers = {
- *
  *     "list_builder" = "\Drupal\rdf_entity\Entity\Controller\RdfTypeListBuilder",
  *     "form" = {
  *       "default" = "\Drupal\rdf_entity\Form\RdfTypeForm",
  *       "reset" = "Drupal\taxonomy\Form\VocabularyResetForm",
- *       "delete" = "Drupal\taxonomy\Form\VocabularyDeleteForm"
+ *       "delete" = "\Drupal\rdf_entity\Form\RdfTypeDeleteForm"
  *     }
  *   },
  *   admin_permission = "administer rdf",
