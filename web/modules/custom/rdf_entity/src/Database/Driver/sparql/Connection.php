@@ -12,7 +12,6 @@ use Drupal\Core\Database\Log;
  * @addtogroup database
  * @{
  */
-
 class Connection {
 
   /**
@@ -46,20 +45,21 @@ class Connection {
    * Constructs a Connection object.
    *
    * @param \EasyRdf_Sparql_Client $connection
-   *   An object of the EasyRdf_Sparql_Client class representing a database connection.
+   *   Object of the EasyRdf_Sparql_Client class which is a database connection.
    * @param array $connection_options
    *   An array of options for the connection. May include the following:
    *   - prefix
    *   - namespace
    *   - Other driver-specific options.
    */
-  public function __construct($connection, array $connection_options) {
+  public function __construct(\EasyRdf_Sparql_Client $connection, array $connection_options) {
     $this->connection = $connection;
     $this->connectionOptions = $connection_options;
   }
 
-
-
+  /**
+   * Execute the actual query against the Sparql endpoint.
+   */
   public function query($query) {
     if (!empty($this->logger)) {
       $query_start = microtime(TRUE);
@@ -80,11 +80,17 @@ class Connection {
     return $results;
   }
 
+  /**
+   * Helper to get the query. Called from the logger.
+   */
   public function getQueryString() {
     return $this->query;
   }
 
 
+  /**
+   * Returns the database connection string.
+   */
   public function getQueryUri() {
     return $this->connection->getQueryUri();
   }
@@ -114,7 +120,10 @@ class Connection {
    * Initialize the database connection.
    *
    * @param array $connection_options
+   *   The connection options as defined in settings.php.
+   *
    * @return \EasyRdf_Sparql_Client
+   *   The EasyRdf connection.
    */
   public static function open(array &$connection_options = array()) {
     // @todo Get endpoint string from settings file.
@@ -139,6 +148,12 @@ class Connection {
     }
   }
 
+  /**
+   * Returns the target this connection is associated with.
+   *
+   * @return string|null
+   *   The target string of this connection, or NULL if no target is set.
+   */
   public function getTarget() {
     return $this->target;
   }
@@ -155,6 +170,12 @@ class Connection {
     }
   }
 
+  /**
+   * Returns the key this connection is associated with.
+   *
+   * @return string|null
+   *   The key of this connection, or NULL if no key is set.
+   */
   public function getKey() {
     return $this->key;
   }
@@ -174,6 +195,7 @@ class Connection {
   public function getConnectionOptions() {
     return $this->connectionOptions;
   }
+
 }
 
 /**

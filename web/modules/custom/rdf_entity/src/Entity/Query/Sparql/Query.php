@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * @file
+ * Build queries to the triple store.
+ */
+
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -7,8 +13,11 @@ use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Entity\Query\Sql\ConditionAggregate;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 
-class Query  extends QueryBase implements QueryInterface {
-  protected $sort_query = NULL;
+/**
+ * The base entity query class for Rdf entities.
+ */
+class Query extends QueryBase implements QueryInterface {
+  protected $sortQuery = NULL;
   /**
    * Constructs a query object.
    *
@@ -32,19 +41,8 @@ class Query  extends QueryBase implements QueryInterface {
    */
   public function execute() {
     return $this
-      ->setPrefixes()
-      ->compile()
       ->addSort()
-      ->finish()
       ->result();
-  }
-
-  protected function setPrefixes() {
-    return $this;
-  }
-
-  protected function compile() {
-    return $this;
   }
 
   /**
@@ -63,18 +61,20 @@ class Query  extends QueryBase implements QueryInterface {
       $sort = array_pop($this->sort);
       switch ($sort['field']) {
         case 'id':
-          $this->sort_query = 'ORDER BY ' . $sort['direction'] . ' (?entity)';
+          $this->sortQuery = 'ORDER BY ' . $sort['direction'] . ' (?entity)';
           break;
+
         case 'rid':
-          $this->sort_query = 'ORDER BY ' . $sort['direction'] . ' (?bundle)';
+          $this->sortQuery = 'ORDER BY ' . $sort['direction'] . ' (?bundle)';
           break;
       }
     }
     return $this;
   }
-  protected function finish() {
-    return $this;
-  }
+
+  /**
+   * Do the actual query building.
+   */
   protected function result() {
 
     if ($this->count) {
@@ -84,13 +84,13 @@ class Query  extends QueryBase implements QueryInterface {
       $query = 'SELECT ?entity ';
     }
     $query .=
-      'WHERE{' .
-      '?entity rdf:type ?bundle.'.
-      '?bundle <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://www.w3.org/TR/vocab-adms/>.'.
+      'WHERE{
+      ?entity rdf:type ?bundle.
+      ?bundle <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://www.w3.org/TR/vocab-adms/>.' .
       '}';
 
-    if ($this->sort_query) {
-      $query .= $this->sort_query;
+    if ($this->sortQuery) {
+      $query .= $this->sortQuery;
     }
     $this->initializePager();
     if (!$this->count && $this->range) {
@@ -98,7 +98,6 @@ class Query  extends QueryBase implements QueryInterface {
       LIMIT ' . $this->range['length'] . '
       OFFSET ' . $this->range['start'];
     }
-
 
     /** @var \EasyRdf_Http_Response $results */
     $results = $this->connection->query($query);
@@ -138,4 +137,5 @@ class Query  extends QueryBase implements QueryInterface {
   public function conditionAggregateGroupFactory($conjunction = 'AND') {
     return new ConditionAggregate($conjunction, $this);
   }
+
 }

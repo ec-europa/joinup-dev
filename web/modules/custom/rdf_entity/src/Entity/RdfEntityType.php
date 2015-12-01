@@ -11,7 +11,7 @@ use Drupal\rdf_entity\RdfEntityTypeInterface;
 
 
 /**
- * Defines the Rdf models
+ * Defines the Rdf models.
  *
  * Disabled for now :-)
  * "storage" = "Drupal\taxonomy\VocabularyStorage",
@@ -62,4 +62,5 @@ class RdfEntityType extends ConfigEntityBundleBase implements RdfEntityTypeInter
 
     return $this->rid;
   }
+
 }

@@ -9,7 +9,6 @@ namespace Drupal\rdf_entity\Entity\Controller;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
-use Drupal\Core\Url;
 
 /**
  * Provides a list controller for rdf_entity entity.

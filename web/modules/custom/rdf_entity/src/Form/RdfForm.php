@@ -42,4 +42,5 @@ class RdfForm extends ContentEntityForm {
     $entity = $this->getEntity();
     $entity->save();
   }
+
 }

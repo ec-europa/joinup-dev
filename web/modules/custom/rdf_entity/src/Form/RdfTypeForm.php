@@ -7,12 +7,10 @@
 
 namespace Drupal\rdf_entity\Form;
 
-use Drupal\Core\Config\Entity\ConfigEntityStorage;
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Entity\BundleEntityFormBase;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Language\LanguageInterface;
-use Drupal\language\Entity\ContentLanguageSettings;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -25,16 +23,16 @@ class RdfTypeForm extends BundleEntityFormBase {
    *
    * @var \Drupal\taxonomy\VocabularyStorageInterface.
    */
-  protected $vocabularyStorage;
+  protected $rdfTypeStorage;
 
   /**
-   * Constructs a new vocabulary form.
+   * Constructs a new rdf type form.
    *
-   * @param \Drupal\taxonomy\VocabularyStorageInterface $vocabulary_storage
-   *   The vocabulary storage.
+   * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $rdf_type_storage
+   *   The rdf type storage.
    */
-  public function __construct(ConfigEntityStorage $vocabulary_storage) {
-    $this->vocabularyStorage = $vocabulary_storage;
+  public function __construct(ConfigEntityStorageInterface $rdf_type_storage) {
+    $this->rdfTypeStorage = $rdf_type_storage;
   }
 
   /**
@@ -42,7 +40,7 @@ class RdfTypeForm extends BundleEntityFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity.manager')->getStorage('taxonomy_vocabulary')
+      $container->get('entity.manager')->getStorage('rdf_type')
     );
   }
 
@@ -52,10 +50,10 @@ class RdfTypeForm extends BundleEntityFormBase {
   public function form(array $form, FormStateInterface $form_state) {
     $rdf_type = $this->entity;
     if ($rdf_type->isNew()) {
-      $form['#title'] = $this->t('Add vocabulary');
+      $form['#title'] = $this->t('Add rdf type');
     }
     else {
-      $form['#title'] = $this->t('Edit vocabulary');
+      $form['#title'] = $this->t('Edit rdf type');
     }
 
     $form['name'] = array(
@@ -64,11 +62,16 @@ class RdfTypeForm extends BundleEntityFormBase {
       '#default_value' => $rdf_type->label(),
       '#maxlength' => 255,
       '#required' => TRUE,
+
     );
     $form['rid'] = array(
-      '#type' => 'textfield',
+      '#type' => 'machine_name',
       '#default_value' => $rdf_type->id(),
       '#maxlength' => EntityTypeInterface::BUNDLE_MAX_LENGTH,
+      '#machine_name' => array(
+        'exists' => array($this, 'exists'),
+        'source' => array('name'),
+      ),
     );
     $form['description'] = array(
       '#type' => 'textfield',
@@ -88,42 +91,42 @@ class RdfTypeForm extends BundleEntityFormBase {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
-    $vocabulary = $this->entity;
+    $rdf_type = $this->entity;
 
-    // Prevent leading and trailing spaces in vocabulary names.
-    $vocabulary->set('name', trim($vocabulary->label()));
+    // Prevent leading and trailing spaces in rdf_type names.
+    $rdf_type->set('name', trim($rdf_type->label()));
 
-    $status = $vocabulary->save();
+    $status = $rdf_type->save();
     $edit_link = $this->entity->link($this->t('Edit'));
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created new vocabulary %name.', array('%name' => $vocabulary->label())));
-        $this->logger('taxonomy')->notice('Created new vocabulary %name.', array('%name' => $vocabulary->label(), 'link' => $edit_link));
-        $form_state->setRedirectUrl($vocabulary->urlInfo('overview-form'));
+        drupal_set_message($this->t('Created new rdf type %name.', array('%name' => $rdf_type->label())));
+        $this->logger('taxonomy')->notice('Created new rdf type %name.', array('%name' => $rdf_type->label(), 'link' => $edit_link));
+        $form_state->setRedirectUrl($rdf_type->urlInfo('overview-form'));
         break;
 
       case SAVED_UPDATED:
-        drupal_set_message($this->t('Updated vocabulary %name.', array('%name' => $vocabulary->label())));
-        $this->logger('taxonomy')->notice('Updated vocabulary %name.', array('%name' => $vocabulary->label(), 'link' => $edit_link));
-        $form_state->setRedirectUrl($vocabulary->urlInfo('collection'));
+        drupal_set_message($this->t('Updated rdf type %name.', array('%name' => $rdf_type->label())));
+        $this->logger('taxonomy')->notice('Updated rdf type %name.', array('%name' => $rdf_type->label(), 'link' => $edit_link));
+        $form_state->setRedirectUrl($rdf_type->urlInfo('collection'));
         break;
     }
 
-    $form_state->setValue('vid', $vocabulary->id());
-    $form_state->set('vid', $vocabulary->id());
+    $form_state->setValue('rid', $rdf_type->id());
+    $form_state->set('rid', $rdf_type->id());
   }
 
   /**
-   * Determines if the vocabulary already exists.
+   * Determines if the rdf type already exists.
    *
-   * @param string $vid
-   *   The vocabulary ID.
+   * @param string $rid
+   *   The rdf type ID.
    *
    * @return bool
    *   TRUE if the vocabulary exists, FALSE otherwise.
    */
-  public function exists($vid) {
-    $action = $this->vocabularyStorage->load($vid);
+  public function exists($rid) {
+    $action = $this->rdfTypeStorage->load($rid);
     return !empty($action);
   }
 

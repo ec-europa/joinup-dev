@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Integrate the Sparql query backend with the web profiler toolbar.
+ */
+
 namespace Drupal\rdf_entity\DataCollector;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -13,29 +18,27 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 /**
- * Class DatabaseDataCollector
+ * Class DatabaseDataCollector.
  */
 class SparqlDataCollector extends DataCollector implements DrupalDataCollectorInterface {
 
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
-  /**
-   * @var \Drupal\Core\Database\Connection
-   */
   private $database;
 
-  /**
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
   private $configFactory;
 
   /**
+   * Setup DatabaseDataCollector.
+   *
    * @param \Drupal\Core\Database\Connection $database
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   Database connection.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   Config factory.
    */
-  public function __construct(Connection $database, ConfigFactoryInterface $configFactory) {
+  public function __construct(Connection $database, ConfigFactoryInterface $config_factory) {
     $this->database = $database;
-    $this->configFactory = $configFactory;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -50,7 +53,7 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
       unset($query['caller']['args']);
 
       // Remove query args element if empty.
-      if(empty($query['args'])) {
+      if (empty($query['args'])) {
         unset($query['args']);
       }
 
@@ -58,8 +61,8 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
       $query['time'] = $query['time'] * 1000;
     }
 
-    $querySort = $this->configFactory->get('webprofiler.config')->get('query_sort');
-    if('duration' === $querySort) {
+    $query_sort = $this->configFactory->get('webprofiler.config')->get('query_sort');
+    if ('duration' === $query_sort) {
       usort($queries, [
         "\\Drupal\\rdf_entity\\DataCollector\\SparqlDataCollector",
         "orderQueryByTime",
@@ -77,21 +80,30 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
   }
 
   /**
+   * Get database connection options.
+   *
    * @return array
+   *    Database connection options.
    */
   public function getDatabase() {
     return $this->data['database'];
   }
 
   /**
+   * Return amount of queries ran.
+   *
    * @return int
+   *    Number of queries.
    */
   public function getQueryCount() {
     return count($this->data['queries']);
   }
 
   /**
+   * Get all executed rdf queries.
+   *
    * @return array
+   *   List of rdf queries.
    */
   public function getQueries() {
     return $this->data['queries'];
@@ -101,6 +113,7 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
    * Returns the total execution time.
    *
    * @return float
+   *   Time
    */
   public function getTime() {
     $time = 0;
@@ -116,6 +129,7 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
    * Returns a color based on the number of executed queries.
    *
    * @return string
+   *   Color
    */
   public function getColorCode() {
     if ($this->getQueryCount() < 100) {
@@ -132,6 +146,7 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
    * Returns the configured query highlight threshold.
    *
    * @return int
+   *   Threshold
    */
   public function getQueryHighlightThreshold() {
     // When a profile is loaded from storage this object is deserialized and
@@ -224,10 +239,15 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
   }
 
   /**
-   * @param $a
-   * @param $b
+   * Sort callback. Sort queries by timing.
+   *
+   * @param array $a
+   *   Query.
+   * @param array $b
+   *   Query.
    *
    * @return int
+   *   Sort for usort.
    */
   private function orderQueryByTime($a, $b) {
     $at = $a['time'];
@@ -238,4 +258,5 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
     }
     return ($at < $bt) ? 1 : -1;
   }
+
 }

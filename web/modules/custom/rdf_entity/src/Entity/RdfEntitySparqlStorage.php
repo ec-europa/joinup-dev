@@ -26,12 +26,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
+  /**
+   * Initialize the storage backend.
+   */
   public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager) {
     parent::__construct($entity_type, $entity_manager, $cache);
     $this->sparql = $sparql;
     $this->languageManager = $language_manager;
     $this->entityTypeManager = $entity_type_manager;
-    // $this->initTableLayout();
   }
 
   /**
@@ -55,7 +57,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $values = array();
     $bundles = $this->getBundlesByIds($ids);
     foreach ($ids as $id) {
-      $safe_id = str_replace('/', '\\' ,(string) $id);
+      $safe_id = str_replace('/', '\\', (string) $id);
       $values[$id] = array(
         'rid' => array('x-default' => $bundles[$id]),
         'id' => array('x-default' => $safe_id),
@@ -86,6 +88,9 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     return array_shift($entities);
   }
 
+  /**
+   * Get the mapping between bundle names and their rdf properties.
+   */
   protected function getRdfBundleMapping() {
     $bundle_rdf_bundle_mapping = array();
     foreach ($this->entityTypeManager->getStorage('rdf_type')->loadMultiple() as $entity) {
@@ -94,14 +99,17 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     return $bundle_rdf_bundle_mapping;
   }
 
+  /**
+   * Determine the bundle types for a list of entities.
+   */
   protected function getBundlesByIds($ids) {
     $bundle_mapping = $this->getRdfBundleMapping();
 
     $ids_rdf_mapping = array();
     foreach ($ids as $id) {
       // @todo Optimize this to do ONE query (move out foreach).
-      $query =
-        'SELECT ?bundle
+      $query
+        = 'SELECT ?bundle
         WHERE{
           <' . $id . '> rdf:type ?bundle.
         } LIMIT 1';
@@ -122,7 +130,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       }
       else {
         $ids_rdf_mapping[$id] = 'unknown_bundle: ' . $rdf_bundle;
-        //throw new EntityMalformedException('Id has no corresponding Drupal bundle.');
+        // @todo Throw new EntityMalformedException
+        // ('Id has no corresponding Drupal bundle.');.
       }
     }
     return $ids_rdf_mapping;
@@ -255,13 +264,13 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   protected function loadFromBaseTable(array &$values) {
     // @todo Find a way to move query out of loop.
     foreach ($values as $entity_id => $entity_values) {
-      $query =
-        'SELECT ?label ' .
-        'WHERE{' .
-        '{<' . $entity_id . '> <http://www.w3.org/2000/01/rdf-schema#label>  ?label.}'.
-        'UNION'.
-        '{ <' . $entity_id . '> <http://usefulinc.com/ns/doap#name> ?label. }'.
-        '} LIMIT 1';
+      $query
+        = 'SELECT ?label
+        WHERE{
+        {<' . $entity_id . '> <http://www.w3.org/2000/01/rdf-schema#label>  ?label.}
+        UNION
+        { <' . $entity_id . '> <http://usefulinc.com/ns/doap#name> ?label. }
+        } LIMIT 1';
       /** @var \EasyRdf_Sparql_Result $results */
       $results = $this->sparql->query($query);
       $results = $results->getArrayCopy();
@@ -329,13 +338,14 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
         continue;
       }
       // @todo Optimize for speed later. This is really not the way to go, but let's start somewhere.
-      // This is where I should slap myself in the face, as it will melt the triplestore.
+      // This is where I should slap myself in the face,
+      // as it will melt the triplestore.
       foreach ($values as $entity_id => $entity_values) {
-        $query =
-          'SELECT ?field_value ' .
-          'WHERE{' .
-          '<' . $entity_id . '> <' . $table . '>  ?field_value'.
-          '} LIMIT 50';
+        $query
+          = 'SELECT ?field_value
+          WHERE{
+          <' . $entity_id . '> <' . $table . '>  ?field_value
+          } LIMIT 50';
         /** @var \EasyRdf_Sparql_Result $results */
         $results = $this->sparql->query($query);
         $values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT] = array();
@@ -380,4 +390,5 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       }
     }
   }
+
 }

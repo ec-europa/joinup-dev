@@ -31,6 +31,9 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id)
   $form['#entity_builders'][] = 'rdf_entity_form_alter_builder';
 }
 
+/**
+ * Entity builder callback: Save rdf field mapping.
+ */
 function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity, FieldStorageConfigEditForm &$form, FormStateInterface $form_state) {
   $entity->setThirdPartySetting('rdf_entity', 'rdf_mapping', $form_state->getValue('rdf_field_property'));
 }

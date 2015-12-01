@@ -14,7 +14,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\taxonomy\VocabularyInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/*
+/**
  * Provides terms overview form for a taxonomy vocabulary.
  */
 class OverviewRdf extends FormBase {
