@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Contains rdf_demo.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function rdf_demo_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the rdf_demo module.
+    case 'help.page.rdf_demo':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Demo the integration with the triplestore.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function rdf_demo_theme() {
+  $theme = [];
+
+  return $theme;
+}
