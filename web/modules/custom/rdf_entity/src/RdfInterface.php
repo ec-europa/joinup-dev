@@ -18,5 +18,21 @@ use Drupal\Core\Entity\EntityChangedInterface;
  * @ingroup rdf_entity
  */
 interface RdfInterface extends ContentEntityInterface, EntityOwnerInterface, EntityChangedInterface {
+  /**
+   * Gets the name of the rdf entity.
+   *
+   * @return string
+   *   The name of the rdf entity.
+   */
+  public function getName();
 
+  /**
+   * Sets the name of the rdf entity.
+   *
+   * @param int $name
+   *   The rdf entity's name.
+   *
+   * @return $this
+   */
+  public function setName($name);
 }

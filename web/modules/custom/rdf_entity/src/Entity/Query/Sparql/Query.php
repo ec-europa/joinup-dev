@@ -18,6 +18,10 @@ use Drupal\rdf_entity\Database\Driver\sparql\Connection;
  */
 class Query extends QueryBase implements QueryInterface {
   protected $sortQuery = NULL;
+
+  public $query = NULL;
+
+  protected $results = NULL;
   /**
    * Constructs a query object.
    *
@@ -41,10 +45,51 @@ class Query extends QueryBase implements QueryInterface {
    */
   public function execute() {
     return $this
+      ->prepare()
+      ->addConditions()
       ->addSort()
+      ->addPager()
+      ->run()
       ->result();
   }
 
+  /**
+   * Initialize the query.
+   *
+   * @return $this
+   */
+  protected function prepare() {
+    // Running as count query?
+    if ($this->count) {
+      $this->query = 'SELECT count(?entity) AS ?count ';
+    }
+    else {
+      $this->query = 'SELECT ?entity ';
+    }
+    $this->query .= "\n";
+    return $this;
+  }
+
+  /**
+   * Add the registered conditions to the WHERE clause.
+   *
+   * @return $this
+   */
+  protected function addConditions() {
+    $this->query .=
+      "WHERE{\n";
+    $this->condition->compile($this);
+    $this->query .= "}\n";
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function condition($property, $value = NULL, $operator = NULL, $langcode = NULL) {
+    $this->condition->condition($property, $value, $operator, $langcode);
+    return $this;
+  }
   /**
    * Adds the sort to the build query.
    *
@@ -52,20 +97,23 @@ class Query extends QueryBase implements QueryInterface {
    *   Returns the called object.
    */
   protected function addSort() {
+    if (!$this->sortQuery) {
+      return $this;
+    }
     if ($this->count) {
       $this->sort = array();
     }
     // Simple sorting. For the POC, only uri's and bundles are supported.
-    // @todo Implement sorting on bundle fields.
+    // @todo Implement sorting on bundle fields?
     if ($this->sort) {
       $sort = array_pop($this->sort);
       switch ($sort['field']) {
         case 'id':
-          $this->sortQuery = 'ORDER BY ' . $sort['direction'] . ' (?entity)';
+          $this->query .= 'ORDER BY ' . $sort['direction'] . ' (?entity)';
           break;
 
         case 'rid':
-          $this->sortQuery = 'ORDER BY ' . $sort['direction'] . ' (?bundle)';
+          $this->query .= 'ORDER BY ' . $sort['direction'] . ' (?bundle)';
           break;
       }
     }
@@ -73,43 +121,39 @@ class Query extends QueryBase implements QueryInterface {
   }
 
   /**
+   * Add pager to query.
+   */
+  protected function addPager() {
+    $this->initializePager();
+    if (!$this->count && $this->range) {
+      $this->query .= 'LIMIT ' . $this->range['length'];
+      $this->query .= 'OFFSET ' . $this->range['start'];
+    }
+    return $this;
+  }
+
+  /**
+   * Commit the query to the backend.
+   */
+  protected function run() {
+    /** @var \EasyRdf_Http_Response $results */
+    $this->results = $this->connection->query($this->query);
+    return $this;
+  }
+  /**
    * Do the actual query building.
    */
   protected function result() {
-
+    // Count query.
     if ($this->count) {
-      $query = 'SELECT count(?entity) AS ?count ';
-    }
-    else {
-      $query = 'SELECT ?entity ';
-    }
-    $query .=
-      'WHERE{
-      ?entity rdf:type ?bundle.
-      ?bundle <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://www.w3.org/TR/vocab-adms/>.' .
-      '}';
-
-    if ($this->sortQuery) {
-      $query .= $this->sortQuery;
-    }
-    $this->initializePager();
-    if (!$this->count && $this->range) {
-      $query .= '
-      LIMIT ' . $this->range['length'] . '
-      OFFSET ' . $this->range['start'];
-    }
-
-    /** @var \EasyRdf_Http_Response $results */
-    $results = $this->connection->query($query);
-    if ($this->count) {
-
-      foreach ($results as $result) {
+      foreach ($this->results as $result) {
         return (string) $result->count;
       }
     }
     $uris = [];
 
-    foreach ($results as $result) {
+    // SELECT query.
+    foreach ($this->results as $result) {
       $uri = (string) $result->entity;
       $uris[$uri] = $uri;
 
@@ -136,6 +180,14 @@ class Query extends QueryBase implements QueryInterface {
    */
   public function conditionAggregateGroupFactory($conjunction = 'AND') {
     return new ConditionAggregate($conjunction, $this);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function conditionGroupFactory($conjunction = 'AND') {
+    $class = static::getClass($this->namespaces, 'SparqlCondition');
+    return new $class($conjunction, $this, $this->namespaces);
   }
 
 }

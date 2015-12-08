@@ -68,7 +68,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $this->loadFromDedicatedTables($values, FALSE);
     foreach ($values as $id => $entity_values) {
       $entity = new Rdf($entity_values, 'rdf_entity', $bundles[$id]);
-      $entities[] = $entity;
+      $entities[$id] = $entity;
     }
     return $entities;
   }
@@ -84,6 +84,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   public function load($id_sanitized) {
     // @todo Write a route handler to inject a proper id here.
+    // @see https://www.drupal.org/node/2310427
     $id = str_replace('\\', '/', $id_sanitized);
     $entities = $this->loadMultiple(array($id));
     return array_shift($entities);
@@ -112,7 +113,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $query
         = 'SELECT ?bundle
         WHERE{
-          <' . $id . '> rdf:type ?bundle.
+          <' . $id . '> rdf:type ?bdl.
+          ?bdl <http://purl.org/dc/terms/identifier> ?bundle.
         } LIMIT 1';
       $results = $this->sparql->query($query);
       $results = $results->getArrayCopy();
@@ -265,12 +267,15 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   protected function loadFromBaseTable(array &$values) {
     // @todo Find a way to move query out of loop.
     foreach ($values as $entity_id => $entity_values) {
+      // @todo: This doesn't feel right... All titles should be in one field.
       $query
         = 'SELECT ?label
         WHERE{
         {<' . $entity_id . '> <http://www.w3.org/2000/01/rdf-schema#label>  ?label.}
         UNION
         { <' . $entity_id . '> <http://usefulinc.com/ns/doap#name> ?label. }
+        UNION
+        { <' . $entity_id . '> <http://purl.org/dc/terms/title> ?label. }
         } LIMIT 1';
       /** @var \EasyRdf_Sparql_Result $results */
       $results = $this->sparql->query($query);

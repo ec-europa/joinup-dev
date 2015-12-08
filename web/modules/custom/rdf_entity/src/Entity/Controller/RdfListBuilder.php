@@ -23,7 +23,9 @@ class RdfListBuilder extends EntityListBuilder {
    */
   public function load() {
     $query = $this->getStorage()->getQuery()
-      ->sort($this->entityType->getKey('id'));
+      ->sort($this->entityType->getKey('id'))
+      ->condition('?entity', 'rdf:type', '?bundle')
+      ->condition('?bundle', 'rdfs:isDefinedBy', '<http://www.w3.org/TR/vocab-adms/>');
 
     // Only add the pager if a limit is specified.
     if ($this->limit) {

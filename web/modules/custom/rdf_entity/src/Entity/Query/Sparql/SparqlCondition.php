@@ -20,10 +20,9 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    */
   public function condition($subject = NULL, $predicate = NULL, $object = NULL, $operator = NULL, $langcode = NULL) {
     $this->conditions[] = array(
-      'field' => $field,
-      'value' => $value,
-      'operator' => $operator,
-      'langcode' => $langcode,
+      'subject' => $subject,
+      'predicate' => $predicate,
+      'object' => $object,
     );
 
     return $this;
@@ -34,11 +33,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    */
   public function compile($query) {
     foreach ($this->conditions() as $condition) {
-      if ($condition['field'] == 'label' && $condition['operator'] == 'CONTAINS') {
-        $query->query .= '?entity <http://purl.org/dc/terms/title> ?label.
-  filter( regex(?label, "' . $condition['value'] . '" ))';
-        //$query->query .= 'filter( regex(?label, "' . $condition['value'] . '" ))';
-      }
+      $query->query .= $condition['subject'] . ' ' . $condition['predicate'] . ' ' . $condition['object'] . ".\n";
     }
 
   }

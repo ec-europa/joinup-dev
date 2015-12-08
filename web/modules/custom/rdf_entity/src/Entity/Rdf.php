@@ -278,4 +278,20 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     return $this->bundle();
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getName() {
+    return $this->label();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setName($name) {
+    $this->set('name', $name);
+    return $this;
+  }
+
+
 }
