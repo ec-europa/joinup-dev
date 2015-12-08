@@ -22,12 +22,30 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id)
   $form_obj = $form_state->getFormObject();
   /** @var FieldStorageConfig $entity */
   $entity = $form_obj->getEntity();
-
-  $form['rdf_field_property'] = array(
-    '#type' => 'textfield',
-    '#title' => t('The RDF property this field maps to'),
-    '#default_value' => $entity->getThirdPartySetting('rdf_entity', 'rdf_mapping', FALSE),
+  $schema = $entity->getSchema();
+  $form['rdf_mapping'] = array(
+    '#type' => 'details',
+    '#title' => t('Rdf field mapping'),
+    '#description' => t('This field uses a Sparql backend. Please map the fields to their corresponding rdf properties.'),
+    '#weight' => 99,
   );
+  foreach ($schema['columns'] as $column => $column_desc) {
+    $description = $column_desc['description'] . "<br>";
+    foreach (array('type', 'length', 'size', 'serialize') as $key) {
+      if (!empty($column_desc[$key])) {
+        $description .= '<strong>' . $key . "</strong>: " . $column_desc[$key] . ' ';
+      }
+    }
+
+    $form['rdf_mapping'][$column] = array(
+      '#type' => 'textfield',
+      '#title' => $column,
+      '#description' => $description,
+      '#weight' => 150,
+      '#default_value' => $entity->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE),
+    );
+  }
+
   $form['#entity_builders'][] = 'rdf_entity_form_alter_builder';
 }
 
@@ -35,5 +53,26 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id)
  * Entity builder callback: Save rdf field mapping.
  */
 function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity, FieldStorageConfigEditForm &$form, FormStateInterface $form_state) {
-  $entity->setThirdPartySetting('rdf_entity', 'rdf_mapping', $form_state->getValue('rdf_field_property'));
+  $schema = $entity->getSchema();
+  foreach ($schema['columns'] as $column => $column_desc) {
+    $value = $form_state->getValue($column);
+    $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $column, $value);
+  }
+}
+
+/**
+ * Implements hook_rdf_entity_view().
+ *
+ * @todo Remove this.
+ * Prints the bundle when viewing the rdf in full.
+ */
+function rdf_entity_rdf_entity_view($build, $entity, $display, $view_mode) {
+  if ($entity instanceof \Drupal\rdf_entity\Entity\Rdf && $view_mode == 'full') {
+    drupal_set_message(
+      t('Current page - Bundle: %bundle', array(
+        '%bundle' => $entity->bundle(),
+      )),
+    'info'
+    );
+  }
 }

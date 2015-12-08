@@ -18,6 +18,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -333,26 +334,39 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       if (!$storage_definition instanceof \Drupal\field\Entity\FieldStorageConfig) {
         continue;
       }
-      $table = $storage_definition->getThirdPartySetting('rdf_entity', 'rdf_mapping', FALSE);
-      if (!$table) {
+      $tables = [];
+      foreach ($storage_definition->getColumns() as $column => $column_info) {
+        if ($table = $storage_definition->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE)) {
+          $tables[$column] = $table;
+        }
+      }
+      if (!$tables) {
         continue;
       }
       // @todo Optimize for speed later. This is really not the way to go, but let's start somewhere.
       // This is where I should slap myself in the face,
       // as it will melt the triplestore.
       foreach ($values as $entity_id => $entity_values) {
-        $query
-          = 'SELECT ?field_value
+        foreach ($tables as $column => $table) {
+          if (!filter_var($table, FILTER_VALIDATE_URL) === FALSE) {
+            $table = '<' . $table . '>';
+          }
+          $query
+            = 'SELECT ?field_value
           WHERE{
-          <' . $entity_id . '> <' . $table . '>  ?field_value
+          <' . $entity_id . '> ' . $table . ' ?field_value
           } LIMIT 50';
-        /** @var \EasyRdf_Sparql_Result $results */
-        $results = $this->sparql->query($query);
-        $values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT] = array();
-        foreach ($results as $result) {
-          $field_value = (string) $result->field_value;
-          $values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT][] = $field_value;
+          /** @var \EasyRdf_Sparql_Result $results */
+          $results = $this->sparql->query($query);
+
+          $i = 0;
+          foreach ($results as $result) {
+            $field_value = (string) $result->field_value;
+            $values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT][$i][$column] = $field_value;
+            $i++;
+          }
         }
+        $this->applyFieldDefaults($storage_definition, $values[$entity_id][$storage_definition->getName()][LanguageInterface::LANGCODE_DEFAULT]);
       }
       $results = array();
 
@@ -391,4 +405,23 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     }
   }
 
+  /**
+   * Allow overrides for some field types.
+   *
+   * @param FieldStorageConfig $storage
+   *   Field storage configuration.
+   * @param array $values
+   *   The field values.
+   */
+  private function applyFieldDefaults(FieldStorageConfig $storage, &$values) {
+    foreach ($values as &$value) {
+      switch ($storage->getType()) {
+        case 'text_long':
+          if (!isset($value['format'])) {
+            $value['format'] = 'full_html';
+          }
+          break;
+      }
+    }
+  }
 }
