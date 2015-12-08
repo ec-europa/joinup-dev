@@ -1,0 +1,8 @@
+uuid: 50f0d38d-c4d5-4b90-bd00-bf1678e56402
+langcode: en
+status: true
+dependencies: {  }
+name: 'Asset distribution'
+rid: asset_distribution
+description: ''
+rdftype: 'adms:AssetDistribution'

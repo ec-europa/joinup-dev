@@ -1,0 +1,19 @@
+uuid: 5a016ca6-f2eb-40af-b106-6f16876c097e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_name
+    - rdf_entity.rdfentity.agent
+id: rdf_entity.agent.field_name
+field_name: field_name
+entity_type: rdf_entity
+bundle: agent
+label: Name
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

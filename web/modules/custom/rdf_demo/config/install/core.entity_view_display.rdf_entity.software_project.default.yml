@@ -1,0 +1,29 @@
+uuid: 2ca8c5bd-3a3b-4eb8-9508-8aa2411acbce
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.software_project.field_description
+    - field.field.rdf_entity.software_project.field_releases
+    - rdf_entity.rdfentity.software_project
+  module:
+    - text
+id: rdf_entity.software_project.default
+targetEntityType: rdf_entity
+bundle: software_project
+mode: default
+content:
+  field_description:
+    weight: -3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_releases:
+    weight: -4
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+hidden: {  }

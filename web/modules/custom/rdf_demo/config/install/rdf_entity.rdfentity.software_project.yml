@@ -1,0 +1,8 @@
+uuid: 3d7c213d-29c4-4beb-8501-1adb8f5c704e
+langcode: en
+status: true
+dependencies: {  }
+name: 'Software project'
+rid: software_project
+description: ''
+rdftype: 'admssw:SoftwareProject'

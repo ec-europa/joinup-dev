@@ -1,0 +1,24 @@
+uuid: 325d1a12-b67c-4e61-9705-052fce35c992
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    rdf_mapping: 'dcat:theme'
+id: rdf_entity.field_theme
+field_name: field_theme
+entity_type: rdf_entity
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

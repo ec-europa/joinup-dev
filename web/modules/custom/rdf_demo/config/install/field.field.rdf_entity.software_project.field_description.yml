@@ -1,0 +1,21 @@
+uuid: 24437f2b-5091-4674-9f08-8e6b5e6f1c9e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_description
+    - rdf_entity.rdfentity.software_project
+  module:
+    - text
+id: rdf_entity.software_project.field_description
+field_name: field_description
+entity_type: rdf_entity
+bundle: software_project
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

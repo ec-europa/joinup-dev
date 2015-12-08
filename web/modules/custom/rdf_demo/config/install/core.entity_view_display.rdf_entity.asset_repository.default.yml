@@ -1,0 +1,20 @@
+uuid: d5b3c478-d032-4d7a-b400-ad7da666aed3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.asset_repository.field_asset_projects
+    - rdf_entity.rdfentity.asset_repository
+id: rdf_entity.asset_repository.default
+targetEntityType: rdf_entity
+bundle: asset_repository
+mode: default
+content:
+  field_asset_projects:
+    weight: -4
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+hidden: {  }

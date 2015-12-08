@@ -1,0 +1,23 @@
+uuid: 682ea5c7-fdd2-4430-a401-1baf4a310db2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_download
+    - rdf_entity.rdfentity.software_package
+  module:
+    - link
+id: rdf_entity.software_package.field_download
+field_name: field_download
+entity_type: rdf_entity
+bundle: software_package
+label: Download
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 1
+  link_type: 17
+field_type: link

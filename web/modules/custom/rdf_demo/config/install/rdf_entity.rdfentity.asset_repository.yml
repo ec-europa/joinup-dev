@@ -1,0 +1,8 @@
+uuid: 7432a152-6a93-4943-af02-02d06d705d67
+langcode: en
+status: true
+dependencies: {  }
+name: 'Asset repository'
+rid: asset_repository
+description: ''
+rdftype: 'adms:AssetRepository'

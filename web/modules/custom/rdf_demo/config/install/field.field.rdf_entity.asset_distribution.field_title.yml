@@ -1,0 +1,19 @@
+uuid: 47167708-dc57-482e-8300-aca7c02f16db
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_title
+    - rdf_entity.rdfentity.asset_distribution
+id: rdf_entity.asset_distribution.field_title
+field_name: field_title
+entity_type: rdf_entity
+bundle: asset_distribution
+label: Title
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

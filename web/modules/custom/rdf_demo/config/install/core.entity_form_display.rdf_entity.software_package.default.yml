@@ -1,0 +1,29 @@
+uuid: eae716f2-e84c-4231-b000-ec4fad6448a7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.software_package.field_download
+    - rdf_entity.rdfentity.software_package
+  module:
+    - link
+id: rdf_entity.software_package.default
+targetEntityType: rdf_entity
+bundle: software_package
+mode: default
+content:
+  field_download:
+    weight: -4
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  label:
+    type: string_textfield
+    weight: -5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

@@ -1,0 +1,8 @@
+uuid: 8f425dae-51e8-4dc7-9b00-d79c8cab0e50
+langcode: en
+status: true
+dependencies: {  }
+name: 'Software release'
+rid: software_release
+description: ''
+rdftype: 'admssw:SoftwareRelease'

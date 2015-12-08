@@ -1,0 +1,24 @@
+uuid: 0c881c0e-0e3e-4862-9300-e774477a9d92
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    rdf_mapping: 'http://purl.org/dc/terms/title'
+id: rdf_entity.field_title
+field_name: field_title
+entity_type: rdf_entity
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

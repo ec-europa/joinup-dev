@@ -1,0 +1,26 @@
+uuid: 25d3acee-cc09-46ba-b200-d345203beea2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_releases
+    - rdf_entity.rdfentity.software_project
+    - rdf_entity.rdfentity.software_release
+id: rdf_entity.software_project.field_releases
+field_name: field_releases
+entity_type: rdf_entity
+bundle: software_project
+label: Releases
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      software_release: software_release
+    sort:
+      field: _none
+field_type: entity_reference

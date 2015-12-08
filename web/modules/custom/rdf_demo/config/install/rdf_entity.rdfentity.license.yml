@@ -1,0 +1,8 @@
+uuid: c7365829-066b-4c5c-9800-c5526e176abb
+langcode: en
+status: true
+dependencies: {  }
+name: License
+rid: license
+description: ''
+rdftype: 'dct:LicenseDocument'

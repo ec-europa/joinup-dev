@@ -1,0 +1,21 @@
+uuid: 11083b8b-a483-4b51-b200-0dc6f3eeb9d4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_asset_projects
+    - rdf_entity.rdfentity.asset_repository
+id: rdf_entity.asset_repository.field_asset_projects
+field_name: field_asset_projects
+entity_type: rdf_entity
+bundle: asset_repository
+label: Projects
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings: {  }
+field_type: entity_reference

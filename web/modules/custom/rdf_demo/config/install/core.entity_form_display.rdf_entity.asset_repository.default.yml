@@ -1,0 +1,28 @@
+uuid: 0872d4e5-0bd0-4b2f-b001-1a7adbdc4c15
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.asset_repository.field_asset_projects
+    - rdf_entity.rdfentity.asset_repository
+id: rdf_entity.asset_repository.default
+targetEntityType: rdf_entity
+bundle: asset_repository
+mode: default
+content:
+  field_asset_projects:
+    weight: -4
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  label:
+    type: string_textfield
+    weight: -5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

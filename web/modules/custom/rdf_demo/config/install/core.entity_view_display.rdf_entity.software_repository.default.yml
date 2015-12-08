@@ -1,0 +1,20 @@
+uuid: 820b929b-2924-4755-8101-01050ae66ca1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.software_repository.field_projects
+    - rdf_entity.rdfentity.software_repository
+id: rdf_entity.software_repository.default
+targetEntityType: rdf_entity
+bundle: software_repository
+mode: default
+content:
+  field_projects:
+    weight: -4
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+hidden: {  }

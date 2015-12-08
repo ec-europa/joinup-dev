@@ -1,0 +1,10 @@
+uuid: 7179a59b-5a35-45e7-a200-cdd13db4f2e6
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+id: rdf_entity.teaser
+label: Teaser
+targetEntityType: rdf_entity
+cache: true

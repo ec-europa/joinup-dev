@@ -1,0 +1,48 @@
+uuid: 9d787e29-79ab-4d70-b500-b468739bad5f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.asset.field_description
+    - field.field.rdf_entity.asset.field_modified
+    - field.field.rdf_entity.asset.field_publisher
+    - field.field.rdf_entity.asset.field_theme
+    - rdf_entity.rdfentity.asset
+  module:
+    - datetime
+    - text
+id: rdf_entity.asset.default
+targetEntityType: rdf_entity
+bundle: asset
+mode: default
+content:
+  field_description:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_modified:
+    weight: 2
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  field_publisher:
+    weight: 0
+    label: above
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+  field_theme:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+hidden: {  }

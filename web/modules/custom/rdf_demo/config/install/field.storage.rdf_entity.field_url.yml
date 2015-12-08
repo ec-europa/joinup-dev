@@ -1,0 +1,22 @@
+uuid: 0bde77bb-b82e-4b9f-9e01-1b2682d4b147
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    rdf_mapping: 'http://www.w3.org/ns/dcat#accessURL'
+id: rdf_entity.field_url
+field_name: field_url
+entity_type: rdf_entity
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

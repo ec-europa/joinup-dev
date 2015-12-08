@@ -1,0 +1,8 @@
+uuid: 9aecf3a3-2620-4307-bf00-d3996a969ace
+langcode: en
+status: true
+dependencies: {  }
+name: 'Software repository'
+rid: software_repository
+description: ''
+rdftype: 'admssw:SoftwareRepository'

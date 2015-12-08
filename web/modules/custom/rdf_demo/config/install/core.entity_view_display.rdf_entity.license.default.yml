@@ -1,0 +1,20 @@
+uuid: 7deb15be-9cd8-439a-8a4a-742c84fe3570
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.license.field_label
+    - rdf_entity.rdfentity.license
+id: rdf_entity.license.default
+targetEntityType: rdf_entity
+bundle: license
+mode: default
+content:
+  field_label:
+    weight: -4
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+hidden: {  }

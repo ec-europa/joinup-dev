@@ -1,0 +1,21 @@
+uuid: dc1acf44-dd64-44b5-8306-6b198e0286e0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_modified
+    - rdf_entity.rdfentity.asset
+  module:
+    - datetime
+id: rdf_entity.asset.field_modified
+field_name: field_modified
+entity_type: rdf_entity
+bundle: asset
+label: Modified
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

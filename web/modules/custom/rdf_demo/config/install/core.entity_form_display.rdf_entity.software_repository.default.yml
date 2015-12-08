@@ -1,0 +1,28 @@
+uuid: 6ecac993-cd67-4cfe-8b39-5743b6d94918
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.software_repository.field_projects
+    - rdf_entity.rdfentity.software_repository
+id: rdf_entity.software_repository.default
+targetEntityType: rdf_entity
+bundle: software_repository
+mode: default
+content:
+  field_projects:
+    weight: -4
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  label:
+    type: string_textfield
+    weight: -5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

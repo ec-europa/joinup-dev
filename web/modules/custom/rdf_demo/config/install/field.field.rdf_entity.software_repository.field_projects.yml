@@ -1,0 +1,26 @@
+uuid: c1f640aa-82fd-4558-9c0e-14cc6c84a5c7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_projects
+    - rdf_entity.rdfentity.asset
+    - rdf_entity.rdfentity.software_repository
+id: rdf_entity.software_repository.field_projects
+field_name: field_projects
+entity_type: rdf_entity
+bundle: software_repository
+label: Projects
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      asset: asset
+    sort:
+      field: _none
+field_type: entity_reference
