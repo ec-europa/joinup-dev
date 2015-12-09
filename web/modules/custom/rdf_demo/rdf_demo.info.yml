@@ -6,3 +6,4 @@ package: Joinup
 features: true
 dependencies:
   - rdf_entity
+  - datetime

@@ -1,0 +1,25 @@
+name: Minimal
+type: profile
+description: 'Initialize the Joinup website.'
+version: VERSION
+core: 8.x
+dependencies:
+  - node
+  - block
+  - contextual
+  - dblog
+  - image
+  - menu_ui
+  - help
+  - options
+  - path
+  - page_cache
+  - search
+  - field_ui
+  - toolbar
+  - file
+  - dynamic_page_cache
+  - rdf_entity
+themes:
+  - bartik
+  - seven
