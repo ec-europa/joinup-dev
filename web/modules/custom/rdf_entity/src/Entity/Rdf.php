@@ -293,5 +293,4 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     return $this;
   }
 
-
 }

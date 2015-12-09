@@ -35,4 +35,5 @@ interface RdfInterface extends ContentEntityInterface, EntityOwnerInterface, Ent
    * @return $this
    */
   public function setName($name);
+
 }

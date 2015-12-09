@@ -5,14 +5,14 @@
  * Contains \Drupal\minimal\Tests\MinimalTest.
  */
 
-namespace Drupal\minimal\Tests;
+namespace Drupal\joinup\Tests;
 
 use Drupal\simpletest\WebTestBase;
 
 /**
  * Tests Minimal installation profile expectations.
  *
- * @group minimal
+ * @group joinup
  */
 class JoinupTest extends WebTestBase {
 
@@ -21,7 +21,7 @@ class JoinupTest extends WebTestBase {
   /**
    * Tests Minimal installation profile.
    */
-  function testMinimal() {
+  public function testMinimal() {
     $this->drupalGet('');
     // Check the login block is present.
     $this->assertLink(t('Create new account'));
@@ -43,4 +43,5 @@ class JoinupTest extends WebTestBase {
     // Ensure that there are no pending entity updates after installation.
     $this->assertFalse($this->container->get('entity.definition_update_manager')->needsUpdates(), 'After installation, entity schema is up to date.');
   }
+
 }

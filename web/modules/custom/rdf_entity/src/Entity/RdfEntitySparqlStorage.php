@@ -429,4 +429,5 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       }
     }
   }
+
 }

@@ -1,16 +1,15 @@
 <?php
 /**
  * @file
- *
+ * Starting point for integrating ADMS.
  */
 
 namespace Drupal\rdf_demo\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\rdf_entity\Entity\Rdf;
 
 /**
- * Provides route responses for the Example module.
+ * Show a list of federated repositories.
  */
 class RdfDemoController extends ControllerBase {
 
@@ -45,4 +44,5 @@ class RdfDemoController extends ControllerBase {
     );
     return $build;
   }
+
 }
