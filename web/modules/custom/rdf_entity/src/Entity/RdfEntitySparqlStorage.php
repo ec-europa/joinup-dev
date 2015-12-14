@@ -420,11 +420,19 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   private function applyFieldDefaults(FieldStorageConfig $storage, &$values) {
     foreach ($values as &$value) {
+      // Textfield: provide default filter when filter not mapped.
       switch ($storage->getType()) {
         case 'text_long':
           if (!isset($value['format'])) {
             $value['format'] = 'full_html';
           }
+          break;
+
+        // Strip timezone part in dates.
+        case 'datetime':
+          $time_stamp = strtotime($value['value']);
+          $date = date('o-m-d', $time_stamp) . "T" . date('H:i:s', $time_stamp);
+          $value['value'] = $date;
           break;
       }
     }
