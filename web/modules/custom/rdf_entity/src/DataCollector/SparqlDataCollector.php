@@ -31,7 +31,7 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
   /**
    * Setup DatabaseDataCollector.
    *
-   * @param \Drupal\Core\Database\Connection $database
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $database
    *   Database connection.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Config factory.
@@ -132,10 +132,12 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
    *   Color
    */
   public function getColorCode() {
-    if ($this->getQueryCount() < 100) {
+    $count = $this->getQueryCount();
+    $time = $this->getTime();
+    if ($count < 10 && $time < 40) {
       return 'green';
     }
-    if ($this->getQueryCount() < 200) {
+    if ($count < 20 && $time < 60) {
       return 'yellow';
     }
 
@@ -197,7 +199,6 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
    */
   public function getData() {
     $data = $this->data;
-
     $conn = Database::getConnection();
     foreach ($data['queries'] as &$query) {
       $explain = TRUE;

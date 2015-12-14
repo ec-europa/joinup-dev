@@ -6,7 +6,7 @@
  */
 
 namespace Drupal\rdf_entity\Database\Driver\sparql;
-use Drupal\Core\Database\Log;
+use Drupal\Core\Database\Database;
 
 /**
  * @addtogroup database
@@ -37,7 +37,7 @@ class Connection {
   /**
    * The current database logging object for this connection.
    *
-   * @var \Drupal\Core\Database\Log|null
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\Log|null
    */
   protected $logger = NULL;
 
@@ -62,6 +62,11 @@ class Connection {
    */
   public function query($query) {
     if (!empty($this->logger)) {
+      // @todo Fix this. Logger should have been auto started.
+      // Probably related to the overwritten log object in $this->setLogger.
+      // Look at
+      // \Drupal\webprofiler\StackMiddleware\WebprofilerMiddleware::handle.
+      $this->logger->start('webprofiler');
       $query_start = microtime(TRUE);
     }
 
@@ -69,14 +74,14 @@ class Connection {
 
     if (!empty($this->logger)) {
       $query_end = microtime(TRUE);
-      $this->dbh = $this;
       $this->query = $query;
       // @fixme Passing in an incorrect but seemingly compatible object.
       // This will most likely break in PHP7 (incorrect type hinting).
       // Replace array($query) with the placeholder version.
       // I should probably implement the statement interface...
-      // $this->logger->log($this, array($query), $query_end - $query_start);
+      $this->logger->log($this, array($query), $query_end - $query_start);
     }
+
     return $results;
   }
 
@@ -101,8 +106,11 @@ class Connection {
    * @param \Drupal\Core\Database\Log $logger
    *   The logging object we want to use.
    */
-  public function setLogger(Log $logger) {
-    $this->logger = $logger;
+  public function setLogger(\Drupal\Core\Database\Log $logger) {
+    // Because we're incompatible with the PDO logger,
+    // we ignore this, and create our own object.
+    // @todo Avoid doing this. It's not ok...
+    $this->logger = new Log($this->getKey());
   }
 
   /**
