@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.rdf_entity.asset.field_description
+    - field.field.rdf_entity.asset.field_distribution
     - field.field.rdf_entity.asset.field_modified
     - field.field.rdf_entity.asset.field_publisher
     - field.field.rdf_entity.asset.field_theme
@@ -22,6 +23,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+  field_distribution:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
   field_modified:
     weight: -2
     settings: {  }

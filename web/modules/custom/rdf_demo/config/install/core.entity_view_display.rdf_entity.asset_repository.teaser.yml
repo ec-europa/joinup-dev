@@ -2,36 +2,35 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.rdf_entity.teaser
     - field.field.rdf_entity.asset_repository.field_asset_projects
     - field.field.rdf_entity.asset_repository.field_description
     - rdf_entity.rdfentity.asset_repository
   module:
     - text
-id: rdf_entity.asset_repository.default
+id: rdf_entity.asset_repository.teaser
 targetEntityType: rdf_entity
 bundle: asset_repository
-mode: default
+mode: teaser
 content:
   field_asset_projects:
     weight: -4
+    label: above
     settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+      link: false
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: entity_reference_label
   field_description:
     weight: -3
-    settings:
-      rows: 5
-      placeholder: ''
+    label: above
+    settings: {  }
     third_party_settings: {  }
-    type: text_textarea
+    type: text_default
   label:
-    type: string_textfield
+    label: hidden
+    type: string
     weight: -5
     settings:
-      size: 60
-      placeholder: ''
+      link_to_entity: false
     third_party_settings: {  }
 hidden: {  }
