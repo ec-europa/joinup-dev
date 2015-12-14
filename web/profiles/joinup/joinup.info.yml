@@ -8,6 +8,7 @@ dependencies:
   - block
   - contextual
   - dblog
+  - editor
   - image
   - menu_ui
   - help
@@ -20,6 +21,7 @@ dependencies:
   - file
   - dynamic_page_cache
   - rdf_entity
+  - rdf_demo
 themes:
   - bartik
   - seven
