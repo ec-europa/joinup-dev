@@ -241,7 +241,8 @@ class Rdf extends ContentEntityBase implements RdfInterface {
         'type' => 'string_textfield',
         'weight' => -5,
       ))
-      ->setDisplayConfigurable('form', TRUE);
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }
