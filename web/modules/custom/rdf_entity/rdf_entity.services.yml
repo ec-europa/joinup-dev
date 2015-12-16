@@ -14,3 +14,9 @@ services:
     arguments: ['@sparql_endpoint', '@config.factory']
     tags:
       - { name: data_collector, template:'@rdf_entity/Collector/sparql.html.twig', id:'sparql', title:'Sparql', priority: 60 }
+  paramconverter.rdf_entity:
+      class: \Drupal\rdf_entity\ParamConverter\RdfEntityConverter
+      tags:
+      # Use a higher priority than EntityConverter.
+        - { name: paramconverter, priority: 2 }
+      arguments: ['@entity.manager']

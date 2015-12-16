@@ -294,4 +294,28 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     return $this;
   }
 
+  /**
+   * Gets an array of placeholders for this entity.
+   *
+   * @param string $rel
+   *   The link relationship type, for example: canonical or edit-form.
+   *
+   * @return array
+   *   An array of URI placeholders.
+   */
+  protected function urlRouteParameters($rel) {
+    $uri_route_parameters = [];
+
+    if ($rel != 'collection') {
+      // The entity ID is needed as a route parameter.
+      // Here we do the actual escaping of outbound rdf entity id's.
+      // @see \Drupal\rdf_entity\ParamConverter\RdfEntityConverter::convert
+      $uri_route_parameters[$this->getEntityTypeId()] = str_replace('/', '\\', $this->id());
+    }
+    if ($rel === 'revision') {
+      $uri_route_parameters[$this->getEntityTypeId() . '_revision'] = str_replace('/', '\\', $this->getRevisionId());;
+    }
+    return $uri_route_parameters;
+  }
+
 }

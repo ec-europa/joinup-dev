@@ -58,10 +58,9 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $values = array();
     $bundles = $this->getBundlesByIds($ids);
     foreach ($ids as $id) {
-      $safe_id = str_replace('/', '\\', (string) $id);
       $values[$id] = array(
         'rid' => array('x-default' => $bundles[$id]),
-        'id' => array('x-default' => $safe_id),
+        'id' => array('x-default' => $id),
       );
     }
     $this->loadFromBaseTable($values);
@@ -82,10 +81,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * {@inheritdoc}
    */
-  public function load($id_sanitized) {
-    // @todo Write a route handler to inject a proper id here.
-    // @see https://www.drupal.org/node/2310427
-    $id = str_replace('\\', '/', $id_sanitized);
+  public function load($id) {
     $entities = $this->loadMultiple(array($id));
     return array_shift($entities);
   }
