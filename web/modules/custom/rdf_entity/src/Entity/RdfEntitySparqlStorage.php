@@ -11,7 +11,6 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\ContentEntityStorageBase;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -98,40 +97,49 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   }
 
   /**
+   * Get the mapping between bundle names and their rdf properties.
+   */
+  protected function getLabelMapping() {
+    $bundle_label_mapping = array();
+    foreach ($this->entityTypeManager->getStorage('rdf_type')->loadMultiple() as $entity) {
+      $label_field = $entity->get('rdf_label');
+      if (!$label_field) {
+        continue;
+      }
+      $bundle_label_mapping[$entity->id()] = $label_field;
+    }
+    return $bundle_label_mapping;
+  }
+
+  /**
    * Determine the bundle types for a list of entities.
    */
   protected function getBundlesByIds($ids) {
-    $bundle_mapping = $this->getRdfBundleMapping();
-
     $ids_rdf_mapping = array();
-    foreach ($ids as $id) {
-      // @todo Optimize this to do ONE query (move out foreach).
-      $query
-        = 'SELECT ?bundle
-        WHERE{
-          <' . $id . '> rdf:type ?bdl.
-          ?bdl <http://purl.org/dc/terms/identifier> ?bundle.
-        } LIMIT 1';
-      $results = $this->sparql->query($query);
-      $results = $results->getArrayCopy();
-      if (is_array($results)) {
-        $result = array_shift($results);
+    $bundle_mapping = $this->getRdfBundleMapping();
+    $ids_string = "<" . implode(">, <", $ids) . ">";
+    $query
+      = 'SELECT ?uri, ?bundle
+WHERE {
+  ?uri rdf:type ?bundle.
+  FILTER (?uri IN ( ' . $ids_string . '))
+}
+GROUP BY ?uri';
+    $results = $this->sparql->query($query);
+    foreach ($results as $result) {
+      $uri = (string) $result->uri;
+      $bundle = (string) $result->bundle;
+      // @todo Why do we get multiple types for a uri?
+      if (isset($ids_rdf_mapping[$uri])) {
+        continue;
       }
-      elseif (is_object($results)) {
-        $result = $results;
-      }
-      else {
-        throw new EntityMalformedException('Unable to query bundle type from Sparql endpoint.');
-      }
-      $rdf_bundle = (string) $result->bundle;
-      if (isset($bundle_mapping[$rdf_bundle])) {
-        $ids_rdf_mapping[$id] = $bundle_mapping[$rdf_bundle];
+      if (isset($bundle_mapping[$bundle])) {
+        $ids_rdf_mapping[$uri] = $bundle_mapping[$bundle];
       }
       else {
-        $ids_rdf_mapping[$id] = 'unknown_bundle: ' . $rdf_bundle;
-        // @todo Throw new EntityMalformedException
-        // ('Id has no corresponding Drupal bundle.');.
+        drupal_set_message('unmapped bundle ' . $bundle . ' for uri ' . $uri);
       }
+
     }
     return $ids_rdf_mapping;
   }
@@ -261,36 +269,30 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *   An array of values keyed by entity ID.
    */
   protected function loadFromBaseTable(array &$values) {
-    // @todo Find a way to move query out of loop.
+    // The label field is bundle specific, so determine the field to use first.
+    $label = $this->getLabelMapping();
+    $ids_by_label = array();
     foreach ($values as $entity_id => $entity_values) {
-      // @todo: This doesn't feel right... All titles should be in one field.
+      $bundle = $entity_values['rid'][LanguageInterface::LANGCODE_DEFAULT];
+      if (isset($label[$bundle])) {
+        $ids_by_label[$label[$bundle]][] = $entity_id;
+      }
+      $values[$entity_id]['label'][LanguageInterface::LANGCODE_DEFAULT] = $entity_id;
+    }
+    foreach ($ids_by_label as $label => $ids) {
+      $ids_string = "<" . implode(">, <", $ids) . ">";
       $query
-        = 'SELECT ?label
-        WHERE{
-        {<' . $entity_id . '> <http://www.w3.org/2000/01/rdf-schema#label>  ?label.}
-        UNION
-        { <' . $entity_id . '> <http://usefulinc.com/ns/doap#name> ?label. }
-        UNION
-        { <' . $entity_id . '> <http://purl.org/dc/terms/title> ?label. }
-        } LIMIT 1';
+        = 'SELECT ?uri ?label
+          WHERE{
+          ?uri <' . $label . '> ?label
+          FILTER (?uri IN ( ' . $ids_string . '))
+          }';
       /** @var \EasyRdf_Sparql_Result $results */
       $results = $this->sparql->query($query);
-      $results = $results->getArrayCopy();
-      if (is_array($results)) {
-        $result = array_shift($results);
-      }
-      elseif (is_object($results)) {
-        $result = $results;
-      }
-      else {
-        throw new EntityMalformedException('Unable to query bundle type from Sparql endpoint.');
-      }
-      $label = (string) $result->label;
-      if ($label) {
-        $values[$entity_id]['label'][LanguageInterface::LANGCODE_DEFAULT] = $label;
-      }
-      else {
-        $values[$entity_id]['label'][LanguageInterface::LANGCODE_DEFAULT] = $entity_id;
+      foreach ($results as $result) {
+        $uri = (string) $result->uri;
+        $label = (string) $result->label;
+        $values[$uri]['label'][LanguageInterface::LANGCODE_DEFAULT] = $label;
       }
     }
   }
@@ -368,40 +370,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
           }
         }
         $this->applyFieldDefaults($storage_definition, $values[$entity_id][$storage_definition->getName()][LanguageInterface::LANGCODE_DEFAULT]);
-      }
-      $results = array();
-
-      foreach ($results as $row) {
-        $bundle = $row->bundle;
-
-        // Field values in default language are stored with
-        // LanguageInterface::LANGCODE_DEFAULT as key.
-        $langcode = LanguageInterface::LANGCODE_DEFAULT;
-        if ($this->langcodeKey && isset($default_langcodes[$row->entity_id]) && $row->langcode != $default_langcodes[$row->entity_id]) {
-          $langcode = $row->langcode;
-        }
-
-        if (!isset($values[$row->entity_id][$field_name][$langcode])) {
-          $values[$row->entity_id][$field_name][$langcode] = array();
-        }
-
-        // Ensure that records for non-translatable fields having invalid
-        // languages are skipped.
-        if ($langcode == LanguageInterface::LANGCODE_DEFAULT || $definitions[$bundle][$field_name]->isTranslatable()) {
-          if ($storage_definition->getCardinality() == FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED || count($values[$row->entity_id][$field_name][$langcode]) < $storage_definition->getCardinality()) {
-            $item = array();
-            // For each column declared by the field, populate the item from the
-            // prefixed database column.
-            foreach ($storage_definition->getColumns() as $column => $attributes) {
-              $column_name = $table_mapping->getFieldColumnName($storage_definition, $column);
-              // Unserialize the value if specified in the column schema.
-              $item[$column] = (!empty($attributes['serialize'])) ? unserialize($row->$column_name) : $row->$column_name;
-            }
-
-            // Add the item to the field values for the entity.
-            $values[$row->entity_id][$field_name][$langcode][] = $item;
-          }
-        }
       }
     }
   }

@@ -44,6 +44,7 @@ use Drupal\rdf_entity\RdfEntityTypeInterface;
  *     "rid",
  *     "description",
  *     "rdftype",
+ *     "rdf_label",
  *   }
  * )
  */
