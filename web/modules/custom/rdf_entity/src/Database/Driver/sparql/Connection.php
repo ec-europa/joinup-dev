@@ -6,7 +6,6 @@
  */
 
 namespace Drupal\rdf_entity\Database\Driver\sparql;
-use Drupal\Core\Database\Database;
 
 /**
  * @addtogroup database
