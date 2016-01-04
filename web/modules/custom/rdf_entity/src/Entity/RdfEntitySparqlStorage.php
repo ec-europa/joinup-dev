@@ -322,8 +322,6 @@ GROUP BY ?uri';
     // Collect impacted fields.
     $storage_definitions = array();
     $definitions = array();
-    // $table_mapping = $this->getTableMapping();
-    $table_mapping = array();
     foreach ($bundles as $bundle => $v) {
       $definitions[$bundle] = $this->entityManager->getFieldDefinitions($this->entityTypeId, $bundle);
       foreach ($definitions[$bundle] as $field_name => $field_definition) {
@@ -333,44 +331,44 @@ GROUP BY ?uri';
       }
     }
     // Load field data.
+    $tables = [];
     foreach ($storage_definitions as $field_name => $storage_definition) {
       if (!$storage_definition instanceof \Drupal\field\Entity\FieldStorageConfig) {
         continue;
       }
-      $tables = [];
+
       foreach ($storage_definition->getColumns() as $column => $column_info) {
         if ($table = $storage_definition->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE)) {
-          $tables[$column] = $table;
+          $tables[$table] = array(
+            'column' => $column,
+            'field_name' => $field_name,
+            'storage_definition' => $storage_definition,
+          );
         }
       }
-      if (!$tables) {
-        continue;
-      }
-      // @todo Optimize for speed later. This is really not the way to go, but let's start somewhere.
-      // This is where I should slap myself in the face,
-      // as it will melt the triplestore.
-      foreach ($values as $entity_id => $entity_values) {
-        foreach ($tables as $column => $table) {
-          if (!filter_var($table, FILTER_VALIDATE_URL) === FALSE) {
-            $table = '<' . $table . '>';
-          }
-          $query
-            = 'SELECT ?field_value
-          WHERE{
-          <' . $entity_id . '> ' . $table . ' ?field_value
-          } LIMIT 50';
-          /** @var \EasyRdf_Sparql_Result $results */
-          $results = $this->sparql->query($query);
+    }
 
-          $i = 0;
-          foreach ($results as $result) {
-            $field_value = (string) $result->field_value;
-            $values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT][$i][$column] = $field_value;
-            $i++;
-          }
-        }
-        $this->applyFieldDefaults($storage_definition, $values[$entity_id][$storage_definition->getName()][LanguageInterface::LANGCODE_DEFAULT]);
-      }
+    $ids_string = "<" . implode(">, <", $ids) . ">";
+    $tables_string = "<" . implode(">, <", array_keys($tables)) . ">";
+
+    $query
+      = 'SELECT ?entity_id ?table ?field_value
+          WHERE{
+          ?entity_id ?table ?field_value
+          FILTER (?table IN ( ' . $tables_string . '))
+          FILTER (?entity_id IN ( ' . $ids_string . '))
+          }';
+    /** @var \EasyRdf_Sparql_Result $results */
+    $results = $this->sparql->query($query);
+    foreach ($results as $result) {
+      $entity_id = (string) $result->entity_id;
+      $table = (string) $result->table;
+      $field_value = (string) $result->field_value;
+      $field_name = $tables[$table]['field_name'];
+      $column = $tables[$table]['column'];
+      $values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT][][$column] = $field_value;
+      $storage_definition = $tables[$table]['storage_definition'];
+      $this->applyFieldDefaults($storage_definition, $values[$entity_id][$storage_definition->getName()][LanguageInterface::LANGCODE_DEFAULT]);
     }
   }
 
@@ -383,6 +381,9 @@ GROUP BY ?uri';
    *   The field values.
    */
   private function applyFieldDefaults(FieldStorageConfig $storage, &$values) {
+    if (empty($values)) {
+      return;
+    }
     foreach ($values as &$value) {
       // Textfield: provide default filter when filter not mapped.
       switch ($storage->getType()) {
