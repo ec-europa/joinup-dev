@@ -5,18 +5,18 @@ rdf.settings_tab:
   title: Settings
   base_route: rdf_entity.rdf_entity_settings
 
-rdf.view:
-  route_name: entity.rdf_entity_rdf.canonical
-  base_route: entity.rdf_entity_rdf.canonical
+entity.rdf_entity.canonical:
+  route_name: entity.rdf_entity.canonical
+  base_route: entity.rdf_entity.canonical
   title: View
 
-rdf.page_edit:
-  route_name: entity.rdf_entity_rdf.edit_form
-  base_route: entity.rdf_entity_rdf.canonical
+entity.rdf_entity.edit_form:
+  route_name: entity.rdf_entity.edit_form
+  base_route: entity.rdf_entity.canonical
   title: Edit
 
-rdf.delete_confirm:
-  route_name:  entity.rdf_entity_rdf.delete_form
-  base_route:  entity.rdf_entity_rdf.canonical
+entity.rdf_type.delete_form:
+  route_name:  entity.rdf_type.delete_form
+  base_route:  entity.rdf_entity.canonical
   title: Delete
   weight: 10

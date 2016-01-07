@@ -78,7 +78,7 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *   label = @Translation("Rdf entity"),
  *   handlers = {
  *     "storage" = "\Drupal\rdf_entity\Entity\RdfEntitySparqlStorage",
- *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
+ *     "view_builder" = "Drupal\rdf_entity\RdfEntityViewBuilder",
  *     "list_builder" = "Drupal\rdf_entity\Entity\Controller\RdfListBuilder",
  *     "form" = {
  *       "add" = "Drupal\rdf_entity\Form\RdfForm",
@@ -152,6 +152,10 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     );
   }
 
+  public function sanitizedId() {
+    return str_replace('/', '\\', $this->getEntityKey('id'));
+  }
+
   /**
    * Get the bundle of the entity.
    */
@@ -170,7 +174,11 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    * {@inheritdoc}
    */
   public function getChangedTime() {
-    return $this->get('changed')->value;
+    // @todo Find out if all rdf entities have a changed date.
+    // If so, we need to define this as a 'base field'.
+    // For now, this date is a workaround.
+    return '2014-05-19T17:03:00';
+    // return $this->get('changed')->value;
   }
 
   /**
