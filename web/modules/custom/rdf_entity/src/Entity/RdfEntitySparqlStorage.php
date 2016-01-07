@@ -52,7 +52,35 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * {@inheritdoc}
    */
-  public function loadMultiple(array $ids = NULL) {
+  public function doLoadMultiple(array $ids = NULL) {
+    // Attempt to load entities from the persistent cache. This will remove IDs
+    // that were loaded from $ids.
+    $entities_from_cache = $this->getFromPersistentCache($ids);
+
+    // Load any remaining entities from the database.
+    if ($entities_from_storage = $this->getFromStorage($ids)) {
+      $this->invokeStorageLoadHook($entities_from_storage);
+      $this->setPersistentCache($entities_from_storage);
+    }
+
+    return $entities_from_cache + $entities_from_storage;
+
+  }
+
+  /**
+   * Gets entities from the storage.
+   *
+   * @param array|null $ids
+   *   If not empty, return entities that match these IDs. Return all entities
+   *   when NULL.
+   *
+   * @return \Drupal\Core\Entity\ContentEntityInterface[]
+   *   Array of entities from the storage.
+   */
+  protected function getFromStorage(array $ids = NULL) {
+    if (empty($ids)) {
+      return [];
+    }
     $entities = array();
     $values = array();
     $bundles = $this->getBundlesByIds($ids);
@@ -69,12 +97,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $entities[$id] = $entity;
     }
     return $entities;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function doLoadMultiple(array $ids = NULL) {
   }
 
   /**
