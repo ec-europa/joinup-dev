@@ -52,4 +52,9 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     // Return $this->condition($field, NULL, 'IS NULL', $langcode);.
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function __clone() {}
+
 }

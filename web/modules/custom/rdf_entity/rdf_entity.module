@@ -8,6 +8,9 @@
 use \Drupal\Core\Form\FormStateInterface;
 use \Drupal\field_ui\Form\FieldStorageConfigEditForm;
 use \Drupal\field\Entity\FieldStorageConfig;
+use \Drupal\Core\Render\Element;
+use \Drupal\Core\Template\Attribute;
+use \Drupal\rdf_entity\RdfInterface;
 /**
  * Implements hook_form_alter().
  */
@@ -75,4 +78,77 @@ function rdf_entity_rdf_entity_view($build, $entity, $display, $view_mode) {
     'info'
     );
   }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function rdf_entity_theme() {
+  return array(
+    'rdf_entity' => array(
+      'render element' => 'elements',
+    ),
+  );
+}
+
+/**
+ * Prepares variables for rdf entity templates.
+ *
+ * Default template: rdf-entity.html.twig.
+ *
+ * Themes should use their own copy of rdf-entity.html.twig.
+ * The default is located  inside "templates/rdf-entity.html.twig".
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ *   - rdf_entity: The rdf_entity object.
+ *   - view_mode: View mode; e.g., 'full', 'teaser', etc.
+ */
+function template_preprocess_rdf_entity(&$variables) {
+
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  // Provide a distinct $teaser boolean.
+  $variables['teaser'] = $variables['view_mode'] == 'teaser';
+  $variables['rdf_entity'] = $variables['elements']['#rdf_entity'];
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
+  $rdf_entity = $variables['rdf_entity'];
+  $variables['date'] = drupal_render($variables['elements']['created']);
+  unset($variables['elements']['created']);
+  $variables['author_name'] = drupal_render($variables['elements']['uid']);
+  unset($variables['elements']['uid']);
+
+  $variables['url'] = $rdf_entity->url('canonical', array(
+    'language' => $rdf_entity->language(),
+  ));
+  $variables['label'] = $variables['elements']['label'];
+  unset($variables['elements']['label']);
+  // The view mode is 'full' and we are on the 'rdf_entity.view' route.
+  $variables['page'] = ($variables['view_mode'] == 'full' && (rdf_entity_is_page($rdf_entity)));
+
+  // Helpful $content variable for templates.
+  $variables += array('content' => array());
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+
+  // Add article ARIA role.
+  $variables['attributes']['role'] = 'article';
+}
+
+/**
+ * Is the current page is the full page view of the passed-in rdf entity?
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+ *   A rdf entity.
+ *
+ * @return int|false
+ *   The ID of the rdf entity if this is a full page view, otherwise FALSE.
+ */
+function rdf_entity_is_page(RdfInterface $rdf_entity) {
+  $route_match = \Drupal::routeMatch();
+  if ($route_match->getRouteName() == 'entity.rdf_entity.canonical') {
+    $page_rdf_entity = $route_match->getParameter('rdf_entity');
+  }
+  return (!empty($page_rdf_entity) ? $page_rdf_entity->id() == $rdf_entity->id() : FALSE);
 }
