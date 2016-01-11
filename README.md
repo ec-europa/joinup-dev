@@ -42,7 +42,7 @@ When installing the given `composer.json` some tasks are taken care of:
 * Creates default writable versions of `settings.php` and `services.yml`.
 * Creates `sites/default/files`-directory.
 * Latest version of drush is installed locally for use at `vendor/bin/drush`.
-* Latest version of DrupalConsole is installed locally for use at `vendor/bin/console`.
+* Latest version of DrupalConsole is installed locally for use at `vendor/bin/drupal`.
 
 ## Updating Drupal Core
 
@@ -279,3 +279,14 @@ Composer recommends **no**. They provide [argumentation against but also workrou
 ### How can I apply patches to downloaded modules?
 
 If you need to apply patches (depending on the project being modified, a pull request is often a better solution), you can do so with the [composer-patches](https://github.com/cweagans/composer-patches) plugin.
+
+To add a patch to drupal module foobar insert the patches section in the extra section of composer.json:
+```json
+"extra": {
+    "patches": {
+        "drupal/foobar": {
+            "Patch description": "URL to patch"
+        }
+    }
+}
+```

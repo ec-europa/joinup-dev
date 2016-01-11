@@ -17,8 +17,10 @@
     ],
     "require": {
         "composer/installers": "^1.0.20",
+        "cweagans/composer-patches": "~1.0",
+        "drupal/console": "~0.10",
         "drupal/core": "8.0.*",
-        "drush/drush": "dev-master",
+        "drush/drush": "~8.0",
         "php": ">=5.5.9"
     },
     "require-dev": {
@@ -26,7 +28,6 @@
         "behat/mink-goutte-driver": "~1.2",
         "drupal/coder": "dev-8.x-2.x",
         "drupal/config_update": "8.1.*@dev",
-        "drupal/console": "dev-master",
         "drupal/devel": "8.1.*@dev",
         "drupal/drupal-extension": "~3.0",
         "drupal/phing-drush-task": "1.0",
