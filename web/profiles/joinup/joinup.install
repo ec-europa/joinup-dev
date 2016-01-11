@@ -13,9 +13,6 @@
  * @see system_install()
  */
 function joinup_install() {
-  // First, do everything that is done in the standard profile.
-  include_once DRUPAL_ROOT . '/core/profiles/standard/standard.install';
-  standard_install();
-
-  // Add code here to make nodes, terms, etc.
+  // Disable the user pictures on nodes.
+  \Drupal::configFactory()->getEditable('system.theme.global')->set('features.node_user_picture', FALSE)->save(TRUE);
 }
