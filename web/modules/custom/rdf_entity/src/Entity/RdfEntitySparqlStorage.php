@@ -108,9 +108,9 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   }
 
   /**
-   * Get the mapping between bundle names and their rdf properties.
+   * Get the mapping between bundle names and their rdf objects.
    */
-  protected function getRdfBundleMapping() {
+  public function getRdfBundleMapping() {
     $bundle_rdf_bundle_mapping = array();
     foreach ($this->entityTypeManager->getStorage('rdf_type')->loadMultiple() as $entity) {
       $bundle_rdf_bundle_mapping[$entity->rdftype] = $entity->id();
@@ -119,9 +119,33 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   }
 
   /**
-   * Get the mapping between bundle names and their rdf properties.
+   * Returns an rdf object for each bundle.
+   *
+   * Returns the rdf object that is specific for this bundle.
    */
-  protected function getLabelMapping() {
+  public function getRdfBundleList($bundles) {
+    if (!$bundles) {
+      return;
+    }
+
+    $bundle_mapping = $this->getRdfBundleMapping();
+    if (empty($bundle_mapping)) {
+      return;
+    }
+    $rdf_bundels = [];
+    $bundle_mapping = array_flip($bundle_mapping);
+    foreach ($bundles as $bundle) {
+      $rdf_bundels[] = $bundle_mapping[$bundle];
+    }
+    return "(<" . implode(">, <", $rdf_bundels) . ">)";
+  }
+
+  /**
+   * Bundle - label mapping.
+   *
+   * Get a list of label predicates by bundle.
+   */
+  public function getLabelMapping() {
     $bundle_label_mapping = array();
     foreach ($this->entityTypeManager->getStorage('rdf_type')->loadMultiple() as $entity) {
       $label_field = $entity->get('rdf_label');
@@ -131,6 +155,28 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $bundle_label_mapping[$entity->id()] = $label_field;
     }
     return $bundle_label_mapping;
+  }
+
+  /**
+   * Fetch a list of triple predicates for labels.
+   *
+   * @return string
+   *   String of label predicates, suitable for inclusion in a query.
+   */
+  public function getRdfLabelList($bundles) {
+    if (!$bundles) {
+      return;
+    }
+
+    $label_mapping = $this->getLabelMapping();
+    if (empty($label_mapping)) {
+      return;
+    }
+    $labels = [];
+    foreach ($bundles as $bundle) {
+      $labels[] = $label_mapping[$bundle];
+    }
+    return "(<" . implode(">, <", $labels) . ">)";
   }
 
   /**
