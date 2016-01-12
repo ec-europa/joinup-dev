@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "15da8829383b2863951d6d6c38418fef",
-    "content-hash": "fcbb2dc01aac39adfe2400499508591c",
+    "hash": "327fff30249aa5b0195837739389dc38",
+    "content-hash": "ac5b45e1ce9067b7c60ffe918c79d84d",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -706,16 +706,16 @@
         },
         {
             "name": "drupal/console",
-            "version": "0.10.2",
+            "version": "0.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "b913d331ba557048fd9a3cfc8eee6c6f84256076"
+                "reference": "c3bb9aa36408e777a7f7fab1e8a5634345bea81a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/b913d331ba557048fd9a3cfc8eee6c6f84256076",
-                "reference": "b913d331ba557048fd9a3cfc8eee6c6f84256076",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/c3bb9aa36408e777a7f7fab1e8a5634345bea81a",
+                "reference": "c3bb9aa36408e777a7f7fab1e8a5634345bea81a",
                 "shasum": ""
             },
             "require": {
@@ -751,7 +751,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -786,7 +786,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2016-01-06 22:21:20"
+            "time": "2016-01-11 19:57:37"
         },
         {
             "name": "drupal/core",
@@ -3474,16 +3474,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.23.2",
+            "version": "v1.23.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "d07c53df79e0c7ff8d78e72d521d46ef0fd80356"
+                "reference": "ae53fc2c312fdee63773b75cb570304f85388b08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/d07c53df79e0c7ff8d78e72d521d46ef0fd80356",
-                "reference": "d07c53df79e0c7ff8d78e72d521d46ef0fd80356",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ae53fc2c312fdee63773b75cb570304f85388b08",
+                "reference": "ae53fc2c312fdee63773b75cb570304f85388b08",
                 "shasum": ""
             },
             "require": {
@@ -3531,7 +3531,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-01-11 13:20:06"
+            "time": "2016-01-11 14:02:19"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -4359,6 +4359,37 @@
                 "standards"
             ],
             "time": "2016-01-02 17:58:53"
+        },
+        {
+            "name": "drupal/config_devel",
+            "version": "8.1.0-beta16",
+            "source": {
+                "type": "git",
+                "url": "http://git.drupal.org/project/config_devel",
+                "reference": "41b1d0ce1d324e586699aa1f8f9230c115eb75be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://ftp.drupal.org/files/projects/config_devel-8.x-1.0-beta16.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "drupal/core": "8.*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Helps developers work with configuration.",
+            "homepage": "https://www.drupal.org/project/config_devel",
+            "time": "2015-09-30 04:02:28"
         },
         {
             "name": "drupal/config_update",

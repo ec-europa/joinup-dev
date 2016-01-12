@@ -9,6 +9,16 @@ dependencies:
   - dynamic_page_cache
   - page_cache
   - toolbar
+
 themes:
   - bartik
   - seven
+
+config_devel:
+  - block.block.bartik_local_actions
+  - block.block.bartik_local_tasks
+  - block.block.seven_local_actions
+  - block.block.seven_primary_local_tasks
+  - block.block.seven_secondary_local_tasks
+  - system.theme
+  - user.role.administrator
