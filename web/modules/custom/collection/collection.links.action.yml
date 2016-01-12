@@ -1,0 +1,7 @@
+entity.collection.add_form:
+  route_name: entity.collection.add_form
+  title: 'Add Collection'
+  appears_on:
+    - entity.collection.collection
+    - entity.collection.canonical
+

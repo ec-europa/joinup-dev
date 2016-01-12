@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - collection
+    - options
+id: collection.field_collection_closed
+field_name: field_collection_closed
+entity_type: collection
+type: list_integer
+settings:
+  allowed_values:
+    -
+      value: 0
+      label: 'Open collection'
+    -
+      value: 1
+      label: 'Closed collection'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.collection.field_collection_metadata_url
+  module:
+    - collection
+    - link
+id: collection.collection.field_collection_metadata_url
+field_name: field_collection_metadata_url
+entity_type: collection
+bundle: collection
+label: 'Metadata retrieval URL'
+description: 'NOT IMPLEMENTED. If automatically harvested, the URL where the data is available.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link
