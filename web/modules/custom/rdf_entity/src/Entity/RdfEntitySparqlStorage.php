@@ -165,12 +165,12 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   public function getRdfLabelList($bundles) {
     if (!$bundles) {
-      return;
+      return '';
     }
 
     $label_mapping = $this->getLabelMapping();
     if (empty($label_mapping)) {
-      return;
+      return '';
     }
     $labels = [];
     foreach ($bundles as $bundle) {

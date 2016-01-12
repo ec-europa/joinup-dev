@@ -177,14 +177,6 @@ class Query extends QueryBase implements QueryInterface {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function SparqlCondition($property, $value = NULL, $operator = NULL, $langcode = NULL) {
-    $this->condition->condition($property, $value, $operator, $langcode);
-    return $this;
-  }
-
-  /**
    * Adds the sort to the build query.
    *
    * @return \Drupal\rdf_entity\Entity\Query\Sparql\Query

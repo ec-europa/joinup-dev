@@ -48,7 +48,6 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
     $queries = $this->database->getLogger()->get('webprofiler');
 
     foreach ($queries as &$query) {
-      // dpm($query, '$query');
       // Remove caller args.
       unset($query['caller']['args']);
 

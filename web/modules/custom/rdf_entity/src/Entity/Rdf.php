@@ -152,6 +152,9 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     );
   }
 
+  /**
+   * Returns the entity id fit for linking.
+   */
   public function sanitizedId() {
     return str_replace('/', '\\', $this->getEntityKey('id'));
   }
@@ -178,7 +181,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     // If so, we need to define this as a 'base field'.
     // For now, this date is a workaround.
     return '2014-05-19T17:03:00';
-    // return $this->get('changed')->value;
+    // @todo Change return $this->get('changed')->value;
   }
 
   /**
