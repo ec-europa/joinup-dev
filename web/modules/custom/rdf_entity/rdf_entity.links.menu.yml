@@ -1,0 +1,12 @@
+# Define the menu links for this module
+
+entity.rdf_entity.collection:
+  title: 'RDF listing'
+  route_name: entity.rdf_entity.collection
+  description: 'List Rdf entities'
+  weight: 10
+rdf_entity_rdf.admin.structure.settings:
+  title: RDF Settings
+  description: 'Configure RDF entity'
+  route_name:  rdf_entity.rdf_entity_settings
+  parent: system.admin_structure

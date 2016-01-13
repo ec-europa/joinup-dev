@@ -1,0 +1,10 @@
+'delete rdf entity':
+  title: Delete entity content.
+'add rdf entity':
+  title: Add entity content
+'view rdf entity':
+  title: View entity content
+'edit rdf entity':
+  title: Edit entity content
+'administer rdf entity':
+  title: Administer settings

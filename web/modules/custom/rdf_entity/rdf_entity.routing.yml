@@ -1,0 +1,57 @@
+# This file brings everything together. Very nifty!
+
+# Route name can be used in sevaral place (links, redirects, local actions etc.)
+entity.rdf_entity.canonical:
+  path: '/rdf_entity/{rdf_entity}'
+  defaults:
+  # Calls the view controller, defined in the annotation of the rdf entity
+    _entity_view: 'rdf_entity'
+    _title: 'RDF Content'
+  requirements:
+  # Calls the access controller of the entity, $operation 'view'
+    _entity_access: 'rdf_entity.view'
+
+entity.rdf_entity.collection:
+  path: '/rdf_entity/list'
+  defaults:
+  # Calls the list controller, defined in the annotation of the rdf entity.
+    _entity_list: 'rdf_entity'
+    _title: 'RDF List'
+  requirements:
+  # Checks for permission directly.
+    _permission: 'view rdf entity'
+
+rdf_entity.rdf_add:
+  path: '/rdf_entity/add'
+  defaults:
+  # Calls the form.add controller, defined in the rdf entity.
+    _entity_form: rdf_entity.add
+    _title: 'Add RDF'
+  requirements:
+    _entity_create_access: 'rdf_entity'
+
+entity.rdf_entity.edit_form:
+  path: '/rdf_entity/{rdf_entity}/edit'
+  defaults:
+  # Calls the form.edit controller, defined in the rdf entity.
+    _entity_form: rdf_entity.edit
+    _title: 'Edit Rdf'
+  requirements:
+    _entity_access: 'rdf_entity.edit'
+
+entity.rdf_entity.delete_form:
+  path: '/rdf_entity/{rdf_entity}/delete'
+  defaults:
+    # Calls the form.delete controller, defined in the rdf entity.
+    _entity_form: rdf_entity.delete
+    _title: 'Delete Rdf'
+  requirements:
+    _entity_access: 'rdf_entity.delete'
+
+rdf_entity.rdf_entity_settings:
+  path: 'admin/structure/rdf_entity_settings'
+  defaults:
+    _form: '\Drupal\rdf_entity\Form\RdfSettingsForm'
+    _title: 'RDF Settings'
+  requirements:
+    _permission: 'administer rdf entity'
