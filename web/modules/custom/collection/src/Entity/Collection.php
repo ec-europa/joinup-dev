@@ -54,7 +54,9 @@ use Drupal\user\UserInterface;
  * )
  */
 class Collection extends ContentEntityBase implements CollectionInterface {
+
   use EntityChangedTrait;
+
   /**
    * {@inheritdoc}
    */
