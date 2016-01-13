@@ -63,7 +63,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Given (the following )collection:
    */
-  public function createACollection(TableNode $collection_table) {
+  public function givenCollection(TableNode $collection_table) {
     $aliases = [
       'name' => 'name',
       'author' => 'author',
