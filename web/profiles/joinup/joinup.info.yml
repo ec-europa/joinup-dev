@@ -6,7 +6,6 @@ core: 8.x
 dependencies:
   - block
   - collection
-  - contextual
   - dynamic_page_cache
   - page_cache
   - toolbar
