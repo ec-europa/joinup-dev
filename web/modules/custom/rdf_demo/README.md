@@ -5,4 +5,3 @@
 - Import the exported Rdf data into your triple store.
   For Virtuoso: http://localhost:8890 -> Login to Conductor -> Linked data -> Quad store upload
   Select the file, choose a uri.
-  

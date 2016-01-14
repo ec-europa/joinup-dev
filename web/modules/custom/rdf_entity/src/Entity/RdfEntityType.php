@@ -56,7 +56,6 @@ class RdfEntityType extends ConfigEntityBundleBase implements RdfEntityTypeInter
    * {@inheritdoc}
    */
   public function id() {
-
     return $this->rid;
   }
 

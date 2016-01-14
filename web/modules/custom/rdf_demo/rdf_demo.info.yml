@@ -1,4 +1,4 @@
-name: Rdf demo
+name: RDF demo
 type: module
 description: Demo the integration with the triplestore.
 core: 8.x

@@ -10,6 +10,7 @@ use \Drupal\field_ui\Form\FieldStorageConfigEditForm;
 use \Drupal\field\Entity\FieldStorageConfig;
 use \Drupal\Core\Render\Element;
 use \Drupal\rdf_entity\RdfInterface;
+
 /**
  * Implements hook_form_alter().
  */
@@ -96,7 +97,7 @@ function rdf_entity_theme() {
  * Default template: rdf-entity.html.twig.
  *
  * Themes should use their own copy of rdf-entity.html.twig.
- * The default is located  inside "templates/rdf-entity.html.twig".
+ * The default is located inside "templates/rdf-entity.html.twig".
  *
  * @param array $variables
  *   An associative array containing:
@@ -105,7 +106,6 @@ function rdf_entity_theme() {
  *   - view_mode: View mode; e.g., 'full', 'teaser', etc.
  */
 function template_preprocess_rdf_entity(&$variables) {
-
   $variables['view_mode'] = $variables['elements']['#view_mode'];
   // Provide a distinct $teaser boolean.
   $variables['teaser'] = $variables['view_mode'] == 'teaser';

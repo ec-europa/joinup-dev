@@ -2,4 +2,4 @@ SELECT ?prop ?value
 WHERE{
   <https://adullact.net/frs/download.php/file/2506/acogit-client-gwt.war#package> ?prop ?value
 }
-ORDER BY DESC(?prop)
+ORDER BY DESC (?prop)
