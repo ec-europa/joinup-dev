@@ -12,6 +12,10 @@ On a debian based system:
  service virtuoso-opensource-6.1 start
  (Set the password during installation)
 
+On an Arch Linux based system:
+- Install the [Virtuoso AUR package](https://aur.archlinux.org/packages/virtuoso/).
+- `# systemctl start virtuoso`
+
  Go to [http://localhost:8890/conductor/](http://localhost:8890/conductor/)
  and login in with: dba - yourpass
 

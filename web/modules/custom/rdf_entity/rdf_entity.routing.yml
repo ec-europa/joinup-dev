@@ -1,14 +1,14 @@
 # This file brings everything together. Very nifty!
 
-# Route name can be used in sevaral place (links, redirects, local actions etc.)
+# Route name can be used in several place (links, redirects, local actions etc.)
 entity.rdf_entity.canonical:
   path: '/rdf_entity/{rdf_entity}'
   defaults:
-  # Calls the view controller, defined in the annotation of the rdf entity
+  # Calls the view controller, defined in the annotation of the rdf entity.
     _entity_view: 'rdf_entity'
     _title_callback: '\Drupal\rdf_entity\Controller\RdfController::rdfTitle'
   requirements:
-  # Calls the access controller of the entity, $operation 'view'
+  # Calls the access controller of the entity, $operation 'view'.
     _entity_access: 'rdf_entity.view'
 
 entity.rdf_entity.collection:

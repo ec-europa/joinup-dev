@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains rdf_demo.module..
+ * Main functions and hook implementation of the RDF demo module.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;

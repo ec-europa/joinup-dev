@@ -136,13 +136,13 @@ function template_preprocess_rdf_entity(&$variables) {
 }
 
 /**
- * Is the current page is the full page view of the passed-in rdf entity?
+ * Is the current page the full page view of the passed-in RDF entity?
  *
  * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
- *   A rdf entity.
+ *   An RDF entity.
  *
- * @return int|false
- *   The ID of the rdf entity if this is a full page view, otherwise FALSE.
+ * @return int|FALSE
+ *   The ID of the RDF entity if this is a full page view, otherwise FALSE.
  */
 function rdf_entity_is_page(RdfInterface $rdf_entity) {
   $route_match = \Drupal::routeMatch();
