@@ -9,8 +9,8 @@ namespace Drupal\rdf_entity\DataCollector;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Database;
-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\webprofiler\DataCollector\DrupalDataCollectorTrait;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Symfony\Component\HttpFoundation\Request;

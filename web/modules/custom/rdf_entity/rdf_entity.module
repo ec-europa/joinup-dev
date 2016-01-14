@@ -6,9 +6,9 @@
  */
 
 use \Drupal\Core\Form\FormStateInterface;
-use \Drupal\field_ui\Form\FieldStorageConfigEditForm;
-use \Drupal\field\Entity\FieldStorageConfig;
 use \Drupal\Core\Render\Element;
+use \Drupal\field\Entity\FieldStorageConfig;
+use \Drupal\field_ui\Form\FieldStorageConfigEditForm;
 use \Drupal\rdf_entity\RdfInterface;
 
 /**
