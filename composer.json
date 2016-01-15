@@ -20,7 +20,7 @@
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",
         "drupal/core": "8.0.*",
-        "drupal/og": "dev-composer-json",
+        "drupal/og": "dev-8.x-1.x",
         "drush/drush": "~8.0",
         "php": ">=5.5.9"
     },
@@ -98,9 +98,9 @@
           }
       },
       {
-          "_comment": "Temporary fork of amitaibu/og with a fix for issue #130",
+          "_comment": "Amitai's fork is the main development repository for Organic Groups. Remove this once a D8 release is made on drupal.org.",
           "type": "vcs",
-          "url": "git@github.com:ec-europa/og"
+          "url": "git@github.com:amitaibu/og"
       }
   ]
 }
