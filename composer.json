@@ -20,6 +20,7 @@
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",
         "drupal/core": "8.0.*",
+        "drupal/og": "dev-composer-json",
         "drush/drush": "~8.0",
         "php": ">=5.5.9"
     },
@@ -95,6 +96,11 @@
                   "reference": "master"
               }
           }
+      },
+      {
+          "_comment": "Temporary fork of amitaibu/og with a fix for issue #130",
+          "type": "vcs",
+          "url": "git@github.com:ec-europa/og"
       }
   ]
 }
