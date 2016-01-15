@@ -10,6 +10,7 @@
         "drupal/core": "8.0.*",
         "drupal/og": "dev-8.x-1.x",
         "drush/drush": "~8.0",
+        "pear/console_table": "dev-php7-support as 1.2.0",
         "php": ">=5.5.9"
     },
     "require-dev": {
@@ -84,6 +85,11 @@
                   "reference": "master"
               }
           }
+      },
+      {
+          "_comment": "Temporary fork of pear/console_table with a fix for PR #13.",
+          "type": "vcs",
+          "url": "git@github.com:ec-europa/Console_Table"
       },
       {
           "_comment": "Amitai's fork is the main development repository for Organic Groups. Remove this once a D8 release is made on drupal.org.",

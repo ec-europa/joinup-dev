@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "19f18944e888173df084fec19fc8904e",
-    "content-hash": "8507c4bd4496491e6c0544a8c5ecd844",
+    "hash": "1dcf84db092a0b7679e08461463aeda4",
+    "content-hash": "85837be7969ec4c064db59bd86a136d1",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -955,16 +955,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-composer-json",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ec-europa/og.git",
-                "reference": "40fb40aa00fae415d20a1ee41f2cd118dcb61104"
+                "url": "https://github.com/amitaibu/og.git",
+                "reference": "64d1ea39050f5d92c1b156415eeb4d92bb3b50dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/40fb40aa00fae415d20a1ee41f2cd118dcb61104",
-                "reference": "40fb40aa00fae415d20a1ee41f2cd118dcb61104",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/64d1ea39050f5d92c1b156415eeb4d92bb3b50dc",
+                "reference": "64d1ea39050f5d92c1b156415eeb4d92bb3b50dc",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -978,7 +978,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-01-15 08:45:49"
+            "time": "2016-01-15 08:57:21"
         },
         {
             "name": "drush/drush",
@@ -1773,20 +1773,20 @@
         },
         {
             "name": "pear/console_table",
-            "version": "1.2.1",
+            "version": "dev-php7-support",
             "source": {
                 "type": "git",
-                "url": "https://github.com/RobLoach/Console_Table.git",
-                "reference": "10d89fbbe533351dcfe5dc1e84de25d9a8395950"
+                "url": "https://github.com/ec-europa/Console_Table.git",
+                "reference": "e9ccefc406362dcafbb188b4e0766ea215f2cfbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobLoach/Console_Table/zipball/10d89fbbe533351dcfe5dc1e84de25d9a8395950",
-                "reference": "10d89fbbe533351dcfe5dc1e84de25d9a8395950",
+                "url": "https://api.github.com/repos/ec-europa/Console_Table/zipball/e9ccefc406362dcafbb188b4e0766ea215f2cfbe",
+                "reference": "e9ccefc406362dcafbb188b4e0766ea215f2cfbe",
                 "shasum": ""
             },
             "require": {
-                "php": ">=4.3.10"
+                "php": ">=5.1.2"
             },
             "suggest": {
                 "pear/Console_Color2": ">=0.1.2"
@@ -1797,7 +1797,6 @@
                     "Table.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-2-Clause"
             ],
@@ -1824,7 +1823,11 @@
             "keywords": [
                 "console"
             ],
-            "time": "2014-10-27 10:04:49"
+            "support": {
+                "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Console_Table",
+                "source": "https://github.com/pear/Console_Table"
+            },
+            "time": "2016-01-15 10:24:49"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -5973,10 +5976,18 @@
             "time": "2016-01-12 17:46:01"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "1.2.0",
+            "alias_normalized": "1.2.0.0",
+            "version": "dev-php7-support",
+            "package": "pear/console_table"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/og": 20,
+        "pear/console_table": 20,
         "drupal/coder": 20,
         "drupal/config_update": 20,
         "drupal/devel": 20,
