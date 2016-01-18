@@ -26,17 +26,15 @@ class CollectionForm extends ContentEntityForm {
     $entity = $this->entity;
     $status = parent::save($form, $form_state);
 
-    switch ($status) {
-      case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label Collection.', [
-          '%label' => $entity->label(),
-        ]));
-        break;
-
-      default:
-        drupal_set_message($this->t('Saved the %label Collection.', [
-          '%label' => $entity->label(),
-        ]));
+    if ($status === SAVED_NEW) {
+      drupal_set_message($this->t('Created the %label Collection.', [
+        '%label' => $entity->label(),
+      ]));
+    }
+    else {
+      drupal_set_message($this->t('Saved the %label Collection.', [
+        '%label' => $entity->label(),
+      ]));
     }
     $form_state->setRedirect('entity.collection.edit_form', ['collection' => $entity->id()]);
   }
