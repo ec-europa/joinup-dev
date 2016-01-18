@@ -49,6 +49,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $container->get('language_manager')
     );
   }
+
   /**
    * {@inheritdoc}
    */
@@ -56,7 +57,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     // Attempt to load entities from the persistent cache. This will remove IDs
     // that were loaded from $ids.
     $entities_from_cache = $this->getFromPersistentCache($ids);
-
     // Load any remaining entities from the database.
     if ($entities_from_storage = $this->getFromStorage($ids)) {
       $this->invokeStorageLoadHook($entities_from_storage);
@@ -85,6 +85,11 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $values = array();
     $bundles = $this->getBundlesByIds($ids);
     foreach ($ids as $id) {
+      if (!isset($bundles[$id])) {
+        // This entity doesn't have a corresponding bundle.
+        // @todo Throw an exception?
+        continue;
+      }
       $values[$id] = array(
         'rid' => array('x-default' => $bundles[$id]),
         'id' => array('x-default' => $id),
@@ -112,7 +117,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   public function getRdfBundleMapping() {
     $bundle_rdf_bundle_mapping = array();
-    foreach ($this->entityTypeManager->getStorage('rdf_type')->loadMultiple() as $entity) {
+    foreach ($this->entityTypeManager->getStorage('rdf_type')
+               ->loadMultiple() as $entity) {
       $bundle_rdf_bundle_mapping[$entity->rdftype] = $entity->id();
     }
     return $bundle_rdf_bundle_mapping;
@@ -147,7 +153,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   public function getLabelMapping() {
     $bundle_label_mapping = array();
-    foreach ($this->entityTypeManager->getStorage('rdf_type')->loadMultiple() as $entity) {
+    foreach ($this->entityTypeManager->getStorage('rdf_type')
+               ->loadMultiple() as $entity) {
       $label_field = $entity->get('rdf_label');
       if (!$label_field) {
         continue;
@@ -185,14 +192,16 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   protected function getBundlesByIds($ids) {
     $ids_rdf_mapping = array();
     $bundle_mapping = $this->getRdfBundleMapping();
+    // @todo Get query through $this->getQuery, and use this wrapper...
     $ids_string = "<" . implode(">, <", $ids) . ">";
-    $query
-      = 'SELECT ?uri, ?bundle
+    $query = <<<QUERY
+SELECT ?uri, ?bundle
 WHERE {
   ?uri rdf:type ?bundle.
-  FILTER (?uri IN ( ' . $ids_string . '))
+  FILTER (?uri IN (  $ids_string ))
 }
-GROUP BY ?uri';
+GROUP BY ?uri
+QUERY;
     $results = $this->sparql->query($query);
     foreach ($results as $result) {
       $uri = (string) $result->uri;
@@ -245,9 +254,85 @@ GROUP BY ?uri';
   }
 
   /**
+   * Get the Drupal field <-> rdf field mapping.
+   *
+   * @param \Drupal\rdf_entity\Entity\Rdf $entity
+   *   Rdf entity.
+   */
+  protected function getMappedProperties(Rdf $entity) {
+    // @todo Better way to get to the bundle?
+    $bundle_target = $entity->get('rid')->getValue();
+    $bundle = $bundle_target[0]['target_id'];
+    $properties = [];
+    $entity_manager = \Drupal::getContainer()->get('entity.manager');
+    // Collect impacted fields.
+    $definitions = $entity_manager->getFieldDefinitions($entity->getEntityTypeId(), $bundle);
+    /** @var \Drupal\Core\Field\BaseFieldDefinition $field_definition */
+    foreach ($definitions as $field_name => $field_definition) {
+      /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
+      $storage_definition = $field_definition->getFieldStorageDefinition();
+      if (!$storage_definition instanceof \Drupal\field\Entity\FieldStorageConfig) {
+        continue;
+      }
+      foreach ($storage_definition->getColumns() as $column => $column_info) {
+        if ($property = $storage_definition->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE)) {
+          $properties['by_field'][$field_name][$column] = $property;
+          $properties['flat'][$property] = $property;
+        }
+      }
+    }
+    return $properties;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function save(EntityInterface $entity) {
+    $id = $entity->id();
+    $insert = '';
+    $properties = $this->getMappedProperties($entity);
+    $properties_list = "<" . implode(">, <", $properties['flat']) . ">";
+    foreach ($entity->toArray() as $field_name => $field) {
+      foreach ($field as $delta => $field_item) {
+        foreach ($field_item as $column => $value) {
+          if (!isset($properties['by_field'][$field_name][$column])) {
+            continue;
+          }
+          $subj = '<' . (string) $id . '>';
+          $pred = '<' . (string) $properties['by_field'][$field_name][$column] . '>';
+          if (!filter_var($value, FILTER_VALIDATE_URL) === FALSE) {
+            $obj = '<' . $value . '>';
+          }
+          else {
+            // @todo This is most probably prone to Sparql injection..!
+            $obj = '"""' . $value . '"""';
+          }
+          $insert .= $subj . ' ' . $pred . ' ' . $obj . '  .' . "\n";
+        }
+      }
+    }
+    $query = <<<QUERY
+DELETE {
+  GRAPH ?g {
+    <$id> ?field ?value
+  }
+}
+WHERE {
+  GRAPH ?g {
+    <$id> ?field ?value .
+    FILTER (?field IN ($properties_list))
+  }
+}
+QUERY;
+    $this->sparql->query($query);
+    // @todo Do in one transaction... If possible.
+    // @todo How to deal with graphs? Now we use the default,
+    // ... This needs some thought and most probably some discussion.
+    $query = "INSERT DATA INTO <http://localhost:8890/DAV> {\n" .
+      $insert . "\n" .
+      '}';
+    $this->sparql->query($query);
+
   }
 
   /**
@@ -263,7 +348,8 @@ GROUP BY ?uri';
   public function getQuery($conjunction = 'AND') {
     // Access the service directly rather than entity.query factory so the
     // storage's current entity type is used.
-    $query = \Drupal::service($this->getQueryServiceName())->get($this->entityType, $conjunction);
+    $query = \Drupal::service($this->getQueryServiceName())
+      ->get($this->entityType, $conjunction);
     return $query;
   }
 
@@ -349,6 +435,7 @@ GROUP BY ?uri';
     }
     foreach ($ids_by_label as $label => $ids) {
       $ids_string = "<" . implode(">, <", $ids) . ">";
+      // @todo Get query through $this->getQuery, and use this wrapper...
       $query
         = 'SELECT ?uri ?label
           WHERE{
@@ -418,6 +505,8 @@ GROUP BY ?uri';
 
     $ids_string = "<" . implode(">, <", $ids) . ">";
     $tables_string = "<" . implode(">, <", array_keys($tables)) . ">";
+
+    // @todo Get query through $this->getQuery, and use this wrapper...
 
     $query
       = 'SELECT ?entity_id ?table ?field_value

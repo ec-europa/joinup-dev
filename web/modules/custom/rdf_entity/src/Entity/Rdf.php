@@ -176,6 +176,13 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   /**
    * {@inheritdoc}
    */
+  public function setChangedTime($timestamp) {
+    // @todo Implement :-)
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getChangedTime() {
     // @todo Find out if all rdf entities have a changed date.
     // If so, we need to define this as a 'base field'.
