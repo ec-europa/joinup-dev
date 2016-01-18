@@ -35,7 +35,8 @@ class CollectionAccessControlHandler extends EntityAccessControlHandler {
         return AccessResult::allowedIfHasPermission($account, 'delete collection entities');
     }
 
-    return AccessResult::allowed();
+    // Unknown operation, no opinion.
+    return AccessResult::neutral();
   }
 
   /**
