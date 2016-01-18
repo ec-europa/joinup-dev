@@ -13,19 +13,11 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Form controller for Collection edit forms.
  *
+ * @deprecated Will be replaced by a view in ISAICP-2205.
+ *
  * @ingroup collection
  */
 class CollectionForm extends ContentEntityForm {
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    /* @var $entity \Drupal\collection\Entity\Collection */
-    $form = parent::buildForm($form, $form_state);
-    $entity = $this->entity;
-
-    return $form;
-  }
 
   /**
    * {@inheritdoc}
