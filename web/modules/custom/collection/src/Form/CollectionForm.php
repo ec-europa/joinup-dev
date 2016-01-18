@@ -36,7 +36,8 @@ class CollectionForm extends ContentEntityForm {
         '%label' => $entity->label(),
       ]));
     }
-    $form_state->setRedirect('entity.collection.edit_form', ['collection' => $entity->id()]);
+
+    $form_state->setRedirect('entity.collection.canonical', ['collection' => $entity->id()]);
   }
 
 }
