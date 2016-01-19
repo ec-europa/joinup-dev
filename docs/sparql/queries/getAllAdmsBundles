@@ -1,3 +1,4 @@
+# The Url used here is no longer dereferenceable, however, it is still in use in the dataset.
 SELECT ?bundles
 WHERE {
   ?bundles rdfs:isDefinedBy <http://joinup.ec.europa.eu/asset/adms_foss/release/release100>.

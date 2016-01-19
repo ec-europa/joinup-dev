@@ -103,7 +103,7 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *     "delete-form" = "/rdf_enity/{rdf_entity}/delete",
  *     "collection" = "/rdf_entity/list"
  *   },
- *   field_ui_base_route = "entity.rdf_type.overview_form",
+ *   field_ui_base_route = "entity.rdf_type.edit_form",
  *   permission_granularity = "bundle",
  *   common_reference_target = TRUE,
  * )
@@ -137,6 +137,12 @@ use Drupal\Core\Entity\EntityChangedTrait;
  */
 class Rdf extends ContentEntityBase implements RdfInterface {
   use EntityChangedTrait;
+
+  /**
+   * Entity bundle.
+   *
+   * @var string $rid
+   */
   protected $rid;
 
   /**
@@ -187,6 +193,13 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   /**
    * {@inheritdoc}
    */
+  public function setChangedTime($time) {
+    // @todo Implement this.
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getOwner() {
     return $this->get('user_id')->entity;
   }
@@ -229,8 +242,21 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     // Standard field, used as unique if primary index.
     $fields['id'] = BaseFieldDefinition::create('string')
       ->setLabel(t('ID'))
-      ->setDescription(t('The ID of the Contact entity.'))
-      ->setReadOnly(TRUE);
+      ->setRequired(TRUE)
+      ->setDescription(t('The ID of the RDF entity.'))
+      ->setTranslatable(FALSE)
+      ->setRevisionable(FALSE)
+      ->setSetting('max_length', 255)
+      ->setDisplayOptions('view', array(
+        'label' => 'hidden',
+        'type' => 'hidden',
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -10,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', FALSE);
 
     $fields['rid'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Rdf Type'))
@@ -267,9 +293,9 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     $fields = array();
     // If ($bundle == 'admssw_softwareproject') {.
     $fields['test'] = BaseFieldDefinition::create('string')
-        ->setLabel(t('Test bundle admssw_softwareproject'))
-        ->setDescription(t('The ID of the Contact entity.'))
-        ->setReadOnly(TRUE);
+      ->setLabel(t('Test bundle admssw_softwareproject'))
+      ->setDescription(t('The ID of the Contact entity.'))
+      ->setReadOnly(TRUE);
     // }.
     return $fields;
   }

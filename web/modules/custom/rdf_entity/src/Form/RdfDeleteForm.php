@@ -31,7 +31,7 @@ class RdfDeleteForm extends ContentEntityConfirmFormBase {
    * If the delete command is canceled, return to the Rdf list.
    */
   public function getCancelUrl() {
-    return new Url('entity.rdf_entity_rdf.collection');
+    return new Url('entity.rdf_entity.collection');
   }
 
   /**
@@ -55,7 +55,7 @@ class RdfDeleteForm extends ContentEntityConfirmFormBase {
         '@type' => $this->entity->bundle(),
         '%title' => $this->entity->label(),
       ));
-    $form_state->setRedirect('entity.rdf_entity_rdf.collection');
+    $form_state->setRedirect('entity.rdf_entity.collection');
   }
 
 }

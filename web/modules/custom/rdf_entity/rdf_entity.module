@@ -10,14 +10,12 @@ use \Drupal\Core\Render\Element;
 use \Drupal\field\Entity\FieldStorageConfig;
 use \Drupal\field_ui\Form\FieldStorageConfigEditForm;
 use \Drupal\rdf_entity\RdfInterface;
+use \Drupal\Core\Url;
 
 /**
  * Implements hook_form_alter().
  */
-function rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id != 'field_storage_config_edit_form') {
-    return;
-  }
+function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Only add mapping form element to rdf entities fields.
   if ($form_state->get('entity_type_id') != 'rdf_entity') {
     return;
@@ -33,7 +31,7 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id)
     '#weight' => 99,
   );
   foreach ($schema['columns'] as $column => $column_desc) {
-    $description = $column_desc['description'] . "<br>";
+    $description = isset($column_desc['description']) ? $column_desc['description'] . "<br>" : '';
     foreach (array('type', 'length', 'size', 'serialize') as $key) {
       if (!empty($column_desc[$key])) {
         $description .= '<strong>' . $key . "</strong>: " . $column_desc[$key] . ' ';
@@ -88,6 +86,9 @@ function rdf_entity_theme() {
     'rdf_entity' => array(
       'render element' => 'elements',
     ),
+    'rdf_add_list' => array(
+      'variables' => array('content' => NULL),
+    ),
   );
 }
 
@@ -133,6 +134,30 @@ function template_preprocess_rdf_entity(&$variables) {
 
   // Add article ARIA role.
   $variables['attributes']['role'] = 'article';
+}
+
+/**
+ * Prepares variables for list of available rdf type templates.
+ *
+ * Default template: rdf-add-list.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - content: An array of rdf bundles.
+ */
+function template_preprocess_rdf_add_list(&$variables) {
+  $variables['types'] = array();
+  if (!empty($variables['content'])) {
+    foreach ($variables['content'] as $type) {
+      $variables['types'][$type->id()] = array(
+        'type' => $type->id(),
+        'add_link' => \Drupal::l($type->label(), new Url('rdf_entity.rdf_add', array('rdf_type' => $type->id()))),
+        'description' => array(
+          '#markup' => $type->getDescription(),
+        ),
+      );
+    }
+  }
 }
 
 /**

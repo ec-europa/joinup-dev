@@ -38,9 +38,6 @@ class RdfDemoController extends ControllerBase {
     // @todo Find out why paging is not working...
     $build = array(
       'list' => $list,
-      'pager' => array(
-        '#theme' => 'pager',
-      ),
     );
     return $build;
   }
