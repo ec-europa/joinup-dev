@@ -17,7 +17,7 @@
         "behat/mink": "~1.6",
         "behat/mink-goutte-driver": "~1.2",
         "drupal/coder": "dev-8.x-2.x",
-        "drupal/config_devel": "~8.1.0",
+        "drupal/config_devel": "dev-8.x-1.x",
         "drupal/config_update": "dev-8.x-1.x",
         "drupal/devel": "dev-8.x-1.x",
         "drupal/drupal-extension": "~3.0",
