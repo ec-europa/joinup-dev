@@ -19,5 +19,5 @@ default_value:
 default_value_callback: ''
 settings:
   on_label: 'Enable pre-moderation'
-  off_label: 'Off'
+  off_label: 'Disable pre-moderation'
 field_type: boolean

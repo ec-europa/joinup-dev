@@ -13,19 +13,11 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Form controller for Collection edit forms.
  *
+ * @deprecated Will be replaced by a view in ISAICP-2205.
+ *
  * @ingroup collection
  */
 class CollectionForm extends ContentEntityForm {
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    /* @var $entity \Drupal\collection\Entity\Collection */
-    $form = parent::buildForm($form, $form_state);
-    $entity = $this->entity;
-
-    return $form;
-  }
 
   /**
    * {@inheritdoc}
@@ -34,19 +26,18 @@ class CollectionForm extends ContentEntityForm {
     $entity = $this->entity;
     $status = parent::save($form, $form_state);
 
-    switch ($status) {
-      case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label Collection.', [
-          '%label' => $entity->label(),
-        ]));
-        break;
-
-      default:
-        drupal_set_message($this->t('Saved the %label Collection.', [
-          '%label' => $entity->label(),
-        ]));
+    if ($status === SAVED_NEW) {
+      drupal_set_message($this->t('Created the %label Collection.', [
+        '%label' => $entity->label(),
+      ]));
     }
-    $form_state->setRedirect('entity.collection.edit_form', ['collection' => $entity->id()]);
+    else {
+      drupal_set_message($this->t('Saved the %label Collection.', [
+        '%label' => $entity->label(),
+      ]));
+    }
+
+    $form_state->setRedirect('entity.collection.canonical', ['collection' => $entity->id()]);
   }
 
 }
