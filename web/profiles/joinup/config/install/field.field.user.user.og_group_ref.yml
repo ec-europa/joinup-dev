@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.og_group_ref
+  module:
+    - og
+    - user
+id: user.user.og_group_ref
+field_name: og_group_ref
+entity_type: user
+bundle: user
+label: 'Groups audience'
+description: 'OG group audience reference field.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:collection'
+  handler_settings: {  }
+  access_override: false
+field_type: og_membership_reference

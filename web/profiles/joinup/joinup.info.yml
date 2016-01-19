@@ -21,6 +21,8 @@ config_devel:
   - block.block.seven_local_actions
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
+  - field.field.user.user.og_group_ref
+  - field.storage.user.og_group_ref
   - og.og_membership_type.og_membership_type
   - og.settings
   - system.theme
