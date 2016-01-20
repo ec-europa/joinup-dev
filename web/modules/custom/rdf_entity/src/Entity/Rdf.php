@@ -200,13 +200,6 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   /**
    * {@inheritdoc}
    */
-  public function setChangedTime($time) {
-    // @todo Implement this.
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getOwner() {
     return $this->get('user_id')->entity;
   }
