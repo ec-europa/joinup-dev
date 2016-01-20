@@ -76,17 +76,17 @@ class RdfTypeForm extends BundleEntityFormBase {
     $form['description'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Description'),
-      '#default_value' => $rdf_type->description,
+      '#default_value' => isset($rdf_type->description) ? $rdf_type->description : '',
     );
     $form['rdftype'] = array(
       '#type' => 'textfield',
       '#title' => t('Rdf base class name'),
-      '#default_value' => $rdf_type->rdftype,
+      '#default_value' => isset($rdf_type->rdftype) ? $rdf_type->rdftype : '',
     );
     $form['rdf_label'] = array(
       '#type' => 'textfield',
       '#title' => t('Rdf property for label'),
-      '#default_value' => $rdf_type->rdf_label,
+      '#default_value' => isset($rdf_type->rdf_label) ? $rdf_type->rdf_label : '',
     );
     $form = parent::form($form, $form_state);
     return $this->protectBundleIdElement($form);

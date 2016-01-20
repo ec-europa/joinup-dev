@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains rdf_demo.module..
+ * Main functions and hook implementation of the RDF demo module.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -21,13 +21,4 @@ function rdf_demo_help($route_name, RouteMatchInterface $route_match) {
 
     default:
   }
-}
-
-/**
- * Implements hook_theme().
- */
-function rdf_demo_theme() {
-  $theme = [];
-
-  return $theme;
 }

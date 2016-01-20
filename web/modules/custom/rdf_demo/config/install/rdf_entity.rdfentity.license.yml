@@ -4,4 +4,5 @@ dependencies: {  }
 name: License
 rid: license
 description: ''
-rdftype: 'dct:LicenseDocument'
+rdftype: 'http://purl.org/dc/terms/LicenseDocument'
+rdf_label: 'http://www.w3.org/2000/01/rdf-schema#label'

@@ -4,4 +4,5 @@ dependencies: {  }
 name: 'Asset distribution'
 rid: asset_distribution
 description: ''
-rdftype: 'adms:AssetDistribution'
+rdftype: 'http://www.w3.org/ns/adms#AssetDistribution'
+rdf_label: 'http://purl.org/dc/terms/title'

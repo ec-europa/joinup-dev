@@ -95,6 +95,9 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
         'id' => array('x-default' => $id),
       );
     }
+    if (empty($values)) {
+      return [];
+    }
     $this->loadFromBaseTable($values);
     $this->loadFromDedicatedTables($values, FALSE);
     foreach ($values as $id => $entity_values) {
@@ -129,14 +132,13 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *
    * Returns the rdf object that is specific for this bundle.
    */
-  public function getRdfBundleList($bundles) {
-    if (!$bundles) {
-      return;
-    }
-
+  public function getRdfBundleList($bundles = []) {
     $bundle_mapping = $this->getRdfBundleMapping();
     if (empty($bundle_mapping)) {
       return;
+    }
+    if (!$bundles) {
+      $bundles = array_values($bundle_mapping);
     }
     $rdf_bundels = [];
     $bundle_mapping = array_flip($bundle_mapping);
@@ -244,13 +246,23 @@ QUERY;
   /**
    * {@inheritdoc}
    */
-  public function delete(array $entities) {
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function doDelete($entities) {
+    $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
+    $query = <<<QUERY
+DELETE {
+  GRAPH ?g {
+    ?entity ?field ?value
+  }
+}
+WHERE {
+  GRAPH ?g {
+    ?entity ?field ?value .
+    FILTER (?entity IN ($entity_list))
+  }
+}
+QUERY;
+
+    $this->sparql->query($query);
   }
 
   /**

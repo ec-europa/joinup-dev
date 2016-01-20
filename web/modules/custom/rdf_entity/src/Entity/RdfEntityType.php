@@ -20,7 +20,6 @@ use Drupal\rdf_entity\RdfEntityTypeInterface;
  *     "list_builder" = "\Drupal\rdf_entity\Entity\Controller\RdfTypeListBuilder",
  *     "form" = {
  *       "default" = "\Drupal\rdf_entity\Form\RdfTypeForm",
- *       "reset" = "Drupal\taxonomy\Form\VocabularyResetForm",
  *       "delete" = "\Drupal\rdf_entity\Form\RdfTypeDeleteForm"
  *     }
  *   },
@@ -34,7 +33,6 @@ use Drupal\rdf_entity\RdfEntityTypeInterface;
  *   links = {
  *     "add-form" = "/admin/structure/rdf_type/manage/{rdf_type}/add",
  *     "delete-form" = "/admin/structure/rdf_type/manage/{rdf_type}/delete",
- *     "reset-form" = "/admin/structure/rdf_type/manage/{rdf_type}/reset",
  *     "overview-form" = "/admin/structure/rdf_type/manage/{rdf_type}/overview",
  *     "edit-form" = "/admin/structure/rdf_type/manage/{rdf_type}",
  *     "collection" = "/admin/structure/rdf_type",
@@ -49,15 +47,44 @@ use Drupal\rdf_entity\RdfEntityTypeInterface;
  * )
  */
 class RdfEntityType extends ConfigEntityBundleBase implements RdfEntityTypeInterface {
+  /**
+   * The bundle type of RDF entity.
+   *
+   * @var string $rid
+   *   The bundle.
+   */
   protected $rid;
+
+  /**
+   * The human readable name of the entity.
+   *
+   * @var string $name
+   *    Human readable name
+   */
   protected $name;
+
+  /**
+   * A brief description of this rdf bundle.
+   *
+   * @var string
+   */
+  protected $description;
 
   /**
    * {@inheritdoc}
    */
   public function id() {
-
     return $this->rid;
+  }
+
+  /**
+   * Gets the description.
+   *
+   * @return string
+   *   The description of this rdf bundle.
+   */
+  public function getDescription() {
+    return $this->description;
   }
 
 }

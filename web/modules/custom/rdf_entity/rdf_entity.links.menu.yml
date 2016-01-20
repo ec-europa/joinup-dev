@@ -4,9 +4,9 @@ entity.rdf_entity.collection:
   title: 'RDF listing'
   route_name: entity.rdf_entity.collection
   description: 'List Rdf entities'
-  weight: 10
+  parent: system.admin_content
 rdf_entity_rdf.admin.structure.settings:
-  title: RDF Settings
-  description: 'Configure RDF entity'
+  title: RDF Bundles
+  description: 'Create RDF bundles and manage their default settings.'
   route_name:  entity.rdf_type.collection
   parent: system.admin_structure

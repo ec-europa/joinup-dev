@@ -1,32 +1,43 @@
 # This file brings everything together. Very nifty!
 
-# Route name can be used in sevaral place (links, redirects, local actions etc.)
+# Route name can be used in several place (links, redirects, local actions etc.)
 entity.rdf_entity.canonical:
   path: '/rdf_entity/{rdf_entity}'
   defaults:
-  # Calls the view controller, defined in the annotation of the rdf entity
+  # Calls the view controller, defined in the annotation of the rdf entity.
     _entity_view: 'rdf_entity'
     _title_callback: '\Drupal\rdf_entity\Controller\RdfController::rdfTitle'
   requirements:
-  # Calls the access controller of the entity, $operation 'view'
+  # Calls the access controller of the entity, $operation 'view'.
     _entity_access: 'rdf_entity.view'
 
 entity.rdf_entity.collection:
-  path: '/rdf_entity/list'
+  path: 'admin/content/rdf'
   defaults:
   # Calls the list controller, defined in the annotation of the rdf entity.
     _entity_list: 'rdf_entity'
-    _title: 'RDF List'
+    _title: 'RDF'
   requirements:
   # Checks for permission directly.
     _permission: 'view rdf entity'
 
-rdf_entity.rdf_add:
+rdf_entity.rdf_add_page:
   path: '/rdf_entity/add'
   defaults:
   # Calls the form.add controller, defined in the rdf entity.
-    _entity_form: rdf_entity.add
+    # _entity_form: rdf_entity.add
     _title: 'Add RDF'
+    _controller: '\Drupal\rdf_entity\Controller\RdfController::addPage'
+  requirements:
+    _entity_create_access: 'rdf_entity'
+
+rdf_entity.rdf_add:
+  path: '/rdf_entity/add/{rdf_type}'
+  defaults:
+  # Calls the form.add controller, defined in the rdf entity.
+    # _entity_form: rdf_entity.add
+    _title: 'Add RDF'
+    _controller: '\Drupal\rdf_entity\Controller\RdfController::add'
   requirements:
     _entity_create_access: 'rdf_entity'
 
@@ -47,14 +58,6 @@ entity.rdf_entity.delete_form:
     _title: 'Delete Rdf'
   requirements:
     _entity_access: 'rdf_entity.delete'
-
-rdf_entity.rdf_entity_settings:
-  path: 'admin/structure/rdf_entity_settings'
-  defaults:
-    _form: '\Drupal\rdf_entity\Form\RdfSettingsForm'
-    _title: 'RDF Settings'
-  requirements:
-    _permission: 'administer rdf entity'
 
 entity.rdf_type.collection:
   path: '/admin/structure/rdf_type'
@@ -87,19 +90,3 @@ entity.rdf_type.delete_form:
     _title: 'Delete Rdf type'
   requirements:
     _entity_access: 'rdf_type.delete'
-
-entity.rdf_type.reset_form:
-  path: '/admin/structure/rdf_type/manage/{rdf_type}/reset'
-  defaults:
-    _entity_form: 'rdf_type.reset'
-    _title: 'Reset'
-  requirements:
-    _permission: 'administer rdf_type'
-
-entity.rdf_type.overview_form:
-  path: '/admin/structure/rdf_type/manage/{rdf_type}/overview'
-  defaults:
-    _form: 'Drupal\rdf_entity\Form\OverviewRdf'
-    _title_callback: '\Drupal\rdf_entity\Controller\RdfController::rdfTypeTitle'
-  requirements:
-    _entity_access: 'rdf_type.view'

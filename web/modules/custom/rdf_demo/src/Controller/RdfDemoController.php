@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Starting point for integrating ADMS.
+ * Contains \Drupal\rdf_demo\Controller\RdfDemoController.
  */
 
 namespace Drupal\rdf_demo\Controller;
@@ -14,7 +14,7 @@ use Drupal\Core\Controller\ControllerBase;
 class RdfDemoController extends ControllerBase {
 
   /**
-   * Returns a simple page.
+   * Returns a list of federated repositories.
    *
    * @return array
    *   A simple render array.
@@ -30,7 +30,7 @@ class RdfDemoController extends ControllerBase {
     $rids = $query->execute();
     $entities = $entity_storage->loadMultiple($rids);
     $list = array('#theme' => 'item_list');
-    /** @var Rdf $entity */
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     foreach ($entities as $entity) {
       $list['#items'][] = array('#markup' => $entity->link());
     }

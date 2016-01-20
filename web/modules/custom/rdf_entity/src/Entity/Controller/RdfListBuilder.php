@@ -22,10 +22,16 @@ class RdfListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function load() {
-    $query = $this->getStorage()->getQuery()
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage */
+    $rdf_storage = $this->getStorage();
+    $mapping = $rdf_storage->getRdfBundleList();
+    if (!$mapping) {
+      return [];
+    }
+    $query = $rdf_storage->getQuery()
       ->sort($this->entityType->getKey('id'))
       ->condition('?entity', 'rdf:type', '?bundle')
-      ->condition('?bundle', 'rdfs:isDefinedBy', '<http://www.w3.org/TR/vocab-adms/>');
+      ->filter('?bundle IN ' . $mapping);
 
     // Only add the pager if a limit is specified.
     if ($this->limit) {

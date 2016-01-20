@@ -38,7 +38,7 @@ class RdfTypeListBuilder extends ConfigEntityListBuilder {
       'data' => $entity->label(),
       'class' => array('menu-label'),
     );
-    $row['description']['data'] = ['#markup' => $entity->description];
+    $row['description']['data'] = ['#markup' => $entity->getDescription()];
     return $row + parent::buildRow($entity);
   }
 
