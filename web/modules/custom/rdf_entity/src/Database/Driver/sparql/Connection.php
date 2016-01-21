@@ -59,7 +59,7 @@ class Connection {
   /**
    * Execute the actual query against the Sparql endpoint.
    */
-  public function query($query) {
+  public function query($query, $type = 'query') {
     if (!empty($this->logger)) {
       // @todo Fix this. Logger should have been auto started.
       // Probably related to the overwritten log object in $this->setLogger.
@@ -69,7 +69,12 @@ class Connection {
       $query_start = microtime(TRUE);
     }
 
-    $results = $this->connection->query($query);
+    if ($type == 'query') {
+      $results = $this->doQuery($query);
+    }
+    else {
+      $results = $this->doUpdate($query);
+    }
 
     if (!empty($this->logger)) {
       $query_end = microtime(TRUE);
@@ -202,6 +207,25 @@ class Connection {
   public function getConnectionOptions() {
     return $this->connectionOptions;
   }
+
+  /**
+   * @param $query
+   * @return object
+   */
+  public function doQuery($query) {
+    $results = $this->connection->query($query);
+    return $results;
+  }
+
+  /**
+   * @param $query
+   * @return object
+   */
+  public function doUpdate($query) {
+    $results = $this->connection->update($query);
+    return $results;
+  }
+
 
 }
 

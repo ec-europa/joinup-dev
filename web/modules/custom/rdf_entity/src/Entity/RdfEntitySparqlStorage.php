@@ -413,7 +413,7 @@ QUERY;
     $query = "INSERT DATA INTO <http://localhost:8890/DAV> {\n" .
       $insert . "\n" .
       '}';
-    $this->sparql->query($query);
+    $this->sparql->query($query, 'update');
   }
 
   /**
