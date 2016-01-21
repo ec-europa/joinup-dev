@@ -119,6 +119,7 @@ class RdfTypeForm extends BundleEntityFormBase {
 
     $form_state->setValue('rid', $rdf_type->id());
     $form_state->set('rid', $rdf_type->id());
+    $form_state->setRedirect('entity.rdf_type.collection');
   }
 
   /**
