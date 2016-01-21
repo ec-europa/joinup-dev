@@ -1,3 +1,4 @@
+uuid: bd64ada2-bef4-4dba-ba00-dad59b3f03b0
 langcode: en
 status: true
 dependencies:
@@ -12,7 +13,7 @@ entity_type: rdf_entity
 bundle: asset_repository
 label: Description
 description: ''
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''

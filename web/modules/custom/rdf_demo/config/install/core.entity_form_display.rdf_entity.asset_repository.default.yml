@@ -1,25 +1,55 @@
+uuid: 33171752-ecc1-4015-ad00-cd055b56982e
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.rdf_entity.asset_repository.field_asset_projects
+    - field.field.rdf_entity.asset_repository.field_access_url
+    - field.field.rdf_entity.asset_repository.field_affiliates
+    - field.field.rdf_entity.asset_repository.field_contact_information
+    - field.field.rdf_entity.asset_repository.field_creation_date
     - field.field.rdf_entity.asset_repository.field_description
+    - field.field.rdf_entity.asset_repository.field_modification_date
+    - field.field.rdf_entity.asset_repository.field_owner
+    - field.field.rdf_entity.asset_repository.field_policy_domain
+    - field.field.rdf_entity.asset_repository.field_spatial_coverage
     - rdf_entity.rdfentity.asset_repository
   module:
+    - datetime
+    - link
     - text
 id: rdf_entity.asset_repository.default
 targetEntityType: rdf_entity
 bundle: asset_repository
 mode: default
 content:
-  field_asset_projects:
-    weight: -4
+  field_access_url:
+    weight: -2
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  field_affiliates:
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+  field_contact_information:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_creation_date:
+    weight: -1
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
   field_description:
     weight: -3
     settings:
@@ -27,6 +57,42 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+  field_modification_date:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_owner:
+    weight: 2
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_policy_domain:
+    weight: 3
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_spatial_coverage:
+    weight: 4
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  id:
+    type: string_textfield
+    weight: -10
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   label:
     type: string_textfield
     weight: -5

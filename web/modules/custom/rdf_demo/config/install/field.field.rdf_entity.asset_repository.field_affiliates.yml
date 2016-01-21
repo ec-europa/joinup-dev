@@ -1,0 +1,21 @@
+uuid: bac0af25-a577-4593-b500-c6d8aa8a42d7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_affiliates
+    - rdf_entity.rdfentity.asset_repository
+id: rdf_entity.asset_repository.field_affiliates
+field_name: field_affiliates
+entity_type: rdf_entity
+bundle: asset_repository
+label: Affiliates
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings: {  }
+field_type: entity_reference

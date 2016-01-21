@@ -1,9 +1,9 @@
+uuid: d2b9ac4f-ba54-4567-9e30-481065715e73
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.rdf_entity.teaser
-    - field.field.rdf_entity.asset_repository.field_asset_projects
     - field.field.rdf_entity.asset_repository.field_description
     - rdf_entity.rdfentity.asset_repository
   module:
@@ -13,13 +13,6 @@ targetEntityType: rdf_entity
 bundle: asset_repository
 mode: teaser
 content:
-  field_asset_projects:
-    weight: -4
-    label: above
-    settings:
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_label
   field_description:
     weight: -3
     label: above

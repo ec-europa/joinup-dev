@@ -1,31 +1,95 @@
+uuid: 5d3d2564-ab8b-4656-bc03-3f0027dda96b
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.rdf_entity.asset_repository.field_asset_projects
+    - field.field.rdf_entity.asset_repository.field_access_url
+    - field.field.rdf_entity.asset_repository.field_affiliates
+    - field.field.rdf_entity.asset_repository.field_contact_information
+    - field.field.rdf_entity.asset_repository.field_creation_date
     - field.field.rdf_entity.asset_repository.field_description
+    - field.field.rdf_entity.asset_repository.field_modification_date
+    - field.field.rdf_entity.asset_repository.field_owner
+    - field.field.rdf_entity.asset_repository.field_policy_domain
+    - field.field.rdf_entity.asset_repository.field_spatial_coverage
     - rdf_entity.rdfentity.asset_repository
   module:
+    - datetime
+    - link
     - text
 id: rdf_entity.asset_repository.default
 targetEntityType: rdf_entity
 bundle: asset_repository
 mode: default
 content:
-  field_asset_projects:
+  field_access_url:
     weight: 2
     label: above
     settings:
-      view_mode: teaser
-      link: false
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    type: link
+  field_affiliates:
+    weight: 9
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_contact_information:
+    weight: 5
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_creation_date:
+    weight: 3
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
   field_description:
     weight: 1
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
+  field_modification_date:
+    weight: 4
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  field_owner:
+    weight: 6
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_policy_domain:
+    weight: 7
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_spatial_coverage:
+    weight: 8
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   label:
     label: hidden
     type: string

@@ -1,0 +1,21 @@
+uuid: 2291926f-563f-47c8-a53b-590ac8f394d2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_policy_domain
+    - rdf_entity.rdfentity.asset_repository
+id: rdf_entity.asset_repository.field_policy_domain
+field_name: field_policy_domain
+entity_type: rdf_entity
+bundle: asset_repository
+label: 'Policy domain'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings: {  }
+field_type: entity_reference

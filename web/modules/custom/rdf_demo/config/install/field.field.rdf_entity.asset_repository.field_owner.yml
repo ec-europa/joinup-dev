@@ -1,0 +1,26 @@
+uuid: fb42b0da-d890-4629-9f00-a3de48efd30e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_owner
+    - rdf_entity.rdfentity.agent
+    - rdf_entity.rdfentity.asset_repository
+id: rdf_entity.asset_repository.field_owner
+field_name: field_owner
+entity_type: rdf_entity
+bundle: asset_repository
+label: Owner
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      agent: agent
+    sort:
+      field: _none
+field_type: entity_reference
