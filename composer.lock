@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "745cd7ca5d95378bb94c778fc1208449",
-    "content-hash": "4383ae2314209e6c2f53e4c2ab6a69dc",
+    "hash": "c275db5267f9784983bfb6fbdac40003",
+    "content-hash": "4b8bb9e10f4ee32f56dba8e277e534e8",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -790,16 +790,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.0.2",
+            "version": "8.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "45cfc0f34191c35ac35d603aa6f3b8a3c632ab8e"
+                "reference": "23d39b5ff5a7f0a84a41c75152eb1128e966d8ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/45cfc0f34191c35ac35d603aa6f3b8a3c632ab8e",
-                "reference": "45cfc0f34191c35ac35d603aa6f3b8a3c632ab8e",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/23d39b5ff5a7f0a84a41c75152eb1128e966d8ef",
+                "reference": "23d39b5ff5a7f0a84a41c75152eb1128e966d8ef",
                 "shasum": ""
             },
             "require": {
@@ -951,7 +951,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-01-06 22:36:23"
+            "time": "2016-01-22 05:32:11"
         },
         {
             "name": "drupal/og",
@@ -959,12 +959,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "64d1ea39050f5d92c1b156415eeb4d92bb3b50dc"
+                "reference": "966f63ea19a681a00229e64851d72aaf7d7897d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/64d1ea39050f5d92c1b156415eeb4d92bb3b50dc",
-                "reference": "64d1ea39050f5d92c1b156415eeb4d92bb3b50dc",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/966f63ea19a681a00229e64851d72aaf7d7897d7",
+                "reference": "966f63ea19a681a00229e64851d72aaf7d7897d7",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -978,7 +978,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-01-15 08:57:21"
+            "time": "2016-01-22 11:13:22"
         },
         {
             "name": "drush/drush",
@@ -4033,27 +4033,27 @@
         },
         {
             "name": "behat/mink-browserkit-driver",
-            "version": "v1.3.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/minkphp/MinkBrowserKitDriver.git",
-                "reference": "da47df1593dac132f04d24e7277ef40d33d9f201"
+                "reference": "2650f5420e713e3807c7f09a07370a4f48367bf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/minkphp/MinkBrowserKitDriver/zipball/da47df1593dac132f04d24e7277ef40d33d9f201",
-                "reference": "da47df1593dac132f04d24e7277ef40d33d9f201",
+                "url": "https://api.github.com/repos/minkphp/MinkBrowserKitDriver/zipball/2650f5420e713e3807c7f09a07370a4f48367bf9",
+                "reference": "2650f5420e713e3807c7f09a07370a4f48367bf9",
                 "shasum": ""
             },
             "require": {
                 "behat/mink": "~1.7@dev",
                 "php": ">=5.3.6",
-                "symfony/browser-kit": "~2.3",
-                "symfony/dom-crawler": "~2.3"
+                "symfony/browser-kit": "~2.3|~3.0",
+                "symfony/dom-crawler": "~2.3|~3.0"
             },
             "require-dev": {
                 "silex/silex": "~1.2",
-                "symfony/phpunit-bridge": "~2.7"
+                "symfony/phpunit-bridge": "~2.7|~3.0"
             },
             "type": "mink-driver",
             "extra": {
@@ -4085,7 +4085,7 @@
                 "browser",
                 "testing"
             ],
-            "time": "2015-09-21 20:56:13"
+            "time": "2016-01-19 16:59:07"
         },
         {
             "name": "behat/mink-extension",
@@ -4361,12 +4361,12 @@
             "version": "dev-8.x-2.x",
             "source": {
                 "type": "git",
-                "url": "http://git.drupal.org/project/coder",
-                "reference": "a0365b2afd2ce5ab9df842618de2a29c6b2836f1"
+                "url": "https://git.drupal.org/project/coder",
+                "reference": "4d1de9006f9f62a3c2f523ea7748b4d2a02362de"
             },
             "require": {
                 "php": ">=5.4.0",
-                "squizlabs/php_codesniffer": "dev-master#8e126925fd3e5d896ec574567af49150fc7e46b1",
+                "squizlabs/php_codesniffer": ">=2.5.1",
                 "symfony/yaml": ">=2.0.0"
             },
             "require-dev": {
@@ -4389,7 +4389,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-01-17 21:40:22"
+            "time": "2016-01-22 00:28:31"
         },
         {
             "name": "drupal/config_devel",
@@ -4460,7 +4460,7 @@
             "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
-                "url": "http://git.drupal.org/project/devel",
+                "url": "https://git.drupal.org/project/devel",
                 "reference": "c0b5c5f9a8ec688459e7cd03eb6b1008a9d5a194"
             },
             "require": {
@@ -5842,16 +5842,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "dev-master",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "4afa2df68ae7ea7f34bcc3adb7b4378ebb028ce0"
+                "reference": "6731851d6aaf1d0d6c58feff1065227b7fda3ba8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4afa2df68ae7ea7f34bcc3adb7b4378ebb028ce0",
-                "reference": "4afa2df68ae7ea7f34bcc3adb7b4378ebb028ce0",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/6731851d6aaf1d0d6c58feff1065227b7fda3ba8",
+                "reference": "6731851d6aaf1d0d6c58feff1065227b7fda3ba8",
                 "shasum": ""
             },
             "require": {
@@ -5915,7 +5915,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-01-19 08:16:46"
+            "time": "2016-01-19 23:39:10"
         },
         {
             "name": "symfony/browser-kit",
@@ -5985,6 +5985,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "drupal/core": 20,
         "drupal/og": 20,
         "pear/console_table": 20,
         "drupal/coder": 20,
