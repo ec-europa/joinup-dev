@@ -7,7 +7,7 @@ services:
   sparql_endpoint:
     class: Drupal\rdf_entity\Database\Driver\sparql\Connection
     factory: Drupal\Core\Database\Database::getConnection
-    arguments: [sparql, sparql_default]
+    arguments: [sparql, default]
 
   webprofiler.sparql:
     class: \Drupal\rdf_entity\DataCollector\SparqlDataCollector

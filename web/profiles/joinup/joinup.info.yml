@@ -1,8 +1,12 @@
-name: Minimal
+name: Joinup
 type: profile
 description: 'Initialize the Joinup website.'
 version: VERSION
 core: 8.x
+
+distribution:
+  name: Joinup
+
 dependencies:
   - node
   - block

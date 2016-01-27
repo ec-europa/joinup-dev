@@ -13,8 +13,14 @@
  */
 function joinup_install() {
   // Disable the user pictures on nodes.
-  \Drupal::configFactory()->getEditable('system.theme.global')->set('features.node_user_picture', FALSE)->save(TRUE);
+  \Drupal::configFactory()
+    ->getEditable('system.theme.global')
+    ->set('features.node_user_picture', FALSE)
+    ->save(TRUE);
 
   // Allow visitor account creation.
-  \Drupal::configFactory()->getEditable('user.settings')->set('register', USER_REGISTER_VISITORS)->save(TRUE);
+  \Drupal::configFactory()
+    ->getEditable('user.settings')
+    ->set('register', USER_REGISTER_VISITORS)
+    ->save(TRUE);
 }

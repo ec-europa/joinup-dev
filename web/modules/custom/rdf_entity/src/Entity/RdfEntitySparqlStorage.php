@@ -420,6 +420,7 @@ QUERY;
    * {@inheritdoc}
    */
   protected function has($id, EntityInterface $entity) {
+    return !$entity->isNew();
   }
 
   /**
