@@ -53,7 +53,7 @@ function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateI
 /**
  * Entity builder callback: Save rdf field mapping.
  */
-function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity, FieldStorageConfigEditForm &$form, FormStateInterface $form_state) {
+function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity, array &$form, FormStateInterface $form_state) {
   $schema = $entity->getSchema();
   foreach ($schema['columns'] as $column => $column_desc) {
     $value = $form_state->getValue($column);
