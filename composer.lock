@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c275db5267f9784983bfb6fbdac40003",
-    "content-hash": "4b8bb9e10f4ee32f56dba8e277e534e8",
+    "hash": "9f171e8ca6be669c322fd3805fd3e885",
+    "content-hash": "999aaae858c51a5a9e5c39cd00c6e384",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,20 +71,20 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.0.22",
+            "version": "v1.0.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "bd9b14f094c89c8b5804a4e41edeb7853bb85046"
+                "reference": "6213d900e92647831f7a406d5c530ea1f3d4360e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/bd9b14f094c89c8b5804a4e41edeb7853bb85046",
-                "reference": "bd9b14f094c89c8b5804a4e41edeb7853bb85046",
+                "url": "https://api.github.com/repos/composer/installers/zipball/6213d900e92647831f7a406d5c530ea1f3d4360e",
+                "reference": "6213d900e92647831f7a406d5c530ea1f3d4360e",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "1.0.0"
+                "composer-plugin-api": "^1.0"
             },
             "replace": {
                 "roundcube/plugin-installer": "*",
@@ -165,7 +165,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2015-10-29 23:28:48"
+            "time": "2016-01-27 12:54:22"
         },
         {
             "name": "composer/semver",
@@ -706,16 +706,16 @@
         },
         {
             "name": "drupal/console",
-            "version": "0.10.5",
+            "version": "0.10.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "71335d09ecb260518786630938544a7baef85e6c"
+                "reference": "9ad670234daf1abbbd492d482c514672ea80181d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/71335d09ecb260518786630938544a7baef85e6c",
-                "reference": "71335d09ecb260518786630938544a7baef85e6c",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/9ad670234daf1abbbd492d482c514672ea80181d",
+                "reference": "9ad670234daf1abbbd492d482c514672ea80181d",
                 "shasum": ""
             },
             "require": {
@@ -786,7 +786,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2016-01-15 17:06:09"
+            "time": "2016-01-26 17:43:48"
         },
         {
             "name": "drupal/core",
@@ -794,12 +794,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "23d39b5ff5a7f0a84a41c75152eb1128e966d8ef"
+                "reference": "4957cff959d3f4aa65ef154e27f238bf7d0e4978"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/23d39b5ff5a7f0a84a41c75152eb1128e966d8ef",
-                "reference": "23d39b5ff5a7f0a84a41c75152eb1128e966d8ef",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/4957cff959d3f4aa65ef154e27f238bf7d0e4978",
+                "reference": "4957cff959d3f4aa65ef154e27f238bf7d0e4978",
                 "shasum": ""
             },
             "require": {
@@ -951,20 +951,20 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-01-22 05:32:11"
+            "time": "2016-01-26 16:37:32"
         },
         {
             "name": "drupal/og",
-            "version": "dev-8.x-1.x",
+            "version": "dev-port-og-complex-widget-test",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "966f63ea19a681a00229e64851d72aaf7d7897d7"
+                "reference": "70166da7afea01133fbc4a74c0924603b5b5f15c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/966f63ea19a681a00229e64851d72aaf7d7897d7",
-                "reference": "966f63ea19a681a00229e64851d72aaf7d7897d7",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/70166da7afea01133fbc4a74c0924603b5b5f15c",
+                "reference": "70166da7afea01133fbc4a74c0924603b5b5f15c",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -978,24 +978,24 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-01-22 11:13:22"
+            "time": "2016-01-27 17:00:32"
         },
         {
             "name": "drush/drush",
-            "version": "8.0.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "5c90a1d3d201bde1d733afa5d2a1885056a3932f"
+                "reference": "fd4216c7273fb98202ed89bcd1150f3b61e483ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/5c90a1d3d201bde1d733afa5d2a1885056a3932f",
-                "reference": "5c90a1d3d201bde1d733afa5d2a1885056a3932f",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/fd4216c7273fb98202ed89bcd1150f3b61e483ca",
+                "reference": "fd4216c7273fb98202ed89bcd1150f3b61e483ca",
                 "shasum": ""
             },
             "require": {
-                "pear/console_table": "~1.2.0",
+                "pear/console_table": "~1.3.0",
                 "php": ">=5.4.5",
                 "psr/log": "~1.0",
                 "psy/psysh": "~0.6",
@@ -1076,7 +1076,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2016-01-08 18:28:35"
+            "time": "2016-01-26 21:03:11"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -1403,16 +1403,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "4d0bdbe1206df7440219ce14c972aa57cc5e4982"
+                "reference": "f5d04bdd2881ac89abde1fb78cc234bce24327bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/4d0bdbe1206df7440219ce14c972aa57cc5e4982",
-                "reference": "4d0bdbe1206df7440219ce14c972aa57cc5e4982",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/f5d04bdd2881ac89abde1fb78cc234bce24327bb",
+                "reference": "f5d04bdd2881ac89abde1fb78cc234bce24327bb",
                 "shasum": ""
             },
             "require": {
@@ -1457,7 +1457,7 @@
                 "stream",
                 "uri"
             ],
-            "time": "2015-11-03 01:34:55"
+            "time": "2016-01-23 01:23:02"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -1773,16 +1773,16 @@
         },
         {
             "name": "pear/console_table",
-            "version": "dev-php7-support",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ec-europa/Console_Table.git",
-                "reference": "945a67522b4bee4933e426c6302c082229ac5b54"
+                "url": "https://github.com/pear/Console_Table.git",
+                "reference": "64100b9ee81852f4fa17823e55d0b385a544f976"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/Console_Table/zipball/945a67522b4bee4933e426c6302c082229ac5b54",
-                "reference": "945a67522b4bee4933e426c6302c082229ac5b54",
+                "url": "https://api.github.com/repos/pear/Console_Table/zipball/64100b9ee81852f4fa17823e55d0b385a544f976",
+                "reference": "64100b9ee81852f4fa17823e55d0b385a544f976",
                 "shasum": ""
             },
             "require": {
@@ -1797,6 +1797,7 @@
                     "Table.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-2-Clause"
             ],
@@ -1823,11 +1824,7 @@
             "keywords": [
                 "console"
             ],
-            "support": {
-                "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Console_Table",
-                "source": "https://github.com/pear/Console_Table"
-            },
-            "time": "2016-01-19 08:01:42"
+            "time": "2016-01-21 16:14:31"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -2959,16 +2956,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "49ff736bd5d41f45240cec77b44967d76e0c3d25"
+                "reference": "1289d16209491b584839022f29257ad859b8532d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/49ff736bd5d41f45240cec77b44967d76e0c3d25",
-                "reference": "49ff736bd5d41f45240cec77b44967d76e0c3d25",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/1289d16209491b584839022f29257ad859b8532d",
+                "reference": "1289d16209491b584839022f29257ad859b8532d",
                 "shasum": ""
             },
             "require": {
@@ -2980,7 +2977,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -3014,7 +3011,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2015-11-20 09:19:13"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/process",
@@ -3505,16 +3502,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.23.3",
+            "version": "v1.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "ae53fc2c312fdee63773b75cb570304f85388b08"
+                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ae53fc2c312fdee63773b75cb570304f85388b08",
-                "reference": "ae53fc2c312fdee63773b75cb570304f85388b08",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
+                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
                 "shasum": ""
             },
             "require": {
@@ -3527,7 +3524,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.23-dev"
+                    "dev-master": "1.24-dev"
                 }
             },
             "autoload": {
@@ -3562,7 +3559,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-01-11 14:02:19"
+            "time": "2016-01-25 21:22:18"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -4396,7 +4393,7 @@
             "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
-                "url": "http://git.drupal.org/project/config_devel",
+                "url": "https://git.drupal.org/project/config_devel",
                 "reference": "d4cdd21562efafcf83d22ad1cbf70b447e4e169b"
             },
             "dist": {
@@ -4430,7 +4427,7 @@
             "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
-                "url": "http://git.drupal.org/project/config_update.git",
+                "url": "https://git.drupal.org/project/config_update.git",
                 "reference": "fdd7187a2199597a5059a4fc225e87dafaec4b14"
             },
             "require": {
@@ -5975,19 +5972,11 @@
             "time": "2016-01-12 17:46:01"
         }
     ],
-    "aliases": [
-        {
-            "alias": "1.2.0",
-            "alias_normalized": "1.2.0.0",
-            "version": "dev-php7-support",
-            "package": "pear/console_table"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/core": 20,
         "drupal/og": 20,
-        "pear/console_table": 20,
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
