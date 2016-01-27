@@ -216,7 +216,11 @@ QUERY;
         $ids_rdf_mapping[$uri] = $bundle_mapping[$bundle];
       }
       else {
-        drupal_set_message('unmapped bundle ' . $bundle . ' for uri ' . $uri);
+        drupal_set_message(t('Unmapped bundle :bundle for uri :uri.',
+          array(
+            ':bundle' => $bundle,
+            ':uri' => $uri
+          )));
       }
 
     }
@@ -366,7 +370,7 @@ QUERY;
     $subj = '<' . (string) $id . '>';
     $properties_list = "<" . implode(">, <", $properties['flat']) . ">";
     foreach ($entity->toArray() as $field_name => $field) {
-      foreach ($field as $delta => $field_item) {
+      foreach ($field as $field_item) {
         foreach ($field_item as $column => $value) {
           if (!isset($properties['by_field'][$field_name][$column])) {
             continue;
@@ -485,13 +489,9 @@ QUERY;
     // Collect entities ids, bundles and languages.
     $bundles = array();
     $ids = array();
-    $default_langcodes = array();
     foreach ($values as $key => $entity_values) {
       $bundles[$this->bundleKey ? $entity_values['rid'][LanguageInterface::LANGCODE_DEFAULT] : $this->entityTypeId] = TRUE;
       $ids[] = !$load_from_revision ? $key : $entity_values[$this->revisionKey][LanguageInterface::LANGCODE_DEFAULT];
-      if ($this->langcodeKey && isset($entity_values[$this->langcodeKey][LanguageInterface::LANGCODE_DEFAULT])) {
-        $default_langcodes[$key] = $entity_values[$this->langcodeKey][LanguageInterface::LANGCODE_DEFAULT];
-      }
     }
 
     // Collect impacted fields.
