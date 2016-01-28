@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "06390da8a26df2f01f9523c3c4aed038",
-    "content-hash": "abb63bb893f30516485bb8e0772ab9c7",
+    "hash": "bb8f75d1897e8a3a222e819b265e691a",
+    "content-hash": "3668a62fca5858fdac8627616e59769c",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -670,7 +670,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/37b7b9a4fffe4efc2fe783c962c350b059002893",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/03a48193facabcf147835330e0c401bf476ce6c1",
                 "reference": "37b7b9a4fffe4efc2fe783c962c350b059002893",
                 "shasum": ""
             },
@@ -919,7 +919,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/fdc782250ea6f80b449a8af33bb6c2b9577893b5",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/fd4216c7273fb98202ed89bcd1150f3b61e483ca",
                 "reference": "fdc782250ea6f80b449a8af33bb6c2b9577893b5",
                 "shasum": ""
             },
@@ -1008,65 +1008,14 @@
         },
         {
             "name": "easyrdf/easyrdf",
-            "version": "0.9.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/njh/easyrdf.git",
-                "reference": "acd09dfe0555fbcfa254291e433c45fdd4652566"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/njh/easyrdf/zipball/acd09dfe0555fbcfa254291e433c45fdd4652566",
-                "reference": "acd09dfe0555fbcfa254291e433c45fdd4652566",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "ext-pcre": "*",
-                "php": ">=5.2.8"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~3.5",
-                "sami/sami": "~1.4",
-                "squizlabs/php_codesniffer": "~1.4.3"
-            },
-            "suggest": {
-                "ml/json-ld": "~1.0"
+                "url": "https://github.com/ec-europa/easyrdf.git",
+                "reference": "master"
             },
             "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "EasyRdf_": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Nicholas Humfrey",
-                    "email": "njh@aelius.com",
-                    "homepage": "http://www.aelius.com/njh/",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Alexey Zakhlestin",
-                    "email": "indeyets@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "EasyRdf is a PHP library designed to make it easy to consume and produce RDF.",
-            "homepage": "http://www.easyrdf.org/",
-            "keywords": [
-                "Linked Data",
-                "RDF",
-                "Semantic Web",
-                "Turtle",
-                "rdfa",
-                "sparql"
-            ],
-            "time": "2015-02-27 09:45:49"
+            "time": "2016-01-28 09:58:03"
         },
         {
             "name": "egulias/email-validator",
@@ -1811,16 +1760,16 @@
         },
         {
             "name": "pear/console_table",
-            "version": "1.2.1",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/RobLoach/Console_Table.git",
-                "reference": "10d89fbbe533351dcfe5dc1e84de25d9a8395950"
+                "url": "https://github.com/pear/Console_Table.git",
+                "reference": "a129a91d8bf19317d81e68d1d3a2e18932f684e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobLoach/Console_Table/zipball/10d89fbbe533351dcfe5dc1e84de25d9a8395950",
-                "reference": "10d89fbbe533351dcfe5dc1e84de25d9a8395950",
+                "url": "https://api.github.com/repos/pear/Console_Table/zipball/a129a91d8bf19317d81e68d1d3a2e18932f684e4",
+                "reference": "a129a91d8bf19317d81e68d1d3a2e18932f684e4",
                 "shasum": ""
             },
             "require": {
@@ -1862,7 +1811,7 @@
             "keywords": [
                 "console"
             ],
-            "time": "2014-10-27 10:04:49"
+            "time": "2014-10-27 09:53:49"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -4378,8 +4327,8 @@
             "version": "dev-8.x-2.x",
             "source": {
                 "type": "git",
-                "url": "http://git.drupal.org/project/coder",
-                "reference": "230c2341d3cd4290845971ca12ac431ec4ec6848"
+                "url": "https://git.drupal.org/project/coder",
+                "reference": "4d1de9006f9f62a3c2f523ea7748b4d2a02362de"
             },
             "require": {
                 "php": ">=5.2.0",
@@ -4405,15 +4354,15 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2015-11-22 20:49:32"
+            "time": "2016-01-22 00:28:31"
         },
         {
             "name": "drupal/config_update",
             "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
-                "url": "http://git.drupal.org/project/config_update.git",
-                "reference": "f9a6efe96860352cd6906158a25a2c521efa6974"
+                "url": "https://git.drupal.org/project/config_update.git",
+                "reference": "fdd7187a2199597a5059a4fc225e87dafaec4b14"
             },
             "dist": {
                 "type": "zip",
@@ -4441,15 +4390,15 @@
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
-            "time": "2015-11-03 16:20:29"
+            "time": "2015-12-17 22:36:09"
         },
         {
             "name": "drupal/devel",
             "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
-                "url": "http://git.drupal.org/project/devel",
-                "reference": "bc2696da3f5f1bc8694c0e362052940834aa9683"
+                "url": "https://git.drupal.org/project/devel",
+                "reference": "c0b5c5f9a8ec688459e7cd03eb6b1008a9d5a194"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -4484,7 +4433,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2015-11-24 00:34:47"
+            "time": "2016-01-06 13:38:58"
         },
         {
             "name": "drupal/drupal-driver",
@@ -4726,7 +4675,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/gastonjs/zipball/5e231b4df98275c404e1371fc5fadd34f6a121ad",
+                "url": "https://api.github.com/repos/jcalderonzumba/gastonjs/zipball/21bebb8ca03eb0f93ec2f3fad61192fb079e2622",
                 "reference": "5e231b4df98275c404e1371fc5fadd34f6a121ad",
                 "shasum": ""
             },
@@ -4783,7 +4732,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/10d7c48c9a4129463052321b52450d98983c4332",
+                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/5bf53fa36afb7e2f378905c6f118527cefe205ad",
                 "reference": "10d7c48c9a4129463052321b52450d98983c4332",
                 "shasum": ""
             },
@@ -5840,7 +5789,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/32a879f4f35019d78d568db2885d7779ca084a33",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/aa3447eedc883eba1f80cd177db05783a1289ac4",
                 "reference": "32a879f4f35019d78d568db2885d7779ca084a33",
                 "shasum": ""
             },
@@ -5962,10 +5911,18 @@
             "time": "2015-11-02 20:20:53"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.9.2",
+            "alias_normalized": "0.9.2.0",
+            "version": "9999999-dev",
+            "package": "easyrdf/easyrdf"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/console": 20,
+        "easyrdf/easyrdf": 20,
         "drush/drush": 20,
         "drupal/coder": 20,
         "drupal/config_update": 20,
