@@ -18,6 +18,7 @@
     "require": {
         "composer/installers": "^1.0.20",
         "drupal/console": "dev-master",
+        "easyrdf/easyrdf": "dev-master as 0.9.2",
         "drupal/core": "8.0.*",
         "drush/drush": "dev-master",
         "php": ">=5.5.9"
@@ -89,6 +90,18 @@
               "type": "git-hook",
               "source": {
                   "url": "https://gist.github.com/498fc52fea3f965f6640.git",
+                  "type": "git",
+                  "reference": "master"
+              }
+          }
+      },
+      {
+          "type": "package",
+          "package": {
+              "name": "easyrdf/easyrdf",
+              "version": "dev-master",
+              "source": {
+                  "url": "https://github.com/ec-europa/easyrdf.git",
                   "type": "git",
                   "reference": "master"
               }
