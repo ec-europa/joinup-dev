@@ -17,7 +17,6 @@ use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
 
 /**
  * A simple form with a button to join a collection.
@@ -70,7 +69,7 @@ class JoinCollectionForm extends FormBase {
     parent::validateForm($form, $form_state);
 
     // Only authenticated users can join a collection.
-    /** @var UserInterface $user */
+    /** @var \Drupal\user\UserInterface $user */
     $user = User::load($form_state->getValue('user_id'));
     if ($user->isAnonymous()) {
       $form_state->setErrorByName('user', $this->t('Please register or log in before joining a collection.'));
@@ -89,7 +88,7 @@ class JoinCollectionForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     /** @var CollectionInterface $collection */
     $collection = Collection::load($form_state->getValue('collection_id'));
-    /** @var UserInterface $user */
+    /** @var \Drupal\user\UserInterface $user */
     $user = User::load($form_state->getValue('user_id'));
 
     // Add the user to the collection.
@@ -104,7 +103,7 @@ class JoinCollectionForm extends FormBase {
       ->save();
 
     drupal_set_message($this->t('You are now a member of %collection.', [
-      '%collection' => $collection->getName()
+      '%collection' => $collection->getName(),
     ]));
   }
 

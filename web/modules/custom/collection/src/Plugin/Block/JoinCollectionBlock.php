@@ -7,7 +7,6 @@
 
 namespace Drupal\collection\Plugin\Block;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -48,7 +47,7 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
    *   The plugin ID for the plugin instance.
    * @param string $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $current_route_match.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $current_route_match
    *   The current route match service.
    * @param \Drupal\Core\Session\AccountProxyInterface $user
    *   The current user.
