@@ -131,7 +131,7 @@ class Collection extends ContentEntityBase implements CollectionInterface {
    * {@inheritdoc}
    */
   public function isPublished() {
-    return (bool) $this->getEntityKey('status');
+    return (bool) $this->get('status')->value;
   }
 
   /**
