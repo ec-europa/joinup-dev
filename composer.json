@@ -18,7 +18,7 @@
     "require": {
         "composer/installers": "^1.0.20",
         "drupal/console": "dev-master",
-        "easyrdf/easyrdf": "dev-master as 0.9.2",
+        "easyrdf/easyrdf": "dev-0.9.x as 0.9.2",
         "drupal/core": "8.0.*",
         "drush/drush": "dev-master",
         "php": ">=5.5.9"
@@ -99,11 +99,11 @@
           "type": "package",
           "package": {
               "name": "easyrdf/easyrdf",
-              "version": "dev-master",
+              "version": "dev-0.9.x",
               "source": {
                   "url": "https://github.com/ec-europa/easyrdf.git",
                   "type": "git",
-                  "reference": "master"
+                  "reference": "0.9.x"
               }
           }
       }
