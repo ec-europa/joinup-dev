@@ -34,7 +34,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Drupal\\DrupalProject\\": "tests/src",
+            "Drupal\\joinup\\": "tests/src",
             "DrupalProject\\": "src"
         }
     },
