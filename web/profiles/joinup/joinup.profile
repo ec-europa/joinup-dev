@@ -5,6 +5,7 @@
  */
 
 use  \Drupal\Core\Form\FormStateInterface;
+use \Drupal\Core\Database\Database;
 
 /**
  * Implements hook_form_FORMID_alter().
@@ -43,6 +44,9 @@ function joinup_form_install_settings_form_alter(&$form, FormStateInterface $for
 function joinup_form_install_settings_form_save($form, FormStateInterface $form_state) {
   $host = $form_state->getValue(['sparql', 'host']);
   $port = $form_state->getValue(['sparql', 'port']);
+  // @see rdf_entity.services.yml
+  $key = 'sparql_default';
+  $target = 'sparql';
   $database = array(
     'prefix' => '',
     'host' => $host,
@@ -50,9 +54,11 @@ function joinup_form_install_settings_form_save($form, FormStateInterface $form_
     'namespace' => 'Drupal\\rdf_entity\\Database\\Driver\\sparql',
     'driver' => 'sparql',
   );
-  $settings['databases']['default']['sparql'] = (object) array(
+  $settings['databases'][$key][$target] = (object) array(
     'value' => $database,
     'required' => TRUE,
   );
   drupal_rewrite_settings($settings);
+  // Load the database connection to make it available in the current request.
+  Database::addConnectionInfo($key, $target, $database);
 }
