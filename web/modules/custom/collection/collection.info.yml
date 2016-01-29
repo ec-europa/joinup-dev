@@ -11,7 +11,6 @@ dependencies:
   - text
 
 config_devel:
-  - block.block.joincollectionblock
   - core.entity_form_display.collection.collection.default
   - core.entity_view_display.collection.collection.default
   - field.field.collection.collection.field_collection_closed
