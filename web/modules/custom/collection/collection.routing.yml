@@ -1,14 +1,12 @@
 
 # Collection routing definition
 entity.collection.canonical:
-  path: '/admin/structure/collection/{collection}'
+  path: '/collection/{collection}'
   defaults:
     _entity_view: 'collection'
     _title: 'Collection'
   requirements:
     _entity_access: 'collection.view'
-  options:
-    _admin_route: TRUE
 
 entity.collection.collection:
   path: '/admin/structure/collection'
