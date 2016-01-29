@@ -6,6 +6,8 @@ dependencies:
   module:
     - collection
     - image
+_core:
+  default_config_hash: wdyh_kry4GvMmUSyGr8PGvxYIEJFQ_JGwi8h3b5GqwA
 id: collection.collection.field_collection_logo
 field_name: field_collection_logo
 entity_type: collection

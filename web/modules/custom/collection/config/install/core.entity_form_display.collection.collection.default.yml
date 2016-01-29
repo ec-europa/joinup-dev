@@ -12,6 +12,8 @@ dependencies:
     - collection
     - image
     - link
+_core:
+  default_config_hash: R9b08g447e9u9l0j5eozrOviy0sNB1p7TyCP5Yudakk
 id: collection.collection.default
 targetEntityType: collection
 bundle: collection

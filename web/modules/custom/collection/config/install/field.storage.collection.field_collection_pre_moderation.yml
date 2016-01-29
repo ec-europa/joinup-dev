@@ -3,6 +3,8 @@ status: true
 dependencies:
   module:
     - collection
+_core:
+  default_config_hash: wvCXBgRRvYx5Wzqj7aC5MNExrhH8tB6g1WuWIFOZsBE
 id: collection.field_collection_pre_moderation
 field_name: field_collection_pre_moderation
 entity_type: collection
