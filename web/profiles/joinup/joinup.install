@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Install, update and uninstall functions for the minimal installation profile.
+ * Install, update and uninstall hooks for the Joinup install profile.
  */
 
 /**
