@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_publisher
+    - rdf_entity.rdfentity.agent
+    - rdf_entity.rdfentity.asset
+id: rdf_entity.asset.field_publisher
+field_name: field_publisher
+entity_type: rdf_entity
+bundle: asset
+label: Publisher
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      agent: agent
+    sort:
+      field: _none
+field_type: entity_reference

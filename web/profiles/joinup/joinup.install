@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Install, update and uninstall hooks for the Joinup install profile.
@@ -8,11 +7,14 @@
 /**
  * Implements hook_install().
  *
- * Perform actions to set up the site for this profile.
+ * Performs actions to set up the site for this profile.
  *
  * @see system_install()
  */
 function joinup_install() {
   // Disable the user pictures on nodes.
   \Drupal::configFactory()->getEditable('system.theme.global')->set('features.node_user_picture', FALSE)->save(TRUE);
+
+  // Allow visitor account creation.
+  \Drupal::configFactory()->getEditable('user.settings')->set('register', USER_REGISTER_VISITORS)->save(TRUE);
 }

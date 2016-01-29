@@ -2,6 +2,177 @@
 
 /**
  * @file
- * Contains Drupal\rdf_entity\rdf_entity.module
+ * Main functions and hook implementations of the RDF Entity module.
  */
 
+use \Drupal\Core\Form\FormStateInterface;
+use \Drupal\Core\Render\Element;
+use \Drupal\field\Entity\FieldStorageConfig;
+use \Drupal\field_ui\Form\FieldStorageConfigEditForm;
+use \Drupal\rdf_entity\RdfInterface;
+use \Drupal\Core\Url;
+
+/**
+ * Implements hook_form_alter().
+ */
+function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Only add mapping form element to rdf entities fields.
+  if ($form_state->get('entity_type_id') != 'rdf_entity') {
+    return;
+  }
+  $form_obj = $form_state->getFormObject();
+  /** @var FieldStorageConfig $entity */
+  $entity = $form_obj->getEntity();
+  $schema = $entity->getSchema();
+  $form['rdf_mapping'] = array(
+    '#type' => 'details',
+    '#title' => t('Rdf field mapping'),
+    '#description' => t('This field uses a Sparql backend. Please map the fields to their corresponding rdf properties.'),
+    '#weight' => 99,
+  );
+  foreach ($schema['columns'] as $column => $column_desc) {
+    $description = isset($column_desc['description']) ? $column_desc['description'] . "<br>" : '';
+    foreach (array('type', 'length', 'size', 'serialize') as $key) {
+      if (!empty($column_desc[$key])) {
+        $description .= '<strong>' . $key . "</strong>: " . $column_desc[$key] . ' ';
+      }
+    }
+
+    $form['rdf_mapping'][$column] = array(
+      '#type' => 'textfield',
+      '#title' => $column,
+      '#description' => $description,
+      '#weight' => 150,
+      '#default_value' => $entity->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE),
+    );
+  }
+
+  $form['#entity_builders'][] = 'rdf_entity_form_alter_builder';
+}
+
+/**
+ * Entity builder callback: Save rdf field mapping.
+ */
+function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity, FieldStorageConfigEditForm &$form, FormStateInterface $form_state) {
+  $schema = $entity->getSchema();
+  foreach ($schema['columns'] as $column => $column_desc) {
+    $value = $form_state->getValue($column);
+    $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $column, $value);
+  }
+}
+
+/**
+ * Implements hook_rdf_entity_view().
+ *
+ * @todo Remove this.
+ * Prints the bundle when viewing the rdf in full.
+ */
+function rdf_entity_rdf_entity_view($build, $entity, $display, $view_mode) {
+  if ($entity instanceof \Drupal\rdf_entity\Entity\Rdf && $view_mode == 'full') {
+    drupal_set_message(
+      t('Current page - Bundle: %bundle', array(
+        '%bundle' => $entity->bundle(),
+      )),
+    'info'
+    );
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function rdf_entity_theme() {
+  return array(
+    'rdf_entity' => array(
+      'render element' => 'elements',
+    ),
+    'rdf_add_list' => array(
+      'variables' => array('content' => NULL),
+    ),
+  );
+}
+
+/**
+ * Prepares variables for rdf entity templates.
+ *
+ * Default template: rdf-entity.html.twig.
+ *
+ * Themes should use their own copy of rdf-entity.html.twig.
+ * The default is located inside "templates/rdf-entity.html.twig".
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ *   - rdf_entity: The rdf_entity object.
+ *   - view_mode: View mode; e.g., 'full', 'teaser', etc.
+ */
+function template_preprocess_rdf_entity(&$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  // Provide a distinct $teaser boolean.
+  $variables['teaser'] = $variables['view_mode'] == 'teaser';
+  $variables['rdf_entity'] = $variables['elements']['#rdf_entity'];
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
+  $rdf_entity = $variables['rdf_entity'];
+  $variables['date'] = drupal_render($variables['elements']['created']);
+  unset($variables['elements']['created']);
+  $variables['author_name'] = drupal_render($variables['elements']['uid']);
+  unset($variables['elements']['uid']);
+
+  $variables['url'] = $rdf_entity->url('canonical', array(
+    'language' => $rdf_entity->language(),
+  ));
+  $variables['label'] = $variables['elements']['label'];
+  unset($variables['elements']['label']);
+  // The view mode is 'full' and we are on the 'rdf_entity.view' route.
+  $variables['page'] = ($variables['view_mode'] == 'full' && (rdf_entity_is_page($rdf_entity)));
+
+  // Helpful $content variable for templates.
+  $variables += array('content' => array());
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+
+  // Add article ARIA role.
+  $variables['attributes']['role'] = 'article';
+}
+
+/**
+ * Prepares variables for list of available rdf type templates.
+ *
+ * Default template: rdf-add-list.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - content: An array of rdf bundles.
+ */
+function template_preprocess_rdf_add_list(&$variables) {
+  $variables['types'] = array();
+  if (!empty($variables['content'])) {
+    foreach ($variables['content'] as $type) {
+      $variables['types'][$type->id()] = array(
+        'type' => $type->id(),
+        'add_link' => \Drupal::l($type->label(), new Url('rdf_entity.rdf_add', array('rdf_type' => $type->id()))),
+        'description' => array(
+          '#markup' => $type->getDescription(),
+        ),
+      );
+    }
+  }
+}
+
+/**
+ * Is the current page the full page view of the passed-in RDF entity?
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+ *   An RDF entity.
+ *
+ * @return int|FALSE
+ *   The ID of the RDF entity if this is a full page view, otherwise FALSE.
+ */
+function rdf_entity_is_page(RdfInterface $rdf_entity) {
+  $route_match = \Drupal::routeMatch();
+  if ($route_match->getRouteName() == 'entity.rdf_entity.canonical') {
+    $page_rdf_entity = $route_match->getParameter('rdf_entity');
+  }
+  return (!empty($page_rdf_entity) ? $page_rdf_entity->id() == $rdf_entity->id() : FALSE);
+}

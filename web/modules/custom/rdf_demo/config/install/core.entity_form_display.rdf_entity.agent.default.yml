@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.agent.field_name
+    - rdf_entity.rdfentity.agent
+id: rdf_entity.agent.default
+targetEntityType: rdf_entity
+bundle: agent
+mode: default
+content:
+  field_name:
+    weight: -4
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  label:
+    type: string_textfield
+    weight: -5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

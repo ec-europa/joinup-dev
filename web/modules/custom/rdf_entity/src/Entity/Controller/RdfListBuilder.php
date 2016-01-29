@@ -9,7 +9,6 @@ namespace Drupal\rdf_entity\Entity\Controller;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
-use Drupal\Core\Url;
 
 /**
  * Provides a list controller for rdf_entity entity.
@@ -17,6 +16,32 @@ use Drupal\Core\Url;
  * @ingroup content_entity_example
  */
 class RdfListBuilder extends EntityListBuilder {
+  protected $limit = 20;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function load() {
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage */
+    $rdf_storage = $this->getStorage();
+    $mapping = $rdf_storage->getRdfBundleList();
+    if (!$mapping) {
+      return [];
+    }
+    $query = $rdf_storage->getQuery()
+      ->sort($this->entityType->getKey('id'))
+      ->condition('?entity', 'rdf:type', '?bundle')
+      ->filter('?bundle IN ' . $mapping);
+
+    // Only add the pager if a limit is specified.
+    if ($this->limit) {
+      $query->pager($this->limit);
+    }
+    $header = $this->buildHeader();
+    $query->tableSort($header);
+    $rids = $query->execute();
+    return $this->storage->loadMultiple($rids);
+  }
 
   /**
    * {@inheritdoc}
@@ -42,10 +67,18 @@ class RdfListBuilder extends EntityListBuilder {
    * and inserts the 'edit' and 'delete' links as defined for the entity type.
    */
   public function buildHeader() {
-    $header['id'] = $this->t('URI');
-    $header['name'] = $this->t('Name');
-    $header['first_name'] = $this->t('First Name');
-    $header['gender'] = $this->t('Gender');
+    $header = array(
+      'id' => array(
+        'data' => $this->t('URI'),
+        'field' => 'id',
+        'specifier' => 'id',
+      ),
+      'rid' => array(
+        'data' => $this->t('Bundle'),
+        'field' => 'rid',
+        'specifier' => 'rid',
+      ),
+    );
     return $header + parent::buildHeader();
   }
 
@@ -54,10 +87,8 @@ class RdfListBuilder extends EntityListBuilder {
    */
   public function buildRow(EntityInterface $entity) {
     /* @var $entity \Drupal\rdf_entity\Entity\Rdf */
-    $row['id'] = $entity->id();
-    $row['name'] = $entity->link();
-    $row['first_name'] = $entity->first_name->value;
-    $row['gender'] = $entity->gender->value;
+    $row['id'] = $entity->link();
+    $row['rid'] = $entity->bundle();
     return $row + parent::buildRow($entity);
   }
 
