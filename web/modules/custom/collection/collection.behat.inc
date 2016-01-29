@@ -8,8 +8,9 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\file\Entity\File;
 use Drupal\collection\Entity\Collection;
+use Drupal\file\Entity\File;
+use Drupal\og\OgMembershipInterface;
 
 /**
  * Behat step definitions for testing collections.
@@ -38,6 +39,20 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function visitAddCollectionForm() {
     $this->visitPath('/admin/structure/collection/add');
+  }
+
+  /**
+   * Navigates to the canonical page display of a collection.
+   *
+   * @param string $collection
+   *   The name of the collection.
+   *
+   * @When (I )go to (the homepage of )the :collection collection
+   * @When (I )visit (the homepage of )the :collection collection
+   */
+  public function visitCollection($collection) {
+    $collection = $this->getCollectionByName($collection);
+    $this->visitPath('/collection/' . $collection->id());
   }
 
   /**
@@ -125,6 +140,33 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Returns the Collection with the given name.
+   *
+   * If multiple collections have the same name, the first one will be returned.
+   *
+   * @param string $name
+   *   The collection name.
+   *
+   * @return \Drupal\collection\CollectionInterface
+   *   The collection.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when a collection with the given name does not exist.
+   */
+  protected function getCollectionByName($name) {
+    $result = \Drupal::entityQuery('collection')
+      ->condition('name', $name)
+      ->range(0, 1)
+      ->execute();
+
+    if (empty($result)) {
+      throw new \InvalidArgumentException("The collection with the name '$name' does not exist.");
+    }
+
+    return Collection::load(reset($result));
+  }
+
+  /**
    * Checks the number of available collections.
    *
    * @param int $number
@@ -139,6 +181,33 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $actual = \Drupal::entityQuery('collection')->count()->execute();
     if ($actual != $number) {
       throw new \Exception("Wrong number of collections. Expected number: $number, actual number: $actual.");
+    }
+  }
+
+  /**
+   * Checks the number of members in a given collection.
+   *
+   * @param string $collection
+   *   The name of the collection to check.
+   * @param int $number
+   *   The expected number of members in the collection.
+   *
+   * @throws \Exception
+   *   Thrown when the number of members does not not match the expectation.
+   *
+   * @Then the :collection collection should have :number member(s)
+   */
+  public function assertMemberCount($collection, $number) {
+    $collection = $this->getCollectionByName($collection);
+    $actual = \Drupal::entityQuery('og_membership')
+      ->condition('group_entity_type', 'collection')
+      ->condition('group_entity_id', $collection->id())
+      ->condition('state', OgMembershipInterface::STATE_ACTIVE)
+      ->count()
+      ->execute();
+
+    if ($actual != $number) {
+      throw new \Exception("Wrong number of members. Expected number: $number, actual number: $actual.");
     }
   }
 
