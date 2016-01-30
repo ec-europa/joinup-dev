@@ -13,6 +13,9 @@ Feature: Organic Groups integration
       | Madame Sharn   | authenticated |
       | Goodie Whemper | authenticated |
 
+    # Initially the collection should only have 1 member, the group manager.
+    Then the "Überwaldean land eels" collection should have 1 member
+
     # Anonymous users should not be able to join a collection.
     Given I am an anonymous user
     When I go to the homepage of the "Überwaldean land eels" collection
@@ -25,7 +28,7 @@ Feature: Organic Groups integration
     Then I should see the "Join this collection" button
     When I press the "Join this collection" button
     Then I should see the success message "You are now a member of Überwaldean land eels."
-    And the "Überwaldean land eels" collection should have 1 member
+    And the "Überwaldean land eels" collection should have 2 members
     When I go to the homepage of the "Überwaldean land eels" collection
     Then I should not see the "Join this collection" button
 
@@ -35,4 +38,4 @@ Feature: Organic Groups integration
     When I go to the homepage of the "Überwaldean land eels" collection
     And I press the "Join this collection" button
     Then I should see the success message "You are now a member of Überwaldean land eels."
-    And the "Überwaldean land eels" collection should have 1 member
+    And the "Überwaldean land eels" collection should have 3 members
