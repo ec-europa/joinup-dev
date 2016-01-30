@@ -36,7 +36,7 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
   /**
    * The current route match service.
    *
-   * @var \Drupal\Core\Routing\RouteMatchInterface,
+   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected $currentRouteMatch;
 
