@@ -20,7 +20,7 @@
         "drupal/config_devel": "dev-8.x-1.x",
         "drupal/config_update": "dev-8.x-1.x",
         "drupal/devel": "dev-8.x-1.x",
-        "drupal/drupal-extension": "~3.0",
+        "drupal/drupal-extension": "dev-assert-not-button as 3.1.6",
         "drupal/phing-drush-task": "1.0",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "dev-master#10d7c48c9a4129463052321b52450d98983c4332",
@@ -63,6 +63,11 @@
         {
             "type": "vcs",
             "url": "http://git.drupal.org/project/coder.git"
+        },
+        {
+            "_comment": "Fork for drupal/drupal-extension containing a fix for PR #248.",
+            "type": "vcs",
+            "url": "https://github.com/pfrenssen/drupalextension.git"
         },
         {
             "type": "package",
