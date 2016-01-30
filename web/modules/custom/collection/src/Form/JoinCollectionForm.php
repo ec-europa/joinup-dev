@@ -36,6 +36,7 @@ class JoinCollectionForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, AccountProxyInterface $user = NULL, CollectionInterface $collection = NULL) {
+    $user = User::load($user->id());
     $form['collection_id'] = [
       '#type' => 'hidden',
       '#title' => $this->t('Collection ID'),
@@ -51,8 +52,10 @@ class JoinCollectionForm extends FormBase {
       '#value' => $this->t('Join this collection'),
     ];
 
-    // This form varies by user and collection. Add the required cacheability
-    // metadata.
+    // Do not show the form if the user is already a member.
+    $form['#access'] = !Og::isMember($collection, $user);
+
+    // This form varies by user and collection.
     $metadata = new CacheableMetadata();
     $metadata
       ->merge(CacheableMetadata::createFromObject($user))

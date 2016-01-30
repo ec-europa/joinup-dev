@@ -7,7 +7,9 @@
 
 namespace Drupal\collection\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -90,6 +92,27 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
 
     // Display the Join Collection form.
     return \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', $this->user, $this->collection);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    // This block varies per user.
+    $contexts = parent::getCacheContexts();
+    return Cache::mergeContexts($contexts, ['user']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function blockAccess(AccountInterface $account) {
+    // Since the visibility of this block depends on whether or not the user is
+    // a member of the collection we need to delegate the access checking to the
+    // form. Otherwise the first time a user would join a collection this form
+    // would not be shown on the page, and its cache tags would not bubble up
+    // any more, causing the block to disappear for all users.
+    return AccessResult::allowed();
   }
 
 }
