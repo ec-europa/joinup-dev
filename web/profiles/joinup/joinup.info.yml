@@ -28,3 +28,5 @@ config_devel:
   - og.settings
   - system.theme
   - user.role.administrator
+  - user.role.anonymous
+  - user.role.authenticated
