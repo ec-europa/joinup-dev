@@ -25,6 +25,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
+   * The collection to join.
+   *
+   * @var \Drupal\collection\CollectionInterface
+   */
+  protected $collection;
+
+  /**
    * The current route match service.
    *
    * @var \Drupal\Core\Routing\RouteMatchInterface,
@@ -56,6 +63,8 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
     $this->user = $user;
+    // Retrieve the collection from the route.
+    $this->collection = $this->currentRouteMatch->getParameter('collection');
   }
 
   /**
@@ -75,14 +84,12 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
    * {@inheritdoc}
    */
   public function build() {
-    // Retrieve the collection from the route.
-    $collection = $this->currentRouteMatch->getParameter('collection');
-    if (empty($collection)) {
+    if (empty($this->collection)) {
       throw new \Exception('The "Join Collection" block can only be shown on collection pages.');
     }
 
     // Display the Join Collection form.
-    return \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', $this->user, $collection);
+    return \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', $this->user, $this->collection);
   }
 
 }
