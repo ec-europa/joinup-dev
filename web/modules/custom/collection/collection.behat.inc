@@ -187,6 +187,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Checks the number of members in a given collection.
    *
+   * In OG parlance a group member can be any kind of entity, but this only
+   * checks which Users are members of the collection.
+   *
    * @param string $collection
    *   The name of the collection to check.
    * @param int $number
@@ -199,9 +202,11 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function assertMemberCount($collection, $number) {
     $collection = $this->getCollectionByName($collection);
+
     $actual = \Drupal::entityQuery('og_membership')
       ->condition('group_entity_type', 'collection')
       ->condition('group_entity_id', $collection->id())
+      ->condition('member_entity_type', 'user')
       ->condition('state', OgMembershipInterface::STATE_ACTIVE)
       ->count()
       ->execute();
