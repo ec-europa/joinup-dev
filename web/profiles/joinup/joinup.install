@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * Install, update and uninstall functions for the minimal installation profile.
+ * Install, update and uninstall hooks for the Joinup install profile.
  */
 
 /**
  * Implements hook_install().
  *
- * Performs actions to set up the site for this profile.
+ * Perform actions to set up the site for this profile.
  *
  * @see system_install()
  */

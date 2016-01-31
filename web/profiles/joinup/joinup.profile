@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Joinup install profile.
+ * Enables modules and site configuration for the Joinup profile.
  */
 
 use  \Drupal\Core\Form\FormStateInterface;

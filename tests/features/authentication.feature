@@ -19,11 +19,15 @@ Scenario Outline: Anonymous user cannot access site administration
   Then I should get an access denied error
 
   Examples:
-  | path            |
-  | admin           |
-  | admin/config    |
-  | admin/content   |
-  | admin/people    |
-  | admin/structure |
-  | node/add        |
-  | node/add/page   |
+  | path                           |
+  | admin                          |
+  | admin/config                   |
+  | admin/content                  |
+  | admin/people                   |
+  | admin/structure                |
+  | admin/structure/collection     |
+  | admin/structure/collection/add |
+
+# Add these back when we actually have nodes.
+#  | node/add        |
+#  | node/add/page   |
