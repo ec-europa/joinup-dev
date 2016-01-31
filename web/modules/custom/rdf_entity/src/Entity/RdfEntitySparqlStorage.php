@@ -219,7 +219,7 @@ QUERY;
         drupal_set_message(t('Unmapped bundle :bundle for uri :uri.',
           array(
             ':bundle' => $bundle,
-            ':uri' => $uri
+            ':uri' => $uri,
           )));
       }
 
