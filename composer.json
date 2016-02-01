@@ -17,15 +17,18 @@
     ],
     "require": {
         "composer/installers": "^1.0.20",
-        "drupal/console": "dev-master",
+        "cweagans/composer-patches": "~1.0",
+        "drupal/console": "~0.10",
         "drupal/core": "8.0.*",
-        "drush/drush": "dev-master",
+        "drush/drush": "~8.0",
+        "easyrdf/easyrdf": "dev-0.9.x as 0.9.1",
         "php": ">=5.5.9"
     },
     "require-dev": {
         "behat/mink": "~1.6",
         "behat/mink-goutte-driver": "~1.2",
         "drupal/coder": "dev-8.x-2.x",
+        "drupal/config_devel": "~8.1.0",
         "drupal/config_update": "8.1.*@dev",
         "drupal/devel": "8.1.*@dev",
         "drupal/drupal-extension": "~3.0",
@@ -91,6 +94,23 @@
                   "url": "https://gist.github.com/498fc52fea3f965f6640.git",
                   "type": "git",
                   "reference": "master"
+              }
+          }
+      },
+      {
+          "type": "package",
+          "package": {
+              "name": "easyrdf/easyrdf",
+              "version": "dev-0.9.x",
+              "source": {
+                  "url": "https://github.com/ec-europa/easyrdf.git",
+                  "type": "git",
+                  "reference": "0.9.x"
+              },
+              "autoload": {
+                  "psr-0": {
+                      "EasyRdf_": "lib/"
+                  }
               }
           }
       }

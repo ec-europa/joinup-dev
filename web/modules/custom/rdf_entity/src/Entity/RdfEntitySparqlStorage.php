@@ -216,7 +216,11 @@ QUERY;
         $ids_rdf_mapping[$uri] = $bundle_mapping[$bundle];
       }
       else {
-        drupal_set_message('unmapped bundle ' . $bundle . ' for uri ' . $uri);
+        drupal_set_message(t('Unmapped bundle :bundle for uri :uri.',
+          array(
+            ':bundle' => $bundle,
+            ':uri' => $uri,
+          )));
       }
 
     }
@@ -293,58 +297,13 @@ QUERY;
         }
       }
     }
+
+    $label_mapping = $this->getLabelMapping();
+    $label_field = $label_mapping[$bundle];
+    $properties['by_field']['label']['value'] = $label_field;
+    $properties['flat'][$label_field] = $label_field;
+
     return $properties;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function save(EntityInterface $entity) {
-    $id = $entity->id();
-    $insert = '';
-    $properties = $this->getMappedProperties($entity);
-    $properties_list = "<" . implode(">, <", $properties['flat']) . ">";
-    foreach ($entity->toArray() as $field_name => $field) {
-      foreach ($field as $delta => $field_item) {
-        foreach ($field_item as $column => $value) {
-          if (!isset($properties['by_field'][$field_name][$column])) {
-            continue;
-          }
-          $subj = '<' . (string) $id . '>';
-          $pred = '<' . (string) $properties['by_field'][$field_name][$column] . '>';
-          if (!filter_var($value, FILTER_VALIDATE_URL) === FALSE) {
-            $obj = '<' . $value . '>';
-          }
-          else {
-            // @todo This is most probably prone to Sparql injection..!
-            $obj = '"""' . $value . '"""';
-          }
-          $insert .= $subj . ' ' . $pred . ' ' . $obj . '  .' . "\n";
-        }
-      }
-    }
-    $query = <<<QUERY
-DELETE {
-  GRAPH ?g {
-    <$id> ?field ?value
-  }
-}
-WHERE {
-  GRAPH ?g {
-    <$id> ?field ?value .
-    FILTER (?field IN ($properties_list))
-  }
-}
-QUERY;
-    $this->sparql->query($query);
-    // @todo Do in one transaction... If possible.
-    // @todo How to deal with graphs? Now we use the default,
-    // ... This needs some thought and most probably some discussion.
-    $query = "INSERT DATA INTO <http://localhost:8890/DAV> {\n" .
-      $insert . "\n" .
-      '}';
-    $this->sparql->query($query);
-
   }
 
   /**
@@ -406,12 +365,66 @@ QUERY;
    * {@inheritdoc}
    */
   protected function doSave($id, EntityInterface $entity) {
+    $insert = '';
+    $properties = $this->getMappedProperties($entity);
+    $subj = '<' . (string) $id . '>';
+    $properties_list = "<" . implode(">, <", $properties['flat']) . ">";
+    foreach ($entity->toArray() as $field_name => $field) {
+      foreach ($field as $field_item) {
+        foreach ($field_item as $column => $value) {
+          if (!isset($properties['by_field'][$field_name][$column])) {
+            continue;
+          }
+          $pred = '<' . (string) $properties['by_field'][$field_name][$column] . '>';
+          if (!filter_var($value, FILTER_VALIDATE_URL) === FALSE) {
+            $obj = '<' . $value . '>';
+          }
+          else {
+            // @todo This is most probably prone to Sparql injection..!
+            $obj = '"""' . $value . '"""';
+          }
+          $insert .= $subj . ' ' . $pred . ' ' . $obj . '  .' . "\n";
+        }
+      }
+    }
+    // Save the bundle.
+    $bundle_target = $entity->get('rid')->getValue();
+    $bundle = $bundle_target[0]['target_id'];
+    $rdf_mapping = array_flip($this->getRdfBundleMapping());
+    $rdf_field = $rdf_mapping[$bundle];
+    $pred = 'rdf:type';
+    $insert .= $subj . ' ' . $pred . ' <' . $rdf_field . '>  .' . "\n";
+
+    $query = <<<QUERY
+DELETE {
+  GRAPH ?g {
+    <$id> ?field ?value
+  }
+}
+WHERE {
+  GRAPH ?g {
+    <$id> ?field ?value .
+    FILTER (?field IN ($properties_list))
+  }
+}
+QUERY;
+    if (!$entity->isNew()) {
+      $this->sparql->query($query);
+    }
+    // @todo Do in one transaction... If possible.
+    // @todo How to deal with graphs? Now we use the default,
+    // ... This needs some thought and most probably some discussion.
+    $query = "INSERT DATA INTO <http://localhost:8890/DAV> {\n" .
+      $insert . "\n" .
+      '}';
+    $this->sparql->query($query);
   }
 
   /**
    * {@inheritdoc}
    */
   protected function has($id, EntityInterface $entity) {
+    return !$entity->isNew();
   }
 
   /**
@@ -477,13 +490,9 @@ QUERY;
     // Collect entities ids, bundles and languages.
     $bundles = array();
     $ids = array();
-    $default_langcodes = array();
     foreach ($values as $key => $entity_values) {
       $bundles[$this->bundleKey ? $entity_values['rid'][LanguageInterface::LANGCODE_DEFAULT] : $this->entityTypeId] = TRUE;
       $ids[] = !$load_from_revision ? $key : $entity_values[$this->revisionKey][LanguageInterface::LANGCODE_DEFAULT];
-      if ($this->langcodeKey && isset($entity_values[$this->langcodeKey][LanguageInterface::LANGCODE_DEFAULT])) {
-        $default_langcodes[$key] = $entity_values[$this->langcodeKey][LanguageInterface::LANGCODE_DEFAULT];
-      }
     }
 
     // Collect impacted fields.

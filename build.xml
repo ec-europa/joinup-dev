@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="My Drupal Project" default="help">
+<project name="Joinup" default="help">
 
     <property file="build.properties.local" />
     <property file="build.properties" />
@@ -52,6 +52,8 @@
             <param>${website.profile.name}</param>
             <!-- Disable sending of e-mails during installation. -->
             <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
+            <param>install_settings_form.sparql.host=${sparql.host}</param>
+            <param>install_settings_form.sparql.port=${sparql.port}</param>
         </drush>
     </target>
 

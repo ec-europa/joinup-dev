@@ -1,0 +1,61 @@
+
+# Collection routing definition
+entity.collection.canonical:
+  path: '/admin/structure/collection/{collection}'
+  defaults:
+    _entity_view: 'collection'
+    _title: 'Collection'
+  requirements:
+    _entity_access: 'collection.view'
+  options:
+    _admin_route: TRUE
+
+entity.collection.collection:
+  path: '/admin/structure/collection'
+  defaults:
+    _entity_list: 'collection'
+    _title: 'Collection list'
+  requirements:
+    _permission: 'view collection entities'
+  options:
+    _admin_route: TRUE
+
+entity.collection.add_form:
+  path: '/admin/structure/collection/add'
+  defaults:
+    _entity_form: collection.add
+    _title: 'Add Collection'
+  requirements:
+    _permission: 'add collection entities'
+  options:
+    _admin_route: TRUE
+
+entity.collection.edit_form:
+  path: '/admin/structure/collection/{collection}/edit'
+  defaults:
+    _entity_form: collection.edit
+    _title: 'Edit Collection'
+  requirements:
+    _permission: 'edit collection entities'
+  options:
+    _admin_route: TRUE
+
+entity.collection.delete_form:
+  path: '/admin/structure/collection/{collection}/delete'
+  defaults:
+    _entity_form: collection.delete
+    _title: 'Delete Collection'
+  requirements:
+    _permission: 'delete collection entities'
+  options:
+    _admin_route: TRUE
+
+collection.settings:
+  path: '/admin/structure/collection/settings'
+  defaults:
+   _form: '\Drupal\collection\Form\CollectionSettingsForm'
+   _title: 'Collection settings'
+  requirements:
+    _permission: 'administer collection entities'
+  options:
+    _admin_route: TRUE

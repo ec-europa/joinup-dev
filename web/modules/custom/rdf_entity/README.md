@@ -19,6 +19,10 @@ On an Arch Linux based system:
  Go to [http://localhost:8890/conductor/](http://localhost:8890/conductor/)
  and login in with: dba - yourpass
 
+Grant 'update' rights to the SPARQL user:
+System admin -> Users -> SPARQL (edit)
+Account roles -> Put SPARQL_UPDATE in 'Selected'
+
 ## Connecting Drupal to the Sparql endpoint
 The following example demonstrates the use with a local Virtuoso installation.
 To connect Drupal to the endpoint, the db connection should be added to the settings.php file.

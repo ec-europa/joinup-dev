@@ -30,7 +30,7 @@ class RdfTypeDeleteForm extends EntityDeleteForm {
    * {@inheritdoc}
    */
   public function getDescription() {
-    return $this->t('Deleting a RDF type won\'t delete the data in the triple store! It will however delete all fields attached to this bundle.');
+    return $this->t("Deleting a RDF type won't delete the data in the triple store! It will however delete all fields attached to this bundle.");
   }
 
   /**

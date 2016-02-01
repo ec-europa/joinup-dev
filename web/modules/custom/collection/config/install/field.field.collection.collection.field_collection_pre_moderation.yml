@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.collection.field_collection_pre_moderation
+  module:
+    - collection
+id: collection.collection.field_collection_pre_moderation
+field_name: field_collection_pre_moderation
+entity_type: collection
+bundle: collection
+label: Pre-moderation
+description: 'NOT IMPLEMENTED. If checked, eLibrary items (news, events, cases and documents) are pre-moderated: they have to be accepted by the moderators of the collection before they will be published.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Enable pre-moderation'
+  off_label: 'Disable pre-moderation'
+field_type: boolean

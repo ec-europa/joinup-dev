@@ -1,13 +1,16 @@
-name: Minimal
+name: Joinup
 type: profile
-description: 'Initialize the Joinup website.'
-version: VERSION
+description: Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability Solutions for European Public Administrations (ISA) Programme. It offers several services that aim to help e-Government professionals share their experience with each other.
 core: 8.x
+
+distribution:
+  name: Joinup
+
 dependencies:
   - node
   - block
+  - collection
   - contextual
-  - dblog
   - editor
   - image
   - menu_ui
@@ -15,8 +18,6 @@ dependencies:
   - options
   - path
   - page_cache
-  - search
-  - field_ui
   - toolbar
   - file
   - dynamic_page_cache
@@ -25,3 +26,12 @@ dependencies:
 themes:
   - bartik
   - seven
+
+config_devel:
+  - block.block.bartik_local_actions
+  - block.block.bartik_local_tasks
+  - block.block.seven_local_actions
+  - block.block.seven_primary_local_tasks
+  - block.block.seven_secondary_local_tasks
+  - system.theme
+  - user.role.administrator

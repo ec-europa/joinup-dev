@@ -1,0 +1,13 @@
+# Collection menu items definition
+entity.collection.collection:
+  title: 'Collection list'
+  route_name: entity.collection.collection
+  description: 'List Collection entities'
+  parent: system.admin_structure
+  weight: 100
+
+collection.admin.structure.settings:
+  title: Collection settings
+  description: 'Configure Collection entities'
+  route_name: collection.settings
+  parent: system.admin_structure

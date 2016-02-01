@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.collection.field_collection_create_elibrary
+  module:
+    - collection
+    - options
+id: collection.collection.field_collection_create_elibrary
+field_name: field_collection_create_elibrary
+entity_type: collection
+bundle: collection
+label: 'Create eLibrary'
+description: 'NOT IMPLEMENTED. Specify the type of user that can create eLibrary content (news, events and documents) within the collection.'
+required: true
+translatable: false
+default_value:
+  -
+    value: members
+default_value_callback: ''
+settings: {  }
+field_type: list_string
