@@ -21,6 +21,7 @@
         "drupal/console": "~0.10",
         "drupal/core": "8.0.*",
         "drush/drush": "~8.0",
+        "easyrdf/easyrdf": "dev-0.9.x as 0.9.1",
         "php": ">=5.5.9"
     },
     "require-dev": {
@@ -93,6 +94,23 @@
                   "url": "https://gist.github.com/498fc52fea3f965f6640.git",
                   "type": "git",
                   "reference": "master"
+              }
+          }
+      },
+      {
+          "type": "package",
+          "package": {
+              "name": "easyrdf/easyrdf",
+              "version": "dev-0.9.x",
+              "source": {
+                  "url": "https://github.com/ec-europa/easyrdf.git",
+                  "type": "git",
+                  "reference": "0.9.x"
+              },
+              "autoload": {
+                  "psr-0": {
+                      "EasyRdf_": "lib/"
+                  }
               }
           }
       }

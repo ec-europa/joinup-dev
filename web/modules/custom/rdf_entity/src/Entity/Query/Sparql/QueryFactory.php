@@ -4,6 +4,7 @@
  * @file
  * Contains \Drupal\Core\Entity\Query\Null\QueryFactory.
  */
+
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -38,7 +39,7 @@ class QueryFactory implements QueryFactoryInterface {
     $class = QueryBase::getClass($this->namespaces, 'Query');
     return new $class($entity_type, $conjunction, $this->connection, $this->namespaces);
 
-    // return new SparqlQuery($entity_type, $conjunction, $this->namespaces);
+    // Return new SparqlQuery($entity_type, $conjunction, $this->namespaces);.
   }
 
   /**
@@ -47,7 +48,7 @@ class QueryFactory implements QueryFactoryInterface {
   public function getAggregate(EntityTypeInterface $entity_type, $conjunction) {
     $class = QueryBase::getClass($this->namespaces, 'Query');
     return new $class($entity_type, $conjunction, $this->connection, $this->namespaces);
-    //return new SparqlQuery($entity_type, $conjunction, $this->namespaces);
+    // Return new SparqlQuery($entity_type, $conjunction, $this->namespaces);.
   }
 
 }

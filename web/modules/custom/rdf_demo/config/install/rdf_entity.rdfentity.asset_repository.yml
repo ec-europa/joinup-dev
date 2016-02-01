@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Asset repository'
+rid: asset_repository
+description: ''
+rdftype: 'http://www.w3.org/ns/adms#AssetRepository'
+rdf_label: 'http://purl.org/dc/terms/title'

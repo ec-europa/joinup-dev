@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - text
+third_party_settings:
+  rdf_entity:
+    rdf_mapping: 'dct:description'
+    mapping_value: 'http://purl.org/dc/terms/description'
+    mapping_format: ''
+id: rdf_entity.field_description
+field_name: field_description
+entity_type: rdf_entity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

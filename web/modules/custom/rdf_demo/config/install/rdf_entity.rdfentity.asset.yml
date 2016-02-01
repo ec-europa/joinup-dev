@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: Asset
+rid: asset
+description: 'Abstract entity that reflects the intellectual content of an Asset'
+rdftype: 'http://www.w3.org/ns/adms#Asset'
+rdf_label: 'http://purl.org/dc/terms/title'

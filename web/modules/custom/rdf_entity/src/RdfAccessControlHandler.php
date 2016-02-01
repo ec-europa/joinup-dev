@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\rdf_entity\RdfAccessControlHandler
+ * Contains \Drupal\rdf_entity\RdfAccessControlHandler.
  */
 
 namespace Drupal\rdf_entity;

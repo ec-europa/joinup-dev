@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.software_package.field_download
+    - rdf_entity.rdfentity.software_package
+  module:
+    - link
+id: rdf_entity.software_package.default
+targetEntityType: rdf_entity
+bundle: software_package
+mode: default
+content:
+  field_download:
+    weight: -4
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+hidden: {  }

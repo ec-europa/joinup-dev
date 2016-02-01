@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Software package'
+rid: software_package
+description: ''
+rdftype: 'admssw:SoftwarePackage'

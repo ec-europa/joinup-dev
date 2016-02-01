@@ -36,7 +36,8 @@ class ContentEntityExampleTest extends ExamplesTestBase {
       'administer contact entity',
       'administer content_entity_example_contact display',
       'administer content_entity_example_contact fields',
-      'administer content_entity_example_contact form display'));
+      'administer content_entity_example_contact form display',
+    ));
 
     // Anonymous User should not see the link to the listing.
     $this->assertNoText(t('Content Entity Example: Contacts Listing'));

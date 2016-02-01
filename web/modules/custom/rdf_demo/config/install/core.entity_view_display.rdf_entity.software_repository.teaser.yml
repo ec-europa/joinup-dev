@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.teaser
+    - field.field.rdf_entity.software_repository.field_projects
+    - rdf_entity.rdfentity.software_repository
+id: rdf_entity.software_repository.teaser
+targetEntityType: rdf_entity
+bundle: software_repository
+mode: teaser
+content:
+  field_projects:
+    type: entity_reference_label
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+hidden: {  }

@@ -1,0 +1,9 @@
+name: RDF demo
+type: module
+description: Demo the integration with the triplestore.
+core: 8.x
+package: Joinup
+features: true
+dependencies:
+  - rdf_entity
+  - datetime

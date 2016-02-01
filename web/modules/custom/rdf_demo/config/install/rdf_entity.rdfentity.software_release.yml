@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Software release'
+rid: software_release
+description: ''
+rdftype: 'admssw:SoftwareRelease'
