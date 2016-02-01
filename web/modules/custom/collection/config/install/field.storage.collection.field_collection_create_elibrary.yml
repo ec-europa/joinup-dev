@@ -4,6 +4,8 @@ dependencies:
   module:
     - collection
     - options
+_core:
+  default_config_hash: qqVfnSZQSU7pIw5fHD9KBX4KXQEF7PjGd8BYPH1gNrI
 id: collection.field_collection_create_elibrary
 field_name: field_collection_create_elibrary
 entity_type: collection

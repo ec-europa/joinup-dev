@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "33cf529cfd136484fb2cfb2eee5c1dd6",
-    "content-hash": "a6cd76fc595b214cfef5757de35250e2",
+    "hash": "1d9824866fdb745ebce9378c11c4104c",
+    "content-hash": "078a41ff55592439b12a6acb2c224e40",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -790,16 +790,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.0.2",
+            "version": "8.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "45cfc0f34191c35ac35d603aa6f3b8a3c632ab8e"
+                "reference": "8c8c5935a653900eaadde87ae0332a4030ca9ca9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/45cfc0f34191c35ac35d603aa6f3b8a3c632ab8e",
-                "reference": "45cfc0f34191c35ac35d603aa6f3b8a3c632ab8e",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/8c8c5935a653900eaadde87ae0332a4030ca9ca9",
+                "reference": "8c8c5935a653900eaadde87ae0332a4030ca9ca9",
                 "shasum": ""
             },
             "require": {
@@ -951,24 +951,51 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-01-06 22:36:23"
+            "time": "2016-02-01 10:20:34"
         },
         {
-            "name": "drush/drush",
-            "version": "8.0.2",
+            "name": "drupal/og",
+            "version": "dev-port-og-complex-widget-test",
             "source": {
                 "type": "git",
-                "url": "https://github.com/drush-ops/drush.git",
-                "reference": "5c90a1d3d201bde1d733afa5d2a1885056a3932f"
+                "url": "https://github.com/amitaibu/og.git",
+                "reference": "70166da7afea01133fbc4a74c0924603b5b5f15c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/5c90a1d3d201bde1d733afa5d2a1885056a3932f",
-                "reference": "5c90a1d3d201bde1d733afa5d2a1885056a3932f",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/70166da7afea01133fbc4a74c0924603b5b5f15c",
+                "reference": "70166da7afea01133fbc4a74c0924603b5b5f15c",
+                "shasum": ""
+            },
+            "type": "drupal-module",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "API to allow associating content with groups.",
+            "homepage": "https://drupal.org/project/og",
+            "support": {
+                "issues": "https://drupal.org/project/issues/og",
+                "irc": "irc://irc.freenode.org/drupal-og",
+                "source": "https://cgit.drupalcode.org/og"
+            },
+            "time": "2016-01-27 17:00:32"
+        },
+        {
+            "name": "drush/drush",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drush-ops/drush.git",
+                "reference": "86de4b6c93a8f401cf18b56c0593a00e40de68ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/86de4b6c93a8f401cf18b56c0593a00e40de68ba",
+                "reference": "86de4b6c93a8f401cf18b56c0593a00e40de68ba",
                 "shasum": ""
             },
             "require": {
-                "pear/console_table": "~1.2.0",
+                "pear/console_table": "~1.3.0",
                 "php": ">=5.4.5",
                 "psr/log": "~1.0",
                 "psy/psysh": "~0.6",
@@ -1049,7 +1076,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2016-01-08 18:28:35"
+            "time": "2016-02-01 01:26:22"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -1700,20 +1727,20 @@
         },
         {
             "name": "pear/console_table",
-            "version": "v1.2.1",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Console_Table.git",
-                "reference": "a129a91d8bf19317d81e68d1d3a2e18932f684e4"
+                "reference": "64100b9ee81852f4fa17823e55d0b385a544f976"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Console_Table/zipball/a129a91d8bf19317d81e68d1d3a2e18932f684e4",
-                "reference": "a129a91d8bf19317d81e68d1d3a2e18932f684e4",
+                "url": "https://api.github.com/repos/pear/Console_Table/zipball/64100b9ee81852f4fa17823e55d0b385a544f976",
+                "reference": "64100b9ee81852f4fa17823e55d0b385a544f976",
                 "shasum": ""
             },
             "require": {
-                "php": ">=4.3.10"
+                "php": ">=5.2.0"
             },
             "suggest": {
                 "pear/Console_Color2": ">=0.1.2"
@@ -1751,7 +1778,7 @@
             "keywords": [
                 "console"
             ],
-            "time": "2014-10-27 09:53:49"
+            "time": "2016-01-21 16:14:31"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -3760,35 +3787,34 @@
     "packages-dev": [
         {
             "name": "behat/behat",
-            "version": "v3.0.15",
+            "version": "v3.1.0rc1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Behat.git",
-                "reference": "b35ae3d45332d80c532af69cc36f780a9397a996"
+                "reference": "a67479a9c6e6d36438b1dfb3f73c2e170dbf0183"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/b35ae3d45332d80c532af69cc36f780a9397a996",
-                "reference": "b35ae3d45332d80c532af69cc36f780a9397a996",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/a67479a9c6e6d36438b1dfb3f73c2e170dbf0183",
+                "reference": "a67479a9c6e6d36438b1dfb3f73c2e170dbf0183",
                 "shasum": ""
             },
             "require": {
-                "behat/gherkin": "~4.3",
+                "behat/gherkin": "~4.4",
                 "behat/transliterator": "~1.0",
                 "ext-mbstring": "*",
                 "php": ">=5.3.3",
-                "symfony/class-loader": "~2.1",
-                "symfony/config": "~2.3",
-                "symfony/console": "~2.1",
-                "symfony/dependency-injection": "~2.1",
-                "symfony/event-dispatcher": "~2.1",
-                "symfony/translation": "~2.3",
-                "symfony/yaml": "~2.1"
+                "symfony/class-loader": "~2.1|~3.0",
+                "symfony/config": "~2.3|~3.0",
+                "symfony/console": "~2.1|~3.0",
+                "symfony/dependency-injection": "~2.1|~3.0",
+                "symfony/event-dispatcher": "~2.1|~3.0",
+                "symfony/translation": "~2.3|~3.0",
+                "symfony/yaml": "~2.1|~3.0"
             },
             "require-dev": {
-                "phpspec/prophecy-phpunit": "~1.0",
-                "phpunit/phpunit": "~4.0",
-                "symfony/process": "~2.1"
+                "phpunit/phpunit": "~4.5",
+                "symfony/process": "~2.1|~3.0"
             },
             "suggest": {
                 "behat/mink-extension": "for integration with Mink testing framework",
@@ -3837,7 +3863,7 @@
                 "symfony",
                 "testing"
             ],
-            "time": "2015-02-22 14:10:33"
+            "time": "2015-12-30 14:59:17"
         },
         {
             "name": "behat/gherkin",
@@ -4317,17 +4343,11 @@
         },
         {
             "name": "drupal/config_devel",
-            "version": "8.1.0-beta16",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_devel",
-                "reference": "41b1d0ce1d324e586699aa1f8f9230c115eb75be"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_devel-8.x-1.0-beta16.zip",
-                "reference": null,
-                "shasum": null
+                "reference": "16ff4c4cc7759cf0b7a070bf1af275fc16dc8dc5"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -4336,6 +4356,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
+                },
+                "patches_applied": {
+                    "Issue #2603268: Add support for profiles": "https://www.drupal.org/files/issues/2603268-8.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
@@ -4344,21 +4367,15 @@
             ],
             "description": "Helps developers work with configuration.",
             "homepage": "https://www.drupal.org/project/config_devel",
-            "time": "2015-09-30 04:02:28"
+            "time": "2016-01-28 04:40:13"
         },
         {
             "name": "drupal/config_update",
-            "version": "8.1.0",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_update.git",
-                "reference": "82596578ccdd79a06cc624b3790173360fe55290"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.0.zip",
-                "reference": null,
-                "shasum": null
+                "reference": "fdd7187a2199597a5059a4fc225e87dafaec4b14"
             },
             "require": {
                 "drupal/config": "8.*",
@@ -4379,7 +4396,8 @@
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "description": "Provides basic revert and update functionality for other modules",
-            "homepage": "https://www.drupal.org/project/config_update"
+            "homepage": "https://www.drupal.org/project/config_update",
+            "time": "2015-12-17 22:36:09"
         },
         {
             "name": "drupal/devel",
@@ -4426,16 +4444,16 @@
         },
         {
             "name": "drupal/drupal-driver",
-            "version": "v1.1.5",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/DrupalDriver.git",
-                "reference": "6c5e04c6a310316bcefc4588bb1c0765b6bad478"
+                "reference": "81a5c528fd0382a6c4c6a6ad5a5b53f11184c7b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/6c5e04c6a310316bcefc4588bb1c0765b6bad478",
-                "reference": "6c5e04c6a310316bcefc4588bb1c0765b6bad478",
+                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/81a5c528fd0382a6c4c6a6ad5a5b53f11184c7b5",
+                "reference": "81a5c528fd0382a6c4c6a6ad5a5b53f11184c7b5",
                 "shasum": ""
             },
             "require": {
@@ -4444,11 +4462,17 @@
             },
             "require-dev": {
                 "drupal/coder": "~8.2.0",
+                "drush-ops/behat-drush-endpoint": "*",
                 "mockery/mockery": "0.9.4",
                 "phpspec/phpspec": "~2.0",
                 "phpunit/phpunit": "~4.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Drupal\\Component": "src/",
@@ -4473,29 +4497,29 @@
                 "test",
                 "web"
             ],
-            "time": "2015-12-14 18:30:01"
+            "time": "2015-12-17 19:14:08"
         },
         {
             "name": "drupal/drupal-extension",
-            "version": "v3.1.5",
+            "version": "dev-assert-not-button",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jhedstrom/drupalextension.git",
-                "reference": "6bfff4967d0efacff51e2ff51a306021012396d8"
+                "url": "https://github.com/pfrenssen/drupalextension.git",
+                "reference": "87f902ddf016bc4856a2fe21aeb65024b5443c6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/6bfff4967d0efacff51e2ff51a306021012396d8",
-                "reference": "6bfff4967d0efacff51e2ff51a306021012396d8",
+                "url": "https://api.github.com/repos/pfrenssen/drupalextension/zipball/87f902ddf016bc4856a2fe21aeb65024b5443c6d",
+                "reference": "87f902ddf016bc4856a2fe21aeb65024b5443c6d",
                 "shasum": ""
             },
             "require": {
-                "behat/behat": "~3.0,>=3.0.5",
+                "behat/behat": "~3.1.0-rc1",
                 "behat/mink": "~1.5",
                 "behat/mink-extension": "~2.0",
                 "behat/mink-goutte-driver": "~1.0",
                 "behat/mink-selenium2-driver": "~1.1",
-                "drupal/drupal-driver": "~1.1"
+                "drupal/drupal-driver": "dev-master"
             },
             "require-dev": {
                 "behat/mink-zombie-driver": "^1.2",
@@ -4503,6 +4527,11 @@
                 "phpunit/phpunit": "3.7.*"
             },
             "type": "behat-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Drupal\\Drupal": "src/",
@@ -4510,7 +4539,6 @@
                     "Drupal\\DrupalExtension": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
@@ -4527,7 +4555,10 @@
                 "test",
                 "web"
             ],
-            "time": "2015-12-22 20:10:14"
+            "support": {
+                "source": "https://github.com/pfrenssen/drupalextension/tree/assert-not-button"
+            },
+            "time": "2016-01-30 09:43:25"
         },
         {
             "name": "drupal/phing-drush-task",
@@ -5907,14 +5938,24 @@
             "alias_normalized": "0.9.1.0",
             "version": "dev-0.9.x",
             "package": "easyrdf/easyrdf"
+        },
+        {
+            "alias": "3.1.6",
+            "alias_normalized": "3.1.6.0",
+            "version": "dev-assert-not-button",
+            "package": "drupal/drupal-extension"
         }
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "drupal/core": 20,
+        "drupal/og": 20,
         "easyrdf/easyrdf": 20,
         "drupal/coder": 20,
+        "drupal/config_devel": 20,
         "drupal/config_update": 20,
         "drupal/devel": 20,
+        "drupal/drupal-extension": 20,
         "jcalderonzumba/gastonjs": 20,
         "jcalderonzumba/mink-phantomjs-driver": 20
     },
