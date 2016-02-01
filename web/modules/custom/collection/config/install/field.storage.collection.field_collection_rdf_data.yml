@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - collection
+    - rdf_entity
+id: collection.field_collection_rdf_data
+field_name: field_collection_rdf_data
+entity_type: collection
+type: entity_reference
+settings:
+  target_type: rdf_entity
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
