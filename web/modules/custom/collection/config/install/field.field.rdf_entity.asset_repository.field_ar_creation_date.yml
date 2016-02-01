@@ -1,24 +1,20 @@
-uuid: bcc113d8-0a08-4dff-bd00-c59c65d0066b
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_creation_date
+    - field.storage.rdf_entity.field_ar_creation_date
     - rdf_entity.rdfentity.asset_repository
   module:
     - datetime
-id: rdf_entity.asset_repository.field_creation_date
-field_name: field_creation_date
+id: rdf_entity.asset_repository.field_ar_creation_date
+field_name: field_ar_creation_date
 entity_type: rdf_entity
 bundle: asset_repository
 label: 'Creation date'
-description: ''
+description: 'Date of creation'
 required: false
 translatable: false
-default_value:
-  -
-    default_date_type: now
-    default_date: now
+default_value: {  }
 default_value_callback: ''
 settings: {  }
 field_type: datetime

@@ -1,14 +1,13 @@
-uuid: 4c0acefb-5487-4463-9e4b-7595f9689b1a
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_access_url
+    - field.storage.rdf_entity.field_ar_access_url
     - rdf_entity.rdfentity.asset_repository
   module:
     - link
-id: rdf_entity.asset_repository.field_access_url
-field_name: field_access_url
+id: rdf_entity.asset_repository.field_ar_access_url
+field_name: field_ar_access_url
 entity_type: rdf_entity
 bundle: asset_repository
 label: 'Access URL'

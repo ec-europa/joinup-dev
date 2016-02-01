@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_asset_projects
+    - field.storage.rdf_entity.field_ar_policy_domain
     - rdf_entity.rdfentity.asset_repository
-id: rdf_entity.asset_repository.field_asset_projects
-field_name: field_asset_projects
+id: rdf_entity.asset_repository.field_ar_policy_domain
+field_name: field_ar_policy_domain
 entity_type: rdf_entity
 bundle: asset_repository
-label: Projects
+label: 'Policy domain'
 description: ''
 required: false
 translatable: false

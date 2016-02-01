@@ -1,20 +1,19 @@
-uuid: bd64ada2-bef4-4dba-ba00-dad59b3f03b0
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_description
+    - field.storage.rdf_entity.field_ar_description
     - rdf_entity.rdfentity.asset_repository
   module:
     - text
-id: rdf_entity.asset_repository.field_description
-field_name: field_description
+id: rdf_entity.asset_repository.field_ar_description
+field_name: field_ar_description
 entity_type: rdf_entity
 bundle: asset_repository
 label: Description
-description: ''
+description: 'Description of the collection (compulsory in English, other languages are optionals)'
 required: true
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }

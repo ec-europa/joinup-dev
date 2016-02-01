@@ -1,12 +1,11 @@
-uuid: bac0af25-a577-4593-b500-c6d8aa8a42d7
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_affiliates
+    - field.storage.rdf_entity.field_ar_affiliates
     - rdf_entity.rdfentity.asset_repository
-id: rdf_entity.asset_repository.field_affiliates
-field_name: field_affiliates
+id: rdf_entity.asset_repository.field_ar_affiliates
+field_name: field_ar_affiliates
 entity_type: rdf_entity
 bundle: asset_repository
 label: Affiliates

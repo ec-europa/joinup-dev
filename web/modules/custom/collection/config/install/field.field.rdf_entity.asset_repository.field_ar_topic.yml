@@ -1,15 +1,14 @@
-uuid: 2291926f-563f-47c8-a53b-590ac8f394d2
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_policy_domain
+    - field.storage.rdf_entity.field_ar_topic
     - rdf_entity.rdfentity.asset_repository
-id: rdf_entity.asset_repository.field_policy_domain
-field_name: field_policy_domain
+id: rdf_entity.asset_repository.field_ar_topic
+field_name: field_ar_topic
 entity_type: rdf_entity
 bundle: asset_repository
-label: 'Policy domain'
+label: Topic
 description: ''
 required: false
 translatable: false

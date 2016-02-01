@@ -1,18 +1,17 @@
-uuid: a4d959b2-3287-4093-8e06-6da98df15439
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_modification_date
+    - field.storage.rdf_entity.field_ar_modification_date
     - rdf_entity.rdfentity.asset_repository
   module:
     - datetime
-id: rdf_entity.asset_repository.field_modification_date
-field_name: field_modification_date
+id: rdf_entity.asset_repository.field_ar_modification_date
+field_name: field_ar_modification_date
 entity_type: rdf_entity
 bundle: asset_repository
 label: 'Modification date'
-description: ''
+description: 'Date of last modification'
 required: false
 translatable: false
 default_value: {  }

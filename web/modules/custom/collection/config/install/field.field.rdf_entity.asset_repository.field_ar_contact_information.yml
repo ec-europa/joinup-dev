@@ -1,13 +1,11 @@
-uuid: 311686fc-2069-4d16-aa00-b9d552ce8f6f
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_contact_information
+    - field.storage.rdf_entity.field_ar_contact_information
     - rdf_entity.rdfentity.asset_repository
-    - rdf_entity.rdfentity.vcard
-id: rdf_entity.asset_repository.field_contact_information
-field_name: field_contact_information
+id: rdf_entity.asset_repository.field_ar_contact_information
+field_name: field_ar_contact_information
 entity_type: rdf_entity
 bundle: asset_repository
 label: 'Contact information'
@@ -18,9 +16,5 @@ default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:rdf_entity'
-  handler_settings:
-    target_bundles:
-      vcard: vcard
-    sort:
-      field: _none
+  handler_settings: {  }
 field_type: entity_reference

@@ -1,13 +1,11 @@
-uuid: 045e18ec-f1d2-4861-9e00-e588a7d40901
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_spatial_coverage
+    - field.storage.rdf_entity.field_ar_spatial_coverage
     - rdf_entity.rdfentity.asset_repository
-    - rdf_entity.rdfentity.place
-id: rdf_entity.asset_repository.field_spatial_coverage
-field_name: field_spatial_coverage
+id: rdf_entity.asset_repository.field_ar_spatial_coverage
+field_name: field_ar_spatial_coverage
 entity_type: rdf_entity
 bundle: asset_repository
 label: 'Spatial coverage'
@@ -18,9 +16,5 @@ default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:rdf_entity'
-  handler_settings:
-    target_bundles:
-      place: place
-    sort:
-      field: _none
+  handler_settings: {  }
 field_type: entity_reference

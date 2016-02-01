@@ -1,17 +1,17 @@
-uuid: 5d3d2564-ab8b-4656-bc03-3f0027dda96b
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.rdf_entity.asset_repository.field_access_url
-    - field.field.rdf_entity.asset_repository.field_affiliates
-    - field.field.rdf_entity.asset_repository.field_contact_information
-    - field.field.rdf_entity.asset_repository.field_creation_date
-    - field.field.rdf_entity.asset_repository.field_description
-    - field.field.rdf_entity.asset_repository.field_modification_date
-    - field.field.rdf_entity.asset_repository.field_owner
-    - field.field.rdf_entity.asset_repository.field_policy_domain
-    - field.field.rdf_entity.asset_repository.field_spatial_coverage
+    - field.field.rdf_entity.asset_repository.field_ar_access_url
+    - field.field.rdf_entity.asset_repository.field_ar_affiliates
+    - field.field.rdf_entity.asset_repository.field_ar_contact_information
+    - field.field.rdf_entity.asset_repository.field_ar_creation_date
+    - field.field.rdf_entity.asset_repository.field_ar_description
+    - field.field.rdf_entity.asset_repository.field_ar_modification_date
+    - field.field.rdf_entity.asset_repository.field_ar_owner
+    - field.field.rdf_entity.asset_repository.field_ar_policy_domain
+    - field.field.rdf_entity.asset_repository.field_ar_spatial_coverage
+    - field.field.rdf_entity.asset_repository.field_ar_topic
     - rdf_entity.rdfentity.asset_repository
   module:
     - datetime
@@ -22,8 +22,8 @@ targetEntityType: rdf_entity
 bundle: asset_repository
 mode: default
 content:
-  field_access_url:
-    weight: 2
+  field_ar_access_url:
+    weight: -3
     label: above
     settings:
       trim_length: 80
@@ -33,58 +33,65 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
-  field_affiliates:
-    weight: 9
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_contact_information:
+  field_ar_affiliates:
     weight: 5
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_creation_date:
-    weight: 3
+  field_ar_contact_information:
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_ar_creation_date:
+    weight: -2
     label: above
     settings:
       format_type: medium
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
-  field_description:
-    weight: 1
-    label: hidden
+  field_ar_description:
+    weight: -4
+    label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
-  field_modification_date:
-    weight: 4
+  field_ar_modification_date:
+    weight: -1
     label: above
     settings:
       format_type: medium
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
-  field_owner:
-    weight: 6
+  field_ar_owner:
+    weight: 1
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_policy_domain:
-    weight: 7
+  field_ar_policy_domain:
+    weight: 2
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_spatial_coverage:
-    weight: 8
+  field_ar_spatial_coverage:
+    weight: 4
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_ar_topic:
+    weight: 3
     label: above
     settings:
       link: true
@@ -93,7 +100,7 @@ content:
   label:
     label: hidden
     type: string
-    weight: 0
+    weight: -5
     settings:
       link_to_entity: false
     third_party_settings: {  }

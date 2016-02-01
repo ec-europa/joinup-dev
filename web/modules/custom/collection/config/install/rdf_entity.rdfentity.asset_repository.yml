@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 name: 'Asset repository'
 rid: asset_repository
-description: ''
+description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
 rdftype: 'http://www.w3.org/ns/adms#AssetRepository'
 rdf_label: 'http://purl.org/dc/terms/title'
