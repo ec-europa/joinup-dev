@@ -1,0 +1,6 @@
+SELECT ?sub
+WHERE {
+  ?sub ?pred rdfs:Class
+}
+GROUP BY (?sub)
+ORDER BY DESC (?sub)

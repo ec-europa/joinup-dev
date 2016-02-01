@@ -1,0 +1,7 @@
+rdf_demo.repositories:
+  path: '/rdf/repositories'
+  defaults:
+    _controller: '\Drupal\rdf_demo\Controller\RdfDemoController::repositories'
+    _title: 'Federated repositories'
+  requirements:
+    _permission: 'access content'

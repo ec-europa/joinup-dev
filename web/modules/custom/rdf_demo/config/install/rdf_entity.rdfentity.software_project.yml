@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Software project'
+rid: software_project
+description: ''
+rdftype: 'admssw:SoftwareProject'

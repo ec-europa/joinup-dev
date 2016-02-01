@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Software repository'
+rid: software_repository
+description: ''
+rdftype: 'admssw:SoftwareRepository'

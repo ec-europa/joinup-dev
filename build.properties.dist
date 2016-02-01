@@ -2,10 +2,10 @@
 # --------------------
 
 # The install profile to use.
-website.profile.name = standard
+website.profile.name = joinup
 
 # The site name.
-website.site.name = MyDrupalProject
+website.site.name = Joinup
 
 # Database settings.
 drupal.db.type = mysql
@@ -15,6 +15,8 @@ drupal.db.password = db_pass
 drupal.db.host = 127.0.0.1
 drupal.db.port = 3306
 drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${drupal.db.name}
+sparql.host = localhost
+sparql.port = 8890
 
 # Admin user.
 drupal.admin.username = admin

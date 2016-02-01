@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_email
+    - rdf_entity.rdfentity.vcard
+id: rdf_entity.vcard.field_email
+field_name: field_email
+entity_type: rdf_entity
+bundle: vcard
+label: Email
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email
