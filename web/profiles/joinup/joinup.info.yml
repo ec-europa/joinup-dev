@@ -3,12 +3,26 @@ type: profile
 description: Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability Solutions for European Public Administrations (ISA) Programme. It offers several services that aim to help e-Government professionals share their experience with each other.
 core: 8.x
 
+distribution:
+  name: Joinup
+
 dependencies:
   - block
   - collection
+  - contextual
   - dynamic_page_cache
+  - editor
+  - file
+  - help
+  - image
+  - menu_ui
+  - node
   - og
+  - options
   - page_cache
+  - path
+  - rdf_demo
+  - rdf_entity
   - toolbar
 
 themes:

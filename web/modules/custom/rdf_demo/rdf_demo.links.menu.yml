@@ -1,0 +1,7 @@
+# Define the menu links for this module
+
+rdf_demo.repositories:
+  title: 'Federated repositories'
+  route_name: rdf_demo.repositories
+  description: 'List federated repositories'
+  weight: 10

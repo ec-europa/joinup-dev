@@ -10,6 +10,7 @@
         "drupal/core": "8.0.x-dev",
         "drupal/og": "dev-port-og-complex-widget-test",
         "drush/drush": "~8.0",
+        "easyrdf/easyrdf": "dev-0.9.x as 0.9.1",
         "pear/console_table": "~1.3.0",
         "php": ">=5.5.9"
     },
@@ -100,6 +101,23 @@
             "_comment": "Amitai's fork is the main development repository for Organic Groups. Remove this once a D8 release is made on drupal.org.",
             "type": "vcs",
             "url": "git@github.com:amitaibu/og"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "easyrdf/easyrdf",
+                "version": "dev-0.9.x",
+                "source": {
+                    "url": "https://github.com/ec-europa/easyrdf.git",
+                    "type": "git",
+                    "reference": "0.9.x"
+                },
+                "autoload": {
+                    "psr-0": {
+                        "EasyRdf_": "lib/"
+                    }
+                }
+            }
         }
     ]
 }

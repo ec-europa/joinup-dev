@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.vcard.field_email
+    - field.field.rdf_entity.vcard.field_vcard_name
+    - rdf_entity.rdfentity.vcard
+id: rdf_entity.vcard.default
+targetEntityType: rdf_entity
+bundle: vcard
+mode: default
+content:
+  field_email:
+    weight: -3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+  field_vcard_name:
+    weight: -4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+  label:
+    type: string_textfield
+    weight: -5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

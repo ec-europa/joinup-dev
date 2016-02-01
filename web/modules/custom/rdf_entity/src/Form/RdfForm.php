@@ -31,6 +31,9 @@ class RdfForm extends ContentEntityForm {
       '#default_value' => $entity->getUntranslated()->language()->getId(),
       '#languages' => Language::STATE_ALL,
     );
+    if (!$entity->isNew()) {
+      $form['id']['#disabled'] = TRUE;
+    }
     return $form;
   }
 
@@ -42,4 +45,5 @@ class RdfForm extends ContentEntityForm {
     $entity = $this->getEntity();
     $entity->save();
   }
+
 }
