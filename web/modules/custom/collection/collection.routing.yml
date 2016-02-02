@@ -57,3 +57,12 @@ collection.settings:
     _permission: 'administer collection entities'
   options:
     _admin_route: TRUE
+
+collection.leave_confirm_form:
+  path: '/collection/{collection}/leave'
+  defaults:
+    _form: '\Drupal\collection\Form\LeaveCollectionConfirmForm'
+    _title: 'Leave collection'
+  requirements:
+    _permission: 'view published collection entities'
+    _custom_access: '\Drupal\collection\Form\LeaveCollectionConfirmForm::access'

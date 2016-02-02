@@ -7,6 +7,7 @@
 
 namespace Drupal\collection\Form;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -48,18 +49,33 @@ class JoinCollectionForm extends FormBase {
       '#title' => $this->t('User ID'),
       '#value' => $user->id(),
     ];
-    $form['join'] = [
-      '#type' => 'submit',
-      '#op' => 'join',
-      '#value' => $this->t('Join this collection'),
-      '#access' => !Og::isMember($collection, $user),
-    ];
-    $form['leave'] = [
-      '#type' => 'submit',
-      '#op' => 'leave',
-      '#value' => $this->t('Leave this collection'),
-      '#access' => Og::isMember($collection, $user),
-    ];
+
+    // If the user is already a member of the collection, show a link to the
+    // confirmation form, disguised as a form submit button. The confirmation
+    // form should open in a modal dialog for JavaScript-enabled browsers.
+    if (Og::isMember($collection, $user)) {
+      $form['leave'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Leave this collection'),
+        '#url' => Url::fromRoute('collection.leave_confirm_form', [
+          'collection' => $collection->id(),
+        ]),
+        '#attributes' => [
+          'class' => ['use-ajax', 'button', 'button--small'],
+          'data-dialog-type' => 'modal',
+          'data-dialog-options' => Json::encode(['width' => 'auto']),
+        ],
+      ];
+      $form['#attached']['library'][] = 'core/drupal.ajax';
+    }
+
+    // If the user is not yet a member, show the join button.
+    else {
+      $form['join'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Join this collection'),
+      ];
+    }
 
     // This form varies by user and collection.
     $metadata = new CacheableMetadata();
@@ -77,7 +93,6 @@ class JoinCollectionForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    $operation = $form_state->getTriggeringElement()['#op'];
     $collection = Collection::load($form_state->getValue('collection_id'));
 
     // Only authenticated users can join a collection.
@@ -90,12 +105,9 @@ class JoinCollectionForm extends FormBase {
       ]));
     }
 
-    // Check if the chosen operation is valid for the user.
-    if (Og::isMember($collection, $user) && $operation === 'join') {
+    // Check if the user is already a member of the collection.
+    if (Og::isMember($collection, $user)) {
       $form_state->setErrorByName('collection', $this->t('You already are a member of this collection.'));
-    }
-    elseif (!Og::isMember($collection, $user) && $operation === 'leave') {
-      $form_state->setErrorByName('collection', $this->t('You already have left this collection.'));
     }
   }
 
@@ -108,38 +120,19 @@ class JoinCollectionForm extends FormBase {
     /** @var \Drupal\user\UserInterface $user */
     $user = User::load($form_state->getValue('user_id'));
 
-    switch ($form_state->getTriggeringElement()['#op']) {
-      case 'join':
-        $membership = Og::membershipStorage()->create(Og::membershipDefault());
-        $membership
-          ->setFieldName(OgGroupAudienceHelper::DEFAULT_FIELD)
-          ->setMemberEntityType('user')
-          ->setMemberEntityId($user->id())
-          ->setGroupEntityType('collection')
-          ->setGroupEntityid($collection->id())
-          ->setState(OgMembershipInterface::STATE_ACTIVE)
-          ->save();
+    $membership = Og::membershipStorage()->create(Og::membershipDefault());
+    $membership
+      ->setFieldName(OgGroupAudienceHelper::DEFAULT_FIELD)
+      ->setMemberEntityType('user')
+      ->setMemberEntityId($user->id())
+      ->setGroupEntityType('collection')
+      ->setGroupEntityid($collection->id())
+      ->setState(OgMembershipInterface::STATE_ACTIVE)
+      ->save();
 
-        drupal_set_message($this->t('You are now a member of %collection.', [
-          '%collection' => $collection->getName(),
-        ]));
-        break;
-
-      case 'leave':
-        $membership_ids = \Drupal::entityQuery('og_membership')
-          ->condition('member_entity_id', $user->id())
-          ->condition('member_entity_type', 'user')
-          ->condition('group_entity_id', $collection->id())
-          ->condition('group_entity_type', 'collection')
-          ->execute();
-        $memberships = Og::membershipStorage()->loadMultiple($membership_ids);
-        Og::membershipStorage()->delete($memberships);
-
-        drupal_set_message($this->t('You are no longer a member of %collection.', [
-          '%collection' => $collection->getName(),
-        ]));
-        break;
-    }
+    drupal_set_message($this->t('You are now a member of %collection.', [
+      '%collection' => $collection->getName(),
+    ]));
   }
 
 }
