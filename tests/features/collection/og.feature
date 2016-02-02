@@ -5,9 +5,10 @@ Feature: Organic Groups integration
   I need to be able to join and leave collections
 
   Scenario: Joining and leaving a collection
-    Given the following collection:
-      | name            | Überwaldean land eels |
-      | author          | Arnold Sideways       |
+    Given collections:
+      | name                        | author          |
+      | Überwaldean land eels       | Arnold Sideways |
+      | Folk Dance and Song Society | Ptaclusp IIb    |
     And users:
       | name           | role          |
       | Madame Sharn   | authenticated |
@@ -15,6 +16,7 @@ Feature: Organic Groups integration
 
     # Initially the collection should only have 1 member, the group manager.
     Then the "Überwaldean land eels" collection should have 1 member
+    And the "Folk Dance and Song Society" collection should have 1 member
 
     # Anonymous users should not be able to join or leave a collection.
     Given I am an anonymous user
@@ -33,6 +35,16 @@ Feature: Organic Groups integration
     When I go to the homepage of the "Überwaldean land eels" collection
     Then I should not see the "Join this collection" button
     But I should see the "Leave this collection" button
+
+    # Check that it is possible to join a second collection.
+    When I go to the homepage of the "Folk Dance and Song Society" collection
+    Then I should see the "Join this collection" button
+    When I press the "Join this collection" button
+    Then I should see the success message "You are now a member of Folk Dance and Song Society."
+    And the "Folk Dance and Song Society" collection should have 2 members
+    When I go to the homepage of the "Folk Dance and Song Society" collection
+    Then I should not see the "Join this collection" button
+    But I should see the link "Leave this collection"
 
     # Check that a second authenticated user can join, the form should not be
     # cached.
