@@ -1,0 +1,63 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.content_editor
+  module:
+    - ckeditor
+_core:
+  default_config_hash: oI4cJEkWFvGvDXbqNjXZNW1NgVAXMweX3Fae0Yhl_yM
+format: content_editor
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatting
+          items:
+            - Bold
+            - Italic
+            - JustifyLeft
+            - JustifyCenter
+            - JustifyRight
+            - Format
+        -
+          name: Links
+          items:
+            - DrupalLink
+            - DrupalUnlink
+        -
+          name: Lists
+          items:
+            - BulletedList
+            - NumberedList
+            - Outdent
+            - Indent
+        -
+          name: Media
+          items:
+            - Blockquote
+            - DrupalImage
+        -
+          name: Tools
+          items:
+            - Table
+            - Cut
+            - Copy
+            - Paste
+            - PasteText
+            - Source
+            - RemoveFormat
+  plugins:
+    stylescombo:
+      styles: ''
+image_upload:
+  status: true
+  scheme: public
+  directory: inline-images
+  max_size: '10 MB'
+  max_dimensions:
+    width: null
+    height: null
+

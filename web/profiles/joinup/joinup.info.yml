@@ -21,6 +21,7 @@ dependencies:
   - toolbar
   - file
   - dynamic_page_cache
+  - ckeditor
   - rdf_entity
   - rdf_demo
 themes:
