@@ -21,7 +21,7 @@ use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\User;
 
 /**
- * A simple form with a button to join a collection.
+ * A simple form with a button to join or leave a collection.
  *
  * @package Drupal\collection\Form
  */
