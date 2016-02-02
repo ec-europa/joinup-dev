@@ -34,7 +34,7 @@ Feature: Organic Groups integration
     And the "Überwaldean Land Eels" collection should have 2 members
     When I go to the homepage of the "Überwaldean Land Eels" collection
     Then I should not see the "Join this collection" button
-    But I should see the "Leave this collection" button
+    But I should see the link "Leave this collection"
 
     # Check that it is possible to join a second collection.
     When I go to the homepage of the "Folk Dance and Song Society" collection
@@ -55,14 +55,18 @@ Feature: Organic Groups integration
     And the "Überwaldean Land Eels" collection should have 3 members
 
     # Check that both users can leave their respective collections.
-    When I press the "Leave this collection" button
+    When I click "Leave this collection"
+    Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels collection?"
+    When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Überwaldean Land Eels."
     And I should see the "Join this collection" button
     And the "Überwaldean Land Eels" collection should have 2 members
 
     When I am logged in as "Madame Sharn"
     And I go to the homepage of the "Überwaldean Land Eels" collection
-    And I press the "Leave this collection" button
+    And I click "Leave this collection"
+    Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels collection?"
+    When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Überwaldean Land Eels."
     And I should see the "Join this collection" button
     And the "Überwaldean Land Eels" collection should have 1 member
