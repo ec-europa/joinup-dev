@@ -59,9 +59,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Creates a number of collections with data provided in a table.
    *
    * Table format:
+   *
+   * @codingStandardsIgnoreStart
    * | name            | author   | logo     | pre-moderation | closed | create elibrary  | schedule | metadata url           |
    * | The City Watch  | Riktor   | logo.png | 0              | 0      | facilitators     | daily    | https://city-watch.am/ |
    * | The Smoking Gnu | Mr. Pump | logo.gif | 1              | 1      | registered_users | weekly   | https://gnu.am/        |
+   * @codingStandardsIgnoreEnd
    *
    * Only the name field is required.
    *
