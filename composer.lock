@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1d9824866fdb745ebce9378c11c4104c",
-    "content-hash": "078a41ff55592439b12a6acb2c224e40",
+    "hash": "f9f9522bf73133403c0f5cc12b5c8ad4",
+    "content-hash": "c707b48568db3ef417acdf0ac851b4ea",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -706,16 +706,16 @@
         },
         {
             "name": "drupal/console",
-            "version": "0.10.6",
+            "version": "0.10.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "9ad670234daf1abbbd492d482c514672ea80181d"
+                "reference": "e23d738e6b60716790edcbc6c53e94f2a79032e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/9ad670234daf1abbbd492d482c514672ea80181d",
-                "reference": "9ad670234daf1abbbd492d482c514672ea80181d",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/e23d738e6b60716790edcbc6c53e94f2a79032e6",
+                "reference": "e23d738e6b60716790edcbc6c53e94f2a79032e6",
                 "shasum": ""
             },
             "require": {
@@ -786,7 +786,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2016-01-26 17:43:48"
+            "time": "2016-02-01 21:34:14"
         },
         {
             "name": "drupal/core",
@@ -794,12 +794,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "8c8c5935a653900eaadde87ae0332a4030ca9ca9"
+                "reference": "1a6aeda05eed589bf5db23cfa11954a5cdfebae2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/8c8c5935a653900eaadde87ae0332a4030ca9ca9",
-                "reference": "8c8c5935a653900eaadde87ae0332a4030ca9ca9",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/1a6aeda05eed589bf5db23cfa11954a5cdfebae2",
+                "reference": "1a6aeda05eed589bf5db23cfa11954a5cdfebae2",
                 "shasum": ""
             },
             "require": {
@@ -951,7 +951,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-02-01 10:20:34"
+            "time": "2016-02-02 15:26:20"
         },
         {
             "name": "drupal/og",
@@ -986,12 +986,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "86de4b6c93a8f401cf18b56c0593a00e40de68ba"
+                "reference": "76d95160c44c1fe5e045d82ee5190af0809f13cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/86de4b6c93a8f401cf18b56c0593a00e40de68ba",
-                "reference": "86de4b6c93a8f401cf18b56c0593a00e40de68ba",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/76d95160c44c1fe5e045d82ee5190af0809f13cb",
+                "reference": "76d95160c44c1fe5e045d82ee5190af0809f13cb",
                 "shasum": ""
             },
             "require": {
@@ -1076,7 +1076,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2016-02-01 01:26:22"
+            "time": "2016-02-02 15:46:31"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -4326,6 +4326,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-8.x-2.x": "8.2.x-dev"
+                },
+                "patches_applied": {
+                    "Issue #2661274: False positive on @codingStandardsIgnoreStart/End in function docblocks": "https://www.drupal.org/files/issues/2661274-2.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
@@ -5300,16 +5303,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.21",
+            "version": "4.8.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "ea76b17bced0500a28098626b84eda12dbcf119c"
+                "reference": "dfb11aa5236376b4fc63853cf746af39fe780e72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ea76b17bced0500a28098626b84eda12dbcf119c",
-                "reference": "ea76b17bced0500a28098626b84eda12dbcf119c",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/dfb11aa5236376b4fc63853cf746af39fe780e72",
+                "reference": "dfb11aa5236376b4fc63853cf746af39fe780e72",
                 "shasum": ""
             },
             "require": {
@@ -5368,7 +5371,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-12-12 07:45:58"
+            "time": "2016-02-02 09:01:21"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

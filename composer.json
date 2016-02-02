@@ -53,6 +53,9 @@
         "patches": {
             "drupal/config_devel": {
                 "Issue #2603268: Add support for profiles": "https://www.drupal.org/files/issues/2603268-8.patch"
+            },
+            "drupal/coder": {
+                "Issue #2661274: False positive on @codingStandardsIgnoreStart/End in function docblocks": "https://www.drupal.org/files/issues/2661274-2.patch"
             }
         }
     },
