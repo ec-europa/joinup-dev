@@ -70,3 +70,11 @@ Feature: Organic Groups integration
     Then I should see the success message "You are no longer a member of Überwaldean Land Eels."
     And I should see the "Join this collection" button
     And the "Überwaldean Land Eels" collection should have 1 member
+
+    When I go to the homepage of the "Folk Dance and Song Society" collection
+    And I click "Leave this collection"
+    Then I should see the text "Are you sure you want to leave the Folk Dance and Song Society collection?"
+    When I press the "Confirm" button
+    Then I should see the success message "You are no longer a member of Folk Dance and Song Society."
+    And I should see the "Join this collection" button
+    And the "Folk Dance and Song Society" collection should have 1 member
