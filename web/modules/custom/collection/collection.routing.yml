@@ -14,7 +14,7 @@ entity.collection.collection:
     _entity_list: 'collection'
     _title: 'Collection list'
   requirements:
-    _permission: 'view published collection entities'
+    _permission: 'administer collection entities'
   options:
     _admin_route: TRUE
 
