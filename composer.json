@@ -60,6 +60,11 @@
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
             "drush/contrib/{$name}": ["type:drupal-drush"]
+        },
+        "patches": {
+            "drupal/coder": {
+                "Issue #2661274: False positive on @codingStandardsIgnoreStart/End in function docblocks": "https://www.drupal.org/files/issues/2661274-2.patch"
+            }
         }
   },
   "repositories": [
