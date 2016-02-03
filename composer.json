@@ -16,6 +16,7 @@
         }
     ],
     "require": {
+        "composer/composer": "^1.0@alpha",
         "composer/installers": "^1.0.20",
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",

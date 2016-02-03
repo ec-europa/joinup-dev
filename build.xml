@@ -178,15 +178,22 @@
         </drush>
     </target>
 
+    <!-- Install Composer dependencies for the build system. -->
+    <target name="install-composer-dependencies">
+        <composer command="install" composer="${composer.bin}">
+            <arg value="--working-dir=${project.basedir}" />
+        </composer>
+    </target>
+
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="setup-behat, setup-php-codesniffer" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer" />
 
     <target
         name="setup-dev"
         description="Set up 'development mode' for an installed website."
-        depends="build-dev, enable-dev-settings, enable-dev-modules" />
+        depends="enable-dev-settings, enable-dev-modules" />
 
     <target
         name="setup-acceptance"
