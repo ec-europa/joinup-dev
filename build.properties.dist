@@ -52,6 +52,9 @@ website.modules.dir = ${website.drupal.dir}/modules
 website.profiles.dir = ${website.drupal.dir}/profiles
 website.themes.dir = ${website.drupal.dir}/themes
 
+# Composer related paths.
+composer.json = ${project.basedir}/composer.json
+
 
 # Behat configuration
 # -------------------

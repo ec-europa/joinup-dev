@@ -21,6 +21,9 @@
     <echo msg="Loading PHP Codesniffer Configuration task." />
     <taskdef name="phpcodesnifferconfiguration" classname="\DrupalProject\Phing\PhpCodeSnifferConfigurationTask" />
 
+    <echo msg="Loading Remove Patched Packages task." />
+    <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
+
     <!-- Make the settings folder writeable so that the installer can copy settings.php. -->
     <target name="writable-settings-folder">
         <chmod mode="0755" failonerror="true" verbose="true" quiet="false" file="${website.settings.dir}" />
@@ -176,6 +179,13 @@
             verbose="${drush.verbose}">
             <param>${drupal.modules.dev}</param>
         </drush>
+    </target>
+
+    <!-- Remove all packages that are patched with cweagans/composer-patches. -->
+    <target name="remove-patched-packages">
+        <removepatchedpackages
+            composerJsonPath="${composer.json}"
+        />
     </target>
 
     <!-- Install Composer dependencies for the build system. -->
