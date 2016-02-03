@@ -4,6 +4,7 @@
     "type": "project",
     "license": "EUPL",
     "require": {
+        "composer/composer": "^1.0@alpha",
         "composer/installers": "^1.0.20",
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",
@@ -51,9 +52,6 @@
             "drush/contrib/{$name}": ["type:drupal-drush"]
         },
         "patches": {
-            "drupal/config_devel": {
-                "Issue #2603268: Add support for profiles": "https://www.drupal.org/files/issues/2603268-8.patch"
-            },
             "drupal/coder": {
                 "Issue #2661274: False positive on @codingStandardsIgnoreStart/End in function docblocks": "https://www.drupal.org/files/issues/2661274-2.patch"
             }

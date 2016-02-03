@@ -21,6 +21,9 @@
     <echo msg="Loading PHP Codesniffer Configuration task." />
     <taskdef name="phpcodesnifferconfiguration" classname="\DrupalProject\Phing\PhpCodeSnifferConfigurationTask" />
 
+    <echo msg="Loading Remove Patched Packages task." />
+    <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
+
     <!-- Make the settings folder writeable so that the installer can copy settings.php. -->
     <target name="writable-settings-folder">
         <chmod mode="0755" failonerror="true" verbose="true" quiet="false" file="${website.settings.dir}" />
@@ -178,15 +181,29 @@
         </drush>
     </target>
 
+    <!-- Remove all packages that are patched with cweagans/composer-patches. -->
+    <target name="remove-patched-packages">
+        <removepatchedpackages
+            composerJsonPath="${composer.json}"
+        />
+    </target>
+
+    <!-- Install Composer dependencies for the build system. -->
+    <target name="install-composer-dependencies">
+        <composer command="install" composer="${composer.bin}">
+            <arg value="--working-dir=${project.basedir}" />
+        </composer>
+    </target>
+
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="setup-behat, setup-php-codesniffer" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer" />
 
     <target
         name="setup-dev"
         description="Set up 'development mode' for an installed website."
-        depends="build-dev, enable-dev-settings, enable-dev-modules" />
+        depends="enable-dev-settings, enable-dev-modules" />
 
     <target
         name="setup-acceptance"
