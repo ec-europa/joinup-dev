@@ -49,6 +49,11 @@ settings:
             - Paste
             - PasteText
         -
+          name: Undo/redo
+          items:
+            - Undo
+            - Redo
+        -
           name: Source
           items:
             - Source
