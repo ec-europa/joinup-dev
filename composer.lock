@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7012547dccd953660e14cf3d533428ba",
-    "content-hash": "f0419cdd39dced64715cb93e4c350e63",
+    "hash": "64e9d16cc64a73d94e1a2c89ab82a8c8",
+    "content-hash": "724d9aabe9dc39356761e22d6250b2b2",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -841,16 +841,16 @@
         },
         {
             "name": "drupal/console",
-            "version": "0.10.8",
+            "version": "0.10.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "a7baf35fb27403a45204f83c4c60f19142d249df"
+                "reference": "ce19bb48abb5a8be2627ce887f1ab16ac59bc179"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/a7baf35fb27403a45204f83c4c60f19142d249df",
-                "reference": "a7baf35fb27403a45204f83c4c60f19142d249df",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/ce19bb48abb5a8be2627ce887f1ab16ac59bc179",
+                "reference": "ce19bb48abb5a8be2627ce887f1ab16ac59bc179",
                 "shasum": ""
             },
             "require": {
@@ -921,20 +921,20 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2016-02-03 08:21:15"
+            "time": "2016-02-04 07:51:54"
         },
         {
             "name": "drupal/core",
-            "version": "8.0.x-dev",
+            "version": "8.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "eca9f05701140713491f958a452f49093d65b345"
+                "reference": "f5b2a07081b963e0931adaf816f62b79541ac1e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/eca9f05701140713491f958a452f49093d65b345",
-                "reference": "eca9f05701140713491f958a452f49093d65b345",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/f5b2a07081b963e0931adaf816f62b79541ac1e6",
+                "reference": "f5b2a07081b963e0931adaf816f62b79541ac1e6",
                 "shasum": ""
             },
             "require": {
@@ -1086,7 +1086,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-02-03 08:53:42"
+            "time": "2016-02-03 08:47:36"
         },
         {
             "name": "drupal/og",
@@ -1116,17 +1116,35 @@
             "time": "2016-01-27 17:00:32"
         },
         {
+            "name": "drupal/phing-drush-task",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "http://git.drupal.org/project/phingdrushtask.git",
+                "reference": "7.x-1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "DrushTask.php"
+                ]
+            },
+            "include-path": [
+                "."
+            ]
+        },
+        {
             "name": "drush/drush",
-            "version": "dev-master",
+            "version": "8.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "364d347ae22049d1ede9e3db2c373ad431abcb26"
+                "reference": "ee77dc526aa9fb26611ded18b5caef801b29aca7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/364d347ae22049d1ede9e3db2c373ad431abcb26",
-                "reference": "364d347ae22049d1ede9e3db2c373ad431abcb26",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/ee77dc526aa9fb26611ded18b5caef801b29aca7",
+                "reference": "ee77dc526aa9fb26611ded18b5caef801b29aca7",
                 "shasum": ""
             },
             "require": {
@@ -1211,7 +1229,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2016-02-03 13:52:06"
+            "time": "2016-02-03 20:52:22"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -1980,6 +1998,96 @@
                 "console"
             ],
             "time": "2016-01-21 16:14:31"
+        },
+        {
+            "name": "phing/phing",
+            "version": "2.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phingofficial/phing.git",
+                "reference": "a5b10a50160c8a4744545aacb33ef158349e655c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phingofficial/phing/zipball/a5b10a50160c8a4744545aacb33ef158349e655c",
+                "reference": "a5b10a50160c8a4744545aacb33ef158349e655c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "ext-pdo_sqlite": "*",
+                "lastcraft/simpletest": "@dev",
+                "pdepend/pdepend": "2.x",
+                "pear/archive_tar": "1.4.x",
+                "pear/http_request2": "dev-trunk",
+                "pear/net_growl": "dev-trunk",
+                "pear/pear-core-minimal": "1.10.1",
+                "pear/versioncontrol_git": "@dev",
+                "pear/versioncontrol_svn": "~0.5",
+                "phpdocumentor/phpdocumentor": "2.x",
+                "phploc/phploc": "~2.0.6",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/phpunit": ">=3.7",
+                "sebastian/git": "~1.0",
+                "sebastian/phpcpd": "2.x",
+                "squizlabs/php_codesniffer": "~2.2",
+                "symfony/yaml": "~2.7"
+            },
+            "suggest": {
+                "pdepend/pdepend": "PHP version of JDepend",
+                "pear/archive_tar": "Tar file management class",
+                "pear/versioncontrol_git": "A library that provides OO interface to handle Git repository",
+                "pear/versioncontrol_svn": "A simple OO-style interface for Subversion, the free/open-source version control system",
+                "phpdocumentor/phpdocumentor": "Documentation Generator for PHP",
+                "phploc/phploc": "A tool for quickly measuring the size of a PHP project",
+                "phpmd/phpmd": "PHP version of PMD tool",
+                "phpunit/php-code-coverage": "Library that provides collection, processing, and rendering functionality for PHP code coverage information",
+                "phpunit/phpunit": "The PHP Unit Testing Framework",
+                "sebastian/phpcpd": "Copy/Paste Detector (CPD) for PHP code",
+                "tedivm/jshrink": "Javascript Minifier built in PHP"
+            },
+            "bin": [
+                "bin/phing"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.13.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "classes/phing/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "classes"
+            ],
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Michiel Rook",
+                    "email": "mrook@php.net"
+                },
+                {
+                    "name": "Phing Community",
+                    "homepage": "https://www.phing.info/trac/wiki/Development/Contributors"
+                }
+            ],
+            "description": "PHing Is Not GNU make; it's a PHP project build system or build tool based on Apache Ant.",
+            "homepage": "https://www.phing.info/",
+            "keywords": [
+                "build",
+                "phing",
+                "task",
+                "tool"
+            ],
+            "time": "2015-12-04 09:45:44"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -4689,7 +4797,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_devel",
-                "reference": "16ff4c4cc7759cf0b7a070bf1af275fc16dc8dc5"
+                "reference": "064a5297d00af7330b455f08dacd90b4ab109c81"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -4706,7 +4814,7 @@
             ],
             "description": "Helps developers work with configuration.",
             "homepage": "https://www.drupal.org/project/config_devel",
-            "time": "2016-01-28 04:40:13"
+            "time": "2016-02-03 04:58:40"
         },
         {
             "name": "drupal/config_update",
@@ -4714,7 +4822,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_update.git",
-                "reference": "fdd7187a2199597a5059a4fc225e87dafaec4b14"
+                "reference": "a0180ef9543394fb7ec04b831d554204781b388d"
             },
             "require": {
                 "drupal/config": "8.*",
@@ -4736,7 +4844,7 @@
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
-            "time": "2015-12-17 22:36:09"
+            "time": "2016-02-02 14:24:56"
         },
         {
             "name": "drupal/devel",
@@ -4898,24 +5006,6 @@
                 "source": "https://github.com/pfrenssen/drupalextension/tree/assert-not-button"
             },
             "time": "2016-01-30 09:43:25"
-        },
-        {
-            "name": "drupal/phing-drush-task",
-            "version": "1.0",
-            "source": {
-                "type": "git",
-                "url": "http://git.drupal.org/project/phingdrushtask.git",
-                "reference": "7.x-1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "DrushTask.php"
-                ]
-            },
-            "include-path": [
-                "."
-            ]
         },
         {
             "name": "fabpot/goutte",
@@ -5197,96 +5287,6 @@
                 "reference": "master"
             },
             "type": "git-hook"
-        },
-        {
-            "name": "phing/phing",
-            "version": "2.13.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phingofficial/phing.git",
-                "reference": "a5b10a50160c8a4744545aacb33ef158349e655c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phingofficial/phing/zipball/a5b10a50160c8a4744545aacb33ef158349e655c",
-                "reference": "a5b10a50160c8a4744545aacb33ef158349e655c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2.0"
-            },
-            "require-dev": {
-                "ext-pdo_sqlite": "*",
-                "lastcraft/simpletest": "@dev",
-                "pdepend/pdepend": "2.x",
-                "pear/archive_tar": "1.4.x",
-                "pear/http_request2": "dev-trunk",
-                "pear/net_growl": "dev-trunk",
-                "pear/pear-core-minimal": "1.10.1",
-                "pear/versioncontrol_git": "@dev",
-                "pear/versioncontrol_svn": "~0.5",
-                "phpdocumentor/phpdocumentor": "2.x",
-                "phploc/phploc": "~2.0.6",
-                "phpmd/phpmd": "~2.2",
-                "phpunit/phpunit": ">=3.7",
-                "sebastian/git": "~1.0",
-                "sebastian/phpcpd": "2.x",
-                "squizlabs/php_codesniffer": "~2.2",
-                "symfony/yaml": "~2.7"
-            },
-            "suggest": {
-                "pdepend/pdepend": "PHP version of JDepend",
-                "pear/archive_tar": "Tar file management class",
-                "pear/versioncontrol_git": "A library that provides OO interface to handle Git repository",
-                "pear/versioncontrol_svn": "A simple OO-style interface for Subversion, the free/open-source version control system",
-                "phpdocumentor/phpdocumentor": "Documentation Generator for PHP",
-                "phploc/phploc": "A tool for quickly measuring the size of a PHP project",
-                "phpmd/phpmd": "PHP version of PMD tool",
-                "phpunit/php-code-coverage": "Library that provides collection, processing, and rendering functionality for PHP code coverage information",
-                "phpunit/phpunit": "The PHP Unit Testing Framework",
-                "sebastian/phpcpd": "Copy/Paste Detector (CPD) for PHP code",
-                "tedivm/jshrink": "Javascript Minifier built in PHP"
-            },
-            "bin": [
-                "bin/phing"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.13.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "classes/phing/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                "classes"
-            ],
-            "license": [
-                "LGPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Michiel Rook",
-                    "email": "mrook@php.net"
-                },
-                {
-                    "name": "Phing Community",
-                    "homepage": "https://www.phing.info/trac/wiki/Development/Contributors"
-                }
-            ],
-            "description": "PHing Is Not GNU make; it's a PHP project build system or build tool based on Apache Ant.",
-            "homepage": "https://www.phing.info/",
-            "keywords": [
-                "build",
-                "phing",
-                "task",
-                "tool"
-            ],
-            "time": "2015-12-04 09:45:44"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -6288,7 +6288,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "composer/composer": 15,
-        "drupal/core": 20,
         "drupal/og": 20,
         "easyrdf/easyrdf": 20,
         "drupal/coder": 20,

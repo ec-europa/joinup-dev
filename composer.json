@@ -8,11 +8,13 @@
         "composer/installers": "^1.0.20",
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",
-        "drupal/core": "8.0.x-dev",
+        "drupal/core": "~8.0.3",
         "drupal/og": "dev-port-og-complex-widget-test",
+        "drupal/phing-drush-task": "1.0",
         "drush/drush": "~8.0",
         "easyrdf/easyrdf": "dev-0.9.x as 0.9.1",
         "pear/console_table": "~1.3.0",
+        "phing/phing": "~2.10",
         "php": ">=5.5.9"
     },
     "require-dev": {
@@ -28,7 +30,6 @@
         "jcalderonzumba/mink-phantomjs-driver": "dev-master#10d7c48c9a4129463052321b52450d98983c4332",
         "mikey179/vfsStream": "~1.2",
         "pfrenssen/phpcs-pre-push": "1.0",
-        "phing/phing": "~2.10",
         "phpunit/phpunit": "~4.8",
         "symfony/css-selector": "2.7.*"
     },
