@@ -23,6 +23,7 @@
         "drupal/core": "8.0.*",
         "drush/drush": "~8.0",
         "easyrdf/easyrdf": "dev-0.9.x as 0.9.1",
+        "drupal/phing-drush-task": "1.0",
         "php": ">=5.5.9"
     },
     "require-dev": {
@@ -33,7 +34,6 @@
         "drupal/config_update": "8.1.*@dev",
         "drupal/devel": "8.1.*@dev",
         "drupal/drupal-extension": "~3.0",
-        "drupal/phing-drush-task": "1.0",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "dev-master#10d7c48c9a4129463052321b52450d98983c4332",
         "mikey179/vfsStream": "~1.2",
