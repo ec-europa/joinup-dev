@@ -18,9 +18,6 @@ settings:
           items:
             - Bold
             - Italic
-            - JustifyLeft
-            - JustifyCenter
-            - JustifyRight
             - Format
         -
           name: Links
