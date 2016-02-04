@@ -2,10 +2,10 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: vbdyTXEnb1LKR3YH01wCITDJn0NA0fGsUJLhisGiLJ0
+  default_config_hash: V7ajwP6nYcUFjHnqUxOQc8Vg7zqzIW29BqUrp7XsPfc
 name: 'Content Editor'
 format: content_editor
-weight: 0
+weight: -10
 filters:
   filter_align:
     id: filter_align
@@ -16,10 +16,34 @@ filters:
   filter_html:
     id: filter_html
     provider: filter
-    status: false
+    status: true
     weight: -10
     settings:
       allowed_html: '<a hreflang href> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol type start> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p> <h1> <pre> <img src alt data-entity-type data-entity-uuid data-align data-caption> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr>'
       filter_html_help: true
       filter_html_nofollow: false
-
+  filter_htmlcorrector:
+    id: filter_htmlcorrector
+    provider: filter
+    status: true
+    weight: 10
+    settings: {  }
+  filter_url:
+    id: filter_url
+    provider: filter
+    status: true
+    weight: 0
+    settings:
+      filter_url_length: 72
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: true
+    weight: 0
+    settings: {  }
+  filter_html_image_secure:
+    id: filter_html_image_secure
+    provider: filter
+    status: true
+    weight: 9
+    settings: {  }
