@@ -16,9 +16,12 @@ settings:
         -
           name: Formatting
           items:
+            - Format
+            - '-'
             - Bold
             - Italic
-            - Format
+            - '-'
+            - RemoveFormat
         -
           name: Links
           items:
@@ -29,6 +32,7 @@ settings:
           items:
             - BulletedList
             - NumberedList
+            - '-'
             - Outdent
             - Indent
         -
@@ -36,16 +40,18 @@ settings:
           items:
             - Blockquote
             - DrupalImage
+            - Table
         -
           name: Tools
           items:
-            - Table
             - Cut
             - Copy
             - Paste
             - PasteText
+        -
+          name: Source
+          items:
             - Source
-            - RemoveFormat
   plugins:
     stylescombo:
       styles: ''
@@ -57,4 +63,3 @@ image_upload:
   max_dimensions:
     width: null
     height: null
-
