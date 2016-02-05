@@ -5,5 +5,3 @@ groups:
 node_access_strict: true
 orphans_delete: false
 use_queue: false
-_core:
-  default_config_hash: CdjXEFpViE98weuslNDK4Z_RyMrTadsZN4HqZr73Za4

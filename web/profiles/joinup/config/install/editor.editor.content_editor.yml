@@ -5,8 +5,6 @@ dependencies:
     - filter.format.content_editor
   module:
     - ckeditor
-_core:
-  default_config_hash: SUvBmPwvaV4YdhPTjBaRL5PAKL6RZ0UJDHUgmZFHmMI
 format: content_editor
 editor: ckeditor
 settings:
