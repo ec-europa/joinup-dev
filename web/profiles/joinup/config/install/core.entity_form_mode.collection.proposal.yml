@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - collection
+id: collection.proposal
+label: Proposal
+targetEntityType: collection
+cache: true
