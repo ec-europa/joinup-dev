@@ -22,7 +22,7 @@ Feature: Organic Groups integration
     Given I am an anonymous user
     When I go to the homepage of the "Überwaldean Land Eels" collection
     Then I should not see the "Join this collection" button
-    And I should not see the "Leave this collection" button
+    And I should not see the link "Leave this collection"
 
     # Authenticated users can join. The Join button should be hidden if the user
     # already is a member of the collection.
