@@ -37,6 +37,7 @@ config_devel:
   - block.block.seven_local_actions
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
+  - core.entity_form_display.collection.collection.proposal
   - core.entity_form_mode.collection.proposal
   - editor.editor.content_editor
   - field.field.user.user.og_group_ref
