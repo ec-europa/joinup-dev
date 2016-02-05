@@ -22,7 +22,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "collection" = @ContextDefinition("entity:collection", label = @Translation("Collection"))
  *   }
  * )
- *
  */
 class Collection extends ConditionPluginBase implements ContainerFactoryPluginInterface {
 
