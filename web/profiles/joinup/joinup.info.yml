@@ -21,8 +21,10 @@ dependencies:
   - toolbar
   - file
   - dynamic_page_cache
+  - ckeditor
   - rdf_entity
   - rdf_demo
+
 themes:
   - bartik
   - seven
@@ -33,5 +35,7 @@ config_devel:
   - block.block.seven_local_actions
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
+  - editor.editor.content_editor
+  - filter.format.content_editor
   - system.theme
   - user.role.administrator
