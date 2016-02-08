@@ -5,6 +5,8 @@ dependencies:
     - collection
     - file
     - image
+_core:
+  default_config_hash: pZIe7S0LXCq0h37mX3wsVAtl4BU1bZ_0Yf7NXP9irvU
 id: collection.field_collection_logo
 field_name: field_collection_logo
 entity_type: collection

@@ -10,3 +10,4 @@ is_admin: false
 permissions:
   - 'access content'
   - 'use text format content_editor'
+  - 'view published collection entities'

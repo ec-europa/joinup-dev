@@ -5,6 +5,8 @@ dependencies:
     - field.storage.collection.field_collection_pre_moderation
   module:
     - collection
+_core:
+  default_config_hash: tfaT9cIMvRr6-6-taWO4S4X4brS8Y8TfUF3jipWCIiU
 id: collection.collection.field_collection_pre_moderation
 field_name: field_collection_pre_moderation
 entity_type: collection

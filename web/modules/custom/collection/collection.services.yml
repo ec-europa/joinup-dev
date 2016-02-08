@@ -1,0 +1,6 @@
+services:
+  collection.collection_route_context:
+    class: Drupal\collection\ContextProvider\CollectionRouteContext
+    arguments: ['@current_route_match']
+    tags:
+      - { name: 'context_provider' }
