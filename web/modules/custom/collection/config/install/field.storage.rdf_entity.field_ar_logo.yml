@@ -2,12 +2,19 @@ langcode: en
 status: true
 dependencies:
   module:
-    - collection
     - file
     - image
-id: collection.field_collection_logo
-field_name: field_collection_logo
-entity_type: collection
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping_target_id: 'http://purl.org/dc/dcmitype/StillImage'
+    mapping_alt: ''
+    mapping_title: ''
+    mapping_width: ''
+    mapping_height: ''
+id: rdf_entity.field_ar_logo
+field_name: field_ar_logo
+entity_type: rdf_entity
 type: image
 settings:
   uri_scheme: public

@@ -6,6 +6,8 @@ dependencies:
     - rdf_entity.rdfentity.asset_repository
   module:
     - datetime
+_core:
+  default_config_hash: DMrwJHrwYZgYLtOl2S2L8Gjo7vKcrOSuSauAbGv-IeA
 id: rdf_entity.asset_repository.field_ar_creation_date
 field_name: field_ar_creation_date
 entity_type: rdf_entity

@@ -4,6 +4,8 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_ar_affiliates
     - rdf_entity.rdfentity.asset_repository
+_core:
+  default_config_hash: brC1_2f34J0S5YdzEonCEGM_gB4qktxdcbIbAr0ZuEw
 id: rdf_entity.asset_repository.field_ar_affiliates
 field_name: field_ar_affiliates
 entity_type: rdf_entity

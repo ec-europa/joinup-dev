@@ -2,11 +2,16 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.rdf_entity.asset_repository.field_ar_abstract
     - field.field.rdf_entity.asset_repository.field_ar_access_url
     - field.field.rdf_entity.asset_repository.field_ar_affiliates
+    - field.field.rdf_entity.asset_repository.field_ar_closed
     - field.field.rdf_entity.asset_repository.field_ar_contact_information
     - field.field.rdf_entity.asset_repository.field_ar_creation_date
     - field.field.rdf_entity.asset_repository.field_ar_description
+    - field.field.rdf_entity.asset_repository.field_ar_elibrary_creation
+    - field.field.rdf_entity.asset_repository.field_ar_logo
+    - field.field.rdf_entity.asset_repository.field_ar_moderation
     - field.field.rdf_entity.asset_repository.field_ar_modification_date
     - field.field.rdf_entity.asset_repository.field_ar_owner
     - field.field.rdf_entity.asset_repository.field_ar_policy_domain
@@ -15,13 +20,23 @@ dependencies:
     - rdf_entity.rdfentity.asset_repository
   module:
     - datetime
+    - image
     - link
+    - options
     - text
+_core:
+  default_config_hash: KNcapIyD58ZODBZgfzsONzudrstXUyrA2MIZvEEL3bY
 id: rdf_entity.asset_repository.default
 targetEntityType: rdf_entity
 bundle: asset_repository
 mode: default
 content:
+  field_ar_abstract:
+    weight: 8
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   field_ar_access_url:
     weight: -3
     label: above
@@ -40,6 +55,15 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_ar_closed:
+    weight: 9
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
   field_ar_contact_information:
     weight: 0
     label: above
@@ -61,6 +85,29 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+  field_ar_elibrary_creation:
+    weight: 10
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+  field_ar_logo:
+    weight: 7
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+  field_ar_moderation:
+    weight: 11
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
   field_ar_modification_date:
     weight: -1
     label: above

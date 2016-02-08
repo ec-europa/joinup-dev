@@ -6,6 +6,8 @@ dependencies:
     - rdf_entity.rdfentity.asset_repository
   module:
     - link
+_core:
+  default_config_hash: 3Ea4lsSUXSdU7Rg0IZadDA_cJySDX7BoefmEzcxUq5Q
 id: rdf_entity.asset_repository.field_ar_access_url
 field_name: field_ar_access_url
 entity_type: rdf_entity

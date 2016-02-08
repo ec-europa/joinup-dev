@@ -6,6 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_target_id: 'http://purl.org/dc/terms/publisher'
+_core:
+  default_config_hash: mJDJtFoedg8Gs_Xao9zNg7OV9PyaZv6ogRpO0hf2OHk
 id: rdf_entity.field_ar_owner
 field_name: field_ar_owner
 entity_type: rdf_entity

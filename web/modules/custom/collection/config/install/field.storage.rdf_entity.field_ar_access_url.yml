@@ -9,6 +9,8 @@ third_party_settings:
     mapping_uri: 'https://www.w3.org/ns/dcat#accessURL'
     mapping_title: ''
     mapping_options: ''
+_core:
+  default_config_hash: _oBBL8Yx9dU1GzBGetuKB5jwE8vD2xHC7Nk2UFhQbWA
 id: rdf_entity.field_ar_access_url
 field_name: field_ar_access_url
 entity_type: rdf_entity

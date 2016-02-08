@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ar_elibrary_creation
+    - rdf_entity.rdfentity.asset_repository
+  module:
+    - options
+id: rdf_entity.asset_repository.field_ar_elibrary_creation
+field_name: field_ar_elibrary_creation
+entity_type: rdf_entity
+bundle: asset_repository
+label: 'eLibrary creation'
+description: 'This field specified the type of Joinup user that can create content (news, events, documents) within the collection.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings: {  }
+field_type: list_integer

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ar_closed
+    - rdf_entity.rdfentity.asset_repository
+id: rdf_entity.asset_repository.field_ar_closed
+field_name: field_ar_closed
+entity_type: rdf_entity
+bundle: asset_repository
+label: Closed
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Closed collection'
+  off_label: 'Open collection'
+field_type: boolean

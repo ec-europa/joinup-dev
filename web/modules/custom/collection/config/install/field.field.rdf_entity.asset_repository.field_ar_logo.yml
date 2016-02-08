@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.collection.field_collection_logo
+    - field.storage.rdf_entity.field_ar_logo
+    - rdf_entity.rdfentity.asset_repository
   module:
-    - collection
     - image
-id: collection.collection.field_collection_logo
-field_name: field_collection_logo
-entity_type: collection
-bundle: collection
+id: rdf_entity.asset_repository.field_ar_logo
+field_name: field_ar_logo
+entity_type: rdf_entity
+bundle: asset_repository
 label: Logo
 description: ''
 required: true
@@ -17,13 +17,13 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: collection-logos
+  file_directory: 'collection/[date:custom:Y]-[date:custom:m]'
   file_extensions: 'png gif jpg jpeg'
-  max_filesize: '10 MB'
+  max_filesize: ''
   max_resolution: ''
   min_resolution: ''
-  alt_field: true
-  alt_field_required: true
+  alt_field: false
+  alt_field_required: false
   title_field: false
   title_field_required: false
   default_image:

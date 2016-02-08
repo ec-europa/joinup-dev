@@ -7,6 +7,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_value: 'http://purl.org/dc/terms/issued'
+_core:
+  default_config_hash: tR2Atoeta6NQQrYyXH3orVhJT0Ui06JiXS81auTd6as
 id: rdf_entity.field_ar_creation_date
 field_name: field_ar_creation_date
 entity_type: rdf_entity

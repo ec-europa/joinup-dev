@@ -1,8 +1,7 @@
-uuid: b70abd21-23b5-4f17-b73f-63f61765499d
 langcode: en
 status: true
 dependencies: {  }
-name: 'Asset repository'
+name: 'Collection  (asset repository)'
 rid: asset_repository
 description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
 rdftype: 'http://www.w3.org/ns/adms#AssetRepository'
