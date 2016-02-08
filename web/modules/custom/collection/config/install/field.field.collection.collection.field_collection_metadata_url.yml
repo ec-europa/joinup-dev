@@ -6,6 +6,8 @@ dependencies:
   module:
     - collection
     - link
+_core:
+  default_config_hash: S2BL4WDQxH25SLBuKuk2TNMSmXp1G7tzyU9REq-NzG4
 id: collection.collection.field_collection_metadata_url
 field_name: field_collection_metadata_url
 entity_type: collection

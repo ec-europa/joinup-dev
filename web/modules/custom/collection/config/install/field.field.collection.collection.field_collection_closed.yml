@@ -6,6 +6,8 @@ dependencies:
   module:
     - collection
     - options
+_core:
+  default_config_hash: xkWbGiIdCqCVsa8bE9y3iDbHaiDtmZNlbwFna3NN8Nw
 id: collection.collection.field_collection_closed
 field_name: field_collection_closed
 entity_type: collection

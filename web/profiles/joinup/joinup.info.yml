@@ -7,23 +7,24 @@ distribution:
   name: Joinup
 
 dependencies:
-  - node
   - block
+  - ckeditor
   - collection
   - contextual
+  - dynamic_page_cache
   - editor
+  - file
+  - help
   - image
   - menu_ui
-  - help
+  - node
+  - og
   - options
-  - path
   - page_cache
-  - toolbar
-  - file
-  - dynamic_page_cache
-  - ckeditor
-  - rdf_entity
+  - path
   - rdf_demo
+  - rdf_entity
+  - toolbar
 
 themes:
   - bartik
@@ -32,10 +33,17 @@ themes:
 config_devel:
   - block.block.bartik_local_actions
   - block.block.bartik_local_tasks
+  - block.block.joincollectionblock
   - block.block.seven_local_actions
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
   - editor.editor.content_editor
+  - field.field.user.user.og_group_ref
+  - field.storage.user.og_group_ref
   - filter.format.content_editor
+  - og.og_membership_type.og_membership_type
+  - og.settings
   - system.theme
   - user.role.administrator
+  - user.role.anonymous
+  - user.role.authenticated

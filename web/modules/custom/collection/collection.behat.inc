@@ -8,8 +8,9 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\file\Entity\File;
 use Drupal\collection\Entity\Collection;
+use Drupal\file\Entity\File;
+use Drupal\og\OgMembershipInterface;
 
 /**
  * Behat step definitions for testing collections.
@@ -41,6 +42,68 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Navigates to the canonical page display of a collection.
+   *
+   * @param string $collection
+   *   The name of the collection.
+   *
+   * @When (I )go to (the homepage of )the :collection collection
+   * @When (I )visit (the homepage of )the :collection collection
+   */
+  public function visitCollection($collection) {
+    $collection = $this->getCollectionByName($collection);
+    $this->visitPath('/collection/' . $collection->id());
+  }
+
+  /**
+   * Creates a number of collections with data provided in a table.
+   *
+   * Table format:
+   *
+   * @codingStandardsIgnoreStart
+   * | name            | author   | logo     | pre-moderation | closed | create elibrary  | schedule | metadata url           |
+   * | The City Watch  | Riktor   | logo.png | 0              | 0      | facilitators     | daily    | https://city-watch.am/ |
+   * | The Smoking Gnu | Mr. Pump | logo.gif | 1              | 1      | registered_users | weekly   | https://gnu.am/        |
+   * @codingStandardsIgnoreEnd
+   *
+   * Only the name field is required.
+   *
+   * @param TableNode $collection_table
+   *   The collection data.
+   *
+   * @throws \Exception
+   *   Thrown when a column name is incorrect.
+   *
+   * @Given (the following )collections:
+   */
+  public function givenCollections(TableNode $collection_table) {
+    $aliases = [
+      'name' => 'name',
+      'author' => 'author',
+      'logo' => 'field_collection_logo',
+      'pre-moderation' => 'field_collection_pre_moderation',
+      'closed' => 'field_collection_closed',
+      'create elibrary' => 'field_collection_create_elibrary',
+      'schedule' => 'field_collection_schedule',
+      'metadata url' => 'field_collection_metadata_url',
+    ];
+
+    foreach ($collection_table->getColumnsHash() as $collection) {
+      $values = [];
+      // Replace the column aliases with the actual field names.
+      foreach ($collection as $key => $value) {
+        if (array_key_exists($key, $aliases)) {
+          $values[$aliases[$key]] = $value;
+        }
+        else {
+          throw new \Exception("Unknown column '$key' in collection table.");
+        }
+      };
+      $this->createCollection($values);
+    }
+  }
+
+  /**
    * Creates a collection with data provided in a table.
    *
    * Table format:
@@ -59,7 +122,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   The collection data.
    *
    * @throws \Exception
-   *   Thrown when a column name is incorrect, or a given image is not found.
+   *   Thrown when a column name is incorrect.
    *
    * @Given (the following )collection:
    */
@@ -85,7 +148,22 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         throw new \Exception("Unknown column '$key' in collection table.");
       }
     };
+    $this->createCollection($values);
+  }
 
+  /**
+   * Creates a collection from the given property and field data.
+   *
+   * @param array $values
+   *   An optional associative array of values, keyed by property name.
+   *
+   * @return \Drupal\collection\Entity\Collection
+   *   A new collection entity.
+   *
+   * @throws \Exception
+   *   Thrown when a given image is not found.
+   */
+  public function createCollection(array $values) {
     // Add image.
     if (!empty($values['field_collection_logo'])) {
       $filename = $values['field_collection_logo'];
@@ -104,24 +182,39 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
 
       $this->images[$image->id()] = $image;
     }
-    $this->createCollection($values);
-  }
 
-  /**
-   * Creates a new collection with the given values.
-   *
-   * @param array $values
-   *   An optional associative array of values, keyed by property name.
-   *
-   * @return \Drupal\collection\Entity\Collection
-   *   A new collection entity.
-   */
-  public function createCollection(array $values = []) {
     $collection = Collection::create($values);
     $collection->save();
     $this->collections[$collection->id()] = $collection;
 
     return $collection;
+  }
+
+  /**
+   * Returns the Collection with the given name.
+   *
+   * If multiple collections have the same name, the first one will be returned.
+   *
+   * @param string $name
+   *   The collection name.
+   *
+   * @return \Drupal\collection\CollectionInterface
+   *   The collection.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when a collection with the given name does not exist.
+   */
+  protected function getCollectionByName($name) {
+    $result = \Drupal::entityQuery('collection')
+      ->condition('name', $name)
+      ->range(0, 1)
+      ->execute();
+
+    if (empty($result)) {
+      throw new \InvalidArgumentException("The collection with the name '$name' does not exist.");
+    }
+
+    return Collection::load(reset($result));
   }
 
   /**
@@ -139,6 +232,38 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $actual = \Drupal::entityQuery('collection')->count()->execute();
     if ($actual != $number) {
       throw new \Exception("Wrong number of collections. Expected number: $number, actual number: $actual.");
+    }
+  }
+
+  /**
+   * Checks the number of members in a given collection.
+   *
+   * In OG parlance a group member can be any kind of entity, but this only
+   * checks which Users are members of the collection.
+   *
+   * @param string $collection
+   *   The name of the collection to check.
+   * @param int $number
+   *   The expected number of members in the collection.
+   *
+   * @throws \Exception
+   *   Thrown when the number of members does not not match the expectation.
+   *
+   * @Then the :collection collection should have :number member(s)
+   */
+  public function assertMemberCount($collection, $number) {
+    $collection = $this->getCollectionByName($collection);
+
+    $actual = \Drupal::entityQuery('og_membership')
+      ->condition('group_entity_type', 'collection')
+      ->condition('group_entity_id', $collection->id())
+      ->condition('member_entity_type', 'user')
+      ->condition('state', OgMembershipInterface::STATE_ACTIVE)
+      ->count()
+      ->execute();
+
+    if ($actual != $number) {
+      throw new \Exception("Wrong number of members. Expected number: $number, actual number: $actual.");
     }
   }
 

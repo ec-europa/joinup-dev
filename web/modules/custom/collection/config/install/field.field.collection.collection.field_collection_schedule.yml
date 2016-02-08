@@ -6,6 +6,8 @@ dependencies:
   module:
     - collection
     - options
+_core:
+  default_config_hash: csrEtuajlGGRUN-3Xe6YpFFprBg8ohHxEGg8Zlqni0U
 id: collection.collection.field_collection_schedule
 field_name: field_collection_schedule
 entity_type: collection
