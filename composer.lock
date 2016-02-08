@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "64e9d16cc64a73d94e1a2c89ab82a8c8",
-    "content-hash": "724d9aabe9dc39356761e22d6250b2b2",
+    "hash": "54115611aae9d8ea0b8ded771eb709f4",
+    "content-hash": "b87ebfc6155ef6d06ceddaba36e61253",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1875,7 +1875,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }

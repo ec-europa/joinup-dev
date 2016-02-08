@@ -25,7 +25,6 @@
         "drupal/config_update": "dev-8.x-1.x",
         "drupal/devel": "dev-8.x-1.x",
         "drupal/drupal-extension": "dev-assert-not-button as 3.1.6",
-        "drupal/phing-drush-task": "1.0",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "dev-master#10d7c48c9a4129463052321b52450d98983c4332",
         "mikey179/vfsStream": "~1.2",
