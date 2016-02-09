@@ -4,3 +4,14 @@
  * @file
  * Main functions and hook implementations of the Collection module.
  */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function collection_form_block_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Hide the 'negation' option for collection block visibility. There are no
+  // good use cases to show a block on all pages, except on collection pages.
+  $form['visibility']['collection']['negate']['#access'] = FALSE;
+}
