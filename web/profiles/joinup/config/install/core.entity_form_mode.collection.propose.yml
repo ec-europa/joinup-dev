@@ -3,7 +3,7 @@ status: true
 dependencies:
   module:
     - collection
-id: collection.proposal
-label: Proposal
+id: collection.propose
+label: Propose
 targetEntityType: collection
 cache: true

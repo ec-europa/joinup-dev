@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_form_mode.collection.proposal
+    - core.entity_form_mode.collection.propose
     - field.field.collection.collection.field_collection_closed
     - field.field.collection.collection.field_collection_create_elibrary
     - field.field.collection.collection.field_collection_logo
@@ -14,10 +14,10 @@ dependencies:
     - collection
     - image
     - link
-id: collection.collection.proposal
+id: collection.collection.propose
 targetEntityType: collection
 bundle: collection
-mode: proposal
+mode: propose
 content:
   field_collection_closed:
     weight: 2
