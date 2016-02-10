@@ -278,21 +278,16 @@
         },
         "Tags": [
           {
-            "Key": "env",
-            "Value":{
-              "Fn::Join": [
-                "",
-                [
-                  {"Ref": "AWS::StackName"},
-                  "-",
-                  {"Ref": "env"}
-                ]
-              ]
-            }
+            "Key": "stack",
+            "Value": {"Ref": "AWS::StackName"}
           },
           {
             "Key":"Name",
             "Value": { "Ref": "AWS::StackName" }
+          },
+          {
+            "Key":"env",
+            "Value": { "Ref": "env" }
           }
         ]
       }
