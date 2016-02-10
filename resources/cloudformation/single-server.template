@@ -267,7 +267,7 @@
                 "' >> /usr/local/etc/subsite/subsite.tmp.ini",
                 "\n",
                 "mv /usr/local/etc/subsite/subsite.tmp.ini /usr/local/etc/subsite/subsite.ini",
-                "\n",
+                "\n"
               ]
             ]
           }
