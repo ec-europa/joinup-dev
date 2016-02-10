@@ -12,6 +12,9 @@ delete collection entities:
 edit collection entities:
   title: 'Edit Collection entities'
 
+propose collection entities:
+  title: 'Propose new Collection entities'
+
 view published collection entities:
   title: 'View published Collection entities'
 
