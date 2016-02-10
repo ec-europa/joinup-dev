@@ -45,7 +45,7 @@
 
     <target name="run-stack">
         <aws-cf-runstack
-                name="subsite-${cf.stackName}"
+                name="joinup-${cf.stackName}"
                 updateOnConflict="true"
                 capabilities="CAPABILITY_IAM"
                 templatePath="./resources/cloudformation/single-server.template">
