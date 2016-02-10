@@ -45,7 +45,7 @@
 
     <target name="run-stack">
         <aws-cf-runstack
-                name="joinup-${cf.stackName}"
+                name="${deploy.applicationName}-${cf.stackName}"
                 updateOnConflict="true"
                 capabilities="CAPABILITY_IAM"
                 templatePath="./resources/cloudformation/single-server.template">
@@ -62,7 +62,7 @@
                 deploymentConfigName="CodeDeployDefault.OneAtATime"
                 serviceRole="${deploy.serviceRole}"
                 application="${deploy.applicationName}">
-            <ec2TagFilter key="env" value="${cf.stackName}" />
+            <ec2TagFilter key="stack" value="${deploy.applicationName}-${cf.stackName}" />
         </aws-deploy-deployment-group>
     </target>
 

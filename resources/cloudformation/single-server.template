@@ -272,15 +272,22 @@
             ]
           }
         },
-        "ImageId": "ami-d259e9a1",
+        "ImageId": "ami-f741f184",
         "InstanceType": {
           "Ref": "InstanceType"
         },
         "Tags": [
           {
             "Key": "env",
-            "Value": {
-              "Ref": "env"
+            "Value":{
+              "Fn::Join": [
+                "",
+                [
+                  {"Ref": "AWS::StackName"},
+                  "-",
+                  {"Ref": "env"}
+                ]
+              ]
             }
           },
           {
