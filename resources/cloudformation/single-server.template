@@ -173,7 +173,7 @@
                 "",
                 [
                   { "Ref": "env" },
-                  ".",
+                  ".joinup.",
                   { "Ref": "HostedZone" },
                   "."
                 ]
@@ -192,7 +192,7 @@
                 [
                   "*.",
                   { "Ref": "env" },
-                  ".",
+                  ".joinup.",
                   { "Ref": "HostedZone" },
                   "."
                 ]
@@ -272,7 +272,7 @@
             ]
           }
         },
-        "ImageId": "ami-f741f184",
+        "ImageId": "ami-7042f203",
         "InstanceType": {
           "Ref": "InstanceType"
         },
@@ -326,7 +326,7 @@
           [
             "http://",
             { "Ref": "env" },
-            ".",
+            ".joinup.",
             { "Ref": "HostedZone" },
             "/"
           ]
