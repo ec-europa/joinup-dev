@@ -31,6 +31,7 @@ use Drupal\user\UserInterface;
  *     "form" = {
  *       "default" = "Drupal\collection\Form\CollectionForm",
  *       "add" = "Drupal\collection\Form\CollectionForm",
+ *       "propose" = "Drupal\collection\Form\CollectionForm",
  *       "edit" = "Drupal\collection\Form\CollectionForm",
  *       "delete" = "Drupal\collection\Form\CollectionDeleteForm",
  *     },
