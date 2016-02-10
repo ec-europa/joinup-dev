@@ -28,6 +28,14 @@ entity.collection.add_form:
   options:
     _admin_route: TRUE
 
+entity.collection.propose_form:
+  path: '/collection/propose'
+  defaults:
+    _entity_form: collection.propose
+    _title: 'Propose a Collection'
+  requirements:
+    _permission: 'propose collection entities'
+
 entity.collection.edit_form:
   path: '/admin/structure/collection/{collection}/edit'
   defaults:
