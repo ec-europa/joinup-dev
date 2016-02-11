@@ -29,7 +29,7 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
   /**
    * The collection to join.
    *
-   * @var \Drupal\collection\CollectionInterface
+   * @var \Drupal\rdf_entity\RdfInterface
    */
   protected $collection;
 
@@ -66,7 +66,7 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
     $this->currentRouteMatch = $current_route_match;
     $this->user = $user;
     // Retrieve the collection from the route.
-    $this->collection = $this->currentRouteMatch->getParameter('collection');
+    $this->collection = $this->currentRouteMatch->getParameter('rdf_entity');
   }
 
   /**

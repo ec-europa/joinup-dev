@@ -9,6 +9,7 @@ namespace Drupal\rdf_entity\Form;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\rdf_entity\Entity\RdfEntityType;
 
 /**
  * Form controller for the rdf_entity entity edit forms.
@@ -24,6 +25,18 @@ class RdfForm extends ContentEntityForm {
     /* @var $entity \Drupal\rdf_entity\Entity\Rdf */
     $form = parent::buildForm($form, $form_state);
     $entity = $this->entity;
+
+    $type = RdfEntityType::load($entity->bundle());
+    if ($type->label()) {
+      // Add.
+      if ($entity->isNew()) {
+        $form['#title'] = $this->t('<em>Add @type</em>', array('@type' => $type->label()));
+      }
+      // Edit.
+      else {
+        $form['#title'] = $this->t('<em>Edit @type</em> @title', array('@type' => $type->label(), '@title' => $entity->label()));
+      }
+    }
 
     $form['langcode'] = array(
       '#title' => $this->t('Language'),

@@ -7,8 +7,6 @@
 namespace Drupal\rdf_entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\user\EntityOwnerInterface;
-use Drupal\Core\Entity\EntityChangedInterface;
 
 /**
  * Provides an interface defining a Rdf entity.
@@ -17,7 +15,7 @@ use Drupal\Core\Entity\EntityChangedInterface;
  *
  * @ingroup rdf_entity
  */
-interface RdfInterface extends ContentEntityInterface, EntityOwnerInterface, EntityChangedInterface {
+interface RdfInterface extends ContentEntityInterface {
   /**
    * Gets the name of the rdf entity.
    *

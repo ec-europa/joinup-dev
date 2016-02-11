@@ -13,9 +13,11 @@ Feature: Collection API
       | create elibrary | facilitators                |
       | schedule        | daily                       |
       | metadata url    | https://ec.europa.eu/my/url |
+      | uri             | https://ec.europa.eu/my/url |
     Then I should have 1 collection
 
   Scenario: Programmatically create a collection using only the name
     Given the following collection:
       | name            | EU Interoperability Support Group |
+      | uri             | http://joinup.eu/collection/eisg  |
     Then I should have 1 collection

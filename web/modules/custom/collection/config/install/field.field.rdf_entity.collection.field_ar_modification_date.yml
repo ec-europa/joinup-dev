@@ -3,15 +3,15 @@ status: true
 dependencies:
   config:
     - field.storage.rdf_entity.field_ar_modification_date
-    - rdf_entity.rdfentity.asset_repository
+    - rdf_entity.rdfentity.collection
   module:
     - datetime
 _core:
   default_config_hash: 5ZGp3vrRJR9ylBO5ATCH4FkAulC0JzcQLukv5N65FDc
-id: rdf_entity.asset_repository.field_ar_modification_date
+id: rdf_entity.collection.field_ar_modification_date
 field_name: field_ar_modification_date
 entity_type: rdf_entity
-bundle: asset_repository
+bundle: collection
 label: 'Modification date'
 description: 'Date of last modification'
 required: false

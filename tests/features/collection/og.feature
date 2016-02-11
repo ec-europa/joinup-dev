@@ -6,9 +6,9 @@ Feature: Organic Groups integration
 
   Scenario: Joining and leaving a collection
     Given collections:
-      | name                        | author          |
-      | Überwaldean Land Eels       | Arnold Sideways |
-      | Folk Dance and Song Society | Ptaclusp IIb    |
+      | name                        | author          | uri                             |
+      | Überwaldean Land Eels       | Arnold Sideways | http://joinup.eu/collection/ule |
+      | Folk Dance and Song Society | Ptaclusp IIb    | http://joinup.eu/collection/fds |
     And users:
       | name           | role          |
       | Madame Sharn   | authenticated |

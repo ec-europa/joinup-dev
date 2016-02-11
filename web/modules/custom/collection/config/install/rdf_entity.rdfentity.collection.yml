@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-name: 'Collection  (asset repository)'
-rid: asset_repository
+name: 'Collection'
+rid: collection
 description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
 rdftype: 'http://www.w3.org/ns/adms#AssetRepository'
 rdf_label: 'http://purl.org/dc/terms/title'

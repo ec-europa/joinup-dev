@@ -33,9 +33,4 @@ visibility:
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
-  collection:
-    id: collection
-    collections: 1
-    negate: false
-    context_mapping:
-      collection: '@collection.collection_route_context:collection'
+

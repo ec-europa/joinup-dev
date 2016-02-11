@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_ar_topic
-    - rdf_entity.rdfentity.asset_repository
+    - field.storage.rdf_entity.field_ar_affiliates
+    - rdf_entity.rdfentity.collection
 _core:
-  default_config_hash: CoWTj74IsnBpKkthX1JduVJMLaqzPKVMoalxUyM99Sk
-id: rdf_entity.asset_repository.field_ar_topic
-field_name: field_ar_topic
+  default_config_hash: brC1_2f34J0S5YdzEonCEGM_gB4qktxdcbIbAr0ZuEw
+id: rdf_entity.collection.field_ar_affiliates
+field_name: field_ar_affiliates
 entity_type: rdf_entity
-bundle: asset_repository
-label: Topic
+bundle: collection
+label: Affiliates
 description: ''
 required: false
 translatable: false

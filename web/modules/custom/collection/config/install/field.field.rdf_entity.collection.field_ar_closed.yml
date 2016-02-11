@@ -3,11 +3,11 @@ status: true
 dependencies:
   config:
     - field.storage.rdf_entity.field_ar_closed
-    - rdf_entity.rdfentity.asset_repository
-id: rdf_entity.asset_repository.field_ar_closed
+    - rdf_entity.rdfentity.collection
+id: rdf_entity.collection.field_ar_closed
 field_name: field_ar_closed
 entity_type: rdf_entity
-bundle: asset_repository
+bundle: collection
 label: Closed
 description: ''
 required: false

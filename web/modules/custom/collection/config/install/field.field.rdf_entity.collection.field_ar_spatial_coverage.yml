@@ -3,13 +3,13 @@ status: true
 dependencies:
   config:
     - field.storage.rdf_entity.field_ar_spatial_coverage
-    - rdf_entity.rdfentity.asset_repository
+    - rdf_entity.rdfentity.collection
 _core:
   default_config_hash: '-FURkFIaz8X7XRujfB_zcBTO-7DWYKngYZYaSwRMiU4'
-id: rdf_entity.asset_repository.field_ar_spatial_coverage
+id: rdf_entity.collection.field_ar_spatial_coverage
 field_name: field_ar_spatial_coverage
 entity_type: rdf_entity
-bundle: asset_repository
+bundle: collection
 label: 'Spatial coverage'
 description: ''
 required: false

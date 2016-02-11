@@ -3,13 +3,13 @@ status: true
 dependencies:
   config:
     - field.storage.rdf_entity.field_ar_contact_information
-    - rdf_entity.rdfentity.asset_repository
+    - rdf_entity.rdfentity.collection
 _core:
   default_config_hash: DToD0R6k5FFSdP63wilqppBp-UZ8pj4Cn6PUW7moitY
-id: rdf_entity.asset_repository.field_ar_contact_information
+id: rdf_entity.collection.field_ar_contact_information
 field_name: field_ar_contact_information
 entity_type: rdf_entity
-bundle: asset_repository
+bundle: collection
 label: 'Contact information'
 description: ''
 required: false

@@ -10,7 +10,7 @@ field_name: og_group_ref
 entity_type: user
 type: og_membership_reference
 settings:
-  target_type: collection
+  target_type: rdf_entity
 module: og
 locked: false
 cardinality: -1
