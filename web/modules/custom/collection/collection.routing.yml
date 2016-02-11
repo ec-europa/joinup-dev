@@ -6,7 +6,6 @@ entity.rdf_entity.leave_confirm_form:
     _form: '\Drupal\collection\Form\LeaveCollectionConfirmForm'
     _title: 'Leave collection'
   requirements:
-    _permission: 'view published collection entities'
     _custom_access: '\Drupal\collection\Form\LeaveCollectionConfirmForm::access'
   options:
     parameters:

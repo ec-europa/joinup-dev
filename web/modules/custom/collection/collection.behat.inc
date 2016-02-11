@@ -21,7 +21,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Test collections.
    *
-   * @var \Drupal\collection\Entity\Collection[]
+   * @var \Drupal\rdf_entity\Entity\Rdf[]
    */
   protected $collections = [];
 
@@ -162,7 +162,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
-   * @return \Drupal\collection\Entity\Collection
+   * @return \Drupal\rdf_entity\Entity\Rdf
    *   A new collection entity.
    *
    * @throws \Exception
