@@ -106,10 +106,9 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $user = User::load($this->currentUser()->id());
     $membership_ids = \Drupal::entityQuery('og_membership')
-      ->condition('member_entity_id', $user->id())
-      ->condition('member_entity_type', 'user')
-      ->condition('group_entity_id', $this->collection->id())
-      ->condition('group_entity_type', 'rdf_entity')
+      ->condition('uid', $user->id())
+      ->condition('entity_id', $this->collection->id())
+      ->condition('entity_type', 'rdf_entity')
       ->execute();
     $memberships = Og::membershipStorage()->loadMultiple($membership_ids);
     Og::membershipStorage()->delete($memberships);
