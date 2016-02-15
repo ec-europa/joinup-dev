@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "64e9d16cc64a73d94e1a2c89ab82a8c8",
-    "content-hash": "724d9aabe9dc39356761e22d6250b2b2",
+    "hash": "525fe17296a70c4060ac5f1165fd1f7c",
+    "content-hash": "3fb5141d41d5d9a47120e6c04f22b6ce",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1875,7 +1875,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -4759,7 +4759,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "4d1de9006f9f62a3c2f523ea7748b4d2a02362de"
+                "reference": "2c80e1234a5f132ba92652af1204c413f24e925e"
             },
             "require": {
                 "php": ">=5.4.0",
@@ -4774,9 +4774,7 @@
                 "branch-alias": {
                     "dev-8.x-2.x": "8.2.x-dev"
                 },
-                "patches_applied": {
-                    "Issue #2661274: False positive on @codingStandardsIgnoreStart/End in function docblocks": "https://www.drupal.org/files/issues/2661274-2.patch"
-                }
+                "patches_applied": []
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "license": [
@@ -4789,7 +4787,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-01-22 00:28:31"
+            "time": "2016-02-07 19:44:27"
         },
         {
             "name": "drupal/config_devel",
@@ -4822,7 +4820,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_update.git",
-                "reference": "a0180ef9543394fb7ec04b831d554204781b388d"
+                "reference": "d58d0277d2573a705af9765386945847acf195b3"
             },
             "require": {
                 "drupal/config": "8.*",
@@ -4844,7 +4842,7 @@
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
-            "time": "2016-02-02 14:24:56"
+            "time": "2016-02-05 16:50:04"
         },
         {
             "name": "drupal/devel",
@@ -4852,7 +4850,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "bb45a4e5e1c0f8f83ec05b52b3d7329a1ca77dec"
+                "reference": "6063e24c24288cbcba8ac969d2de4c6f3f52b91c"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -4887,7 +4885,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2016-01-30 21:39:03"
+            "time": "2016-02-08 18:00:33"
         },
         {
             "name": "drupal/drupal-driver",
