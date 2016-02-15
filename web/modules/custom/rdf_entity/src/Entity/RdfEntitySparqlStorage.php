@@ -252,6 +252,24 @@ QUERY;
    */
   protected function doDelete($entities) {
     $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
+
+    // @todo The hardcoding will be fixed in future issue.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2343
+    $query = <<<QUERY
+DELETE FROM <http://localhost:8890/DAV>
+{
+  ?entity ?field ?value
+}
+WHERE
+{
+  ?entity ?field ?value
+  FILTER(
+    ?entity IN ($entity_list)
+  )
+}
+QUERY;
+
+    /*
     $query = <<<QUERY
 DELETE {
   GRAPH ?g {
@@ -265,7 +283,7 @@ WHERE {
   }
 }
 QUERY;
-
+*/
     $this->sparql->query($query);
   }
 
@@ -395,6 +413,7 @@ QUERY;
     $pred = 'rdf:type';
     $insert .= $subj . ' ' . $pred . ' <' . $rdf_field . '>  .' . "\n";
 
+
     $query = <<<QUERY
 DELETE {
   GRAPH ?g {
@@ -408,6 +427,7 @@ WHERE {
   }
 }
 QUERY;
+
     if (!$entity->isNew()) {
       $this->sparql->query($query);
     }
