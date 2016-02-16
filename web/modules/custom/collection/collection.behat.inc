@@ -265,9 +265,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $collection = $this->getCollectionByName($collection);
 
     $actual = \Drupal::entityQuery('og_membership')
-      ->condition('group_entity_type', 'rdf_entity')
-      ->condition('group_entity_id', $collection->id())
-      ->condition('member_entity_type', 'user')
+      ->condition('entity_type', 'rdf_entity')
+      ->condition('entity_id', $collection->id())
       ->condition('state', OgMembershipInterface::STATE_ACTIVE)
       ->count()
       ->execute();

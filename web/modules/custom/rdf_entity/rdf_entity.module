@@ -197,10 +197,9 @@ function rdf_entity_entity_insert(EntityInterface $entity) {
     // Subscribe the group manager.
     $membership = \Drupal\og\Entity\OgMembership::create(['type' => \Drupal\og\OgMembershipInterface::TYPE_DEFAULT]);
     $membership
-      ->setMemberEntityId(\Drupal::currentUser()->id())
-      ->setMemberEntityType('user')
-      ->setGroupEntityid($entity->id())
-      ->setGroupEntityType($entity->getEntityTypeId())
+      ->setUser(\Drupal::currentUser()->id())
+      ->setEntityId($entity->id())
+      ->setEntityType($entity->getEntityTypeId())
       ->setFieldName($membership->getFieldName())
       ->save();
   }
