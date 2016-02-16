@@ -11,6 +11,7 @@ permissions:
   - 'access content'
   - 'use text format content_editor'
   - 'view published collection entities'
+  - 'view rdf entity'
   - 'use text format basic_html'
   - 'create collection rdf entity'
   - 'delete collection rdf entity'
