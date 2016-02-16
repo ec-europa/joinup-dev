@@ -26,7 +26,7 @@ class SetVirtuosoSparqlPermissions extends \Task {
    * Set the permissions of the '/sparql' endpoint to allow update queries.
    */
   public function main() {
-    $command = "echo 'grant SPARQL_UPDATE to \"SPARQL\";' | " . $this->isqlPath . " 1111 dba " . $this->dbaPass;
+    $command = "echo 'grant SPARQL_UPDATE to \"SPARQL\";' | " . $this->isqlPath . " Virtuoso dba " . $this->dbaPass;
     $output = array();
     $return = NULL;
     exec($command, $output, $return);
