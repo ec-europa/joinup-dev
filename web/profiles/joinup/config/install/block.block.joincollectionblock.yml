@@ -7,10 +7,12 @@ dependencies:
     - user
   theme:
     - bartik
+_core:
+  default_config_hash: coJvJ5S8qjA1CU2RTRjp2LQAdgz-Ae5XO6vXDY0q2KI
 id: joincollectionblock
 theme: bartik
 region: content
-weight: null
+weight: -7
 provider: null
 plugin: join_collection_block
 settings:
@@ -23,7 +25,7 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: '/collection/*/leave'
+    pages: '/rdf_entity/*/leave'
     negate: true
     context_mapping: {  }
   user_role:
@@ -38,4 +40,4 @@ visibility:
     collections: 1
     negate: false
     context_mapping:
-      collection: '@collection.collection_route_context:collection'
+      collection: '@collection.collection_route_context:rdf_entity'

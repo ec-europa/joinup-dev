@@ -19,7 +19,7 @@ entity.rdf_entity.collection:
     _title: 'RDF'
   requirements:
   # Checks for permission directly.
-    _permission: 'view rdf entity'
+    _permission: 'view rdf entity overview'
 
 rdf_entity.rdf_add_page:
   path: '/rdf_entity/add'

@@ -11,7 +11,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\user\UserInterface;
 use Drupal\Core\Entity\EntityChangedTrait;
 
 /**
@@ -195,36 +194,6 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     // For now, this date is a workaround.
     return '2014-05-19T17:03:00';
     // @todo Change return $this->get('changed')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOwner() {
-    return $this->get('user_id')->entity;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOwnerId() {
-    return $this->get('user_id')->target_id;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setOwnerId($uid) {
-    $this->set('user_id', $uid);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setOwner(UserInterface $account) {
-    $this->set('user_id', $account->id());
-    return $this;
   }
 
   /**

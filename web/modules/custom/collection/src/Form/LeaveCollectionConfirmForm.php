@@ -12,8 +12,8 @@ use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\collection\CollectionInterface;
 use Drupal\og\Og;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -26,7 +26,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   /**
    * The collection that is about to be abandoned by the user.
    *
-   * @var \Drupal\collection\CollectionInterface
+   * @var \Drupal\rdf_entity\RdfInterface
    */
   protected $collection;
 
@@ -57,17 +57,17 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return Url::fromRoute('entity.collection.canonical', [
-      'collection' => $this->collection->id(),
+    return Url::fromRoute('entity.rdf_entity.canonical', [
+      'rdf_entity' => $this->collection->sanitizedId(),
     ]);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, CollectionInterface $collection = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
     // Store the collection on the object so it can be reused.
-    $this->collection = $collection;
+    $this->collection = $rdf_entity;
 
     $form = parent::buildForm($form, $form_state);
 
@@ -109,7 +109,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
       ->condition('member_entity_id', $user->id())
       ->condition('member_entity_type', 'user')
       ->condition('group_entity_id', $this->collection->id())
-      ->condition('group_entity_type', 'collection')
+      ->condition('group_entity_type', 'rdf_entity')
       ->execute();
     $memberships = Og::membershipStorage()->loadMultiple($membership_ids);
     Og::membershipStorage()->delete($memberships);
@@ -124,13 +124,13 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   /**
    * Access check for the LeaveCollectionConfirmForm.
    *
-   * @param \Drupal\collection\CollectionInterface $collection
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The collection that is on the verge of losing a member.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public static function access(CollectionInterface $collection) {
+  public static function access(RdfInterface $rdf_entity) {
     /** @var \Drupal\Core\Session\AccountProxyInterface $account_proxy */
     $account_proxy = \Drupal::service('current_user');
 
@@ -141,7 +141,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
 
     // Only allow access if the current user is a member of the collection.
     $user = User::load($account_proxy->id());
-    return AccessResult::allowedIf(Og::isMember($collection, $user));
+    return AccessResult::allowedIf(Og::isMember($rdf_entity, $user));
   }
 
   /**

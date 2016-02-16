@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ar_abstract
+    - rdf_entity.rdfentity.collection
+  module:
+    - text
+id: rdf_entity.collection.field_ar_abstract
+field_name: field_ar_abstract
+entity_type: rdf_entity
+bundle: collection
+label: Abstract
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
