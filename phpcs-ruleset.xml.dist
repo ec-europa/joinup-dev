@@ -13,5 +13,8 @@
     <exclude-pattern>*.min.css</exclude-pattern>
     <exclude-pattern>*.min.js</exclude-pattern>
 
+    <!-- Exclude Phing scripts from Drupal coding standards. -->
+    <exclude-pattern>src/*</exclude-pattern>
+
     <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal" />
 </ruleset>

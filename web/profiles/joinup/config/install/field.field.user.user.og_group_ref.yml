@@ -17,7 +17,7 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:collection'
+  handler: 'default:rdf_entity'
   handler_settings: {  }
   access_override: false
 field_type: og_membership_reference

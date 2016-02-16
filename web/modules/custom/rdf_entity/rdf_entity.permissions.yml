@@ -1,10 +1,9 @@
-'delete rdf entity':
-  title: Delete entity content.
-'add rdf entity':
-  title: Add entity content
 'view rdf entity':
-  title: View entity content
-'edit rdf entity':
-  title: Edit entity content
+  title: View Rdf entity
+'view rdf entity overview':
+  title: View Rdf entity overview
 'administer rdf entity':
   title: Administer settings
+
+permission_callbacks:
+  - \Drupal\rdf_entity\RdfPermissions::rdfTypePermissions

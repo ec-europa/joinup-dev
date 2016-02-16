@@ -17,6 +17,7 @@ drupal.db.port = 3306
 drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${drupal.db.name}
 sparql.host = localhost
 sparql.port = 8890
+sparql.dba.password = ${drupal.db.password}
 
 # Admin user.
 drupal.admin.username = admin
@@ -35,6 +36,7 @@ drupal.demo.users = administrator
 composer.bin = ${project.basedir}/vendor/bin/composer
 drush.bin = ${project.basedir}/vendor/bin/drush
 phing.bin = ${project.basedir}/vendor/bin/phing
+isql.bin = /usr/bin/isql
 
 # Files and directories inside the Drupal installation.
 website.drupal.dir = ${project.basedir}/web

@@ -5,9 +5,11 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - datetime
   - image
   - link
   - options
+  - rdf_entity
   - text
 
 config_devel:
