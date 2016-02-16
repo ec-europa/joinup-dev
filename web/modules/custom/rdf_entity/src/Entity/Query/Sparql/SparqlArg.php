@@ -27,6 +27,7 @@ class SparqlArg {
    *    Sparql validated URI.
    *
    * @throws \Exception
+   *    Inform the user that $uri variable is not a URI.
    */
   public static function uri($uri) {
     if (!filter_var($uri, FILTER_VALIDATE_URL)) {

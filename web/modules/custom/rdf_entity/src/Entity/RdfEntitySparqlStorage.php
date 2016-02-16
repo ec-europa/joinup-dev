@@ -268,22 +268,6 @@ WHERE
   )
 }
 QUERY;
-
-    /*
-    $query = <<<QUERY
-DELETE {
-  GRAPH ?g {
-    ?entity ?field ?value
-  }
-}
-WHERE {
-  GRAPH ?g {
-    ?entity ?field ?value .
-    FILTER (?entity IN ($entity_list))
-  }
-}
-QUERY;
-*/
     $this->sparql->query($query);
   }
 
@@ -412,7 +396,6 @@ QUERY;
     $rdf_field = $rdf_mapping[$bundle];
     $pred = 'rdf:type';
     $insert .= $subj . ' ' . $pred . ' <' . $rdf_field . '>  .' . "\n";
-
 
     $query = <<<QUERY
 DELETE {
