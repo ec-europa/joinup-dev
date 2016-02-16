@@ -30,11 +30,16 @@ class SetVirtuosoSparqlPermissions extends \Task {
     $output = array();
     $return = NULL;
     exec($command, $output, $return);
-    foreach ($output as $line) {
-      $this->log($line, \Project::MSG_INFO);
-    }
     if ($return != 0) {
+      foreach ($output as $line) {
+        $this->log($line, \Project::MSG_ERR);
+      }
       throw new \BuildException("Setting the virtuoso Sparql UPDATE permissions exited with code $return");
+    }
+    else {
+      foreach ($output as $line) {
+        $this->log($line, \Project::MSG_INFO);
+      }
     }
   }
 
