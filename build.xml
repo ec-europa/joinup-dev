@@ -285,7 +285,7 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions" />
+        depends="setup-virtuoso, create-demo-users, setup-virtuoso-permissions" />
 
     <target
         name="install-dev"
