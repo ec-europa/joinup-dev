@@ -65,8 +65,10 @@
 
     <target name="setup-virtuoso-permissions">
         <setvirtuososparqlpermissions
-                IsqlPath="${isql.bin}"
-                DbaPassword="${sparql.dba.password}"
+            IsqlPath="${isql.bin}"
+            DataSourceName="${sparql.dsn}"
+            Username="${sparql.user}"
+            Password="${sparql.password}"
         />
     </target>
 
