@@ -38,8 +38,6 @@ config_devel:
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
   - block.block.userlogin
-  - core.entity_form_display.collection.collection.propose
-  - core.entity_form_mode.collection.propose
   - editor.editor.content_editor
   - field.field.user.user.og_group_ref
   - field.storage.user.og_group_ref
