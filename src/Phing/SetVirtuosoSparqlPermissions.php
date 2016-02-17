@@ -47,10 +47,17 @@ class SetVirtuosoSparqlPermissions extends \Task {
    * @throws \BuildException
    */
   protected function execute($query) {
-    $command = "echo '" . $query . "' | " . $this->isqlPath . ' ' . $this->dsn . ' ' . $this->user . ' ' . $this->pass;
+    $parts = [
+      'echo ' . escapeshellarg($query),
+      '|',
+      escapeshellcmd($this->isqlPath),
+      escapeshellarg($this->dsn),
+      escapeshellarg($this->user),
+      escapeshellarg($this->pass),
+    ];
     $output = array();
     $return = NULL;
-    exec($command, $output, $return);
+    exec(implode(' ', $parts), $output, $return);
     if ($return != 0) {
       foreach ($output as $line) {
         $this->log($line, \Project::MSG_ERR);
