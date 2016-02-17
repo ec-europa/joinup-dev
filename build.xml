@@ -69,6 +69,9 @@
     <echo msg="Setting Virtuoso endpoint as writable" />
     <taskdef name="setvirtuososparqlpermissions" classname="\DrupalProject\Phing\SetVirtuosoSparqlPermissions" />
 
+    <echo msg="Setting Virtuoso endpoint as writable" />
+    <taskdef name="setvirtuososparqlpermissions" classname="\DrupalProject\Phing\SetVirtuosoSparqlPermissions" />
+
     <!-- Make the settings folder writeable so that the installer can copy settings.php. -->
     <target name="writable-settings-folder">
         <chmod mode="0755" failonerror="true" verbose="true" quiet="false" file="${website.settings.dir}" />

@@ -13,11 +13,11 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
-use Drupal\collection\CollectionInterface;
-use Drupal\collection\Entity\Collection;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgMembershipInterface;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -37,7 +37,7 @@ class JoinCollectionForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, AccountProxyInterface $user = NULL, CollectionInterface $collection = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, AccountProxyInterface $user = NULL, RdfInterface $collection = NULL) {
     $user = User::load($user->id());
     $form['collection_id'] = [
       '#type' => 'hidden',
@@ -57,8 +57,8 @@ class JoinCollectionForm extends FormBase {
       $form['leave'] = [
         '#type' => 'link',
         '#title' => $this->t('Leave this collection'),
-        '#url' => Url::fromRoute('collection.leave_confirm_form', [
-          'collection' => $collection->id(),
+        '#url' => Url::fromRoute('entity.rdf_entity.leave_confirm_form', [
+          'rdf_entity' => $collection->sanitizedId(),
         ]),
         '#attributes' => [
           'class' => ['use-ajax', 'button', 'button--small'],
@@ -83,7 +83,6 @@ class JoinCollectionForm extends FormBase {
       ->merge(CacheableMetadata::createFromObject($user))
       ->merge(CacheableMetadata::createFromObject($collection))
       ->applyTo($form);
-
     return $form;
   }
 
@@ -93,7 +92,7 @@ class JoinCollectionForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    $collection = Collection::load($form_state->getValue('collection_id'));
+    $collection = Rdf::load($form_state->getValue('collection_id'));
 
     // Only authenticated users can join a collection.
     /** @var \Drupal\user\UserInterface $user */
@@ -115,18 +114,17 @@ class JoinCollectionForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    /** @var CollectionInterface $collection */
-    $collection = Collection::load($form_state->getValue('collection_id'));
+    /** @var RdfInterface $collection */
+    $collection = Rdf::load($form_state->getValue('collection_id'));
     /** @var \Drupal\user\UserInterface $user */
     $user = User::load($form_state->getValue('user_id'));
 
     $membership = Og::membershipStorage()->create(Og::membershipDefault());
     $membership
       ->setFieldName(OgGroupAudienceHelper::DEFAULT_FIELD)
-      ->setMemberEntityType('user')
-      ->setMemberEntityId($user->id())
-      ->setGroupEntityType('collection')
-      ->setGroupEntityid($collection->id())
+      ->setUser($user->id())
+      ->setEntityType('rdf_entity')
+      ->setEntityid($collection->id())
       ->setState(OgMembershipInterface::STATE_ACTIVE)
       ->save();
 
