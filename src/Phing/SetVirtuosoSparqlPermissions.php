@@ -23,19 +23,39 @@ class SetVirtuosoSparqlPermissions extends \Task {
   protected $dbaPass;
 
   /**
-   * Set the permissions of the '/sparql' endpoint to allow update queries.
+   * @param string $query
+   * @return $this
+   * @throws \BuildException
    */
-  public function main() {
-    $command = "echo 'grant SPARQL_UPDATE to \"SPARQL\";' | " . $this->isqlPath . " 1111 dba " . $this->dbaPass;
+  protected function execute($query) {
+    $command = "echo '" . $query . "' | " . $this->isqlPath . " Virtuoso dba " . $this->dbaPass;
     $output = array();
     $return = NULL;
     exec($command, $output, $return);
-    foreach ($output as $line) {
-      $this->log($line, \Project::MSG_INFO);
-    }
     if ($return != 0) {
+      foreach ($output as $line) {
+        $this->log($line, \Project::MSG_ERR);
+      }
       throw new \BuildException("Setting the virtuoso Sparql UPDATE permissions exited with code $return");
     }
+    else {
+      foreach ($output as $line) {
+        $this->log($line, \Project::MSG_INFO);
+      }
+    }
+    
+    return $this;
+  }
+
+  /**
+   * Set the permissions of the '/sparql' endpoint to allow update queries.
+   */
+  public function main() {
+    $this->execute('grant SPARQL_UPDATE to "SPARQL"')
+      ->execute('GRANT execute ON SPARQL_INSERT_DICT_CONTENT TO "SPARQL"')
+      ->execute('GRANT execute ON SPARQL_INSERT_DICT_CONTENT TO SPARQL_UPDATE')
+      ->execute('GRANT execute ON DB.DBA.SPARQL_MODIFY_BY_DICT_CONTENTS TO "SPARQL"')
+      ->execute('GRANT execute ON DB.DBA.SPARQL_MODIFY_BY_DICT_CONTENTS TO SPARQL_UPDATE');
   }
 
   /**
