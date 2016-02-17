@@ -252,20 +252,22 @@ QUERY;
    */
   protected function doDelete($entities) {
     $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
+
+    // @todo The hardcoding will be fixed in future issue.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2343
     $query = <<<QUERY
-DELETE {
-  GRAPH ?g {
-    ?entity ?field ?value
-  }
+DELETE FROM <http://localhost:8890/DAV>
+{
+  ?entity ?field ?value
 }
-WHERE {
-  GRAPH ?g {
-    ?entity ?field ?value .
-    FILTER (?entity IN ($entity_list))
-  }
+WHERE
+{
+  ?entity ?field ?value
+  FILTER(
+    ?entity IN ($entity_list)
+  )
 }
 QUERY;
-
     $this->sparql->query($query);
   }
 
@@ -408,6 +410,7 @@ WHERE {
   }
 }
 QUERY;
+
     if (!$entity->isNew()) {
       $this->sparql->query($query);
     }

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ar_affiliates
+    - rdf_entity.rdfentity.collection
+_core:
+  default_config_hash: brC1_2f34J0S5YdzEonCEGM_gB4qktxdcbIbAr0ZuEw
+id: rdf_entity.collection.field_ar_affiliates
+field_name: field_ar_affiliates
+entity_type: rdf_entity
+bundle: collection
+label: Affiliates
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings: {  }
+field_type: entity_reference

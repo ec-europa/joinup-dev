@@ -43,11 +43,14 @@ class CollectionRouteContext implements ContextProviderInterface {
    */
   public function getRuntimeContexts(array $unqualified_context_ids) {
     $result = [];
-    $context_definition = new ContextDefinition('entity:collection', NULL, FALSE);
+    $context_definition = new ContextDefinition('entity:rdf_entity', NULL, FALSE);
     $value = NULL;
-    if (($route_object = $this->routeMatch->getRouteObject()) && ($route_contexts = $route_object->getOption('parameters')) && isset($route_contexts['collection'])) {
-      if ($collection = $this->routeMatch->getParameter('collection')) {
-        $value = $collection;
+    if (($route_object = $this->routeMatch->getRouteObject()) && ($route_contexts = $route_object->getOption('parameters')) && isset($route_contexts['rdf_entity'])) {
+      /** @var \Drupal\rdf_entity\RdfInterface $collection */
+      if ($collection = $this->routeMatch->getParameter('rdf_entity')) {
+        if ($collection->bundle() == 'collection') {
+          $value = $collection;
+        }
       }
     }
 
@@ -56,7 +59,8 @@ class CollectionRouteContext implements ContextProviderInterface {
 
     $context = new Context($context_definition, $value);
     $context->addCacheableDependency($cacheability);
-    $result['collection'] = $context;
+
+    $result['rdf_entity'] = $context;
 
     return $result;
   }
@@ -65,8 +69,8 @@ class CollectionRouteContext implements ContextProviderInterface {
    * {@inheritdoc}
    */
   public function getAvailableContexts() {
-    $context = new Context(new ContextDefinition('entity:collection', $this->t('Collection from URL')));
-    return ['collection' => $context];
+    $context = new Context(new ContextDefinition('entity:rdf_entity', $this->t('Collection from URL')));
+    return ['rdf_entity' => $context];
   }
 
 }

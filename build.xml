@@ -24,6 +24,9 @@
     <echo msg="Loading Remove Patched Packages task." />
     <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
 
+    <echo msg="Setting Virtuoso endpoint as writable" />
+    <taskdef name="setvirtuososparqlpermissions" classname="\DrupalProject\Phing\SetVirtuosoSparqlPermissions" />
+
     <!-- Make the settings folder writeable so that the installer can copy settings.php. -->
     <target name="writable-settings-folder">
         <chmod mode="0755" failonerror="true" verbose="true" quiet="false" file="${website.settings.dir}" />
@@ -58,6 +61,13 @@
             <param>install_settings_form.sparql.host=${sparql.host}</param>
             <param>install_settings_form.sparql.port=${sparql.port}</param>
         </drush>
+    </target>
+
+    <target name="setup-virtuoso-permissions">
+        <setvirtuososparqlpermissions
+                IsqlPath="${isql.bin}"
+                DbaPassword="${sparql.dba.password}"
+        />
     </target>
 
     <!-- Set up PHP CodeSniffer. -->
@@ -230,7 +240,7 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users" />
+        depends="create-demo-users, setup-virtuoso-permissions" />
 
     <target
         name="install-dev"

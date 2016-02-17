@@ -8,7 +8,8 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\collection\Entity\Collection;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\file\Entity\File;
 use Drupal\og\OgMembershipInterface;
 
@@ -20,7 +21,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Test collections.
    *
-   * @var \Drupal\collection\Entity\Collection[]
+   * @var \Drupal\rdf_entity\Entity\Rdf[]
    */
   protected $collections = [];
 
@@ -38,7 +39,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When (I )visit the add collection form
    */
   public function visitAddCollectionForm() {
-    $this->visitPath('/admin/structure/collection/add');
+    $this->visitPath('/rdf_entity/add/collection');
   }
 
   /**
@@ -51,25 +52,26 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When (I )visit (the homepage of )the :collection collection
    */
   public function visitCollection($collection) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
     $collection = $this->getCollectionByName($collection);
-    $this->visitPath('/collection/' . $collection->id());
+    $this->visitPath($collection->url());
   }
 
   /**
    * Creates a number of collections with data provided in a table.
    *
+   * * @param TableNode $collection_table
+   *   The collection data.
+   *
    * Table format:
    *
    * @codingStandardsIgnoreStart
-   * | name            | author   | logo     | pre-moderation | closed | create elibrary  | schedule | metadata url           |
-   * | The City Watch  | Riktor   | logo.png | 0              | 0      | facilitators     | daily    | https://city-watch.am/ |
-   * | The Smoking Gnu | Mr. Pump | logo.gif | 1              | 1      | registered_users | weekly   | https://gnu.am/        |
+   * | name            | author   | uri                             | logo     | pre-moderation | closed | create elibrary  | schedule | metadata url           |
+   * | The City Watch  | Riktor   | http://joinup.eu/collection/tcw | logo.png | 0              | 0      | facilitators     | daily    | https://city-watch.am/ |
+   * | The Smoking Gnu | Mr. Pump | http://joinup.eu/collection/tsg |logo.gif  | 1              | 1      | registered_users | weekly   | https://gnu.am/        |
    * @codingStandardsIgnoreEnd
    *
    * Only the name field is required.
-   *
-   * @param TableNode $collection_table
-   *   The collection data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
@@ -78,7 +80,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function givenCollections(TableNode $collection_table) {
     $aliases = [
-      'name' => 'name',
+      'uri' => 'id',
+      'name' => 'label',
       'author' => 'author',
       'logo' => 'field_collection_logo',
       'pre-moderation' => 'field_collection_pre_moderation',
@@ -108,6 +111,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * Table format:
    * | name            | Open Data Initiative                  |
+   * | uri             | http://joinup.eu/collection/odi       |
    * | author          | Mightily Oats                         |
    * | logo            | logo.png                              |
    * | pre-moderation  | 0|1                                   |
@@ -128,7 +132,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function givenCollection(TableNode $collection_table) {
     $aliases = [
-      'name' => 'name',
+      'uri' => 'id',
+      'name' => 'label',
       'author' => 'author',
       'logo' => 'field_collection_logo',
       'pre-moderation' => 'field_collection_pre_moderation',
@@ -157,7 +162,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
-   * @return \Drupal\collection\Entity\Collection
+   * @return \Drupal\rdf_entity\Entity\Rdf
    *   A new collection entity.
    *
    * @throws \Exception
@@ -182,8 +187,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
 
       $this->images[$image->id()] = $image;
     }
-
-    $collection = Collection::create($values);
+    // @todo Remove this after the widget in ISAICP-2301 is build.
+    $values['rid'] = 'collection';
+    $collection = Rdf::create($values);
     $collection->save();
     $this->collections[$collection->id()] = $collection;
 
@@ -205,16 +211,17 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   Thrown when a collection with the given name does not exist.
    */
   protected function getCollectionByName($name) {
-    $result = \Drupal::entityQuery('collection')
-      ->condition('name', $name)
-      ->range(0, 1)
-      ->execute();
+    $query = \Drupal::entityQuery('rdf_entity')
+      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#AssetRepository'))
+      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
+      ->range(0, 1);
+    $result = $query->execute();
 
     if (empty($result)) {
       throw new \InvalidArgumentException("The collection with the name '$name' does not exist.");
     }
 
-    return Collection::load(reset($result));
+    return Rdf::load(reset($result));
   }
 
   /**
@@ -229,7 +236,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Then I should have :number collection(s)
    */
   public function assertCollectionCount($number) {
-    $actual = \Drupal::entityQuery('collection')->count()->execute();
+    $actual = \Drupal::entityQuery('rdf_entity')
+      ->condition('?entity', 'rdf:type', '<http://www.w3.org/ns/adms#AssetRepository>')
+      ->count()
+      ->execute();
     if ($actual != $number) {
       throw new \Exception("Wrong number of collections. Expected number: $number, actual number: $actual.");
     }
@@ -255,9 +265,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $collection = $this->getCollectionByName($collection);
 
     $actual = \Drupal::entityQuery('og_membership')
-      ->condition('group_entity_type', 'collection')
-      ->condition('group_entity_id', $collection->id())
-      ->condition('member_entity_type', 'user')
+      ->condition('entity_type', 'rdf_entity')
+      ->condition('entity_id', $collection->id())
       ->condition('state', OgMembershipInterface::STATE_ACTIVE)
       ->count()
       ->execute();

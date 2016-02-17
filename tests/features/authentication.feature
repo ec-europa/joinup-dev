@@ -25,8 +25,8 @@ Scenario Outline: Anonymous user cannot access site administration
   | admin/content                  |
   | admin/people                   |
   | admin/structure                |
-  | admin/structure/collection     |
-  | admin/structure/collection/add |
+  | admin/content/rdf              |
+  | rdf_entity/add/collection      |
 
 # Add these back when we actually have nodes.
 #  | node/add        |

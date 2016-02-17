@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ar_owner
+    - rdf_entity.rdfentity.collection
+_core:
+  default_config_hash: UjeBL2PdtoNo9XvN0IOZKhDNjpHhbI20UqDYUcZoWGo
+id: rdf_entity.collection.field_ar_owner
+field_name: field_ar_owner
+entity_type: rdf_entity
+bundle: collection
+label: Owner
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings: {  }
+field_type: entity_reference
