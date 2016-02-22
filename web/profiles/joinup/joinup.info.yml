@@ -24,7 +24,11 @@ dependencies:
   - path
   - rdf_demo
   - rdf_entity
+  - text
   - toolbar
+  - search_api
+  - search_api_db
+  - views
 
 themes:
   - bartik
