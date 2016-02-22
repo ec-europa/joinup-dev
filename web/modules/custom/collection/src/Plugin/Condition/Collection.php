@@ -52,7 +52,7 @@ class Collection extends ConditionPluginBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-    $this->configuration['collections'] = $form_state->getValue('collections');
+    $this->configuration['collections'] = (bool) $form_state->getValue('collections');
     parent::submitConfigurationForm($form, $form_state);
   }
 

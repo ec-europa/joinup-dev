@@ -20,7 +20,26 @@ class SetVirtuosoSparqlPermissions extends \Task {
    */
   protected $isqlPath;
 
-  protected $dbaPass;
+  /**
+   * The data source name.
+   *
+   * @var string
+   */
+  protected $dsn;
+
+  /**
+   * The database connection username.
+   *
+   * @var string
+   */
+  protected $user;
+
+  /**
+   * The database connection password.
+   *
+   * @var string
+   */
+  protected $pass;
 
   /**
    * @param string $query
@@ -28,10 +47,17 @@ class SetVirtuosoSparqlPermissions extends \Task {
    * @throws \BuildException
    */
   protected function execute($query) {
-    $command = "echo '" . $query . "' | " . $this->isqlPath . " Virtuoso dba " . $this->dbaPass;
+    $parts = [
+      'echo ' . escapeshellarg($query),
+      '|',
+      escapeshellcmd($this->isqlPath),
+      escapeshellarg($this->dsn),
+      escapeshellarg($this->user),
+      escapeshellarg($this->pass),
+    ];
     $output = array();
     $return = NULL;
-    exec($command, $output, $return);
+    exec(implode(' ', $parts), $output, $return);
     if ($return != 0) {
       foreach ($output as $line) {
         $this->log($line, \Project::MSG_ERR);
@@ -69,13 +95,33 @@ class SetVirtuosoSparqlPermissions extends \Task {
   }
 
   /**
-   * Set dba password.
+   * Set data source name.
+   *
+   * @param string $dsn
+   *    Data source name of the Virtuoso database.
+   */
+  public function setDataSourceName($dsn) {
+    $this->dsn = $dsn;
+  }
+
+  /**
+   * Set user name.
+   *
+   * @param string $user
+   *    User name of the Virtuoso dba user.
+   */
+  public function setUsername($user) {
+    $this->user = $user;
+  }
+
+  /**
+   * Set password.
    *
    * @param string $pass
    *    Password of the Virtuoso dba user.
    */
-  public function setDbaPassword($pass) {
-    $this->dbaPass = $pass;
+  public function setPassword($pass) {
+    $this->pass = $pass;
   }
 
 }
