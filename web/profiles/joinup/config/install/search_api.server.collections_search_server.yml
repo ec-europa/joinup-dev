@@ -1,0 +1,18 @@
+uuid: 9fe2d8ff-5921-4ec5-a400-c5351a1499f4
+langcode: en
+status: true
+dependencies:
+  module:
+    - search_api_db
+id: collections_search_server
+name: 'Collections Search Server'
+description: ''
+backend: search_api_db
+backend_config:
+  database: 'default:default'
+  database_text: ''
+  min_chars: 3
+  partial_matches: false
+  autocomplete:
+    suggest_suffix: true
+    suggest_words: true
