@@ -31,17 +31,47 @@ themes:
   - seven
 
 config_devel:
+  - block.block.bartik_account_menu
+  - block.block.bartik_branding
+  - block.block.bartik_breadcrumbs
+  - block.block.bartik_content
+  - block.block.bartik_footer
+  - block.block.bartik_help
   - block.block.bartik_local_actions
   - block.block.bartik_local_tasks
+  - block.block.bartik_main_menu
+  - block.block.bartik_messages
+  - block.block.bartik_page_title
+  - block.block.bartik_tools
   - block.block.joincollectionblock
+  - block.block.seven_breadcrumbs
+  - block.block.seven_content
+  - block.block.seven_help
   - block.block.seven_local_actions
+  - block.block.seven_login
+  - block.block.seven_messages
+  - block.block.seven_page_title
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
   - block.block.userlogin
+  - core.date_format.fallback
+  - core.date_format.html_date
+  - core.date_format.html_datetime
+  - core.date_format.html_month
+  - core.date_format.html_time
+  - core.date_format.html_week
+  - core.date_format.html_year
+  - core.date_format.html_yearless_date
+  - core.date_format.long
+  - core.date_format.medium
+  - core.date_format.short
   - editor.editor.content_editor
   - field.field.user.user.og_group_ref
   - field.storage.user.og_group_ref
+  - filter.format.basic_html
   - filter.format.content_editor
+  - filter.format.full_html
+  - filter.format.restricted_html
   - og.og_membership_type.og_membership_type
   - og.settings
   - system.theme
