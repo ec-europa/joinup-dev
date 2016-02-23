@@ -251,12 +251,6 @@
         </drush>
     </target>
     
-    <target name="setup-virtuoso">
-        <copy file="./resources/virtuoso/odbc.ini"
-              tofile="${user.home}/.odbc.ini"
-              overwrite="true" />
-    </target>
-
     <!-- Remove all packages that are patched with cweagans/composer-patches. -->
     <target name="remove-patched-packages">
         <removepatchedpackages
@@ -289,7 +283,7 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso, install, setup-dev, create-demo-users" />
+        depends="install, setup-dev, create-demo-users" />
 
     <target name="provision-stack"
             description="Provision a stack on AWS"
