@@ -58,6 +58,15 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Navigates to the collections overview page.
+   *
+   * @When (I )visit the collection overview page
+   */
+  public function visitCollectionOverviewPage() {
+    $this->visitPath('/collection');
+  }
+
+  /**
    * Creates a number of collections with data provided in a table.
    *
    * * @param TableNode $collection_table
@@ -159,6 +168,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
 
   /**
    * Indexes items of entity type: collection.
+   * In addition, views page cache data are being cleared.
    *
    * @throws \Exception
    *   When no items are indexed.
@@ -169,6 +179,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     /** @var String $id */
     $id = 'collections';
 
+    /** @var String $views_id */
+    $views_id = 'collection';
+
     /** @var \Drupal\search_api\IndexInterface $index */
     $index = \Drupal\search_api\Entity\Index::load($id);
     if (empty($index)) {
@@ -176,6 +189,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
     $index->reindex();
     $index->indexItems();
+
+    // Clear the views cache data.
+    $view_tags = \Drupal\views\Views::getView($views_id)->getCacheTags();
+    \Drupal\Core\Cache\Cache::invalidateTags($view_tags);
   }
 
   /**
