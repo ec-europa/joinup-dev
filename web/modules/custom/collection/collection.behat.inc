@@ -66,9 +66,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Table format:
    *
    * @codingStandardsIgnoreStart
-   * | name            | author   | uri                             | logo     | pre-moderation | closed | create elibrary  | schedule | metadata url           |
-   * | The City Watch  | Riktor   | http://joinup.eu/collection/tcw | logo.png | 0              | 0      | facilitators     | daily    | https://city-watch.am/ |
-   * | The Smoking Gnu | Mr. Pump | http://joinup.eu/collection/tsg |logo.gif  | 1              | 1      | registered_users | weekly   | https://gnu.am/        |
+   * | name            | description                                      | author   | uri                             | logo     | pre-moderation | closed | create elibrary  | schedule | metadata url           |
+   * | The City Watch  | A short description.                             | Riktor   | http://joinup.eu/collection/tcw | logo.png | 0              | 0      | facilitators     | daily    | https://city-watch.am/ |
+   * | The Smoking Gnu | Just one description that is longer than normal. | Mr. Pump | http://joinup.eu/collection/tsg | logo.gif | 1              | 1      | registered_users | weekly   | https://gnu.am/        |
    * @codingStandardsIgnoreEnd
    *
    * Only the name field is required.
@@ -83,6 +83,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'uri' => 'id',
       'name' => 'label',
       'author' => 'author',
+      'description' => 'field_ar_description',
       'logo' => 'field_collection_logo',
       'pre-moderation' => 'field_collection_pre_moderation',
       'closed' => 'field_collection_closed',
@@ -154,6 +155,27 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
     };
     $this->createCollection($values);
+  }
+
+  /**
+   * Indexes items of entity type: collection.
+   *
+   * @throws \Exception
+   *   When no items are indexed.
+   *
+   * @Given The collections are indexed
+   */
+  public function theCollectionsAreIndexed(){
+    /** @var String $id */
+    $id = 'collections';
+
+    /** @var \Drupal\search_api\IndexInterface $index */
+    $index = \Drupal\search_api\Entity\Index::load($id);
+    if(empty($index)){
+      throw new \Exception("Collection index not found.");
+    }
+    $index->reindex();
+    $index->indexItems();
   }
 
   /**
