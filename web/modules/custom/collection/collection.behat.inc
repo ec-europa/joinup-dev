@@ -167,7 +167,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Indexes items of entity type: collection. In addition, views page cache data are being cleared.
+   * Indexes items of entity type: collection.
+   *
+   * In addiction, views cache data are being cleared.
    *
    * @throws \Exception
    *   When no items are indexed.
