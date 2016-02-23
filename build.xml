@@ -23,6 +23,9 @@
 
     <echo msg="Loading Remove Patched Packages task." />
     <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
+
+    <echo msg="Loading Virtuoso Sparql Permissions task." />
+    <taskdef name="setvirtuososparqlpermissions" classname="\DrupalProject\Phing\SetVirtuosoSparqlPermissions" />
     
     <echo msg="Loading AWS additional tasks." />
     <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />
@@ -65,12 +68,6 @@
             <ec2TagFilter key="stack" value="${deploy.applicationName}-${cf.stackName}" />
         </aws-deploy-deployment-group>
     </target>
-
-    <echo msg="Setting Virtuoso endpoint as writable" />
-    <taskdef name="setvirtuososparqlpermissions" classname="\DrupalProject\Phing\SetVirtuosoSparqlPermissions" />
-
-    <echo msg="Setting Virtuoso endpoint as writable" />
-    <taskdef name="setvirtuososparqlpermissions" classname="\DrupalProject\Phing\SetVirtuosoSparqlPermissions" />
 
     <!-- Make the settings folder writeable so that the installer can copy settings.php. -->
     <target name="writable-settings-folder">
