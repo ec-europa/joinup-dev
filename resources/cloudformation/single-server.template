@@ -272,7 +272,7 @@
             ]
           }
         },
-        "ImageId": "ami-527ecc21",
+        "ImageId": "ami-437ec230",
         "InstanceType": {
           "Ref": "InstanceType"
         },
@@ -332,7 +332,7 @@
           ]
         ]
       },
-      "Description" : "URL of Zend Server UI"
+      "Description" : "Endpoint URL"
     }
   }
 }
