@@ -15,9 +15,12 @@ drupal.db.password = db_pass
 drupal.db.host = 127.0.0.1
 drupal.db.port = 3306
 drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${drupal.db.name}
+
 sparql.host = localhost
 sparql.port = 8890
-sparql.dba.password = ${drupal.db.password}
+sparql.dsn = Virtuoso
+sparql.user = ${drupal.db.user}
+sparql.password = ${drupal.db.password}
 
 # Admin user.
 drupal.admin.username = admin
@@ -135,3 +138,11 @@ drupal.modules.dev = config_update field_ui menu_ui views_ui
 
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = no
+
+# AWS SDK
+# -------
+aws.region = eu-west-1
+
+# AWS CodeDeploy
+# --------------
+deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
