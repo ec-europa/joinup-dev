@@ -16,6 +16,7 @@
         "easyrdf/easyrdf": "dev-0.9.x as 0.9.1",
         "pear/console_table": "~1.3.0",
         "phing/phing": "~2.10",
+        "continuousphp/aws-sdk-phing": "~0.1",
         "php": ">=5.5.9"
     },
     "require-dev": {
