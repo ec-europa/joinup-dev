@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "08b6bf6fed979b3d94bab57e40598f30",
-    "content-hash": "d428a53e1b701459563aa0076bfc31a8",
+    "hash": "7f7e3562628d2c386d1902349e2d1c5e",
+    "content-hash": "6588cde6f24cdf41a0fd5d1208a20de0",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1282,7 +1282,7 @@
                     "dev-8.x-1.x": "8.1.x-dev"
                 },
                 "patches_applied": {
-                    "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/2671228_12.patch"
+                    "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/support_for_non_numeric-2671228-2_1.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",

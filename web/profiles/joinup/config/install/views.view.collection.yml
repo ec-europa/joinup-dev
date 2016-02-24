@@ -7,7 +7,7 @@ dependencies:
   module:
     - search_api
     - text
-id: collection
+id: collections
 label: Collections
 module: views
 description: ''
@@ -441,7 +441,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: collection
+      path: collections
     cache_metadata:
       max-age: 0
       contexts:
