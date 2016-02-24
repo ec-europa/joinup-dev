@@ -1,4 +1,3 @@
-uuid: e5498df7-0435-45dc-820a-10889814f600
 langcode: en
 status: true
 dependencies:
@@ -27,8 +26,12 @@ display:
         type: none
         options: {  }
       cache:
-        type: tag
-        options: {  }
+        type: search_api
+        options:
+          results_lifespan: '3600'
+          results_lifespan_custom: '0'
+          output_lifespan: '3600'
+          output_lifespan_custom: '0'
       query:
         type: views_query
         options:

@@ -93,12 +93,11 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'name' => 'label',
       'author' => 'author',
       'description' => 'field_ar_description',
-      'logo' => 'field_collection_logo',
-      'pre-moderation' => 'field_collection_pre_moderation',
-      'closed' => 'field_collection_closed',
+      'logo' => 'field_ar_logo',
+      'pre-moderation' => 'field_ar_moderation',
+      'closed' => 'field_ar_closed',
       'create elibrary' => 'field_collection_create_elibrary',
-      'schedule' => 'field_collection_schedule',
-      'metadata url' => 'field_collection_metadata_url',
+      'schedule' => 'field_ar_elibrary_creation',
     ];
 
     foreach ($collection_table->getColumnsHash() as $collection) {
@@ -167,19 +166,16 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Indexes items of entity type: collection. In addition, views page cache data are being cleared.
+   * Indexes items of entity type: collection.
    *
    * @throws \Exception
-   *   When no items are indexed.
+   *   When the collection index is not found.
    *
    * @Given The collections are indexed
    */
   public function theCollectionsAreIndexed() {
     /** @var String $id */
     $id = 'collections';
-
-    /** @var String $views_id */
-    $views_id = 'collection';
 
     /** @var \Drupal\search_api\IndexInterface $index */
     $index = \Drupal\search_api\Entity\Index::load($id);
@@ -188,10 +184,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
     $index->reindex();
     $index->indexItems();
-
-    // Clear the views cache data.
-    $view_tags = \Drupal\views\Views::getView($views_id)->getCacheTags();
-    \Drupal\Core\Cache\Cache::invalidateTags($view_tags);
   }
 
   /**
