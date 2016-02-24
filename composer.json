@@ -59,7 +59,7 @@
         },
         "patches": {
             "drupal/search_api": {
-                "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/2671228_12.patch"
+                "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/support_for_non_numeric-2671228-2_1.patch"
             }
         }
     },
