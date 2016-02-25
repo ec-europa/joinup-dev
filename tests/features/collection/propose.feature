@@ -23,11 +23,11 @@ Feature: Proposing a collection
     | Username | Cecil Clapman |
     | Password | claps         |
     And I press "Log in"
-    Then I should see the heading "Propose a collection"
+    Then I should see the heading "Propose collection"
 
   Scenario: Propose a collection
     Given I am logged in as a user with the "authenticated" role
     When I am on the homepage
     And I click "Add collection"
-    Then I should see the heading "Propose a collection"
+    Then I should see the heading "Propose collection"
 
