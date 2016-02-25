@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies:
   module:
-    - collection
     - og
+    - rdf_entity
     - user
 id: user.og_group_ref
 field_name: og_group_ref
