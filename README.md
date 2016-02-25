@@ -1,292 +1,93 @@
-# Composer template for Drupal projects
+# Joinup website (https://joinup.ec.europa.eu/)
 
-[![Build Status](https://travis-ci.org/drupal-composer/drupal-project.svg?branch=8.x)](https://travis-ci.org/drupal-composer/drupal-project)
+[![Build Status](https://status.continuousphp.com/git-hub/ec-europa/joinup-dev?token=77aa9de5-7fef-40bc-8c48-d6ff70fba9ff)](https://continuousphp.com/git-hub/ec-europa/joinup-dev)
 
-This project template should provide a kickstart for managing your site
-dependencies with [Composer](https://getcomposer.org/).
+Joinup is a collaborative platform created by the European Commission and funded by the European Union
+via the [Interoperability Solutions for European Public Administrations (ISA)](http://ec.europa.eu/isa/) Programme.
 
-If you want to know how to use it as replacement for
-[Drush Make](https://github.com/drush-ops/drush/blob/master/docs/make.md) visit
-the [Documentation on drupal.org](https://www.drupal.org/node/2471553).
+It offers several services that aim to help e-Government professionals share their experience with each other.
+We also hope to support them to find, choose, re-use, develop and implement interoperability solutions.
 
-## Usage
-
-First you need to [install composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
-
-> Note: The instructions below refer to the [global composer installation](https://getcomposer.org/doc/00-intro.md#globally).
-You might need to replace `composer` with `php composer.phar` (or similar) for your setup.
-
-After that you can create the project:
-
-```
-composer create-project drupal-composer/drupal-project:8.x-dev some-dir --stability dev --no-interaction
-```
-
-With `composer require ...` you can download new dependencies to your installation.
-
-```
-cd some-dir
-composer require drupal/devel:8.*
-```
-
-## What does the template do?
-
-When installing the given `composer.json` some tasks are taken care of:
-
-* Drupal will be installed in the `web`-directory.
-* Autoloader is implemented to use the generated composer autoloader in `vendor/autoload.php`,
-  instead of the one provided by Drupal (`web/vendor/autoload.php`).
-* Modules (packages of type `drupal-module`) will be placed in `web/modules/contrib/`
-* Theme (packages of type `drupal-theme`) will be placed in `web/themes/contrib/`
-* Profiles (packages of type `drupal-profile`) will be placed in `web/profiles/contrib/`
-* Creates default writable versions of `settings.php` and `services.yml`.
-* Creates `sites/default/files`-directory.
-* Latest version of drush is installed locally for use at `vendor/bin/drush`.
-* Latest version of DrupalConsole is installed locally for use at `vendor/bin/drupal`.
-
-## Updating Drupal Core
-
-Updating Drupal core is a two-step process.
-
-1. Update the version number of `drupal/core` in `composer.json`.
-1. Run `composer update drupal/core`.
-1. Run `./scripts/drupal/update-scaffold [drush-version-spec]` to update files
-   in the `web` directory, where `drush-version-spec` is an optional identifier
-   acceptable to Drush, e.g. `drupal-8.0.x` or `drupal-8.1.x`, corresponding to
-   the version you specified in `composer.json`. (Defaults to `drupal-8`, the
-   latest stable release.) Review the files for any changes and restore any
-   customizations to `.htaccess` or `robots.txt`.
-1. Commit everything all together in a single commit, so `web` will remain in
-   sync with the `core` when checking out branches or running `git bisect`.
-
-## Generate composer.json from existing project
-
-With using [the "Composer Generate" drush extension](https://www.drupal.org/project/composer_generate)
-you can now generate a basic `composer.json` file from an existing project. Note
-that the generated `composer.json` might differ from this project's file.
+The Joinup platform is developed as a Drupal 8 distribution, and therefore tries to follow the 'drupal-way' as much as possible.
 
 
-## Customize build properties
 
-Create a new file in the root of the project named `build.properties.local`
-using your favourite text editor:
+## Running your own instance of Joinup
 
-```
-$ vim build.properties.local
-```
+### Dependencies
+* A regular LAMP stack
+* Virtuoso (Triplestore database)
+* Apache Solr
 
-This file will contain configuration which is unique to your development
-machine. This is mainly useful for specifying your database credentials and the
-username and password of the Drupal admin user so they can be used during the
-installation.
+### Dependency management and builds
+We use Drupal composer as a template for the project.
+For the most up-to-date information on how to use Composer, build the project using Phing, or on how to run the Behat test,
+please refer directly to the documention of [drupal-composer](https://github.com/drupal-composer/drupal-project).
 
-Because these settings are personal they should not be shared with the rest of
-the team. Make sure you never commit this file!
-
-All options you can use can be found in the `build.properties.dist` file. Just
-copy the lines you want to override and change their values. For example:
-
-```
-# The location of the Composer binary.
-composer.bin = /usr/bin/composer
-
-# Database settings.
-drupal.db.name = my_database
-drupal.db.user = root
-drupal.db.password = hunter2
-
-# Admin user.
-drupal.admin.username = admin
-drupal.admin.password = admin
-
-# The base URL to use in Behat tests.
-behat.base_url = http://platform.local
-
-# Verbosity of Drush commands. Set to 'yes' for verbose output.
-drush.verbose = yes
-```
-
-
-## Listing the available build commands
-
-You can get a list of all the available Phing build commands ("targets") with a
-short description of each target with the following command:
-
-```
-$ ./vendor/bin/phing
-```
-
-
-## Install the website.
-
-```
-$ ./vendor/bin/phing install
-```
-
-
-## Set up tools for the development environment
-
-If you want to install a version suitable for development you can execute the
-`setup-dev` Phing target.
-
-```
-$ ./vendor/bin/phing setup-dev
-```
-
-This will perform the following tasks:
-
-1. Configure Behat.
-2. Configure PHP CodeSniffer.
-3. Enable 'development mode'. This will:
-  * Enable the services in `development.services.yml`.
-  * Show all error messages with backtrace information.
-  * Disable CSS and JS aggregation.
-  * Disable the render cache.
-  * Allow test modules and themes to be installed.
-  * Enable access to `rebuild.php`.
-4. Enable development modules.
-5. Create a demo user for each user role.
-
-To set up a development environment quickly, you can perform both the `install`
-and `setup-dev` targets at once by executing `install-dev`:
-
+### Setup
+* Clone this repository
+* Point the document root of your webserver to the 'web/' directory.
+* Use [composer](https://getcomposer.org/) to install the dependencies.
+* Create a build.properties.local file.
+> Create a new file in the root of the project named `build.properties.local
+> using your favourite text editor:
+>
+> ```
+> $ vim build.properties.local
+> ```
+>
+> This file will contain configuration which is unique to your development
+> machine. This is mainly useful for specifying your database credentials and the
+> username and password of the Drupal admin user so they can be used during the
+> installation.
+>
+> Because these settings are personal they should not be shared with the rest of
+> the team. Make sure you never commit this file!
+>
+> All options you can use can be found in the `build.properties.dist` file. Just
+> copy the lines you want to override and change their values. For example:
+>
+> #### The location of the Composer binary.
+> composer.bin = /usr/bin/composer
+>
+> #### Database settings.
+> drupal.db.name = my_database
+> drupal.db.user = root
+> drupal.db.password = hunter2
+>
+> #### Admin user.
+> drupal.admin.username = admin
+> drupal.admin.password = admin
+>
+> #### The base URL to use in Behat tests.
+> behat.base_url = http://joinup.local
+>
+> #### Verbosity of Drush commands. Set to 'yes' for verbose output.
+> drush.verbose = yes
+* If you didn't do so yet, now is the time to install Virtuoso.
+See [setting up Virtuoso](/web/modules/custom/rdf_entity/README.md)
+* Also setup a Solr search server, using the configuration provided inside the search_api_solr module.
+For installation instruction, refer to INSTALL.txt inside the search_api_solr module.
+* Execute the [Phing](https://www.phing.info/) target install-dev when building a development instance.
 ```
 $ ./vendor/bin/phing install-dev
 ```
-
-
-## Running Behat tests
-
-The Behat test suite is located in the `tests/` folder. The easiest way to run
-them is by going into this folder and executing the following command:
-
+* Run the test suite to validate your installation.
 ```
-$ cd tests/
-$ ./behat
+$ cd tests; ./behat
 ```
+## Contributing
+* You're thinking of setting up your own code repository using the Joinup codebase?
+* You are about to develop a big feature on top of this codebase?
+* You're having trouble installing this project?
+* If you want to report an issue?
+Get in touch! We'd like to hear about your plans.
 
-If you want to execute a single test, just provide the path to the test as an
-argument. The tests are located in `tests/features/`:
+## Code quality
+We try to keep the quality of this repository as high as possible, and therefore a few measure are put in place:
+- Coding standards are verified
+- Behat tests to avoid regression
+(You can [check our current scenario's here](/tests/features/)
 
-```
-$ cd tests/
-$ ./behat features/authentication.feature
-```
-
-If you want to run the tests from a different folder, then provide the path to
-`tests/behat.yml` with the `-c` option:
-
-```
-# Run the tests from the root folder of the project.
-$ ./vendor/bin/behat -c tests/behat.yml
-```
-
-
-## Checking for coding standards violations
-
-### Set up PHP CodeSniffer
-
-PHP CodeSniffer is included to do coding standards checks of PHP and JS files.
-In the default configuration it will scan all files in the following folders:
-- `web/modules` (excluding `web/modules/contrib`)
-- `web/profiles`
-- `web/themes`
-
-First you'll need to execute the `setup-php-codesniffer` Phing target (note that
-this also runs as part of the `install-dev` and `setup-dev` targets):
-
-```
-$ ./vendor/bin/phing setup-php-codesniffer
-```
-
-This will generate a `phpcs.xml` file containing settings specific to your local
-environment. Make sure to never commit this file.
-
-### Run coding standards checks
-
-#### Run checks manually
-
-The coding standards checks can then be run as follows:
-
-```
-# Scan all files for coding standards violations.
-$ ./vendor/bin/phpcs
-
-# Scan only a single folder.
-$ ./vendor/bin/phpcs web/modules/custom/mymodule
-```
-
-#### Run checks automatically when pushing
-
-To save yourself the embarrassment of pushing non-compliant code to the git
-repository you can put the following line in your `build.properties.local`:
-
-```
-# Whether or not to run a coding standards check before doing a git push. Note
-# that this will abort the push if the coding standards check fails.
-phpcs.prepush.enable = 1
-```
-
-and then regenerate your PHP CodeSniffer configuration:
-
-```
-$ ./vendor/bin/phing setup-php-codesniffer
-```
-
-If your project requires all team members to follow coding standards, put this
-line in the project configuration (`build.properties`) instead.
-
-Note that this will not allow you to push any code that fails the coding
-standards check. If you really need to push in a hurry, then you can disable
-the coding standards check by executing this Phing target:
-
-```
-$ ./vendor/bin/phing disable-pre-push
-```
-
-The pre-push hook will be reinstated when the `setup-php-codesniffer` target
-is executed.
-
-
-### Customize configuration
-
-The basic configuration can be changed by copying the relevant Phing properties
-from the "PHP CodeSniffer configuration" section in `build.properties.dist` to
-`build.properties` and changing them to your requirements. Then regenerate the
-`phpcs.xml` file by running the `setup-php-codesniffer` target:
-
-```
-$ ./vendor/bin/phing setup-php-codesniffer
-```
-
-To change to PHP CodeSniffer ruleset itself, make a copy of the file
-`phpcs-ruleset.xml.dist` and rename it to `phpcs-ruleset.xml`, and then put this
-line in your `build.properties` file:
-
-```
-phpcs.standard = ${project.basedir}/phpcs-ruleset.xml
-```
-
-For more information on configuring the ruleset see [Annotated ruleset](http://pear.php.net/manual/en/package.php.php-codesniffer.annotated-ruleset.php).
-
-
-## FAQ
-
-### Should I commit the contrib modules I download
-
-Composer recommends **no**. They provide [argumentation against but also workrounds if a project decides to do it anyway](https://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md).
-
-### How can I apply patches to downloaded modules?
-
-If you need to apply patches (depending on the project being modified, a pull request is often a better solution), you can do so with the [composer-patches](https://github.com/cweagans/composer-patches) plugin.
-
-To add a patch to drupal module foobar insert the patches section in the extra section of composer.json:
-```json
-"extra": {
-    "patches": {
-        "drupal/foobar": {
-            "Patch description": "URL to patch"
-        }
-    }
-}
-```
+If you plan to make contributions to the Joinup codebase, we kindly ask you to run the coding standards checks,
+ as well as the Behat test suite before making a pull request.
