@@ -62,3 +62,13 @@ function joinup_form_install_settings_form_save($form, FormStateInterface $form_
   // Load the database connection to make it available in the current request.
   Database::addConnectionInfo($key, $target, $database);
 }
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_entity_type_alter(array &$entity_types) {
+  // Add the "Propose" form operation to the RDF Entity so that we can add
+  // propose form displays to them.
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+  $entity_types['rdf_entity']->setFormclass('propose', 'Drupal\rdf_entity\Form\RdfForm');
+}
