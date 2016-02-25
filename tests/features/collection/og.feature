@@ -92,7 +92,7 @@ Feature: Organic Groups integration
       | Madame Sharn     |               |
       | Goodie Whemper   |               |
     # Administrators can edit the collection.
-    # @fixme Run this as facilitator or collection owner.
+    # @fixme Run this as facilitator or collection owner. (ISAICP-2190)
     Given I am logged in as "Collection admin"
     When I go to the homepage of the "Überwaldean Land Eels" collection
     Then I should see the link "Edit"
@@ -102,4 +102,4 @@ Feature: Organic Groups integration
     Then the following fields should be present "Title, Description, Abstract, Contact information, Owner, Policy domain, Topic, Spatial coverage, Affiliates, Closed collection, eLibrary creation, Moderated"
     And I fill in "Title" with "Überwaldean Sea Eels"
     And I press the "Save" button
-    Then I should see the text "Überwaldean Sea Eels"
+    Then I should see the heading "Überwaldean Sea Eels"
