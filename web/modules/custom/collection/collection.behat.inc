@@ -58,6 +58,22 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Navigates to the edit form of a collection.
+   *
+   * @param string $collection
+   *   The name of the collection.
+   *
+   * @When (I )go to the :collection collection edit form
+   * @When (I )visit the :collection collection edit form
+   */
+  public function visitEditCollection($collection) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
+    $collection = $this->getCollectionByName($collection);
+    $path = $collection->url('edit-form');
+    $this->visitPath($path);
+  }
+
+  /**
    * Creates a number of collections with data provided in a table.
    *
    * * @param TableNode $collection_table
@@ -66,9 +82,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Table format:
    *
    * @codingStandardsIgnoreStart
-   * | name            | author   | uri                             | logo     | pre-moderation | closed | create elibrary  | schedule | metadata url           |
-   * | The City Watch  | Riktor   | http://joinup.eu/collection/tcw | logo.png | 0              | 0      | facilitators     | daily    | https://city-watch.am/ |
-   * | The Smoking Gnu | Mr. Pump | http://joinup.eu/collection/tsg |logo.gif  | 1              | 1      | registered_users | weekly   | https://gnu.am/        |
+   * uri                              | name                     | abstract                                    | access url                              | closed  | creation date     | description                                                                                                         | elibrary creation  | logo  | moderation  | modification date  | owner
+   * http://joinup.eu/collection/dog  | Dog owner collection     | Read up on all about <strong>dogs</strong>  | http://dogtime.com/dog-breeds/profiles  | 1       | 28-01-1995 12:05  | The Afghan Hound is elegance personified.                                                                           | 0                  |       | 1           |                    |
+   * http://joinup.eu/collection/cat  | Cats collection 4 ever!  | Cats are cool!                              | http://mashable.com/category/cats/      | 0       | 28-01-1995 12:06  | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal.  | 1                  |       | 0           |                    |
    * @codingStandardsIgnoreEnd
    *
    * Only the name field is required.
@@ -79,17 +95,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Given (the following )collections:
    */
   public function givenCollections(TableNode $collection_table) {
-    $aliases = [
-      'uri' => 'id',
-      'name' => 'label',
-      'author' => 'author',
-      'logo' => 'field_collection_logo',
-      'pre-moderation' => 'field_collection_pre_moderation',
-      'closed' => 'field_collection_closed',
-      'create elibrary' => 'field_collection_create_elibrary',
-      'schedule' => 'field_collection_schedule',
-      'metadata url' => 'field_collection_metadata_url',
-    ];
+    $aliases = self::collectionFieldAliases();
 
     foreach ($collection_table->getColumnsHash() as $collection) {
       $values = [];
@@ -131,17 +137,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Given (the following )collection:
    */
   public function givenCollection(TableNode $collection_table) {
-    $aliases = [
-      'uri' => 'id',
-      'name' => 'label',
-      'author' => 'author',
-      'logo' => 'field_collection_logo',
-      'pre-moderation' => 'field_collection_pre_moderation',
-      'closed' => 'field_collection_closed',
-      'create elibrary' => 'field_collection_create_elibrary',
-      'schedule' => 'field_collection_schedule',
-      'metadata url' => 'field_collection_metadata_url',
-    ];
+    $aliases = self::collectionFieldAliases();
 
     $values = [];
     // Replace the column aliases with the actual field names.
@@ -170,8 +166,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function createCollection(array $values) {
     // Add image.
-    if (!empty($values['field_collection_logo'])) {
-      $filename = $values['field_collection_logo'];
+    if (!empty($values['field_ar_logo'])) {
+      $filename = $values['field_ar_logo'];
       $files_path = $this->getMinkParameter('files_path');
       $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
       if (!is_file($path)) {
@@ -180,10 +176,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       // Copy the image into the public files folder and turn it into a File
       // entity before linking it to the collection.
       $uri = 'public://' . $filename;
-      file_unmanaged_copy($path, $uri);
-      $image = File::create(['uri' => $uri]);
+      $destination = file_unmanaged_copy($path, $uri);
+      $image = File::create(['uri' => $destination]);
       $image->save();
-      $values['field_collection_logo'] = [$image->id()];
+      $values['field_ar_logo'] = [$image->id()];
 
       $this->images[$image->id()] = $image;
     }
@@ -288,8 +284,86 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
     // Also remove the image entities that were attached to the collections.
     foreach ($this->images as $image) {
-      file_unmanaged_delete($image->getFileUri());
       $image->delete();
+    }
+  }
+
+  /**
+   * Field alias mapping.
+   *
+   * @return array
+   *    Mapping.
+   */
+  private static function collectionFieldAliases() {
+    // Mapping alias - field name.
+    return [
+      'uri' => 'id',
+      'name' => 'label',
+      'abstract' => 'field_ar_abstract',
+      'access url' => 'field_ar_access_url',
+      'affiliates' => 'field_ar_affiliates',
+      'closed' => 'field_ar_closed',
+      'contact information' => 'field_ar_contact_information',
+      'creation date' => 'field_ar_creation_date',
+      'description' => 'field_ar_description',
+      'elibrary creation' => 'field_ar_elibrary_creation',
+      'logo' => 'field_ar_logo',
+      'moderation' => 'field_ar_moderation',
+      'modification date' => 'field_ar_modification_date',
+      'owner' => 'field_ar_owner',
+      'policy domain' => 'field_ar_policy_domain',
+      'spatial coverage' => 'field_ar_spatial_coverage',
+      'topic' => 'field_ar_topic',
+    ];
+  }
+
+  /**
+   * Assert that certain fields are present on the page.
+   *
+   * @param string $fields
+   *    Fields.
+   *
+   * @throws \Exception
+   *   Thrown when a column name is incorrect.
+   *
+   * @Then /^(?:|the following )fields should be present? "(?P<fields>[^"]*)"$/
+   */
+  public function assertFieldsPresent($fields) {
+    $fields = explode(',', $fields);
+    $fields = array_map('trim', $fields);
+    $fields = array_filter($fields);
+    $not_found = [];
+    foreach ($fields as $field) {
+      $is_found = $this->getSession()->getPage()->find('named', array('field', $field));
+      if (!$is_found) {
+        $not_found[] = $field;
+      }
+    }
+    if ($not_found) {
+      throw new \Exception("Field(s) expected, but not found: " . implode(', ', $not_found));
+    }
+  }
+
+  /**
+   * Assert that certain fields are not present on the page.
+   *
+   * @param string $fields
+   *    Fields.
+   *
+   * @throws \Exception
+   *   Thrown when a column name is incorrect.
+   *
+   * @Then /^(?:|the following )fields should not be present? "(?P<fields>[^"]*)"$/
+   */
+  public function assertFieldsNotPresent($fields) {
+    $fields = explode(',', $fields);
+    $fields = array_map('trim', $fields);
+    $fields = array_filter($fields);
+    foreach ($fields as $field) {
+      $is_found = $this->getSession()->getPage()->find('named', array('field', $field));
+      if ($is_found) {
+        throw new \Exception("Field should not be found, but is present: " . $field);
+      }
     }
   }
 

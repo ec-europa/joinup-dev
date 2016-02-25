@@ -54,6 +54,11 @@
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
             "drush/contrib/{$name}": ["type:drupal-drush"]
+        },
+        "patches": {
+            "drupal/core": {
+                "Enlarge file_usage entity id length.": "https://gist.githubusercontent.com/sandervd/884027d8fa7d5a14165a/raw/03d3460888dba36f37dc2f74ef36128dc4cf4a3d/file_usage_entity_id_length.patch"
+            }
         }
     },
     "repositories": [

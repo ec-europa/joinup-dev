@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6e54f284add1a52c9f9fae39ef1684ce",
-    "content-hash": "8933fd6c2fe292f4913224f5acb30222",
+    "hash": "978fd7fef40a0811f907284c91187426",
+    "content-hash": "e12bea52765554015f1b266f22901079",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1182,6 +1182,11 @@
                 "symfony/css-selector": "2.7.*"
             },
             "type": "drupal-core",
+            "extra": {
+                "patches_applied": {
+                    "Enlarge file_usage entity id length.": "https://gist.githubusercontent.com/sandervd/884027d8fa7d5a14165a/raw/03d3460888dba36f37dc2f74ef36128dc4cf4a3d/file_usage_entity_id_length.patch"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Drupal\\Core\\": "lib/Drupal/Core",
