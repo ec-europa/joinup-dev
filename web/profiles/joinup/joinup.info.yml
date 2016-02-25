@@ -66,6 +66,8 @@ config_devel:
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
+  - core.entity_form_display.rdf_entity.collection.propose
+  - core.entity_form_mode.rdf_entity.propose
   - core.entity_form_mode.rdf_entity.propose
   - editor.editor.content_editor
   - field.field.user.user.og_group_ref
