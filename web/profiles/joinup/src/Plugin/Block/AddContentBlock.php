@@ -24,12 +24,13 @@ class AddContentBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $build = [];
-    $build['collection'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Add collection'),
-      '#url' => Url::fromRoute('entity.collection.propose_form'),
-      '#attributes' => ['class' => ['button', 'button--small']],
+    $build = [
+      'collection' => [
+        '#type' => 'link',
+        '#title' => $this->t('Add collection'),
+        '#url' => Url::fromRoute('collection.propose_form'),
+        '#attributes' => ['class' => ['button', 'button--small']],
+      ],
     ];
 
     return $build;
