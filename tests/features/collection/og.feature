@@ -81,7 +81,6 @@ Feature: Organic Groups integration
     And I should see the "Join this collection" button
     And the "Folk Dance and Song Society" collection should have 1 member
 
-  @javascript
   Scenario: Edit a Collection
     Given collections:
       | uri                              | logo     | name                         | abstract                                    | access url                              | closed  | creation date     | description                                                                                                         | elibrary creation  | moderation  | modification date  | owner |
