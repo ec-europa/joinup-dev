@@ -8,4 +8,8 @@ label: 'Authenticated user'
 weight: 1
 is_admin: false
 permissions:
-  - 'view published collection entities'
+  0: 'view published collection entities'
+  1: 'access content'
+  2: 'use text format basic_html'
+  3: 'use text format content_editor'
+  6: 'view rdf entity'

@@ -6,5 +6,6 @@ _core:
 id: administrator
 label: Administrator
 weight: 4
-is_admin: true
-permissions: {  }
+is_admin: false
+permissions:
+  - 'administer account settings'
