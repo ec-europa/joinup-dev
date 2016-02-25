@@ -51,9 +51,13 @@ class RdfForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
-    $form_state->setRedirect('entity.rdf_entity.collection');
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     $entity = $this->getEntity();
     $entity->save();
+    $form_state->setRedirect(
+      'entity.rdf_entity.canonical',
+      ['rdf_entity' => $entity->sanitizedId()]
+    );
   }
 
 }
