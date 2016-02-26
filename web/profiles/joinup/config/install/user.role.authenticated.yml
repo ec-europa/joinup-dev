@@ -1,15 +1,14 @@
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: l9WfNYE3126T7fXUICiVhvzqujmpBET_PziGYmgPNBQ
 id: authenticated
 label: 'Authenticated user'
 weight: 1
 is_admin: false
 permissions:
-  0: 'view published collection entities'
-  1: 'access content'
-  2: 'use text format basic_html'
-  3: 'use text format content_editor'
-  6: 'view rdf entity'
+  - 'access content'
+  - 'create collection rdf entity'
+  - 'use text format basic_html'
+  - 'use text format content_editor'
+  - 'view published collection entities'
+  - 'view rdf entity'

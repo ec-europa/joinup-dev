@@ -49,36 +49,11 @@ Feature: User authentication
     Examples:
       | path                           |
       | rdf_entity/http%3A\\drupal.org |
+      | rdf_entity/add/collection      |
 
   @api
   Scenario Outline: Authenticated user cannot access site administration
     Given I am logged in as a user with the "authenticated" role
-    When I go to "<path>"
-    Then I should get an access denied error
-
-    Examples:
-      | path                           |
-      | admin                          |
-      | admin/config                   |
-      | admin/content                  |
-      | admin/people                   |
-      | admin/structure                |
-      | admin/content/rdf              |
-      | rdf_entity/add/collection      |
-
-  @api
-  Scenario Outline: User an access these paths
-    Given I am logged in as a user with the "user" role
-    Then I visit "<path>"
-
-    Examples:
-      | path                           |
-      | rdf_entity/http%3A\\drupal.org |
-      | rdf_entity/add/collection      |
-
-  @api
-  Scenario Outline: User cannot access these paths
-    Given I am logged in as a user with the "user" role
     When I go to "<path>"
     Then I should get an access denied error
 
@@ -114,7 +89,6 @@ Feature: User authentication
       | admin/config                   |
       | admin/content                  |
       | admin/structure                |
-      | rdf_entity/add/collection      |
 
   @api
   Scenario Outline: Administrator can access these paths
@@ -139,4 +113,3 @@ Feature: User authentication
       | admin/people                   |
       | admin/structure                |
       | admin/content/rdf              |
-      | rdf_entity/add/collection      |
