@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7653ebb7e0f8232d57c0ac1708e493f0",
-    "content-hash": "3a7080d84db33a1d89ebc56124556726",
+    "hash": "b706fd175b41450f5a2ec875aa2aee8f",
+    "content-hash": "8140cbe545061b6a004003bdbd551fc4",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.15.0",
+            "version": "3.15.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "cf218650881cd79f7bfec669996cd3aff22528d1"
+                "reference": "b1e854697f57b8376cf27a150fb452c45d495411"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/cf218650881cd79f7bfec669996cd3aff22528d1",
-                "reference": "cf218650881cd79f7bfec669996cd3aff22528d1",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b1e854697f57b8376cf27a150fb452c45d495411",
+                "reference": "b1e854697f57b8376cf27a150fb452c45d495411",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-02-09 21:59:27"
+            "time": "2016-02-23 21:45:03"
         },
         {
             "name": "composer/composer",
@@ -1044,16 +1044,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.0.3",
+            "version": "8.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "f5b2a07081b963e0931adaf816f62b79541ac1e6"
+                "reference": "2e5b41ece5a7b79d93279cbeee709272e9fed682"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/f5b2a07081b963e0931adaf816f62b79541ac1e6",
-                "reference": "f5b2a07081b963e0931adaf816f62b79541ac1e6",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/2e5b41ece5a7b79d93279cbeee709272e9fed682",
+                "reference": "2e5b41ece5a7b79d93279cbeee709272e9fed682",
                 "shasum": ""
             },
             "require": {
@@ -1205,7 +1205,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-02-03 08:47:36"
+            "time": "2016-02-24 18:59:52"
         },
         {
             "name": "drupal/og",
@@ -2104,7 +2104,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
