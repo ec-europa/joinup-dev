@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - search_api.server.collections_search_server
+    - search_api.server.database_search_server
     - field.field.rdf_entity.collection.field_ar_description
   module:
     - search_api
@@ -69,4 +69,4 @@ tracker_settings:
   default:
     plugin_id: default
     settings: {  }
-server: collections_search_server
+server: database_search_server

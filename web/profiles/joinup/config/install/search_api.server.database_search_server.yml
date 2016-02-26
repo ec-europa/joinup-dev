@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - search_api_db
-id: collections_search_server
-name: 'Collections Search Server'
+id: database_search_server
+name: 'Database Search Server'
 description: ''
 backend: search_api_db
 backend_config:
