@@ -4,6 +4,8 @@
  * Purge the triple store from the cli.
  */
 
+use \Drush\Log\LogLevel;
+
 /**
  * Implements hook_drush_command().
  */
@@ -49,10 +51,10 @@ WHERE {
 }
 QUERY;
     $endpoint->query($query);
-    drush_log('All triples have been removed.', \Drush\Log\LogLevel::INFO);
+    drush_log('All triples have been removed.', LogLevel::INFO);
 
   }
   else {
-    drush_log('Triple store is empty, nothing to delete.', \Drush\Log\LogLevel::INFO);
+    drush_log('Triple store is empty, nothing to delete.', LogLevel::INFO);
   }
 }
