@@ -39,7 +39,7 @@ rdf_entity.rdf_add:
     _title: 'Add RDF'
     _controller: '\Drupal\rdf_entity\Controller\RdfController::add'
   requirements:
-    _entity_create_access: 'rdf_entity'
+    _entity_create_access: 'rdf_entity:{rdf_type}'
 
 entity.rdf_entity.edit_form:
   path: '/rdf_entity/{rdf_entity}/edit'
