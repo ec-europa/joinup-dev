@@ -11,6 +11,7 @@
         "drupal/core": "~8.0.3",
         "drupal/og": "dev-port-og-complex-widget-test",
         "drupal/phing-drush-task": "1.0",
+        "drupal/search_api": "~8.1.0-alpha12",
         "drush/drush": "~8.0",
         "easyrdf/easyrdf": "dev-0.9.x as 0.9.1",
         "pear/console_table": "~1.3.0",
@@ -58,6 +59,9 @@
         "patches": {
             "drupal/core": {
                 "Enlarge file_usage entity id length.": "https://gist.githubusercontent.com/sandervd/884027d8fa7d5a14165a/raw/03d3460888dba36f37dc2f74ef36128dc4cf4a3d/file_usage_entity_id_length.patch"
+            },
+            "drupal/search_api": {
+                "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/support_for_non_numeric-2671228-2_1.patch"
             }
         }
     },
