@@ -166,27 +166,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Indexes items of entity type: collection.
-   *
-   * @throws \Exception
-   *   When the collection index is not found.
-   *
-   * @Given The collections are indexed
-   */
-  public function theCollectionsAreIndexed() {
-    /** @var String $id */
-    $id = 'collections';
-
-    /** @var \Drupal\search_api\IndexInterface $index */
-    $index = \Drupal\search_api\Entity\Index::load($id);
-    if (empty($index)) {
-      throw new \Exception("Collection index not found.");
-    }
-    $index->reindex();
-    $index->indexItems();
-  }
-
-  /**
    * Creates a collection from the given property and field data.
    *
    * @param array $values
