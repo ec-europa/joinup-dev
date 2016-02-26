@@ -4,7 +4,7 @@
  * Enables modules and site configuration for the Joinup profile.
  */
 
-use  \Drupal\Core\Form\FormStateInterface;
+use \Drupal\Core\Form\FormStateInterface;
 use \Drupal\Core\Database\Database;
 
 /**
