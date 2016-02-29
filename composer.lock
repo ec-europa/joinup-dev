@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6ea1ada588b666bb58051d0cd75870fc",
-    "content-hash": "5b3b5f63d9877dd4c4ca85969c336674",
+    "hash": "1e1d50e6d7f6e4e5525197201ba5ee0b",
+    "content-hash": "e502c6dbc2da54d462cce031dd12afb2",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -6495,6 +6495,24 @@
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
             "time": "2016-01-27 11:34:40"
+        },
+        {
+            "name": "typhonius/behattask",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://gist.github.com/5719e15be9687ff7c138.git",
+                "reference": "0ea666882cba3099dfa4feeb02e1bb85b2c0bde9"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "BehatTask.php"
+                ]
+            },
+            "include-path": [
+                "."
+            ]
         }
     ],
     "aliases": [
