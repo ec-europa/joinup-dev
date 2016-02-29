@@ -10,7 +10,7 @@ field_name: field_user_professional_domain
 entity_type: user
 bundle: user
 label: 'Professional domain'
-description: ''
+description: 'Expertise domains you are interested in'
 required: false
 translatable: false
 default_value: {  }
