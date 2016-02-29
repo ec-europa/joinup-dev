@@ -18,6 +18,9 @@
     <echo msg="Loading Drush task." />
     <taskdef name="drush" classname="DrushTask" />
 
+    <echo msg="Loading Behat task." />
+    <taskdef name="behat" classname="BehatTask" />
+
     <echo msg="Loading PHP Codesniffer Configuration task." />
     <taskdef name="phpcodesnifferconfiguration" classname="\DrupalProject\Phing\PhpCodeSnifferConfigurationTask" />
 
@@ -179,6 +182,16 @@
             </filterchain>
         </loadfile>
         <echo message="${behat.yml.content}" file="${behat.yml.path}" />
+    </target>
+
+    <!-- Run Behat tests. -->
+    <target name="run-behat-tests" description="Run Behat tests.">
+        <behat
+            executable="${behat.bin}"
+            config="${behat.yml.path}"
+            strict="${behat.options.strict}"
+            verbose="${behat.options.verbosity}"
+        />
     </target>
 
     <!-- Link the site root to the document root of the webserver. -->
