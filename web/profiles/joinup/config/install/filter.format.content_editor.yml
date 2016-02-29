@@ -1,8 +1,6 @@
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: V7ajwP6nYcUFjHnqUxOQc8Vg7zqzIW29BqUrp7XsPfc
 name: 'Content Editor'
 format: content_editor
 weight: -10

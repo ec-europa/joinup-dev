@@ -2,19 +2,18 @@ langcode: en
 status: true
 dependencies:
   module:
-    - og
     - rdf_entity
     - user
-id: user.og_group_ref
-field_name: og_group_ref
+id: user.field_user_nationality
+field_name: field_user_nationality
 entity_type: user
-type: og_membership_reference
+type: entity_reference
 settings:
   target_type: rdf_entity
-module: og
+module: core
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false
-custom_storage: true
+custom_storage: false

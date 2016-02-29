@@ -1,8 +1,6 @@
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: Yipley8Vk84a9RnRaSQ0Ndo0o6HTtjvmkRrL63GT7n4
 type: og_membership_type
 name: 'OG membership type'
 description: 'Basic OG membership type'
