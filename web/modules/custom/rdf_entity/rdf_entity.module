@@ -5,12 +5,16 @@
  * Main functions and hook implementations of the RDF Entity module.
  */
 
-use \Drupal\Core\Form\FormStateInterface;
-use \Drupal\Core\Render\Element;
-use \Drupal\field\Entity\FieldStorageConfig;
-use \Drupal\rdf_entity\RdfInterface;
-use \Drupal\Core\Url;
 use \Drupal\Core\Entity\EntityInterface;
+use \Drupal\Core\Render\Element;
+use \Drupal\Core\Form\FormStateInterface;
+use \Drupal\Core\Url;
+use \Drupal\field\Entity\FieldStorageConfig;
+use \Drupal\rdf_entity\Entity\Rdf;
+use \Drupal\rdf_entity\RdfInterface;
+use \Drupal\og\Og;
+use \Drupal\og\OgMembershipInterface;
+use \Drupal\og\Entity\OgMembership;
 
 /**
  * Implements hook_form_alter().
@@ -68,7 +72,7 @@ function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity,
  * Prints the bundle when viewing the rdf in full.
  */
 function rdf_entity_rdf_entity_view($build, $entity, $display, $view_mode) {
-  if ($entity instanceof \Drupal\rdf_entity\Entity\Rdf && $view_mode == 'full') {
+  if ($entity instanceof Rdf && $view_mode == 'full') {
     drupal_set_message(
       t('Current page - Bundle: %bundle', array(
         '%bundle' => $entity->bundle(),
@@ -190,12 +194,12 @@ function rdf_entity_entity_insert(EntityInterface $entity) {
   if (!\Drupal::moduleHandler()->moduleExists('og')) {
     return;
   }
-  if (!\Drupal\og\Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
+  if (!Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
     return;
   }
   if ($entity instanceof RdfInterface) {
     // Subscribe the group manager.
-    $membership = \Drupal\og\Entity\OgMembership::create(['type' => \Drupal\og\OgMembershipInterface::TYPE_DEFAULT]);
+    $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
     $membership
       ->setUser(\Drupal::currentUser()->id())
       ->setEntityId($entity->id())

@@ -74,6 +74,15 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Navigates to the collections overview page.
+   *
+   * @When (I )visit the collection overview page
+   */
+  public function visitCollectionOverviewPage() {
+    $this->visitPath('/collections');
+  }
+
+  /**
    * Creates a number of collections with data provided in a table.
    *
    * * @param TableNode $collection_table
