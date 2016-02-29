@@ -92,7 +92,7 @@ Feature: Organic Groups integration
       | Madame Sharn     |               |
       | Goodie Whemper   |               |
     # Administrators can edit the collection.
-    # @fixme Run this as facilitator or collection owner. (ISAICP-2190)
+    # @fixme Run this as facilitator or collection owner. (ISAICP-2362)
     Given I am logged in as "Collection admin"
     When I go to the homepage of the "Überwaldean Land Eels" collection
     Then I should see the link "Edit"
