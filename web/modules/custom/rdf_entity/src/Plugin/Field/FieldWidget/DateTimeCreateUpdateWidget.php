@@ -106,12 +106,21 @@ class DateTimeCreateUpdateWidget extends DateTimeWidgetBase implements Container
 
     $behaviour = $this->getSetting('behaviour');
     if (($behaviour == 'create' && $is_new) || $behaviour == 'modified') {
-      $element['value'] = [
-        '#type' => 'value',
-        '#value' => date('c'),
+      $element['set_date'] = [
+        '#type' => 'item',
+        '#value' => TRUE,
       ];
     }
     return $element;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+    foreach ($values as $delta => &$field_item) {
+      $field_item['value'] = isset($field_item['set_date']) ? date('c') : NULL;
+    }
+    return $values;
+  }
 }
