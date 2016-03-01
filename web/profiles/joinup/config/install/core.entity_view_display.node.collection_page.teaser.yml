@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.collection_page.body
+    - field.field.node.collection_page.og_group_ref
+    - node.type.collection_page
+  module:
+    - text
+    - user
+id: node.collection_page.teaser
+targetEntityType: node
+bundle: collection_page
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden:
+  og_group_ref: true

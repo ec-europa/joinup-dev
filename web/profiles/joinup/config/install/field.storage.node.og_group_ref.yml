@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   module:
+    - node
     - og
     - rdf_entity
-    - user
-id: user.og_group_ref
+id: node.og_group_ref
 field_name: og_group_ref
-entity_type: user
-type: og_membership_reference
+entity_type: node
+type: og_standard_reference
 settings:
   target_type: rdf_entity
 module: og
@@ -17,4 +17,4 @@ cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false
-custom_storage: true
+custom_storage: false

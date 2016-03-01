@@ -57,6 +57,8 @@ config_devel:
   - block.block.seven_page_title
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
+  - core.base_field_override.node.collection_page.promote
+  - core.base_field_override.node.collection_page.status
   - core.date_format.fallback
   - core.date_format.html_datetime
   - core.date_format.html_date
@@ -68,18 +70,34 @@ config_devel:
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
+  - core.entity_form_display.node.collection_page.default
+  - core.entity_view_display.node.collection_page.default
+  - core.entity_view_display.node.collection_page.teaser
+  - core.entity_view_mode.node.full
+  - core.entity_view_mode.node.rss
+  - core.entity_view_mode.node.search_index
+  - core.entity_view_mode.node.search_result
+  - core.entity_view_mode.node.teaser
   - editor.editor.content_editor
+  - field.field.node.collection_page.body
+  - field.field.node.collection_page.og_group_ref
   - field.field.user.user.og_group_ref
   - field.storage.user.og_group_ref
+  - field.storage.node.body
+  - field.storage.node.og_group_ref
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
+  - node.type.collection_page
   - og.og_membership_type.og_membership_type
   - og.settings
+  - search_api.index.collections
+  - search_api.server.database_search_server
   - system.theme
   - user.role.administrator
   - user.role.anonymous
   - user.role.authenticated
   - user.role.moderator
   - user.role.user
+  - views.view.collections

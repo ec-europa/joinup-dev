@@ -1,0 +1,10 @@
+name: collection_page
+type: module
+description: Custom content type
+core: 8.x
+package: Joinup
+dependencies:
+  - og
+  - node
+
+
