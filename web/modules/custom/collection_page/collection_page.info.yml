@@ -6,5 +6,7 @@ package: Joinup
 dependencies:
   - og
   - node
-
-
+  - field
+  - path
+  - text
+  - menu_ui
