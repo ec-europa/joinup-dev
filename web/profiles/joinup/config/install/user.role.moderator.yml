@@ -6,7 +6,6 @@ label: Moderator
 weight: 3
 is_admin: false
 permissions:
-  - 'view unpublished collection entities'
   - 'view rdf entity overview'
   - 'administer users'
   - 'access user profiles'

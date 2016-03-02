@@ -62,27 +62,34 @@ class AutoUriWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $element['value'] = $element + array(
+    $element['value'] = array(
       '#type' => 'value',
+      '#value' => isset($items[$delta]->value) ? $items[$delta]->value : FALSE,
     );
-    // Existing Id.
-    if (isset($items[$delta]->value)) {
-      $element['value']['#value'] = $items[$delta]->value;
-    }
-    // Generate a new id.
-    else {
+    return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+    foreach ($values as $delta => &$field_item) {
+      // Don't generate a new id when one is already on the entity.
+      if ($field_item['value']) {
+        continue;
+      }
       $prefix = $this->getSetting('prefix');
       if (empty($prefix)) {
-        throw new Exception('Auto URI widget has is un-configured: Prefix not set.');
+        throw new Exception('Auto URI widget is un-configured: Prefix not set.');
       }
       // If needed, append a trailing slash.
       if (substr($prefix, -1) != '/') {
         $prefix .= '/';
       }
       $uuid = new Php();
-      $element['value']['#value'] = $prefix . $uuid->generate();
+      $field_item['value'] = $prefix . $uuid->generate();
     }
-    return $element;
+    return $values;
   }
 
 }
