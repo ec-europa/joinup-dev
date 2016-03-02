@@ -89,11 +89,12 @@ behat.formatter.name = progress
 behat.files.path = ${behat.dir}/fixtures/files
 
 # Enable strict mode in Behat tests. Will only pass if all tests are explicitly
-# passing.
+# passing. This option is only used for the 'run-behat-tests' Phing target.
 behat.options.strict = false
 
 # Set verbosity for Behat tests. 0 is completely silent, 1 is normal output, 2
-# shows exception backtraces, 3 shows debugging information.
+# shows exception backtraces, 3 shows debugging information. This option is
+# only used for the 'run-behat-tests' Phing target.
 behat.options.verbosity = 2
 
 

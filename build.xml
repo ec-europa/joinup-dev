@@ -185,6 +185,7 @@
     </target>
 
     <!-- Run Behat tests. -->
+    <!-- Use this target to run tests with increased verbosity on ContinuousPHP to help debugging. -->
     <target name="run-behat-tests" description="Run Behat tests.">
         <behat
             executable="${behat.bin}"
