@@ -9,7 +9,7 @@ collection.propose_form:
     _title: 'Propose a Collection'
     rdf_type: 'collection'
   requirements:
-    _permission: 'propose collection entities'
+    _permission: 'propose collection rdf entity'
   options:
     parameters:
       rdf_type:
