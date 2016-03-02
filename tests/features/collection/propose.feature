@@ -30,4 +30,12 @@ Feature: Proposing a collection
     When I am on the homepage
     And I click "Add collection"
     Then I should see the heading "Propose collection"
+    When I fill in the following:
+    | Title       | Ancient and Classical Mythology                                                                      |
+    | Description | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
+    And I attach the file "logo.png" to "Logo"
+    And I press "Save"
+    Then I should see the heading "Ancient and Classical Mythology"
+    # The user that proposed the collection should be auto-subscribed.
+    And the "Ancient and Classical Mythology" collection should have 1 member
 
