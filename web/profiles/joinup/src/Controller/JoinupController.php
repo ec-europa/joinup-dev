@@ -34,7 +34,7 @@ class JoinupController extends ControllerBase {
     ));
 
     $form = $this->entityFormBuilder()->getForm($rdf_entity, 'propose');
-    $form['#title'] = $this->t('<em>Propose @type</em>', [
+    $form['#title'] = $this->t('Propose @type', [
       '@type' => Unicode::strtolower($rdf_type->label()),
     ]);
     return $form;
