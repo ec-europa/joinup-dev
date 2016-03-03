@@ -23,7 +23,7 @@ class CollectionPageSubContext extends DrupalSubContextBase implements DrupalSub
   /**
    * The bundle type of the content entity.
    *
-   * @var String
+   * @var string
    */
   protected $bundle = 'collection_page';
 
