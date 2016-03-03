@@ -64,6 +64,39 @@ class UserSubContext extends DrupalSubContextBase implements DrupalSubContextInt
   }
 
   /**
+   * @Given the following user registration:
+   */
+  public function submitRegistrationForm(TableNode $table) {
+    $this->visitPath('/user/register');
+
+    // Fill in fields.
+    foreach ($table->getRowsHash() as $field => $value) {
+      $this->getSession()->getPage()->fillField($field, $value);
+    };
+    // Submit form.
+    $this->getSession()->getPage()->pressButton("Create new account");
+
+    // Get the last registered user.
+    $storage = \Drupal::entityManager()->getStorage('user');
+    $query = $storage->getQuery();
+    $result = $query->sort('uid', 'DESC')->range(0, 1)->execute();
+    $uid = array_pop($result);
+    /** @var \Drupal\user\UserInterface $user */
+    $user = $storage->load($uid);
+
+    // Check if latest registered user is created during this request.
+    $user_creation_time = $user->getCreatedTime();
+    $request_time = \Drupal::requestStack()->getCurrentRequest()->server->get('REQUEST_TIME');
+    if (($request_time - $user_creation_time) < 0) {
+      // Track user for auto delete in tear-down.
+      $this->users[$uid] = $user;
+    }
+    else {
+      throw new Exception('User not registered.');
+    }
+  }
+
+  /**
    * Mapping of human readable names to machine names.
    *
    * @return array
