@@ -64,10 +64,10 @@ class UserSubContext extends DrupalSubContextBase implements DrupalSubContextInt
   }
 
   /**
-   * @Given the following user registration:
+   * @Given the following user registration at :location:
    */
-  public function submitRegistrationForm(TableNode $table) {
-    $this->visitPath('/user/register');
+  public function submitRegistrationForm(TableNode $table, $location) {
+    $this->visitPath($location);
 
     // Fill in fields.
     foreach ($table->getRowsHash() as $field => $value) {
