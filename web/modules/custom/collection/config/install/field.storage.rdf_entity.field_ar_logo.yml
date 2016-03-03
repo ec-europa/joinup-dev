@@ -20,9 +20,10 @@ settings:
   uri_scheme: public
   default_image:
     alt: ''
-    title: ''
-    width: null
     height: null
+    title: ''
+    uuid: ''
+    width: null
   target_type: file
   display_field: false
   display_default: false
