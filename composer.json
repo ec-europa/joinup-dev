@@ -84,7 +84,7 @@
                 "name": "drupal/phing-drush-task",
                 "version": "1.0",
                 "source": {
-                    "url": "http://git.drupal.org/project/phingdrushtask.git",
+                    "url": "https://git.drupal.org/project/phingdrushtask.git",
                     "type": "git",
                     "reference": "7.x-1.0"
                 },
