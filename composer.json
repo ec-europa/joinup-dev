@@ -71,7 +71,7 @@
         },
         {
             "type": "vcs",
-            "url": "http://git.drupal.org/project/coder.git"
+            "url": "https://git.drupal.org/project/coder.git"
         },
         {
             "_comment": "Fork for drupal/drupal-extension containing a fix for PR #248.",
