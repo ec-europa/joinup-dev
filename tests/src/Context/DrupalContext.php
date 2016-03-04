@@ -38,7 +38,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    *
    * @Then I should have a :type (content )page titled :title
    */
-  public function assertCollectionPage($type, $title) {
+  public function assertContentPageByTitle($type, $title) {
     $type = $this->getBundleFromLabel($type);
 
     $nodes = \Drupal::entityTypeManager()->getStorage('node')
