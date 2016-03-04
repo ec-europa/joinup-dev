@@ -49,7 +49,6 @@ Feature: User authentication
     Examples:
       | path                           |
       | rdf_entity/http%3A\\drupal.org |
-      | rdf_entity/add/collection      |
 
   @api
   Scenario Outline: Authenticated user cannot access site administration
@@ -62,9 +61,10 @@ Feature: User authentication
       | admin                          |
       | admin/config                   |
       | admin/content                  |
+      | admin/content/rdf              |
       | admin/people                   |
       | admin/structure                |
-      | admin/content/rdf              |
+      | rdf_entity/add/collection      |
 
   @api
   Scenario Outline: Moderator can access pages they are authorized to
@@ -89,6 +89,7 @@ Feature: User authentication
       | admin/config                   |
       | admin/content                  |
       | admin/structure                |
+      | rdf_entity/add/collection      |
 
   @api
   Scenario Outline: Administrator can access pages they are authorized to
@@ -113,3 +114,4 @@ Feature: User authentication
       | admin/people                   |
       | admin/structure                |
       | admin/content/rdf              |
+      | rdf_entity/add/collection      |
