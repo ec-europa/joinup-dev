@@ -1,4 +1,6 @@
-# Joinup website (https://joinup.ec.europa.eu/)
+# Joinup website
+
+This is the source code for https://joinup.ec.europa.eu/
 
 [![Build Status](https://status.continuousphp.com/git-hub/ec-europa/joinup-dev?token=77aa9de5-7fef-40bc-8c48-d6ff70fba9ff)](https://continuousphp.com/git-hub/ec-europa/joinup-dev)
 
@@ -12,6 +14,11 @@ choose, re-use, develop and implement interoperability solutions.
 
 The Joinup platform is developed as a Drupal 8 distribution, and therefore
 tries to follow the 'drupal-way' as much as possible.
+
+You are free to fork this project to host your own collaborative platform.
+Joinup is licensed under the
+[EUPL](https://en.wikipedia.org/wiki/European_Union_Public_Licence), which is
+compatible with the GPL.
 
 
 ## Running your own instance of Joinup
@@ -119,7 +126,7 @@ therefore a few measures are put in place:
 * Coding standards are verified.
 * Behat tests to avoid regression.
 
-You can [check our current scenario's here](/tests/features/)
+You can [check our current test scenarios here](/tests/features/).
 
 If you plan to make contributions to the Joinup codebase, we kindly ask you to
 run the coding standards checks, as well as the Behat test suite before making
