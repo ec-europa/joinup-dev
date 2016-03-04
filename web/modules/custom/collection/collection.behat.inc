@@ -58,6 +58,15 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Navigates to the collections overview page.
+   *
+   * @When (I )visit the collection overview page
+   */
+  public function visitCollectionOverviewPage() {
+    $this->visitPath('/collections');
+  }
+
+  /**
    * Creates a number of collections with data provided in a table.
    *
    * * @param TableNode $collection_table
@@ -66,9 +75,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Table format:
    *
    * @codingStandardsIgnoreStart
-   * | name            | author   | uri                             | logo     | pre-moderation | closed | create elibrary  | schedule | metadata url           |
-   * | The City Watch  | Riktor   | http://joinup.eu/collection/tcw | logo.png | 0              | 0      | facilitators     | daily    | https://city-watch.am/ |
-   * | The Smoking Gnu | Mr. Pump | http://joinup.eu/collection/tsg |logo.gif  | 1              | 1      | registered_users | weekly   | https://gnu.am/        |
+   * | name            | description                                      | author   | uri                             | logo     | pre-moderation | closed | create elibrary  | schedule | metadata url           |
+   * | The City Watch  | A short description.                             | Riktor   | http://joinup.eu/collection/tcw | logo.png | 0              | 0      | facilitators     | daily    | https://city-watch.am/ |
+   * | The Smoking Gnu | Just one description that is longer than normal. | Mr. Pump | http://joinup.eu/collection/tsg | logo.gif | 1              | 1      | registered_users | weekly   | https://gnu.am/        |
    * @codingStandardsIgnoreEnd
    *
    * Only the name field is required.
@@ -83,12 +92,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'uri' => 'id',
       'name' => 'label',
       'author' => 'author',
-      'logo' => 'field_collection_logo',
-      'pre-moderation' => 'field_collection_pre_moderation',
-      'closed' => 'field_collection_closed',
+      'description' => 'field_ar_description',
+      'logo' => 'field_ar_logo',
+      'pre-moderation' => 'field_ar_moderation',
+      'closed' => 'field_ar_closed',
       'create elibrary' => 'field_collection_create_elibrary',
-      'schedule' => 'field_collection_schedule',
-      'metadata url' => 'field_collection_metadata_url',
+      'schedule' => 'field_ar_elibrary_creation',
     ];
 
     foreach ($collection_table->getColumnsHash() as $collection) {
