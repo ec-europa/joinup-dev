@@ -31,14 +31,14 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    * Checks the existence of a content page.
    *
    * @param int $title
-   *   The title of the collection page.
+   *   The title of the page.
    *
    * @throws \Exception
    *   Thrown when the entity is not found.
    *
    * @Then I should have a :type (content )page titled :title
    */
-  public function assertCollectionPage($type, $title) {
+  public function assertContentPageByTitle($type, $title) {
     $type = $this->getBundleFromLabel($type);
 
     $nodes = \Drupal::entityTypeManager()->getStorage('node')
