@@ -2,14 +2,16 @@
 
 [![Build Status](https://status.continuousphp.com/git-hub/ec-europa/joinup-dev?token=77aa9de5-7fef-40bc-8c48-d6ff70fba9ff)](https://continuousphp.com/git-hub/ec-europa/joinup-dev)
 
-Joinup is a collaborative platform created by the European Commission and funded by the European Union
-via the [Interoperability Solutions for European Public Administrations (ISA)](http://ec.europa.eu/isa/) Programme.
+Joinup is a collaborative platform created by the European Commission and
+funded by the European Union via the [Interoperability Solutions for European
+Public Administrations (ISA)](http://ec.europa.eu/isa/) Programme.
 
-It offers several services that aim to help e-Government professionals share their experience with each other.
-We also hope to support them to find, choose, re-use, develop and implement interoperability solutions.
+It offers several services that aim to help e-Government professionals share
+their experience with each other.  We also hope to support them to find,
+choose, re-use, develop and implement interoperability solutions.
 
-The Joinup platform is developed as a Drupal 8 distribution, and therefore tries to follow the 'drupal-way' as much as possible.
-
+The Joinup platform is developed as a Drupal 8 distribution, and therefore
+tries to follow the 'drupal-way' as much as possible.
 
 
 ## Running your own instance of Joinup
@@ -20,74 +22,106 @@ The Joinup platform is developed as a Drupal 8 distribution, and therefore tries
 * Apache Solr
 
 ### Dependency management and builds
-We use Drupal composer as a template for the project.
-For the most up-to-date information on how to use Composer, build the project using Phing, or on how to run the Behat test,
-please refer directly to the documention of [drupal-composer](https://github.com/drupal-composer/drupal-project).
 
-### Setup
-* Clone this repository
+We use Drupal composer as a template for the project.  For the most up-to-date
+information on how to use Composer, build the project using Phing, or on how to
+run the Behat test, please refer directly to the documention of
+[drupal-composer](https://github.com/drupal-composer/drupal-project).
+
+### Initial setup
+
+* Clone this repository.  Use [composer](https://getcomposer.org/) to install
+* the dependencies.  Install Virtuoso. See [setting up
+  Virtuoso](/web/modules/custom/rdf_entity/README.md).
+* Set up a Solr search server, using the configuration provided inside the
+  `search_api_solr` module. For installation instructions, refer to
+  `INSTALL.txt` inside the `search_api_solr` module.
 * Point the document root of your webserver to the 'web/' directory.
-* Use [composer](https://getcomposer.org/) to install the dependencies.
-* Create a build.properties.local file.
-> Create a new file in the root of the project named `build.properties.local
-> using your favourite text editor:
->
-> ```
-> $ vim build.properties.local
-> ```
->
-> This file will contain configuration which is unique to your development
-> machine. This is mainly useful for specifying your database credentials and the
-> username and password of the Drupal admin user so they can be used during the
-> installation.
->
-> Because these settings are personal they should not be shared with the rest of
-> the team. Make sure you never commit this file!
->
-> All options you can use can be found in the `build.properties.dist` file. Just
-> copy the lines you want to override and change their values. For example:
->
-> #### The location of the Composer binary.
-> composer.bin = /usr/bin/composer
->
-> #### Database settings.
-> drupal.db.name = my_database
-> drupal.db.user = root
-> drupal.db.password = hunter2
->
-> #### Admin user.
-> drupal.admin.username = admin
-> drupal.admin.password = admin
->
-> #### The base URL to use in Behat tests.
-> behat.base_url = http://joinup.local
->
-> #### Verbosity of Drush commands. Set to 'yes' for verbose output.
-> drush.verbose = yes
-* If you didn't do so yet, now is the time to install Virtuoso.
-See [setting up Virtuoso](/web/modules/custom/rdf_entity/README.md)
-* Also setup a Solr search server, using the configuration provided inside the search_api_solr module.
-For installation instruction, refer to INSTALL.txt inside the search_api_solr module.
-* Execute the [Phing](https://www.phing.info/) target install-dev when building a development instance.
+
+### Create a local build properties file
+Create a new file in the root of the project named `build.properties.local
+using your favourite text editor:
+
 ```
+$ vim build.properties.local
+```
+
+This file will contain configuration which is unique to your development
+machine. This is mainly useful for specifying your database credentials and the
+username and password of the Drupal admin user so they can be used during the
+installation.
+
+Because these settings are personal they should not be shared with the rest of
+the team. Make sure you never commit this file!
+
+All options you can use can be found in the `build.properties.dist` file. Just
+copy the lines you want to override and change their values. Do not copy the
+entire `build.properties.dist` file, since this would override all options.
+
+Example `build.properties.local`:
+
+```
+# The location of the Composer binary.
+composer.bin = /usr/bin/composer
+
+# Database settings.
+drupal.db.name = my_database
+drupal.db.user = root
+drupal.db.password = hunter2
+
+# Admin user.
+drupal.admin.username = admin
+drupal.admin.password = admin
+
+# The base URL to use in Behat tests.
+behat.base_url = http://joinup.local
+
+# Verbosity of Drush commands. Set to 'yes' for verbose output.
+drush.verbose = yes
+```
+
+
+### Build the project
+
+Execute the [Phing](https://www.phing.info/) target `build-dev` to build a
+development instance, then install the site with `install-dev`:
+
+```
+$ ./vendor/bin/phing build-dev
 $ ./vendor/bin/phing install-dev
 ```
-* Run the test suite to validate your installation.
+
+
+### Run the tests
+
+Run the Behat test suite to validate your installation.
+
 ```
 $ cd tests; ./behat
 ```
+
+
 ## Contributing
-* You're thinking of setting up your own code repository using the Joinup codebase?
+
+* You're thinking of setting up your own code repository using the Joinup
+  codebase?
 * You are about to develop a big feature on top of this codebase?
 * You're having trouble installing this project?
 * If you want to report an issue?
-Get in touch! We'd like to hear about your plans.
+
+Use the Github issue queue to get in touch! We'd like to hear about your plans.
+
 
 ## Code quality
-We try to keep the quality of this repository as high as possible, and therefore a few measure are put in place:
-- Coding standards are verified
-- Behat tests to avoid regression
-(You can [check our current scenario's here](/tests/features/)
 
-If you plan to make contributions to the Joinup codebase, we kindly ask you to run the coding standards checks,
- as well as the Behat test suite before making a pull request.
+We try to keep the quality of this repository as high as possible, and
+therefore a few measures are put in place:
+* Coding standards are verified.
+* Behat tests to avoid regression.
+
+You can [check our current scenario's here](/tests/features/)
+
+If you plan to make contributions to the Joinup codebase, we kindly ask you to
+run the coding standards checks, as well as the Behat test suite before making
+a pull request. Also make sure you add test coverage for the functionality
+covered in the pull request.
