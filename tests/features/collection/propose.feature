@@ -4,7 +4,7 @@ Feature: Proposing a collection
   As the product owner of a collection of software solutions
   I need to be able to propose a collection for inclusion on Joinup
 
-  # Todo: It still needs to be decided on which pages the "Add collection"
+  # Todo: It still needs to be decided on which pages the "Propose collection"
   # button will be shown. It might be removed from the homepage in the future.
   # Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2298
 
@@ -17,7 +17,7 @@ Feature: Proposing a collection
     | Cecil Clapman | claps |
     Given I am an anonymous user
     When I am on the homepage
-    And I click "Add collection"
+    And I click "Propose collection"
     Then I should see the heading "Access denied"
     When I fill in the following:
     | Username | Cecil Clapman |
@@ -28,7 +28,7 @@ Feature: Proposing a collection
   Scenario: Propose a collection
     Given I am logged in as a user with the "authenticated" role
     When I am on the homepage
-    And I click "Add collection"
+    And I click "Propose collection"
     Then I should see the heading "Propose collection"
     When I fill in the following:
     | Title       | Ancient and Classical Mythology                                                                      |

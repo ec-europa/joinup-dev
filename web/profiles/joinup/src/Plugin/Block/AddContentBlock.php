@@ -27,7 +27,7 @@ class AddContentBlock extends BlockBase {
     $build = [
       'collection' => [
         '#type' => 'link',
-        '#title' => $this->t('Add collection'),
+        '#title' => $this->t('Propose collection'),
         '#url' => Url::fromRoute('collection.propose_form'),
         '#attributes' => ['class' => ['button', 'button--small']],
       ],
