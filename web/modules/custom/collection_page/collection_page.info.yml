@@ -1,6 +1,6 @@
 name: collection_page
 type: module
-description: Custom content type
+description: Custom content that belong to a collection.
 core: 8.x
 package: Joinup
 dependencies:

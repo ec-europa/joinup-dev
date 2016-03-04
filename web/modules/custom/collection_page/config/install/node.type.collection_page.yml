@@ -1,16 +1,5 @@
 langcode: en
 
-config_devel:
-  - node.type.collection_page
-  - field.storage.user.og_group_ref
-  - field.storage.node.body
-  - field.field.node.collection_page.body
-  - field.field.node.collection_page.og_group_ref
-  - core.base_field_override.node.collection_page.promote
-  - core.base_field_override.node.collection_page.status
-  - core.entity_form_display.node.collection_page.default
-  - core.entity_view_display.node.collection_page.default
-  - core.entity_view_display.node.collection_page.teaser
 status: true
 dependencies:
   module:

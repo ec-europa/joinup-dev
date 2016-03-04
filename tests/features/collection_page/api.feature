@@ -15,9 +15,9 @@ Feature: Collection Page API
       | schedule        | daily                   |
       | metadata url    | http://joinup.eu/my/foo |
       | uri             | http://joinup.eu/my/foo |
-    And content of type "Collection Page":
-      | title             | body                                     | groups audience         |
-      | Dummy Page        | This is some dummy content like foo:bar. | http://joinup.eu/my/foo |
-     # @Fixme unimplemented.
-     # | Exclude          |                                              |
-     Then I should have a collection page titled "Dummy Page"
+    And collection_page content:
+      | title              | body                                     | groups audience         |
+      | Dummy Page         | This is some dummy content like foo:bar. | http://joinup.eu/my/foo |
+     # @Fixme unimplemented. See ISAICP-2369
+     # | Exclude from menu |                                              |
+     Then I should have a "Collection Page" page titled "Dummy Page"
