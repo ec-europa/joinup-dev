@@ -64,6 +64,8 @@ class UserSubContext extends DrupalSubContextBase implements DrupalSubContextInt
   }
 
   /**
+   * Register a user.
+   *
    * @Given the following user registration at :location:
    */
   public function submitRegistrationForm(TableNode $table, $location) {

@@ -25,7 +25,8 @@ Feature: User registration
       | name            | roles          |
       | Mr. Moderator   | Moderator     |
     And I am logged in as "Mr. Moderator"
-    When I am at "/admin/people"
+    When I am on the homepage
+    Then I click "People"
     Then I click "Add user"
     Then I am at "admin/people/create"
 
