@@ -11,4 +11,3 @@ entity.rdf_entity.leave_confirm_form:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
-

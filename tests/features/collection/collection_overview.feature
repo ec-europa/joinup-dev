@@ -2,10 +2,10 @@
 Feature: Collections Overview
   Scenario: View collection overview
     Given collections:
-      | name              | description                    | author          | uri                        |
-      | eHealth           | Supports health-related fields | Arnold Sideways | http://drupal.org/notfound |
-      | Open Data         | Facilitate access to data sets | Madame Sharn    | http://joinup.eu/coll1     |
-      | Connecting Europe | Reusable tools and services    | Ptaclusp IIb    | http://joinup.eu/coll2     |
+      | name              | description                    | owner           | uri                        |
+      | eHealth           | Supports health-related fields |                 | http://drupal.org/notfound |
+      | Open Data         | Facilitate access to data sets |                 | http://joinup.eu/coll1     |
+      | Connecting Europe | Reusable tools and services    |                 | http://joinup.eu/coll2     |
     And users:
       | name           | role          |
       | Madame Sharn   | authenticated |
