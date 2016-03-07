@@ -7,8 +7,8 @@
         "composer/composer": "^1.0@alpha",
         "composer/installers": "^1.0.20",
         "cweagans/composer-patches": "~1.0",
-        "drupal/console": "~0.10",
-        "drupal/core": "~8.0.3",
+        "drupal/console": "dev-support-drupal-8.1-beta1",
+        "drupal/core": "8.1.x@dev",
         "drupal/og": "dev-port-og-complex-widget-test",
         "drupal/phing-drush-task": "1.0",
         "drupal/search_api": "~8.1.0-alpha12",
@@ -22,7 +22,7 @@
     "require-dev": {
         "behat/mink": "~1.6",
         "behat/mink-goutte-driver": "~1.2",
-        "drupal/coder": "dev-8.x-2.x",
+        "drupal/coder": "~8.2.6",
         "drupal/config_devel": "dev-8.x-1.x",
         "drupal/config_update": "dev-8.x-1.x",
         "drupal/devel": "dev-8.x-1.x",
@@ -32,7 +32,6 @@
         "mikey179/vfsStream": "~1.2",
         "pfrenssen/phpcs-pre-push": "1.0",
         "phpunit/phpunit": "~4.8",
-        "symfony/css-selector": "2.7.*",
         "typhonius/behattask": "1.0"
     },
     "conflict": {
@@ -63,6 +62,9 @@
             },
             "drupal/search_api": {
                 "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/support_for_non_numeric-2671228-2_1.patch"
+            },
+            "drupal/devel": {
+                "Issue #2682343: Fatal error enabling web profiler on 8.1.x": "https://www.drupal.org/files/issues/2682343-2.patch"
             }
         }
     },
@@ -79,6 +81,11 @@
             "_comment": "Fork for drupal/drupal-extension containing a fix for PR #248.",
             "type": "vcs",
             "url": "https://github.com/pfrenssen/drupalextension.git"
+        },
+        {
+            "_comment": "Fork of drupal/console containing a fix for PR #1988.",
+            "type": "vcs",
+            "url": "https://github.com/pfrenssen/DrupalConsole.git"
         },
         {
             "type": "package",
