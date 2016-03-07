@@ -222,7 +222,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param string $name
    *   The collection name.
    *
-   * @return \Drupal\collection\CollectionInterface
+   * @return \Drupal\rdf_entity\Entity\Rdf
    *   The collection.
    *
    * @throws \InvalidArgumentException
