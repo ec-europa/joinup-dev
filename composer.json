@@ -58,6 +58,9 @@
             "drush/contrib/{$name}": ["type:drupal-drush"]
         },
         "patches": {
+            "drupal/core": {
+                "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
+            },
             "drupal/search_api": {
                 "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/support_for_non_numeric-2671228-2_1.patch"
             }
@@ -70,7 +73,7 @@
         },
         {
             "type": "vcs",
-            "url": "http://git.drupal.org/project/coder.git"
+            "url": "https://git.drupal.org/project/coder.git"
         },
         {
             "_comment": "Fork for drupal/drupal-extension containing a fix for PR #248.",
@@ -83,7 +86,7 @@
                 "name": "drupal/phing-drush-task",
                 "version": "1.0",
                 "source": {
-                    "url": "http://git.drupal.org/project/phingdrushtask.git",
+                    "url": "https://git.drupal.org/project/phingdrushtask.git",
                     "type": "git",
                     "reference": "7.x-1.0"
                 },

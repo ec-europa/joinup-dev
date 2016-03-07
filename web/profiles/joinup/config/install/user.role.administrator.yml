@@ -7,3 +7,5 @@ weight: 4
 is_admin: false
 permissions:
   - 'administer account settings'
+  - 'edit collection rdf entity'
+  - 'administer group'

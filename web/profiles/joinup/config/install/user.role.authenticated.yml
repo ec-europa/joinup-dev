@@ -10,5 +10,4 @@ permissions:
   - 'create collection rdf entity'
   - 'use text format basic_html'
   - 'use text format content_editor'
-  - 'view published collection entities'
   - 'view rdf entity'
