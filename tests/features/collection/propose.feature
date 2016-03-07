@@ -18,7 +18,7 @@ Feature: Proposing a collection
     Given I am an anonymous user
     When I am on the homepage
     And I click "Propose collection"
-    Then I should see the heading "Access denied"
+    Then I should see the error message "Access denied. You must log in to view this page."
     When I fill in the following:
     | Username | Cecil Clapman |
     | Password | claps         |

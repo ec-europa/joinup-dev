@@ -11,6 +11,7 @@
         "drupal/core": "~8.0.3",
         "drupal/og": "dev-port-og-complex-widget-test",
         "drupal/phing-drush-task": "1.0",
+        "drupal/r4032login": "dev-8.x-1.x",
         "drupal/search_api": "~8.1.0-alpha12",
         "drush/drush": "~8.0",
         "easyrdf/easyrdf": "dev-0.9.x as 0.9.1",

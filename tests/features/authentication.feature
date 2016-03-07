@@ -29,7 +29,7 @@ Feature: User authentication
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
     When I go to "<path>"
-    Then I should get an access denied error
+    Then I should see the error message "Access denied. You must log in to view this page."
 
     Examples:
       | path                           |
