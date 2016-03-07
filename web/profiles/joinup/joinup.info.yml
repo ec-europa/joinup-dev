@@ -59,7 +59,6 @@ config_devel:
   - block.block.seven_page_title
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
-  - block.block.userlogin
   - core.date_format.fallback
   - core.date_format.html_date
   - core.date_format.html_datetime
