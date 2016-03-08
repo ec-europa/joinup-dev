@@ -75,4 +75,23 @@ class DrupalContext extends DrupalExtensionDrupalContext {
       }
     }
   }
+
+  /**
+   * Checks the users existence.
+   *
+   * @param string $username
+   *   The username of the user.
+   *
+   * @throws \Exception
+   *   Thrown when the user is not found.
+   *
+   * @Then I should have a :username user
+   */
+  public function assertUserExistence($username) {
+    $user = user_load_by_name($username);
+
+    if (empty($user)) {
+      throw new \Exception("Unable to load expected user " . $username);
+    }
+  }
 }

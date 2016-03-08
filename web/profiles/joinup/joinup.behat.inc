@@ -5,16 +5,21 @@
  * Contains \UserSubContext.
  */
 
-use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use \Drupal\user\Entity\User;
+use \Behat\Gherkin\Node\TableNode;
 use \Drupal\file\Entity\File;
 
 /**
  * Behat step definitions for testing users.
  */
-class UserSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+  /**
+   * Test files.
+   *
+   * @var \Drupal\file\Entity\File[]
+   */
+  protected $files = [];
 
   /**
    * Test users.
@@ -24,24 +29,15 @@ class UserSubContext extends DrupalSubContextBase implements DrupalSubContextInt
   protected $users = [];
 
   /**
-   * Test images.
-   *
-   * @var \Drupal\file\Entity\File[]
-   */
-  protected $images = [];
-
-  /**
    * Creates a user with data provided in a table.
    *
-   * The following fields are required:
-   *  - Username
-   *  - Password
-   *  - E-mail
-   *  - First name
-   *  - Last name.
+   * Table format:
+   * | Username   | Mr Bond            |
+   * | Password   | Bond007            |
+   * | E-mail     | james.bond@mi5.org |
    *
    * @param TableNode $user_table
-   *   The collection data.
+   *   The user data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
@@ -59,8 +55,47 @@ class UserSubContext extends DrupalSubContextBase implements DrupalSubContextInt
       else {
         throw new \Exception("Unknown column '$key' in user table.");
       }
-    };
-    $this->createUser($values);
+    }
+    $this->handleFileFields($values, 'user', 'user');
+
+    $user = (object) $values;
+    $this->userCreate($user);
+  }
+
+  /**
+   * Save files and change filename into a file id.
+   */
+  private function handleFileFields(&$values, $entity_type, $bundle) {
+    $entity_manager = \Drupal::entityManager();
+    /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $fields */
+    $fields = $entity_manager->getFieldDefinitions($entity_type, $bundle);
+
+    foreach ($values as $field_name => $value) {
+      if (!isset($fields[$field_name])) {
+        throw new \Exception("Field $field_name is not set on entity $entity_type  : $bundle");
+      }
+      if (empty($value)) {
+        continue;
+      }
+      /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_info */
+      $field_info = $fields[$field_name];
+      if (in_array($field_info->getType(), ['image', 'file'])) {
+        $files_path = $this->getMinkParameter('files_path');
+        $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $value;
+        if (!is_file($path)) {
+          throw new \Exception("File '$value' was not found in file path '$files_path'.");
+        }
+        // Copy the image into the public files folder and turn it into a File
+        // entity before linking it.
+        $uri = 'public://' . $value;
+        file_unmanaged_copy($path, $uri);
+        $file = File::create(['uri' => $uri]);
+        $file->save();
+        $values[$field_name] = $file->id();
+
+        $this->files[$file->id()] = $file;
+      }
+    }
   }
 
   /**
@@ -119,80 +154,6 @@ class UserSubContext extends DrupalSubContextBase implements DrupalSubContextInt
       'Professional domain' => 'field_user_professional_domain',
       // @todo Social network
     ];
-  }
-
-  /**
-   * Creates a user from the given property and field data.
-   *
-   * @param array $values
-   *   An optional associative array of values, keyed by property name.
-   *
-   * @return \Drupal\user\Entity\User
-   *   A new user entity.
-   *
-   * @throws \Exception
-   *   Thrown when a given image is not found.
-   */
-  public function createUser(array $values) {
-    // Add image.
-    if (!empty($values['field_user_photo'])) {
-      $filename = $values['field_user_photo'];
-      $files_path = $this->getMinkParameter('files_path');
-      $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
-      if (!is_file($path)) {
-        throw new \Exception("Image '$filename' was not found in file path '$files_path'.");
-      }
-      // Copy the image into the public files folder and turn it into a File
-      // entity before linking it to the collection.
-      $uri = 'public://' . $filename;
-      file_unmanaged_copy($path, $uri);
-      $image = File::create(['uri' => $uri]);
-      $image->save();
-      $values['field_user_photo'] = [$image->id()];
-
-      $this->images[$image->id()] = $image;
-    }
-    $user = User::create($values);
-    $user->save();
-    $this->users[$user->id()] = $user;
-
-    return $user;
-  }
-
-  /**
-   * Checks the users existence.
-   *
-   * @param string $username
-   *   The username of the user.
-   *
-   * @throws \Exception
-   *   Thrown when the user is not found.
-   *
-   * @Then I should have a :username user
-   */
-  public function assertUserExistence($username) {
-    $user = user_load_by_name($username);
-
-    if (empty($user)) {
-      throw new \Exception("Unable to load expected user " . $username);
-    }
-  }
-
-  /**
-   * Remove any created users.
-   *
-   * @AfterScenario
-   */
-  public function cleanUsers() {
-    // Remove any collections that were created.
-    foreach ($this->users as $user) {
-      $user->delete();
-    }
-    // Also remove the image entities that were attached to the collections.
-    foreach ($this->images as $image) {
-      file_unmanaged_delete($image->getFileUri());
-      $image->delete();
-    }
   }
 
 }
