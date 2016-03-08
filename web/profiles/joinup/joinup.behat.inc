@@ -31,15 +31,13 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Creates a user with data provided in a table.
    *
-   * The following fields are required:
-   *  - Username
-   *  - Password
-   *  - E-mail
-   *  - First name
-   *  - Last name.
+   * Table format:
+   * | Username   | Mr Bond            |
+   * | Password   | Bond007            |
+   * | E-mail     | james.bond@mi5.org |
    *
    * @param TableNode $user_table
-   *   The collection data.
+   *   The user data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
