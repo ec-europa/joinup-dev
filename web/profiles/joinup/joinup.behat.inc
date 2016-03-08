@@ -26,7 +26,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @var \Drupal\user\Entity\User[]
    */
-  protected $users = [];
+  protected $registeredUsers = [];
 
   /**
    * Creates a user with data provided in a table.
@@ -126,10 +126,25 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $request_time = \Drupal::requestStack()->getCurrentRequest()->server->get('REQUEST_TIME');
     if (($request_time - $user_creation_time) < 0) {
       // Track user for auto delete in tear-down.
-      $this->users[$uid] = $user;
+      $this->registeredUsers[$uid] = $user;
     }
     else {
       throw new Exception('User not registered.');
+    }
+  }
+
+  /**
+   * Remove any created registered users.
+   *
+   * @AfterScenario
+   */
+  public function cleanRegisteredUsers() {
+    // Remove any users that were created.
+    if (!empty($this->registeredUsers)) {
+      /** @var \Drupal\user\Entity\User $user */
+      foreach ($this->registeredUsers as $user) {
+        $user->delete();
+      }
     }
   }
 
