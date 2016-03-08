@@ -7,8 +7,8 @@
 
 namespace Drupal\joinup\Context;
 
+use Drupal\Core\Entity\Entity;
 use Drupal\DrupalExtension\Context\DrupalContext as DrupalExtensionDrupalContext;
-use Drupal\node\Entity\NodeType;
 
 /**
  * Provides step definitions for interacting with Drupal.
@@ -28,49 +28,62 @@ class DrupalContext extends DrupalExtensionDrupalContext {
   }
 
   /**
-   * Checks the existence of a content page.
+   * Checks if a node of a certain type with a given title exists.
    *
-   * @param int $title
-   *   The title of the page.
-   *
-   * @throws \Exception
-   *   Thrown when the entity is not found.
+   * @param string $type
+   *   The node type.
+   * @param string $title
+   *   The title of the node.
    *
    * @Then I should have a :type (content )page titled :title
    */
   public function assertContentPageByTitle($type, $title) {
-    $type = $this->getBundleFromLabel($type);
-
-    $nodes = \Drupal::entityTypeManager()->getStorage('node')
-      ->loadByProperties(
-        ['title' => $title, 'type' => $type]
-      );
-    $actual = reset($nodes);
-    if (empty($actual)) {
-      throw new \Exception("Entity titled '$title' was not found.");
-    }
+    $type = $this->getEntityByLabel('node_type', $type);
+    // If the node doesn't exist, the exception will be thrown here.
+    $this->getEntityByLabel('node', $title, $type->id());
   }
 
   /**
-   * Returns the machine name of a node bundle given their Bundle Label.
+   * Returns the entity with the given type, bundle and label.
    *
-   * @param string $bundle_label
-   *   The label of the bundle.
+   * If multiple entities have the same label then the first one is returned.
    *
-   * @return string
-   *   The machine name of the bundle.
+   * @param string $entity_type
+   *   The entity type to check.
+   * @param string $label
+   *   The label to check.
+   * @param string $bundle
+   *   Optional bundle to check. If omitted, the entity can be of any bundle.
+   *
+   * @return \Drupal\Core\Entity\Entity
+   *   The requested entity.
    *
    * @throws \Exception
-   *   Thrown when the bundle type is not found.
+   *   Thrown when an entity with the given type, label and bundle does not
+   *   exist.
    */
-  public function getBundleFromLabel($bundle_label) {
-    foreach (NodeType::loadMultiple() as $type) {
-      if ($bundle_label == $type->label()) {
-        return $type->id();
-      }
+  public function getEntityByLabel($entity_type, $label, $bundle = NULL) {
+    $entity_manager = \Drupal::entityTypeManager();
+    $storage = $entity_manager->getStorage($entity_type);
+    $entity = $entity_manager->getDefinition($entity_type);
+
+    $query = $storage->getQuery()
+      ->condition($entity->getKey('label'), $label)
+      ->range(0, 1);
+
+    // Optionally filter by bundle.
+    if ($bundle) {
+      $query->condition($entity->getKey('bundle'), $bundle);
     }
 
-    throw new \Exception("Content bundle '$bundle_label' was not found.");
+    $result = $query->execute();
+
+    if ($result) {
+      $result = reset($result);
+      return $storage->load($result);
+    }
+
+    throw new \Exception("The entity with label '$label' was not found.");
   }
 
 
