@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "74d36ca0fc744ba416b189f4f1434e9e",
-    "content-hash": "1f807ce672861d1407dba20a4a0faba0",
+    "hash": "df259ee5ba1c0597ae960314c25c2dd5",
+    "content-hash": "e61d53b89d4c130663d3df6224fc2e3a",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1219,12 +1219,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "afba489a4faf27deeaa2cbfe1f1f7544321893c0"
+                "reference": "25b6bf3d242d17f7fb29818fd7e0a62c0d3b1c8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/afba489a4faf27deeaa2cbfe1f1f7544321893c0",
-                "reference": "afba489a4faf27deeaa2cbfe1f1f7544321893c0",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/25b6bf3d242d17f7fb29818fd7e0a62c0d3b1c8a",
+                "reference": "25b6bf3d242d17f7fb29818fd7e0a62c0d3b1c8a",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1238,7 +1238,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-02-12 17:27:48"
+            "time": "2016-03-08 13:47:37"
         },
         {
             "name": "drupal/phing-drush-task",
@@ -1661,16 +1661,16 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "1.0.3",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "b1e1c0d55f8083c71eda2c28c12a228d708294ea"
+                "reference": "bb9024c526b22f3fe6ae55a561fd70653d470aa8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/b1e1c0d55f8083c71eda2c28c12a228d708294ea",
-                "reference": "b1e1c0d55f8083c71eda2c28c12a228d708294ea",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/bb9024c526b22f3fe6ae55a561fd70653d470aa8",
+                "reference": "bb9024c526b22f3fe6ae55a561fd70653d470aa8",
                 "shasum": ""
             },
             "require": {
@@ -1708,7 +1708,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2015-10-15 22:28:00"
+            "time": "2016-03-08 01:15:46"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -2187,7 +2187,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -5195,25 +5195,27 @@
         },
         {
             "name": "drupal/drupal-extension",
-            "version": "dev-assert-not-button",
+            "version": "dev-PHP7-compatibility",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pfrenssen/drupalextension.git",
-                "reference": "87f902ddf016bc4856a2fe21aeb65024b5443c6d"
+                "url": "https://github.com/ec-europa/drupalextension.git",
+                "reference": "8df22fd9c65c0f2bb859d7bd3573a7ac4612be27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/drupalextension/zipball/87f902ddf016bc4856a2fe21aeb65024b5443c6d",
-                "reference": "87f902ddf016bc4856a2fe21aeb65024b5443c6d",
+                "url": "https://api.github.com/repos/ec-europa/drupalextension/zipball/8df22fd9c65c0f2bb859d7bd3573a7ac4612be27",
+                "reference": "8df22fd9c65c0f2bb859d7bd3573a7ac4612be27",
                 "shasum": ""
             },
             "require": {
-                "behat/behat": "~3.1.0-rc1",
+                "behat/behat": "~3.1.0-rc2",
                 "behat/mink": "~1.5",
                 "behat/mink-extension": "~2.0",
                 "behat/mink-goutte-driver": "~1.0",
                 "behat/mink-selenium2-driver": "~1.1",
-                "drupal/drupal-driver": "dev-master"
+                "drupal/drupal-driver": "dev-master",
+                "symfony/dependency-injection": "2.7.*",
+                "symfony/event-dispatcher": "2.7.*"
             },
             "require-dev": {
                 "behat/mink-zombie-driver": "^1.2",
@@ -5250,9 +5252,9 @@
                 "web"
             ],
             "support": {
-                "source": "https://github.com/pfrenssen/drupalextension/tree/assert-not-button"
+                "source": "https://github.com/ec-europa/drupalextension/tree/PHP7-compatibility"
             },
-            "time": "2016-01-30 09:43:25"
+            "time": "2016-03-08 15:21:47"
         },
         {
             "name": "fabpot/goutte",
@@ -6548,7 +6550,7 @@
         {
             "alias": "3.1.6",
             "alias_normalized": "3.1.6.0",
-            "version": "dev-assert-not-button",
+            "version": "dev-PHP7-compatibility",
             "package": "drupal/drupal-extension"
         }
     ],
