@@ -13,7 +13,7 @@ use \Drupal\file\Entity\File;
 /**
  * Behat step definitions for testing users.
  */
-class UserSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
   /**
    * Test files.
    *
