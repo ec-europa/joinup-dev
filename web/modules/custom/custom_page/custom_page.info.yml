@@ -1,4 +1,4 @@
-name: collection_page
+name: Custom page
 type: module
 description: Custom content that belongs to a collection.
 core: 8.x

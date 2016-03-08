@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.collection_page
-id: node.collection_page.promote
-field_name: promote
+    - node.type.custom_page
+id: node.custom_page.status
+field_name: status
 entity_type: node
-bundle: collection_page
-label: 'Promoted to front page'
-description: ''
+bundle: custom_page
+label: 'Publishing status'
+description: 'A boolean indicating whether the node is published.'
 required: false
 translatable: true
 default_value:

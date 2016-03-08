@@ -10,8 +10,8 @@ dependencies:
   - block
   - ckeditor
   - collection
-  - collection_page
   - contextual
+  - custom_page
   - dynamic_page_cache
   - editor
   - file

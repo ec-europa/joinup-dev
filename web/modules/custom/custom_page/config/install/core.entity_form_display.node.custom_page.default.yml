@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.collection_page.body
-    - field.field.node.collection_page.og_group_ref
-    - node.type.collection_page
+    - field.field.node.custom_page.body
+    - field.field.node.custom_page.og_group_ref
+    - node.type.custom_page
   module:
     - path
     - text
-id: node.collection_page.default
+id: node.custom_page.default
 targetEntityType: node
-bundle: collection_page
+bundle: custom_page
 mode: default
 content:
   body:

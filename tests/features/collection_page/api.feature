@@ -13,7 +13,7 @@ Feature: Collection Page API
       | closed            | 1                       |
       | elibrary creation | facilitators            |
       | uri               | http://joinup.eu/my/foo |
-    And collection_page content:
+    And custom_page content:
       | title      | body                                     | groups audience         |
       | Dummy Page | This is some dummy content like foo:bar. | http://joinup.eu/my/foo |
      # @Fixme unimplemented. See ISAICP-2369

@@ -3,14 +3,14 @@ status: true
 dependencies:
   config:
     - field.storage.node.og_group_ref
-    - node.type.collection_page
+    - node.type.custom_page
     - rdf_entity.rdfentity.collection
   module:
     - og
-id: node.collection_page.og_group_ref
+id: node.custom_page.og_group_ref
 field_name: og_group_ref
 entity_type: node
-bundle: collection_page
+bundle: custom_page
 label: 'Groups audience'
 description: 'OG group audience reference field.'
 required: false

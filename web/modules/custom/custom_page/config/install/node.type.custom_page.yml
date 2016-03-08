@@ -9,7 +9,7 @@ third_party_settings:
     available_menus: {  }
     parent: ''
 name: 'Collection Page'
-type: collection_page
+type: custom_page
 description: ''
 help: ''
 new_revision: false
