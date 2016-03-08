@@ -21,6 +21,14 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
+  og_group_ref:
+    type: og_complex
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   path:
     type: path
     weight: 5
