@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f130ae085a7ce379754d675357761427",
-    "content-hash": "0df614bb160168925ed126827e1bcbfe",
+    "hash": "74d36ca0fc744ba416b189f4f1434e9e",
+    "content-hash": "1f807ce672861d1407dba20a4a0faba0",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1259,6 +1259,28 @@
             ]
         },
         {
+            "name": "drupal/r4032login",
+            "version": "dev-8.x-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/r4032login",
+                "reference": "4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9"
+            },
+            "require": {
+                "drupal/core": "8.*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
+            "homepage": "https://www.drupal.org/project/r4032login",
+            "time": "2016-03-01 13:56:38"
+        },
+        {
             "name": "drupal/search_api",
             "version": "8.1.0-alpha12",
             "source": {
@@ -1639,16 +1661,16 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "1.0.3",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "b1e1c0d55f8083c71eda2c28c12a228d708294ea"
+                "reference": "bb9024c526b22f3fe6ae55a561fd70653d470aa8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/b1e1c0d55f8083c71eda2c28c12a228d708294ea",
-                "reference": "b1e1c0d55f8083c71eda2c28c12a228d708294ea",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/bb9024c526b22f3fe6ae55a561fd70653d470aa8",
+                "reference": "bb9024c526b22f3fe6ae55a561fd70653d470aa8",
                 "shasum": ""
             },
             "require": {
@@ -1686,7 +1708,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2015-10-15 22:28:00"
+            "time": "2016-03-08 01:15:46"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -6496,6 +6518,24 @@
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
             "time": "2016-01-27 11:34:40"
+        },
+        {
+            "name": "typhonius/behattask",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://gist.github.com/5719e15be9687ff7c138.git",
+                "reference": "0ea666882cba3099dfa4feeb02e1bb85b2c0bde9"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "BehatTask.php"
+                ]
+            },
+            "include-path": [
+                "."
+            ]
         }
     ],
     "aliases": [
@@ -6516,6 +6556,7 @@
     "stability-flags": {
         "composer/composer": 15,
         "drupal/og": 20,
+        "drupal/r4032login": 20,
         "easyrdf/easyrdf": 20,
         "drupal/coder": 20,
         "drupal/config_devel": 20,

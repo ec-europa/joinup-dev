@@ -10,9 +10,9 @@ Feature: Organic Groups integration
       | http://joinup.eu/collection/dog  | Überwaldean Land Eels        | Read up on all about <strong>dogs</strong>  | http://dogtime.com/dog-breeds/profiles  | 1       | 28-01-1995 12:05  | The Afghan Hound is elegance personified.                                                                           | 0                  | 1           |                    |       |
       | http://joinup.eu/collection/cat  | Folk Dance and Song Society  | Cats are cool!                              | http://mashable.com/category/cats/      | 0       | 28-01-1995 12:06  | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal.  | 1                  | 0           |                    |       |
     And users:
-      | name             | roles         |
-      | Madame Sharn     |               |
-      | Goodie Whemper   |               |
+      | name           | roles |
+      | Madame Sharn   |       |
+      | Goodie Whemper |       |
 
     # Initially the collection should only have 1 member, the group manager.
     Then the "Überwaldean Land Eels" collection should have 1 member

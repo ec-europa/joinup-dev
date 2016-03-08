@@ -23,6 +23,7 @@ dependencies:
   - options
   - page_cache
   - path
+  - r4032login
   - rdf_demo
   - rdf_entity
   - text
@@ -49,6 +50,7 @@ config_devel:
   - block.block.bartik_page_title
   - block.block.bartik_tools
   - block.block.joincollectionblock
+  - block.block.joinup_add_content
   - block.block.seven_breadcrumbs
   - block.block.seven_content
   - block.block.seven_help
@@ -59,17 +61,20 @@ config_devel:
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
   - core.date_format.fallback
-  - core.date_format.html_datetime
   - core.date_format.html_date
+  - core.date_format.html_datetime
   - core.date_format.html_month
   - core.date_format.html_time
   - core.date_format.html_week
-  - core.date_format.html_yearless_date
   - core.date_format.html_year
+  - core.date_format.html_yearless_date
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
   - core.entity_view_mode.node.full
+  - core.entity_form_display.rdf_entity.collection.propose
+  - core.entity_form_mode.rdf_entity.propose
+  - core.entity_form_mode.rdf_entity.propose
   - editor.editor.content_editor
   - field.field.user.user.og_group_ref
   - field.storage.user.og_group_ref
