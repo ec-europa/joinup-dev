@@ -11,7 +11,7 @@ field_name: field_ar_elibrary_creation
 entity_type: rdf_entity
 bundle: collection
 label: 'eLibrary creation'
-description: 'This field specified the type of Joinup user that can create content (news, events, documents) within the collection.'
+description: 'Specify the type of user that can create eLibrary content (news, events, and documents).'
 required: true
 translatable: false
 default_value:

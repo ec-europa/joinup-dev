@@ -65,7 +65,7 @@ composer.json = ${project.basedir}/composer.json
 # -------------------
 
 # The location of the Behat executable.
-behat.bin = ${project.basedir}/bin/behat
+behat.bin = ${project.basedir}/vendor/bin/behat
 
 # The location of the Behat tests.
 behat.dir = ${project.basedir}/tests
@@ -87,6 +87,14 @@ behat.formatter.name = progress
 
 # The location of the test files.
 behat.files.path = ${behat.dir}/fixtures/files
+
+# Enable strict mode in Behat tests. Will only pass if all tests are explicitly
+# passing.
+behat.options.strict = false
+
+# Set verbosity for Behat tests. 0 is completely silent, 1 is normal output, 2
+# shows exception backtraces, 3 shows debugging information.
+behat.options.verbosity = 2
 
 
 # PHP CodeSniffer configuration

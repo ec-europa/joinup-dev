@@ -9,7 +9,7 @@ field_name: field_ar_closed
 entity_type: rdf_entity
 bundle: collection
 label: Closed
-description: ''
+description: 'If a collection is closed, users need to request membership to create content (except comments and discussions).'
 required: false
 translatable: false
 default_value:

@@ -202,6 +202,19 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Deletes a collection.
+   *
+   * @param string $collection
+   *   The name of the collection.
+   *
+   * @When (I )delete the :collection collection
+   */
+  public function deleteCollection($collection) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
+    $this->getCollectionByName($collection)->delete();
+  }
+
+  /**
    * Returns the Collection with the given name.
    *
    * If multiple collections have the same name, the first one will be returned.
@@ -209,7 +222,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param string $name
    *   The collection name.
    *
-   * @return \Drupal\collection\CollectionInterface
+   * @return \Drupal\rdf_entity\Entity\Rdf
    *   The collection.
    *
    * @throws \InvalidArgumentException
