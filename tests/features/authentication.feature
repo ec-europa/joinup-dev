@@ -1,13 +1,14 @@
 Feature: User authentication
   In order to protect the integrity of the website
-  I want to make sure proper permissions are given to appropriate roles
+  As a product owner
+  I want to make sure users with various roles can only access pages they are authorized to
 
   Background:
     Given collections:
-      | name                        | author          | uri               |
-      | Überwaldean Land Eels       | Arnold Sideways | http://drupal.org |
+      | name                        | uri               |
+      | Überwaldean Land Eels       | http://drupal.org |
 
-  Scenario: Anonymous user can see the user login page and a collection homepage
+  Scenario: Anonymous user can see the user login page
     Given I am not logged in
     When I visit "user"
     Then I should see the text "Log in"
@@ -17,8 +18,7 @@ Feature: User authentication
     But I should not see the text "Log out"
     And I should not see the text "My account"
 
-  @api
-  Scenario Outline: Anonymous user should be able to view created collections
+  Scenario Outline: Anonymous user can access public pages
     Given I am not logged in
     Then I visit "<path>"
 
@@ -29,7 +29,7 @@ Feature: User authentication
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
     When I go to "<path>"
-    Then I should get an access denied error
+    Then I should see the error message "Access denied. You must log in to view this page."
 
     Examples:
       | path                           |
@@ -42,14 +42,13 @@ Feature: User authentication
       | rdf_entity/add/collection      |
 
   @api
-  Scenario Outline: Authenticated user should inherit anonymous user's permissions but also be able to view collections
+  Scenario Outline: Authenticated user can access pages they are authorized to
     Given I am logged in as a user with the "authenticated" role
     Then I visit "<path>"
 
     Examples:
       | path                           |
       | rdf_entity/http%3A\\drupal.org |
-      | rdf_entity/add/collection      |
 
   @api
   Scenario Outline: Authenticated user cannot access site administration
@@ -62,12 +61,13 @@ Feature: User authentication
       | admin                          |
       | admin/config                   |
       | admin/content                  |
+      | admin/content/rdf              |
       | admin/people                   |
       | admin/structure                |
-      | admin/content/rdf              |
+      | rdf_entity/add/collection      |
 
   @api
-  Scenario Outline: Moderator can access these paths
+  Scenario Outline: Moderator can access pages they are authorized to
     Given I am logged in as a user with the "moderator" role
     Then I visit "<path>"
 
@@ -78,7 +78,7 @@ Feature: User authentication
       | admin/content/rdf              |
 
   @api
-  Scenario Outline: Moderator cannot access these paths
+  Scenario Outline: Moderator cannot access restricted pages
     Given I am logged in as a user with the "moderator" role
     When I go to "<path>"
     Then I should get an access denied error
@@ -89,9 +89,10 @@ Feature: User authentication
       | admin/config                   |
       | admin/content                  |
       | admin/structure                |
+      | rdf_entity/add/collection      |
 
   @api
-  Scenario Outline: Administrator can access these paths
+  Scenario Outline: Administrator can access pages they are authorized to
     Given I am logged in as a user with the "administrator" role
     Then I visit "<path>"
 
@@ -100,7 +101,7 @@ Feature: User authentication
       | rdf_entity/http%3A\\drupal.org |
 
   @api
-  Scenario Outline: Administrator role cannot access these paths
+  Scenario Outline: Administrator cannot access pages intended for site building and development
     Given I am logged in as a user with the "administrator" role
     When I go to "<path>"
     Then I should get an access denied error
@@ -113,3 +114,4 @@ Feature: User authentication
       | admin/people                   |
       | admin/structure                |
       | admin/content/rdf              |
+      | rdf_entity/add/collection      |

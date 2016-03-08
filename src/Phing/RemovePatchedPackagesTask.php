@@ -61,6 +61,12 @@ class RemovePatchedPackagesTask extends \Task {
           }
         }
       }
+      // Re-generate the autoloader to get rid of stale class definitions.
+      $generator = $composer->getAutoloadGenerator();
+      $localRepo = $composer->getRepositoryManager()->getLocalRepository();
+      $package = $composer->getPackage();
+      $installationManager = $composer->getInstallationManager();
+      $generator->dump($config, $localRepo, $package, $installationManager, 'composer');
     }
   }
 

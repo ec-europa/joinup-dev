@@ -5,15 +5,12 @@ Feature: Collection API
 
   Scenario: Programmatically create a collection
     Given the following collection:
-      | name            | Open Data Initiative        |
-      | author          | Mightily Oats               |
-      | logo            | logo.png                    |
-      | pre-moderation  | 0                           |
-      | closed          | 0                           |
-      | create elibrary | facilitators                |
-      | schedule        | daily                       |
-      | metadata url    | https://ec.europa.eu/my/url |
-      | uri             | https://ec.europa.eu/my/url |
+      | name              | Open Data Initiative        |
+      | logo              | logo.png                    |
+      | moderation        | 0                           |
+      | closed            | 0                           |
+      | elibrary creation | facilitators                |
+      | uri               | https://ec.europa.eu/my/url |
     Then I should have 1 collection
 
   Scenario: Programmatically create a collection using only the name

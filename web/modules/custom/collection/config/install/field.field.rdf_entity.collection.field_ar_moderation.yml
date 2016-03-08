@@ -9,7 +9,7 @@ field_name: field_ar_moderation
 entity_type: rdf_entity
 bundle: collection
 label: Moderation
-description: ''
+description: 'If checked, eLibrary items (news, events, and documents) are pre-moderated: they have to be validated by the moderators of the collection before they will be published.'
 required: false
 translatable: false
 default_value:

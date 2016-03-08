@@ -1,11 +1,11 @@
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: rBsLv3pYTT_c4m4WKWk6pR7UghcAEPtWiv6pbn1wuu0
 id: administrator
 label: Administrator
 weight: 4
 is_admin: false
 permissions:
   - 'administer account settings'
+  - 'edit collection rdf entity'
+  - 'administer group'

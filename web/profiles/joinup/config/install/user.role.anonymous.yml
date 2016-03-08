@@ -1,14 +1,11 @@
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: Ce7v1XoamjzJQo8WQ0ShkNwOuS_lGZEw5uUE1O-93Sw
 id: anonymous
 label: 'Anonymous user'
 weight: 0
 is_admin: false
 permissions:
-  - 'view published collection entities'
   - 'access content'
   - 'use text format restricted_html'
   - 'view rdf entity'

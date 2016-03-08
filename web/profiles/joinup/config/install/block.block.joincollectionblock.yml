@@ -7,8 +7,6 @@ dependencies:
     - user
   theme:
     - bartik
-_core:
-  default_config_hash: coJvJ5S8qjA1CU2RTRjp2LQAdgz-Ae5XO6vXDY0q2KI
 id: joincollectionblock
 theme: bartik
 region: content
