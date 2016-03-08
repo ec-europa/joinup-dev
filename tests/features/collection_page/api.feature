@@ -6,18 +6,16 @@ Feature: Collection Page API
 
   Scenario: Programmatically create a Collection Page
     Given the following collection:
-      | name            | Open Data Initiative    |
-      | author          | Mightily Oats           |
-      | logo            | logo.png                |
-      | pre-moderation  | 0                       |
-      | closed          | 0                       |
-      | create elibrary | facilitators            |
-      | schedule        | daily                   |
-      | metadata url    | http://joinup.eu/my/foo |
-      | uri             | http://joinup.eu/my/foo |
+      | name              | Le Foie Heureux         |
+      | owner             | Rufus Drumknott         |
+      | logo              | logo.png                |
+      | moderation        | 1                       |
+      | closed            | 1                       |
+      | elibrary creation | facilitators            |
+      | uri               | http://joinup.eu/my/foo |
     And collection_page content:
-      | title              | body                                     | groups audience         |
-      | Dummy Page         | This is some dummy content like foo:bar. | http://joinup.eu/my/foo |
+      | title      | body                                     | groups audience         |
+      | Dummy Page | This is some dummy content like foo:bar. | http://joinup.eu/my/foo |
      # @Fixme unimplemented. See ISAICP-2369
      # | Exclude from menu |                                              |
      Then I should have a "Collection Page" page titled "Dummy Page"
