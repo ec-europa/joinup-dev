@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup
+  theme:
+    - bartik
+id: joinup_add_content
+theme: bartik
+region: sidebar_first
+weight: null
+provider: null
+plugin: add_content_block
+settings:
+  id: add_content_block
+  label: 'Add content'
+  provider: joinup
+  label_display: visible
+visibility: {  }
