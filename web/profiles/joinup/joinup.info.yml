@@ -22,6 +22,7 @@ dependencies:
   - options
   - page_cache
   - path
+  - r4032login
   - rdf_demo
   - rdf_entity
   - text
@@ -48,6 +49,7 @@ config_devel:
   - block.block.bartik_page_title
   - block.block.bartik_tools
   - block.block.joincollectionblock
+  - block.block.joinup_add_content
   - block.block.seven_breadcrumbs
   - block.block.seven_content
   - block.block.seven_help
@@ -74,6 +76,9 @@ config_devel:
   - core.entity_view_display.user.user.default
   - core.entity_view_mode.user.compact
   - core.entity_view_mode.user.full
+  - core.entity_form_display.rdf_entity.collection.propose
+  - core.entity_form_mode.rdf_entity.propose
+  - core.entity_form_mode.rdf_entity.propose
   - editor.editor.content_editor
   - field.field.user.user.field_user_family_name
   - field.field.user.user.field_user_first_name
