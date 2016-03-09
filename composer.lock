@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "732788beb6a626cd033f2472e5fcf32e",
-    "content-hash": "d3072c76e6eeb052d73a753bf17c1e94",
+    "hash": "f31c2c038ccc4c52abd4ecccbd841994",
+    "content-hash": "07a3fc9e54ff8baf11e27058e9cb7903",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -4281,6 +4281,24 @@
             "time": "2016-01-25 21:22:18"
         },
         {
+            "name": "typhonius/behattask",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://gist.github.com/5719e15be9687ff7c138.git",
+                "reference": "0ea666882cba3099dfa4feeb02e1bb85b2c0bde9"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "BehatTask.php"
+                ]
+            },
+            "include-path": [
+                "."
+            ]
+        },
+        {
             "name": "zendframework/zend-diactoros",
             "version": "1.3.3",
             "source": {
@@ -6518,24 +6536,6 @@
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
             "time": "2016-01-27 11:34:40"
-        },
-        {
-            "name": "typhonius/behattask",
-            "version": "1.0",
-            "source": {
-                "type": "git",
-                "url": "https://gist.github.com/5719e15be9687ff7c138.git",
-                "reference": "0ea666882cba3099dfa4feeb02e1bb85b2c0bde9"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "BehatTask.php"
-                ]
-            },
-            "include-path": [
-                "."
-            ]
         }
     ],
     "aliases": [
