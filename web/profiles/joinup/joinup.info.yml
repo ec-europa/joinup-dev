@@ -11,6 +11,7 @@ dependencies:
   - ckeditor
   - collection
   - contextual
+  - custom_page
   - dynamic_page_cache
   - editor
   - file
@@ -70,6 +71,7 @@ config_devel:
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
+  - core.entity_view_mode.node.full
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_mode.rdf_entity.propose
   - core.entity_form_mode.rdf_entity.propose
@@ -82,9 +84,12 @@ config_devel:
   - filter.format.restricted_html
   - og.og_membership_type.og_membership_type
   - og.settings
+  - search_api.index.collections
+  - search_api.server.database_search_server
   - system.theme
   - user.role.administrator
   - user.role.anonymous
   - user.role.authenticated
   - user.role.moderator
   - user.role.user
+  - views.view.collections

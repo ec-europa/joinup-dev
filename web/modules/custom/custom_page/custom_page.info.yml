@@ -1,0 +1,12 @@
+name: Custom page
+type: module
+description: Custom content that belongs to a collection.
+core: 8.x
+package: Joinup
+dependencies:
+  - og
+  - node
+  - field
+  - path
+  - text
+  - menu_ui

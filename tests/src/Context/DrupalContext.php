@@ -7,6 +7,7 @@
 
 namespace Drupal\joinup\Context;
 
+use Drupal\Core\Entity\Entity;
 use Drupal\DrupalExtension\Context\DrupalContext as DrupalExtensionDrupalContext;
 
 /**
@@ -25,6 +26,66 @@ class DrupalContext extends DrupalExtensionDrupalContext {
     $element = $session->getPage();
     return $element->find('css', 'body.user-logged-in');
   }
+
+  /**
+   * Checks if a node of a certain type with a given title exists.
+   *
+   * @param string $type
+   *   The node type.
+   * @param string $title
+   *   The title of the node.
+   *
+   * @Then I should have a :type (content )page titled :title
+   */
+  public function assertContentPageByTitle($type, $title) {
+    $type = $this->getEntityByLabel('node_type', $type);
+    // If the node doesn't exist, the exception will be thrown here.
+    $this->getEntityByLabel('node', $title, $type->id());
+  }
+
+  /**
+   * Returns the entity with the given type, bundle and label.
+   *
+   * If multiple entities have the same label then the first one is returned.
+   *
+   * @param string $entity_type
+   *   The entity type to check.
+   * @param string $label
+   *   The label to check.
+   * @param string $bundle
+   *   Optional bundle to check. If omitted, the entity can be of any bundle.
+   *
+   * @return \Drupal\Core\Entity\Entity
+   *   The requested entity.
+   *
+   * @throws \Exception
+   *   Thrown when an entity with the given type, label and bundle does not
+   *   exist.
+   */
+  public function getEntityByLabel($entity_type, $label, $bundle = NULL) {
+    $entity_manager = \Drupal::entityTypeManager();
+    $storage = $entity_manager->getStorage($entity_type);
+    $entity = $entity_manager->getDefinition($entity_type);
+
+    $query = $storage->getQuery()
+      ->condition($entity->getKey('label'), $label)
+      ->range(0, 1);
+
+    // Optionally filter by bundle.
+    if ($bundle) {
+      $query->condition($entity->getKey('bundle'), $bundle);
+    }
+
+    $result = $query->execute();
+
+    if ($result) {
+      $result = reset($result);
+      return $storage->load($result);
+    }
+
+    throw new \Exception("The entity with label '$label' was not found.");
+  }
+
 
   /**
    * Assert that certain fields are present on the page.
@@ -75,4 +136,5 @@ class DrupalContext extends DrupalExtensionDrupalContext {
       }
     }
   }
+
 }
