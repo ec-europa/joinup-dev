@@ -72,6 +72,7 @@ config_devel:
   - core.date_format.medium
   - core.date_format.short
   - core.entity_view_mode.node.full
+  - core.entity_form_display.node.custom_page.collection_custom_page
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_mode.rdf_entity.propose
   - editor.editor.content_editor
