@@ -74,12 +74,14 @@ class AddContentBlock extends BlockBase
       ],
     ];
 
-    if (!empty($this->collection) && $this->collection->bundle() == 'collection') {
+    // @todo: Fix the visibility.
+    if ($this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical'
+      && $this->collection->bundle() == 'collection') {
       $build['custom_page'] = [
         '#type' => 'link',
         '#title' => $this->t('Add custom page'),
-        '#url' => Url::fromRoute('collection.custom_page.add',
-          ['rdf_entity' => $this->currentRouteMatch->getRawParameter('rdf_entity')]),
+        '#url' => Url::fromRoute('custom_page.collection_custom_page.add',
+          ['rdf_entity' => $this->collection->sanitizedId()]),
         '#attributes' => ['class' => ['button', 'button--small']],
       ];
     }
