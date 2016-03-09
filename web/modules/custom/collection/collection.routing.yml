@@ -1,6 +1,5 @@
-
 # Collection routing definition
-entity.rdf_entity.leave_confirm_form:
+collection.leave_confirm_form:
   path: '/rdf_entity/{rdf_entity}/leave'
   defaults:
     _form: '\Drupal\collection\Form\LeaveCollectionConfirmForm'
@@ -11,4 +10,3 @@ entity.rdf_entity.leave_confirm_form:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
-

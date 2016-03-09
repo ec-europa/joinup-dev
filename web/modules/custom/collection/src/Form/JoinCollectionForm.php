@@ -57,7 +57,7 @@ class JoinCollectionForm extends FormBase {
       $form['leave'] = [
         '#type' => 'link',
         '#title' => $this->t('Leave this collection'),
-        '#url' => Url::fromRoute('entity.rdf_entity.leave_confirm_form', [
+        '#url' => Url::fromRoute('collection.leave_confirm_form', [
           'rdf_entity' => $collection->sanitizedId(),
         ]),
         '#attributes' => [

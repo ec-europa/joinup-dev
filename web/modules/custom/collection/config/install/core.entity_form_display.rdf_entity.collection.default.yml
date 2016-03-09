@@ -23,9 +23,10 @@ dependencies:
     - datetime
     - image
     - link
+    - rdf_entity
     - text
 _core:
-  default_config_hash: 7J5kiNcWwzxFV3dpv_JwbNVd6IlpWCqGBp7Y-FzPWGM
+  default_config_hash: fbC_Go0HP9SCUjTRv94g0KHkTip0Bor8FeOJzkymoBk
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection
@@ -70,11 +71,9 @@ content:
   field_ar_creation_date:
     weight: 6
     settings:
-      date_order: DMY
-      time_type: '24'
-      increment: 15
+      behaviour: create
     third_party_settings: {  }
-    type: datetime_datelist
+    type: datetime_create_update
   field_ar_description:
     weight: 2
     settings:
@@ -103,11 +102,9 @@ content:
   field_ar_modification_date:
     weight: 7
     settings:
-      date_order: DMY
-      time_type: '24'
-      increment: 15
+      behaviour: modified
     third_party_settings: {  }
-    type: datetime_datelist
+    type: datetime_create_update
   field_ar_owner:
     weight: 9
     settings:
@@ -141,11 +138,10 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   id:
-    type: uri
+    type: auto_uri
     weight: 0
     settings:
-      size: 60
-      placeholder: ''
+      prefix: 'http://joinup.eu/adms/asset-repository'
     third_party_settings: {  }
   label:
     type: string_textfield

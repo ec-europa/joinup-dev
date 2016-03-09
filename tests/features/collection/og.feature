@@ -6,13 +6,13 @@ Feature: Organic Groups integration
 
   Scenario: Joining and leaving a collection
     Given collections:
-      | name                        | author          | uri                             |
-      | Überwaldean Land Eels       | Arnold Sideways | http://joinup.eu/collection/ule |
-      | Folk Dance and Song Society | Ptaclusp IIb    | http://joinup.eu/collection/fds |
+      | uri                              | name                         | abstract                                    | access url                              | closed  | creation date     | description                                                                                                         | elibrary creation  | moderation  | modification date  | owner |
+      | http://joinup.eu/collection/dog  | Überwaldean Land Eels        | Read up on all about <strong>dogs</strong>  | http://dogtime.com/dog-breeds/profiles  | 1       | 28-01-1995 12:05  | The Afghan Hound is elegance personified.                                                                           | 0                  | 1           |                    |       |
+      | http://joinup.eu/collection/cat  | Folk Dance and Song Society  | Cats are cool!                              | http://mashable.com/category/cats/      | 0       | 28-01-1995 12:06  | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal.  | 1                  | 0           |                    |       |
     And users:
-      | name           | role          |
-      | Madame Sharn   | authenticated |
-      | Goodie Whemper | authenticated |
+      | name           | roles |
+      | Madame Sharn   |       |
+      | Goodie Whemper |       |
 
     # Initially the collection should only have 1 member, the group manager.
     Then the "Überwaldean Land Eels" collection should have 1 member
@@ -34,6 +34,7 @@ Feature: Organic Groups integration
     And the "Überwaldean Land Eels" collection should have 2 members
     When I go to the homepage of the "Überwaldean Land Eels" collection
     Then I should not see the "Join this collection" button
+    And I should not see the link "Edit"
     But I should see the link "Leave this collection"
 
     # Check that it is possible to join a second collection.
@@ -79,3 +80,26 @@ Feature: Organic Groups integration
     Then I should see the success message "You are no longer a member of Folk Dance and Song Society."
     And I should see the "Join this collection" button
     And the "Folk Dance and Song Society" collection should have 1 member
+
+  Scenario: Edit a Collection
+    Given collections:
+      | uri                              | logo     | name                         | abstract                                    | access url                              | closed  | creation date     | description                                                                                                         | elibrary creation  | moderation  | modification date  | owner |
+      | http://joinup.eu/collection/dog  | logo.png | Überwaldean Land Eels        | Read up on all about <strong>dogs</strong>  | http://dogtime.com/dog-breeds/profiles  | 1       | 28-01-1995 12:05  | The Afghan Hound is elegance personified.                                                                           | 0                  | 1           |                    |       |
+      | http://joinup.eu/collection/cat  | logo.png | Folk Dance and Song Society  | Cats are cool!                              | http://mashable.com/category/cats/      | 0       | 28-01-1995 12:06  | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal.  | 1                  | 0           |                    |       |
+    And users:
+      | name             | roles         |
+      | Collection admin | administrator |
+      | Madame Sharn     |               |
+      | Goodie Whemper   |               |
+    # Administrators can edit the collection.
+    # @fixme Run this as facilitator or collection owner. (ISAICP-2362)
+    Given I am logged in as "Collection admin"
+    When I go to the homepage of the "Überwaldean Land Eels" collection
+    Then I should see the link "Edit"
+
+    # Edit a collection.
+    When I go to the "Überwaldean Land Eels" collection edit form
+    Then the following fields should be present "Title, Description, Abstract, Contact information, Owner, Policy domain, Topic, Spatial coverage, Affiliates, Closed collection, eLibrary creation, Moderated"
+    And I fill in "Title" with "Überwaldean Sea Eels"
+    And I press the "Save" button
+    Then I should see the heading "Überwaldean Sea Eels"
