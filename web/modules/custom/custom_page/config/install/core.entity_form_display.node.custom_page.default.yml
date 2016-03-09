@@ -55,5 +55,4 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  og_group_ref: true
   uid: true
