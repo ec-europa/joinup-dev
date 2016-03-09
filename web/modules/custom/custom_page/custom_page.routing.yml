@@ -7,13 +7,14 @@
 # defined as a classname
 # ("\Drupal\custom_page\Controller\CustomPageController")
 # and a method ("add").
-collection.custom_page.add:
-  path: 'rdf_entity/{rdf_entity}/add/custom_page'
+custom_page.collection_custom_page.add:
+  path: 'rdf_entity/{rdf_entity}/custom_page/add'
   defaults:
     _controller: '\Drupal\custom_page\Controller\CustomPageController::add'
     _title: 'Add custom page'
   requirements:
     _node_add_access: 'node:custom_page'
-  parameters:
-    rdf_entity:
-      type: entity:rdf_entity
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
