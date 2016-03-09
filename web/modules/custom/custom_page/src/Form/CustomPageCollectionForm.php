@@ -7,6 +7,7 @@
 
 namespace Drupal\custom_page\Form;
 
+use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -15,7 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * @package Drupal\custom_page\Form
  */
-class CustomPageCollectionForm extends FormBase {
+class CustomPageCollectionForm extends ContentEntityForm {
 
   /**
    * {@inheritdoc}

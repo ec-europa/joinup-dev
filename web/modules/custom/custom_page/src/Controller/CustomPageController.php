@@ -29,21 +29,16 @@ class CustomPageController extends ControllerBase {
    * @return string
    *   Return Hello string.
    */
-  public function add($rdf_entity) {
+  public function add($rdf_entity, $node_type) {
     $route = \Drupal::routeMatch();
 
     // @todo: Find why value is not filtered.
     $collection = $route->getParameter('rdf_entity');
-    $node = $this->entityManager()->getStorage('node')->create(array(
-      'type' => 'custom_page',
+    $node = $this->entityTypeManager()->getStorage('node')->create(array(
+      'type' => $node_type,
     ));
 
-    $form = $this->entityFormBuilder()->getForm($node);
-
-    // Set form defaults.
-    $form['og_group_ref']['#access'] = false;
-    $form['og_group_ref']['widget'][0]['target_id']['#value']
-      = $collection->label() . ' (' . $collection->id() . ')';
+    $form = $this->entityFormBuilder()->getForm($node, 'collection_custom_page');
 
     return $form;
   }
