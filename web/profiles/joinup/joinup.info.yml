@@ -108,5 +108,4 @@ config_devel:
   - user.role.anonymous
   - user.role.authenticated
   - user.role.moderator
-  - user.role.user
   - user.settings
