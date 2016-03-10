@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "df259ee5ba1c0597ae960314c25c2dd5",
-    "content-hash": "e61d53b89d4c130663d3df6224fc2e3a",
+    "hash": "f31c2c038ccc4c52abd4ecccbd841994",
+    "content-hash": "07a3fc9e54ff8baf11e27058e9cb7903",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.15.7",
+            "version": "3.15.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "9a3af130cbbe0e7bebad03209ee47c0bbc25a36d"
+                "reference": "94630759de5e55c8e9670ea12b7ded132229696d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9a3af130cbbe0e7bebad03209ee47c0bbc25a36d",
-                "reference": "9a3af130cbbe0e7bebad03209ee47c0bbc25a36d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/94630759de5e55c8e9670ea12b7ded132229696d",
+                "reference": "94630759de5e55c8e9670ea12b7ded132229696d",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-03-04 05:10:17"
+            "time": "2016-03-08 23:21:09"
         },
         {
             "name": "composer/composer",
@@ -1219,12 +1219,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "25b6bf3d242d17f7fb29818fd7e0a62c0d3b1c8a"
+                "reference": "ac1eadc6e2aec91945413ba4ab1da5fde47c5761"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/25b6bf3d242d17f7fb29818fd7e0a62c0d3b1c8a",
-                "reference": "25b6bf3d242d17f7fb29818fd7e0a62c0d3b1c8a",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/ac1eadc6e2aec91945413ba4ab1da5fde47c5761",
+                "reference": "ac1eadc6e2aec91945413ba4ab1da5fde47c5761",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1238,7 +1238,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-03-08 13:47:37"
+            "time": "2016-03-09 10:33:55"
         },
         {
             "name": "drupal/phing-drush-task",
@@ -1337,16 +1337,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "8.0.3",
+            "version": "8.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "ee77dc526aa9fb26611ded18b5caef801b29aca7"
+                "reference": "1f53daa63505f18286791e899de614e27d4cfdc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/ee77dc526aa9fb26611ded18b5caef801b29aca7",
-                "reference": "ee77dc526aa9fb26611ded18b5caef801b29aca7",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/1f53daa63505f18286791e899de614e27d4cfdc9",
+                "reference": "1f53daa63505f18286791e899de614e27d4cfdc9",
                 "shasum": ""
             },
             "require": {
@@ -1354,8 +1354,8 @@
                 "php": ">=5.4.5",
                 "psr/log": "~1.0",
                 "psy/psysh": "~0.6",
-                "symfony/var-dumper": "^2.6.3",
-                "symfony/yaml": "2.7.*"
+                "symfony/var-dumper": "~2.7|~3.0",
+                "symfony/yaml": "~2.3|~3.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "4.*",
@@ -1431,7 +1431,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2016-02-03 20:52:22"
+            "time": "2016-03-08 21:00:41"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -2132,7 +2132,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2570,16 +2570,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.7.1",
+            "version": "v0.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "5e8cedbe0a3681f18782594eefc78423f8401fc8"
+                "reference": "e64e10b20f8d229cac76399e1f3edddb57a0f280"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/5e8cedbe0a3681f18782594eefc78423f8401fc8",
-                "reference": "5e8cedbe0a3681f18782594eefc78423f8401fc8",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/e64e10b20f8d229cac76399e1f3edddb57a0f280",
+                "reference": "e64e10b20f8d229cac76399e1f3edddb57a0f280",
                 "shasum": ""
             },
             "require": {
@@ -2638,7 +2638,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2016-02-27 18:59:18"
+            "time": "2016-03-09 05:03:14"
         },
         {
             "name": "seld/cli-prompt",
@@ -4109,20 +4109,20 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v2.8.3",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "19b697abe08833ddf38c3ab0cb1bfad236b13bde"
+                "reference": "9a6a883c48acb215d4825ce9de61dccf93d62074"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/19b697abe08833ddf38c3ab0cb1bfad236b13bde",
-                "reference": "19b697abe08833ddf38c3ab0cb1bfad236b13bde",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/9a6a883c48acb215d4825ce9de61dccf93d62074",
+                "reference": "9a6a883c48acb215d4825ce9de61dccf93d62074",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.9",
+                "php": ">=5.5.9",
                 "symfony/polyfill-mbstring": "~1.0"
             },
             "require-dev": {
@@ -4134,7 +4134,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.8-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -4168,7 +4168,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2016-02-13 09:21:29"
+            "time": "2016-02-13 09:23:44"
         },
         {
             "name": "symfony/yaml",
@@ -4279,6 +4279,24 @@
                 "templating"
             ],
             "time": "2016-01-25 21:22:18"
+        },
+        {
+            "name": "typhonius/behattask",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://gist.github.com/5719e15be9687ff7c138.git",
+                "reference": "0ea666882cba3099dfa4feeb02e1bb85b2c0bde9"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "BehatTask.php"
+                ]
+            },
+            "include-path": [
+                "."
+            ]
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -5195,16 +5213,16 @@
         },
         {
             "name": "drupal/drupal-extension",
-            "version": "dev-PHP7-compatibility",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ec-europa/drupalextension.git",
-                "reference": "8df22fd9c65c0f2bb859d7bd3573a7ac4612be27"
+                "url": "https://github.com/jhedstrom/drupalextension.git",
+                "reference": "9aec37ba55f2c515f58af4f9dd8ae2bb2bfbd37e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/drupalextension/zipball/8df22fd9c65c0f2bb859d7bd3573a7ac4612be27",
-                "reference": "8df22fd9c65c0f2bb859d7bd3573a7ac4612be27",
+                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/9aec37ba55f2c515f58af4f9dd8ae2bb2bfbd37e",
+                "reference": "9aec37ba55f2c515f58af4f9dd8ae2bb2bfbd37e",
                 "shasum": ""
             },
             "require": {
@@ -5235,6 +5253,7 @@
                     "Drupal\\DrupalExtension": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
@@ -5251,10 +5270,7 @@
                 "test",
                 "web"
             ],
-            "support": {
-                "source": "https://github.com/ec-europa/drupalextension/tree/PHP7-compatibility"
-            },
-            "time": "2016-03-08 15:21:47"
+            "time": "2016-03-08 16:36:12"
         },
         {
             "name": "fabpot/goutte",
@@ -6520,24 +6536,6 @@
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
             "time": "2016-01-27 11:34:40"
-        },
-        {
-            "name": "typhonius/behattask",
-            "version": "1.0",
-            "source": {
-                "type": "git",
-                "url": "https://gist.github.com/5719e15be9687ff7c138.git",
-                "reference": "0ea666882cba3099dfa4feeb02e1bb85b2c0bde9"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "BehatTask.php"
-                ]
-            },
-            "include-path": [
-                "."
-            ]
         }
     ],
     "aliases": [
@@ -6546,12 +6544,6 @@
             "alias_normalized": "0.9.1.0",
             "version": "dev-0.9.x",
             "package": "easyrdf/easyrdf"
-        },
-        {
-            "alias": "3.1.6",
-            "alias_normalized": "3.1.6.0",
-            "version": "dev-PHP7-compatibility",
-            "package": "drupal/drupal-extension"
         }
     ],
     "minimum-stability": "dev",
