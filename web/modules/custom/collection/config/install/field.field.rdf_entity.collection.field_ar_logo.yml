@@ -28,9 +28,10 @@ settings:
   title_field_required: false
   default_image:
     alt: ''
-    title: ''
-    width: null
     height: null
+    title: ''
+    uuid: ''
+    width: null
   handler: 'default:file'
   handler_settings: {  }
 field_type: image
