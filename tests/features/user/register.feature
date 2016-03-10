@@ -7,10 +7,8 @@ Feature: User registration
     When I am on the homepage
     And I click "Log in"
     Then I am at "/user/login"
-
     When I click "Create new account"
     Then I am at "/user/register"
-
 
   Scenario: User can register with minimal required fields
     Given the following user registration at "/user/register":
@@ -29,12 +27,11 @@ Feature: User registration
     Then I click "People"
     Then I click "Add user"
     Then I am at "admin/people/create"
-
     Given the following user registration at "admin/people/create":
-      | Email address      | superuser@example.org |
-      | Username           | SuperUser             |
-      | First name         | Super                 |
-      | Family name        | User                  |
-      | Password           | SuperSecret           |
-      | Confirm password   | SuperSecret           |
-      | Notify user of new account | 1             |
+      | Email address              | superuser@example.org |
+      | Username                   | SuperUser             |
+      | First name                 | Super                 |
+      | Family name                | User                  |
+      | Password                   | SuperSecret           |
+      | Confirm password           | SuperSecret           |
+      | Notify user of new account | 1                     |

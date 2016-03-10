@@ -74,7 +74,6 @@ config_devel:
   - core.entity_form_display.user.user.register
   - core.entity_form_mode.user.register
   - core.entity_view_display.user.user.default
-  - core.entity_view_mode.user.compact
   - core.entity_view_mode.user.full
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_mode.rdf_entity.propose
