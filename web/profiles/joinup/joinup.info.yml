@@ -71,12 +71,32 @@ config_devel:
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
+  - core.entity_form_display.user.user.default
+  - core.entity_form_display.user.user.register
+  - core.entity_form_mode.user.register
+  - core.entity_view_display.user.user.default
+  - core.entity_view_mode.user.compact
+  - core.entity_view_mode.user.full
   - core.entity_view_mode.node.full
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_mode.rdf_entity.propose
   - core.entity_form_mode.rdf_entity.propose
   - editor.editor.content_editor
+  - field.field.user.user.field_user_family_name
+  - field.field.user.user.field_user_first_name
+  - field.field.user.user.field_user_nationality
+  - field.field.user.user.field_user_organisation
+  - field.field.user.user.field_user_photo
+  - field.field.user.user.field_user_professional_domain
+  - field.field.user.user.field_user_professional_profile
   - field.field.user.user.og_group_ref
+  - field.storage.user.field_user_family_name
+  - field.storage.user.field_user_first_name
+  - field.storage.user.field_user_nationality
+  - field.storage.user.field_user_organisation
+  - field.storage.user.field_user_photo
+  - field.storage.user.field_user_professional_domain
+  - field.storage.user.field_user_professional_profile
   - field.storage.user.og_group_ref
   - filter.format.basic_html
   - filter.format.content_editor
@@ -87,9 +107,12 @@ config_devel:
   - search_api.index.collections
   - search_api.server.database_search_server
   - system.theme
+  - user.flood
+  - user.mail
   - user.role.administrator
   - user.role.anonymous
   - user.role.authenticated
   - user.role.moderator
   - user.role.user
+  - user.settings
   - views.view.collections

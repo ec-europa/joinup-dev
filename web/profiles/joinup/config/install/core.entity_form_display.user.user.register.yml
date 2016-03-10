@@ -1,0 +1,56 @@
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_form_mode.user.register
+    - field.field.user.user.field_user_family_name
+    - field.field.user.user.field_user_first_name
+    - field.field.user.user.field_user_nationality
+    - field.field.user.user.field_user_photo
+    - field.field.user.user.og_group_ref
+    - image.style.thumbnail
+  module:
+    - image
+    - user
+id: user.user.register
+targetEntityType: user
+bundle: user
+mode: register
+content:
+  account:
+    weight: -10
+  field_user_family_name:
+    weight: 8
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_user_first_name:
+    weight: 7
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_user_nationality:
+    weight: 11
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_user_photo:
+    weight: 9
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+  language:
+    weight: 0
+  timezone:
+    weight: 6
+hidden:
+  og_group_ref: true
