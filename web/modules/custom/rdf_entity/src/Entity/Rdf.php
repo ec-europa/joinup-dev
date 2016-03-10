@@ -314,7 +314,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   protected function urlRouteParameters($rel) {
     $uri_route_parameters = [];
 
-    if ($rel != 'collection') {
+    if ($rel != 'rdf_entity') {
       // The entity ID is needed as a route parameter.
       // Here we do the actual escaping of outbound rdf entity id's.
       // @see \Drupal\rdf_entity\ParamConverter\RdfEntityConverter::convert
