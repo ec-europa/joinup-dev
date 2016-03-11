@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.custom_page.og_group_ref
     - node.type.custom_page
   module:
+    - og
     - path
     - text
 id: node.custom_page.default
@@ -15,7 +16,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 1
+    weight: 2
     settings:
       rows: 9
       summary_rows: 3
@@ -31,12 +32,12 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 5
+    weight: 3
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 3
+    weight: 4
     settings:
       display_label: false
     third_party_settings: {  }
@@ -44,11 +45,11 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 4
+    weight: 5
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: 0
+    weight: 1
     settings:
       size: 60
       placeholder: ''

@@ -10,20 +10,14 @@ namespace Drupal\custom_page\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\rdf_entity\Entity\Rdf;
 
+// @todo: Fix the description.
 /**
  * Class CustomPageController.
  *
  * @package Drupal\custom_page\Controller
  */
 class CustomPageController extends ControllerBase {
-  /**
-   * CustomPageController constructor.
-   */
-  public function __construct()
-  {
-  }
-
-
+  // @todo: Fix the description.
   /**
    * Controller for the base form .
    *
@@ -34,16 +28,17 @@ class CustomPageController extends ControllerBase {
    *   Return Hello string.
    */
   public function add($rdf_entity) {
-    $route = \Drupal::routeMatch();
-
     // @todo: Find why value is not filtered.
     $node = $this->entityTypeManager()->getStorage('node')->create(array(
       'type' => 'custom_page',
+      'og_group_ref' => $rdf_entity->Id()
     ));
 
-    $form = $this->entityFormBuilder()->getForm($node);
+    // @todo: Change form name to include '_form' suffix.
+    $form = $this->entityFormBuilder()->getForm($node, 'collection_custom_page');
 
     return $form;
   }
 
+  // @todo: Fix access.
 }

@@ -71,4 +71,5 @@ function joinup_entity_type_alter(array &$entity_types) {
   // propose form displays to them.
   /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
   $entity_types['rdf_entity']->setFormclass('propose', 'Drupal\rdf_entity\Form\RdfForm');
+  $entity_types['node']->setFormclass('collection_custom_page', 'Drupal\custom_page\Form\CollectionCustomPageForm');
 }
