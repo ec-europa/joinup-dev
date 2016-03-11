@@ -166,7 +166,12 @@ class Query extends QueryBase implements QueryInterface {
       case 'label-=':
         preg_match('/\((.*?)\)/', $value, $matches);
         $matching = array_pop($matches);
-        $ids = "(<$matching>)";
+        if($matching){
+          $ids = "(<$matching>)";
+        }
+        else{
+          $ids = '("' . $value . '")';
+        }
         $this->filter->filter('?entity IN ' . $ids);
         break;
 
