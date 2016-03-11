@@ -6,6 +6,7 @@
     "require": {
         "composer/composer": "^1.0@alpha",
         "composer/installers": "^1.0.20",
+        "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",
         "drupal/core": "~8.0.3",
@@ -17,8 +18,8 @@
         "easyrdf/easyrdf": "dev-0.9.x as 0.9.1",
         "pear/console_table": "~1.3.0",
         "phing/phing": "~2.10",
-        "continuousphp/aws-sdk-phing": "~0.1",
-        "php": ">=5.5.9"
+        "php": ">=5.5.9",
+        "typhonius/behattask": "1.0"
     },
     "require-dev": {
         "behat/mink": "~1.6",
@@ -33,8 +34,7 @@
         "mikey179/vfsStream": "~1.2",
         "pfrenssen/phpcs-pre-push": "1.0",
         "phpunit/phpunit": "~4.8",
-        "symfony/css-selector": "2.7.*",
-        "typhonius/behattask": "1.0"
+        "symfony/css-selector": "2.7.*"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -75,11 +75,6 @@
         {
             "type": "vcs",
             "url": "https://git.drupal.org/project/coder.git"
-        },
-        {
-            "_comment": "Fork for drupal/drupal-extension containing a fix for PR #248.",
-            "type": "vcs",
-            "url": "https://github.com/pfrenssen/drupalextension.git"
         },
         {
             "type": "package",
