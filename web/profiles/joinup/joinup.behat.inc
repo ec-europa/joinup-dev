@@ -26,7 +26,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @var \Drupal\user\Entity\User[]
    */
-  protected $users = [];
+  protected $registeredUsers = [];
 
   /**
    * Creates a user with data provided in a table.
@@ -94,6 +94,56 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         $values[$field_name] = $file->id();
 
         $this->files[$file->id()] = $file;
+      }
+    }
+  }
+
+  /**
+   * Register a user.
+   *
+   * @Given the following user registration at :location:
+   */
+  public function submitRegistrationForm(TableNode $table, $location) {
+    $this->visitPath($location);
+
+    // Fill in fields.
+    foreach ($table->getRowsHash() as $field => $value) {
+      $this->getSession()->getPage()->fillField($field, $value);
+    };
+    // Submit form.
+    $this->getSession()->getPage()->pressButton("Create new account");
+
+    // Get the last registered user.
+    $storage = \Drupal::entityManager()->getStorage('user');
+    $query = $storage->getQuery();
+    $result = $query->sort('uid', 'DESC')->range(0, 1)->execute();
+    $uid = array_pop($result);
+    /** @var \Drupal\user\UserInterface $user */
+    $user = $storage->load($uid);
+
+    // Check if latest registered user is created during this request.
+    $user_creation_time = $user->getCreatedTime();
+    $request_time = \Drupal::requestStack()->getCurrentRequest()->server->get('REQUEST_TIME');
+    if (($request_time - $user_creation_time) < 0) {
+      // Track user for auto delete in tear-down.
+      $this->registeredUsers[$uid] = $user;
+    }
+    else {
+      throw new Exception('User not registered.');
+    }
+  }
+
+  /**
+   * Remove any created registered users.
+   *
+   * @AfterScenario
+   */
+  public function cleanRegisteredUsers() {
+    // Remove any users that were created.
+    if (!empty($this->registeredUsers)) {
+      /** @var \Drupal\user\Entity\User $user */
+      foreach ($this->registeredUsers as $user) {
+        $user->delete();
       }
     }
   }

@@ -10,3 +10,4 @@ permissions:
   - 'administer users'
   - 'access user profiles'
   - 'administer views'
+  - 'access toolbar'
