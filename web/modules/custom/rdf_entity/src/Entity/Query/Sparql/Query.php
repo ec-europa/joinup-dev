@@ -122,6 +122,7 @@ class Query extends QueryBase implements QueryInterface {
     // @todo Getting the storage container here looks wrong...
     $entity_storage = \Drupal::service('entity.manager')
       ->getStorage('rdf_entity');
+
     /*
      * Ok, so what is all this:
      * We need to convert our conditions into some sparql compatible conditions.
@@ -139,6 +140,17 @@ class Query extends QueryBase implements QueryInterface {
         if ($value) {
           $ids_list = "(<" . implode(">, <", $value) . ">)";
           $this->filter->filter('?entity IN ' . $ids_list);
+        }
+        break;
+
+      // @todo: Check if there is a better way to do it. 'NOT IN' gets a parse error.
+      case 'id-NOT IN':
+        if ($value) {
+          $conditions = [];
+          foreach($value as $uri){
+            $conditions[] = '?entity != <' . $uri . '>';
+          }
+          $this->filter->filter(implode(" && ", $conditions));
         }
         break;
 
