@@ -143,14 +143,10 @@ class Query extends QueryBase implements QueryInterface {
         }
         break;
 
-      // @todo: Check if there is a better way to do it. 'NOT IN' gets a parse error.
       case 'id-NOT IN':
         if ($value) {
-          $conditions = [];
-          foreach($value as $uri){
-            $conditions[] = '?entity != <' . $uri . '>';
-          }
-          $this->filter->filter(implode(" && ", $conditions));
+          $ids_list = "(<" . implode(">, <", $value) . ">)";
+          $this->filter->filter('!(?entity IN ' . $ids_list . ')');
         }
         break;
 
