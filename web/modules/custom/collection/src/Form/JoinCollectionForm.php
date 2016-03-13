@@ -8,6 +8,7 @@
 namespace Drupal\collection\Form;
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -127,6 +128,10 @@ class JoinCollectionForm extends FormBase {
       ->setEntityid($collection->id())
       ->setState(OgMembershipInterface::STATE_ACTIVE)
       ->save();
+
+    // @todo: when og gets its own caching system, use its context instead.
+    // Invalidate cache so that the add content block can be rebuilt.
+    Cache::invalidateTags(['user', 'og.membership']);
 
     drupal_set_message($this->t('You are now a member of %collection.', [
       '%collection' => $collection->getName(),

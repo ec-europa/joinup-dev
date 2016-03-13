@@ -95,10 +95,10 @@ class AddContentBlock extends BlockBase
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
+  public function getCacheTags() {
     // This block varies per user.
-    $contexts = parent::getCacheContexts();
-    return Cache::mergeContexts($contexts, ['url']);
+    $contexts = parent::getCacheTags();
+    return Cache::mergeContexts($contexts, ['user', 'og.membership']);
   }
 
 }
