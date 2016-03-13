@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f31c2c038ccc4c52abd4ecccbd841994",
-    "content-hash": "07a3fc9e54ff8baf11e27058e9cb7903",
+    "hash": "ce01d534839f0d40f1beee180821967a",
+    "content-hash": "77b23fc198a7a8cf59fa22a789ffb1f0",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.15.8",
+            "version": "3.15.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "94630759de5e55c8e9670ea12b7ded132229696d"
+                "reference": "5f27941e2f1ac1700e667cfcf9d9da44c1d9b612"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/94630759de5e55c8e9670ea12b7ded132229696d",
-                "reference": "94630759de5e55c8e9670ea12b7ded132229696d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5f27941e2f1ac1700e667cfcf9d9da44c1d9b612",
+                "reference": "5f27941e2f1ac1700e667cfcf9d9da44c1d9b612",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-03-08 23:21:09"
+            "time": "2016-03-11 00:44:20"
         },
         {
             "name": "composer/composer",
@@ -1219,15 +1219,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "ac1eadc6e2aec91945413ba4ab1da5fde47c5761"
+                "reference": "20634bd951f93bbf510cc84502796e8a4fb15387"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/ac1eadc6e2aec91945413ba4ab1da5fde47c5761",
-                "reference": "ac1eadc6e2aec91945413ba4ab1da5fde47c5761",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/20634bd951f93bbf510cc84502796e8a4fb15387",
+                "reference": "20634bd951f93bbf510cc84502796e8a4fb15387",
                 "shasum": ""
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "Issue #141: Bundle handler ajax fix": "https://github.com/amitaibu/og/compare/8.x-1.x...ec-europa:141.patch",
+                    "Issue #OGComplex: Fix og complex functionality": "https://github.com/amitaibu/og/compare/8.x-1.x...ec-europa:OgComplexWidget-target_type.patch",
+                    "Issue #SupportForUriEntityId: Add more special characters to id support": "https://github.com/amitaibu/og/compare/8.x-1.x...ec-europa:SupportForUriEntiId.patch"
+                }
+            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -1238,7 +1245,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-03-09 10:33:55"
+            "time": "2016-03-09 13:43:47"
         },
         {
             "name": "drupal/phing-drush-task",
@@ -2258,16 +2265,16 @@
         },
         {
             "name": "phing/phing",
-            "version": "2.13.0",
+            "version": "2.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phingofficial/phing.git",
-                "reference": "a5b10a50160c8a4744545aacb33ef158349e655c"
+                "reference": "7dd73c83c377623def54b58121f46b4dcb35dd61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phingofficial/phing/zipball/a5b10a50160c8a4744545aacb33ef158349e655c",
-                "reference": "a5b10a50160c8a4744545aacb33ef158349e655c",
+                "url": "https://api.github.com/repos/phingofficial/phing/zipball/7dd73c83c377623def54b58121f46b4dcb35dd61",
+                "reference": "7dd73c83c377623def54b58121f46b4dcb35dd61",
                 "shasum": ""
             },
             "require": {
@@ -2276,6 +2283,7 @@
             "require-dev": {
                 "ext-pdo_sqlite": "*",
                 "lastcraft/simpletest": "@dev",
+                "mikey179/vfsstream": "^1.6",
                 "pdepend/pdepend": "2.x",
                 "pear/archive_tar": "1.4.x",
                 "pear/http_request2": "dev-trunk",
@@ -2311,7 +2319,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.13.x-dev"
+                    "dev-master": "2.14.x-dev"
                 }
             },
             "autoload": {
@@ -2344,7 +2352,7 @@
                 "task",
                 "tool"
             ],
-            "time": "2015-12-04 09:45:44"
+            "time": "2016-03-10 21:39:23"
         },
         {
             "name": "phpseclib/phpseclib",
