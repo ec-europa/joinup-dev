@@ -1,10 +1,10 @@
 @api
-Feature: Collection Page API
-  In order to manage collection pages programmatically
+Feature: Custom Page API
+  In order to manage custom pages programmatically
   As a backend developer
-  I need to be able to use the Node API to handle the "Collection Page" bundle
+  I need to be able to use the Node API to handle the "Custom Page" bundle
 
-  Scenario: Programmatically create a Collection Page
+  Scenario: Programmatically create a Custom Page
     Given the following collection:
       | name              | Le Foie Heureux         |
       | owner             | Rufus Drumknott         |
@@ -18,4 +18,4 @@ Feature: Collection Page API
       | Dummy Page | This is some dummy content like foo:bar. | http://joinup.eu/my/foo |
      # @Fixme unimplemented. See ISAICP-2369
      # | Exclude from menu |                                              |
-     Then I should have a "Collection Page" page titled "Dummy Page"
+     Then I should have a "Custom Page" page titled "Dummy Page"
