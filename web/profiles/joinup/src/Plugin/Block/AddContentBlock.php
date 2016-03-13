@@ -74,15 +74,18 @@ class AddContentBlock extends BlockBase
       ],
     ];
 
-    // @todo: Fix the visibility.
+    // @todo: Fix the visibility to include og membership dependency.
     if ($this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical'
       && $this->collection->bundle() == 'collection') {
+      $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+
       $build['custom_page'] = [
         '#type' => 'link',
         '#title' => $this->t('Add custom page'),
         '#url' => Url::fromRoute('custom_page.collection_custom_page.add',
           ['rdf_entity' => $this->collection->sanitizedId()]),
         '#attributes' => ['class' => ['button', 'button--small']],
+        '#access' => \Drupal\og\Og::isMember($this->collection, $user),
       ];
     }
 
