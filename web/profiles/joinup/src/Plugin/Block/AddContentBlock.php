@@ -96,9 +96,18 @@ class AddContentBlock extends BlockBase
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    // This block varies per user.
-    $contexts = parent::getCacheTags();
-    return Cache::mergeContexts($contexts, ['user', 'og.membership']);
+    // Handles the og dependency.
+    $tags = parent::getCacheTags();
+    return Cache::mergeContexts($tags, ['og.membership']);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    // This block varies per user, route and a parameter in the route called 'rdf_entity'.
+    // This block also varies per og membership which is handled through cache_tags instead.
+    $contexts = parent::getCacheContexts();
+    return Cache::mergeContexts($contexts, ['user', 'route:rdf_entity']);
+  }
 }
