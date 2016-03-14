@@ -105,28 +105,27 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function submitRegistrationForm(TableNode $table, $location) {
     $this->visitPath($location);
+    $username = '';
 
     // Fill in fields.
     foreach ($table->getRowsHash() as $field => $value) {
       $this->getSession()->getPage()->fillField($field, $value);
+      if($field == 'Username'){
+        $username = $value;
+      }
     };
     // Submit form.
     $this->getSession()->getPage()->pressButton("Create new account");
 
     // Get the last registered user.
-    $storage = \Drupal::entityManager()->getStorage('user');
-    $query = $storage->getQuery();
-    $result = $query->sort('uid', 'DESC')->range(0, 1)->execute();
-    $uid = array_pop($result);
+    $results = \Drupal::entityManager()->getStorage('user')
+        ->loadByProperties(['name' => $username]);
     /** @var \Drupal\user\UserInterface $user */
-    $user = $storage->load($uid);
+    $user = reset($results);
 
-    // Check if latest registered user is created during this request.
-    $user_creation_time = $user->getCreatedTime();
-    $request_time = \Drupal::requestStack()->getCurrentRequest()->server->get('REQUEST_TIME');
-    if (($request_time - $user_creation_time) < 0) {
+    if ($user) {
       // Track user for auto delete in tear-down.
-      $this->registeredUsers[$uid] = $user;
+      $this->registeredUsers[$user->id()] = $user;
     }
     else {
       throw new Exception('User not registered.');
