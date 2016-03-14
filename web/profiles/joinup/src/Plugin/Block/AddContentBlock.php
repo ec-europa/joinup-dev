@@ -10,6 +10,8 @@ namespace Drupal\joinup\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
+use Drupal\og\Og;
+use Drupal\user\Entity\User;
 
 /**
  * Provides an 'AddContentBlock' block.
@@ -74,10 +76,10 @@ class AddContentBlock extends BlockBase
       ],
     ];
 
-    // @todo: Fix the visibility to include og membership dependency.
+    // @todo: Fix the visibility to include og membership dependency after ISAICP-2362.
     if ($this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical'
       && $this->collection->bundle() == 'collection') {
-      $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+      $user = User::load(\Drupal::currentUser()->id());
 
       $build['custom_page'] = [
         '#type' => 'link',
@@ -85,7 +87,7 @@ class AddContentBlock extends BlockBase
         '#url' => Url::fromRoute('custom_page.collection_custom_page.add',
           ['rdf_entity' => $this->collection->sanitizedId()]),
         '#attributes' => ['class' => ['button', 'button--small']],
-        '#access' => \Drupal\og\Og::isMember($this->collection, $user),
+        '#access' => Og::isMember($this->collection, $user),
       ];
     }
 
