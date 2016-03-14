@@ -76,9 +76,10 @@ class AddContentBlock extends BlockBase
       ],
     ];
 
-    // @todo: Fix the visibility to include og membership dependency after ISAICP-2362.
+    // @todo: Fix the visibility to include og membership dependency after ISAICP-2362. Will be moved to the access controller.
     if ($this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical'
-      && $this->collection->bundle() == 'collection') {
+      && $this->collection->bundle() == 'collection'
+      && !(\Drupal::currentUser()->isAnonymous())) {
       $user = User::load(\Drupal::currentUser()->id());
 
       $build['custom_page'] = [
