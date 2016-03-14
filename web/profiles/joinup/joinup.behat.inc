@@ -110,7 +110,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // Fill in fields.
     foreach ($table->getRowsHash() as $field => $value) {
       $this->getSession()->getPage()->fillField($field, $value);
-      if($field == 'Username'){
+      if ($field == 'Username') {
         $username = $value;
       }
     };

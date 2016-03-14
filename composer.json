@@ -64,11 +64,6 @@
             },
             "drupal/search_api": {
                 "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/support_for_non_numeric-2671228-2_1.patch"
-            },
-            "drupal/og": {
-                "Issue #141: Bundle handler ajax fix": "https://github.com/amitaibu/og/compare/8.x-1.x...ec-europa:141.patch",
-                "Issue #OGComplex: Fix og complex functionality": "https://github.com/amitaibu/og/compare/8.x-1.x...ec-europa:OgComplexWidget-target_type.patch",
-                "Issue #SupportForUriEntityId: Add more special characters to id support": "https://github.com/amitaibu/og/compare/8.x-1.x...ec-europa:SupportForUriEntiId.patch"
             }
         }
     },

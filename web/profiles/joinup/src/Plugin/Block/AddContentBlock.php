@@ -39,7 +39,7 @@ class AddContentBlock extends BlockBase
   protected $currentRouteMatch;
 
   /**
-   * Constructs a JoinCollectionBlock object.
+   * Constructs a AddContentBlock object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -47,10 +47,6 @@ class AddContentBlock extends BlockBase
    *   The plugin ID for the plugin instance.
    * @param string $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $current_route_match
-   *   The current route match service.
-   * @param \Drupal\Core\Session\AccountProxyInterface $user
-   *   The current user.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition)
   {
@@ -76,10 +72,12 @@ class AddContentBlock extends BlockBase
       ],
     ];
 
-    // @todo: Fix the visibility to include og membership dependency after ISAICP-2362. Will be moved to the access controller.
-    if ($this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical'
-      && $this->collection->bundle() == 'collection'
-      && !(\Drupal::currentUser()->isAnonymous())) {
+    // This check has to occur here so that the link can be cached correctly for each page.
+    if (
+        !(\Drupal::currentUser()->isAnonymous())
+        && $this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical'
+        && $this->collection->bundle() == 'collection'
+      ) {
       $user = User::load(\Drupal::currentUser()->id());
 
       $build['custom_page'] = [
