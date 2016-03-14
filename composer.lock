@@ -1219,7 +1219,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "20634bd951f93bbf510cc84502796e8a4fb15387"
+                "reference": "ac1eadc6e2aec91945413ba4ab1da5fde47c5761"
             },
             "dist": {
                 "type": "zip",
