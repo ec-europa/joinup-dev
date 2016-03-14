@@ -41,17 +41,4 @@ Feature: "Add custom page" visibility options.
       | Body        | This is some dummy description not meant to explain or define anything. |
     And I press "Save"
     Then I should have a "Custom page" content page titled "Custom page title"
-    And the "Custom page title" of type "node" should be a member of the "rdf_entity" with ID "http://joinup.eu/collection/foo"
-
-  Scenario: Add custom page as a moderator.
-    When I am logged in as a user with the "moderator" role
-    And I visit "node/add/custom_page"
-    And the following fields should be present "Title, Body"
-    #And the following fields should be present "Groups audience, Other groups"
-    When I fill in the following:
-      | Title         | Custom page title                                                       |
-      | Body          | This is some dummy description not meant to explain or define anything. |
-      | Other groups  | Foo Collection (http://joinup.eu/collection/foo)                        |
-    And I press "Save"
-    Then I should have a "Custom page" content page titled "Custom page title"
-    And the "Custom page title" of type "node" should be a member of the "rdf_entity" with ID "http://joinup.eu/collection/foo"
+    And the "Custom page title" of type "node" should be a member of the group with ID "http://joinup.eu/collection/foo"
