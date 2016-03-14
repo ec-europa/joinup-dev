@@ -41,4 +41,4 @@ Feature: "Add custom page" visibility options.
       | Body        | This is some dummy description not meant to explain or define anything. |
     And I press "Save"
     Then I should have a "Custom page" content page titled "Custom page title"
-    And the "Custom page title" of type "node" should be a member of the "rdf_entity" with ID "http://joinup.eu/collection/foo"
+    And the "Custom page title" of type "node" should be a member of the group with ID "http://joinup.eu/collection/foo"

@@ -158,95 +158,93 @@ class DrupalContext extends DrupalExtensionDrupalContext {
       throw new \Exception("Unable to load expected user " . $username);
     }
   }
+
+  /**
+   * Creates memberships for the provided entities.
+   * If the member type is user, the username should be passed instead.
+   *
+   * @param TableNode $membership_table
+   *   The membership table.
+   *
+   * Table format:
+   * group_type   | group_id  | member    |
+   * entityTypeId | entity_id | user name |
+   * entityTypeId | entity_id | user name |
+   *
+   * Only the name field is required.
+   *
+   * @throws \Exception
+   *   Thrown when an entity is not found or when an entity set as group is not a group.
+   *
+   * @Given (the following )user memberships:
+   */
+  public function givenUserMembership(TableNode $membership_table) {
+    foreach ($membership_table->getColumnsHash() as $membership_row) {
+      foreach ($membership_row as $key => $value) {
+        $values[$key] = $value;
+      }
+
+      // Load group.
+      $group = \Drupal::entityTypeManager()
+        ->getStorage($values['group_type'])
+        ->load($values['group_id']);
+      if (empty($group)) {
+        throw new \Exception("Entity " . $values['group_id'] . " not found.");
+      }
+
+      // Load member.
+      $member = user_load_by_name($values['member']);
+      if (empty($member)) {
+        throw new \Exception("Entity " . $values['group_id'] . " not found.");
+      }
+
+      /**
+       * @var \Drupal\og\OgMembership $membership
+       */
+      $membership = Og::membershipStorage()->create(Og::membershipDefault());
+      $membership
+        ->setEntityType($group->getEntityTypeId())
+        ->setEntityid($group->id())
+        ->setState(OgMembershipInterface::STATE_ACTIVE);
+      if ($member->getEntityTypeId() == 'user') {
+        $membership->setUser($member->id());
+      }
+      $membership->save();
+    }
+  }
+
+  /**
+   * Checks if the given entity is member of the given group.
+   *
+   * @param String $member_title The member entity's label.
+   * @param String $member_type The member entity's bundle.
+   * @param String $group_id The group entity's label.
+   *
+   * @throws \Exception
+   *   Thrown when an entity is not found or when an entity set as group is not a group.
+   *
+   * @Then the :member_label of type :member_type should be a member of the group with ID :group_id
+   */
+  public function assertOgMembership($member_title, $member_type, $group_id) {
+    $member_storage = \Drupal::entityTypeManager()->getStorage($member_type);
+    $members_array = $member_storage->loadByProperties(['title' => $member_title]);
     /**
-     * Creates memberships for the provided entities.
-     * If the member type is user, the username should be passed instead.
-     *
-     * @param TableNode $membership_table
-     *   The membership table.
-     *
-     * Table format:
-     * group_type   | group_id  | member    |
-     * entityTypeId | entity_id | user name |
-     * entityTypeId | entity_id | user name |
-     *
-     * Only the name field is required.
-     *
-     * @throws \Exception
-     *   Thrown when an entity is not found or when an entity set as group is not a group.
-     *
-     * @Given (the following )user memberships:
+     * @var \Drupal\core\Entity\EntityInterface $member
      */
-    public function givenUserMembership(TableNode $membership_table)
-    {
-        foreach ($membership_table->getColumnsHash() as $membership_row) {
-            foreach($membership_row as $key => $value) {
-                $values[$key] = $value;
-            }
+    $member = reset($members_array);
 
-            // Load group.
-            $group = \Drupal::entityTypeManager()->getStorage($values['group_type'])->load($values['group_id']);
-            if (empty($group)) {
-                throw new \Exception("Entity " . $values['group_id'] . " not found.");
-            }
-
-            // Load member.
-            $member = user_load_by_name($values['member']);
-            if (empty($member)) {
-                throw new \Exception("Entity " . $values['group_id'] . " not found.");
-            }
-
-            $membership = Og::membershipStorage()->create(Og::membershipDefault());
-            $membership
-                ->setEntityType($group->getEntityTypeId())
-                ->setEntityid($group->id())
-                ->setState(OgMembershipInterface::STATE_ACTIVE)
-                ->setUser($member->id())
-                ->save();
-        }
+    if (empty($member)) {
+      throw new \Exception("The entity titled $member_title was not found.");
+    }
+    if (!(Og::isGroupContent($member->getEntityTypeId(), $member->bundle()))) {
+      throw new \Exception("The entity " . $member->getEntityTypeId()
+        . " is not a group content.");
     }
 
-    /**
-     * Checks if the given entity is member of the given group.
-     *
-     * @param String $member_title The member entity's label.
-     * @param String $member_type The member entity's bundle.
-     * @param String $group_type The group entity's label.
-     * @param String $group_id The group entity's label.
-     *
-     * @throws \Exception
-     *   Thrown when an entity is not found or when an entity set as group is not a group.
-     *
-     * @Then the :member_label of type :member_type should be a member of the :group_type with ID :group_id
-     */
-    public function assertOgMembership($member_title, $member_type, $group_type, $group_id)
-    {
-        // Load group.
-        $group_storage = \Drupal::entityTypeManager()->getStorage($group_type);
-        $group = $group_storage->load($group_id);
-        if (empty($group)) {
-            throw new \Exception("The group $group_id was not found.");
-        }
-
-        if (!(Og::isGroup($group->getEntityTypeId(), $group->bundle()))) {
-            throw new \Exception("The entity $group_id is not an og group.");
-        }
-
-        // Load member.
-        $member_storage = \Drupal::entityTypeManager()->getStorage($member_type);
-        $members_array = $member_storage->loadByProperties(['title' => $member_title]);
-        $member = reset($members_array);
-        if (empty($member)) {
-            throw new \Exception("The entity titled $member_title was not found.");
-        }
-        if (!(Og::isGroupContent($member->getEntityTypeId(), $member->bundle()))){
-            throw new \Exception("The entity " . $member->getEntityType()->label() . " is not a group content.");
-        }
-
-        // Check membership.
-        if(!(Og::isMember($group, $member))){
-            throw new \Exception("The \"$member_title\" entity is not a member of the entity \"$group_id\"");
-        }
+    if ($member->og_group_ref->getValue()[0]['target_id'] != $group_id) {
+      throw new \Exception("Entity \"" . $member->label()
+        . "\" is not a member of entity with id \"" . $group_id . "\"");
     }
+  }
 
 }
