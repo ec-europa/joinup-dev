@@ -10,7 +10,7 @@
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",
         "drupal/core": "~8.0.3",
-        "drupal/og": "dev-port-og-complex-widget-test",
+        "drupal/og": "dev-userGroupsFix",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x",
         "drupal/search_api": "~8.1.0-alpha12",
@@ -120,7 +120,7 @@
         {
             "_comment": "Amitai's fork is the main development repository for Organic Groups. Remove this once a D8 release is made on drupal.org.",
             "type": "vcs",
-            "url": "git@github.com:amitaibu/og"
+            "url": "git@github.com:ec-europa/og"
         },
         {
             "type": "package",

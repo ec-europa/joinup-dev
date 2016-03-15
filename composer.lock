@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f31c2c038ccc4c52abd4ecccbd841994",
-    "content-hash": "07a3fc9e54ff8baf11e27058e9cb7903",
+    "hash": "ed4657bb9e9ff7a69627b5adcd9b8f1a",
+    "content-hash": "f079334e1394967adafc0a834b9d2586",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1215,16 +1215,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-port-og-complex-widget-test",
+            "version": "dev-userGroupsFix",
             "source": {
                 "type": "git",
-                "url": "https://github.com/amitaibu/og.git",
-                "reference": "20634bd951f93bbf510cc84502796e8a4fb15387"
+                "url": "https://github.com/ec-europa/og.git",
+                "reference": "44b2702f16bfe1d9ef34bdf0c43e5e742b494014"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/20634bd951f93bbf510cc84502796e8a4fb15387",
-                "reference": "20634bd951f93bbf510cc84502796e8a4fb15387",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/44b2702f16bfe1d9ef34bdf0c43e5e742b494014",
+                "reference": "44b2702f16bfe1d9ef34bdf0c43e5e742b494014",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1238,7 +1238,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-03-09 13:43:47"
+            "time": "2016-03-15 10:28:30"
         },
         {
             "name": "drupal/phing-drush-task",
