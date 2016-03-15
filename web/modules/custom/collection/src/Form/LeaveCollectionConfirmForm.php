@@ -116,7 +116,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
 
     // @todo: when og gets its own caching system, use its context instead.
     // Invalidate cache so that the add content block can be rebuilt.
-    Cache::invalidateTags(['user', 'og.membership']);
+    Cache::invalidateTags(['og_get_membership']);
 
     drupal_set_message($this->t('You are no longer a member of %collection.', [
       '%collection' => $this->collection->getName(),

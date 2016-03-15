@@ -11,6 +11,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
 use Drupal\og\Og;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\user\Entity\User;
 
 /**
@@ -39,6 +40,11 @@ class AddContentBlock extends BlockBase
   protected $currentRouteMatch;
 
   /**
+   * @var \Drupal\user\UserInterface
+   */
+  protected $account;
+
+  /**
    * Constructs a AddContentBlock object.
    *
    * @param array $configuration
@@ -56,6 +62,8 @@ class AddContentBlock extends BlockBase
     // @todo: This should be restricted to collection rdf_entities only.
     // Retrieve the collection from the route.
     $this->collection = $this->currentRouteMatch->getParameter('rdf_entity');
+
+    $this->account = User::load(\Drupal::currentUser()->id());
   }
 
   /**
@@ -74,19 +82,17 @@ class AddContentBlock extends BlockBase
 
     // This check has to occur here so that the link can be cached correctly for each page.
     if (
-        !(\Drupal::currentUser()->isAnonymous())
+        !($this->account->isAnonymous())
         && $this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical'
         && $this->collection->bundle() == 'collection'
       ) {
-      $user = User::load(\Drupal::currentUser()->id());
-
       $build['custom_page'] = [
         '#type' => 'link',
         '#title' => $this->t('Add custom page'),
         '#url' => Url::fromRoute('custom_page.collection_custom_page.add',
           ['rdf_entity' => $this->collection->sanitizedId()]),
         '#attributes' => ['class' => ['button', 'button--small']],
-        '#access' => Og::isMember($this->collection, $user),
+        '#access' => Og::isMember($this->collection, $this->account),
       ];
     }
 
@@ -99,7 +105,7 @@ class AddContentBlock extends BlockBase
   public function getCacheTags() {
     // Handles the og dependency.
     $tags = parent::getCacheTags();
-    return Cache::mergeContexts($tags, ['og.membership']);
+    return Cache::mergeContexts($tags, ['og_get_membership']);
   }
 
   /**
@@ -109,6 +115,7 @@ class AddContentBlock extends BlockBase
     // This block varies per user, route and a parameter in the route called 'rdf_entity'.
     // This block also varies per og membership which is handled through cache_tags instead.
     $contexts = parent::getCacheContexts();
-    return Cache::mergeContexts($contexts, ['user', 'route:rdf_entity']);
+    $contexts = Cache::mergeContexts($contexts, ['route:rdf_entity']);
+    return Cache::mergeContexts($contexts, $this->account->getCacheContexts());
   }
 }
