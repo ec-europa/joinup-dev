@@ -102,6 +102,7 @@ class AddContentBlock extends BlockBase
   /**
    * {@inheritdoc}
    */
+
   public function getCacheContexts() {
     // This block varies per user, route and a parameter in the route called 'rdf_entity'.
     // This block also varies per og membership which is handled through cache_tags instead.
