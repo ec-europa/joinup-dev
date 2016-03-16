@@ -4,19 +4,14 @@
  * Main functions and hook implementations of the Custom Page module.
  */
 
-use \Drupal\Core\Render\Element;
 use \Drupal\Core\Form\FormStateInterface;
+use \Drupal\Core\Access\AccessResult;
 
 /**
- * Implements hook_FORM_ID_alter.
- *
- * @param array $form
- *  The form array to render.
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- * @param string $form_id
+ * Implements hook_form_FORM_ID_alter().
  */
 function custom_page_form_node_custom_page_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-    $form['og_group_ref']['#access'] =
-        Drupal\Core\Access\AccessResult::allowedIfHasPermission(\Drupal::currentUser()->getAccount(),
-            'moderate entity parents');
+  $form['og_group_ref']['#access']
+    = AccessResult::allowedIfHasPermission(\Drupal::currentUser()->getAccount(),
+      'moderate entity parents');
 }
