@@ -11,3 +11,4 @@ permissions:
   - 'access user profiles'
   - 'administer views'
   - 'access toolbar'
+  - 'moderate entity parents'
