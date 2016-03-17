@@ -17,6 +17,7 @@ dependencies:
   - file
   - help
   - image
+  - joinup_document
   - menu_ui
   - node
   - og
