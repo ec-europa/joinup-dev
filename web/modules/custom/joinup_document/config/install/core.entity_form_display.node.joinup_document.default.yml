@@ -53,14 +53,6 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
-  og_group_ref:
-    type: og_complex
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    weight: 6
-    third_party_settings: {  }
   title:
     type: string_textfield
     weight: 0
@@ -74,3 +66,4 @@ hidden:
   promote: true
   sticky: true
   uid: true
+  og_group_ref: true
