@@ -5,24 +5,26 @@
  * Contains joinup_document.module.
  */
 
+use \Drupal\core\Form\FormStateInterface;
+
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function joinup_document_form_node_joinup_document_form_alter(&$form, \Drupal\core\Form\FormStateInterface $form_state, $form_id) {
+function joinup_document_form_node_joinup_document_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#validate'][] = 'joinup_document_form_default_validate';
 }
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function joinup_document_form_node_joinup_document_edit_form_alter(&$form, \Drupal\core\Form\FormStateInterface $form_state, $form_id) {
+function joinup_document_form_node_joinup_document_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#validate'][] = 'joinup_document_form_default_validate';
 }
 
 /**
  * Validates the default joinup document form.
- * The validation includes the file submission and the short title.
  *
+ * The validation includes the file submission and the short title.
  * The file can be submitted either by file or by link so not both of these
  * fields can be empty.
  * If the short title field is filled, it has to be unique in a global scope.
@@ -32,10 +34,11 @@ function joinup_document_form_node_joinup_document_edit_form_alter(&$form, \Drup
  * @param \Drupal\core\Form\FormStateInterface $form_state
  *   The form state object.
  */
-function joinup_document_form_default_validate(&$form, \Drupal\core\Form\FormStateInterface $form_state) {
+function joinup_document_form_default_validate(&$form, FormStateInterface $form_state) {
   // Check the file submission.
   if (empty($form_state->getValue('field_file')[0]['fids'])
-    && empty($form_state->getValue('field_source_url')[0]['uri'])) {
+    && empty($form_state->getValue('field_source_url')[0]['uri'])
+  ) {
     $form_state->setErrorByName('field_file');
     $form_state->setErrorByName('field_source_url', t('One of the file sources must be filled.'));
   }
@@ -47,7 +50,7 @@ function joinup_document_form_default_validate(&$form, \Drupal\core\Form\FormSta
       ->condition('type', 'joinup_document')
       ->condition('field_short_title', $form_state->getValue('field_short_title')[0]['value'])
       ->execute();
-    if(!empty(reset($results))){
+    if (!empty(reset($results))) {
       $form_state->setErrorByName('field_short_title', t('There is already a document with this short title.'));
     }
   }
