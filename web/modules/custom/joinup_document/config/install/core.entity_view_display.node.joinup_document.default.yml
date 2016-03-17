@@ -1,0 +1,63 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.joinup_document.body
+    - field.field.node.joinup_document.field_file
+    - field.field.node.joinup_document.field_publication_date
+    - field.field.node.joinup_document.field_short_title
+    - field.field.node.joinup_document.field_source_url
+    - field.field.node.joinup_document.og_group_ref
+    - node.type.joinup_document
+  module:
+    - datetime
+    - file
+    - link
+    - text
+    - user
+id: node.joinup_document.default
+targetEntityType: node
+bundle: joinup_document
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+  field_file:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_default
+  field_publication_date:
+    weight: 2
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  field_short_title:
+    weight: 0
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_source_url:
+    weight: 4
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+hidden:
+  links: true
+  og_group_ref: true

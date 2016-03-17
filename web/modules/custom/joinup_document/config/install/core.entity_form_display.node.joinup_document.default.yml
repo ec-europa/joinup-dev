@@ -1,0 +1,76 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.joinup_document.body
+    - field.field.node.joinup_document.field_file
+    - field.field.node.joinup_document.field_publication_date
+    - field.field.node.joinup_document.field_short_title
+    - field.field.node.joinup_document.field_source_url
+    - field.field.node.joinup_document.og_group_ref
+    - node.type.joinup_document
+  module:
+    - datetime
+    - file
+    - link
+    - og
+    - text
+id: node.joinup_document.default
+targetEntityType: node
+bundle: joinup_document
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 2
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+  field_file:
+    weight: 4
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+  field_publication_date:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_short_title:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_source_url:
+    weight: 5
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  og_group_ref:
+    type: og_complex
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    weight: 6
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  path: true
+  promote: true
+  sticky: true
+  uid: true

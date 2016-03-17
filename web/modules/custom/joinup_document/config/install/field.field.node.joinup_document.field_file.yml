@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_file
+    - node.type.joinup_document
+  module:
+    - file
+id: node.joinup_document.field_file
+field_name: field_file
+entity_type: node
+bundle: joinup_document
+label: File
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'pdf doc docx'
+  max_filesize: '8 MB'
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file
