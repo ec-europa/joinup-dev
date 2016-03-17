@@ -5,8 +5,6 @@ dependencies:
     - node
     - og
     - rdf_entity
-_core:
-  default_config_hash: N-8ePh2t7QKNPlQyXAlRIo9J7ky7-rggioaiEGYOKMU
 id: node.og_group_ref
 field_name: og_group_ref
 entity_type: node
