@@ -3,13 +3,13 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_source_url
-    - node.type.news
+    - node.type.joinup_news
   module:
     - link
-id: node.news.field_source_url
+id: node.joinup_news.field_source_url
 field_name: field_source_url
 entity_type: node
-bundle: news
+bundle: joinup_news
 label: 'Source URL'
 description: ''
 required: false

@@ -3,13 +3,13 @@ status: true
 dependencies:
   config:
     - field.storage.node.body
-    - node.type.news
+    - node.type.joinup_news
   module:
     - text
-id: node.news.body
+id: node.joinup_news.body
 field_name: body
 entity_type: node
-bundle: news
+bundle: joinup_news
 label: Content
 description: ''
 required: true
