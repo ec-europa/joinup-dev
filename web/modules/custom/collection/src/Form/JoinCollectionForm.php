@@ -14,6 +14,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
+use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgMembershipInterface;
@@ -128,11 +129,7 @@ class JoinCollectionForm extends FormBase {
       ->setEntityid($collection->id())
       ->setState(OgMembershipInterface::STATE_ACTIVE)
       ->save();
-
-    // @todo: when og gets its own caching system, use its context instead.
-    // Invalidate cache so that the add content block can be rebuilt.
-    Cache::invalidateTags(['block_view']);
-
+    Cache::invalidateTags($membership->getCacheTagsToInvalidate());
     drupal_set_message($this->t('You are now a member of %collection.', [
       '%collection' => $collection->getName(),
     ]));

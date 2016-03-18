@@ -12,16 +12,22 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\Og;
 use Drupal\user\Entity\User;
 
-// @todo: Fix the description.
 /**
  * Class CustomPageController.
+ *
+ * Handles the form to perform actions when it is called by a route that
+ * includes an rdf_entity id.
  *
  * @package Drupal\custom_page\Controller
  */
 class CustomPageController extends ControllerBase {
   // @todo: Fix the description.
   /**
-   * Controller for the base form .
+   * Controller for the base form.
+   *
+   * We need to override the functionality of the create form for pages
+   * that include the rdf_entity id in the url so that the og audience field
+   * is autofilled.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The collection rdf_entity.
@@ -30,14 +36,12 @@ class CustomPageController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add($rdf_entity) {
-    // @todo: Find why value is not filtered.
     $node = $this->entityTypeManager()->getStorage('node')->create(array(
       'type' => 'custom_page',
       'og_group_ref' => $rdf_entity->Id()
     ));
 
-    // @todo: Change form name to include '_form' suffix.
-    $form = $this->entityFormBuilder()->getForm($node, 'collection_custom_page');
+    $form = $this->entityFormBuilder()->getForm($node);
 
     return $form;
   }

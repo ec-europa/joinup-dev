@@ -114,10 +114,6 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
     $memberships = Og::membershipStorage()->loadMultiple($membership_ids);
     Og::membershipStorage()->delete($memberships);
 
-    // @todo: when og gets its own caching system, use its context instead.
-    // Invalidate cache so that the add content block can be rebuilt.
-    Cache::invalidateTags(['block_view']);
-
     drupal_set_message($this->t('You are no longer a member of %collection.', [
       '%collection' => $this->collection->getName(),
     ]));

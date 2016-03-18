@@ -10,7 +10,9 @@ namespace Drupal\joinup\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
+use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
+use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\user\Entity\User;
 
@@ -22,27 +24,31 @@ use Drupal\user\Entity\User;
  *  admin_label = @Translation("Add content"),
  * )
  */
-class AddContentBlock extends BlockBase
-{
+class AddContentBlock extends BlockBase {
 
   /**
    * The collection to join.
    *
-   * @var \Drupal\rdf_entity\RdfInterface
+   * @var \Drupal\rdf_entity\RdfInterface $collection
    */
   protected $collection;
 
   /**
    * The current route match service.
    *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
+   * @var \Drupal\Core\Routing\RouteMatchInterface $currentRouteMatch
    */
   protected $currentRouteMatch;
 
   /**
-   * @var \Drupal\user\UserInterface
+   * @var \Drupal\user\UserInterface $account
    */
   protected $account;
+
+  /**
+   * @var \Drupal\og\Entity\OgMembership $membership
+   */
+  protected $membership;
 
   /**
    * Constructs a AddContentBlock object.
@@ -54,23 +60,20 @@ class AddContentBlock extends BlockBase
    * @param string $plugin_definition
    *   The plugin implementation definition.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition)
-  {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = \Drupal::routeMatch();
 
     // @todo: This should be restricted to collection rdf_entities only.
     // Retrieve the collection from the route.
     $this->collection = $this->currentRouteMatch->getParameter('rdf_entity');
-
     $this->account = User::load(\Drupal::currentUser()->id());
   }
 
   /**
    * {@inheritdoc}
    */
-  public function build()
-  {
+  public function build() {
     $build = [
       'collection' => [
         '#type' => 'link',
@@ -82,10 +85,10 @@ class AddContentBlock extends BlockBase
 
     // This check has to occur here so that the link can be cached correctly for each page.
     if (
-        !($this->account->isAnonymous())
-        && $this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical'
-        && $this->collection->bundle() == 'collection'
-      ) {
+      !($this->account->isAnonymous())
+      && $this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical'
+      && $this->collection->bundle() == 'collection'
+    ) {
       $build['custom_page'] = [
         '#type' => 'link',
         '#title' => $this->t('Add custom page'),
@@ -102,12 +105,34 @@ class AddContentBlock extends BlockBase
   /**
    * {@inheritdoc}
    */
+  public function getCacheTags() {
+    $tags = parent::getCacheTags();
+    if (!empty($this->collection)
+      && !$this->account->isAnonymous()
+    ) {
+      // Load the membership.
+      $results = Og::membershipStorage()->loadByProperties([
+          'type' => OgMembershipInterface::TYPE_DEFAULT,
+          'entity_type' => $this->collection->getEntityTypeId(),
+          'entity_id' => $this->collection->id(),
+          'uid' => $this->account->id(),
+        ]);
+      $this->membership = reset($results);
 
+      if ($this->membership) {
+        $tags = Cache::mergeTags($tags, $this->membership->getCacheTags());
+      }
+    }
+    return $tags;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCacheContexts() {
     // This block varies per user, route and a parameter in the route called 'rdf_entity'.
     // This block also varies per og membership which is handled through cache_tags instead.
     $contexts = parent::getCacheContexts();
-    $contexts = Cache::mergeContexts($contexts, ['route:rdf_entity']);
-    return Cache::mergeContexts($contexts, $this->account->getCacheContexts());
+    return Cache::mergeContexts($contexts, ['route:rdf_entity']);
   }
 }
