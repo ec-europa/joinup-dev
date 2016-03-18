@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.joinup_event
+  module:
+    - datetime
+id: node.joinup_event.field_end_date
+field_name: field_end_date
+entity_type: node
+bundle: joinup_event
+label: 'End date'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

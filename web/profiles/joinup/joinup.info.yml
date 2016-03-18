@@ -17,6 +17,7 @@ dependencies:
   - file
   - help
   - image
+  - joinup_event
   - menu_ui
   - node
   - og
@@ -97,6 +98,16 @@ config_devel:
   - field.storage.user.field_user_professional_domain
   - field.storage.user.field_user_professional_profile
   - field.storage.user.og_group_ref
+  - field.storage.node.body
+  - field.storage.node.field_additional_address_info
+  - field.storage.node.field_agenda
+  - field.storage.node.field_contact_email
+  - field.storage.node.field_end_date
+  - field.storage.node.field_logo
+  - field.storage.node.field_short_title
+  - field.storage.node.field_start_date
+  - field.storage.node.field_web_url
+  - field.storage.node.og_group_ref
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html

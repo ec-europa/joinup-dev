@@ -1,0 +1,6 @@
+name: Joinup Event
+type: module
+dependencies:
+description: Events content type for joinup.
+core: 8.x
+package: Joinup
