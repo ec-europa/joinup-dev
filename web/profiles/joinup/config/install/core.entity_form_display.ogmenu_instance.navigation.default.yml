@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.ogmenu_instance.navigation.og_group_ref
+    - og_menu.ogmenu.navigation
+id: ogmenu_instance.navigation.default
+targetEntityType: ogmenu_instance
+bundle: navigation
+mode: default
+content:
+  langcode:
+    type: language_select
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  og_group_ref: true
