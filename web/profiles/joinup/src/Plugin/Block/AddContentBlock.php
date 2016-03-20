@@ -135,4 +135,12 @@ class AddContentBlock extends BlockBase {
     return $tags;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    $context = parent::getCacheContexts();
+    return Cache::mergeContexts($context, ['user', 'route:rdf_entity']);
+  }
+
 }

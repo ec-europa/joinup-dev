@@ -16,7 +16,6 @@ Feature: "Add custom page" visibility options.
     | rdf_entity | http://joinup.eu/collection/foo  | Vaggelis Tnst   |
 
   Scenario: Check visibility of the "Add custom page" button.
-    Then I break
     When I am logged in as "Vaggelis Tnst"
     And I go to the homepage of the "Foo Collection" collection
     Then I should see the link "Add custom page"
