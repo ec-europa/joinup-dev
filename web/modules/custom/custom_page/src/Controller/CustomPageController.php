@@ -68,7 +68,7 @@ class CustomPageController extends ControllerBase {
     if(!(Og::isMember($rdf_entity, $user))){
       return AccessResult::forbidden();
     }
-
+    
     return AccessResult::allowed();
   }
 }
