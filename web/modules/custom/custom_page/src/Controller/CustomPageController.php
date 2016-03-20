@@ -21,13 +21,12 @@ use Drupal\user\Entity\User;
  * @package Drupal\custom_page\Controller
  */
 class CustomPageController extends ControllerBase {
-  // @todo: Fix the description.
   /**
    * Controller for the base form.
    *
    * We need to override the functionality of the create form for pages
    * that include the rdf_entity id in the url so that the og audience field
-   * is autofilled.
+   * is auto completed.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The collection rdf_entity.
@@ -47,7 +46,7 @@ class CustomPageController extends ControllerBase {
   }
 
   /**
-   * Handles accessibility to the custom page add form through collection pages.
+   * Handles access to the custom page add form through collection pages.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
