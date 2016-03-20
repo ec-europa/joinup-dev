@@ -105,7 +105,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function submitRegistrationForm(TableNode $table, $location) {
     $this->visitPath($location);
-    $username = '';
 
     // Fill in fields.
     foreach ($table->getRowsHash() as $field => $value) {
