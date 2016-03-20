@@ -112,27 +112,27 @@ class AddContentBlock extends BlockBase {
     ) {
       // Load the membership.
       $results = Og::membershipStorage()->loadByProperties([
-          'type' => OgMembershipInterface::TYPE_DEFAULT,
-          'entity_type' => $this->collection->getEntityTypeId(),
-          'entity_id' => $this->collection->id(),
-          'uid' => $this->account->id(),
-        ]);
+        'type' => OgMembershipInterface::TYPE_DEFAULT,
+        'entity_type' => $this->collection->getEntityTypeId(),
+        'entity_id' => $this->collection->id(),
+        'uid' => $this->account->id(),
+      ]);
       $this->membership = reset($results);
 
+      // Cache per membership.
       if ($this->membership) {
         $tags = Cache::mergeTags($tags, $this->membership->getCacheTags());
       }
+
+      // Build our custom cache tag to invalidate cache on membership insert.
+      // This is to avoid rebuilding cache for all users in each membership insert.
+      $tag = $this->collection->getEntityTypeId()
+        . ':' . $this->account->getEntityTypeId()
+        . ':' . $this->account->id();
+      $tags = Cache::mergeTags($tags, [$tag]);
     }
+
     return $tags;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheContexts() {
-    // This block varies per user, route and a parameter in the route called 'rdf_entity'.
-    // This block also varies per og membership which is handled through cache_tags instead.
-    $contexts = parent::getCacheContexts();
-    return Cache::mergeContexts($contexts, ['route:rdf_entity']);
-  }
 }
