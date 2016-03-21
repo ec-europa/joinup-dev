@@ -29,6 +29,7 @@ class Query extends QueryBase implements QueryInterface {
   protected $filter;
 
   protected $results = NULL;
+
   /**
    * Constructs a query object.
    *
@@ -162,10 +163,10 @@ class Query extends QueryBase implements QueryInterface {
       case 'label-=':
         preg_match('/\((.*?)\)/', $value, $matches);
         $matching = array_pop($matches);
-        if($matching){
+        if ($matching) {
           $ids = "(<$matching>)";
         }
-        else{
+        else {
           $ids = '("' . $value . '")';
         }
         $this->filter->filter('?entity IN ' . $ids);
@@ -239,6 +240,7 @@ class Query extends QueryBase implements QueryInterface {
     $this->results = $this->connection->query($this->query);
     return $this;
   }
+
   /**
    * Do the actual query building.
    */

@@ -22,31 +22,6 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
-  og_group_ref:
-    type: og_complex
-    weight: 0
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  path:
-    type: path
-    weight: 3
-    settings: {  }
-    third_party_settings: {  }
-  promote:
-    type: boolean_checkbox
-    weight: 4
-    settings:
-      display_label: false
-    third_party_settings: {  }
-  sticky:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 5
-    third_party_settings: {  }
   title:
     type: string_textfield
     weight: 1
@@ -57,3 +32,7 @@ content:
 hidden:
   created: true
   uid: true
+  og_group_ref: true
+  path: true
+  promote: true
+  sticky: true

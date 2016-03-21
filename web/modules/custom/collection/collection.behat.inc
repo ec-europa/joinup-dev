@@ -11,6 +11,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\file\Entity\File;
+use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 
 /**
@@ -302,6 +303,15 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function cleanCollections() {
     // Remove any collections that were created.
     foreach ($this->collections as $collection) {
+      // @todo: This delete functionality should occur automatically. See ISAICP-2311.
+      $membership_ids = \Drupal::entityQuery('og_membership')
+        ->condition('entity_id', $collection->id())
+        ->condition('entity_type', 'rdf_entity')
+        ->execute();
+      $memberships = Og::membershipStorage()->loadMultiple($membership_ids);
+      Og::membershipStorage()->delete($memberships);
+
+      // Delete the collection.
       $collection->delete();
     }
     // Also remove the image entities that were attached to the collections.

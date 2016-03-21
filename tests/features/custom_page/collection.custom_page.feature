@@ -5,18 +5,18 @@ Feature: "Add custom page" visibility options.
   I need to be able to add "Custom Page" content through UI.
   Background:
     Given users:
-    | name            | mail                  | roles         | pass |
-    | Rufus Drumknott | member@example.com    |               | test |
+    | name            | mail                  | pass |
+    | Vaggelis Tnst   | member@example.com    | test |
     And the following collections:
-    | uri                             | name           | description               | logo     |  owner |
-    | http://joinup.eu/collection/foo | Foo Collection | This is a foo collection. | logo.png |        |
-    | http://joinup.eu/collection/bar | Bar Collection | This is a bar connection. | logo.png |        |
+    | uri                             | name           | description               | logo     | owner |
+    | http://joinup.eu/collection/foo | Foo Collection | This is a foo collection. | logo.png |       |
+    | http://joinup.eu/collection/bar | Bar Collection | This is a bar connection. | logo.png |       |
     And the following user memberships:
     | group_type | group_id                         | member          |
-    | rdf_entity | http://joinup.eu/collection/foo  | Rufus Drumknott |
+    | rdf_entity | http://joinup.eu/collection/foo  | Vaggelis Tnst   |
 
   Scenario: Check visibility of the "Add custom page" button.
-    When I am logged in as "Rufus Drumknott"
+    When I am logged in as "Vaggelis Tnst"
     And I go to the homepage of the "Foo Collection" collection
     Then I should see the link "Add custom page"
     When I click "Leave this collection"
@@ -27,13 +27,12 @@ Feature: "Add custom page" visibility options.
     But I should see the button "Join this collection"
     When I press the "Join this collection" button
     Then I should see the link "Add custom page"
-
   Scenario: Add custom page as a collection member.
-    When I am logged in as "Rufus Drumknott"
+    When I am logged in as "Vaggelis Tnst"
     And I go to the homepage of the "Foo Collection" collection
     Then I should see the link "Add custom page"
     When I click "Add custom page"
-    Then I should see the text "Add custom page"
+    Then I should see the heading "Add custom page"
     And the following fields should be present "Title, Body"
     And the following fields should not be present "Groups audience, Other groups"
     When I fill in the following:
