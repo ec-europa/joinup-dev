@@ -1,19 +1,12 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\joinup\Plugin\Block\AddContentBlock.
- */
-
 namespace Drupal\joinup\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
-use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\user\Entity\User;
 
 /**
@@ -41,11 +34,15 @@ class AddContentBlock extends BlockBase {
   protected $currentRouteMatch;
 
   /**
+   * The user account.
+   *
    * @var \Drupal\user\UserInterface $account
    */
   protected $account;
 
   /**
+   * The OG membership.
+   *
    * @var \Drupal\og\Entity\OgMembership $membership
    */
   protected $membership;
@@ -83,7 +80,8 @@ class AddContentBlock extends BlockBase {
       ],
     ];
 
-    // This check has to occur here so that the link can be cached correctly for each page.
+    // This check has to occur here so that the link can be cached correctly
+    // for each page.
     if (
       !($this->account->isAnonymous())
       && $this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical'
@@ -125,7 +123,8 @@ class AddContentBlock extends BlockBase {
       }
 
       // Build our custom cache tag to invalidate cache on membership insert.
-      // This is to avoid rebuilding cache for all users in each membership insert.
+      // This is to avoid rebuilding cache for all users in each membership
+      // insert.
       $tag = $this->collection->getEntityTypeId()
         . ':' . $this->account->getEntityTypeId()
         . ':' . $this->account->id();

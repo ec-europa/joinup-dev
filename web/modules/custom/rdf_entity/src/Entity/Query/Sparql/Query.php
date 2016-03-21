@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Build queries to the triple store.
- */
-
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
 use Drupal\Core\Entity\EntityTypeInterface;

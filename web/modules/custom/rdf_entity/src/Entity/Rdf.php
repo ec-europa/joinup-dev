@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\rdf_entity\Entity\ContentEntityExample.
- */
 
 namespace Drupal\rdf_entity\Entity;
 
@@ -270,7 +266,6 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     // }.
     return $fields;
   }
-
 
   /**
    * {@inheritdoc}

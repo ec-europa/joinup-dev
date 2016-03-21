@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\collection\ContextProvider\CollectionRouteContext.
- */
-
 namespace Drupal\collection\ContextProvider;
 
 use Drupal\Core\Cache\CacheableMetadata;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\collection\Plugin\Condition\Collection.
- */
-
 namespace Drupal\collection\Plugin\Condition;
 
 use Drupal\Core\Condition\ConditionPluginBase;

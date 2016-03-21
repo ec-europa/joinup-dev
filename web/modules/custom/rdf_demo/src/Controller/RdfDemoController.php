@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\rdf_demo\Controller\RdfDemoController.
- */
 
 namespace Drupal\rdf_demo\Controller;
 

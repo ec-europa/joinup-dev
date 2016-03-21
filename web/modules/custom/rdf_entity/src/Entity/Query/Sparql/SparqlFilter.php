@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Provides FILTER capabilities to Sparql queries.
- */
 
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 

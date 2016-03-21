@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\taxonomy\Form\VocabularyDeleteForm.
- */
-
 namespace Drupal\rdf_entity\Form;
 
 use Drupal\Core\Entity\EntityDeleteForm;
@@ -13,12 +8,14 @@ use Drupal\Core\Entity\EntityDeleteForm;
  * Provides a deletion confirmation form for taxonomy vocabulary.
  */
 class RdfTypeDeleteForm extends EntityDeleteForm {
+
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
     return 'rdf_type_confirm_delete';
   }
+
   /**
    * {@inheritdoc}
    */

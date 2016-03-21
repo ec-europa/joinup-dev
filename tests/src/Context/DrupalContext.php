@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\joinup\Context\DrupalContext.
- */
-
 namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Drupal\Core\Entity\Entity;
 use Drupal\DrupalExtension\Context\DrupalContext as DrupalExtensionDrupalContext;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
@@ -89,7 +83,6 @@ class DrupalContext extends DrupalExtensionDrupalContext {
     throw new \Exception("The entity with label '$label' was not found.");
   }
 
-
   /**
    * Assert that certain fields are present on the page.
    *
@@ -161,20 +154,22 @@ class DrupalContext extends DrupalExtensionDrupalContext {
 
   /**
    * Creates memberships for the provided entities.
+   *
    * If the member type is user, the username should be passed instead.
    *
    * @param TableNode $membership_table
    *   The membership table.
    *
-   * Table format:
-   * group_type   | group_id  | member    |
-   * entityTypeId | entity_id | user name |
-   * entityTypeId | entity_id | user name |
+   *   Table format:
+   *   | group_type   | group_id  | member    |
+   *   | entityTypeId | entity_id | user name |
+   *   | entityTypeId | entity_id | user name |
    *
-   * Only the name field is required.
+   *   Only the name field is required.
    *
    * @throws \Exception
-   *   Thrown when an entity is not found or when an entity set as group is not a group.
+   *   Thrown when an entity is not found or when an entity set as group is not
+   *   a group.
    *
    * @Given (the following )user memberships:
    */
@@ -198,9 +193,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
         throw new \Exception("Entity " . $values['group_id'] . " not found.");
       }
 
-      /**
-       * @var \Drupal\og\OgMembership $membership
-       */
+      /** @var \Drupal\og\OgMembership $membership */
       $membership = Og::membershipStorage()->create(Og::membershipDefault());
       $membership
         ->setEntityType($group->getEntityTypeId())
@@ -216,34 +209,34 @@ class DrupalContext extends DrupalExtensionDrupalContext {
   /**
    * Checks if the given entity is member of the given group.
    *
-   * @param String $member_title The member entity's label.
-   * @param String $member_type The member entity's bundle.
-   * @param String $group_id The group entity's label.
+   * @param string $member_title
+   *   The member entity's label.
+   * @param string $member_type
+   *   The member entity's bundle.
+   * @param string $group_id
+   *   The group entity's label.
    *
    * @throws \Exception
-   *   Thrown when an entity is not found or when an entity set as group is not a group.
+   *   Thrown when an entity is not found or when an entity set as group is not
+   *   a group.
    *
    * @Then the :member_label of type :member_type should be a member of the group with ID :group_id
    */
   public function assertOgMembership($member_title, $member_type, $group_id) {
     $member_storage = \Drupal::entityTypeManager()->getStorage($member_type);
     $members_array = $member_storage->loadByProperties(['title' => $member_title]);
-    /**
-     * @var \Drupal\core\Entity\EntityInterface $member
-     */
+    /** @var \Drupal\core\Entity\EntityInterface $member */
     $member = reset($members_array);
 
     if (empty($member)) {
       throw new \Exception("The entity titled $member_title was not found.");
     }
     if (!(Og::isGroupContent($member->getEntityTypeId(), $member->bundle()))) {
-      throw new \Exception("The entity " . $member->getEntityTypeId()
-        . " is not a group content.");
+      throw new \Exception("The entity " . $member->getEntityTypeId() . " is not a group content.");
     }
 
     if ($member->og_group_ref->getValue()[0]['target_id'] != $group_id) {
-      throw new \Exception("Entity \"" . $member->label()
-        . "\" is not a member of entity with id \"" . $group_id . "\"");
+      throw new \Exception("Entity \"" . $member->label() . "\" is not a member of entity with id \"" . $group_id . "\"");
     }
   }
 
