@@ -11,7 +11,7 @@ Feature: "Add custom page" visibility options.
     And the following collections:
       | uri                             | name           | description               | logo     |
       | http://joinup.eu/collection/foo | Foo Collection | This is a foo collection. | logo.png |
-      | http://joinup.eu/collection/bar | Bar Collection | This is a bar connection. | logo.png |
+      | http://joinup.eu/collection/bar | Bar Collection | This is a bar collection. | logo.png |
     And the following user memberships:
       | group_type | group_id                        | member        |
       | rdf_entity | http://joinup.eu/collection/foo | Vaggelis Tnst |
