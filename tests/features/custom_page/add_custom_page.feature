@@ -23,6 +23,7 @@ Feature: "Add custom page" visibility options.
     When I click "Leave this collection"
     And I press the "Confirm" button
     Then I should not see the link "Add custom page"
+    # Test this for another collection too to check if the block is not incorrectly cached.
     When I go to the homepage of the "Bar Collection" collection
     Then I should not see the link "Add custom page"
     But I should see the button "Join this collection"
