@@ -10,7 +10,7 @@
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",
         "drupal/core": "~8.0.3",
-        "drupal/og": "dev-userGroupsFix",
+        "drupal/og": "dev-OgFieldAccessNeutralReturn",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x",
         "drupal/search_api": "~8.1.0-alpha12",
@@ -118,7 +118,7 @@
             }
         },
         {
-            "_comment": "Custom branch containing patches necessary for the current og state. Will be reverted to the original when og has these issues solved. Check branch for more details.",
+            "_comment": "Our fork of OG contains a fix for PR#166. Revert back to upstream when this is accepted.",
             "type": "vcs",
             "url": "git@github.com:ec-europa/og"
         },
