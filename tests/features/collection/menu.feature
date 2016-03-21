@@ -1,6 +1,5 @@
 @api
 Feature: Collections menu
-  @javascript
   Scenario: Add a link to og menu
     Given collections:
       | name              | description            | owner   | uri                                 |
@@ -12,7 +11,6 @@ Feature: Collections menu
     # Create a link
     Given I am logged in as "Mr Menu"
     When I go to the homepage of the "MenuCollection1" collection
-    Then I break
     Then I should see the link "Add menu"
     When I click "Add menu"
     Then I should see "There are no menu links yet."
