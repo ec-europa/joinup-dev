@@ -129,7 +129,7 @@ class JoinCollectionForm extends FormBase {
       ->setEntityid($collection->id())
       ->setState(OgMembershipInterface::STATE_ACTIVE)
       ->save();
-    Cache::invalidateTags($membership->getCacheTagsToInvalidate());
+
     drupal_set_message($this->t('You are now a member of %collection.', [
       '%collection' => $collection->getName(),
     ]));
