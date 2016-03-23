@@ -3,14 +3,14 @@ status: true
 dependencies:
   config:
     - field.storage.node.og_group_ref
-    - node.type.joinup_document
+    - node.type.document
     - rdf_entity.rdfentity.collection
   module:
     - og
-id: node.joinup_document.og_group_ref
+id: node.document.og_group_ref
 field_name: og_group_ref
 entity_type: node
-bundle: joinup_document
+bundle: document
 label: 'Groups audience'
 description: 'OG group audience reference field.'
 required: false

@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_file
-    - node.type.joinup_document
+    - field.storage.node.field_document_file
+    - node.type.document
   module:
     - file
-id: node.joinup_document.field_file
-field_name: field_file
+id: node.document.field_document_file
+field_name: field_document_file
 entity_type: node
-bundle: joinup_document
+bundle: document
 label: File
 description: ''
 required: false

@@ -2,16 +2,14 @@ langcode: en
 status: true
 dependencies:
   module:
+    - link
     - node
-id: node.field_short_title
-field_name: field_short_title
+id: node.field_document_source_url
+field_name: field_document_source_url
 entity_type: node
-type: string
-settings:
-  max_length: 255
-  is_ascii: false
-  case_sensitive: false
-module: core
+type: link
+settings: {  }
+module: link
 locked: false
 cardinality: 1
 translatable: true

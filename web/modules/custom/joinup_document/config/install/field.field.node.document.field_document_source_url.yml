@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_source_url
-    - node.type.joinup_document
+    - field.storage.node.field_document_source_url
+    - node.type.document
   module:
     - link
-id: node.joinup_document.field_source_url
-field_name: field_source_url
+id: node.document.field_document_source_url
+field_name: field_document_source_url
 entity_type: node
-bundle: joinup_document
+bundle: document
 label: 'Source URL'
 description: 'In case the document is hosted elsewhere, you can define the URL here instead of uploading it directly.'
 required: false
