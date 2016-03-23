@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.joinup_event
-id: node.joinup_event.field_short_title
-field_name: field_short_title
+    - node.type.event
+id: node.event.field_event_short_title
+field_name: field_event_short_title
 entity_type: node
-bundle: joinup_event
+bundle: event
 label: 'Short title'
 description: ''
 required: true

@@ -3,13 +3,11 @@ status: true
 dependencies:
   module:
     - node
-id: node.field_short_title
-field_name: field_short_title
+id: node.field_event_adtl_address_info
+field_name: field_event_adtl_address_info
 entity_type: node
-type: string
+type: string_long
 settings:
-  max_length: 255
-  is_ascii: false
   case_sensitive: false
 module: core
 locked: false

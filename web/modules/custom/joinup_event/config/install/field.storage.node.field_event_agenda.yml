@@ -3,13 +3,13 @@ status: true
 dependencies:
   module:
     - node
-id: node.field_additional_address_info
-field_name: field_additional_address_info
+    - text
+id: node.field_event_agenda
+field_name: field_event_agenda
 entity_type: node
-type: string_long
-settings:
-  case_sensitive: false
-module: core
+type: text_long
+settings: {  }
+module: text
 locked: false
 cardinality: 1
 translatable: true

@@ -2,16 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.joinup_event
-id: node.joinup_event.field_contact_email
-field_name: field_contact_email
+    - node.type.event
+  module:
+    - text
+id: node.event.field_event_agenda
+field_name: field_event_agenda
 entity_type: node
-bundle: joinup_event
-label: 'Contact email'
+bundle: event
+label: Agenda
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: email
+field_type: text_long

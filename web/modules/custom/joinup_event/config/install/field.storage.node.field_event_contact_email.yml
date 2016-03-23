@@ -2,16 +2,15 @@ langcode: en
 status: true
 dependencies:
   module:
-    - link
     - node
-id: node.field_web_url
-field_name: field_web_url
+id: node.field_event_contact_email
+field_name: field_event_contact_email
 entity_type: node
-type: link
+type: email
 settings: {  }
-module: link
+module: core
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

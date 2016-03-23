@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.joinup_event
-id: node.joinup_event.field_additional_address_info
-field_name: field_additional_address_info
+    - node.type.event
+id: node.event.field_event_adtl_address_info
+field_name: field_event_adtl_address_info
 entity_type: node
-bundle: joinup_event
+bundle: event
 label: 'Additional address info'
 description: ''
 required: false

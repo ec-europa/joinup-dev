@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.joinup_event
+    - node.type.event
   module:
     - image
-id: node.joinup_event.field_logo
-field_name: field_logo
+id: node.event.field_event_logo
+field_name: field_event_logo
 entity_type: node
-bundle: joinup_event
+bundle: event
 label: Logo
 description: ''
 required: false

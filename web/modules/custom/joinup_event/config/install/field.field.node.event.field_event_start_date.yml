@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.joinup_event
+    - node.type.event
   module:
     - datetime
-id: node.joinup_event.field_start_date
-field_name: field_start_date
+id: node.event.field_event_start_date
+field_name: field_event_start_date
 entity_type: node
-bundle: joinup_event
+bundle: event
 label: 'Start date'
 description: ''
 required: true

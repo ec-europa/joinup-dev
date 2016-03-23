@@ -9,7 +9,7 @@ third_party_settings:
     available_menus: {  }
     parent: ''
 name: Event
-type: joinup_event
+type: event
 description: ''
 help: ''
 new_revision: false

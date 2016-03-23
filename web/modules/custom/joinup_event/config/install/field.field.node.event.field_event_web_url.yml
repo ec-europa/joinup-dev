@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.joinup_event
+    - node.type.event
   module:
     - link
-id: node.joinup_event.field_web_url
-field_name: field_web_url
+id: node.event.field_event_web_url
+field_name: field_event_web_url
 entity_type: node
-bundle: joinup_event
+bundle: event
 label: Website
 description: 'If there is an external website for this event, you can add the URL here.'
 required: false

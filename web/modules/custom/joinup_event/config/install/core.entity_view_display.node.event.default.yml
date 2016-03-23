@@ -2,26 +2,26 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.joinup_event.body
-    - field.field.node.joinup_event.field_additional_address_info
-    - field.field.node.joinup_event.field_agenda
-    - field.field.node.joinup_event.field_contact_email
-    - field.field.node.joinup_event.field_end_date
-    - field.field.node.joinup_event.field_logo
-    - field.field.node.joinup_event.field_short_title
-    - field.field.node.joinup_event.field_start_date
-    - field.field.node.joinup_event.field_web_url
-    - field.field.node.joinup_event.og_group_ref
-    - node.type.joinup_event
+    - field.field.node.event.body
+    - field.field.node.event.field_event_adtl_address_info
+    - field.field.node.event.field_event_agenda
+    - field.field.node.event.field_event_contact_email
+    - field.field.node.event.field_event_end_date
+    - field.field.node.event.field_event_logo
+    - field.field.node.event.field_event_short_title
+    - field.field.node.event.field_event_start_date
+    - field.field.node.event.field_event_web_url
+    - field.field.node.event.og_group_ref
+    - node.type.event
   module:
     - datetime
     - image
     - link
     - text
     - user
-id: node.joinup_event.default
+id: node.event.default
 targetEntityType: node
-bundle: joinup_event
+bundle: event
 mode: default
 content:
   body:
@@ -30,25 +30,25 @@ content:
     weight: 101
     settings: {  }
     third_party_settings: {  }
-  field_additional_address_info:
+  field_event_adtl_address_info:
     weight: 107
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-  field_agenda:
+  field_event_agenda:
     weight: 103
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
-  field_contact_email:
+  field_event_contact_email:
     weight: 108
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-  field_end_date:
+  field_event_end_date:
     weight: 106
     label: above
     settings:
@@ -56,7 +56,7 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
-  field_logo:
+  field_event_logo:
     weight: 104
     label: above
     settings:
@@ -64,14 +64,14 @@ content:
       image_link: ''
     third_party_settings: {  }
     type: image
-  field_short_title:
+  field_event_short_title:
     weight: 102
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-  field_start_date:
+  field_event_start_date:
     weight: 105
     label: above
     settings:
@@ -79,7 +79,7 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
-  field_web_url:
+  field_event_web_url:
     weight: 109
     label: above
     settings:

@@ -2,15 +2,14 @@ langcode: en
 status: true
 dependencies:
   module:
-    - datetime
+    - link
     - node
-id: node.field_start_date
-field_name: field_start_date
+id: node.field_event_web_url
+field_name: field_event_web_url
 entity_type: node
-type: datetime
-settings:
-  datetime_type: datetime
-module: datetime
+type: link
+settings: {  }
+module: link
 locked: false
 cardinality: 1
 translatable: true

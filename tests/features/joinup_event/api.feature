@@ -13,7 +13,7 @@ Feature: Event API
       | closed            | 1                       |
       | elibrary creation | facilitators            |
       | uri               | http://joinup.eu/event  |
-    And joinup_event content:
-      | title       | short_title | body                                     | groups audience         | field_start_date    |
-      | Dummy Event | Short       | This is some dummy content like foo:bar. | http://joinup.eu/event  | 2016-03-15T11:12:12 |
+    And event content:
+      | title       | field_event_short_title | body                                     | groups audience         | field_start_date    |
+      | Dummy Event | Short                   | This is some dummy content like foo:bar. | http://joinup.eu/event  | 2016-03-15T11:12:12 |
     Then I should have a "Event" page titled "Dummy Event"
