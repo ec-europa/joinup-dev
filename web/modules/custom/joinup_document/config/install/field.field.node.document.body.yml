@@ -3,13 +3,13 @@ status: true
 dependencies:
   config:
     - field.storage.node.body
-    - node.type.joinup_document
+    - node.type.document
   module:
     - text
-id: node.joinup_document.body
+id: node.document.body
 field_name: body
 entity_type: node
-bundle: joinup_document
+bundle: document
 label: Description
 description: ''
 required: false

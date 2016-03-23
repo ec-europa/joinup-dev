@@ -2,22 +2,22 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.joinup_document.body
-    - field.field.node.joinup_document.field_file
-    - field.field.node.joinup_document.field_publication_date
-    - field.field.node.joinup_document.field_short_title
-    - field.field.node.joinup_document.field_source_url
-    - field.field.node.joinup_document.og_group_ref
-    - node.type.joinup_document
+    - field.field.node.document.body
+    - field.field.node.document.field_document_file
+    - field.field.node.document.field_document_publication_date
+    - field.field.node.document.field_document_short_title
+    - field.field.node.document.field_document_source_url
+    - field.field.node.document.og_group_ref
+    - node.type.document
   module:
     - datetime
     - file
     - link
     - og
     - text
-id: node.joinup_document.default
+id: node.document.default
 targetEntityType: node
-bundle: joinup_document
+bundle: document
 mode: default
 content:
   body:
@@ -28,25 +28,25 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
-  field_file:
+  field_document_file:
     weight: 4
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
-  field_publication_date:
+  field_document_publication_date:
     weight: 3
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
-  field_short_title:
+  field_document_short_title:
     weight: 1
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
-  field_source_url:
+  field_document_source_url:
     weight: 5
     settings:
       placeholder_url: ''

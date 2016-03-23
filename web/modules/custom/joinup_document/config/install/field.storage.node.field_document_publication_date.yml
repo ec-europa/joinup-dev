@@ -2,18 +2,15 @@ langcode: en
 status: true
 dependencies:
   module:
-    - file
+    - datetime
     - node
-id: node.field_file
-field_name: field_file
+id: node.field_document_publication_date
+field_name: field_document_publication_date
 entity_type: node
-type: file
+type: datetime
 settings:
-  display_field: false
-  display_default: false
-  uri_scheme: public
-  target_type: file
-module: file
+  datetime_type: datetime
+module: datetime
 locked: false
 cardinality: 1
 translatable: true

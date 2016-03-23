@@ -2,15 +2,16 @@ langcode: en
 status: true
 dependencies:
   module:
-    - datetime
     - node
-id: node.field_publication_date
-field_name: field_publication_date
+id: node.field_document_short_title
+field_name: field_document_short_title
 entity_type: node
-type: datetime
+type: string
 settings:
-  datetime_type: datetime
-module: datetime
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
 locked: false
 cardinality: 1
 translatable: true

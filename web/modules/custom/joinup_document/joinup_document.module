@@ -36,22 +36,22 @@ function joinup_document_form_node_joinup_document_edit_form_alter(&$form, FormS
  */
 function joinup_document_form_default_validate(&$form, FormStateInterface $form_state) {
   // Check the file submission.
-  if (!(empty($form_state->getValue('field_file')[0]['fids'])
-    xor empty($form_state->getValue('field_source_url')[0]['uri']))
+  if (!(empty($form_state->getValue('field_document_file')[0]['fids'])
+    xor empty($form_state->getValue('field_document_source_url')[0]['uri']))
   ) {
-    $form_state->setErrorByName('field_file');
-    $form_state->setErrorByName('field_source_url', t('One of the file sources must be filled.'));
+    $form_state->setErrorByName('field_document_file');
+    $form_state->setErrorByName('field_document_source_url', t('One of the file sources must be filled.'));
   }
 
   // Check the short title.
-  if (!empty($form_state->getValue('field_short_title')[0]['value'])) {
+  if (!empty($form_state->getValue('field_document_short_title')[0]['value'])) {
     // Load all document entities with this short title.
     $results = \Drupal::entityQuery('node')
-      ->condition('type', 'joinup_document')
-      ->condition('field_short_title', $form_state->getValue('field_short_title')[0]['value'])
+      ->condition('type', 'document')
+      ->condition('field_document_short_title', $form_state->getValue('field_document_short_title')[0]['value'])
       ->execute();
     if (!empty(reset($results))) {
-      $form_state->setErrorByName('field_short_title', t('There is already a document with this short title.'));
+      $form_state->setErrorByName('field_document_short_title', t('There is already a document with this short title.'));
     }
   }
 }

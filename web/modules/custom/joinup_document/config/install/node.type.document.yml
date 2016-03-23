@@ -8,7 +8,7 @@ third_party_settings:
     available_menus: {  }
     parent: ''
 name: Document
-type: joinup_document
+type: document
 description: ''
 help: ''
 new_revision: false
