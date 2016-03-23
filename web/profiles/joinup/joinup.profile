@@ -72,3 +72,14 @@ function joinup_entity_type_alter(array &$entity_types) {
   /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
   $entity_types['rdf_entity']->setFormclass('propose', 'Drupal\rdf_entity\Form\RdfForm');
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_form_field_config_edit_form_alter(&$form) {
+  // Increase the maximum length of the file extension field to allow
+  // registration of large amounts of extensions.
+  if (isset($form['settings']['file_extensions']['#maxlength'])) {
+    $form['settings']['file_extensions']['#maxlength'] = 1024;
+  }
+}
