@@ -36,8 +36,8 @@ function joinup_document_form_node_joinup_document_edit_form_alter(&$form, FormS
  */
 function joinup_document_form_default_validate(&$form, FormStateInterface $form_state) {
   // Check the file submission.
-  if (empty($form_state->getValue('field_file')[0]['fids'])
-    && empty($form_state->getValue('field_source_url')[0]['uri'])
+  if (!(empty($form_state->getValue('field_file')[0]['fids'])
+    xor empty($form_state->getValue('field_source_url')[0]['uri']))
   ) {
     $form_state->setErrorByName('field_file');
     $form_state->setErrorByName('field_source_url', t('One of the file sources must be filled.'));
