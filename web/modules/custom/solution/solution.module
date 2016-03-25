@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains solution.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function solution_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the solution module.
+    case 'help.page.solution':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The interoperability solution RDF entity.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

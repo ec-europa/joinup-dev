@@ -26,6 +26,7 @@ dependencies:
   - r4032login
   - rdf_demo
   - rdf_entity
+  - solution
   - text
   - toolbar
   - search_api

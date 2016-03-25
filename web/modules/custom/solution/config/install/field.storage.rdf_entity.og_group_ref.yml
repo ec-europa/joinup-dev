@@ -1,0 +1,20 @@
+uuid: c1320170-ec54-47be-ad00-f134c2bfbb14
+langcode: en
+status: true
+dependencies:
+  module:
+    - og
+    - rdf_entity
+id: rdf_entity.og_group_ref
+field_name: og_group_ref
+entity_type: rdf_entity
+type: og_standard_reference
+settings:
+  target_type: rdf_entity
+module: og
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

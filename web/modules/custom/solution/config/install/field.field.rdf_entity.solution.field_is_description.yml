@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_description
+    - rdf_entity.rdfentity.solution
+  module:
+    - text
+id: rdf_entity.solution.field_is_description
+field_name: field_is_description
+entity_type: rdf_entity
+bundle: solution
+label: Description
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
