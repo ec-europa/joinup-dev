@@ -22,7 +22,7 @@ class AddContentBlock extends BlockBase {
   /**
    * The collection to join.
    *
-   * @var \Drupal\rdf_entity\RdfInterface $collection
+   * @var \Drupal\rdf_entity\RdfInterface
    */
   protected $collection;
 
@@ -36,14 +36,14 @@ class AddContentBlock extends BlockBase {
   /**
    * The user account.
    *
-   * @var \Drupal\user\UserInterface $account
+   * @var \Drupal\user\UserInterface
    */
   protected $account;
 
   /**
    * The OG membership.
    *
-   * @var \Drupal\og\Entity\OgMembership $membership
+   * @var \Drupal\og\Entity\OgMembership
    */
   protected $membership;
 
@@ -90,8 +90,7 @@ class AddContentBlock extends BlockBase {
       $build['custom_page'] = [
         '#type' => 'link',
         '#title' => $this->t('Add custom page'),
-        '#url' => Url::fromRoute('custom_page.collection_custom_page.add',
-          ['rdf_entity' => $this->collection->sanitizedId()]),
+        '#url' => Url::fromRoute('custom_page.collection_custom_page.add', ['rdf_entity' => $this->collection->sanitizedId()]),
         '#attributes' => ['class' => ['button', 'button--small']],
         '#access' => Og::isMember($this->collection, $this->account),
       ];
@@ -105,9 +104,8 @@ class AddContentBlock extends BlockBase {
    */
   public function getCacheTags() {
     $tags = parent::getCacheTags();
-    if (!empty($this->collection)
-      && !$this->account->isAnonymous()
-    ) {
+
+    if (!empty($this->collection) && !$this->account->isAnonymous()) {
       // Load the membership.
       $results = Og::membershipStorage()->loadByProperties([
         'type' => OgMembershipInterface::TYPE_DEFAULT,
