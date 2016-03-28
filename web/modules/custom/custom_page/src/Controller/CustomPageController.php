@@ -45,12 +45,14 @@ class CustomPageController extends ControllerBase {
   /**
    * Handles access to the custom page add form through collection pages.
    *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The RDF entity for which the custom page is created.
+   *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function access() {
-    $rdf_entity = \Drupal::routeMatch()->getParameter('rdf_entity');
-    $account = \Drupal::currentUser();
+  public function createCustomPageAccess(RdfInterface $rdf_entity) {
+    $account = $this->currentUser();
 
     if ($account->isAnonymous()) {
       return AccessResult::forbidden();
