@@ -23,7 +23,6 @@ Feature: Solution API
      | wiki              | http://example.wiki/foobar/wiki              |
      | groups audience   | http://joinup.eu/collection/solution-api-foo |
     Then I should have 1 solution
-    Then I break
 
   Scenario: Programmatically create a collection using only the mandatory fields
     Given the following collection:
@@ -40,4 +39,3 @@ Feature: Solution API
       | elibrary creation | 1                                            |
       | groups audience   | http://joinup.eu/collection/solution-api-bar |
     Then I should have 1 solution
-    Then I break
