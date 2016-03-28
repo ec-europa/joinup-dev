@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "collection",
  *   label = @Translation("Collections"),
  *   context = {
- *     "collection" = @ContextDefinition("entity:rdf_entity", label = @Translation("Collection"))
+ *     "collection" = @ContextDefinition("entity:rdf_entity:collection", label = @Translation("Collection"))
  *   }
  * )
  */
