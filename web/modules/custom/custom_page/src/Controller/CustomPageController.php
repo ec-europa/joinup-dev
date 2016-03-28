@@ -4,9 +4,7 @@ namespace Drupal\custom_page\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\user\Entity\User;
 
 /**
  * Class CustomPageController.
