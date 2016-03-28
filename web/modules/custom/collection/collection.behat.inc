@@ -86,18 +86,17 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Creates a number of collections with data provided in a table.
    *
-   * * @param TableNode $collection_table
-   *   The collection data.
-   *
    * Table format:
-   *
    * @codingStandardsIgnoreStart
-   * uri                              | name                     | abstract                                    | access url                              | closed  | creation date     | description                                                                                                         | elibrary creation  | logo  | moderation  | modification date  | owner
-   * http://joinup.eu/collection/dog  | Dog owner collection     | Read up on all about <strong>dogs</strong>  | http://dogtime.com/dog-breeds/profiles  | 1       | 28-01-1995 12:05  | The Afghan Hound is elegance personified.                                                                           | 0                  |       | 1           |                    |
-   * http://joinup.eu/collection/cat  | Cats collection 4 ever!  | Cats are cool!                              | http://mashable.com/category/cats/      | 0       | 28-01-1995 12:06  | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal.  | 1                  |       | 0           |                    |
+   * uri                             | name                    | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | logo | moderation | modification date | owner |
+   * http://joinup.eu/collection/dog | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | 1      | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | 0                 |      | 1          |                   |       |
+   * http://joinup.eu/collection/cat | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | 0      | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | 1                 |      | 0          |                   |       |
    * @codingStandardsIgnoreEnd
    *
    * Only the name field is required.
+   *
+   * @param TableNode $collection_table
+   *   The collection data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
@@ -298,11 +297,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Subscribes the given users to the given collections.
    *
+   * Table format:
+   * | collection               | user          |
+   * | Interoperability Friends | Verence II    |
+   * | Electronic Surveillance  | Letice Earwig |
+   *
    * @param TableNode $membership_table
-   *   The membership table, in the following format:
-   *   | collection               | user          |
-   *   | Interoperability Friends | Verence II    |
-   *   | Electronic Surveillance  | Letice Earwig |
+   *   The membership table.
    *
    * @throws \Exception
    *   Thrown when a collection is not found.
