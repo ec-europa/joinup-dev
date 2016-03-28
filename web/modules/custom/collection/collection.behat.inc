@@ -296,6 +296,45 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Subscribes the given users to the given collections.
+   *
+   * @param TableNode $membership_table
+   *   The membership table, in the following format:
+   *   | collection               | user          |
+   *   | Interoperability Friends | Verence II    |
+   *   | Electronic Surveillance  | Letice Earwig |
+   *
+   * @throws \Exception
+   *   Thrown when a collection is not found.
+   *
+   * @Given (the following )user memberships:
+   */
+  public function givenUserMemberships(TableNode $membership_table) {
+    foreach ($membership_table->getColumnsHash() as $values) {
+      // Load group.
+      $group = $this->getCollectionByName($values['collection']);
+      if (empty($group)) {
+        throw new \Exception("Collection " . $values['collection'] . " not found.");
+      }
+
+      // Load member.
+      $member = user_load_by_name($values['user']);
+      if (empty($member)) {
+        throw new \Exception("User " . $values['user'] . " not found.");
+      }
+
+      /** @var \Drupal\og\Entity\OgMembership $membership */
+      $membership = Og::membershipStorage()->create(Og::membershipDefault());
+      $membership
+        ->setEntityType($group->getEntityTypeId())
+        ->setEntityid($group->id())
+        ->setState(OgMembershipInterface::STATE_ACTIVE)
+        ->setUser($member->id())
+        ->save();
+    }
+  }
+
+  /**
    * Remove any created collections.
    *
    * @AfterScenario

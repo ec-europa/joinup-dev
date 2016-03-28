@@ -2,10 +2,8 @@
 
 namespace Drupal\joinup\Context;
 
-use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalContext as DrupalExtensionDrupalContext;
 use Drupal\og\Og;
-use Drupal\og\OgMembershipInterface;
 
 /**
  * Provides step definitions for interacting with Drupal.
@@ -149,60 +147,6 @@ class DrupalContext extends DrupalExtensionDrupalContext {
 
     if (empty($user)) {
       throw new \Exception("Unable to load expected user " . $username);
-    }
-  }
-
-  /**
-   * Creates memberships for the provided entities.
-   *
-   * If the member type is user, the username should be passed instead.
-   *
-   * @param TableNode $membership_table
-   *   The membership table.
-   *
-   *   Table format:
-   *   | group_type   | group_id  | member    |
-   *   | entityTypeId | entity_id | user name |
-   *   | entityTypeId | entity_id | user name |
-   *
-   *   Only the name field is required.
-   *
-   * @throws \Exception
-   *   Thrown when an entity is not found or when an entity set as group is not
-   *   a group.
-   *
-   * @Given (the following )user memberships:
-   */
-  public function givenUserMembership(TableNode $membership_table) {
-    foreach ($membership_table->getColumnsHash() as $membership_row) {
-      foreach ($membership_row as $key => $value) {
-        $values[$key] = $value;
-      }
-
-      // Load group.
-      $group = \Drupal::entityTypeManager()
-        ->getStorage($values['group_type'])
-        ->load($values['group_id']);
-      if (empty($group)) {
-        throw new \Exception("Entity " . $values['group_id'] . " not found.");
-      }
-
-      // Load member.
-      $member = user_load_by_name($values['member']);
-      if (empty($member)) {
-        throw new \Exception("Entity " . $values['group_id'] . " not found.");
-      }
-
-      /** @var \Drupal\og\OgMembership $membership */
-      $membership = Og::membershipStorage()->create(Og::membershipDefault());
-      $membership
-        ->setEntityType($group->getEntityTypeId())
-        ->setEntityid($group->id())
-        ->setState(OgMembershipInterface::STATE_ACTIVE);
-      if ($member->getEntityTypeId() == 'user') {
-        $membership->setUser($member->id());
-      }
-      $membership->save();
     }
   }
 
