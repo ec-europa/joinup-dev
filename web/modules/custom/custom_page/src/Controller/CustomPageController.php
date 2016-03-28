@@ -52,23 +52,16 @@ class CustomPageController extends ControllerBase {
    *   The access result object.
    */
   public function createCustomPageAccess(RdfInterface $rdf_entity) {
-    $account = $this->currentUser();
-
-    if ($account->isAnonymous()) {
-      return AccessResult::forbidden();
+    // Check that the passed in RDF entity is a collection, and that the user
+    // has the permission to create custom pages.
+    // @todo Collection owners and facilitators should also have the right to
+    //   create custom pages for the collections they manage.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2443
+    if ($rdf_entity->bundle() == 'collection' && $this->currentUser()->hasPermission('create custom collection page')) {
+      return AccessResult::allowed();
     }
 
-    if ($rdf_entity->bundle() != 'collection') {
-      return AccessResult::forbidden();
-    }
-
-    // @todo: Fix the visibility to include og membership role dependency after ISAICP-2362.
-    $user = User::load($account->id());
-    if (!(Og::isMember($rdf_entity, $user))) {
-      return AccessResult::forbidden();
-    }
-
-    return AccessResult::allowed();
+    return AccessResult::forbidden();
   }
 
 }
