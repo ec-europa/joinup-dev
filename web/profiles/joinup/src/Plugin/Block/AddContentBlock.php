@@ -4,10 +4,10 @@ namespace Drupal\joinup\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Url;
-use Drupal\og\Og;
-use Drupal\og\OgMembershipInterface;
-use Drupal\user\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides an 'AddContentBlock' block.
@@ -17,35 +17,14 @@ use Drupal\user\Entity\User;
  *  admin_label = @Translation("Add content"),
  * )
  */
-class AddContentBlock extends BlockBase {
+class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The collection to join.
+   * The collection route context service.
    *
-   * @var \Drupal\rdf_entity\RdfInterface
+   * @var \Drupal\Core\Plugin\Context\ContextProviderInterface
    */
-  protected $collection;
-
-  /**
-   * The current route match service.
-   *
-   * @var \Drupal\Core\Routing\RouteMatchInterface $currentRouteMatch
-   */
-  protected $currentRouteMatch;
-
-  /**
-   * The user account.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $account;
-
-  /**
-   * The OG membership.
-   *
-   * @var \Drupal\og\Entity\OgMembership
-   */
-  protected $membership;
+  protected $collectionContext;
 
   /**
    * Constructs a AddContentBlock object.
@@ -56,44 +35,69 @@ class AddContentBlock extends BlockBase {
    *   The plugin ID for the plugin instance.
    * @param string $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $collection_context
+   *   The collection context.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextProviderInterface $collection_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->currentRouteMatch = \Drupal::routeMatch();
+    $this->collectionContext = $collection_context;
+  }
 
-    // @todo: This should be restricted to collection rdf_entities only.
-    // Retrieve the collection from the route.
-    $this->collection = $this->currentRouteMatch->getParameter('rdf_entity');
-    $this->account = User::load(\Drupal::currentUser()->id());
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration, $plugin_id, $plugin_definition,
+      $container->get('collection.collection_route_context')
+    );
   }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
-    $build = [
-      'collection' => [
-        '#type' => 'link',
-        '#title' => $this->t('Propose collection'),
-        '#url' => Url::fromRoute('collection.propose_form'),
-        '#attributes' => ['class' => ['button', 'button--small']],
-      ],
+    $links = [];
+
+    // Add a link to propose a collection. This is visible for everyone, even
+    // anonymous users.
+    $links['collection'] = [
+      '#title' => $this->t('Propose collection'),
+      '#url' => Url::fromRoute('collection.propose_form'),
     ];
 
-    // This check has to occur here so that the link can be cached correctly
-    // for each page.
-    if (
-      !($this->account->isAnonymous())
-      && $this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical'
-      && $this->collection->bundle() == 'collection'
-    ) {
-      $build['custom_page'] = [
+    // Retrieve the collection from the context service. This needs to be done
+    // manually since this is an optional context. Core only supports required
+    // contexts (the ones that are enabled through the visibility conditions in
+    // the block configuration). This also means we have to take care of the
+    // caching ourselves.
+    /** @var \Drupal\Core\Plugin\Context\Context[] $collection_contexts */
+    $collection_contexts = $this->collectionContext->getRuntimeContexts(['collection']);
+    if ($collection_contexts['collection']->hasContextValue()) {
+      $url = Url::fromRoute('custom_page.collection_custom_page.add', [
+        'rdf_entity' => $collection_contexts['collection']->getContextValue()->sanitizedId(),
+      ]);
+      $links['custom_page'] = [
         '#type' => 'link',
         '#title' => $this->t('Add custom page'),
-        '#url' => Url::fromRoute('custom_page.collection_custom_page.add', ['rdf_entity' => $this->collection->sanitizedId()]),
+        '#url' => $url,
         '#attributes' => ['class' => ['button', 'button--small']],
-        '#access' => Og::isMember($this->collection, $this->account),
+        '#access' => $url->access(),
       ];
+    }
+
+    // Render the links as an unordered list, styled as buttons.
+    $build = [
+      '#theme' => 'item_list',
+      '#list_type' => 'ul',
+    ];
+
+    foreach ($links as $key => $link) {
+      $link += [
+        '#type' => 'link',
+        '#attributes' => ['class' => ['button', 'button--small']],
+      ];
+      $build['#items'][$key] = $link;
     }
 
     return $build;
@@ -102,42 +106,12 @@ class AddContentBlock extends BlockBase {
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
-    $tags = parent::getCacheTags();
-
-    if (!empty($this->collection) && !$this->account->isAnonymous()) {
-      // Load the membership.
-      $results = Og::membershipStorage()->loadByProperties([
-        'type' => OgMembershipInterface::TYPE_DEFAULT,
-        'entity_type' => $this->collection->getEntityTypeId(),
-        'entity_id' => $this->collection->id(),
-        'uid' => $this->account->id(),
-      ]);
-      $this->membership = reset($results);
-
-      // Cache per membership.
-      if ($this->membership) {
-        $tags = Cache::mergeTags($tags, $this->membership->getCacheTags());
-      }
-
-      // Build our custom cache tag to invalidate cache on membership insert.
-      // This is to avoid rebuilding cache for all users in each membership
-      // insert.
-      $tag = $this->collection->getEntityTypeId()
-        . ':' . $this->account->getEntityTypeId()
-        . ':' . $this->account->id();
-      $tags = Cache::mergeTags($tags, [$tag]);
-    }
-
-    return $tags;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getCacheContexts() {
     $context = parent::getCacheContexts();
-    return Cache::mergeContexts($context, ['user', 'route:rdf_entity']);
+    // The 'Add custom page' link is only visible for certain roles on certain
+    // collections. Normally cache contexts are added automatically but this
+    // link depends on an optional context which we manage ourselves.
+    return Cache::mergeContexts($context, ['user.roles', 'collection']);
   }
 
 }
