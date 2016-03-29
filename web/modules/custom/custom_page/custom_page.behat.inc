@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * @file
+ * Contains \CustomPageSubContext.
+ */
+
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\og\OgGroupAudienceHelper;
 
 /**
  * Behat step definitions for testing custom pages.
@@ -38,7 +44,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
 
     /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-    foreach ($custom_page->get(\Drupal\og\OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
+    foreach ($custom_page->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
       if ($group->getValue()['target_id'] == $collection->id()) {
         // Test passes.
         return;

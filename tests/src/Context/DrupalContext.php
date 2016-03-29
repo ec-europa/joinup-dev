@@ -3,7 +3,6 @@
 namespace Drupal\joinup\Context;
 
 use Drupal\DrupalExtension\Context\DrupalContext as DrupalExtensionDrupalContext;
-use Drupal\og\Og;
 
 /**
  * Provides step definitions for interacting with Drupal.
