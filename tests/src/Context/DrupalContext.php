@@ -150,38 +150,4 @@ class DrupalContext extends DrupalExtensionDrupalContext {
     }
   }
 
-  /**
-   * Checks if the given entity is member of the given group.
-   *
-   * @param string $member_title
-   *   The member entity's label.
-   * @param string $member_type
-   *   The member entity's bundle.
-   * @param string $group_id
-   *   The group entity's label.
-   *
-   * @throws \Exception
-   *   Thrown when an entity is not found or when an entity set as group is not
-   *   a group.
-   *
-   * @Then the :member_label of type :member_type should be a member of the group with ID :group_id
-   */
-  public function assertOgMembership($member_title, $member_type, $group_id) {
-    $member_storage = \Drupal::entityTypeManager()->getStorage($member_type);
-    $members_array = $member_storage->loadByProperties(['title' => $member_title]);
-    /** @var \Drupal\core\Entity\EntityInterface $member */
-    $member = reset($members_array);
-
-    if (empty($member)) {
-      throw new \Exception("The entity titled $member_title was not found.");
-    }
-    if (!(Og::isGroupContent($member->getEntityTypeId(), $member->bundle()))) {
-      throw new \Exception("The entity " . $member->getEntityTypeId() . " is not a group content.");
-    }
-
-    if ($member->og_group_ref->getValue()[0]['target_id'] != $group_id) {
-      throw new \Exception("Entity \"" . $member->label() . "\" is not a member of entity with id \"" . $group_id . "\"");
-    }
-  }
-
 }

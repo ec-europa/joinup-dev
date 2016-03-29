@@ -228,7 +228,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \InvalidArgumentException
    *   Thrown when a collection with the given name does not exist.
    */
-  protected function getCollectionByName($name) {
+  public static function getCollectionByName($name) {
     $query = \Drupal::entityQuery('rdf_entity')
       ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#AssetRepository'))
       ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
