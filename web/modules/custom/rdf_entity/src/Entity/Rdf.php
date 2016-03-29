@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\rdf_entity\Entity\ContentEntityExample.
- */
 
 namespace Drupal\rdf_entity\Entity;
 
@@ -207,7 +203,6 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    * in the GUI. The behaviour of the widgets used can be determined here.
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
-
     // Standard field, used as unique if primary index.
     $fields['id'] = BaseFieldDefinition::create('uri')
       ->setLabel(t('ID'))
@@ -271,7 +266,6 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     return $fields;
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -314,7 +308,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   protected function urlRouteParameters($rel) {
     $uri_route_parameters = [];
 
-    if ($rel != 'collection') {
+    if ($rel != 'rdf_entity') {
       // The entity ID is needed as a route parameter.
       // Here we do the actual escaping of outbound rdf entity id's.
       // @see \Drupal\rdf_entity\ParamConverter\RdfEntityConverter::convert

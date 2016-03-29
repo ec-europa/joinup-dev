@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\collection\Plugin\Block\JoinCollectionBlock.
- */
-
 namespace Drupal\collection\Plugin\Block;
 
 use Drupal\Core\Access\AccessResult;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Entity\ContentEntityNullStorage.
- */
-
 namespace Drupal\rdf_entity\Entity;
 
 use Drupal\Core\Cache\CacheBackendInterface;
@@ -289,7 +284,7 @@ QUERY;
     foreach ($definitions as $field_name => $field_definition) {
       /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
       $storage_definition = $field_definition->getFieldStorageDefinition();
-      if (!$storage_definition instanceof \Drupal\field\Entity\FieldStorageConfig) {
+      if (!$storage_definition instanceof FieldStorageConfig) {
         continue;
       }
       foreach ($storage_definition->getColumns() as $column => $column_info) {
@@ -512,7 +507,7 @@ QUERY;
     // Load field data.
     $tables = [];
     foreach ($storage_definitions as $field_name => $storage_definition) {
-      if (!$storage_definition instanceof \Drupal\field\Entity\FieldStorageConfig) {
+      if (!$storage_definition instanceof FieldStorageConfig) {
         continue;
       }
 

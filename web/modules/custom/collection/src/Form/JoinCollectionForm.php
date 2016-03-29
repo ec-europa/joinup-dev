@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\collection\Form\JoinCollectionForm.
- */
-
 namespace Drupal\collection\Form;
 
 use Drupal\Component\Serialization\Json;

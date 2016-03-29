@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdf_entity\ParamConverter\RdfEntityConverter.
- */
-
 namespace Drupal\rdf_entity\ParamConverter;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -20,6 +15,7 @@ use Symfony\Component\Routing\Route;
  * @see \Drupal\rdf_entity\Entity\Rdf::urlRouteParameters.
  */
 class RdfEntityConverter extends EntityConverter {
+
   /**
    * {@inheritdoc}
    */

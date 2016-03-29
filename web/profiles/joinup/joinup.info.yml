@@ -78,8 +78,9 @@ config_devel:
   - core.entity_view_display.user.user.default
   - core.entity_view_mode.user.full
   - core.entity_view_mode.node.full
+  - core.entity_form_display.node.custom_page.collection_custom_page
+  - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_display.rdf_entity.collection.propose
-  - core.entity_form_mode.rdf_entity.propose
   - core.entity_form_mode.rdf_entity.propose
   - editor.editor.content_editor
   - field.field.user.user.field_user_family_name

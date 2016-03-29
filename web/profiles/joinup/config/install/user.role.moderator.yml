@@ -11,3 +11,5 @@ permissions:
   - 'access user profiles'
   - 'administer views'
   - 'access toolbar'
+  - 'create custom collection page'
+  - 'administer nodes'

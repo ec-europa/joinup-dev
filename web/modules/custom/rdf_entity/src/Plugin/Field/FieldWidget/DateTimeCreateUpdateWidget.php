@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\datetime\Plugin\Field\FieldWidget\DateTimeDefaultWidget.
- */
 
 namespace Drupal\rdf_entity\Plugin\Field\FieldWidget;
 
@@ -11,7 +7,6 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\datetime\Plugin\Field\FieldType\DateTimeItem;
 use Drupal\datetime\Plugin\Field\FieldWidget\DateTimeWidgetBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -57,6 +52,7 @@ class DateTimeCreateUpdateWidget extends DateTimeWidgetBase implements Container
       $container->get('entity.manager')->getStorage('date_format')
     );
   }
+
   /**
    * {@inheritdoc}
    */
@@ -117,10 +113,11 @@ class DateTimeCreateUpdateWidget extends DateTimeWidgetBase implements Container
   /**
    * {@inheritdoc}
    */
-  function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     foreach ($values as $delta => &$field_item) {
       $field_item['value'] = isset($field_item['set_date']) ? date('c') : NULL;
     }
     return $values;
   }
+
 }
