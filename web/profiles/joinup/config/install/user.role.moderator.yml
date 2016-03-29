@@ -12,3 +12,4 @@ permissions:
   - 'administer views'
   - 'access toolbar'
   - 'create custom collection page'
+  - 'administer nodes'
