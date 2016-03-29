@@ -32,7 +32,7 @@ class CustomPageController extends ControllerBase {
   public function add(RdfInterface $rdf_entity) {
     $node = $this->entityTypeManager()->getStorage('node')->create(array(
       'type' => 'custom_page',
-      'og_group_ref' => $rdf_entity->Id(),
+      'og_group_ref' => $rdf_entity->id(),
     ));
 
     $form = $this->entityFormBuilder()->getForm($node);
