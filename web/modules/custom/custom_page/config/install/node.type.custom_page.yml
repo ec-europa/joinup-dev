@@ -8,7 +8,7 @@ third_party_settings:
   menu_ui:
     available_menus: {  }
     parent: ''
-name: 'Custom Page'
+name: 'Custom page'
 type: custom_page
 description: ''
 help: ''
