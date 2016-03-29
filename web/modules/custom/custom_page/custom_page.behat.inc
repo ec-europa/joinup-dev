@@ -30,14 +30,16 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     $custom_pages = \Drupal::entityTypeManager()
       ->getStorage('node')
       ->loadByProperties(['title' => $title]);
+    /** @var \Drupal\node\NodeInterface $custom_page */
     $custom_page = reset($custom_pages);
 
     if (empty($custom_page)) {
       throw new \Exception("The custom page titled '$title' was not found.");
     }
 
+    /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
     foreach ($custom_page->get(\Drupal\og\OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
-      if ($group['target_id'] == $collection->id()) {
+      if ($group->getValue()['target_id'] == $collection->id()) {
         // Test passes.
         return;
       }
