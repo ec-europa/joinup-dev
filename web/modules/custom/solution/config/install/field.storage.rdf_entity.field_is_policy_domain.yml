@@ -1,20 +1,18 @@
-uuid: c1320170-ec54-47be-ad00-f134c2bfbb14
 langcode: en
 status: true
 dependencies:
   module:
-    - og
     - rdf_entity
-id: rdf_entity.og_group_ref
 third_party_settings:
   rdf_entity:
-    mapping_target_id: 'http://joinup.eu/solution/og_group_ref'
-field_name: og_group_ref
+    mapping_target_id: 'http://www.w3.org/ns/dcat#keyword'
+id: rdf_entity.field_is_policy_domain
+field_name: field_is_policy_domain
 entity_type: rdf_entity
-type: og_standard_reference
+type: entity_reference
 settings:
   target_type: rdf_entity
-module: og
+module: core
 locked: false
 cardinality: -1
 translatable: true

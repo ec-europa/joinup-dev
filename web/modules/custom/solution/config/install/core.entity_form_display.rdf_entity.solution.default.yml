@@ -18,6 +18,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_modification_date
     - field.field.rdf_entity.solution.field_is_owner
+    - field.field.rdf_entity.solution.field_is_policy_domain
     - field.field.rdf_entity.solution.field_is_related_solutions
     - field.field.rdf_entity.solution.field_is_solution_category
     - field.field.rdf_entity.solution.field_is_solution_type
@@ -95,19 +96,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-  field_is_webdav_creation:
-    weight: 7
-    settings:
-      display_label: false
-    third_party_settings: {  }
-    type: boolean_checkbox
-  field_is_webdav_url:
-    weight: 8
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
   field_is_wiki:
     weight: 12
     settings:
@@ -128,14 +116,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  og_group_ref:
-    type: og_complex
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    weight: 13
-    third_party_settings: {  }
 hidden:
   field_is_affiliations_requests: true
   field_is_contact_information: true
@@ -146,6 +126,7 @@ hidden:
   field_is_latest_release: true
   field_is_modification_date: true
   field_is_owner: true
+  field_is_policy_domain: true
   field_is_solution_category: true
   field_is_solution_type: true
   field_is_source_code_repository: true
@@ -153,3 +134,6 @@ hidden:
   field_is_status: true
   field_is_topic: true
   field_is_translation: true
+  field_is_webdav_creation: true
+  field_is_webdav_url: true
+  og_group_ref: true
