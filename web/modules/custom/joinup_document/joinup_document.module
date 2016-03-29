@@ -10,14 +10,14 @@ use \Drupal\core\Form\FormStateInterface;
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function joinup_document_form_node_joinup_document_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function joinup_document_form_node_document_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#validate'][] = 'joinup_document_form_default_validate';
 }
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function joinup_document_form_node_joinup_document_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function joinup_document_form_node_document_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#validate'][] = 'joinup_document_form_default_validate';
 }
 
