@@ -18,5 +18,5 @@ services:
       class: \Drupal\rdf_entity\ParamConverter\RdfEntityConverter
       tags:
       # Use a higher priority than EntityConverter.
-        - { name: paramconverter, priority: 5 }
+        - { name: paramconverter, priority: 6 }
       arguments: ['@entity.manager']
