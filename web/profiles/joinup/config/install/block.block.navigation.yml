@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - og_menu.ogmenu.navigation
+  module:
+    - og_menu
+  theme:
+    - bartik
+id: navigation
+theme: bartik
+region: primary_menu
+weight: -8
+provider: null
+plugin: 'ogmenu_block:navigation'
+settings:
+  id: 'ogmenu_block:navigation'
+  label: Navigation
+  provider: og_menu
+  label_display: '0'
+  level: '1'
+  depth: '0'
+  context_mapping:
+    og: '@og_menu.og_route_context:og'
+visibility: {  }

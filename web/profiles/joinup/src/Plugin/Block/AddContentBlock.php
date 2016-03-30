@@ -75,7 +75,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $collection_contexts = $this->collectionContext->getRuntimeContexts(['collection']);
     if ($collection_contexts['collection']->hasContextValue()) {
       $url = Url::fromRoute('custom_page.collection_custom_page.add', [
-        'rdf_entity' => $collection_contexts['collection']->getContextValue()->sanitizedId(),
+        'rdf_entity' => $collection_contexts['collection']->getContextValue()->id(),
       ]);
       $links['custom_page'] = [
         '#type' => 'link',

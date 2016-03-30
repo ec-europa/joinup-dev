@@ -52,7 +52,7 @@ class RdfForm extends ContentEntityForm {
     $entity->save();
     $form_state->setRedirect(
       'entity.rdf_entity.canonical',
-      ['rdf_entity' => $entity->sanitizedId()]
+      ['rdf_entity' => $entity->id()]
     );
   }
 
