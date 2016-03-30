@@ -24,7 +24,7 @@ class RouteProcessorRdf implements OutboundRouteProcessorInterface {
   protected $routeMatch;
 
   /**
-   * Constructs a new RouteProcessorCurrent.
+   * Constructs a new RouteProcessorRdf.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The current route match.
