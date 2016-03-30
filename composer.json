@@ -124,6 +124,10 @@
             "url": "git@github.com:amitaibu/og"
         },
         {
+            "type": "vcs",
+            "url": "git@github.com:ec-europa/og_menu"
+        },
+        {
             "type": "package",
             "package": {
                 "name": "easyrdf/easyrdf",
