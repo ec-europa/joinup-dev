@@ -23,7 +23,7 @@ class RdfEntityViewBuilder extends EntityViewBuilder {
 
     parent::alterBuild($build, $entity, $display, $view_mode);
     $build['#contextual_links']['rdf_entity'] = array(
-      'route_parameters' => array('rdf_entity' => $entity->sanitizedId()),
+      'route_parameters' => array('rdf_entity' => $entity->id()),
       'metadata' => array('changed' => $entity->getChangedTime()),
     );
   }
