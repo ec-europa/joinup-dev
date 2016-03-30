@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdf_entity\Form\RdfDeleteForm.
- */
-
 namespace Drupal\rdf_entity\Form;
 
 use Drupal\Core\Entity\ContentEntityConfirmFormBase;

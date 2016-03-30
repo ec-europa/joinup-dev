@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\joinup\JoinupPermissions.
- */
-
 namespace Drupal\joinup;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -25,8 +20,8 @@ class JoinupPermissions {
    *
    * @return array
    *   The permissions.
-   *   @see \Drupal\user\PermissionHandlerInterface::getPermissions()
    *
+   * @see \Drupal\user\PermissionHandlerInterface::getPermissions()
    * @see joinup_entity_type_alter()
    */
   public function rdfTypePermissions() {

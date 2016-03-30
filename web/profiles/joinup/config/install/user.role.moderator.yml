@@ -14,3 +14,5 @@ permissions:
   - 'add og menu instance entities'
   - 'delete og menu instance entities'
   - 'edit og menu instance entities'
+  - 'create custom collection page'
+  - 'administer nodes'

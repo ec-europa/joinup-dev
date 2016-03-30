@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\rdf_entity\RdfInterface.
- */
 
 namespace Drupal\rdf_entity;
 
@@ -16,6 +12,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
  * @ingroup rdf_entity
  */
 interface RdfInterface extends ContentEntityInterface {
+
   /**
    * Gets the name of the rdf entity.
    *

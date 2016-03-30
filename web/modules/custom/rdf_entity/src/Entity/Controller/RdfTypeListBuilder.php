@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\taxonomy\VocabularyListBuilder.
- */
-
 namespace Drupal\rdf_entity\Entity\Controller;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;

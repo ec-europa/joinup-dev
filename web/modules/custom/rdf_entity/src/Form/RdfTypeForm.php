@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\taxonomy\VocabularyForm.
- */
-
 namespace Drupal\rdf_entity\Form;
 
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;

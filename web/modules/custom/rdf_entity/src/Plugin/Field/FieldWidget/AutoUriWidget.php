@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Field\Plugin\Field\FieldWidget\UriWidget.
- */
-
 namespace Drupal\rdf_entity\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Uuid\Php;
@@ -72,7 +67,7 @@ class AutoUriWidget extends WidgetBase {
   /**
    * {@inheritdoc}
    */
-  function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     foreach ($values as $delta => &$field_item) {
       // Don't generate a new id when one is already on the entity.
       if ($field_item['value']) {

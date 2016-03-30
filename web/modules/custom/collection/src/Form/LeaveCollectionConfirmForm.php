@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\collection\Form\LeaveCollectionConfirmForm.
- */
-
 namespace Drupal\collection\Form;
 
 use Drupal\Core\Access\AccessResult;

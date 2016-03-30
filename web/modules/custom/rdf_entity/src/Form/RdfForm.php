@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains Drupal\rdf_entity\Form\RdfForm.
- */
 
 namespace Drupal\rdf_entity\Form;
 

@@ -1,11 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Database\Driver\mysql\Connection.
- */
-
 namespace Drupal\rdf_entity\Database\Driver\sparql;
+
+use Drupal\Core\Database\Log;
 
 /**
  * @addtogroup database
@@ -91,7 +88,6 @@ class Connection {
     return $this->query;
   }
 
-
   /**
    * Returns the database connection string.
    */
@@ -105,7 +101,7 @@ class Connection {
    * @param \Drupal\Core\Database\Log $logger
    *   The logging object we want to use.
    */
-  public function setLogger(\Drupal\Core\Database\Log $logger) {
+  public function setLogger(Log $logger) {
     // Because we're incompatible with the PDO logger,
     // we ignore this, and create our own object.
     // @todo Avoid doing this. It's not ok...

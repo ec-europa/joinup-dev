@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Entity\Query\Null\Condition.
- */
-
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
 use Drupal\Core\Entity\Query\ConditionFundamentals;
