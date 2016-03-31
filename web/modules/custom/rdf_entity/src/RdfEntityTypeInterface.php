@@ -1,10 +1,7 @@
 <?php
-/**
- * @file
- * Contains \Drupal\rdf_entity\RdfInterface.
- */
 
 namespace Drupal\rdf_entity;
+
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 
 /**

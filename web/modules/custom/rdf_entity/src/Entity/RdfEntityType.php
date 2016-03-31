@@ -1,14 +1,9 @@
 <?php
-/**
- * @file
- * Defines the Rdf entity type: e.g. Asset, Interoperability Solution,...
- */
 
 namespace Drupal\rdf_entity\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 use Drupal\rdf_entity\RdfEntityTypeInterface;
-
 
 /**
  * Defines the Rdf models.

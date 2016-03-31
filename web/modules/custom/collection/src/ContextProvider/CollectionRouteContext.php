@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\collection\ContextProvider\CollectionRouteContext.
- */
-
 namespace Drupal\collection\ContextProvider;
 
 use Drupal\Core\Cache\CacheableMetadata;
@@ -43,7 +38,7 @@ class CollectionRouteContext implements ContextProviderInterface {
    */
   public function getRuntimeContexts(array $unqualified_context_ids) {
     $result = [];
-    $context_definition = new ContextDefinition('entity:rdf_entity', NULL, FALSE);
+    $context_definition = new ContextDefinition('entity:rdf_entity:collection', NULL, FALSE);
     $value = NULL;
     if (($route_object = $this->routeMatch->getRouteObject()) && ($route_contexts = $route_object->getOption('parameters')) && isset($route_contexts['rdf_entity'])) {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
@@ -60,7 +55,7 @@ class CollectionRouteContext implements ContextProviderInterface {
     $context = new Context($context_definition, $value);
     $context->addCacheableDependency($cacheability);
 
-    $result['rdf_entity'] = $context;
+    $result['collection'] = $context;
 
     return $result;
   }
@@ -69,8 +64,8 @@ class CollectionRouteContext implements ContextProviderInterface {
    * {@inheritdoc}
    */
   public function getAvailableContexts() {
-    $context = new Context(new ContextDefinition('entity:rdf_entity', $this->t('Collection from URL')));
-    return ['rdf_entity' => $context];
+    $context = new Context(new ContextDefinition('entity:rdf_entity:collection', $this->t('Collection from URL')));
+    return ['collection' => $context];
   }
 
 }
