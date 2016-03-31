@@ -55,9 +55,12 @@ content:
     type: email_default
   field_event_end_date:
     weight: 6
-    settings: {  }
+    settings:
+      increment: 15
+      date_order: YMD
+      time_type: '24'
     third_party_settings: {  }
-    type: datetime_default
+    type: datetime_datelist
   field_event_logo:
     weight: 4
     settings:
@@ -73,10 +76,13 @@ content:
     third_party_settings: {  }
     type: string_textfield
   field_event_start_date:
+    type: datetime_datelist
     weight: 5
-    settings: {  }
+    settings:
+      increment: 15
+      date_order: YMD
+      time_type: '24'
     third_party_settings: {  }
-    type: datetime_default
   field_event_web_url:
     weight: 9
     settings:
