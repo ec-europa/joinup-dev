@@ -1,0 +1,12 @@
+# Route to create a custom page that belongs to an rdf_entity.
+solution.collection_solution.add:
+  path: 'rdf_entity/{rdf_entity}/solution/add'
+  defaults:
+    _controller: '\Drupal\solution\Controller\SolutionController::add'
+    _title: 'Add solution'
+  requirements:
+    _custom_access: '\Drupal\solution\Controller\SolutionController::createSolutionAccess'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity

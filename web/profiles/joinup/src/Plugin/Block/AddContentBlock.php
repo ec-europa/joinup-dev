@@ -74,16 +74,28 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     /** @var \Drupal\Core\Plugin\Context\Context[] $collection_contexts */
     $collection_contexts = $this->collectionContext->getRuntimeContexts(['collection']);
     if ($collection_contexts['collection']->hasContextValue()) {
-      $url = Url::fromRoute('custom_page.collection_custom_page.add', [
+      $page_url = Url::fromRoute('custom_page.collection_custom_page.add', [
         'rdf_entity' => $collection_contexts['collection']->getContextValue()->id(),
       ]);
       $links['custom_page'] = [
         '#type' => 'link',
         '#title' => $this->t('Add custom page'),
-        '#url' => $url,
+        '#url' => $page_url,
         '#attributes' => ['class' => ['button', 'button--small']],
-        '#access' => $url->access(),
+        '#access' => $page_url->access(),
       ];
+
+      $solution_url = Url::fromRoute('solution.collection_solution.add', [
+        'rdf_entity' => $collection_contexts['collection']->getContextValue()->id(),
+      ]);
+      $links['solution'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Add solution'),
+        '#url' => $solution_url,
+        '#attributes' => ['class' => ['button', 'button--small']],
+        '#access' => $solution_url->access(),
+      ];
+
     }
 
     // Render the links as an unordered list, styled as buttons.
