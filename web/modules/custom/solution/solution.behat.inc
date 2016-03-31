@@ -283,7 +283,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $collection = \CollectionSubContext::getCollectionByName($collection);
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     $solution = \SolutionSubContext::getSolutionByName($solution);
-    if(!in_array($solution, $this->solutions)){
+    // This handles the solutions added by form submit.
+    if (!in_array($solution, $this->solutions)) {
       $this->solutions[$solution->id()] = $solution;
     }
 
