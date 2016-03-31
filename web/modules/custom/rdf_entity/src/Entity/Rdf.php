@@ -76,6 +76,7 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *     "view_builder" = "Drupal\rdf_entity\RdfEntityViewBuilder",
  *     "list_builder" = "Drupal\rdf_entity\Entity\Controller\RdfListBuilder",
  *     "form" = {
+ *       "default" = "Drupal\rdf_entity\Form\RdfForm",
  *       "add" = "Drupal\rdf_entity\Form\RdfForm",
  *       "edit" = "Drupal\rdf_entity\Form\RdfForm",
  *       "delete" = "\Drupal\rdf_entity\Form\RdfDeleteForm",
