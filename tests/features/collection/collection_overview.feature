@@ -19,4 +19,3 @@ Feature: Collections Overview
     And I should see the text "Reusable tools and services"
     When I click "eHealth"
     Then I should see the heading "eHealth"
-

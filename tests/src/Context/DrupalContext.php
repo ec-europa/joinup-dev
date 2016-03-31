@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\joinup\Context\DrupalContext.
- */
-
 namespace Drupal\joinup\Context;
 
-use Drupal\Core\Entity\Entity;
 use Drupal\DrupalExtension\Context\DrupalContext as DrupalExtensionDrupalContext;
 
 /**
@@ -85,7 +79,6 @@ class DrupalContext extends DrupalExtensionDrupalContext {
 
     throw new \Exception("The entity with label '$label' was not found.");
   }
-
 
   /**
    * Assert that certain fields are present on the page.

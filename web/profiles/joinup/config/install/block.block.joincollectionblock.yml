@@ -35,7 +35,7 @@ visibility:
       user: '@user.current_user_context:current_user'
   collection:
     id: collection
-    collections: 1
+    collections: true
     negate: false
     context_mapping:
-      collection: '@collection.collection_route_context:rdf_entity'
+      collection: '@collection.collection_route_context:collection'

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\joinup\Controller\JoinupController.
- */
-
 namespace Drupal\joinup\Controller;
 
 use Drupal\Component\Utility\Unicode;

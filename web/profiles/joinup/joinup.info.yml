@@ -17,10 +17,12 @@ dependencies:
   - file
   - help
   - image
+  - joinup_document
   - joinup_news
   - menu_ui
   - node
   - og
+  - og_menu
   - options
   - page_cache
   - path
@@ -52,6 +54,7 @@ config:
   - block.block.bartik_tools
   - block.block.joincollectionblock
   - block.block.joinup_add_content
+  - block.block.navigation
   - block.block.seven_breadcrumbs
   - block.block.seven_content
   - block.block.seven_help
@@ -72,16 +75,25 @@ config:
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
+  - core.entity_form_display.node.custom_page.collection_custom_page
+  - core.entity_form_display.ogmenu_instance.navigation.default
+  - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
   - core.entity_form_display.user.user.register
-  - core.entity_form_mode.user.register
-  - core.entity_view_display.user.user.default
-  - core.entity_view_display.node.news.default
-  - core.entity_view_mode.user.full
-  - core.entity_view_mode.node.full
+  - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_mode.rdf_entity.propose
+  - core.entity_form_mode.rdf_entity.propose
+  - core.entity_form_mode.rdf_entity.propose
+  - core.entity_form_mode.user.register
+  - core.entity_view_display.node.news.default
+  - core.entity_view_display.ogmenu_instance.navigation.default
+  - core.entity_view_display.user.user.default
+  - core.entity_view_mode.node.full
+  - core.entity_view_mode.node.full
+  - core.entity_view_mode.user.full
   - editor.editor.content_editor
+  - field.field.ogmenu_instance.navigation.og_group_ref
   - field.field.user.user.field_user_family_name
   - field.field.user.user.field_user_first_name
   - field.field.user.user.field_user_nationality
@@ -92,6 +104,7 @@ config:
   - field.field.user.user.og_group_ref
   - field.storage.node.body
   - field.storage.node.og_group_ref
+  - field.storage.ogmenu_instance.og_group_ref
   - field.storage.user.field_user_family_name
   - field.storage.user.field_user_first_name
   - field.storage.user.field_user_nationality
@@ -106,6 +119,7 @@ config:
   - filter.format.restricted_html
   - og.og_membership_type.og_membership_type
   - og.settings
+  - og_menu.ogmenu.navigation
   - search_api.index.collections
   - search_api.server.database_search_server
   - system.theme

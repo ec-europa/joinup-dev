@@ -9,3 +9,4 @@ permissions:
   - 'administer account settings'
   - 'edit collection rdf entity'
   - 'administer group'
+  - 'administer nodes'

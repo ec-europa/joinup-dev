@@ -1,10 +1,7 @@
 <?php
-/**
- * @file
- * Sparql query logger.
- */
 
 namespace Drupal\rdf_entity\Database\Driver\sparql;
+
 /**
  * Class Log.
  *

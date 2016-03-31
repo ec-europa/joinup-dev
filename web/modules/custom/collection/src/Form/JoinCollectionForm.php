@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\collection\Form\JoinCollectionForm.
- */
-
 namespace Drupal\collection\Form;
 
 use Drupal\Component\Serialization\Json;
@@ -58,7 +53,7 @@ class JoinCollectionForm extends FormBase {
         '#type' => 'link',
         '#title' => $this->t('Leave this collection'),
         '#url' => Url::fromRoute('collection.leave_confirm_form', [
-          'rdf_entity' => $collection->sanitizedId(),
+          'rdf_entity' => $collection->id(),
         ]),
         '#attributes' => [
           'class' => ['use-ajax', 'button', 'button--small'],

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Build queries to the triple store.
- */
-
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -29,6 +24,7 @@ class Query extends QueryBase implements QueryInterface {
   protected $filter;
 
   protected $results = NULL;
+
   /**
    * Constructs a query object.
    *
@@ -122,6 +118,7 @@ class Query extends QueryBase implements QueryInterface {
     // @todo Getting the storage container here looks wrong...
     $entity_storage = \Drupal::service('entity.manager')
       ->getStorage('rdf_entity');
+
     /*
      * Ok, so what is all this:
      * We need to convert our conditions into some sparql compatible conditions.
@@ -142,6 +139,13 @@ class Query extends QueryBase implements QueryInterface {
         }
         break;
 
+      case 'id-NOT IN':
+        if ($value) {
+          $ids_list = "(<" . implode(">, <", $value) . ">)";
+          $this->filter->filter('!(?entity IN ' . $ids_list . ')');
+        }
+        break;
+
       case 'id-=':
         if (!$value) {
           return $this;
@@ -154,7 +158,12 @@ class Query extends QueryBase implements QueryInterface {
       case 'label-=':
         preg_match('/\((.*?)\)/', $value, $matches);
         $matching = array_pop($matches);
-        $ids = "(<$matching>)";
+        if ($matching) {
+          $ids = "(<$matching>)";
+        }
+        else {
+          $ids = '("' . $value . '")';
+        }
         $this->filter->filter('?entity IN ' . $ids);
         break;
 
@@ -226,6 +235,7 @@ class Query extends QueryBase implements QueryInterface {
     $this->results = $this->connection->query($this->query);
     return $this;
   }
+
   /**
    * Do the actual query building.
    */
