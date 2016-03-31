@@ -11,6 +11,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\file\Entity\File;
+use Drupal\og\OgGroupAudienceHelper;
 
 /**
  * Behat step definitions for testing solutions.
@@ -160,27 +161,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Checks the number of available solution.
-   *
-   * @param int $number
-   *   The expected number of solution.
-   *
-   * @throws \Exception
-   *   Thrown when the number of solutions does not not match the expectation.
-   *
-   * @Then I should have :number solution(s)
-   */
-  public function assertCollectionCount($number) {
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', '<http://www.w3.org/ns/adms#Asset>')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
-    }
-  }
-
-  /**
    * Creates a solution from the given property and field data.
    *
    * @param array $values
@@ -270,7 +250,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \Exception
    *   Thrown when the number of solutions does not not match the expectation.
    *
-   * @Then I should have :number solutions(s)
+   * @Then I should have :number solution(s)
    */
   public function assertSolutionCount($number) {
     $actual = \Drupal::entityQuery('rdf_entity')
@@ -280,6 +260,42 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     if ($actual != $number) {
       throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
     }
+  }
+
+  /**
+   * Checks if the given solution belongs to the given collection.
+   *
+   * If there are multiple solutions or collections with the same name, then
+   * only the first one is checked.
+   *
+   * @param string $solution
+   *   The title of the custom page to check.
+   * @param string $collection
+   *   The name of the collection to check.
+   *
+   * @throws \Exception
+   *   Thrown when a custom page with the given title doesn't exist.
+   *
+   * @Then the :collection collection has a solution named :solution
+   */
+  public function assertOgMembership($solution, $collection) {
+    /** @var \Drupal\rdf_entity\RdfInterface $collection */
+    $collection = \CollectionSubContext::getCollectionByName($collection);
+    /** @var \Drupal\rdf_entity\RdfInterface $solution */
+    $solution = \SolutionSubContext::getSolutionByName($solution);
+    if(!in_array($solution, $this->solutions)){
+      $this->solutions[$solution->id()] = $solution;
+    }
+
+    /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
+    foreach ($solution->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
+      if ($group->getValue()['target_id'] == $collection->id()) {
+        // Test passes.
+        return;
+      }
+    }
+
+    throw new \Exception("The solution '{$solution->label()}' is not associated with collection '{$collection->label()}'.");
   }
 
   /**
