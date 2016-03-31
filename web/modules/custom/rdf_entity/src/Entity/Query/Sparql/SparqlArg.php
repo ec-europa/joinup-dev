@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Wrapper for arguments in Sparql condition.
- */
 
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
@@ -17,6 +13,7 @@ namespace Drupal\rdf_entity\Entity\Query\Sparql;
  * @package Drupal\rdf_entity\Entity\Query\Sparql
  */
 class SparqlArg {
+
   /**
    * URI Query argument.
    *

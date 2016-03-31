@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdf_entity\ParamConverter\RdfEntityConverter.
- */
-
 namespace Drupal\rdf_entity\ParamConverter;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -15,11 +10,14 @@ use Symfony\Component\Routing\Route;
 /**
  * Converts the escaped URI's in the path into valid URI's.
  *
- * The outbound escaping is handled in:
+ * This handles the uri ids being passed properly as parameters to routes
+ * by converting '/' to '\'.
+ * This class is counterpart to RouteProcessorRdf.
  *
- * @see \Drupal\rdf_entity\Entity\Rdf::urlRouteParameters.
+ * @see \Drupal\rdf_entity\RouteProcessor\RouteProcessorRdf.
  */
 class RdfEntityConverter extends EntityConverter {
+
   /**
    * {@inheritdoc}
    */

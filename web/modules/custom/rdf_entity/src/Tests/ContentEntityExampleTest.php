@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Test cases for Content Entity Example Module.
- */
-
 namespace Drupal\content_entity_example\Tests;
 
 use Drupal\content_entity_example\Entity\Contact;

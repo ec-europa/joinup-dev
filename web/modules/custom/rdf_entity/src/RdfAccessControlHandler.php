@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdf_entity\RdfAccessControlHandler.
- */
-
 namespace Drupal\rdf_entity;
 
 use Drupal\Core\Access\AccessResult;
