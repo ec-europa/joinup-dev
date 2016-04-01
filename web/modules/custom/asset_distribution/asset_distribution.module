@@ -2,23 +2,43 @@
 
 /**
  * @file
- * Contains asset_distribution.module..
+ * Contains asset_distribution.module.
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
+use \Drupal\core\Form\FormStateInterface;
 
 /**
- * Implements hook_help().
+ * Implements hook_form_FORM_ID_alter().
  */
-function asset_distribution_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the asset_distribution module.
-    case 'help.page.asset_distribution':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('An asset distribution RDF entity') . '</p>';
-      return $output;
+function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#validate'][] = 'asset_distribution_form_default_validate';
+}
 
-    default:
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function asset_distribution_form_rdf_entity_asset_distribution_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#validate'][] = 'asset_distribution_form_default_validate';
+}
+
+/**
+ * Validates the default asset distribution form.
+ *
+ * The validation includes the file submission.
+ * The file can be submitted either by file or by link so not both of these
+ * fields can be empty.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function asset_distribution_form_default_validate(&$form, FormStateInterface $form_state) {
+  // Check the file submission.
+  if (!(empty($form_state->getValue('field_ad_file')[0]['fids'])
+    xor empty($form_state->getValue('field_ad_access_url')[0]['uri']))
+  ) {
+    $form_state->setErrorByName('field_ad_file');
+    $form_state->setErrorByName('field_ad_access_url', t('One of the file sources must be filled.'));
   }
 }

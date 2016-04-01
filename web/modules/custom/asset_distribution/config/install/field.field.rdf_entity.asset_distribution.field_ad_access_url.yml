@@ -12,7 +12,7 @@ entity_type: rdf_entity
 bundle: asset_distribution
 label: 'Access URL'
 description: "If the file(s) exist in an external server, you can provide the URL here directly.\r\nYou can alternatively host your distribution in Joinup by using the Distribution file field below."
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

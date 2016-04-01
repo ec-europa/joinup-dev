@@ -29,6 +29,12 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+  field_ad_creation_date:
+    type: datetime_create_update
+    weight: 9
+    settings:
+      behaviour: create
+    third_party_settings: {  }
   field_ad_description:
     weight: 2
     settings:
@@ -65,6 +71,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+  field_ad_modification_date:
+    type: datetime_create_update
+    weight: 10
+    settings:
+      behaviour: create
+    third_party_settings: {  }
   field_ad_repr_technique:
     weight: 7
     settings:
@@ -74,11 +86,10 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   id:
-    type: uri
+    type: auto_uri
     weight: 0
     settings:
-      size: 60
-      placeholder: ''
+      prefix: 'http://example.org'
     third_party_settings: {  }
   label:
     type: string_textfield
@@ -88,6 +99,4 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
-  field_ad_creation_date: true
-  field_ad_modification_date: true
   field_ad_status: true
