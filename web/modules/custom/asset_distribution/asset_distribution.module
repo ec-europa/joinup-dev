@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains asset_distribution.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function asset_distribution_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the asset_distribution module.
+    case 'help.page.asset_distribution':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('An asset distribution RDF entity') . '</p>';
+      return $output;
+
+    default:
+  }
+}

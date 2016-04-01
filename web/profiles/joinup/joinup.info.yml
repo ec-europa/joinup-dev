@@ -7,6 +7,7 @@ distribution:
   name: Joinup
 
 dependencies:
+  - asset_distribution
   - block
   - ckeditor
   - collection
@@ -27,7 +28,6 @@ dependencies:
   - page_cache
   - path
   - r4032login
-  - rdf_demo
   - rdf_entity
   - text
   - toolbar
