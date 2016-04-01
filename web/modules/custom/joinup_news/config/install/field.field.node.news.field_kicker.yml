@@ -3,11 +3,11 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_kicker
-    - node.type.joinup_news
-id: node.joinup_news.field_kicker
+    - node.type.news
+id: node.news.field_kicker
 field_name: field_kicker
 entity_type: node
-bundle: joinup_news
+bundle: news
 label: Kicker
 description: 'The kicker is a short, catchy word or phrase and will be placed over the headline.'
 required: true

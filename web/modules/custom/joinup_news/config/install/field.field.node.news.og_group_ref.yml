@@ -3,14 +3,14 @@ status: true
 dependencies:
   config:
     - field.storage.node.og_group_ref
-    - node.type.joinup_news
+    - node.type.news
     - rdf_entity.rdfentity.collection
   module:
     - og
-id: node.joinup_news.og_group_ref
+id: node.news.og_group_ref
 field_name: og_group_ref
 entity_type: node
-bundle: joinup_news
+bundle: news
 label: 'Groups audience'
 description: 'OG group audience reference field.'
 required: false
@@ -24,5 +24,6 @@ settings:
       collection: collection
     sort:
       field: _none
+    target_type: rdf_entity
   access_override: false
 field_type: og_standard_reference

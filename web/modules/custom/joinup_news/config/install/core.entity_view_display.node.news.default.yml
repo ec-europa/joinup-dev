@@ -2,18 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.joinup_news.body
-    - field.field.node.joinup_news.field_kicker
-    - field.field.node.joinup_news.field_source_url
-    - field.field.node.joinup_news.og_group_ref
-    - node.type.joinup_news
+    - field.field.node.news.body
+    - field.field.node.news.field_kicker
+    - field.field.node.news.field_source_url
+    - field.field.node.news.og_group_ref
+    - node.type.news
   module:
     - link
     - text
     - user
 id: node.news.default
 targetEntityType: node
-bundle: joinup_news
+bundle: news
 mode: default
 content:
   body:

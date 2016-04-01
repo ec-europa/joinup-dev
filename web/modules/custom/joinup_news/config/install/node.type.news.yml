@@ -8,7 +8,7 @@ third_party_settings:
     available_menus: {  }
     parent: ''
 name: News
-type: joinup_news
+type: news
 description: ''
 help: ''
 new_revision: false

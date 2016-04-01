@@ -4,3 +4,27 @@
  * @file
  * Contains joinup_news.module.
  */
+
+use \Drupal\Core\Entity\EntityTypeInterface;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'node'  && $bundle == 'news') {
+    if (!empty($fields['field_kicker'])) {
+      $fields['field_kicker']->addConstraint('UniqueField');
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function joinup_news_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() == 'node') {
+    if (!empty($fields['title'])) {
+      $fields['title']->addConstraint('UniqueField');
+    }
+  }
+}
