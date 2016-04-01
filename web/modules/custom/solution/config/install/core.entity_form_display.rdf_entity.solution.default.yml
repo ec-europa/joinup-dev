@@ -35,7 +35,6 @@ dependencies:
   module:
     - file
     - link
-    - og
     - rdf_entity
     - text
 id: rdf_entity.solution.default
