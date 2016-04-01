@@ -1,32 +1,34 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\Validation\Plugin\Validation\Constraint\UniqueFieldValueValidator.
- */
-
-namespace Drupal\Core\Validation\Plugin\Validation\Constraint;
+namespace Drupal\joinup\Plugin\Validation\Constraint;
 
 use Drupal\Component\Utility\Unicode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Validates that a field is unique for the given entity type.
+ * Validates that a field is unique for the given entity type within a bundle.
  */
-class UniqueFieldValueValidator extends ConstraintValidator {
+class UniqueFieldValueInBundleValidator extends ConstraintValidator {
 
   /**
    * {@inheritdoc}
    */
   public function validate($items, Constraint $constraint) {
-    $context = $this->context;
+    $bundles = $constraint->bundles;
     if (!$item = $items->first()) {
       return;
     }
     $field_name = $items->getFieldDefinition()->getName();
     /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = $items->getEntity();
+    $bundle = $entity->bundle();
+    if (!in_array($bundle, $bundles)) {
+      // The constraint does not apply to this bundle.
+      return;
+    }
+
+    $bundle_key = $entity->getEntityType()->getKey('bundle');
     $entity_type_id = $entity->getEntityTypeId();
     $id_key = $entity->getEntityType()->getKey('id');
 
@@ -34,6 +36,7 @@ class UniqueFieldValueValidator extends ConstraintValidator {
       // The id could be NULL, so we cast it to 0 in that case.
       ->condition($id_key, (int) $items->getEntity()->id(), '<>')
       ->condition($field_name, $item->value)
+      ->condition($bundle_key, $bundle)
       ->range(0, 1)
       ->count()
       ->execute();
@@ -46,4 +49,5 @@ class UniqueFieldValueValidator extends ConstraintValidator {
       ]);
     }
   }
+
 }
