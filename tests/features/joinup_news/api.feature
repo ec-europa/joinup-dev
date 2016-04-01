@@ -13,7 +13,7 @@ Feature: News API
       | closed            | 1                       |
       | elibrary creation | facilitators            |
       | uri               | http://joinup.eu/my/foo |
-    And joinup_news content:
+    And news content:
       | title      | body                                     | groups audience         |
       | Dummy News | This is some dummy content like foo:bar. | http://joinup.eu/my/foo |
     Then I should have a "News" page titled "Dummy News"
