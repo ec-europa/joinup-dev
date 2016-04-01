@@ -12,6 +12,7 @@ use \Drupal\core\Form\FormStateInterface;
  */
 function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#validate'][] = 'asset_distribution_form_default_validate';
+  $form['#submit'][] = 'asset_distribution_form_default_submit';
 }
 
 /**
@@ -19,6 +20,7 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
  */
 function asset_distribution_form_rdf_entity_asset_distribution_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#validate'][] = 'asset_distribution_form_default_validate';
+  $form['#submit'][] = 'asset_distribution_form_default_submit';
 }
 
 /**
@@ -39,6 +41,41 @@ function asset_distribution_form_default_validate(&$form, FormStateInterface $fo
     xor empty($form_state->getValue('field_ad_access_url')[0]['uri']))
   ) {
     $form_state->setErrorByName('field_ad_file');
-    $form_state->setErrorByName('field_ad_access_url', t('One of the file sources must be filled.'));
+    $form_state->setErrorByName('field_ad_access_url', t('Both fields cannot be filled or empty at the same time.'));
+  }
+
+  // Check if there is an access url, then the filesize field should be filled.
+  if (!empty($form_state->getValue('field_ad_access_url'))
+    && empty($form_state->getValue('field_ad_filesize'))
+  ) {
+    $form_state->setErrorByName('field_ad_filesize', t('If the access url is not empty, this field cannot be empty.'));
+  }
+}
+
+/**
+ * Handles the submission of the default asset distribution form.
+ *
+ * If the user submitted file(s) then update the access url and the filesize.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function asset_distribution_form_default_submit(&$form, FormStateInterface $form_state) {
+  // If files are submitted, set the access URLs and the total filesize.
+  /** @var Drupal\File\FileInterface[] $files */
+  if ($files = $form_state->getValue('field_ad_file')) {
+    $filesize = 0;
+    $access_urls = [];
+    foreach ($files as $file) {
+      $file->setPermanent();
+      $file->save();
+      $filesize += $file->getSize() / 1024;
+      $access_urls[] = $file->toUrl();
+    }
+
+    $form_state->setValue('field_ad_filesize', $filesize);
+    $form_state->setValue('field_ad_access_url', $access_urls);
   }
 }
