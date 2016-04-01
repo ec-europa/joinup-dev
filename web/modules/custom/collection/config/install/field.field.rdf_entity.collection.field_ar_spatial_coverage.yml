@@ -4,8 +4,6 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_ar_spatial_coverage
     - rdf_entity.rdfentity.collection
-_core:
-  default_config_hash: '-FURkFIaz8X7XRujfB_zcBTO-7DWYKngYZYaSwRMiU4'
 id: rdf_entity.collection.field_ar_spatial_coverage
 field_name: field_ar_spatial_coverage
 entity_type: rdf_entity

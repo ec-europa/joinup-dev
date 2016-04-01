@@ -4,8 +4,6 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_ar_policy_domain
     - rdf_entity.rdfentity.collection
-_core:
-  default_config_hash: fLLvCAXOQjWfZIMllxqrUN8FBXKkqgtqogrE8e8PGk0
 id: rdf_entity.collection.field_ar_policy_domain
 field_name: field_ar_policy_domain
 entity_type: rdf_entity
