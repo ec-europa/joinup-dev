@@ -106,7 +106,7 @@ content:
     type: auto_uri
     weight: 0
     settings:
-      prefix: 'http://example.org'
+      prefix: 'http://joinup.eu/adms/asset'
     third_party_settings: {  }
   label:
     type: string_textfield
