@@ -144,7 +144,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @Given (the following )asset distribution:
    */
-  public function givenCollection(TableNode $asset_distribution_table) {
+  public function givenAssetDistribution(TableNode $asset_distribution_table) {
     $aliases = self::assetDistributionFieldAliases();
 
     $values = [];
@@ -208,7 +208,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @When (I )delete the :asset_distribution asset distribution
    */
-  public function deleteSolution($asset_distribution) {
+  public function deleteAssetDistribution($asset_distribution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
     $this->getAssetDistributionByName($asset_distribution)->delete();
   }
@@ -237,6 +237,34 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
 
     if (empty($result)) {
       throw new \InvalidArgumentException("The asset distribution with the name '$name' was not found.");
+    }
+
+    return Rdf::load(reset($result));
+  }
+
+  /**
+   * Returns the Solution with the given name.
+   *
+   * If multiple solution have the same name, the first one will be returned.
+   *
+   * @param string $name
+   *   The solution name.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   The solution.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when a solution with the given name does not exist.
+   */
+  protected function getSolutionByName($name) {
+    $query = \Drupal::entityQuery('rdf_entity')
+      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#Asset'))
+      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
+      ->range(0, 1);
+    $result = $query->execute();
+
+    if (empty($result)) {
+      throw new \InvalidArgumentException("The solution with the name '$name' was not found.");
     }
 
     return Rdf::load(reset($result));
@@ -283,16 +311,17 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   public function assertAssetRelationship($asset_distribution, $solution) {
     /** @var \Drupal\rdf_entity\RdfInterface $asset_distribution */
     $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
+
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = \SolutionSubContext::getSolutionByName($solution);
+    $solution = $this->getSolutionByName($solution);
     // This handles the solutions added by form submit.
     if (!in_array($asset_distribution, $this->assetDistributions)) {
       $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
     }
 
     /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-    foreach ($solution->get('field_is_asset_distribution') as $distribution) {
-      if ($distribution->getValue()['uri'] == $asset_distribution->id()) {
+    foreach ($solution->get('field_is_distribution') as $distribution) {
+      if ($distribution->getValue()['target_id'] == $asset_distribution->id()) {
         // Test passes.
         return;
       }

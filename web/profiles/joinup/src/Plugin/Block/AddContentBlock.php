@@ -86,7 +86,8 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $collection_contexts = $this->collectionContext->getRuntimeContexts(['collection']);
     if ($collection_contexts && $collection_contexts['collection']->hasContextValue()) {
       $page_url = Url::fromRoute('custom_page.collection_custom_page.add', [
-        'rdf_entity' => $collection_contexts['collection']->getContextValue()->id(),
+        'rdf_entity' => $collection_contexts['collection']->getContextValue()
+          ->id(),
       ]);
       $links['custom_page'] = [
         '#type' => 'link',
@@ -97,7 +98,8 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       ];
 
       $solution_url = Url::fromRoute('solution.collection_solution.add', [
-        'rdf_entity' => $collection_contexts['collection']->getContextValue()->id(),
+        'rdf_entity' => $collection_contexts['collection']->getContextValue()
+          ->id(),
       ]);
       $links['solution'] = [
         '#type' => 'link',
@@ -108,7 +110,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       ];
     }
 
-    if(!empty($this->solutionContext)) {
+    if (!empty($this->solutionContext)) {
       // Same as above for a button regarding the distributions.
       /** @var \Drupal\Core\Plugin\Context\Context[] $solution_contexts */
       $solution_contexts = $this->solutionContext->getRuntimeContexts(['solution']);
@@ -152,7 +154,11 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // The links are only visible for certain roles on certain
     // collections. Normally cache contexts are added automatically but this
     // links depends on an optional context which we manage ourselves.
-    return Cache::mergeContexts($context, ['user.roles', 'collection', 'solution']);
+    return Cache::mergeContexts($context, [
+      'user.roles',
+      'collection',
+      'solution',
+    ]);
   }
 
 }
