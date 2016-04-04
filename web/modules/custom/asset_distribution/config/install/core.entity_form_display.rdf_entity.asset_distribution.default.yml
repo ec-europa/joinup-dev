@@ -49,12 +49,6 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
-  field_ad_file_size:
-    weight: 8
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
   field_ad_format:
     weight: 6
     settings:
@@ -100,3 +94,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_ad_status: true
+  field_ad_file_size: true

@@ -5,77 +5,57 @@
  * Contains asset_distribution.module.
  */
 
-use \Drupal\core\Form\FormStateInterface;
+use \Drupal\Core\Entity\EntityInterface;
+use \Drupal\file\Entity\File;
+use \Drupal\Component\Utility\UrlHelper;
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'asset_distribution_form_default_validate';
-  $form['#submit'][] = 'asset_distribution_form_default_submit';
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function asset_distribution_form_rdf_entity_asset_distribution_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'asset_distribution_form_default_validate';
-  $form['#submit'][] = 'asset_distribution_form_default_submit';
-}
-
-/**
- * Validates the default asset distribution form.
+ * Implements hook_ENTITY_TYPE_presave().
  *
- * The validation includes the file submission.
- * The file can be submitted either by file or by link so not both of these
- * fields can be empty.
- *
- * @param array $form
- *   The form array.
- * @param \Drupal\core\Form\FormStateInterface $form_state
- *   The form state object.
+ * Before an entity is saved to the database, we need to synchronize the
+ * access urls with the file field and calculate the file size for
+ * files hosted internally.
  */
-function asset_distribution_form_default_validate(&$form, FormStateInterface $form_state) {
-  // Check the file submission.
-  if (!(empty($form_state->getValue('field_ad_file')[0]['fids'])
-    xor empty($form_state->getValue('field_ad_access_url')[0]['uri']))
-  ) {
-    $form_state->setErrorByName('field_ad_file');
-    $form_state->setErrorByName('field_ad_access_url', t('Both fields cannot be filled or empty at the same time.'));
+function asset_distribution_rdf_entity_presave(EntityInterface $entity) {
+  global $base_url;
+  if ($entity->bundle() != 'asset_distribution') {
+    return;
+  }
+  $file_urls = [];
+  $file_size = 0;
+
+  // Get all access urls.
+  foreach ($entity->get('field_ad_access_url') as $delta => $url) {
+    $access_urls = $entity->get('field_ad_access_url')->getValue();
   }
 
-  // Check if there is an access url, then the filesize field should be filled.
-  if (!empty($form_state->getValue('field_ad_access_url'))
-    && empty($form_state->getValue('field_ad_filesize'))
-  ) {
-    $form_state->setErrorByName('field_ad_filesize', t('If the access url is not empty, this field cannot be empty.'));
-  }
-}
-
-/**
- * Handles the submission of the default asset distribution form.
- *
- * If the user submitted file(s) then update the access url and the filesize.
- *
- * @param array $form
- *   The form array.
- * @param \Drupal\core\Form\FormStateInterface $form_state
- *   The form state object.
- */
-function asset_distribution_form_default_submit(&$form, FormStateInterface $form_state) {
-  // If files are submitted, set the access URLs and the total filesize.
-  /** @var Drupal\File\FileInterface[] $files */
-  if ($files = $form_state->getValue('field_ad_file')) {
-    $filesize = 0;
-    $access_urls = [];
-    foreach ($files as $file) {
-      $file->setPermanent();
-      $file->save();
-      $filesize += $file->getSize() / 1024;
-      $access_urls[] = $file->toUrl();
+  // Get all file urls.
+  /** @var \Drupal\field\FieldConfigInterface $file_field */
+  foreach ($entity->get('field_ad_file') as $file_field) {
+    $file = File::load($file_field->get('target_id')->getValue());
+    if ($file) {
+      $file_urls[] = $file->url();
     }
 
-    $form_state->setValue('field_ad_filesize', $filesize);
-    $form_state->setValue('field_ad_access_url', $access_urls);
+    $file_size += intval($file->getSize());
   }
+
+  // Remove removed files from access urls.
+  foreach ($access_urls as $delta => $access_url) {
+    if (UrlHelper::isExternal($access_url['uri']) && UrlHelper::externalIsLocal($access_url['uri'], $base_url) && !in_array($access_url['uri'], $file_urls)
+    ) {
+      unset($access_urls[$delta]);
+    }
+  }
+
+  // Add new or updated files to the access urls.
+  foreach ($file_urls as $file_url) {
+    if (!array_search($file_url, array_column($access_urls, 'uri'))) {
+      $access_urls[]['uri'] = $file_url;
+    }
+  }
+
+  // Set the values.
+  $entity->get('field_ad_access_url')->setValue($access_urls);
+  $entity->get('field_ad_file_size')->setValue(intval($file_size / 1024));
 }
