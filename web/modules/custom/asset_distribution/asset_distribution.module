@@ -26,9 +26,7 @@ function asset_distribution_rdf_entity_presave(EntityInterface $entity) {
   $file_size = 0;
 
   // Get all access urls.
-  foreach ($entity->get('field_ad_access_url') as $delta => $url) {
-    $access_urls = $entity->get('field_ad_access_url')->getValue();
-  }
+  $access_urls = $entity->get('field_ad_access_url')->getValue();
 
   // Get all file urls.
   /** @var \Drupal\field\FieldConfigInterface $file_field */
