@@ -1,0 +1,325 @@
+<?php
+
+/**
+ * @file
+ * Contains \AssetDistributionSubContext.
+ */
+
+use Behat\Gherkin\Node\TableNode;
+use Drupal\DrupalExtension\Context\DrupalSubContextBase;
+use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
+use Drupal\file\Entity\File;
+use Drupal\og\OgGroupAudienceHelper;
+
+/**
+ * Behat step definitions for testing asset distributions.
+ */
+class AssetDistributionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
+  /**
+   * Test asset distributions.
+   *
+   * @var \Drupal\rdf_entity\Entity\Rdf[]
+   */
+  protected $assetdistributions = [];
+
+  /**
+   * Test files.
+   *
+   * @var \Drupal\file\Entity\File[]
+   */
+  protected $files = [];
+
+  /**
+   * Navigates to the canonical page display of a asset distribution.
+   *
+   * @param string $asset_distribution
+   *   The name of the asset distribution.
+   *
+   * @When (I )go to (the homepage of )the :asset_distribution distribution
+   * @When (I )visit (the homepage of )the :asset_distribution distribution
+   */
+  public function visitCollection($asset_distribution) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $distribution */
+    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
+    $this->visitPath($asset_distribution->url());
+  }
+
+  /**
+   * Navigates to the edit form of a asset distribution.
+   *
+   * @param string $asset_distribution
+   *   The name of the $asset_distribution.
+   *
+   * @When (I )go to the :asset_distribution asset distribution edit form
+   * @When (I )visit the :asset_distribution asset distribution edit form
+   */
+  public function visitEditAssetDistribution($asset_distribution) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
+    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
+    $path = $asset_distribution->url('edit-form');
+    $this->visitPath($path);
+  }
+
+  /**
+   * Creates a number of asset distributions with data provided in a table.
+   *
+   * @param TableNode $asset_distribution_table
+   *   The solution data.
+   *
+   * @codingStandardsIgnoreStart
+   *   Table format:
+   *   Table format:
+   * uri                                      | name          | description              | access url                               | file     | creation date     | modification date |
+   * http://joinup.eu/asset_distribution/foo  | Foo solution  | This is a foo solution   | http://base_url.com/path-to-file.zip     | text.zip | 28-01-1995 12:05  |                   |
+   * http://joinup.eu/asset_distribution/bar  | Bar solution  | This is a bar solution   | http://external_url.com/path-to-file.zip | text.zip | 28-01-1995 12:06  |                   |
+   * @codingStandardsIgnoreEnd
+   * Fields title and description are mandatory.
+   *
+   * @throws \Exception
+   *   Thrown when a column name is incorrect.
+   *
+   * @Given (the following )solutions:
+   */
+  public function givenSolutions(TableNode $asset_distribution_table) {
+    $aliases = self::solutionFieldAliases();
+
+    foreach ($asset_distribution_table->getColumnsHash() as $solution) {
+      $values = [];
+      // Replace the column aliases with the actual field names.
+      foreach ($solution as $key => $value) {
+        if (array_key_exists($key, $aliases)) {
+          $values[$aliases[$key]] = $value;
+        }
+        else {
+          throw new \Exception("Unknown column '$key' in solution table.");
+        }
+      };
+      $this->createSolution($values);
+    }
+  }
+
+  /**
+   * Creates a solution with data provided in a table.
+   *
+   * Table format:
+   * | title             | Sample solution                         |
+   * | uri               | http://joinup.eu/solution/foobar        |
+   * | description       | A sample solution                       |
+   * | document          | text.pdf                                |
+   * | pre-moderation    | 0|1                                     |
+   * | closed            | 0|1                                     |
+   * | elibrary creation | 0|1|2                                   |
+   * | landing page      | http://example.com/foobar/landing       |
+   * | webdav creation   | 0|1                                     |
+   * | webdav url        | http://joinup.eu/solution/foobar/webdav |
+   * | wiki              | http://example.wiki/foobar/wiki         |
+   *
+   * Fields title, description and elibrary creation are required.
+   *
+   * @param TableNode $solution_table
+   *   The solution data.
+   *
+   * @throws \Exception
+   *   Thrown when a column name is incorrect.
+   *
+   * @Given (the following )solution:
+   */
+  public function givenCollection(TableNode $solution_table) {
+    $aliases = self::solutionFieldAliases();
+
+    $values = [];
+    // Replace the column aliases with the actual field names.
+    foreach ($solution_table->getRowsHash() as $key => $value) {
+      if (array_key_exists($key, $aliases)) {
+        $values[$aliases[$key]] = $value;
+      }
+      else {
+        throw new \Exception("Unknown column '$key' in solution table.");
+      }
+    };
+    $this->createSolution($values);
+  }
+
+  /**
+   * Creates a solution from the given property and field data.
+   *
+   * @param array $values
+   *   An optional associative array of values, keyed by property name.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   A new collection entity.
+   *
+   * @throws \Exception
+   *   Thrown when a given image is not found.
+   */
+  public function createSolution(array $values) {
+    // Add image.
+    if (!empty($values['field_is_documentation'])) {
+      $filename = $values['field_is_documentation'];
+      $files_path = $this->getMinkParameter('files_path');
+      $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
+      if (!is_file($path)) {
+        throw new \Exception("Document '$filename' was not found in file path '$files_path'.");
+      }
+      // Copy the document into the public files folder and turn it into a File
+      // entity before linking it to the collection.
+      $uri = 'public://' . $filename;
+      $destination = file_unmanaged_copy($path, $uri);
+      $document = File::create(['uri' => $destination]);
+      $document->save();
+      $values['field_is_documentation'] = [$document->id()];
+
+      $this->documents[$document->id()] = $document;
+    }
+
+    $values['rid'] = 'solution';
+    $solution = Rdf::create($values);
+    $solution->save();
+    $this->solutions[$solution->id()] = $solution;
+
+    return $solution;
+  }
+
+  /**
+   * Deletes a solution.
+   *
+   * @param string $solution
+   *   The name of the solution.
+   *
+   * @When (I )delete the :solution solution
+   */
+  public function deleteSolution($solution) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
+    $this->getSolutionByName($solution)->delete();
+  }
+
+  /**
+   * Returns the Solution with the given name.
+   *
+   * If multiple solution have the same name, the first one will be returned.
+   *
+   * @param string $name
+   *   The solution name.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   The solution.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when a solution with the given name does not exist.
+   */
+  protected function getSolutionByName($name) {
+    $query = \Drupal::entityQuery('rdf_entity')
+      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#Asset'))
+      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
+      ->range(0, 1);
+    $result = $query->execute();
+
+    if (empty($result)) {
+      throw new \InvalidArgumentException("The solution with the name '$name' was not found.");
+    }
+
+    return Rdf::load(reset($result));
+  }
+
+  /**
+   * Checks the number of available solutions.
+   *
+   * @param int $number
+   *   The expected number of solutions.
+   *
+   * @throws \Exception
+   *   Thrown when the number of solutions does not not match the expectation.
+   *
+   * @Then I should have :number solution(s)
+   */
+  public function assertSolutionCount($number) {
+    $actual = \Drupal::entityQuery('rdf_entity')
+      ->condition('?entity', 'rdf:type', '<http://www.w3.org/ns/adms#Asset>')
+      ->count()
+      ->execute();
+    if ($actual != $number) {
+      throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
+    }
+  }
+
+  /**
+   * Checks if the given solution belongs to the given collection.
+   *
+   * If there are multiple solutions or collections with the same name, then
+   * only the first one is checked.
+   *
+   * @param string $solution
+   *   The title of the custom page to check.
+   * @param string $collection
+   *   The name of the collection to check.
+   *
+   * @throws \Exception
+   *   Thrown when a custom page with the given title doesn't exist.
+   *
+   * @Then the :collection collection has a solution named :solution
+   */
+  public function assertOgMembership($solution, $collection) {
+    /** @var \Drupal\rdf_entity\RdfInterface $collection */
+    $collection = \CollectionSubContext::getCollectionByName($collection);
+    /** @var \Drupal\rdf_entity\RdfInterface $solution */
+    $solution = \SolutionSubContext::getSolutionByName($solution);
+    // This handles the solutions added by form submit.
+    if (!in_array($solution, $this->solutions)) {
+      $this->solutions[$solution->id()] = $solution;
+    }
+
+    /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
+    foreach ($solution->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
+      if ($group->getValue()['target_id'] == $collection->id()) {
+        // Test passes.
+        return;
+      }
+    }
+
+    throw new \Exception("The solution '{$solution->label()}' is not associated with collection '{$collection->label()}'.");
+  }
+
+  /**
+   * Remove any created solutions.
+   *
+   * @AfterScenario
+   */
+  public function cleanSolutions() {
+    // Remove any solutions that were created.
+    foreach ($this->solutions as $solution) {
+      $solution->delete();
+    }
+    // Also remove the image entities that were attached to the collections.
+    foreach ($this->documents as $document) {
+      $document->delete();
+    }
+  }
+
+  /**
+   * Field alias mapping.
+   *
+   * @return array
+   *    Mapping.
+   */
+  private static function assetDistributionFieldAliases() {
+    // Mapping alias - field name.
+    return [
+      'uri' => 'id',
+      'name' => 'label',
+      'access url' => 'field_ad_access_url',
+      'creation date' => 'field_ad_creation_date',
+      'description' => 'field_ad_description',
+      'file' => 'field_ad_file',
+      'file size' => 'field_ad_file_size',
+      'format' => 'field_ad_format',
+      'licence' => 'field_ad_licence',
+      'modification date' => 'field_ad_modification_date',
+      'representation technique' => 'field_ad_repr_technique',
+      'status' => 'field_ad_status',
+    ];
+  }
+
+}
