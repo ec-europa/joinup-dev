@@ -289,4 +289,14 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     return $this;
   }
 
+  /**
+   * Get weight.
+   *
+   * @todo This should be removed rdf terms have their own
+   * proper implementation.
+   */
+  public function getWeight() {
+    return 0;
+  }
+
 }

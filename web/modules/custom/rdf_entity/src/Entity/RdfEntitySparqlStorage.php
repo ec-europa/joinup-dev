@@ -76,29 +76,37 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     if (empty($ids)) {
       return [];
     }
+    $remaining_ids = $ids;
     $entities = array();
-    $values = array();
-    $bundles = $this->getBundlesByIds($ids);
-    foreach ($ids as $id) {
-      if (!isset($bundles[$id])) {
-        // This entity doesn't have a corresponding bundle.
-        // @todo Throw an exception?
+    while (count($remaining_ids)) {
+      $operation_ids = array_slice($remaining_ids, 0, 200, TRUE);
+      foreach ($operation_ids as $k => $v) {
+        unset($remaining_ids[$k]);
+      }
+      $values = array();
+      $bundles = $this->getBundlesByIds($operation_ids);
+      foreach ($operation_ids as $key => $id) {
+        if (!isset($bundles[$id])) {
+          // This entity doesn't have a corresponding bundle.
+          // @todo Throw an exception?
+          continue;
+        }
+        $values[$id] = array(
+          'rid' => array('x-default' => $bundles[$id]),
+          'id' => array('x-default' => $id),
+        );
+      }
+      if (empty($values)) {
         continue;
       }
-      $values[$id] = array(
-        'rid' => array('x-default' => $bundles[$id]),
-        'id' => array('x-default' => $id),
-      );
+      $this->loadFromBaseTable($values);
+      $this->loadFromDedicatedTables($values, FALSE);
+      foreach ($values as $id => $entity_values) {
+        $entity = new Rdf($entity_values, 'rdf_entity', $bundles[$id]);
+        $entities[$id] = $entity;
+      }
     }
-    if (empty($values)) {
-      return [];
-    }
-    $this->loadFromBaseTable($values);
-    $this->loadFromDedicatedTables($values, FALSE);
-    foreach ($values as $id => $entity_values) {
-      $entity = new Rdf($entity_values, 'rdf_entity', $bundles[$id]);
-      $entities[$id] = $entity;
-    }
+
     return $entities;
   }
 
@@ -464,6 +472,7 @@ QUERY;
           WHERE{
           ?uri <' . $label . '> ?label
           FILTER (?uri IN ( ' . $ids_string . '))
+          FILTER (lang(?label) = \'en\') .
           }';
       /** @var \EasyRdf_Sparql_Result $results */
       $results = $this->sparql->query($query);

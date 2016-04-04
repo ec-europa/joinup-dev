@@ -1,0 +1,17 @@
+<?php
+/**
+ * @file
+ * Main functions and hook implementations of the RDF Taxonomy module.
+ */
+
+/**
+ * Implements hook_entity_type_alter().
+ *
+ * Set the controller class for vocabularies and terms to an alternate
+ * implementation of the Drupal\Core\Entity\EntityStorageInterface interface.
+ */
+function rdf_taxonomy_entity_type_alter(array &$entity_types) {
+  $entity_types['taxonomy_vocabulary']->setStorageClass('Drupal\rdf_taxonomy\VocabularyRdfStorage');
+  $entity_types['taxonomy_term']->setStorageClass('Drupal\rdf_taxonomy\TermRdfStorage');
+  $entity_types['taxonomy_term']->setHandlerClass('views_data', NULL);
+}

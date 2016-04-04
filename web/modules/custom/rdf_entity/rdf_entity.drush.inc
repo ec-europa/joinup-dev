@@ -49,6 +49,9 @@ WHERE {
     ?entity ?field ?value .
   }
 }
+
+SPARQL CLEAR GRAPH  <http://example.com>;
+DROP SILENT GRAPH
 QUERY;
     $endpoint->query($query);
     drush_log('All triples have been removed.', LogLevel::INFO);
