@@ -27,6 +27,13 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
   protected $collectionContext;
 
   /**
+   * The solution route context service.
+   *
+   * @var \Drupal\Core\Plugin\Context\ContextProviderInterface
+   */
+  protected $solutionContext;
+
+  /**
    * Constructs a AddContentBlock object.
    *
    * @param array $configuration
@@ -37,10 +44,13 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
    *   The plugin implementation definition.
    * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $collection_context
    *   The collection context.
+   * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $solution_context
+   *   The solution context.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextProviderInterface $collection_context) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextProviderInterface $collection_context, ContextProviderInterface $solution_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->collectionContext = $collection_context;
+    $this->solutionContext = $solution_context;
   }
 
   /**
@@ -49,7 +59,8 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration, $plugin_id, $plugin_definition,
-      $container->get('collection.collection_route_context')
+      $container->get('collection.collection_route_context'),
+      $container->get('solution.solution_route_context')
     );
   }
 
@@ -73,7 +84,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // caching ourselves.
     /** @var \Drupal\Core\Plugin\Context\Context[] $collection_contexts */
     $collection_contexts = $this->collectionContext->getRuntimeContexts(['collection']);
-    if ($collection_contexts['collection']->hasContextValue()) {
+    if ($collection_contexts && $collection_contexts['collection']->hasContextValue()) {
       $page_url = Url::fromRoute('custom_page.collection_custom_page.add', [
         'rdf_entity' => $collection_contexts['collection']->getContextValue()->id(),
       ]);
@@ -95,7 +106,25 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
         '#attributes' => ['class' => ['button', 'button--small']],
         '#access' => $solution_url->access(),
       ];
+    }
 
+    if(!empty($this->solutionContext)) {
+      // Same as above for a button regarding the distributions.
+      /** @var \Drupal\Core\Plugin\Context\Context[] $solution_contexts */
+      $solution_contexts = $this->solutionContext->getRuntimeContexts(['solution']);
+      if ($solution_contexts && $solution_contexts['solution']->hasContextValue()) {
+        $distribution_url = Url::fromRoute('asset_distribution.solution_asset_distribution.add', [
+          'rdf_entity' => $solution_contexts['solution']->getContextValue()
+            ->id(),
+        ]);
+        $links['asset_distribution'] = [
+          '#type' => 'link',
+          '#title' => $this->t('Add distribution'),
+          '#url' => $distribution_url,
+          '#attributes' => ['class' => ['button', 'button--small']],
+          '#access' => $distribution_url->access(),
+        ];
+      }
     }
 
     // Render the links as an unordered list, styled as buttons.
@@ -120,10 +149,10 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
    */
   public function getCacheContexts() {
     $context = parent::getCacheContexts();
-    // The 'Add custom page' link is only visible for certain roles on certain
+    // The links are only visible for certain roles on certain
     // collections. Normally cache contexts are added automatically but this
-    // link depends on an optional context which we manage ourselves.
-    return Cache::mergeContexts($context, ['user.roles', 'collection']);
+    // links depends on an optional context which we manage ourselves.
+    return Cache::mergeContexts($context, ['user.roles', 'collection', 'solution']);
   }
 
 }
