@@ -8,6 +8,7 @@
 use \Drupal\Core\Entity\EntityInterface;
 use \Drupal\file\Entity\File;
 use \Drupal\Component\Utility\UrlHelper;
+use \Drupal\rdf_entity\RdfInterface;
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
@@ -58,4 +59,23 @@ function asset_distribution_rdf_entity_presave(EntityInterface $entity) {
   // Set the values.
   $entity->get('field_ad_access_url')->setValue($access_urls);
   $entity->get('field_ad_file_size')->setValue(intval($file_size / 1024));
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_create().
+ */
+function asset_distribution_rdf_entity_create(EntityInterface $entity) {
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
+  $rdf_entity = \Drupal::routeMatch()->getParameter('rdf_entity');
+
+  if ($rdf_entity instanceof RdfInterface && $rdf_entity->bundle() == 'asset') {
+    // @todo: Build the relation between this entity and the parent.
+    // Below is an example (that might already be working.
+    /*
+    $assigned_distributions =
+    $rdf_entity->get('field_is_assetDistributions')->getValue();
+    $assigned_distributions[]['target_id'] = $entity->id();
+    $rdf_entity->set('field_is_asset_distributions', $assigned_distributions);
+     */
+  }
 }
