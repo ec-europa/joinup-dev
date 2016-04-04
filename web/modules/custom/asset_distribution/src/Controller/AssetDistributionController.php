@@ -15,6 +15,7 @@ use Drupal\rdf_entity\RdfInterface;
  * @package Drupal\asset_distribution\Controller
  */
 class AssetDistributionController extends ControllerBase {
+
   /**
    * Handles access to the distribution add form through solution pages.
    *
