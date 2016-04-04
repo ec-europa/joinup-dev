@@ -11,7 +11,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\file\Entity\File;
-use Drupal\og\OgGroupAudienceHelper;
 
 /**
  * Behat step definitions for testing asset distributions.
@@ -188,12 +187,12 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       $destination = file_unmanaged_copy($path, $uri);
       $file = File::create(['uri' => $destination]);
       $file->save();
-      $values['field_is_documentation'] = [$file->id()];
+      $values['field_ad_file'] = [$file->id()];
 
       $this->files[$file->id()] = $file;
     }
 
-    $values['rid'] = 'asset_repository';
+    $values['rid'] = 'asset_distribution';
     $asset_distribution = Rdf::create($values);
     $asset_distribution->save();
     $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
@@ -217,7 +216,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   /**
    * Returns the asset distribution with the given name.
    *
-   * If multiple asset distributions have the same name, the first one will be returned.
+   * If multiple asset distributions have the same name,
+   * the first one will be returned.
    *
    * @param string $name
    *   The asset distribution name.
@@ -249,9 +249,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *   The expected number of asset distributions.
    *
    * @throws \Exception
-   *   Thrown when the number of asset distributions does not not match the expectation.
+   *   Thrown when the number of asset distributions does not
+   *   match the expectation.
    *
-   * @Then I should have :number asset distributions(s)
+   * @Then I should have :number asset distribution(s)
    */
   public function assertAssetDistributionCount($number) {
     $actual = \Drupal::entityQuery('rdf_entity')
@@ -266,8 +267,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   /**
    * Checks if the given asset distributions belongs to the given solution.
    *
-   * If there are multiple solutions or asset distributions with the same name, then
-   * only the first one is checked.
+   * If there are multiple solutions or asset distributions with
+   * the same name, then only the first one is checked.
    *
    * @param string $asset_distribution
    *   The name of the asset distribution to check.
@@ -277,9 +278,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \Exception
    *   Thrown when an asset distribution with the given title doesn't exist.
    *
-   * @Then the :solution solution is related to the :asset_distribution distribution
+   * @Then the :asset_distribution asset distribution is related to the :solution solution
    */
-  public function assertOgMembership($asset_distribution, $solution) {
+  public function assertAssetRelationship($asset_distribution, $solution) {
     /** @var \Drupal\rdf_entity\RdfInterface $asset_distribution */
     $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
     /** @var \Drupal\rdf_entity\RdfInterface $solution */

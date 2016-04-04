@@ -50,5 +50,5 @@ Feature: "Add asset distribution" visibility options.
       | Description       | This is a test text                    |
       | File              | text.pdf                               |
     And I press "Save"
-    Then I have an asset distribution titled "Custom title of asset distribution"
-    And the "Custom title of asset distribution" asset distribution is related to "Asset random name 2" solution
+    Then I should have 1 asset distribution
+    And the "Custom title of asset distribution" asset distribution is related to the "Asset random name 2" solution

@@ -15,7 +15,6 @@ Feature: Solution API
       | name        | Asset distribution entity foo                      |
       | uri         | http://joinup.eu/asset_distribution/entity/api/foo |
       | description | Asset distribution sample description              |
-      | abstract    | A test abstract                                    |
       | file        | test.zip                                           |
     And the following solution:
       | name              | Asset distribution solution                            |
@@ -31,11 +30,11 @@ Feature: Solution API
       | groups audience   | http://joinup.eu/collection/asset_distribution-api-foo |
     Then I should have 1 solution
     And I should have 1 asset distribution
-    And the "Custom title of asset distribution" asset distribution is related to "Asset random name 2" solution
+    And the "Custom title of asset distribution" asset distribution is related to the "Asset random name 2" solution
 
   Scenario: Programmatically create a collection using only the mandatory fields
     Given the following collection:
-      | name              | Asset repository short API bar           |
+      | name              | Asset distribution short API bar         |
       | logo              | logo.png                                 |
       | moderation        | 1                                        |
       | closed            | 1                                        |
@@ -45,7 +44,6 @@ Feature: Solution API
       | name        | Asset distribution entity foo short                  |
       | uri         | http://joinup.eu/asset_distribution/entity/api/short |
       | description | Asset distribution sample description                |
-      | abstract    | A test abstract                                      |
       | file        | test.zip                                             |
     Given the following solution:
       | name              | AD first solution mandatory short                    |
@@ -56,4 +54,4 @@ Feature: Solution API
       | groups audience   | http://joinup.eu/asset_repo/coll-api-bar             |
     Then I should have 1 solution
     And I should have 1 asset distribution
-    And the "Custom title of asset distribution" asset distribution is related to "Asset random name 2" solution
+    And the "Custom title of asset distribution" asset distribution is related to the "Asset random name 2" solution
