@@ -29,6 +29,7 @@ dependencies:
   - path
   - r4032login
   - rdf_entity
+  - solution
   - text
   - toolbar
   - search_api

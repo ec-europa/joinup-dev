@@ -1,0 +1,13 @@
+name: Interoperability Solution
+type: module
+description: The interoperability solution RDF entity.
+core: 8.x
+package: Joinup
+
+dependencies:
+  - datetime
+  - image
+  - link
+  - options
+  - rdf_entity
+  - text
