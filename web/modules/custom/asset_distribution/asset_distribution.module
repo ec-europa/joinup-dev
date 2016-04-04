@@ -69,13 +69,8 @@ function asset_distribution_rdf_entity_create(EntityInterface $entity) {
   $rdf_entity = \Drupal::routeMatch()->getParameter('rdf_entity');
 
   if ($rdf_entity instanceof RdfInterface && $rdf_entity->bundle() == 'asset') {
-    // @todo: Build the relation between this entity and the parent.
-    // Below is an example (that might already be working.
-    /*
-    $assigned_distributions =
-    $rdf_entity->get('field_is_assetDistributions')->getValue();
+    $assigned_distributions = $rdf_entity->get('field_is_asset_distribution')->getValue();
     $assigned_distributions[]['target_id'] = $entity->id();
-    $rdf_entity->set('field_is_asset_distributions', $assigned_distributions);
-     */
+    $rdf_entity->set('field_is_asset_distribution', $assigned_distributions);
   }
 }
