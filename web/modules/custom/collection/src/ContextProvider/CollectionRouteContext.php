@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\rdf_entity\ContextProvider;
+namespace Drupal\collection\ContextProvider;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Plugin\Context\Context;
@@ -10,9 +10,9 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
- * Sets the current rdf entity as a context on collection routes.
+ * Sets the current collection as a context on collection routes.
  */
-class RdfRouteContext implements ContextProviderInterface {
+class CollectionRouteContext implements ContextProviderInterface {
 
   use StringTranslationTrait;
 
@@ -38,12 +38,14 @@ class RdfRouteContext implements ContextProviderInterface {
    */
   public function getRuntimeContexts(array $unqualified_context_ids) {
     $result = [];
-    $context_definition = new ContextDefinition('entity:rdf_entity', NULL, FALSE);
+    $context_definition = new ContextDefinition('entity:rdf_entity:collection', NULL, FALSE);
     $value = NULL;
     if (($route_object = $this->routeMatch->getRouteObject()) && ($route_contexts = $route_object->getOption('parameters')) && isset($route_contexts['rdf_entity'])) {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
-      if ($rdf_entity = $this->routeMatch->getParameter('rdf_entity')) {
-        $value = $rdf_entity;
+      if ($collection = $this->routeMatch->getParameter('rdf_entity')) {
+        if ($collection->bundle() == 'collection') {
+          $value = $collection;
+        }
       }
     }
 
@@ -53,7 +55,7 @@ class RdfRouteContext implements ContextProviderInterface {
     $context = new Context($context_definition, $value);
     $context->addCacheableDependency($cacheability);
 
-    $result[$value->bundle()] = $context;
+    $result['collection'] = $context;
 
     return $result;
   }
@@ -62,8 +64,8 @@ class RdfRouteContext implements ContextProviderInterface {
    * {@inheritdoc}
    */
   public function getAvailableContexts() {
-    $context = new Context(new ContextDefinition('entity:rdf_entity', $this->t('Rdf entity from URL')));
-    return [$this->routeMatch->getParameter('rdf_entity')->bundle() => $context];
+    $context = new Context(new ContextDefinition('entity:rdf_entity:collection', $this->t('Collection from URL')));
+    return ['collection' => $context];
   }
 
 }
