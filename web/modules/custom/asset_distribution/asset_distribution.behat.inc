@@ -5,7 +5,6 @@
  * Contains \AssetDistributionSubContext.
  */
 
-use Drupal\DrupalDriverManager;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -31,24 +30,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @var \Drupal\file\Entity\File[]
    */
   protected $files = [];
-
-  /**
-   * A solution subcontext object.
-   *
-   * @var \SolutionSubContext
-   */
-  protected $solutionContext;
-
-  /**
-   * AssetDistributionSubContext constructor.
-   *
-   * @param \Drupal\DrupalDriverManager $drupal
-   *   The drupal driver.
-   */
-  public function __construct(DrupalDriverManager $drupal) {
-    $this->solutionContext = new SolutionSubContext($drupal);
-    parent::__construct($drupal);
-  }
 
   /**
    * Navigates to the canonical page display of a asset distribution.
@@ -262,6 +243,38 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
+   * Returns the Solution with the given name.
+   *
+   * If multiple solution have the same name, the first one will be returned.
+   *
+   * @param string $name
+   *   The solution name.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   The solution.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when a solution with the given name does not exist.
+   */
+  public function getSolutionByName($name) {
+    $query = \Drupal::entityQuery('rdf_entity')
+      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#Asset'))
+      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
+      ->range(0, 1);
+    $result = $query->execute();
+
+    if (empty($result)) {
+      throw new \InvalidArgumentException("The solution with the name '$name' was not found.");
+    }
+
+    // We need to skip the static cache and load the unchanged entity from the
+    // database.
+    return \Drupal::entityTypeManager()
+      ->getStorage('rdf_entity')
+      ->loadUnchanged(reset($result));
+  }
+
+  /**
    * Checks the number of available asset distributions.
    *
    * @param int $number
@@ -304,7 +317,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
 
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = $this->solutionContext->getSolutionByName($solution);
+    $this->clearStaticCaches();
+    $solution = $this->getSolutionByName($solution);
 
     // This handles the solutions added by form submit.
     if (!in_array($asset_distribution, $this->assetDistributions)) {

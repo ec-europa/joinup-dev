@@ -28,7 +28,6 @@ Feature: "Add asset distribution" visibility options.
     And I go to the homepage of the "Asset random name" solution
     Then I should not see the link "Add distribution"
 
-  @javascript
   Scenario: Add distribution as a moderator.
     Given the following collection:
       | name | Asset Distribution Test2                  |
@@ -51,5 +50,4 @@ Feature: "Add asset distribution" visibility options.
     When I go to the homepage of the "Asset another random name" solution
     Then I should see the text "Distribution"
     And I should see the link "Custom title of asset distribution"
-    Then I break
     And the "Custom title of asset distribution" asset distribution is related to the "Asset another random name" solution
