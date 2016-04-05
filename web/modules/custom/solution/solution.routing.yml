@@ -10,3 +10,15 @@ solution.collection_solution.add:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+# Route to create a release of the current solution.
+solution.release.add:
+  path: 'rdf_entity/{rdf_entity}/release/add'
+  defaults:
+    _controller: '\Drupal\solution\Controller\SolutionReleaseController::add'
+    _title: 'Add solution'
+  requirements:
+    _custom_access: '\Drupal\solution\Controller\SolutionReleaseController::createSolutionAccess'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity

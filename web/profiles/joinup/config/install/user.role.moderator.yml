@@ -6,14 +6,15 @@ label: Moderator
 weight: 3
 is_admin: false
 permissions:
-  - 'view rdf entity overview'
-  - 'administer users'
-  - 'access user profiles'
-  - 'administer views'
   - 'access toolbar'
+  - 'access user profiles'
   - 'add og menu instance entities'
+  - 'administer nodes'
+  - 'administer users'
+  - 'administer views'
+  - 'create custom collection page'
+  - 'create solution releases'
   - 'delete og menu instance entities'
   - 'edit og menu instance entities'
-  - 'create custom collection page'
   - 'propose solution rdf entity'
-  - 'administer nodes'
+  - 'view rdf entity overview'
