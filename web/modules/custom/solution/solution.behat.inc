@@ -9,7 +9,6 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\file\Entity\File;
 use Drupal\og\OgGroupAudienceHelper;
@@ -329,15 +328,13 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       throw new \Exception("Solution entity not found.");
     }
 
-    if (!($target_solution = $release->get('field_is_is_version_of')
-      ->getValue())
+    if ($release->get('field_is_is_version_of')->getValue()[0]['target_id']
+      == $solution->id()
     ) {
-      throw new \Exception("Release {$release->label()} is not a release.");
+      // Pass.
+      return;
     }
-
-    if ($target_solution['target_id'] != $solution->id()) {
-      throw new \Exception("Release {$release->label()} is not a release of the {$solution->label()} solution.");
-    }
+    throw new \Exception("Release {$release->label()} is not a release of the {$solution->label()} solution.");
   }
 
   /**

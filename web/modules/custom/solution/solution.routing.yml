@@ -15,7 +15,6 @@ solution.release.add:
   path: 'rdf_entity/{rdf_entity}/release/add'
   defaults:
     _controller: '\Drupal\solution\Controller\SolutionReleaseController::add'
-    _title: 'Add release'
   requirements:
     _custom_access: '\Drupal\solution\Controller\SolutionReleaseController::createSolutionAccess'
   options:

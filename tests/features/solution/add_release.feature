@@ -5,31 +5,30 @@ Feature: "Add release" visibility options.
   I need to be able to add "Release" rdf entities through UI.
 
   Scenario: "Add release" button should only be shown to moderators.
-    Given the following solutions:
+    Given the following solution:
       | name              | Release solution test             |
       | uri               | https://release.solution/add/test |
-      | Documentation     | text.pdf                          |
-      | eLibrary creation | 1                                 |
+      | documentation     | text.pdf                          |
+
     When I am logged in as a "moderator"
-    And I go to the homepage of the "Release solution test" collection
+    And I go to the homepage of the "Release solution test" solution
     Then I should see the link "Add release"
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Release solution test" collection
+    And I go to the homepage of the "Release solution test" solution
     Then I should not see the link "Add release"
 
     When I am an anonymous user
-    And I go to the homepage of the "Release solution test" collection
+    And I go to the homepage of the "Release solution test" solution
     Then I should not see the link "Add release"
 
   Scenario: Add release as a moderator.
-    Given the following solutions:
+    Given the following solution:
       | name              | Release solution test 2             |
       | uri               | https://release.solution/add/test/2 |
-      | Documentation     | text.pdf                            |
-      | eLibrary creation | 1                                   |
+      | documentation     | text.pdf                            |
     And I am logged in as a moderator
-    When I go to the homepage of the "Release solution test 2" collection
+    When I go to the homepage of the "Release solution test 2" solution
     And I click "Add release"
     Then I should see the heading "Add release"
     And the following fields should be present "Title, Version"

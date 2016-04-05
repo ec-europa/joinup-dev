@@ -9,7 +9,7 @@ use Drupal\rdf_entity\RdfInterface;
 /**
  * Class SolutionReleaseController.
  *
- * Hanldes the creation of a new release of a solution
+ * Hanldes the creation of a new release of a solution.
  *
  * @package Drupal\solution\Controller
  */
@@ -31,6 +31,9 @@ class SolutionReleaseController extends ControllerBase {
     $release->set('field_is_is_version_of', $rdf_entity->id());
     $form = $this->entityFormBuilder()->getForm($release, 'release');
 
+    // Override rdf's title.
+    $form['#title'] = t('Add release');
+
     return $form;
   }
 
@@ -49,7 +52,9 @@ class SolutionReleaseController extends ControllerBase {
     // @todo Collection owners and facilitators should also have the right to
     //   create solutions for the collections they manage.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2448
-    if ($rdf_entity->bundle() == 'solution' && $this->currentUser()->hasPermission('create solution releases')) {
+    if ($rdf_entity->bundle() == 'solution' && $this->currentUser()
+        ->hasPermission('create solution releases')
+    ) {
       return AccessResult::allowed();
     }
 
