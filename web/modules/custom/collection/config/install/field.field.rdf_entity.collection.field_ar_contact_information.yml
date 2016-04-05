@@ -4,8 +4,6 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_ar_contact_information
     - rdf_entity.rdfentity.collection
-_core:
-  default_config_hash: DToD0R6k5FFSdP63wilqppBp-UZ8pj4Cn6PUW7moitY
 id: rdf_entity.collection.field_ar_contact_information
 field_name: field_ar_contact_information
 entity_type: rdf_entity

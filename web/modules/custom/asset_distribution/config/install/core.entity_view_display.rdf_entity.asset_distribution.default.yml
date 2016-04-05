@@ -1,0 +1,108 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.asset_distribution.field_ad_access_url
+    - field.field.rdf_entity.asset_distribution.field_ad_creation_date
+    - field.field.rdf_entity.asset_distribution.field_ad_description
+    - field.field.rdf_entity.asset_distribution.field_ad_file
+    - field.field.rdf_entity.asset_distribution.field_ad_file_size
+    - field.field.rdf_entity.asset_distribution.field_ad_format
+    - field.field.rdf_entity.asset_distribution.field_ad_licence
+    - field.field.rdf_entity.asset_distribution.field_ad_modification_date
+    - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
+    - field.field.rdf_entity.asset_distribution.field_ad_status
+    - rdf_entity.rdfentity.asset_distribution
+  module:
+    - datetime
+    - file
+    - link
+    - text
+id: rdf_entity.asset_distribution.default
+targetEntityType: rdf_entity
+bundle: asset_distribution
+mode: default
+content:
+  field_ad_access_url:
+    weight: -3
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+  field_ad_creation_date:
+    weight: -2
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  field_ad_description:
+    weight: -4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_ad_file:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_default
+  field_ad_file_size:
+    weight: 5
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+  field_ad_format:
+    weight: 2
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_ad_licence:
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_ad_modification_date:
+    weight: -1
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  field_ad_repr_technique:
+    weight: 3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_ad_status:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  label:
+    label: hidden
+    type: string
+    weight: -5
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden: {  }

@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ad_description
+    - rdf_entity.rdfentity.asset_distribution
+  module:
+    - text
+id: rdf_entity.asset_distribution.field_ad_description
+field_name: field_ad_description
+entity_type: rdf_entity
+bundle: asset_distribution
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary
