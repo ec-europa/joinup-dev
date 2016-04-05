@@ -14,6 +14,7 @@ dependencies:
 
 config_devel:
   - core.entity_form_display.rdf_entity.solution.default
+  - core.entity_form_display.rdf_entity.solution.release
   - core.entity_view_display.rdf_entity.solution.default
   - field.field.rdf_entity.solution.field_is_affiliations_requests
   - field.field.rdf_entity.solution.field_is_contact_information

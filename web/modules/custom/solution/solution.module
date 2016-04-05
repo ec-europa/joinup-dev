@@ -18,3 +18,11 @@ function solution_entity_base_field_info_alter(&$fields, EntityTypeInterface $en
     }
   }
 }
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function solution_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+  $entity_types['rdf_entity']->setFormclass('release', 'Drupal\rdf_entity\Form\RdfForm');
+}
