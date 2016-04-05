@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\file\Entity\File;
 use Drupal\og\OgGroupAudienceHelper;
@@ -55,6 +56,34 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
     $solution = $this->getSolutionByName($solution);
     $this->visitPath($solution->url());
+  }
+
+  /**
+   * Returns the Solution with the given name.
+   *
+   * If multiple solution have the same name, the first one will be returned.
+   *
+   * @param string $name
+   *   The solution name.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   The solution.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when a solution with the given name does not exist.
+   */
+  public function getSolutionByName($name) {
+    $query = \Drupal::entityQuery('rdf_entity')
+      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#Asset'))
+      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
+      ->range(0, 1);
+    $result = $query->execute();
+
+    if (empty($result)) {
+      throw new \InvalidArgumentException("The solution with the name '$name' was not found.");
+    }
+
+    return Rdf::load(reset($result));
   }
 
   /**
@@ -119,45 +148,46 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Creates a solution with data provided in a table.
+   * Field alias mapping.
    *
-   * Table format:
-   * | title             | Sample solution                         |
-   * | uri               | http://joinup.eu/solution/foobar        |
-   * | description       | A sample solution                       |
-   * | document          | text.pdf                                |
-   * | pre-moderation    | 0|1                                     |
-   * | closed            | 0|1                                     |
-   * | elibrary creation | 0|1|2                                   |
-   * | landing page      | http://example.com/foobar/landing       |
-   * | webdav creation   | 0|1                                     |
-   * | webdav url        | http://joinup.eu/solution/foobar/webdav |
-   * | wiki              | http://example.wiki/foobar/wiki         |
-   *
-   * Fields title, description and elibrary creation are required.
-   *
-   * @param TableNode $solution_table
-   *   The solution data.
-   *
-   * @throws \Exception
-   *   Thrown when a column name is incorrect.
-   *
-   * @Given (the following )solution:
+   * @return array
+   *    Mapping.
    */
-  public function givenCollection(TableNode $solution_table) {
-    $aliases = self::solutionFieldAliases();
-
-    $values = [];
-    // Replace the column aliases with the actual field names.
-    foreach ($solution_table->getRowsHash() as $key => $value) {
-      if (array_key_exists($key, $aliases)) {
-        $values[$aliases[$key]] = $value;
-      }
-      else {
-        throw new \Exception("Unknown column '$key' in solution table.");
-      }
-    };
-    $this->createSolution($values);
+  private static function solutionFieldAliases() {
+    // Mapping alias - field name.
+    return [
+      'uri' => 'id',
+      'name' => 'label',
+      'affiliations requests' => 'field_is_affiliations_requests',
+      'contact information' => 'field_is_contact_information',
+      'creation date' => 'field_is_creation_date',
+      'description' => 'field_is_description',
+      'distribution' => 'field_is_distribution',
+      'documentation' => 'field_is_documentation',
+      'elibrary creation' => 'field_is_elibrary_creation',
+      'included asset' => 'field_is_included_asset',
+      'issue tracker' => 'field_is_issue_tracker',
+      'keywords' => 'field_is_keywords',
+      'landing page' => 'field_is_landing_page',
+      'language' => 'field_is_language',
+      'latest release' => 'field_is_latest_release',
+      'metrics page' => 'field_is_metrics_page',
+      'moderation' => 'field_is_moderation',
+      'modification date' => 'field_is_modification_date',
+      'owner' => 'field_is_owner',
+      'related solutions' => 'field_is_related_solutions',
+      'solution category' => 'field_is_solution_category',
+      'solution type' => 'field_is_solution_type',
+      'source code repository' => 'field_is_source_code_repository',
+      'spacial coverage' => 'field_is_spacial_coverage',
+      'status' => 'field_is_status',
+      'topic' => 'field_is_topic',
+      'translation' => 'field_is_translation',
+      'webdav creation' => 'field_is_webdav_creation',
+      'webdav url' => 'field_is_webdav_url',
+      'wiki' => 'field_is_wiki',
+      'groups audience' => 'og_group_ref',
+    ];
   }
 
   /**
@@ -201,6 +231,48 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Creates a solution with data provided in a table.
+   *
+   * Table format:
+   * | title             | Sample solution                         |
+   * | uri               | http://joinup.eu/solution/foobar        |
+   * | description       | A sample solution                       |
+   * | document          | text.pdf                                |
+   * | pre-moderation    | 0|1                                     |
+   * | closed            | 0|1                                     |
+   * | elibrary creation | 0|1|2                                   |
+   * | landing page      | http://example.com/foobar/landing       |
+   * | webdav creation   | 0|1                                     |
+   * | webdav url        | http://joinup.eu/solution/foobar/webdav |
+   * | wiki              | http://example.wiki/foobar/wiki         |
+   *
+   * Fields title, description and elibrary creation are required.
+   *
+   * @param TableNode $solution_table
+   *   The solution data.
+   *
+   * @throws \Exception
+   *   Thrown when a column name is incorrect.
+   *
+   * @Given (the following )solution:
+   */
+  public function givenCollection(TableNode $solution_table) {
+    $aliases = self::solutionFieldAliases();
+
+    $values = [];
+    // Replace the column aliases with the actual field names.
+    foreach ($solution_table->getRowsHash() as $key => $value) {
+      if (array_key_exists($key, $aliases)) {
+        $values[$aliases[$key]] = $value;
+      }
+      else {
+        throw new \Exception("Unknown column '$key' in solution table.");
+      }
+    };
+    $this->createSolution($values);
+  }
+
+  /**
    * Deletes a solution.
    *
    * @param string $solution
@@ -211,34 +283,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   public function deleteSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
     $this->getSolutionByName($solution)->delete();
-  }
-
-  /**
-   * Returns the Solution with the given name.
-   *
-   * If multiple solution have the same name, the first one will be returned.
-   *
-   * @param string $name
-   *   The solution name.
-   *
-   * @return \Drupal\rdf_entity\Entity\Rdf
-   *   The solution.
-   *
-   * @throws \InvalidArgumentException
-   *   Thrown when a solution with the given name does not exist.
-   */
-  public function getSolutionByName($name) {
-    $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#Asset'))
-      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
-      ->range(0, 1);
-    $result = $query->execute();
-
-    if (empty($result)) {
-      throw new \InvalidArgumentException("The solution with the name '$name' was not found.");
-    }
-
-    return Rdf::load(reset($result));
   }
 
   /**
@@ -259,6 +303,40 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       ->execute();
     if ($actual != $number) {
       throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
+    }
+  }
+
+  /**
+   * Checks if the loaded release is a distribution of a solution.
+   *
+   * @param int $release
+   *   The solution name.
+   *
+   * @throws \Exception
+   *   Thrown when a solutions is not found or it is not
+   *   a release of the given solution.
+   *
+   * @Then the :release solution is a new release for :solution
+   */
+  public function assertSolutionRelease($release, $solution) {
+    $release = $this->getSolutionByName($release);
+    if (empty($release)) {
+      throw new \Exception("Release entity not found.");
+    }
+
+    $solution = $this->getSolutionByName($solution);
+    if (empty($release)) {
+      throw new \Exception("Solution entity not found.");
+    }
+
+    if (!($target_solution = $release->get('field_is_is_version_of')
+      ->getValue())
+    ) {
+      throw new \Exception("Release {$release->label()} is not a release.");
+    }
+
+    if ($target_solution['target_id'] != $solution->id()) {
+      throw new \Exception("Release {$release->label()} is not a release of the {$solution->label()} solution.");
     }
   }
 
@@ -313,49 +391,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     foreach ($this->documents as $document) {
       $document->delete();
     }
-  }
-
-  /**
-   * Field alias mapping.
-   *
-   * @return array
-   *    Mapping.
-   */
-  private static function solutionFieldAliases() {
-    // Mapping alias - field name.
-    return [
-      'uri' => 'id',
-      'name' => 'label',
-      'affiliations requests' => 'field_is_affiliations_requests',
-      'contact information' => 'field_is_contact_information',
-      'creation date' => 'field_is_creation_date',
-      'description' => 'field_is_description',
-      'distribution' => 'field_is_distribution',
-      'documentation' => 'field_is_documentation',
-      'elibrary creation' => 'field_is_elibrary_creation',
-      'included asset' => 'field_is_included_asset',
-      'issue tracker' => 'field_is_issue_tracker',
-      'keywords' => 'field_is_keywords',
-      'landing page' => 'field_is_landing_page',
-      'language' => 'field_is_language',
-      'latest release' => 'field_is_latest_release',
-      'metrics page' => 'field_is_metrics_page',
-      'moderation' => 'field_is_moderation',
-      'modification date' => 'field_is_modification_date',
-      'owner' => 'field_is_owner',
-      'related solutions' => 'field_is_related_solutions',
-      'solution category' => 'field_is_solution_category',
-      'solution type' => 'field_is_solution_type',
-      'source code repository' => 'field_is_source_code_repository',
-      'spacial coverage' => 'field_is_spacial_coverage',
-      'status' => 'field_is_status',
-      'topic' => 'field_is_topic',
-      'translation' => 'field_is_translation',
-      'webdav creation' => 'field_is_webdav_creation',
-      'webdav url' => 'field_is_webdav_url',
-      'wiki' => 'field_is_wiki',
-      'groups audience' => 'og_group_ref',
-    ];
   }
 
 }
