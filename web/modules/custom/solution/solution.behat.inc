@@ -227,7 +227,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \InvalidArgumentException
    *   Thrown when a solution with the given name does not exist.
    */
-  protected function getSolutionByName($name) {
+  public function getSolutionByName($name) {
     $query = \Drupal::entityQuery('rdf_entity')
       ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#Asset'))
       ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
