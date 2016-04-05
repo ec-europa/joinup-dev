@@ -8,7 +8,9 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_documentation
     - field.field.rdf_entity.solution.field_is_elibrary_creation
+    - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
+    - field.field.rdf_entity.solution.field_is_is_version_of
     - field.field.rdf_entity.solution.field_is_issue_tracker
     - field.field.rdf_entity.solution.field_is_keywords
     - field.field.rdf_entity.solution.field_is_landing_page
@@ -27,6 +29,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_status
     - field.field.rdf_entity.solution.field_is_topic
     - field.field.rdf_entity.solution.field_is_translation
+    - field.field.rdf_entity.solution.field_is_version
     - field.field.rdf_entity.solution.field_is_webdav_creation
     - field.field.rdf_entity.solution.field_is_webdav_url
     - field.field.rdf_entity.solution.field_is_wiki
@@ -83,8 +86,22 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
+  field_is_has_version:
+    weight: 26
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_is_included_asset:
     weight: 6
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_is_is_version_of:
+    weight: 25
     label: above
     settings:
       link: true
@@ -236,6 +253,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_is_version:
+    weight: 27
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   field_is_webdav_creation:
     weight: 15
     label: above
