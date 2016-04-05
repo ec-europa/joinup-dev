@@ -5,20 +5,16 @@
  * Contains solution.module..
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
+use \Drupal\Core\Entity\EntityTypeInterface;
 
 /**
- * Implements hook_help().
+ * Implements hook_entity_base_field_info_alter().
  */
-function solution_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the solution module.
-    case 'help.page.solution':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('The interoperability solution RDF entity.') . '</p>';
-      return $output;
-
-    default:
+function solution_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() == 'rdf_entity') {
+    // Title must be unique.
+    if (!empty($fields['label'])) {
+      $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['solution']]);
+    }
   }
 }

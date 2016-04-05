@@ -8,7 +8,7 @@ id: rdf_entity.solution.field_is_policy_domain
 field_name: field_is_policy_domain
 entity_type: rdf_entity
 bundle: solution
-label: Policy Domain
+label: 'Policy Domain'
 description: ''
 # @todo: Change to true when taxonomies are created. See ISAICP-2244
 required: false
