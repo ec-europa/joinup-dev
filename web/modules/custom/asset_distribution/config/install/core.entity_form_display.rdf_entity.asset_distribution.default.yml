@@ -83,7 +83,7 @@ content:
     type: auto_uri
     weight: 0
     settings:
-      prefix: 'http://example.org'
+      prefix: 'http://example.org/joinup/licence'
     third_party_settings: {  }
   label:
     type: string_textfield
