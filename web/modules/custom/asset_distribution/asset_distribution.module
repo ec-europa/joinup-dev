@@ -14,6 +14,9 @@ use \Drupal\rdf_entity\RdfInterface;
  * Handle the reverse reference of the solution-distribution entities.
  */
 function asset_distribution_rdf_entity_presave(EntityInterface $entity) {
+  if ($entity->bundle() != 'asset_distribution') {
+    return;
+  }
   // Handle reverse reference in the interoperability solution.
   /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
   $rdf_entity = \Drupal::routeMatch()->getParameter('rdf_entity');
