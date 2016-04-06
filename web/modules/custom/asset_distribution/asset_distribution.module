@@ -22,22 +22,15 @@ function asset_distribution_rdf_entity_presave(EntityInterface $entity) {
   if ($entity->bundle() != 'asset_distribution') {
     return;
   }
-
   $file_urls = [];
-  $file_size = 0;
-
-  // Get all access urls.
   $access_urls = $entity->get('field_ad_access_url')->getValue();
 
-  // Get all file urls.
   /** @var \Drupal\field\FieldConfigInterface $file_field */
   foreach ($entity->get('field_ad_file') as $file_field) {
     $file = File::load($file_field->get('target_id')->getValue());
     if ($file) {
       $file_urls[] = $file->url();
     }
-
-    $file_size += intval($file->getSize());
   }
 
   // Remove removed files from access urls.
@@ -54,15 +47,12 @@ function asset_distribution_rdf_entity_presave(EntityInterface $entity) {
       $access_urls[]['uri'] = $file_url;
     }
   }
-
   // Set the values.
   $entity->get('field_ad_access_url')->setValue($access_urls);
-  $entity->get('field_ad_file_size')->setValue(intval($file_size / 1024));
 
-  // Finally, update the interoperability solution.
+  // Handle reverse reference in the interoperability solution.
   /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
   $rdf_entity = \Drupal::routeMatch()->getParameter('rdf_entity');
-
   if ($rdf_entity instanceof RdfInterface && $rdf_entity->bundle() == 'solution') {
     $assigned_distributions = $rdf_entity->get('field_is_distribution')
       ->getValue();

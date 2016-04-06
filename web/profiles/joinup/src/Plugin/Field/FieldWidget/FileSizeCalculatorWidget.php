@@ -9,7 +9,6 @@ use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\file\Entity\File;
-use Drupal\file\FileInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -52,7 +51,7 @@ class FileSizeCalculatorWidget extends WidgetBase implements ContainerFactoryPlu
   public static function defaultSettings() {
     return array(
       'file_fields' => [],
-      'size_type' => '1024'
+      'size_type' => '1024',
     ) + parent::defaultSettings();
   }
 
@@ -103,7 +102,8 @@ class FileSizeCalculatorWidget extends WidgetBase implements ContainerFactoryPlu
   /**
    * Returns the options for the size format.
    *
-   * @return array An array of options keyed by their number of bytes.
+   * @return array
+   *   An array of options keyed by their number of bytes.
    */
   public function getSizeOptions() {
     return [
@@ -130,15 +130,15 @@ class FileSizeCalculatorWidget extends WidgetBase implements ContainerFactoryPlu
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    if(empty($this->getSetting('file_fields'))){
-      drupal_set_message(t("No file fields are selected for the {$this->fieldDefinition->id()} auto calculated field."), 'warning');
+    if (empty($this->getSetting('file_fields'))) {
+      drupal_set_message(t("No file fields are selected for the :id auto calculated field.", [':id' => $this->fieldDefinition->id()]), 'warning');
     }
 
     $element = [];
     $element['value'] = $element + array(
-        '#type' => 'value',
-        '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : NULL,
-      );
+      '#type' => 'value',
+      '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : NULL,
+    );
 
     return $element;
   }
