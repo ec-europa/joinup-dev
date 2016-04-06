@@ -25,10 +25,10 @@ content:
   field_ad_access_url:
     weight: 3
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
+      file_fields:
+        - field_ad_file
     third_party_settings: {  }
-    type: link_default
+    type: url_file_synchronizer_widget
   field_ad_creation_date:
     type: datetime_create_update
     weight: 9
