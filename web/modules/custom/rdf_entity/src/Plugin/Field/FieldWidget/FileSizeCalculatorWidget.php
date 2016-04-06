@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup\Plugin\Field\FieldWidget;
+namespace Drupal\rdf_entity\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -150,16 +150,17 @@ class FileSizeCalculatorWidget extends WidgetBase implements ContainerFactoryPlu
     $countable_fields = $this->getSetting('file_fields');
     $file_size = 0;
     foreach ($countable_fields as $field) {
-      $files_values = array_filter(array_column($form_state->getValue($field), 'fids'));
-      foreach ($files_values as $file_value) {
-        /** @var FileInterface $file */
-        $file = File::load(reset($file_value));
-        if ($file) {
-          $file_size += $file->getSize();
+      if ($field_value = $form_state->getValue($field)) {
+        $files_values = array_filter(array_column($field_value, 'fids'));
+        foreach ($files_values as $file_value) {
+          /** @var FileInterface $file */
+          $file = File::load(reset($file_value));
+          if ($file) {
+            $file_size += $file->getSize();
+          }
         }
       }
     }
-
     $format = intval($this->getSetting('size_type'));
     $values = $file_size / $format;
     return $values;
