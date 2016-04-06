@@ -1,3 +1,4 @@
+@api
 Feature: Solution API
   In order to manage solutions programmatically
   As a backend developer
@@ -30,7 +31,7 @@ Feature: Solution API
       | groups audience   | http://joinup.eu/collection/asset_distribution-api-foo |
     Then I should have 1 solution
     And I should have 1 asset distribution
-    And the "Custom title of asset distribution" asset distribution is related to the "Asset random name 2" solution
+    And the "Asset distribution entity foo" asset distribution is related to the "Asset distribution solution" solution
 
   Scenario: Programmatically create a collection using only the mandatory fields
     Given the following collection:
@@ -54,4 +55,4 @@ Feature: Solution API
       | groups audience   | http://joinup.eu/asset_repo/coll-api-bar             |
     Then I should have 1 solution
     And I should have 1 asset distribution
-    And the "Custom title of asset distribution" asset distribution is related to the "Asset random name 2" solution
+    And the "Asset distribution entity foo short" asset distribution is related to the "AD first solution mandatory short" solution

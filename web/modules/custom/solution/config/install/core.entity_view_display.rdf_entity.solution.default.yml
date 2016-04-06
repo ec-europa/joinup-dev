@@ -6,6 +6,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
+    - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
     - field.field.rdf_entity.solution.field_is_elibrary_creation
     - field.field.rdf_entity.solution.field_is_included_asset
@@ -38,6 +39,8 @@ dependencies:
     - link
     - options
     - text
+_core:
+  default_config_hash: nPz1_tM3C94f0aZJ2Dm6jDkJK0Zb89duzzULw_9x7i8
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
 bundle: solution
@@ -71,6 +74,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+  field_is_distribution:
+    weight: 25
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_is_documentation:
     weight: -3
     label: above
