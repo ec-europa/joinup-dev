@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\asset_distribution\Plugin\Field\FieldWidget;
+namespace Drupal\joinup\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -9,6 +9,7 @@ use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\file\Entity\File;
+use Drupal\file\FileInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -51,6 +52,7 @@ class FileSizeCalculatorWidget extends WidgetBase implements ContainerFactoryPlu
   public static function defaultSettings() {
     return array(
       'file_fields' => [],
+      'size_type' => '1024'
     ) + parent::defaultSettings();
   }
 
@@ -65,63 +67,20 @@ class FileSizeCalculatorWidget extends WidgetBase implements ContainerFactoryPlu
       '#title' => t('File fields'),
       '#options' => $this->getAvailableFields(),
       '#default_value' => $this->getSetting('file_fields'),
+      '#multiple' => TRUE,
       '#required' => TRUE,
-      '#min' => 1,
+    );
+
+    $elements['size_type'] = array(
+      '#type' => 'select',
+      '#title' => t('File size type'),
+      '#options' => $this->getSizeOptions(),
+      '#default_value' => $this->getSetting('size_type'),
+      '#required' => TRUE,
+      '#multiple' => FALSE,
     );
 
     return $elements;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsSummary() {
-    $summary = [];
-
-    // @todo: Add a proper description.
-    // $summary[] = t('Textfield size: !size',
-    // array('!size' => $this->getSetting('size')));
-    // if (!empty($this->getSetting('placeholder'))) {
-    // $summary[] = t('Placeholder: @placeholder',
-    // array('@placeholder' => $this->getSetting('placeholder')));
-    // }
-    return $summary;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $element = [];
-
-    $element['value'] = $element + array(
-      '#type' => 'value',
-      '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : NULL,
-    );
-
-    return $element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
-    $countable_fields = $this->getSetting('file_fields');
-    $file_size = 0;
-    foreach ($countable_fields as $field) {
-      $files_values = $form_state->getValue($field);
-      foreach ($files_values as $file_value) {
-        /** @var FileInterface $file */
-        $file = File::load($file_value['target_id']);
-        if ($file) {
-          $file_size = $file->getSize();
-        }
-      }
-    }
-
-    // Return size in KB.
-    $values[]['value'] = $file_size / 1024;
-    return $values;
   }
 
   /**
@@ -139,6 +98,71 @@ class FileSizeCalculatorWidget extends WidgetBase implements ContainerFactoryPlu
       }
     }
     return $available_fields;
+  }
+
+  /**
+   * Returns the options for the size format.
+   *
+   * @return array An array of options keyed by their number of bytes.
+   */
+  public function getSizeOptions() {
+    return [
+      '1' => t('Bytes'),
+      '1024' => t('Kilo Bytes'),
+      '1048576' => t('Mega Bytes'),
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = [];
+
+    $summary[] = t('File fields to count: :filefields',
+      [':filefields' => implode(', ', $this->getSetting('file_fields'))]);
+    $summary[] = t('Size format: :format',
+      [':format' => $this->getSizeOptions()[$this->getSetting('size_type')]]);
+    return $summary;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+    if(empty($this->getSetting('file_fields'))){
+      drupal_set_message(t("No file fields are selected for the {$this->fieldDefinition->id()} auto calculated field."), 'warning');
+    }
+
+    $element = [];
+    $element['value'] = $element + array(
+        '#type' => 'value',
+        '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : NULL,
+      );
+
+    return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+    $countable_fields = $this->getSetting('file_fields');
+    $file_size = 0;
+    foreach ($countable_fields as $field) {
+      $files_values = array_filter(array_column($form_state->getValue($field), 'fids'));
+      foreach ($files_values as $file_value) {
+        /** @var FileInterface $file */
+        $file = File::load(reset($file_value));
+        if ($file) {
+          $file_size += $file->getSize();
+        }
+      }
+    }
+
+    $format = intval($this->getSetting('size_type'));
+    $values = $file_size / $format;
+    return $values;
   }
 
 }
