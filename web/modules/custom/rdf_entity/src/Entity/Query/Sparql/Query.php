@@ -113,7 +113,7 @@ class Query extends QueryBase implements QueryInterface {
   /**
    * {@inheritdoc}
    */
-  public function condition($property, $value = NULL, $operator = NULL, $langcode = NULL) {
+  public function condition($property, $value = NULL, $operator = '=', $langcode = NULL) {
     $key = $property . '-' . $operator;
     // @todo Getting the storage container here looks wrong...
     $entity_storage = \Drupal::service('entity.manager')
@@ -132,6 +132,15 @@ class Query extends QueryBase implements QueryInterface {
         }
         break;
 
+      case 'rid-=':
+        $mapping = $entity_storage->getRdfBundleMapping();
+        $mapping = array_flip($mapping);
+        $bundle = $mapping[$value];
+        if ($bundle) {
+          $this->condition->condition('?entity', 'rdf:type', SparqlArg::uri($bundle));
+        }
+        break;
+
       case 'id-IN':
         if ($value) {
           $ids_list = "(<" . implode(">, <", $value) . ">)";
@@ -140,6 +149,7 @@ class Query extends QueryBase implements QueryInterface {
         break;
 
       case 'id-NOT IN':
+      case 'id-<>':
         if ($value) {
           $ids_list = "(<" . implode(">, <", $value) . ">)";
           $this->filter->filter('!(?entity IN ' . $ids_list . ')');
@@ -152,7 +162,7 @@ class Query extends QueryBase implements QueryInterface {
         }
         $id = '<' . $value . '>';
         $this->condition->condition('?entity', 'rdf:type', '?type');
-        $this->filter->filter('?entity IN ' . $id);
+        $this->filter->filter('?entity IN ' . SparqlArg::literal($id));
         break;
 
       case 'label-=':
@@ -160,11 +170,22 @@ class Query extends QueryBase implements QueryInterface {
         $matching = array_pop($matches);
         if ($matching) {
           $ids = "(<$matching>)";
+          $this->filter->filter('?entity IN ' . $ids);
         }
         else {
-          $ids = '("' . $value . '")';
+          if (file_valid_uri($value)) {
+            $ids = "(<$value>)";
+            $this->filter->filter('?entity IN ' . $ids);
+          }
+          else {
+            $mapping = $entity_storage->getLabelMapping();
+            $label_list = "(<" . implode(">, <", array_unique(array_values($mapping))) . ">)";
+            $this->condition->condition('?entity', '?label_type', '?label');
+            $this->filter->filter('?label_type IN ' . $label_list);
+            $this->filter->filter('regex(?label, "' . $value . '", "i")');
+          }
         }
-        $this->filter->filter('?entity IN ' . $ids);
+
         break;
 
       case 'label-CONTAINS':
