@@ -13,7 +13,6 @@ use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\file\Entity\File;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
-use Drupal\og\OgGroupAudienceHelper;
 
 /**
  * Behat step definitions for testing collections.
