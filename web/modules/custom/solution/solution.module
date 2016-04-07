@@ -14,7 +14,12 @@ function solution_entity_base_field_info_alter(&$fields, EntityTypeInterface $en
   if ($entity_type->id() == 'rdf_entity') {
     // Title must be unique.
     if (!empty($fields['label'])) {
-      $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['solution']]);
+      $bundles = ['solution'];
+      if ($constraint = $fields['label']->getConstraint('UniqueFieldInBundle')) {
+        $bundles = array_merge($bundles, $constraint['bundles']);
+      }
+
+      $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => $bundles]);
     }
   }
 }
