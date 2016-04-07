@@ -25,7 +25,7 @@ function joinup_news_entity_base_field_info_alter(&$fields, EntityTypeInterface 
   if ($entity_type->id() == 'node') {
     if (!empty($fields['title'])) {
       $bundles = ['news'];
-      if ($constraint = $fields['label']->getConstraint('UniqueFieldInBundle')) {
+      if ($constraint = $fields['title']->getConstraint('UniqueFieldInBundle')) {
         $bundles = array_merge($bundles, $constraint['bundles']);
       }
 
