@@ -5,6 +5,7 @@
  * Contains joinup_event.module.
  */
 
+use Drupal\Core\Entity\EntityTypeInterface;
 use \Drupal\core\Form\FormStateInterface;
 
 /**
@@ -37,11 +38,10 @@ function joinup_event_form_default_validate(&$form, FormStateInterface $form_sta
 
 }
 
-
 /**
  * Implements hook_entity_base_field_info_alter().
  */
-function joinup_event_entity_base_field_info_alter(&$fields, \Drupal\Core\Entity\EntityTypeInterface $entity_type) {
+function joinup_event_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
   if ($entity_type->id() == 'node') {
     if (!empty($fields['title'])) {
       $bundles = ['event'];
