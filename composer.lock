@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.17.3",
+            "version": "3.17.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4d70cbe397c03e84907e10436358f627aab428e6"
+                "reference": "1cef9b334729b3564c9aef15481a55561c54b53f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4d70cbe397c03e84907e10436358f627aab428e6",
-                "reference": "4d70cbe397c03e84907e10436358f627aab428e6",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1cef9b334729b3564c9aef15481a55561c54b53f",
+                "reference": "1cef9b334729b3564c9aef15481a55561c54b53f",
                 "shasum": ""
             },
             "require": {
@@ -147,20 +147,20 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-03-29 22:53:44"
+            "time": "2016-04-07 22:44:13"
         },
         {
             "name": "composer/composer",
-            "version": "1.0.0-beta2",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "91d92c4ff80e4c6573a4dc91aee08e50d2617d30"
+                "reference": "32df3aa8cdbdaa16df9491b5e672e81c87f94c78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/91d92c4ff80e4c6573a4dc91aee08e50d2617d30",
-                "reference": "91d92c4ff80e4c6573a4dc91aee08e50d2617d30",
+                "url": "https://api.github.com/repos/composer/composer/zipball/32df3aa8cdbdaa16df9491b5e672e81c87f94c78",
+                "reference": "32df3aa8cdbdaa16df9491b5e672e81c87f94c78",
                 "shasum": ""
             },
             "require": {
@@ -222,20 +222,20 @@
                 "dependency",
                 "package"
             ],
-            "time": "2016-03-27 15:00:34"
+            "time": "2016-04-05 12:27:26"
         },
         {
             "name": "composer/installers",
-            "version": "v1.0.23",
+            "version": "v1.0.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "6213d900e92647831f7a406d5c530ea1f3d4360e"
+                "reference": "1cf7cc4b89d5e8549bbb7d6ab1de75da13d27988"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/6213d900e92647831f7a406d5c530ea1f3d4360e",
-                "reference": "6213d900e92647831f7a406d5c530ea1f3d4360e",
+                "url": "https://api.github.com/repos/composer/installers/zipball/1cf7cc4b89d5e8549bbb7d6ab1de75da13d27988",
+                "reference": "1cf7cc4b89d5e8549bbb7d6ab1de75da13d27988",
                 "shasum": ""
             },
             "require": {
@@ -257,8 +257,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Composer\\Installers\\": "src/"
+                "psr-4": {
+                    "Composer\\Installers\\": "src/Composer/Installers"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -273,12 +273,14 @@
                 }
             ],
             "description": "A multi-framework Composer library installer",
-            "homepage": "http://composer.github.com/installers/",
+            "homepage": "https://composer.github.io/installers/",
             "keywords": [
                 "Craft",
                 "Dolibarr",
                 "Hurad",
+                "ImageCMS",
                 "MODX Evo",
+                "Mautic",
                 "OXID",
                 "SMF",
                 "Thelia",
@@ -320,7 +322,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2016-01-27 12:54:22"
+            "time": "2016-04-05 11:42:46"
         },
         {
             "name": "composer/semver",
@@ -961,16 +963,16 @@
         },
         {
             "name": "drupal/console",
-            "version": "0.10.15",
+            "version": "0.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "e7ecde204eba9045577292d4d1f90360048b3513"
+                "reference": "7a5c0f539211a40954b50d0478b731ce4d12bd16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/e7ecde204eba9045577292d4d1f90360048b3513",
-                "reference": "e7ecde204eba9045577292d4d1f90360048b3513",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/7a5c0f539211a40954b50d0478b731ce4d12bd16",
+                "reference": "7a5c0f539211a40954b50d0478b731ce4d12bd16",
                 "shasum": ""
             },
             "require": {
@@ -1042,20 +1044,20 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2016-04-01 02:56:37"
+            "time": "2016-04-07 20:42:09"
         },
         {
             "name": "drupal/core",
-            "version": "8.0.5",
+            "version": "8.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "da4c151b0ca4b27197b0407a590e117c4d2866e7"
+                "reference": "0691e597e80fc047279f9ef273d7028b96b19c1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/da4c151b0ca4b27197b0407a590e117c4d2866e7",
-                "reference": "da4c151b0ca4b27197b0407a590e117c4d2866e7",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/0691e597e80fc047279f9ef273d7028b96b19c1a",
+                "reference": "0691e597e80fc047279f9ef273d7028b96b19c1a",
                 "shasum": ""
             },
             "require": {
@@ -1212,7 +1214,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-03-02 10:31:56"
+            "time": "2016-04-05 23:34:17"
         },
         {
             "name": "drupal/og",
@@ -1220,12 +1222,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "a9296943febeb86014e42857421a0ad982de5e26"
+                "reference": "499d1babf59752c98714d4d354ae25554b3ddd22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/a9296943febeb86014e42857421a0ad982de5e26",
-                "reference": "a9296943febeb86014e42857421a0ad982de5e26",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/499d1babf59752c98714d4d354ae25554b3ddd22",
+                "reference": "499d1babf59752c98714d4d354ae25554b3ddd22",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1239,7 +1241,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-03-31 17:50:27"
+            "time": "2016-04-06 07:35:22"
         },
         {
             "name": "drupal/og_menu",
@@ -1309,15 +1311,15 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha12",
+            "version": "8.1.0-alpha13",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "212e944e8d31261a1e1533d392a9e574904134c0"
+                "reference": "97c5168c90ee606606bb53cbd6c6b0072d0d3a1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha12.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha13.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1360,7 +1362,7 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-01-27 13:30:26"
+            "time": "2016-04-06 09:02:54"
         },
         {
             "name": "drush/drush",
@@ -4989,7 +4991,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_devel",
-                "reference": "e6540214570908edabfb6979c25a95dcdcf13aca"
+                "reference": "93bd3c663b5cb3319babd0e8b8cca90a4494f26d"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -5006,7 +5008,7 @@
             ],
             "description": "Helps developers work with configuration.",
             "homepage": "https://www.drupal.org/project/config_devel",
-            "time": "2016-03-24 02:01:48"
+            "time": "2016-04-04 20:56:57"
         },
         {
             "name": "drupal/config_update",
@@ -5044,7 +5046,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "c4cf2d4d600cabd489b02098e7494b95d01fd521"
+                "reference": "449d8ed0c040ae265dc8d4146ee6d7043d619b41"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -5079,7 +5081,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2016-03-29 16:12:53"
+            "time": "2016-04-07 06:41:07"
         },
         {
             "name": "drupal/drupal-driver",
@@ -6332,19 +6334,20 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.5.1",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "6731851d6aaf1d0d6c58feff1065227b7fda3ba8"
+                "reference": "1bcdf03b068a530ac1962ce671dead356eeba43b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/6731851d6aaf1d0d6c58feff1065227b7fda3ba8",
-                "reference": "6731851d6aaf1d0d6c58feff1065227b7fda3ba8",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/1bcdf03b068a530ac1962ce671dead356eeba43b",
+                "reference": "1bcdf03b068a530ac1962ce671dead356eeba43b",
                 "shasum": ""
             },
             "require": {
+                "ext-simplexml": "*",
                 "ext-tokenizer": "*",
                 "ext-xmlwriter": "*",
                 "php": ">=5.1.2"
@@ -6405,7 +6408,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-01-19 23:39:10"
+            "time": "2016-04-03 22:58:34"
         },
         {
             "name": "symfony/browser-kit",
