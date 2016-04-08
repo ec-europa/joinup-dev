@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5ee1a7682c4cbb9b4d87a78e04a28cf1",
-    "content-hash": "093ad6b7606031db0602a695eae6a8ca",
+    "hash": "7fb3a24b20919424a43437f11678203d",
+    "content-hash": "605c5c9c07b837d149589f2bf6696aaf",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.17.4",
+            "version": "3.17.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "9899865dda8e388a6f9aa7425af50730eabf5ffd"
+                "reference": "1cef9b334729b3564c9aef15481a55561c54b53f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9899865dda8e388a6f9aa7425af50730eabf5ffd",
-                "reference": "9899865dda8e388a6f9aa7425af50730eabf5ffd",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1cef9b334729b3564c9aef15481a55561c54b53f",
+                "reference": "1cef9b334729b3564c9aef15481a55561c54b53f",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-04-06 00:39:52"
+            "time": "2016-04-07 22:44:13"
         },
         {
             "name": "composer/composer",
@@ -963,16 +963,16 @@
         },
         {
             "name": "drupal/console",
-            "version": "0.11.1",
+            "version": "0.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "bc1bacc30dd2dee1757ab6853f9e789093c66f14"
+                "reference": "7a5c0f539211a40954b50d0478b731ce4d12bd16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/bc1bacc30dd2dee1757ab6853f9e789093c66f14",
-                "reference": "bc1bacc30dd2dee1757ab6853f9e789093c66f14",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/7a5c0f539211a40954b50d0478b731ce4d12bd16",
+                "reference": "7a5c0f539211a40954b50d0478b731ce4d12bd16",
                 "shasum": ""
             },
             "require": {
@@ -1044,7 +1044,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2016-04-05 06:57:29"
+            "time": "2016-04-07 20:42:09"
         },
         {
             "name": "drupal/core",
@@ -1226,12 +1226,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "499d1babf59752c98714d4d354ae25554b3ddd22"
+                "reference": "cac7ca1e1e27fb0705721a658e53fd51b6fa8e52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/499d1babf59752c98714d4d354ae25554b3ddd22",
-                "reference": "499d1babf59752c98714d4d354ae25554b3ddd22",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/cac7ca1e1e27fb0705721a658e53fd51b6fa8e52",
+                "reference": "cac7ca1e1e27fb0705721a658e53fd51b6fa8e52",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1245,7 +1245,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-04-06 07:35:22"
+            "time": "2016-04-08 14:55:53"
         },
         {
             "name": "drupal/og_menu",
@@ -1309,21 +1309,24 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
             "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
             "homepage": "https://www.drupal.org/project/r4032login",
             "time": "2016-03-01 13:56:38"
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha12",
+            "version": "8.1.0-alpha13",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "212e944e8d31261a1e1533d392a9e574904134c0"
+                "reference": "97c5168c90ee606606bb53cbd6c6b0072d0d3a1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha12.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha13.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1366,7 +1369,7 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-01-27 13:30:26"
+            "time": "2016-04-06 09:02:54"
         },
         {
             "name": "drush/drush",
@@ -2153,7 +2156,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -3231,16 +3234,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v2.8.4",
+            "version": "v2.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "f7b4a498e679fa440b16facb934680a1527ed48c"
+                "reference": "ba94a914e244e0d05f0aaef460d5558d5541d2b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/f7b4a498e679fa440b16facb934680a1527ed48c",
-                "reference": "f7b4a498e679fa440b16facb934680a1527ed48c",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/ba94a914e244e0d05f0aaef460d5558d5541d2b1",
+                "reference": "ba94a914e244e0d05f0aaef460d5558d5541d2b1",
                 "shasum": ""
             },
             "require": {
@@ -3289,7 +3292,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-21 07:27:21"
+            "time": "2016-01-12 17:46:01"
         },
         {
             "name": "symfony/dom-crawler",
@@ -5415,12 +5418,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/drupalextension.git",
-                "reference": "14cc437ea093d053bd894de73eca1433def92ef4"
+                "reference": "156e36891687dd5775e9a1d8bcbd4eb27df08649"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/drupalextension/zipball/14cc437ea093d053bd894de73eca1433def92ef4",
-                "reference": "14cc437ea093d053bd894de73eca1433def92ef4",
+                "url": "https://api.github.com/repos/pfrenssen/drupalextension/zipball/156e36891687dd5775e9a1d8bcbd4eb27df08649",
+                "reference": "156e36891687dd5775e9a1d8bcbd4eb27df08649",
                 "shasum": ""
             },
             "require": {
@@ -5470,7 +5473,7 @@
             "support": {
                 "source": "https://github.com/pfrenssen/drupalextension/tree/support-drupal-8.1"
             },
-            "time": "2016-04-07 08:10:25"
+            "time": "2016-04-08 14:45:33"
         },
         {
             "name": "fabpot/goutte",
