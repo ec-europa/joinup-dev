@@ -66,23 +66,6 @@ function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity,
 }
 
 /**
- * Implements hook_rdf_entity_view().
- *
- * @todo Remove this.
- * Prints the bundle when viewing the rdf in full.
- */
-function rdf_entity_rdf_entity_view($build, $entity, $display, $view_mode) {
-  if ($entity instanceof Rdf && $view_mode == 'full') {
-    drupal_set_message(
-      t('Current page - Bundle: %bundle', array(
-        '%bundle' => $entity->bundle(),
-      )),
-    'info'
-    );
-  }
-}
-
-/**
  * Implements hook_theme().
  */
 function rdf_entity_theme() {
