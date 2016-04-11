@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_elibrary_creation
+    - rdf_entity.rdfentity.solution
+  module:
+    - options
+id: rdf_entity.solution.field_is_elibrary_creation
+field_name: field_is_elibrary_creation
+entity_type: rdf_entity
+bundle: solution
+label: 'eLibrary creation'
+description: 'Specify the type of user that can create eLibrary content (news, events, and documents).'
+required: true
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings: {  }
+field_type: list_integer

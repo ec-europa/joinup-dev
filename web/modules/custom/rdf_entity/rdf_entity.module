@@ -10,7 +10,6 @@ use \Drupal\Core\Render\Element;
 use \Drupal\Core\Form\FormStateInterface;
 use \Drupal\Core\Url;
 use \Drupal\field\Entity\FieldStorageConfig;
-use \Drupal\rdf_entity\Entity\Rdf;
 use \Drupal\rdf_entity\RdfInterface;
 use \Drupal\og\Og;
 use \Drupal\og\OgMembershipInterface;
@@ -62,23 +61,6 @@ function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity,
   foreach ($schema['columns'] as $column => $column_desc) {
     $value = $form_state->getValue($column);
     $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $column, $value);
-  }
-}
-
-/**
- * Implements hook_rdf_entity_view().
- *
- * @todo Remove this.
- * Prints the bundle when viewing the rdf in full.
- */
-function rdf_entity_rdf_entity_view($build, $entity, $display, $view_mode) {
-  if ($entity instanceof Rdf && $view_mode == 'full') {
-    drupal_set_message(
-      t('Current page - Bundle: %bundle', array(
-        '%bundle' => $entity->bundle(),
-      )),
-    'info'
-    );
   }
 }
 

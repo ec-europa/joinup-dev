@@ -41,6 +41,7 @@ Feature: User authentication
       | admin/content/rdf              |
       | rdf_entity/add/collection      |
       | node/add/custom_page           |
+      | rdf_entity/add/solution        |
 
   @api
   Scenario Outline: Authenticated user can access pages they are authorized to
@@ -67,6 +68,7 @@ Feature: User authentication
       | admin/structure                |
       | rdf_entity/add/collection      |
       | node/add/custom_page           |
+      | rdf_entity/add/solution        |
 
   @api
   Scenario Outline: Moderator can access pages they are authorized to
@@ -93,6 +95,7 @@ Feature: User authentication
       | admin/structure                |
       | rdf_entity/add/collection      |
       | node/add/custom_page           |
+      | rdf_entity/add/solution        |
 
   @api
   Scenario Outline: Administrator can access pages they are authorized to

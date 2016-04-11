@@ -29,8 +29,8 @@ dependencies:
   - page_cache
   - path
   - r4032login
-  - rdf_demo
   - rdf_entity
+  - solution
   - text
   - toolbar
   - search_api
