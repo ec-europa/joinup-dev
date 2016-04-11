@@ -8,9 +8,9 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\file\Entity\File;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing asset distributions.
