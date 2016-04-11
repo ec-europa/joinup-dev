@@ -32,7 +32,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   protected $files = [];
 
   /**
-   * Navigates to the canonical page display of a asset distribution.
+   * Navigates to the canonical page display of an asset distribution.
    *
    * @param string $asset_distribution
    *   The name of the asset distribution.
@@ -47,7 +47,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Navigates to the edit form of a asset distribution.
+   * Navigates to the edit form of an asset distribution.
    *
    * @param string $asset_distribution
    *   The name of the $asset_distribution.
@@ -161,7 +161,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Creates a asset distribution from the given property and field data.
+   * Creates an asset distribution from the given property and field data.
    *
    * @param array $values
    *   An optional associative array of values, keyed by property name.
@@ -226,7 +226,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *   The asset distribution.
    *
    * @throws \InvalidArgumentException
-   *   Thrown when a asset distribution with the given name does not exist.
+   *   Thrown when an asset distribution with the given name does not exist.
    */
   protected function getAssetDistributionByName($name) {
     $query = \Drupal::entityQuery('rdf_entity')
