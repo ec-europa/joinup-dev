@@ -6,36 +6,19 @@
  */
 
 use Drupal\Core\Entity\EntityTypeInterface;
-use \Drupal\core\Form\FormStateInterface;
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_entity_bundle_field_info_alter().
  */
-function joinup_event_form_node_event_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'joinup_event_form_default_validate';
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function joinup_event_form_node_event_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'joinup_event_form_default_validate';
-}
-
-/**
- * Validates the default joinup event form.
- *
- * The validation includes the the short title.
- * The short title field is mandatory and it has to be unique
- * in a global scope among events.
- *
- * @param array $form
- *   The form array.
- * @param \Drupal\core\Form\FormStateInterface $form_state
- *   The form state object.
- */
-function joinup_event_form_default_validate(&$form, FormStateInterface $form_state) {
-
+function joinup_event_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'node' && $bundle == 'event') {
+    if (!empty($fields['field_event_short_title'])) {
+      $fields['field_event_short_title']->addConstraint('UniqueField');
+    }
+    if (!empty($fields['title'])) {
+      $fields['title']->addConstraint('UniqueField');
+    }
+  }
 }
 
 /**
@@ -43,13 +26,8 @@ function joinup_event_form_default_validate(&$form, FormStateInterface $form_sta
  */
 function joinup_event_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
   if ($entity_type->id() == 'node') {
-    if (!empty($fields['title'])) {
-      $bundles = ['event'];
-      if ($constraint = $fields['title']->getConstraint('UniqueFieldInBundle')) {
-        $bundles = array_merge($bundles, $constraint['bundles']);
-      }
-
-      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => $bundles]);
+    if (!empty($fields['field_event_short_title'])) {
+      $fields['field_event_short_title']->addConstraint('UniqueField');
     }
   }
 }
