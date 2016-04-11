@@ -2,10 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_kicker
+    - field.storage.node.field_news_kicker
     - node.type.news
-id: node.news.field_kicker
-field_name: field_kicker
+id: node.news.field_news_kicker
+field_name: field_news_kicker
 entity_type: node
 bundle: news
 label: Kicker

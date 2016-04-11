@@ -3,8 +3,8 @@ status: true
 dependencies:
   config:
     - field.field.node.news.body
-    - field.field.node.news.field_kicker
-    - field.field.node.news.field_source_url
+    - field.field.node.news.field_news_kicker
+    - field.field.node.news.field_news_source_url
     - field.field.node.news.og_group_ref
     - node.type.news
   module:
@@ -23,14 +23,14 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
-  field_kicker:
+  field_news_kicker:
     weight: 1
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
-  field_source_url:
+  field_news_source_url:
     weight: 3
     settings:
       placeholder_url: ''
