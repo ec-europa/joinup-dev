@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.17.4",
+            "version": "3.17.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "9899865dda8e388a6f9aa7425af50730eabf5ffd"
+                "reference": "1cef9b334729b3564c9aef15481a55561c54b53f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9899865dda8e388a6f9aa7425af50730eabf5ffd",
-                "reference": "9899865dda8e388a6f9aa7425af50730eabf5ffd",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1cef9b334729b3564c9aef15481a55561c54b53f",
+                "reference": "1cef9b334729b3564c9aef15481a55561c54b53f",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-04-06 00:39:52"
+            "time": "2016-04-07 22:44:13"
         },
         {
             "name": "composer/composer",
@@ -963,16 +963,16 @@
         },
         {
             "name": "drupal/console",
-            "version": "0.11.1",
+            "version": "0.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "bc1bacc30dd2dee1757ab6853f9e789093c66f14"
+                "reference": "7a5c0f539211a40954b50d0478b731ce4d12bd16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/bc1bacc30dd2dee1757ab6853f9e789093c66f14",
-                "reference": "bc1bacc30dd2dee1757ab6853f9e789093c66f14",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/7a5c0f539211a40954b50d0478b731ce4d12bd16",
+                "reference": "7a5c0f539211a40954b50d0478b731ce4d12bd16",
                 "shasum": ""
             },
             "require": {
@@ -1044,7 +1044,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2016-04-05 06:57:29"
+            "time": "2016-04-07 20:42:09"
         },
         {
             "name": "drupal/core",
@@ -1222,12 +1222,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "499d1babf59752c98714d4d354ae25554b3ddd22"
+                "reference": "cac7ca1e1e27fb0705721a658e53fd51b6fa8e52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/499d1babf59752c98714d4d354ae25554b3ddd22",
-                "reference": "499d1babf59752c98714d4d354ae25554b3ddd22",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/cac7ca1e1e27fb0705721a658e53fd51b6fa8e52",
+                "reference": "cac7ca1e1e27fb0705721a658e53fd51b6fa8e52",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1241,7 +1241,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-04-06 07:35:22"
+            "time": "2016-04-08 14:55:53"
         },
         {
             "name": "drupal/og_menu",
@@ -1311,15 +1311,15 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha12",
+            "version": "8.1.0-alpha13",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "212e944e8d31261a1e1533d392a9e574904134c0"
+                "reference": "97c5168c90ee606606bb53cbd6c6b0072d0d3a1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha12.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha13.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1362,7 +1362,7 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-01-27 13:30:26"
+            "time": "2016-04-06 09:02:54"
         },
         {
             "name": "drush/drush",
@@ -2107,7 +2107,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2162,7 +2162,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -5046,7 +5046,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "c4cf2d4d600cabd489b02098e7494b95d01fd521"
+                "reference": "449d8ed0c040ae265dc8d4146ee6d7043d619b41"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -5081,7 +5081,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2016-03-29 16:12:53"
+            "time": "2016-04-07 06:41:07"
         },
         {
             "name": "drupal/drupal-driver",
@@ -5089,12 +5089,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/DrupalDriver.git",
-                "reference": "204a770cc79031a484c2c46a8323dbddbca2ca97"
+                "reference": "f267d9fe4e54c6c39f84dbe45a4ee4eb6cc694a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/204a770cc79031a484c2c46a8323dbddbca2ca97",
-                "reference": "204a770cc79031a484c2c46a8323dbddbca2ca97",
+                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/f267d9fe4e54c6c39f84dbe45a4ee4eb6cc694a2",
+                "reference": "f267d9fe4e54c6c39f84dbe45a4ee4eb6cc694a2",
                 "shasum": ""
             },
             "require": {
@@ -5138,7 +5138,7 @@
                 "test",
                 "web"
             ],
-            "time": "2016-03-29 18:26:16"
+            "time": "2016-04-08 21:17:14"
         },
         {
             "name": "drupal/drupal-extension",
@@ -5146,12 +5146,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/drupalextension.git",
-                "reference": "9aec37ba55f2c515f58af4f9dd8ae2bb2bfbd37e"
+                "reference": "83aeb0d4ecb318fe60cda7dce28e04d66a0e9a43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/9aec37ba55f2c515f58af4f9dd8ae2bb2bfbd37e",
-                "reference": "9aec37ba55f2c515f58af4f9dd8ae2bb2bfbd37e",
+                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/83aeb0d4ecb318fe60cda7dce28e04d66a0e9a43",
+                "reference": "83aeb0d4ecb318fe60cda7dce28e04d66a0e9a43",
                 "shasum": ""
             },
             "require": {
@@ -5199,7 +5199,7 @@
                 "test",
                 "web"
             ],
-            "time": "2016-03-08 16:36:12"
+            "time": "2016-04-08 16:39:51"
         },
         {
             "name": "fabpot/goutte",
@@ -5428,16 +5428,16 @@
         },
         {
             "name": "mikey179/vfsStream",
-            "version": "v1.6.2",
+            "version": "v1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/vfsStream.git",
-                "reference": "fefd182fa739d4e23d9dc7c80d3344f528d600ab"
+                "reference": "c19925cd0390d3c436a0203ae859afa460d0474b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/fefd182fa739d4e23d9dc7c80d3344f528d600ab",
-                "reference": "fefd182fa739d4e23d9dc7c80d3344f528d600ab",
+                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/c19925cd0390d3c436a0203ae859afa460d0474b",
+                "reference": "c19925cd0390d3c436a0203ae859afa460d0474b",
                 "shasum": ""
             },
             "require": {
@@ -5470,7 +5470,7 @@
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
             "homepage": "http://vfs.bovigo.org/",
-            "time": "2016-01-13 09:41:49"
+            "time": "2016-04-09 09:42:01"
         },
         {
             "name": "pfrenssen/phpcs-pre-push",
