@@ -18,18 +18,10 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
 }
 
 /**
- * Implements hook_entity_base_field_info_alter().
+ * Implements hook_entity_bundle_field_info_alter().
  */
-function collection_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
-  /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $fields */
-  if ($entity_type->id() == 'rdf_entity') {
-    if (!empty($fields['label'])) {
-      $bundles = ['collection'];
-      if ($constraint = $fields['label']->getConstraint('UniqueFieldInBundle')) {
-        $bundles = array_merge($bundles, $constraint['bundles']);
-      }
-
-      $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => $bundles]);
-    }
+function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'collection' && !empty($fields['label'])) {
+    $fields['label']->addConstraint('UniqueField');
   }
 }
