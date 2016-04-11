@@ -255,7 +255,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function assertCollectionCount($number) {
     $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', '<http://www.w3.org/ns/adms#AssetRepository>')
+      ->condition('rid', 'collection')
       ->count()
       ->execute();
     if ($actual != $number) {
