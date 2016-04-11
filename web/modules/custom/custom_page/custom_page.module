@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Contains custom_page.module.
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function custom_page_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'node' && $bundle == 'custom_page') {
+    if (!empty($fields['title'])) {
+      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['custom_page']]);
+    }
+  }
+}
