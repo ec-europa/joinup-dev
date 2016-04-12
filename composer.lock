@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8d0f4d33659c02b042d2c5c44309b14c",
-    "content-hash": "900a6caf8d9d1d1c49c0befe5d3e1014",
+    "hash": "f2c6650652c9aa969e8e37eb08907040",
+    "content-hash": "48c21a295ba033ed1a1dac62eeefbbe3",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.17.4",
+            "version": "3.17.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "9899865dda8e388a6f9aa7425af50730eabf5ffd"
+                "reference": "1cef9b334729b3564c9aef15481a55561c54b53f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9899865dda8e388a6f9aa7425af50730eabf5ffd",
-                "reference": "9899865dda8e388a6f9aa7425af50730eabf5ffd",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1cef9b334729b3564c9aef15481a55561c54b53f",
+                "reference": "1cef9b334729b3564c9aef15481a55561c54b53f",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-04-06 00:39:52"
+            "time": "2016-04-07 22:44:13"
         },
         {
             "name": "composer/composer",
@@ -963,16 +963,16 @@
         },
         {
             "name": "drupal/console",
-            "version": "0.11.1",
+            "version": "0.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "bc1bacc30dd2dee1757ab6853f9e789093c66f14"
+                "reference": "7a5c0f539211a40954b50d0478b731ce4d12bd16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/bc1bacc30dd2dee1757ab6853f9e789093c66f14",
-                "reference": "bc1bacc30dd2dee1757ab6853f9e789093c66f14",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/7a5c0f539211a40954b50d0478b731ce4d12bd16",
+                "reference": "7a5c0f539211a40954b50d0478b731ce4d12bd16",
                 "shasum": ""
             },
             "require": {
@@ -1044,7 +1044,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2016-04-05 06:57:29"
+            "time": "2016-04-07 20:42:09"
         },
         {
             "name": "drupal/core",
@@ -1218,16 +1218,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-delete-user-memberships",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "89adf8afa0869b95411cdd26d097855e4ae42d3e"
+                "reference": "499d1babf59752c98714d4d354ae25554b3ddd22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/89adf8afa0869b95411cdd26d097855e4ae42d3e",
-                "reference": "89adf8afa0869b95411cdd26d097855e4ae42d3e",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/499d1babf59752c98714d4d354ae25554b3ddd22",
+                "reference": "499d1babf59752c98714d4d354ae25554b3ddd22",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1241,7 +1241,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-04-07 13:16:45"
+            "time": "2016-04-06 07:35:22"
         },
         {
             "name": "drupal/og_menu",
@@ -1305,9 +1305,6 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
             "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
             "homepage": "https://www.drupal.org/project/r4032login",
             "time": "2016-03-01 13:56:38"
@@ -2110,7 +2107,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2165,7 +2162,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
