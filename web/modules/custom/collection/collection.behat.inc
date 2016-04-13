@@ -5,7 +5,6 @@
  * Contains \CollectionSubContext.
  */
 
-use Drupal\Component\Uuid\Php;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -21,6 +20,7 @@ use Drupal\og\OgGroupAudienceHelper;
  */
 class CollectionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
   use JoinupTrait;
+
   /**
    * Test collections.
    *
@@ -409,16 +409,17 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
-  private static function convertValueAliases($fields){
+  private function convertValueAliases($fields) {
     $mapped_values = [
-      'moderation' => ['no' => 0, 'yes' => 1],
-      'elibrary creation' => ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
-      'closed' => ['no' => 0, 'yes' => 1],
+      'field_ar_moderation' => ['no' => 0, 'yes' => 1],
+      'field_ar_elibrary_creation' =>
+        ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
+      'field_ar_closed' => ['no' => 0, 'yes' => 1],
     ];
 
-    foreach($fields as $field => $value){
-      if(isset($mapped_values[$field])){
-        if(!isset($mapped_values[$field][$value])){
+    foreach ($fields as $field => $value) {
+      if (isset($mapped_values[$field])) {
+        if (!isset($mapped_values[$field][$value])) {
           throw new \Exception("Value $value is not an acceptable value for field $field.");
         }
 
@@ -427,17 +428,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
 
     return $fields;
-  }
-
-  /**
-   * Returns a random URI ID for the collection.
-   *
-   * @return string
-   *   A string URI
-   */
-  private function getRandomUri() {
-    $php = new Php();
-    return 'http://example.com/' . $php->generate();
   }
 
 }

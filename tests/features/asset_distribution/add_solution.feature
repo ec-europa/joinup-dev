@@ -6,10 +6,10 @@ Feature: "Add asset distribution" visibility options.
 
   Scenario: "Add distribution" button should only be shown to moderators.
     Given the following collection:
-      | name | Asset Distribution Test |
-      | logo | logo.png                |
+      | title | Asset Distribution Test |
+      | logo  | logo.png                |
     And the following solution:
-      | name        | Asset random name                |
+      | title       | Asset random name                |
       | description | Some reusable random description |
       | collection  | Asset Distribution Test          |
 
@@ -27,10 +27,10 @@ Feature: "Add asset distribution" visibility options.
 
   Scenario: Add distribution as a moderator.
     Given the following collection:
-      | name | Asset Distribution Test2 |
-      | logo | logo.png                 |
+      | title | Asset Distribution Test2 |
+      | logo  | logo.png                 |
     And the following solution:
-      | name        | Asset another random name        |
+      | title       | Asset another random name        |
       | description | Some reusable random description |
       | collection  | Asset Distribution Test2         |
     And I am logged in as a moderator

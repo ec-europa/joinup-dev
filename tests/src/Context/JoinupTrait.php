@@ -3,7 +3,9 @@
 namespace Drupal\joinup\Context;
 
 
+use Drupal\Component\Uuid\Php;
 use Drupal\file\Entity\File;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 
 /**
  * Helper trait for behat tests.
@@ -57,6 +59,50 @@ trait JoinupTrait {
     foreach ($this->files as $file) {
       $file->delete();
     }
+  }
+
+  /**
+   * Returns the rdf entity with the given name and type.
+   *
+   * If multiple asset distributions have the same name,
+   * the first one will be returned.
+   *
+   * @param string $title
+   *   The rdf entity title.
+   * @param string $type
+   *   The rdf entity type.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   The asset distribution.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when an asset distribution with the given name does not exist.
+   */
+  protected function getRdfEntityByLabel($title, $type) {
+    $query = \Drupal::entityQuery('rdf_entity')
+      ->condition('?entity', 'rdf:type', SparqlArg::uri($type))
+      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($title))
+      ->range(0, 1);
+    $result = $query->execute();
+
+    if (empty($result)) {
+      throw new \InvalidArgumentException("The rdf entity with the name '$title' was not found.");
+    }
+
+    return \Drupal::entityTypeManager()
+      ->getStorage('rdf_entity')
+      ->loadUnchanged(reset($result));
+  }
+
+  /**
+   * Returns a random URI ID for the collection.
+   *
+   * @return string
+   *   A string URI
+   */
+  private function getRandomUri() {
+    $php = new Php();
+    return 'http://example.com/' . $php->generate();
   }
 
 }

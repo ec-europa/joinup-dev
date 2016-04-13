@@ -3,11 +3,11 @@ Feature: Collections menu
 
   Scenario: Add a link to og menu
     Given collections:
-      | name            | description            |
+      | title           | description            |
       | MenuCollection1 | First menu collection  |
       | MenuCollection2 | Second menu collection |
     And users:
-      | title   | roles     |
+      | name    | roles     |
       | Mr Menu | moderator |
     # Create a link
     Given I am logged in as "Mr Menu"

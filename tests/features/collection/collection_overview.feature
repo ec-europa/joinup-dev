@@ -19,7 +19,7 @@ Feature: Collections Overview
       | Open Data         | Facilitate access to data sets |
       | Connecting Europe | Reusable tools and services    |
     And users:
-      | title        | role          |
+      | name         | role          |
       | Madame Sharn | authenticated |
     And I am logged in as "Madame Sharn"
     When I visit the collection overview page

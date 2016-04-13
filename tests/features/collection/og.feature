@@ -6,7 +6,7 @@ Feature: Organic Groups integration
 
   Scenario: Joining and leaving a collection
     Given collections:
-      | name                        | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation |
+      | title                       | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation |
       | Überwaldean Land Eels       | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        |
       | Folk Dance and Song Society | Cats are cool!                             | http://mashable.com/category/cats/     | no     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         |
     And users:
@@ -87,7 +87,7 @@ Feature: Organic Groups integration
       | Überwaldean Land Eels       | logo.png | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        |
       | Folk Dance and Song Society | logo.png | Cats are cool!                             | http://mashable.com/category/cats/     | no     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         |
     And users:
-      | title            | roles         |
+      | name             | roles         |
       | Collection admin | administrator |
       | Madame Sharn     |               |
       | Goodie Whemper   |               |

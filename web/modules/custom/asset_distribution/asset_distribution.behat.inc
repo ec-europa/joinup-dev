@@ -9,7 +9,6 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Context\JoinupTrait;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -17,6 +16,7 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class AssetDistributionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
   use JoinupTrait;
+
   /**
    * Test asset distributions.
    *
@@ -101,30 +101,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Field alias mapping.
-   *
-   * @return array
-   *    Mapping.
-   */
-  private static function assetDistributionFieldAliases() {
-    // Mapping alias - field name.
-    return [
-      'uri' => 'id',
-      'name' => 'label',
-      'access url' => 'field_ad_access_url',
-      'creation date' => 'field_ad_creation_date',
-      'description' => 'field_ad_description',
-      'file' => 'field_ad_file',
-      'file size' => 'field_ad_file_size',
-      'format' => 'field_ad_format',
-      'licence' => 'field_ad_licence',
-      'modification date' => 'field_ad_modification_date',
-      'representation technique' => 'field_ad_repr_technique',
-      'status' => 'field_ad_status',
-    ];
-  }
-
-  /**
    * Creates an asset distribution with data provided in a table.
    *
    * Table format:
@@ -179,6 +155,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     }
 
     $values['rid'] = 'asset_distribution';
+    $values['id'] = $this->getRandomUri();
     $asset_distribution = Rdf::create($values);
     $asset_distribution->save();
     $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
@@ -205,7 +182,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * If multiple asset distributions have the same name,
    * the first one will be returned.
    *
-   * @param string $name
+   * @param string $title
    *   The asset distribution name.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
@@ -214,18 +191,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \InvalidArgumentException
    *   Thrown when an asset distribution with the given name does not exist.
    */
-  protected function getAssetDistributionByName($name) {
-    $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#AssetDistribution'))
-      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
-      ->range(0, 1);
-    $result = $query->execute();
-
-    if (empty($result)) {
-      throw new \InvalidArgumentException("The asset distribution with the name '$name' was not found.");
-    }
-
-    return Rdf::load(reset($result));
+  protected function getAssetDistributionByName($title) {
+    return $this->getRdfEntityByLabel($title, 'http://www.w3.org/ns/adms#AssetDistribution');
   }
 
   /**
@@ -233,7 +200,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * If multiple solution have the same name, the first one will be returned.
    *
-   * @param string $name
+   * @param string $title
    *   The solution name.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
@@ -242,22 +209,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \InvalidArgumentException
    *   Thrown when a solution with the given name does not exist.
    */
-  public function getSolutionByName($name) {
-    $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#Asset'))
-      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
-      ->range(0, 1);
-    $result = $query->execute();
-
-    if (empty($result)) {
-      throw new \InvalidArgumentException("The solution with the name '$name' was not found.");
-    }
-
-    // We need to skip the static cache and load the unchanged entity from the
-    // database.
-    return \Drupal::entityTypeManager()
-      ->getStorage('rdf_entity')
-      ->loadUnchanged(reset($result));
+  public function getSolutionByName($title) {
+    return $this->getRdfEntityByLabel($title, 'http://www.w3.org/ns/adms#Asset');
   }
 
   /**
@@ -331,6 +284,30 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     foreach ($this->assetDistributions as $asset_distribution) {
       $asset_distribution->delete();
     }
+  }
+
+  /**
+   * Field alias mapping.
+   *
+   * @return array
+   *    Mapping.
+   */
+  private static function assetDistributionFieldAliases() {
+    // Mapping alias - field name.
+    return [
+      'uri' => 'id',
+      'title' => 'label',
+      'access url' => 'field_ad_access_url',
+      'creation date' => 'field_ad_creation_date',
+      'description' => 'field_ad_description',
+      'file' => 'field_ad_file',
+      'file size' => 'field_ad_file_size',
+      'format' => 'field_ad_format',
+      'licence' => 'field_ad_licence',
+      'modification date' => 'field_ad_modification_date',
+      'representation technique' => 'field_ad_repr_technique',
+      'status' => 'field_ad_status',
+    ];
   }
 
 }
