@@ -96,7 +96,6 @@ config_devel:
   - field.field.user.user.field_user_photo
   - field.field.user.user.field_user_professional_domain
   - field.field.user.user.field_user_professional_profile
-  - field.field.user.user.og_group_ref
   - field.storage.node.body
   - field.storage.node.og_group_ref
   - field.storage.ogmenu_instance.og_group_ref
@@ -106,8 +105,7 @@ config_devel:
   - field.storage.user.field_user_organisation
   - field.storage.user.field_user_photo
   - field.storage.user.field_user_professional_domain
-  - field.storage.user.field_user_professional_profile
-  - field.storage.user.og_group_ref
+  - field.storage.user.field_user_professional_profiled
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html

@@ -118,7 +118,8 @@ class Query extends QueryBase implements QueryInterface {
     // @todo Getting the storage container here looks wrong...
     $entity_storage = \Drupal::service('entity.manager')
       ->getStorage('rdf_entity');
-
+    $field_storage_definitions = \Drupal::service('entity.manager')
+      ->getFieldStorageDefinitions('rdf_entity');
     /*
      * Ok, so what is all this:
      * We need to convert our conditions into some sparql compatible conditions.
@@ -130,7 +131,7 @@ class Query extends QueryBase implements QueryInterface {
           $this->condition->condition('?entity', 'rdf:type', '?type');
           $this->filter->filter('?type IN ' . $rdf_bundles);
         }
-        break;
+        return $this;
 
       case 'rid-=':
         $mapping = $entity_storage->getRdfBundleMapping();
@@ -139,14 +140,14 @@ class Query extends QueryBase implements QueryInterface {
         if ($bundle) {
           $this->condition->condition('?entity', 'rdf:type', SparqlArg::uri($bundle));
         }
-        break;
+        return $this;
 
       case 'id-IN':
         if ($value) {
           $ids_list = "(<" . implode(">, <", $value) . ">)";
           $this->filter->filter('?entity IN ' . $ids_list);
         }
-        break;
+        return $this;
 
       case 'id-NOT IN':
       case 'id-<>':
@@ -154,7 +155,7 @@ class Query extends QueryBase implements QueryInterface {
           $ids_list = "(<" . implode(">, <", $value) . ">)";
           $this->filter->filter('!(?entity IN ' . $ids_list . ')');
         }
-        break;
+        return $this;
 
       case 'id-=':
         if (!$value) {
@@ -186,7 +187,7 @@ class Query extends QueryBase implements QueryInterface {
           }
         }
 
-        break;
+        return $this;
 
       case 'label-CONTAINS':
         $mapping = $entity_storage->getLabelMapping();
@@ -196,11 +197,34 @@ class Query extends QueryBase implements QueryInterface {
         if ($value) {
           $this->filter->filter('regex(?label, "' . $value . '", "i")');
         }
-        break;
+        return $this;
 
-      default:
-        $this->condition->condition($property, $value, $operator, $langcode);
-        break;
+    }
+    if ($operator == '=') {
+      if (!$value) {
+        return $this;
+      }
+      list ($field_name, $column) = explode('.', $property);
+
+      if (empty($field_storage_definitions[$field_name])) {
+        throw new \Exception('Unknown field ' . $field_name);
+      }
+      /** @var \Drupal\field\Entity\FieldStorageConfig $field_storage */
+      $field_storage = $field_storage_definitions[$field_name];
+      if (empty($column)) {
+        $column = $field_storage->getMainPropertyName();
+      }
+      $field_rdf_name = $field_storage->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE);
+      if (empty($field_rdf_name)) {
+        throw new \Exception('No 3rd party field settings for ' . $field_name);
+      }
+      if (!filter_var($value, FILTER_VALIDATE_URL) === FALSE) {
+        $value = SparqlArg::uri($value);
+      }
+      else {
+        $value = SparqlArg::literal($value);
+      }
+      $this->condition->condition('?entity', SparqlArg::uri($field_rdf_name), $value);
     }
 
     return $this;

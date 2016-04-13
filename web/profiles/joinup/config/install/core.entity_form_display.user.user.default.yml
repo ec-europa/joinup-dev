@@ -9,7 +9,6 @@ dependencies:
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
     - field.field.user.user.field_user_professional_profile
-    - field.field.user.user.og_group_ref
     - image.style.thumbnail
   module:
     - image

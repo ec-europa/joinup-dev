@@ -3,5 +3,6 @@ groups:
   rdf_entity:
     - collection
 node_access_strict: true
-orphans_delete: false
-use_queue: false
+use_queue: null
+delete_orphans: true
+delete_orphans_plugin_id: simple

@@ -9,7 +9,6 @@ dependencies:
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
     - field.field.user.user.field_user_professional_profile
-    - field.field.user.user.og_group_ref
   module:
     - image
     - text
@@ -70,5 +69,4 @@ content:
     type: text_default
   member_for:
     weight: 5
-hidden:
-  og_group_ref: true
+hidden: {  }
