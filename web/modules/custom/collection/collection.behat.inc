@@ -9,10 +9,10 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\joinup\Context\JoinupTrait;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
+use \Drupal\og\OgGroupAudienceHelper;
 
 /**
  * Behat step definitions for testing collections.
@@ -57,6 +57,24 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
     $collection = $this->getCollectionByName($collection);
     $this->visitPath($collection->url());
+  }
+
+  /**
+   * Returns the Collection with the given title.
+   *
+   * If multiple collections have the same title, the first one will be returned.
+   *
+   * @param string $title
+   *   The collection title.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   The collection.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when a collection with the given title does not exist.
+   */
+  public static function getCollectionByName($title) {
+    return self::getRdfEntityByLabel($title, 'collection');
   }
 
   /**
@@ -127,6 +145,95 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Field alias mapping.
+   *
+   * @return array
+   *    Mapping.
+   */
+  private static function collectionFieldAliases() {
+    // Mapping alias - field name.
+    return [
+      'uri' => 'id',
+      'title' => 'label',
+      'abstract' => 'field_ar_abstract',
+      'access url' => 'field_ar_access_url',
+      'affiliates' => 'field_ar_affiliates',
+      'closed' => 'field_ar_closed',
+      'contact information' => 'field_ar_contact_information',
+      'creation date' => 'field_ar_creation_date',
+      'description' => 'field_ar_description',
+      'elibrary creation' => 'field_ar_elibrary_creation',
+      'logo' => 'field_ar_logo',
+      'moderation' => 'field_ar_moderation',
+      'modification date' => 'field_ar_modification_date',
+      'owner' => 'field_ar_owner',
+      'policy domain' => 'field_ar_policy_domain',
+      'spatial coverage' => 'field_ar_spatial_coverage',
+      'topic' => 'field_ar_topic',
+    ];
+  }
+
+  /**
+   * Converts values from user friendly to normal machine values.
+   *
+   * @param array $fields
+   *    An array of fields keyed by field name.
+   *
+   * @return mixed
+   *    The array with the values converted.
+   *
+   * @throws \Exception
+   *    Throws an exception when a mapped value is not found.
+   */
+  private function convertValueAliases($fields) {
+    $mapped_values = [
+      'field_ar_moderation' => ['no' => 0, 'yes' => 1],
+      'field_ar_elibrary_creation' =>
+        ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
+      'field_ar_closed' => ['no' => 0, 'yes' => 1],
+    ];
+
+    foreach ($fields as $field => $value) {
+      if (isset($mapped_values[$field])) {
+        if (!isset($mapped_values[$field][$value])) {
+          throw new \Exception("Value $value is not an acceptable value for field $field.");
+        }
+
+        $fields[$field] = $mapped_values[$field][$value];
+      }
+    }
+
+    return $fields;
+  }
+
+  /**
+   * Creates a collection from the given property and field data.
+   *
+   * @param array $values
+   *   An optional associative array of values, keyed by property name.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   A new collection entity.
+   *
+   * @throws \Exception
+   *   Thrown when a given image is not found.
+   */
+  public function createCollection(array $values) {
+    // Add image.
+    if (!empty($values['field_ar_logo'])) {
+      $values['field_ar_logo'] = [$this->createFile($values['field_ar_logo'], $this->getMinkParameter('files_path'))];
+    }
+    // @todo Remove this after the widget in ISAICP-2301 is build.
+    $values['rid'] = 'collection';
+    $values['id'] = $this->getRandomUri();
+    $collection = Rdf::create($values);
+    $collection->save();
+    $this->collections[$collection->id()] = $collection;
+
+    return $collection;
+  }
+
+  /**
    * Creates a collection with data provided in a table.
    *
    * Table format:
@@ -169,33 +276,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Creates a collection from the given property and field data.
-   *
-   * @param array $values
-   *   An optional associative array of values, keyed by property name.
-   *
-   * @return \Drupal\rdf_entity\Entity\Rdf
-   *   A new collection entity.
-   *
-   * @throws \Exception
-   *   Thrown when a given image is not found.
-   */
-  public function createCollection(array $values) {
-    // Add image.
-    if (!empty($values['field_ar_logo'])) {
-      $values['field_ar_logo'] = [$this->createFile($values['field_ar_logo'], $this->getMinkParameter('files_path'))];
-    }
-    // @todo Remove this after the widget in ISAICP-2301 is build.
-    $values['rid'] = 'collection';
-    $values['id'] = $this->getRandomUri();
-    $collection = Rdf::create($values);
-    $collection->save();
-    $this->collections[$collection->id()] = $collection;
-
-    return $collection;
-  }
-
-  /**
    * Deletes a collection.
    *
    * @param string $collection
@@ -209,42 +289,15 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Returns the Collection with the given title.
-   *
-   * If multiple collections have the same title, the first one will be returned.
-   *
-   * @param string $title
-   *   The collection title.
-   *
-   * @return \Drupal\rdf_entity\Entity\Rdf
-   *   The collection.
-   *
-   * @throws \InvalidArgumentException
-   *   Thrown when a collection with the given title does not exist.
-   */
-  public static function getCollectionByName($title) {
-    return self::getRdfEntityByLabel($title, 'collection');
-  }
-
-  /**
    * Checks the number of available collections.
    *
    * @param int $number
    *   The expected number of collections.
    *
-   * @throws \Exception
-   *   Thrown when the number of collections does not not match the expectation.
-   *
    * @Then I should have :number collection(s)
    */
   public function assertCollectionCount($number) {
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'collection')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of collections. Expected number: $number, actual number: $actual.");
-    }
+    $this->assertRdfEntityCount($number, 'collection');
   }
 
   /**
@@ -327,70 +380,30 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function cleanCollections() {
     // Remove any collections that were created.
     foreach ($this->collections as $collection) {
+      // @todo: This delete functionality should occur automatically. See ISAICP-2311.
+      $membership_ids = \Drupal::entityQuery('og_membership')
+        ->condition('entity_id', $collection->id())
+        ->condition('entity_type', 'rdf_entity')
+        ->execute();
+      $memberships = Og::membershipStorage()->loadMultiple($membership_ids);
+      Og::membershipStorage()->delete($memberships);
+
+      // Some more workarounds for og_menu.
+      $storage = \Drupal::getContainer()
+        ->get('entity.manager')
+        ->getStorage('ogmenu_instance');
+      $values = [
+        OgGroupAudienceHelper::DEFAULT_FIELD => $collection->id(),
+      ];
+      // Load all ogmenu_instances related to the group, and delete them.
+      $menu_instances = $storage->loadByProperties($values);
+      foreach ($menu_instances as $menu_instance) {
+        $menu_instance->delete();
+      }
+      // Delete the collection.
+
       $collection->delete();
     }
-  }
-
-  /**
-   * Field alias mapping.
-   *
-   * @return array
-   *    Mapping.
-   */
-  private static function collectionFieldAliases() {
-    // Mapping alias - field name.
-    return [
-      'uri' => 'id',
-      'title' => 'label',
-      'abstract' => 'field_ar_abstract',
-      'access url' => 'field_ar_access_url',
-      'affiliates' => 'field_ar_affiliates',
-      'closed' => 'field_ar_closed',
-      'contact information' => 'field_ar_contact_information',
-      'creation date' => 'field_ar_creation_date',
-      'description' => 'field_ar_description',
-      'elibrary creation' => 'field_ar_elibrary_creation',
-      'logo' => 'field_ar_logo',
-      'moderation' => 'field_ar_moderation',
-      'modification date' => 'field_ar_modification_date',
-      'owner' => 'field_ar_owner',
-      'policy domain' => 'field_ar_policy_domain',
-      'spatial coverage' => 'field_ar_spatial_coverage',
-      'topic' => 'field_ar_topic',
-    ];
-  }
-
-  /**
-   * Converts values from user friendly to normal machine values.
-   *
-   * @param array $fields
-   *    An array of fields keyed by field name.
-   *
-   * @return mixed
-   *    The array with the values converted.
-   *
-   * @throws \Exception
-   *    Throws an exception when a mapped value is not found.
-   */
-  private function convertValueAliases($fields) {
-    $mapped_values = [
-      'field_ar_moderation' => ['no' => 0, 'yes' => 1],
-      'field_ar_elibrary_creation' =>
-        ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
-      'field_ar_closed' => ['no' => 0, 'yes' => 1],
-    ];
-
-    foreach ($fields as $field => $value) {
-      if (isset($mapped_values[$field])) {
-        if (!isset($mapped_values[$field][$value])) {
-          throw new \Exception("Value $value is not an acceptable value for field $field.");
-        }
-
-        $fields[$field] = $mapped_values[$field][$value];
-      }
-    }
-
-    return $fields;
   }
 
 }

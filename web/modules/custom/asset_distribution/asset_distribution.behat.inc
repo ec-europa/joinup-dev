@@ -219,20 +219,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param int $number
    *   The expected number of asset distributions.
    *
-   * @throws \Exception
-   *   Thrown when the number of asset distributions does not
-   *   match the expectation.
-   *
    * @Then I should have :number asset distribution(s)
    */
   public function assertAssetDistributionCount($number) {
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'asset_distribution')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of asset distributions. Expected number: $number, actual number: $actual.");
-    }
+    $this->assertRdfEntityCount($number, 'asset_distribution');
   }
 
   /**

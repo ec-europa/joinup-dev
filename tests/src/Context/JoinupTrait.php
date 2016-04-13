@@ -105,4 +105,28 @@ trait JoinupTrait {
     return 'http://example.com/' . $php->generate();
   }
 
+  /**
+   * Checks the number of available rdf entities filtered by bundle.
+   *
+   * @param int $number
+   *   The expected number of rdf entities.
+   * @param string $type
+   *   The rdf type.
+   *
+   * @throws \Exception
+   *   Thrown when the number of rdf entities does not
+   *   match the expectation.
+   */
+  public function assertRdfEntityCount($number, $type) {
+    $actual = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', $type)
+      ->count()
+      ->execute();
+    if ($actual != $number) {
+      throw new \Exception("Wrong number of asset distributions. Expected number: $number, actual number: $actual.");
+    }
+  }
+
+
+
 }
