@@ -1,19 +1,15 @@
 <?php
 
-/**
- * @file
- * Contains \UserSubContext.
- */
-
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use \Behat\Gherkin\Node\TableNode;
-use \Drupal\file\Entity\File;
+use Drupal\joinup\Context\JoinupTrait;
 
 /**
  * Behat step definitions for testing users.
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+  use JoinupTrait;
   /**
    * Test files.
    *
@@ -80,20 +76,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_info */
       $field_info = $fields[$field_name];
       if (in_array($field_info->getType(), ['image', 'file'])) {
-        $files_path = $this->getMinkParameter('files_path');
-        $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $value;
-        if (!is_file($path)) {
-          throw new \Exception("File '$value' was not found in file path '$files_path'.");
-        }
-        // Copy the image into the public files folder and turn it into a File
-        // entity before linking it.
-        $uri = 'public://' . $value;
-        file_unmanaged_copy($path, $uri);
-        $file = File::create(['uri' => $uri]);
-        $file->save();
-        $values[$field_name] = $file->id();
-
-        $this->files[$file->id()] = $file;
+        $values[$field_name] = [$this->createFile($values[$field_name], $this->getMinkParameter('files_path'))];
       }
     }
   }

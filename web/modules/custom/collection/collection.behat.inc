@@ -5,12 +5,13 @@
  * Contains \CollectionSubContext.
  */
 
+use Drupal\Component\Uuid\Php;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
-use Drupal\file\Entity\File;
+use Drupal\joinup\Context\JoinupTrait;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgGroupAudienceHelper;
@@ -19,7 +20,7 @@ use Drupal\og\OgGroupAudienceHelper;
  * Behat step definitions for testing collections.
  */
 class CollectionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
-
+  use JoinupTrait;
   /**
    * Test collections.
    *
@@ -176,25 +177,11 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function createCollection(array $values) {
     // Add image.
     if (!empty($values['field_ar_logo'])) {
-      $filename = $values['field_ar_logo'];
-      $files_path = $this->getMinkParameter('files_path');
-      $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
-      if (!is_file($path)) {
-        throw new \Exception("Image '$filename' was not found in file path '$files_path'.");
-      }
-      // Copy the image into the public files folder and turn it into a File
-      // entity before linking it to the collection.
-      $uri = 'public://' . $filename;
-      $destination = file_unmanaged_copy($path, $uri);
-      $image = File::create(['uri' => $destination]);
-      $image->save();
-      $values['field_ar_logo'] = [$image->id()];
-
-      $this->images[$image->id()] = $image;
+      $values['field_ar_logo'] = [$this->createFile($values['field_ar_logo'], $this->getMinkParameter('files_path'))];
     }
     // @todo Remove this after the widget in ISAICP-2301 is build.
     $values['rid'] = 'collection';
-    $values['id'] = $this->getRandomURI();
+    $values['id'] = $this->getRandomUri();
     $collection = Rdf::create($values);
     $collection->save();
     $this->collections[$collection->id()] = $collection;
@@ -353,7 +340,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       Og::membershipStorage()->delete($memberships);
 
       // Some more workarounds for og_menu.
-      $storage = \Drupal::getContainer()->get('entity.manager')->getStorage('ogmenu_instance');
+      $storage = \Drupal::getContainer()
+        ->get('entity.manager')
+        ->getStorage('ogmenu_instance');
       $values = [
         OgGroupAudienceHelper::DEFAULT_FIELD => $collection->id(),
       ];
@@ -405,9 +394,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Returns a random URI ID for the collection.
    *
    * @return string
+   *   A string URI
    */
-  private function getRandomURI() {
-    $php = new \Drupal\Component\Uuid\Php();
+  private function getRandomUri() {
+    $php = new Php();
     return 'http://example.com/' . $php->generate();
   }
 

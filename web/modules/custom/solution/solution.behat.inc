@@ -1,22 +1,18 @@
 <?php
 
-/**
- * @file
- * Contains \SolutionSubContext.
- */
-
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
-use Drupal\file\Entity\File;
+use Drupal\joinup\Context\JoinupTrait;
 use Drupal\og\OgGroupAudienceHelper;
 
 /**
  * Behat step definitions for testing solutions.
  */
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+  use JoinupTrait;
 
   /**
    * Test solutions.
@@ -175,21 +171,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   public function createSolution(array $values) {
     // Add image.
     if (!empty($values['field_is_documentation'])) {
-      $filename = $values['field_is_documentation'];
-      $files_path = $this->getMinkParameter('files_path');
-      $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
-      if (!is_file($path)) {
-        throw new \Exception("Document '$filename' was not found in file path '$files_path'.");
-      }
-      // Copy the document into the public files folder and turn it into a File
-      // entity before linking it to the collection.
-      $uri = 'public://' . $filename;
-      $destination = file_unmanaged_copy($path, $uri);
-      $document = File::create(['uri' => $destination]);
-      $document->save();
-      $values['field_is_documentation'] = [$document->id()];
-
-      $this->documents[$document->id()] = $document;
+      $values['field_is_documentation'] = [$this->createFile($values['field_is_documentation'], $this->getMinkParameter('files_path'))];
     }
 
     $values['rid'] = 'solution';
@@ -308,10 +290,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
       $solution->delete();
-    }
-    // Also remove the image entities that were attached to the collections.
-    foreach ($this->documents as $document) {
-      $document->delete();
     }
   }
 

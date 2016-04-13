@@ -8,7 +8,7 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\file\Entity\File;
+use Drupal\joinup\Context\JoinupTrait;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -16,7 +16,7 @@ use Drupal\rdf_entity\Entity\Rdf;
  * Behat step definitions for testing asset distributions.
  */
 class AssetDistributionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
-
+  use JoinupTrait;
   /**
    * Test asset distributions.
    *
@@ -175,21 +175,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   public function createAssetDistribution(array $values) {
     // Add image.
     if (!empty($values['field_ad_file'])) {
-      $filename = $values['field_ad_file'];
-      $files_path = $this->getMinkParameter('files_path');
-      $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
-      if (!is_file($path)) {
-        throw new \Exception("File '$filename' was not found in file path '$files_path'.");
-      }
-      // Copy the file into the public files folder and turn it into a File
-      // entity before linking it to the collection.
-      $uri = 'public://' . $filename;
-      $destination = file_unmanaged_copy($path, $uri);
-      $file = File::create(['uri' => $destination]);
-      $file->save();
-      $values['field_ad_file'] = [$file->id()];
-
-      $this->files[$file->id()] = $file;
+      $values['field_ad_file'] = [$this->createFile($values['field_ad_file'], $this->getMinkParameter('files_path'))];
     }
 
     $values['rid'] = 'asset_distribution';
@@ -344,10 +330,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     // Remove any asset distributions that were created.
     foreach ($this->assetDistributions as $asset_distribution) {
       $asset_distribution->delete();
-    }
-    // Also remove the image entities that were attached to the collections.
-    foreach ($this->files as $file) {
-      $file->delete();
     }
   }
 
