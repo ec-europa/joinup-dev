@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\og\Og;
 
@@ -23,7 +24,7 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
  *
  * Invalidate the og_content cache tag of the groups this entity belongs to.
  */
-function collection_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+function collection_entity_presave(EntityInterface $entity) {
   $entity_type_id = $entity->getEntityType()->id();
   $bundle = $entity->bundle();
   if (Og::isGroupContent($entity_type_id, $bundle)) {

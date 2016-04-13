@@ -2,14 +2,10 @@
 
 namespace Drupal\collection\Plugin\Block;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Session\AccountProxyInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\og\Og;
 
@@ -62,15 +58,12 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
    *   The plugin implementation definition.
    * @param \Drupal\Core\Routing\RouteMatchInterface $current_route_match
    *   The current route match service.
-   * @param \Drupal\Core\Session\AccountProxyInterface $user
-   *   The current user.
    * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
    *   The entity manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, AccountProxyInterface $user, EntityManagerInterface $entityManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityManagerInterface $entityManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
-    $this->user = $user;
     // Retrieve the collection from the route.
     $this->collection = $this->currentRouteMatch->getParameter('rdf_entity');
     $this->entityManager = $entityManager;
@@ -85,7 +78,6 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
       $plugin_id,
       $plugin_definition,
       $container->get('current_route_match'),
-      $container->get('current_user'),
       $container->get('entity.manager')
     );
   }
@@ -109,7 +101,7 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
       if ($children) {
         $list[] = array(
           '#markup' => $storage->getEntityType()->getLabel(),
-          'children' => $children
+          'children' => $children,
         );
       }
     }
