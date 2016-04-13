@@ -6,8 +6,6 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - text
-_core:
-  default_config_hash: fFFIoCOK3TOjd5rw5LNJYJppuepMxikoJwT8UNiBwUI
 id: rdf_entity.collection.field_ar_description
 field_name: field_ar_description
 entity_type: rdf_entity
