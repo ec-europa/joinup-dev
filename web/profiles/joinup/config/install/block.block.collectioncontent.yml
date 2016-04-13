@@ -7,7 +7,7 @@ dependencies:
     - bartik
 id: collectioncontent
 theme: bartik
-region: sidebar_second
+region: sidebar_first
 weight: -8
 provider: null
 plugin: collection_content_block
