@@ -117,4 +117,12 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
     return $build;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheMaxAge() {
+    // Disable caching.
+    return 0;
+  }
+
 }
