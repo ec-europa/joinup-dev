@@ -5,7 +5,9 @@
  * Main functions and hook implementations of the Collection module.
  */
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\og\Og;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -14,4 +16,24 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
   // Hide the 'negation' option for collection block visibility. There are no
   // good use cases to show a block on all pages, except on collection pages.
   $form['visibility']['collection']['negate']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_entity_presave().
+ *
+ * Invalidate the og_content cache tag of the groups this entity belongs to.
+ */
+function collection_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+  $entity_type_id = $entity->getEntityType()->id();
+  $bundle = $entity->bundle();
+  if (Og::isGroupContent($entity_type_id, $bundle)) {
+    $groups_by_type = Og::getEntityGroups($entity);
+    foreach ($groups_by_type as $entity_type => $groups) {
+      /** @var \Drupal\Core\Entity\EntityInterface $group */
+      foreach ($groups as $group) {
+        Cache::invalidateTags(['og_content:' . $group->id()]);
+      }
+    }
+  }
+
 }
