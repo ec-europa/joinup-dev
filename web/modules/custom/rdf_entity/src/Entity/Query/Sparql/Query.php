@@ -216,7 +216,7 @@ class Query extends QueryBase implements QueryInterface {
       }
       $field_rdf_name = $field_storage->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE);
       if (empty($field_rdf_name)) {
-        throw new \Exception('No 3th party field settings for ' . $field_name);
+        throw new \Exception('No 3rd party field settings for ' . $field_name);
       }
       if ((!filter_var($value, FILTER_VALIDATE_URL) === FALSE)) {
         $value = SparqlArg::uri($value);
