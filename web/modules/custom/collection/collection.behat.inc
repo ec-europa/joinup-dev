@@ -90,9 +90,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * name                    | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | logo | moderation | modification date | owner |
-   * Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | 1      | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | 0                 |      | 1          |                   |       |
-   * Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | 0      | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | 1                 |      | 0          |                   |       |
+   * title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation                     | logo | moderation | modification date | owner |
+   * Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users |      | yes        |                   |       |
+   * Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users |      | no         |                   |       |
    * @codingStandardsIgnoreEnd
    *
    * Only the name field is required.
@@ -119,6 +119,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
           throw new \Exception("Unknown column '$key' in collection table.");
         }
       };
+
+      // Convert user friendly values to machine values.
+      $values = $this->convertValueAliases($values);
+
       $this->createCollection($values);
     }
   }
@@ -127,13 +131,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Creates a collection with data provided in a table.
    *
    * Table format:
-   * | name            | Open Data Initiative                  |
+   * | title           | Open Data Initiative                  |
    * | author          | Mightily Oats                         |
    * | logo            | logo.png                              |
-   * | pre-moderation  | 0|1                                   |
-   * | closed          | 0|1                                   |
-   * | create elibrary | facilitators|members|registered_users |
-   * | schedule        | daily|weekly|monthly                  |
+   * | moderation      | yes|no                                |
+   * | closed          | yes|no                                |
+   * | create elibrary | facilitators|members|registered users |
    * | metadata url    | https://ec.europa.eu/my/url           |
    *
    * Only the name field is required.
@@ -159,6 +162,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         throw new \Exception("Unknown column '$key' in collection table.");
       }
     };
+
+    // Convert user friendly values to machine values.
+    $values = $this->convertValueAliases($values);
+
     $this->createCollection($values);
   }
 
@@ -371,7 +378,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     // Mapping alias - field name.
     return [
       'uri' => 'id',
-      'name' => 'label',
+      'title' => 'label',
       'abstract' => 'field_ar_abstract',
       'access url' => 'field_ar_access_url',
       'affiliates' => 'field_ar_affiliates',
@@ -388,6 +395,38 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'spatial coverage' => 'field_ar_spatial_coverage',
       'topic' => 'field_ar_topic',
     ];
+  }
+
+  /**
+   * Converts values from user friendly to normal machine values.
+   *
+   * @param array $fields
+   *    An array of fields keyed by field name.
+   *
+   * @return mixed
+   *    The array with the values converted.
+   *
+   * @throws \Exception
+   *    Throws an exception when a mapped value is not found.
+   */
+  private static function convertValueAliases($fields){
+    $mapped_values = [
+      'moderation' => ['no' => 0, 'yes' => 1],
+      'elibrary creation' => ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
+      'closed' => ['no' => 0, 'yes' => 1],
+    ];
+
+    foreach($fields as $field => $value){
+      if(isset($mapped_values[$field])){
+        if(!isset($mapped_values[$field][$value])){
+          throw new \Exception("Value $value is not an acceptable value for field $field.");
+        }
+
+        $fields[$field] = $mapped_values[$field][$value];
+      }
+    }
+
+    return $fields;
   }
 
   /**
