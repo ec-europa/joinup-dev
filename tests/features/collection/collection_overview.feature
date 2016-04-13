@@ -1,5 +1,15 @@
 @api
 Feature: Collections Overview
+  Scenario: Check visibility of "Collections" menu link.
+    Given I am an anonymous user
+    Then I should see the link "Collections"
+    When I click "Collections"
+    Then I should see the heading "Collections"
+    # Check that all logged in users can see and access the link as well.
+    Given I am logged in as a user with the "authenticated user" role
+    Then I should see the link "Collections"
+    When I click "Collections"
+    Then I should see the heading "Collections"
 
   Scenario: View collection overview
     Given collections:
