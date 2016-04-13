@@ -47,7 +47,7 @@ Feature: Proposing a collection
 
   Scenario: Propose a collection with a duplicate name
     Given the following collection:
-      | name | The Ratcatcher's Guild       |
+      | name | The Ratcatcher's Guild |
     Given I am logged in as a user with the "authenticated" role
     When I am on the homepage
     And I click "Propose collection"
