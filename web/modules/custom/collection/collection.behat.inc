@@ -191,6 +191,14 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
 
       $this->images[$image->id()] = $image;
     }
+
+    // Generate a URI if this is not specified. Typically the URI is not exposed
+    // to the end user, so in a functional test the user will not be able to
+    // enter one.
+    if (empty($values['id'])) {
+      $values['id'] = 'http://joinup.eu/collection/' . urlencode($values['label']);
+    }
+
     // @todo Remove this after the widget in ISAICP-2301 is build.
     $values['rid'] = 'collection';
     $collection = Rdf::create($values);
