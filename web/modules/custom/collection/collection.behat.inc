@@ -13,7 +13,6 @@ use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\joinup\Context\JoinupTrait;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
-use Drupal\og\OgGroupAudienceHelper;
 
 /**
  * Behat step definitions for testing collections.
@@ -225,8 +224,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public static function getCollectionByName($name) {
     $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#AssetRepository'))
-      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
+      ->condition('rid', 'collection')
+      ->condition('label', $name)
       ->range(0, 1);
     $result = $query->execute();
 
@@ -250,7 +249,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function assertCollectionCount($number) {
     $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', '<http://www.w3.org/ns/adms#AssetRepository>')
+      ->condition('rid', 'collection')
       ->count()
       ->execute();
     if ($actual != $number) {
@@ -338,33 +337,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function cleanCollections() {
     // Remove any collections that were created.
     foreach ($this->collections as $collection) {
-      // @todo: This delete functionality should occur automatically. See ISAICP-2311.
-      $membership_ids = \Drupal::entityQuery('og_membership')
-        ->condition('entity_id', $collection->id())
-        ->condition('entity_type', 'rdf_entity')
-        ->execute();
-      $memberships = Og::membershipStorage()->loadMultiple($membership_ids);
-      Og::membershipStorage()->delete($memberships);
-
-      // Some more workarounds for og_menu.
-      $storage = \Drupal::getContainer()
-        ->get('entity.manager')
-        ->getStorage('ogmenu_instance');
-      $values = [
-        OgGroupAudienceHelper::DEFAULT_FIELD => $collection->id(),
-      ];
-      // Load all ogmenu_instances related to the group, and delete them.
-      $menu_instances = $storage->loadByProperties($values);
-      foreach ($menu_instances as $menu_instance) {
-        $menu_instance->delete();
-      }
-
-      // Delete the collection.
       $collection->delete();
-    }
-    // Also remove the image entities that were attached to the collections.
-    foreach ($this->images as $image) {
-      $image->delete();
     }
   }
 

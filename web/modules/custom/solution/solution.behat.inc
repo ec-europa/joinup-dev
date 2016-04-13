@@ -205,7 +205,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *   Thrown when a solution with the given name does not exist.
    */
   public function getSolutionByName($title) {
-    return $this->getRdfEntityByLabel($title, 'http://www.w3.org/ns/adms#Asset');
+    return $this->getRdfEntityByLabel($title, 'solution');
   }
 
   /**
@@ -221,7 +221,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function assertSolutionCount($number) {
     $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', '<http://www.w3.org/ns/adms#Asset>')
+      ->condition('rid', 'solution')
       ->count()
       ->execute();
     if ($actual != $number) {
@@ -353,13 +353,13 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     // Check for the og group.
     if (isset($fields['field_is_distribution'])) {
-      $distribution = $this->getRdfEntityByLabel($fields['field_is_distribution'], 'http://www.w3.org/ns/adms#AssetDistribution');
+      $distribution = $this->getRdfEntityByLabel($fields['field_is_distribution'], 'asset_distribution');
       $fields['field_is_distribution'] = [$distribution->id()];
     }
 
     // Check for the og group.
     if (isset($fields['og_group_ref'])) {
-      $collection = $this->getRdfEntityByLabel($fields['og_group_ref'], 'http://www.w3.org/ns/adms#AssetRepository');
+      $collection = $this->getRdfEntityByLabel($fields['og_group_ref'], 'collection');
       $fields['og_group_ref'] = $collection->id();
     }
 

@@ -80,7 +80,7 @@ trait JoinupTrait {
    */
   protected function getRdfEntityByLabel($title, $type) {
     $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', SparqlArg::uri($type))
+      ->condition('rid', $type)
       ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($title))
       ->range(0, 1);
     $result = $query->execute();

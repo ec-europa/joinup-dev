@@ -192,7 +192,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *   Thrown when an asset distribution with the given name does not exist.
    */
   protected function getAssetDistributionByName($title) {
-    return $this->getRdfEntityByLabel($title, 'http://www.w3.org/ns/adms#AssetDistribution');
+    return $this->getRdfEntityByLabel($title, 'asset_distribution');
   }
 
   /**
@@ -210,7 +210,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *   Thrown when a solution with the given name does not exist.
    */
   public function getSolutionByName($title) {
-    return $this->getRdfEntityByLabel($title, 'http://www.w3.org/ns/adms#Asset');
+    return $this->getRdfEntityByLabel($title, 'solution');
   }
 
   /**
@@ -227,7 +227,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    */
   public function assertAssetDistributionCount($number) {
     $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', '<http://www.w3.org/ns/adms#AssetDistribution>')
+      ->condition('rid', 'asset_distribution')
       ->count()
       ->execute();
     if ($actual != $number) {
