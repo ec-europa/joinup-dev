@@ -246,7 +246,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
 
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $this->clearStaticCaches();
     $solution = $this->getSolutionByName($solution);
 
     // This handles the solutions added by form submit.

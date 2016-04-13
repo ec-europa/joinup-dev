@@ -54,7 +54,7 @@ class AssetDistributionController extends ControllerBase {
     //   create distributions related to the solutions they manage.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2450
     if ($rdf_entity->bundle() == 'solution' && $this->currentUser()
-        ->hasPermission('propose asset_distribution rdf entity')
+        ->hasPermission('create asset_distribution rdf entity')
     ) {
       return AccessResult::allowed();
     }
