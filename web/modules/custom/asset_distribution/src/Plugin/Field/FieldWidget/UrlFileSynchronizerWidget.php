@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\rdf_entity\Plugin\Field\FieldWidget;
+namespace Drupal\asset_distribution\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
