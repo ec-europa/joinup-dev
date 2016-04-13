@@ -5,8 +5,8 @@
  * Main functions and hook implementations of the Collection module.
  */
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -21,7 +21,8 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
  * Implements hook_entity_bundle_field_info_alter().
  */
 function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  // Make sure the collection label is unique.
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'collection' && !empty($fields['label'])) {
-    $fields['label']->addConstraint('UniqueField');
+    $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['collection']]);
   }
 }

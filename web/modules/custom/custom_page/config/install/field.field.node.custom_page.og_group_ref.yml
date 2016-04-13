@@ -11,8 +11,8 @@ id: node.custom_page.og_group_ref
 field_name: og_group_ref
 entity_type: node
 bundle: custom_page
-label: 'Groups audience'
-description: 'OG group audience reference field.'
+label: Collection
+description: 'The collection this custom page belongs to.'
 required: false
 translatable: true
 default_value: {  }
