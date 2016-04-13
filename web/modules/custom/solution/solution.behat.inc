@@ -204,8 +204,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \InvalidArgumentException
    *   Thrown when a solution with the given name does not exist.
    */
-  public function getSolutionByName($title) {
-    return $this->getRdfEntityByLabel($title, 'solution');
+  public static function getSolutionByName($title) {
+    return self::getRdfEntityByLabel($title, 'solution');
   }
 
   /**

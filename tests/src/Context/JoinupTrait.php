@@ -78,10 +78,10 @@ trait JoinupTrait {
    * @throws \InvalidArgumentException
    *   Thrown when an asset distribution with the given name does not exist.
    */
-  protected function getRdfEntityByLabel($title, $type) {
+  protected static function getRdfEntityByLabel($title, $type) {
     $query = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', $type)
-      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($title))
+      ->condition('label', $title)
       ->range(0, 1);
     $result = $query->execute();
 

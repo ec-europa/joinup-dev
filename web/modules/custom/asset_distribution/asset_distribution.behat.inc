@@ -35,7 +35,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Navigates to the canonical page display of an asset distribution.
    *
    * @param string $asset_distribution
-   *   The name of the asset distribution.
+   *   The title of the asset distribution.
    *
    * @When (I )go to (the homepage of )the :asset_distribution distribution
    * @When (I )visit (the homepage of )the :asset_distribution distribution
@@ -50,7 +50,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Navigates to the edit form of an asset distribution.
    *
    * @param string $asset_distribution
-   *   The name of the $asset_distribution.
+   *   The title of the $asset_distribution.
    *
    * @When (I )go to the :asset_distribution asset distribution edit form
    * @When (I )visit the :asset_distribution asset distribution edit form
@@ -71,7 +71,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @codingStandardsIgnoreStart
    *   Table format:
    *   Table format:
-   * uri                                      | name              | description                  | access url                               | file     | creation date     | modification date
+   * uri                                      | title              | description                  | access url                               | file     | creation date     | modification date
    * http://joinup.eu/asset_distribution/foo  | Foo distribution  | This is a foo distribution   | http://base_url.com/path-to-file.zip     | test.zip | 28-01-1995 12:05  |
    * http://joinup.eu/asset_distribution/bar  | Bar distribution  | This is a bar distribution   | http://external_url.com/path-to-file.zip | test.zip | 28-01-1995 12:06  |
    * @codingStandardsIgnoreEnd
@@ -167,7 +167,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Deletes an asset distribution.
    *
    * @param string $asset_distribution
-   *   The name of the asset distribution.
+   *   The title of the asset distribution.
    *
    * @When (I )delete the :asset_distribution asset distribution
    */
@@ -177,40 +177,40 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Returns the asset distribution with the given name.
+   * Returns the asset distribution with the given title.
    *
-   * If multiple asset distributions have the same name,
+   * If multiple asset distributions have the same title,
    * the first one will be returned.
    *
    * @param string $title
-   *   The asset distribution name.
+   *   The asset distribution title.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
    *   The asset distribution.
    *
    * @throws \InvalidArgumentException
-   *   Thrown when an asset distribution with the given name does not exist.
+   *   Thrown when an asset distribution with the given title does not exist.
    */
   protected function getAssetDistributionByName($title) {
     return $this->getRdfEntityByLabel($title, 'asset_distribution');
   }
 
   /**
-   * Returns the Solution with the given name.
+   * Returns the Solution with the given title.
    *
-   * If multiple solution have the same name, the first one will be returned.
+   * If multiple solution have the same title, the first one will be returned.
    *
    * @param string $title
-   *   The solution name.
+   *   The solution title.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
    *   The solution.
    *
    * @throws \InvalidArgumentException
-   *   Thrown when a solution with the given name does not exist.
+   *   Thrown when a solution with the given title does not exist.
    */
-  public function getSolutionByName($title) {
-    return $this->getRdfEntityByLabel($title, 'solution');
+  public static function getSolutionByName($title) {
+    return self::getRdfEntityByLabel($title, 'solution');
   }
 
   /**
@@ -239,10 +239,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Checks if the given asset distributions belongs to the given solution.
    *
    * If there are multiple solutions or asset distributions with
-   * the same name, then only the first one is checked.
+   * the same title, then only the first one is checked.
    *
    * @param string $asset_distribution
-   *   The name of the asset distribution to check.
+   *   The title of the asset distribution to check.
    * @param string $solution
    *   The title of the custom page to check.
    *

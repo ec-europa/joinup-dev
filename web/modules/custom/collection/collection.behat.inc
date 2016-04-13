@@ -48,7 +48,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Navigates to the canonical page display of a collection.
    *
    * @param string $collection
-   *   The name of the collection.
+   *   The title of the collection.
    *
    * @When (I )go to (the homepage of )the :collection collection
    * @When (I )visit (the homepage of )the :collection collection
@@ -63,7 +63,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Navigates to the edit form of a collection.
    *
    * @param string $collection
-   *   The name of the collection.
+   *   The title of the collection.
    *
    * @When (I )go to the :collection collection edit form
    * @When (I )visit the :collection collection edit form
@@ -94,7 +94,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users |      | no         |                   |       |
    * @codingStandardsIgnoreEnd
    *
-   * Only the name field is required.
+   * Only the title field is required.
    *
    * @param TableNode $collection_table
    *   The collection data.
@@ -138,7 +138,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * | create elibrary | facilitators|members|registered users |
    * | metadata url    | https://ec.europa.eu/my/url           |
    *
-   * Only the name field is required.
+   * Only the title field is required.
    *
    * @param TableNode $collection_table
    *   The collection data.
@@ -199,7 +199,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Deletes a collection.
    *
    * @param string $collection
-   *   The name of the collection.
+   *   The title of the collection.
    *
    * @When (I )delete the :collection collection
    */
@@ -209,31 +209,21 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Returns the Collection with the given name.
+   * Returns the Collection with the given title.
    *
-   * If multiple collections have the same name, the first one will be returned.
+   * If multiple collections have the same title, the first one will be returned.
    *
-   * @param string $name
-   *   The collection name.
+   * @param string $title
+   *   The collection title.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
    *   The collection.
    *
    * @throws \InvalidArgumentException
-   *   Thrown when a collection with the given name does not exist.
+   *   Thrown when a collection with the given title does not exist.
    */
-  public static function getCollectionByName($name) {
-    $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'collection')
-      ->condition('label', $name)
-      ->range(0, 1);
-    $result = $query->execute();
-
-    if (empty($result)) {
-      throw new \InvalidArgumentException("The collection with the name '$name' does not exist.");
-    }
-
-    return Rdf::load(reset($result));
+  public static function getCollectionByName($title) {
+    return self::getRdfEntityByLabel($title, 'collection');
   }
 
   /**
