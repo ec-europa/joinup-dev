@@ -64,7 +64,8 @@
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
             },
             "drupal/search_api": {
-                "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/support_for_non_numeric-2671228-2_1.patch"
+                "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/2671228.patch",
+                "Issue #2704761: Extend length of supported IDs in search API DB Backend (Patch only)": "https://www.drupal.org/files/issues/2704761_patch_only.patch"
             }
         }
     },
