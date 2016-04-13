@@ -24,9 +24,7 @@ class RdfListBuilder extends EntityListBuilder {
       return [];
     }
     $query = $rdf_storage->getQuery()
-      ->sort($this->entityType->getKey('id'))
-      ->condition('?entity', 'rdf:type', '?bundle')
-      ->filter('?bundle IN ' . $mapping);
+      ->condition('rid', NULL, 'IN');
 
     // Only add the pager if a limit is specified.
     if ($this->limit) {

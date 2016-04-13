@@ -9,7 +9,6 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\file\Entity\File;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
@@ -230,8 +229,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public static function getCollectionByName($name) {
     $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#AssetRepository'))
-      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
+      ->condition('rid', 'collection')
+      ->condition('label', $name)
       ->range(0, 1);
     $result = $query->execute();
 
@@ -255,7 +254,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function assertCollectionCount($number) {
     $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', '<http://www.w3.org/ns/adms#AssetRepository>')
+      ->condition('rid', 'collection')
       ->count()
       ->execute();
     if ($actual != $number) {
