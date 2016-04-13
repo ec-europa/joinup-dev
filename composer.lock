@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7227570b03ad0c7f6395bfe7daab80d6",
-    "content-hash": "d565f1c5525eb6598f9bc706c3ac9d4c",
+    "hash": "c01761af6af25f64b88b8cf0cb53ec62",
+    "content-hash": "64cc04b89d73679f1d05f9e339e35a03",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1218,16 +1218,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-8.x-1.x",
+            "version": "dev-delete-user-memberships",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "cac7ca1e1e27fb0705721a658e53fd51b6fa8e52"
+                "reference": "5cfa2f45d7c2495941805d26df03ac98110a8723"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/cac7ca1e1e27fb0705721a658e53fd51b6fa8e52",
-                "reference": "cac7ca1e1e27fb0705721a658e53fd51b6fa8e52",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/5cfa2f45d7c2495941805d26df03ac98110a8723",
+                "reference": "5cfa2f45d7c2495941805d26df03ac98110a8723",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1241,7 +1241,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-04-08 14:55:53"
+            "time": "2016-04-08 15:28:20"
         },
         {
             "name": "drupal/og_menu",
@@ -2108,7 +2108,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2163,7 +2163,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
