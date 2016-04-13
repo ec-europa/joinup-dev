@@ -9,7 +9,6 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\file\Entity\File;
 use Drupal\og\OgGroupAudienceHelper;
 
@@ -229,8 +228,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   protected function getSolutionByName($name) {
     $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#Asset'))
-      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
+      ->condition('rid', 'solution')
+      ->condition('label', $name)
       ->range(0, 1);
     $result = $query->execute();
 
@@ -254,7 +253,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function assertSolutionCount($number) {
     $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', '<http://www.w3.org/ns/adms#Asset>')
+      ->condition('rid', 'solution')
       ->count()
       ->execute();
     if ($actual != $number) {
