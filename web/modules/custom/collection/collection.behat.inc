@@ -62,7 +62,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Returns the Collection with the given title.
    *
-   * If multiple collections have the same title, the first one will be returned.
+   * If multiple collections have the same title,
+   * the first one will be returned.
    *
    * @param string $title
    *   The collection title.
@@ -401,7 +402,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         $menu_instance->delete();
       }
       // Delete the collection.
-
       $collection->delete();
     }
   }

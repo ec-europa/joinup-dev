@@ -5,7 +5,6 @@ namespace Drupal\joinup\Context;
 
 use Drupal\Component\Uuid\Php;
 use Drupal\file\Entity\File;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 
 /**
  * Helper trait for behat tests.
@@ -126,7 +125,5 @@ trait JoinupTrait {
       throw new \Exception("Wrong number of asset distributions. Expected number: $number, actual number: $actual.");
     }
   }
-
-
 
 }
