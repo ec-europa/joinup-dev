@@ -5,6 +5,7 @@ namespace Drupal\joinup\Context;
 
 use Drupal\Component\Uuid\Php;
 use Drupal\file\Entity\File;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Helper trait for behat tests.
@@ -88,6 +89,40 @@ trait JoinupTrait {
       throw new \InvalidArgumentException("The rdf entity with the name '$title' was not found.");
     }
 
+    return Rdf::load(reset($result));
+  }
+
+  /**
+   * Returns the rdf entity with the given name and type.
+   *
+   * If multiple asset distributions have the same name,
+   * the first one will be returned.
+   *
+   * This method resets the static cache before loading the entity and
+   * should be used when an entity is altered through e.g. a hook update.
+   *
+   * @param string $title
+   *   The rdf entity title.
+   * @param string $type
+   *   The rdf entity type.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   The asset distribution.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when an asset distribution with the given name does not exist.
+   */
+  protected static function getRdfEntityByLabelUnchanged($title, $type) {
+    $query = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', $type)
+      ->condition('label', $title)
+      ->range(0, 1);
+    $result = $query->execute();
+
+    if (empty($result)) {
+      throw new \InvalidArgumentException("The rdf entity with the name '$title' was not found.");
+    }
+
     return \Drupal::entityTypeManager()
       ->getStorage('rdf_entity')
       ->loadUnchanged(reset($result));
@@ -99,7 +134,7 @@ trait JoinupTrait {
    * @return string
    *   A string URI
    */
-  private function getRandomUri() {
+  public function getRandomUri() {
     $php = new Php();
     return 'http://example.com/' . $php->generate();
   }
