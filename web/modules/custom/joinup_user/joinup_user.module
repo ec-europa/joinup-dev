@@ -1,0 +1,71 @@
+<?php
+/**
+ * @file
+ * Main functions and hook implementations of the Joinup user module.
+ */
+
+use \Drupal\Core\Form\FormStateInterface;
+use \Drupal\Core\Session\AccountInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Send a notification whenever an admin updates a user profile.
+ */
+function joinup_user_user_update(AccountInterface $account) {
+
+  $user = \Drupal::currentUser();
+  if ($user->id() == $account->id()) {
+    // User changed his own profile.
+    return;
+  }
+  $params['account'] = $account;
+  \Drupal::service('plugin.manager.mail')->mail(
+    'user',
+    'email_admin_update',
+    $account->getEmail(),
+    $account->getPreferredLangcode(),
+    $params
+  );
+  drupal_set_message(t('An e-mail has been send to the user to notify him on the change to his account.'));
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Settings form for the email send when an admin updates a user profile.
+ */
+function joinup_user_form_user_admin_settings_alter(&$form, FormStateInterface $form_state) {
+  $form['#submit'][] = 'joinup_user_form_user_admin_settings_alter_submit';
+  $mail_config = \Drupal::config('user.mail');
+  $email_token_help = t('Available variables are: [site:name], [site:url], [user:display-name], [user:account-name], [user:mail], [site:login-url], [site:url-brief], [user:edit-url], [user:one-time-login-url], [user:cancel-url].');
+  $form['email_admin_update'] = array(
+    '#type' => 'details',
+    '#title' => t('Account changed by administrator'),
+    '#description' => t('Edit the email messages sent to member accounts edited by an administrator.'),
+    '#group' => 'email',
+  );
+  $form['email_admin_update']['#description'] .= ' ' . $email_token_help;
+  $form['email_admin_update']['user_mail_update_account_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#default_value' => $mail_config->get('email_admin_update.subject'),
+    '#maxlength' => 180,
+  );
+  $form['email_admin_update']['user_mail_update_account_body'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Body'),
+    '#default_value' => $mail_config->get('email_admin_update.body'),
+    '#rows' => 15,
+  );
+}
+
+/**
+ * Submit callback: Save the email settings.
+ */
+function joinup_user_form_user_admin_settings_alter_submit(array &$form, FormStateInterface $form_state) {
+  \Drupal::configFactory()->getEditable('user.mail')
+    ->set('email_admin_update.body', $form_state->getValue('user_mail_update_account_body'))
+    ->set('email_admin_update.subject', $form_state->getValue('user_mail_update_account_subject'))
+    ->save();
+}
