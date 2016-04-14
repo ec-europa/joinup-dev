@@ -13,6 +13,10 @@ use \Drupal\Core\Session\AccountInterface;
  * Send a notification whenever an admin updates a user profile.
  */
 function joinup_user_user_update(AccountInterface $account) {
+  // Do not attempt to send emails during the installation procedure.
+  if (drupal_installation_attempted()) {
+    return;
+  }
 
   $user = \Drupal::currentUser();
   if ($user->id() == $account->id()) {
