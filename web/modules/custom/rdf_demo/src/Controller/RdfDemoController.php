@@ -20,7 +20,7 @@ class RdfDemoController extends ControllerBase {
     $entity_storage = \Drupal::service('entity.manager')->getStorage('rdf_entity');
     $query = $entity_storage->getQuery()
       ->sort('id')
-      ->condition('?entity', 'rdf:type', '<http://www.w3.org/ns/adms#AssetRepository>')
+      ->condition('rid', 'collection')
       ->pager(10);
 
     $rids = $query->execute();

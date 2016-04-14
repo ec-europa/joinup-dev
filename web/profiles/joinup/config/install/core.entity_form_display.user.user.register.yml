@@ -10,7 +10,6 @@ dependencies:
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
     - field.field.user.user.field_user_professional_profile
-    - field.field.user.user.og_group_ref
   module:
     - user
 id: user.user.register
@@ -43,5 +42,4 @@ hidden:
   field_user_professional_domain: true
   field_user_professional_profile: true
   language: true
-  og_group_ref: true
   timezone: true

@@ -18,5 +18,3 @@ permissions:
   - 'edit og menu instance entities'
   - 'propose solution rdf entity'
   - 'view rdf entity overview'
-  - 'propose asset_distribution rdf entity'
-  - 'administer nodes'
