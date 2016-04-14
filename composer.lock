@@ -226,18 +226,6 @@
         },
         {
             "name": "composer/installers",
-<<<<<<< HEAD
-            "version": "v1.0.24",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer/installers.git",
-                "reference": "1cf7cc4b89d5e8549bbb7d6ab1de75da13d27988"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/1cf7cc4b89d5e8549bbb7d6ab1de75da13d27988",
-                "reference": "1cf7cc4b89d5e8549bbb7d6ab1de75da13d27988",
-=======
             "version": "v1.0.25",
             "source": {
                 "type": "git",
@@ -248,7 +236,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/composer/installers/zipball/36e5b5843203d7f1cf6ffb0305a97e014387bd8e",
                 "reference": "36e5b5843203d7f1cf6ffb0305a97e014387bd8e",
->>>>>>> develop
                 "shasum": ""
             },
             "require": {
@@ -335,11 +322,7 @@
                 "zend",
                 "zikula"
             ],
-<<<<<<< HEAD
-            "time": "2016-04-05 11:42:46"
-=======
             "time": "2016-04-13 19:46:30"
->>>>>>> develop
         },
         {
             "name": "composer/semver",
@@ -980,18 +963,6 @@
         },
         {
             "name": "drupal/console",
-<<<<<<< HEAD
-            "version": "0.11.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "bc1bacc30dd2dee1757ab6853f9e789093c66f14"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/bc1bacc30dd2dee1757ab6853f9e789093c66f14",
-                "reference": "bc1bacc30dd2dee1757ab6853f9e789093c66f14",
-=======
             "version": "0.11.3",
             "source": {
                 "type": "git",
@@ -1002,7 +973,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/e0912b0f52455542d18d39f12387f297ec0f6cac",
                 "reference": "e0912b0f52455542d18d39f12387f297ec0f6cac",
->>>>>>> develop
                 "shasum": ""
             },
             "require": {
@@ -1074,11 +1044,7 @@
                 "drupal",
                 "symfony"
             ],
-<<<<<<< HEAD
-            "time": "2016-04-05 06:57:29"
-=======
             "time": "2016-04-14 06:45:29"
->>>>>>> develop
         },
         {
             "name": "drupal/core",
