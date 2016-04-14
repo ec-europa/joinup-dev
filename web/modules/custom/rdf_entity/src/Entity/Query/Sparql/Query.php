@@ -219,7 +219,7 @@ class Query extends QueryBase implements QueryInterface {
       if (empty($field_rdf_name)) {
         throw new \Exception('No 3rd party field settings for ' . $field_name);
       }
-      if (UrlHelper::isValid($value, FILTER_VALIDATE_URL, TRUE)) {
+      if (UrlHelper::isValid($value, TRUE)) {
         $value = SparqlArg::uri($value);
       }
       else {
