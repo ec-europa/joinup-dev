@@ -3,7 +3,6 @@ Feature: User profile
   A user must be able to change his own profile.
   A moderator must be able to edit any user account.
 
-  @javascript
   Scenario: A logged-in user can navigate to his own profile and edit it.
     Given users:
       | name              | mail         | roles        |
