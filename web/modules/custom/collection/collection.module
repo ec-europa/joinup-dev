@@ -35,7 +35,6 @@ function collection_entity_update(EntityInterface $entity) {
   $entity_type_id = $entity->getEntityTypeId();
   $bundle = $entity->bundle();
   if (Og::isGroupContent($entity_type_id, $bundle)) {
-    $ids = Og::getGroupIds($entity);
     foreach (Og::getGroupIds($entity) as $entity_type => $ids) {
       foreach ($ids as $id) {
         Cache::invalidateTags(['og_group_content:' . $id]);
