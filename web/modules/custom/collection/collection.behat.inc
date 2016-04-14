@@ -381,7 +381,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function cleanCollections() {
     // Remove any collections that were created.
     foreach ($this->collections as $collection) {
-      // @todo: This delete functionality should occur automatically. See ISAICP-2311.
+      // @todo: Remove the workaround after the bug in ISAICP-2473 is fixed.
       $membership_ids = \Drupal::entityQuery('og_membership')
         ->condition('entity_id', $collection->id())
         ->condition('entity_type', 'rdf_entity')
