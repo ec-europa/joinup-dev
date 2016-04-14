@@ -20,6 +20,7 @@ dependencies:
   - joinup_document
   - joinup_event
   - joinup_news
+  - joinup_user
   - menu_ui
   - node
   - og
@@ -66,25 +67,22 @@ config_devel:
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
   - core.date_format.fallback
-  - core.date_format.html_date
   - core.date_format.html_datetime
+  - core.date_format.html_date
   - core.date_format.html_month
   - core.date_format.html_time
   - core.date_format.html_week
-  - core.date_format.html_year
   - core.date_format.html_yearless_date
+  - core.date_format.html_year
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
-  - core.entity_form_display.node.custom_page.collection_custom_page
   - core.entity_form_display.ogmenu_instance.navigation.default
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
   - core.entity_form_display.user.user.register
-  - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_mode.rdf_entity.propose
   - core.entity_form_mode.user.register
-  - core.entity_view_display.node.news.default
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.default
   - core.entity_view_mode.node.full
@@ -107,24 +105,14 @@ config_devel:
   - field.storage.user.field_user_organisation
   - field.storage.user.field_user_photo
   - field.storage.user.field_user_professional_domain
-  - field.storage.user.field_user_professional_profile
-  - field.storage.node.body
-  - field.storage.node.field_additional_address_info
-  - field.storage.node.field_agenda
-  - field.storage.node.field_contact_email
-  - field.storage.node.field_end_date
-  - field.storage.node.field_logo
-  - field.storage.node.field_short_title
-  - field.storage.node.field_start_date
-  - field.storage.node.field_web_url
-  - field.storage.node.og_group_ref
+  - field.storage.user.field_user_professional_profiled
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
+  - og_menu.ogmenu.navigation
   - og.og_membership_type.og_membership_type
   - og.settings
-  - og_menu.ogmenu.navigation
   - search_api.index.collections
   - search_api.server.database_search_server
   - system.theme
