@@ -1,6 +1,7 @@
 <?php
 
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
+use Drupal\Component\Utility\UrlHelper;
 
 /**
  * Class SparqlArg.
@@ -27,7 +28,7 @@ class SparqlArg {
    *    Inform the user that $uri variable is not a URI.
    */
   public static function uri($uri) {
-    if (!filter_var($uri, FILTER_VALIDATE_URL)) {
+    if (!UrlHelper::isValid($uri, TRUE)) {
       throw new \Exception('Provided value is not a URI.');
     }
     return '<' . $uri . '>';
