@@ -110,7 +110,7 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
         '#theme' => 'item_list',
         '#items' => $list,
         '#cache' => [
-          'tags' => ['og_content:' . $this->collection->id()],
+          'tags' => ['og_group_content:' . $this->collection->id()],
         ],
       ],
     );

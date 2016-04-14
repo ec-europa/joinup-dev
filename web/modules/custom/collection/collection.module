@@ -20,21 +20,26 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
 }
 
 /**
- * Implements hook_entity_presave().
+ * Implements hook_entity_insert().
+ */
+function collection_entity_insert(EntityInterface $entity) {
+  collection_entity_update($entity);
+}
+
+/**
+ * Implements hook_entity_update().
  *
  * Invalidate the og_content cache tag of the groups this entity belongs to.
  */
-function collection_entity_presave(EntityInterface $entity) {
-  $entity_type_id = $entity->getEntityType()->id();
+function collection_entity_update(EntityInterface $entity) {
+  $entity_type_id = $entity->getEntityTypeId();
   $bundle = $entity->bundle();
   if (Og::isGroupContent($entity_type_id, $bundle)) {
-    $groups_by_type = Og::getEntityGroups($entity);
-    foreach ($groups_by_type as $entity_type => $groups) {
-      /** @var \Drupal\Core\Entity\EntityInterface $group */
-      foreach ($groups as $group) {
-        Cache::invalidateTags(['og_content:' . $group->id()]);
+    $ids = Og::getGroupIds($entity);
+    foreach (Og::getGroupIds($entity) as $entity_type => $ids) {
+      foreach ($ids as $id) {
+        Cache::invalidateTags(['og_group_content:' . $id]);
       }
     }
   }
-
 }
