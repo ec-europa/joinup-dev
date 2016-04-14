@@ -226,16 +226,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.0.24",
+            "version": "v1.0.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "1cf7cc4b89d5e8549bbb7d6ab1de75da13d27988"
+                "reference": "36e5b5843203d7f1cf6ffb0305a97e014387bd8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/1cf7cc4b89d5e8549bbb7d6ab1de75da13d27988",
-                "reference": "1cf7cc4b89d5e8549bbb7d6ab1de75da13d27988",
+                "url": "https://api.github.com/repos/composer/installers/zipball/36e5b5843203d7f1cf6ffb0305a97e014387bd8e",
+                "reference": "36e5b5843203d7f1cf6ffb0305a97e014387bd8e",
                 "shasum": ""
             },
             "require": {
@@ -322,7 +322,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2016-04-05 11:42:46"
+            "time": "2016-04-13 19:46:30"
         },
         {
             "name": "composer/semver",
@@ -963,16 +963,16 @@
         },
         {
             "name": "drupal/console",
-            "version": "0.11.2",
+            "version": "0.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "7a5c0f539211a40954b50d0478b731ce4d12bd16"
+                "reference": "e0912b0f52455542d18d39f12387f297ec0f6cac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/7a5c0f539211a40954b50d0478b731ce4d12bd16",
-                "reference": "7a5c0f539211a40954b50d0478b731ce4d12bd16",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/e0912b0f52455542d18d39f12387f297ec0f6cac",
+                "reference": "e0912b0f52455542d18d39f12387f297ec0f6cac",
                 "shasum": ""
             },
             "require": {
@@ -1044,7 +1044,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2016-04-07 20:42:09"
+            "time": "2016-04-14 06:45:29"
         },
         {
             "name": "drupal/core",
@@ -1692,16 +1692,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.2.3",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "2e89629ff057ebb49492ba08e6995d3a6a80021b"
+                "reference": "31382fef2889136415751badebbd1cb022a4ed72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/2e89629ff057ebb49492ba08e6995d3a6a80021b",
-                "reference": "2e89629ff057ebb49492ba08e6995d3a6a80021b",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/31382fef2889136415751badebbd1cb022a4ed72",
+                "reference": "31382fef2889136415751badebbd1cb022a4ed72",
                 "shasum": ""
             },
             "require": {
@@ -1746,7 +1746,7 @@
                 "stream",
                 "uri"
             ],
-            "time": "2016-02-18 21:54:00"
+            "time": "2016-04-13 19:56:01"
         },
         {
             "name": "ircmaxell/password-compat",
