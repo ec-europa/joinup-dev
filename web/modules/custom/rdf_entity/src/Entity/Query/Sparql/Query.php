@@ -2,6 +2,7 @@
 
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\Query\QueryBase;
 use Drupal\Core\Entity\Query\QueryInterface;
@@ -218,7 +219,7 @@ class Query extends QueryBase implements QueryInterface {
       if (empty($field_rdf_name)) {
         throw new \Exception('No 3rd party field settings for ' . $field_name);
       }
-      if (!filter_var($value, FILTER_VALIDATE_URL) === FALSE) {
+      if (UrlHelper::isValid($value, TRUE)) {
         $value = SparqlArg::uri($value);
       }
       else {
