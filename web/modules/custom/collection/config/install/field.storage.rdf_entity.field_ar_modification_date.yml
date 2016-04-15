@@ -7,8 +7,6 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_value: 'http://purl.org/dc/terms/modified'
-_core:
-  default_config_hash: sv4e3qeeKjQJri8P_u8h2L3hE4L-oExin0mMHeMS3vA
 id: rdf_entity.field_ar_modification_date
 field_name: field_ar_modification_date
 entity_type: rdf_entity
