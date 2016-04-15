@@ -617,6 +617,84 @@ display:
             name: name
             mail: mail
           plugin_id: combine
+        field_user_first_name_value:
+          id: field_user_first_name_value
+          table: user__field_user_first_name
+          field: field_user_first_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_user_first_name_value_op
+            label: 'First name'
+            description: ''
+            use_operator: false
+            operator: field_user_first_name_value_op
+            identifier: field_user_first_name_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              moderator: '0'
+              administrator: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: string
+        field_user_family_name_value:
+          id: field_user_family_name_value
+          table: user__field_user_family_name
+          field: field_user_family_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_user_family_name_value_op
+            label: 'Family name'
+            description: ''
+            use_operator: false
+            operator: field_user_family_name_value_op
+            identifier: field_user_family_name_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              moderator: '0'
+              administrator: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: string
         roles_target_id:
           id: roles_target_id
           table: user__roles
