@@ -2212,7 +2212,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -5371,12 +5371,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/DrupalDriver.git",
-                "reference": "f267d9fe4e54c6c39f84dbe45a4ee4eb6cc694a2"
+                "reference": "25d6ceed27d2538324171fe30f11a846c3c7496f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/f267d9fe4e54c6c39f84dbe45a4ee4eb6cc694a2",
-                "reference": "f267d9fe4e54c6c39f84dbe45a4ee4eb6cc694a2",
+                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/25d6ceed27d2538324171fe30f11a846c3c7496f",
+                "reference": "25d6ceed27d2538324171fe30f11a846c3c7496f",
                 "shasum": ""
             },
             "require": {
@@ -5420,7 +5420,7 @@
                 "test",
                 "web"
             ],
-            "time": "2016-04-08 21:17:14"
+            "time": "2016-04-14 18:16:06"
         },
         {
             "name": "drupal/drupal-extension",

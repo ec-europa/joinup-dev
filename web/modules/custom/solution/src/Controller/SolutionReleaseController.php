@@ -4,6 +4,7 @@ namespace Drupal\solution\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -28,7 +29,13 @@ class SolutionReleaseController extends ControllerBase {
    */
   public function add(RdfInterface $rdf_entity) {
     $release = $rdf_entity->createDuplicate();
+    // In case of adding through a release, get the original entity.
+    while ($parent_entity_id = $rdf_entity->get('field_is_is_version_of')->getValue()) {
+      $rdf_entity = Rdf::load($parent_entity_id[0]['target_id']);
+    }
     $release->set('field_is_is_version_of', $rdf_entity->id());
+
+    // Skip the check for unique title.
     $form = $this->entityFormBuilder()->getForm($release, 'release');
 
     // Override rdf's title.
