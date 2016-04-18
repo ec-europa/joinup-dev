@@ -98,8 +98,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       ];
 
       $solution_url = Url::fromRoute('solution.collection_solution.add', [
-        'rdf_entity' => $collection_contexts['collection']->getContextValue()
-          ->id(),
+        'rdf_entity' => $collection_contexts['collection']->getContextValue()->id(),
       ]);
       $links['solution'] = [
         '#type' => 'link',
@@ -116,8 +115,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $solution_contexts = $this->solutionContext->getRuntimeContexts(['solution']);
       if ($solution_contexts && $solution_contexts['solution']->hasContextValue()) {
         $distribution_url = Url::fromRoute('asset_distribution.solution_asset_distribution.add', [
-          'rdf_entity' => $solution_contexts['solution']->getContextValue()
-            ->id(),
+          'rdf_entity' => $solution_contexts['solution']->getContextValue()->id(),
         ]);
         $links['asset_distribution'] = [
           '#type' => 'link',

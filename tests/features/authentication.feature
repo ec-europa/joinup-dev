@@ -5,7 +5,7 @@ Feature: User authentication
 
   Background:
     Given collections:
-      | name                        | uri               |
+      | title                       | uri               |
       | Überwaldean Land Eels       | http://drupal.org |
 
   Scenario: Anonymous user can see the user login page
@@ -18,13 +18,10 @@ Feature: User authentication
     But I should not see the text "Log out"
     And I should not see the text "My account"
 
-  Scenario Outline: Anonymous user can access public pages
+  Scenario: Anonymous user can access public pages
     Given I am not logged in
-    Then I visit "<path>"
-
-    Examples:
-      | path                           |
-      | rdf_entity/http%3A\\drupal.org |
+    When I go to the homepage of the "Überwaldean Land Eels" collection
+    Then I should see the heading "Überwaldean Land Eels"
 
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
@@ -44,13 +41,10 @@ Feature: User authentication
       | rdf_entity/add/solution        |
 
   @api
-  Scenario Outline: Authenticated user can access pages they are authorized to
-    Given I am logged in as a user with the "authenticated" role
-    Then I visit "<path>"
-
-    Examples:
-      | path                           |
-      | rdf_entity/http%3A\\drupal.org |
+  Scenario: Authenticated user can access pages they are authorized to
+    Given I am logged in as a user with the "authenticated user" role
+    When I go to the homepage of the "Überwaldean Land Eels" collection
+    Then I should see the heading "Überwaldean Land Eels"
 
   @api
   Scenario Outline: Authenticated user cannot access site administration
@@ -77,7 +71,6 @@ Feature: User authentication
 
     Examples:
       | path                           |
-      | rdf_entity/http%3A\\drupal.org |
       | admin/people                   |
       | admin/content/rdf              |
 
@@ -96,15 +89,6 @@ Feature: User authentication
       | rdf_entity/add/collection      |
       | node/add/custom_page           |
       | rdf_entity/add/solution        |
-
-  @api
-  Scenario Outline: Administrator can access pages they are authorized to
-    Given I am logged in as a user with the "administrator" role
-    Then I visit "<path>"
-
-    Examples:
-      | path                           |
-      | rdf_entity/http%3A\\drupal.org |
 
   @api
   Scenario Outline: Administrator cannot access pages intended for site building and development

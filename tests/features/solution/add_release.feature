@@ -7,7 +7,6 @@ Feature: "Add release" visibility options.
   Scenario: "Add release" button should only be shown to moderators.
     Given the following solution:
       | name              | Release solution test             |
-      | uri               | https://release.solution/add/test |
       | documentation     | text.pdf                          |
 
     When I am logged in as a "moderator"

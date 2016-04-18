@@ -6,8 +6,7 @@ Feature: "Add custom page" visibility options.
 
   Scenario: "Add custom page" button should only be shown to moderators.
     Given the following collection:
-      | name   | Code Camp          |
-      | uri    | https://code.ca/mp |
+      | title  | Code Camp          |
       | logo   | logo.png           |
 
     When I am logged in as a "moderator"
@@ -24,8 +23,7 @@ Feature: "Add custom page" visibility options.
 
   Scenario: Add custom page as a moderator.
     Given the following collection:
-      | name   | Open Collective              |
-      | uri    | irc://opencollective.io/?a=1 |
+      | title  | Open Collective              |
       | logo   | logo.png                     |
     And I am logged in as a moderator
 

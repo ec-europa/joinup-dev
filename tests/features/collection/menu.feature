@@ -1,13 +1,14 @@
 @api
 Feature: Collections menu
+
   Scenario: Add a link to og menu
     Given collections:
-      | name              | description            | owner   | uri                                 |
-      | MenuCollection1   | First menu collection  |         | http://joinup.eu/collection/ogmenu1 |
-      | MenuCollection2   | Second menu collection |         | http://joinup.eu/collection/ogmenu2 |
+      | title           | description            |
+      | MenuCollection1 | First menu collection  |
+      | MenuCollection2 | Second menu collection |
     And users:
-      | name      | roles      |
-      | Mr Menu   | moderator  |
+      | name    | roles     |
+      | Mr Menu | moderator |
     # Create a link
     Given I am logged in as "Mr Menu"
     When I go to the homepage of the "MenuCollection1" collection

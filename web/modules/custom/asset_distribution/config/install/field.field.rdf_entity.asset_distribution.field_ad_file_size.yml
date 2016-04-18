@@ -19,4 +19,4 @@ settings:
   max: null
   prefix: ''
   suffix: KB
-field_type: integer
+field_type: float

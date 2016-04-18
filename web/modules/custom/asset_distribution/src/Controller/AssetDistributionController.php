@@ -48,13 +48,13 @@ class AssetDistributionController extends ControllerBase {
    *   The access result object.
    */
   public function createAssetDistributionAccess(RdfInterface $rdf_entity) {
-    // Check that the passed in RDF entity is a collection, and that the user
-    // has the permission to create custom pages.
+    // Check that the passed in RDF entity is a solution, and that the user
+    // has the permission to create distribution entities.
     // @todo Collection owners and facilitators should also have the right to
-    //   create custom pages for the collections they manage.
+    //   create distributions related to the solutions they manage.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2450
     if ($rdf_entity->bundle() == 'solution' && $this->currentUser()
-        ->hasPermission('propose asset_distribution rdf entity')
+        ->hasPermission('create asset_distribution rdf entity')
     ) {
       return AccessResult::allowed();
     }

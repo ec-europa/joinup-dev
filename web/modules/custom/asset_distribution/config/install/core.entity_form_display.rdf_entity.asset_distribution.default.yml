@@ -25,10 +25,10 @@ content:
   field_ad_access_url:
     weight: 3
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
+      file_fields:
+        - field_ad_file
     third_party_settings: {  }
-    type: link_default
+    type: url_file_synchronizer_widget
   field_ad_creation_date:
     type: datetime_create_update
     weight: 9
@@ -49,6 +49,15 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
+  field_ad_file_size:
+    type: file_size_calculator_widget
+    weight: 0
+    settings:
+      file_fields:
+        - field_ad_file
+        - field_test
+      size_type: '1048576'
+    third_party_settings: {  }
   field_ad_format:
     weight: 6
     settings:
@@ -83,7 +92,7 @@ content:
     type: auto_uri
     weight: 0
     settings:
-      prefix: 'http://example.org'
+      prefix: 'http://example.org/joinup/licence'
     third_party_settings: {  }
   label:
     type: string_textfield

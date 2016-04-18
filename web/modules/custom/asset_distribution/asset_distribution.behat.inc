@@ -8,14 +8,14 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Context\JoinupTrait;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
-use Drupal\file\Entity\File;
 
 /**
  * Behat step definitions for testing asset distributions.
  */
 class AssetDistributionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+  use JoinupTrait;
 
   /**
    * Test asset distributions.
@@ -32,10 +32,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   protected $files = [];
 
   /**
-   * Navigates to the canonical page display of a asset distribution.
+   * Navigates to the canonical page display of an asset distribution.
    *
    * @param string $asset_distribution
-   *   The name of the asset distribution.
+   *   The title of the asset distribution.
    *
    * @When (I )go to (the homepage of )the :asset_distribution distribution
    * @When (I )visit (the homepage of )the :asset_distribution distribution
@@ -47,10 +47,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Navigates to the edit form of a asset distribution.
+   * Navigates to the edit form of an asset distribution.
    *
    * @param string $asset_distribution
-   *   The name of the $asset_distribution.
+   *   The title of the $asset_distribution.
    *
    * @When (I )go to the :asset_distribution asset distribution edit form
    * @When (I )visit the :asset_distribution asset distribution edit form
@@ -71,7 +71,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @codingStandardsIgnoreStart
    *   Table format:
    *   Table format:
-   * uri                                      | name              | description                  | access url                               | file     | creation date     | modification date
+   * uri                                      | title              | description                  | access url                               | file     | creation date     | modification date
    * http://joinup.eu/asset_distribution/foo  | Foo distribution  | This is a foo distribution   | http://base_url.com/path-to-file.zip     | test.zip | 28-01-1995 12:05  |
    * http://joinup.eu/asset_distribution/bar  | Bar distribution  | This is a bar distribution   | http://external_url.com/path-to-file.zip | test.zip | 28-01-1995 12:06  |
    * @codingStandardsIgnoreEnd
@@ -98,30 +98,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       };
       $this->createAssetDistribution($values);
     }
-  }
-
-  /**
-   * Field alias mapping.
-   *
-   * @return array
-   *    Mapping.
-   */
-  private static function assetDistributionFieldAliases() {
-    // Mapping alias - field name.
-    return [
-      'uri' => 'id',
-      'name' => 'label',
-      'access url' => 'field_ad_access_url',
-      'creation date' => 'field_ad_creation_date',
-      'description' => 'field_ad_description',
-      'file' => 'field_ad_file',
-      'file size' => 'field_ad_file_size',
-      'format' => 'field_ad_format',
-      'licence' => 'field_ad_licence',
-      'modification date' => 'field_ad_modification_date',
-      'representation technique' => 'field_ad_repr_technique',
-      'status' => 'field_ad_status',
-    ];
   }
 
   /**
@@ -161,7 +137,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Creates a asset distribution from the given property and field data.
+   * Creates an asset distribution from the given property and field data.
    *
    * @param array $values
    *   An optional associative array of values, keyed by property name.
@@ -175,24 +151,11 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   public function createAssetDistribution(array $values) {
     // Add image.
     if (!empty($values['field_ad_file'])) {
-      $filename = $values['field_ad_file'];
-      $files_path = $this->getMinkParameter('files_path');
-      $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
-      if (!is_file($path)) {
-        throw new \Exception("File '$filename' was not found in file path '$files_path'.");
-      }
-      // Copy the file into the public files folder and turn it into a File
-      // entity before linking it to the collection.
-      $uri = 'public://' . $filename;
-      $destination = file_unmanaged_copy($path, $uri);
-      $file = File::create(['uri' => $destination]);
-      $file->save();
-      $values['field_ad_file'] = [$file->id()];
-
-      $this->files[$file->id()] = $file;
+      $values['field_ad_file'] = [$this->createFile($values['field_ad_file'], $this->getMinkParameter('files_path'))];
     }
 
     $values['rid'] = 'asset_distribution';
+    $values['id'] = $this->getRandomUri();
     $asset_distribution = Rdf::create($values);
     $asset_distribution->save();
     $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
@@ -204,7 +167,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Deletes an asset distribution.
    *
    * @param string $asset_distribution
-   *   The name of the asset distribution.
+   *   The title of the asset distribution.
    *
    * @When (I )delete the :asset_distribution asset distribution
    */
@@ -214,64 +177,40 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Returns the asset distribution with the given name.
+   * Returns the asset distribution with the given title.
    *
-   * If multiple asset distributions have the same name,
+   * If multiple asset distributions have the same title,
    * the first one will be returned.
    *
-   * @param string $name
-   *   The asset distribution name.
+   * @param string $title
+   *   The asset distribution title.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
    *   The asset distribution.
    *
    * @throws \InvalidArgumentException
-   *   Thrown when a asset distribution with the given name does not exist.
+   *   Thrown when an asset distribution with the given title does not exist.
    */
-  protected function getAssetDistributionByName($name) {
-    $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#AssetDistribution'))
-      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
-      ->range(0, 1);
-    $result = $query->execute();
-
-    if (empty($result)) {
-      throw new \InvalidArgumentException("The asset distribution with the name '$name' was not found.");
-    }
-
-    return Rdf::load(reset($result));
+  protected function getAssetDistributionByName($title) {
+    return $this->getRdfEntityByLabel($title, 'asset_distribution');
   }
 
   /**
-   * Returns the Solution with the given name.
+   * Returns the Solution with the given title.
    *
-   * If multiple solution have the same name, the first one will be returned.
+   * If multiple solution have the same title, the first one will be returned.
    *
-   * @param string $name
-   *   The solution name.
+   * @param string $title
+   *   The solution title.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
    *   The solution.
    *
    * @throws \InvalidArgumentException
-   *   Thrown when a solution with the given name does not exist.
+   *   Thrown when a solution with the given title does not exist.
    */
-  public function getSolutionByName($name) {
-    $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#Asset'))
-      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
-      ->range(0, 1);
-    $result = $query->execute();
-
-    if (empty($result)) {
-      throw new \InvalidArgumentException("The solution with the name '$name' was not found.");
-    }
-
-    // We need to skip the static cache and load the unchanged entity from the
-    // database.
-    return \Drupal::entityTypeManager()
-      ->getStorage('rdf_entity')
-      ->loadUnchanged(reset($result));
+  public static function getSolutionByName($title) {
+    return self::getRdfEntityByLabel($title, 'solution');
   }
 
   /**
@@ -280,30 +219,20 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param int $number
    *   The expected number of asset distributions.
    *
-   * @throws \Exception
-   *   Thrown when the number of asset distributions does not
-   *   match the expectation.
-   *
    * @Then I should have :number asset distribution(s)
    */
   public function assertAssetDistributionCount($number) {
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', '<http://www.w3.org/ns/adms#AssetDistribution>')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of asset distributions. Expected number: $number, actual number: $actual.");
-    }
+    $this->assertRdfEntityCount($number, 'asset_distribution');
   }
 
   /**
    * Checks if the given asset distributions belongs to the given solution.
    *
    * If there are multiple solutions or asset distributions with
-   * the same name, then only the first one is checked.
+   * the same title, then only the first one is checked.
    *
    * @param string $asset_distribution
-   *   The name of the asset distribution to check.
+   *   The title of the asset distribution to check.
    * @param string $solution
    *   The title of the custom page to check.
    *
@@ -317,8 +246,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
 
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $this->clearStaticCaches();
-    $solution = $this->getSolutionByName($solution);
+    $solution = $this->getRdfEntityByLabelUnchanged($solution, 'solution');
 
     // This handles the solutions added by form submit.
     if (!in_array($asset_distribution, $this->assetDistributions)) {
@@ -345,10 +273,30 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     foreach ($this->assetDistributions as $asset_distribution) {
       $asset_distribution->delete();
     }
-    // Also remove the image entities that were attached to the collections.
-    foreach ($this->files as $file) {
-      $file->delete();
-    }
+  }
+
+  /**
+   * Field alias mapping.
+   *
+   * @return array
+   *    Mapping.
+   */
+  private static function assetDistributionFieldAliases() {
+    // Mapping alias - field name.
+    return [
+      'uri' => 'id',
+      'title' => 'label',
+      'access url' => 'field_ad_access_url',
+      'creation date' => 'field_ad_creation_date',
+      'description' => 'field_ad_description',
+      'file' => 'field_ad_file',
+      'file size' => 'field_ad_file_size',
+      'format' => 'field_ad_format',
+      'licence' => 'field_ad_licence',
+      'modification date' => 'field_ad_modification_date',
+      'representation technique' => 'field_ad_repr_technique',
+      'status' => 'field_ad_status',
+    ];
   }
 
 }
