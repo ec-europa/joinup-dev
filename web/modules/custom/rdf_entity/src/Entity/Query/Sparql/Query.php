@@ -200,18 +200,14 @@ class Query extends QueryBase implements QueryInterface {
         return $this;
 
       case '_field_exists-EXISTS':
-        $field_rdf_name = $this->getFieldRdfPropertyName($value, $field_storage_definitions);
-
-        if ($field_rdf_name) {
-          $this->filter('?entity ' . $field_rdf_name . ' ?c', 'FILTER EXISTS');
-        }
-        return $this;
-
       case '_field_exists-NOT EXISTS':
         $field_rdf_name = $this->getFieldRdfPropertyName($value, $field_storage_definitions);
 
+        if (!filter_var($field_rdf_name, FILTER_VALIDATE_URL) === FALSE) {
+          $field_rdf_name = SparqlArg::uri($field_rdf_name);
+        }
         if ($field_rdf_name) {
-          $this->filter('?entity ' . $field_rdf_name . ' ?c', 'FILTER NOT EXISTS');
+          $this->filter('?entity ' . $field_rdf_name . ' ?c', 'FILTER ' . $operator);
         }
         return $this;
 
@@ -263,9 +259,6 @@ class Query extends QueryBase implements QueryInterface {
     $field_rdf_name = $field_storage->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE);
     if (empty($field_rdf_name)) {
       throw new \Exception('No 3rd party field settings for ' . $field_name);
-    }
-    if (filter_var($field_rdf_name, FILTER_VALIDATE_URL) === TRUE) {
-      $field_rdf_name = SparqlArg::uri($field_rdf_name);
     }
 
     return $field_rdf_name;
