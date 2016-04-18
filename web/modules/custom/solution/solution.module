@@ -5,9 +5,7 @@
  * Contains file solution.module.
  */
 
-use Drupal\rdf_entity\Entity\Rdf;
 use \Drupal\Core\Entity\EntityTypeInterface;
-use \Drupal\Core\Entity\EntityInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
