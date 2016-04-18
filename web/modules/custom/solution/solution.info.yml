@@ -22,12 +22,13 @@ config_devel:
   - field.field.rdf_entity.solution.field_is_description
   - field.field.rdf_entity.solution.field_is_documentation
   - field.field.rdf_entity.solution.field_is_elibrary_creation
+  - field.field.rdf_entity.solution.field_is_has_version
   - field.field.rdf_entity.solution.field_is_included_asset
+  - field.field.rdf_entity.solution.field_is_version_of
   - field.field.rdf_entity.solution.field_is_issue_tracker
   - field.field.rdf_entity.solution.field_is_keywords
   - field.field.rdf_entity.solution.field_is_landing_page
   - field.field.rdf_entity.solution.field_is_language
-  - field.field.rdf_entity.solution.field_is_latest_release
   - field.field.rdf_entity.solution.field_is_metrics_page
   - field.field.rdf_entity.solution.field_is_moderation
   - field.field.rdf_entity.solution.field_is_modification_date
@@ -51,8 +52,10 @@ config_devel:
   - field.storage.rdf_entity.field_is_description
   - field.storage.rdf_entity.field_is_documentation
   - field.storage.rdf_entity.field_is_elibrary_creation
+  - field.storage.rdf_entity.field_is_has_version
   - field.storage.rdf_entity.field_is_included_asset
   - field.storage.rdf_entity.field_is_issue_tracker
+  - field.storage.rdf_entity.field_is_is_version_of
   - field.storage.rdf_entity.field_is_keywords
   - field.storage.rdf_entity.field_is_landing_page
   - field.storage.rdf_entity.field_is_language

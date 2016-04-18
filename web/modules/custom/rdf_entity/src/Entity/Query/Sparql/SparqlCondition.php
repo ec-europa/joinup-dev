@@ -37,14 +37,14 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    * Implements \Drupal\Core\Entity\Query\ConditionInterface::exists().
    */
   public function exists($field, $langcode = NULL) {
-    // Return $this->condition($field, NULL, 'IS NOT NULL', $langcode);.
+    $this->condition('_field_exists', $field, 'EXISTS');
   }
 
   /**
    * Implements \Drupal\Core\Entity\Query\ConditionInterface::notExists().
    */
   public function notExists($field, $langcode = NULL) {
-    // Return $this->condition($field, NULL, 'IS NULL', $langcode);.
+    $this->condition('_field_exists', $field, 'NOT EXISTS');
   }
 
   /**

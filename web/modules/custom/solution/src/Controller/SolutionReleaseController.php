@@ -30,11 +30,12 @@ class SolutionReleaseController extends ControllerBase {
   public function add(RdfInterface $rdf_entity) {
     $release = $rdf_entity->createDuplicate();
     // In case of adding through a release, get the original entity.
-    while ($parent_entity_id = $rdf_entity->get('field_is_is_version_of')->getValue()) {
-      $rdf_entity = Rdf::load($parent_entity_id[0]['target_id']);
+    while (!empty($rdf_entity->get('field_is_is_version_of')->getValue()[0]['target_id'])) {
+      $parent_entity_id = $rdf_entity->get('field_is_is_version_of')->getValue()[0]['target_id'];
+      $rdf_entity = Rdf::load($parent_entity_id);
     }
     $release->set('field_is_is_version_of', $rdf_entity->id());
-
+    $release->set('field_is_has_version', []);
     // Skip the check for unique title.
     $form = $this->entityFormBuilder()->getForm($release, 'release');
 

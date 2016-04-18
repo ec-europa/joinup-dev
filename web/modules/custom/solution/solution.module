@@ -32,17 +32,18 @@ function solution_entity_type_alter(array &$entity_types) {
 /**
  * Implements hook_ENTITY_TYPE_create().
  */
-function solution_rdf_entity_create(EntityInterface $entity) {
+function solution_rdf_entity_insert(EntityInterface $entity) {
   if ($entity->bundle() == 'solution' && !empty($entity->get('field_is_is_version_of')
-      ->getValue())
+      ->getValue()[0]['target_id'])
   ) {
     // Assign the entity to the parent.
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
     $parent = Rdf::load($entity->get('field_is_is_version_of')
-      ->getValue());
-    $releases = $parent->get('field_is_has_version');
-    $releases[] = $entity->id();
-    $parent->set('field_is_has_version', $releases);
+      ->getValue()[0]['target_id']);
+
+    $releases = $parent->get('field_is_has_version')->getValue();
+    $releases[] = ['target_id' => $entity->id()];
+    $parent->get('field_is_has_version')->setValue($releases);
     $parent->save();
   }
 }

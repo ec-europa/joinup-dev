@@ -157,7 +157,7 @@ trait JoinupTrait {
       ->count()
       ->execute();
     if ($actual != $number) {
-      throw new \Exception("Wrong number of asset distributions. Expected number: $number, actual number: $actual.");
+      throw new \Exception("Wrong number of rdf_entities. Expected number: $number, actual number: $actual.");
     }
   }
 

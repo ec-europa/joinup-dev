@@ -16,7 +16,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_keywords
     - field.field.rdf_entity.solution.field_is_landing_page
     - field.field.rdf_entity.solution.field_is_language
-    - field.field.rdf_entity.solution.field_is_latest_release
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_modification_date
@@ -94,7 +93,6 @@ hidden:
   field_is_keywords: true
   field_is_landing_page: true
   field_is_language: true
-  field_is_latest_release: true
   field_is_metrics_page: true
   field_is_moderation: true
   field_is_owner: true

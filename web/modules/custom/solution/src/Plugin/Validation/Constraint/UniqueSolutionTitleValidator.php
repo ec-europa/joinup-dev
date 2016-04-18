@@ -3,6 +3,7 @@
 namespace Drupal\solution\Plugin\Validation\Constraint;
 
 use Drupal\Component\Utility\Unicode;
+use Drupal\rdf_entity\Entity\Rdf;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -25,25 +26,27 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
     $entity_type_id = $entity->getEntityTypeId();
     $id_key = $entity->getEntityType()->getKey('id');
 
-    // If the is version of field is not empty, check for the same title.
+    // If the is_version_of field is not empty, check for the same title.
     if (!empty($entity->get('field_is_is_version_of')
-        ->getValue()) && $entity->get('field_is_is_version_of')
-        ->getEntity()
-        ->label() == $entity->label()
+      ->getValue()[0]['target_id'])
     ) {
-      return TRUE;
+      $parent = Rdf::load($entity->get('field_is_is_version_of')
+        ->getValue()[0]['target_id']);
+      if ($parent->label() == $entity->label()) {
+        // The release has the same name as the solution.
+        return;
+      }
     }
-    else {
-      $value_taken = (bool) \Drupal::entityQuery($entity_type_id)
-        // The id could be NULL, so we cast it to 0 in that case.
-        ->condition($id_key, (int) $items->getEntity()->id(), '<>')
-        ->condition($field_name, $item->value)
-        ->condition('rid', 'solution')
-        ->condition('field_is_is_version_of', NULL)
-        ->range(0, 1)
-        ->count()
-        ->execute();
-    }
+
+    $value_taken = (bool) \Drupal::entityQuery($entity_type_id)
+      // The id could be NULL, so we cast it to 0 in that case.
+      ->condition($id_key, (int) $items->getEntity()->id(), '<>')
+      ->condition($field_name, $item->value)
+      ->condition('rid', 'solution')
+      ->notExists('field_is_is_version_of')
+      ->range(0, 1)
+      ->count()
+      ->execute();
     if ($value_taken) {
       $this->context->addViolation($constraint->message, [
         '%value' => $item->value,

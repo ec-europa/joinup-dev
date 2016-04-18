@@ -209,6 +209,35 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Returns the release with the given name.
+   *
+   * If multiple solution have the same name, the first one will be returned.
+   *
+   * @param string $title
+   *   The release name.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   The release.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when a release with the given name does not exist.
+   */
+  public static function getReleaseByName($title) {
+    $query = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'solution')
+      ->exists('field_is_is_version_of')
+      ->condition('label', $title)
+      ->range(0, 1);
+    $result = $query->execute();
+
+    if (empty($result)) {
+      throw new \InvalidArgumentException("The release with the name '$title' was not found.");
+    }
+
+    return Rdf::load(reset($result));
+  }
+
+  /**
    * Checks the number of available solutions.
    *
    * @param int $number
@@ -221,35 +250,26 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Checks if the loaded release is a distribution of a solution.
+   * Checks the number of available releases.
    *
-   * @param int $release
-   *   The solution name.
+   * @param int $number
+   *   The expected number of releases.
    *
    * @throws \Exception
-   *   Thrown when a solutions is not found or it is not
-   *   a release of the given solution.
+   *   Thrown when the number of release entities do not
+   *   match the expectation.
    *
-   * @Then the :release solution is a new release for :solution
+   * @Then I should have :number release(s)
    */
-  public function assertSolutionRelease($release, $solution) {
-    $release = $this->getSolutionByName($release);
-    if (empty($release)) {
-      throw new \Exception("Release entity not found.");
+  public function assertReleaseCount($number) {
+    $actual = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'solution')
+      ->exists('field_is_is_version_of')
+      ->count()
+      ->execute();
+    if ($actual != $number) {
+      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
     }
-
-    $solution = $this->getSolutionByName($solution);
-    if (empty($release)) {
-      throw new \Exception("Solution entity not found.");
-    }
-
-    if ($release->get('field_is_is_version_of')->getValue()[0]['target_id']
-      == $solution->id()
-    ) {
-      // Pass.
-      return;
-    }
-    throw new \Exception("Release {$release->label()} is not a release of the {$solution->label()} solution.");
   }
 
   /**

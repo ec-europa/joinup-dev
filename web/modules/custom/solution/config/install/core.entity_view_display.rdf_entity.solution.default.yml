@@ -16,7 +16,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_keywords
     - field.field.rdf_entity.solution.field_is_landing_page
     - field.field.rdf_entity.solution.field_is_language
-    - field.field.rdf_entity.solution.field_is_latest_release
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_modification_date
@@ -151,14 +150,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_is_latest_release:
-    weight: 5
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
   field_is_metrics_page:
     weight: 18
     label: above
