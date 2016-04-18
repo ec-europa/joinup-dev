@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Asset distribution'
+rid: asset_distribution
+description: ''
+rdftype: 'http://www.w3.org/ns/adms#AssetDistribution'
+rdf_label: 'http://purl.org/dc/terms/title'

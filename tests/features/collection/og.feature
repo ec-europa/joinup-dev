@@ -6,13 +6,13 @@ Feature: Organic Groups integration
 
   Scenario: Joining and leaving a collection
     Given collections:
-      | uri                              | name                         | abstract                                    | access url                              | closed  | creation date     | description                                                                                                         | elibrary creation  | moderation  | modification date  | owner |
-      | http://joinup.eu/collection/dog  | Überwaldean Land Eels        | Read up on all about <strong>dogs</strong>  | http://dogtime.com/dog-breeds/profiles  | 1       | 28-01-1995 12:05  | The Afghan Hound is elegance personified.                                                                           | 0                  | 1           |                    |       |
-      | http://joinup.eu/collection/cat  | Folk Dance and Song Society  | Cats are cool!                              | http://mashable.com/category/cats/      | 0       | 28-01-1995 12:06  | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal.  | 1                  | 0           |                    |       |
+      | title                       | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation |
+      | Überwaldean Land Eels       | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        |
+      | Folk Dance and Song Society | Cats are cool!                             | http://mashable.com/category/cats/     | no     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         |
     And users:
-      | name           | roles |
-      | Madame Sharn   |       |
-      | Goodie Whemper |       |
+      | name           |
+      | Madame Sharn   |
+      | Goodie Whemper |
 
     # Initially the collection should only have 1 member, the group manager.
     Then the "Überwaldean Land Eels" collection should have 1 member
@@ -83,9 +83,9 @@ Feature: Organic Groups integration
 
   Scenario: Edit a Collection
     Given collections:
-      | uri                              | logo     | name                         | abstract                                    | access url                              | closed  | creation date     | description                                                                                                         | elibrary creation  | moderation  | modification date  | owner |
-      | http://joinup.eu/collection/dog  | logo.png | Überwaldean Land Eels        | Read up on all about <strong>dogs</strong>  | http://dogtime.com/dog-breeds/profiles  | 1       | 28-01-1995 12:05  | The Afghan Hound is elegance personified.                                                                           | 0                  | 1           |                    |       |
-      | http://joinup.eu/collection/cat  | logo.png | Folk Dance and Song Society  | Cats are cool!                              | http://mashable.com/category/cats/      | 0       | 28-01-1995 12:06  | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal.  | 1                  | 0           |                    |       |
+      | title                       | logo     | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation |
+      | Überwaldean Land Eels       | logo.png | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        |
+      | Folk Dance and Song Society | logo.png | Cats are cool!                             | http://mashable.com/category/cats/     | no     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         |
     And users:
       | name             | roles         |
       | Collection admin | administrator |

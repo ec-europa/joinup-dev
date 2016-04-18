@@ -248,15 +248,8 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    * {@inheritdoc}
    */
   public static function bundleFieldDefinitions(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions) {
-    // @todo This is the key to proper bundle fields..!
-    // @todo Only invoked after cache clear.
-    $fields = array();
-    // If ($bundle == 'admssw_softwareproject') {.
-    $fields['test'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Test bundle admssw_softwareproject'))
-      ->setDescription(t('The ID of the Contact entity.'))
-      ->setReadOnly(TRUE);
-    // }.
+    // Allow other modules to override the label field.
+    $fields['label'] = clone $base_field_definitions['label'];
     return $fields;
   }
 

@@ -9,6 +9,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\og\Og;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -45,5 +46,14 @@ function collection_entity_update(EntityInterface $entity) {
         Cache::invalidateTags(['og_group_content:' . $id]);
       }
     }
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'collection' && !empty($fields['label'])) {
+    $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['collection']]);
   }
 }
