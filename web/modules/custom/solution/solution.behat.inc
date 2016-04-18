@@ -243,10 +243,20 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param int $number
    *   The expected number of solutions.
    *
+   * @throws \Exception
+   *   Throws an exception when the expected number is not equal to the given.
+   *
    * @Then I should have :number solution(s)
    */
   public function assertSolutionCount($number) {
-    $this->assertRdfEntityCount($number, 'solution');
+    $actual = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'solution')
+      ->notExists('field_is_is_version_of')
+      ->count()
+      ->execute();
+    if ($actual != $number) {
+      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
+    }
   }
 
   /**
