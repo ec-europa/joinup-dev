@@ -30,21 +30,37 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
     if (!empty($entity->get('field_is_is_version_of')
       ->getValue()[0]['target_id'])
     ) {
+      /** @var \Drupal\rdf_entity\RdfInterface $parent */
       $parent = Rdf::load($entity->get('field_is_is_version_of')
         ->getValue()[0]['target_id']);
+
       if ($parent->label() == $entity->label()) {
         // The release has the same name as the solution.
         return;
       }
+
+      // Check if the name is the same to other releases of the entity.
+      foreach ($parent->get('field_is_has_version')->getValue() as $release) {
+        $simbling = Rdf::load($release['target_id']);
+        if ($entity->label() == $simbling->label()) {
+          return;
+        }
+      }
     }
 
-    $value_taken = (bool) \Drupal::entityQuery($entity_type_id)
+    $query = \Drupal::entityQuery($entity_type_id)
       // The id could be NULL, so we cast it to 0 in that case.
       ->condition($id_key, (int) $items->getEntity()->id(), '<>')
       ->condition($field_name, $item->value)
-      ->condition('rid', 'solution')
-      ->notExists('field_is_is_version_of')
-      ->range(0, 1)
+      ->condition('rid', 'solution');
+    // @todo: Discuss about it whether we need it.
+    if (empty($entity->get('field_is_is_version_of')
+      ->getValue()[0]['target_id'])
+    ) {
+      $query->notExists('field_is_is_version_of');
+    }
+
+    $value_taken = (bool) $query->range(0, 1)
       ->count()
       ->execute();
     if ($value_taken) {
