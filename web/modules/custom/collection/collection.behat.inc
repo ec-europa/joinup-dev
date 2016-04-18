@@ -277,16 +277,16 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Deletes a collection.
+   * Deletes a rdf_entity.
    *
-   * @param string $collection
-   *   The title of the collection.
+   * @param string $rdf_entity
+   *   The title of the rdf entity.
    *
-   * @When (I )delete the :collection collection
+   * @When (I )delete the :rdf_entity rdf entity
    */
-  public function deleteCollection($collection) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
-    $this->getCollectionByName($collection)->delete();
+  public function deleteRdfEntity($rdf_entity) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $rdf_entity */
+    $this->getRdfEntityByLabel($rdf_entity)->delete();
   }
 
   /**

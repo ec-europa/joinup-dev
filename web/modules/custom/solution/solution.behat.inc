@@ -238,6 +238,19 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Deletes a rdf_entity.
+   *
+   * @param string $rdf_entity
+   *   The title of the rdf entity.
+   *
+   * @When (I )delete the :rdf_entity rdf entity
+   */
+  public function deleteRdfEntity($rdf_entity) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $rdf_entity */
+    $this->getRdfEntityByLabel($rdf_entity)->delete();
+  }
+
+  /**
    * Checks the number of available solutions.
    *
    * @param int $number
@@ -303,10 +316,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $collection = \CollectionSubContext::getCollectionByName($collection);
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     $solution = \SolutionSubContext::getSolutionByName($solution);
-    // This handles the solutions added by form submit.
-    if (!in_array($solution, $this->solutions)) {
-      $this->solutions[$solution->id()] = $solution;
-    }
 
     /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
     foreach ($solution->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {

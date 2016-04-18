@@ -38,3 +38,4 @@ Feature: "Add solution" visibility options.
       | Documentation     | text.pdf                         |
     And I press "Save"
     And the "Collection solution test 2" collection has a solution named "Collection solution add solution"
+    Then I delete the "Collection solution test 2" rdf entity

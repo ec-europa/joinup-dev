@@ -43,5 +43,5 @@ Feature: Proposing a collection
     # The user that proposed the collection should be auto-subscribed.
     And the "Ancient and Classical Mythology" collection should have 1 member
     # Clean up the collection that was created.
-    Then I delete the "Ancient and Classical Mythology" collection
+    Then I delete the "Ancient and Classical Mythology" rdf entity
 
