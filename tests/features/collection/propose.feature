@@ -44,4 +44,3 @@ Feature: Proposing a collection
     And the "Ancient and Classical Mythology" collection should have 1 member
     # Clean up the collection that was created.
     Then I delete the "Ancient and Classical Mythology" collection
-
