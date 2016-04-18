@@ -21,7 +21,7 @@ Feature: "Add release" visibility options.
     When I am an anonymous user
     And I go to the homepage of the "Release solution test" solution
     Then I should not see the link "Add release"
-  @javascript
+
   Scenario: Add release as a moderator.
     Given the following solutions:
       | title          | description        | documentation |
@@ -31,7 +31,6 @@ Feature: "Add release" visibility options.
     And I am logged in as a moderator
     When I go to the homepage of the "Release Test 1" solution
     And I click "Add release"
-    Then I break
     Then I should see the heading "Add release"
     And the following fields should be present "Title, Version"
     When I fill in "Title" with "Release Test 2"
