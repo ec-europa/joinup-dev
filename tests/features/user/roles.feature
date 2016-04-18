@@ -2,7 +2,6 @@
 Feature: User role management
   As a moderator I must be able to assign roles to users.
 
-  @javascript
   Scenario: A moderator can register a user
     Given users:
       | name         | roles          | mail                       |
