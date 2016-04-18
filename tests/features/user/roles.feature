@@ -2,7 +2,6 @@
 Feature: User role management
   As a moderator I must be able to assign roles to users.
 
-  @javascript
   Scenario: A moderator can register a user
     Given users:
       | name         | roles          | mail                       |
@@ -20,5 +19,3 @@ Feature: User role management
     And I press the "Apply" button
     Then I should see the success message "Add the Moderator role to the selected users was applied to 1 item."
     Then I should see the success message "An e-mail has been send to the user to notify him on the change to his account."
-
-    Then I break
