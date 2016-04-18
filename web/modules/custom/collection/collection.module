@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -14,4 +15,13 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
   // Hide the 'negation' option for collection block visibility. There are no
   // good use cases to show a block on all pages, except on collection pages.
   $form['visibility']['collection']['negate']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'collection' && !empty($fields['label'])) {
+    $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['collection']]);
+  }
 }

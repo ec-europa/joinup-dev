@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains solution.module..
- */
-
 use Drupal\rdf_entity\Entity\Rdf;
 use \Drupal\Core\Entity\EntityTypeInterface;
 use \Drupal\Core\Entity\EntityInterface;
