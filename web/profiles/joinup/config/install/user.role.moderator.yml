@@ -15,6 +15,7 @@ permissions:
   - 'delete og menu instance entities'
   - 'edit og menu instance entities'
   - 'create custom collection page'
+  - 'administer nodes'
   - 'propose solution rdf entity'
   - 'create asset_distribution rdf entity'
   - 'administer nodes'
