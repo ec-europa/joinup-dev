@@ -30,8 +30,14 @@ class UrlFileSynchronizerWidget extends LinkWidget implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings,
-                              EntityFieldManagerInterface $entity_field_manager) {
+  public function __construct(
+      $plugin_id,
+      $plugin_definition,
+      FieldDefinitionInterface $field_definition,
+      array $settings,
+      array $third_party_settings,
+      EntityFieldManagerInterface $entity_field_manager
+  ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
     $this->entityFieldManager = $entity_field_manager;
     $this->targetEntity = $field_definition->getTargetEntityTypeId();

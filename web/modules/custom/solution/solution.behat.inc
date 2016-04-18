@@ -238,19 +238,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Deletes a rdf_entity.
-   *
-   * @param string $rdf_entity
-   *   The title of the rdf entity.
-   *
-   * @When (I )delete the :rdf_entity rdf entity
-   */
-  public function deleteRdfEntity($rdf_entity) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $rdf_entity */
-    $this->getRdfEntityByLabel($rdf_entity)->delete();
-  }
-
-  /**
    * Checks the number of available solutions.
    *
    * @param int $number

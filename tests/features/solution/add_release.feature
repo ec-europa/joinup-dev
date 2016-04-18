@@ -61,4 +61,4 @@ Feature: "Add release" visibility options.
     And I press "Save"
     Then I should not see the error message "Content with title <em>Release Test 1 v2</em> already exists."
 
-    Then I delete the "Release Test 1 v2" rdf entity
+    Then I delete the "Release Test 1 v2" solution
