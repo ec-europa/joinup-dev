@@ -8,7 +8,8 @@ is_admin: false
 permissions:
   - 'administer account settings'
   - 'administer nodes'
-  # @todo This permission is temporarily granted to allow testers to change
-  # collections during user acceptance testing. Remove this once ISAICP-2362 is
+  # @todo These permissions are temporarily granted to allow testers to change
+  # collections during user acceptance testing. Remove them once ISAICP-2362 is
   # done.
+  - 'administer group'
   - 'edit collection rdf entity'
