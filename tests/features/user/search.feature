@@ -1,4 +1,4 @@
-@api @javascript
+@api
 Feature: User management
   As a moderator I must be able to search users.
 
