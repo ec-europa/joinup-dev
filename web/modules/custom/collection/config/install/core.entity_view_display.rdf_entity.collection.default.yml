@@ -24,8 +24,6 @@ dependencies:
     - link
     - options
     - text
-_core:
-  default_config_hash: KNcapIyD58ZODBZgfzsONzudrstXUyrA2MIZvEEL3bY
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection
