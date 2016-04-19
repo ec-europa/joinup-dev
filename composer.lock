@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "850b58486ed81bd7464233f78778163f",
-    "content-hash": "e4c72cc7e21d95b0f7236542bb5c6b66",
+    "hash": "fc69829d7295133ef3eeae6aa5d0eb29",
+    "content-hash": "0133f3b47a428ce07cce54c4ec9e7728",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -5470,16 +5470,16 @@
         },
         {
             "name": "ec-europa/joinup-infra",
-            "version": "0.1.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/joinup-infra.git",
-                "reference": "a1e2e6ab67e16c9b086c5a020c4e5a44f9e632f6"
+                "reference": "2a04b4645e541776ff101bf7cafe807e1be2b081"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-infra/zipball/a1e2e6ab67e16c9b086c5a020c4e5a44f9e632f6",
-                "reference": "a1e2e6ab67e16c9b086c5a020c4e5a44f9e632f6",
+                "url": "https://api.github.com/repos/ec-europa/joinup-infra/zipball/2a04b4645e541776ff101bf7cafe807e1be2b081",
+                "reference": "2a04b4645e541776ff101bf7cafe807e1be2b081",
                 "shasum": ""
             },
             "type": "library",
@@ -5493,7 +5493,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2016-04-19 09:37:23"
+            "time": "2016-04-19 09:45:45"
         },
         {
             "name": "fabpot/goutte",
@@ -6782,6 +6782,7 @@
         "drupal/config_update": 20,
         "drupal/devel": 20,
         "drupal/drupal-extension": 20,
+        "ec-europa/joinup-infra": 20,
         "jcalderonzumba/gastonjs": 20,
         "jcalderonzumba/mink-phantomjs-driver": 20
     },

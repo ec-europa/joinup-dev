@@ -31,7 +31,7 @@
         "drupal/config_update": "dev-8.x-1.x",
         "drupal/devel": "dev-8.x-1.x",
         "drupal/drupal-extension": "dev-support-drupal-8.1",
-        "ec-europa/joinup-infra": "^0",
+        "ec-europa/joinup-infra": "dev-master",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "dev-master#10d7c48c9a4129463052321b52450d98983c4332",
         "mikey179/vfsStream": "~1.2",
