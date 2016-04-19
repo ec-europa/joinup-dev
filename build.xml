@@ -243,7 +243,7 @@
     
     <target name="setup-continuousphp">
         <copy
-            file="./resources/continuousphp/odbc.ini"
+            file="./vendor/ec-europa/joinup-infra/continuousphp/odbc.ini"
             tofile="${user.home}/.odbc.ini"
             overwrite="true"
         />
