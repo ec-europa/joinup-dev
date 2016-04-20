@@ -296,9 +296,12 @@ class Query extends QueryBase implements QueryInterface {
 
     // SELECT query.
     foreach ($this->results as $result) {
-      $uri = (string) $result->entity;
-      $uris[$uri] = $uri;
-
+      // If the query does not return any results, EasyRdf_Sparql_Result still
+      // contains an empty result object. If this is the case, skip it.
+      if (!empty((array) $result)) {
+        $uri = (string) $result->entity;
+        $uris[$uri] = $uri;
+      }
     }
     return $uris;
   }
