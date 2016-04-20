@@ -6,6 +6,5 @@ do
   sleep 2
 done
 
-source /etc/profile
 vendor/bin/phing -propertyfile /usr/local/etc/subsite/subsite.ini install setup-acceptance >> /var/log/subsite/install.log 2>&1
 chown -R www-data:www-data /var/www/html/*
