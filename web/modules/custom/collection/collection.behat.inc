@@ -33,13 +33,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   protected $collections = [];
 
   /**
-   * Test images.
-   *
-   * @var \Drupal\file\Entity\File[]
-   */
-  protected $images = [];
-
-  /**
    * Navigates to the add collection form.
    *
    * @When (I )go to the add collection form
