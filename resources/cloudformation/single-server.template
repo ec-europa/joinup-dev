@@ -272,7 +272,7 @@
             ]
           }
         },
-        "ImageId": "ami-93a62ae0",
+        "ImageId": "ami-e2b23e91",
         "InstanceType": {
           "Ref": "InstanceType"
         },
