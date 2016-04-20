@@ -137,7 +137,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @Given (the following )solution:
    */
-  public function givenCollection(TableNode $solution_table) {
+  public function givenSolution(TableNode $solution_table) {
     $aliases = self::solutionFieldAliases();
 
     $values = [];
@@ -168,7 +168,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  public function createSolution(array $values) {
+  protected function createSolution(array $values) {
     if (!empty($values['field_is_documentation'])) {
       $values['field_is_documentation'] = [$this->createFile($values['field_is_documentation'], $this->getMinkParameter('files_path'))];
     }
@@ -209,7 +209,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \InvalidArgumentException
    *   Thrown when a solution with the given name does not exist.
    */
-  public static function getSolutionByName($title) {
+  protected function getSolutionByName($title) {
     return $this->getRdfEntityByLabel($title, 'solution');
   }
 
@@ -280,7 +280,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @return array
    *    Mapping.
    */
-  private static function solutionFieldAliases() {
+  protected static function solutionFieldAliases() {
     // Mapping alias - field name.
     return [
       'uri' => 'id',
@@ -329,7 +329,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
-  private function convertValueAliases($fields) {
+  protected function convertValueAliases($fields) {
     $mapped_values = [
       'field_is_moderation' => ['no' => 0, 'yes' => 1],
       'field_is_elibrary_creation' =>

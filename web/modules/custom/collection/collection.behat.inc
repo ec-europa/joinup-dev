@@ -79,7 +79,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \InvalidArgumentException
    *   Thrown when a collection with the given title does not exist.
    */
-  public static function getCollectionByName($title) {
+  protected function getCollectionByName($title) {
     return $this->getRdfEntityByLabel($title, 'collection');
   }
 
@@ -156,7 +156,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @return array
    *    Mapping.
    */
-  private static function collectionFieldAliases() {
+  protected static function collectionFieldAliases() {
     // Mapping alias - field name.
     return [
       'uri' => 'id',
@@ -191,7 +191,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
-  private function convertValueAliases($fields) {
+  protected function convertValueAliases($fields) {
     $mapped_values = [
       'field_ar_moderation' => ['no' => 0, 'yes' => 1],
       'field_ar_elibrary_creation' =>
@@ -224,7 +224,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  public function createCollection(array $values) {
+  protected function createCollection(array $values) {
     // Add image.
     if (!empty($values['field_ar_logo'])) {
       $values['field_ar_logo'] = [$this->createFile($values['field_ar_logo'], $this->getMinkParameter('files_path'))];

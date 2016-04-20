@@ -45,7 +45,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When (I )go to (the homepage of )the :asset_distribution distribution
    * @When (I )visit (the homepage of )the :asset_distribution distribution
    */
-  public function visitCollection($asset_distribution) {
+  public function visitDistribution($asset_distribution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $distribution */
     $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
     $this->visitPath($asset_distribution->url());
@@ -153,7 +153,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \Exception
    *   Thrown when a given file is not found.
    */
-  public function createAssetDistribution(array $values) {
+  protected function createAssetDistribution(array $values) {
     // Add image.
     if (!empty($values['field_ad_file'])) {
       $values['field_ad_file'] = [$this->createFile($values['field_ad_file'], $this->getMinkParameter('files_path'))];
@@ -214,7 +214,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \InvalidArgumentException
    *   Thrown when a solution with the given title does not exist.
    */
-  public static function getSolutionByName($title) {
+  protected function getSolutionByName($title) {
     return $this->getRdfEntityByLabel($title, 'solution');
   }
 
@@ -286,7 +286,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @return array
    *    Mapping.
    */
-  private static function assetDistributionFieldAliases() {
+  protected static function assetDistributionFieldAliases() {
     // Mapping alias - field name.
     return [
       'uri' => 'id',
