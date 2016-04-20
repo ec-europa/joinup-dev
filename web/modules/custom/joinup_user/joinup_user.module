@@ -30,7 +30,7 @@ function joinup_user_user_update(UserInterface $account) {
     'email_admin_update',
     $account->getEmail(),
     $account->getPreferredLangcode(),
-    $params,
+    $params
   );
   drupal_set_message(t('An e-mail has been send to the user to notify him on the change to his account.'));
 }
