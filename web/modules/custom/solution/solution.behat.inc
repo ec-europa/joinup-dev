@@ -243,9 +243,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function assertOgMembership($solution, $collection) {
     /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    $collection = \CollectionSubContext::getCollectionByName($collection);
+    $collection = $this->getRdfEntityByLabel($collection, 'collection');
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = $this->getRdfEntityByName('solution', $solution);
+    $solution = $this->getRdfEntityByLabel($solution, 'solution');
 
     /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
     foreach ($solution->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
