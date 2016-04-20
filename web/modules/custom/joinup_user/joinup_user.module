@@ -7,40 +7,33 @@
 use \Drupal\Core\Form\FormStateInterface;
 use \Drupal\Core\Session\AccountInterface;
 use \Drupal\Component\Render\PlainTextOutput;
+use \Drupal\user\UserInterface;
 
 /**
- * Implements hook_ENTITY_TYPE_presave().
+ * Implements hook_ENTITY_TYPE_update().
  *
  * Send a notification whenever an admin updates a user profile.
  */
-function joinup_user_user_presave(AccountInterface $account) {
-  // Do not attempt to send emails during the installation procedure.
-  if (drupal_installation_attempted()) {
+function joinup_user_user_update(UserInterface $account) {
+  $current_user = \Drupal::currentUser()->getAccount();
+  // Email should only fire when a user alters another user's account.
+  if ($account->isAnonymous() || $current_user->isAnonymous() || $current_user->id() == $account->id()) {
     return;
   }
 
-  // Only act on update.
-  if (empty($account->id())) {
-    return;
-  }
-
-  $user = \Drupal::currentUser();
-  if ($user->id() == $account->id()) {
-    // User changed his own profile.
-    return;
-  }
-
-  // Load original account object for comparison.
-  $account_previous_state = \Drupal::entityManager()->getStorage('user')->loadUnchanged($account->id());
+  // Inform the user that his profile was updated.
   $params['account'] = $account;
-  $params['account_previous_state'] = $account_previous_state;
-  \Drupal::service('plugin.manager.mail')->mail(
+  $params['original'] = $account->original;
+
+  if ($account) {
+    \Drupal::service('plugin.manager.mail')->mail(
     'joinup_user',
     'email_admin_update',
     $account->getEmail(),
     $account->getPreferredLangcode(),
     $params
-  );
+    );
+  }
   drupal_set_message(t('An e-mail has been send to the user to notify him on the change to his account.'));
 }
 
@@ -53,7 +46,7 @@ function joinup_user_mail($key, &$message, $params) {
   $token_service = \Drupal::token();
   $language_manager = \Drupal::languageManager();
   $langcode = $message['langcode'];
-  $variables = array('user' => $params['account'], 'user_previous_state' => $params['account_previous_state']);
+  $variables = array('user' => $params['account'], 'original' => $params['original']);
 
   $language = \Drupal::languageManager()->getLanguage($params['account']->getPreferredLangcode());
   $original_language = $language_manager->getConfigOverrideLanguage();
@@ -100,8 +93,8 @@ function joinup_user_mail($key, &$message, $params) {
  */
 function joinup_user_mail_tokens(&$replacements, $data, $options) {
   user_mail_tokens($replacements, $data, $options);
-  if (isset($data['user']) && isset($data['user_previous_state'])) {
-    $changes = joinup_user_account_changes($data['user_previous_state'], $data['user']);
+  if (isset($data['user']) && isset($data['original'])) {
+    $changes = joinup_user_account_changes($data['original'], $data['user']);
     $replacements['[user:changes]'] = implode("\n", $changes);
   }
 }
