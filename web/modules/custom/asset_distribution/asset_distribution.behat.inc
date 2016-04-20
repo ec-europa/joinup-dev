@@ -8,14 +8,19 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\joinup\Context\JoinupTrait;
+use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\RandomGeneratorTrait;
+use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing asset distributions.
  */
 class AssetDistributionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
-  use JoinupTrait;
+
+  use FileTrait;
+  use RandomGeneratorTrait;
+  use RdfEntityTrait;
 
   /**
    * Test asset distributions.
@@ -210,7 +215,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *   Thrown when a solution with the given title does not exist.
    */
   public static function getSolutionByName($title) {
-    return self::getRdfEntityByLabel($title, 'solution');
+    return $this->getRdfEntityByLabel($title, 'solution');
   }
 
   /**

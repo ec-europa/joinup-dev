@@ -9,7 +9,9 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\joinup\Context\JoinupTrait;
+use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\RandomGeneratorTrait;
+use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use \Drupal\og\OgGroupAudienceHelper;
@@ -18,7 +20,10 @@ use \Drupal\og\OgGroupAudienceHelper;
  * Behat step definitions for testing collections.
  */
 class CollectionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
-  use JoinupTrait;
+
+  use FileTrait;
+  use RandomGeneratorTrait;
+  use RdfEntityTrait;
 
   /**
    * Test collections.
@@ -75,7 +80,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   Thrown when a collection with the given title does not exist.
    */
   public static function getCollectionByName($title) {
-    return self::getRdfEntityByLabel($title, 'collection');
+    return $this->getRdfEntityByLabel($title, 'collection');
   }
 
   /**

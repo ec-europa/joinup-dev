@@ -8,15 +8,20 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\joinup\Context\JoinupTrait;
+use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\RandomGeneratorTrait;
+use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelper;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing solutions.
  */
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
-  use JoinupTrait;
+
+  use FileTrait;
+  use RandomGeneratorTrait;
+  use RdfEntityTrait;
 
   /**
    * Test solutions.
@@ -205,7 +210,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *   Thrown when a solution with the given name does not exist.
    */
   public static function getSolutionByName($title) {
-    return self::getRdfEntityByLabel($title, 'solution');
+    return $this->getRdfEntityByLabel($title, 'solution');
   }
 
   /**
@@ -240,7 +245,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     /** @var \Drupal\rdf_entity\RdfInterface $collection */
     $collection = \CollectionSubContext::getCollectionByName($collection);
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = \SolutionSubContext::getSolutionByName($solution);
+    $solution = $this->getRdfEntityByName('solution', $solution);
     // This handles the solutions added by form submit.
     if (!in_array($solution, $this->solutions)) {
       $this->solutions[$solution->id()] = $solution;
