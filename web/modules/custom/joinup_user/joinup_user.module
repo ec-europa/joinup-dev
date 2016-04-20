@@ -25,15 +25,13 @@ function joinup_user_user_update(UserInterface $account) {
   $params['account'] = $account;
   $params['original'] = $account->original;
 
-  if ($account) {
-    \Drupal::service('plugin.manager.mail')->mail(
+  \Drupal::service('plugin.manager.mail')->mail(
     'joinup_user',
     'email_admin_update',
     $account->getEmail(),
     $account->getPreferredLangcode(),
-    $params
-    );
-  }
+    $params,
+  );
   drupal_set_message(t('An e-mail has been send to the user to notify him on the change to his account.'));
 }
 
@@ -46,9 +44,13 @@ function joinup_user_mail($key, &$message, $params) {
   $token_service = \Drupal::token();
   $language_manager = \Drupal::languageManager();
   $langcode = $message['langcode'];
-  $variables = array('user' => $params['account'], 'original' => $params['original']);
+  $variables = array(
+    'user' => $params['account'],
+    'original' => $params['original'],
+  );
 
-  $language = \Drupal::languageManager()->getLanguage($params['account']->getPreferredLangcode());
+  $language = \Drupal::languageManager()
+    ->getLanguage($params['account']->getPreferredLangcode());
   $original_language = $language_manager->getConfigOverrideLanguage();
   $language_manager->setConfigOverrideLanguage($language);
   $mail_config = \Drupal::config('user.mail');
