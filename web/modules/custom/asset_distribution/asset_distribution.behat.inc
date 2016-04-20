@@ -75,11 +75,11 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @codingStandardsIgnoreStart
    *   Table format:
-   *   Table format:
-   * uri                                      | title              | description                  | access url                               | file     | creation date     | modification date
-   * http://joinup.eu/asset_distribution/foo  | Foo distribution  | This is a foo distribution   | http://base_url.com/path-to-file.zip     | test.zip | 28-01-1995 12:05  |
-   * http://joinup.eu/asset_distribution/bar  | Bar distribution  | This is a bar distribution   | http://external_url.com/path-to-file.zip | test.zip | 28-01-1995 12:06  |
+   *   uri                                     | title            | description                | access url                               | file     | creation date     | modification date
+   *   http://joinup.eu/asset_distribution/foo | Foo distribution | This is a foo distribution | http://base_url.com/path-to-file.zip     | test.zip | 28-01-1995 12:05  |
+   *   http://joinup.eu/asset_distribution/bar | Bar distribution | This is a bar distribution | http://external_url.com/path-to-file.zip | test.zip | 28-01-1995 12:06  |
    * @codingStandardsIgnoreEnd
+   *
    * Fields title and description are mandatory.
    *
    * @throws \Exception

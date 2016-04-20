@@ -76,9 +76,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * title         | description              | document | closed  | creation date     | elibrary creation  | moderation  | modification date | landing page               | webdav creation | webdav url                  | wiki
-   * Foo solution  | This is a foo solution   | text.pdf | yes     | 28-01-1995 12:05  | no                 | yes         |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
-   * Bar solution  | This is a bar solution   | text.pdf | no      | 28-01-1995 12:06  | yes                | no          |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
+   * title        | description            | document | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki
+   * Foo solution | This is a foo solution | text.pdf | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
+   * Bar solution | This is a bar solution | text.pdf | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
    * @codingStandardsIgnoreEnd
    *
    * Fields title, description and elibrary creation are mandatory.
@@ -163,7 +163,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *   An optional associative array of values, keyed by property name.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
-   *   A new collection entity.
+   *   A new solution entity.
    *
    * @throws \Exception
    *   Thrown when a given image is not found.
@@ -347,13 +347,13 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     }
 
-    // Check for the og group.
+    // Check for the OG group.
     if (isset($fields['field_is_distribution'])) {
       $distribution = $this->getRdfEntityByLabel($fields['field_is_distribution'], 'asset_distribution');
       $fields['field_is_distribution'] = [$distribution->id()];
     }
 
-    // Check for the og group.
+    // Check for the OG group.
     if (isset($fields['og_group_ref'])) {
       $collection = $this->getRdfEntityByLabel($fields['og_group_ref'], 'collection');
       $fields['og_group_ref'] = $collection->id();
