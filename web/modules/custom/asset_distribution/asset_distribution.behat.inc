@@ -253,11 +253,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     $solution = $this->getRdfEntityByLabelUnchanged($solution, 'solution');
 
-    // This handles the solutions added by form submit.
-    if (!in_array($asset_distribution, $this->assetDistributions)) {
-      $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
-    }
-
     foreach ($solution->get('field_is_distribution') as $distribution) {
       if ($distribution->getValue()['target_id'] == $asset_distribution->id()) {
         // Test passes.

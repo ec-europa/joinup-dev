@@ -45,3 +45,5 @@ Feature: "Add asset distribution" visibility options.
     Then I should see the text "Distribution"
     And I should see the link "Custom title of asset distribution"
     And the "Custom title of asset distribution" asset distribution is related to the "Asset another random name" solution
+    # Clean up the asset distribution that was created through the UI.
+    Then I delete the "Custom title of asset distribution" asset distribution
