@@ -2,7 +2,7 @@
 Feature: User role management
   As a moderator I must be able to assign roles to users.
 
-  Scenario: A moderator can register a user
+  Scenario: A moderator can assign a role to a user.
     Given users:
       | name         | roles          | mail                       |
       | Rick Rolls   | Moderator      | rick.roles@example.com     |
