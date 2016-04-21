@@ -18,3 +18,4 @@ permissions:
   - 'administer nodes'
   - 'propose solution rdf entity'
   - 'administer nodes'
+  - 'access contextual links'

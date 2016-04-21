@@ -58,6 +58,22 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * @Then I should see the following in the repeated :element element within the context of the :parentElement element:
+   */
+  public function assertRepeatedElementContainsText(TableNode $table, $element, $parentElement) {
+    $parent = $this->getSession()->getPage()->findAll('css', $parentElement);
+    $i = 0;
+    foreach ($table->getHash() as $repeatedElement) {
+      $child = $parent[$i];
+      \PHPUnit_Framework_Assert::assertEquals(
+        $child->find('css', $element)->getText(),
+        $repeatedElement['text']
+      );
+      $i++;
+    }
+  }
+
+  /**
    * Navigates to the edit form of a collection.
    *
    * @param string $collection
