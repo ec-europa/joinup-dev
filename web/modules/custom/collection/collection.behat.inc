@@ -58,6 +58,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Assert the order of elements.
+   *
    * @Then I should see the following in the repeated :element element within the context of the :parentElement element:
    */
   public function assertRepeatedElementContainsText(TableNode $table, $element, $parentElement) {
