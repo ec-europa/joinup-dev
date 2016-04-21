@@ -21,6 +21,15 @@ function joinup_user_user_update(UserInterface $account) {
     return;
   }
 
+  /** @var \Drupal\joinup_user\ActiveFormSubmit $active_form */
+  $active_form = \Drupal::getContainer()->get('joinup_user.active_form_submit');
+  $active_form_id = $active_form->getFormId();
+  // Only run when either submitting the user edit form, or the bulk operation
+  // on admin/people.
+  if (!$active_form_id || !in_array($active_form_id, ['views_form_user_admin_people_page_1', 'user_form'])) {
+    return;
+  }
+
   // Inform the user that his profile was updated.
   $params['account'] = $account;
   $params['original'] = $account->original;
@@ -171,4 +180,23 @@ function joinup_user_form_user_admin_settings_alter_submit(array &$form, FormSta
     ->set('email_admin_update.body', $form_state->getValue('user_mail_update_account_body'))
     ->set('email_admin_update.subject', $form_state->getValue('user_mail_update_account_subject'))
     ->save();
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function joinup_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#validate'][] = 'joinup_user_form_alter_validate';
+}
+
+/**
+ * Form validation callback: Keep track of the form being validated/submitted.
+ */
+function joinup_user_form_alter_validate(&$form, FormStateInterface $form_state) {
+  $build_info = $form_state->getBuildInfo();
+  if (isset($build_info['form_id'])) {
+    /** @var \Drupal\joinup_user\ActiveFormSubmit $active_form */
+    $active_form = \Drupal::getContainer()->get('joinup_user.active_form_submit');
+    $active_form->setFormId($build_info['form_id']);
+  }
 }
