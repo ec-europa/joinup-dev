@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fc69829d7295133ef3eeae6aa5d0eb29",
-    "content-hash": "0133f3b47a428ce07cce54c4ec9e7728",
+    "hash": "96c88767552b935b2d443132831f1771",
+    "content-hash": "6fc129e0034518b826fb2d4458b28457",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1482,6 +1482,33 @@
                 }
             },
             "time": "2016-01-28 12:56:40"
+        },
+        {
+            "name": "ec-europa/joinup-infra",
+            "version": "0.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ec-europa/joinup-infra.git",
+                "reference": "fde5fad5d8bd229f410851a856ec6b1bdf3fcf20"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/joinup-infra/zipball/fde5fad5d8bd229f410851a856ec6b1bdf3fcf20",
+                "reference": "fde5fad5d8bd229f410851a856ec6b1bdf3fcf20",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Gregory Boddin",
+                    "email": "gregory@siwhine.net"
+                }
+            ],
+            "time": "2016-04-22 14:52:53"
         },
         {
             "name": "egulias/email-validator",
@@ -5469,33 +5496,6 @@
             "time": "2016-04-08 14:45:33"
         },
         {
-            "name": "ec-europa/joinup-infra",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ec-europa/joinup-infra.git",
-                "reference": "2a04b4645e541776ff101bf7cafe807e1be2b081"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-infra/zipball/2a04b4645e541776ff101bf7cafe807e1be2b081",
-                "reference": "2a04b4645e541776ff101bf7cafe807e1be2b081",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPLv3"
-            ],
-            "authors": [
-                {
-                    "name": "Gregory Boddin",
-                    "email": "gregory@siwhine.net"
-                }
-            ],
-            "time": "2016-04-19 09:45:45"
-        },
-        {
             "name": "fabpot/goutte",
             "version": "v3.1.2",
             "source": {
@@ -6782,7 +6782,6 @@
         "drupal/config_update": 20,
         "drupal/devel": 20,
         "drupal/drupal-extension": 20,
-        "ec-europa/joinup-infra": 20,
         "jcalderonzumba/gastonjs": 20,
         "jcalderonzumba/mink-phantomjs-driver": 20
     },
