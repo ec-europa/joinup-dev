@@ -27,5 +27,5 @@ status_canceled:
   subject: 'Account details for [user:display-name] at [site:name] (canceled)'
 langcode: en
 email_admin_update:
-  body: "[user:display-name],\r\n\r\nA site administrator at [site:name] has updated your account for you.\r\nYou can validate your updated profile by logging in at [site:login-url].\r\n\r\n[user:changes]\r\n\r\n--  [site:name] team"
+  body: "[user:display-name],\r\n\r\nA site administrator at [site:name] has updated your account for you.\r\n\r\n[user:changes]\r\n\r\n--  [site:name] team"
   subject: 'An administrator updated your account for you at [site:name]'
