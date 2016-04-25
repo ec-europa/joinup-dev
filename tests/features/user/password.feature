@@ -1,4 +1,4 @@
-@api @javascript
+@api
 Feature: Password management
   A user must be able to change his password
 
