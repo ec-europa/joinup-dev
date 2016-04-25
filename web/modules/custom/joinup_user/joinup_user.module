@@ -139,6 +139,15 @@ function joinup_user_account_changes(AccountInterface $old_account, AccountInter
     $text .= implode(', ', $added);
     $changes[] = $text;
   }
+
+  if ($old_account->isActive() && $new_account->isBlocked()) {
+    $changes[] = "Your account has been blocked.";
+  }
+
+  if ($old_account->isBlocked() && $new_account->isActive()) {
+    $changes[] = "Your account has been un-blocked.";
+  }
+
   return $changes;
 }
 
