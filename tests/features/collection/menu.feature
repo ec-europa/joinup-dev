@@ -1,3 +1,4 @@
+# If you want to run this test through Selenium, uncomment the specified lines!
 @api
 Feature: Collections menu
   Scenario: Add a link to og menu
@@ -36,9 +37,9 @@ Feature: Collections menu
       | Mordor         |
 
     # Edit menu and change the order of items.
-    Then I press "Open configuration options" in the "Primary menu" region
-    Then I click "Edit menu"
-    Then I press the "Show row weights" button
+    Then I click the contextual link "Edit menu" in the "Primary menu" region
+    # To run on Selenium, uncomment next line:
+    # Then I press the "Show row weights" button
     Then I select "5" from "Weight for Mines of Moria"
     Then I press the "Save" button
 
