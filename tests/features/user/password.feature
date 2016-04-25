@@ -1,11 +1,11 @@
-@api
+@api @javascript
 Feature: Password management
   A user must be able to change his password
 
   Scenario: A logged-in user can navigate to his profile and change his password.
     Given users:
-      | name           | mail                        | pass        | First name | Family name |
-      | Charlie Change | charlie.change@example.com  | changeme    | Charlie    | Change      |
+      | name           | mail                        | pass        | field_user_first_name | field_user_family_name |
+      | Charlie Change | charlie.change@example.com  | changeme    | Charlie               | Change                 |
     When I am logged in as "Charlie Change"
     And I am on the homepage
     Then I click "My account"
