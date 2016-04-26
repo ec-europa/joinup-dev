@@ -149,10 +149,10 @@ drush.verbose = no
 
 # AWS SDK
 # -------
-# !!! Keep this in your local properties, never commit to git !!!
-
 aws.region = eu-west-1
-#aws.id = < your id >
+
+# !!! Keep this in your local properties, never commit to git !!!
+#aws.id = <your id>
 #aws.secret = <your secret key>
 
 # AWS CodeDeploy
