@@ -1485,16 +1485,16 @@
         },
         {
             "name": "ec-europa/joinup-infra",
-            "version": "0.1.5",
+            "version": "0.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/joinup-infra.git",
-                "reference": "8708c3b5a83b433c56cf61191042c9d1cd1057ca"
+                "reference": "b4a57249903bfe4b78523a01ec1e5e8315e3961d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-infra/zipball/8708c3b5a83b433c56cf61191042c9d1cd1057ca",
-                "reference": "8708c3b5a83b433c56cf61191042c9d1cd1057ca",
+                "url": "https://api.github.com/repos/ec-europa/joinup-infra/zipball/b4a57249903bfe4b78523a01ec1e5e8315e3961d",
+                "reference": "b4a57249903bfe4b78523a01ec1e5e8315e3961d",
                 "shasum": ""
             },
             "type": "library",
@@ -1508,7 +1508,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2016-04-22 16:26:34"
+            "time": "2016-04-26 09:03:59"
         },
         {
             "name": "egulias/email-validator",
