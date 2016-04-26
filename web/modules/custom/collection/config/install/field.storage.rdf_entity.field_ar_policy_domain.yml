@@ -6,8 +6,6 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_target_id: 'https://www.w3.org/ns/dcat#keyword'
-_core:
-  default_config_hash: 7Bb4FNzSaDfPyYfE8y18qlXsn8_HU8LrlOwTE5AuWhU
 id: rdf_entity.field_ar_policy_domain
 field_name: field_ar_policy_domain
 entity_type: rdf_entity

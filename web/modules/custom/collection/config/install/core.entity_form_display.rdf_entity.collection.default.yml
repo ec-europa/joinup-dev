@@ -20,13 +20,10 @@ dependencies:
     - image.style.thumbnail
     - rdf_entity.rdfentity.collection
   module:
-    - datetime
     - image
     - link
     - rdf_entity
     - text
-_core:
-  default_config_hash: fbC_Go0HP9SCUjTRv94g0KHkTip0Bor8FeOJzkymoBk
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection

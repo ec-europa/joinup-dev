@@ -6,8 +6,6 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_target_id: 'http://www.w3.org/ns/dcat#spatial'
-_core:
-  default_config_hash: dqYwPtm7xFM_5BPg5nfShhi-wmVJ16C27QIDbaxzbdw
 id: rdf_entity.field_ar_spatial_coverage
 field_name: field_ar_spatial_coverage
 entity_type: rdf_entity
