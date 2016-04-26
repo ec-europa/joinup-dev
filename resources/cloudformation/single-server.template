@@ -10,7 +10,7 @@
     "InstanceType": {
       "Description": "WebServer EC2 instance type",
       "Type": "String",
-      "Default": "t2.micro",
+      "Default": "t2.small",
       "AllowedValues": [
         "t2.nano",
         "t2.micro",
@@ -272,7 +272,7 @@
             ]
           }
         },
-        "ImageId": "ami-93a62ae0",
+        "ImageId": "ami-3b49c548",
         "InstanceType": {
           "Ref": "InstanceType"
         },
