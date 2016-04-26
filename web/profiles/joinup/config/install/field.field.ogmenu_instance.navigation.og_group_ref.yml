@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.user.og_group_ref
+    - field.storage.ogmenu_instance.og_group_ref
+    - og_menu.ogmenu.navigation
   module:
     - og
-    - user
-id: user.user.og_group_ref
+id: ogmenu_instance.navigation.og_group_ref
 field_name: og_group_ref
-entity_type: user
-bundle: user
+entity_type: ogmenu_instance
+bundle: navigation
 label: 'Groups audience'
 description: 'OG group audience reference field.'
 required: false
@@ -20,4 +20,4 @@ settings:
   handler: 'default:rdf_entity'
   handler_settings: {  }
   access_override: false
-field_type: og_membership_reference
+field_type: og_standard_reference

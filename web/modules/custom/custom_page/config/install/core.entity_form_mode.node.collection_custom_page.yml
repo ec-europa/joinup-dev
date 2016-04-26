@@ -4,6 +4,6 @@ dependencies:
   module:
     - node
 id: node.collection_custom_page
-label: 'Collection Custom Page'
+label: 'Collection custom page'
 targetEntityType: node
 cache: true

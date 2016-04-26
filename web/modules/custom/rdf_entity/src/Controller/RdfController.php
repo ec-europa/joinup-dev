@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\rdf_entity\Controller\RdfController.
- */
-
 namespace Drupal\rdf_entity\Controller;
 
 use Drupal\Component\Utility\Xss;
@@ -16,6 +11,7 @@ use Drupal\rdf_entity\RdfInterface;
  * Provides route responses for rdf_entity.module.
  */
 class RdfController extends ControllerBase {
+
   /**
    * Route title callback.
    *

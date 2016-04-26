@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\collection\Form\LeaveCollectionConfirmForm.
- */
-
 namespace Drupal\collection\Form;
 
 use Drupal\Core\Access\AccessResult;
@@ -58,7 +53,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    */
   public function getCancelUrl() {
     return Url::fromRoute('entity.rdf_entity.canonical', [
-      'rdf_entity' => $this->collection->sanitizedId(),
+      'rdf_entity' => $this->collection->id(),
     ]);
   }
 

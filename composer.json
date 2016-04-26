@@ -9,8 +9,9 @@
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",
-        "drupal/core": "~8.0.3",
-        "drupal/og": "dev-userGroupsFix",
+        "drupal/core": "~8.1.0",
+        "drupal/og": "dev-delete-user-memberships",
+        "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x",
         "drupal/search_api": "~8.1.0-alpha12",
@@ -19,6 +20,7 @@
         "pear/console_table": "~1.3.0",
         "phing/phing": "~2.10",
         "php": ">=5.5.9",
+        "symfony/dependency-injection": "2.8.2",
         "typhonius/behattask": "1.0"
     },
     "require-dev": {
@@ -28,13 +30,13 @@
         "drupal/config_devel": "dev-8.x-1.x",
         "drupal/config_update": "dev-8.x-1.x",
         "drupal/devel": "dev-8.x-1.x",
-        "drupal/drupal-extension": "dev-master",
+        "drupal/drupal-extension": "dev-support-drupal-8.1",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "dev-master#10d7c48c9a4129463052321b52450d98983c4332",
         "mikey179/vfsStream": "~1.2",
         "pfrenssen/phpcs-pre-push": "1.0",
         "phpunit/phpunit": "~4.8",
-        "symfony/css-selector": "2.7.*"
+        "symfony/css-selector": "~2.8.0"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -63,7 +65,8 @@
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
             },
             "drupal/search_api": {
-                "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/support_for_non_numeric-2671228-2_1.patch"
+                "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/2671228.patch",
+                "Issue #2704761: Extend length of supported IDs in search API DB Backend (Patch only)": "https://www.drupal.org/files/issues/2704761_patch_only.patch"
             }
         }
     },
@@ -118,9 +121,18 @@
             }
         },
         {
-            "_comment": "Custom branch containing patches necessary for the current og state. Will be reverted to the original when og has these issues solved. Check branch for more details.",
+            "_comment": "This is the development repository of the D8 port of Organic Groups. Remove this when an official alpha release is made.",
             "type": "vcs",
-            "url": "git@github.com:ec-europa/og"
+            "url": "git@github.com:amitaibu/og"
+        },
+        {
+            "_comment": "Use a fork of Behat Drupal Extension with a fix for #266.",
+            "type": "vcs",
+            "url": "https://github.com/pfrenssen/drupalextension.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:ec-europa/og_menu"
         },
         {
             "type": "package",

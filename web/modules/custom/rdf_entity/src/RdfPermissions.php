@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Drupal\rdf_entity\RdfPermissions.
- */
-
 namespace Drupal\rdf_entity;
 
 use Drupal\Core\Routing\UrlGeneratorTrait;

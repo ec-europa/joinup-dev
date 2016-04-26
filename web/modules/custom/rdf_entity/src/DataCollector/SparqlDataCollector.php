@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Integrate the Sparql query backend with the web profiler toolbar.
- */
-
 namespace Drupal\rdf_entity\DataCollector;
 
 use Drupal\Core\Config\ConfigFactoryInterface;

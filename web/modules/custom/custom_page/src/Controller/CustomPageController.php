@@ -1,16 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\custom_page\Controller\CustomPageController.
- */
-
 namespace Drupal\custom_page\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\Og;
-use Drupal\user\Entity\User;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Class CustomPageController.
@@ -21,6 +15,7 @@ use Drupal\user\Entity\User;
  * @package Drupal\custom_page\Controller
  */
 class CustomPageController extends ControllerBase {
+
   /**
    * Controller for the base form.
    *
@@ -34,10 +29,10 @@ class CustomPageController extends ControllerBase {
    * @return array
    *   Return the form array to be rendered.
    */
-  public function add($rdf_entity) {
+  public function add(RdfInterface $rdf_entity) {
     $node = $this->entityTypeManager()->getStorage('node')->create(array(
       'type' => 'custom_page',
-      'og_group_ref' => $rdf_entity->Id()
+      'og_group_ref' => $rdf_entity->id(),
     ));
 
     $form = $this->entityFormBuilder()->getForm($node);
@@ -48,27 +43,23 @@ class CustomPageController extends ControllerBase {
   /**
    * Handles access to the custom page add form through collection pages.
    *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The RDF entity for which the custom page is created.
+   *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function access(){
-    $rdf_entity = \Drupal::routeMatch()->getParameter('rdf_entity');
-    $account = \Drupal::currentUser();
-
-    if($account->isAnonymous()){
-      return AccessResult::forbidden();
+  public function createCustomPageAccess(RdfInterface $rdf_entity) {
+    // Check that the passed in RDF entity is a collection, and that the user
+    // has the permission to create custom pages.
+    // @todo Collection owners and facilitators should also have the right to
+    //   create custom pages for the collections they manage.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2443
+    if ($rdf_entity->bundle() == 'collection' && $this->currentUser()->hasPermission('create custom collection page')) {
+      return AccessResult::allowed();
     }
 
-    if($rdf_entity->bundle() != 'collection' ){
-      return AccessResult::forbidden();
-    }
-
-    // @todo: Fix the visibility to include og membership role dependency after ISAICP-2362.
-    $user = User::load($account->id());
-    if(!(Og::isMember($rdf_entity, $user))){
-      return AccessResult::forbidden();
-    }
-    
-    return AccessResult::allowed();
+    return AccessResult::forbidden();
   }
+
 }

@@ -35,13 +35,13 @@ field_settings:
     property_path: field_ar_description
     type: text
 processor_settings:
-  language:
-    plugin_id: language
+  add_url:
+    plugin_id: add_url
     settings:
       weights:
         preprocess_index: -30
-  add_url:
-    plugin_id: add_url
+  language:
+    plugin_id: language
     settings:
       weights:
         preprocess_index: -30

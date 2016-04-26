@@ -9,7 +9,6 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\file\Entity\File;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
@@ -86,18 +85,17 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Creates a number of collections with data provided in a table.
    *
-   * * @param TableNode $collection_table
-   *   The collection data.
-   *
    * Table format:
-   *
    * @codingStandardsIgnoreStart
-   * uri                              | name                     | abstract                                    | access url                              | closed  | creation date     | description                                                                                                         | elibrary creation  | logo  | moderation  | modification date  | owner
-   * http://joinup.eu/collection/dog  | Dog owner collection     | Read up on all about <strong>dogs</strong>  | http://dogtime.com/dog-breeds/profiles  | 1       | 28-01-1995 12:05  | The Afghan Hound is elegance personified.                                                                           | 0                  |       | 1           |                    |
-   * http://joinup.eu/collection/cat  | Cats collection 4 ever!  | Cats are cool!                              | http://mashable.com/category/cats/      | 0       | 28-01-1995 12:06  | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal.  | 1                  |       | 0           |                    |
+   * uri                             | name                    | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | logo | moderation | modification date | owner |
+   * http://joinup.eu/collection/dog | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | 1      | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | 0                 |      | 1          |                   |       |
+   * http://joinup.eu/collection/cat | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | 0      | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | 1                 |      | 0          |                   |       |
    * @codingStandardsIgnoreEnd
    *
    * Only the name field is required.
+   *
+   * @param TableNode $collection_table
+   *   The collection data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
@@ -193,6 +191,14 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
 
       $this->images[$image->id()] = $image;
     }
+
+    // Generate a URI if this is not specified. Typically the URI is not exposed
+    // to the end user, so in a functional test the user will not be able to
+    // enter one.
+    if (empty($values['id'])) {
+      $values['id'] = 'http://joinup.eu/collection/' . urlencode($values['label']);
+    }
+
     // @todo Remove this after the widget in ISAICP-2301 is build.
     $values['rid'] = 'collection';
     $collection = Rdf::create($values);
@@ -229,10 +235,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \InvalidArgumentException
    *   Thrown when a collection with the given name does not exist.
    */
-  protected function getCollectionByName($name) {
+  public static function getCollectionByName($name) {
     $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', SparqlArg::uri('http://www.w3.org/ns/adms#AssetRepository'))
-      ->condition('?entity', SparqlArg::uri('http://purl.org/dc/terms/title'), SparqlArg::literal($name))
+      ->condition('rid', 'collection')
+      ->condition('label', $name)
       ->range(0, 1);
     $result = $query->execute();
 
@@ -256,7 +262,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function assertCollectionCount($number) {
     $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('?entity', 'rdf:type', '<http://www.w3.org/ns/adms#AssetRepository>')
+      ->condition('rid', 'collection')
       ->count()
       ->execute();
     if ($actual != $number) {
@@ -296,6 +302,47 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Subscribes the given users to the given collections.
+   *
+   * Table format:
+   * | collection               | user          |
+   * | Interoperability Friends | Verence II    |
+   * | Electronic Surveillance  | Letice Earwig |
+   *
+   * @param TableNode $membership_table
+   *   The membership table.
+   *
+   * @throws \Exception
+   *   Thrown when a collection is not found.
+   *
+   * @Given (the following )user memberships:
+   */
+  public function givenUserMemberships(TableNode $membership_table) {
+    foreach ($membership_table->getColumnsHash() as $values) {
+      // Load group.
+      $group = $this->getCollectionByName($values['collection']);
+      if (empty($group)) {
+        throw new \Exception("Collection " . $values['collection'] . " not found.");
+      }
+
+      // Load member.
+      $member = user_load_by_name($values['user']);
+      if (empty($member)) {
+        throw new \Exception("User " . $values['user'] . " not found.");
+      }
+
+      /** @var \Drupal\og\Entity\OgMembership $membership */
+      $membership = Og::membershipStorage()->create(Og::membershipDefault());
+      $membership
+        ->setEntityType($group->getEntityTypeId())
+        ->setEntityid($group->id())
+        ->setState(OgMembershipInterface::STATE_ACTIVE)
+        ->setUser($member->id())
+        ->save();
+    }
+  }
+
+  /**
    * Remove any created collections.
    *
    * @AfterScenario
@@ -303,15 +350,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function cleanCollections() {
     // Remove any collections that were created.
     foreach ($this->collections as $collection) {
-      // @todo: This delete functionality should occur automatically. See ISAICP-2311.
-      $membership_ids = \Drupal::entityQuery('og_membership')
-        ->condition('entity_id', $collection->id())
-        ->condition('entity_type', 'rdf_entity')
-        ->execute();
-      $memberships = Og::membershipStorage()->loadMultiple($membership_ids);
-      Og::membershipStorage()->delete($memberships);
-
-      // Delete the collection.
       $collection->delete();
     }
     // Also remove the image entities that were attached to the collections.
