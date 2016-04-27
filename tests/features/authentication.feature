@@ -3,11 +3,6 @@ Feature: User authentication
   As a product owner
   I want to make sure users with various roles can only access pages they are authorized to
 
-  Background:
-    Given collections:
-      | title                       | uri               |
-      | Überwaldean Land Eels       | http://drupal.org |
-
   Scenario: Anonymous user can see the user login page
     Given I am not logged in
     When I visit "user"
@@ -18,10 +13,16 @@ Feature: User authentication
     But I should not see the text "Log out"
     And I should not see the text "My account"
 
-  Scenario: Anonymous user can access public pages
+  Scenario Outline: Anonymous user can access public pages
     Given I am not logged in
-    When I go to the homepage of the "Überwaldean Land Eels" collection
-    Then I should see the heading "Überwaldean Land Eels"
+    Then I visit "<path>"
+
+    Examples:
+      | path          |
+      | collections   |
+      | user/login    |
+      | user/password |
+      | user/register |
 
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
@@ -29,22 +30,33 @@ Feature: User authentication
     Then I should see the error message "Access denied. You must log in to view this page."
 
     Examples:
-      | path                           |
-      | admin                          |
-      | admin/config                   |
-      | admin/content                  |
-      | admin/people                   |
-      | admin/structure                |
-      | admin/content/rdf              |
-      | rdf_entity/add/collection      |
-      | node/add/custom_page           |
-      | rdf_entity/add/solution        |
+      | path                      |
+      | admin                     |
+      | admin/config              |
+      | admin/content             |
+      | admin/content/rdf         |
+      | admin/people              |
+      | admin/structure           |
+      | collection/propose        |
+      | node/add                  |
+      | node/add/custom_page      |
+      | node/add/document         |
+      | node/add/event            |
+      | node/add/news             |
+      | rdf_entity/add            |
+      | rdf_entity/add/collection |
+      | rdf_entity/add/solution   |
 
   @api
-  Scenario: Authenticated user can access pages they are authorized to
-    Given I am logged in as a user with the "authenticated user" role
-    When I go to the homepage of the "Überwaldean Land Eels" collection
-    Then I should see the heading "Überwaldean Land Eels"
+  Scenario Outline: Authenticated user can access pages they are authorized to
+    Given I am logged in as a user with the "authenticated" role
+    Then I visit "<path>"
+
+    Examples:
+      | path               |
+      | collection/propose |
+      | collections        |
+      | user               |
 
   @api
   Scenario Outline: Authenticated user cannot access site administration
@@ -53,16 +65,21 @@ Feature: User authentication
     Then I should get an access denied error
 
     Examples:
-      | path                           |
-      | admin                          |
-      | admin/config                   |
-      | admin/content                  |
-      | admin/content/rdf              |
-      | admin/people                   |
-      | admin/structure                |
-      | rdf_entity/add/collection      |
-      | node/add/custom_page           |
-      | rdf_entity/add/solution        |
+      | path                      |
+      | admin                     |
+      | admin/config              |
+      | admin/content             |
+      | admin/content/rdf         |
+      | admin/people              |
+      | admin/structure           |
+      | node/add                  |
+      | node/add/custom_page      |
+      | node/add/document         |
+      | node/add/event            |
+      | node/add/news             |
+      | rdf_entity/add            |
+      | rdf_entity/add/collection |
+      | rdf_entity/add/solution   |
 
   @api
   Scenario Outline: Moderator can access pages they are authorized to
@@ -70,9 +87,9 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path                           |
-      | admin/people                   |
-      | admin/content/rdf              |
+      | path              |
+      | admin/people      |
+      | admin/content/rdf |
 
   @api
   Scenario Outline: Moderator cannot access restricted pages
@@ -81,14 +98,28 @@ Feature: User authentication
     Then I should get an access denied error
 
     Examples:
-      | path                           |
-      | admin                          |
-      | admin/config                   |
-      | admin/content                  |
-      | admin/structure                |
-      | rdf_entity/add/collection      |
-      | node/add/custom_page           |
-      | rdf_entity/add/solution        |
+      | path                      |
+      | admin                     |
+      | admin/config              |
+      | admin/content             |
+      | admin/structure           |
+      | node/add                  |
+      | node/add/custom_page      |
+      | node/add/document         |
+      | node/add/event            |
+      | node/add/news             |
+      | rdf_entity/add            |
+      | rdf_entity/add/collection |
+      | rdf_entity/add/solution   |
+
+  @api
+  Scenario Outline: Administrator can access pages they are authorized to
+    Given I am logged in as a user with the "administrator" role
+    Then I visit "<path>"
+
+    Examples:
+      | path        |
+      | collections |
 
   @api
   Scenario Outline: Administrator cannot access pages intended for site building and development
@@ -97,11 +128,17 @@ Feature: User authentication
     Then I should get an access denied error
 
     Examples:
-      | path                           |
-      | admin                          |
-      | admin/config                   |
-      | admin/content                  |
-      | admin/people                   |
-      | admin/structure                |
-      | admin/content/rdf              |
-      | rdf_entity/add/collection      |
+      | path                      |
+      | admin                     |
+      | admin/config              |
+      | admin/content             |
+      | admin/content/rdf         |
+      | admin/people              |
+      | admin/structure           |
+      | node/add                  |
+      | node/add/custom_page      |
+      | node/add/document         |
+      | node/add/event            |
+      | node/add/news             |
+      | rdf_entity/add            |
+      | rdf_entity/add/collection |

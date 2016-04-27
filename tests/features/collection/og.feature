@@ -91,8 +91,12 @@ Feature: Organic Groups integration
       | Collection admin | administrator |
       | Madame Sharn     |               |
       | Goodie Whemper   |               |
-    # Administrators can edit the collection.
-    # @fixme Run this as facilitator or collection owner. (ISAICP-2362)
+    # Administrators should be able to edit the collection. This is temporary
+    # and is provided for the convenience of the user acceptance testers so they
+    # can log in as administrator and edit existing collections for testing
+    # purposes.
+    # @todo This should be only possible as facilitator or collection owner.
+    # @see ISAICP-2362
     Given I am logged in as "Collection admin"
     When I go to the homepage of the "Überwaldean Land Eels" collection
     Then I should see the link "Edit"

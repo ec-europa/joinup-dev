@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueFieldInBundleConstraint extends Constraint {
 
-  public $message = 'Content with @field_name %value already exists.';
+  public $message = 'Content with @field_name %value already exists. Please choose a different @field_name.';
 
   /**
    * {@inheritdoc}

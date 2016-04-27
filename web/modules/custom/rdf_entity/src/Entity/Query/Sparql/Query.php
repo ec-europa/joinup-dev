@@ -2,6 +2,7 @@
 
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\Query\QueryBase;
 use Drupal\Core\Entity\Query\QueryInterface;
@@ -219,9 +220,19 @@ class Query extends QueryBase implements QueryInterface {
 
       list ($field_name, $column) = explode('.', $property);
 
-      $field_rdf_name = $this->getFieldRdfPropertyName($field_name, $field_storage_definitions);
-
-      if (!filter_var($value, FILTER_VALIDATE_URL) === FALSE) {
+      if (empty($field_storage_definitions[$field_name])) {
+        throw new \Exception('Unknown field ' . $field_name);
+      }
+      /** @var \Drupal\field\Entity\FieldStorageConfig $field_storage */
+      $field_storage = $field_storage_definitions[$field_name];
+      if (empty($column)) {
+        $column = $field_storage->getMainPropertyName();
+      }
+      $field_rdf_name = $field_storage->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE);
+      if (empty($field_rdf_name)) {
+        throw new \Exception('No 3rd party field settings for ' . $field_name);
+      }
+      if (UrlHelper::isValid($value, TRUE)) {
         $value = SparqlArg::uri($value);
       }
       else {
@@ -329,9 +340,12 @@ class Query extends QueryBase implements QueryInterface {
 
     // SELECT query.
     foreach ($this->results as $result) {
-      $uri = (string) $result->entity;
-      $uris[$uri] = $uri;
-
+      // If the query does not return any results, EasyRdf_Sparql_Result still
+      // contains an empty result object. If this is the case, skip it.
+      if (!empty((array) $result)) {
+        $uri = (string) $result->entity;
+        $uris[$uri] = $uri;
+      }
     }
     return $uris;
   }
