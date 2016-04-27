@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0ab230db6e901137ce1c86036ed89ee3",
-    "content-hash": "ef836dd5b6fe6ae61983e3febf702b86",
+    "hash": "83cab5462161eb01a2184ba7d7e0be4f",
+    "content-hash": "208e1ee0dc7fb37dc8680075dc44706c",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.3",
+            "version": "3.18.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "899c5c982582d811754a57d2ca941c7f2dc8090b"
+                "reference": "b02e402e4795819a06dc0e4ebf59f2585e8afbcd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/899c5c982582d811754a57d2ca941c7f2dc8090b",
-                "reference": "899c5c982582d811754a57d2ca941c7f2dc8090b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b02e402e4795819a06dc0e4ebf59f2585e8afbcd",
+                "reference": "b02e402e4795819a06dc0e4ebf59f2585e8afbcd",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-04-27 16:44:34"
+            "time": "2016-04-26 20:02:37"
         },
         {
             "name": "composer/composer",
@@ -1222,16 +1222,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-delete-user-memberships",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "173b11a23ea7111402c20985303319555b74f3a5"
+                "reference": "178a3e8a5f9be5ee4c41e561f95e7a8556b48b0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/173b11a23ea7111402c20985303319555b74f3a5",
-                "reference": "173b11a23ea7111402c20985303319555b74f3a5",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/178a3e8a5f9be5ee4c41e561f95e7a8556b48b0f",
+                "reference": "178a3e8a5f9be5ee4c41e561f95e7a8556b48b0f",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1245,7 +1245,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-04-18 12:02:23"
+            "time": "2016-04-27 08:09:38"
         },
         {
             "name": "drupal/og_menu",
