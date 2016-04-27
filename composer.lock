@@ -1324,7 +1324,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha13.zip",
-                "reference": null,
+                "reference": "97c5168c90ee606606bb53cbd6c6b0072d0d3a1f",
                 "shasum": null
             },
             "require": {
@@ -1489,12 +1489,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "b6a09c89ca118c8eed2a41e081817d7c3508aa4b"
+                "reference": "560e7b92d7741646cbfbe0c95ae91d62ac9a3acd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/b6a09c89ca118c8eed2a41e081817d7c3508aa4b",
-                "reference": "b6a09c89ca118c8eed2a41e081817d7c3508aa4b",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/560e7b92d7741646cbfbe0c95ae91d62ac9a3acd",
+                "reference": "560e7b92d7741646cbfbe0c95ae91d62ac9a3acd",
                 "shasum": ""
             },
             "type": "library",
@@ -1508,7 +1508,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2016-04-27 08:49:26"
+            "time": "2016-04-27 09:42:11"
         },
         {
             "name": "egulias/email-validator",
@@ -5669,7 +5669,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
+                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/10d7c48c9a4129463052321b52450d98983c4332",
                 "reference": "10d7c48c9a4129463052321b52450d98983c4332",
                 "shasum": ""
             },

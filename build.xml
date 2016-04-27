@@ -35,7 +35,7 @@
     <property name="aws.profile" value="" />
 
     <echo msg="Loading infra additional tasks." />
-    <import file="./vendor/ec-europa/joinup-infra/infra.xml" />
+    <import file="./vendor/ec-europa/infra/infra.xml" />
 
     <!-- Make the settings folder writeable so that the installer can copy settings.php. -->
     <target name="writable-settings-folder">
