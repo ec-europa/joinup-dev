@@ -24,7 +24,12 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
 function joinup_news_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
   if ($entity_type->id() == 'node') {
     if (!empty($fields['title'])) {
-      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
+      $bundles = ['news'];
+      if ($constraint = $fields['title']->getConstraint('UniqueFieldInBundle')) {
+        $bundles = array_merge($bundles, $constraint['bundles']);
+      }
+
+      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => $bundles]);
     }
   }
 }
