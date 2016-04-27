@@ -8,17 +8,22 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\joinup\Context\JoinupTrait;
+use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\RandomGeneratorTrait;
+use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\Og;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgMembershipInterface;
-use \Drupal\og\OgGroupAudienceHelper;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing collections.
  */
 class CollectionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
-  use JoinupTrait;
+
+  use FileTrait;
+  use RandomGeneratorTrait;
+  use RdfEntityTrait;
 
   /**
    * Test collections.
@@ -26,13 +31,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @var \Drupal\rdf_entity\Entity\Rdf[]
    */
   protected $collections = [];
-
-  /**
-   * Test images.
-   *
-   * @var \Drupal\file\Entity\File[]
-   */
-  protected $images = [];
 
   /**
    * Navigates to the add collection form.
@@ -74,8 +72,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \InvalidArgumentException
    *   Thrown when a collection with the given title does not exist.
    */
-  public static function getCollectionByName($title) {
-    return self::getRdfEntityByLabel($title, 'collection');
+  protected function getCollectionByName($title) {
+    return $this->getRdfEntityByLabel($title, 'collection');
   }
 
   /**
@@ -151,7 +149,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @return array
    *    Mapping.
    */
-  private static function collectionFieldAliases() {
+  protected static function collectionFieldAliases() {
     // Mapping alias - field name.
     return [
       'uri' => 'id',
@@ -186,7 +184,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
-  private function convertValueAliases($fields) {
+  protected function convertValueAliases($fields) {
     $mapped_values = [
       'field_ar_moderation' => ['no' => 0, 'yes' => 1],
       'field_ar_elibrary_creation' =>
@@ -219,11 +217,19 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  public function createCollection(array $values) {
+  protected function createCollection(array $values) {
     // Add image.
     if (!empty($values['field_ar_logo'])) {
       $values['field_ar_logo'] = [$this->createFile($values['field_ar_logo'], $this->getMinkParameter('files_path'))];
     }
+
+    // Generate a URI if this is not specified. Typically the URI is not exposed
+    // to the end user, so in a functional test the user will not be able to
+    // enter one.
+    if (empty($values['id'])) {
+      $values['id'] = 'http://joinup.eu/collection/' . urlencode($values['label']);
+    }
+
     // @todo Remove this after the widget in ISAICP-2301 is build.
     $values['rid'] = 'collection';
     $values['id'] = $this->getRandomUri();

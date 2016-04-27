@@ -10,7 +10,7 @@
     "InstanceType": {
       "Description": "WebServer EC2 instance type",
       "Type": "String",
-      "Default": "t2.micro",
+      "Default": "t2.small",
       "AllowedValues": [
         "t2.nano",
         "t2.micro",
@@ -272,7 +272,7 @@
             ]
           }
         },
-        "ImageId": "ami-7d75c90e",
+        "ImageId": "ami-3b49c548",
         "InstanceType": {
           "Ref": "InstanceType"
         },
@@ -301,6 +301,12 @@
             "IpProtocol": "tcp",
             "FromPort": "80",
             "ToPort": "80",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "1080",
+            "ToPort": "1080",
             "CidrIp": "0.0.0.0/0"
           },
           {

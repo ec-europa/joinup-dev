@@ -37,5 +37,6 @@ Feature: "Add solution" visibility options.
       | Description       | This is a test text              |
       | Documentation     | text.pdf                         |
     And I press "Save"
-    And the "Collection solution test 2" collection has a solution named "Collection solution add solution"
+    Then the "Collection solution test 2" collection has a solution named "Collection solution add solution"
+    # Clean up the solution that was created through the UI.
     Then I delete the "Collection solution add solution" solution

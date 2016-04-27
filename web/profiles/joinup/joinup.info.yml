@@ -108,7 +108,7 @@ config_devel:
   - field.storage.user.field_user_organisation
   - field.storage.user.field_user_photo
   - field.storage.user.field_user_professional_domain
-  - field.storage.user.field_user_professional_profiled
+  - field.storage.user.field_user_professional_profile
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html
@@ -127,3 +127,4 @@ config_devel:
   - user.role.moderator
   - user.settings
   - views.view.collections
+  - views.view.user_admin_people

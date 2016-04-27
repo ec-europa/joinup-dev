@@ -1,0 +1,3 @@
+services:
+  joinup_user.active_form_submit:
+    class: \Drupal\joinup_user\ActiveFormSubmit

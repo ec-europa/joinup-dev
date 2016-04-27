@@ -8,14 +8,19 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\joinup\Context\JoinupTrait;
+use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\RandomGeneratorTrait;
+use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing asset distributions.
  */
 class AssetDistributionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
-  use JoinupTrait;
+
+  use FileTrait;
+  use RandomGeneratorTrait;
+  use RdfEntityTrait;
 
   /**
    * Test asset distributions.
@@ -40,7 +45,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When (I )go to (the homepage of )the :asset_distribution distribution
    * @When (I )visit (the homepage of )the :asset_distribution distribution
    */
-  public function visitCollection($asset_distribution) {
+  public function visitDistribution($asset_distribution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $distribution */
     $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
     $this->visitPath($asset_distribution->url());
@@ -70,11 +75,11 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @codingStandardsIgnoreStart
    *   Table format:
-   *   Table format:
-   * uri                                      | title              | description                  | access url                               | file     | creation date     | modification date
-   * http://joinup.eu/asset_distribution/foo  | Foo distribution  | This is a foo distribution   | http://base_url.com/path-to-file.zip     | test.zip | 28-01-1995 12:05  |
-   * http://joinup.eu/asset_distribution/bar  | Bar distribution  | This is a bar distribution   | http://external_url.com/path-to-file.zip | test.zip | 28-01-1995 12:06  |
+   *   uri                                     | title            | description                | access url                               | file     | creation date     | modification date
+   *   http://joinup.eu/asset_distribution/foo | Foo distribution | This is a foo distribution | http://base_url.com/path-to-file.zip     | test.zip | 28-01-1995 12:05  |
+   *   http://joinup.eu/asset_distribution/bar | Bar distribution | This is a bar distribution | http://external_url.com/path-to-file.zip | test.zip | 28-01-1995 12:06  |
    * @codingStandardsIgnoreEnd
+   *
    * Fields title and description are mandatory.
    *
    * @throws \Exception
@@ -148,7 +153,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \Exception
    *   Thrown when a given file is not found.
    */
-  public function createAssetDistribution(array $values) {
+  protected function createAssetDistribution(array $values) {
     // Add image.
     if (!empty($values['field_ad_file'])) {
       $values['field_ad_file'] = [$this->createFile($values['field_ad_file'], $this->getMinkParameter('files_path'))];
@@ -209,8 +214,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \InvalidArgumentException
    *   Thrown when a solution with the given title does not exist.
    */
-  public static function getSolutionByName($title) {
-    return self::getRdfEntityByLabel($title, 'solution');
+  protected function getSolutionByName($title) {
+    return $this->getRdfEntityByLabel($title, 'solution');
   }
 
   /**
@@ -248,11 +253,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     $solution = $this->getRdfEntityByLabelUnchanged($solution, 'solution');
 
-    // This handles the solutions added by form submit.
-    if (!in_array($asset_distribution, $this->assetDistributions)) {
-      $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
-    }
-
     foreach ($solution->get('field_is_distribution') as $distribution) {
       if ($distribution->getValue()['target_id'] == $asset_distribution->id()) {
         // Test passes.
@@ -281,7 +281,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @return array
    *    Mapping.
    */
-  private static function assetDistributionFieldAliases() {
+  protected static function assetDistributionFieldAliases() {
     // Mapping alias - field name.
     return [
       'uri' => 'id',
