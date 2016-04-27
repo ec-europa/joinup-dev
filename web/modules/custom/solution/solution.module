@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains file solution.module.
+ * Contains hooks regarding the solution rdf entity bundle.
  */
 
-use \Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().

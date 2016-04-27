@@ -283,7 +283,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Deletes an asset distribution.
+   * Deletes a collection.
    *
    * @param string $collection
    *   The title of the collection.

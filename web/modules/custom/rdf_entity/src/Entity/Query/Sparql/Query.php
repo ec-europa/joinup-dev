@@ -2,6 +2,7 @@
 
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\Query\QueryBase;
 use Drupal\Core\Entity\Query\QueryInterface;
@@ -203,7 +204,7 @@ class Query extends QueryBase implements QueryInterface {
       case '_field_exists-NOT EXISTS':
         $field_rdf_name = $this->getFieldRdfPropertyName($value, $field_storage_definitions);
 
-        if (!filter_var($field_rdf_name, FILTER_VALIDATE_URL) === FALSE) {
+        if (!UrlHelper::isValid($field_rdf_name, TRUE) === FALSE) {
           $field_rdf_name = SparqlArg::uri($field_rdf_name);
         }
         if ($field_rdf_name) {
@@ -221,7 +222,7 @@ class Query extends QueryBase implements QueryInterface {
 
       $field_rdf_name = $this->getFieldRdfPropertyName($field_name, $field_storage_definitions);
 
-      if (!filter_var($value, FILTER_VALIDATE_URL) === FALSE) {
+      if (!UrlHelper::isValid($value, TRUE) === FALSE) {
         $value = SparqlArg::uri($value);
       }
       else {
