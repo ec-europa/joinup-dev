@@ -40,5 +40,7 @@ Feature: "Add solution" visibility options.
     # The name of the solution should exist in the block of the relative content in a collection.
     When I go to the homepage of the "Collection solution test 2" collection
     Then I should see the link "Collection solution add solution"
+    When I click "Collection solution add solution"
+    Then I should see the heading "Collection solution add solution"
     # Clean up the solution that was created through the UI.
     Then I delete the "Collection solution add solution" solution
