@@ -7,6 +7,10 @@ website.profile.name = joinup
 # The site name.
 website.site.name = Joinup
 
+# The site type ( Infrastructure stack )
+
+project.siteType = joinup
+
 # Database settings.
 drupal.db.type = mysql
 drupal.db.name = db_name

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "96c88767552b935b2d443132831f1771",
-    "content-hash": "6fc129e0034518b826fb2d4458b28457",
+    "hash": "e465324c5401e45e81d171bad22ee673",
+    "content-hash": "183ab67656373ff6af863351810b28eb",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1484,17 +1484,17 @@
             "time": "2016-01-28 12:56:40"
         },
         {
-            "name": "ec-europa/joinup-infra",
-            "version": "0.1.6",
+            "name": "ec-europa/infra",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ec-europa/joinup-infra.git",
-                "reference": "b4a57249903bfe4b78523a01ec1e5e8315e3961d"
+                "url": "https://github.com/ec-europa/infra.git",
+                "reference": "b6a09c89ca118c8eed2a41e081817d7c3508aa4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-infra/zipball/b4a57249903bfe4b78523a01ec1e5e8315e3961d",
-                "reference": "b4a57249903bfe4b78523a01ec1e5e8315e3961d",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/b6a09c89ca118c8eed2a41e081817d7c3508aa4b",
+                "reference": "b6a09c89ca118c8eed2a41e081817d7c3508aa4b",
                 "shasum": ""
             },
             "type": "library",
@@ -1508,7 +1508,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2016-04-26 09:03:59"
+            "time": "2016-04-27 08:49:26"
         },
         {
             "name": "egulias/email-validator",
@@ -6777,6 +6777,7 @@
         "drupal/og_menu": 20,
         "drupal/r4032login": 20,
         "easyrdf/easyrdf": 20,
+        "ec-europa/infra": 20,
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
