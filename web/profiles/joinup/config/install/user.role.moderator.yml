@@ -19,3 +19,4 @@ permissions:
   - 'administer nodes'
   - 'propose solution rdf entity'
   - 'administer nodes'
+  - 'edit any custom_page content'
