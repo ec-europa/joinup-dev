@@ -6,9 +6,8 @@ Feature: "Add solution" visibility options.
 
   Scenario: "Add solution" button should only be shown to moderators.
     Given the following collection:
-      | name   | Collection solution test             |
-      | uri    | https://collection.solution/add/test |
-      | logo   | logo.png                             |
+      | title | Collection solution test |
+      | logo  | logo.png                 |
 
     When I am logged in as a "moderator"
     And I go to the homepage of the "Collection solution test" collection
@@ -24,9 +23,8 @@ Feature: "Add solution" visibility options.
 
   Scenario: Add solution as a moderator.
     Given the following collection:
-      | name   | Collection solution test 2              |
-      | uri    | https://collection.solution/add/test/2  |
-      | logo   | logo.png                                |
+      | title | Collection solution test 2 |
+      | logo  | logo.png                   |
     And I am logged in as a moderator
 
     When I go to the homepage of the "Collection solution test 2" collection
@@ -35,9 +33,10 @@ Feature: "Add solution" visibility options.
     And the following fields should be present "Title, Description, Documentation"
     And the following fields should not be present "Groups audience, Other groups"
     When I fill in the following:
-      | Title             | Collection solution add solution       |
-      | Description       | This is a test text                    |
-      | Documentation     | text.pdf                               |
-      | eLibrary creation | 1                                      |
+      | Title             | Collection solution add solution |
+      | Description       | This is a test text              |
+      | Documentation     | text.pdf                         |
     And I press "Save"
-    And the "Collection solution test 2" collection has a solution named "Collection solution add solution"
+    Then the "Collection solution test 2" collection has a solution named "Collection solution add solution"
+    # Clean up the solution that was created through the UI.
+    Then I delete the "Collection solution add solution" solution

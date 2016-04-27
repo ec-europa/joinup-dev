@@ -17,4 +17,5 @@ permissions:
   - 'create custom collection page'
   - 'administer nodes'
   - 'propose solution rdf entity'
+  - 'create asset_distribution rdf entity'
   - 'administer nodes'

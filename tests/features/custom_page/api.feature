@@ -6,16 +6,15 @@ Feature: Custom page API
 
   Scenario: Programmatically create a Custom page
     Given the following collection:
-      | name              | Le Foie Heureux         |
-      | owner             | Rufus Drumknott         |
-      | logo              | logo.png                |
-      | moderation        | 1                       |
-      | closed            | 1                       |
-      | elibrary creation | facilitators            |
-      | uri               | http://joinup.eu/my/foo |
+      | title             | Le Foie Heureux |
+      | owner             | Rufus Drumknott |
+      | logo              | logo.png        |
+      | moderation        | yes             |
+      | closed            | yes             |
+      | elibrary creation | facilitators    |
     And custom_page content:
-      | title      | body                                     | groups audience         |
-      | Dummy page | This is some dummy content like foo:bar. | http://joinup.eu/my/foo |
+      | title      | body                                     | groups audience |
+      | Dummy page | This is some dummy content like foo:bar. | Le Foie Heureux |
      # @Fixme unimplemented. See ISAICP-2369
      # | Exclude from menu |                                              |
-     Then I should have a "Custom page" page titled "Dummy page"
+    Then I should have a "Custom page" page titled "Dummy page"
