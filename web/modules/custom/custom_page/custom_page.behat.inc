@@ -7,12 +7,15 @@
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelper;
 
 /**
  * Behat step definitions for testing custom pages.
  */
 class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
+  use RdfEntityTrait;
 
   /**
    * Checks if the given custom page belongs to the given collection.
@@ -31,7 +34,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Then the :collection collection has a custom page titled :title
    */
   public function assertOgMembership($title, $collection) {
-    $collection = \CollectionSubContext::getCollectionByName($collection);
+    $collection = $this->getRdfEntityByLabel($collection, 'collection');
 
     $custom_pages = \Drupal::entityTypeManager()
       ->getStorage('node')

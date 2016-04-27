@@ -1,8 +1,8 @@
 @api
-Feature: "Add asset distribution" visibility options.
+Feature: Add asset distribution through the UI
   In order to manage distributions
   As a moderator
-  I need to be able to add "Asset distribution" rdf entities through UI.
+  I need to be able to add "Asset distribution" RDF entities through the UI.
 
   Scenario: "Add distribution" button should only be shown to moderators.
     Given the following collection:
@@ -41,8 +41,12 @@ Feature: "Add asset distribution" visibility options.
     And I attach the file "test.zip" to "Add a new file"
     And I press "Save"
     Then I should have 1 asset distribution
+    And the "Custom title of asset distribution" asset distribution is related to the "Asset another random name" solution
+    # Check if the asset distribution is accessible as an anonymous user
     When I go to the homepage of the "Asset another random name" solution
     Then I should see the text "Distribution"
     And I should see the link "Custom title of asset distribution"
-    And the "Custom title of asset distribution" asset distribution is related to the "Asset another random name" solution
+    When I click "Custom title of asset distribution"
+    Then I should see the heading "Custom title of asset distribution"
+    # Clean up the asset distribution that was created through the UI.
     Then I delete the "Custom title of asset distribution" asset distribution

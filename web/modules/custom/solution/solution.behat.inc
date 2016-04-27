@@ -8,15 +8,20 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\joinup\Context\JoinupTrait;
+use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\RandomGeneratorTrait;
+use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelper;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing solutions.
  */
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
-  use JoinupTrait;
+
+  use FileTrait;
+  use RandomGeneratorTrait;
+  use RdfEntityTrait;
 
   /**
    * Test solutions.
@@ -71,9 +76,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * title         | description              | document | closed  | creation date     | elibrary creation  | moderation  | modification date | landing page               | webdav creation | webdav url                  | wiki
-   * Foo solution  | This is a foo solution   | text.pdf | yes     | 28-01-1995 12:05  | no                 | yes         |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
-   * Bar solution  | This is a bar solution   | text.pdf | no      | 28-01-1995 12:06  | yes                | no          |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
+   * title        | description            | document | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki
+   * Foo solution | This is a foo solution | text.pdf | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
+   * Bar solution | This is a bar solution | text.pdf | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
    * @codingStandardsIgnoreEnd
    *
    * Fields title, description and elibrary creation are mandatory.
@@ -158,12 +163,12 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *   An optional associative array of values, keyed by property name.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
-   *   A new collection entity.
+   *   A new solution entity.
    *
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  public function createSolution(array $values) {
+  protected function createSolution(array $values) {
     if (!empty($values['field_is_documentation'])) {
       $values['field_is_documentation'] = [$this->createFile($values['field_is_documentation'], $this->getMinkParameter('files_path'))];
     }
@@ -204,8 +209,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \InvalidArgumentException
    *   Thrown when a solution with the given name does not exist.
    */
-  public static function getSolutionByName($title) {
-    return self::getRdfEntityByLabel($title, 'solution');
+  protected function getSolutionByName($title) {
+    return $this->getRdfEntityByLabel($title, 'solution');
   }
 
   /**
@@ -300,9 +305,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function assertOgMembership($solution, $collection) {
     /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    $collection = \CollectionSubContext::getCollectionByName($collection);
+    $collection = $this->getRdfEntityByLabel($collection, 'collection');
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = \SolutionSubContext::getSolutionByName($solution);
+    $solution = $this->getRdfEntityByLabel($solution, 'solution');
 
     /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
     foreach ($solution->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
@@ -333,7 +338,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @return array
    *    Mapping.
    */
-  private static function solutionFieldAliases() {
+  protected static function solutionFieldAliases() {
     // Mapping alias - field name.
     return [
       'uri' => 'id',
@@ -382,7 +387,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
-  private function convertValueAliases($fields) {
+  protected function convertValueAliases($fields) {
     $mapped_values = [
       'field_is_moderation' => ['no' => 0, 'yes' => 1],
       'field_is_elibrary_creation' =>
@@ -400,13 +405,13 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     }
 
-    // Check for the og group.
+    // Check for the OG group.
     if (isset($fields['field_is_distribution'])) {
       $distribution = $this->getRdfEntityByLabel($fields['field_is_distribution'], 'asset_distribution');
       $fields['field_is_distribution'] = [$distribution->id()];
     }
 
-    // Check for the og group.
+    // Check for the OG group.
     if (isset($fields['og_group_ref'])) {
       $collection = $this->getRdfEntityByLabel($fields['og_group_ref'], 'collection');
       $fields['og_group_ref'] = $collection->id();
