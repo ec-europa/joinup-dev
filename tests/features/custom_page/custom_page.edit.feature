@@ -10,7 +10,7 @@ Feature: "Custom page" editing.
       | name         | mail                     | roles     |
       | Mickey Mouse | mickey.mouse@example.com | Moderator |
     And the following collections:
-      | uri                               | name                 | description                                                                            | logo     |
+      | uri                               | title                | description                                                                            | logo     |
       | http://joinup.eu/disney/dumbo     | Dumbo Collection     | Featuring a semi-anthropomorphic elephant who is cruelly nicknamed "Dumbo".            | logo.png |
       | http://joinup.eu/disney/pinocchio | Pinocchio Collection | Featuring an old wood-carver named Geppetto who carves a wooden puppet named Pinocchio | logo.png |
     And the following user memberships:

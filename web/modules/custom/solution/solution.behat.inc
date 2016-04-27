@@ -174,7 +174,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     }
 
     $values['rid'] = 'solution';
-    $values['id'] = $this->getRandomUri();
+    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $solution = Rdf::create($values);
     $solution->save();
     $this->solutions[$solution->id()] = $solution;

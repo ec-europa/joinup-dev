@@ -9,7 +9,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelper;
-use Drupal\node\Entity\Node;
+use Drupal\joinup\Traits\NodeTrait;
 
 /**
  * Behat step definitions for testing custom pages.
@@ -17,6 +17,7 @@ use Drupal\node\Entity\Node;
 class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use RdfEntityTrait;
+  use NodeTrait;
 
   /**
    * Checks if the given custom page belongs to the given collection.
@@ -59,35 +60,6 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Returns the Custom page with the given name.
-   *
-   * If multiple custom pages have the same name,
-   * the first one will be returned.
-   *
-   * @param string $name
-   *   The custom page name.
-   *
-   * @return \Drupal\node\Entity\Node
-   *   The custom page node.
-   *
-   * @throws \InvalidArgumentException
-   *   Thrown when a custom page with the given name does not exist.
-   */
-  public static function getCustomPageByName($name) {
-    $query = \Drupal::entityQuery('node')
-      ->condition('type', 'custom_page')
-      ->condition('title', $name)
-      ->range(0, 1);
-    $result = $query->execute();
-
-    if (empty($result)) {
-      throw new \InvalidArgumentException("The custom page with the name '$name' does not exist.");
-    }
-
-    return Node::load(reset($result));
-  }
-
-  /**
    * Navigates to the canonical page display of a custom page.
    *
    * @param string $title
@@ -98,7 +70,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function visitCustomPage($title) {
     /** @var \Drupal\node\Entity\Node $node */
-    $node = $this->getCustomPageByName($title);
+    $node = $this->getNodeByTitle($title, 'custom_page');
     $this->visitPath($node->url());
   }
 
