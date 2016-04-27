@@ -11,7 +11,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -285,39 +284,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     if ($actual != $number) {
       throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
     }
-  }
-
-  /**
-   * Checks if the given solution belongs to the given collection.
-   *
-   * If there are multiple solutions or collections with the same name, then
-   * only the first one is checked.
-   *
-   * @param string $solution
-   *   The title of the custom page to check.
-   * @param string $collection
-   *   The name of the collection to check.
-   *
-   * @throws \Exception
-   *   Thrown when a custom page with the given title doesn't exist.
-   *
-   * @Then the :collection collection has a solution named :solution
-   */
-  public function assertOgMembership($solution, $collection) {
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    $collection = $this->getRdfEntityByLabel($collection, 'collection');
-    /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = $this->getRdfEntityByLabel($solution, 'solution');
-
-    /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-    foreach ($solution->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
-      if ($group->getValue()['target_id'] == $collection->id()) {
-        // Test passes.
-        return;
-      }
-    }
-
-    throw new \Exception("The solution '{$solution->label()}' is not associated with collection '{$collection->label()}'.");
   }
 
   /**
