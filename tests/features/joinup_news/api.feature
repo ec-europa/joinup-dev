@@ -6,14 +6,13 @@ Feature: News API
 
   Scenario: Programmatically create a News entity
     Given the following collection:
-      | name              | Le Foie Heureux         |
-      | owner             | Rufus Drumknott         |
-      | logo              | logo.png                |
-      | moderation        | 1                       |
-      | closed            | 1                       |
-      | elibrary creation | facilitators            |
-      | uri               | http://joinup.eu/my/foo |
+      | title             | Le Foie Heureux |
+      | owner             | Rufus Drumknott |
+      | logo              | logo.png        |
+      | moderation        | yes             |
+      | closed            | yes             |
+      | elibrary creation | facilitators    |
     And news content:
-      | title      | body                                     | groups audience         |
-      | Dummy News | This is some dummy content like foo:bar. | http://joinup.eu/my/foo |
+      | title      | body                                     | collection      |
+      | Dummy News | This is some dummy content like foo:bar. | Le Foie Heureux |
     Then I should have a "News" page titled "Dummy News"

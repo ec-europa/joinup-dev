@@ -2,16 +2,45 @@
 
 /**
  * @file
- * Contains solution.module..
+ * Contains file solution.module.
  */
 
-use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\rdf_entity\Entity\Rdf;
+use \Drupal\Core\Entity\EntityTypeInterface;
+use \Drupal\Core\Entity\EntityInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
 function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'solution' && !empty($fields['label'])) {
-    $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['solution']]);
+    $fields['label']->addConstraint('UniqueSolutionTitle', []);
+  }
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function solution_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+  $entity_types['rdf_entity']->setFormclass('release', 'Drupal\rdf_entity\Form\RdfForm');
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_create().
+ */
+function solution_rdf_entity_insert(EntityInterface $entity) {
+  if ($entity->bundle() == 'solution' && !empty($entity->get('field_is_is_version_of')
+      ->getValue()[0]['target_id'])
+  ) {
+    // Assign the entity to the parent.
+    /** @var \Drupal\rdf_entity\RdfInterface $parent */
+    $parent = Rdf::load($entity->get('field_is_is_version_of')
+      ->getValue()[0]['target_id']);
+
+    $releases = $parent->get('field_is_has_version')->getValue();
+    $releases[] = ['target_id' => $entity->id()];
+    $parent->get('field_is_has_version')->setValue($releases);
+    $parent->save();
   }
 }

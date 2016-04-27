@@ -2,7 +2,6 @@
 
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\Query\QueryBase;
 use Drupal\Core\Entity\Query\QueryInterface;
@@ -106,8 +105,8 @@ class Query extends QueryBase implements QueryInterface {
   /**
    * {@inheritdoc}
    */
-  public function filter($filter) {
-    $this->filter->filter($filter);
+  public function filter($filter, $type = 'FILTER') {
+    $this->filter->filter($filter, $type);
     return $this;
   }
 
@@ -200,26 +199,29 @@ class Query extends QueryBase implements QueryInterface {
         }
         return $this;
 
+      case '_field_exists-EXISTS':
+      case '_field_exists-NOT EXISTS':
+        $field_rdf_name = $this->getFieldRdfPropertyName($value, $field_storage_definitions);
+
+        if (!filter_var($field_rdf_name, FILTER_VALIDATE_URL) === FALSE) {
+          $field_rdf_name = SparqlArg::uri($field_rdf_name);
+        }
+        if ($field_rdf_name) {
+          $this->filter('?entity ' . $field_rdf_name . ' ?c', 'FILTER ' . $operator);
+        }
+        return $this;
+
     }
     if ($operator == '=') {
       if (!$value) {
         return $this;
       }
+
       list ($field_name, $column) = explode('.', $property);
 
-      if (empty($field_storage_definitions[$field_name])) {
-        throw new \Exception('Unknown field ' . $field_name);
-      }
-      /** @var \Drupal\field\Entity\FieldStorageConfig $field_storage */
-      $field_storage = $field_storage_definitions[$field_name];
-      if (empty($column)) {
-        $column = $field_storage->getMainPropertyName();
-      }
-      $field_rdf_name = $field_storage->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE);
-      if (empty($field_rdf_name)) {
-        throw new \Exception('No 3rd party field settings for ' . $field_name);
-      }
-      if (UrlHelper::isValid($value, TRUE)) {
+      $field_rdf_name = $this->getFieldRdfPropertyName($field_name, $field_storage_definitions);
+
+      if (!filter_var($value, FILTER_VALIDATE_URL) === FALSE) {
         $value = SparqlArg::uri($value);
       }
       else {
@@ -229,6 +231,37 @@ class Query extends QueryBase implements QueryInterface {
     }
 
     return $this;
+  }
+
+  /**
+   * Returns an rdf property name for the given field.
+   *
+   * @param string $field_name
+   *   The machine name of the field.
+   * @param array $field_storage_definitions
+   *   The field storage definition Item.
+   *
+   * @return string
+   *   The property name of the field. If it is a uri, wrap it with '<', '>'.
+   *
+   * @throws \Exception
+   *   Thrown when the field has not a valid rdf property name.
+   */
+  public function getFieldRdfPropertyName($field_name, $field_storage_definitions) {
+    if (empty($field_storage_definitions[$field_name])) {
+      throw new \Exception('Unknown field ' . $field_name);
+    }
+    /** @var \Drupal\field\Entity\FieldStorageConfig $field_storage */
+    $field_storage = $field_storage_definitions[$field_name];
+    if (empty($column)) {
+      $column = $field_storage->getMainPropertyName();
+    }
+    $field_rdf_name = $field_storage->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE);
+    if (empty($field_rdf_name)) {
+      throw new \Exception('No 3rd party field settings for ' . $field_name);
+    }
+
+    return $field_rdf_name;
   }
 
   /**

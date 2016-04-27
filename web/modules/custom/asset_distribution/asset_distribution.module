@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Contains asset_distribution.module.
+ */
+
+use \Drupal\Core\Entity\EntityInterface;
+use \Drupal\rdf_entity\RdfInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function asset_distribution_rdf_entity_presave(EntityInterface $entity) {
+  if ($entity->bundle() != 'asset_distribution') {
+    return;
+  }
+  // Handle reverse reference in the interoperability solution.
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
+  $rdf_entity = \Drupal::routeMatch()->getParameter('rdf_entity');
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($rdf_entity instanceof RdfInterface && $rdf_entity->bundle() == 'solution' && $route_name == 'asset_distribution.solution_asset_distribution.add' && $entity->isNew()) {
+    $assigned_distributions = $rdf_entity->get('field_is_distribution')
+      ->getValue();
+    $assigned_distributions[]['target_id'] = $entity->id();
+    $rdf_entity->set('field_is_distribution', $assigned_distributions);
+    $rdf_entity->save();
+  }
+}

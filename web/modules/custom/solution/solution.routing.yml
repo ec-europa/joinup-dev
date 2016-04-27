@@ -1,4 +1,4 @@
-# Route to create a custom page that belongs to an rdf_entity.
+# Route to create a custom page that belongs to an rdf_entity.asset_distribution
 solution.collection_solution.add:
   path: 'rdf_entity/{rdf_entity}/solution/add'
   defaults:
@@ -6,6 +6,17 @@ solution.collection_solution.add:
     _title: 'Add solution'
   requirements:
     _custom_access: '\Drupal\solution\Controller\SolutionController::createSolutionAccess'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+# Route to create a release of the current solution.
+solution.release.add:
+  path: 'rdf_entity/{rdf_entity}/release/add'
+  defaults:
+    _controller: '\Drupal\solution\Controller\SolutionReleaseController::add'
+  requirements:
+    _custom_access: '\Drupal\solution\Controller\SolutionReleaseController::createSolutionAccess'
   options:
     parameters:
       rdf_entity:
