@@ -10,7 +10,7 @@
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",
         "drupal/core": "~8.1.0",
-        "drupal/og": "dev-delete-user-memberships",
+        "drupal/og": "dev-8.x-1.x",
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x",
