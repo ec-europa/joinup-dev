@@ -2,20 +2,26 @@
 
 /**
  * @file
- * Contains \SolutionSubContext.
+ * Contains Drupal\solution\solution.behat.inc.
  */
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\file\Entity\File;
+use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\RandomGeneratorTrait;
+use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelper;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing solutions.
  */
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
+  use FileTrait;
+  use RandomGeneratorTrait;
+  use RdfEntityTrait;
 
   /**
    * Test solutions.
@@ -23,13 +29,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @var \Drupal\rdf_entity\Entity\Rdf[]
    */
   protected $solutions = [];
-
-  /**
-   * Test images.
-   *
-   * @var \Drupal\file\Entity\File[]
-   */
-  protected $documents = [];
 
   /**
    * Navigates to the add solution form.
@@ -75,24 +74,17 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   /**
    * Creates a number of solutions with data provided in a table.
    *
-   * * @param TableNode $solution_table
-   *   The solution data.
-   *
-   * 'contact information' => 'field_is_contact_information',
-   * 'landing page' => 'field_is_landing_page',
-   * 'webdav creation' => 'field_is_webdav_creation',
-   * 'webdav url' => 'field_is_webdav_url',
-   * 'wiki' => 'field_is_wiki'
-   *
    * Table format:
-   *
    * @codingStandardsIgnoreStart
-   * uri                            | title         | description              | document | closed  | creation date     | elibrary creation  | moderation  | modification date | landing page               | webdav creation | webdav url                  | wiki
-   * http://joinup.eu/solution/foo  | Foo solution  | This is a foo solution   | text.pdf | 1       | 28-01-1995 12:05  | 0                  | 1           |                   | http://foo-url-example.com | 1               | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
-   * http://joinup.eu/solution/bar  | Bar solution  | This is a bar solution   | text.pdf | 0       | 28-01-1995 12:06  | 1                  | 0           |                   | http://bar-url-example.com | 0               |                             | http://bar-wiki-example.com
+   * title        | description            | document | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki
+   * Foo solution | This is a foo solution | text.pdf | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
+   * Bar solution | This is a bar solution | text.pdf | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
    * @codingStandardsIgnoreEnd
    *
    * Fields title, description and elibrary creation are mandatory.
+   *
+   * @param TableNode $solution_table
+   *   The solution data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
@@ -113,6 +105,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
           throw new \Exception("Unknown column '$key' in solution table.");
         }
       };
+
+      $values = $this->convertValueAliases($values);
+
       $this->createSolution($values);
     }
   }
@@ -122,14 +117,13 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Table format:
    * | title             | Sample solution                         |
-   * | uri               | http://joinup.eu/solution/foobar        |
    * | description       | A sample solution                       |
    * | document          | text.pdf                                |
-   * | pre-moderation    | 0|1                                     |
-   * | closed            | 0|1                                     |
-   * | elibrary creation | 0|1|2                                   |
+   * | moderation        | no|yes                                  |
+   * | closed            | no|yes                                  |
+   * | elibrary creation | facilitators|members|registered users   |
    * | landing page      | http://example.com/foobar/landing       |
-   * | webdav creation   | 0|1                                     |
+   * | webdav creation   | no|yes                                  |
    * | webdav url        | http://joinup.eu/solution/foobar/webdav |
    * | wiki              | http://example.wiki/foobar/wiki         |
    *
@@ -143,7 +137,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @Given (the following )solution:
    */
-  public function givenCollection(TableNode $solution_table) {
+  public function givenSolution(TableNode $solution_table) {
     $aliases = self::solutionFieldAliases();
 
     $values = [];
@@ -156,6 +150,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
         throw new \Exception("Unknown column '$key' in solution table.");
       }
     };
+
+    $values = $this->convertValueAliases($values);
+
     $this->createSolution($values);
   }
 
@@ -166,32 +163,18 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *   An optional associative array of values, keyed by property name.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
-   *   A new collection entity.
+   *   A new solution entity.
    *
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  public function createSolution(array $values) {
-    // Add image.
+  protected function createSolution(array $values) {
     if (!empty($values['field_is_documentation'])) {
-      $filename = $values['field_is_documentation'];
-      $files_path = $this->getMinkParameter('files_path');
-      $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
-      if (!is_file($path)) {
-        throw new \Exception("Document '$filename' was not found in file path '$files_path'.");
-      }
-      // Copy the document into the public files folder and turn it into a File
-      // entity before linking it to the collection.
-      $uri = 'public://' . $filename;
-      $destination = file_unmanaged_copy($path, $uri);
-      $document = File::create(['uri' => $destination]);
-      $document->save();
-      $values['field_is_documentation'] = [$document->id()];
-
-      $this->documents[$document->id()] = $document;
+      $values['field_is_documentation'] = [$this->createFile($values['field_is_documentation'], $this->getMinkParameter('files_path'))];
     }
 
     $values['rid'] = 'solution';
+    $values['id'] = $this->getRandomUri();
     $solution = Rdf::create($values);
     $solution->save();
     $this->solutions[$solution->id()] = $solution;
@@ -217,7 +200,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * If multiple solution have the same name, the first one will be returned.
    *
-   * @param string $name
+   * @param string $title
    *   The solution name.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
@@ -226,18 +209,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \InvalidArgumentException
    *   Thrown when a solution with the given name does not exist.
    */
-  protected function getSolutionByName($name) {
-    $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
-      ->condition('label', $name)
-      ->range(0, 1);
-    $result = $query->execute();
-
-    if (empty($result)) {
-      throw new \InvalidArgumentException("The solution with the name '$name' was not found.");
-    }
-
-    return Rdf::load(reset($result));
+  protected function getSolutionByName($title) {
+    return $this->getRdfEntityByLabel($title, 'solution');
   }
 
   /**
@@ -246,19 +219,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param int $number
    *   The expected number of solutions.
    *
-   * @throws \Exception
-   *   Thrown when the number of solutions does not not match the expectation.
-   *
    * @Then I should have :number solution(s)
    */
   public function assertSolutionCount($number) {
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
-    }
+    $this->assertRdfEntityCount($number, 'solution');
   }
 
   /**
@@ -279,13 +243,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function assertOgMembership($solution, $collection) {
     /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    $collection = \CollectionSubContext::getCollectionByName($collection);
+    $collection = $this->getRdfEntityByLabel($collection, 'collection');
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = \SolutionSubContext::getSolutionByName($solution);
-    // This handles the solutions added by form submit.
-    if (!in_array($solution, $this->solutions)) {
-      $this->solutions[$solution->id()] = $solution;
-    }
+    $solution = $this->getRdfEntityByLabel($solution, 'solution');
 
     /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
     foreach ($solution->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
@@ -308,10 +268,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     foreach ($this->solutions as $solution) {
       $solution->delete();
     }
-    // Also remove the image entities that were attached to the collections.
-    foreach ($this->documents as $document) {
-      $document->delete();
-    }
   }
 
   /**
@@ -320,15 +276,16 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @return array
    *    Mapping.
    */
-  private static function solutionFieldAliases() {
+  protected static function solutionFieldAliases() {
     // Mapping alias - field name.
     return [
       'uri' => 'id',
-      'name' => 'label',
+      'title' => 'label',
       'affiliations requests' => 'field_is_affiliations_requests',
       'contact information' => 'field_is_contact_information',
       'creation date' => 'field_is_creation_date',
       'description' => 'field_is_description',
+      'distribution' => 'field_is_distribution',
       'documentation' => 'field_is_documentation',
       'elibrary creation' => 'field_is_elibrary_creation',
       'included asset' => 'field_is_included_asset',
@@ -352,8 +309,53 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
-      'groups audience' => 'og_group_ref',
+      'collection' => 'og_group_ref',
     ];
+  }
+
+  /**
+   * Converts values from user friendly to normal machine values.
+   *
+   * @param array $fields
+   *    An array of fields keyed by field name.
+   *
+   * @return mixed
+   *    The array with the values converted.
+   *
+   * @throws \Exception
+   *    Throws an exception when a mapped value is not found.
+   */
+  protected function convertValueAliases($fields) {
+    $mapped_values = [
+      'field_is_moderation' => ['no' => 0, 'yes' => 1],
+      'field_is_elibrary_creation' =>
+        ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
+      'field_is_webdav_creation' => ['no' => 0, 'yes' => 1],
+    ];
+
+    foreach ($fields as $field => $value) {
+      if (isset($mapped_values[$field])) {
+        if (!isset($mapped_values[$field][$value])) {
+          throw new \Exception("Value $value is not an acceptable value for field $field.");
+        }
+
+        $fields[$field] = $mapped_values[$field][$value];
+      }
+    }
+
+    // Check for the OG group.
+    if (isset($fields['field_is_distribution'])) {
+      $distribution = $this->getRdfEntityByLabel($fields['field_is_distribution'], 'asset_distribution');
+      $fields['field_is_distribution'] = [$distribution->id()];
+    }
+
+    // Check for the OG group.
+    if (isset($fields['og_group_ref'])) {
+      $collection = $this->getRdfEntityByLabel($fields['og_group_ref'], 'collection');
+      $fields['og_group_ref'] = $collection->id();
+    }
+
+    return $fields;
   }
 
 }

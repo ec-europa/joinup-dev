@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * Contains asset_distribution.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\RdfInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Asset distributions are always created in the context of an interoperability
+ * solution. Retrieve the solution from the route context and save it in the
+ * form state.
+ *
+ * @see \Drupal\asset_distribution\Controller\AssetDistributionController::add()
+ */
+function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form, FormStateInterface $form_state) {
+  $solution = \Drupal::routeMatch()->getParameter('rdf_entity');
+
+  // Bail out if the interoperability solution is not present on the route.
+  // Since this form is only intended to be used in the context of a solution
+  // there is no field provided for it. Without a solution the asset
+  // distribution will be dangling and won't be reachable.
+  if (!$solution instanceof RdfInterface || $solution->bundle() !== 'solution') {
+    throw new \InvalidArgumentException('Asset distributions can only be created in context of an interoperability solution.');
+  }
+
+  $form_state->set('solution_id', $solution->id());
+
+  // Add a submit handler so we can add the distribution relation to the
+  // solution.
+  $form['actions']['submit']['#submit'][] = 'asset_distribution_form_rdf_entity_asset_distribution_form_submit';
+}
+
+/**
+ * Submit handler for rdf_entity_asset_distribution_form.
+ *
+ * When creating a new asset distribution, add the relation to the
+ * interoperability solution. Usually this relation would point the other way,
+ * but this is how the data model has been designed.
+ *
+ * @see asset_distribution_form_rdf_entity_asset_distribution_form_alter()
+ */
+function asset_distribution_form_rdf_entity_asset_distribution_form_submit(&$form, FormStateInterface $form_state) {
+  $solution = Rdf::load($form_state->get('solution_id'));
+  /** @var RdfInterface $distribution */
+  $distribution = $form_state->getFormObject()->getEntity();
+
+  // Only add the relation if it doesn't yet exist.
+  $related_distributions = $solution->get('field_is_distribution')->getValue();
+  foreach ($related_distributions as $related_distribution) {
+    if ($related_distribution['target_id'] === $distribution->id()) {
+      return;
+    }
+  }
+
+  $related_distributions[]['target_id'] = $distribution->id();
+  $solution->set('field_is_distribution', $related_distributions);
+  $solution->save();
+}

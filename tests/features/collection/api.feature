@@ -5,16 +5,14 @@ Feature: Collection API
 
   Scenario: Programmatically create a collection
     Given the following collection:
-      | name              | Open Data Initiative        |
-      | logo              | logo.png                    |
-      | moderation        | 0                           |
-      | closed            | 0                           |
-      | elibrary creation | facilitators                |
-      | uri               | https://ec.europa.eu/my/url |
+      | title             | Open Data Initiative |
+      | logo              | logo.png             |
+      | moderation        | no                   |
+      | closed            | no                   |
+      | elibrary creation | facilitators         |
     Then I should have 1 collection
 
   Scenario: Programmatically create a collection using only the name
     Given the following collection:
-      | name            | EU Interoperability Support Group |
-      | uri             | http://joinup.eu/collection/eisg  |
+      | title | EU Interoperability Support Group |
     Then I should have 1 collection
