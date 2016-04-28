@@ -61,7 +61,14 @@ class FileSizeCalculatorWidget extends WidgetBase implements ContainerFactoryPlu
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, EntityFieldManagerInterface $entity_field_manager) {
+  public function __construct(
+      $plugin_id,
+      $plugin_definition,
+      FieldDefinitionInterface $field_definition,
+      array $settings,
+      array $third_party_settings,
+      EntityFieldManagerInterface $entity_field_manager
+  ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
     $this->entityFieldManager = $entity_field_manager;
     $this->targetEntityTypeId = $field_definition->getTargetEntityTypeId();
