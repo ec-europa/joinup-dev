@@ -11,6 +11,7 @@ permissions:
   - 'access user profiles'
   - 'administer views'
   - 'access toolbar'
+  - 'moderate entity parents'
   - 'add og menu instance entities'
   - 'delete og menu instance entities'
   - 'edit og menu instance entities'
@@ -19,3 +20,4 @@ permissions:
   - 'propose solution rdf entity'
   - 'create asset_distribution rdf entity'
   - 'administer nodes'
+  - 'edit any custom_page content'
