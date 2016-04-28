@@ -2,19 +2,24 @@
 
 /**
  * @file
- * Contains solution.module..
+ * Contains hooks regarding the solution rdf entity bundle.
  */
 
-use \Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
- * Implements hook_entity_base_field_info_alter().
+ * Implements hook_entity_bundle_field_info_alter().
  */
-function solution_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
-  if ($entity_type->id() == 'rdf_entity') {
-    // Title must be unique.
-    if (!empty($fields['label'])) {
-      $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['solution']]);
-    }
+function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'solution' && !empty($fields['label'])) {
+    $fields['label']->addConstraint('UniqueSolutionTitle', []);
   }
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function solution_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+  $entity_types['rdf_entity']->setFormclass('release', 'Drupal\rdf_entity\Form\RdfForm');
 }

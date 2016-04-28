@@ -6,14 +6,16 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
+    - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
     - field.field.rdf_entity.solution.field_is_elibrary_creation
+    - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
+    - field.field.rdf_entity.solution.field_is_is_version_of
     - field.field.rdf_entity.solution.field_is_issue_tracker
     - field.field.rdf_entity.solution.field_is_keywords
     - field.field.rdf_entity.solution.field_is_landing_page
     - field.field.rdf_entity.solution.field_is_language
-    - field.field.rdf_entity.solution.field_is_latest_release
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_modification_date
@@ -27,6 +29,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_status
     - field.field.rdf_entity.solution.field_is_topic
     - field.field.rdf_entity.solution.field_is_translation
+    - field.field.rdf_entity.solution.field_is_version
     - field.field.rdf_entity.solution.field_is_webdav_creation
     - field.field.rdf_entity.solution.field_is_webdav_url
     - field.field.rdf_entity.solution.field_is_wiki
@@ -61,21 +64,21 @@ content:
     third_party_settings: {  }
     type: options_select
   field_is_issue_tracker:
-    weight: 11
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-  field_is_landing_page:
     weight: 9
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+  field_is_landing_page:
+    weight: 7
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
   field_is_metrics_page:
-    weight: 10
+    weight: 8
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -96,7 +99,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_is_wiki:
-    weight: 12
+    weight: 10
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -119,10 +122,12 @@ hidden:
   field_is_affiliations_requests: true
   field_is_contact_information: true
   field_is_creation_date: true
+  field_is_has_version: true
+  field_is_distribution: true
   field_is_included_asset: true
+  field_is_is_version_of: true
   field_is_keywords: true
   field_is_language: true
-  field_is_latest_release: true
   field_is_modification_date: true
   field_is_owner: true
   field_is_policy_domain: true
@@ -133,6 +138,7 @@ hidden:
   field_is_status: true
   field_is_topic: true
   field_is_translation: true
+  field_is_version: true
   field_is_webdav_creation: true
   field_is_webdav_url: true
   og_group_ref: true

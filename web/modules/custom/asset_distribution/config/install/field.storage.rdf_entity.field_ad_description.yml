@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: { }
+third_party_settings:
+  rdf_entity:
+    mapping_value: 'dct:description'
+    mapping_summary: ''
+    mapping_format: ''
+id: rdf_entity.field_ad_description
+field_name: field_ad_description
+entity_type: rdf_entity
+type: text_with_summary
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
