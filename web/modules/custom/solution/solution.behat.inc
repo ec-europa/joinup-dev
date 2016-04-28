@@ -11,7 +11,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -174,7 +173,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     }
 
     $values['rid'] = 'solution';
-    $values['id'] = $this->getRandomUri();
+    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $solution = Rdf::create($values);
     $solution->save();
     $this->solutions[$solution->id()] = $solution;
@@ -254,6 +253,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @Then I should have :number solution(s)
    */
   public function assertSolutionCount($number) {
+    // We cannot rely on $this->assertRdfEntityCount() because a solution shares
+    // the same bundle with a release. We need to distinguish them by the
+    // presence of the 'is_version_of' field - if this field is missing it is a
+    // solution, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'solution')
       ->notExists('field_is_is_version_of')
@@ -277,6 +280,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @Then I should have :number release(s)
    */
   public function assertReleaseCount($number) {
+    // We cannot rely on $this->assertRdfEntityCount() because a release shares
+    // the same bundle with a solution. We need to distinguish them by the
+    // presence of the 'is_version_of' field - if this field is missing it is a
+    // solution, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'solution')
       ->exists('field_is_is_version_of')
@@ -285,39 +292,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     if ($actual != $number) {
       throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
     }
-  }
-
-  /**
-   * Checks if the given solution belongs to the given collection.
-   *
-   * If there are multiple solutions or collections with the same name, then
-   * only the first one is checked.
-   *
-   * @param string $solution
-   *   The title of the custom page to check.
-   * @param string $collection
-   *   The name of the collection to check.
-   *
-   * @throws \Exception
-   *   Thrown when a custom page with the given title doesn't exist.
-   *
-   * @Then the :collection collection has a solution named :solution
-   */
-  public function assertOgMembership($solution, $collection) {
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    $collection = $this->getRdfEntityByLabel($collection, 'collection');
-    /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = $this->getRdfEntityByLabel($solution, 'solution');
-
-    /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-    foreach ($solution->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
-      if ($group->getValue()['target_id'] == $collection->id()) {
-        // Test passes.
-        return;
-      }
-    }
-
-    throw new \Exception("The solution '{$solution->label()}' is not associated with collection '{$collection->label()}'.");
   }
 
   /**

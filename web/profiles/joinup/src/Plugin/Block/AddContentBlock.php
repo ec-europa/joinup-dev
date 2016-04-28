@@ -124,18 +124,6 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           '#attributes' => ['class' => ['button', 'button--small']],
           '#access' => $distribution_url->access(),
         ];
-
-        $release_url = Url::fromRoute('solution.release.add', [
-          'rdf_entity' => $solution_contexts['solution']->getContextValue()
-            ->id(),
-        ]);
-        $links['release'] = [
-          '#type' => 'link',
-          '#title' => $this->t('Add release'),
-          '#url' => $release_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
-          '#access' => $release_url->access(),
-        ];
       }
     }
 

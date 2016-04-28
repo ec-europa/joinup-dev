@@ -13,6 +13,7 @@ dependencies:
   - collection
   - contextual
   - custom_page
+  - dashboard
   - dynamic_page_cache
   - editor
   - file
