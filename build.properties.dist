@@ -163,3 +163,5 @@ deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
 # Packer configuration
 # --------------------
 packer.path = /usr/bin/env packer
+project.docroot = ${website.drupal.dir}
+
