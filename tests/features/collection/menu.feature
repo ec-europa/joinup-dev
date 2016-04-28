@@ -1,6 +1,7 @@
 # If you want to run this test through Selenium, uncomment the specified lines!
 @api
 Feature: Collections menu
+
   Scenario: Add a link to og menu
     Given collections:
       | name               | description                     | owner | uri                                  |

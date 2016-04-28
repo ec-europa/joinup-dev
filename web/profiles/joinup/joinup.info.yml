@@ -7,11 +7,13 @@ distribution:
   name: Joinup
 
 dependencies:
+  - asset_distribution
   - block
   - ckeditor
   - collection
   - contextual
   - custom_page
+  - dashboard
   - dynamic_page_cache
   - editor
   - file

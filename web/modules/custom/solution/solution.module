@@ -5,16 +5,13 @@
  * Contains solution.module..
  */
 
-use \Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
- * Implements hook_entity_base_field_info_alter().
+ * Implements hook_entity_bundle_field_info_alter().
  */
-function solution_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
-  if ($entity_type->id() == 'rdf_entity') {
-    // Title must be unique.
-    if (!empty($fields['label'])) {
-      $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['solution']]);
-    }
+function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'solution' && !empty($fields['label'])) {
+    $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['solution']]);
   }
 }

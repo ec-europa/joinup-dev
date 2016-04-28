@@ -5,37 +5,33 @@ Feature: Solution API
 
   Scenario: Programmatically create a solution
     Given the following collection:
-      | name              | Solution API foo                             |
-      | logo              | logo.png                                     |
-      | moderation        | 1                                            |
-      | closed            | 1                                            |
-      | elibrary creation | facilitators                                 |
-      | uri               | http://joinup.eu/collection/solution-api-foo |
+      | title             | Solution API foo |
+      | logo              | logo.png         |
+      | moderation        | yes              |
+      | closed            | yes              |
+      | elibrary creation | facilitators     |
     And the following solution:
-     | name              | My first solution                            |
-     | uri               | http://joinup.eu/solution/api/foo            |
-     | description       | A sample solution                            |
-     | documentation     | text.pdf                                     |
-     | elibrary creation | 2                                            |
-     | landing page      | http://foo-example.com/landing               |
-     | webdav creation   | 0                                            |
-     | webdav url        | http://joinup.eu/solution/foo/webdav         |
-     | wiki              | http://example.wiki/foobar/wiki              |
-     | groups audience   | http://joinup.eu/collection/solution-api-foo |
+      | title             | My first solution                    |
+      | description       | A sample solution                    |
+      | documentation     | text.pdf                             |
+      | elibrary creation | registered users                     |
+      | landing page      | http://foo-example.com/landing       |
+      | webdav creation   | no                                   |
+      | webdav url        | http://joinup.eu/solution/foo/webdav |
+      | wiki              | http://example.wiki/foobar/wiki      |
+      | collection        | Solution API foo                     |
     Then I should have 1 solution
 
   Scenario: Programmatically create a collection using only the mandatory fields
     Given the following collection:
-      | name              | Solution API bar                             |
-      | logo              | logo.png                                     |
-      | moderation        | 1                                            |
-      | closed            | 1                                            |
-      | elibrary creation | facilitators                                 |
-      | uri               | http://joinup.eu/collection/solution-api-bar |
+      | title             | Solution API bar |
+      | logo              | logo.png         |
+      | moderation        | yes              |
+      | closed            | yes              |
+      | elibrary creation | facilitators     |
     Given the following solution:
-      | name              | My first solution mandatory                  |
-      | uri               | http://joinup.eu/solution/api/bar            |
-      | description       | Another sample solution                      |
-      | elibrary creation | 1                                            |
-      | groups audience   | http://joinup.eu/collection/solution-api-bar |
+      | title             | My first solution mandatory       |
+      | description       | Another sample solution           |
+      | elibrary creation | members                           |
+      | collection        | Solution API bar                  |
     Then I should have 1 solution
