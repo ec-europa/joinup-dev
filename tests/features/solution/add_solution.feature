@@ -42,5 +42,6 @@ Feature: "Add solution" visibility options.
     Then I should see the link "Collection solution add solution"
     When I click "Collection solution add solution"
     Then I should see the heading "Collection solution add solution"
+    And I should see the description "This is a test text"
     # Clean up the solution that was created through the UI.
     Then I delete the "Collection solution add solution" solution
