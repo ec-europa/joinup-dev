@@ -8,7 +8,6 @@ website.profile.name = joinup
 website.site.name = Joinup
 
 # The site type ( Infrastructure stack )
-
 project.siteType = joinup
 
 # Database settings.
@@ -153,11 +152,9 @@ drush.verbose = no
 
 # AWS SDK
 # -------
+aws.profile = default
 aws.region = eu-west-1
 
-# !!! Keep this in your local properties, never commit to git !!!
-#aws.id = <your id>
-#aws.secret = <your secret key>
 
 # AWS CodeDeploy
 # --------------
