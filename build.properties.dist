@@ -45,7 +45,8 @@ phing.bin = ${project.basedir}/vendor/bin/phing
 isql.bin = /usr/bin/isql
 
 # Files and directories inside the Drupal installation.
-website.drupal.dir = ${project.basedir}/web
+documentroot.path = web
+website.drupal.dir = ${project.basedir}/${documentroot.path}
 
 website.sites.dir = ${website.drupal.dir}/sites
 website.site.dir = ${website.drupal.sites.dir}/all
@@ -163,5 +164,4 @@ deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
 # Packer configuration
 # --------------------
 packer.path = /usr/bin/env packer
-project.docroot = ${website.drupal.dir}
 
