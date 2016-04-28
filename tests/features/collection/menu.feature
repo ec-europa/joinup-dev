@@ -4,9 +4,9 @@ Feature: Collections menu
 
   Scenario: Add a link to og menu
     Given collections:
-      | name               | description                     | owner | uri                                  |
-      | Lord of the rings  | A collection for true LOTR fans |       | http://joinup.eu/collection/lotr     |
-      | Star Trek          | A collection for Trekkies       |       | http://joinup.eu/collection/startrek |
+      | title              | description                     |
+      | Lord of the rings  | A collection for true LOTR fans |
+      | Star Trek          | A collection for Trekkies       |
     And users:
       | name      | roles      |
       | Gandalf   | moderator  |
@@ -32,12 +32,15 @@ Feature: Collections menu
     # Check for the link on the collection
     When I go to the homepage of the "Lord of the rings" collection
     # Check order of links.
-    Then I should see the following in the repeated ".menu-item" element within the context of the ".block-og-menu ul.menu .menu-item" element:
+    Then I should see the following collection menu items in the specified order:
       | text           |
       | Mines of Moria |
       | Mordor         |
 
     # Edit menu and change the order of items.
+    # When you hover over the menu, you will notice a little pencil icon
+    # appearing at the end right of the region. Click on this icon to show the
+    # "Edit menu" link.
     Then I click the contextual link "Edit menu" in the "Primary menu" region
     # To run on Selenium, uncomment next line:
     # Then I press the "Show row weights" button
@@ -45,7 +48,7 @@ Feature: Collections menu
     Then I press the "Save" button
 
     # Assert the changed order
-    Then I should see the following in the repeated ".menu-item" element within the context of the ".block-og-menu ul.menu .menu-item" element:
+    Then I should see the following collection menu items in the specified order:
       | text           |
       | Mordor         |
       | Mines of Moria |
