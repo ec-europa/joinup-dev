@@ -38,6 +38,7 @@ Feature: User authentication
       | admin/people              |
       | admin/structure           |
       | collection/propose        |
+      | dashboard                 |
       | node/add                  |
       | node/add/custom_page      |
       | node/add/document         |
@@ -56,6 +57,7 @@ Feature: User authentication
       | path               |
       | collection/propose |
       | collections        |
+      | dashboard          |
       | user               |
 
   @api
@@ -90,6 +92,7 @@ Feature: User authentication
       | path              |
       | admin/people      |
       | admin/content/rdf |
+      | dashboard         |
 
   @api
   Scenario Outline: Moderator cannot access restricted pages
@@ -120,6 +123,7 @@ Feature: User authentication
     Examples:
       | path        |
       | collections |
+      | dashboard   |
 
   @api
   Scenario Outline: Administrator cannot access pages intended for site building and development

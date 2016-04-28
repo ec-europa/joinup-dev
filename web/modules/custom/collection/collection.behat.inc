@@ -12,7 +12,6 @@ use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -380,27 +379,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function cleanCollections() {
     // Remove any collections that were created.
     foreach ($this->collections as $collection) {
-      // @todo: Remove the workaround after the bug in ISAICP-2473 is fixed.
-      $membership_ids = \Drupal::entityQuery('og_membership')
-        ->condition('entity_id', $collection->id())
-        ->condition('entity_type', 'rdf_entity')
-        ->execute();
-      $memberships = Og::membershipStorage()->loadMultiple($membership_ids);
-      Og::membershipStorage()->delete($memberships);
-
-      // Some more workarounds for og_menu.
-      $storage = \Drupal::getContainer()
-        ->get('entity.manager')
-        ->getStorage('ogmenu_instance');
-      $values = [
-        OgGroupAudienceHelper::DEFAULT_FIELD => $collection->id(),
-      ];
-      // Load all ogmenu_instances related to the group, and delete them.
-      $menu_instances = $storage->loadByProperties($values);
-      foreach ($menu_instances as $menu_instance) {
-        $menu_instance->delete();
-      }
-      // Delete the collection.
       $collection->delete();
     }
   }
