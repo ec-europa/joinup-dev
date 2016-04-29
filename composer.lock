@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.3",
+            "version": "3.18.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "899c5c982582d811754a57d2ca941c7f2dc8090b"
+                "reference": "fe2b49c01e09c74218cb681d5026f0c85c5e9094"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/899c5c982582d811754a57d2ca941c7f2dc8090b",
-                "reference": "899c5c982582d811754a57d2ca941c7f2dc8090b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fe2b49c01e09c74218cb681d5026f0c85c5e9094",
+                "reference": "fe2b49c01e09c74218cb681d5026f0c85c5e9094",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-04-27 16:44:34"
+            "time": "2016-04-28 20:07:34"
         },
         {
             "name": "composer/composer",
@@ -1253,12 +1253,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og_menu.git",
-                "reference": "7484f8d9d1655772c64dc3a50d7d03c281364e63"
+                "reference": "2eefb6d6c9fc0292ec1007e1bd9c90590d897ae9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/7484f8d9d1655772c64dc3a50d7d03c281364e63",
-                "reference": "7484f8d9d1655772c64dc3a50d7d03c281364e63",
+                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/2eefb6d6c9fc0292ec1007e1bd9c90590d897ae9",
+                "reference": "2eefb6d6c9fc0292ec1007e1bd9c90590d897ae9",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1271,7 +1271,7 @@
                 "issues": "https://drupal.org/project/issues/og_menu",
                 "source": "https://cgit.drupalcode.org/og_menu"
             },
-            "time": "2016-03-30 19:34:59"
+            "time": "2016-04-29 07:19:36"
         },
         {
             "name": "drupal/phing-drush-task",
@@ -1309,9 +1309,6 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
             "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
             "homepage": "https://www.drupal.org/project/r4032login",
             "time": "2016-03-01 13:56:38"
@@ -1327,7 +1324,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha14.zip",
-                "reference": "507607e3919c1a61573719fa8dc4bf0695ac4704",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -5287,7 +5284,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_devel",
-                "reference": "93bd3c663b5cb3319babd0e8b8cca90a4494f26d"
+                "reference": "d774944da82270c743e2dd0d38b506281d16034b"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -5304,7 +5301,7 @@
             ],
             "description": "Helps developers work with configuration.",
             "homepage": "https://www.drupal.org/project/config_devel",
-            "time": "2016-04-04 20:56:57"
+            "time": "2016-04-28 23:59:11"
         },
         {
             "name": "drupal/config_update",
@@ -5313,12 +5310,6 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_update.git",
                 "reference": "ac1526df5836a611f04bb421945beddb6306b7f2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.1.zip",
-                "reference": "ac1526df5836a611f04bb421945beddb6306b7f2",
-                "shasum": null
             },
             "require": {
                 "drupal/config": "8.*",
@@ -5338,9 +5329,6 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "time": "2016-03-01 16:28:35"
@@ -5682,7 +5670,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/10d7c48c9a4129463052321b52450d98983c4332",
+                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
                 "reference": "10d7c48c9a4129463052321b52450d98983c4332",
                 "shasum": ""
             },
