@@ -5,9 +5,9 @@
  * Main functions and hook implementations of the Collection module.
  */
 
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\og\Og;
 

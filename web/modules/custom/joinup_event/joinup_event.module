@@ -16,7 +16,7 @@ function joinup_event_entity_bundle_field_info_alter(&$fields, EntityTypeInterfa
       $fields['field_event_short_title']->addConstraint('UniqueField');
     }
     if (!empty($fields['title'])) {
-      $fields['title']->addConstraint('UniqueField');
+      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['event']]);
     }
   }
 }

@@ -11,25 +11,14 @@ use \Drupal\Core\Entity\EntityTypeInterface;
  * Implements hook_entity_bundle_field_info_alter().
  */
 function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
-  if ($entity_type->id() == 'node'  && $bundle == 'news') {
-    if (!empty($fields['field_kicker'])) {
-      $fields['field_kicker']->addConstraint('UniqueField');
+  // @todo Add test coverage for these constraints.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2500
+  if ($entity_type->id() == 'node' && $bundle == 'news') {
+    if (!empty($fields['field_news_short_title'])) {
+      $fields['field_news_short_title']->addConstraint('UniqueField');
     }
-  }
-}
-
-/**
- * Implements hook_entity_base_field_info_alter().
- */
-function joinup_news_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
-  if ($entity_type->id() == 'node') {
     if (!empty($fields['title'])) {
-      $bundles = ['news'];
-      if ($constraint = $fields['title']->getConstraint('UniqueFieldInBundle')) {
-        $bundles = array_merge($bundles, $constraint['bundles']);
-      }
-
-      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => $bundles]);
+      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
     }
   }
 }

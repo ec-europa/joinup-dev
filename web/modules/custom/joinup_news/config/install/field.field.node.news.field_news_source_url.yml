@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_source_url
+    - field.storage.node.field_news_source_url
     - node.type.news
   module:
     - link
-id: node.news.field_source_url
-field_name: field_source_url
+id: node.news.field_news_source_url
+field_name: field_news_source_url
 entity_type: node
 bundle: news
 label: 'Source URL'

@@ -13,6 +13,7 @@ dependencies:
   - collection
   - contextual
   - custom_page
+  - dashboard
   - dynamic_page_cache
   - editor
   - file
@@ -82,6 +83,8 @@ config_devel:
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
   - core.entity_form_display.user.user.register
+  - core.entity_form_display.rdf_entity.solution.release
+  - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_mode.rdf_entity.propose
   - core.entity_form_mode.user.register
   - core.entity_view_display.ogmenu_instance.navigation.default
