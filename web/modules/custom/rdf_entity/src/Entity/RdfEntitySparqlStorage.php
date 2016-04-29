@@ -192,9 +192,10 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     // @todo Get query through $this->getQuery, and use this wrapper...
     $ids_string = "<" . implode(">, <", $ids) . ">";
     $query = <<<QUERY
-SELECT ?uri, ?bundle
+SELECT ?uri, ?bundle, ?version
 WHERE {
   ?uri rdf:type ?bundle.
+  OPTIONAL { ?uri  <http://purl.org/dc/terms/isVerionOf>  ?version }.
   FILTER (?uri IN (  $ids_string ))
 }
 GROUP BY ?uri
@@ -203,12 +204,21 @@ QUERY;
     foreach ($results as $result) {
       $uri = (string) $result->uri;
       $bundle = (string) $result->bundle;
+      $version = NULL;
+      if (isset($result->version)) {
+        $version = (string) $result->version;
+      }
+
       // @todo Why do we get multiple types for a uri?
       if (isset($ids_rdf_mapping[$uri])) {
         continue;
       }
       if (isset($bundle_mapping[$bundle])) {
-        $ids_rdf_mapping[$uri] = $bundle_mapping[$bundle];
+        $bundle_name = $bundle_mapping[$bundle];
+        if ($bundle_name == 'solution' && $version) {
+          $bundle_name = 'release';
+        }
+        $ids_rdf_mapping[$uri] = $bundle_name;
       }
       else {
         drupal_set_message(t('Unmapped bundle :bundle for uri :uri.',
