@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "83cab5462161eb01a2184ba7d7e0be4f",
-    "content-hash": "208e1ee0dc7fb37dc8680075dc44706c",
+    "hash": "e04ac285c7230bd28150cad82fc096af",
+    "content-hash": "70faaa62b36d86b66e8ebdde9b4c761d",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1327,7 +1327,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha14.zip",
-                "reference": null,
+                "reference": "507607e3919c1a61573719fa8dc4bf0695ac4704",
                 "shasum": null
             },
             "require": {
@@ -1486,6 +1486,33 @@
                 }
             },
             "time": "2016-01-28 12:56:40"
+        },
+        {
+            "name": "ec-europa/infra",
+            "version": "0.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ec-europa/infra.git",
+                "reference": "c9a620af80db38de964c01147452325ab8e7ffda"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/c9a620af80db38de964c01147452325ab8e7ffda",
+                "reference": "c9a620af80db38de964c01147452325ab8e7ffda",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Gregory Boddin",
+                    "email": "gregory@siwhine.net"
+                }
+            ],
+            "time": "2016-04-28 21:43:37"
         },
         {
             "name": "egulias/email-validator",
@@ -5290,7 +5317,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.1.zip",
-                "reference": null,
+                "reference": "ac1526df5836a611f04bb421945beddb6306b7f2",
                 "shasum": null
             },
             "require": {
@@ -5655,7 +5682,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
+                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/10d7c48c9a4129463052321b52450d98983c4332",
                 "reference": "10d7c48c9a4129463052321b52450d98983c4332",
                 "shasum": ""
             },
