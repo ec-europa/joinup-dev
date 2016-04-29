@@ -7,6 +7,9 @@ website.profile.name = joinup
 # The site name.
 website.site.name = Joinup
 
+# The site type ( Infrastructure stack )
+project.siteType = joinup
+
 # Database settings.
 drupal.db.type = mysql
 drupal.db.name = db_name
@@ -42,7 +45,8 @@ phing.bin = ${project.basedir}/vendor/bin/phing
 isql.bin = /usr/bin/isql
 
 # Files and directories inside the Drupal installation.
-website.drupal.dir = ${project.basedir}/web
+documentroot.path = web
+website.drupal.dir = ${project.basedir}/${documentroot.path}
 
 website.sites.dir = ${website.drupal.dir}/sites
 website.site.dir = ${website.drupal.sites.dir}/all
@@ -149,8 +153,15 @@ drush.verbose = no
 
 # AWS SDK
 # -------
+aws.profile = default
 aws.region = eu-west-1
+
 
 # AWS CodeDeploy
 # --------------
 deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
+
+# Packer configuration
+# --------------------
+packer.path = /usr/bin/env packer
+

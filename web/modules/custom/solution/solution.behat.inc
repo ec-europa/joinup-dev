@@ -11,7 +11,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -174,7 +173,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     }
 
     $values['rid'] = 'solution';
-    $values['id'] = $this->getRandomUri();
+    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $solution = Rdf::create($values);
     $solution->save();
     $this->solutions[$solution->id()] = $solution;
@@ -214,48 +213,85 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Returns the release with the given name.
+   *
+   * If multiple solution have the same name, the first one will be returned.
+   *
+   * @param string $title
+   *   The release name.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   The release.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when a release with the given name does not exist.
+   */
+  public static function getReleaseByName($title) {
+    $query = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'solution')
+      ->exists('field_is_is_version_of')
+      ->condition('label', $title)
+      ->range(0, 1);
+    $result = $query->execute();
+
+    if (empty($result)) {
+      throw new \InvalidArgumentException("The release with the name '$title' was not found.");
+    }
+
+    return Rdf::load(reset($result));
+  }
+
+  /**
    * Checks the number of available solutions.
    *
    * @param int $number
    *   The expected number of solutions.
    *
+   * @throws \Exception
+   *   Throws an exception when the expected number is not equal to the given.
+   *
    * @Then I should have :number solution(s)
    */
   public function assertSolutionCount($number) {
-    $this->assertRdfEntityCount($number, 'solution');
+    // We cannot rely on $this->assertRdfEntityCount() because a solution shares
+    // the same bundle with a release. We need to distinguish them by the
+    // presence of the 'is_version_of' field - if this field is missing it is a
+    // solution, if it is present it is a release.
+    $actual = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'solution')
+      ->notExists('field_is_is_version_of')
+      ->count()
+      ->execute();
+    if ($actual != $number) {
+      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
+    }
   }
 
   /**
-   * Checks if the given solution belongs to the given collection.
+   * Checks the number of available releases.
    *
-   * If there are multiple solutions or collections with the same name, then
-   * only the first one is checked.
-   *
-   * @param string $solution
-   *   The title of the custom page to check.
-   * @param string $collection
-   *   The name of the collection to check.
+   * @param int $number
+   *   The expected number of releases.
    *
    * @throws \Exception
-   *   Thrown when a custom page with the given title doesn't exist.
+   *   Thrown when the number of release entities do not
+   *   match the expectation.
    *
-   * @Then the :collection collection has a solution named :solution
+   * @Then I should have :number release(s)
    */
-  public function assertOgMembership($solution, $collection) {
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    $collection = $this->getRdfEntityByLabel($collection, 'collection');
-    /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = $this->getRdfEntityByLabel($solution, 'solution');
-
-    /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-    foreach ($solution->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
-      if ($group->getValue()['target_id'] == $collection->id()) {
-        // Test passes.
-        return;
-      }
+  public function assertReleaseCount($number) {
+    // We cannot rely on $this->assertRdfEntityCount() because a release shares
+    // the same bundle with a solution. We need to distinguish them by the
+    // presence of the 'is_version_of' field - if this field is missing it is a
+    // solution, if it is present it is a release.
+    $actual = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'solution')
+      ->exists('field_is_is_version_of')
+      ->count()
+      ->execute();
+    if ($actual != $number) {
+      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
     }
-
-    throw new \Exception("The solution '{$solution->label()}' is not associated with collection '{$collection->label()}'.");
   }
 
   /**

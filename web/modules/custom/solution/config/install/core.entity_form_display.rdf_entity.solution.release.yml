@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.rdf_entity.release
     - field.field.rdf_entity.solution.field_is_affiliations_requests
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
-    - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
     - field.field.rdf_entity.solution.field_is_elibrary_creation
     - field.field.rdf_entity.solution.field_is_has_version
@@ -37,74 +37,37 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - file
-    - link
     - rdf_entity
-    - text
-id: rdf_entity.solution.default
+id: rdf_entity.solution.release
 targetEntityType: rdf_entity
 bundle: solution
-mode: default
+mode: release
 content:
-  field_is_description:
-    weight: 2
+  field_is_creation_date:
+    type: datetime_create_update
+    weight: 0
     settings:
-      rows: 5
-      placeholder: ''
+      behaviour: create
     third_party_settings: {  }
-    type: text_textarea
   field_is_documentation:
-    weight: 3
+    weight: 2
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
-  field_is_elibrary_creation:
-    weight: 5
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-  field_is_issue_tracker:
-    weight: 9
+  field_is_modification_date:
+    type: datetime_create_update
+    weight: 0
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
+      behaviour: create
     third_party_settings: {  }
-    type: link_default
-  field_is_landing_page:
-    weight: 7
+  field_is_version:
+    type: string_textfield
+    weight: 3
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-  field_is_metrics_page:
-    weight: 8
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-  field_is_moderation:
-    weight: 6
-    settings:
-      display_label: false
-    third_party_settings: {  }
-    type: boolean_checkbox
-  field_is_related_solutions:
-    weight: 4
-    settings:
-      match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-  field_is_wiki:
-    weight: 10
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
   id:
     type: auto_uri
     weight: 0
@@ -121,16 +84,20 @@ content:
 hidden:
   field_is_affiliations_requests: true
   field_is_contact_information: true
-  field_is_creation_date: true
+  field_is_description: true
+  field_is_elibrary_creation: true
   field_is_has_version: true
-  field_is_distribution: true
   field_is_included_asset: true
   field_is_is_version_of: true
+  field_is_issue_tracker: true
   field_is_keywords: true
+  field_is_landing_page: true
   field_is_language: true
-  field_is_modification_date: true
+  field_is_metrics_page: true
+  field_is_moderation: true
   field_is_owner: true
   field_is_policy_domain: true
+  field_is_related_solutions: true
   field_is_solution_category: true
   field_is_solution_type: true
   field_is_source_code_repository: true
@@ -138,7 +105,7 @@ hidden:
   field_is_status: true
   field_is_topic: true
   field_is_translation: true
-  field_is_version: true
   field_is_webdav_creation: true
   field_is_webdav_url: true
+  field_is_wiki: true
   og_group_ref: true

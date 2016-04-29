@@ -240,16 +240,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       $values['field_ar_logo'] = [$this->createFile($values['field_ar_logo'], $this->getMinkParameter('files_path'))];
     }
 
-    // Generate a URI if this is not specified. Typically the URI is not exposed
-    // to the end user, so in a functional test the user will not be able to
-    // enter one.
-    if (empty($values['id'])) {
-      $values['id'] = 'http://joinup.eu/collection/' . urlencode($values['label']);
-    }
-
     // @todo Remove this after the widget in ISAICP-2301 is build.
     $values['rid'] = 'collection';
-    $values['id'] = $this->getRandomUri();
+    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $collection = Rdf::create($values);
     $collection->save();
     $this->collections[$collection->id()] = $collection;

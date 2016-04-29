@@ -23,17 +23,55 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class UrlFileSynchronizerWidget extends LinkWidget implements ContainerFactoryPluginInterface {
-  protected $targetEntity;
+
+  /**
+   * The target entity type ID.
+   *
+   * @var string
+   */
+  protected $targetEntityTypeId;
+
+  /**
+   * The target bundle.
+   *
+   * @var string
+   */
   protected $targetBundle;
+
+  /**
+   * The entity field manager.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
   protected $entityFieldManager;
 
   /**
-   * {@inheritdoc}
+   * Constructs a UrlFileSynchronizerWidget.
+   *
+   * @param array $plugin_id
+   *   The plugin_id for the widget.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+   *   The definition of the field to which the widget is associated.
+   * @param array $settings
+   *   The widget settings.
+   * @param array $third_party_settings
+   *   Any third party settings.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, EntityFieldManagerInterface $entity_field_manager) {
+  public function __construct(
+      $plugin_id,
+      $plugin_definition,
+      FieldDefinitionInterface $field_definition,
+      array $settings,
+      array $third_party_settings,
+      EntityFieldManagerInterface $entity_field_manager
+  ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
     $this->entityFieldManager = $entity_field_manager;
-    $this->targetEntity = $field_definition->getTargetEntityTypeId();
+    $this->targetEntityTypeId = $field_definition->getTargetEntityTypeId();
     $this->targetBundle = $field_definition->getTargetBundle();
   }
 
@@ -80,7 +118,7 @@ class UrlFileSynchronizerWidget extends LinkWidget implements ContainerFactoryPl
   public function getAvailableFields() {
     $available_fields = [];
     /** @var FieldDefinitionInterface $field_definition */
-    foreach ($this->entityFieldManager->getFieldDefinitions($this->targetEntity, $this->targetBundle) as $field_key => $field_definition) {
+    foreach ($this->entityFieldManager->getFieldDefinitions($this->targetEntityTypeId, $this->targetBundle) as $field_key => $field_definition) {
       if ($field_definition->getType() == 'file') {
         $available_fields[$field_key] = $field_definition->label();
       }

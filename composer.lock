@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "83cab5462161eb01a2184ba7d7e0be4f",
-    "content-hash": "208e1ee0dc7fb37dc8680075dc44706c",
+    "hash": "e04ac285c7230bd28150cad82fc096af",
+    "content-hash": "70faaa62b36d86b66e8ebdde9b4c761d",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.3",
+            "version": "3.18.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "899c5c982582d811754a57d2ca941c7f2dc8090b"
+                "reference": "fe2b49c01e09c74218cb681d5026f0c85c5e9094"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/899c5c982582d811754a57d2ca941c7f2dc8090b",
-                "reference": "899c5c982582d811754a57d2ca941c7f2dc8090b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fe2b49c01e09c74218cb681d5026f0c85c5e9094",
+                "reference": "fe2b49c01e09c74218cb681d5026f0c85c5e9094",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-04-27 16:44:34"
+            "time": "2016-04-28 20:07:34"
         },
         {
             "name": "composer/composer",
@@ -1253,12 +1253,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og_menu.git",
-                "reference": "7484f8d9d1655772c64dc3a50d7d03c281364e63"
+                "reference": "2eefb6d6c9fc0292ec1007e1bd9c90590d897ae9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/7484f8d9d1655772c64dc3a50d7d03c281364e63",
-                "reference": "7484f8d9d1655772c64dc3a50d7d03c281364e63",
+                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/2eefb6d6c9fc0292ec1007e1bd9c90590d897ae9",
+                "reference": "2eefb6d6c9fc0292ec1007e1bd9c90590d897ae9",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1271,7 +1271,7 @@
                 "issues": "https://drupal.org/project/issues/og_menu",
                 "source": "https://cgit.drupalcode.org/og_menu"
             },
-            "time": "2016-03-30 19:34:59"
+            "time": "2016-04-29 07:19:36"
         },
         {
             "name": "drupal/phing-drush-task",
@@ -1483,6 +1483,33 @@
                 }
             },
             "time": "2016-01-28 12:56:40"
+        },
+        {
+            "name": "ec-europa/infra",
+            "version": "0.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ec-europa/infra.git",
+                "reference": "c9a620af80db38de964c01147452325ab8e7ffda"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/c9a620af80db38de964c01147452325ab8e7ffda",
+                "reference": "c9a620af80db38de964c01147452325ab8e7ffda",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Gregory Boddin",
+                    "email": "gregory@siwhine.net"
+                }
+            ],
+            "time": "2016-04-28 21:43:37"
         },
         {
             "name": "egulias/email-validator",
@@ -5257,7 +5284,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_devel",
-                "reference": "93bd3c663b5cb3319babd0e8b8cca90a4494f26d"
+                "reference": "d774944da82270c743e2dd0d38b506281d16034b"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -5274,7 +5301,7 @@
             ],
             "description": "Helps developers work with configuration.",
             "homepage": "https://www.drupal.org/project/config_devel",
-            "time": "2016-04-04 20:56:57"
+            "time": "2016-04-28 23:59:11"
         },
         {
             "name": "drupal/config_update",

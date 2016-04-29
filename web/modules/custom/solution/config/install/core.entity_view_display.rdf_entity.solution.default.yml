@@ -9,12 +9,13 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
     - field.field.rdf_entity.solution.field_is_elibrary_creation
+    - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
+    - field.field.rdf_entity.solution.field_is_is_version_of
     - field.field.rdf_entity.solution.field_is_issue_tracker
     - field.field.rdf_entity.solution.field_is_keywords
     - field.field.rdf_entity.solution.field_is_landing_page
     - field.field.rdf_entity.solution.field_is_language
-    - field.field.rdf_entity.solution.field_is_latest_release
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_modification_date
@@ -28,6 +29,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_status
     - field.field.rdf_entity.solution.field_is_topic
     - field.field.rdf_entity.solution.field_is_translation
+    - field.field.rdf_entity.solution.field_is_version
     - field.field.rdf_entity.solution.field_is_webdav_creation
     - field.field.rdf_entity.solution.field_is_webdav_url
     - field.field.rdf_entity.solution.field_is_wiki
@@ -39,8 +41,6 @@ dependencies:
     - link
     - options
     - text
-_core:
-  default_config_hash: nPz1_tM3C94f0aZJ2Dm6jDkJK0Zb89duzzULw_9x7i8
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
 bundle: solution
@@ -93,8 +93,22 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
+  field_is_has_version:
+    weight: 26
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_is_included_asset:
     weight: 6
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_is_is_version_of:
+    weight: 25
     label: above
     settings:
       link: true
@@ -136,14 +150,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_is_latest_release:
-    weight: 5
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
   field_is_metrics_page:
     weight: 18
     label: above
@@ -246,6 +252,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_is_version:
+    weight: 27
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   field_is_webdav_creation:
     weight: 15
     label: above
