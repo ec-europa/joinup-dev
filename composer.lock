@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e04ac285c7230bd28150cad82fc096af",
-    "content-hash": "70faaa62b36d86b66e8ebdde9b4c761d",
+    "hash": "91d2aebdcb5279e86fcf490828848ca8",
+    "content-hash": "945149ff44cff7691424a3e744860904",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1489,16 +1489,16 @@
         },
         {
             "name": "ec-europa/infra",
-            "version": "0.2.2",
+            "version": "0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "c9a620af80db38de964c01147452325ab8e7ffda"
+                "reference": "30e6770f82721274627951ad4e15bcc276b9d86c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/c9a620af80db38de964c01147452325ab8e7ffda",
-                "reference": "c9a620af80db38de964c01147452325ab8e7ffda",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/30e6770f82721274627951ad4e15bcc276b9d86c",
+                "reference": "30e6770f82721274627951ad4e15bcc276b9d86c",
                 "shasum": ""
             },
             "type": "library",
@@ -1512,7 +1512,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2016-04-28 21:43:37"
+            "time": "2016-04-29 13:13:28"
         },
         {
             "name": "egulias/email-validator",
