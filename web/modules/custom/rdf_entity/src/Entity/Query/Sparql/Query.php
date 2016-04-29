@@ -2,6 +2,7 @@
 
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
+use Drupal\Component\Utility\UrlHelper
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\Query\QueryBase;
 use Drupal\Core\Entity\Query\QueryInterface;
