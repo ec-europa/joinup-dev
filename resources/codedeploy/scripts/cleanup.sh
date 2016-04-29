@@ -1,4 +1,4 @@
 #!/bin/bash
-rm -Rf /var/www/html
-mkdir /var/www/html
-chown www-data:www-data /var/www/html
+rm -Rf /srv/project
+mkdir /srv/project
+chown www-data:www-data /srv/project
