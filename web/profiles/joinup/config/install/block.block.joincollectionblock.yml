@@ -9,7 +9,7 @@ dependencies:
     - bartik
 id: joincollectionblock
 theme: bartik
-region: content
+region: sidebar_first
 weight: -7
 provider: null
 plugin: join_collection_block

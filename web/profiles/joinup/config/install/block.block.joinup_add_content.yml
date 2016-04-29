@@ -8,7 +8,7 @@ dependencies:
 id: joinup_add_content
 theme: bartik
 region: sidebar_first
-weight: null
+weight: -6
 provider: null
 plugin: add_content_block
 settings:
