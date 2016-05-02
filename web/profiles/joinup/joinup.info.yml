@@ -8,6 +8,7 @@ distribution:
 
 dependencies:
   - asset_distribution
+  - asset_release
   - block
   - ckeditor
   - collection
