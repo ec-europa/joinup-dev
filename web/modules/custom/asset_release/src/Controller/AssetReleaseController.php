@@ -55,7 +55,7 @@ class AssetReleaseController extends ControllerBase {
     // @todo Collection owners and facilitators should also have the right to
     //   create asset_releases for the collections they manage.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2448
-    if ($rdf_entity->bundle() == 'collection' && $this->currentUser()->hasPermission('propose asset_release rdf entity')) {
+    if ($rdf_entity->bundle() == 'solution' && $this->currentUser()->hasPermission('create asset_release rdf entity')) {
       return AccessResult::allowed();
     }
 

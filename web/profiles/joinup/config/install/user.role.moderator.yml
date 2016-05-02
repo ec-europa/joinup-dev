@@ -13,6 +13,7 @@ permissions:
   - 'administer users'
   - 'administer views'
   - 'create asset_distribution rdf entity'
+  - 'create asset_release rdf entity'
   - 'create custom collection page'
   - 'create solution releases'
   - 'delete og menu instance entities'
