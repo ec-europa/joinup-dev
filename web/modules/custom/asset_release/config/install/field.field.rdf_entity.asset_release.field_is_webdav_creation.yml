@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_webdav_creation
+    - rdf_entity.rdfentity.solution
+id: rdf_entity.solution.field_is_webdav_creation
+field_name: field_is_webdav_creation
+entity_type: rdf_entity
+bundle: solution
+label: 'WebDAV creation'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'Create WebDAV URL automatically'
+  off_label: 'Do not create WebDAV URL automatically'
+field_type: boolean

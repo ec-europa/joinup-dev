@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_source_code_repository
+    - rdf_entity.rdfentity.solution
+  module:
+    - link
+id: rdf_entity.solution.field_is_source_code_repository
+field_name: field_is_source_code_repository
+entity_type: rdf_entity
+bundle: solution
+label: 'Source code repository'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 0
+field_type: link
