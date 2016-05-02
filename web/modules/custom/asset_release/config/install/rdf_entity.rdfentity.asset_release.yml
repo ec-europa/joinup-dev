@@ -1,7 +1,7 @@
 langcode: en
 status: true
 dependencies: {  }
-name: 'Interoperability AssetRelease'
+name: 'Asset release'
 rid: asset_release
 description: ''
 rdftype: 'http://www.w3.org/ns/adms#Asset'

@@ -5,9 +5,9 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_target_id: 'http://joinup.eu/asset_release/affiliations_requests'
-id: rdf_entity.field_isr_affiliations_requests
-field_name: field_isr_affiliations_requests
+    mapping_target_id: 'http://purl.org/dc/terms/relation'
+id: rdf_entity.field_isr_related_solutions
+field_name: field_isr_related_solutions
 entity_type: rdf_entity
 type: entity_reference
 settings:

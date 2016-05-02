@@ -7,7 +7,7 @@ id: rdf_entity.asset_release.label
 field_name: label
 entity_type: rdf_entity
 bundle: asset_release
-label: 'Title'
+label: 'Name'
 description: ''
 required: true
 translatable: true

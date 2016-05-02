@@ -2,38 +2,26 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_form_mode.rdf_entity.release
-    - field.field.rdf_entity.asset_release.field_isr_affiliations_requests
     - field.field.rdf_entity.asset_release.field_isr_contact_information
     - field.field.rdf_entity.asset_release.field_isr_creation_date
     - field.field.rdf_entity.asset_release.field_isr_description
+    - field.field.rdf_entity.asset_release.field_isr_distribution
     - field.field.rdf_entity.asset_release.field_isr_documentation
-    - field.field.rdf_entity.asset_release.field_isr_elibrary_creation
     - field.field.rdf_entity.asset_release.field_isr_has_version
     - field.field.rdf_entity.asset_release.field_isr_included_asset
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
-    - field.field.rdf_entity.asset_release.field_isr_issue_tracker
     - field.field.rdf_entity.asset_release.field_isr_keywords
-    - field.field.rdf_entity.asset_release.field_isr_landing_page
     - field.field.rdf_entity.asset_release.field_isr_language
-    - field.field.rdf_entity.asset_release.field_isr_metrics_page
-    - field.field.rdf_entity.asset_release.field_isr_moderation
     - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
     - field.field.rdf_entity.asset_release.field_isr_policy_domain
-    - field.field.rdf_entity.asset_release.field_isr_related_asset_releases
-    - field.field.rdf_entity.asset_release.field_isr_asset_release_category
-    - field.field.rdf_entity.asset_release.field_isr_asset_release_type
-    - field.field.rdf_entity.asset_release.field_isr_source_code_repository
+    - field.field.rdf_entity.asset_release.field_isr_related_solutions
+    - field.field.rdf_entity.asset_release.field_isr_solution_type
     - field.field.rdf_entity.asset_release.field_isr_spacial_coverage
     - field.field.rdf_entity.asset_release.field_isr_status
     - field.field.rdf_entity.asset_release.field_isr_topic
     - field.field.rdf_entity.asset_release.field_isr_translation
     - field.field.rdf_entity.asset_release.field_isr_version
-    - field.field.rdf_entity.asset_release.field_isr_webdav_creation
-    - field.field.rdf_entity.asset_release.field_isr_webdav_url
-    - field.field.rdf_entity.asset_release.field_isr_wiki
-    - field.field.rdf_entity.asset_release.og_group_ref
     - rdf_entity.rdfentity.asset_release
   module:
     - file
@@ -82,30 +70,17 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
-  field_isr_affiliations_requests: true
   field_isr_contact_information: true
   field_isr_description: true
-  field_isr_elibrary_creation: true
-  field_isr_has_version: true
   field_isr_included_asset: true
   field_isr_is_version_of: true
-  field_isr_issue_tracker: true
   field_isr_keywords: true
-  field_isr_landing_page: true
   field_isr_language: true
-  field_isr_metrics_page: true
-  field_isr_moderation: true
   field_isr_owner: true
   field_isr_policy_domain: true
-  field_isr_related_asset_releases: true
-  field_isr_asset_release_category: true
-  field_isr_asset_release_type: true
-  field_isr_source_code_repository: true
+  field_isr_related_solutions: true
+  field_isr_solution_type: true
   field_isr_spacial_coverage: true
   field_isr_status: true
   field_isr_topic: true
   field_isr_translation: true
-  field_isr_webdav_creation: true
-  field_isr_webdav_url: true
-  field_isr_wiki: true
-  og_group_ref: true

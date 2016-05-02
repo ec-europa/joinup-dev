@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_isr_asset_release_type
+    - field.storage.rdf_entity.field_isr_solution_type
     - rdf_entity.rdfentity.asset_release
-id: rdf_entity.asset_release.field_isr_asset_release_type
-field_name: field_isr_asset_release_type
+id: rdf_entity.asset_release.field_isr_solution_type
+field_name: field_isr_solution_type
 entity_type: rdf_entity
 bundle: asset_release
-label: 'AssetRelease type'
+label: 'Solution type'
 description: ''
 # @todo: Change to true when taxonomies are created. See ISAICP-2244
 required: false
