@@ -6,8 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_target_id: 'http://www.w3.org/ns/dcat#keyword'
-id: rdf_entity.field_is_policy_domain
-field_name: field_is_policy_domain
+id: rdf_entity.field_isr_policy_domain
+field_name: field_isr_policy_domain
 entity_type: rdf_entity
 type: entity_reference
 settings:

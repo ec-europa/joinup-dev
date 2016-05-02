@@ -9,8 +9,8 @@ third_party_settings:
     mapping_uri: 'http://joinup.eu/asset_release/webdav_url'
     mapping_title: ''
     mapping_options: ''
-id: rdf_entity.field_is_webdav_url
-field_name: field_is_webdav_url
+id: rdf_entity.field_isr_webdav_url
+field_name: field_isr_webdav_url
 entity_type: rdf_entity
 type: link
 settings: {  }

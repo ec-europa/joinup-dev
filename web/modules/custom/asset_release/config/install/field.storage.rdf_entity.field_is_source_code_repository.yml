@@ -9,8 +9,8 @@ third_party_settings:
     mapping_uri: 'http://joinup.eu/asset_release/source_code_repository'
     mapping_title: ''
     mapping_options: ''
-id: rdf_entity.field_is_source_code_repository
-field_name: field_is_source_code_repository
+id: rdf_entity.field_isr_source_code_repository
+field_name: field_isr_source_code_repository
 entity_type: rdf_entity
 type: link
 settings: {  }

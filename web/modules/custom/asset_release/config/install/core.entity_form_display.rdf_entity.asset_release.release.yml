@@ -3,36 +3,36 @@ status: true
 dependencies:
   config:
     - core.entity_form_mode.rdf_entity.release
-    - field.field.rdf_entity.asset_release.field_is_affiliations_requests
-    - field.field.rdf_entity.asset_release.field_is_contact_information
-    - field.field.rdf_entity.asset_release.field_is_creation_date
-    - field.field.rdf_entity.asset_release.field_is_description
-    - field.field.rdf_entity.asset_release.field_is_documentation
-    - field.field.rdf_entity.asset_release.field_is_elibrary_creation
-    - field.field.rdf_entity.asset_release.field_is_has_version
-    - field.field.rdf_entity.asset_release.field_is_included_asset
-    - field.field.rdf_entity.asset_release.field_is_is_version_of
-    - field.field.rdf_entity.asset_release.field_is_issue_tracker
-    - field.field.rdf_entity.asset_release.field_is_keywords
-    - field.field.rdf_entity.asset_release.field_is_landing_page
-    - field.field.rdf_entity.asset_release.field_is_language
-    - field.field.rdf_entity.asset_release.field_is_metrics_page
-    - field.field.rdf_entity.asset_release.field_is_moderation
-    - field.field.rdf_entity.asset_release.field_is_modification_date
-    - field.field.rdf_entity.asset_release.field_is_owner
-    - field.field.rdf_entity.asset_release.field_is_policy_domain
-    - field.field.rdf_entity.asset_release.field_is_related_asset_releases
-    - field.field.rdf_entity.asset_release.field_is_asset_release_category
-    - field.field.rdf_entity.asset_release.field_is_asset_release_type
-    - field.field.rdf_entity.asset_release.field_is_source_code_repository
-    - field.field.rdf_entity.asset_release.field_is_spacial_coverage
-    - field.field.rdf_entity.asset_release.field_is_status
-    - field.field.rdf_entity.asset_release.field_is_topic
-    - field.field.rdf_entity.asset_release.field_is_translation
-    - field.field.rdf_entity.asset_release.field_is_version
-    - field.field.rdf_entity.asset_release.field_is_webdav_creation
-    - field.field.rdf_entity.asset_release.field_is_webdav_url
-    - field.field.rdf_entity.asset_release.field_is_wiki
+    - field.field.rdf_entity.asset_release.field_isr_affiliations_requests
+    - field.field.rdf_entity.asset_release.field_isr_contact_information
+    - field.field.rdf_entity.asset_release.field_isr_creation_date
+    - field.field.rdf_entity.asset_release.field_isr_description
+    - field.field.rdf_entity.asset_release.field_isr_documentation
+    - field.field.rdf_entity.asset_release.field_isr_elibrary_creation
+    - field.field.rdf_entity.asset_release.field_isr_has_version
+    - field.field.rdf_entity.asset_release.field_isr_included_asset
+    - field.field.rdf_entity.asset_release.field_isr_is_version_of
+    - field.field.rdf_entity.asset_release.field_isr_issue_tracker
+    - field.field.rdf_entity.asset_release.field_isr_keywords
+    - field.field.rdf_entity.asset_release.field_isr_landing_page
+    - field.field.rdf_entity.asset_release.field_isr_language
+    - field.field.rdf_entity.asset_release.field_isr_metrics_page
+    - field.field.rdf_entity.asset_release.field_isr_moderation
+    - field.field.rdf_entity.asset_release.field_isr_modification_date
+    - field.field.rdf_entity.asset_release.field_isr_owner
+    - field.field.rdf_entity.asset_release.field_isr_policy_domain
+    - field.field.rdf_entity.asset_release.field_isr_related_asset_releases
+    - field.field.rdf_entity.asset_release.field_isr_asset_release_category
+    - field.field.rdf_entity.asset_release.field_isr_asset_release_type
+    - field.field.rdf_entity.asset_release.field_isr_source_code_repository
+    - field.field.rdf_entity.asset_release.field_isr_spacial_coverage
+    - field.field.rdf_entity.asset_release.field_isr_status
+    - field.field.rdf_entity.asset_release.field_isr_topic
+    - field.field.rdf_entity.asset_release.field_isr_translation
+    - field.field.rdf_entity.asset_release.field_isr_version
+    - field.field.rdf_entity.asset_release.field_isr_webdav_creation
+    - field.field.rdf_entity.asset_release.field_isr_webdav_url
+    - field.field.rdf_entity.asset_release.field_isr_wiki
     - field.field.rdf_entity.asset_release.og_group_ref
     - rdf_entity.rdfentity.asset_release
   module:
@@ -43,25 +43,25 @@ targetEntityType: rdf_entity
 bundle: asset_release
 mode: release
 content:
-  field_is_creation_date:
+  field_isr_creation_date:
     type: datetime_create_update
     weight: 0
     settings:
       behaviour: create
     third_party_settings: {  }
-  field_is_documentation:
+  field_isr_documentation:
     weight: 2
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
-  field_is_modification_date:
+  field_isr_modification_date:
     type: datetime_create_update
     weight: 0
     settings:
       behaviour: create
     third_party_settings: {  }
-  field_is_version:
+  field_isr_version:
     type: string_textfield
     weight: 3
     settings:
@@ -82,30 +82,30 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
-  field_is_affiliations_requests: true
-  field_is_contact_information: true
-  field_is_description: true
-  field_is_elibrary_creation: true
-  field_is_has_version: true
-  field_is_included_asset: true
-  field_is_is_version_of: true
-  field_is_issue_tracker: true
-  field_is_keywords: true
-  field_is_landing_page: true
-  field_is_language: true
-  field_is_metrics_page: true
-  field_is_moderation: true
-  field_is_owner: true
-  field_is_policy_domain: true
-  field_is_related_asset_releases: true
-  field_is_asset_release_category: true
-  field_is_asset_release_type: true
-  field_is_source_code_repository: true
-  field_is_spacial_coverage: true
-  field_is_status: true
-  field_is_topic: true
-  field_is_translation: true
-  field_is_webdav_creation: true
-  field_is_webdav_url: true
-  field_is_wiki: true
+  field_isr_affiliations_requests: true
+  field_isr_contact_information: true
+  field_isr_description: true
+  field_isr_elibrary_creation: true
+  field_isr_has_version: true
+  field_isr_included_asset: true
+  field_isr_is_version_of: true
+  field_isr_issue_tracker: true
+  field_isr_keywords: true
+  field_isr_landing_page: true
+  field_isr_language: true
+  field_isr_metrics_page: true
+  field_isr_moderation: true
+  field_isr_owner: true
+  field_isr_policy_domain: true
+  field_isr_related_asset_releases: true
+  field_isr_asset_release_category: true
+  field_isr_asset_release_type: true
+  field_isr_source_code_repository: true
+  field_isr_spacial_coverage: true
+  field_isr_status: true
+  field_isr_topic: true
+  field_isr_translation: true
+  field_isr_webdav_creation: true
+  field_isr_webdav_url: true
+  field_isr_wiki: true
   og_group_ref: true

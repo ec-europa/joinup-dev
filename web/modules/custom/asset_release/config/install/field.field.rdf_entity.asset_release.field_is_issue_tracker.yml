@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_issue_tracker
+    - field.storage.rdf_entity.field_isr_issue_tracker
     - rdf_entity.rdfentity.asset_release
   module:
     - link
-id: rdf_entity.asset_release.field_is_issue_tracker
-field_name: field_is_issue_tracker
+id: rdf_entity.asset_release.field_isr_issue_tracker
+field_name: field_isr_issue_tracker
 entity_type: rdf_entity
 bundle: asset_release
 label: 'Issue tracker'

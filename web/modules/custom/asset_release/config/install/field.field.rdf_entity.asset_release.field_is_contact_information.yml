@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_isr_contact_information
     - rdf_entity.rdfentity.collection
     - rdf_entity.rdfentity.asset_release
-id: rdf_entity.asset_release.field_is_contact_information
-field_name: field_is_contact_information
+id: rdf_entity.asset_release.field_isr_contact_information
+field_name: field_isr_contact_information
 entity_type: rdf_entity
 bundle: asset_release
 label: 'Contact information'

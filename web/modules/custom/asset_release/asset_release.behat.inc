@@ -168,8 +168,8 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *   Thrown when a given image is not found.
    */
   protected function createAssetRelease(array $values) {
-    if (!empty($values['field_is_documentation'])) {
-      $values['field_is_documentation'] = [$this->createFile($values['field_is_documentation'], $this->getMinkParameter('files_path'))];
+    if (!empty($values['field_isr_documentation'])) {
+      $values['field_isr_documentation'] = [$this->createFile($values['field_isr_documentation'], $this->getMinkParameter('files_path'))];
     }
 
     $values['rid'] = 'asset_release';
@@ -229,7 +229,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   public static function getReleaseByName($title) {
     $query = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'asset_release')
-      ->exists('field_is_is_version_of')
+      ->exists('field_isr_is_version_of')
       ->condition('label', $title)
       ->range(0, 1);
     $result = $query->execute();
@@ -259,7 +259,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     // asset_release, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'asset_release')
-      ->notExists('field_is_is_version_of')
+      ->notExists('field_isr_is_version_of')
       ->count()
       ->execute();
     if ($actual != $number) {
@@ -286,7 +286,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     // asset_release, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'asset_release')
-      ->exists('field_is_is_version_of')
+      ->exists('field_isr_is_version_of')
       ->count()
       ->execute();
     if ($actual != $number) {
@@ -317,34 +317,34 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     return [
       'uri' => 'id',
       'title' => 'label',
-      'affiliations requests' => 'field_is_affiliations_requests',
-      'contact information' => 'field_is_contact_information',
-      'creation date' => 'field_is_creation_date',
-      'description' => 'field_is_description',
-      'distribution' => 'field_is_distribution',
-      'documentation' => 'field_is_documentation',
-      'elibrary creation' => 'field_is_elibrary_creation',
-      'included asset' => 'field_is_included_asset',
-      'issue tracker' => 'field_is_issue_tracker',
-      'keywords' => 'field_is_keywords',
-      'landing page' => 'field_is_landing_page',
-      'language' => 'field_is_language',
-      'latest release' => 'field_is_latest_release',
-      'metrics page' => 'field_is_metrics_page',
-      'moderation' => 'field_is_moderation',
-      'modification date' => 'field_is_modification_date',
-      'owner' => 'field_is_owner',
-      'related asset_releases' => 'field_is_related_asset_releases',
-      'asset_release category' => 'field_is_asset_release_category',
-      'asset_release type' => 'field_is_asset_release_type',
-      'source code repository' => 'field_is_source_code_repository',
-      'spacial coverage' => 'field_is_spacial_coverage',
-      'status' => 'field_is_status',
-      'topic' => 'field_is_topic',
-      'translation' => 'field_is_translation',
-      'webdav creation' => 'field_is_webdav_creation',
-      'webdav url' => 'field_is_webdav_url',
-      'wiki' => 'field_is_wiki',
+      'affiliations requests' => 'field_isr_affiliations_requests',
+      'contact information' => 'field_isr_contact_information',
+      'creation date' => 'field_isr_creation_date',
+      'description' => 'field_isr_description',
+      'distribution' => 'field_isr_distribution',
+      'documentation' => 'field_isr_documentation',
+      'elibrary creation' => 'field_isr_elibrary_creation',
+      'included asset' => 'field_isr_included_asset',
+      'issue tracker' => 'field_isr_issue_tracker',
+      'keywords' => 'field_isr_keywords',
+      'landing page' => 'field_isr_landing_page',
+      'language' => 'field_isr_language',
+      'latest release' => 'field_isr_latest_release',
+      'metrics page' => 'field_isr_metrics_page',
+      'moderation' => 'field_isr_moderation',
+      'modification date' => 'field_isr_modification_date',
+      'owner' => 'field_isr_owner',
+      'related asset_releases' => 'field_isr_related_asset_releases',
+      'asset_release category' => 'field_isr_asset_release_category',
+      'asset_release type' => 'field_isr_asset_release_type',
+      'source code repository' => 'field_isr_source_code_repository',
+      'spacial coverage' => 'field_isr_spacial_coverage',
+      'status' => 'field_isr_status',
+      'topic' => 'field_isr_topic',
+      'translation' => 'field_isr_translation',
+      'webdav creation' => 'field_isr_webdav_creation',
+      'webdav url' => 'field_isr_webdav_url',
+      'wiki' => 'field_isr_wiki',
       'collection' => 'og_group_ref',
     ];
   }
@@ -363,10 +363,10 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    */
   protected function convertValueAliases($fields) {
     $mapped_values = [
-      'field_is_moderation' => ['no' => 0, 'yes' => 1],
-      'field_is_elibrary_creation' =>
+      'field_isr_moderation' => ['no' => 0, 'yes' => 1],
+      'field_isr_elibrary_creation' =>
         ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
-      'field_is_webdav_creation' => ['no' => 0, 'yes' => 1],
+      'field_isr_webdav_creation' => ['no' => 0, 'yes' => 1],
     ];
 
     foreach ($fields as $field => $value) {
@@ -380,9 +380,9 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     }
 
     // Check for the OG group.
-    if (isset($fields['field_is_distribution'])) {
-      $distribution = $this->getRdfEntityByLabel($fields['field_is_distribution'], 'asset_distribution');
-      $fields['field_is_distribution'] = [$distribution->id()];
+    if (isset($fields['field_isr_distribution'])) {
+      $distribution = $this->getRdfEntityByLabel($fields['field_isr_distribution'], 'asset_distribution');
+      $fields['field_isr_distribution'] = [$distribution->id()];
     }
 
     // Check for the OG group.

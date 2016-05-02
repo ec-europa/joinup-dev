@@ -9,8 +9,8 @@ third_party_settings:
     mapping_uri: 'http://joinup.eu/asset_release/metrics_page'
     mapping_title: ''
     mapping_options: ''
-id: rdf_entity.field_is_metrics_page
-field_name: field_is_metrics_page
+id: rdf_entity.field_isr_metrics_page
+field_name: field_isr_metrics_page
 entity_type: rdf_entity
 type: link
 settings: {  }

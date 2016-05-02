@@ -6,8 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_target_id: 'http://purl.org/dc/terms/DCMIType'
-id: rdf_entity.field_is_asset_release_category
-field_name: field_is_asset_release_category
+id: rdf_entity.field_isr_asset_release_category
+field_name: field_isr_asset_release_category
 entity_type: rdf_entity
 type: entity_reference
 settings:

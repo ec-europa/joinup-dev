@@ -42,9 +42,9 @@ class UniqueAssetReleaseTitleValidator extends ConstraintValidator {
     $id_key = $entity->getEntityType()->getKey('id');
 
     // Check if the entity is a release.
-    if (!empty($entity->get('field_is_is_version_of')->getValue()[0]['target_id'])) {
+    if (!empty($entity->get('field_isr_is_version_of')->getValue()[0]['target_id'])) {
       // Get the asset_release this entity belongs to.
-      $parent = Rdf::load($entity->get('field_is_is_version_of')
+      $parent = Rdf::load($entity->get('field_isr_is_version_of')
         ->getValue()[0]['target_id']);
 
       // The release can have the same name as the asset_release it belongs to.
@@ -53,7 +53,7 @@ class UniqueAssetReleaseTitleValidator extends ConstraintValidator {
       }
 
       // The release can have the same name as the sibling releases.
-      foreach ($parent->get('field_is_has_version')->getValue() as $release) {
+      foreach ($parent->get('field_isr_has_version')->getValue() as $release) {
         $sibling = Rdf::load($release['target_id']);
         if ($entity->label() == $sibling->label()) {
           return;
@@ -67,8 +67,8 @@ class UniqueAssetReleaseTitleValidator extends ConstraintValidator {
       ->condition($field_name, $item->value)
       ->condition('rid', 'asset_release');
     // @todo: Discuss about it whether we need it.
-    if (empty($entity->get('field_is_is_version_of')->getValue()[0]['target_id'])) {
-      $query->notExists('field_is_is_version_of');
+    if (empty($entity->get('field_isr_is_version_of')->getValue()[0]['target_id'])) {
+      $query->notExists('field_isr_is_version_of');
     }
 
     $value_taken = (bool) $query->range(0, 1)

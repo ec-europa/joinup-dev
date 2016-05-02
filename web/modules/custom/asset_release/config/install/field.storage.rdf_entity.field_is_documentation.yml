@@ -9,8 +9,8 @@ third_party_settings:
     mapping_target_id: 'foaf:page'
     mapping_display: ''
     mapping_description: ''
-id: rdf_entity.field_is_documentation
-field_name: field_is_documentation
+id: rdf_entity.field_isr_documentation
+field_name: field_isr_documentation
 entity_type: rdf_entity
 type: file
 settings:

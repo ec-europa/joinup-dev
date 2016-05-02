@@ -2,10 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_asset_release_category
+    - field.storage.rdf_entity.field_isr_asset_release_category
     - rdf_entity.rdfentity.asset_release
-id: rdf_entity.asset_release.field_is_asset_release_category
-field_name: field_is_asset_release_category
+id: rdf_entity.asset_release.field_isr_asset_release_category
+field_name: field_isr_asset_release_category
 entity_type: rdf_entity
 bundle: asset_release
 label: 'AssetRelease Category'

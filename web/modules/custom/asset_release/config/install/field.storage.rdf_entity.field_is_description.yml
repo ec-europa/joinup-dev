@@ -8,8 +8,8 @@ third_party_settings:
   rdf_entity:
     mapping_value: 'http://purl.org/dc/terms/description'
     mapping_format: ''
-id: rdf_entity.field_is_description
-field_name: field_is_description
+id: rdf_entity.field_isr_description
+field_name: field_isr_description
 entity_type: rdf_entity
 type: text_long
 settings: {  }

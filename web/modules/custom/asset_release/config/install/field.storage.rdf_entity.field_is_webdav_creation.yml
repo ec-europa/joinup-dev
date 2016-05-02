@@ -6,8 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_value: 'http://joinup.eu/asset_release/webdav_creation'
-id: rdf_entity.field_is_webdav_creation
-field_name: field_is_webdav_creation
+id: rdf_entity.field_isr_webdav_creation
+field_name: field_isr_webdav_creation
 entity_type: rdf_entity
 type: boolean
 settings: {  }

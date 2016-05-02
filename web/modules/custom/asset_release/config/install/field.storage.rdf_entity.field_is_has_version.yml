@@ -6,8 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_target_id: 'http://purl.org/dc/terms/hasVersion'
-id: rdf_entity.field_is_has_version
-field_name: field_is_has_version
+id: rdf_entity.field_isr_has_version
+field_name: field_isr_has_version
 entity_type: rdf_entity
 type: entity_reference
 settings:

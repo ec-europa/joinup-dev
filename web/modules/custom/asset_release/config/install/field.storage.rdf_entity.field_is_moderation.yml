@@ -6,8 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_value: 'http://joinup.eu/asset_release/moderation'
-id: rdf_entity.field_is_moderation
-field_name: field_is_moderation
+id: rdf_entity.field_isr_moderation
+field_name: field_isr_moderation
 entity_type: rdf_entity
 type: boolean
 settings: {  }

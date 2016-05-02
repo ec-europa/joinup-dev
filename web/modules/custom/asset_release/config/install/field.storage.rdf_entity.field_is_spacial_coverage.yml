@@ -6,8 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_target_id: 'http://www.w3.org/ns/dcat#spatial'
-id: rdf_entity.field_is_spacial_coverage
-field_name: field_is_spacial_coverage
+id: rdf_entity.field_isr_spacial_coverage
+field_name: field_isr_spacial_coverage
 entity_type: rdf_entity
 type: entity_reference
 settings:

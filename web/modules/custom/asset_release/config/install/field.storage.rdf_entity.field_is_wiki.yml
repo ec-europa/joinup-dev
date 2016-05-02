@@ -9,8 +9,8 @@ third_party_settings:
     mapping_uri: 'http://joinup.eu/asset_release/wiki'
     mapping_title: ''
     mapping_options: ''
-id: rdf_entity.field_is_wiki
-field_name: field_is_wiki
+id: rdf_entity.field_isr_wiki
+field_name: field_isr_wiki
 entity_type: rdf_entity
 type: link
 settings: {  }

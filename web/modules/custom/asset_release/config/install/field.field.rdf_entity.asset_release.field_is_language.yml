@@ -2,10 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_language
+    - field.storage.rdf_entity.field_isr_language
     - rdf_entity.rdfentity.asset_release
-id: rdf_entity.asset_release.field_is_language
-field_name: field_is_language
+id: rdf_entity.asset_release.field_isr_language
+field_name: field_isr_language
 entity_type: rdf_entity
 bundle: asset_release
 label: Language

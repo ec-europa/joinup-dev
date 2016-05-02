@@ -2,10 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_affiliations_requests
+    - field.storage.rdf_entity.field_isr_affiliations_requests
     - rdf_entity.rdfentity.asset_release
-id: rdf_entity.asset_release.field_is_affiliations_requests
-field_name: field_is_affiliations_requests
+id: rdf_entity.asset_release.field_isr_affiliations_requests
+field_name: field_isr_affiliations_requests
 entity_type: rdf_entity
 bundle: asset_release
 label: 'Affiliations requests'

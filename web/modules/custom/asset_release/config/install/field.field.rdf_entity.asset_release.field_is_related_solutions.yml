@@ -2,10 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_related_asset_releases
+    - field.storage.rdf_entity.field_isr_related_asset_releases
     - rdf_entity.rdfentity.asset_release
-id: rdf_entity.asset_release.field_is_related_asset_releases
-field_name: field_is_related_asset_releases
+id: rdf_entity.asset_release.field_isr_related_asset_releases
+field_name: field_isr_related_asset_releases
 entity_type: rdf_entity
 bundle: asset_release
 label: 'Related AssetReleases'

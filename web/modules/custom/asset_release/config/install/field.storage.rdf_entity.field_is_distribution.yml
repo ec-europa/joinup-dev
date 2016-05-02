@@ -6,8 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_target_id: 'http://www.w3.org/ns/dcat#distribution'
-id: rdf_entity.field_is_distribution
-field_name: field_is_distribution
+id: rdf_entity.field_isr_distribution
+field_name: field_isr_distribution
 entity_type: rdf_entity
 type: entity_reference
 settings:

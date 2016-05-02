@@ -6,8 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_target_id: 'http://www.w3.org/ns/adms#status'
-id: rdf_entity.field_is_status
-field_name: field_is_status
+id: rdf_entity.field_isr_status
+field_name: field_isr_status
 entity_type: rdf_entity
 type: entity_reference
 settings:

@@ -6,8 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping_target_id: 'http://purl.org/dc/terms/publisher'
-id: rdf_entity.field_is_owner
-field_name: field_is_owner
+id: rdf_entity.field_isr_owner
+field_name: field_isr_owner
 entity_type: rdf_entity
 type: entity_reference
 settings:
