@@ -6,7 +6,7 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_uri: 'http://joinup.eu/solution/metrics_page'
+    mapping_uri: 'http://joinup.eu/asset_release/metrics_page'
     mapping_title: ''
     mapping_options: ''
 id: rdf_entity.field_is_metrics_page

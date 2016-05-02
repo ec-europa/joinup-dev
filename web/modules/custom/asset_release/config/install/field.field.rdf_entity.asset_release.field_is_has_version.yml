@@ -3,11 +3,11 @@ status: true
 dependencies:
   config:
     - field.storage.rdf_entity.field_is_has_version
-    - rdf_entity.rdfentity.solution
-id: rdf_entity.solution.field_is_has_version
+    - rdf_entity.rdfentity.asset_release
+id: rdf_entity.asset_release.field_is_has_version
 field_name: field_is_has_version
 entity_type: rdf_entity
-bundle: solution
+bundle: asset_release
 label: 'Has version'
 description: ''
 required: false
@@ -18,7 +18,7 @@ settings:
   handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
-      solution: solution
+      asset_release: asset_release
     sort:
       field: _none
 field_type: entity_reference

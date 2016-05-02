@@ -6,7 +6,7 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_value: 'http://joinup.eu/solution/elibrary_creation'
+    mapping_value: 'http://joinup.eu/asset_release/elibrary_creation'
 id: rdf_entity.field_is_elibrary_creation
 field_name: field_is_elibrary_creation
 entity_type: rdf_entity

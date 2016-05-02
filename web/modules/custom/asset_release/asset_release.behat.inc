@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\solution\solution.behat.inc.
+ * Contains Drupal\asset_release\asset_release.behat.inc.
  */
 
 use Behat\Gherkin\Node\TableNode;
@@ -14,7 +14,7 @@ use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
- * Behat step definitions for testing solutions.
+ * Behat step definitions for testing asset_releases.
  */
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
@@ -23,85 +23,85 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use RdfEntityTrait;
 
   /**
-   * Test solutions.
+   * Test asset_releases.
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]
    */
-  protected $solutions = [];
+  protected $asset_releases = [];
 
   /**
-   * Navigates to the add solution form.
+   * Navigates to the add asset_release form.
    *
-   * @When (I )go to the add solution form
-   * @When (I )visit the add solution form
+   * @When (I )go to the add asset_release form
+   * @When (I )visit the add asset_release form
    */
   public function visitAddSolutionForm() {
-    $this->visitPath('/rdf_entity/add/solution');
+    $this->visitPath('/rdf_entity/add/asset_release');
   }
 
   /**
-   * Navigates to the canonical page display of a solution.
+   * Navigates to the canonical page display of a asset_release.
    *
-   * @param string $solution
-   *   The name of the solution.
+   * @param string $asset_release
+   *   The name of the asset_release.
    *
-   * @When (I )go to (the homepage of )the :solution solution
-   * @When (I )visit (the homepage of )the :solution solution
+   * @When (I )go to (the homepage of )the :asset_release asset_release
+   * @When (I )visit (the homepage of )the :asset_release asset_release
    */
-  public function visitCollection($solution) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
-    $solution = $this->getSolutionByName($solution);
-    $this->visitPath($solution->url());
+  public function visitCollection($asset_release) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
+    $asset_release = $this->getSolutionByName($asset_release);
+    $this->visitPath($asset_release->url());
   }
 
   /**
-   * Navigates to the edit form of a solution.
+   * Navigates to the edit form of a asset_release.
    *
-   * @param string $solution
-   *   The name of the solution.
+   * @param string $asset_release
+   *   The name of the asset_release.
    *
-   * @When (I )go to the :solution solution edit form
-   * @When (I )visit the :solution solution edit form
+   * @When (I )go to the :asset_release asset_release edit form
+   * @When (I )visit the :asset_release asset_release edit form
    */
-  public function visitEditSolution($solution) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
-    $solution = $this->getSolutionByName($solution);
-    $path = $solution->url('edit-form');
+  public function visitEditSolution($asset_release) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
+    $asset_release = $this->getSolutionByName($asset_release);
+    $path = $asset_release->url('edit-form');
     $this->visitPath($path);
   }
 
   /**
-   * Creates a number of solutions with data provided in a table.
+   * Creates a number of asset_releases with data provided in a table.
    *
    * Table format:
    * @codingStandardsIgnoreStart
    * title        | description            | document | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki
-   * Foo solution | This is a foo solution | text.pdf | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
-   * Bar solution | This is a bar solution | text.pdf | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
+   * Foo asset_release | This is a foo asset_release | text.pdf | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
+   * Bar asset_release | This is a bar asset_release | text.pdf | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
    * @codingStandardsIgnoreEnd
    *
    * Fields title, description and elibrary creation are mandatory.
    *
-   * @param TableNode $solution_table
-   *   The solution data.
+   * @param TableNode $asset_release_table
+   *   The asset_release data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )solutions:
+   * @Given (the following )asset_releases:
    */
-  public function givenSolutions(TableNode $solution_table) {
-    $aliases = self::solutionFieldAliases();
+  public function givenSolutions(TableNode $asset_release_table) {
+    $aliases = self::asset_releaseFieldAliases();
 
-    foreach ($solution_table->getColumnsHash() as $solution) {
+    foreach ($asset_release_table->getColumnsHash() as $asset_release) {
       $values = [];
       // Replace the column aliases with the actual field names.
-      foreach ($solution as $key => $value) {
+      foreach ($asset_release as $key => $value) {
         if (array_key_exists($key, $aliases)) {
           $values[$aliases[$key]] = $value;
         }
         else {
-          throw new \Exception("Unknown column '$key' in solution table.");
+          throw new \Exception("Unknown column '$key' in asset_release table.");
         }
       };
 
@@ -112,41 +112,41 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Creates a solution with data provided in a table.
+   * Creates a asset_release with data provided in a table.
    *
    * Table format:
-   * | title             | Sample solution                         |
-   * | description       | A sample solution                       |
+   * | title             | Sample asset_release                         |
+   * | description       | A sample asset_release                       |
    * | document          | text.pdf                                |
    * | moderation        | no|yes                                  |
    * | closed            | no|yes                                  |
    * | elibrary creation | facilitators|members|registered users   |
    * | landing page      | http://example.com/foobar/landing       |
    * | webdav creation   | no|yes                                  |
-   * | webdav url        | http://joinup.eu/solution/foobar/webdav |
+   * | webdav url        | http://joinup.eu/asset_release/foobar/webdav |
    * | wiki              | http://example.wiki/foobar/wiki         |
    *
    * Fields title, description and elibrary creation are required.
    *
-   * @param TableNode $solution_table
-   *   The solution data.
+   * @param TableNode $asset_release_table
+   *   The asset_release data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )solution:
+   * @Given (the following )asset_release:
    */
-  public function givenSolution(TableNode $solution_table) {
-    $aliases = self::solutionFieldAliases();
+  public function givenSolution(TableNode $asset_release_table) {
+    $aliases = self::asset_releaseFieldAliases();
 
     $values = [];
     // Replace the column aliases with the actual field names.
-    foreach ($solution_table->getRowsHash() as $key => $value) {
+    foreach ($asset_release_table->getRowsHash() as $key => $value) {
       if (array_key_exists($key, $aliases)) {
         $values[$aliases[$key]] = $value;
       }
       else {
-        throw new \Exception("Unknown column '$key' in solution table.");
+        throw new \Exception("Unknown column '$key' in asset_release table.");
       }
     };
 
@@ -156,13 +156,13 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Creates a solution from the given property and field data.
+   * Creates a asset_release from the given property and field data.
    *
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
-   *   A new solution entity.
+   *   A new asset_release entity.
    *
    * @throws \Exception
    *   Thrown when a given image is not found.
@@ -172,50 +172,50 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       $values['field_is_documentation'] = [$this->createFile($values['field_is_documentation'], $this->getMinkParameter('files_path'))];
     }
 
-    $values['rid'] = 'solution';
+    $values['rid'] = 'asset_release';
     $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
-    $solution = Rdf::create($values);
-    $solution->save();
-    $this->solutions[$solution->id()] = $solution;
+    $asset_release = Rdf::create($values);
+    $asset_release->save();
+    $this->asset_releases[$asset_release->id()] = $asset_release;
 
-    return $solution;
+    return $asset_release;
   }
 
   /**
-   * Deletes a solution.
+   * Deletes a asset_release.
    *
-   * @param string $solution
-   *   The name of the solution.
+   * @param string $asset_release
+   *   The name of the asset_release.
    *
-   * @When (I )delete the :solution solution
+   * @When (I )delete the :asset_release asset_release
    */
-  public function deleteSolution($solution) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
-    $this->getSolutionByName($solution)->delete();
+  public function deleteSolution($asset_release) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
+    $this->getSolutionByName($asset_release)->delete();
   }
 
   /**
    * Returns the Solution with the given name.
    *
-   * If multiple solution have the same name, the first one will be returned.
+   * If multiple asset_release have the same name, the first one will be returned.
    *
    * @param string $title
-   *   The solution name.
+   *   The asset_release name.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
-   *   The solution.
+   *   The asset_release.
    *
    * @throws \InvalidArgumentException
-   *   Thrown when a solution with the given name does not exist.
+   *   Thrown when a asset_release with the given name does not exist.
    */
   protected function getSolutionByName($title) {
-    return $this->getRdfEntityByLabel($title, 'solution');
+    return $this->getRdfEntityByLabel($title, 'asset_release');
   }
 
   /**
    * Returns the release with the given name.
    *
-   * If multiple solution have the same name, the first one will be returned.
+   * If multiple asset_release have the same name, the first one will be returned.
    *
    * @param string $title
    *   The release name.
@@ -228,7 +228,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public static function getReleaseByName($title) {
     $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
+      ->condition('rid', 'asset_release')
       ->exists('field_is_is_version_of')
       ->condition('label', $title)
       ->range(0, 1);
@@ -242,23 +242,23 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Checks the number of available solutions.
+   * Checks the number of available asset_releases.
    *
    * @param int $number
-   *   The expected number of solutions.
+   *   The expected number of asset_releases.
    *
    * @throws \Exception
    *   Throws an exception when the expected number is not equal to the given.
    *
-   * @Then I should have :number solution(s)
+   * @Then I should have :number asset_release(s)
    */
   public function assertSolutionCount($number) {
-    // We cannot rely on $this->assertRdfEntityCount() because a solution shares
+    // We cannot rely on $this->assertRdfEntityCount() because a asset_release shares
     // the same bundle with a release. We need to distinguish them by the
     // presence of the 'is_version_of' field - if this field is missing it is a
-    // solution, if it is present it is a release.
+    // asset_release, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
+      ->condition('rid', 'asset_release')
       ->notExists('field_is_is_version_of')
       ->count()
       ->execute();
@@ -281,11 +281,11 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function assertReleaseCount($number) {
     // We cannot rely on $this->assertRdfEntityCount() because a release shares
-    // the same bundle with a solution. We need to distinguish them by the
+    // the same bundle with a asset_release. We need to distinguish them by the
     // presence of the 'is_version_of' field - if this field is missing it is a
-    // solution, if it is present it is a release.
+    // asset_release, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
+      ->condition('rid', 'asset_release')
       ->exists('field_is_is_version_of')
       ->count()
       ->execute();
@@ -295,14 +295,14 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Remove any created solutions.
+   * Remove any created asset_releases.
    *
    * @AfterScenario
    */
   public function cleanSolutions() {
-    // Remove any solutions that were created.
-    foreach ($this->solutions as $solution) {
-      $solution->delete();
+    // Remove any asset_releases that were created.
+    foreach ($this->asset_releases as $asset_release) {
+      $asset_release->delete();
     }
   }
 
@@ -312,7 +312,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @return array
    *    Mapping.
    */
-  protected static function solutionFieldAliases() {
+  protected static function asset_releaseFieldAliases() {
     // Mapping alias - field name.
     return [
       'uri' => 'id',
@@ -334,9 +334,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'moderation' => 'field_is_moderation',
       'modification date' => 'field_is_modification_date',
       'owner' => 'field_is_owner',
-      'related solutions' => 'field_is_related_solutions',
-      'solution category' => 'field_is_solution_category',
-      'solution type' => 'field_is_solution_type',
+      'related asset_releases' => 'field_is_related_asset_releases',
+      'asset_release category' => 'field_is_asset_release_category',
+      'asset_release type' => 'field_is_asset_release_type',
       'source code repository' => 'field_is_source_code_repository',
       'spacial coverage' => 'field_is_spacial_coverage',
       'status' => 'field_is_status',

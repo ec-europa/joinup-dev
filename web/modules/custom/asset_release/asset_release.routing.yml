@@ -1,11 +1,11 @@
 # Route to create a custom page that belongs to an rdf_entity.asset_distribution
-solution.collection_solution.add:
-  path: 'rdf_entity/{rdf_entity}/solution/add'
+asset_release.collection_asset_release.add:
+  path: 'rdf_entity/{rdf_entity}/asset_release/add'
   defaults:
-    _controller: '\Drupal\solution\Controller\SolutionController::add'
-    _title: 'Add solution'
+    _controller: '\Drupal\asset_release\Controller\SolutionController::add'
+    _title: 'Add asset_release'
   requirements:
-    _custom_access: '\Drupal\solution\Controller\SolutionController::createSolutionAccess'
+    _custom_access: '\Drupal\asset_release\Controller\SolutionController::createSolutionAccess'
   options:
     parameters:
       rdf_entity:

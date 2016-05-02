@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_related_solutions
-    - rdf_entity.rdfentity.solution
-id: rdf_entity.solution.field_is_related_solutions
-field_name: field_is_related_solutions
+    - field.storage.rdf_entity.field_is_related_asset_releases
+    - rdf_entity.rdfentity.asset_release
+id: rdf_entity.asset_release.field_is_related_asset_releases
+field_name: field_is_related_asset_releases
 entity_type: rdf_entity
-bundle: solution
+bundle: asset_release
 label: 'Related Solutions'
-description: "Related solutions (similar, same context, same application, etc.)\r\n"
+description: "Related asset_releases (similar, same context, same application, etc.)\r\n"
 required: false
 translatable: false
 default_value: {  }
@@ -18,7 +18,7 @@ settings:
   handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
-      solution: solution
+      asset_release: asset_release
     sort:
       field: _none
 field_type: entity_reference

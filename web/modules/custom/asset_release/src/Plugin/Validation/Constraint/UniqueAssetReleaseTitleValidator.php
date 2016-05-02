@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\solution\Plugin\Validation\Constraint;
+namespace Drupal\asset_release\Plugin\Validation\Constraint;
 
 use Drupal\Component\Utility\Unicode;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -11,18 +11,18 @@ use Symfony\Component\Validator\ConstraintValidator;
  * Validates that a field is unique for the given entity type within a bundle.
  *
  * This is the validator for the UniqueSolutionInTitle constraint.
- * The solutions and the releases are actually the same entity. A solution
- * can have many releases and a release belongs to one solution. A release
- * cannot have releases or multiple solutions.
+ * The asset_releases and the releases are actually the same entity. A asset_release
+ * can have many releases and a release belongs to one asset_release. A release
+ * cannot have releases or multiple asset_releases.
  *
- * The solution entity is defined by having an empty field is_version_of.
- * This is enough because releases can only be created through the solution and
+ * The asset_release entity is defined by having an empty field is_version_of.
+ * This is enough because releases can only be created through the asset_release and
  * automatically have the is_version_of field filled. An entity that has the
  * field is_version_of filled is automatically a release.
  *
- * The following checks make sure that a solution must have a unique title among
- * solutions and a release must have a unique title against other solutions and
- * their releases but can have the same name as their parent solution or their
+ * The following checks make sure that a asset_release must have a unique title among
+ * asset_releases and a release must have a unique title against other asset_releases and
+ * their releases but can have the same name as their parent asset_release or their
  * sibling releases.
  */
 class UniqueSolutionTitleValidator extends ConstraintValidator {
@@ -43,11 +43,11 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
 
     // Check if the entity is a release.
     if (!empty($entity->get('field_is_is_version_of')->getValue()[0]['target_id'])) {
-      // Get the solution this entity belongs to.
+      // Get the asset_release this entity belongs to.
       $parent = Rdf::load($entity->get('field_is_is_version_of')
         ->getValue()[0]['target_id']);
 
-      // The release can have the same name as the solution it belongs to.
+      // The release can have the same name as the asset_release it belongs to.
       if ($parent->label() == $entity->label()) {
         return;
       }
@@ -65,7 +65,7 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
       // The id could be NULL, so we cast it to 0 in that case.
       ->condition($id_key, (int) $items->getEntity()->id(), '<>')
       ->condition($field_name, $item->value)
-      ->condition('rid', 'solution');
+      ->condition('rid', 'asset_release');
     // @todo: Discuss about it whether we need it.
     if (empty($entity->get('field_is_is_version_of')->getValue()[0]['target_id'])) {
       $query->notExists('field_is_is_version_of');

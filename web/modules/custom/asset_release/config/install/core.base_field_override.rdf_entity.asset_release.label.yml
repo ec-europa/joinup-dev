@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.rdfentity.solution
-id: rdf_entity.solution.label
+    - rdf_entity.rdfentity.asset_release
+id: rdf_entity.asset_release.label
 field_name: label
 entity_type: rdf_entity
-bundle: solution
+bundle: asset_release
 label: 'Title'
 description: ''
 required: true

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\solution\Cache;
+namespace Drupal\asset_release\Cache;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\Context\CacheContextInterface;
@@ -8,9 +8,9 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Defines the solution cache context service.
+ * Defines the asset_release cache context service.
  *
- * Cache context ID: 'solution'.
+ * Cache context ID: 'asset_release'.
  */
 class SolutionCacheContext extends ContainerAware implements CacheContextInterface {
 
@@ -42,11 +42,11 @@ class SolutionCacheContext extends ContainerAware implements CacheContextInterfa
    * {@inheritdoc}
    */
   public function getContext() {
-    /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    if (($solution = $this->requestStack->getCurrentRequest()->get('rdf_entity')) && $solution->bundle() == 'solution') {
-      return 'solution.' . $solution->id();
+    /** @var \Drupal\rdf_entity\RdfInterface $asset_release */
+    if (($asset_release = $this->requestStack->getCurrentRequest()->get('rdf_entity')) && $asset_release->bundle() == 'asset_release') {
+      return 'asset_release.' . $asset_release->id();
     }
-    return 'solution.none';
+    return 'asset_release.none';
   }
 
   /**

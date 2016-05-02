@@ -3,13 +3,13 @@ status: true
 dependencies:
   config:
     - field.storage.rdf_entity.field_is_documentation
-    - rdf_entity.rdfentity.solution
+    - rdf_entity.rdfentity.asset_release
   module:
     - file
-id: rdf_entity.solution.field_is_documentation
+id: rdf_entity.asset_release.field_is_documentation
 field_name: field_is_documentation
 entity_type: rdf_entity
-bundle: solution
+bundle: asset_release
 label: Documentation
 description: ''
 required: false

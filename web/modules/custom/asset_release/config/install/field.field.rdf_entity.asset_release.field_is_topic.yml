@@ -3,11 +3,11 @@ status: true
 dependencies:
   config:
     - field.storage.rdf_entity.field_is_topic
-    - rdf_entity.rdfentity.solution
-id: rdf_entity.solution.field_is_topic
+    - rdf_entity.rdfentity.asset_release
+id: rdf_entity.asset_release.field_is_topic
 field_name: field_is_topic
 entity_type: rdf_entity
-bundle: solution
+bundle: asset_release
 label: Topic
 description: ''
 required: false

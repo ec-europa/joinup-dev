@@ -3,44 +3,44 @@ status: true
 dependencies:
   config:
     - core.entity_form_mode.rdf_entity.release
-    - field.field.rdf_entity.solution.field_is_affiliations_requests
-    - field.field.rdf_entity.solution.field_is_contact_information
-    - field.field.rdf_entity.solution.field_is_creation_date
-    - field.field.rdf_entity.solution.field_is_description
-    - field.field.rdf_entity.solution.field_is_documentation
-    - field.field.rdf_entity.solution.field_is_elibrary_creation
-    - field.field.rdf_entity.solution.field_is_has_version
-    - field.field.rdf_entity.solution.field_is_included_asset
-    - field.field.rdf_entity.solution.field_is_is_version_of
-    - field.field.rdf_entity.solution.field_is_issue_tracker
-    - field.field.rdf_entity.solution.field_is_keywords
-    - field.field.rdf_entity.solution.field_is_landing_page
-    - field.field.rdf_entity.solution.field_is_language
-    - field.field.rdf_entity.solution.field_is_metrics_page
-    - field.field.rdf_entity.solution.field_is_moderation
-    - field.field.rdf_entity.solution.field_is_modification_date
-    - field.field.rdf_entity.solution.field_is_owner
-    - field.field.rdf_entity.solution.field_is_policy_domain
-    - field.field.rdf_entity.solution.field_is_related_solutions
-    - field.field.rdf_entity.solution.field_is_solution_category
-    - field.field.rdf_entity.solution.field_is_solution_type
-    - field.field.rdf_entity.solution.field_is_source_code_repository
-    - field.field.rdf_entity.solution.field_is_spacial_coverage
-    - field.field.rdf_entity.solution.field_is_status
-    - field.field.rdf_entity.solution.field_is_topic
-    - field.field.rdf_entity.solution.field_is_translation
-    - field.field.rdf_entity.solution.field_is_version
-    - field.field.rdf_entity.solution.field_is_webdav_creation
-    - field.field.rdf_entity.solution.field_is_webdav_url
-    - field.field.rdf_entity.solution.field_is_wiki
-    - field.field.rdf_entity.solution.og_group_ref
-    - rdf_entity.rdfentity.solution
+    - field.field.rdf_entity.asset_release.field_is_affiliations_requests
+    - field.field.rdf_entity.asset_release.field_is_contact_information
+    - field.field.rdf_entity.asset_release.field_is_creation_date
+    - field.field.rdf_entity.asset_release.field_is_description
+    - field.field.rdf_entity.asset_release.field_is_documentation
+    - field.field.rdf_entity.asset_release.field_is_elibrary_creation
+    - field.field.rdf_entity.asset_release.field_is_has_version
+    - field.field.rdf_entity.asset_release.field_is_included_asset
+    - field.field.rdf_entity.asset_release.field_is_is_version_of
+    - field.field.rdf_entity.asset_release.field_is_issue_tracker
+    - field.field.rdf_entity.asset_release.field_is_keywords
+    - field.field.rdf_entity.asset_release.field_is_landing_page
+    - field.field.rdf_entity.asset_release.field_is_language
+    - field.field.rdf_entity.asset_release.field_is_metrics_page
+    - field.field.rdf_entity.asset_release.field_is_moderation
+    - field.field.rdf_entity.asset_release.field_is_modification_date
+    - field.field.rdf_entity.asset_release.field_is_owner
+    - field.field.rdf_entity.asset_release.field_is_policy_domain
+    - field.field.rdf_entity.asset_release.field_is_related_asset_releases
+    - field.field.rdf_entity.asset_release.field_is_asset_release_category
+    - field.field.rdf_entity.asset_release.field_is_asset_release_type
+    - field.field.rdf_entity.asset_release.field_is_source_code_repository
+    - field.field.rdf_entity.asset_release.field_is_spacial_coverage
+    - field.field.rdf_entity.asset_release.field_is_status
+    - field.field.rdf_entity.asset_release.field_is_topic
+    - field.field.rdf_entity.asset_release.field_is_translation
+    - field.field.rdf_entity.asset_release.field_is_version
+    - field.field.rdf_entity.asset_release.field_is_webdav_creation
+    - field.field.rdf_entity.asset_release.field_is_webdav_url
+    - field.field.rdf_entity.asset_release.field_is_wiki
+    - field.field.rdf_entity.asset_release.og_group_ref
+    - rdf_entity.rdfentity.asset_release
   module:
     - file
     - rdf_entity
-id: rdf_entity.solution.release
+id: rdf_entity.asset_release.release
 targetEntityType: rdf_entity
-bundle: solution
+bundle: asset_release
 mode: release
 content:
   field_is_creation_date:
@@ -97,9 +97,9 @@ hidden:
   field_is_moderation: true
   field_is_owner: true
   field_is_policy_domain: true
-  field_is_related_solutions: true
-  field_is_solution_category: true
-  field_is_solution_type: true
+  field_is_related_asset_releases: true
+  field_is_asset_release_category: true
+  field_is_asset_release_type: true
   field_is_source_code_repository: true
   field_is_spacial_coverage: true
   field_is_status: true

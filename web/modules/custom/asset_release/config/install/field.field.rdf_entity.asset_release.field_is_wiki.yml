@@ -3,15 +3,15 @@ status: true
 dependencies:
   config:
     - field.storage.rdf_entity.field_is_wiki
-    - rdf_entity.rdfentity.solution
+    - rdf_entity.rdfentity.asset_release
   module:
     - link
-id: rdf_entity.solution.field_is_wiki
+id: rdf_entity.asset_release.field_is_wiki
 field_name: field_is_wiki
 entity_type: rdf_entity
-bundle: solution
+bundle: asset_release
 label: Wiki
-description: 'The documentation page regarding the solution'
+description: 'The documentation page regarding the asset_release'
 required: false
 translatable: false
 default_value: {  }

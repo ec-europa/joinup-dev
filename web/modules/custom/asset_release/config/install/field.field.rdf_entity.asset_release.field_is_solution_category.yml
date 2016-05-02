@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_solution_category
-    - rdf_entity.rdfentity.solution
-id: rdf_entity.solution.field_is_solution_category
-field_name: field_is_solution_category
+    - field.storage.rdf_entity.field_is_asset_release_category
+    - rdf_entity.rdfentity.asset_release
+id: rdf_entity.asset_release.field_is_asset_release_category
+field_name: field_is_asset_release_category
 entity_type: rdf_entity
-bundle: solution
+bundle: asset_release
 label: 'Solution Category'
 description: ''
 # @todo: Change to true when taxonomies are created. See ISAICP-2244

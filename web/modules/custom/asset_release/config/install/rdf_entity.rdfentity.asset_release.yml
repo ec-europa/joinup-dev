@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: 'Interoperability Solution'
-rid: solution
+rid: asset_release
 description: ''
 rdftype: 'http://www.w3.org/ns/adms#Asset'
 rdf_label: 'http://purl.org/dc/terms/title'

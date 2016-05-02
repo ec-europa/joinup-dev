@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\solution\Controller;
+namespace Drupal\asset_release\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
@@ -12,7 +12,7 @@ use Drupal\rdf_entity\RdfInterface;
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.
  *
- * @package Drupal\solution\Controller
+ * @package Drupal\asset_release\Controller
  */
 class SolutionController extends ControllerBase {
 
@@ -30,18 +30,18 @@ class SolutionController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity) {
-    $solution = $this->entityTypeManager()->getStorage('rdf_entity')->create(array(
-      'rid' => 'solution',
+    $asset_release = $this->entityTypeManager()->getStorage('rdf_entity')->create(array(
+      'rid' => 'asset_release',
       'og_group_ref' => $rdf_entity->id(),
     ));
 
-    $form = $this->entityFormBuilder()->getForm($solution);
+    $form = $this->entityFormBuilder()->getForm($asset_release);
 
     return $form;
   }
 
   /**
-   * Handles access to the solution add form through collection pages.
+   * Handles access to the asset_release add form through collection pages.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the custom page is created.
@@ -51,11 +51,11 @@ class SolutionController extends ControllerBase {
    */
   public function createSolutionAccess(RdfInterface $rdf_entity) {
     // Check that the passed in RDF entity is a collection, and that the user
-    // has the permission to create solutions.
+    // has the permission to create asset_releases.
     // @todo Collection owners and facilitators should also have the right to
-    //   create solutions for the collections they manage.
+    //   create asset_releases for the collections they manage.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2448
-    if ($rdf_entity->bundle() == 'collection' && $this->currentUser()->hasPermission('propose solution rdf entity')) {
+    if ($rdf_entity->bundle() == 'collection' && $this->currentUser()->hasPermission('propose asset_release rdf entity')) {
       return AccessResult::allowed();
     }
 

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains hooks regarding the solution rdf entity bundle.
+ * Contains hooks regarding the asset_release rdf entity bundle.
  */
 
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -10,8 +10,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
-function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
-  if ($entity_type->id() == 'rdf_entity' && $bundle == 'solution' && !empty($fields['label'])) {
+function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'asset_release' && !empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueSolutionTitle', []);
   }
 }
@@ -19,7 +19,7 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
 /**
  * Implements hook_entity_type_alter().
  */
-function solution_entity_type_alter(array &$entity_types) {
+function asset_release_entity_type_alter(array &$entity_types) {
   /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
   $entity_types['rdf_entity']->setFormclass('release', 'Drupal\rdf_entity\Form\RdfForm');
 }

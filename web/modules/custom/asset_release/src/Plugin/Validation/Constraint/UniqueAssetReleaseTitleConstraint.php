@@ -1,18 +1,18 @@
 <?php
 
-namespace Drupal\solution\Plugin\Validation\Constraint;
+namespace Drupal\asset_release\Plugin\Validation\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Checks if a solution's title is unique within the solutions.
+ * Checks if a asset_release's title is unique within the asset_releases.
  *
  * This constraint takes into account that releases can have same title as the
  * original entity.
  *
  * @Constraint(
  *   id = "UniqueSolutionTitle",
- *   label = @Translation("Unique title within a solution constraint", context = "Validation"),
+ *   label = @Translation("Unique title within a asset_release constraint", context = "Validation"),
  * )
  */
 class UniqueSolutionTitleConstraint extends Constraint {
@@ -23,7 +23,7 @@ class UniqueSolutionTitleConstraint extends Constraint {
    * {@inheritdoc}
    */
   public function validatedBy() {
-    return '\Drupal\solution\Plugin\Validation\Constraint\UniqueSolutionTitleValidator';
+    return '\Drupal\asset_release\Plugin\Validation\Constraint\UniqueSolutionTitleValidator';
   }
 
   /**
