@@ -27,7 +27,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]
    */
-  protected $asset_releases = [];
+  protected $assetReleases = [];
 
   /**
    * Navigates to the add asset_release form.
@@ -197,7 +197,8 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   /**
    * Returns the AssetRelease with the given name.
    *
-   * If multiple asset_release have the same name, the first one will be returned.
+   * If multiple asset_release have the same name,
+   * the first one will be returned.
    *
    * @param string $title
    *   The asset_release name.
@@ -215,7 +216,8 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   /**
    * Returns the release with the given name.
    *
-   * If multiple asset_release have the same name, the first one will be returned.
+   * If multiple asset_release have the same name,
+   * the first one will be returned.
    *
    * @param string $title
    *   The release name.
@@ -253,7 +255,8 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @Then I should have :number asset_release(s)
    */
   public function assertAssetReleaseCount($number) {
-    // We cannot rely on $this->assertRdfEntityCount() because a asset_release shares
+    // We cannot rely on $this->assertRdfEntityCount()
+    // because a asset_release shares
     // the same bundle with a release. We need to distinguish them by the
     // presence of the 'is_version_of' field - if this field is missing it is a
     // asset_release, if it is present it is a release.
@@ -312,7 +315,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @return array
    *    Mapping.
    */
-  protected static function asset_releaseFieldAliases() {
+  protected static function assetReleaseFieldAliases() {
     // Mapping alias - field name.
     return [
       'uri' => 'id',
