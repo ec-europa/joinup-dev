@@ -117,7 +117,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $bundle_rdf_bundle_mapping = array();
     foreach ($this->entityTypeManager->getStorage('rdf_type')
                ->loadMultiple() as $entity) {
-      $bundle_rdf_bundle_mapping[$entity->rdftype] = $entity->id();
+      $bundle_rdf_bundle_mapping[$entity->id()] = $entity->rdftype;
     }
     return $bundle_rdf_bundle_mapping;
   }
@@ -133,14 +133,13 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       return;
     }
     if (!$bundles) {
-      $bundles = array_values($bundle_mapping);
+      $bundles = array_keys($bundle_mapping);
     }
     $rdf_bundels = [];
-    $bundle_mapping = array_flip($bundle_mapping);
     foreach ($bundles as $bundle) {
       $rdf_bundels[] = $bundle_mapping[$bundle];
     }
-    return "(<" . implode(">, <", $rdf_bundels) . ">)";
+    return "(<" . implode(">, <", array_unique($rdf_bundels)) . ">)";
   }
 
   /**
@@ -195,7 +194,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 SELECT ?uri, ?bundle, ?version
 WHERE {
   ?uri rdf:type ?bundle.
-  OPTIONAL { ?uri  <http://purl.org/dc/terms/isVerionOf>  ?version }.
+  OPTIONAL { ?uri  <http://purl.org/dc/terms/isVersionOf>  ?version }.
   FILTER (?uri IN (  $ids_string ))
 }
 GROUP BY ?uri
@@ -213,10 +212,9 @@ QUERY;
       if (isset($ids_rdf_mapping[$uri])) {
         continue;
       }
-      if (isset($bundle_mapping[$bundle])) {
-        $bundle_name = $bundle_mapping[$bundle];
+      if ($bundle_name = array_search($bundle, $bundle_mapping)) {
         if ($bundle_name == 'solution' && $version) {
-          $bundle_name = 'release';
+          $bundle_name = 'asset_release';
         }
         $ids_rdf_mapping[$uri] = $bundle_name;
       }
@@ -397,7 +395,7 @@ QUERY;
     // Save the bundle.
     $bundle_target = $entity->get('rid')->getValue();
     $bundle = $bundle_target[0]['target_id'];
-    $rdf_mapping = array_flip($this->getRdfBundleMapping());
+    $rdf_mapping = $this->getRdfBundleMapping();
     $rdf_field = $rdf_mapping[$bundle];
     $pred = 'rdf:type';
     $insert .= $subj . ' ' . $pred . ' <' . $rdf_field . '>  .' . "\n";
