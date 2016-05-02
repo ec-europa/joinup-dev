@@ -5,16 +5,14 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_value: 'owl:versionInfo'
-id: rdf_entity.field_isr_version
-field_name: field_isr_version
+    mapping_value: 'adms:versionNotes'
+    mapping_format: ''
+id: rdf_entity.field_isr_release_notes
+field_name: field_isr_release_notes
 entity_type: rdf_entity
-type: string
-settings:
-  max_length: 255
-  is_ascii: false
-  case_sensitive: false
-module: core
+type: text_long
+settings: {  }
+module: text
 locked: false
 cardinality: 1
 translatable: true

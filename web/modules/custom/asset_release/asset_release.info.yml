@@ -29,6 +29,8 @@ config_devel:
   - field.field.rdf_entity.asset_release.field_isr_modification_date
   - field.field.rdf_entity.asset_release.field_isr_owner
   - field.field.rdf_entity.asset_release.field_isr_policy_domain
+  - field.field.rdf_entity.asset_release.field_isr_release_number
+  - field.field.rdf_entity.asset_release.field_isr_release_notes
   - field.field.rdf_entity.asset_release.field_isr_related_solutions
   - field.field.rdf_entity.asset_release.field_isr_solution_type
   - field.field.rdf_entity.asset_release.field_isr_spacial_coverage
@@ -49,6 +51,8 @@ config_devel:
   - field.storage.rdf_entity.field_isr_modification_date
   - field.storage.rdf_entity.field_isr_owner
   - field.storage.rdf_entity.field_isr_policy_domain
+  - field.storage.rdf_entity.field_isr_release_number
+  - field.storage.rdf_entity.field_isr_release_notes
   - field.storage.rdf_entity.field_isr_related_solutions
   - field.storage.rdf_entity.field_isr_solution_type
   - field.storage.rdf_entity.field_isr_spacial_coverage

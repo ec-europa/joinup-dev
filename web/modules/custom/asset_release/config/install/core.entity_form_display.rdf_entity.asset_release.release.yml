@@ -15,13 +15,15 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
     - field.field.rdf_entity.asset_release.field_isr_policy_domain
+    - field.field.rdf_entity.asset_release.field_isr_release_number
+    - field.field.rdf_entity.asset_release.field_isr_release_notes
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
     - field.field.rdf_entity.asset_release.field_isr_solution_type
     - field.field.rdf_entity.asset_release.field_isr_spacial_coverage
     - field.field.rdf_entity.asset_release.field_isr_status
     - field.field.rdf_entity.asset_release.field_isr_topic
     - field.field.rdf_entity.asset_release.field_isr_translation
-    - field.field.rdf_entity.asset_release.field_isr_version
+    - field.field.rdf_entity.asset_release.field_isr_release_number
     - rdf_entity.rdfentity.asset_release
   module:
     - file
@@ -49,7 +51,7 @@ content:
     settings:
       behaviour: create
     third_party_settings: {  }
-  field_isr_version:
+  field_isr_release_number:
     type: string_textfield
     weight: 3
     settings:
