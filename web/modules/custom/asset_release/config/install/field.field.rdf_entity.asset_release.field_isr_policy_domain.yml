@@ -10,7 +10,6 @@ entity_type: rdf_entity
 bundle: asset_release
 label: 'Policy Domain'
 description: ''
-# @todo: Change to true when taxonomies are created. See ISAICP-2244
 required: false
 translatable: false
 default_value: {  }

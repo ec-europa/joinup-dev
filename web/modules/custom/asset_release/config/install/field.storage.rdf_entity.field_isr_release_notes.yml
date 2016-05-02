@@ -3,6 +3,7 @@ status: true
 dependencies:
   module:
     - rdf_entity
+    - text
 third_party_settings:
   rdf_entity:
     mapping_value: 'adms:versionNotes'

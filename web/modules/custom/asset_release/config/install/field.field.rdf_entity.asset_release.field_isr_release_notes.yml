@@ -4,6 +4,8 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_isr_release_notes
     - rdf_entity.rdfentity.asset_release
+  module:
+    - text
 id: rdf_entity.asset_release.field_isr_release_notes
 field_name: field_isr_release_notes
 entity_type: rdf_entity

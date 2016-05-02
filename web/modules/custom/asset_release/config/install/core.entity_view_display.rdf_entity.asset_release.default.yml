@@ -15,21 +15,18 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
     - field.field.rdf_entity.asset_release.field_isr_policy_domain
-    - field.field.rdf_entity.asset_release.field_isr_release_number
-    - field.field.rdf_entity.asset_release.field_isr_release_notes
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
+    - field.field.rdf_entity.asset_release.field_isr_release_notes
+    - field.field.rdf_entity.asset_release.field_isr_release_number
     - field.field.rdf_entity.asset_release.field_isr_solution_type
     - field.field.rdf_entity.asset_release.field_isr_spacial_coverage
     - field.field.rdf_entity.asset_release.field_isr_status
     - field.field.rdf_entity.asset_release.field_isr_topic
     - field.field.rdf_entity.asset_release.field_isr_translation
-    - field.field.rdf_entity.asset_release.field_isr_release_number
     - rdf_entity.rdfentity.asset_release
   module:
     - datetime
     - file
-    - link
-    - options
     - text
 id: rdf_entity.asset_release.default
 targetEntityType: rdf_entity
@@ -38,6 +35,20 @@ mode: default
 content:
   field_isr_affiliations_requests:
     weight: 22
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_isr_asset_release_category:
+    weight: 3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_isr_asset_release_type:
+    weight: 4
     label: above
     settings:
       link: true
@@ -189,20 +200,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_isr_asset_release_category:
-    weight: 3
+  field_isr_release_number:
+    weight: 27
     label: above
     settings:
-      link: true
+      link_to_entity: false
     third_party_settings: {  }
-    type: entity_reference_label
-  field_isr_asset_release_type:
-    weight: 4
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
+    type: string
   field_isr_source_code_repository:
     weight: 21
     label: above
@@ -242,13 +246,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_isr_release_number:
-    weight: 27
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
   field_isr_webdav_creation:
     weight: 15
     label: above
@@ -288,4 +285,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  field_isr_related_solutions: true
+  field_isr_release_notes: true
+  field_isr_solution_type: true
   og_group_ref: true
