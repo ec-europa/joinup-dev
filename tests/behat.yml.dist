@@ -19,6 +19,8 @@ default:
     Drupal\DrupalExtension:
       api_driver: 'drupal'
       blackbox: ~
+      region_map:
+        Primary menu: ".region-primary-menu"
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:
