@@ -32,7 +32,7 @@ class AssetReleaseController extends ControllerBase {
   public function add(RdfInterface $rdf_entity) {
     $asset_release = $this->entityTypeManager()->getStorage('rdf_entity')->create(array(
       'rid' => 'asset_release',
-      'og_group_ref' => $rdf_entity->id(),
+      'field_isr_is_version_of' => $rdf_entity->id(),
     ));
 
     $form = $this->entityFormBuilder()->getForm($asset_release);
