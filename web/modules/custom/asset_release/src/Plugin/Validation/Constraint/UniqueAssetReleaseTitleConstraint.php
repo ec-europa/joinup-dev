@@ -11,11 +11,11 @@ use Symfony\Component\Validator\Constraint;
  * original entity.
  *
  * @Constraint(
- *   id = "UniqueSolutionTitle",
+ *   id = "UniqueAssetReleaseTitle",
  *   label = @Translation("Unique title within a asset_release constraint", context = "Validation"),
  * )
  */
-class UniqueSolutionTitleConstraint extends Constraint {
+class UniqueAssetReleaseTitleConstraint extends Constraint {
 
   public $message = 'Content with @field_name %value already exists.';
 
@@ -23,7 +23,7 @@ class UniqueSolutionTitleConstraint extends Constraint {
    * {@inheritdoc}
    */
   public function validatedBy() {
-    return '\Drupal\asset_release\Plugin\Validation\Constraint\UniqueSolutionTitleValidator';
+    return '\Drupal\asset_release\Plugin\Validation\Constraint\UniqueAssetReleaseTitleValidator';
   }
 
   /**

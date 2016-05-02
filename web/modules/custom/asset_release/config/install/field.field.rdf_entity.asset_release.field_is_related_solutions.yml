@@ -8,7 +8,7 @@ id: rdf_entity.asset_release.field_is_related_asset_releases
 field_name: field_is_related_asset_releases
 entity_type: rdf_entity
 bundle: asset_release
-label: 'Related Solutions'
+label: 'Related AssetReleases'
 description: "Related asset_releases (similar, same context, same application, etc.)\r\n"
 required: false
 translatable: false

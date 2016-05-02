@@ -8,7 +8,7 @@ id: rdf_entity.asset_release.field_is_asset_release_type
 field_name: field_is_asset_release_type
 entity_type: rdf_entity
 bundle: asset_release
-label: 'Solution type'
+label: 'AssetRelease type'
 description: ''
 # @todo: Change to true when taxonomies are created. See ISAICP-2244
 required: false

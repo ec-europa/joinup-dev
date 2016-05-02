@@ -10,7 +10,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 /**
  * Validates that a field is unique for the given entity type within a bundle.
  *
- * This is the validator for the UniqueSolutionInTitle constraint.
+ * This is the validator for the UniqueAssetReleaseInTitle constraint.
  * The asset_releases and the releases are actually the same entity. A asset_release
  * can have many releases and a release belongs to one asset_release. A release
  * cannot have releases or multiple asset_releases.
@@ -25,7 +25,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  * their releases but can have the same name as their parent asset_release or their
  * sibling releases.
  */
-class UniqueSolutionTitleValidator extends ConstraintValidator {
+class UniqueAssetReleaseTitleValidator extends ConstraintValidator {
 
   /**
    * {@inheritdoc}

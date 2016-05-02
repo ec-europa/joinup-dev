@@ -7,14 +7,14 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Class SolutionController.
+ * Class AssetReleaseController.
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.
  *
  * @package Drupal\asset_release\Controller
  */
-class SolutionController extends ControllerBase {
+class AssetReleaseController extends ControllerBase {
 
   /**
    * Controller for the base form.
@@ -49,7 +49,7 @@ class SolutionController extends ControllerBase {
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createSolutionAccess(RdfInterface $rdf_entity) {
+  public function createAssetReleaseAccess(RdfInterface $rdf_entity) {
     // Check that the passed in RDF entity is a collection, and that the user
     // has the permission to create asset_releases.
     // @todo Collection owners and facilitators should also have the right to

@@ -2,10 +2,10 @@
 asset_release.collection_asset_release.add:
   path: 'rdf_entity/{rdf_entity}/asset_release/add'
   defaults:
-    _controller: '\Drupal\asset_release\Controller\SolutionController::add'
+    _controller: '\Drupal\asset_release\Controller\AssetReleaseController::add'
     _title: 'Add asset_release'
   requirements:
-    _custom_access: '\Drupal\asset_release\Controller\SolutionController::createSolutionAccess'
+    _custom_access: '\Drupal\asset_release\Controller\AssetReleaseController::createAssetReleaseAccess'
   options:
     parameters:
       rdf_entity:

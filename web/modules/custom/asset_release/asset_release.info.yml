@@ -1,4 +1,4 @@
-name: Interoperability Solution
+name: Interoperability AssetRelease
 type: module
 description: The interoperability asset_release RDF entity.
 core: 8.x

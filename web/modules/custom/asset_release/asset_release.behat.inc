@@ -16,7 +16,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 /**
  * Behat step definitions for testing asset_releases.
  */
-class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use FileTrait;
   use RandomGeneratorTrait;
@@ -35,7 +35,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @When (I )go to the add asset_release form
    * @When (I )visit the add asset_release form
    */
-  public function visitAddSolutionForm() {
+  public function visitAddAssetReleaseForm() {
     $this->visitPath('/rdf_entity/add/asset_release');
   }
 
@@ -50,7 +50,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function visitCollection($asset_release) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
-    $asset_release = $this->getSolutionByName($asset_release);
+    $asset_release = $this->getAssetReleaseByName($asset_release);
     $this->visitPath($asset_release->url());
   }
 
@@ -63,9 +63,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @When (I )go to the :asset_release asset_release edit form
    * @When (I )visit the :asset_release asset_release edit form
    */
-  public function visitEditSolution($asset_release) {
+  public function visitEditAssetRelease($asset_release) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
-    $asset_release = $this->getSolutionByName($asset_release);
+    $asset_release = $this->getAssetReleaseByName($asset_release);
     $path = $asset_release->url('edit-form');
     $this->visitPath($path);
   }
@@ -90,7 +90,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @Given (the following )asset_releases:
    */
-  public function givenSolutions(TableNode $asset_release_table) {
+  public function givenAssetReleases(TableNode $asset_release_table) {
     $aliases = self::asset_releaseFieldAliases();
 
     foreach ($asset_release_table->getColumnsHash() as $asset_release) {
@@ -107,7 +107,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
       $values = $this->convertValueAliases($values);
 
-      $this->createSolution($values);
+      $this->createAssetRelease($values);
     }
   }
 
@@ -136,7 +136,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @Given (the following )asset_release:
    */
-  public function givenSolution(TableNode $asset_release_table) {
+  public function givenAssetRelease(TableNode $asset_release_table) {
     $aliases = self::asset_releaseFieldAliases();
 
     $values = [];
@@ -152,7 +152,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     $values = $this->convertValueAliases($values);
 
-    $this->createSolution($values);
+    $this->createAssetRelease($values);
   }
 
   /**
@@ -167,7 +167,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  protected function createSolution(array $values) {
+  protected function createAssetRelease(array $values) {
     if (!empty($values['field_is_documentation'])) {
       $values['field_is_documentation'] = [$this->createFile($values['field_is_documentation'], $this->getMinkParameter('files_path'))];
     }
@@ -189,13 +189,13 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @When (I )delete the :asset_release asset_release
    */
-  public function deleteSolution($asset_release) {
+  public function deleteAssetRelease($asset_release) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
-    $this->getSolutionByName($asset_release)->delete();
+    $this->getAssetReleaseByName($asset_release)->delete();
   }
 
   /**
-   * Returns the Solution with the given name.
+   * Returns the AssetRelease with the given name.
    *
    * If multiple asset_release have the same name, the first one will be returned.
    *
@@ -208,7 +208,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \InvalidArgumentException
    *   Thrown when a asset_release with the given name does not exist.
    */
-  protected function getSolutionByName($title) {
+  protected function getAssetReleaseByName($title) {
     return $this->getRdfEntityByLabel($title, 'asset_release');
   }
 
@@ -252,7 +252,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @Then I should have :number asset_release(s)
    */
-  public function assertSolutionCount($number) {
+  public function assertAssetReleaseCount($number) {
     // We cannot rely on $this->assertRdfEntityCount() because a asset_release shares
     // the same bundle with a release. We need to distinguish them by the
     // presence of the 'is_version_of' field - if this field is missing it is a
@@ -299,7 +299,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @AfterScenario
    */
-  public function cleanSolutions() {
+  public function cleanAssetReleases() {
     // Remove any asset_releases that were created.
     foreach ($this->asset_releases as $asset_release) {
       $asset_release->delete();

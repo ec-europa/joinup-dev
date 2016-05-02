@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *
  * Cache context ID: 'asset_release'.
  */
-class SolutionCacheContext extends ContainerAware implements CacheContextInterface {
+class AssetReleaseCacheContext extends ContainerAware implements CacheContextInterface {
 
   /**
    * The request stack.
@@ -22,7 +22,7 @@ class SolutionCacheContext extends ContainerAware implements CacheContextInterfa
   protected $requestStack;
 
   /**
-   * Constructs a new SolutionCacheContext service.
+   * Constructs a new AssetReleaseCacheContext service.
    *
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The request stack.
@@ -35,7 +35,7 @@ class SolutionCacheContext extends ContainerAware implements CacheContextInterfa
    * {@inheritdoc}
    */
   public static function getLabel() {
-    return t('Solution');
+    return t('AssetRelease');
   }
 
   /**

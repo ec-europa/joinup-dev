@@ -12,7 +12,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 /**
  * Sets the current asset_release as a context on asset_release routes.
  */
-class SolutionRouteContext implements ContextProviderInterface {
+class AssetReleaseRouteContext implements ContextProviderInterface {
 
   use StringTranslationTrait;
 
@@ -24,7 +24,7 @@ class SolutionRouteContext implements ContextProviderInterface {
   protected $routeMatch;
 
   /**
-   * Constructs a new SolutionRouteContext.
+   * Constructs a new AssetReleaseRouteContext.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match object.
@@ -64,7 +64,7 @@ class SolutionRouteContext implements ContextProviderInterface {
    * {@inheritdoc}
    */
   public function getAvailableContexts() {
-    $context = new Context(new ContextDefinition('entity:rdf_entity:asset_release', $this->t('Solution from URL')));
+    $context = new Context(new ContextDefinition('entity:rdf_entity:asset_release', $this->t('AssetRelease from URL')));
     return ['asset_release' => $context];
   }
 
