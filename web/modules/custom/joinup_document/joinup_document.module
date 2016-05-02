@@ -5,53 +5,20 @@
  * Contains joinup_document.module.
  */
 
-use \Drupal\core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_entity_bundle_field_info_alter().
  */
-function joinup_document_form_node_document_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'joinup_document_form_default_validate';
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function joinup_document_form_node_document_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'joinup_document_form_default_validate';
-}
-
-/**
- * Validates the default joinup document form.
- *
- * The validation includes the file submission and the short title.
- * The file can be submitted either by file or by link so not both of these
- * fields can be empty.
- * If the short title field is filled, it has to be unique in a global scope.
- *
- * @param array $form
- *   The form array.
- * @param \Drupal\core\Form\FormStateInterface $form_state
- *   The form state object.
- */
-function joinup_document_form_default_validate(&$form, FormStateInterface $form_state) {
-  // Check the file submission.
-  if (!(empty($form_state->getValue('field_document_file')[0]['fids'])
-    xor empty($form_state->getValue('field_document_source_url')[0]['uri']))
-  ) {
-    $form_state->setErrorByName('field_document_file');
-    $form_state->setErrorByName('field_document_source_url', t('One of the file sources must be filled.'));
-  }
-
-  // Check the short title.
-  if (!empty($form_state->getValue('field_document_short_title')[0]['value'])) {
-    // Load all document entities with this short title.
-    $results = \Drupal::entityQuery('node')
-      ->condition('type', 'document')
-      ->condition('field_document_short_title', $form_state->getValue('field_document_short_title')[0]['value'])
-      ->execute();
-    if (!empty(reset($results))) {
-      $form_state->setErrorByName('field_document_short_title', t('There is already a document with this short title.'));
+function joinup_document_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  // @todo Add test coverage for these constraints.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2499
+  if ($entity_type->id() == 'node' && $bundle == 'document') {
+    if (!empty($fields['field_document_short_title'])) {
+      $fields['field_document_short_title']->addConstraint('UniqueField');
+    }
+    if (!empty($fields['title'])) {
+      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['document']]);
     }
   }
 }

@@ -8,8 +8,6 @@ third_party_settings:
   rdf_entity:
     mapping_value: 'http://purl.org/dc/terms/description'
     mapping_format: ''
-_core:
-  default_config_hash: RuS5tI8YVR46AIwnSMCFV8gP_fqZ_hEPD-Ryy-xyQY0
 id: rdf_entity.field_ar_description
 field_name: field_ar_description
 entity_type: rdf_entity

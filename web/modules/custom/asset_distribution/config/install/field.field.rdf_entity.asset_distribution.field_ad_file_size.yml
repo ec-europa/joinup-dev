@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ad_file_size
+    - rdf_entity.rdfentity.asset_distribution
+id: rdf_entity.asset_distribution.field_ad_file_size
+field_name: field_ad_file_size
+entity_type: rdf_entity
+bundle: asset_distribution
+label: 'File size'
+description: "Size of the distribution payload file (in KB).\r\nIf the distribution is hosted in Joinup, you can omit this field."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: KB
+field_type: float

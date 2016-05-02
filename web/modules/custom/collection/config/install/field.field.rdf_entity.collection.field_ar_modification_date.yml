@@ -6,8 +6,6 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - datetime
-_core:
-  default_config_hash: 5ZGp3vrRJR9ylBO5ATCH4FkAulC0JzcQLukv5N65FDc
 id: rdf_entity.collection.field_ar_modification_date
 field_name: field_ar_modification_date
 entity_type: rdf_entity

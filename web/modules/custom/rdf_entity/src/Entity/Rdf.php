@@ -76,6 +76,7 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *     "view_builder" = "Drupal\rdf_entity\RdfEntityViewBuilder",
  *     "list_builder" = "Drupal\rdf_entity\Entity\Controller\RdfListBuilder",
  *     "form" = {
+ *       "default" = "Drupal\rdf_entity\Form\RdfForm",
  *       "add" = "Drupal\rdf_entity\Form\RdfForm",
  *       "edit" = "Drupal\rdf_entity\Form\RdfForm",
  *       "delete" = "\Drupal\rdf_entity\Form\RdfDeleteForm",
@@ -240,22 +241,6 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    return $fields;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function bundleFieldDefinitions(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions) {
-    // @todo This is the key to proper bundle fields..!
-    // @todo Only invoked after cache clear.
-    $fields = array();
-    // If ($bundle == 'admssw_softwareproject') {.
-    $fields['test'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Test bundle admssw_softwareproject'))
-      ->setDescription(t('The ID of the Contact entity.'))
-      ->setReadOnly(TRUE);
-    // }.
     return $fields;
   }
 

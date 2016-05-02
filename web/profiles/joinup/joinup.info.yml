@@ -7,11 +7,13 @@ distribution:
   name: Joinup
 
 dependencies:
+  - asset_distribution
   - block
   - ckeditor
   - collection
   - contextual
   - custom_page
+  - dashboard
   - dynamic_page_cache
   - editor
   - file
@@ -19,6 +21,8 @@ dependencies:
   - image
   - joinup_document
   - joinup_event
+  - joinup_news
+  - joinup_user
   - menu_ui
   - node
   - og
@@ -27,8 +31,8 @@ dependencies:
   - page_cache
   - path
   - r4032login
-  - rdf_demo
   - rdf_entity
+  - solution
   - text
   - toolbar
   - search_api
@@ -65,13 +69,13 @@ config_devel:
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
   - core.date_format.fallback
-  - core.date_format.html_date
   - core.date_format.html_datetime
+  - core.date_format.html_date
   - core.date_format.html_month
   - core.date_format.html_time
   - core.date_format.html_week
-  - core.date_format.html_year
   - core.date_format.html_yearless_date
+  - core.date_format.html_year
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
@@ -79,16 +83,14 @@ config_devel:
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
   - core.entity_form_display.user.user.register
-  - core.entity_form_mode.rdf_entity.propose
+  - core.entity_form_mode.node.collection_custom_page
+  - core.entity_form_display.rdf_entity.solution.release
   - core.entity_form_mode.rdf_entity.propose
   - core.entity_form_mode.user.register
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.default
   - core.entity_view_mode.node.full
-  - core.entity_form_display.node.custom_page.collection_custom_page
-  - core.entity_form_mode.node.collection_custom_page
-  - core.entity_form_display.rdf_entity.collection.propose
-  - core.entity_form_mode.rdf_entity.propose
+  - core.entity_view_mode.user.full
   - editor.editor.content_editor
   - field.field.ogmenu_instance.navigation.og_group_ref
   - field.field.user.user.field_user_family_name
@@ -98,7 +100,8 @@ config_devel:
   - field.field.user.user.field_user_photo
   - field.field.user.user.field_user_professional_domain
   - field.field.user.user.field_user_professional_profile
-  - field.field.user.user.og_group_ref
+  - field.storage.node.body
+  - field.storage.node.og_group_ref
   - field.storage.ogmenu_instance.og_group_ref
   - field.storage.user.field_user_family_name
   - field.storage.user.field_user_first_name
@@ -107,17 +110,6 @@ config_devel:
   - field.storage.user.field_user_photo
   - field.storage.user.field_user_professional_domain
   - field.storage.user.field_user_professional_profile
-  - field.storage.user.og_group_ref
-  - field.storage.node.body
-  - field.storage.node.field_additional_address_info
-  - field.storage.node.field_agenda
-  - field.storage.node.field_contact_email
-  - field.storage.node.field_end_date
-  - field.storage.node.field_logo
-  - field.storage.node.field_short_title
-  - field.storage.node.field_start_date
-  - field.storage.node.field_web_url
-  - field.storage.node.og_group_ref
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html
@@ -136,3 +128,4 @@ config_devel:
   - user.role.moderator
   - user.settings
   - views.view.collections
+  - views.view.user_admin_people
