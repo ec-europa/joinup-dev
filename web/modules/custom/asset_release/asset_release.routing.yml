@@ -1,5 +1,5 @@
 # Route to create a release that belongs to an rdf_entity.solution
-asset_release.collection_asset_release.add:
+asset_release.solution_asset_release.add:
   path: 'rdf_entity/{rdf_entity}/asset_release/add'
   defaults:
     _controller: '\Drupal\asset_release\Controller\AssetReleaseController::add'

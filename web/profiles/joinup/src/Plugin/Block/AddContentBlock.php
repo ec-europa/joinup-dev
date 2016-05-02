@@ -109,22 +109,19 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       ];
     }
 
-    if (!empty($this->solutionContext)) {
-      // Same as above for a button regarding the distributions.
-      /** @var \Drupal\Core\Plugin\Context\Context[] $solution_contexts */
-      $solution_contexts = $this->solutionContext->getRuntimeContexts(['solution']);
-      if ($solution_contexts && $solution_contexts['solution']->hasContextValue()) {
-        $distribution_url = Url::fromRoute('asset_distribution.solution_asset_distribution.add', [
-          'rdf_entity' => $solution_contexts['solution']->getContextValue()->id(),
-        ]);
-        $links['asset_distribution'] = [
-          '#type' => 'link',
-          '#title' => $this->t('Add distribution'),
-          '#url' => $distribution_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
-          '#access' => $distribution_url->access(),
-        ];
-      }
+    /** @var \Drupal\Core\Plugin\Context\Context[] $solution_contexts */
+    $solution_contexts = $this->solutionContext->getRuntimeContexts(['solution']);
+    if ($solution_contexts && $solution_contexts['solution']->hasContextValue()) {
+      $release_url = Url::fromRoute('asset_release.solution_asset_release.add', [
+        'rdf_entity' => $solution_contexts['solution']->getContextValue()->id(),
+      ]);
+      $links['asset_release'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Add release'),
+        '#url' => $release_url,
+        '#attributes' => ['class' => ['button', 'button--small']],
+        '#access' => $release_url->access(),
+      ];
     }
 
     // Render the links as an unordered list, styled as buttons.
