@@ -180,7 +180,7 @@ class Query extends QueryBase implements QueryInterface {
           }
           else {
             $mapping = $entity_storage->getLabelMapping();
-            $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping))) . ">)";
+            $label_list = "(<" . implode(">, <", array_unique(array_values($mapping))) . ">)";
             $this->condition->condition('?entity', '?label_type', '?label');
             $this->filter->filter('?label_type IN ' . $label_list);
             $this->filter->filter('regex(?label, "' . $value . '", "i")');

@@ -149,8 +149,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   public function getLabelMapping() {
     $bundle_label_mapping = array();
-    foreach ($this->entityTypeManager->getStorage('rdf_type')
-               ->loadMultiple() as $entity) {
+    foreach ($this->entityTypeManager->getStorage('rdf_type')->loadMultiple() as $entity) {
       $label_field = $entity->get('rdf_label');
       if (!$label_field) {
         continue;
