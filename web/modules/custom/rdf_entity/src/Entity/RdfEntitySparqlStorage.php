@@ -212,10 +212,11 @@ QUERY;
       if (isset($ids_rdf_mapping[$uri])) {
         continue;
       }
-      if ($bundle_name = array_search($bundle, $bundle_mapping)) {
-        if ($bundle_name == 'solution' && $version) {
-          $bundle_name = 'asset_release';
-        }
+
+      if (in_array($bundle, ['http://www.w3.org/ns/adms#Asset', 'dcat:Dataset', 'http://www.w3.org/ns/dcat#Dataset'])) {
+        $ids_rdf_mapping[$uri] = empty($version) ? 'solution' : 'asset_release';
+      }
+      elseif ($bundle_name = array_search($bundle, $bundle_mapping)) {
         $ids_rdf_mapping[$uri] = $bundle_name;
       }
       else {

@@ -5,7 +5,7 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_target_id: 'http://purl.org/dc/terms/isVerionOf'
+    mapping_target_id: 'http://purl.org/dc/terms/isVersionOf'
 id: rdf_entity.field_is_is_version_of
 field_name: field_is_is_version_of
 entity_type: rdf_entity
