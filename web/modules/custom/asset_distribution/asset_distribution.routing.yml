@@ -1,5 +1,5 @@
 # Route to create a custom page that belongs to an rdf_entity.
-asset_distribution.solution_asset_distribution.add:
+asset_distribution.asset_release_asset_distribution.add:
   path: 'rdf_entity/{rdf_entity}/distribution/add'
   defaults:
     _controller: '\Drupal\asset_distribution\Controller\AssetDistributionController::add'
