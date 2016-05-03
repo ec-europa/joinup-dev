@@ -12,7 +12,7 @@ entity_type: rdf_entity
 bundle: asset_release
 label: 'Release notes'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
