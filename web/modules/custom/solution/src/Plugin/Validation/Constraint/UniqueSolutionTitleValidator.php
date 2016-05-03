@@ -41,10 +41,10 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
     $entity_type_id = $entity->getEntityTypeId();
     $id_key = $entity->getEntityType()->getKey('id');
 
-    // Check if the entity is a release.
-    if (!empty($entity->get('field_is_is_version_of')->getValue()[0]['target_id'])) {
+    // Check first for the release.
+    if ($entity->bundle() == 'asset_release') {
       // Get the solution this entity belongs to.
-      $parent = Rdf::load($entity->get('field_is_is_version_of')
+      $parent = Rdf::load($entity->get('field_isr_is_version_of')
         ->getValue()[0]['target_id']);
 
       // The release can have the same name as the solution it belongs to.
@@ -65,10 +65,10 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
       // The id could be NULL, so we cast it to 0 in that case.
       ->condition($id_key, (int) $items->getEntity()->id(), '<>')
       ->condition($field_name, $item->value)
-      ->condition('rid', 'solution');
-    // @todo: Discuss about it whether we need it.
-    if (empty($entity->get('field_is_is_version_of')->getValue()[0]['target_id'])) {
-      $query->notExists('field_is_is_version_of');
+      ->condition('rid', $entity->bundle());
+    // If this is a solution, ignore releases.
+    if ($entity->bundle() == 'solution') {
+      $query->notExists('field_isr_is_version_of');
     }
 
     $value_taken = (bool) $query->range(0, 1)

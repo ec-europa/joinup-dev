@@ -14,7 +14,7 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'asset_release' && !empty($fields['label'])) {
-    // $fields['label']->addConstraint('UniqueSolutionTitle', []);.
+    $fields['label']->addConstraint('UniqueSolutionTitle', []);
   }
 }
 

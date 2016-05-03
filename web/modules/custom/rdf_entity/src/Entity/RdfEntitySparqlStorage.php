@@ -149,7 +149,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   public function getLabelMapping() {
     $bundle_label_mapping = array();
-    foreach ($this->entityTypeManager->getStorage('rdf_type')->loadMultiple() as $entity) {
+    foreach ($this->entityTypeManager->getStorage('rdf_type')
+               ->loadMultiple() as $entity) {
       $label_field = $entity->get('rdf_label');
       if (!$label_field) {
         continue;
@@ -212,7 +213,11 @@ QUERY;
         continue;
       }
 
-      if (in_array($bundle, ['http://www.w3.org/ns/adms#Asset', 'dcat:Dataset', 'http://www.w3.org/ns/dcat#Dataset'])) {
+      if (in_array($bundle, [
+        'http://www.w3.org/ns/adms#Asset',
+        'dcat:Dataset',
+        'http://www.w3.org/ns/dcat#Dataset',
+      ])) {
         $ids_rdf_mapping[$uri] = empty($version) ? 'solution' : 'asset_release';
       }
       elseif ($bundle_name = array_search($bundle, $bundle_mapping)) {
