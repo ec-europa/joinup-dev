@@ -23,21 +23,11 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   use RdfEntityTrait;
 
   /**
-   * Test asset_releases.
+   * Test asset releases.
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]
    */
   protected $assetReleases = [];
-
-  /**
-   * Navigates to the add asset_release form.
-   *
-   * @When (I )go to the add asset_release form
-   * @When (I )visit the add asset_release form
-   */
-  public function visitAddAssetReleaseForm() {
-    $this->visitPath('/rdf_entity/add/asset_release');
-  }
 
   /**
    * Navigates to the canonical page display of a asset_release.
@@ -45,8 +35,8 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @param string $asset_release
    *   The name of the asset_release.
    *
-   * @When (I )go to (the homepage of )the :asset_release asset_release
-   * @When (I )visit (the homepage of )the :asset_release asset_release
+   * @When (I )go to (the homepage of )the :asset_release asset release
+   * @When (I )visit (the homepage of )the :asset_release asset release
    */
   public function visitCollection($asset_release) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
@@ -55,32 +45,16 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
-   * Navigates to the edit form of a asset_release.
-   *
-   * @param string $asset_release
-   *   The name of the asset_release.
-   *
-   * @When (I )go to the :asset_release asset_release edit form
-   * @When (I )visit the :asset_release asset_release edit form
-   */
-  public function visitEditAssetRelease($asset_release) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
-    $asset_release = $this->getAssetReleaseByName($asset_release);
-    $path = $asset_release->url('edit-form');
-    $this->visitPath($path);
-  }
-
-  /**
    * Creates a number of asset_releases with data provided in a table.
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * title        | description            | document | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki
-   * Foo asset_release | This is a foo asset_release | text.pdf | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
-   * Bar asset_release | This is a bar asset_release | text.pdf | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
+   * title             | description                 | documentation | release number | release notes | creation date    | modification date |
+   * Foo asset_release | This is a foo asset release | text.pdf      | 1              | Notes 1       | 28-01-1995 12:05 |                   |
+   * Bar asset_release | This is a bar asset release | text.pdf      | 2.3            | Notes 2       | 28-01-1995 12:06 |                   |
    * @codingStandardsIgnoreEnd
    *
-   * Fields title, description and elibrary creation are mandatory.
+   * Fields title, description, release number and release notes are required.
    *
    * @param TableNode $asset_release_table
    *   The asset_release data.
@@ -88,10 +62,10 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )asset_releases:
+   * @Given (the following )asset releases:
    */
   public function givenAssetReleases(TableNode $asset_release_table) {
-    $aliases = self::asset_releaseFieldAliases();
+    $aliases = self::assetReleaseFieldAliases();
 
     foreach ($asset_release_table->getColumnsHash() as $asset_release) {
       $values = [];
@@ -115,18 +89,16 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * Creates a asset_release with data provided in a table.
    *
    * Table format:
-   * | title             | Sample asset_release                         |
-   * | description       | A sample asset_release                       |
-   * | document          | text.pdf                                |
-   * | moderation        | no|yes                                  |
-   * | closed            | no|yes                                  |
-   * | elibrary creation | facilitators|members|registered users   |
-   * | landing page      | http://example.com/foobar/landing       |
-   * | webdav creation   | no|yes                                  |
-   * | webdav url        | http://joinup.eu/asset_release/foobar/webdav |
-   * | wiki              | http://example.wiki/foobar/wiki         |
+   * | title             | Sample asset_release                    |
+   * | description       | A sample asset_release                  |
+   * | documentation     | text.pdf                                |
+   * | is version of     | Solution                                |
+   * | release number    | 1                                       |
+   * | release notes     | Notes on the release                    |
+   * | keywords          | key1, key2                              |
+   * ...
    *
-   * Fields title, description and elibrary creation are required.
+   * Fields title, description, release number and release notes required.
    *
    * @param TableNode $asset_release_table
    *   The asset_release data.
@@ -134,10 +106,10 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )asset_release:
+   * @Given (the following )asset release:
    */
   public function givenAssetRelease(TableNode $asset_release_table) {
-    $aliases = self::asset_releaseFieldAliases();
+    $aliases = self::assetReleaseFieldAliases();
 
     $values = [];
     // Replace the column aliases with the actual field names.
@@ -156,13 +128,13 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
-   * Creates a asset_release from the given property and field data.
+   * Creates a asset release from the given property and field data.
    *
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
-   *   A new asset_release entity.
+   *   A new asset release entity.
    *
    * @throws \Exception
    *   Thrown when a given image is not found.
@@ -176,135 +148,71 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $asset_release = Rdf::create($values);
     $asset_release->save();
-    $this->asset_releases[$asset_release->id()] = $asset_release;
+    $this->assetReleases[$asset_release->id()] = $asset_release;
 
     return $asset_release;
   }
 
   /**
-   * Deletes a asset_release.
+   * Deletes a asset release.
    *
    * @param string $asset_release
-   *   The name of the asset_release.
+   *   The name of the asset release.
    *
-   * @When (I )delete the :asset_release asset_release
+   * @When (I )delete the :asset_release asset release
    */
   public function deleteAssetRelease($asset_release) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
+    /** @var \Drupal\rdf_entity\RdfInterface $asset_release */
     $this->getAssetReleaseByName($asset_release)->delete();
   }
 
   /**
-   * Returns the AssetRelease with the given name.
+   * Returns the asset release with the given name.
    *
-   * If multiple asset_release have the same name,
+   * If multiple asset releases have the same name,
    * the first one will be returned.
    *
    * @param string $title
-   *   The asset_release name.
+   *   The asset release name.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
-   *   The asset_release.
-   *
-   * @throws \InvalidArgumentException
-   *   Thrown when a asset_release with the given name does not exist.
+   * @return \Drupal\rdf_entity\RdfInterface
+   *   The asset release.
    */
   protected function getAssetReleaseByName($title) {
     return $this->getRdfEntityByLabel($title, 'asset_release');
   }
 
   /**
-   * Returns the release with the given name.
-   *
-   * If multiple asset_release have the same name,
-   * the first one will be returned.
-   *
-   * @param string $title
-   *   The release name.
-   *
-   * @return \Drupal\rdf_entity\Entity\Rdf
-   *   The release.
-   *
-   * @throws \InvalidArgumentException
-   *   Thrown when a release with the given name does not exist.
-   */
-  public static function getReleaseByName($title) {
-    $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'asset_release')
-      ->exists('field_isr_is_version_of')
-      ->condition('label', $title)
-      ->range(0, 1);
-    $result = $query->execute();
-
-    if (empty($result)) {
-      throw new \InvalidArgumentException("The release with the name '$title' was not found.");
-    }
-
-    return Rdf::load(reset($result));
-  }
-
-  /**
-   * Checks the number of available asset_releases.
+   * Checks the number of available asset releases.
    *
    * @param int $number
-   *   The expected number of asset_releases.
+   *   The expected number of asset releases.
    *
    * @throws \Exception
-   *   Throws an exception when the expected number is not equal to the given.
+   *   Throws an exception when the expected number
+   *   does not match the one found.
    *
-   * @Then I should have :number asset_release(s)
+   * @Then I should have :number asset release(s)
    */
   public function assertAssetReleaseCount($number) {
-    // We cannot rely on $this->assertRdfEntityCount()
-    // because a asset_release shares
-    // the same bundle with a release. We need to distinguish them by the
-    // presence of the 'is_version_of' field - if this field is missing it is a
-    // asset_release, if it is present it is a release.
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'asset_release')
-      ->notExists('field_isr_is_version_of')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
-    }
-  }
-
-  /**
-   * Checks the number of available releases.
-   *
-   * @param int $number
-   *   The expected number of releases.
-   *
-   * @throws \Exception
-   *   Thrown when the number of release entities do not
-   *   match the expectation.
-   *
-   * @Then I should have :number release(s)
-   */
-  public function assertReleaseCount($number) {
-    // We cannot rely on $this->assertRdfEntityCount() because a release shares
-    // the same bundle with a asset_release. We need to distinguish them by the
-    // presence of the 'is_version_of' field - if this field is missing it is a
-    // asset_release, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'asset_release')
       ->exists('field_isr_is_version_of')
       ->count()
       ->execute();
     if ($actual != $number) {
-      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
+      throw new \Exception("Wrong number of asset release entities. Expected number: $number, actual number: $actual.");
     }
   }
 
   /**
-   * Remove any created asset_releases.
+   * Remove any created asset releases.
    *
    * @AfterScenario
    */
   public function cleanAssetReleases() {
     // Remove any asset_releases that were created.
-    foreach ($this->asset_releases as $asset_release) {
+    foreach ($this->assetReleases as $asset_release) {
       $asset_release->delete();
     }
   }
@@ -320,35 +228,25 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     return [
       'uri' => 'id',
       'title' => 'label',
-      'affiliations requests' => 'field_isr_affiliations_requests',
       'contact information' => 'field_isr_contact_information',
       'creation date' => 'field_isr_creation_date',
       'description' => 'field_isr_description',
       'distribution' => 'field_isr_distribution',
       'documentation' => 'field_isr_documentation',
-      'elibrary creation' => 'field_isr_elibrary_creation',
       'included asset' => 'field_isr_included_asset',
-      'issue tracker' => 'field_isr_issue_tracker',
+      'is version of' => 'field_isr_is_version_of',
       'keywords' => 'field_isr_keywords',
-      'landing page' => 'field_isr_landing_page',
       'language' => 'field_isr_language',
-      'latest release' => 'field_isr_latest_release',
-      'metrics page' => 'field_isr_metrics_page',
-      'moderation' => 'field_isr_moderation',
       'modification date' => 'field_isr_modification_date',
       'owner' => 'field_isr_owner',
-      'related asset_releases' => 'field_isr_related_asset_releases',
-      'asset_release category' => 'field_isr_asset_release_category',
-      'asset_release type' => 'field_isr_asset_release_type',
-      'source code repository' => 'field_isr_source_code_repository',
+      'release number' => 'field_isr_release_number',
+      'release notes' => 'field_isr_release_notes',
+      'related solutions' => 'field_isr_related_solutions',
+      'solution type' => 'field_isr_solution_type',
       'spacial coverage' => 'field_isr_spacial_coverage',
       'status' => 'field_isr_status',
       'topic' => 'field_isr_topic',
       'translation' => 'field_isr_translation',
-      'webdav creation' => 'field_isr_webdav_creation',
-      'webdav url' => 'field_isr_webdav_url',
-      'wiki' => 'field_isr_wiki',
-      'collection' => 'og_group_ref',
     ];
   }
 
@@ -365,33 +263,16 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *    Throws an exception when a mapped value is not found.
    */
   protected function convertValueAliases($fields) {
-    $mapped_values = [
-      'field_isr_moderation' => ['no' => 0, 'yes' => 1],
-      'field_isr_elibrary_creation' =>
-        ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
-      'field_isr_webdav_creation' => ['no' => 0, 'yes' => 1],
-    ];
-
-    foreach ($fields as $field => $value) {
-      if (isset($mapped_values[$field])) {
-        if (!isset($mapped_values[$field][$value])) {
-          throw new \Exception("Value $value is not an acceptable value for field $field.");
-        }
-
-        $fields[$field] = $mapped_values[$field][$value];
-      }
-    }
-
     // Check for the OG group.
     if (isset($fields['field_isr_distribution'])) {
       $distribution = $this->getRdfEntityByLabel($fields['field_isr_distribution'], 'asset_distribution');
       $fields['field_isr_distribution'] = [$distribution->id()];
     }
 
-    // Check for the OG group.
-    if (isset($fields['og_group_ref'])) {
-      $collection = $this->getRdfEntityByLabel($fields['og_group_ref'], 'collection');
-      $fields['og_group_ref'] = $collection->id();
+    // Conver the name of the is version of field to an id.
+    if (isset($fields['field_isr_is_version_of'])) {
+      $collection = $this->getRdfEntityByLabel($fields['field_isr_is_version_of'], 'solution');
+      $fields['field_isr_is_version_of'] = $collection->id();
     }
 
     return $fields;
