@@ -6,6 +6,7 @@ label: Moderator
 weight: 3
 is_admin: false
 permissions:
+  - 'access contextual links'
   - 'access toolbar'
   - 'access user profiles'
   - 'add og menu instance entities'

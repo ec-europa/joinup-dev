@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.storage.ogmenu_instance.og_group_ref
     - og_menu.ogmenu.navigation
+    - rdf_entity.rdfentity.collection
   module:
     - og
 id: ogmenu_instance.navigation.og_group_ref
@@ -18,6 +19,12 @@ default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:rdf_entity'
-  handler_settings: {  }
+  handler_settings:
+    target_bundles:
+      collection: collection
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
   access_override: false
 field_type: og_standard_reference
