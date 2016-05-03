@@ -19,14 +19,6 @@ function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterf
 }
 
 /**
- * Implements hook_entity_type_alter().
- */
-function asset_release_entity_type_alter(array &$entity_types) {
-  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
-  $entity_types['rdf_entity']->setFormclass('release', 'Drupal\rdf_entity\Form\RdfForm');
-}
-
-/**
  * Implements hook_ENTITY_TYPE_create().
  *
  * This takes care of the reverse reference.

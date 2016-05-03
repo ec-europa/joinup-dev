@@ -33,32 +33,117 @@ targetEntityType: rdf_entity
 bundle: asset_release
 mode: default
 content:
+  field_isr_creation_date:
+    type: datetime_create_update
+    weight: 7
+    settings:
+      behaviour: create
+    third_party_settings: {  }
   field_isr_description:
-    weight: 2
+    type: text_textarea
+    weight: 4
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
   field_isr_documentation:
-    weight: 3
+    weight: 5
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
-  field_isr_elibrary_creation:
-    weight: 5
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-  field_isr_related_solutions:
-    weight: 4
+  field_isr_included_asset:
+    type: entity_reference_autocomplete
+    weight: 12
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_isr_keywords:
     type: entity_reference_autocomplete
+    weight: 17
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_isr_language:
+    type: entity_reference_autocomplete
+    weight: 19
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_isr_modification_date:
+    type: datetime_create_update
+    weight: 8
+    settings:
+      behaviour: create
+    third_party_settings: {  }
+  field_isr_related_solutions:
+    type: entity_reference_autocomplete
+    weight: 11
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_isr_release_notes:
+    type: text_textarea
+    weight: 3
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_isr_release_number:
+    type: string_textfield
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_isr_solution_type:
+    type: entity_reference_autocomplete
+    weight: 6
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_isr_spacial_coverage:
+    type: entity_reference_autocomplete
+    weight: 14
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_isr_status:
+    type: entity_reference_autocomplete
+    weight: 18
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_isr_topic:
+    type: entity_reference_autocomplete
+    weight: 16
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_isr_translation:
+    type: entity_reference_autocomplete
+    weight: 13
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   id:
     type: auto_uri
     weight: 0
@@ -74,20 +159,8 @@ content:
     third_party_settings: {  }
 hidden:
   field_isr_contact_information: true
-  field_isr_creation_date: true
   field_isr_distribution: true
   field_isr_has_version: true
-  field_isr_included_asset: true
   field_isr_is_version_of: true
-  field_isr_keywords: true
-  field_isr_language: true
-  field_isr_modification_date: true
   field_isr_owner: true
   field_isr_policy_domain: true
-  field_isr_release_notes: true
-  field_isr_release_number: true
-  field_isr_solution_type: true
-  field_isr_spacial_coverage: true
-  field_isr_status: true
-  field_isr_topic: true
-  field_isr_translation: true
