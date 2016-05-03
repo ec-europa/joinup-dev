@@ -176,6 +176,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     return Cache::mergeContexts($context, [
       'user.roles',
       'collection',
+      'asset_release',
       'solution',
     ]);
   }
