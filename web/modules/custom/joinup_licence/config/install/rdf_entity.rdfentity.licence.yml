@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: Licence
+rid: licence
+description: 'Contains licence entity details.'
+rdftype: 'dct:LicenseDocument'
+rdf_label: 'http://purl.org/dc/terms/title'
