@@ -152,6 +152,7 @@ class Query extends QueryBase implements QueryInterface {
       case 'id-NOT IN':
       case 'id-<>':
         if ($value) {
+          $value = is_array($value) ? $value : [$value];
           $ids_list = "(<" . implode(">, <", $value) . ">)";
           $this->filter->filter('!(?entity IN ' . $ids_list . ')');
         }

@@ -62,10 +62,11 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
     }
 
     $query = \Drupal::entityQuery($entity_type_id)
-      // The id could be NULL, so we cast it to 0 in that case.
-      ->condition($id_key, (int) $items->getEntity()->id(), '<>')
       ->condition($field_name, $item->value)
       ->condition('rid', $entity->bundle());
+    if (!empty($entity->id())) {
+      $query->condition($id_key, $items->getEntity()->id(), '<>');
+    }
     // If this is a solution, ignore releases.
     if ($entity->bundle() == 'solution') {
       $query->notExists('field_isr_is_version_of');
@@ -78,8 +79,7 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
       $this->context->addViolation($constraint->message, [
         '%value' => $item->value,
         '@entity_type' => $entity->getEntityType()->getLowercaseLabel(),
-        '@field_name' => Unicode::strtolower($items->getFieldDefinition()
-          ->getLabel()),
+        '@field_name' => Unicode::strtolower($items->getFieldDefinition()->getLabel()),
       ]);
     }
   }
