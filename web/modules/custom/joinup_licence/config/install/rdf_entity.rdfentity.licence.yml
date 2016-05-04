@@ -3,6 +3,6 @@ status: true
 dependencies: {  }
 name: Licence
 rid: licence
-description: 'Contains licence entity details.'
-rdftype: 'dct:LicenseDocument'
+description: ''
+rdftype: 'http://purl.org/dc/terms/LicenseDocument'
 rdf_label: 'http://purl.org/dc/terms/title'
