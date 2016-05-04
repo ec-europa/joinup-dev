@@ -118,14 +118,21 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           'rdf_entity' => $solution_contexts['solution']->getContextValue()->id(),
         ]);
         $links['asset_distribution'] = [
-          '#type' => 'link',
           '#title' => $this->t('Add distribution'),
           '#url' => $distribution_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
           '#access' => $distribution_url->access(),
         ];
       }
     }
+
+    $licence_url = Url::fromRoute('rdf_entity.rdf_add', [
+      'rdf_type' => 'licence',
+    ]);
+    $links['licence'] = [
+      '#title' => $this->t('Add Licence'),
+      '#url' => $licence_url,
+      '#access' => $licence_url->access(),
+    ];
 
     // Render the links as an unordered list, styled as buttons.
     $build = [
