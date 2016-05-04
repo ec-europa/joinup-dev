@@ -8,7 +8,7 @@ website.profile.name = joinup
 website.site.name = Joinup
 
 # The site type ( Infrastructure stack )
-project.siteType = joinup
+infra.type = joinup
 
 # Database settings.
 drupal.db.type = mysql
@@ -164,4 +164,6 @@ deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
 # Packer configuration
 # --------------------
 packer.path = /usr/bin/env packer
+application.name = joinup
+
 
