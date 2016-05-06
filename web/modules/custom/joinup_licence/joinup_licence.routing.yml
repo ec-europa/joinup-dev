@@ -1,0 +1,7 @@
+joinup_licence.licence_overview_controller_build:
+  path: '/admin/structure/licences'
+  defaults:
+    _controller: '\Drupal\joinup_licence\Controller\LicenceOverviewController::build'
+    _title: 'List all licence entities.'
+  requirements:
+    _permission: 'access content'

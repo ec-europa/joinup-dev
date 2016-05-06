@@ -1,0 +1,4 @@
+joinup_licence.licence_overview_controller_build:
+  title: Licences
+  route_name: joinup_licence.licence_overview_controller_build
+  base_route: system.admin_structure

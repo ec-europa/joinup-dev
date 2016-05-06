@@ -1,0 +1,22 @@
+{#
+/**
+ * @file licence.html.twig
+ * Default theme implementation to present Licence data.
+ *
+ * This template is used when viewing Licence pages.
+ *
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_licence()
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes.addClass('licence') }}>
+  {% if content %}
+    {{- content -}}
+  {% endif %}
+</div>
