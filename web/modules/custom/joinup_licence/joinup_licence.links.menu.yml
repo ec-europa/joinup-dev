@@ -1,5 +1,5 @@
 joinup_licence.licence_overview_controller_build:
   title: 'Licences'
-  route_name: joinup_licence.licence_overview_controller_build
-  description: 'List Rdf entities'
-  parent: system.admin_structure
+  weight: 0
+  url: 'internal:/licences'
+  menu_name: main
