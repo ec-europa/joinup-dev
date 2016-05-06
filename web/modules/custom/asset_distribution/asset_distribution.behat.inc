@@ -46,7 +46,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When (I )visit (the homepage of )the :asset_distribution distribution
    */
   public function visitDistribution($asset_distribution) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $distribution */
+    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
     $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
     $this->visitPath($asset_distribution->url());
   }
@@ -71,7 +71,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Creates a number of asset distributions with data provided in a table.
    *
    * @param TableNode $asset_distribution_table
-   *   The solution data.
+   *   The asset distribution data.
    *
    * @codingStandardsIgnoreStart
    *   Table format:
