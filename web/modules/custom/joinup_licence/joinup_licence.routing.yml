@@ -4,4 +4,4 @@ joinup_licence.licence_overview_controller_build:
     _controller: '\Drupal\joinup_licence\Controller\LicenceOverviewController::build'
     _title: 'List all licence entities.'
   requirements:
-    _permission: 'access content'
+    _permission: 'view licence overview page'
