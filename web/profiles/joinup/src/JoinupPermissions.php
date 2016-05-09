@@ -26,9 +26,14 @@ class JoinupPermissions {
    */
   public function rdfTypePermissions() {
     $perms = [];
+    $types = RdfEntityType::loadMultiple();
     // Generate permissions to propose rdf entities of all types.
-    foreach (RdfEntityType::loadMultiple() as $type) {
-      $perms += $this->buildRdfTypePermissions($type);
+    /** @var EntityTypeInterface $type */
+    foreach ($types as $type) {
+      $perms += $this->buildProposeRdfTypePermissions($type);
+      if ($type->id() != 'collection') {
+        $perms += $this->buildGroupRdfTypePermissions($type);
+      }
     }
 
     return $perms;
@@ -43,13 +48,35 @@ class JoinupPermissions {
    * @return array
    *   An associative array of permission names and descriptions.
    */
-  protected function buildRdfTypePermissions(RdfEntityType $type) {
+  protected function buildProposeRdfTypePermissions(RdfEntityType $type) {
+    $type_id = $type->id();
+    $type_params = ['%type_name' => $type->label()];
+
+    return [
+      "create group $type_id rdf entity" => [
+        'title' => $this->t('%type_name: Propose new rdf entity', $type_params),
+      ],
+    ];
+  }
+
+  /**
+   * Returns a list of permissions for a given Rdf entity type.
+   *
+   * These permissions refer to access the create page from within the group.
+   *
+   * @param \Drupal\rdf_entity\Entity\RdfEntityType $type
+   *   The Rdf type.
+   *
+   * @return array
+   *   An associative array of permission names and descriptions.
+   */
+  protected function buildGroupRdfTypePermissions(RdfEntityType $type) {
     $type_id = $type->id();
     $type_params = ['%type_name' => $type->label()];
 
     return [
       "propose $type_id rdf entity" => [
-        'title' => $this->t('%type_name: Propose new rdf entity', $type_params),
+        'title' => $this->t('%type_name: Create group rdf entity', $type_params),
       ],
     ];
   }

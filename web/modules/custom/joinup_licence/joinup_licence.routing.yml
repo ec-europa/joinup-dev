@@ -1,5 +1,5 @@
 joinup_licence.licence_overview_controller_build:
-  path: '/licences'
+  path: 'licences'
   defaults:
     _controller: '\Drupal\joinup_licence\Controller\LicenceOverviewController::build'
     _title: 'List all licence entities.'
