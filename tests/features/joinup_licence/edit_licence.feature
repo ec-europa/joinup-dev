@@ -31,4 +31,3 @@ Feature: Edit licence through UI
     And I fill in "Description" with "This is some different description."
     And I press "Save"
     Then I should see the heading "Licence 1.1"
-    Then I delete the "Licence 1.1" licence
