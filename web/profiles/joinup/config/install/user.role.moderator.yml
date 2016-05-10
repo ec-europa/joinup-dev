@@ -24,3 +24,5 @@ permissions:
   - 'moderate entity parents'
   - 'propose solution rdf entity'
   - 'view rdf entity overview'
+  - 'delete licence rdf entity'
+  - 'edit licence rdf entity'
