@@ -381,7 +381,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       /** @var \Drupal\og\Entity\OgMembership $membership */
       $membership = Og::membershipStorage()->create(Og::membershipDefault());
       $membership
-        ->setEntityType($group->getEntityTypeId())
+        ->setGroupEntityType($group->getEntityTypeId())
         ->setEntityid($group->id())
         ->setState(OgMembershipInterface::STATE_ACTIVE)
         ->setUser($member->id())
