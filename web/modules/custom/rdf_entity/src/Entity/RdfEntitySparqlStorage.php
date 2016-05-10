@@ -20,6 +20,26 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Defines a entity storage backend that uses a Sparql endpoint.
  */
 class RdfEntitySparqlStorage extends ContentEntityStorageBase {
+  /**
+   * Sparql database connection.
+   *
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   */
+  protected $sparql;
+
+  /**
+   * Language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface sdfsdf.
+   */
+  protected $languageManager;
+
+  /**
+   * Entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface sdfsdfsdf.
+   */
+  protected $entityTypeManager;
 
   /**
    * Initialize the storage backend.
@@ -53,10 +73,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     // that were loaded from $ids.
     $entities_from_cache = $this->getFromPersistentCache($ids);
     // Load any remaining entities from the database.
-    if ($entities_from_storage = $this->getFromStorage($ids)) {
-      $this->invokeStorageLoadHook($entities_from_storage);
-      $this->setPersistentCache($entities_from_storage);
-    }
+    $entities_from_storage = $this->getFromStorage($ids);
 
     return $entities_from_cache + $entities_from_storage;
 
@@ -83,31 +100,154 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       foreach ($operation_ids as $k => $v) {
         unset($remaining_ids[$k]);
       }
-      $values = array();
-      $bundles = $this->getBundlesByIds($operation_ids);
-      foreach ($operation_ids as $key => $id) {
-        if (!isset($bundles[$id])) {
-          // This entity doesn't have a corresponding bundle.
-          // @todo Throw an exception?
-          continue;
+      $entities_values = $this->loadFromStorage($operation_ids);
+      if ($entities_values) {
+        foreach ($entities_values as $id => $entity_values) {
+          $bundle = $entity_values['rid'][LanguageInterface::LANGCODE_DEFAULT][0]['value'];
+          $entity = new Rdf($entity_values, 'rdf_entity', $bundle);
+          $entities[$id] = $entity;
         }
-        $values[$id] = array(
-          'rid' => array('x-default' => $bundles[$id]),
-          'id' => array('x-default' => $id),
-        );
-      }
-      if (empty($values)) {
-        continue;
-      }
-      $this->loadFromBaseTable($values);
-      $this->loadFromDedicatedTables($values, FALSE);
-      foreach ($values as $id => $entity_values) {
-        $entity = new Rdf($entity_values, 'rdf_entity', $bundles[$id]);
-        $entities[$id] = $entity;
+        $this->invokeStorageLoadHook($entities);
+        $this->setPersistentCache($entities);
       }
     }
-
     return $entities;
+  }
+
+  /**
+   * Retrieve the entity data from the Sparql endpoint.
+   */
+  protected function loadFromStorage($ids) {
+    if (empty($ids)) {
+      return [];
+    }
+    $ids_string = "<" . implode(">, <", $ids) . ">";
+
+    // @todo Get rid of the language filter. It's here because of eurovoc:
+    // \Drupal\taxonomy\Form\OverviewTerms::buildForm loads full entities
+    // of the whole tree: 7000+ terms in 24 languages is just too much.
+    $query = <<<QUERY
+SELECT ?entity_id ?predicate ?field_value
+WHERE{
+  ?entity_id ?predicate ?field_value
+  FILTER (?entity_id IN ( $ids_string ) )
+  FILTER(!isLiteral(?field_value) || (lang(?field_value) = "" || langMatches(lang(?field_value), "EN")))
+}
+QUERY;
+    /** @var \EasyRdf_Sparql_Result $entity_values */
+    $entity_values = $this->sparql->query($query);
+
+    $mapping = $this->predicateMapping();
+
+    $res = [];
+    foreach ($entity_values as $result) {
+      $entity_id = (string) $result->entity_id;
+
+      $lang = LanguageInterface::LANGCODE_DEFAULT;
+      if ($result->field_value instanceof \EasyRdf_Literal) {
+        $lang_temp = $result->field_value->getLang();
+        if ($lang_temp) {
+          $lang = $lang_temp;
+        }
+      }
+      $res[$entity_id][(string) $result->predicate][$lang][] = (string) $result->field_value;
+    }
+    $values = [];
+    foreach ($res as $entity_id => $entity_values) {
+      // First determine the bundle of the returned entity.
+      if (!isset($entity_values['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'])) {
+        continue;
+      }
+      /** @var \Drupal\rdf_entity\Entity\RdfEntityType $bundle */
+      $bundle = $this->getActiveBundle($entity_values);
+      if (!$bundle) {
+        continue;
+      }
+      $values[$entity_id]['rid'][LanguageInterface::LANGCODE_DEFAULT][]['value'] = $bundle->id();
+      $values[$entity_id]['id'][LanguageInterface::LANGCODE_DEFAULT][]['value'] = $entity_id;
+
+      $label_predicate = $bundle->rdf_label;
+      if (isset($entity_values[$label_predicate])) {
+        $values[$entity_id]['label'] = $entity_values[$label_predicate];
+        $label_item = $entity_values[$label_predicate];
+        $label_item = array_shift($label_item);
+        $label_item = array_shift($label_item);
+        $values[$entity_id]['label'][LanguageInterface::LANGCODE_DEFAULT][]['value'] = $label_item;
+      }
+      $rdf_type = NULL;
+      foreach ($entity_values as $predicate => $field) {
+        // If not mapped, ignore.
+        if (!isset($mapping[$bundle->id()][$predicate])) {
+          continue;
+        }
+        $field_name = $mapping[$bundle->id()][$predicate]['field_name'];
+        $column = $mapping[$bundle->id()][$predicate]['column'];
+        foreach ($field as $lang => $items) {
+          foreach ($items as $item) {
+            $values[$entity_id][$field_name][$lang][][$column] = $item;
+          }
+          $storage_definition = $mapping[$bundle->id()][$predicate]['storage_definition'];
+          $this->applyFieldDefaults($storage_definition, $values[$entity_id][$storage_definition->getName()][$lang]);
+        }
+      }
+    }
+    return $values;
+  }
+
+  /**
+   * Derive the bundle from the rdf:type.
+   */
+  protected function getActiveBundle($entity_values) {
+    $bundle = NULL;
+    static $rdf_bundles;
+    if (!$rdf_bundles) {
+      $rdf_bundles = $this->entityTypeManager->getStorage('rdf_type')->loadMultiple();
+    }
+    foreach ($rdf_bundles as $rdf_bundle) {
+      foreach ($entity_values['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'] as $lang => $items) {
+        foreach ($items as $item) {
+          if ($item == $rdf_bundle->rdftype) {
+            $bundle = $rdf_bundle;
+          }
+        }
+      }
+    }
+    // @TODO Inject alter hook here.
+    return $bundle;
+  }
+
+  /**
+   * Get the mapping between drupal properties and rdf predicates.
+   */
+  protected function predicateMapping() {
+    $mapping = &drupal_static(__FUNCTION__);
+    if (!isset($mapping)) {
+      // Collect entities ids, bundles and languages.
+      $rdf_bundle_entities = $this->entityTypeManager->getStorage('rdf_type')->loadMultiple();
+
+      // Collect impacted fields.
+      $mapping = [];
+      foreach ($rdf_bundle_entities as $rdf_bundle_entity) {
+        $field_definitions = $this->entityManager->getFieldDefinitions($this->entityTypeId, $rdf_bundle_entity->id());
+        foreach ($field_definitions as $field_name => $field_definition) {
+          /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
+          $storage_definition = $field_definition->getFieldStorageDefinition();
+          if (!$storage_definition instanceof FieldStorageConfig) {
+            continue;
+          }
+          foreach ($storage_definition->getColumns() as $column => $column_info) {
+            if ($predicate = $storage_definition->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE)) {
+              $mapping[$rdf_bundle_entity->id()][$predicate] = array(
+                'column' => $column,
+                'field_name' => $field_name,
+                'storage_definition' => $storage_definition,
+              );
+            }
+          }
+        }
+      }
+    }
+    return $mapping;
   }
 
   /**
@@ -167,28 +307,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $bundle_label_mapping[$entity->id()] = $label_field;
     }
     return $bundle_label_mapping;
-  }
-
-  /**
-   * Fetch a list of triple predicates for labels.
-   *
-   * @return string
-   *   String of label predicates, suitable for inclusion in a query.
-   */
-  public function getRdfLabelList($bundles) {
-    if (!$bundles) {
-      return '';
-    }
-
-    $label_mapping = $this->getLabelMapping();
-    if (empty($label_mapping)) {
-      return '';
-    }
-    $labels = [];
-    foreach ($bundles as $bundle) {
-      $labels[] = $label_mapping[$bundle];
-    }
-    return "(<" . implode(">, <", $labels) . ">)";
   }
 
   /**
@@ -445,116 +563,6 @@ QUERY;
    */
   public function hasData() {
     return FALSE;
-  }
-
-  /**
-   * Loads values of fields stored in dedicated tables for a group of entities.
-   *
-   * @param array &$values
-   *   An array of values keyed by entity ID.
-   */
-  protected function loadFromBaseTable(array &$values) {
-    // The label field is bundle specific, so determine the field to use first.
-    $label = $this->getLabelMapping();
-    $ids_by_label = array();
-    foreach ($values as $entity_id => $entity_values) {
-      $bundle = $entity_values['rid'][LanguageInterface::LANGCODE_DEFAULT];
-      if (isset($label[$bundle])) {
-        $ids_by_label[$label[$bundle]][] = $entity_id;
-      }
-      $values[$entity_id]['label'][LanguageInterface::LANGCODE_DEFAULT] = $entity_id;
-    }
-    foreach ($ids_by_label as $label => $ids) {
-      $ids_string = "<" . implode(">, <", $ids) . ">";
-      // @todo Get query through $this->getQuery, and use this wrapper...
-      $query
-        = 'SELECT ?uri ?label
-          WHERE{
-          ?uri <' . $label . '> ?label
-          FILTER (?uri IN ( ' . $ids_string . '))
-          FILTER (lang(?label) = \'en\') .
-          }';
-      /** @var \EasyRdf_Sparql_Result $results */
-      $results = $this->sparql->query($query);
-      foreach ($results as $result) {
-        $uri = (string) $result->uri;
-        $label = (string) $result->label;
-        $values[$uri]['label'][LanguageInterface::LANGCODE_DEFAULT] = $label;
-      }
-    }
-  }
-
-  /**
-   * Loads values of fields stored in dedicated tables for a group of entities.
-   *
-   * @param array &$values
-   *   An array of values keyed by entity ID.
-   * @param bool $load_from_revision
-   *   (optional) Flag to indicate whether revisions should be loaded or not,
-   *   defaults to FALSE.
-   */
-  protected function loadFromDedicatedTables(array &$values, $load_from_revision) {
-    // Collect entities ids, bundles and languages.
-    $bundles = array();
-    $ids = array();
-    foreach ($values as $key => $entity_values) {
-      $bundles[$this->bundleKey ? $entity_values['rid'][LanguageInterface::LANGCODE_DEFAULT] : $this->entityTypeId] = TRUE;
-      $ids[] = !$load_from_revision ? $key : $entity_values[$this->revisionKey][LanguageInterface::LANGCODE_DEFAULT];
-    }
-
-    // Collect impacted fields.
-    $storage_definitions = array();
-    $definitions = array();
-    foreach ($bundles as $bundle => $v) {
-      $definitions[$bundle] = $this->entityManager->getFieldDefinitions($this->entityTypeId, $bundle);
-      foreach ($definitions[$bundle] as $field_name => $field_definition) {
-        /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
-        $storage_definition = $field_definition->getFieldStorageDefinition();
-        $storage_definitions[$field_name] = $storage_definition;
-      }
-    }
-    // Load field data.
-    $tables = [];
-    foreach ($storage_definitions as $field_name => $storage_definition) {
-      if (!$storage_definition instanceof FieldStorageConfig) {
-        continue;
-      }
-
-      foreach ($storage_definition->getColumns() as $column => $column_info) {
-        if ($table = $storage_definition->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE)) {
-          $tables[$table] = array(
-            'column' => $column,
-            'field_name' => $field_name,
-            'storage_definition' => $storage_definition,
-          );
-        }
-      }
-    }
-
-    $ids_string = "<" . implode(">, <", $ids) . ">";
-    $tables_string = "<" . implode(">, <", array_keys($tables)) . ">";
-
-    // @todo Get query through $this->getQuery, and use this wrapper...
-
-    $query
-      = 'SELECT ?entity_id ?table ?field_value
-          WHERE{
-          ?entity_id ?table ?field_value
-          FILTER (?table IN ( ' . $tables_string . '))
-          FILTER (?entity_id IN ( ' . $ids_string . '))
-          }';
-    /** @var \EasyRdf_Sparql_Result $results */
-    $results = $this->sparql->query($query);
-    foreach ($results as $result) {
-      $entity_id = (string) $result->entity_id;
-      $table = (string) $result->table;
-      $field_value = (string) $result->field_value;
-      $field_name = $tables[$table]['field_name'];
-      $column = $tables[$table]['column'];
-      $values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT][][$column] = $field_value;
-      $storage_definition = $tables[$table]['storage_definition'];
-      $this->applyFieldDefaults($storage_definition, $values[$entity_id][$storage_definition->getName()][LanguageInterface::LANGCODE_DEFAULT]);
-    }
   }
 
   /**

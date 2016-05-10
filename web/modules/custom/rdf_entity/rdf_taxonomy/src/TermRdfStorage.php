@@ -202,24 +202,34 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
         $this->treeChildren[$vid] = array();
         $this->treeParents[$vid] = array();
         $this->treeTerms[$vid] = array();
-        $result = $this->sparql->query('SELECT ?tid ?label ?parent
-        WHERE {
-          ?tid <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-          ?tid <http://www.w3.org/2004/02/skos/core#prefLabel> ?label .
-          FILTER (lang(?label) = \'en\') .
-          OPTIONAL {?tid <http://www.w3.org/2004/02/skos/core#broaderTransitive> ?parent }
-        }
-        ');
-        foreach ($result as $term) {
-
+        $query = <<<QUERY
+SELECT ?tid ?label ?parent
+WHERE {
+  ?tid <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+  ?tid <http://www.w3.org/2004/02/skos/core#prefLabel> ?label .
+  FILTER (lang(?label) = 'en') .
+  OPTIONAL {?tid <http://www.w3.org/2004/02/skos/core#broaderTransitive> ?parent }
+}
+QUERY;
+        $result = $this->sparql->query($query);
+        foreach ($result as $term_res) {
           $parent = 0;
-          if (isset($term->parent)) {
-            $parent = (string) $term->parent;
+          if (isset($term_res->parent)) {
+            $parent = (string) $term_res->parent;
           }
-          $tid = (string) $term->tid;
-          $this->treeChildren[$vid][$parent][] = $tid;
-          $this->treeParents[$vid][$tid][] = $parent;
-          $this->treeTerms[$vid][$tid] = $term;
+          $tid = (string) $term_res->tid;
+          $label = (string) $term_res->label;
+          $values = [
+            'tid' => $tid,
+            'vid' => $vid,
+            'name' => $label,
+            'parent' => $parent,
+            'weight' => 0,
+          ];
+          $term = (object) $values;
+          $this->treeChildren[$vid][$parent][] = $term->tid;
+          $this->treeParents[$vid][$term->tid][] = $parent;
+          $this->treeTerms[$vid][$term->tid] = $term;
         }
       }
 
@@ -235,7 +245,11 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
 
       // Keeps track of the parents we have to process, the last entry is used
       // for the next processing step.
-      $process_parents = array_keys($this->treeChildren[$vid][0]);
+      $process_parents = NULL;
+      if (isset($this->treeChildren[$vid][0])) {
+        $process_parents = array_keys($this->treeChildren[$vid][0]);
+      }
+
       // $process_parents[] = $parent;
       // Loops over the parent terms and adds its children to the tree array.
       // Uses a loop instead of a recursion, because it's more efficient.
