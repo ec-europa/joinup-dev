@@ -122,15 +122,18 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
   public function loadParents($tid) {
     if (!isset($this->parents[$tid])) {
       $parents = array();
-      $query = $this->sparql->select('taxonomy_term_field_data', 't');
-      $query->join('taxonomy_term_hierarchy', 'h', 'h.parent = t.tid');
-      $query->addField('t', 'tid');
-      $query->condition('h.tid', $tid);
-      $query->condition('t.default_langcode', 1);
-      $query->addTag('term_access');
-      $query->orderBy('t.weight');
-      $query->orderBy('t.name');
-      if ($ids = $query->execute()->fetchCol()) {
+      $ids = [];
+      $query = <<<QUERY
+SELECT ?parents
+WHERE {
+  <$tid> <http://www.w3.org/2004/02/skos/core#broaderTransitive> ?parents
+}
+QUERY;
+      $result = $this->sparql->query($query);
+      foreach ($result as $item) {
+        $ids[] = (string) $item->parents;
+      }
+      if ($ids) {
         $parents = $this->loadMultiple($ids);
       }
       $this->parents[$tid] = $parents;
@@ -171,18 +174,19 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
   public function loadChildren($tid, $vid = NULL) {
     if (!isset($this->children[$tid])) {
       $children = array();
-      $query = $this->sparql->select('taxonomy_term_field_data', 't');
-      $query->join('taxonomy_term_hierarchy', 'h', 'h.tid = t.tid');
-      $query->addField('t', 'tid');
-      $query->condition('h.parent', $tid);
-      if ($vid) {
-        $query->condition('t.vid', $vid);
+      // Get terms whom refer to tid as being a parent.
+      $query = <<<QUERY
+SELECT ?children
+WHERE {
+   ?children <http://www.w3.org/2004/02/skos/core#broaderTransitive> <$tid>
+}
+QUERY;
+      $result = $this->sparql->query($query);
+      $ids = [];
+      foreach ($result as $item) {
+        $ids[] = (string) $item->children;
       }
-      $query->condition('t.default_langcode', 1);
-      $query->addTag('term_access');
-      $query->orderBy('t.weight');
-      $query->orderBy('t.name');
-      if ($ids = $query->execute()->fetchCol()) {
+      if ($ids) {
         $children = $this->loadMultiple($ids);
       }
       $this->children[$tid] = $children;
@@ -308,42 +312,26 @@ QUERY;
    * {@inheritdoc}
    */
   public function nodeCount($vid) {
-    $query = $this->sparql->select('taxonomy_index', 'ti');
-    $query->addExpression('COUNT(DISTINCT ti.nid)');
-    $query->leftJoin('taxonomy_term_data', 'td', 'ti.tid = td.tid');
-    $query->condition('td.vid', $vid);
-    $query->addTag('vocabulary_node_count');
-    return $query->execute()->fetchField();
+    // @todo Is this possible to determine?
+    return 0;
   }
 
   /**
    * {@inheritdoc}
    */
   public function resetWeights($vid) {
-    $this->sparql->update('taxonomy_term_field_data')
-      ->fields(array('weight' => 0))
-      ->condition('vid', $vid)
-      ->execute();
+    // SKOS doesn't use weights...
   }
 
   /**
    * {@inheritdoc}
    */
   public function getNodeTerms(array $nids, array $vocabs = array(), $langcode = NULL) {
-    $query = db_select('taxonomy_term_field_data', 'td');
-    $query->innerJoin('taxonomy_index', 'tn', 'td.tid = tn.tid');
-    $query->fields('td', array('tid'));
+    // @todo Test this.
+    $query = db_select('taxonomy_index', 'tn');
+    $query->fields('tn', array('tid'));
     $query->addField('tn', 'nid', 'node_nid');
-    $query->orderby('td.weight');
-    $query->orderby('td.name');
     $query->condition('tn.nid', $nids, 'IN');
-    $query->addTag('term_access');
-    if (!empty($vocabs)) {
-      $query->condition('td.vid', $vocabs, 'IN');
-    }
-    if (!empty($langcode)) {
-      $query->condition('td.langcode', $langcode);
-    }
 
     $results = array();
     $all_tids = array();
