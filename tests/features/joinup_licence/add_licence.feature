@@ -28,3 +28,4 @@ Feature: Add licence through UI
     And I fill in "Description" with "Licence details go here.."
     And I press "Save"
     Then I should have 1 licence
+    Then I delete the "This is a random licence" licence
