@@ -47,7 +47,7 @@ class LicenceOverviewController extends ControllerBase {
    * @return string
    *   Return Hello string.
    */
-  public function build() {
+  public function overview() {
     $mapping = $this->entityStorage->getRdfBundleList();
     if (!$mapping) {
       return [];

@@ -125,11 +125,9 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       }
     }
 
-    $licence_url = Url::fromRoute('rdf_entity.rdf_add', [
-      'rdf_type' => 'licence',
-    ]);
+    $licence_url = Url::fromRoute('joinup_licence.add');
     $links['licence'] = [
-      '#title' => $this->t('Add Licence'),
+      '#title' => $this->t('Add licence'),
       '#url' => $licence_url,
       '#access' => $licence_url->access(),
     ];

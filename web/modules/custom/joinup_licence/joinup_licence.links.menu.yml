@@ -1,5 +1,5 @@
-joinup_licence.licence_overview_controller_build:
+joinup_licence.overview:
   title: 'Licences'
   weight: 0
-  url: 'internal:/licences'
+  url: 'internal:/licence'
   menu_name: main

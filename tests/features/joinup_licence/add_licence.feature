@@ -23,7 +23,7 @@ Feature: Add licence through UI
     Given I am logged in as a moderator
     And I am on the homepage
     When I click "Add licence"
-    Then I should see the heading "Add licence"
+    Then I should see the heading "Add Licence"
     When I fill in "Title" with "This is a random licence"
     And I fill in "Description" with "Licence details go here.."
     And I press "Save"
