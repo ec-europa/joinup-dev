@@ -24,6 +24,8 @@ dependencies:
   - joinup_news
   - joinup_user
   - menu_ui
+  - message
+  - message_notify
   - node
   - og
   - og_menu

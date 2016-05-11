@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "91d2aebdcb5279e86fcf490828848ca8",
-    "content-hash": "945149ff44cff7691424a3e744860904",
+    "hash": "106330b22f98d89670307b41567889ce",
+    "content-hash": "f3cc6968f1006bc9fbd276f59669015c",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1274,6 +1274,61 @@
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
             "time": "2016-05-04 11:20:24"
+        },
+        {
+            "name": "drupal/message",
+            "version": "dev-8.x-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Gizra/message.git",
+                "reference": "1e007237b3e8adeab1e10c3b471be3c381ee150f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Gizra/message/zipball/1e007237b3e8adeab1e10c3b471be3c381ee150f",
+                "reference": "1e007237b3e8adeab1e10c3b471be3c381ee150f",
+                "shasum": ""
+            },
+            "type": "drupal-module",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Message",
+            "support": {
+                "source": "https://github.com/Gizra/message/tree/8.x-1.x",
+                "issues": "https://github.com/Gizra/message/issues"
+            },
+            "time": "2016-05-05 17:34:18"
+        },
+        {
+            "name": "drupal/message_notify",
+            "version": "dev-latest_version_requirement",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/idimopoulos/message_notify.git",
+                "reference": "27913276f8d1c0ea64dca6ac4add3c9e20baf6ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/idimopoulos/message_notify/zipball/27913276f8d1c0ea64dca6ac4add3c9e20baf6ea",
+                "reference": "27913276f8d1c0ea64dca6ac4add3c9e20baf6ea",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/message": "dev-8.x-1.x"
+            },
+            "type": "drupal-module",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Notification framework for the Message module",
+            "homepage": "https://drupal.org/project/message_notify",
+            "support": {
+                "issues": "https://drupal.org/project/issues/message_notify",
+                "irc": "irc://irc.freenode.org/drupal",
+                "source": "https://cgit.drupalcode.org/message_notify"
+            },
+            "time": "2016-05-11 19:46:11"
         },
         {
             "name": "drupal/og",
@@ -6843,6 +6898,8 @@
     "stability-flags": {
         "composer/composer": 15,
         "drupal/og": 20,
+        "drupal/message": 20,
+        "drupal/message_notify": 20,
         "drupal/og_menu": 20,
         "drupal/r4032login": 20,
         "easyrdf/easyrdf": 20,
