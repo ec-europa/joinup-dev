@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_solution_type
+    - field.storage.rdf_entity.field_is_actor
     - rdf_entity.rdfentity.solution
-id: rdf_entity.solution.field_is_solution_type
-field_name: field_is_solution_type
+id: rdf_entity.solution.field_is_actor
+field_name: field_is_actor
 entity_type: rdf_entity
 bundle: solution
-label: 'Solution type'
+label: Actor
 description: ''
 required: false
 translatable: false
