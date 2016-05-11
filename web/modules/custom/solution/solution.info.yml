@@ -78,7 +78,7 @@ config_devel:
   - field.storage.rdf_entity.field_is_spacial_coverage
   - field.storage.rdf_entity.field_is_status
   - field.storage.rdf_entity.field_is_standardization_level
-  - field.storage.rdf_entity.field_is_test_resouce_type
+  - field.storage.rdf_entity.field_is_test_resource_type
   - field.storage.rdf_entity.field_is_topic
   - field.storage.rdf_entity.field_is_translation
   - field.storage.rdf_entity.field_is_webdav_creation
