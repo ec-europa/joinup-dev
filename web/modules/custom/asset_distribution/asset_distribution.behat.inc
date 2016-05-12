@@ -30,13 +30,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   protected $assetDistributions = [];
 
   /**
-   * Test files.
-   *
-   * @var \Drupal\file\Entity\File[]
-   */
-  protected $files = [];
-
-  /**
    * Navigates to the canonical page display of an asset distribution.
    *
    * @param string $asset_distribution
