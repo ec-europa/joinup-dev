@@ -21,6 +21,7 @@ dependencies:
   - image
   - joinup_document
   - joinup_event
+  - joinup_licence
   - joinup_news
   - joinup_user
   - menu_ui

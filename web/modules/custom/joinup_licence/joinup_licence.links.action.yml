@@ -1,0 +1,5 @@
+joinup_licence.licence_add:
+  route_name: joinup_licence.add
+  title: 'Add licence'
+  appears_on:
+    - joinup_licence.overview
