@@ -2,6 +2,7 @@
 
 namespace Drupal\rdf_entity\Entity;
 
+use Drupal\Component\Uuid\Php;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\ContentEntityStorageBase;
@@ -9,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -44,11 +46,12 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * Initialize the storage backend.
    */
-  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager) {
+  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler) {
     parent::__construct($entity_type, $entity_manager, $cache);
     $this->sparql = $sparql;
     $this->languageManager = $language_manager;
     $this->entityTypeManager = $entity_type_manager;
+    $this->moduleHandler = $module_handler;
   }
 
   /**
@@ -61,8 +64,19 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $container->get('entity.manager'),
       $container->get('entity_type.manager'),
       $container->get('cache.entity'),
-      $container->get('language_manager')
+      $container->get('language_manager'),
+      $container->get('module_handler')
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function create(array $values = array()) {
+    if (!isset($values[$this->idKey])) {
+      $values[$this->idKey] = $this->generateId();
+    }
+    return parent::create($values);
   }
 
   /**
@@ -212,7 +226,7 @@ QUERY;
         }
       }
     }
-    // @TODO Inject alter hook here.
+    $this->moduleHandler->alter('rdf_load_bundle', $entity_values, $bundle);
     return $bundle;
   }
 
@@ -265,8 +279,9 @@ QUERY;
     $bundle_rdf_bundle_mapping = array();
     foreach ($this->entityTypeManager->getStorage('rdf_type')
                ->loadMultiple() as $entity) {
-      $bundle_rdf_bundle_mapping[$entity->rdftype] = $entity->id();
+      $bundle_rdf_bundle_mapping['rdf_entity'][$entity->rdftype] = $entity->id();
     }
+    \Drupal::moduleHandler()->alter('bundle_mapping', $bundle_rdf_bundle_mapping);
     return $bundle_rdf_bundle_mapping;
   }
 
@@ -281,10 +296,10 @@ QUERY;
       return;
     }
     if (!$bundles) {
-      $bundles = array_values($bundle_mapping);
+      $bundles = array_values($bundle_mapping['rdf_entity']);
     }
     $rdf_bundels = [];
-    $bundle_mapping = array_flip($bundle_mapping);
+    $bundle_mapping = array_flip($bundle_mapping['rdf_entity']);
     foreach ($bundles as $bundle) {
       $rdf_bundels[] = $bundle_mapping[$bundle];
     }
@@ -398,10 +413,8 @@ QUERY;
    * @param \Drupal\rdf_entity\Entity\Rdf $entity
    *   Rdf entity.
    */
-  protected function getMappedProperties(Rdf $entity) {
-    // @todo Better way to get to the bundle?
-    $bundle_target = $entity->get('rid')->getValue();
-    $bundle = $bundle_target[0]['target_id'];
+  protected function getMappedProperties(ContentEntityInterface $entity) {
+    $bundle = $entity->bundle();
     $properties = [];
     $entity_manager = \Drupal::getContainer()->get('entity.manager');
     // Collect impacted fields.
@@ -422,7 +435,7 @@ QUERY;
     }
 
     $label_mapping = $this->getLabelMapping();
-    $label_field = $label_mapping[$bundle];
+    $label_field = $label_mapping[$entity->getEntityTypeId()][$bundle];
     $properties['by_field']['label']['value'] = $label_field;
     $properties['flat'][$label_field] = $label_field;
 
@@ -485,6 +498,17 @@ QUERY;
   }
 
   /**
+   * Generate the id of the entity.
+   *
+   * @return string The new id for the entity.
+   */
+  function generateId() {
+    $uuid = new Php();
+    // @todo Fetch a bundle specific template.
+    return 'http://placeHolder/' . $uuid->generate();
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function doSave($id, EntityInterface $entity) {
@@ -511,10 +535,9 @@ QUERY;
       }
     }
     // Save the bundle.
-    $bundle_target = $entity->get('rid')->getValue();
-    $bundle = $bundle_target[0]['target_id'];
-    $rdf_mapping = array_flip($this->getRdfBundleMapping());
-    $rdf_field = $rdf_mapping[$bundle];
+    $bundle = $entity->bundle();
+    $rdf_mapping = $this->getRdfBundleMapping();
+    $rdf_field = array_flip($rdf_mapping[$entity->getEntityTypeId()])[$bundle];
     $pred = 'rdf:type';
     $insert .= $subj . ' ' . $pred . ' <' . $rdf_field . '>  .' . "\n";
 

@@ -95,25 +95,14 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
    * {@inheritdoc}
    */
   public function deleteTermHierarchy($tids) {
-    $this->sparql->delete('taxonomy_term_hierarchy')
-      ->condition('tid', $tids, 'IN')
-      ->execute();
+    // @todo Implement hierarchy updates.
   }
 
   /**
    * {@inheritdoc}
    */
   public function updateTermHierarchy(EntityInterface $term) {
-    $query = $this->sparql->insert('taxonomy_term_hierarchy')
-      ->fields(array('tid', 'parent'));
-
-    foreach ($term->parent as $parent) {
-      $query->values(array(
-        'tid' => $term->id(),
-        'parent' => (int) $parent->target_id,
-      ));
-    }
-    $query->execute();
+    // @todo Implement hierarchy updates.
   }
 
   /**
@@ -200,15 +189,20 @@ QUERY;
   public function loadTree($vid, $parent = 0, $max_depth = NULL, $load_entities = FALSE) {
     $cache_key = implode(':', func_get_args());
     if (!isset($this->trees[$cache_key])) {
+
       // We cache trees, so it's not CPU-intensive to call on a term and its
       // children, too.
       if (!isset($this->treeChildren[$vid])) {
+        /** @var \Drupal\taxonomy\Entity\Vocabulary $voc */
+        $voc = entity_load('taxonomy_vocabulary', $vid);
+        $concept_schema = $voc->getThirdPartySetting('rdf_entity', 'ConceptScheme');
         $this->treeChildren[$vid] = array();
         $this->treeParents[$vid] = array();
         $this->treeTerms[$vid] = array();
         $query = <<<QUERY
 SELECT ?tid ?label ?parent
 WHERE {
+  ?tid <http://www.w3.org/2004/02/skos/core#inScheme> <$concept_schema> .
   ?tid <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
   ?tid <http://www.w3.org/2004/02/skos/core#prefLabel> ?label .
   FILTER (lang(?label) = 'en') .

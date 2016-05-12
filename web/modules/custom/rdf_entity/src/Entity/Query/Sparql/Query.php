@@ -136,7 +136,7 @@ class Query extends QueryBase implements QueryInterface {
 
       case 'rid-=':
         $mapping = $entity_storage->getRdfBundleMapping();
-        $mapping = array_flip($mapping);
+        $mapping = array_flip($mapping['rdf_entity']);
         $bundle = $mapping[$value];
         if ($bundle) {
           $this->condition->condition('?entity', 'rdf:type', SparqlArg::uri($bundle));
