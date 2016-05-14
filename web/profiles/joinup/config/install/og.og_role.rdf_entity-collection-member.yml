@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies: {  }
+id: rdf_entity-collection-member
+label: Member
+weight: 1
+group_type: rdf_entity
+group_bundle: collection
+group_id: null
+permissions:
+  - unsubscribe
+role_type: immutable

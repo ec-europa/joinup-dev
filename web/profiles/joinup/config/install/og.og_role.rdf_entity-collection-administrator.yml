@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies: {  }
+id: rdf_entity-collection-administrator
+label: Administrator
+weight: 2
+group_type: rdf_entity
+group_bundle: collection
+group_id: null
+permissions:
+  - 'add user'
+  - 'administer group'
+  - 'approve and deny subscription'
+  - 'manage members'
+  - 'manage permissions'
+  - 'manage roles'
+  - 'update group'
+role_type: standard
