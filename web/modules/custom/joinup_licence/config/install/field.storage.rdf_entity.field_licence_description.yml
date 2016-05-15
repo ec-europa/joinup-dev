@@ -3,18 +3,19 @@ status: true
 dependencies:
   module:
     - rdf_entity
+    - text
 third_party_settings:
   rdf_entity:
-    mapping_target_id: 'dcat:keyword'
-id: rdf_entity.field_ar_policy_domain
-field_name: field_ar_policy_domain
+    mapping_value: 'dct:description'
+    mapping_format: ''
+id: rdf_entity.field_licence_description
+field_name: field_licence_description
 entity_type: rdf_entity
-type: entity_reference
-settings:
-  target_type: rdf_entity
-module: core
+type: text_long
+settings: {  }
+module: text
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

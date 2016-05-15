@@ -38,13 +38,13 @@ field_settings:
       config:
         - field.storage.rdf_entity.field_ar_description
 processor_settings:
-  add_url:
-    plugin_id: add_url
+  language:
+    plugin_id: language
     settings:
       weights:
         preprocess_index: -30
-  language:
-    plugin_id: language
+  add_url:
+    plugin_id: add_url
     settings:
       weights:
         preprocess_index: -30

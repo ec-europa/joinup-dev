@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_licence_type
+    - rdf_entity.rdfentity.licence
+id: rdf_entity.licence.field_licence_type
+field_name: field_licence_type
+entity_type: rdf_entity
+bundle: licence
+label: Type
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings: {  }
+field_type: entity_reference

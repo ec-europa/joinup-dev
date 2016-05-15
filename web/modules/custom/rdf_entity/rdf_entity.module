@@ -260,7 +260,7 @@ function rdf_entity_entity_insert(EntityInterface $entity) {
     $membership
       ->setUser(\Drupal::currentUser()->id())
       ->setEntityId($entity->id())
-      ->setEntityType($entity->getEntityTypeId())
+      ->setGroupEntityType($entity->getEntityTypeId())
       ->setFieldName($membership->getFieldName())
       ->save();
   }
