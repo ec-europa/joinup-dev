@@ -14,8 +14,9 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.field_ad_status
     - rdf_entity.rdfentity.asset_distribution
   module:
+    - asset_distribution
     - file
-    - link
+    - rdf_entity
     - text
 id: rdf_entity.asset_distribution.default
 targetEntityType: rdf_entity
@@ -102,5 +103,5 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
-  field_ad_status: true
   field_ad_file_size: true
+  field_ad_status: true

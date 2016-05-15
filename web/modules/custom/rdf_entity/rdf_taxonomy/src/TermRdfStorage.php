@@ -10,6 +10,7 @@ use Drupal\taxonomy\TermStorageInterface;
  * Defines a Controller class for taxonomy terms.
  */
 class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterface {
+  protected $bundle_predicate = 'http://www.w3.org/2004/02/skos/core#inScheme';
 
   /**
    * Array of loaded parents keyed by child term ID.
@@ -109,7 +110,7 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
    * {@inheritdoc}
    */
   public function loadParents($tid) {
-    if (!isset($this->parents[$tid])) {
+    if (empty($this->parents[$tid])) {
       $parents = array();
       $ids = [];
       $query = <<<QUERY
@@ -188,14 +189,14 @@ QUERY;
    */
   public function loadTree($vid, $parent = 0, $max_depth = NULL, $load_entities = FALSE) {
     $cache_key = implode(':', func_get_args());
-    if (!isset($this->trees[$cache_key])) {
+    if (empty($this->trees[$cache_key])) {
 
       // We cache trees, so it's not CPU-intensive to call on a term and its
       // children, too.
-      if (!isset($this->treeChildren[$vid])) {
+      if (empty($this->treeChildren[$vid])) {
         /** @var \Drupal\taxonomy\Entity\Vocabulary $voc */
         $voc = entity_load('taxonomy_vocabulary', $vid);
-        $concept_schema = $voc->getThirdPartySetting('rdf_entity', 'ConceptScheme');
+        $concept_schema = array_pop($voc->getThirdPartySetting('rdf_entity', 'mapping_vid'));
         $this->treeChildren[$vid] = array();
         $this->treeParents[$vid] = array();
         $this->treeTerms[$vid] = array();
@@ -260,6 +261,9 @@ QUERY;
           $child = current($this->treeChildren[$vid][$parent]);
           do {
             if (empty($child)) {
+              break;
+            }
+            if ($load_entities && empty($term_entities[$child]) || !$load_entities && empty($this->treeTerms[$vid][$child])) {
               break;
             }
             $term = $load_entities ? $term_entities[$child] : $this->treeTerms[$vid][$child];

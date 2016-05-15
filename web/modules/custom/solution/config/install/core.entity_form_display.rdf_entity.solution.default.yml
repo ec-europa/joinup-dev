@@ -122,8 +122,8 @@ hidden:
   field_is_affiliations_requests: true
   field_is_contact_information: true
   field_is_creation_date: true
-  field_is_has_version: true
   field_is_distribution: true
+  field_is_has_version: true
   field_is_included_asset: true
   field_is_is_version_of: true
   field_is_keywords: true

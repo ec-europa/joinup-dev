@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: { }
+dependencies:
+  module:
+    - link
+    - rdf_entity
 third_party_settings:
   rdf_entity:
     mapping_uri: 'dcat:accessURL'

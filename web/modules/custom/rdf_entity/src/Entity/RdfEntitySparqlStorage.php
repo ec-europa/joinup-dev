@@ -43,6 +43,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   protected $entityTypeManager;
 
+  protected $bundle_predicate = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
+
   /**
    * Initialize the storage backend.
    */
@@ -110,15 +112,15 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $remaining_ids = $ids;
     $entities = array();
     while (count($remaining_ids)) {
-      $operation_ids = array_slice($remaining_ids, 0, 200, TRUE);
+      $operation_ids = array_slice($remaining_ids, 0, 50, TRUE);
       foreach ($operation_ids as $k => $v) {
         unset($remaining_ids[$k]);
       }
       $entities_values = $this->loadFromStorage($operation_ids);
       if ($entities_values) {
         foreach ($entities_values as $id => $entity_values) {
-          $bundle = $entity_values['rid'][LanguageInterface::LANGCODE_DEFAULT][0]['value'];
-          $entity = new Rdf($entity_values, 'rdf_entity', $bundle);
+          $bundle = $this->bundleKey ? $entity_values[$this->bundleKey][LanguageInterface::LANGCODE_DEFAULT] : FALSE;
+          $entity = new $this->entityClass($entity_values, $this->entityTypeId, $bundle);
           $entities[$id] = $entity;
         }
         $this->invokeStorageLoadHook($entities);
@@ -169,7 +171,8 @@ QUERY;
     $values = [];
     foreach ($res as $entity_id => $entity_values) {
       // First determine the bundle of the returned entity.
-      if (!isset($entity_values['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'])) {
+      $bundle_pred = $this->bundle_predicate;
+      if (!isset($entity_values[$bundle_pred])) {
         continue;
       }
       /** @var \Drupal\rdf_entity\Entity\RdfEntityType $bundle */
@@ -177,17 +180,10 @@ QUERY;
       if (!$bundle) {
         continue;
       }
-      $values[$entity_id]['rid'][LanguageInterface::LANGCODE_DEFAULT][]['value'] = $bundle->id();
-      $values[$entity_id]['id'][LanguageInterface::LANGCODE_DEFAULT][]['value'] = $entity_id;
+      // Map bundle and entity id.
+      $values[$entity_id][$this->bundleKey][LanguageInterface::LANGCODE_DEFAULT] = $bundle->id();
+      $values[$entity_id][$this->idKey][LanguageInterface::LANGCODE_DEFAULT] = $entity_id;
 
-      $label_predicate = $bundle->rdf_label;
-      if (isset($entity_values[$label_predicate])) {
-        $values[$entity_id]['label'] = $entity_values[$label_predicate];
-        $label_item = $entity_values[$label_predicate];
-        $label_item = array_shift($label_item);
-        $label_item = array_shift($label_item);
-        $values[$entity_id]['label'][LanguageInterface::LANGCODE_DEFAULT][]['value'] = $label_item;
-      }
       $rdf_type = NULL;
       foreach ($entity_values as $predicate => $field) {
         // If not mapped, ignore.
@@ -199,9 +195,14 @@ QUERY;
         foreach ($field as $lang => $items) {
           foreach ($items as $item) {
             $values[$entity_id][$field_name][$lang][][$column] = $item;
+            if (!isset($values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT])) {
+              $values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT][][$column] = $item;
+            }
           }
-          $storage_definition = $mapping[$bundle->id()][$predicate]['storage_definition'];
-          $this->applyFieldDefaults($storage_definition, $values[$entity_id][$storage_definition->getName()][$lang]);
+          if (isset($mapping[$bundle->id()][$predicate]['storage_definition'])) {
+            $storage_definition = $mapping[$bundle->id()][$predicate]['storage_definition'];
+            $this->applyFieldDefaults($storage_definition, $values[$entity_id][$storage_definition->getName()][$lang]);
+          }
         }
       }
     }
@@ -214,13 +215,15 @@ QUERY;
   protected function getActiveBundle($entity_values) {
     $bundle = NULL;
     static $rdf_bundles;
-    if (!$rdf_bundles) {
-      $rdf_bundles = $this->entityTypeManager->getStorage('rdf_type')->loadMultiple();
+    if (!isset($rdf_bundles[$this->entityType->getBundleEntityType()])) {
+      $rdf_bundles[$this->entityType->getBundleEntityType()] = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->loadMultiple();
     }
-    foreach ($rdf_bundles as $rdf_bundle) {
-      foreach ($entity_values['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'] as $lang => $items) {
+    foreach ($rdf_bundles[$this->entityType->getBundleEntityType()] as $rdf_bundle) {
+      $settings = $rdf_bundle->getThirdPartySetting('rdf_entity', 'mapping_' . $this->bundleKey, FALSE);
+      $type = array_pop($settings);
+      foreach ($entity_values[$this->bundle_predicate] as $lang => $items) {
         foreach ($items as $item) {
-          if ($item == $rdf_bundle->rdftype) {
+          if ($item == $type) {
             $bundle = $rdf_bundle;
           }
         }
@@ -235,14 +238,33 @@ QUERY;
    */
   protected function predicateMapping() {
     $mapping = &drupal_static(__FUNCTION__);
-    if (!isset($mapping)) {
+    if (empty($mapping)) {
       // Collect entities ids, bundles and languages.
-      $rdf_bundle_entities = $this->entityTypeManager->getStorage('rdf_type')->loadMultiple();
+      $rdf_bundle_entities = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->loadMultiple();
 
       // Collect impacted fields.
       $mapping = [];
       foreach ($rdf_bundle_entities as $rdf_bundle_entity) {
+        $base_field_definitions = $this->entityManager->getBaseFieldDefinitions($this->entityTypeId);
         $field_definitions = $this->entityManager->getFieldDefinitions($this->entityTypeId, $rdf_bundle_entity->id());
+        if (!$base_field_definitions) {
+          continue;
+        }
+        foreach ($base_field_definitions as $id => $base_field_definition) {
+          $field_data = $rdf_bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $id, FALSE);
+          if (!$field_data) {
+            continue;
+          }
+          foreach ($field_data as $column => $predicate) {
+            if (empty($predicate)) {
+              continue;
+            }
+            $mapping[$rdf_bundle_entity->id()][$predicate] = array(
+              'field_name' => $id,
+              'column' => $column,
+            );
+          }
+        }
         foreach ($field_definitions as $field_name => $field_definition) {
           /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
           $storage_definition = $field_definition->getFieldStorageDefinition();
@@ -251,6 +273,9 @@ QUERY;
           }
           foreach ($storage_definition->getColumns() as $column => $column_info) {
             if ($predicate = $storage_definition->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE)) {
+              if (empty($predicate)) {
+                continue;
+              }
               $mapping[$rdf_bundle_entity->id()][$predicate] = array(
                 'column' => $column,
                 'field_name' => $field_name,
@@ -277,9 +302,11 @@ QUERY;
    */
   public function getRdfBundleMapping() {
     $bundle_rdf_bundle_mapping = array();
-    foreach ($this->entityTypeManager->getStorage('rdf_type')
+    foreach ($this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())
                ->loadMultiple() as $entity) {
-      $bundle_rdf_bundle_mapping['rdf_entity'][$entity->rdftype] = $entity->id();
+      $settings = $entity->getThirdPartySetting('rdf_entity', 'mapping_' . $this->bundleKey, FALSE);
+      $type = array_pop($settings);
+      $bundle_rdf_bundle_mapping['rdf_entity'][$entity->rdftype] = $type;
     }
     \Drupal::moduleHandler()->alter('bundle_mapping', $bundle_rdf_bundle_mapping);
     return $bundle_rdf_bundle_mapping;
@@ -301,27 +328,11 @@ QUERY;
     $rdf_bundels = [];
     $bundle_mapping = array_flip($bundle_mapping['rdf_entity']);
     foreach ($bundles as $bundle) {
-      $rdf_bundels[] = $bundle_mapping[$bundle];
+      if (isset($bundle_mapping[$bundle])) {
+        $rdf_bundels[] = $bundle_mapping[$bundle];
+      }
     }
     return "(<" . implode(">, <", $rdf_bundels) . ">)";
-  }
-
-  /**
-   * Bundle - label mapping.
-   *
-   * Get a list of label predicates by bundle.
-   */
-  public function getLabelMapping() {
-    $bundle_label_mapping = array();
-    foreach ($this->entityTypeManager->getStorage('rdf_type')
-               ->loadMultiple() as $entity) {
-      $label_field = $entity->get('rdf_label');
-      if (!$label_field) {
-        continue;
-      }
-      $bundle_label_mapping[$entity->id()] = $label_field;
-    }
-    return $bundle_label_mapping;
   }
 
   /**
@@ -419,6 +430,8 @@ QUERY;
     $entity_manager = \Drupal::getContainer()->get('entity.manager');
     // Collect impacted fields.
     $definitions = $entity_manager->getFieldDefinitions($entity->getEntityTypeId(), $bundle);
+    $base_field_definitions = $this->entityManager->getBaseFieldDefinitions($this->entityTypeId);
+    $rdf_bundle_entity = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->load($bundle);
     /** @var \Drupal\Core\Field\BaseFieldDefinition $field_definition */
     foreach ($definitions as $field_name => $field_definition) {
       /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
@@ -433,12 +446,20 @@ QUERY;
         }
       }
     }
+    foreach ($base_field_definitions as $field_name => $base_field_definition) {
+      $field_data = $rdf_bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $field_name, FALSE);
+      if (!$field_data) {
+        continue;
+      }
+      foreach ($field_data as $column => $predicate) {
+        if (empty($predicate)) {
+          continue;
+        }
+        $properties['by_field'][$field_name][$column] = $predicate;
+        $properties['flat'][$predicate] = $predicate;
+      }
 
-    $label_mapping = $this->getLabelMapping();
-    $label_field = $label_mapping[$entity->getEntityTypeId()][$bundle];
-    $properties['by_field']['label']['value'] = $label_field;
-    $properties['flat'][$label_field] = $label_field;
-
+    }
     return $properties;
   }
 
@@ -561,7 +582,7 @@ QUERY;
     // @todo Do in one transaction... If possible.
     // @todo How to deal with graphs? Now we use the default,
     // ... This needs some thought and most probably some discussion.
-    $query = "INSERT DATA INTO <http://localhost:8890/DAV> {\n" .
+    $query = "INSERT DATA INTO <http://published/> {\n" .
       $insert . "\n" .
       '}';
     $this->sparql->query($query);

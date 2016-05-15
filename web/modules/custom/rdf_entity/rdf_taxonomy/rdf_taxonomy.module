@@ -23,6 +23,11 @@ function rdf_taxonomy_entity_type_alter(array &$entity_types) {
  * Implements hook_form_alter().
  */
 function rdf_taxonomy_form_taxonomy_vocabulary_form_alter(&$form, FormStateInterface $form_state) {
+  return;
+  // @todo Should be obsolete...
+
+
+
   // Only add mapping form element to rdf entities fields.
   if ($form_state->get('entity_type_id') != 'rdf_entity') {
     //return;
@@ -65,4 +70,30 @@ function rdf_taxonomy_bundle_mapping_alter(&$mapping) {
   foreach (\Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->loadMultiple() as $entity) {
     $mapping['taxonomy_term']['http://www.w3.org/2004/02/skos/core#Concept'] = $entity->id();
   }
+}
+
+/**
+ * Implements hook_rdf_load_bundle_alter().
+ */
+function rdf_taxonomy_rdf_load_bundle_alter($entity_values, &$bundle) {
+//  $is_term = FALSE;
+//  foreach ($entity_values['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'] as $lang => $items) {
+//    foreach ($items as $item) {
+//      // Current item is a term.
+//      if ($item == 'http://www.w3.org/2004/02/skos/core#Concept') {
+//        $is_term = TRUE;
+//      }
+//    }
+//  }
+//  if ($is_term) {
+//    foreach ($entity_values['http://www.w3.org/2004/02/skos/core#inScheme'] as $lang => $items) {
+//      foreach ($items as $item) {
+//        // Current item is a term.
+//        if ($item == 'http://www.w3.org/2004/02/skos/core#Concept') {
+//          $is_term = TRUE;
+//        }
+//      }
+//    }
+//
+//  }
 }

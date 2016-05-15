@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.rdf_entity.field_ar_description
     - search_api.server.database_search_server
-    - field.field.rdf_entity.collection.field_ar_description
   module:
     - search_api
     - rdf_entity
@@ -34,6 +34,9 @@ field_settings:
     datasource_id: 'entity:rdf_entity'
     property_path: field_ar_description
     type: text
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_ar_description
 processor_settings:
   add_url:
     plugin_id: add_url
