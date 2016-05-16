@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains joinup_subscription.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function joinup_subscription_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the joinup_subscription module.
+    case 'help.page.joinup_subscription':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Handles subscription settings for each user.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

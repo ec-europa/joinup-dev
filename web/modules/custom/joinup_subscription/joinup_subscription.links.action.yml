@@ -1,0 +1,6 @@
+entity.subscription_configuration.add_form:
+  route_name: 'entity.subscription_configuration.add_form'
+  title: 'Add Subscription configuration'
+  appears_on:
+    - entity.subscription_configuration.collection
+

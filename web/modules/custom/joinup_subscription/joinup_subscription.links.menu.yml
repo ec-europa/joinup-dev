@@ -1,0 +1,8 @@
+# Subscription configuration menu items definition
+entity.subscription_configuration.collection:
+  title: 'Subscription configuration'
+  route_name: entity.subscription_configuration.collection
+  description: 'List Subscription configuration (bundles)'
+  parent: system.admin_structure
+  weight: 99
+

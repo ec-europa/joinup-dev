@@ -11,8 +11,9 @@
         "drupal/console": "~0.10",
         "drupal/core": "~8.1.0",
         "drupal/og": "dev-8.x-1.x",
-        "drupal/message": "dev-8.x-1.x",
-        "drupal/message_notify": "dev-latest_version_requirement",
+        "drupal/message": "dev-8.x-1.x as 8.1.0",
+        "drupal/message_notify": "dev-8.x-1.x as 8.1.0",
+        "drupal/message_subscribe": "dev-8.x-1.x",
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x",
@@ -134,9 +135,14 @@
             "url": "git@github.com:Gizra/message.git"
         },
         {
-            "_comment": "This is a fork that has a fix for the message dependency.",
+            "_comment": "This is the development repository of the D8 port of message notify module. Remove this when an official alpha release is made.",
             "type": "vcs",
-            "url": "git@github.com:idimopoulos/message_notify.git"
+            "url": "git@github.com:Gizra/message_notify.git"
+        },
+        {
+            "_comment": "This is the development repository of the D8 port of message subscribe module. Remove this when an official alpha release is made.",
+            "type": "vcs",
+            "url": "git@github.com:Gizra/message_subscribe.git"
         },
         {
             "_comment": "Use a fork of Behat Drupal Extension with a fix for #266.",

@@ -1,0 +1,5 @@
+name: Joinup subscription
+type: module
+description: Handles subscription settings for each user.
+core: 8.x
+package: Joinup
