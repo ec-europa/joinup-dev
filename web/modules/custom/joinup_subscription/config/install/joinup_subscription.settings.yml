@@ -3,4 +3,4 @@ default_group_types:
   - node:event
   - node:news
   - node:document
-frequency: 604800
+frequency: weekly
