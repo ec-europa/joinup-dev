@@ -4,6 +4,8 @@ dependencies:
   config:
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
+    - field.field.user.user.field_user_frequency
+    - field.field.user.user.field_user_group_types
     - field.field.user.user.field_user_nationality
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
@@ -69,4 +71,6 @@ content:
     type: text_default
   member_for:
     weight: 5
-hidden: {  }
+hidden:
+  field_user_frequency: true
+  field_user_group_types: true

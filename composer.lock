@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "106330b22f98d89670307b41567889ce",
-    "content-hash": "f3cc6968f1006bc9fbd276f59669015c",
+    "hash": "91d2aebdcb5279e86fcf490828848ca8",
+    "content-hash": "945149ff44cff7691424a3e744860904",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1276,72 +1276,17 @@
             "time": "2016-05-04 11:20:24"
         },
         {
-            "name": "drupal/message",
-            "version": "dev-8.x-1.x",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Gizra/message.git",
-                "reference": "1e007237b3e8adeab1e10c3b471be3c381ee150f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Gizra/message/zipball/1e007237b3e8adeab1e10c3b471be3c381ee150f",
-                "reference": "1e007237b3e8adeab1e10c3b471be3c381ee150f",
-                "shasum": ""
-            },
-            "type": "drupal-module",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "description": "Message",
-            "support": {
-                "source": "https://github.com/Gizra/message/tree/8.x-1.x",
-                "issues": "https://github.com/Gizra/message/issues"
-            },
-            "time": "2016-05-05 17:34:18"
-        },
-        {
-            "name": "drupal/message_notify",
-            "version": "dev-latest_version_requirement",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/idimopoulos/message_notify.git",
-                "reference": "27913276f8d1c0ea64dca6ac4add3c9e20baf6ea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/idimopoulos/message_notify/zipball/27913276f8d1c0ea64dca6ac4add3c9e20baf6ea",
-                "reference": "27913276f8d1c0ea64dca6ac4add3c9e20baf6ea",
-                "shasum": ""
-            },
-            "require": {
-                "drupal/message": "dev-8.x-1.x"
-            },
-            "type": "drupal-module",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "description": "Notification framework for the Message module",
-            "homepage": "https://drupal.org/project/message_notify",
-            "support": {
-                "issues": "https://drupal.org/project/issues/message_notify",
-                "irc": "irc://irc.freenode.org/drupal",
-                "source": "https://cgit.drupalcode.org/message_notify"
-            },
-            "time": "2016-05-11 19:46:11"
-        },
-        {
             "name": "drupal/og",
             "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "200ea3e129e462c3fa77afb9b4760e797ed45628"
+                "reference": "213570b78b5ef6cce33b254d3b78b54b89f8a64e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/200ea3e129e462c3fa77afb9b4760e797ed45628",
-                "reference": "200ea3e129e462c3fa77afb9b4760e797ed45628",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/213570b78b5ef6cce33b254d3b78b54b89f8a64e",
+                "reference": "213570b78b5ef6cce33b254d3b78b54b89f8a64e",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1355,7 +1300,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-05-05 09:11:58"
+            "time": "2016-05-16 08:21:15"
         },
         {
             "name": "drupal/og_menu",
@@ -1419,9 +1364,6 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
             "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
             "homepage": "https://www.drupal.org/project/r4032login",
             "time": "2016-03-01 13:56:38"
@@ -1626,25 +1568,24 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "1.2.11",
+            "version": "1.2.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "04c6cdf9871140b80947c87db7770c0dd9c75c7c"
+                "reference": "cbfe3ee6f758225559b1111048e05a3e4c2e26cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/04c6cdf9871140b80947c87db7770c0dd9c75c7c",
-                "reference": "04c6cdf9871140b80947c87db7770c0dd9c75c7c",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/cbfe3ee6f758225559b1111048e05a3e4c2e26cf",
+                "reference": "cbfe3ee6f758225559b1111048e05a3e4c2e26cf",
                 "shasum": ""
             },
             "require": {
-                "doctrine/lexer": "~1.0,>=1.0.1",
+                "doctrine/lexer": "^1.0.1",
                 "php": ">= 5.3.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.4",
-                "satooshi/php-coveralls": "dev-master"
+                "phpunit/phpunit": "^4.8.24"
             },
             "type": "library",
             "extra": {
@@ -1675,7 +1616,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2015-11-11 03:28:32"
+            "time": "2016-05-15 10:06:34"
         },
         {
             "name": "gabordemooij/redbean",
@@ -5368,7 +5309,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "cca42acad8cc7f4149a87ba8b5cb78db866c3b9e"
+                "reference": "e4cd2325a4656762bd4a0fbfd2996d3fa221b2b5"
             },
             "require": {
                 "php": ">=5.4.0",
@@ -5390,7 +5331,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-05-06 18:09:17"
+            "time": "2016-05-15 15:00:50"
         },
         {
             "name": "drupal/config_devel",
@@ -5425,12 +5366,6 @@
                 "url": "https://git.drupal.org/project/config_update.git",
                 "reference": "ac1526df5836a611f04bb421945beddb6306b7f2"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.1.zip",
-                "reference": null,
-                "shasum": null
-            },
             "require": {
                 "drupal/config": "8.*",
                 "drupal/core": "8.*"
@@ -5449,9 +5384,6 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "time": "2016-03-01 16:28:35"
@@ -5462,7 +5394,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "ebb184dcb29d652ef26093b703895c0ba61f2a6e"
+                "reference": "34538908ad46551c4251556b678d36baa3c12083"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -5497,7 +5429,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2016-05-10 19:17:16"
+            "time": "2016-05-14 18:40:47"
         },
         {
             "name": "drupal/drupal-driver",
@@ -5789,12 +5721,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jcalderonzumba/MinkPhantomJSDriver.git",
-                "reference": "f6867c5e5ad1727936b5e70075d92c2ec060e1a1"
+                "reference": "10d7c48c9a4129463052321b52450d98983c4332"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
-                "reference": "f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
+                "reference": "10d7c48c9a4129463052321b52450d98983c4332",
                 "shasum": ""
             },
             "require": {
@@ -5842,7 +5774,7 @@
                 "phantomjs",
                 "testing"
             ],
-            "time": "2016-03-04 20:15:21"
+            "time": "2015-10-05 18:24:44"
         },
         {
             "name": "mikey179/vfsStream",
@@ -6163,20 +6095,23 @@
         },
         {
             "name": "phpunit/php-timer",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-timer.git",
-                "reference": "3e82f4e9fc92665fafd9157568e4dcb01d014e5b"
+                "reference": "38e9124049cf1a164f1e4537caf19c99bf1eb260"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/3e82f4e9fc92665fafd9157568e4dcb01d014e5b",
-                "reference": "3e82f4e9fc92665fafd9157568e4dcb01d014e5b",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/38e9124049cf1a164f1e4537caf19c99bf1eb260",
+                "reference": "38e9124049cf1a164f1e4537caf19c99bf1eb260",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4|~5"
             },
             "type": "library",
             "autoload": {
@@ -6200,7 +6135,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2015-06-21 08:01:12"
+            "time": "2016-05-12 18:03:57"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -6253,16 +6188,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.24",
+            "version": "4.8.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a1066c562c52900a142a0e2bbf0582994671385e"
+                "reference": "fc1d8cd5b5de11625979125c5639347896ac2c74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a1066c562c52900a142a0e2bbf0582994671385e",
-                "reference": "a1066c562c52900a142a0e2bbf0582994671385e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fc1d8cd5b5de11625979125c5639347896ac2c74",
+                "reference": "fc1d8cd5b5de11625979125c5639347896ac2c74",
                 "shasum": ""
             },
             "require": {
@@ -6276,7 +6211,7 @@
                 "phpunit/php-code-coverage": "~2.1",
                 "phpunit/php-file-iterator": "~1.4",
                 "phpunit/php-text-template": "~1.2",
-                "phpunit/php-timer": ">=1.0.6",
+                "phpunit/php-timer": "^1.0.6",
                 "phpunit/phpunit-mock-objects": "~2.3",
                 "sebastian/comparator": "~1.1",
                 "sebastian/diff": "~1.2",
@@ -6321,7 +6256,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-03-14 06:16:08"
+            "time": "2016-05-17 03:09:28"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -6497,16 +6432,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "1.3.6",
+            "version": "1.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "2292b116f43c272ff4328083096114f84ea46a56"
+                "reference": "4e8f0da10ac5802913afc151413bc8c53b6c2716"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/2292b116f43c272ff4328083096114f84ea46a56",
-                "reference": "2292b116f43c272ff4328083096114f84ea46a56",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/4e8f0da10ac5802913afc151413bc8c53b6c2716",
+                "reference": "4e8f0da10ac5802913afc151413bc8c53b6c2716",
                 "shasum": ""
             },
             "require": {
@@ -6543,7 +6478,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2016-05-04 07:59:13"
+            "time": "2016-05-17 03:18:57"
         },
         {
             "name": "sebastian/exporter",
@@ -6898,8 +6833,6 @@
     "stability-flags": {
         "composer/composer": 15,
         "drupal/og": 20,
-        "drupal/message": 20,
-        "drupal/message_notify": 20,
         "drupal/og_menu": 20,
         "drupal/r4032login": 20,
         "easyrdf/easyrdf": 20,

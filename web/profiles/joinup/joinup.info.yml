@@ -22,10 +22,9 @@ dependencies:
   - joinup_document
   - joinup_event
   - joinup_news
+  - joinup_subscription
   - joinup_user
   - menu_ui
-  - message
-  - message_notify
   - node
   - og
   - og_menu

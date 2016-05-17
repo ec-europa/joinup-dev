@@ -8,17 +8,9 @@
 use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
- * Implements hook_help().
+ * Implements hook_entity_type_alter().
  */
-function joinup_subscription_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the joinup_subscription module.
-    case 'help.page.joinup_subscription':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Handles subscription settings for each user.') . '</p>';
-      return $output;
-
-    default:
-  }
+function joinup_subscription_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+  $entity_types['user']->setFormclass('subscription_settings', 'Drupal\user\Form\SubscriptionSettingsForm');
 }
