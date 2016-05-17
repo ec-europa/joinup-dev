@@ -1,10 +1,10 @@
 @api
-Feature: Solution API
+Feature: Asset distribution API
   In order to manage solutions programmatically
   As a backend developer
   I need to be able to use the Solution API
 
-  Scenario: Programmatically create a solution
+  Scenario: Programmatically create a distribution
     Given the following collection:
       | title             | Asset distribution collection API foo |
       | logo              | logo.png                              |
@@ -37,7 +37,7 @@ Feature: Solution API
     And I should have 1 asset release
     And I should have 1 asset distribution
 
-  Scenario: Programmatically create a collection using only the mandatory fields
+  Scenario: Programmatically create a distribution using only the mandatory fields
     Given the following collection:
       | title             | Asset distribution short API bar |
       | logo              | logo.png                         |

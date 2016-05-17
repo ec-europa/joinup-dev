@@ -22,6 +22,7 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - image
+    - link
     - rdf_entity
     - text
 id: rdf_entity.collection.propose

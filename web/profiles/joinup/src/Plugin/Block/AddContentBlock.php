@@ -107,7 +107,8 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       ];
 
       $solution_url = Url::fromRoute('solution.collection_solution.add', [
-        'rdf_entity' => $collection_contexts['collection']->getContextValue()->id(),
+        'rdf_entity' => $collection_contexts['collection']->getContextValue()
+          ->id(),
       ]);
       $links['solution'] = [
         '#type' => 'link',
@@ -133,20 +134,30 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       ];
     }
 
-    /** @var \Drupal\Core\Plugin\Context\Context[] $asset_release_contexts */
-    $asset_release_contexts = $this->assetReleaseContext->getRuntimeContexts(['asset_release']);
-    if ($asset_release_contexts && $asset_release_contexts['asset_release']->hasContextValue()) {
-      $distribution_url = Url::fromRoute('asset_distribution.asset_release_asset_distribution.add', [
-        'rdf_entity' => $asset_release_contexts['asset_release']->getContextValue()->id(),
-      ]);
-      $links['asset_distribution'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Add distribution'),
-        '#url' => $distribution_url,
-        '#attributes' => ['class' => ['button', 'button--small']],
-        '#access' => $distribution_url->access(),
-      ];
+    if (!empty($this->assetReleaseContext)) {
+      /** @var \Drupal\Core\Plugin\Context\Context[] $asset_release_contexts */
+      $asset_release_contexts = $this->assetReleaseContext->getRuntimeContexts(['asset_release']);
+      if ($asset_release_contexts && $asset_release_contexts['asset_release']->hasContextValue()) {
+        $distribution_url = Url::fromRoute('asset_distribution.asset_release_asset_distribution.add', [
+          'rdf_entity' => $asset_release_contexts['asset_release']->getContextValue()
+            ->id(),
+        ]);
+        $links['asset_distribution'] = [
+          '#type' => 'link',
+          '#title' => $this->t('Add distribution'),
+          '#url' => $distribution_url,
+          '#attributes' => ['class' => ['button', 'button--small']],
+          '#access' => $distribution_url->access(),
+        ];
+      }
     }
+
+    $licence_url = Url::fromRoute('joinup_licence.add');
+    $links['licence'] = [
+      '#title' => $this->t('Add licence'),
+      '#url' => $licence_url,
+      '#access' => $licence_url->access(),
+    ];
 
     // Render the links as an unordered list, styled as buttons.
     $build = [

@@ -49,7 +49,7 @@ Feature: "Add release" visibility options.
 
     # Verify that the "Release Test 1 v2" is registered as a release to "Release Test 1" solution.
     When I go to the homepage of the "Release Test 1" solution
-    Then I should see the text "Has version"
+    Then I should see the text "Releases"
     And I should see the text "Release Test 1 v2"
 
     # Check that the release cannot take the title of another release in another solution.
@@ -67,7 +67,7 @@ Feature: "Add release" visibility options.
 
     # Check relationship with solution.
     When I go to the homepage of the "Release Test 1" solution
-    And I should see the text "Has version"
+    And I should see the text "Releases"
     And I should see the text "Release Test 1 v2"
     When I click "Release Test 1 v2"
     Then I should see the text "Is version of"

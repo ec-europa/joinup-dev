@@ -5,9 +5,9 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_target_id: 'http://purl.org/dc/terms/DCMIType'
-id: rdf_entity.field_is_solution_category
-field_name: field_is_solution_category
+    mapping_target_id: 'dct:type'
+id: rdf_entity.field_is_test_resource_type
+field_name: field_is_test_resource_type
 entity_type: rdf_entity
 type: entity_reference
 settings:

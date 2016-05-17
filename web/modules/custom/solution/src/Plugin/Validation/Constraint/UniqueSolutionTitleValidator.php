@@ -15,15 +15,8 @@ use Symfony\Component\Validator\ConstraintValidator;
  * can have many releases and a release belongs to one solution. A release
  * cannot have releases or multiple solutions.
  *
- * The solution entity is defined by having an empty field is_version_of.
- * This is enough because releases can only be created through the solution and
- * automatically have the is_version_of field filled. An entity that has the
- * field is_version_of filled is automatically a release.
- *
  * The following checks make sure that a solution must have a unique title among
- * solutions and a release must have a unique title against other solutions and
- * their releases but can have the same name as their parent solution or their
- * sibling releases.
+ * solutions.
  */
 class UniqueSolutionTitleValidator extends ConstraintValidator {
 
