@@ -194,7 +194,9 @@ QUERY;
         $column = $mapping[$bundle->id()][$predicate]['column'];
         foreach ($field as $lang => $items) {
           foreach ($items as $item) {
-            $values[$entity_id][$field_name][$lang][][$column] = $item;
+            if (!isset($values[$entity_id][$field_name]) || !is_string($values[$entity_id][$field_name][$lang])) {
+              $values[$entity_id][$field_name][$lang][][$column] = $item;
+            }
             if (!isset($values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT])) {
               $values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT][][$column] = $item;
             }
@@ -305,8 +307,11 @@ QUERY;
     foreach ($this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())
                ->loadMultiple() as $entity) {
       $settings = $entity->getThirdPartySetting('rdf_entity', 'mapping_' . $this->bundleKey, FALSE);
+      if (!is_array($settings)) {
+        throw new \Exception('No rdf:type mapping set for bundle ' . $entity->label());
+      }
       $type = array_pop($settings);
-      $bundle_rdf_bundle_mapping['rdf_entity'][$entity->rdftype] = $type;
+      $bundle_rdf_bundle_mapping['rdf_entity'][$type] = $entity->id();
     }
     \Drupal::moduleHandler()->alter('bundle_mapping', $bundle_rdf_bundle_mapping);
     return $bundle_rdf_bundle_mapping;
@@ -372,6 +377,24 @@ QUERY;
 
     }
     return $ids_rdf_mapping;
+  }
+
+  /**
+   * Bundle - label mapping.
+   *
+   * Get a list of label predicates by bundle.
+   */
+  public function getLabelMapping() {
+    $bundle_label_mapping = array();
+    foreach ($this->entityTypeManager->getStorage('rdf_type')
+               ->loadMultiple() as $entity) {
+      $label_field = $entity->get('rdf_label');
+      if (!$label_field) {
+        continue;
+      }
+      $bundle_label_mapping[$entity->id()] = $label_field;
+    }
+    return $bundle_label_mapping;
   }
 
   /**
@@ -582,7 +605,7 @@ QUERY;
     // @todo Do in one transaction... If possible.
     // @todo How to deal with graphs? Now we use the default,
     // ... This needs some thought and most probably some discussion.
-    $query = "INSERT DATA INTO <http://published/> {\n" .
+    $query = "INSERT DATA INTO <http://localhost:8890/DAV> {\n" .
       $insert . "\n" .
       '}';
     $this->sparql->query($query);
