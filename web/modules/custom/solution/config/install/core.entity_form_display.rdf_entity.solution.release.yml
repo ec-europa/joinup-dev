@@ -25,7 +25,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_policy_domain
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
-    - field.field.rdf_entity.solution.field_is_solution_category
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_spacial_coverage
@@ -106,7 +105,6 @@ hidden:
   field_is_policy_domain: true
   field_is_product_type: true
   field_is_related_solutions: true
-  field_is_solution_category: true
   field_is_solution_type: true
   field_is_source_code_repository: true
   field_is_spacial_coverage: true

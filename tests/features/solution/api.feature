@@ -22,7 +22,7 @@ Feature: Solution API
       | collection        | Solution API foo                     |
     Then I should have 1 solution
 
-  Scenario: Programmatically create a collection using only the mandatory fields
+  Scenario: Programmatically create a solution using only the mandatory fields
     Given the following collection:
       | title             | Solution API bar |
       | logo              | logo.png         |
