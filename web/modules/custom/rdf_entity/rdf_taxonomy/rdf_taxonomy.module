@@ -4,9 +4,6 @@
  * Main functions and hook implementations of the RDF Taxonomy module.
  */
 
-use \Drupal\Core\Form\FormStateInterface;
-use \Drupal\taxonomy\Entity\Vocabulary;
-
 /**
  * Implements hook_entity_type_alter().
  *
@@ -20,80 +17,10 @@ function rdf_taxonomy_entity_type_alter(array &$entity_types) {
 }
 
 /**
- * Implements hook_form_alter().
- */
-function rdf_taxonomy_form_taxonomy_vocabulary_form_alter(&$form, FormStateInterface $form_state) {
-  return;
-  // @todo Should be obsolete...
-
-
-
-  // Only add mapping form element to rdf entities fields.
-  if ($form_state->get('entity_type_id') != 'rdf_entity') {
-    //return;
-  }
-  $form_obj = $form_state->getFormObject();
-  /** @var \Drupal\taxonomy\Entity\Vocabulary $entity */
-  $entity = $form_obj->getEntity();
-  // $schema = $entity->getSchema();
-  $form['rdf_mapping'] = array(
-    '#type' => 'details',
-    '#title' => t('Vocabulary id'),
-    '#description' => t('skos:ConceptScheme'),
-    '#weight' => 99,
-    '#open' => TRUE,
-  );
-  $form['rdf_mapping']['concept_scheme'] = array(
-    '#type' => 'textfield',
-    '#title' => 'skos:ConceptScheme URI used to query the vocabulary',
-    '#weight' => 150,
-    '#default_value' => $entity->getThirdPartySetting('rdf_entity', 'ConceptScheme', FALSE),
-    '#required' => TRUE,
-  );
-
-  $form['#entity_builders'][] = 'rdf_taxonomy_form_alter_builder';
-}
-
-/**
- * Entity builder callback: Save rdf field mapping.
- */
-function rdf_taxonomy_form_alter_builder($entity_type, Vocabulary $entity, array &$form, FormStateInterface $form_state) {
-    $value = $form_state->getValue('concept_scheme');
-    $entity->setThirdPartySetting('rdf_entity', 'ConceptScheme', $value);
-}
-
-
-/**
  * Implements hook_bundle_mapping_alter().
  */
 function rdf_taxonomy_bundle_mapping_alter(&$mapping) {
   foreach (\Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->loadMultiple() as $entity) {
     $mapping['taxonomy_term']['http://www.w3.org/2004/02/skos/core#Concept'] = $entity->id();
   }
-}
-
-/**
- * Implements hook_rdf_load_bundle_alter().
- */
-function rdf_taxonomy_rdf_load_bundle_alter($entity_values, &$bundle) {
-//  $is_term = FALSE;
-//  foreach ($entity_values['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'] as $lang => $items) {
-//    foreach ($items as $item) {
-//      // Current item is a term.
-//      if ($item == 'http://www.w3.org/2004/02/skos/core#Concept') {
-//        $is_term = TRUE;
-//      }
-//    }
-//  }
-//  if ($is_term) {
-//    foreach ($entity_values['http://www.w3.org/2004/02/skos/core#inScheme'] as $lang => $items) {
-//      foreach ($items as $item) {
-//        // Current item is a term.
-//        if ($item == 'http://www.w3.org/2004/02/skos/core#Concept') {
-//          $is_term = TRUE;
-//        }
-//      }
-//    }
-//
-//  }
 }

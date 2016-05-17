@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Install rdf taxonomy.
+ */
 
 /**
  * Implements hook_install().

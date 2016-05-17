@@ -43,7 +43,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   protected $entityTypeManager;
 
-  protected $bundle_predicate = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
+  protected $bundlePredicate = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 
   /**
    * Initialize the storage backend.
@@ -171,7 +171,7 @@ QUERY;
     $values = [];
     foreach ($res as $entity_id => $entity_values) {
       // First determine the bundle of the returned entity.
-      $bundle_pred = $this->bundle_predicate;
+      $bundle_pred = $this->bundlePredicate;
       if (!isset($entity_values[$bundle_pred])) {
         continue;
       }
@@ -223,7 +223,7 @@ QUERY;
     foreach ($rdf_bundles[$this->entityType->getBundleEntityType()] as $rdf_bundle) {
       $settings = $rdf_bundle->getThirdPartySetting('rdf_entity', 'mapping_' . $this->bundleKey, FALSE);
       $type = array_pop($settings);
-      foreach ($entity_values[$this->bundle_predicate] as $lang => $items) {
+      foreach ($entity_values[$this->bundlePredicate] as $lang => $items) {
         foreach ($items as $item) {
           if ($item == $type) {
             $bundle = $rdf_bundle;
@@ -444,8 +444,11 @@ QUERY;
   /**
    * Get the Drupal field <-> rdf field mapping.
    *
-   * @param \Drupal\rdf_entity\Entity\Rdf $entity
-   *   Rdf entity.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   Entity.
+   *
+   * @return array
+   *    An array of mappings between predicates and field properties.
    */
   protected function getMappedProperties(ContentEntityInterface $entity) {
     $bundle = $entity->bundle();
@@ -544,9 +547,10 @@ QUERY;
   /**
    * Generate the id of the entity.
    *
-   * @return string The new id for the entity.
+   * @return string
+   *    The new id for the entity.
    */
-  function generateId() {
+  protected function generateId() {
     $uuid = new Php();
     // @todo Fetch a bundle specific template.
     return 'http://placeHolder/' . $uuid->generate();

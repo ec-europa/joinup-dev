@@ -10,7 +10,7 @@ use Drupal\taxonomy\TermStorageInterface;
  * Defines a Controller class for taxonomy terms.
  */
 class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterface {
-  protected $bundle_predicate = 'http://www.w3.org/2004/02/skos/core#inScheme';
+  protected $bundlePredicate = 'http://www.w3.org/2004/02/skos/core#inScheme';
 
   /**
    * Array of loaded parents keyed by child term ID.
