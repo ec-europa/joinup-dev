@@ -57,6 +57,13 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   }
 
   /**
+   * The predicate used to determine the bundle.
+   */
+  public function bundlePredicate() {
+    return $this->bundlePredicate;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
@@ -311,7 +318,7 @@ QUERY;
         throw new \Exception('No rdf:type mapping set for bundle ' . $entity->label());
       }
       $type = array_pop($settings);
-      $bundle_rdf_bundle_mapping['rdf_entity'][$type] = $entity->id();
+      $bundle_rdf_bundle_mapping[$this->entityTypeId][$type] = $entity->id();
     }
     \Drupal::moduleHandler()->alter('bundle_mapping', $bundle_rdf_bundle_mapping);
     return $bundle_rdf_bundle_mapping;
@@ -328,10 +335,10 @@ QUERY;
       return;
     }
     if (!$bundles) {
-      $bundles = array_values($bundle_mapping['rdf_entity']);
+      $bundles = array_values($bundle_mapping[$this->entityTypeId]);
     }
     $rdf_bundels = [];
-    $bundle_mapping = array_flip($bundle_mapping['rdf_entity']);
+    $bundle_mapping = array_flip($bundle_mapping[$this->entityTypeId]);
     foreach ($bundles as $bundle) {
       if (isset($bundle_mapping[$bundle])) {
         $rdf_bundels[] = $bundle_mapping[$bundle];
@@ -386,14 +393,17 @@ QUERY;
    */
   public function getLabelMapping() {
     $bundle_label_mapping = array();
-    foreach ($this->entityTypeManager->getStorage('rdf_type')
+    foreach ($this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())
                ->loadMultiple() as $entity) {
-      $label_field = $entity->get('rdf_label');
-      if (!$label_field) {
-        continue;
+      $label = $this->entityType->getKey('label');
+      $settings = $entity->getThirdPartySetting('rdf_entity', 'mapping_' . $label, FALSE);
+      if (!is_array($settings)) {
+        throw new \Exception('No rdf:type mapping set for bundle ' . $entity->label());
       }
-      $bundle_label_mapping[$entity->id()] = $label_field;
+      $type = array_pop($settings);
+      $bundle_label_mapping[$this->entityTypeId][$type] = $entity->id();
     }
+    \Drupal::moduleHandler()->alter('label_mapping', $bundle_label_mapping);
     return $bundle_label_mapping;
   }
 

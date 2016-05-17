@@ -15,12 +15,3 @@ function rdf_taxonomy_entity_type_alter(array &$entity_types) {
   $entity_types['taxonomy_term']->setStorageClass('Drupal\rdf_taxonomy\TermRdfStorage');
   $entity_types['taxonomy_term']->setHandlerClass('views_data', NULL);
 }
-
-/**
- * Implements hook_bundle_mapping_alter().
- */
-function rdf_taxonomy_bundle_mapping_alter(&$mapping) {
-  foreach (\Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->loadMultiple() as $entity) {
-    $mapping['taxonomy_term']['http://www.w3.org/2004/02/skos/core#Concept'] = $entity->id();
-  }
-}
