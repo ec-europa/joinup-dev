@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_is_version_of
+    - field.storage.rdf_entity.field_is_actor
     - rdf_entity.rdfentity.solution
-id: rdf_entity.solution.field_is_is_version_of
-field_name: field_is_is_version_of
+id: rdf_entity.solution.field_is_actor
+field_name: field_is_actor
 entity_type: rdf_entity
 bundle: solution
-label: 'Is version of'
+label: Actor
 description: ''
 required: false
 translatable: false
@@ -16,9 +16,5 @@ default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:rdf_entity'
-  handler_settings:
-    target_bundles:
-      solution: solution
-    sort:
-      field: _none
+  handler_settings: {  }
 field_type: entity_reference
