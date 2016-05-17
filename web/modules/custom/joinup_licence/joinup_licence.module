@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the Licence module.
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function joinup_licence_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  // Make sure the licence label is unique.
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'licence' && !empty($fields['label'])) {
+    $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['licence']]);
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * This is a temporary workaround because textareas are having 'full_html'
+ * filter preset in an edit form. Remove this when ISAICP-2513 is in.
+ *
+ * @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2513
+ */
+function joinup_licence_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (isset($form['field_licence_description']) && !isset($form['field_licence_description']['und']['0']['#format'])) {
+    $form['field_licence_description']['widget'][0]['#format'] = "content_editor";
+  }
+}
