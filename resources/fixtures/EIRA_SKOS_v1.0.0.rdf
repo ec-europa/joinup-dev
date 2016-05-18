@@ -1,0 +1,1441 @@
+<?xml version="1.0"?>
+<!DOCTYPE rdf:RDF [
+        <!ENTITY dcterms "http://purl.org/dc/terms/" >
+        <!ENTITY foaf "http://xmlns.com/foaf/0.1/" >
+        <!ENTITY vann "http://purl.org/vocab/vann/" >
+        <!ENTITY cc "http://creativecommons.org/ns#" >
+        <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+        <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+        <!ENTITY wdrs "http://www.w3.org/2007/05/powder-s#" >
+        <!ENTITY skos "http://www.w3.org/2004/02/skos/core#" >
+        <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
+        <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+        <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+        ]>
+<rdf:RDF xmlns="http://www.semanticweb.org/owl/owlapi/turtle#"
+         xml:base="http://www.semanticweb.org/owl/owlapi/turtle"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:vann="http://purl.org/vocab/vann/"
+         xmlns:xml="http://www.w3.org/XML/1998/namespace"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:cc="http://creativecommons.org/ns#">
+    <owl:Ontology rdf:about="http://data.europa.eu/eira">
+        <rdfs:label xml:lang="en">Controlled vocabulary for the European Interoperability Reference Architecture (EIRA)</rdfs:label>
+        <dcterms:modified rdf:datatype="&xsd;date">2016-04-04</dcterms:modified>
+        <dcterms:rights xml:lang="en">Copyright (c) 2016 European Union.</dcterms:rights>
+        <cc:attributionName xml:lang="en">European Commission</cc:attributionName>
+        <rdfs:comment xml:lang="en">This file specifies the controlled vocabulary defined by the EIRA as SKOS concept schemes and SKOS concepts.</rdfs:comment>
+        <dcterms:description xml:lang="en">This file specifies the controlled vocabulary defined by the EIRA as SKOS concept schemes and SKOS concepts.</dcterms:description>
+        <dcterms:abstract xml:lang="en">This file specifies the controlled vocabulary defined by the EIRA as SKOS concept schemes and SKOS concepts.</dcterms:abstract>
+        <owl:versionInfo xml:lang="en">EIRA v1.0.0</owl:versionInfo>
+        <vann:preferredNamespacePrefix xml:lang="en">eira</vann:preferredNamespacePrefix>
+        <vann:preferredNamespaceUri xml:lang="en">http://data.europa.eu/eira/</vann:preferredNamespaceUri>
+        <foaf:maker rdf:resource="https://joinup.ec.europa.eu/asset/eia"/>
+        <dcterms:creator rdf:resource="https://joinup.ec.europa.eu/asset/eia"/>
+        <cc:attributionURL rdf:resource="https://joinup.ec.europa.eu/asset/eia"/>
+        <dcterms:license rdf:resource="https://joinup.ec.europa.eu/category/licence/isa-open-metadata-licence-v11"/>
+        <dcterms:conformsTo rdf:resource="https://joinup.ec.europa.eu/elibrary/document/isa-deliverable-process-and-methodology-developing-core-vocabularies"/>
+    </owl:Ontology>
+
+
+    <skos:ConceptScheme rdf:about="http://data.europa.eu/eira/view/LegalView">
+        <skos:notation>LegalView</skos:notation>
+        <skos:prefLabel xml:lang="en">Legal View</skos:prefLabel>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/BindingInstrument"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DefinitionOfPublicPolicyObjectives"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/FinancialResource"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/FormulationOfPublicPolicyScenarios"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ImpactAssessment"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ImplementingGuideline"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/LegalRequirementOrConstraint"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/LegislationCatalogue"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/Non-bindingInstrument"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/OperationalEnabler"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicPolicy"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicPolicyCycle"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicPolicyDevelopmentApproach"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicPolicyDevelopmentEnabler"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicPolicyDevelopmentMandate"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicPolicyEvaluation"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicPolicyFormulationAndImplementationInstrument"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicPolicyImplementation"/>
+    </skos:ConceptScheme>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/BindingInstrument">
+        <skos:notation>BindingInstrument</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB17] Binding Instrument</skos:prefLabel>
+        <skos:definition xml:lang="en">A Binding Instrument is a legal instrument that expresses something which is obligatory.
+
+Source: 
+Based on the concepts laid out in http://europa.eu/legislation_summaries/glossary/community_legal_instruments_en.htm</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DefinitionOfPublicPolicyObjectives">
+        <skos:notation>DefinitionOfPublicPolicyObjectives</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB103] Definition of Public Policy Objectives</skos:prefLabel>
+        <skos:definition xml:lang="en">A Definition of Public Policy Objectives is a stage where public policy objectives are defined.
+
+Source: Based on the concepts laid out in http://www.europarl.europa.eu/RegData/etudes/etudes/join/2013/507457/IPOL-IMCO_ET(2013)507457_EN.pdf</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/FinancialResource">
+        <skos:notation>FinancialResource</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB116] Financial Resource</skos:prefLabel>
+        <skos:definition xml:lang="en">A Financial Resource is money in the form of cash, securities, creditors, loan facilities, etc.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/FormulationOfPublicPolicyScenarios">
+        <skos:notation>FormulationOfPublicPolicyScenarios</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB104] Formulation of Public Policy Scenarios</skos:prefLabel>
+        <skos:definition xml:lang="en">A Formulation of Public Policy Scenarios is a stage where a number of public policy options for addressing the problem and achieving the public policy objectives are developed.
+
+Source: Based on the concepts laid out in http://www.europarl.europa.eu/RegData/etudes/etudes/join/2013/507457/IPOL-IMCO_ET(2013)507457_EN.pdf</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ImpactAssessment">
+        <skos:notation>ImpactAssessment</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB105] Impact Assessment</skos:prefLabel>
+        <skos:definition xml:lang="en">An Impact assessment is a key tool to ensure that the public policy process is carried out on the basis of transparent, comprehensive and balanced evidence, an Impact assessment is an aid to political decision-making.
+
+Source: Based on the concepts laid out in  http://ec.europa.eu/smart-regulation/impact/commission_guidelines/docs/iag_2009_en.pdf</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ImplementingGuideline">
+        <skos:notation>ImplementingGuideline</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB117] Implementing Guideline</skos:prefLabel>
+        <skos:definition xml:lang="en">An Implementing Guideline is a set of instructions that provides insight into how to implement a policy.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/LegalRequirementOrConstraint">
+        <skos:notation>LegalRequirementOrConstraint</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB164] Legal Requirement or Constraint</skos:prefLabel>
+        <skos:definition xml:lang="en">A Legal Requirement or Constraint is a legal text that mandates and/or guides the creation of an Interoperable European Solution.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/LegislationCatalogue">
+        <skos:notation>LegislationCatalogue</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB165] Legislation Catalogue</skos:prefLabel>
+        <skos:definition xml:lang="en">A Legislation Catalogue is a set of legal documents.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/Non-bindingInstrument">
+        <skos:notation>Non-bindingInstrument</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB113] Non-binding Instrument</skos:prefLabel>
+        <skos:definition xml:lang="en">A Non-binding Instrument is a set of recommendations and opinions, as well as rules governing how EU institutions and programmes work, etc. 
+
+Source: http://europa.eu/legislation_summaries/glossary/community_legal_instruments_en.htm</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/OperationalEnabler">
+        <skos:notation>OperationalEnabler</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB166] Operational Enabler</skos:prefLabel>
+        <skos:definition xml:lang="en">An Operational Enabler is an organisation, person, object or event that makes it possible to implement the policy. [Oxford Dictionary]
+
+Source: http://www.oxforddictionaries.com/definition/english/enabler</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicPolicy">
+        <skos:notation>PublicPolicy</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB9] Public Policy</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Policy is the whole of actions under a policy domain taken by a public authority to bring about social change in the medium and long term. It is based on certain values and objectives and is implemented using a variety of methods. It applies on the territory within which the authority is authorised to act. [Source: EuroVoc,  http://eurovoc.europa.eu/drupal/?q=request&amp;concepturi=http%3A%2F%2Feurovoc.europa.eu%2F8466&amp;termuri=http%3A%2F%2Feurovoc.europa.eu%2F209598&amp;language=en&amp;view=pt&amp;ifacelang=en ].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicPolicyCycle">
+        <skos:notation>PublicPolicyCycle</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB102] Public Policy Cycle</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Policy Cycle is a cycle of stages in the creation and execution of a public policy.
+
+Source: Based on the concepts laid out in section 2.2 of http://www.europarl.europa.eu/RegData/etudes/etudes/join/2013/507457/IPOL-IMCO_ET(2013)507457_EN.pdf</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicPolicyDevelopmentApproach">
+        <skos:notation>PublicPolicyDevelopmentApproach</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB111] Public Policy Development Approach</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Policy Development Approach is the delegation model used to enforce the policy (centralised vs. decentralised). [European Interoperability Strategy]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicPolicyDevelopmentEnabler">
+        <skos:notation>PublicPolicyDevelopmentEnabler</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB167] Public Policy Development Enabler</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Policy Development Enabler is an organisation or thing that make the development and implementation of the Public Policy possible. [Oxford Dictionary]
+
+Source: http://www.oxforddictionaries.com/definition/english/enabler</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicPolicyDevelopmentMandate">
+        <skos:notation>PublicPolicyDevelopmentMandate</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB112] Public Policy Development Mandate</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Policy Development Mandate is the capacity and authority to carry out tasks within a specific policy domain. [European Interoperability Strategy]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicPolicyEvaluation">
+        <skos:notation>PublicPolicyEvaluation</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB107] Public Policy Evaluation</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Policy Evaluation is an assessment of how the public policy met its objectives (according to defined criteria).
+
+Source: Based on the concepts laid out in http://www.europarl.europa.eu/RegData/etudes/etudes/join/2013/507457/IPOL-IMCO_ET(2013)507457_EN.pdf</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicPolicyFormulationAndImplementationInstrument">
+        <skos:notation>PublicPolicyFormulationAndImplementationInstrument</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB168] Public Policy Formulation and Implementation Instrument</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Policy Formulation and Implementation Instrument is an instrument that support the formulation and implementation of the policy.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicPolicyImplementation">
+        <skos:notation>PublicPolicyImplementation</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB106] Public Policy Implementation</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Policy Implementation is the process of putting a public policy into effect. [Oxford Dictionary]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/LegalView"/>
+    </skos:Concept>
+
+    <skos:ConceptScheme rdf:about="http://data.europa.eu/eira/view/OrganisationalView">
+        <skos:notation>OrganisationalView</skos:notation>
+        <skos:prefLabel xml:lang="en">Organisational View</skos:prefLabel>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/Business"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/BusinessCapability"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/BusinessInformation"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/BusinessInformationExchange"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/BusinessRule"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/Citizen"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/InteroperabilityAgreement"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/InteroperabilityFramework"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/InteroperabilityGovernance"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/InteroperabilityOrganisationalAuthority"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/InteroperabilityStrategy"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/InteroperabilitySkill"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/Organisation"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/OrganisationalInteroperabilityEnabler"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/OrganisationalPolicy"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/OrganisationalProcedure"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/OrganisationalStructure"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/OrganisationalSkill"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicAdministration"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicServiceCatalogue"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicServiceConsumer"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicServiceDeliveryAgent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicServiceProvider"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ServiceDeliveryModel"/>
+    </skos:ConceptScheme>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/Business">
+        <skos:notation>Business</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB169] Business</skos:prefLabel>
+        <skos:definition xml:lang="en">A Business is an organisational entity that provides and/or consumes Public Services. This includes non-governmental organisations and not-for-profit organisations.  [European Interoperability Framework]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/BusinessCapability">
+        <skos:notation>BusinessCapability</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB12] Business Capability</skos:prefLabel>
+        <skos:definition xml:lang="en">A Business Capability is the expression or the articulation of the capacity, materials and expertise an organization needs in order to perform core functions. Enterprise architects use business capabilities to illustrate the over-arching needs of the business in order to better strategize IT solutions that meet those business needs.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/BusinessInformation">
+        <skos:notation>BusinessInformation</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB13] Business Information</skos:prefLabel>
+        <skos:definition xml:lang="en">Business Information is a piece of business data or a group of pieces of business data with a unique business semantics definition in a specific business context [source: ISO15000-5, UN/CEFACT CCTS].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/BusinessInformationExchange">
+        <skos:notation>BusinessInformationExchange</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB170] Business Information Exchange</skos:prefLabel>
+        <skos:definition xml:lang="en">A Business Information Exchange is an interaction between two or more public administrations, businesses or citizens.
+
+Source: Based on UN/CEFACT Modelling Methodology (UMM)
+http://www.unece.org/cefact/umm/umm_index.html</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/BusinessRule">
+        <skos:notation>BusinessRule</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB16] Business Rule</skos:prefLabel>
+        <skos:definition xml:lang="en">A Business Rule is a statement that defines or constrains some aspect of the business.  It is intended to assert business structure, or to control or influence the behaviour of the business.
+
+Source: Business Rules Group; http://www.businessrulesgroup.org/defnbrg.shtml</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/Citizen">
+        <skos:notation>Citizen</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB8] Citizen</skos:prefLabel>
+        <skos:definition xml:lang="en">A Citizens is a consumers of Public Services</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/InteroperabilityAgreement">
+        <skos:notation>InteroperabilityAgreement</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB119] Interoperability Agreement</skos:prefLabel>
+        <skos:definition xml:lang="en">An Interoperability Agreement is the means through which organisations (public administrations, or businesses) formalises the cooperation with one another. These agreements aim at the development of interoperability solutions, which meets the functional / technical requirements and needs of one another. [European Interoperability Framework]
+
+The agreement should include purposes and goals, terms and conditions, governance, and the description of the channel(s).
+
+The EIRA differentiates the following Interoperability Agreements:
+- Interoperability Service Agreement (between Public Service Consumers and Public Service Providers;
+- Interoperability Collaboration Agreement (between Organisations); or
+- Interoperability Provider Agreement (between Public Service Providers).</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/InteroperabilityFramework">
+        <skos:notation>InteroperabilityFramework</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB206] Interoperability Framework</skos:prefLabel>
+        <skos:definition xml:lang="en">An Interoperability Framework is a set of interoperability principles, rules, and guidelines in an organisation. Examples are EIF at European level and National schemas of IOP at national level.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/InteroperabilityGovernance">
+        <skos:notation>InteroperabilityGovernance</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB214] Interoperability Governance</skos:prefLabel>
+        <skos:definition xml:lang="en">Interoperability Governance is an organisational procedures for the governance of interoperability usually under the mandate/approach of a public policy. Examples are the comitology procedures for ISA at European level.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/InteroperabilityOrganisationalAuthority">
+        <skos:notation>InteroperabilityOrganisationalAuthority</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB205] Interoperability Organisational Authority</skos:prefLabel>
+        <skos:definition xml:lang="en">An Interoperability Organisational Authority is an organisation holding the responsibility for interoperability governance under the mandate/approach of a Public Policy. Examples are ISA at European level and CIO at national level.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/InteroperabilityStrategy">
+        <skos:notation>InteroperabilityStrategy</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB208] Interoperability Strategy</skos:prefLabel>
+        <skos:definition xml:lang="en">An Interoperability Strategy is a long term plan addressing interoperability strategic objectives. Example is the European Interoperability Strategy at European level.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/InteroperabilitySkill">
+        <skos:notation>InteroperabilitySkill</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB220] Interoperability Skill</skos:prefLabel>
+        <skos:definition xml:lang="en">A set of skills and competencies that, being developed and applied, allow the organisation to achieve excellent results in the field of Interoperability (adapted from Gonzlez-Cruz et al. 2009).</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/Organisation">
+        <skos:notation>Organisation</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB7] Organisation</skos:prefLabel>
+        <skos:definition xml:lang="en">An Organisation is an entity that provides and/or consumes Public Services.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/OrganisationalInteroperabilityEnabler">
+        <skos:notation>OrganisationalInteroperabilityEnabler</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB171] Organisational Interoperability Enabler</skos:prefLabel>
+        <skos:definition xml:lang="en">An Organisational Interoperability Enabler consists of elements which describe the functions, principles, rules, and policies in an organisation. These enablers act as sources for the business rules of an organisation.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/OrganisationalPolicy">
+        <skos:notation>OrganisationalPolicy</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB18] Organisational Policy</skos:prefLabel>
+        <skos:definition xml:lang="en">An Organisational Policy defines a set of principles, rules, and guidelines in an organisation. [source: European Interoperability Framework 
+http://ec.europa.eu/isa/documents/isa_annex_ii_eif_en.pdf]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/OrganisationalProcedure">
+        <skos:notation>OrganisationalProcedure</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB207] Organisational Procedure</skos:prefLabel>
+        <skos:definition xml:lang="en">An Organisational Procedure is a step-by-step description of the tasks required to support and carry out organizational policies.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/OrganisationalStructure">
+        <skos:notation>OrganisationalStructure</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB14] Organisational Structure</skos:prefLabel>
+        <skos:definition xml:lang="en">An Organisational Structure is the pattern of the distribution of work, flow of communications and instructions in the organisation required to fulfil the organisational objectives.
+The way an organisation is set up: 
+- matrix-organisation? 
+- central/federated model?
+
+[Jayantee Saha - 2006 Management and Organizational Behaviour]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/OrganisationalSkill">
+        <skos:notation>OrganisationalSkill</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB219] Organisational Skill</skos:prefLabel>
+        <skos:definition xml:lang="en">A set of skills and competencies that, being developed and applied, allow the organisation to perform a certain role in an excellent way (Gonzlez-Cruz et al. 2009).</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicAdministration">
+        <skos:notation>PublicAdministration</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB172] Public Administration</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Administration is an organisational entity that provides and/or consumes Public Services.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicService">
+        <skos:notation>PublicService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB1] Public Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Service is an economic activity that public authorities identify as being of particular importance to citizens, businesses and public administrations and that would not be supplied (or would be supplied under different conditions) if there were no public intervention. 
+
+Source: Based on DG Competition
+http://ec.europa.eu/competition/state_aid/overview/public_services_en.html
+
+A public service is the capacity to carry out a procedure and exists whether it is used or not. It is a set of deeds and acts performed by or on behalf of a public agency for the benefit of a citizen, a business or another public agency. 
+https://joinup.ec.europa.eu/site/core_public_service/rdfs.html#PublicService
+
+A Public Service is considered also based on the commitment to provide it by its provider, regardless of whether or not it is actively being offered.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicServiceCatalogue">
+        <skos:notation>PublicServiceCatalogue</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB124] Public Service Catalogue</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Service Catalogue is a repository, with information on all public services. It represents the collection of the offered public services. [ITIL v3]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicServiceConsumer">
+        <skos:notation>PublicServiceConsumer</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB5] Public Service Consumer</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Service Consumer is a Public Administration, Business or Citizen consuming public services. [European Interoperability Framework]
+
+Source: Based on EIF 2.0
+http://ec.europa.eu/isa/documents/isa_annex_ii_eif_en.pdf</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicServiceDeliveryAgent">
+        <skos:notation>PublicServiceDeliveryAgent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB173] Public Service Delivery Agent</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Service Delivery Agent delivers a public service on behalf of a Service Providers. An example of this would be pharmacies that deliver a service &apos;on the behalf of&apos; the Ministry of Health. In this case the pharmacies would be captured as a Service Delivery Agent whereas the Service Provider would be the Ministry of Health.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicServiceProvider">
+        <skos:notation>PublicServiceProvider</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB174] Public Service Provider</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Service Provider is a Public Administration or Business providing Public Services financed through public resource. [DG Competition]
+
+Source: 
+http://ec.europa.eu/competition/state_aid/overview/public_services_en.html</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ServiceDeliveryModel">
+        <skos:notation>ServiceDeliveryModel</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB15] Service Delivery Model</skos:prefLabel>
+        <skos:definition xml:lang="en">A Service Delivery Model defines how the organisation arranges the delivery of its services to service consumers. This includes:
+- How will the service be delivered (e.g. multi-channel, SPOCs, only once)?
+- How will the interaction between the service provider and service consumer take place?
+- How will certain situations be handled (e.g. incident management)?
+- How will the support &amp; maintenance look like? [ITIL v3]
+
+Source: http://www.itil-officialsite.com/</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/OrganisationalView"/>
+    </skos:Concept>
+
+    <skos:ConceptScheme rdf:about="http://data.europa.eu/eira/view/SemanticView">
+        <skos:notation>SemanticView</skos:notation>
+        <skos:prefLabel xml:lang="en">Semantic View</skos:prefLabel>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/CharacterEncodingScheme"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/CoreDataModel"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/Data"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataEntity"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataModel"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataPolicy"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataSet"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataSetCatalogue"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataStandard"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataStandardCatalogue"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/Data-levelMapping"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DescriptiveMetadata"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/IdentifierScheme"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/MasterData"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ReferenceData"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/Representation"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/Schema-levelMapping"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/SyntaxEncodingScheme"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/TransactionalData"/>
+    </skos:ConceptScheme>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/CharacterEncodingScheme">
+        <skos:notation>CharacterEncodingScheme</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB179] Character Encoding Scheme</skos:prefLabel>
+        <skos:definition xml:lang="en">A Character Encoding Scheme reflects the way a chosen character set is mapped to bytes for manipulation in a computer [W3C]. An example is the UTF-8 standard.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/CoreDataModel">
+        <skos:notation>CoreDataModel</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB194] Core Data Model</skos:prefLabel>
+        <skos:definition xml:lang="en">A context-neutral data model that captures the fundamental characteristics of an entity [Source: Core Vocabularies Handbook, https://joinup.ec.europa.eu/site/core_vocabularies/Core_Vocabularies_user_handbook/ ].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/Data">
+        <skos:notation>Data</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB22] Data</skos:prefLabel>
+        <skos:definition xml:lang="en">Data is facts represented as text, numbers, graphics, images, sound, or video. Data is the raw material used to represent information, or from which information can be derived [source: DAMA DM_BOK, http://www.dama.org].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataEntity">
+        <skos:notation>DataEntity</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB20] Data Entity</skos:prefLabel>
+        <skos:definition xml:lang="en">A classification of objects found in the real world described by the Noun part of speech  persons, places, things, concepts, and events  of interest to the enterprise  [source: DAMA DM_BOK, http://www.dama.org].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataModel">
+        <skos:notation>DataModel</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB26] Data Model</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data Model includes formal data names, comprehensive data definitions, proper data structures and precise data integrity rules  [source: DAMA DM_BOK, http://www.dama.org].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataPolicy">
+        <skos:notation>DataPolicy</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB30] Data Policy</skos:prefLabel>
+        <skos:definition xml:lang="en">A data policy is a short statement of management intent and fundamental rules governing the creation, acquisition, integrity, security, quality, and use of data and information [source: DAMA DM_BOK, http://www.dama.org.]. A data policy can be among others the following:
+- information security policy;
+- privacy policy;
+- licensing and charging policy ;
+- data quality policy; and
+- metadata management policy.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataSet">
+        <skos:notation>DataSet</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB23] Data Set</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data Set is a collection of data, published or curated by a single agent, and available for access or download in one or more formats [source: W3C, 
+http://www.w3.org/TR/vocab-dcat/#class-dataset].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataSetCatalogue">
+        <skos:notation>DataSetCatalogue</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB24] Data Set Catalogue</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data Set Catalogue is a curated collection of datasets [source: W3C, 
+http://www.w3.org/TR/vocab-dcat/#class-catalog].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataStandard">
+        <skos:notation>DataStandard</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB183] Data Standard</skos:prefLabel>
+        <skos:definition xml:lang="en">A data standard is a structural metadata specification that describes or defines other data [ISO111179]. Structural metadata indicates how compound objects are put together [NISO]. It can consist of among others data models, reference data, and identifier schemas.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataStandardCatalogue">
+        <skos:notation>DataStandardCatalogue</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB211] Data Standard Catalogue</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data Standard Catalogue is a catalogue of Data Standards.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/Data-levelMapping">
+        <skos:notation>Data-levelMapping</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB180] Data-level Mapping</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data-level Mapping is a mapping between specific data elements (or data values) [source: ISO/DIS 25964-2].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DescriptiveMetadata">
+        <skos:notation>DescriptiveMetadata</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB195] Descriptive Metadata</skos:prefLabel>
+        <skos:definition xml:lang="en">Descriptive metadata describes a resource for purposes such as discovery and identification. It can include elements such as title, abstract, author, and keywords.
+
+Source: 
+http://www.niso.org/publications/press/UnderstandingMetadata.pdf</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/IdentifierScheme">
+        <skos:notation>IdentifierScheme</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB29] Identifier Scheme</skos:prefLabel>
+        <skos:definition xml:lang="en">An Identifier Schema defines the values of an identifier  [source: CEN BII http://spec.cenbii.eu/].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/MasterData">
+        <skos:notation>MasterData</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB181] Master Data</skos:prefLabel>
+        <skos:definition xml:lang="en">Master Data is the authoritative, most accurate data that is available about key business entities, used to establish the context for business transactions and transactional data [source: DAMA DM_BOK, http://www.dama.org].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ReferenceData">
+        <skos:notation>ReferenceData</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB27] Reference Data</skos:prefLabel>
+        <skos:definition xml:lang="en">Reference Data is any data used to organise or categorise other data, or for relating data to information both within and beyond the boundaries of the enterprise. Usually consists of codes and descriptions or definitions [source: DAMA DM_BOK, http://www.dama.org].
+
+Reference data consists typically of a small, discrete set of values that are not updated as part of business transactions but are usually used to impose consistent classication. Reference data normally has a low update frequency. Reference data is relevant across more than one business systems belonging to different organisations and sectors [source: J. Jordan &amp; C. Ellen (2009). Business need, data and business intelligence].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/Representation">
+        <skos:notation>Representation</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB182] Representation</skos:prefLabel>
+        <skos:definition xml:lang="en">A Representation is a physical embodiment or manifestation of data [based on the Functional Requirements for Bibliographic Records]. It is the perceptible form of information carried by a business object [based on ArchiMate].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/Schema-levelMapping">
+        <skos:notation>Schema-levelMapping</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB212] Schema-level Mapping</skos:prefLabel>
+        <skos:definition xml:lang="en">A Schema-level Mapping is a mapping between related classes and properties [source: ISO/DIS 25964-2].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/SyntaxEncodingScheme">
+        <skos:notation>SyntaxEncodingScheme</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB184] Syntax Encoding Scheme</skos:prefLabel>
+        <skos:definition xml:lang="en">A Syntax Encoding Scheme indicates that the value is a string formatted in accordance with a formal notation [DCMI Glossary], such as 2000-01-01 as the standard expression of a date. Another example is CSV [Source: http://wiki.dublincore.org/index.php/Glossary/Encoding_Scheme].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/TransactionalData">
+        <skos:notation>TransactionalData</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB185] Transactional Data</skos:prefLabel>
+        <skos:definition xml:lang="en">Transactional Data is data that covers the business information related to business transactions and information exchanges [source: based on DAMA DM_BOK, http://www.dama.org].</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/SemanticView"/>
+    </skos:Concept>
+
+    <skos:ConceptScheme rdf:about="http://data.europa.eu/eira/view/TechnicalView-Application">
+        <skos:notation>TechnicalView-Application</skos:notation>
+        <skos:prefLabel xml:lang="en">Technical View - Application</skos:prefLabel>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/AccessManagementComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/AccessManagementService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ApplicationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/AuditAndLoggingComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/AuditService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/BusinessAnalyticsService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/BusinessIntelligenceComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/BusinessProcessManagementComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/BusinessReportingService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ChoreographyService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ConfigurationManagement"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataTransformationComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataTransformationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataValidationComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataValidationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/HumanInterface"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/InteroperableEuropeanSolution"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/LoggingService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/MachineToMachineInterface"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/OperationalProcedure"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/OrchestrationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ServiceDiscoveryService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/TechnicalSpecification"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/TestComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/TestReport"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/TestScenario"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/TestService"/>
+    </skos:ConceptScheme>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/AccessManagementComponent">
+        <skos:notation>AccessManagementComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB70] Access Management Component</skos:prefLabel>
+        <skos:definition xml:lang="en">An Access Management Component encapsulates the functionalities  to authorize users exposed through the Access Management Service.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/AccessManagementService">
+        <skos:notation>AccessManagementService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB57] Access Management Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An Access Management Service provides the mechanisms to ensure that only authorized users can access and perform actions on IT resources.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ApplicationService">
+        <skos:notation>ApplicationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB187] Application Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An Application Service is an externally visible unit of functionality, provided by one or more application components. It is exposed through well-defined interfaces and is meaningful to the environment. A Application Service exposes the functionality of components to their environment. This functionality is accessed through one or more application interfaces.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/AuditAndLoggingComponent">
+        <skos:notation>AuditAndLoggingComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB71] Audit and Logging Component</skos:prefLabel>
+        <skos:definition xml:lang="en">An Audit and Logging Component encapsulates the functionalities for auditing and logging of events.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/AuditService">
+        <skos:notation>AuditService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB58] Audit Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An Audit Service provides support for the principle of accountability, that is holding users of a system accountable for their actions within the system, and detection of policy violations. The audit policy defines the elements of an information system which need to be traced,  for example to assure tracability of actions: what, how, when, where and with what.
+
+Inspired by: http://www.opengroup.org/security/das/xdas_int.htm</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/BusinessAnalyticsService">
+        <skos:notation>BusinessAnalyticsService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB46] Business Analytics Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Business Analytics Service enables the storage and manipulation of dimensional data models for the analysis of business trends and projections. [DAMA]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/BusinessIntelligenceComponent">
+        <skos:notation>BusinessIntelligenceComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB66] Business Intelligence Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Business Intelligence Component encapsulates the functionalities exposed through the Business Analytics Service.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/BusinessProcessManagementComponent">
+        <skos:notation>BusinessProcessManagementComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB186] Business Process Management Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Business Process Management Component encapsulates the functionalities for the orchestration/choreography of business processes.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/BusinessReportingService">
+        <skos:notation>BusinessReportingService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB47] Business Reporting Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Business Reporting Service provides detailed reports using unified views of enterprise data. [DAMA]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ChoreographyService">
+        <skos:notation>ChoreographyService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB44] Choreography Service</skos:prefLabel>
+        <skos:definition xml:lang="en">The Choreography Service is  the interplay among groups of services which, in turn, make up a larger, composite service, or which interact across organisational boundaries in order to obtain and process information. [W3C]
+
+Source: http://www.w3.org/TR/ws-cdl-10/</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ConfigurationManagement">
+        <skos:notation>ConfigurationManagement</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB127] Configuration Management</skos:prefLabel>
+        <skos:definition xml:lang="en">A Configuration management is the means of maintaining Interoperable European Solutions to safeguard the performance of these solution. This includes change management, versioning, etc.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataTransformationComponent">
+        <skos:notation>DataTransformationComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB61] Data Transformation Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data Transformation Component encapsulates the data transformation functionalities exposed through the Data Transformation Service.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataTransformationService">
+        <skos:notation>DataTransformationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB40] Data Transformation Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data Transformation Service converts data. This includes the conversion from one data format to another.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataValidationComponent">
+        <skos:notation>DataValidationComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB63] Data Validation Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data Validation Component encapsulates the data validation functionalities exposed through the Data Validation Service.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataValidationService">
+        <skos:notation>DataValidationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB42] Data Validation Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data Validation Service is used to validate data against predefined semantic and syntactic constraints.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/HumanInterface">
+        <skos:notation>HumanInterface</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB37] Human Interface</skos:prefLabel>
+        <skos:definition xml:lang="en">A Human Interface is a specific interface between the human users of an IT system and the programs providing screen or printed results. It is frequently regarded as a dedicated set of programs, separate from those which extract and process data. [DG TAXUD]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/InteroperableEuropeanSolution">
+        <skos:notation>InteroperableEuropeanSolution</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB60] Interoperable European Solution</skos:prefLabel>
+        <skos:definition xml:lang="en">An Interoperable European Solution (IES) is a solution, developed by Public Administrations that facilitate the delivery of electronic Public Services and cross-border exchange of information between Public Administrations (or Citizens) in support to the implementation and advancement of EU, national or local Public Policies.
+
+Source: This IES definition was derived from the Trans-European Systems definition.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/LoggingService">
+        <skos:notation>LoggingService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB59] Logging Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An Logging Service traces all events and user actions impacting a data entity throughout its lifecycle (from its creation to its disposal). It can be used to reproduce a certain state of a data entity at a certain moment in time.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/MachineToMachineInterface">
+        <skos:notation>MachineToMachineInterface</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB38] Machine to Machine Interface</skos:prefLabel>
+        <skos:definition xml:lang="en">A Machine to Machine Interface is a description of a boundary between a system and other systems, usually including the mechanisms by which information is transferred. [DG TAXUD]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/OperationalProcedure">
+        <skos:notation>OperationalProcedure</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB126] Operational Procedure</skos:prefLabel>
+        <skos:definition xml:lang="en">An Operational Procedure defines the process of operating a solution, how the procedures are implemented and the rules for operating it.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/OrchestrationService">
+        <skos:notation>OrchestrationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB45] Orchestration Service</skos:prefLabel>
+        <skos:definition xml:lang="en">Orchestration identifies a sets of transactions involving use of other services and functionalities, according to business rules embodied in one or more documented business processes, with the ultimate goal of performing or providing some other value-added function or service.
+The Orchestration Service executes all the required transactions and routes the inputs and outputs of processes according to rules described in a standard language (i.e. BPEL). [European Interoperability Framework]
+
+Source:
+http://ec.europa.eu/isa/documents/isa_annex_ii_eif_en.pdf</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ServiceDiscoveryService">
+        <skos:notation>ServiceDiscoveryService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB159] Service Discovery Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Service Discovery Service allows the automatic discovery of other services.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/TechnicalSpecification">
+        <skos:notation>TechnicalSpecification</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB125] Technical Specification</skos:prefLabel>
+        <skos:definition xml:lang="en">A Technical Specification is a document describing the functional/technical specifications of a solution.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/TestComponent">
+        <skos:notation>TestComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB129] Test Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Test Component encapsulates the functionalities for conformance and interoperability testing.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/TestReport">
+        <skos:notation>TestReport</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB131] Test Report</skos:prefLabel>
+        <skos:definition xml:lang="en">A Test Report documents the results of verifying the behaviour of one or more test item(s) or system(s) under test. It is making a conformance or interoperability assessment.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/TestScenario">
+        <skos:notation>TestScenario</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB130] Test Scenario</skos:prefLabel>
+        <skos:definition xml:lang="en">A Test Scenario defines the different test cases which needs to be performed by the Test Service. Each scenario (actual) outcome is validated against the pre-defined expected outcome.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/TestService">
+        <skos:notation>TestService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB128] Test Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Test Service enables the execution of interoperability and conformance testing. A Test Service is realised by one or more Test Components.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Application"/>
+    </skos:Concept>
+
+    <skos:ConceptScheme rdf:about="http://data.europa.eu/eira/view/TechnicalView-Infrastructure">
+        <skos:notation>TechnicalView-Infrastructure</skos:notation>
+        <skos:prefLabel xml:lang="en">Technical View - Infrastructure</skos:prefLabel>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/AdministrationAndMonitoringService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/AdministrationComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/AudiovisualService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/CollaborationComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ConfigurationAndCartographyService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ConfigurationAndCartographyServiceComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ContentManagementComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ContentManagementService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataExchangeComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataExchangeService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataPublicationComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DataPublicationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DigitalServiceInfrastructure"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/DocumentManagementService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/E-archivingComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/E-archivingService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/E-paymentComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/E-paymentService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/E-sealCreationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/E-sealPreservationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/E-sealVerificationAndValidationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/E-signatureCreationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/E-signaturePreservationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/E-signatureVerificationAndValidationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/E-timestampCreationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/E-timestampVerificationAndValidationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/FormsManagementComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/FormsManagementService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/HostingAndNetworkingInfrastructureService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/HostingFacility"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/HostingService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/IdentityManagementComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/IdentityManagementService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/LifecycleManagementService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/MachineTranslationComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/MachineTranslationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/MessagingService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/MetadataManagementComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/MetadataManagementService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/Network"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/NetworkingService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PartnerManagementComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PartnerManagementService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PrivateHostingFacility"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PrivateNetwork"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicHostingFacility"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/PublicNetwork"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/RecordManagementComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/RecordManagementService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/RegisteredElectronicDeliveryService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ServiceRegistrationService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/ServiceRegistryComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/TrustRegistryComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/TrustRegistryService"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/TrustServiceProvisioningComponent"/>
+    </skos:ConceptScheme>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/AdministrationAndMonitoringService">
+        <skos:notation>AdministrationAndMonitoringService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB137] Administration and Monitoring Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An Administration and Monitoring Service enables the administration and monitoring of services offered by the different components. [SOA Backplane Reference Model of Gartner]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/AdministrationComponent">
+        <skos:notation>AdministrationComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB139] Administration Component</skos:prefLabel>
+        <skos:definition xml:lang="en">An Administration Component encapsulates the functionalities for the administration, monitoring and lifecycle management of services. [SOA Backplane Reference Model of Gartner]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/AudiovisualService">
+        <skos:notation>AudiovisualService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB54] Audiovisual Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An Audiovisual Service enables the broadcast of audio and video content over the internet or satellite.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/CollaborationComponent">
+        <skos:notation>CollaborationComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB72] Collaboration Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Collaboration Component encapsulates the functionalities for  transmission of text and broadcasting of audio and video content.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ConfigurationAndCartographyService">
+        <skos:notation>ConfigurationAndCartographyService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB210] Configuration and Cartography Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Configuration and Cartography Service allows the documentation of solution, including its configuration and architecture.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ConfigurationAndCartographyServiceComponent">
+        <skos:notation>ConfigurationAndCartographyServiceComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB213] Configuration and Cartography Service Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Configuration and Cartography Service Component encapsulates the functionalities for documenting the configuration and architecture of solutions.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ContentManagementComponent">
+        <skos:notation>ContentManagementComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB75] Content Management Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Content Management Component encapsulates the functionalities for the organisation and categorization of information resources.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ContentManagementService">
+        <skos:notation>ContentManagementService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB51] Content Management Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Content Management Service enables the organisation and categorisation of information resources so that they can be stored, published and reused in multiple contexts. [DAMA]
+
+Source:  http://www.dama.org/</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataExchangeComponent">
+        <skos:notation>DataExchangeComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB64] Data Exchange Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data Exchange Component encapsulates the functionalities for secure data exchange.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataExchangeService">
+        <skos:notation>DataExchangeService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB43] Data Exchange Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data Exchange Service enables the secure exchange of messages, records, forms and other kinds of data between different ICT systems. This includes data routing, except endpoint discovery. [European Interoperability Framework]
+
+Source: 
+http://ec.europa.eu/isa/documents/isa_annex_ii_eif_en.pdf</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataPublicationComponent">
+        <skos:notation>DataPublicationComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB209] Data Publication Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data Publication Component encapsulates the functionalities for data publication services.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DataPublicationService">
+        <skos:notation>DataPublicationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB215] Data Publication Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Data Publication Service makes data available to other services or users.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DigitalServiceInfrastructure">
+        <skos:notation>DigitalServiceInfrastructure</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB188] Digital Service Infrastructure</skos:prefLabel>
+        <skos:definition xml:lang="en">A Digital Service Infrastructure is a collection of cross-sectorial infrastructure services and components. They are decoupled from the business which a specific interoperable solution implements. They can be re-used with no or very minor changes by other interoperable solutions or in different policy contexts. [CEF]
+
+Source: http://ec.europa.eu/digital-agenda/en/connecting-europe-facility</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/DocumentManagementService">
+        <skos:notation>DocumentManagementService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB136] Document Management Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Document Management Service enables the organisation and  categorization of electronic documents in order to store, publish and reuse these documents in multiple contexts. For a differentiation  between ERMS and EDMS visit section 10.3 of Moreq: http://ec.europa.eu/archival-policy/moreq/doc/moreq_en.
+
+The definition of a Record Management Service includes a differentiation towards record management and e-archiving.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/E-archivingComponent">
+        <skos:notation>E-archivingComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB157] e-Archiving Component</skos:prefLabel>
+        <skos:definition xml:lang="en">An e-Archiving Component encapsulates the functionalities for electronic archiving of documents.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/E-archivingService">
+        <skos:notation>E-archivingService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB156] e-Archiving Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An e-Archiving Service enables the permanent or long-term storage of selected (by an authority) electronic documents or information for preservation purposes like their enduring research value and memory aid. 
+
+The EIRA differentiates between document management, record management and e-archiving as follows:
+- Document management is primarily about day-to-day use of electronic documents (create/update/delete/versioning) within the operational environment.
+- Record management is primarily about ensuring that information (e.g. in form of an electronic document or database record) is available for business and legal purposes (e.g. to proof and track the handling of contracts). If an electronic document or information is becoming a record (an authority declares it as a record) that electronic document or information needs to be handled by the record management service (based on specific business or legal reasons (e.g. contract negotiation)).
+- e-Archiving is primarily about storing records which have been selected (by an authority) for permanent or long-term preservation due to their enduring research value and as a memory aid. An electronic document or information which a) is managed by the document management service or the record management service and b) is no longer needed for business or legal purposes or day-to-day activities, and c) still has value for research purposes or as a memory aid, the electronic document should be managed by the e-archiving service&quot;.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/E-paymentComponent">
+        <skos:notation>E-paymentComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB68] e-Payment Component</skos:prefLabel>
+        <skos:definition xml:lang="en">An e-Payment Component encapsulates the functionalities for execution or electronic payments.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/E-paymentService">
+        <skos:notation>E-paymentService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB48] e-Payment Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An e-Payment Service enables the execution of payment transactions where the consent of the payer to execute a payment transaction is given by means of any telecommunication, digital or IT device. [Directive 2007/64/EC]
+
+Source:
+http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=CELEX:32007L0064:EN:NOT</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/E-sealCreationService">
+        <skos:notation>E-sealCreationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB198] e-Seal Creation Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An e-Seal Creation Service is used to sign data in electronic form on behalf of a legal person.  
+
+According to the eIDAS Regulation, an electronic seal means data in electronic form, which is attached to or logically associated with other data in electronic form to ensure the latters origin and integrity. The creator of a seal is a legal person who creates an electronic seal.
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/E-sealPreservationService">
+        <skos:notation>E-sealPreservationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB200] e-Seal Preservation Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An e-Seal Preservation Service is used for extending the trustworthiness of the qualified electronic signature beyond the technological validity period.
+
+According to the eIDAS Regulation, an electronic seal means data in electronic form, which is attached to or logically associated with other data in electronic form to ensure the latters origin and integrity. The creator of a seal is a legal person who creates an electronic seal.
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/E-sealVerificationAndValidationService">
+        <skos:notation>E-sealVerificationAndValidationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB199] e-Seal Verification and Validation Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An e-Seal Verification and Validation Service is used for the verification of documents that are signed electronically.
+
+According to the eIDAS Regulation, an electronic seal means data in electronic form, which is attached to or logically associated with other data in electronic form to ensure the latters origin and integrity. The creator of a seal is a legal person who creates an electronic seal.
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/E-signatureCreationService">
+        <skos:notation>E-signatureCreationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB55] e-Signature Creation Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An e-Signature Creation Service is used by a natural person to sign data in electronic form.  
+
+According to the eIDAS Regulation, an electronic signature means data in electronic form which is attached to or logically associated with other data in electronic form and which is used by the signatory to sign.
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/E-signaturePreservationService">
+        <skos:notation>E-signaturePreservationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB197] e-Signature Preservation Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An e-Signature Preservation Service is used for extending the trustworthiness of the qualified electronic signature beyond the technological validity period.
+
+According to the eIDAS Regulation, an electronic signature means data in electronic form which is attached to or logically associated with other data in electronic form and which is used by the signatory to sign.
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/E-signatureVerificationAndValidationService">
+        <skos:notation>E-signatureVerificationAndValidationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB144] e-Signature Verification and Validation Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An e-Signature Verification and Validation Service is used for the verification of documents that are signed electronically.
+
+According to the eIDAS Regulation, an electronic signature means data in electronic form which is attached to or logically associated with other data in electronic form and which is used by the signatory to sign.
+According to the eIDAS Regulation, validation means the process of verifying and confirming that an electronic signature or a seal is valid.
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/E-timestampCreationService">
+        <skos:notation>E-timestampCreationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB201] e-Timestamp Creation Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An e-Timestamp Creation Service is used for the verification of timestamps used for establishing evidence that a give piece of data existed at a given point in time.
+
+According to the eIDAS Regulation, electronic time stamp means data in electronic form which binds other data in electronic form to a particular time establishing evidence that the latter data existed at that time.
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/E-timestampVerificationAndValidationService">
+        <skos:notation>E-timestampVerificationAndValidationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB202] e-Timestamp Verification and Validation Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An e-Timestamp Verification and Validation Service is used for the verification of timestamps used for establishing evidence that a give piece of data existed at a given point in time.
+
+According to the eIDAS Regulation, electronic time stamp means data in electronic form which binds other data in electronic form to a particular time establishing evidence that the latter data existed at that time.
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/FormsManagementComponent">
+        <skos:notation>FormsManagementComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB77] Forms Management Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Forms Management Component encapsulates the functionalities for the management of forms.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/FormsManagementService">
+        <skos:notation>FormsManagementService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB49] Forms Management Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Forms Management Service enables the dynamic creation, distribution and analysis of forms and online surveys.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/HostingAndNetworkingInfrastructureService">
+        <skos:notation>HostingAndNetworkingInfrastructureService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB190] Hosting and Networking Infrastructure Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Hosting and Networking Infrastructure Service is a collection of services for hosting Interoperable European Solutions and provides the necessary networks for operating these solutions.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/HostingFacility">
+        <skos:notation>HostingFacility</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB191] Hosting Facility</skos:prefLabel>
+        <skos:definition xml:lang="en">A Hosting Facility is usually embodied in a building and the equipment supporting the hosting of Interoperable European Solutions and their components.
+[DIGIT C Infrastructure Services Provision]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/HostingService">
+        <skos:notation>HostingService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB151] Hosting Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Hosting  Service is a service provided by a hosting provider. [DIGIT C Infrastructure Services Provision]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/IdentityManagementComponent">
+        <skos:notation>IdentityManagementComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB158] Identity Management Component</skos:prefLabel>
+        <skos:definition xml:lang="en">An Identity Management Component encapsulates the functionalities for the authentication of users.
+
+The eIDAS Regulation provides the following definitions:
+electronic identification means the process of using person identification data in electronic form uniquely representing either a natural or legal person, or a natural person representing a legal person;
+authentication means an electronic process that enables the electronic identification of a natural or legal person, or the origin and integrity of data in electronic form to be confirmed;
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/IdentityManagementService">
+        <skos:notation>IdentityManagementService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB204] Identity Management Service</skos:prefLabel>
+        <skos:definition xml:lang="en">An Identity Management Service provides functionalities for the authentication of users.
+
+The eIDAS Regulation provides the following definitions:
+electronic identification means the process of using person identification data in electronic form uniquely representing either a natural or legal person, or a natural person representing a legal person;
+authentication means an electronic process that enables the electronic identification of a natural or legal person, or the origin and integrity of data in electronic form to be confirmed;
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/LifecycleManagementService">
+        <skos:notation>LifecycleManagementService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB138] Lifecycle Management Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Lifecycle Management Service supports the governance of services throughout their lifecycle. [SOA Backplane Reference Model of Gartner]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/MachineTranslationComponent">
+        <skos:notation>MachineTranslationComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB62] Machine Translation Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Machine Translation Component encapsulates the machine translation functionalities exposed through the Machine Translation Service.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/MachineTranslationService">
+        <skos:notation>MachineTranslationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB41] Machine Translation Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Machine Translation Service enables the automatic translation of data in form of plain text from one EU language to another EU language (or to a set of other EU languages).</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/MessagingService">
+        <skos:notation>MessagingService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB53] Messaging Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Messaging Service enables real-time transmission of text over the internet.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/MetadataManagementComponent">
+        <skos:notation>MetadataManagementComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB74] Metadata Management Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Metadata Management Component encapsulates the functionalities for the management of metadata.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/MetadataManagementService">
+        <skos:notation>MetadataManagementService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB52] Metadata Management Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Metadata Management Service enables the creation, storage, categorisation and retrieval of metadata. [DAMA]
+
+Source: http://www.dama.org/</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/Network">
+        <skos:notation>Network</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB92] Network</skos:prefLabel>
+        <skos:definition xml:lang="en">A Network realises the physical communication layer among nodes participating in an Interoperable European Solution.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/NetworkingService">
+        <skos:notation>NetworkingService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB150] Networking Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Networking Service is a service provided by a network provider. [DIGIT C Infrastructure Services Provision]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PartnerManagementComponent">
+        <skos:notation>PartnerManagementComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB141] Partner Management Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Partner Management Component encapsulates the functionalities for managing the consumers of services. [SOA Backplane Reference Model of Gartner]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PartnerManagementService">
+        <skos:notation>PartnerManagementService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB140] Partner Management Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Partner Management Service enables the management of the consumers of the services offered by the different components (i.e. the Partners) to ensure scalability. It enables the management of IES&apos; interoperability agreements. [SOA Backplane Reference Model of Gartner]</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PrivateHostingFacility">
+        <skos:notation>PrivateHostingFacility</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB192] Private Hosting Facility</skos:prefLabel>
+        <skos:definition xml:lang="en">A Private Hosting Facility is a Hosting Facility which is owned by or dedicated to one organization (e.g. data centre or private cloud).</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PrivateNetwork">
+        <skos:notation>PrivateNetwork</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB93] Private Network</skos:prefLabel>
+        <skos:definition xml:lang="en">A Private Network is a network that is used for the only purpose of realising the physical communication among Interoperable European Solution (e.g. sTESTA), and cannot be accessed by the public.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicHostingFacility">
+        <skos:notation>PublicHostingFacility</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB193] Public Hosting Facility</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Hosting Facility is a Hosting Facility which is owned by a third party and shared between organizations (e.g. cloud services).</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/PublicNetwork">
+        <skos:notation>PublicNetwork</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB94] Public Network</skos:prefLabel>
+        <skos:definition xml:lang="en">A Public Network is a network that can be accessed by the public (public administrations, businesses and citizens) without specific authorisations. Interoperable European Solutions can rely on Public Networks (e.g. the Internet) to realise the physical communication between nodes.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/RecordManagementComponent">
+        <skos:notation>RecordManagementComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB76] Record Management Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Record Management Component encapsulates the functionalities for the classification, storage, archiving, and destruction of electronic records.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/RecordManagementService">
+        <skos:notation>RecordManagementService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB50] Record Management Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Records Management Service enables the classification, storage, access, and disposal of the records of an organization from the time they are captured (e.g. creation of an internal document or reception of an external document) up to their eventual disposal. Electronic records are document(s) in digital format produced or received by a person or organisation in the course of business, and retained by that person or organisation.
+
+The definition of a Record Management Service includes a differentiation towards record management and e-archiving.
+
+Source: Based on the archival policy of the European Commission
+http://ec.europa.eu/archival-policy/moreq/doc/moreq_en.pdf</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/RegisteredElectronicDeliveryService">
+        <skos:notation>RegisteredElectronicDeliveryService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB203] Registered Electronic Delivery Service</skos:prefLabel>
+        <skos:definition xml:lang="en">According to the eIDAS Regulation, an Electronic Registered Delivery Service is a service that makes it possible to transmit data between third parties by electronic means and provides evidence relating to the handling of the transmitted data, including proof of sending and receiving the data, and that protects transmitted data against the risk of loss, theft, damage or any unauthorised alterations;
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ServiceRegistrationService">
+        <skos:notation>ServiceRegistrationService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB189] Service Registration Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Service Registration Service provides a mechanism to register the system service within a catalogue to be discovered by other services.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/ServiceRegistryComponent">
+        <skos:notation>ServiceRegistryComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB133] Service Registry Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Service Registry Component encapsulates the service registration functionality.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/TrustRegistryComponent">
+        <skos:notation>TrustRegistryComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB146] Trust Registry Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Trust Registry Component enables the discovery of essential information about e.g. supervised/accredited  trust service providers issuing certificates for electronic signatures, for electronic seals or for website authentication; supervised/accredited  trust services for eSignature, eSeal or TimeStamp creation and validation; supervised/accredited  trust services for eSignature  or eSeal preservation; supervised/accredited trust services for electronic registered delivery.
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/TrustRegistryService">
+        <skos:notation>TrustRegistryService</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB145] Trust Registry Service</skos:prefLabel>
+        <skos:definition xml:lang="en">A Trust Registry Service enables the discovery of essential information about e.g. supervised/accredited  trust service providers issuing certificates for electronic signatures, for electronic seals or for website authentication; supervised/accredited  trust services for eSignature, eSeal or TimeStamp creation and validation; supervised/accredited  trust services for eSignature  or eSeal preservation; supervised/accredited trust services for electronic registered delivery.
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/TrustServiceProvisioningComponent">
+        <skos:notation>TrustServiceProvisioningComponent</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB69] Trust Service Provisioning Component</skos:prefLabel>
+        <skos:definition xml:lang="en">A Trust Service Provisioning Component is a component that provides trust services. 
+
+According to the eIDAS Regulation, a trust service means an electronic service normally provided for remuneration which consists of:
+(a) the creation, verification, and validation of electronic signatures, electronic seals or electronic time stamps, electronic registered delivery services and certificates related to those services, or
+(b) te creation, verification and validation of certificates for website authentication; or
+(c) the preservation of electronic signatures, seals or certificates related to those services.
+
+Source: REGULATION (EU) No 910/2014 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/TechnicalView-Infrastructure"/>
+    </skos:Concept>
+
+    <skos:ConceptScheme rdf:about="http://data.europa.eu/eira/view/IopSpecificationUnderpinningView">
+        <skos:notation>IopSpecificationUnderpinningView</skos:notation>
+        <skos:prefLabel xml:lang="en">IOP specification underpinning View</skos:prefLabel>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/InteroperabilitySpecification"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/LegalInteroperabilitySpecification"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/OrganisationalInteroperabilitySpecification"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/SemanticInteroperabilitySpecification"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/Specification"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/eira/TechnicalInteroperabilitySpecification"/>
+    </skos:ConceptScheme>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/InteroperabilitySpecification">
+        <skos:notation>InteroperabilitySpecification</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB162] Interoperability Specification</skos:prefLabel>
+        <skos:definition xml:lang="en">An Interoperability Specification is a document  containing agreed  normative statements for solution building blocks used in an information exchange context.  It  can refer to existing  standards or  specifications.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/IopSpecificationUnderpinningView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/LegalInteroperabilitySpecification">
+        <skos:notation>LegalInteroperabilitySpecification</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB175] Legal Interoperability Specification</skos:prefLabel>
+        <skos:definition xml:lang="en">A Legal Interoperability Specification defines a necessary attribute that shall be fully met to support legal interoperability in the Public Policy Cycle.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/IopSpecificationUnderpinningView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/OrganisationalInteroperabilitySpecification">
+        <skos:notation>OrganisationalInteroperabilitySpecification</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB176] Organisational Interoperability Specification</skos:prefLabel>
+        <skos:definition xml:lang="en">An Organisational Interoperability Specification defines a necessary attribute that shall be fully met to support organisational interoperability.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/IopSpecificationUnderpinningView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/SemanticInteroperabilitySpecification">
+        <skos:notation>SemanticInteroperabilitySpecification</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB177] Semantic Interoperability Specification</skos:prefLabel>
+        <skos:definition xml:lang="en">A Semantic Interoperability Specification defines a necessary attribute that shall be fully met to support semantic interoperability.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/IopSpecificationUnderpinningView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/Specification">
+        <skos:notation>Specification</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB163] Specification</skos:prefLabel>
+        <skos:definition xml:lang="en">A Specification is  a document that states requirements. A specification can be related to activities (e.g. procedure document, process specification and test specification), or products  (e.g. product specification, performance specification and drawing). [ISO 9000:2005] 
+
+Source : https://www.iso.org/obp/ui/#iso:std:iso:9000:ed-3:v1:en:term:3.7.3</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/IopSpecificationUnderpinningView"/>
+    </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/eira/TechnicalInteroperabilitySpecification">
+        <skos:notation>TechnicalInteroperabilitySpecification</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB178] Technical Interoperability Specification</skos:prefLabel>
+        <skos:definition xml:lang="en">A Technical Interoperability Specifications defines a necessary attribute that shall be fully met to support technical interoperability.</skos:definition>
+        <skos:inScheme rdf:resource="http://data.europa.eu/eira/view/IopSpecificationUnderpinningView"/>
+    </skos:Concept>
+
+</rdf:RDF>
+
