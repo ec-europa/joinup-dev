@@ -57,6 +57,24 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Assert the order of elements.
+   *
+   * @Then I should see the following collection menu items in the specified order:
+   */
+  public function assertRepeatedElementContainsText(TableNode $table) {
+    $parent = $this->getSession()->getPage()->findAll('css', '.block-og-menu ul.menu .menu-item');
+    $i = 0;
+    foreach ($table->getHash() as $repeatedElement) {
+      $child = $parent[$i];
+      \PHPUnit_Framework_Assert::assertEquals(
+        $child->find('css', '.menu-item')->getText(),
+        $repeatedElement['text']
+      );
+      $i++;
+    }
+  }
+
+  /**
    * Returns the Collection with the given title.
    *
    * If multiple collections have the same title,
@@ -363,7 +381,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       /** @var \Drupal\og\Entity\OgMembership $membership */
       $membership = Og::membershipStorage()->create(Og::membershipDefault());
       $membership
-        ->setEntityType($group->getEntityTypeId())
+        ->setGroupEntityType($group->getEntityTypeId())
         ->setEntityid($group->id())
         ->setState(OgMembershipInterface::STATE_ACTIVE)
         ->setUser($member->id())

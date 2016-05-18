@@ -8,7 +8,7 @@ id: rdf_entity.solution.field_is_has_version
 field_name: field_is_has_version
 entity_type: rdf_entity
 bundle: solution
-label: 'Has version'
+label: Releases
 description: ''
 required: false
 translatable: false
@@ -21,4 +21,6 @@ settings:
       solution: solution
     sort:
       field: _none
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference

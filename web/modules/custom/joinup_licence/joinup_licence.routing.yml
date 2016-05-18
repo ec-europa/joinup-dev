@@ -1,0 +1,17 @@
+joinup_licence.overview:
+  path: 'licence'
+  defaults:
+    _controller: '\Drupal\joinup_licence\Controller\LicenceOverviewController::overview'
+    _title: 'Licences'
+  requirements:
+    _permission: 'view licence overview page'
+
+# We have dissallowed all access to rdf_entity.add so we are creating a new
+# route to allow a licence to be created outside the scope of a group.
+joinup_licence.add:
+  path: 'licence/add'
+  defaults:
+    _controller: '\Drupal\rdf_entity\Controller\RdfController::add'
+    rdf_type: 'licence'
+  requirements:
+    _entity_create_access: 'rdf_entity:licence'
