@@ -8,6 +8,7 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.field_ad_file
     - field.field.rdf_entity.asset_distribution.field_ad_file_size
     - field.field.rdf_entity.asset_distribution.field_ad_format
+    - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
     - field.field.rdf_entity.asset_distribution.field_ad_licence
     - field.field.rdf_entity.asset_distribution.field_ad_modification_date
     - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
@@ -17,6 +18,7 @@ dependencies:
     - datetime
     - file
     - link
+    - options
     - text
 id: rdf_entity.asset_distribution.default
 targetEntityType: rdf_entity
@@ -24,7 +26,7 @@ bundle: asset_distribution
 mode: default
 content:
   field_ad_access_url:
-    weight: -3
+    weight: 2
     label: above
     settings:
       trim_length: 80
@@ -35,7 +37,7 @@ content:
     third_party_settings: {  }
     type: link
   field_ad_creation_date:
-    weight: -2
+    weight: 3
     label: above
     settings:
       format_type: medium
@@ -43,41 +45,45 @@ content:
     third_party_settings: {  }
     type: datetime_default
   field_ad_description:
-    weight: -4
+    weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_ad_file:
-    weight: 4
+    weight: 9
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
   field_ad_file_size:
-    weight: 5
+    weight: 10
     label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
+    settings: {  }
     third_party_settings: {  }
-    type: number_integer
+    type: number_unformatted
   field_ad_format:
-    weight: 2
+    weight: 7
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_ad_gitb_compliant:
+    type: list_key
+    weight: 11
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_ad_licence:
-    weight: 0
+    weight: 5
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_ad_modification_date:
-    weight: -1
+    weight: 4
     label: above
     settings:
       format_type: medium
@@ -85,14 +91,14 @@ content:
     third_party_settings: {  }
     type: datetime_default
   field_ad_repr_technique:
-    weight: 3
+    weight: 8
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_ad_status:
-    weight: 1
+    weight: 6
     label: above
     settings:
       link: true
@@ -101,7 +107,7 @@ content:
   label:
     label: hidden
     type: string
-    weight: -5
+    weight: 0
     settings:
       link_to_entity: false
     third_party_settings: {  }

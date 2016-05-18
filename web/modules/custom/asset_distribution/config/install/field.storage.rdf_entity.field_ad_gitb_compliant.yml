@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping_value: 'http://joinup.eu/asset_distribution/gitb_compliant'
+id: rdf_entity.field_ad_gitb_compliant
+field_name: field_ad_gitb_compliant
+entity_type: rdf_entity
+type: list_integer
+settings:
+  allowed_values:
+    -
+      value: 0
+      label: 'No GITB compliant'
+    -
+      value: 1
+      label: 'GITB compliant'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

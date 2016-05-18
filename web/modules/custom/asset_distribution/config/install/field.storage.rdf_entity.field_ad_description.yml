@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: { }
+dependencies:
+  module:
+    - rdf_entity
+    - text
 third_party_settings:
   rdf_entity:
     mapping_value: 'dct:description'
