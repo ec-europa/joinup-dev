@@ -34,6 +34,13 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
   protected $solutionContext;
 
   /**
+   * The asset release route context service.
+   *
+   * @var \Drupal\Core\Plugin\Context\ContextProviderInterface
+   */
+  protected $assetReleaseContext;
+
+  /**
    * Constructs a AddContentBlock object.
    *
    * @param array $configuration
@@ -47,10 +54,11 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
    * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $solution_context
    *   The solution context.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextProviderInterface $collection_context, ContextProviderInterface $solution_context) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextProviderInterface $collection_context, ContextProviderInterface $solution_context, ContextProviderInterface $asset_release_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->collectionContext = $collection_context;
     $this->solutionContext = $solution_context;
+    $this->assetReleaseContext = $asset_release_context;
   }
 
   /**
@@ -60,7 +68,8 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     return new static(
       $configuration, $plugin_id, $plugin_definition,
       $container->get('collection.collection_route_context'),
-      $container->get('solution.solution_route_context')
+      $container->get('solution.solution_route_context'),
+      $container->get('asset_release.asset_release_route_context')
     );
   }
 
@@ -98,7 +107,8 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       ];
 
       $solution_url = Url::fromRoute('solution.collection_solution.add', [
-        'rdf_entity' => $collection_contexts['collection']->getContextValue()->id(),
+        'rdf_entity' => $collection_contexts['collection']->getContextValue()
+          ->id(),
       ]);
       $links['solution'] = [
         '#type' => 'link',
@@ -109,17 +119,34 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       ];
     }
 
-    if (!empty($this->solutionContext)) {
-      // Same as above for a button regarding the distributions.
-      /** @var \Drupal\Core\Plugin\Context\Context[] $solution_contexts */
-      $solution_contexts = $this->solutionContext->getRuntimeContexts(['solution']);
-      if ($solution_contexts && $solution_contexts['solution']->hasContextValue()) {
-        $distribution_url = Url::fromRoute('asset_distribution.solution_asset_distribution.add', [
-          'rdf_entity' => $solution_contexts['solution']->getContextValue()->id(),
+    /** @var \Drupal\Core\Plugin\Context\Context[] $solution_contexts */
+    $solution_contexts = $this->solutionContext->getRuntimeContexts(['solution']);
+    if ($solution_contexts && $solution_contexts['solution']->hasContextValue()) {
+      $release_url = Url::fromRoute('asset_release.solution_asset_release.add', [
+        'rdf_entity' => $solution_contexts['solution']->getContextValue()->id(),
+      ]);
+      $links['asset_release'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Add release'),
+        '#url' => $release_url,
+        '#attributes' => ['class' => ['button', 'button--small']],
+        '#access' => $release_url->access(),
+      ];
+    }
+
+    if (!empty($this->assetReleaseContext)) {
+      /** @var \Drupal\Core\Plugin\Context\Context[] $asset_release_contexts */
+      $asset_release_contexts = $this->assetReleaseContext->getRuntimeContexts(['asset_release']);
+      if ($asset_release_contexts && $asset_release_contexts['asset_release']->hasContextValue()) {
+        $distribution_url = Url::fromRoute('asset_distribution.asset_release_asset_distribution.add', [
+          'rdf_entity' => $asset_release_contexts['asset_release']->getContextValue()
+            ->id(),
         ]);
         $links['asset_distribution'] = [
+          '#type' => 'link',
           '#title' => $this->t('Add distribution'),
           '#url' => $distribution_url,
+          '#attributes' => ['class' => ['button', 'button--small']],
           '#access' => $distribution_url->access(),
         ];
       }
@@ -160,6 +187,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     return Cache::mergeContexts($context, [
       'user.roles',
       'collection',
+      'asset_release',
       'solution',
     ]);
   }

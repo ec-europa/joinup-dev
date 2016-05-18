@@ -15,11 +15,3 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
     $fields['label']->addConstraint('UniqueSolutionTitle', []);
   }
 }
-
-/**
- * Implements hook_entity_type_alter().
- */
-function solution_entity_type_alter(array &$entity_types) {
-  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
-  $entity_types['rdf_entity']->setFormclass('release', 'Drupal\rdf_entity\Form\RdfForm');
-}

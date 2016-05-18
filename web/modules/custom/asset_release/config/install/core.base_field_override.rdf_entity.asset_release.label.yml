@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.asset_release
+id: rdf_entity.asset_release.label
+field_name: label
+entity_type: rdf_entity
+bundle: asset_release
+label: 'Name'
+description: ''
+required: true
+translatable: true
+default_value: { }
+default_value_callback: ''
+settings: { }
+field_type: string

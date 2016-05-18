@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_isr_distribution
+    - rdf_entity.rdfentity.asset_distribution
+    - rdf_entity.rdfentity.asset_release
+id: rdf_entity.asset_release.field_isr_distribution
+field_name: field_isr_distribution
+entity_type: rdf_entity
+bundle: asset_release
+label: Distribution
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      asset_distribution: asset_distribution
+    sort:
+      field: _none
+field_type: entity_reference

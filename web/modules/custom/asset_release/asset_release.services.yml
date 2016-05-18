@@ -1,0 +1,11 @@
+services:
+  asset_release.asset_release_route_context:
+    class: Drupal\asset_release\ContextProvider\AssetReleaseRouteContext
+    arguments: ['@current_route_match']
+    tags:
+      - { name: 'context_provider' }
+  cache_context.asset_release:
+    class: Drupal\asset_release\Cache\AssetReleaseCacheContext
+    arguments: ['@request_stack']
+    tags:
+      - { name: cache.context }

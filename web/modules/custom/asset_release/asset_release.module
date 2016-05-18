@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks regarding the asset_release rdf entity bundle.
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\rdf_entity\Entity\Rdf;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'asset_release' && !empty($fields['label'])) {
+    $fields['label']->addConstraint('UniqueSolutionTitle', []);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_create().
+ *
+ * This takes care of the reverse reference.
+ * When a release is created, it has it's isVersionOf prefilled
+ * and is connected to its parent. But the parent needs to have the hasVersion
+ * field filled as well.
+ */
+function solution_rdf_entity_insert(EntityInterface $entity) {
+  if ($entity->bundle() == 'asset_release' && !empty($entity->get('field_isr_is_version_of')->getValue()[0]['target_id'])) {
+    // Assign the entity to the parent.
+    /** @var \Drupal\rdf_entity\RdfInterface $parent */
+    $parent = Rdf::load($entity->get('field_isr_is_version_of')->getValue()[0]['target_id']);
+
+    $releases = $parent->get('field_is_has_version')->getValue();
+    $releases[] = ['target_id' => $entity->id()];
+    $parent->get('field_is_has_version')->setValue($releases);
+    $parent->save();
+  }
+}
