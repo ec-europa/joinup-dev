@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "91d2aebdcb5279e86fcf490828848ca8",
-    "content-hash": "945149ff44cff7691424a3e744860904",
+    "hash": "123baa00bee62d97c927792187a32a87",
+    "content-hash": "83f5238a9dad3006f73b401469bcf82d",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1379,7 +1379,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha14.zip",
-                "reference": null,
+                "reference": "507607e3919c1a61573719fa8dc4bf0695ac4704",
                 "shasum": null
             },
             "require": {
@@ -1541,16 +1541,16 @@
         },
         {
             "name": "ec-europa/infra",
-            "version": "0.3",
+            "version": "0.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "30e6770f82721274627951ad4e15bcc276b9d86c"
+                "reference": "e5074589f5f9ec9ec6a0f9ccc7c39d5902ce1cd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/30e6770f82721274627951ad4e15bcc276b9d86c",
-                "reference": "30e6770f82721274627951ad4e15bcc276b9d86c",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/e5074589f5f9ec9ec6a0f9ccc7c39d5902ce1cd2",
+                "reference": "e5074589f5f9ec9ec6a0f9ccc7c39d5902ce1cd2",
                 "shasum": ""
             },
             "type": "library",
@@ -1564,7 +1564,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2016-04-29 13:13:28"
+            "time": "2016-05-18 11:39:09"
         },
         {
             "name": "egulias/email-validator",
@@ -5366,6 +5366,12 @@
                 "url": "https://git.drupal.org/project/config_update.git",
                 "reference": "ac1526df5836a611f04bb421945beddb6306b7f2"
             },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.1.zip",
+                "reference": "ac1526df5836a611f04bb421945beddb6306b7f2",
+                "shasum": null
+            },
             "require": {
                 "drupal/config": "8.*",
                 "drupal/core": "8.*"
@@ -5725,7 +5731,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
+                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/10d7c48c9a4129463052321b52450d98983c4332",
                 "reference": "10d7c48c9a4129463052321b52450d98983c4332",
                 "shasum": ""
             },

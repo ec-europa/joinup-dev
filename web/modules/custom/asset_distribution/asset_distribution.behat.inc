@@ -30,13 +30,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   protected $assetDistributions = [];
 
   /**
-   * Test files.
-   *
-   * @var \Drupal\file\Entity\File[]
-   */
-  protected $files = [];
-
-  /**
    * Navigates to the canonical page display of an asset distribution.
    *
    * @param string $asset_distribution
@@ -46,7 +39,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When (I )visit (the homepage of )the :asset_distribution distribution
    */
   public function visitDistribution($asset_distribution) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $distribution */
+    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
     $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
     $this->visitPath($asset_distribution->url());
   }
@@ -71,7 +64,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Creates a number of asset distributions with data provided in a table.
    *
    * @param TableNode $asset_distribution_table
-   *   The solution data.
+   *   The asset distribution data.
    *
    * @codingStandardsIgnoreStart
    *   Table format:
@@ -228,39 +221,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    */
   public function assertAssetDistributionCount($number) {
     $this->assertRdfEntityCount($number, 'asset_distribution');
-  }
-
-  /**
-   * Checks if the given asset distributions belongs to the given solution.
-   *
-   * If there are multiple solutions or asset distributions with
-   * the same title, then only the first one is checked.
-   *
-   * @param string $asset_distribution
-   *   The title of the asset distribution to check.
-   * @param string $solution
-   *   The title of the custom page to check.
-   *
-   * @throws \Exception
-   *   Thrown when an asset distribution with the given title doesn't exist.
-   *
-   * @Then the :asset_distribution asset distribution is related to the :solution solution
-   */
-  public function assertAssetRelationship($asset_distribution, $solution) {
-    /** @var \Drupal\rdf_entity\RdfInterface $asset_distribution */
-    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
-
-    /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = $this->getRdfEntityByLabelUnchanged($solution, 'solution');
-
-    foreach ($solution->get('field_is_distribution') as $distribution) {
-      if ($distribution->getValue()['target_id'] == $asset_distribution->id()) {
-        // Test passes.
-        return;
-      }
-    }
-
-    throw new \Exception("The solution '{$solution->label()}' is not associated with asset distribution '{$asset_distribution->label()}'.");
   }
 
   /**

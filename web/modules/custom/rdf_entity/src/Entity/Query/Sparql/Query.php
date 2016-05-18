@@ -136,7 +136,6 @@ class Query extends QueryBase implements QueryInterface {
 
       case 'rid-=':
         $mapping = $entity_storage->getRdfBundleMapping();
-        $mapping = array_flip($mapping);
         $bundle = $mapping[$value];
         if ($bundle) {
           $this->condition->condition('?entity', 'rdf:type', SparqlArg::uri($bundle));
@@ -153,6 +152,7 @@ class Query extends QueryBase implements QueryInterface {
       case 'id-NOT IN':
       case 'id-<>':
         if ($value) {
+          $value = is_array($value) ? $value : [$value];
           $ids_list = "(<" . implode(">, <", $value) . ">)";
           $this->filter->filter('!(?entity IN ' . $ids_list . ')');
         }

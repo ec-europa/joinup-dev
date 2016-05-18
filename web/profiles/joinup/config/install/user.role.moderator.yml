@@ -7,6 +7,7 @@ weight: 3
 is_admin: false
 permissions:
   - 'access contextual links'
+  - 'view licence overview page'
   - 'access toolbar'
   - 'access user profiles'
   - 'add og menu instance entities'
@@ -14,6 +15,8 @@ permissions:
   - 'administer users'
   - 'administer views'
   - 'create asset_distribution rdf entity'
+  - 'create asset_release rdf entity'
+  - 'create licence rdf entity'
   - 'create custom collection page'
   - 'create solution releases'
   - 'delete og menu instance entities'
@@ -22,3 +25,5 @@ permissions:
   - 'moderate entity parents'
   - 'propose solution rdf entity'
   - 'view rdf entity overview'
+  - 'delete licence rdf entity'
+  - 'edit licence rdf entity'

@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_is_version_of
-    - rdf_entity.rdfentity.solution
-id: rdf_entity.solution.field_is_is_version_of
-field_name: field_is_is_version_of
+    - field.storage.rdf_entity.field_isr_contact_information
+    - rdf_entity.rdfentity.asset_release
+id: rdf_entity.asset_release.field_isr_contact_information
+field_name: field_isr_contact_information
 entity_type: rdf_entity
-bundle: solution
-label: 'Is version of'
+bundle: asset_release
+label: 'Contact information'
 description: ''
 required: false
 translatable: false
@@ -18,7 +18,7 @@ settings:
   handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
-      solution: solution
+      collection: collection
     sort:
       field: _none
 field_type: entity_reference
