@@ -1,7 +1,11 @@
 joinup_subscription.subscription_settings:
-  path: '/user/subscription_settings'
+  path: '/user/{user}/subscription_settings'
   defaults:
-    _controller: '\Drupal\joinup_subscription\Controller\SubscriptionSettingsForm::build'
+    _controller: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::build'
     _title: 'Subscription settings'
   requirements:
-    _permission: 'access content'
+    _custom_access: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::access'
+  options:
+    parameters:
+      user:
+        type: entity:user
