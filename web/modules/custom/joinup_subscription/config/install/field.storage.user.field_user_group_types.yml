@@ -26,8 +26,8 @@ settings:
       value: 'node:event'
       label: Event
     -
-      value: 'node:newsNews'
-      label: 'node:newsNews'
+      value: 'node:news'
+      label: News
     -
       value: 'node:custom_page'
       label: 'Custom page'
