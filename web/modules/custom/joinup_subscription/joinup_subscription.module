@@ -5,8 +5,6 @@
  * Contains joinup_subscription.module..
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
-
 /**
  * Implements hook_entity_type_alter().
  */
