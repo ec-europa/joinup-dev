@@ -5,9 +5,9 @@ Feature: User subscription settings
   Scenario: Set the subscription settings
     Given I am logged in as a user with the "authenticated user" role
     When I am on the homepage
-    And I click "My account"
-    Then I should see the link "Subscription Settings"
-    When I click "Subscription Settings"
+    And I click "Dashboard"
+    Then I should see the link "My subscriptions"
+    When I click "My subscriptions"
     And I select "Monthly" from "Frequency"
     And I select "Solution" from "Subscription group types"
     And I additionally select "News" from "Subscription group types"
