@@ -5,6 +5,7 @@ dependencies:
     - core.entity_form_mode.user.subscription_settings
     - field.field.user.user.field_user_frequency
     - field.field.user.user.field_user_group_types
+    - field.field.user.user.field_user_subscription_events
   module:
     - user
 id: user.user.subscription_settings
@@ -13,12 +14,17 @@ bundle: user
 mode: subscription_settings
 content:
   field_user_frequency:
-    type: options_buttons
-    weight: 1
+    type: options_select
+    weight: 0
     settings: {  }
     third_party_settings: {  }
   field_user_group_types:
-    type: options_buttons
+    type: options_select
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+  field_user_subscription_events:
+    type: options_select
     weight: 2
     settings: {  }
     third_party_settings: {  }

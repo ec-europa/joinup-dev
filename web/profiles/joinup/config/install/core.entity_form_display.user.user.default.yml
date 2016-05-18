@@ -11,6 +11,7 @@ dependencies:
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
     - field.field.user.user.field_user_professional_profile
+    - field.field.user.user.field_user_subscription_events
     - image.style.thumbnail
   module:
     - image
@@ -79,6 +80,7 @@ content:
 hidden:
   field_user_frequency: true
   field_user_group_types: true
+  field_user_subscription_events: true
   language: true
   og_group_ref: true
   timezone: true

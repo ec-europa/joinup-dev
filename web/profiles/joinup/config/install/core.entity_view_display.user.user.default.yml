@@ -11,6 +11,7 @@ dependencies:
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
     - field.field.user.user.field_user_professional_profile
+    - field.field.user.user.field_user_subscription_events
   module:
     - image
     - options
@@ -82,6 +83,12 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+  field_user_subscription_events:
+    weight: 10
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
   member_for:
     weight: 0
     settings: {  }

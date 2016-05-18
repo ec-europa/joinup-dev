@@ -10,6 +10,8 @@ Feature: User subscription settings
     When I click "Subscription Settings"
     And I select "Monthly" from "Frequency"
     And I select "Solution" from "Subscription group types"
+    And I additionally select "News" from "Subscription group types"
+    And I select "Update" from "Subscription events"
     And I press "Save"
     Then I should see the following success messages:
      | The changes have been saved |
@@ -21,3 +23,6 @@ Feature: User subscription settings
     And I should see the text "Monthly"
     And I should see the text "Subscription group types"
     And I should see the text "Solution"
+    And I should see the text "News"
+    And I should see the text "Subscription events"
+    And I should see the text "Update"
