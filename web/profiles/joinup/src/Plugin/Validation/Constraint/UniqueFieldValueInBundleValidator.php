@@ -32,11 +32,13 @@ class UniqueFieldValueInBundleValidator extends ConstraintValidator {
     $entity_type_id = $entity->getEntityTypeId();
     $id_key = $entity->getEntityType()->getKey('id');
 
-    $value_taken = (bool) \Drupal::entityQuery($entity_type_id)
-      // The id could be NULL, so we cast it to 0 in that case.
-      ->condition($id_key, (int) $items->getEntity()->id(), '<>')
+    $query = \Drupal::entityQuery($entity_type_id)
       ->condition($field_name, $item->value)
-      ->condition($bundle_key, $bundle)
+      ->condition($bundle_key, $bundle);
+    if (!empty($entity->id())) {
+      $query->condition($id_key, $items->getEntity()->id(), '<>');
+    }
+    $value_taken = (bool) $query
       ->range(0, 1)
       ->count()
       ->execute();
