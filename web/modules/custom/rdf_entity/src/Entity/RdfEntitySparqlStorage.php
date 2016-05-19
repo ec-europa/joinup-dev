@@ -318,7 +318,7 @@ QUERY;
         throw new \Exception('No rdf:type mapping set for bundle ' . $entity->label());
       }
       $type = array_pop($settings);
-      $bundle_rdf_bundle_mapping[$this->entityTypeId][$type] = $entity->id();
+      $bundle_rdf_bundle_mapping[$this->entityTypeId][$entity->id()] = $type;
     }
     \Drupal::moduleHandler()->alter('bundle_mapping', $bundle_rdf_bundle_mapping);
     return $bundle_rdf_bundle_mapping;
@@ -335,16 +335,16 @@ QUERY;
       return;
     }
     if (!$bundles) {
-      $bundles = array_values($bundle_mapping[$this->entityTypeId]);
+      $bundles = array_keys($bundle_mapping[$this->entityTypeId]);
     }
-    $rdf_bundels = [];
-    $bundle_mapping = array_flip($bundle_mapping[$this->entityTypeId]);
+    $rdf_bundles = [];
+    $bundle_mapping = $bundle_mapping[$this->entityTypeId];
     foreach ($bundles as $bundle) {
       if (isset($bundle_mapping[$bundle])) {
-        $rdf_bundels[] = $bundle_mapping[$bundle];
+        $rdf_bundles[] = $bundle_mapping[$bundle];
       }
     }
-    return "(<" . implode(">, <", $rdf_bundels) . ">)";
+    return "(<" . implode(">, <", $rdf_bundles) . ">)";
   }
 
   /**
@@ -368,11 +368,11 @@ QUERY;
       $uri = (string) $result->uri;
       $bundle = (string) $result->bundle;
       // @todo Why do we get multiple types for a uri?
-      if (isset($ids_rdf_mapping[$uri])) {
+      if (array_search($uri, $ids_rdf_mapping)) {
         continue;
       }
-      if (isset($bundle_mapping[$bundle])) {
-        $ids_rdf_mapping[$uri] = $bundle_mapping[$bundle];
+      if ($id = array_search($bundle, $bundle_mapping)) {
+        $ids_rdf_mapping[$uri] = $id;
       }
       else {
         drupal_set_message(t('Unmapped bundle :bundle for uri :uri.',
@@ -595,7 +595,7 @@ QUERY;
     // Save the bundle.
     $bundle = $entity->bundle();
     $rdf_mapping = $this->getRdfBundleMapping();
-    $rdf_field = array_flip($rdf_mapping[$entity->getEntityTypeId()])[$bundle];
+    $rdf_field = $rdf_mapping[$entity->getEntityTypeId()][$bundle];
     $pred = 'rdf:type';
     $insert .= $subj . ' ' . $pred . ' <' . $rdf_field . '>  .' . "\n";
 
