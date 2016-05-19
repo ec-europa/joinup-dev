@@ -23,10 +23,17 @@ use \Drupal\rdf_entity\RdfInterface;
  * Implements hook_form_alter().
  */
 function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Only add mapping form element to rdf entities fields.
-  if ($form_state->get('entity_type_id') != 'rdf_entity') {
+  // Only add mapping form element to fields of entities implementing
+  // RdfEntitySparqlStorage.
+  $id = $form_state->get('entity_type_id');
+  if (!$id) {
     return;
   }
+  $storage = \Drupal::entityManager()->getStorage($id);
+  if (!$storage instanceof RdfEntitySparqlStorage) {
+    return;
+  }
+
   $form_obj = $form_state->getFormObject();
   /** @var FieldStorageConfig $entity */
   $entity = $form_obj->getEntity();

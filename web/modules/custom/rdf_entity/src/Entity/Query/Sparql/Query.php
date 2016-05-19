@@ -139,7 +139,7 @@ class Query extends QueryBase implements QueryInterface {
 
       case $bundle . '-=':
         $mapping = $entity_storage->getRdfBundleMapping();
-        $mapping = array_flip($mapping['rdf_entity']);
+        $mapping = $mapping['rdf_entity'];
         $bundle = $mapping[$value];
         if ($bundle) {
           $this->condition->condition('?entity', '<' . $entity_storage->bundlePredicate() . '>', SparqlArg::uri($bundle));

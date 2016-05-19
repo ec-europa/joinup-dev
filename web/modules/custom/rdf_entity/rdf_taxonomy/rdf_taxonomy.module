@@ -4,6 +4,9 @@
  * Main functions and hook implementations of the RDF Taxonomy module.
  */
 
+use \Drupal\Core\Entity\EntityTypeInterface;
+use \Drupal\Core\Field\BaseFieldDefinition;
+
 /**
  * Implements hook_entity_type_alter().
  *
@@ -14,4 +17,19 @@ function rdf_taxonomy_entity_type_alter(array &$entity_types) {
   $entity_types['taxonomy_vocabulary']->setStorageClass('Drupal\rdf_taxonomy\VocabularyRdfStorage');
   $entity_types['taxonomy_term']->setStorageClass('Drupal\rdf_taxonomy\TermRdfStorage');
   $entity_types['taxonomy_term']->setHandlerClass('views_data', NULL);
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function rdf_taxonomy_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() != 'taxonomy_term') {
+    return;
+  }
+  // Change the tid type to string (RDF uri).
+  $fields['tid'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Term ID'))
+    ->setDescription(t('The term ID.'))
+    ->setReadOnly(TRUE);
+  $fields['tid']->setTargetEntityTypeId('taxonomy_term');
 }

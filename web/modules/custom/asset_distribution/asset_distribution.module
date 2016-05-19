@@ -61,3 +61,12 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_submit(&$for
   $asset_release->set('field_isr_distribution', $related_distributions);
   $asset_release->save();
 }
+
+/**
+ * Implements hook_rdf_load_bundle_alter().
+ */
+function asset_distribution_rdf_load_bundle_alter($entity_values, &$bundle) {
+  if ($bundle->id() == 'solution' && isset($entity_values['http://purl.org/dc/terms/isVersionOf'])) {
+    $bundle = \Drupal::entityTypeManager()->getStorage('rdf_type')->load('asset_release');
+  }
+}
