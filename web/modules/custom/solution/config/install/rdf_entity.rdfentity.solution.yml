@@ -1,6 +1,12 @@
 langcode: en
 status: true
 dependencies: {  }
+third_party_settings:
+  rdf_entity:
+    mapping_rid:
+      target_id: 'http://www.w3.org/ns/adms#Asset'
+    mapping_label:
+      value: 'http://purl.org/dc/terms/title'
 name: 'Interoperability Solution'
 rid: solution
 description: ''

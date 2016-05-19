@@ -118,47 +118,56 @@ class Query extends QueryBase implements QueryInterface {
     $key = $property . '-' . $operator;
     // @todo Getting the storage container here looks wrong...
     $entity_storage = \Drupal::service('entity.manager')
-      ->getStorage('rdf_entity');
+      ->getStorage($this->entityTypeId);
     $field_storage_definitions = \Drupal::service('entity.manager')
-      ->getFieldStorageDefinitions('rdf_entity');
+      ->getFieldStorageDefinitions($this->entityTypeId);
     /*
      * Ok, so what is all this:
      * We need to convert our conditions into some sparql compatible conditions.
      */
+    $bundle = $this->entityType->getKey('bundle');
+    $id = $this->entityType->getKey('id');
+    $label = $this->entityType->getKey('label');
     switch ($key) {
-      case 'rid-IN':
+      case  $bundle . '-IN':
         $rdf_bundles = $entity_storage->getRdfBundleList($value);
         if ($rdf_bundles) {
-          $this->condition->condition('?entity', 'rdf:type', '?type');
+          $this->condition->condition('?entity', '<' . $entity_storage->bundlePredicate() . '>', '?type');
           $this->filter->filter('?type IN ' . $rdf_bundles);
         }
         return $this;
 
-      case 'rid-=':
+      case $bundle . '-=':
         $mapping = $entity_storage->getRdfBundleMapping();
+        $mapping = $mapping['rdf_entity'];
         $bundle = $mapping[$value];
         if ($bundle) {
-          $this->condition->condition('?entity', 'rdf:type', SparqlArg::uri($bundle));
+          $this->condition->condition('?entity', '<' . $entity_storage->bundlePredicate() . '>', SparqlArg::uri($bundle));
         }
         return $this;
 
-      case 'id-IN':
+      case $id . '-IN':
         if ($value) {
           $ids_list = "(<" . implode(">, <", $value) . ">)";
           $this->filter->filter('?entity IN ' . $ids_list);
         }
         return $this;
 
-      case 'id-NOT IN':
-      case 'id-<>':
+      case $id . '-NOT IN':
+      case $id . '-<>':
         if ($value) {
-          $value = is_array($value) ? $value : [$value];
-          $ids_list = "(<" . implode(">, <", $value) . ">)";
+          if (is_array($value)) {
+            $ids_list = "(<" . implode(">, <", $value) . ">)";
+          }
+          else {
+            $ids_list = "(<" . $value . ">)";
+          }
+
           $this->filter->filter('!(?entity IN ' . $ids_list . ')');
         }
         return $this;
 
-      case 'id-=':
+      case $id . '-=':
         if (!$value) {
           return $this;
         }
@@ -167,7 +176,7 @@ class Query extends QueryBase implements QueryInterface {
         $this->filter->filter('?entity IN ' . SparqlArg::literal($id));
         break;
 
-      case 'label-=':
+      case $label . '-=':
         preg_match('/\((.*?)\)/', $value, $matches);
         $matching = array_pop($matches);
         if ($matching) {
@@ -181,7 +190,7 @@ class Query extends QueryBase implements QueryInterface {
           }
           else {
             $mapping = $entity_storage->getLabelMapping();
-            $label_list = "(<" . implode(">, <", array_unique(array_values($mapping))) . ">)";
+            $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping[$this->entityTypeId]))) . ">)";
             $this->condition->condition('?entity', '?label_type', '?label');
             $this->filter->filter('?label_type IN ' . $label_list);
             $this->filter->filter('regex(?label, "' . $value . '", "i")');
@@ -190,13 +199,14 @@ class Query extends QueryBase implements QueryInterface {
 
         return $this;
 
-      case 'label-CONTAINS':
+      case $label . '-CONTAINS':
         $mapping = $entity_storage->getLabelMapping();
-        $label_list = "(<" . implode(">, <", array_unique(array_values($mapping))) . ">)";
+        $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping[$this->entityTypeId]))) . ">)";
         $this->condition->condition('?entity', '?label_type', '?label');
         $this->filter->filter('?label_type IN ' . $label_list);
         if ($value) {
           $this->filter->filter('regex(?label, "' . $value . '", "i")');
+          $this->filter->filter('(lang(?label) = "" || langMatches(lang(?label), "EN"))');
         }
         return $this;
 

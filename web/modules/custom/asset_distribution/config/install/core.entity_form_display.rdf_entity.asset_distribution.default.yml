@@ -111,4 +111,5 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
+  field_ad_file_size: true
   field_ad_status: true
