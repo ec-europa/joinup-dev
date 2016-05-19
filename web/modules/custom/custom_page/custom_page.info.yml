@@ -16,7 +16,6 @@ config_devel:
 - core.base_field_override.node.custom_page.promote
 - core.base_field_override.node.custom_page.status
 - core.entity_form_display.node.custom_page.default
-- core.entity_form_mode.node.collection_custom_page
 - core.entity_view_display.node.custom_page.default
 - field.field.node.custom_page.body
 - field.field.node.custom_page.og_group_ref
