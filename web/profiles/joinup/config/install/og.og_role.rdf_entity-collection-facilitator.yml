@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-id: rdf_entity-collection-administrator
-label: Collection owner
+id: rdf_entity-collection-facilitator
+label: Collection facilitator
 weight: 2
 group_type: rdf_entity
 group_bundle: collection
