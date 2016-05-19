@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_isr_documentation
+    - rdf_entity.rdfentity.asset_release
+  module:
+    - file
+id: rdf_entity.asset_release.field_isr_documentation
+field_name: field_isr_documentation
+entity_type: rdf_entity
+bundle: asset_release
+label: Documentation
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'txt doc docx pdf'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file
