@@ -10,8 +10,8 @@ id: user.user.field_user_group_types
 field_name: field_user_group_types
 entity_type: user
 bundle: user
-label: 'Subscription group types'
-description: ''
+label: 'Receive notifications for'
+description: 'The types of content you''re interested in receiving updates about.'
 required: false
 translatable: false
 default_value: {  }
