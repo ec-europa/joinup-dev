@@ -15,15 +15,8 @@ use Symfony\Component\Validator\ConstraintValidator;
  * can have many releases and a release belongs to one solution. A release
  * cannot have releases or multiple solutions.
  *
- * The solution entity is defined by having an empty field is_version_of.
- * This is enough because releases can only be created through the solution and
- * automatically have the is_version_of field filled. An entity that has the
- * field is_version_of filled is automatically a release.
- *
  * The following checks make sure that a solution must have a unique title among
- * solutions and a release must have a unique title against other solutions and
- * their releases but can have the same name as their parent solution or their
- * sibling releases.
+ * solutions.
  */
 class UniqueSolutionTitleValidator extends ConstraintValidator {
 
@@ -41,10 +34,10 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
     $entity_type_id = $entity->getEntityTypeId();
     $id_key = $entity->getEntityType()->getKey('id');
 
-    // Check if the entity is a release.
-    if (!empty($entity->get('field_is_is_version_of')->getValue()[0]['target_id'])) {
+    // Check first for the release.
+    if ($entity->bundle() == 'asset_release') {
       // Get the solution this entity belongs to.
-      $parent = Rdf::load($entity->get('field_is_is_version_of')
+      $parent = Rdf::load($entity->get('field_isr_is_version_of')
         ->getValue()[0]['target_id']);
 
       // The release can have the same name as the solution it belongs to.
@@ -62,13 +55,14 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
     }
 
     $query = \Drupal::entityQuery($entity_type_id)
-      // The id could be NULL, so we cast it to 0 in that case.
-      ->condition($id_key, (int) $items->getEntity()->id(), '<>')
       ->condition($field_name, $item->value)
-      ->condition('rid', 'solution');
-    // @todo: Discuss about it whether we need it.
-    if (empty($entity->get('field_is_is_version_of')->getValue()[0]['target_id'])) {
-      $query->notExists('field_is_is_version_of');
+      ->condition('rid', $entity->bundle());
+    if (!empty($entity->id())) {
+      $query->condition($id_key, $items->getEntity()->id(), '<>');
+    }
+    // If this is a solution, ignore releases.
+    if ($entity->bundle() == 'solution') {
+      $query->notExists('field_isr_is_version_of');
     }
 
     $value_taken = (bool) $query->range(0, 1)
@@ -78,8 +72,7 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
       $this->context->addViolation($constraint->message, [
         '%value' => $item->value,
         '@entity_type' => $entity->getEntityType()->getLowercaseLabel(),
-        '@field_name' => Unicode::strtolower($items->getFieldDefinition()
-          ->getLabel()),
+        '@field_name' => Unicode::strtolower($items->getFieldDefinition()->getLabel()),
       ]);
     }
   }

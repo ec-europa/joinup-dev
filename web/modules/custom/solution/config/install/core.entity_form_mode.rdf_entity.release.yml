@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies:
-  module:
-    - rdf_entity
-id: rdf_entity.release
-label: Release
-targetEntityType: rdf_entity
-cache: true
