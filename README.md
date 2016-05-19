@@ -146,10 +146,12 @@ in your build.properties.local file. These parameters are
   * sparql.password: Your administrator password for virtuoso.
   * isql.bin = The full path of your isql (or isql-vt) binary.
 This phing target will give the SPARQL user, the update permission.
-* import-rdf-fixtures: This will import rdf files located in the
+* import-rdf-fixtures: The same variables as setup-virtuoso-permissions need to
+be set to your build.properties.local file for this to work.
+This will import rdf files located in the
 `[project root directory]/resources/fixtures` directory. In order to let
- virtuoso accept importing files from this directory, you have to append this
- directory to the configuration file of your virtuoso. Locate and open the
- virtuoso configuration file and search for the `DirsAllowed` key under the
- `[Parameters]` section and append the full path of the fixtures directory.
- Restart your virtuoso server and then you can import the rdf files.
+virtuoso accept importing files from this directory, you have to append this
+directory to the configuration file of your virtuoso. Locate and open the
+virtuoso configuration file and search for the `DirsAllowed` key under the
+`[Parameters]` section and append the full path of the fixtures directory.
+Restart your virtuoso server and then you can import the rdf files.
