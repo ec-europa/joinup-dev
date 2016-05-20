@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping_target_id: 'http://joinup.eu/collection/shared-content'
+id: rdf_entity.field_ar_shared_content
+field_name: field_ar_shared_content
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: node
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
