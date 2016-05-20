@@ -675,6 +675,7 @@ QUERY;
           break;
       }
     }
+    $this->moduleHandler->alter('rdf_apply_default_fields', $storage, $values);
   }
 
 }

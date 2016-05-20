@@ -6,6 +6,7 @@
 
 use \Drupal\Core\Form\FormStateInterface;
 use \Drupal\Core\Database\Database;
+use \Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Implements hook_form_FORMID_alter().
@@ -81,5 +82,26 @@ function joinup_form_field_config_edit_form_alter(&$form) {
   // registration of large amounts of extensions.
   if (isset($form['settings']['file_extensions']['#maxlength'])) {
     $form['settings']['file_extensions']['#maxlength'] = 1024;
+  }
+}
+
+/**
+ * Implements hook_rdf_apply_default_fields_alter().
+ *
+ * This profile includes 'content_editor' filter format as a text editor and
+ * access to 'full_html' and the rest of the filter formats are restricted.
+ * With this hook, we make sure that the default fields with type 'text_long'
+ * have the 'content_editor' filter format as default.
+ */
+function joinup_rdf_apply_default_fields_alter(FieldStorageConfig $storage, &$values) {
+  foreach ($values as &$value) {
+    // Since the profile includes a filter format, we provide this as default.
+    switch ($storage->getType()) {
+      case 'text_long':
+        if ($value['format'] == 'full_html') {
+          $value['format'] = 'content_editor';
+        }
+        break;
+    }
   }
 }
