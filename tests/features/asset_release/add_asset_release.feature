@@ -32,9 +32,8 @@ Feature: "Add release" visibility options.
     When I go to the homepage of the "Release Test 1" solution
     And I click "Add release"
     Then I should see the heading "Add Asset release"
-    And the following fields should be present "Name, Description, Release number, Release notes"
+    And the following fields should be present "Name, Release number, Release notes"
     When I fill in "Name" with "Release Test 2"
-    And I fill in "Description" with "This is a description text."
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."
     And I press "Save"
@@ -57,9 +56,8 @@ Feature: "Add release" visibility options.
     When I go to the homepage of the "Release Test 2" solution
     And I click "Add release"
     Then I should see the heading "Add Asset release"
-    And the following fields should be present "Name, Description, Release number, Release notes"
+    And the following fields should be present "Name, Release number, Release notes"
     When I fill in "Name" with "Release Test 1 v2"
-    And I fill in "Description" with "This is a description text."
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."
     And I press "Save"

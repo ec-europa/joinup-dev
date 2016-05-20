@@ -49,12 +49,12 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * title             | description                 | documentation | release number | release notes | creation date    | modification date |
-   * Foo asset_release | This is a foo asset release | text.pdf      | 1              | Notes 1       | 28-01-1995 12:05 |                   |
-   * Bar asset_release | This is a bar asset release | text.pdf      | 2.3            | Notes 2       | 28-01-1995 12:06 |                   |
+   * title             | documentation | release number | release notes | creation date    | modification date |
+   * Foo asset_release | text.pdf      | 1              | Notes 1       | 28-01-1995 12:05 |                   |
+   * Bar asset_release | text.pdf      | 2.3            | Notes 2       | 28-01-1995 12:06 |                   |
    * @codingStandardsIgnoreEnd
    *
-   * Fields title, description, release number and release notes are required.
+   * Fields title, release number and release notes are required.
    *
    * @param TableNode $asset_release_table
    *   The asset_release data.
@@ -90,7 +90,6 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * Table format:
    * | title             | Sample asset_release                    |
-   * | description       | A sample asset_release                  |
    * | documentation     | text.pdf                                |
    * | is version of     | Solution                                |
    * | release number    | 1                                       |
@@ -98,7 +97,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * | keywords          | key1, key2                              |
    * ...
    *
-   * Fields title, description, release number and release notes required.
+   * Fields title, release number and release notes required.
    *
    * @param TableNode $asset_release_table
    *   The asset_release data.
