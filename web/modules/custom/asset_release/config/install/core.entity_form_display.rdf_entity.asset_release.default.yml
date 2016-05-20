@@ -82,14 +82,6 @@ content:
     settings:
       behaviour: create
     third_party_settings: {  }
-  field_isr_related_solutions:
-    type: entity_reference_autocomplete
-    weight: 11
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_isr_release_notes:
     type: text_textarea
     weight: 3
@@ -104,14 +96,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_isr_solution_type:
-    type: entity_reference_autocomplete
-    weight: 6
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_isr_spacial_coverage:
     type: entity_reference_autocomplete
     weight: 14
@@ -123,22 +107,6 @@ content:
   field_isr_status:
     type: entity_reference_autocomplete
     weight: 18
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_isr_topic:
-    type: entity_reference_autocomplete
-    weight: 16
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_isr_translation:
-    type: entity_reference_autocomplete
-    weight: 13
     settings:
       match_operator: CONTAINS
       size: 60
@@ -164,3 +132,7 @@ hidden:
   field_isr_is_version_of: true
   field_isr_owner: true
   field_isr_policy_domain: true
+  field_isr_related_solutions: true
+  field_isr_solution_type: true
+  field_isr_topic: true
+  field_isr_translation: true
