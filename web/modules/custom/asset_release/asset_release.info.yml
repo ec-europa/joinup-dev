@@ -14,7 +14,6 @@ dependencies:
 
 config_devel:
   - core.entity_form_display.rdf_entity.asset_release.default
-  - core.entity_form_display.rdf_entity.asset_release.release
   - core.entity_view_display.rdf_entity.asset_release.default
   - field.field.rdf_entity.asset_release.field_isr_contact_information
   - field.field.rdf_entity.asset_release.field_isr_creation_date

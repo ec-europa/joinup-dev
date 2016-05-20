@@ -55,14 +55,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   field_isr_contact_information:
-    weight: 0
+    weight: 5
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_isr_creation_date:
-    weight: -2
+    weight: 3
     label: above
     settings:
       format_type: medium
@@ -70,20 +70,20 @@ content:
     third_party_settings: {  }
     type: datetime_default
   field_isr_description:
-    weight: -4
+    weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_isr_distribution:
-    weight: 25
+    weight: 16
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_isr_documentation:
-    weight: -3
+    weight: 2
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -95,21 +95,21 @@ content:
     third_party_settings: {  }
     type: list_default
   field_isr_has_version:
-    weight: 26
+    weight: 17
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_isr_included_asset:
-    weight: 6
+    weight: 7
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_isr_is_version_of:
-    weight: 25
+    weight: 15
     label: above
     settings:
       link: true
@@ -127,7 +127,7 @@ content:
     third_party_settings: {  }
     type: link
   field_isr_keywords:
-    weight: 10
+    weight: 11
     label: above
     settings:
       link: true
@@ -145,7 +145,7 @@ content:
     third_party_settings: {  }
     type: link
   field_isr_language:
-    weight: 12
+    weight: 13
     label: above
     settings:
       link: true
@@ -172,7 +172,7 @@ content:
     third_party_settings: {  }
     type: boolean
   field_isr_modification_date:
-    weight: -1
+    weight: 4
     label: above
     settings:
       format_type: medium
@@ -180,14 +180,14 @@ content:
     third_party_settings: {  }
     type: datetime_default
   field_isr_owner:
-    weight: 1
+    weight: 6
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_isr_policy_domain:
-    weight: 24
+    weight: 14
     label: above
     settings:
       link: true
@@ -200,13 +200,31 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_isr_related_solutions:
+    type: entity_reference_entity_id
+    weight: 19
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_isr_release_notes:
+    type: text_default
+    weight: 21
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_isr_release_number:
-    weight: 27
+    weight: 18
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+  field_isr_solution_type:
+    type: entity_reference_entity_id
+    weight: 20
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_isr_source_code_repository:
     weight: 21
     label: above
@@ -219,28 +237,28 @@ content:
     third_party_settings: {  }
     type: link
   field_isr_spacial_coverage:
-    weight: 8
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_isr_status:
-    weight: 11
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_isr_topic:
     weight: 9
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_isr_status:
+    weight: 12
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_isr_topic:
+    weight: 10
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_isr_translation:
-    weight: 7
+    weight: 8
     label: above
     settings:
       link: true
@@ -280,12 +298,9 @@ content:
   label:
     label: hidden
     type: string
-    weight: -5
+    weight: 0
     settings:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
-  field_isr_related_solutions: true
-  field_isr_release_notes: true
-  field_isr_solution_type: true
   og_group_ref: true
