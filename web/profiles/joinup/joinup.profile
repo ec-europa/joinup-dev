@@ -94,14 +94,12 @@ function joinup_form_field_config_edit_form_alter(&$form) {
  * have the 'content_editor' filter format as default.
  */
 function joinup_rdf_apply_default_fields_alter(FieldStorageConfig $storage, &$values) {
-  foreach ($values as &$value) {
-    // Since the profile includes a filter format, we provide this as default.
-    switch ($storage->getType()) {
-      case 'text_long':
-        if ($value['format'] == 'full_html') {
-          $value['format'] = 'content_editor';
-        }
-        break;
+  // Since the profile includes a filter format, we provide this as default.
+  if ($storage->getType() == 'text_long') {
+    foreach ($values as &$value) {
+      if ($value['format'] == 'full_html') {
+        $value['format'] = 'content_editor';
+      }
     }
   }
 }
