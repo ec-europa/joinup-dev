@@ -24,6 +24,7 @@ dependencies:
   - joinup_event
   - joinup_licence
   - joinup_news
+  - joinup_subscription
   - joinup_user
   - menu_ui
   - node

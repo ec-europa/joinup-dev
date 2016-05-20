@@ -5,11 +5,14 @@ dependencies:
     - core.entity_form_mode.user.register
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
+    - field.field.user.user.field_user_frequency
+    - field.field.user.user.field_user_group_types
     - field.field.user.user.field_user_nationality
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
     - field.field.user.user.field_user_professional_profile
+    - field.field.user.user.field_user_subscription_events
   module:
     - user
 id: user.user.register
@@ -36,10 +39,13 @@ content:
     third_party_settings: {  }
     type: string_textfield
 hidden:
+  field_user_frequency: true
+  field_user_group_types: true
   field_user_nationality: true
   field_user_organisation: true
   field_user_photo: true
   field_user_professional_domain: true
   field_user_professional_profile: true
+  field_user_subscription_events: true
   language: true
   timezone: true

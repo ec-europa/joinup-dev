@@ -1,0 +1,6 @@
+default_group_types:
+  - node:custom_page
+  - node:event
+  - node:news
+  - node:document
+frequency: weekly
