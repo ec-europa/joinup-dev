@@ -224,39 +224,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Checks if the given asset distributions belongs to the given solution.
-   *
-   * If there are multiple solutions or asset distributions with
-   * the same title, then only the first one is checked.
-   *
-   * @param string $asset_distribution
-   *   The title of the asset distribution to check.
-   * @param string $solution
-   *   The title of the custom page to check.
-   *
-   * @throws \Exception
-   *   Thrown when an asset distribution with the given title doesn't exist.
-   *
-   * @Then the :asset_distribution asset distribution is related to the :solution solution
-   */
-  public function assertAssetRelationship($asset_distribution, $solution) {
-    /** @var \Drupal\rdf_entity\RdfInterface $asset_distribution */
-    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
-
-    /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = $this->getRdfEntityByLabelUnchanged($solution, 'solution');
-
-    foreach ($solution->get('field_is_distribution') as $distribution) {
-      if ($distribution->getValue()['target_id'] == $asset_distribution->id()) {
-        // Test passes.
-        return;
-      }
-    }
-
-    throw new \Exception("The solution '{$solution->label()}' is not associated with asset distribution '{$asset_distribution->label()}'.");
-  }
-
-  /**
    * Remove any created asset distributions.
    *
    * @AfterScenario

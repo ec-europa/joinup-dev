@@ -5,24 +5,35 @@
  * Main functions and hook implementations of the RDF Entity module.
  */
 
+use \Drupal\Core\Config\Entity\ConfigEntityBundleBase;
+use \Drupal\Core\Config\Entity\ConfigEntityInterface;
+use \Drupal\Core\Entity\BundleEntityFormBase;
 use \Drupal\Core\Entity\EntityInterface;
-use \Drupal\Core\Render\Element;
 use \Drupal\Core\Form\FormStateInterface;
+use \Drupal\Core\Render\Element;
 use \Drupal\Core\Url;
 use \Drupal\field\Entity\FieldStorageConfig;
-use \Drupal\rdf_entity\RdfInterface;
+use \Drupal\og\Entity\OgMembership;
 use \Drupal\og\Og;
 use \Drupal\og\OgMembershipInterface;
-use \Drupal\og\Entity\OgMembership;
+use \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+use \Drupal\rdf_entity\RdfInterface;
 
 /**
  * Implements hook_form_alter().
  */
 function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Only add mapping form element to rdf entities fields.
-  if ($form_state->get('entity_type_id') != 'rdf_entity') {
+  // Only add mapping form element to fields of entities implementing
+  // RdfEntitySparqlStorage.
+  $id = $form_state->get('entity_type_id');
+  if (!$id) {
     return;
   }
+  $storage = \Drupal::entityManager()->getStorage($id);
+  if (!$storage instanceof RdfEntitySparqlStorage) {
+    return;
+  }
+
   $form_obj = $form_state->getFormObject();
   /** @var FieldStorageConfig $entity */
   $entity = $form_obj->getEntity();
@@ -61,6 +72,85 @@ function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity,
   foreach ($schema['columns'] as $column => $column_desc) {
     $value = $form_state->getValue($column);
     $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $column, $value);
+  }
+}
+
+/**
+ * Configure RDF mappings for the entities base fields.
+ *
+ * Implements hook_form_alter().
+ */
+function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
+  $form_obj = $form_state->getFormObject();
+  if (!$form_obj instanceof BundleEntityFormBase) {
+    return;
+  }
+  /** @var \Drupal\Core\Config\Entity\ConfigEntityBundleBase $entity */
+  $entity = $form_obj->getEntity();
+  if (!$entity instanceof ConfigEntityBundleBase) {
+    return;
+  }
+  $entity_name = $entity->getEntityType()->getBundleOf();
+  /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+  $storage = \Drupal::entityManager()->getStorage($entity_name);
+  if (!$storage instanceof RdfEntitySparqlStorage) {
+    return;
+  }
+  $base_fields = \Drupal::entityManager()->getBaseFieldDefinitions($entity_name);
+  $idKey = $storage->getEntityType()->getKey('id');
+  $form['rdf_mapping'] = array(
+    '#type' => 'details',
+    '#title' => t('Rdf field mapping'),
+    '#description' => t('This field uses a Sparql backend. Please map the fields to their corresponding rdf properties.'),
+    '#weight' => 99,
+  );
+
+  /** @var \Drupal\Core\Field\BaseFieldDefinition $base_field */
+  foreach ($base_fields as $id => $base_field) {
+    $columns = $base_field->getColumns();
+    // The entity id doesn't need a mapping,
+    // as this is the subject of the triple.
+    if ($id == $idKey) {
+      continue;
+    }
+    foreach ($columns as $column_name => $column) {
+      $settings = $entity->getThirdPartySetting('rdf_entity', 'mapping_' . $id, FALSE);
+      $title = $base_field->getLabel();
+      if (count($columns) > 1) {
+        $title .= ' (' . $column_name . ')';
+      }
+      $form['rdf_mapping']['mapping_' . $id . '_' . $column_name] = array(
+        '#type' => 'textfield',
+        '#title' => $title,
+        '#description' => $base_field->getDescription(),
+        '#weight' => 150,
+        '#default_value' => isset($settings[$column_name]) ? $settings[$column_name] : NULL,
+      );
+    }
+
+  }
+  $form['#entity_builders'][] = 'rdf_entity_bundle_config';
+}
+
+/**
+ * Store the mapping of fields and rdf properties.
+ */
+function rdf_entity_bundle_config($entity_type, ConfigEntityInterface $entity, array &$form, FormStateInterface $form_state) {
+  $entity_name = $entity->getEntityType()->getBundleOf();
+  $base_fields = \Drupal::entityManager()->getBaseFieldDefinitions($entity_name);
+  $storage = \Drupal::entityManager()->getStorage($entity_name);
+  $idKey = $storage->getEntityType()->getKey('id');
+  /** @var \Drupal\Core\Field\BaseFieldDefinition $base_field */
+  foreach ($base_fields as $id => $base_field) {
+    if ($id == $idKey) {
+      continue;
+    }
+    $columns = $base_field->getColumns();
+    $settings = [];
+    foreach ($columns as $column_name => $column) {
+      $settings[$column_name] = $form_state->getValue('mapping_' . $id . '_' . $column_name);
+    }
+    $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $id, $settings);
   }
 }
 

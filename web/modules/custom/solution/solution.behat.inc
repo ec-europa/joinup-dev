@@ -259,6 +259,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // solution, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'solution')
+      ->notExists('field_is_has_version')
       ->count()
       ->execute();
     if ($actual != $number) {
@@ -284,8 +285,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // presence of the 'is_version_of' field - if this field is missing it is a
     // solution, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
-      ->exists('field_is_is_version_of')
+      ->condition('rid', 'asset_release')
+      ->exists('field_isr_is_version_of')
       ->count()
       ->execute();
     if ($actual != $number) {

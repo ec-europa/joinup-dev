@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_user_group_types
+  module:
+    - options
+    - user
+id: user.user.field_user_group_types
+field_name: field_user_group_types
+entity_type: user
+bundle: user
+label: 'Receive notifications for'
+description: 'The types of content you''re interested in receiving updates about.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

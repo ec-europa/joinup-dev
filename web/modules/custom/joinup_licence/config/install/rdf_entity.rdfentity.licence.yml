@@ -1,6 +1,12 @@
 langcode: en
 status: true
 dependencies: {  }
+third_party_settings:
+  rdf_entity:
+    mapping_rid:
+      target_id: 'http://purl.org/dc/terms/LicenseDocument'
+    mapping_label:
+      value: 'http://purl.org/dc/terms/title'
 name: Licence
 rid: licence
 description: ''

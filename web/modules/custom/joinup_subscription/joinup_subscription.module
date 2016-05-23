@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @file
+ * Contains joinup_subscription.module..
+ */
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function joinup_subscription_entity_type_build(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+  $entity_types['user']->setFormClass('subscription_settings', 'Drupal\user\ProfileForm');
+}

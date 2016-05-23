@@ -1,20 +1,16 @@
 @api
-Feature: Solution API
+Feature: Asset distribution API
   In order to manage solutions programmatically
   As a backend developer
   I need to be able to use the Solution API
 
-  Scenario: Programmatically create a solution
+  Scenario: Programmatically create a distribution
     Given the following collection:
       | title             | Asset distribution collection API foo |
       | logo              | logo.png                              |
       | moderation        | yes                                   |
       | closed            | yes                                   |
       | elibrary creation | facilitators                          |
-    And the following asset distribution:
-      | title       | Asset distribution entity foo         |
-      | description | Asset distribution sample description |
-      | file        | test.zip                              |
     And the following solution:
       | title             | Asset distribution solution           |
       | description       | Asset distribution sample solution    |
@@ -24,29 +20,46 @@ Feature: Solution API
       | webdav creation   | no                                    |
       | webdav url        | http://joinup.eu/solution/foo/webdav  |
       | wiki              | http://example.wiki/foobar/wiki       |
-      | distribution      | Asset distribution entity foo         |
       | collection        | Asset distribution collection API foo |
+    And the following asset distribution:
+      | title       | Asset distribution entity foo         |
+      | description | Asset distribution sample description |
+      | file        | test.zip                              |
+    And the following asset release:
+      | title          | Asset distribution asset release   |
+      | description    | Asset distribution sample solution |
+      | documentation  | text.pdf                           |
+      | release number | 1                                  |
+      | release notes  | Changed release                    |
+      | distribution   | Asset distribution entity foo      |
+      | is version of  | Asset distribution solution        |
     Then I should have 1 solution
+    And I should have 1 asset release
     And I should have 1 asset distribution
-    And the "Asset distribution entity foo" asset distribution is related to the "Asset distribution solution" solution
 
-  Scenario: Programmatically create a collection using only the mandatory fields
+  Scenario: Programmatically create a distribution using only the mandatory fields
     Given the following collection:
       | title             | Asset distribution short API bar |
       | logo              | logo.png                         |
       | moderation        | yes                              |
       | closed            | yes                              |
       | elibrary creation | facilitators                     |
+    Given the following solution:
+      | title             | AD first solution mandatory short |
+      | description       | Another sample solution           |
+      | elibrary creation | members                           |
+      | collection        | Asset distribution short API bar  |
     And the following asset distribution:
       | title       | Asset distribution entity foo short   |
       | description | Asset distribution sample description |
       | file        | test.zip                              |
-    Given the following solution:
-      | title             | AD first solution mandatory short   |
-      | description       | Another sample solution             |
-      | elibrary creation | members                             |
-      | distribution      | Asset distribution entity foo short |
-      | collection        | Asset distribution short API bar    |
+    And the following asset release:
+      | title          | AD first release                    |
+      | description    | Asset distribution sample solution  |
+      | distribution   | Asset distribution entity foo short |
+      | release number | 1                                   |
+      | release notes  | Changed release                     |
+      | is version of  | AD first solution mandatory short   |
     Then I should have 1 solution
+    And I should have 1 asset release
     And I should have 1 asset distribution
-    And the "Asset distribution entity foo short" asset distribution is related to the "AD first solution mandatory short" solution

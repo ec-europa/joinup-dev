@@ -8,6 +8,7 @@ distribution:
 
 dependencies:
   - asset_distribution
+  - asset_release
   - block
   - ckeditor
   - collection
@@ -23,6 +24,7 @@ dependencies:
   - joinup_event
   - joinup_licence
   - joinup_news
+  - joinup_subscription
   - joinup_user
   - menu_ui
   - node
@@ -33,6 +35,7 @@ dependencies:
   - path
   - r4032login
   - rdf_entity
+  - rdf_taxonomy
   - solution
   - text
   - toolbar
@@ -124,6 +127,7 @@ config_devel:
   - search_api.index.collections
   - search_api.server.database_search_server
   - system.theme
+  - taxonomy.vocabulary.eurovoc
   - user.flood
   - user.mail
   - user.role.administrator

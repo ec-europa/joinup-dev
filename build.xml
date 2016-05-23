@@ -29,6 +29,9 @@
 
     <echo msg="Loading Virtuoso Sparql Permissions task." />
     <taskdef name="setvirtuososparqlpermissions" classname="\DrupalProject\Phing\SetVirtuosoSparqlPermissions" />
+
+    <echo msg="Loading Import RDF fixtures task." />
+    <taskdef name="importrdffixtures" classname="\DrupalProject\Phing\ImportRdfFixtures" />
     
     <echo msg="Loading AWS additional tasks." />
     <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />
@@ -79,6 +82,15 @@
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
             Password="${sparql.password}"
+        />
+    </target>
+
+    <target name="import-rdf-fixtures">
+        <importrdffixtures
+                IsqlPath="${isql.bin}"
+                DataSourceName="${sparql.dsn}"
+                Username="${sparql.user}"
+                Password="${sparql.password}"
         />
     </target>
 
@@ -276,7 +288,7 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions" />
+        depends="create-demo-users, setup-virtuoso-permissions, import-rdf-fixtures" />
 
     <target
         name="install-dev"

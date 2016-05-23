@@ -3,6 +3,7 @@
 namespace Drupal\solution\Plugin\Validation\Constraint;
 
 use Drupal\Component\Utility\Unicode;
+use Drupal\rdf_entity\Entity\Rdf;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -33,12 +34,37 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
     $entity_type_id = $entity->getEntityTypeId();
     $id_key = $entity->getEntityType()->getKey('id');
 
+    // Check first for the release.
+    if ($entity->bundle() == 'asset_release') {
+      // Get the solution this entity belongs to.
+      $parent = Rdf::load($entity->get('field_isr_is_version_of')
+        ->getValue()[0]['target_id']);
+
+      // The release can have the same name as the solution it belongs to.
+      if ($parent->label() == $entity->label()) {
+        return;
+      }
+
+      // The release can have the same name as the sibling releases.
+      foreach ($parent->get('field_is_has_version')->getValue() as $release) {
+        $sibling = Rdf::load($release['target_id']);
+        if ($entity->label() == $sibling->label()) {
+          return;
+        }
+      }
+    }
+
     $query = \Drupal::entityQuery($entity_type_id)
-      // The id could be NULL, so we cast it to 0 in that case.
-      ->condition($id_key, (int) $items->getEntity()->id(), '<>')
       ->condition($field_name, $item->value)
-      ->condition('rid', 'solution');
-    // @todo: Discuss about it whether we need it.
+      ->condition('rid', $entity->bundle());
+    if (!empty($entity->id())) {
+      $query->condition($id_key, $items->getEntity()->id(), '<>');
+    }
+    // If this is a solution, ignore releases.
+    if ($entity->bundle() == 'solution') {
+      $query->notExists('field_isr_is_version_of');
+    }
+
     $value_taken = (bool) $query->range(0, 1)
       ->count()
       ->execute();
@@ -46,8 +72,7 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
       $this->context->addViolation($constraint->message, [
         '%value' => $item->value,
         '@entity_type' => $entity->getEntityType()->getLowercaseLabel(),
-        '@field_name' => Unicode::strtolower($items->getFieldDefinition()
-          ->getLabel()),
+        '@field_name' => Unicode::strtolower($items->getFieldDefinition()->getLabel()),
       ]);
     }
   }

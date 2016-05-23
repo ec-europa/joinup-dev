@@ -1,0 +1,15 @@
+name: Joinup subscription
+type: module
+description: Handles subscription settings for each user.
+core: 8.x
+package: Joinup
+
+config_devel:
+ - core.entity_form_display.user.user.subscription_settings
+ - core.entity_form_mode.user.subscription_settings
+ - field.field.user.user.field_user_frequency
+ - field.field.user.user.field_user_group_types
+ - field.field.user.user.field_user_subscription_events
+ - field.storage.user.field_user_frequency
+ - field.storage.user.field_user_group_types
+ - field.storage.user.field_user_subscription_events

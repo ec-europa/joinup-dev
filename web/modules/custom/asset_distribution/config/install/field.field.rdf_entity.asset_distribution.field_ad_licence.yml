@@ -17,6 +17,10 @@ default_value_callback: ''
 settings:
   handler: 'default:rdf_entity'
   handler_settings:
+    target_bundles:
+      licence: licence
     sort:
       field: _none
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference
