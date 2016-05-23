@@ -28,8 +28,8 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
   public function provideDefaultOgPermissions(PermissionEventInterface $event) {
     if ($event->getEntityTypeId() === 'rdf_entity' && $event->getBundleId() === 'collection') {
       $event->setPermissions([
-        'approve proposed collections' => [
-          'title' => t('Approve proposed collections'),
+        'request collection deletion' => [
+          'title' => t('Request to delete collections'),
         ],
         'request collection archival' => [
           'title' => t('Request to archive collections'),

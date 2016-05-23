@@ -10,6 +10,9 @@ group_id: null
 permissions:
   - 'add user'
   - 'approve and deny subscription'
+  - 'highlight collections'
+  - 'invite facilitators'
   - 'manage members'
+  - 'request collection archival'
   - 'update group'
 role_type: standard

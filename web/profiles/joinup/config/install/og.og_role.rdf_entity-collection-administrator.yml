@@ -8,8 +8,5 @@ group_type: rdf_entity
 group_bundle: collection
 group_id: null
 permissions:
-  - 'add user'
-  - 'approve and deny subscription'
-  - 'manage members'
-  - 'update group'
+  - 'request collection deletion'
 role_type: standard
