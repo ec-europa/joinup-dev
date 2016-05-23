@@ -32,22 +32,22 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
           'title' => t('Approve proposed collections'),
         ],
         'request collection archival' => [
-          'title' => t('Request to archive collections')
+          'title' => t('Request to archive collections'),
         ],
         'invite members' => [
-          'title' => t('Invite users to become collection members')
+          'title' => t('Invite users to become collection members'),
         ],
         'approve membership requests' => [
-          'title' => t('Approve requests to join collections')
+          'title' => t('Approve requests to join collections'),
         ],
         'invite facilitators' => [
-          'title' => t('Invite users to become collection facilitators')
+          'title' => t('Invite users to become collection facilitators'),
         ],
         'accept facilitator invitation' => [
-          'title' => t('Accept invitation to become collection facilitator')
+          'title' => t('Accept invitation to become collection facilitator'),
         ],
         'highlight collections' => [
-          'title' => t('Highlight collections')
+          'title' => t('Highlight collections'),
         ],
       ]);
     }
