@@ -23,7 +23,6 @@ function rdf_export_entity_type_alter(array &$entity_types) {
       $recurse = FALSE;
       if ($storage  instanceof RdfEntitySparqlStorage) {
         $entity_type->setLinkTemplate('rdf-export', "/rdf-export/$entity_type_id/{{$entity_type_id}}");
-        $entity_type->setLinkTemplate('rdf-export-download', "/rdf-export/$entity_type_id/{{$entity_type_id}}/{{export_format}}");
       }
     }
   }
