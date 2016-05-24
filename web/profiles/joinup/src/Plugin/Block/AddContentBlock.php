@@ -95,8 +95,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $collection_contexts = $this->collectionContext->getRuntimeContexts(['collection']);
     if ($collection_contexts && $collection_contexts['collection']->hasContextValue()) {
       $page_url = Url::fromRoute('custom_page.collection_custom_page.add', [
-        'rdf_entity' => $collection_contexts['collection']->getContextValue()
-          ->id(),
+        'rdf_entity' => $collection_contexts['collection']->getContextValue()->id(),
       ]);
       $links['custom_page'] = [
         '#type' => 'link',
@@ -107,8 +106,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       ];
 
       $solution_url = Url::fromRoute('solution.collection_solution.add', [
-        'rdf_entity' => $collection_contexts['collection']->getContextValue()
-          ->id(),
+        'rdf_entity' => $collection_contexts['collection']->getContextValue()->id(),
       ]);
       $links['solution'] = [
         '#type' => 'link',
@@ -139,8 +137,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $asset_release_contexts = $this->assetReleaseContext->getRuntimeContexts(['asset_release']);
       if ($asset_release_contexts && $asset_release_contexts['asset_release']->hasContextValue()) {
         $distribution_url = Url::fromRoute('asset_distribution.asset_release_asset_distribution.add', [
-          'rdf_entity' => $asset_release_contexts['asset_release']->getContextValue()
-            ->id(),
+          'rdf_entity' => $asset_release_contexts['asset_release']->getContextValue()->id(),
         ]);
         $links['asset_distribution'] = [
           '#type' => 'link',
