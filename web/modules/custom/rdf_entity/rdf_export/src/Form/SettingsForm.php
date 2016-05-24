@@ -7,7 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use EasyRdf\Format;
 
 /**
- * Class SettingsForm.
+ * Configuration form for rdf_export module.
  *
  * @package Drupal\rdf_export\Form
  */
@@ -33,8 +33,7 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('rdf_export.settings');
-    $export_types = $config->get('export_types');
+    $export_types = $this->config('rdf_export.settings')->get('export_types');
     // @todo: Check which format are supported by the server?
     $formats = Format::getFormats();
     $list = [];
@@ -69,8 +68,7 @@ class SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-    $config = $this->config('rdf_export.settings');
-    $config->set('export_types', $form_state->getValue('export_types'));
+    $config = $this->config('rdf_export.settings')->set('export_types', $form_state->getValue('export_types'));
     $config->save();
   }
 
