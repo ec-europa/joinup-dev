@@ -9,8 +9,8 @@ dependencies:
     - bartik
 id: navigation
 theme: bartik
-region: primary_menu
-weight: -8
+region: sidebar_first
+weight: -7
 provider: null
 plugin: 'ogmenu_block:navigation'
 settings:
