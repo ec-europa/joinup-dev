@@ -37,6 +37,7 @@ dependencies:
   - rdf_entity
   - rdf_taxonomy
   - solution
+  - state_machine
   - text
   - toolbar
   - search_api

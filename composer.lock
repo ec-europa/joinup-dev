@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "123baa00bee62d97c927792187a32a87",
-    "content-hash": "83f5238a9dad3006f73b401469bcf82d",
+    "hash": "fcdf432d6d41b3de06759c151a0dcede",
+    "content-hash": "4f3029ffa0c2f0f0d6282fbad3ad2a4b",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1285,7 +1285,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/213570b78b5ef6cce33b254d3b78b54b89f8a64e",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/7c3b2e141ca6859b2190b68763d694ebcc8ddb82",
                 "reference": "213570b78b5ef6cce33b254d3b78b54b89f8a64e",
                 "shasum": ""
             },
@@ -1423,6 +1423,37 @@
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
             "time": "2016-04-20 12:32:19"
+        },
+        {
+            "name": "drupal/state_machine",
+            "version": "8.1.0-beta2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/state_machine",
+                "reference": "9af95093ed41eaf653ba51415ff85b8a42f6532f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta2.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "drupal/core": "8.*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Provides code-driven workflow functionality.",
+            "homepage": "https://www.drupal.org/project/state_machine",
+            "time": "2016-03-07 15:00:57"
         },
         {
             "name": "drush/drush",
@@ -5731,7 +5762,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/10d7c48c9a4129463052321b52450d98983c4332",
+                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
                 "reference": "10d7c48c9a4129463052321b52450d98983c4332",
                 "shasum": ""
             },
