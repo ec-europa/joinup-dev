@@ -9,3 +9,6 @@ dependencies:
 
 version: '8.x-1.x-dev'
 core: '8.x'
+
+config_devel:
+ - rdf_export.settings

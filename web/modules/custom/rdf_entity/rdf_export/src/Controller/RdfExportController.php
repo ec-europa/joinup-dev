@@ -96,7 +96,7 @@ class RdfExportController extends ControllerBase {
   protected function getSerializerFormats() {
     // Many more are supported...
     // @todo Move this to a settings form.
-    $white_list = ['rdfxml', 'turtle'];
+    $white_list = $this->config('rdf_export.settings')->get('export_types');
     $list = [];
     $formats = Format::getFormats();
     /** @var \EasyRdf\Format $format */
