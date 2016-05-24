@@ -8,6 +8,7 @@ dependencies:
   - datetime
   - image
   - link
+  - og_menu
   - options
   - rdf_entity
   - text
@@ -48,4 +49,3 @@ config_devel:
   - field.storage.rdf_entity.field_ar_spatial_coverage
   - field.storage.rdf_entity.field_ar_topic
   - rdf_entity.rdfentity.collection
-
