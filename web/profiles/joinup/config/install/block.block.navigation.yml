@@ -10,7 +10,7 @@ dependencies:
 id: navigation
 theme: bartik
 region: sidebar_first
-weight: -7
+weight: -9
 provider: null
 plugin: 'collection_menu_block:navigation'
 settings:
