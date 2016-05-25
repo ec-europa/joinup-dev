@@ -35,6 +35,17 @@ function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface
  */
 function collection_entity_insert(EntityInterface $entity) {
   collection_entity_update($entity);
+
+  // Create a new navigation menu and associate it with the new collection. This
+  // menu can be used to link to custom pages for the collection.
+  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
+    $values = [
+      'type' => 'navigation',
+      OgGroupAudienceHelper::DEFAULT_FIELD => $entity->id(),
+    ];
+    $og_menu_instance = OgMenuInstance::create($values);
+    $og_menu_instance->save();
+  }
 }
 
 /**
