@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.news.body
     - field.field.node.news.field_news_kicker
     - field.field.node.news.field_news_source_url
+    - field.field.node.news.field_news_state
     - field.field.node.news.og_group_ref
     - node.type.news
   module:
@@ -37,6 +38,11 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+  field_news_state:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
   title:
     type: string_textfield
     weight: 0

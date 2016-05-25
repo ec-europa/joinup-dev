@@ -2,16 +2,15 @@ langcode: en
 status: true
 dependencies:
   module:
-    - link
     - node
-id: node.field_news_source_url
-field_name: field_news_source_url
+id: node.field_news_state
+field_name: field_news_state
 entity_type: node
-type: link
+type: state
 settings: {  }
-module: link
+module: state_machine
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

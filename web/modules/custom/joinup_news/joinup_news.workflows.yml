@@ -1,0 +1,32 @@
+news_workflow:
+  id: news_workflow
+  label: "Default"
+  group: news
+  states:
+    draft:
+      label: Draft
+    proposed:
+      label: Proposed
+    validated:
+      label: Validated
+    deletion_request:
+      label: Request deletion
+    in_assessment:
+      label: In assessment
+  transitions:
+    propose:
+      label: Propose
+      from: [draft, validated, in_assessment, proposed]
+      to: proposed
+    validate:
+      label: Validate
+      from: [draft, validated, proposed, deletion_request]
+      to: validated
+    report:
+      label: Report
+      from: [validated]
+      to: in_assessment
+    request_deletion:
+      label: Request deletion
+      from: [validated]
+      to: deletion_request
