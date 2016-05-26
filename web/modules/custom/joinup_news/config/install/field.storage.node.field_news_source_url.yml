@@ -4,7 +4,7 @@ dependencies:
   module:
     - link
     - node
-id: node.field_mews_source_url
+id: node.field_news_source_url
 field_name: field_news_source_url
 entity_type: node
 type: link
