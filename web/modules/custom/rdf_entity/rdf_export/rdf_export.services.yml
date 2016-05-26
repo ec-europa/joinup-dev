@@ -1,0 +1,6 @@
+services:
+  rdf_export.route_subscriber:
+      class: Drupal\rdf_export\Routing\RouteSubscriber
+      arguments: ['@entity_type.manager']
+      tags:
+        - { name: event_subscriber }

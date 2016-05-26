@@ -1,0 +1,7 @@
+rdf_export.settings_form:
+  title: 'Rdf export settings'
+  route_name: rdf_export.settings_form
+  description: 'Settings regarding rdf export module.'
+  parent: system.admin_config_system
+  weight: 99
+

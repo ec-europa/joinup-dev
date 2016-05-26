@@ -1,0 +1,44 @@
+<?php
+/**
+ * @file
+ * Export entities using the rdf storage in RDF.
+ */
+
+use \Drupal\Core\Entity\EntityInterface;
+use \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function rdf_export_entity_type_alter(array &$entity_types) {
+  // Guard condition against infinite recursion.
+  static $recurse = FALSE;
+  if ($recurse) {
+    return;
+  }
+  foreach ($entity_types as $entity_type_id => $entity_type) {
+    if ($entity_type->hasViewBuilderClass() && $entity_type->hasLinkTemplate('canonical')) {
+      $recurse = TRUE;
+      $storage = \Drupal::service('entity.manager')->getStorage($entity_type_id);
+      $recurse = FALSE;
+      if ($storage  instanceof RdfEntitySparqlStorage) {
+        $entity_type->setLinkTemplate('rdf-export', "/rdf-export/$entity_type_id/{{$entity_type_id}}");
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function rdf_export_entity_operation(EntityInterface $entity) {
+  $operations = array();
+  if ($entity->hasLinkTemplate('rdf-export')) {
+    $operations['export'] = array(
+      'title' => t('Export RDF'),
+      'weight' => 100,
+      'url' => $entity->toUrl('rdf-export'),
+    );
+  }
+  return $operations;
+}

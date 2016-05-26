@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6484aedc81cad9a9bb77a436132e602c",
-    "content-hash": "ad360e5d1e9165132e7b4ccab5e0c697",
+    "hash": "849212ff45ca044060135b635f699df5",
+    "content-hash": "a63d89e8f551ec9662add4db250041f3",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.12",
+            "version": "3.18.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "12386ad98e3a76df29cee9475264b7364a50542f"
+                "reference": "8bd25f62869051476034464d853a9c0c72e2d91e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/12386ad98e3a76df29cee9475264b7364a50542f",
-                "reference": "12386ad98e3a76df29cee9475264b7364a50542f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8bd25f62869051476034464d853a9c0c72e2d91e",
+                "reference": "8bd25f62869051476034464d853a9c0c72e2d91e",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-05-20 05:19:30"
+            "time": "2016-05-24 18:21:32"
         },
         {
             "name": "composer/ca-bundle",
@@ -1281,12 +1281,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "c2bf4de582105e8c71f52d48c423c98d18fe75bf"
+                "reference": "9d11aa4c4e7fe99e0119f86c9c44d2814156d2e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/c2bf4de582105e8c71f52d48c423c98d18fe75bf",
-                "reference": "c2bf4de582105e8c71f52d48c423c98d18fe75bf",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/9d11aa4c4e7fe99e0119f86c9c44d2814156d2e0",
+                "reference": "9d11aa4c4e7fe99e0119f86c9c44d2814156d2e0",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1300,7 +1300,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-05-23 07:19:19"
+            "time": "2016-05-26 13:24:52"
         },
         {
             "name": "drupal/og_menu",
@@ -1373,15 +1373,15 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha14",
+            "version": "8.1.0-alpha15",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "507607e3919c1a61573719fa8dc4bf0695ac4704"
+                "reference": "f8f3ce33a9f608aa830688767fd5ffbd108eb889"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha14.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha15.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1400,10 +1400,7 @@
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
                 },
-                "patches_applied": {
-                    "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/2671228.patch",
-                    "Issue #2704761: Extend length of supported IDs in search API DB Backend (Patch only)": "https://www.drupal.org/files/issues/2704761_patch_only.patch"
-                }
+                "patches_applied": []
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "license": [
@@ -1425,7 +1422,7 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-04-20 12:32:19"
+            "time": "2016-05-20 10:43:24"
         },
         {
             "name": "drush/drush",
@@ -1528,19 +1525,70 @@
         },
         {
             "name": "easyrdf/easyrdf",
-            "version": "dev-0.9.x",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ec-europa/easyrdf.git",
-                "reference": "0.9.x"
+                "url": "https://github.com/njh/easyrdf.git",
+                "reference": "1371c8af2abd3a948c50962b2212fce1912000e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/njh/easyrdf/zipball/1371c8af2abd3a948c50962b2212fce1912000e7",
+                "reference": "1371c8af2abd3a948c50962b2212fce1912000e7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "ext-pcre": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "ml/json-ld": "~1.0",
+                "phpunit/phpunit": "~4.1",
+                "sami/sami": "~2.0",
+                "semsol/arc2": "~2.2",
+                "squizlabs/php_codesniffer": "~1.4.3",
+                "zendframework/zend-http": "~2.3"
+            },
+            "suggest": {
+                "ml/json-ld": "~1.0",
+                "semsol/arc2": "~2.2"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "EasyRdf_": "lib/"
+                "psr-4": {
+                    "EasyRdf\\": "lib"
                 }
             },
-            "time": "2016-01-28 12:56:40"
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nicholas Humfrey",
+                    "email": "njh@aelius.com",
+                    "homepage": "http://www.aelius.com/njh/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Alexey Zakhlestin",
+                    "email": "indeyets@gmail.com",
+                    "homepage": "http://indeyets.ru/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "EasyRdf is a PHP library designed to make it easy to consume and produce RDF.",
+            "homepage": "http://www.easyrdf.org/",
+            "keywords": [
+                "Linked Data",
+                "RDF",
+                "Semantic Web",
+                "Turtle",
+                "rdfa",
+                "sparql"
+            ],
+            "time": "2015-11-01 12:15:43"
         },
         {
             "name": "ec-europa/infra",
@@ -5630,6 +5678,12 @@
                 "url": "https://git.drupal.org/project/config_update.git",
                 "reference": "ac1526df5836a611f04bb421945beddb6306b7f2"
             },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.1.zip",
+                "reference": "ac1526df5836a611f04bb421945beddb6306b7f2",
+                "shasum": null
+            },
             "require": {
                 "drupal/config": "8.*",
                 "drupal/core": "8.*"
@@ -5658,7 +5712,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "ae6d4158c8c350a079f9b2c92169354b68cb75ed"
+                "reference": "8dc277d763ec233fea889084922a9eb7202b518f"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -5693,7 +5747,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2016-05-21 12:07:57"
+            "time": "2016-05-23 19:16:52"
         },
         {
             "name": "drupal/drupal-driver",
@@ -7089,7 +7143,7 @@
         {
             "alias": "0.9.1",
             "alias_normalized": "0.9.1.0",
-            "version": "dev-0.9.x",
+            "version": "9999999-dev",
             "package": "easyrdf/easyrdf"
         }
     ],
