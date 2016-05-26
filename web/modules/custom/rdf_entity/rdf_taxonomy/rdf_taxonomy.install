@@ -8,10 +8,9 @@
  * Implements hook_install().
  */
 function rdf_taxonomy_install() {
-  // Disable the view that takes over the taxonomy term pages.
+  // Delete the view that takes over the taxonomy term pages.
   // (Views is currently not supported.)
   /** @var \Drupal\Core\Config\ImmutableConfig $config */
   $config = \Drupal::service('config.factory')->getEditable('views.view.taxonomy_term');
-  $config->set('status', 0);
-  $config->save();
+  $config->delete();
 }
