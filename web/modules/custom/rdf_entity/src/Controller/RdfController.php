@@ -22,7 +22,10 @@ class RdfController extends ControllerBase {
    *   The rdf type label as a render array.
    */
   public function rdfTypeTitle(RdfEntityTypeInterface $rdf_type) {
-    return ['#markup' => $rdf_type->label(), '#allowed_tags' => Xss::getHtmlTagList()];
+    return [
+      '#markup' => $rdf_type->label(),
+      '#allowed_tags' => Xss::getHtmlTagList(),
+    ];
   }
 
   /**
@@ -35,7 +38,10 @@ class RdfController extends ControllerBase {
    *   The rdf entity label as a render array.
    */
   public function rdfTitle(RdfInterface $rdf_entity) {
-    return ['#markup' => $rdf_entity->getName(), '#allowed_tags' => Xss::getHtmlTagList()];
+    return [
+      '#markup' => $rdf_entity->getName(),
+      '#allowed_tags' => Xss::getHtmlTagList(),
+    ];
   }
 
   /**
@@ -48,9 +54,11 @@ class RdfController extends ControllerBase {
    *   A RDF submission form.
    */
   public function add(RdfEntityTypeInterface $rdf_type) {
-    $rdf_entity = $this->entityManager()->getStorage('rdf_entity')->create(array(
-      'rid' => $rdf_type->id(),
-    ));
+    $rdf_entity = $this->entityManager()
+      ->getStorage('rdf_entity')
+      ->create(array(
+        'rid' => $rdf_type->id(),
+      ));
 
     $form = $this->entityFormBuilder()->getForm($rdf_entity, 'add');
 
@@ -72,15 +80,21 @@ class RdfController extends ControllerBase {
     $build = [
       '#theme' => 'rdf_add_list',
       '#cache' => [
-        'tags' => $this->entityManager()->getDefinition('rdf_type')->getListCacheTags(),
+        'tags' => $this->entityManager()
+          ->getDefinition('rdf_type')
+          ->getListCacheTags(),
       ],
     ];
 
     $content = array();
 
     // Only use RDF types the user has access to.
-    foreach ($this->entityManager()->getStorage('rdf_type')->loadMultiple() as $type) {
-      $access = $this->entityManager()->getAccessControlHandler('rdf_entity')->createAccess($type->id(), NULL, [], TRUE);
+    foreach ($this->entityManager()
+               ->getStorage('rdf_type')
+               ->loadMultiple() as $type) {
+      $access = $this->entityManager()
+        ->getAccessControlHandler('rdf_entity')
+        ->createAccess($type->id(), NULL, [], TRUE);
       if ($access->isAllowed()) {
         $content[$type->id()] = $type;
       }
