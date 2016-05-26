@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "849212ff45ca044060135b635f699df5",
-    "content-hash": "a63d89e8f551ec9662add4db250041f3",
+    "hash": "5d3e92cf42745347149076058164448c",
+    "content-hash": "d8444c2b98a34943e284fd79613c95bc",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1373,15 +1373,15 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha15",
+            "version": "8.1.0-alpha14",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "f8f3ce33a9f608aa830688767fd5ffbd108eb889"
+                "reference": "507607e3919c1a61573719fa8dc4bf0695ac4704"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha15.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha14.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1400,7 +1400,10 @@
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
                 },
-                "patches_applied": []
+                "patches_applied": {
+                    "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/2671228.patch",
+                    "Issue #2704761: Extend length of supported IDs in search API DB Backend (Patch only)": "https://www.drupal.org/files/issues/2704761_patch_only.patch"
+                }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "license": [
@@ -1422,7 +1425,7 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-05-20 10:43:24"
+            "time": "2016-04-20 12:32:19"
         },
         {
             "name": "drush/drush",

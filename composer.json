@@ -14,7 +14,7 @@
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x",
-        "drupal/search_api": "~8.1.0-alpha12",
+        "drupal/search_api": "~8.1.0-alpha12 < 8.1.0-alpha15",
         "drush/drush": "~8.0",
         "pear/console_table": "~1.3.0",
         "phing/phing": "~2.10",
