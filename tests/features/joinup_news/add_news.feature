@@ -40,7 +40,6 @@ Feature: "Add news" visibility options.
       | description   | This is where experiments are done. |
       | documentation | text.pdf                            |
     And I am logged in as a moderator
-    And I break
 
     # Add news belonging to a collection
     When I go to the homepage of the "Ironman's second house" collection
