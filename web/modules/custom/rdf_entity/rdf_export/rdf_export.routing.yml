@@ -1,0 +1,10 @@
+rdf_export.settings_form:
+  path: '/admin/config/rdf_export/settings'
+  defaults:
+    _form: '\Drupal\rdf_export\Form\SettingsForm'
+    _title: 'Rdf export settings'
+  requirements:
+    _permission: 'administer rdf metadata settings'
+  options:
+    _admin_route: TRUE
+

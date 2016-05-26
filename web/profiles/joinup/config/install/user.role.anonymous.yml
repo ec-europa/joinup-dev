@@ -9,3 +9,4 @@ permissions:
   - 'access content'
   - 'use text format restricted_html'
   - 'view rdf entity'
+  - 'export rdf metadata'
