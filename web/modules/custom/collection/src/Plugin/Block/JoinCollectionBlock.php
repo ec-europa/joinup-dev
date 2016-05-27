@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -56,12 +57,18 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
    * @param \Drupal\Core\Session\AccountProxyInterface $user
    *   The current user.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, AccountProxyInterface $user) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, AccountProxyInterface $user, ContextProviderInterface $collection_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
     $this->user = $user;
     // Retrieve the collection from the route.
     $this->collection = $this->currentRouteMatch->getParameter('rdf_entity');
+
+    if (empty($this->collection)) {
+      if (!empty($collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue())) {
+        $this->collection = $collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue();
+      }
+    }
   }
 
   /**
@@ -73,7 +80,8 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
       $plugin_id,
       $plugin_definition,
       $container->get('current_route_match'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('collection.collection_route_context')
     );
   }
 
@@ -86,7 +94,8 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
     }
 
     // Display the Join Collection form.
-    return \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', $this->user, $this->collection);
+    return \Drupal::formBuilder()
+      ->getForm('\Drupal\collection\Form\JoinCollectionForm', $this->user, $this->collection);
   }
 
   /**

@@ -87,7 +87,9 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
    */
   public function build() {
     if (empty($this->collection)) {
-      throw new \Exception('The "Collection content" block can only be shown on collection pages.');
+      // If this is not a collection page, return an empty array so that the
+      // block is not rendered.
+      return [];
     }
     $content_ids = Og::getGroupContentIds($this->collection);
     $list = array();
