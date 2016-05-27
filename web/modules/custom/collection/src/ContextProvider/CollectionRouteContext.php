@@ -3,11 +3,13 @@
 namespace Drupal\collection\ContextProvider;
 
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Plugin\Context\Context;
 use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\og\Og;
 
 /**
  * Sets the current collection as a context on collection routes.
@@ -45,6 +47,22 @@ class CollectionRouteContext implements ContextProviderInterface {
       if ($collection = $this->routeMatch->getParameter('rdf_entity')) {
         if ($collection->bundle() == 'collection') {
           $value = $collection;
+        }
+      }
+    }
+    elseif ($route_parameters = $this->routeMatch->getParameters()) {
+      /** @var ContentEntityInterface $route_parameter */
+      foreach ($route_parameters as $route_parameter) {
+        if ($route_parameter instanceof ContentEntityInterface) {
+          $bundle = $route_parameter->bundle();
+          $entity_type = $route_parameter->getEntityTypeId();
+
+          // Check if the object is a og content entity.
+          if (Og::isGroupContent($entity_type, $bundle) && ($groups = Og::getGroupIds($route_parameter, 'rdf_entity', 'collection'))) {
+            // A content can belong to only one rdf_entity.
+            $collection = reset($groups['rdf_entity']);
+            $value = $collection;
+          }
         }
       }
     }
