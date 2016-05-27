@@ -1281,12 +1281,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "4130b5fa773a5af5e627e806b70dad473353113e"
+                "reference": "f17605be80a834b93fd8328db59ec541a7839bbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/4130b5fa773a5af5e627e806b70dad473353113e",
-                "reference": "4130b5fa773a5af5e627e806b70dad473353113e",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/f17605be80a834b93fd8328db59ec541a7839bbf",
+                "reference": "f17605be80a834b93fd8328db59ec541a7839bbf",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1300,7 +1300,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-05-27 06:57:50"
+            "time": "2016-05-27 08:08:29"
         },
         {
             "name": "drupal/og_menu",
@@ -1364,9 +1364,6 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
             "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
             "homepage": "https://www.drupal.org/project/r4032login",
             "time": "2016-03-01 13:56:38"
@@ -2295,7 +2292,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -6042,12 +6039,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jcalderonzumba/MinkPhantomJSDriver.git",
-                "reference": "f6867c5e5ad1727936b5e70075d92c2ec060e1a1"
+                "reference": "10d7c48c9a4129463052321b52450d98983c4332"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
-                "reference": "f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
+                "reference": "10d7c48c9a4129463052321b52450d98983c4332",
                 "shasum": ""
             },
             "require": {
@@ -6095,7 +6092,7 @@
                 "phantomjs",
                 "testing"
             ],
-            "time": "2016-03-04 20:15:21"
+            "time": "2015-10-05 18:24:44"
         },
         {
             "name": "mikey179/vfsStream",
