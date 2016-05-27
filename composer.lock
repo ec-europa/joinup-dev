@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5d3e92cf42745347149076058164448c",
-    "content-hash": "d8444c2b98a34943e284fd79613c95bc",
+    "hash": "9ca172bca43ca76b5b4b6adce2b925d2",
+    "content-hash": "a3fe7c5f2a98f3e0da50ce7c0c0bd01b",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.13",
+            "version": "3.18.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "8bd25f62869051476034464d853a9c0c72e2d91e"
+                "reference": "9398db378231fe723583fb8d7a919c1806f02be3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8bd25f62869051476034464d853a9c0c72e2d91e",
-                "reference": "8bd25f62869051476034464d853a9c0c72e2d91e",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9398db378231fe723583fb8d7a919c1806f02be3",
+                "reference": "9398db378231fe723583fb8d7a919c1806f02be3",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-05-24 18:21:32"
+            "time": "2016-05-26 20:43:24"
         },
         {
             "name": "composer/ca-bundle",
@@ -1277,16 +1277,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-default-roles",
+            "version": "dev-ISAICP-2362",
             "source": {
                 "type": "git",
-                "url": "https://github.com/amitaibu/og.git",
-                "reference": "9d11aa4c4e7fe99e0119f86c9c44d2814156d2e0"
+                "url": "https://github.com/ec-europa/og.git",
+                "reference": "4130b5fa773a5af5e627e806b70dad473353113e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/9d11aa4c4e7fe99e0119f86c9c44d2814156d2e0",
-                "reference": "9d11aa4c4e7fe99e0119f86c9c44d2814156d2e0",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/4130b5fa773a5af5e627e806b70dad473353113e",
+                "reference": "4130b5fa773a5af5e627e806b70dad473353113e",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1300,7 +1300,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-05-26 13:24:52"
+            "time": "2016-05-27 06:57:50"
         },
         {
             "name": "drupal/og_menu",
@@ -1679,16 +1679,16 @@
         },
         {
             "name": "gabordemooij/redbean",
-            "version": "v4.3.1",
+            "version": "v4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gabordemooij/redbean.git",
-                "reference": "f1f572ddac226d047d730444927794321ee9aca6"
+                "reference": "72368f15cedfa7990c7fb228e47d2f00c7f49d4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/f1f572ddac226d047d730444927794321ee9aca6",
-                "reference": "f1f572ddac226d047d730444927794321ee9aca6",
+                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/72368f15cedfa7990c7fb228e47d2f00c7f49d4f",
+                "reference": "72368f15cedfa7990c7fb228e47d2f00c7f49d4f",
                 "shasum": ""
             },
             "require": {
@@ -1716,7 +1716,7 @@
             "keywords": [
                 "orm"
             ],
-            "time": "2015-12-28 19:46:34"
+            "time": "2016-05-01 10:27:43"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -5624,7 +5624,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "e4cd2325a4656762bd4a0fbfd2996d3fa221b2b5"
+                "reference": "6572b554acc0df6216b1d278d6843b4e464b4be5"
             },
             "require": {
                 "php": ">=5.4.0",
@@ -5646,7 +5646,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-05-15 15:00:50"
+            "time": "2016-05-26 15:50:37"
         },
         {
             "name": "drupal/config_devel",
@@ -5715,7 +5715,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "8dc277d763ec233fea889084922a9eb7202b518f"
+                "reference": "0182817a1ae9b4e92f86ee29740a056659fbc9b5"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -5750,7 +5750,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2016-05-23 19:16:52"
+            "time": "2016-05-26 15:55:04"
         },
         {
             "name": "drupal/drupal-driver",
