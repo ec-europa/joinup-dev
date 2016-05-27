@@ -10,6 +10,7 @@ use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\og\Og;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Sets the current collection as a context on collection routes.
@@ -60,7 +61,7 @@ class CollectionRouteContext implements ContextProviderInterface {
           // Check if the object is a og content entity.
           if (Og::isGroupContent($entity_type, $bundle) && ($groups = Og::getGroupIds($route_parameter, 'rdf_entity', 'collection'))) {
             // A content can belong to only one rdf_entity.
-            $collection = reset($groups['rdf_entity']);
+            $collection = Rdf::load(reset($groups['rdf_entity']));
             $value = $collection;
           }
         }
