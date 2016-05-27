@@ -1,7 +1,10 @@
 langcode: en
 status: true
 dependencies: {  }
-id: rdf_entity-collection-facilitator
+# todo: The actual ID is 'rdf_entity-collection-facilitator'. Update this
+# when PR #216 is fixed.
+# @see https://github.com/amitaibu/og/issues/216
+id: facilitator
 label: Collection facilitator
 weight: 2
 group_type: rdf_entity
