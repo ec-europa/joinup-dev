@@ -4,3 +4,8 @@ services:
     arguments: ['@entity.manager']
     tags:
      - { name: event_subscriber }
+
+  rdf_taxonomy.overrider:
+    class: \Drupal\rdf_taxonomy\RdfTaxonomyConfigOverrides
+    tags:
+      - {name: config.factory.override, priority: 5}
