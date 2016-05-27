@@ -27,9 +27,11 @@ class NewsController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity) {
+    // Access is only allowed for collections and solutions.
+    $field = ($rdf_entity->bundle() == 'collection') ? 'og_group_ref' : 'field_news_parent';
     $node = $this->entityTypeManager()->getStorage('node')->create(array(
       'type' => 'news',
-      'og_group_ref' => $rdf_entity->id(),
+      $field => $rdf_entity->id(),
     ));
 
     $form = $this->entityFormBuilder()->getForm($node);

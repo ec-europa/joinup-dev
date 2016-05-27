@@ -84,32 +84,25 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
       return [];
     }
 
-    $content_ids = Og::getGroupContentIds($this->solution);
-    $list = array();
-    foreach ($content_ids as $entity_type => $ids) {
-      $storage = $this->entityManager->getStorage($entity_type);
-      $entities = $storage->loadMultiple($ids);
-      $children = [];
-      foreach ($entities as $entity) {
-        $children[] = array('#markup' => $entity->link());
-      }
-      if ($children) {
-        $list[] = array(
-          '#markup' => $storage->getEntityType()->getLabel(),
-          'children' => $children,
-        );
-      }
+    // Get news referencing to this solution.
+    $entities = $this->entityManager->getStorage('node')
+      ->loadByProperties(['field_news_parent' => $this->solution->id()]);
+    $items = [];
+    foreach ($entities as $entity) {
+      $items[] = array('#markup' => $entity->link());
     }
-    $build = array(
-      'list' => [
-        '#theme' => 'item_list',
-        '#items' => $list,
-        '#cache' => [
-          'tags' => ['og_group_content:' . $this->solution->id()],
+    if ($items) {
+      return [
+        'list' => [
+          '#theme' => 'item_list',
+          '#items' => $items,
+          '#cache' => [
+            'tags' => ['og_group_content:' . $this->solution->id()],
+          ],
         ],
-      ],
-    );
-    return $build;
+      ];
+    }
+    return [];
   }
 
 }
