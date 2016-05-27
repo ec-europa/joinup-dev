@@ -15,10 +15,13 @@ permissions:
   - 'unsubscribe'
   - 'update own custom_page node'
   - 'delete own custom_page node'
+  - 'create document node'
   - 'update own document node'
   - 'delete own document node'
+  - 'create event node'
   - 'update own event node'
   - 'delete own event node'
+  - 'create news node'
   - 'update own news node'
   - 'delete own news node'
 role_type: immutable
