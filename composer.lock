@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "123baa00bee62d97c927792187a32a87",
-    "content-hash": "83f5238a9dad3006f73b401469bcf82d",
+    "hash": "05af1edfe7ac4a299939fad256421cd0",
+    "content-hash": "c250c73710fbde0d72cc5c3b9488efd4",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1525,19 +1525,70 @@
         },
         {
             "name": "easyrdf/easyrdf",
-            "version": "dev-0.9.x",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ec-europa/easyrdf.git",
-                "reference": "0.9.x"
+                "url": "https://github.com/njh/easyrdf.git",
+                "reference": "1371c8af2abd3a948c50962b2212fce1912000e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/njh/easyrdf/zipball/1371c8af2abd3a948c50962b2212fce1912000e7",
+                "reference": "1371c8af2abd3a948c50962b2212fce1912000e7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "ext-pcre": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "ml/json-ld": "~1.0",
+                "phpunit/phpunit": "~4.1",
+                "sami/sami": "~2.0",
+                "semsol/arc2": "~2.2",
+                "squizlabs/php_codesniffer": "~1.4.3",
+                "zendframework/zend-http": "~2.3"
+            },
+            "suggest": {
+                "ml/json-ld": "~1.0",
+                "semsol/arc2": "~2.2"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "EasyRdf_": "lib/"
+                "psr-4": {
+                    "EasyRdf\\": "lib"
                 }
             },
-            "time": "2016-01-28 12:56:40"
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nicholas Humfrey",
+                    "email": "njh@aelius.com",
+                    "homepage": "http://www.aelius.com/njh/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Alexey Zakhlestin",
+                    "email": "indeyets@gmail.com",
+                    "homepage": "http://indeyets.ru/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "EasyRdf is a PHP library designed to make it easy to consume and produce RDF.",
+            "homepage": "http://www.easyrdf.org/",
+            "keywords": [
+                "Linked Data",
+                "RDF",
+                "Semantic Web",
+                "Turtle",
+                "rdfa",
+                "sparql"
+            ],
+            "time": "2015-11-01 12:15:43"
         },
         {
             "name": "ec-europa/infra",
@@ -2236,7 +2287,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -5390,6 +5441,9 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "time": "2016-03-01 16:28:35"
@@ -6831,7 +6885,7 @@
         {
             "alias": "0.9.1",
             "alias_normalized": "0.9.1.0",
-            "version": "dev-0.9.x",
+            "version": "9999999-dev",
             "package": "easyrdf/easyrdf"
         }
     ],
