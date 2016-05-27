@@ -13,4 +13,12 @@ group_id: null
 permissions:
   - 'accept facilitator invitation'
   - 'unsubscribe'
+  - 'update own custom_page node'
+  - 'delete own custom_page node'
+  - 'update own document node'
+  - 'delete own document node'
+  - 'update own event node'
+  - 'delete own event node'
+  - 'update own news node'
+  - 'delete own news node'
 role_type: immutable

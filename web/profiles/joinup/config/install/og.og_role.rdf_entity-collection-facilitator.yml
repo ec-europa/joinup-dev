@@ -18,4 +18,13 @@ permissions:
   - 'manage members'
   - 'request collection archival'
   - 'update group'
+  - 'create custom_page node'
+  - 'update any custom_page node'
+  - 'delete any custom_page node'
+  - 'update any document node'
+  - 'delete any document node'
+  - 'update any event node'
+  - 'delete any event node'
+  - 'update any news node'
+  - 'delete any news node'
 role_type: standard
