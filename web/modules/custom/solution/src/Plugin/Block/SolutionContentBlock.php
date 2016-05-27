@@ -4,7 +4,6 @@ namespace Drupal\solution\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\og\Og;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Entity\EntityManager;
@@ -97,7 +96,7 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
           '#theme' => 'item_list',
           '#items' => $items,
           '#cache' => [
-            'tags' => ['og_group_content:' . $this->solution->id()],
+            'tags' => ['entity:node:news'],
           ],
         ],
       ];
