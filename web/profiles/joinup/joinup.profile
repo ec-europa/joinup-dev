@@ -103,3 +103,23 @@ function joinup_rdf_apply_default_fields_alter(FieldStorageConfig $storage, &$va
     }
   }
 }
+
+/**
+ * Implements hook_og_user_access_alter().
+ */
+function joinup_og_user_access_alter(&$permissions, &$cacheable_metadata, $context) {
+  // Moderators should have access to edit and delete all group content in
+  // collections.
+  /** @var \Drupal\Core\Session\AccountProxyInterface $user */
+  $user = $context['user'];
+  $operation = $context['operation'];
+  $group = $context['group'];
+
+  $is_moderator = in_array('moderator', $user->getRoles());
+  $is_collection = $group->bundle() === 'collection';
+  $operation_allowed = in_array($operation, ['create', 'update', 'delete']);
+
+  if ($is_moderator && $is_collection && $operation_allowed) {
+    $permissions[] = $operation;
+  }
+}
