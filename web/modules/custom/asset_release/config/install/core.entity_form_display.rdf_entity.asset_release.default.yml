@@ -10,19 +10,19 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_has_version
     - field.field.rdf_entity.asset_release.field_isr_included_asset
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
-    - field.field.rdf_entity.asset_release.field_keywords
     - field.field.rdf_entity.asset_release.field_isr_language
     - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
-    - field.field.rdf_entity.asset_release.field_policy_domain
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
     - field.field.rdf_entity.asset_release.field_isr_release_notes
     - field.field.rdf_entity.asset_release.field_isr_release_number
     - field.field.rdf_entity.asset_release.field_isr_solution_type
+    - field.field.rdf_entity.asset_release.field_isr_translation
+    - field.field.rdf_entity.asset_release.field_keywords
+    - field.field.rdf_entity.asset_release.field_policy_domain
     - field.field.rdf_entity.asset_release.field_spacial_coverage
     - field.field.rdf_entity.asset_release.field_status
     - field.field.rdf_entity.asset_release.field_topic
-    - field.field.rdf_entity.asset_release.field_isr_translation
     - rdf_entity.rdfentity.asset_release
   module:
     - file
@@ -45,14 +45,6 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
-  field_keywords:
-    type: entity_reference_autocomplete
-    weight: 17
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_isr_language:
     type: entity_reference_autocomplete
     weight: 19
@@ -78,6 +70,14 @@ content:
     type: string_textfield
     weight: 2
     settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_keywords:
+    type: entity_reference_autocomplete
+    weight: 17
+    settings:
+      match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
@@ -118,8 +118,8 @@ hidden:
   field_isr_included_asset: true
   field_isr_is_version_of: true
   field_isr_owner: true
-  field_policy_domain: true
   field_isr_related_solutions: true
   field_isr_solution_type: true
-  field_topic: true
   field_isr_translation: true
+  field_policy_domain: true
+  field_topic: true
