@@ -14,7 +14,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
-    - field.field.rdf_entity.solution.field_is_keywords
+    - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_is_landing_page
     - field.field.rdf_entity.solution.field_is_language
     - field.field.rdf_entity.solution.field_is_metrics_page
@@ -135,7 +135,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
-  field_is_keywords:
+  field_keywords:
     weight: 10
     label: above
     settings:

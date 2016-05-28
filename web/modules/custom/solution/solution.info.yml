@@ -27,7 +27,7 @@ config_devel:
   - field.field.rdf_entity.solution.field_is_has_version
   - field.field.rdf_entity.solution.field_is_included_asset
   - field.field.rdf_entity.solution.field_is_issue_tracker
-  - field.field.rdf_entity.solution.field_is_keywords
+  - field.field.rdf_entity.solution.field_keywords
   - field.field.rdf_entity.solution.field_is_landing_page
   - field.field.rdf_entity.solution.field_is_language
   - field.field.rdf_entity.solution.field_is_metrics_page
@@ -60,7 +60,7 @@ config_devel:
   - field.storage.rdf_entity.field_is_has_version
   - field.storage.rdf_entity.field_is_included_asset
   - field.storage.rdf_entity.field_is_issue_tracker
-  - field.storage.rdf_entity.field_is_keywords
+  - field.storage.rdf_entity.field_keywords
   - field.storage.rdf_entity.field_is_landing_page
   - field.storage.rdf_entity.field_is_language
   - field.storage.rdf_entity.field_is_latest_release

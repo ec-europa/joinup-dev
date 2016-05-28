@@ -10,7 +10,7 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_has_version
     - field.field.rdf_entity.asset_release.field_isr_included_asset
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
-    - field.field.rdf_entity.asset_release.field_isr_keywords
+    - field.field.rdf_entity.asset_release.field_keywords
     - field.field.rdf_entity.asset_release.field_isr_language
     - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
@@ -126,7 +126,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
-  field_isr_keywords:
+  field_keywords:
     weight: 11
     label: above
     settings:

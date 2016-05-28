@@ -14,7 +14,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
-    - field.field.rdf_entity.solution.field_is_keywords
+    - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_is_landing_page
     - field.field.rdf_entity.solution.field_is_language
     - field.field.rdf_entity.solution.field_is_metrics_page
@@ -130,7 +130,7 @@ hidden:
   field_is_distribution: true
   field_is_has_version: true
   field_is_included_asset: true
-  field_is_keywords: true
+  field_keywords: true
   field_is_language: true
   field_is_modification_date: true
   field_is_owner: true

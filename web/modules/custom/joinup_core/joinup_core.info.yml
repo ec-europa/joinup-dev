@@ -8,6 +8,7 @@ dependencies:
   - rdf_entity
 
 config_devel:
+  - field.storage.rdf_entity.field_keywords
   - field.storage.rdf_entity.field_policy_domain
   - field.storage.rdf_entity.field_spacial_coverage
   - field.storage.rdf_entity.field_status

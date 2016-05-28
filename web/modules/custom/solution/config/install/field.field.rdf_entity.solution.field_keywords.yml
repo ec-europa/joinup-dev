@@ -2,10 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_keywords
+    - field.storage.rdf_entity.field_keywords
     - rdf_entity.rdfentity.solution
-id: rdf_entity.solution.field_is_keywords
-field_name: field_is_keywords
+id: rdf_entity.solution.field_keywords
+field_name: field_keywords
 entity_type: rdf_entity
 bundle: solution
 label: Keywords

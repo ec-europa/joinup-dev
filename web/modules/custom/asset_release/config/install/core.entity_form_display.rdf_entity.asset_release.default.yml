@@ -10,7 +10,7 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_has_version
     - field.field.rdf_entity.asset_release.field_isr_included_asset
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
-    - field.field.rdf_entity.asset_release.field_isr_keywords
+    - field.field.rdf_entity.asset_release.field_keywords
     - field.field.rdf_entity.asset_release.field_isr_language
     - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
@@ -45,7 +45,7 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
-  field_isr_keywords:
+  field_keywords:
     type: entity_reference_autocomplete
     weight: 17
     settings:
