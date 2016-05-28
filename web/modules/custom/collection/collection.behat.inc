@@ -183,7 +183,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'moderation' => 'field_ar_moderation',
       'modification date' => 'field_ar_modification_date',
       'owner' => 'field_ar_owner',
-      'policy domain' => 'field_ar_policy_domain',
+      'policy domain' => 'field_policy_domain',
       'spatial coverage' => 'field_ar_spatial_coverage',
       'topic' => 'field_ar_topic',
     ];

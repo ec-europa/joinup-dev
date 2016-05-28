@@ -8,4 +8,5 @@ dependencies:
   - rdf_entity
 
 config_devel:
+  - field.storage.rdf_entity.field_policy_domain
   - field.storage.rdf_entity.field_status

@@ -14,7 +14,7 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_language
     - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
-    - field.field.rdf_entity.asset_release.field_isr_policy_domain
+    - field.field.rdf_entity.asset_release.field_policy_domain
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
     - field.field.rdf_entity.asset_release.field_isr_release_notes
     - field.field.rdf_entity.asset_release.field_isr_release_number
@@ -118,7 +118,7 @@ hidden:
   field_isr_included_asset: true
   field_isr_is_version_of: true
   field_isr_owner: true
-  field_isr_policy_domain: true
+  field_policy_domain: true
   field_isr_related_solutions: true
   field_isr_solution_type: true
   field_isr_topic: true

@@ -14,7 +14,7 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_language
     - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
-    - field.field.rdf_entity.asset_release.field_isr_policy_domain
+    - field.field.rdf_entity.asset_release.field_policy_domain
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
     - field.field.rdf_entity.asset_release.field_isr_release_notes
     - field.field.rdf_entity.asset_release.field_isr_release_number
@@ -186,7 +186,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_isr_policy_domain:
+  field_policy_domain:
     weight: 14
     label: above
     settings:
