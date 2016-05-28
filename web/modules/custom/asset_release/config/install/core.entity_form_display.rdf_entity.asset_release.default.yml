@@ -19,7 +19,7 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_release_notes
     - field.field.rdf_entity.asset_release.field_isr_release_number
     - field.field.rdf_entity.asset_release.field_isr_solution_type
-    - field.field.rdf_entity.asset_release.field_isr_spacial_coverage
+    - field.field.rdf_entity.asset_release.field_spacial_coverage
     - field.field.rdf_entity.asset_release.field_status
     - field.field.rdf_entity.asset_release.field_isr_topic
     - field.field.rdf_entity.asset_release.field_isr_translation
@@ -81,7 +81,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_isr_spacial_coverage:
+  field_spacial_coverage:
     type: entity_reference_autocomplete
     weight: 14
     settings:
