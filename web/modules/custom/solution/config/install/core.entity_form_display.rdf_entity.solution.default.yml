@@ -30,7 +30,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_standardization_level
     - field.field.rdf_entity.solution.field_status
     - field.field.rdf_entity.solution.field_is_test_resource_type
-    - field.field.rdf_entity.solution.field_is_topic
+    - field.field.rdf_entity.solution.field_topic
     - field.field.rdf_entity.solution.field_is_translation
     - field.field.rdf_entity.solution.field_is_version
     - field.field.rdf_entity.solution.field_is_webdav_creation
@@ -142,7 +142,7 @@ hidden:
   field_is_standardization_level: true
   field_status: true
   field_is_test_resource_type: true
-  field_is_topic: true
+  field_topic: true
   field_is_translation: true
   field_is_version: true
   field_is_webdav_creation: true

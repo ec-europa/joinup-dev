@@ -30,7 +30,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_standardization_level
     - field.field.rdf_entity.solution.field_status
     - field.field.rdf_entity.solution.field_is_test_resource_type
-    - field.field.rdf_entity.solution.field_is_topic
+    - field.field.rdf_entity.solution.field_topic
     - field.field.rdf_entity.solution.field_is_translation
     - field.field.rdf_entity.solution.field_is_version
     - field.field.rdf_entity.solution.field_is_webdav_creation
@@ -269,7 +269,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_is_topic:
+  field_topic:
     weight: 9
     label: above
     settings:

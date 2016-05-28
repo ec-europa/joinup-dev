@@ -338,7 +338,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'source code repository' => 'field_is_source_code_repository',
       'spacial coverage' => 'field_spacial_coverage',
       'status' => 'field_status',
-      'topic' => 'field_is_topic',
+      'topic' => 'field_topic',
       'translation' => 'field_is_translation',
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',

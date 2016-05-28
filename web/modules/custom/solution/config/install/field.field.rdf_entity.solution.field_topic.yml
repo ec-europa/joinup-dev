@@ -2,10 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_topic
+    - field.storage.rdf_entity.field_topic
     - rdf_entity.rdfentity.solution
-id: rdf_entity.solution.field_is_topic
-field_name: field_is_topic
+id: rdf_entity.solution.field_topic
+field_name: field_topic
 entity_type: rdf_entity
 bundle: solution
 label: Topic

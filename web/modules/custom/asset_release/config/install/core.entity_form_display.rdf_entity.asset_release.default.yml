@@ -21,7 +21,7 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_solution_type
     - field.field.rdf_entity.asset_release.field_spacial_coverage
     - field.field.rdf_entity.asset_release.field_status
-    - field.field.rdf_entity.asset_release.field_isr_topic
+    - field.field.rdf_entity.asset_release.field_topic
     - field.field.rdf_entity.asset_release.field_isr_translation
     - rdf_entity.rdfentity.asset_release
   module:
@@ -121,5 +121,5 @@ hidden:
   field_policy_domain: true
   field_isr_related_solutions: true
   field_isr_solution_type: true
-  field_isr_topic: true
+  field_topic: true
   field_isr_translation: true

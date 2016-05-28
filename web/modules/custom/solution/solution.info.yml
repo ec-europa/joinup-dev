@@ -43,7 +43,7 @@ config_devel:
   - field.field.rdf_entity.solution.field_status
   - field.field.rdf_entity.solution.field_is_standardization_level
   - field.field.rdf_entity.solution.field_is_test_resource_type
-  - field.field.rdf_entity.solution.field_is_topic
+  - field.field.rdf_entity.solution.field_topic
   - field.field.rdf_entity.solution.field_is_translation
   - field.field.rdf_entity.solution.field_is_webdav_creation
   - field.field.rdf_entity.solution.field_is_webdav_url
@@ -74,7 +74,6 @@ config_devel:
   - field.storage.rdf_entity.field_is_source_code_repository
   - field.storage.rdf_entity.field_is_standardization_level
   - field.storage.rdf_entity.field_is_test_resource_type
-  - field.storage.rdf_entity.field_is_topic
   - field.storage.rdf_entity.field_is_translation
   - field.storage.rdf_entity.field_is_webdav_creation
   - field.storage.rdf_entity.field_is_webdav_url

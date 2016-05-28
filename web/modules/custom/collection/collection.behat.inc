@@ -185,7 +185,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'owner' => 'field_ar_owner',
       'policy domain' => 'field_policy_domain',
       'spatial coverage' => 'field_ar_spatial_coverage',
-      'topic' => 'field_ar_topic',
+      'topic' => 'field_topic',
     ];
   }
 
