@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_status
-    - rdf_entity.rdfentity.solution
-id: rdf_entity.solution.field_is_status
-field_name: field_is_status
+    - field.storage.rdf_entity.field_status
+    - rdf_entity.rdfentity.asset_distribution
+id: rdf_entity.asset_distribution.field_status
+field_name: field_status
 entity_type: rdf_entity
-bundle: solution
+bundle: asset_distribution
 label: Status
 description: ''
 required: false

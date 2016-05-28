@@ -7,6 +7,7 @@ package: Joinup
 dependencies:
   - datetime
   - image
+  - joinup_core
   - link
   - options
   - rdf_entity
@@ -39,7 +40,7 @@ config_devel:
   - field.field.rdf_entity.solution.field_is_solution_type
   - field.field.rdf_entity.solution.field_is_source_code_repository
   - field.field.rdf_entity.solution.field_is_spacial_coverage
-  - field.field.rdf_entity.solution.field_is_status
+  - field.field.rdf_entity.solution.field_status
   - field.field.rdf_entity.solution.field_is_standardization_level
   - field.field.rdf_entity.solution.field_is_test_resource_type
   - field.field.rdf_entity.solution.field_is_topic
@@ -73,7 +74,6 @@ config_devel:
   - field.storage.rdf_entity.field_is_solution_type
   - field.storage.rdf_entity.field_is_source_code_repository
   - field.storage.rdf_entity.field_is_spacial_coverage
-  - field.storage.rdf_entity.field_is_status
   - field.storage.rdf_entity.field_is_standardization_level
   - field.storage.rdf_entity.field_is_test_resource_type
   - field.storage.rdf_entity.field_is_topic

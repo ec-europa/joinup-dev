@@ -1,0 +1,11 @@
+name: Joinup core
+type: module
+description: Contains field storage configuration.
+core: 8.x
+package: Custom
+
+dependencies:
+  - rdf_entity
+
+config_devel:
+  - field.storage.rdf_entity.field_status
