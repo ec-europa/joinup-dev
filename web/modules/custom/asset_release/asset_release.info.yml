@@ -45,7 +45,6 @@ config_devel:
   - field.storage.rdf_entity.field_isr_has_version
   - field.storage.rdf_entity.field_isr_included_asset
   - field.storage.rdf_entity.field_isr_is_version_of
-  - field.storage.rdf_entity.field_keywords
   - field.storage.rdf_entity.field_isr_language
   - field.storage.rdf_entity.field_isr_modification_date
   - field.storage.rdf_entity.field_isr_owner
@@ -53,6 +52,5 @@ config_devel:
   - field.storage.rdf_entity.field_isr_release_notes
   - field.storage.rdf_entity.field_isr_related_solutions
   - field.storage.rdf_entity.field_isr_solution_type
-  - field.storage.rdf_entity.field_topic
   - field.storage.rdf_entity.field_isr_translation
   - rdf_entity.rdfentity.asset_release
