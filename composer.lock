@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "05af1edfe7ac4a299939fad256421cd0",
-    "content-hash": "c250c73710fbde0d72cc5c3b9488efd4",
+    "hash": "b1357e0a51ea4c34bfa410707b2df0b7",
+    "content-hash": "9954f1d329dc74eca595631868130f91",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1300,7 +1300,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-05-16 08:21:15"
+            "time": "2016-05-22 18:47:56"
         },
         {
             "name": "drupal/og_menu",
@@ -1364,22 +1364,25 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
             "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
             "homepage": "https://www.drupal.org/project/r4032login",
             "time": "2016-03-01 13:56:38"
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha14",
+            "version": "8.1.0-alpha15",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "507607e3919c1a61573719fa8dc4bf0695ac4704"
+                "reference": "f8f3ce33a9f608aa830688767fd5ffbd108eb889"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha14.zip",
-                "reference": "507607e3919c1a61573719fa8dc4bf0695ac4704",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha15.zip",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -1396,10 +1399,6 @@
             "extra": {
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
-                },
-                "patches_applied": {
-                    "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/2671228.patch",
-                    "Issue #2704761: Extend length of supported IDs in search API DB Backend (Patch only)": "https://www.drupal.org/files/issues/2704761_patch_only.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
@@ -1422,7 +1421,7 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-04-20 12:32:19"
+            "time": "2016-05-20 10:43:24"
         },
         {
             "name": "drush/drush",
@@ -2287,7 +2286,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -5441,9 +5440,6 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "time": "2016-03-01 16:28:35"
