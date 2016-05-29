@@ -103,7 +103,7 @@ Feature: Organic Groups integration
 
     # Edit a collection.
     When I go to the "Überwaldean Land Eels" collection edit form
-    Then the following fields should be present "Title, Description, Abstract, Contact information, Owner, Policy domain, Topic, Spatial coverage, Affiliates, Closed collection, eLibrary creation, Moderated"
+    Then the following fields should be present "Title, Description, Abstract, Contact information, Owner, Policy domain, Topic, Spacial coverage, Affiliates, Closed collection, eLibrary creation, Moderated"
     And I fill in "Title" with "Überwaldean Sea Eels"
     And I press the "Save" button
     Then I should see the heading "Überwaldean Sea Eels"
