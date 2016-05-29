@@ -1281,12 +1281,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "7c3b2e141ca6859b2190b68763d694ebcc8ddb82"
+                "reference": "213570b78b5ef6cce33b254d3b78b54b89f8a64e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/7c3b2e141ca6859b2190b68763d694ebcc8ddb82",
-                "reference": "7c3b2e141ca6859b2190b68763d694ebcc8ddb82",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/213570b78b5ef6cce33b254d3b78b54b89f8a64e",
+                "reference": "213570b78b5ef6cce33b254d3b78b54b89f8a64e",
                 "shasum": ""
             },
             "type": "drupal-module",
