@@ -76,7 +76,7 @@ class CollectionRouteContext implements ContextProviderInterface {
           if (Og::isGroupContent($entity_type, $bundle) && ($groups = Og::getGroupIds($route_parameter, 'rdf_entity', 'collection'))) {
             // A content can belong to only one rdf_entity.
             // Check that the content is not an orphaned one.
-            if($collection_id = reset($groups['rdf_entity'])) {
+            if ($collection_id = reset($groups['rdf_entity'])) {
               $collection = Rdf::load($collection_id);
               $value = $collection;
             }
