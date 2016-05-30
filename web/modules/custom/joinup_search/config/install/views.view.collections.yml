@@ -417,7 +417,49 @@ display:
             multi_type: separator
             multi_separator: ', '
           plugin_id: search_api_field
-      filters: {  }
+      filters:
+        rid:
+          id: rid
+          table: search_api_index_collections
+          field: rid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: collection
+          group: 1
+          exposed: true
+          expose:
+            operator_id: rid_op
+            label: 'Rdf Type'
+            description: ''
+            use_operator: false
+            operator: rid_op
+            identifier: rid
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              moderator: '0'
+              administrator: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: search_api_string
       sorts: {  }
       title: Collections
       header: {  }
