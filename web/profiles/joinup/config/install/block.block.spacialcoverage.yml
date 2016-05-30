@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.spacial_coverage
+  module:
+    - facets
+  theme:
+    - bartik
+id: spacialcoverage
+theme: bartik
+region: sidebar_second
+weight: -10
+provider: null
+plugin: 'facet_block:spacial_coverage'
+settings:
+  id: 'facet_block:spacial_coverage'
+  label: 'Spacial coverage'
+  provider: facets
+  label_display: visible
+visibility:
+  other_facet:
+    id: other_facet
+    facets: ''
+    facet_value: ''
+    negate: false
+    context_mapping: {  }

@@ -22,7 +22,9 @@
         "symfony/dependency-injection": "2.8.2",
         "typhonius/behattask": "1.0",
         "ec-europa/infra": "~0.4",
-        "easyrdf/easyrdf": "dev-master as 0.9.1"
+        "easyrdf/easyrdf": "dev-master as 0.9.1",
+        "drupal/search_api_solr": "~8.1.0-alpha4",
+	"drupal/facets" : "~8.1.0-alpha3"
     },
     "require-dev": {
         "behat/mink": "~1.6",

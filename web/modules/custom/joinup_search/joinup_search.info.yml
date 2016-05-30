@@ -1,0 +1,18 @@
+name: Joinup search
+type: module
+description: Integrates the Joinup project with Solr.
+core: 8.x
+package: Joinup
+
+dependencies:
+  - search_api_solr
+  - facets
+
+config_devel:
+ - facets.facet.policy_domain
+ - facets.facet.spacial_coverage
+ - facets.facet.status
+ - search_api.server.solr
+ - search_api.index.collections
+ - views.view.collections
+ - views.view.search

@@ -24,6 +24,7 @@ dependencies:
   - joinup_event
   - joinup_licence
   - joinup_news
+  - joinup_search
   - joinup_subscription
   - joinup_user
   - menu_ui
@@ -61,6 +62,9 @@ config_devel:
   - block.block.bartik_messages
   - block.block.bartik_page_title
   - block.block.bartik_tools
+  - block.block.policydomain
+  - block.block.spacialcoverage
+  - block.block.status
   - block.block.joincollectionblock
   - block.block.joinup_add_content
   - block.block.navigation
@@ -120,8 +124,6 @@ config_devel:
   - og_menu.ogmenu.navigation
   - og.og_membership_type.og_membership_type
   - og.settings
-  - search_api.index.collections
-  - search_api.server.database_search_server
   - system.theme
   - user.flood
   - user.mail
