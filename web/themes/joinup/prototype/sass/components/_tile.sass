@@ -1,0 +1,53 @@
+// Tile
+//
+// Tile component
+
+// Component
+// --------------------------------------------------
+.tile
+  width: 100%
+
+// Elements
+// --------------------------------------------------
+.tile__image
+  position: relative
+  text-align: center
+  height: 140px
+  img
+    max-width: 100%
+    height: auto
+    width: auto
+    position: relative
+    top: 50%
+    -webkit-transform: translateY(-50%)
+    -ms-transform: translateY(-50%)
+    transform: translateY(-50%)
+
+.tile__field
+  padding-left: 20px
+  padding-right: 20px
+
+.tile__icons-bar
+  width: 100%
+  text-align: right
+
+.tile__icons-item
+  display: inline-block
+  padding-right: 25px
+
+.tile__avatar
+  margin-top: -20px
+  z-index: 10
+
+
+
+// Modifiers
+// --------------------------------------------------
+.tile__icons-item--solutions
+  background: url('../images/solutions-tile-icon.png') right center no-repeat
+
+.tile__icons-item--members
+  background: url('../images/members-tile-icon.png') right center no-repeat
+
+.tile__icons-item--like
+  background: url('../images/like-tile-icon.png') right center no-repeat

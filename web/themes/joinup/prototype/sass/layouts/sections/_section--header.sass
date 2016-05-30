@@ -1,0 +1,68 @@
+// Header
+//
+// Header component
+
+// Component
+// --------------------------------------------------
+.section--header
+  background-color: #27456b
+  width: 100%
+  //height: 60px
+
+// Elements
+// --------------------------------------------------
+.header__logo
+  width: 82px
+  height: 30px
+  //display: inline-block
+  //margin-left: 15px
+  background: url('../images/logo.png') center no-repeat
+  vertical-align: middle
+
+.header__menu
+  //display: inline-block
+  //margin: 0 auto
+
+.header__menu-link
+  color: #fff
+  text-transform: uppercase
+  text-decoration: none
+  text-align: center
+  min-width: 160px
+  border-top: 2px solid #27456b
+
+.header__menu-text
+  display: inline-block
+  padding-left: 30px
+  line-height: 58px
+
+.header__container-right
+  float: right
+  clear: right
+
+.header__search-container
+  display: inline-block
+
+.header__search-icon
+  width: 32px
+  height: 32px
+  //background: url('../images/search-icon.png') no-repeat
+
+// Modifiers
+// --------------------------------------------------
+.header__menu-link--solutions
+  .header__menu-text
+    background: url('../images/solutions-icon.png') left center no-repeat
+
+.header__menu-link--collections
+  .header__menu-text
+    background: url('../images/collections-icon.png') left center no-repeat
+
+.header__menu-link--events
+  .header__menu-text
+    background: url('../images/events-icon.png') left center no-repeat
+
+a.header__menu-link.active-trail
+  background: #fff
+  border-top: 2px solid #f08c14
+  color: #27456b

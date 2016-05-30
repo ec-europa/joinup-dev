@@ -5,13 +5,23 @@
 
   <body>
 
-    {% include header.html %}
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-    {{ content }}
+    {% include section--header.html %}
 
-    {% include footer.html %}
-    
+    {% include section--featured.html %}
+
+    {% include section--sidebar-left.html %}
+
+    {% include section--content-top.html %}
+
+    {% include section--content.html %}
+
+    {% include section--footer.html %}
+
     {% include scripts.html %}
+
+    </div>
 
   </body>
 
