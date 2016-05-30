@@ -61,13 +61,8 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
     $this->user = $user;
-    // Retrieve the collection from the route.
-    $this->collection = $this->currentRouteMatch->getParameter('rdf_entity');
-
-    if (empty($this->collection)) {
-      if (!empty($collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue())) {
-        $this->collection = $collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue();
-      }
+    if (!empty($collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue())) {
+      $this->collection = $collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue();
     }
   }
 

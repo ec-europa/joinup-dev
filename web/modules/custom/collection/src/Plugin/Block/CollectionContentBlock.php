@@ -2,10 +2,13 @@
 
 namespace Drupal\collection\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\og\Og;
 
@@ -61,11 +64,12 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
    * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
    *   The entity manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityManagerInterface $entityManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityManagerInterface $entityManager, ContextProviderInterface $collection_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
-    // Retrieve the collection from the route.
-    $this->collection = $this->currentRouteMatch->getParameter('rdf_entity');
+    if (!empty($collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue())) {
+      $this->collection = $collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue();
+    }
     $this->entityManager = $entityManager;
   }
 
@@ -78,7 +82,8 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
       $plugin_id,
       $plugin_definition,
       $container->get('current_route_match'),
-      $container->get('entity.manager')
+      $container->get('entity.manager'),
+      $container->get('collection.collection_route_context')
     );
   }
 
@@ -87,9 +92,7 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
    */
   public function build() {
     if (empty($this->collection)) {
-      // If this is not a collection page, return an empty array so that the
-      // block is not rendered.
-      return [];
+      throw new \Exception('The "Join Collection" block can only be shown on collection pages.');
     }
     $content_ids = Og::getGroupContentIds($this->collection);
     $list = array();
@@ -125,6 +128,13 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
   public function getCacheMaxAge() {
     // Disable caching.
     return 0;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function blockAccess(AccountInterface $account) {
+    return ($this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical') ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
 }
