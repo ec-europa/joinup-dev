@@ -1,0 +1,22 @@
+name: Joinup core
+type: module
+description: Contains field storage configuration.
+core: 8.x
+package: Custom
+
+dependencies:
+  - rdf_entity
+  - rdf_taxonomy
+
+config_devel:
+  - field.storage.rdf_entity.field_keywords
+  - field.storage.rdf_entity.field_policy_domain
+  - field.storage.rdf_entity.field_spacial_coverage
+  - field.storage.rdf_entity.field_status
+  - field.storage.rdf_entity.field_topic
+  - taxonomy.vocabulary.eurovoc
+  - taxonomy.vocabulary.policy_domain
+  - taxonomy.vocabulary.spatial
+  - taxonomy.vocabulary.status
+  - taxonomy.vocabulary.themes
+  - taxonomy.vocabulary.language

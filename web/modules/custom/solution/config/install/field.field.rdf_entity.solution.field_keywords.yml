@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_isr_policy_domain
-    - rdf_entity.rdfentity.asset_release
-id: rdf_entity.asset_release.field_isr_policy_domain
-field_name: field_isr_policy_domain
+    - field.storage.rdf_entity.field_keywords
+    - rdf_entity.rdfentity.solution
+id: rdf_entity.solution.field_keywords
+field_name: field_keywords
 entity_type: rdf_entity
-bundle: asset_release
-label: 'Policy Domain'
+bundle: solution
+label: Keywords
 description: ''
 required: false
 translatable: false
