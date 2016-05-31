@@ -431,7 +431,7 @@ display:
             max: ''
             value: collection
           group: 1
-          exposed: true
+          exposed: false
           expose:
             operator_id: rid_op
             label: 'Rdf Type'

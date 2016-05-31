@@ -23,7 +23,7 @@
         "typhonius/behattask": "1.0",
         "ec-europa/infra": "~0.4",
         "easyrdf/easyrdf": "dev-master as 0.9.1",
-        "drupal/search_api_solr": "~8.1.0-alpha4",
+        "drupal/search_api_solr": "dev-8.x-1.x",
 	"drupal/facets" : "~8.1.0-alpha3"
     },
     "require-dev": {

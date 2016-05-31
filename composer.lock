@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e1cbfbf80d96e9633e420e796dc5f40c",
-    "content-hash": "13a323c6fb840d7bbe2b08a160288177",
+    "hash": "e7f8fdb31eb48ac3ff63f3e6899505c0",
+    "content-hash": "f3e927f15f3e1d938a6f8124ac51f66e",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1286,7 +1286,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha3.zip",
-                "reference": null,
+                "reference": "ae38a8e49082f418f9fc533bb575f931d4c2e277",
                 "shasum": null
             },
             "require": {
@@ -1466,17 +1466,11 @@
         },
         {
             "name": "drupal/search_api_solr",
-            "version": "8.1.0-alpha4",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "6cde24a4d4f4949d3bc849393a658e2e5b76120a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha4.zip",
-                "reference": "6cde24a4d4f4949d3bc849393a658e2e5b76120a",
-                "shasum": null
+                "reference": "4952e63307bc2f382c6453f335a19beec68298e1"
             },
             "require": {
                 "drupal/core": "8.*",
@@ -1495,7 +1489,7 @@
             ],
             "description": "Offers an implementation of the Search API that uses an Apache Solr server for indexing content.",
             "homepage": "https://www.drupal.org/project/search_api_solr",
-            "time": "2016-05-21 17:56:05"
+            "time": "2016-05-27 16:24:14"
         },
         {
             "name": "drush/drush",
@@ -7023,6 +7017,7 @@
         "drupal/og_menu": 20,
         "drupal/r4032login": 20,
         "easyrdf/easyrdf": 20,
+        "drupal/search_api_solr": 20,
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
