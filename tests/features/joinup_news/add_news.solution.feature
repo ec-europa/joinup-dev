@@ -5,43 +5,52 @@ Feature: "Add news" visibility options.
   I need to be able to add news content through UI.
 
   Scenario: "Add news" button should only be shown to moderators.
-    Given the following collection:
-      | title | Ironman's home |
-      | logo  | logo.png       |
+    Given users:
+      | name         | mail                     | roles     |
+      | Pepper Pots  | pepper.pots@example.com  | moderator |
+      | Tony Stark   | tony.stark@example.com   |           |
+      | Phil Coulson | phil.coulson@example.com |           |
+    And the following collection:
+      | title      | Ironman's home |
+      | logo       | logo.png       |
+      | moderation | yes            |
+    And user memberships:
+      | collection     | user         | roles         |
+      | Ironman's home | Pepper Pots  |               |
+      | Ironman's home | Tony Stark   | administrator |
+      | Phil Coulson   | Phil Coulson | member        |
     And the following solution:
       | title         | Ironman's room       |
       | description   | The room of ironman. |
       | documentation | text.pdf             |
 
-    When I am logged in as a "moderator"
-    And I go to the homepage of the "Ironman's home" collection
-    Then I should see the link "Add news"
-    When I go to the "Ironman's room" solution
-    Then I should see the link "Add news"
-
+    # Check visibility for users with specific permissions.
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Ironman's home" collection
     Then I should not see the link "Add news"
     When I go to the "Ironman's room" solution
     Then I should not see the link "Add news"
+    When I am logged in as "Tony Stark"
+    And I go to the homepage of the "Ironman's home" collection
+    Then I should not see the link "Add news"
+    When I am logged in as "Phil Coulson"
+    # Create news belongs to members.
+    And I go to the homepage of the "Ironman's home" collection
+    Then I should see the link "Add news"
 
+    # Check visibility for user with generic roles.
+    When I am logged in as an "authenticated user"
+    And I go to the homepage of the "Ironman's home" collection
+    Then I should not see the link "Add news"
+    When I go to the "Ironman's room" solution
+    Then I should not see the link "Add news"
     When I am an anonymous user
     And I go to the homepage of the "Ironman's home" collection
     Then I should not see the link "Add news"
     When I go to the "Ironman's room" solution
     Then I should not see the link "Add news"
 
-  Scenario: Add custom page as a moderator.
-    Given the following collection:
-      | title | Ironman's second house |
-      | logo  | logo.png               |
-    And the following solution:
-      | title         | Ironman's basement                  |
-      | description   | This is where experiments are done. |
-      | documentation | text.pdf                            |
-    And I am logged in as a moderator
-
-    # Add news belonging to a collection
+    # Add news belonging to a collection.
     When I go to the homepage of the "Ironman's second house" collection
     And I click "Add news"
     Then I should see the heading "Add news"
@@ -56,7 +65,7 @@ Feature: "Add news" visibility options.
     And I should see the success message "News We have some news has been created."
     And the "Ironman's second house" collection has a news page titled "We have some news"
 
-    # Add news belonging to a solution
+    # Add news belonging to a solution.
     When I go to the "Ironman's basement" solution
     And I click "Add news"
     Then I should see the heading "Add news"
