@@ -5,8 +5,11 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  git s- facets
+  - node
+  - rdf_entity
   - search_api_solr
-  - facets
+  - taxonomy
 
 config_devel:
  - facets.facet.policy_domain
