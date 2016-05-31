@@ -4,6 +4,7 @@ namespace Drupal\custom_page\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\og\OgAccess;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -30,11 +31,7 @@ class CustomPageController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity) {
-    $node = $this->entityTypeManager()->getStorage('node')->create(array(
-      'type' => 'custom_page',
-      'og_group_ref' => $rdf_entity->id(),
-    ));
-
+    $node = $this->createNewCustomPage($rdf_entity);
     $form = $this->entityFormBuilder()->getForm($node);
 
     return $form;
@@ -59,7 +56,28 @@ class CustomPageController extends ControllerBase {
       return AccessResult::allowed();
     }
 
+    // Check if the user has the OG permission to create a custom page.
+    if (OgAccess::userAccessGroupContentEntityCrud('create', $rdf_entity, $this->createNewCustomPage($rdf_entity))->isAllowed()) {
+      return AccessResult::allowed();
+    }
+
     return AccessResult::forbidden();
+  }
+
+  /**
+   * Creates a new custom page entity.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The collection with which the custom page will be associated.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   The unsaved custom page entity.
+   */
+  protected function createNewCustomPage(RdfInterface $rdf_entity) {
+    return $this->entityTypeManager()->getStorage('node')->create([
+      'type' => 'custom_page',
+      'og_group_ref' => $rdf_entity->id(),
+    ]);
   }
 
 }

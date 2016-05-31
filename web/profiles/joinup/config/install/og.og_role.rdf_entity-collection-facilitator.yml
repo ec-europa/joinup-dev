@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies: {  }
+# todo: The actual ID is 'rdf_entity-collection-facilitator'. Update this
+# when PR #216 is fixed.
+# @see https://github.com/amitaibu/og/issues/216
+id: facilitator
+label: Collection facilitator
+weight: 2
+group_type: rdf_entity
+group_bundle: collection
+group_id: null
+permissions:
+  - 'add user'
+  - 'approve and deny subscription'
+  - 'highlight collections'
+  - 'invite facilitators'
+  - 'manage members'
+  - 'request collection archival'
+  - 'update group'
+  - 'create custom_page node'
+  - 'update any custom_page node'
+  - 'delete any custom_page node'
+  - 'update any document node'
+  - 'delete any document node'
+  - 'update any event node'
+  - 'delete any event node'
+  - 'update any news node'
+  - 'delete any news node'
+role_type: standard

@@ -9,6 +9,7 @@ dependencies:
   - image
   - joinup_core
   - link
+  - og
   - og_menu
   - options
   - rdf_entity
