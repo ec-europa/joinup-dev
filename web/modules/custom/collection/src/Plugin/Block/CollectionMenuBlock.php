@@ -51,7 +51,7 @@ class CollectionMenuBlock extends OgMenuBlock {
       $build['create']['info'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t('There are no pages yet. Why don\'t you start by creating an <em>About</em> page?'),
+        '#value' => $this->t("There are no pages yet. Why don't you start by creating an <em>About</em> page?"),
       ];
       $create_url = Url::fromRoute('custom_page.collection_custom_page.add', [
         'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
