@@ -79,12 +79,8 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
    * {@inheritdoc}
    */
   public function build() {
-    $collection = $this->contextProvider->getRuntimeContexts(['collection'])['collection']->getContextValue();
-    if (empty($collection)) {
-      throw new \Exception('The "Join Collection" block can only be shown on collection pages.');
-    }
-
     // Display the Join Collection form.
+    $collection = $this->contextProvider->getRuntimeContexts(['collection'])['collection']->getContextValue();
     return \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', $this->user, $collection);
   }
 
