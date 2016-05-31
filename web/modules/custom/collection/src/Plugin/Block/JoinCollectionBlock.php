@@ -7,7 +7,6 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\Context\ContextProviderInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -30,18 +29,19 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
   protected $collection;
 
   /**
-   * The current route match service.
-   *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
-   */
-  protected $currentRouteMatch;
-
-  /**
    * The current user.
    *
    * @var \Drupal\Core\Session\AccountProxyInterface $user
    */
   protected $user;
+
+  /**
+   * The context provider for the Collection context.
+   *
+   * @var \Drupal\Core\Plugin\Context\ContextProviderInterface
+   */
+  protected $contextProvider;
+
 
   /**
    * Constructs a JoinCollectionBlock object.
@@ -52,18 +52,15 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
    *   The plugin ID for the plugin instance.
    * @param string $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $current_route_match
-   *   The current route match service.
    * @param \Drupal\Core\Session\AccountProxyInterface $user
    *   The current user.
-   * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $collection_context
-   *   The collection context.
+   * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $context_provider
+   *   The context provider for the Collection context.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, AccountProxyInterface $user, ContextProviderInterface $collection_context) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxyInterface $user, ContextProviderInterface $context_provider) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->currentRouteMatch = $current_route_match;
     $this->user = $user;
-    $this->collection = $collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue();
+    $this->contextProvider = $context_provider;
   }
 
   /**
@@ -74,7 +71,6 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('current_route_match'),
       $container->get('current_user'),
       $container->get('collection.collection_route_context')
     );
@@ -84,12 +80,13 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
    * {@inheritdoc}
    */
   public function build() {
-    if (empty($this->collection)) {
+    $collection = $this->contextProvider->getRuntimeContexts(['collection'])['collection']->getContextValue();
+    if (empty($collection)) {
       throw new \Exception('The "Join Collection" block can only be shown on collection pages.');
     }
 
     // Display the Join Collection form.
-    return \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', $this->user, $this->collection);
+    return \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', $this->user, $collection);
   }
 
   /**
