@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - solution
+    - system
+  theme:
+    - bartik
+id: solutioncontent
+theme: bartik
+region: sidebar_first
+weight: -9
+provider: null
+plugin: solution_content_block
+settings:
+  id: solution_content_block
+  label: 'Solution content'
+  provider: solution
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: '/rdf_entity/*'
+    negate: false
+    context_mapping: {  }

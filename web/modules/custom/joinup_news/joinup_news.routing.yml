@@ -1,0 +1,12 @@
+# Route to create a news entity that belongs to an rdf_entity.
+custom_page.rdf_entity_news.add:
+  path: 'rdf_entity/{rdf_entity}/news/add'
+  defaults:
+    _controller: '\Drupal\joinup_news\Controller\NewsController::add'
+    _title: 'Add news'
+  requirements:
+    _custom_access: '\Drupal\joinup_news\Controller\NewsController::createNewsAccess'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity

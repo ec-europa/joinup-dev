@@ -255,7 +255,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       'licence' => 'field_ad_licence',
       'modification date' => 'field_ad_modification_date',
       'representation technique' => 'field_ad_repr_technique',
-      'status' => 'field_ad_status',
+      'status' => 'field_status',
     ];
   }
 

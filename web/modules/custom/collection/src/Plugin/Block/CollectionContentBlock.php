@@ -2,10 +2,13 @@
 
 namespace Drupal\collection\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\og\Og;
 
@@ -48,6 +51,20 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
   protected $entityManager;
 
   /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('current_route_match'),
+      $container->get('entity.manager'),
+      $container->get('collection.collection_route_context')
+    );
+  }
+
+  /**
    * Constructs a CollectionContentBlock object.
    *
    * @param array $configuration
@@ -60,26 +77,15 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
    *   The current route match service.
    * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
    *   The entity manager.
+   * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $collection_context
+   *   The collection context.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityManagerInterface $entityManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityManagerInterface $entityManager, ContextProviderInterface $collection_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
-    // Retrieve the collection from the route.
-    $this->collection = $this->currentRouteMatch->getParameter('rdf_entity');
-    $this->entityManager = $entityManager;
-  }
+    $this->collection = $collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue();
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('current_route_match'),
-      $container->get('entity.manager')
-    );
+    $this->entityManager = $entityManager;
   }
 
   /**
@@ -123,6 +129,13 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
   public function getCacheMaxAge() {
     // Disable caching.
     return 0;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function blockAccess(AccountInterface $account) {
+    return ($this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical') ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
 }

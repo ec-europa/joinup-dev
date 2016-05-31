@@ -18,6 +18,7 @@ permissions:
   - 'create asset_release rdf entity'
   - 'create licence rdf entity'
   - 'create custom collection page'
+  - 'create rdf entity news'
   - 'create solution releases'
   - 'delete og menu instance entities'
   - 'edit any custom_page content'
