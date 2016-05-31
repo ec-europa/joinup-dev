@@ -77,13 +77,13 @@ config_devel:
   - block.block.seven_secondary_local_tasks
   - block.block.solutioncontent
   - core.date_format.fallback
-  - core.date_format.html_datetime
   - core.date_format.html_date
+  - core.date_format.html_datetime
   - core.date_format.html_month
   - core.date_format.html_time
   - core.date_format.html_week
-  - core.date_format.html_yearless_date
   - core.date_format.html_year
+  - core.date_format.html_yearless_date
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
@@ -120,9 +120,12 @@ config_devel:
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
-  - og_menu.ogmenu.navigation
   - og.og_membership_type.og_membership_type
+  - og.og_role.rdf_entity-collection-administrator
+  - og.og_role.rdf_entity-collection-member
+  - og.og_role.rdf_entity-collection-non-member
   - og.settings
+  - og_menu.ogmenu.navigation
   - search_api.index.collections
   - search_api.server.database_search_server
   - system.theme

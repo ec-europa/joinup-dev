@@ -8,6 +8,7 @@ dependencies:
   - datetime
   - image
   - link
+  - og
   - options
   - rdf_entity
   - text

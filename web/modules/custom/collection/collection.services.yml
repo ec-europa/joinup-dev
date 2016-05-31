@@ -9,3 +9,7 @@ services:
     arguments: ['@request_stack']
     tags:
       - { name: cache.context }
+  collection.event_subscriber:
+    class: Drupal\collection\EventSubscriber\CollectionEventSubscriber
+    tags:
+      - { name: 'event_subscriber' }
