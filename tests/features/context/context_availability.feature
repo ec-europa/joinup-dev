@@ -1,7 +1,7 @@
 @api
 Feature: Context availability
   In order to check context availability
-  As a backend developer
+  As a user
   I need to be able to see collection content in child entities pages.
 
   Scenario: 'Join collection' and 'Collection content' block availability.

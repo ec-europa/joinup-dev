@@ -51,29 +51,6 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
   protected $entityManager;
 
   /**
-   * Constructs a CollectionContentBlock object.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
-   * @param string $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $current_route_match
-   *   The current route match service.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
-   *   The entity manager.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityManagerInterface $entityManager, ContextProviderInterface $collection_context) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->currentRouteMatch = $current_route_match;
-    if (!empty($collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue())) {
-      $this->collection = $collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue();
-    }
-    $this->entityManager = $entityManager;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
@@ -88,11 +65,41 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
   }
 
   /**
+   * Constructs a CollectionContentBlock object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin ID for the plugin instance.
+   * @param string $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $current_route_match
+   *   The current route match service.
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
+   *   The entity manager.
+   * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $collection_context
+   *   The collection context.
+   *
+   * @throws \Exception
+   *    Throws an exception when the collection context does not exist.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityManagerInterface $entityManager, ContextProviderInterface $collection_context) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->currentRouteMatch = $current_route_match;
+    if (empty($collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue())) {
+      throw new \Exception('Collection context should exist in the page but is empty.');
+    }
+
+    $this->collection = $collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue();
+    $this->entityManager = $entityManager;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function build() {
     if (empty($this->collection)) {
-      throw new \Exception('The "Join Collection" block can only be shown on collection pages.');
+      throw new \Exception('The "Collection content" block can only be shown on collection pages.');
     }
     $content_ids = Og::getGroupContentIds($this->collection);
     $list = array();
