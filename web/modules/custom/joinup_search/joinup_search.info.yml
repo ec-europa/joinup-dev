@@ -19,5 +19,3 @@ config_devel:
  - facets.facet.status
  - search_api.server.solr
  - search_api.index.collections
- - views.view.collections
- - views.view.search

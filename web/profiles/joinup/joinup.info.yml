@@ -133,4 +133,5 @@ config_devel:
   - user.role.moderator
   - user.settings
   - views.view.collections
+  - views.view.search
   - views.view.user_admin_people
