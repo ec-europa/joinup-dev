@@ -1,8 +1,8 @@
 @api
 Feature: Context availability
-  In order to check context availability
+  In order to be able to perform actions related to the collection to which certain content belongs
   As a user
-  I need to be able to see collection content in child entities pages.
+  I should be presented with collection related buttons on collection content pages.
 
   Scenario: 'Join collection' and 'Collection content' block availability.
     Given the following collection:
