@@ -42,7 +42,6 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
    */
   protected $contextProvider;
 
-
   /**
    * Constructs a JoinCollectionBlock object.
    *
