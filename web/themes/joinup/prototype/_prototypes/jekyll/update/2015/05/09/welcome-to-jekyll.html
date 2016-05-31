@@ -4,83 +4,208 @@
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Welcome to Jekyll!</title>
   <meta name="description" content="You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...">
-
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="../mdl/material.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="canonical" href="http://yourdomain.com/jekyll/update/2015/05/09/welcome-to-jekyll.html">
-  <link rel="alternate" type="application/rss+xml" title="Site prototype" href="http://yourdomain.com/feed.xml" />
+  <link rel="alternate" type="application/rss+xml" title="Joinup" href="http://yourdomain.com/feed.xml" />
 </head>
 
 
   <body>
 
-    <div class="header">
-  <div class="header__logo">joinup</div>
-  <div class="header__menu">
-    <ul>
-      <li><span class="header__menu-icon"></span><span class="header__menu-link">Solutionsbbb</span></li>
-      <li><span class="header__menu-icon"></span><span class="header__menu-link">Collectionsaa</span></li>
-      <li><span class="header__menu-icon"></span><span class="header__menu-link">Events</span></li>
-    </ul>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+    <header class="section section--header mdl-layout__header">
+  <div class="container-fluid">
+    <div class="region region--header mdl-layout__header-row">
+      <a href="/" class="header__logo mdl-layout-title" title="Home"></a>
+      <div class="mdl-layout-spacer"></div>
+      <nav class="header__menu mdl-navigation">
+        <a class="header__menu-link header__menu-link--solutions mdl-navigation__link" href="#"><span class="header__menu-text">Solutions</span></a>
+        <a class="header__menu-link header__menu-link--collections active-trail mdl-navigation__link" href="#"><span class="header__menu-text">Collections</span></a>
+        <a class="header__menu-link header__menu-link--events mdl-navigation__link" href="#"><span class="header__menu-text">Events</span></a>
+      </nav>
+      <div class="mdl-layout-spacer"></div>
+      <div class="header__search-container mdl-textfield mdl-js-textfield mdl-textfield--expandable
+      mdl-textfield--floating-label mdl-textfield--align-right">
+        <label class="header__search-icon mdl-button mdl-js-button mdl-button--icon"
+        for="fixed-header-drawer-exp">
+        <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="sample"
+          id="fixed-header-drawer-exp">
+        </div>
+      </div>
+      <div class="login-menu">
+      <div id="login-menu__button" class="login-menu__button mdl-button mdl-js-button">
+        <img src="../images/login-icon.png">
+      </div>
+      <ul class="login-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="login-menu__button">
+        <li class="mdl-menu__item"><a class="login-menu__link" href="#">My profile</a></li>
+        <li class="mdl-menu__item"><a class="login-menu__link" href="#">My page</a></li>
+        <li class="mdl-menu__item"><a class="login-menu__link" href="#">Logout</a></li>
+      </ul>
+      </div>
+    </div>
   </div>
-  </div class="header__search-container">
-    <div class="header__search-icon">
+</header>
+
+
+    <div class="section section--featured">
+  <div class="container">
+    <div class="region region--featured">
+      <div class="title-container">
+        <div class="title-container__avatar"></div>
+        <div class="title-container__text">Querying the semantic web</div>
+      </div>
     </div>
   </div>
 </div>
 
 
-    <div class="post">
-
-  <header class="post-header">
-    <h1 class="post-title">Welcome to Jekyll!</h1>
-    <p class="post-meta">May 9, 2015</p>
-  </header>
-
-  <article class="post-content">
-    <p>You’ll find this post in your <code class="highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
-
-<p>To add new posts, simply add a file in the <code class="highlighter-rouge">_posts</code> directory that follows the convention <code class="highlighter-rouge">YYYY-MM-DD-name-of-post.ext</code> and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.</p>
-
-<p>Jekyll also offers powerful support for code snippets:</p>
-
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-  <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
-<span class="k">end</span>
-<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
-<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
-
-<p>Check out the <a href="http://jekyllrb.com">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://github.com/jekyll/jekyll-help">Jekyll’s dedicated Help repository</a>.</p>
+    <div class="section section--sidebar-left">
+  <div class="container-fluid">
+    <div class="region region--sidebar-left">
+      <div class="sidebar-menu mdl-layout__drawer">
+  <nav class="mdl-navigation">
+    <a class="mdl-navigation__link" href="">About</a>
+    <a class="mdl-navigation__link" href="">Overview</a>
+    <a class="mdl-navigation__link" href="">Discussions</a>
+    <a class="mdl-navigation__link" href="">Members</a>
+    <a class="mdl-navigation__link" href="">Metrics</a>
+  </nav>
+</div>
+<
+    </div>
+  </div>
+</div>
 
 
-  </article>
+    <div class="section section--content-top">
+  <div class="container-fluid">
+    <div class="region region--content-top">
+    </div>
+  </div>
+</div>
 
+
+    <div class="section section--content">
+  <div class="container-fluid">
+    <div class="region region--content">
+      <div class="block">
+        <div class="listing listing--grid mdl-grid">
+          <div class="listing__item mdl-cell mdl-cell--4-col"><div class="listing__item--tile mdl-card mdl-shadow--2dp">
+  <div class="listing__image">
+    <img src="../images/tile-image.png">
+  </div>
+  <div class="listing__field listing__avatar">
+    <img src="../images/login-icon.png">
+  </div>
+  <div class="listing__field listing__title">
+    Optimy
+  </div>
+  <div class="listing__field listing-teaser mdl-card__supporting-text">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Aenan convallis.
+  </div>
+  <div class="listing__field icons-bar mdl-card__actions">
+    <div class="icons-bar__item icons-bar__item--solutions">
+      154
+    </div>
+    <div class="icons-bar__item tile__icons-item--members">
+      13
+    </div>
+    <div class="icons-bar__item tile__icons-item--like">
+      22
+    </div>
+  </div>
+</div>
+</div>
+          <div class="listing__item mdl-cell mdl-cell--4-col"><div class="listing__item--tile mdl-card mdl-shadow--2dp">
+  <div class="listing__image">
+    <img src="../images/tile-image.png">
+  </div>
+  <div class="listing__field listing__avatar">
+    <img src="../images/login-icon.png">
+  </div>
+  <div class="listing__field listing__title">
+    Optimy
+  </div>
+  <div class="listing__field listing-teaser mdl-card__supporting-text">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Aenan convallis.
+  </div>
+  <div class="listing__field icons-bar mdl-card__actions">
+    <div class="icons-bar__item icons-bar__item--solutions">
+      154
+    </div>
+    <div class="icons-bar__item tile__icons-item--members">
+      13
+    </div>
+    <div class="icons-bar__item tile__icons-item--like">
+      22
+    </div>
+  </div>
+</div>
+</div>
+          <div class="listing__item mdl-cell mdl-cell--4-col"><div class="listing__item--tile mdl-card mdl-shadow--2dp">
+  <div class="listing__image">
+    <img src="../images/tile-image.png">
+  </div>
+  <div class="listing__field listing__avatar">
+    <img src="../images/login-icon.png">
+  </div>
+  <div class="listing__field listing__title">
+    Optimy
+  </div>
+  <div class="listing__field listing-teaser mdl-card__supporting-text">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Aenan convallis.
+  </div>
+  <div class="listing__field icons-bar mdl-card__actions">
+    <div class="icons-bar__item icons-bar__item--solutions">
+      154
+    </div>
+    <div class="icons-bar__item tile__icons-item--members">
+      13
+    </div>
+    <div class="icons-bar__item tile__icons-item--like">
+      22
+    </div>
+  </div>
+</div>
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="section section--content-bottom">
+  <div class="container-fluid">
+    <div class="region region--content-bottom">
+    </div>
+  </div>
 </div>
 
 
     <footer class="section--footer">
-  <div class="container">
-    <ul class="nav-horizontal text-center">
-      <li class="nav-horizontal__item">
-        <a href="#" class="nav-horizontal__link">Sitemapaaaa</a>
-      </li>
-      <li class="nav-horizontal__item">
-        <a href="#" class="nav-horizontal__link">Terms of use</a>
-      </li>
-      <li class="nav-horizontal__item">
-        <a href="#" class="nav-horizontal__link">Jobs</a>
-      </li>
-    </ul>
+  <div class="container-fluid">
+    <div class="region region--footer">
+    </div>
   </div>
 </footer>
 
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="bootstrap-sass/javascripts/bootstrap.min.js"></script>
-<script src="js/components/news-carousel/news-carousel.js"></script>
+<script defer src="../mdl/material.min.js"></script>
 <script>
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover();
@@ -88,6 +213,8 @@ $(document).ready(function(){
 </script>
 <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 
+
+    </div>
 
   </body>
 

@@ -4,63 +4,209 @@
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>About</title>
   <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
 ">
-
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="../mdl/material.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="canonical" href="http://yourdomain.com/about/">
-  <link rel="alternate" type="application/rss+xml" title="Site prototype" href="http://yourdomain.com/feed.xml" />
+  <link rel="alternate" type="application/rss+xml" title="Joinup" href="http://yourdomain.com/feed.xml" />
 </head>
 
 
   <body>
 
-    <div class="header">
-  <div class="header__logo">joinup</div>
-  <div class="header__menu">
-    <ul>
-      <li><span class="header__menu-icon"></span><span class="header__menu-link">Solutionsbbb</span></li>
-      <li><span class="header__menu-icon"></span><span class="header__menu-link">Collectionsaa</span></li>
-      <li><span class="header__menu-icon"></span><span class="header__menu-link">Events</span></li>
-    </ul>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+    <header class="section section--header mdl-layout__header">
+  <div class="container-fluid">
+    <div class="region region--header mdl-layout__header-row">
+      <a href="/" class="header__logo mdl-layout-title" title="Home"></a>
+      <div class="mdl-layout-spacer"></div>
+      <nav class="header__menu mdl-navigation">
+        <a class="header__menu-link header__menu-link--solutions mdl-navigation__link" href="#"><span class="header__menu-text">Solutions</span></a>
+        <a class="header__menu-link header__menu-link--collections active-trail mdl-navigation__link" href="#"><span class="header__menu-text">Collections</span></a>
+        <a class="header__menu-link header__menu-link--events mdl-navigation__link" href="#"><span class="header__menu-text">Events</span></a>
+      </nav>
+      <div class="mdl-layout-spacer"></div>
+      <div class="header__search-container mdl-textfield mdl-js-textfield mdl-textfield--expandable
+      mdl-textfield--floating-label mdl-textfield--align-right">
+        <label class="header__search-icon mdl-button mdl-js-button mdl-button--icon"
+        for="fixed-header-drawer-exp">
+        <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="sample"
+          id="fixed-header-drawer-exp">
+        </div>
+      </div>
+      <div class="login-menu">
+      <div id="login-menu__button" class="login-menu__button mdl-button mdl-js-button">
+        <img src="../images/login-icon.png">
+      </div>
+      <ul class="login-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="login-menu__button">
+        <li class="mdl-menu__item"><a class="login-menu__link" href="#">My profile</a></li>
+        <li class="mdl-menu__item"><a class="login-menu__link" href="#">My page</a></li>
+        <li class="mdl-menu__item"><a class="login-menu__link" href="#">Logout</a></li>
+      </ul>
+      </div>
+    </div>
   </div>
-  </div class="header__search-container">
-    <div class="header__search-icon">
+</header>
+
+
+    <div class="section section--featured">
+  <div class="container">
+    <div class="region region--featured">
+      <div class="title-container">
+        <div class="title-container__avatar"></div>
+        <div class="title-container__text">Querying the semantic web</div>
+      </div>
     </div>
   </div>
 </div>
 
 
-    <p>This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at <a href="http://jekyllrb.com/">jekyllrb.com</a></p>
+    <div class="section section--sidebar-left">
+  <div class="container-fluid">
+    <div class="region region--sidebar-left">
+      <div class="sidebar-menu mdl-layout__drawer">
+  <nav class="mdl-navigation">
+    <a class="mdl-navigation__link" href="">About</a>
+    <a class="mdl-navigation__link" href="">Overview</a>
+    <a class="mdl-navigation__link" href="">Discussions</a>
+    <a class="mdl-navigation__link" href="">Members</a>
+    <a class="mdl-navigation__link" href="">Metrics</a>
+  </nav>
+</div>
+<
+    </div>
+  </div>
+</div>
 
-<p>You can find the source code for the Jekyll new theme at: <a href="https://github.com/jglovier/jekyll-new">github.com/jglovier/jekyll-new</a></p>
 
-<p>You can find the source code for Jekyll at <a href="https://github.com/jekyll/jekyll">github.com/jekyll/jekyll</a></p>
+    <div class="section section--content-top">
+  <div class="container-fluid">
+    <div class="region region--content-top">
+    </div>
+  </div>
+</div>
+
+
+    <div class="section section--content">
+  <div class="container-fluid">
+    <div class="region region--content">
+      <div class="block">
+        <div class="listing listing--grid mdl-grid">
+          <div class="listing__item mdl-cell mdl-cell--4-col"><div class="listing__item--tile mdl-card mdl-shadow--2dp">
+  <div class="listing__image">
+    <img src="../images/tile-image.png">
+  </div>
+  <div class="listing__field listing__avatar">
+    <img src="../images/login-icon.png">
+  </div>
+  <div class="listing__field listing__title">
+    Optimy
+  </div>
+  <div class="listing__field listing-teaser mdl-card__supporting-text">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Aenan convallis.
+  </div>
+  <div class="listing__field icons-bar mdl-card__actions">
+    <div class="icons-bar__item icons-bar__item--solutions">
+      154
+    </div>
+    <div class="icons-bar__item tile__icons-item--members">
+      13
+    </div>
+    <div class="icons-bar__item tile__icons-item--like">
+      22
+    </div>
+  </div>
+</div>
+</div>
+          <div class="listing__item mdl-cell mdl-cell--4-col"><div class="listing__item--tile mdl-card mdl-shadow--2dp">
+  <div class="listing__image">
+    <img src="../images/tile-image.png">
+  </div>
+  <div class="listing__field listing__avatar">
+    <img src="../images/login-icon.png">
+  </div>
+  <div class="listing__field listing__title">
+    Optimy
+  </div>
+  <div class="listing__field listing-teaser mdl-card__supporting-text">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Aenan convallis.
+  </div>
+  <div class="listing__field icons-bar mdl-card__actions">
+    <div class="icons-bar__item icons-bar__item--solutions">
+      154
+    </div>
+    <div class="icons-bar__item tile__icons-item--members">
+      13
+    </div>
+    <div class="icons-bar__item tile__icons-item--like">
+      22
+    </div>
+  </div>
+</div>
+</div>
+          <div class="listing__item mdl-cell mdl-cell--4-col"><div class="listing__item--tile mdl-card mdl-shadow--2dp">
+  <div class="listing__image">
+    <img src="../images/tile-image.png">
+  </div>
+  <div class="listing__field listing__avatar">
+    <img src="../images/login-icon.png">
+  </div>
+  <div class="listing__field listing__title">
+    Optimy
+  </div>
+  <div class="listing__field listing-teaser mdl-card__supporting-text">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Aenan convallis.
+  </div>
+  <div class="listing__field icons-bar mdl-card__actions">
+    <div class="icons-bar__item icons-bar__item--solutions">
+      154
+    </div>
+    <div class="icons-bar__item tile__icons-item--members">
+      13
+    </div>
+    <div class="icons-bar__item tile__icons-item--like">
+      22
+    </div>
+  </div>
+</div>
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="section section--content-bottom">
+  <div class="container-fluid">
+    <div class="region region--content-bottom">
+    </div>
+  </div>
+</div>
 
 
     <footer class="section--footer">
-  <div class="container">
-    <ul class="nav-horizontal text-center">
-      <li class="nav-horizontal__item">
-        <a href="#" class="nav-horizontal__link">Sitemapaaaa</a>
-      </li>
-      <li class="nav-horizontal__item">
-        <a href="#" class="nav-horizontal__link">Terms of use</a>
-      </li>
-      <li class="nav-horizontal__item">
-        <a href="#" class="nav-horizontal__link">Jobs</a>
-      </li>
-    </ul>
+  <div class="container-fluid">
+    <div class="region region--footer">
+    </div>
   </div>
 </footer>
 
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="bootstrap-sass/javascripts/bootstrap.min.js"></script>
-<script src="js/components/news-carousel/news-carousel.js"></script>
+<script defer src="../mdl/material.min.js"></script>
 <script>
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover();
@@ -68,6 +214,8 @@ $(document).ready(function(){
 </script>
 <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 
+
+    </div>
 
   </body>
 
