@@ -32,7 +32,7 @@ gulp.task('images', function() {
 gulp.task('sass', function () {
   gulp.src('sass/app.sass')
     .pipe(sass(
-      {outputStyle: 'compressed'}
+      {outputStyle: 'expanded'}
     ).on('error', sass.logError))
     .pipe(rename('style.css'))
     .pipe(gulp.dest('../css'))
