@@ -31,7 +31,7 @@ Feature: "Add news" visibility options.
     When I go to the "Ironman's room" solution
     Then I should not see the link "Add news"
 
-  Scenario: Add custom page as a moderator.
+  Scenario: Add news as a moderator.
     Given the following collection:
       | title | Ironman's second house |
       | logo  | logo.png               |
