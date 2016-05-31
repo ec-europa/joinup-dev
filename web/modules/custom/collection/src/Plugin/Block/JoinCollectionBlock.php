@@ -58,18 +58,11 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
    *   The current user.
    * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $collection_context
    *   The collection context.
-   *
-   * @throws \Exception
-   *    Throws an exception when the collection context does not exist.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, AccountProxyInterface $user, ContextProviderInterface $collection_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
     $this->user = $user;
-    if (empty($collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue())) {
-      throw new \Exception('Collection context should exist in the page but is empty.');
-    }
-
     $this->collection = $collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue();
   }
 
@@ -96,8 +89,7 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
     }
 
     // Display the Join Collection form.
-    return \Drupal::formBuilder()
-      ->getForm('\Drupal\collection\Form\JoinCollectionForm', $this->user, $this->collection);
+    return \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', $this->user, $this->collection);
   }
 
   /**

@@ -79,18 +79,12 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
    *   The entity manager.
    * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $collection_context
    *   The collection context.
-   *
-   * @throws \Exception
-   *    Throws an exception when the collection context does not exist.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityManagerInterface $entityManager, ContextProviderInterface $collection_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
-    if (empty($collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue())) {
-      throw new \Exception('Collection context should exist in the page but is empty.');
-    }
-
     $this->collection = $collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue();
+
     $this->entityManager = $entityManager;
   }
 
