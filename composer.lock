@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "123baa00bee62d97c927792187a32a87",
-    "content-hash": "83f5238a9dad3006f73b401469bcf82d",
+    "hash": "2a8fc01217ff3a37d3f5df43f9b28b7a",
+    "content-hash": "9ab1716e2df03e51fead75ea9644f3d4",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1658,6 +1658,17 @@
                 "orm"
             ],
             "time": "2015-12-28 19:46:34"
+        },
+        {
+            "name": "google/material-design-lite",
+            "version": "dev-v1.1.3",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:google/material-design-lite.git",
+                "reference": "v1.1.3"
+            },
+            "type": "drupal-theme-library",
+            "time": "2016-03-17 16:08:51"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -6842,6 +6853,7 @@
         "drupal/og_menu": 20,
         "drupal/r4032login": 20,
         "easyrdf/easyrdf": 20,
+        "google/material-design-lite": 20,
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
