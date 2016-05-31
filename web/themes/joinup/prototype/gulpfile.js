@@ -32,9 +32,9 @@ gulp.task('images', function() {
 gulp.task('sass', function () {
   gulp.src('sass/app.sass')
     .pipe(sass(
-      {outputStyle: 'expanded'}
+      {outputStyle: 'compressed'}
     ).on('error', sass.logError))
-    .pipe(rename('style.css'))
+    .pipe(rename('style.min.css'))
     .pipe(gulp.dest('../css'))
     .pipe(gulp.dest('css'))
     .pipe(livereload());

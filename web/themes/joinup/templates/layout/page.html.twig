@@ -1,0 +1,84 @@
+{#
+/**
+ * @file
+ * Theme override to display a single page.
+ *
+ * The doctype, html, head and body tags are not in this template. Instead they
+ * can be found in the html.html.twig template in this directory.
+ *
+ * Available variables:
+ *
+ * General utility variables:
+ * - base_path: The base URL path of the Drupal installation. Will usually be
+ *   "/" unless you have installed Drupal in a sub-directory.
+ * - is_front: A flag indicating if the current page is the front page.
+ * - logged_in: A flag indicating if the user is registered and signed in.
+ * - is_admin: A flag indicating if the user has permission to access
+ *   administration pages.
+ *
+ * Site identity:
+ * - front_page: The URL of the front page. Use this instead of base_path when
+ *   linking to the front page. This includes the language domain or prefix.
+ *
+ * Page content (in order of occurrence in the default page.html.twig):
+ * - messages: Status and error messages. Should be displayed prominently.
+ * - node: Fully loaded node, if there is an automatically-loaded node
+ *   associated with the page and the node ID is the second argument in the
+ *   page's path (e.g. node/12345 and node/12345/revisions, but not
+ *   comment/reply/12345).
+ *
+ * Regions:
+ * - page.header: Items for the header region.
+ * - page.featured: Items for the featured region.
+ * - page.sidebar_left: Items for the sidebar region.
+ * - page.content_top: The content top of the current page.
+ * - page.content: The content of the current page.
+ * - page.content_bottom: The content bottom of the current page.
+ * - page.footer: Items for the footer region.
+ *
+ * @see template_preprocess_page()
+ * @see html.html.twig
+ */
+#}
+<div class="layout-container mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+  <header class="section--header" role="banner">
+    {{ page.header }}
+  </header>
+
+  {{ page.featured }}
+
+  <main role="main">
+    <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+
+    {% if page.sidebar_left %}
+      <aside class="section--sidebar-left" role="complementary">
+        {{ page.sidebar_left }}
+      </aside>
+    {% endif %}
+
+    {% if page.content_top %}
+      <div class="section--content-top">
+        {{ page.content_top }}
+      </div>
+    {% endif %}
+
+    <div class="section--content">
+      {{ page.content }}
+    </div>{# /.layout-content #}
+
+    {% if page.content_bottom %}
+      <div class="section--content-bottom">
+        {{ page.content_bottom }}
+      </div>
+    {% endif %}
+
+  </main>
+
+  {% if page.footer %}
+    <footer class="section--footer" role="contentinfo">
+      {{ page.footer }}
+    </footer>
+  {% endif %}
+
+</div>{# /.layout-container #}

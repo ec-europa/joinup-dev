@@ -1,0 +1,19 @@
+name: Joinup
+description: Joinup theme based on Material design lite.
+base theme: stable
+package: Custom
+type: theme
+version: 1.0
+core: 8.x
+libraries:
+  - joinup/global-styling
+stylesheets-remove:
+  - core/assets/vendor/normalize-css/normalize.css
+regions:
+  header: Header
+  featured: Featured
+  sidebar_left: 'Sidebar left'
+  content_top: 'Content top'
+  content: Content  # the content region is required
+  content_bottom: 'Content bottom'
+  footer: Footer
