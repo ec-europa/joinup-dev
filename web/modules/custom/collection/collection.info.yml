@@ -7,6 +7,7 @@ package: Joinup
 dependencies:
   - datetime
   - image
+  - joinup_core
   - link
   - og_menu
   - options
@@ -28,10 +29,10 @@ config_devel:
   - field.field.rdf_entity.collection.field_ar_moderation
   - field.field.rdf_entity.collection.field_ar_modification_date
   - field.field.rdf_entity.collection.field_ar_owner
-  - field.field.rdf_entity.collection.field_ar_policy_domain
+  - field.field.rdf_entity.collection.field_policy_domain
   - field.field.rdf_entity.collection.field_ar_shared_content
-  - field.field.rdf_entity.collection.field_ar_spatial_coverage
-  - field.field.rdf_entity.collection.field_ar_topic
+  - field.field.rdf_entity.collection.field_spacial_coverage
+  - field.field.rdf_entity.collection.field_topic
   - field.storage.rdf_entity.field_ar_abstract
   - field.storage.rdf_entity.field_ar_access_url
   - field.storage.rdf_entity.field_ar_affiliates
@@ -44,8 +45,5 @@ config_devel:
   - field.storage.rdf_entity.field_ar_moderation
   - field.storage.rdf_entity.field_ar_modification_date
   - field.storage.rdf_entity.field_ar_owner
-  - field.storage.rdf_entity.field_ar_policy_domain
   - field.storage.rdf_entity.field_ar_shared_content
-  - field.storage.rdf_entity.field_ar_spatial_coverage
-  - field.storage.rdf_entity.field_ar_topic
   - rdf_entity.rdfentity.collection

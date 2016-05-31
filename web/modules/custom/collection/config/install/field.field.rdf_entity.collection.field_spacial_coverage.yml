@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_spacial_coverage
+    - rdf_entity.rdfentity.collection
+id: rdf_entity.collection.field_spacial_coverage
+field_name: field_spacial_coverage
+entity_type: rdf_entity
+bundle: collection
+label: 'Spacial coverage'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings: {  }
+field_type: entity_reference

@@ -15,9 +15,9 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
-    - field.field.rdf_entity.collection.field_ar_policy_domain
-    - field.field.rdf_entity.collection.field_ar_spatial_coverage
-    - field.field.rdf_entity.collection.field_ar_topic
+    - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_spacial_coverage
+    - field.field.rdf_entity.collection.field_topic
     - image.style.thumbnail
     - rdf_entity.rdfentity.collection
   module:
@@ -111,7 +111,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-  field_ar_policy_domain:
+  field_policy_domain:
     weight: 10
     settings:
       match_operator: CONTAINS
@@ -119,7 +119,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-  field_ar_spatial_coverage:
+  field_spacial_coverage:
     weight: 12
     settings:
       match_operator: CONTAINS
@@ -127,7 +127,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-  field_ar_topic:
+  field_topic:
     weight: 11
     settings:
       match_operator: CONTAINS

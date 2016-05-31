@@ -12,7 +12,7 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.field_ad_licence
     - field.field.rdf_entity.asset_distribution.field_ad_modification_date
     - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
-    - field.field.rdf_entity.asset_distribution.field_ad_status
+    - field.field.rdf_entity.asset_distribution.field_status
     - rdf_entity.rdfentity.asset_distribution
   module:
     - asset_distribution
@@ -112,4 +112,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_ad_file_size: true
-  field_ad_status: true
+  field_status: true
