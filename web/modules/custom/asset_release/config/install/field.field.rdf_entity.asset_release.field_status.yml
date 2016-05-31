@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_status
+    - rdf_entity.rdfentity.asset_release
+    - taxonomy.vocabulary.status
+id: rdf_entity.asset_release.field_status
+field_name: field_status
+entity_type: rdf_entity
+bundle: asset_release
+label: Status
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      status: status
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

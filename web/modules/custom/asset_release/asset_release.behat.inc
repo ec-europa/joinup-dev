@@ -234,7 +234,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
       'documentation' => 'field_isr_documentation',
       'included asset' => 'field_isr_included_asset',
       'is version of' => 'field_isr_is_version_of',
-      'keywords' => 'field_isr_keywords',
+      'keywords' => 'field_keywords',
       'language' => 'field_isr_language',
       'modification date' => 'field_isr_modification_date',
       'owner' => 'field_isr_owner',
@@ -242,9 +242,9 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
       'release notes' => 'field_isr_release_notes',
       'related solutions' => 'field_isr_related_solutions',
       'solution type' => 'field_isr_solution_type',
-      'spacial coverage' => 'field_isr_spacial_coverage',
-      'status' => 'field_isr_status',
-      'topic' => 'field_isr_topic',
+      'spacial coverage' => 'field_spacial_coverage',
+      'status' => 'field_status',
+      'topic' => 'field_topic',
       'translation' => 'field_isr_translation',
     ];
   }
