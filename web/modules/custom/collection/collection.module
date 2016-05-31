@@ -13,6 +13,7 @@ use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
+use Drupal\og_menu\Entity\OgMenuInstance;
 
 /**
  * Implements hook_form_FORM_ID_alter().
