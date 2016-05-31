@@ -14,3 +14,4 @@ permissions:
   - 'view published og menu instance entities'
   - 'access dashboard'
   - 'manage own subscriptions'
+  - 'export rdf metadata'

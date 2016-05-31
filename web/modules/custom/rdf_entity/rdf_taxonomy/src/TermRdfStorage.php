@@ -202,7 +202,7 @@ QUERY;
         $this->treeParents[$vid] = array();
         $this->treeTerms[$vid] = array();
         $query = <<<QUERY
-SELECT ?tid ?label ?parent
+SELECT DISTINCT ?tid ?label ?parent
 WHERE {
   ?tid <http://www.w3.org/2004/02/skos/core#inScheme> <$concept_schema> .
   ?tid <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
@@ -245,12 +245,8 @@ QUERY;
 
       // Keeps track of the parents we have to process, the last entry is used
       // for the next processing step.
-      $process_parents = NULL;
-      if (isset($this->treeChildren[$vid][0])) {
-        $process_parents = array_keys($this->treeChildren[$vid][0]);
-      }
-
-      // $process_parents[] = $parent;
+      $process_parents = [];
+      $process_parents[] = $parent;
       // Loops over the parent terms and adds its children to the tree array.
       // Uses a loop instead of a recursion, because it's more efficient.
       while (count($process_parents)) {

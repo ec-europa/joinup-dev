@@ -35,6 +35,7 @@ dependencies:
   - path
   - r4032login
   - rdf_entity
+  - rdf_export
   - rdf_taxonomy
   - solution
   - state_machine
@@ -124,6 +125,11 @@ config_devel:
   - search_api.server.database_search_server
   - system.theme
   - taxonomy.vocabulary.eurovoc
+  - taxonomy.vocabulary.policy_domain
+  - taxonomy.vocabulary.spatial
+  - taxonomy.vocabulary.status
+  - taxonomy.vocabulary.themes
+  - taxonomy.vocabulary.language
   - user.flood
   - user.mail
   - user.role.administrator

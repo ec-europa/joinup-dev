@@ -8,9 +8,9 @@
  * Implements hook_install().
  */
 function rdf_taxonomy_install() {
-  // Disable the view that takes over the taxonomy term pages.
-  // (Views is currently not supported.)
-  $config = \Drupal::service('config.factory')->getEditable('views.view.taxonomy_term');
-  $config->set('status', 0);
+  // Don't build a node - term index.
+  // When this should be needed, look into altering the schema.
+  $config = \Drupal::service('config.factory')->getEditable('taxonomy.settings');
+  $config->set('maintain_index_table', 0);
   $config->save();
 }
