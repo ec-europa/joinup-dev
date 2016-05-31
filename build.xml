@@ -218,6 +218,39 @@
         </drush>
     </target>
 
+    <target name="build-index">
+        <echo message="Building Solr index"/>
+        <exec dir="${project.basedir}"
+              command="sudo curl -o /opt/solr/search_api_solr.tar.gz https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha4.tar.gz;
+sudo tar xvzf /opt/solr/search_api_solr.tar.gz -C /opt/solr;
+sudo /opt/solr/bin/solr create_core -c drupal;
+sudo mkdir /opt/solr/server/solr/drupal;
+sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/drupal/conf/"
+              checkreturn="true"
+              passthru="true"/>
+    </target>
+
+    <target name="restart-solr">
+        <exec dir="${project.basedir}"
+              command="sudo /opt/solr/bin/solr restart"
+              checkreturn="true"
+              passthru="true"
+              spawn="true"/>
+    </target>
+
+    <target name="solr-status">
+        <exec dir="${project.basedir}"
+              command="sudo /opt/solr/bin/solr status"
+              checkreturn="true"
+              passthru="true"/>
+    </target>
+
+    <target name="solr-query-test">
+        <exec dir="${project.basedir}"
+              command="sudo curl http://localhost:8983/solr/drupal/select?q=tid:0"
+              checkreturn="true"/>
+    </target>
+
     <!-- Set up development configuration, including on-screen error logging and debugging options. -->
     <target name="enable-dev-settings">
         <phingcall target="writable-settings-folder"/>
