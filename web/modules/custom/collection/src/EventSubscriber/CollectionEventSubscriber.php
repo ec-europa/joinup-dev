@@ -20,7 +20,7 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Provides default OG permissions.
+   * Declare OG permissions for collections.
    *
    * @param \Drupal\og\Event\PermissionEventInterface $event
    *   The OG permission event.
