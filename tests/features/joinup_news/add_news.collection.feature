@@ -10,25 +10,30 @@ Feature: "Add news" visibility options.
       | Pepper Pots  | pass | pepper.pots@example.com  | moderator |
       | Tony Stark   | pass | tony.stark@example.com   |           |
       | Phil Coulson | pass | phil.coulson@example.com |           |
-    And the following collection:
-      | title      | Ironman's home |
-      | logo       | logo.png       |
-      | moderation | yes            |
+    And collections:
+      | title                 | logo     | moderation |
+      | Ironman's home        | logo.png | yes        |
+      | S.H.I.E.L.D. newsroom | logo.png | no         |
     And user memberships:
-      | collection     | user         | roles         |
-      | Ironman's home | Pepper Pots  |               |
-      | Ironman's home | Tony Stark   | administrator |
-      | Ironman's home | Phil Coulson | member        |
-
+      | collection            | user         | roles         |
+      | Ironman's home        | Tony Stark   | administrator |
+      | Ironman's home        | Phil Coulson | member        |
+      | S.H.I.E.L.D. newsroom | Phil Coulson | member        |
+    # Check visibility for anonymous users.
+    When I am not logged in
+    And I go to the homepage of the "Ironman's home" collection
+    Then I should not see the link "Add news"
     # Check visibility for authenticated users.
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Ironman's home" collection
     Then I should not see the link "Add news"
-    # Check visibility for users with specific permissions.
-    When I am logged in as an "authenticated user"
+    # Only group 'members' and site moderators can create news.
+    When I am logged in as "Tony Stark"
     And I go to the homepage of the "Ironman's home" collection
     Then I should not see the link "Add news"
-    # Group members can create news.
+    When I am logged in as "Pepper Pots"
+    And I go to the homepage of the "Ironman's home" collection
+    Then I should see the link "Add news"
     When I am logged in as "Phil Coulson"
     And I go to the homepage of the "Ironman's home" collection
     Then I should see the link "Add news"
@@ -46,5 +51,20 @@ Feature: "Add news" visibility options.
     And I press "Save"
     # Check reference to news page.
     Then I should see the heading "New avengers member"
-    When I go to the homepage of the "Ironman's home" collection
+    And I should see the text "Collection"
+    And I should see the text "Ironman's home"
+    When I click "Ironman's home"
     Then I should see the link "New avengers member"
+
+    # Add news belonging to a collection with status validated.
+    When I go to the homepage of the "S.H.I.E.L.D. newsroom" collection
+    And I click "Add news"
+    And I fill in the following:
+      | Headline | Avengers acquired Black Widow |
+      | Kicker   | Recruitment alert             |
+      | Content  | We just missed her            |
+    And I select "Validated" from "State"
+    And I press "Save"
+    Then I should see the heading "Avengers acquired Black Widow"
+    And I should see the text "Collection"
+    And I should see the text "S.H.I.E.L.D. newsroom"

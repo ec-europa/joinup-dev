@@ -14,15 +14,6 @@ use Drupal\Core\Entity\EntityInterface;
  * @package Drupal\joinup_news\Guard
  */
 class FulfillmentGuard implements GuardInterface {
-  /**
-   * Contains a value replacement for the 'new' value.
-   *
-   * This is used to define that the entity is being created and the state
-   * field is empty.
-   *
-   * @var string
-   */
-  const NEW_STATE = '__NEW__';
 
   /**
    * {@inheritdoc}
@@ -32,45 +23,48 @@ class FulfillmentGuard implements GuardInterface {
    * user roles. In the following method, the allowed transitions per
    * moderation are checked and then if the transition is allowed, the user
    * roles by the system and the organic groups are checked.
+   *
+   * This method called whenever the transitions are checked even outside the
+   * entity CRUD forms. Cases like this is e.g. when trying to edit the settings
+   * of the field.
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    $from_state = $entity->get('field_news_state')
-      ->getValue() ?: self::NEW_STATE;
+    $from_state = $entity->field_news_state->first()->value;
 
     // Check if the transition is allowed according to moderation of parent.
+    // @todo: This can be empty if the states are accessed outside the scope of the create.
     $parent = joinup_news_get_parent($entity);
-    $is_moderated = FALSE;
+
+    $is_moderated = TRUE;
     if ($parent) {
-      $is_moderated = (bool) (($parent->bundle() == 'collection') ? $parent->get('field_ar_moderation')
-        ->getValue() : $parent->get('field_is_moderation')->getValue());
+      $is_moderated = (bool) ($parent->bundle() == 'collection') ?
+        $parent->field_ar_moderation->first()->value :
+        $parent->field_is_moderation->first()->value;
     }
-    $to_state = $transition->getToState();
+    $to_state = $transition->getToState()->getId();
     $allowed_states = $this->getAllowedTransitions($is_moderated);
-    if (!array_search($from_state, $allowed_states[$to_state])) {
+    if (!in_array($from_state, $allowed_states[$to_state])) {
       return FALSE;
     }
 
     // Check if the user has role permission.
     $user = \Drupal::currentUser();
     $system_roles = $this->getAllowedRoles();
-    $has_system_role = FALSE;
     if (array_intersect($system_roles[$to_state], $user->getRoles())) {
-      $has_system_role = TRUE;
+      return TRUE;
     }
 
     // Check if the user has a role as a member of the group.
     $membership = Og::getUserMembership($user->getAccount(), $parent);
-    $membership_roles = $this->getAllowedOgRoles();
-    $has_membership_role = FALSE;
-    if (array_intersect($membership_roles[$to_state], $membership->getRolesIds())) {
-      $has_membership_role = TRUE;
-    }
-
-    if (!$has_system_role && !$has_membership_role) {
+    if (empty($membership)) {
       return FALSE;
     }
+    $membership_roles = $this->getAllowedOgRoles($is_moderated);
+    if (array_intersect($membership_roles[$to_state], $membership->getRolesIds())) {
+      return TRUE;
+    }
 
-    return TRUE;
+    return FALSE;
   }
 
   /**
@@ -89,7 +83,7 @@ class FulfillmentGuard implements GuardInterface {
   protected function getAllowedTransitions($moderated) {
     if ($moderated) {
       return [
-        'draft' => [self::NEW_STATE],
+        'draft' => ['draft'],
         'proposed' => ['draft', 'validated', 'in_assessment', 'proposed'],
         'validated' => ['draft', 'validated', 'proposed', 'deletion_request'],
         'in_assessment' => ['validated'],
@@ -98,14 +92,9 @@ class FulfillmentGuard implements GuardInterface {
     }
     else {
       return [
-        'draft' => [self::NEW_STATE],
-        'proposed' => [
-          self::NEW_STATE,
-          'proposed',
-          'validated',
-          'in_assessment',
-        ],
-        'validate' => [self::NEW_STATE, 'draft', 'proposed', 'validated'],
+        'draft' => ['draft'],
+        'proposed' => ['draft', 'proposed', 'validated', 'in_assessment'],
+        'validated' => ['new', 'draft', 'proposed', 'validated'],
         'in_assessment' => ['validated'],
         'deletion_request' => [''],
       ];
@@ -120,10 +109,11 @@ class FulfillmentGuard implements GuardInterface {
    *    of role machine names.
    */
   protected function getAllowedRoles() {
+    // The moderator can perform all transitions when available.
     return [
       'draft' => ['moderator'],
       'proposed' => ['moderator'],
-      'validate' => ['moderator'],
+      'validated' => ['moderator'],
       'in_assessment' => ['moderator'],
       'deletion_request' => ['moderator'],
     ];
@@ -140,11 +130,15 @@ class FulfillmentGuard implements GuardInterface {
    *    of role machine names.
    */
   protected function getAllowedOgRoles($moderated) {
+    // Roles are supplementary. This means that if one role has permission
+    // for a certain action, this is his permission. If a user needs to perform
+    // this action, he should have this role assigned and not assign permissions
+    // to multiple roles for no reason but convenience.
     if ($moderated) {
       return [
         'draft' => ['rdf_entity-collection-member'],
         'proposed' => ['rdf_entity-collection-member'],
-        'validate' => ['rdf_entity-collection-facilitator'],
+        'validated' => ['rdf_entity-collection-facilitator'],
         'in_assessment' => ['rdf_entity-collection-member'],
         'deletion_request' => ['rdf_entity-collection-administrator'],
       ];
@@ -153,7 +147,7 @@ class FulfillmentGuard implements GuardInterface {
       return [
         'draft' => ['rdf_entity-collection-member'],
         'proposed' => ['rdf_entity-collection-member'],
-        'validate' => ['rdf_entity-collection-member'],
+        'validated' => ['rdf_entity-collection-member'],
         'in_assessment' => ['rdf_entity-collection-member'],
         'deletion_request' => ['rdf_entity-collection-administrator'],
       ];

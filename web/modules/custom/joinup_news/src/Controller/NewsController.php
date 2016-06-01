@@ -28,13 +28,7 @@ class NewsController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity) {
-    // Access is only allowed for collections and solutions.
-    $field = ($rdf_entity->bundle() == 'collection') ? 'og_group_ref' : 'field_news_parent';
-    $node = $this->entityTypeManager()->getStorage('node')->create(array(
-      'type' => 'news',
-      $field => $rdf_entity->id(),
-    ));
-
+    $node = $this->createNewsEntity($rdf_entity);
     $form = $this->entityFormBuilder()->getForm($node);
 
     return $form;
@@ -56,12 +50,33 @@ class NewsController extends ControllerBase {
       if ($this->currentUser()->hasPermission('create rdf entity news')) {
         return AccessResult::allowed();
       }
-      if (OgAccess::userAccess($rdf_entity, 'create rdf entity news')) {
+      if (OgAccess::userAccess($rdf_entity, 'create rdf entity news')->isAllowed()) {
         return AccessResult::allowed();
       }
     }
 
     return AccessResult::forbidden();
+  }
+
+  /**
+   * Returns a news content entity.
+   *
+   * The news content entity is pre-filled with the parent Rdf entity and the
+   * initial state.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *    The parent that the news content entity belongs to.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface
+   *    A node entity.
+   */
+  protected function createNewsEntity(RdfInterface $rdf_entity) {
+    $field = ($rdf_entity->bundle() == 'collection') ? 'og_group_ref' : 'field_news_parent';
+    return $this->entityTypeManager()->getStorage('node')->create([
+      'type' => 'news',
+      $field => $rdf_entity->id(),
+      'field_news_state' => 'draft',
+    ]);
   }
 
 }

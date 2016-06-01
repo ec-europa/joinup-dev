@@ -9,7 +9,7 @@ field_name: field_news_parent
 entity_type: node
 bundle: news
 label: Parent
-description: 'Refers to the entity the news is about.'
+description: 'The parent entity this news entity belongs to.'
 required: false
 translatable: false
 default_value: {  }
