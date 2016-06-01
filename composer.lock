@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9ca172bca43ca76b5b4b6adce2b925d2",
-    "content-hash": "a3fe7c5f2a98f3e0da50ce7c0c0bd01b",
+    "hash": "90d43ff81c8359a35f78ecb5bc5f3a64",
+    "content-hash": "b5ecf04ed342c8a038d6d6ac18fbba65",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -206,16 +206,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "48156b0fd9888bf528fbe9c9cba6963223cdd584"
+                "reference": "b2cf67b1a575d7e648c742be2454339232ef32b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/48156b0fd9888bf528fbe9c9cba6963223cdd584",
-                "reference": "48156b0fd9888bf528fbe9c9cba6963223cdd584",
+                "url": "https://api.github.com/repos/composer/composer/zipball/b2cf67b1a575d7e648c742be2454339232ef32b2",
+                "reference": "b2cf67b1a575d7e648c742be2454339232ef32b2",
                 "shasum": ""
             },
             "require": {
@@ -279,7 +279,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2016-05-17 11:25:44"
+            "time": "2016-05-31 18:48:12"
         },
         {
             "name": "composer/installers",
@@ -1281,12 +1281,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "b0634836282e80cd1d3c5b52950edeef2551cf99"
+                "reference": "e317803b98e57b549dd33378b0d08f44763bb8bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/b0634836282e80cd1d3c5b52950edeef2551cf99",
-                "reference": "b0634836282e80cd1d3c5b52950edeef2551cf99",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/e317803b98e57b549dd33378b0d08f44763bb8bd",
+                "reference": "e317803b98e57b549dd33378b0d08f44763bb8bd",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1300,7 +1300,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-05-27 15:49:05"
+            "time": "2016-06-01 08:44:43"
         },
         {
             "name": "drupal/og_menu",
@@ -1370,15 +1370,15 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha14",
+            "version": "8.1.0-alpha15",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "507607e3919c1a61573719fa8dc4bf0695ac4704"
+                "reference": "f8f3ce33a9f608aa830688767fd5ffbd108eb889"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha14.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha15.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1396,10 +1396,6 @@
             "extra": {
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
-                },
-                "patches_applied": {
-                    "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/2671228.patch",
-                    "Issue #2704761: Extend length of supported IDs in search API DB Backend (Patch only)": "https://www.drupal.org/files/issues/2704761_patch_only.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
@@ -1422,7 +1418,7 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-04-20 12:32:19"
+            "time": "2016-05-20 10:43:24"
         },
         {
             "name": "drush/drush",
@@ -2292,7 +2288,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
