@@ -50,7 +50,17 @@ Feature: "Add news" visibility options.
     When I go to the "Ironman's room" solution
     Then I should not see the link "Add news"
 
-    # Add news belonging to a collection.
+  Scenario: Add news as a moderator.
+    Given the following collection:
+      | title | Ironman's second house |
+      | logo  | logo.png               |
+    And the following solution:
+      | title         | Ironman's basement                  |
+      | description   | This is where experiments are done. |
+      | documentation | text.pdf                            |
+    And I am logged in as a moderator
+
+    # Add news belonging to a collection
     When I go to the homepage of the "Ironman's second house" collection
     And I click "Add news"
     Then I should see the heading "Add news"

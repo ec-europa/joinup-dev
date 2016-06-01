@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_ar_policy_domain
-    - rdf_entity.rdfentity.collection
-id: rdf_entity.collection.field_ar_policy_domain
-field_name: field_ar_policy_domain
+    - field.storage.rdf_entity.field_topic
+    - rdf_entity.rdfentity.asset_release
+id: rdf_entity.asset_release.field_topic
+field_name: field_topic
 entity_type: rdf_entity
-bundle: collection
-label: 'Policy domain'
+bundle: asset_release
+label: Topic
 description: ''
 required: false
 translatable: false

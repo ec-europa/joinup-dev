@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9ca172bca43ca76b5b4b6adce2b925d2",
-    "content-hash": "a3fe7c5f2a98f3e0da50ce7c0c0bd01b",
+    "hash": "90d43ff81c8359a35f78ecb5bc5f3a64",
+    "content-hash": "b5ecf04ed342c8a038d6d6ac18fbba65",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -206,16 +206,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "48156b0fd9888bf528fbe9c9cba6963223cdd584"
+                "reference": "b2cf67b1a575d7e648c742be2454339232ef32b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/48156b0fd9888bf528fbe9c9cba6963223cdd584",
-                "reference": "48156b0fd9888bf528fbe9c9cba6963223cdd584",
+                "url": "https://api.github.com/repos/composer/composer/zipball/b2cf67b1a575d7e648c742be2454339232ef32b2",
+                "reference": "b2cf67b1a575d7e648c742be2454339232ef32b2",
                 "shasum": ""
             },
             "require": {
@@ -279,7 +279,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2016-05-17 11:25:44"
+            "time": "2016-05-31 18:48:12"
         },
         {
             "name": "composer/installers",
@@ -545,20 +545,20 @@
         },
         {
             "name": "cweagans/composer-patches",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cweagans/composer-patches.git",
-                "reference": "0d75c63b6de66144517a1da9084422b78c2ff251"
+                "reference": "8de7c73b2eae217f4e7028d7262ff2330aa4b4e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cweagans/composer-patches/zipball/0d75c63b6de66144517a1da9084422b78c2ff251",
-                "reference": "0d75c63b6de66144517a1da9084422b78c2ff251",
+                "url": "https://api.github.com/repos/cweagans/composer-patches/zipball/8de7c73b2eae217f4e7028d7262ff2330aa4b4e8",
+                "reference": "8de7c73b2eae217f4e7028d7262ff2330aa4b4e8",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "~1.0",
+                "composer-plugin-api": "^1.0",
                 "php": ">=5.3.0"
             },
             "require-dev": {
@@ -585,7 +585,7 @@
                 }
             ],
             "description": "Provides a way to patch Composer packages.",
-            "time": "2016-02-29 03:45:02"
+            "time": "2016-03-28 18:54:21"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1281,12 +1281,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "b0634836282e80cd1d3c5b52950edeef2551cf99"
+                "reference": "e317803b98e57b549dd33378b0d08f44763bb8bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/b0634836282e80cd1d3c5b52950edeef2551cf99",
-                "reference": "b0634836282e80cd1d3c5b52950edeef2551cf99",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/e317803b98e57b549dd33378b0d08f44763bb8bd",
+                "reference": "e317803b98e57b549dd33378b0d08f44763bb8bd",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1300,7 +1300,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-05-27 15:49:05"
+            "time": "2016-06-01 08:44:43"
         },
         {
             "name": "drupal/og_menu",
@@ -1364,24 +1364,21 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
             "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
             "homepage": "https://www.drupal.org/project/r4032login",
             "time": "2016-03-01 13:56:38"
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha14",
+            "version": "8.1.0-alpha15",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "507607e3919c1a61573719fa8dc4bf0695ac4704"
+                "reference": "f8f3ce33a9f608aa830688767fd5ffbd108eb889"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha14.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha15.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1399,10 +1396,6 @@
             "extra": {
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
-                },
-                "patches_applied": {
-                    "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/2671228.patch",
-                    "Issue #2704761: Extend length of supported IDs in search API DB Backend (Patch only)": "https://www.drupal.org/files/issues/2704761_patch_only.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
@@ -1425,7 +1418,7 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-04-20 12:32:19"
+            "time": "2016-05-20 10:43:24"
         },
         {
             "name": "drupal/state_machine",
@@ -2326,7 +2319,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -4849,16 +4842,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.24.0",
+            "version": "v1.24.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8"
+                "reference": "3566d311a92aae4deec6e48682dc5a4528c4a512"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
-                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3566d311a92aae4deec6e48682dc5a4528c4a512",
+                "reference": "3566d311a92aae4deec6e48682dc5a4528c4a512",
                 "shasum": ""
             },
             "require": {
@@ -4906,7 +4899,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-01-25 21:22:18"
+            "time": "2016-05-30 09:11:59"
         },
         {
             "name": "typhonius/behattask",
@@ -5746,7 +5739,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "0182817a1ae9b4e92f86ee29740a056659fbc9b5"
+                "reference": "44d44182c3d8c92a4fa53ed5d3205e37b9203f5d"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -5781,7 +5774,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2016-05-26 15:55:04"
+            "time": "2016-05-29 20:17:42"
         },
         {
             "name": "drupal/drupal-driver",
@@ -6073,12 +6066,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jcalderonzumba/MinkPhantomJSDriver.git",
-                "reference": "f6867c5e5ad1727936b5e70075d92c2ec060e1a1"
+                "reference": "10d7c48c9a4129463052321b52450d98983c4332"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
-                "reference": "f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
+                "reference": "10d7c48c9a4129463052321b52450d98983c4332",
                 "shasum": ""
             },
             "require": {
@@ -6126,7 +6119,7 @@
                 "phantomjs",
                 "testing"
             ],
-            "time": "2016-03-04 20:15:21"
+            "time": "2015-10-05 18:24:44"
         },
         {
             "name": "mikey179/vfsStream",
@@ -7039,16 +7032,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.6.0",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "1bcdf03b068a530ac1962ce671dead356eeba43b"
+                "reference": "fb72ed32f8418db5e7770be1653e62e0d6f5dd3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/1bcdf03b068a530ac1962ce671dead356eeba43b",
-                "reference": "1bcdf03b068a530ac1962ce671dead356eeba43b",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/fb72ed32f8418db5e7770be1653e62e0d6f5dd3d",
+                "reference": "fb72ed32f8418db5e7770be1653e62e0d6f5dd3d",
                 "shasum": ""
             },
             "require": {
@@ -7113,20 +7106,20 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-04-03 22:58:34"
+            "time": "2016-05-30 22:24:32"
         },
         {
             "name": "symfony/browser-kit",
-            "version": "v3.0.6",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/browser-kit.git",
-                "reference": "e07127ac31230b30887c2dddf3708d883d239b14"
+                "reference": "b645a9b23d6c0eeba5ac823fa87bf010db9aff22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/e07127ac31230b30887c2dddf3708d883d239b14",
-                "reference": "e07127ac31230b30887c2dddf3708d883d239b14",
+                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/b645a9b23d6c0eeba5ac823fa87bf010db9aff22",
+                "reference": "b645a9b23d6c0eeba5ac823fa87bf010db9aff22",
                 "shasum": ""
             },
             "require": {
@@ -7143,7 +7136,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "3.1-dev"
                 }
             },
             "autoload": {
@@ -7170,7 +7163,7 @@
             ],
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-04 07:55:57"
+            "time": "2016-03-04 07:56:56"
         }
     ],
     "aliases": [

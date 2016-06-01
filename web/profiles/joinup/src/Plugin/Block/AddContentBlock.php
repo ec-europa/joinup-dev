@@ -204,10 +204,14 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
    */
   public function getCacheContexts() {
     $context = parent::getCacheContexts();
-    // The links are only visible for certain roles on certain
-    // collections. Normally cache contexts are added automatically but this
-    // links depends on an optional context which we manage ourselves.
+    // The links are only visible for certain roles on certain collections.
+    // Normally cache contexts are added automatically but these links depend on
+    // an optional context which we manage ourselves.
     return Cache::mergeContexts($context, [
+      // @todo Change 'user' to the OG Roles per group type cache context when
+      //   this exists.
+      // @see https://github.com/amitaibu/og/issues/219
+      'user',
       'user.roles',
       'collection',
       'asset_release',
