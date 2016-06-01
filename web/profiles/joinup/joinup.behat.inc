@@ -141,7 +141,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Given all content is indexed
    */
   public function contentIsIndexed() {
-    sleep(1);
+    sleep(5);
   }
 
   /**
