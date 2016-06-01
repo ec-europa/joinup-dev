@@ -149,6 +149,7 @@ class Query extends QueryBase implements QueryInterface {
       case $id . '-IN':
         if ($value) {
           $ids_list = "(<" . implode(">, <", $value) . ">)";
+          $this->condition->condition('?entity', 'rdf:type', '?type');
           $this->filter->filter('?entity IN ' . $ids_list);
         }
         return $this;
@@ -163,6 +164,7 @@ class Query extends QueryBase implements QueryInterface {
             $ids_list = "(<" . $value . ">)";
           }
 
+          $this->condition->condition('?entity', 'rdf:type', '?type');
           $this->filter->filter('!(?entity IN ' . $ids_list . ')');
         }
         return $this;

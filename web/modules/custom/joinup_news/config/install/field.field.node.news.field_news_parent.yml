@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_news_parent
+    - node.type.news
+id: node.news.field_news_parent
+field_name: field_news_parent
+entity_type: node
+bundle: news
+label: Parent
+description: 'Refers to the entity the news is about.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      solution: solution
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

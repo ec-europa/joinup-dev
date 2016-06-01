@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies: {  }
+# todo: The actual ID is 'rdf_entity-collection-member'. Update this
+# when PR #216 is fixed.
+# @see https://github.com/amitaibu/og/issues/216
+id: member
+label: Member
+weight: 1
+group_type: rdf_entity
+group_bundle: collection
+group_id: null
+permissions:
+  - 'accept facilitator invitation'
+  - 'unsubscribe'
+  - 'update own custom_page node'
+  - 'delete own custom_page node'
+  - 'create document node'
+  - 'update own document node'
+  - 'delete own document node'
+  - 'create event node'
+  - 'update own event node'
+  - 'delete own event node'
+  - 'create news node'
+  - 'update own news node'
+  - 'delete own news node'
+role_type: immutable
