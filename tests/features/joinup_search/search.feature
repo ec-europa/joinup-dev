@@ -21,6 +21,7 @@ Feature: Global search
       | description      | The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams |
       | collection       | Molecular cooking collection                                                                                                       |
       | spacial coverage | http://publications.europa.eu/resource/authority/country/EUR                                                                       |
+    And all content is indexed
     Given I am logged in as a user with the "authenticated" role
     When I am at "/search"
     # All content visible
