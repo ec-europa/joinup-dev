@@ -116,12 +116,30 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_isr_description
+  search_api_aggregation_1:
+    label: Type
+    datasource_id: null
+    property_path: search_api_aggregation_1
+    type: string
+    indexed_locked: true
 processor_settings:
   add_url:
     plugin_id: add_url
     settings:
       weights:
         preprocess_index: -30
+  aggregated_field:
+    plugin_id: aggregated_field
+    settings:
+      fields:
+        search_api_aggregation_1:
+          label: Type
+          type: union
+          fields:
+            - 'entity:node/type'
+            - 'entity:rdf_entity/rid'
+      weights:
+        preprocess_index: -10
 options:
   index_directly: true
   cron_limit: 50

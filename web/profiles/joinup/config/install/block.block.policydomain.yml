@@ -10,7 +10,7 @@ dependencies:
 id: policydomain
 theme: bartik
 region: sidebar_second
-weight: -10
+weight: -8
 provider: null
 plugin: 'facet_block:policy_domain'
 settings:

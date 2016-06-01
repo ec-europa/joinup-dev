@@ -17,5 +17,6 @@ config_devel:
  - facets.facet.policy_domain
  - facets.facet.spacial_coverage
  - facets.facet.status
+ - facets.facet.type
  - search_api.server.solr
  - search_api.index.collections

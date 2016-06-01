@@ -29,8 +29,8 @@ Feature: Global search
     Then I should see the text "El Celler de Can Roca"
     Then I should see the text "Spherification"
     Then I should see the text "Foam"
-    # Select link in the spacial coverage facet.
-    Then I click "European Union" in the "Right sidebar" region
+    # Select link in the 'type' facet.
+    Then I click "solution" in the "Right sidebar" region
     Then I should not see the text "Molecular cooking collection"
     Then I should not see the text "El Celler de Can Roca"
     Then I should see the text "Spherification"

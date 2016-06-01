@@ -10,7 +10,7 @@ dependencies:
 id: status
 theme: bartik
 region: sidebar_second
-weight: -10
+weight: -6
 provider: null
 plugin: 'facet_block:status'
 settings:

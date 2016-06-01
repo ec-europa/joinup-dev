@@ -65,6 +65,7 @@ config_devel:
   - block.block.policydomain
   - block.block.spacialcoverage
   - block.block.status
+  - block.block.type
   - block.block.joincollectionblock
   - block.block.joinup_add_content
   - block.block.navigation
