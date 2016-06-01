@@ -171,6 +171,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Commit the solr index for testing purposes.
+   *
    * @Then I commit the solr index
    */
   public function iCommitTheSolrIndex() {
@@ -191,4 +193,5 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $solarium_client->update($update);
     }
   }
+
 }
