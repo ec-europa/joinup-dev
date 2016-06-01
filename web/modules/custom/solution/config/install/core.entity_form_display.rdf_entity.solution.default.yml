@@ -14,28 +14,28 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
-    - field.field.rdf_entity.solution.field_is_keywords
     - field.field.rdf_entity.solution.field_is_landing_page
     - field.field.rdf_entity.solution.field_is_language
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_modification_date
     - field.field.rdf_entity.solution.field_is_owner
-    - field.field.rdf_entity.solution.field_is_policy_domain
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
-    - field.field.rdf_entity.solution.field_is_spacial_coverage
     - field.field.rdf_entity.solution.field_is_standardization_level
-    - field.field.rdf_entity.solution.field_is_status
     - field.field.rdf_entity.solution.field_is_test_resource_type
-    - field.field.rdf_entity.solution.field_is_topic
     - field.field.rdf_entity.solution.field_is_translation
     - field.field.rdf_entity.solution.field_is_version
     - field.field.rdf_entity.solution.field_is_webdav_creation
     - field.field.rdf_entity.solution.field_is_webdav_url
     - field.field.rdf_entity.solution.field_is_wiki
+    - field.field.rdf_entity.solution.field_keywords
+    - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_spacial_coverage
+    - field.field.rdf_entity.solution.field_status
+    - field.field.rdf_entity.solution.field_topic
     - field.field.rdf_entity.solution.og_group_ref
     - rdf_entity.rdfentity.solution
   module:
@@ -130,21 +130,21 @@ hidden:
   field_is_distribution: true
   field_is_has_version: true
   field_is_included_asset: true
-  field_is_keywords: true
   field_is_language: true
   field_is_modification_date: true
   field_is_owner: true
-  field_is_policy_domain: true
   field_is_product_type: true
   field_is_solution_type: true
   field_is_source_code_repository: true
-  field_is_spacial_coverage: true
   field_is_standardization_level: true
-  field_is_status: true
   field_is_test_resource_type: true
-  field_is_topic: true
   field_is_translation: true
   field_is_version: true
   field_is_webdav_creation: true
   field_is_webdav_url: true
+  field_keywords: true
+  field_policy_domain: true
+  field_spacial_coverage: true
+  field_status: true
+  field_topic: true
   og_group_ref: true

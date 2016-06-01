@@ -5,6 +5,7 @@ core: 8.x
 package: Joinup
 dependencies:
   - datetime
+  - joinup_core
   - link
   - rdf_entity
   - text
@@ -22,7 +23,7 @@ config_devel:
   - field.field.rdf_entity.asset_distribution.field_ad_licence
   - field.field.rdf_entity.asset_distribution.field_ad_modification_date
   - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
-  - field.field.rdf_entity.asset_distribution.field_ad_status
+  - field.field.rdf_entity.asset_distribution.field_status
   - field.storage.rdf_entity.field_ad_access_url
   - field.storage.rdf_entity.field_ad_creation_date
   - field.storage.rdf_entity.field_ad_description
@@ -33,5 +34,4 @@ config_devel:
   - field.storage.rdf_entity.field_ad_licence
   - field.storage.rdf_entity.field_ad_modification_date
   - field.storage.rdf_entity.field_ad_repr_technique
-  - field.storage.rdf_entity.field_ad_status
   - rdf_entity.rdfentity.asset_distribution

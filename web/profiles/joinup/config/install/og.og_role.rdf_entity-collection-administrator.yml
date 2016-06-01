@@ -1,0 +1,15 @@
+langcode: en
+status: true
+dependencies: {  }
+# todo: The actual ID is 'rdf_entity-collection-administrator'. Update this
+# when PR #216 is fixed.
+# @see https://github.com/amitaibu/og/issues/216
+id: administrator
+label: Collection owner
+weight: 2
+group_type: rdf_entity
+group_bundle: collection
+group_id: null
+permissions:
+  - 'request collection deletion'
+role_type: standard
