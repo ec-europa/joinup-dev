@@ -6,10 +6,10 @@ Feature: "Add news" visibility options.
 
   Scenario: "Add news" button should only be shown to moderators.
     Given users:
-      | name         | pass | mail                     | roles     |
-      | Pepper Pots  | pass | pepper.pots@example.com  | moderator |
-      | Tony Stark   | pass | tony.stark@example.com   |           |
-      | Phil Coulson | pass | phil.coulson@example.com |           |
+      | name         | mail                     | roles     |
+      | Pepper Pots  | pepper.pots@example.com  | moderator |
+      | Tony Stark   | tony.stark@example.com   |           |
+      | Phil Coulson | phil.coulson@example.com |           |
     And collections:
       | title                 | logo     | moderation |
       | Ironman's home        | logo.png | yes        |
