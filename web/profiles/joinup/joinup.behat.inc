@@ -118,7 +118,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     // Get the last registered user.
     $results = \Drupal::entityManager()->getStorage('user')
-        ->loadByProperties(['name' => $username]);
+      ->loadByProperties(['name' => $username]);
     /** @var \Drupal\user\UserInterface $user */
     $user = reset($results);
 
@@ -129,6 +129,19 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     else {
       throw new Exception('User not registered.');
     }
+  }
+
+  /**
+   * Sleeps 1 second for solr to be able to index items.
+   *
+   * Solr server takes a few momnets to index items. In a fast machine,
+   * this is some milliseconds. We will give it 1 second for results to be
+   * available.
+   *
+   * @Given all content is indexed
+   */
+  public function contentIsIndexed() {
+    sleep(1);
   }
 
   /**
