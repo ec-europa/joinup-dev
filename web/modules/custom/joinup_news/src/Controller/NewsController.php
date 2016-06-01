@@ -62,7 +62,8 @@ class NewsController extends ControllerBase {
    * Returns a news content entity.
    *
    * The news content entity is pre-filled with the parent Rdf entity and the
-   * initial state.
+   * initial state. The initial state is needed to provide the appropriate
+   * options to the user.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *    The parent that the news content entity belongs to.
