@@ -3,6 +3,7 @@
 namespace Drupal\joinup_news\Guard;
 
 use Drupal\og\Og;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
@@ -35,7 +36,7 @@ class FulfillmentGuard implements GuardInterface {
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
     $from_state = $entity->field_news_state->first()->value;
-    $parent = joinup_news_get_parent($entity);
+    $parent = $this->getParent($entity);
 
     $is_moderated = self::MODERATED;
     if ($parent) {
@@ -70,6 +71,32 @@ class FulfillmentGuard implements GuardInterface {
     }
 
     return FALSE;
+  }
+
+  /**
+   * Returns the owner entity of this node if it exists.
+   *
+   * The news entity can belong to a collection or a solution, depending on
+   * how it was created. This function will return the parent of the entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The news content entity.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface|null
+   *    The parent of the entity. This can be a collection or a solution.
+   *    If there is no parent found, return NULL.
+   */
+  protected function getParent(EntityInterface $entity) {
+    $parent = NULL;
+    if (!empty($entity->og_group_ref->first()->target_id)) {
+      /** @var \Drupal\rdf_entity\RdfInterface $parent */
+      $parent = Rdf::load($entity->og_group_ref->first()->target_id);
+    }
+    if (!empty($entity->field_news_parent->first()->target_id)) {
+      /** @var \Drupal\rdf_entity\RdfInterface $parent */
+      $parent = Rdf::load($entity->field_news_parent->first()->target_id);
+    }
+    return $parent;
   }
 
   /**

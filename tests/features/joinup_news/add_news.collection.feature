@@ -43,6 +43,8 @@ Feature: "Add news" visibility options.
     Then I should see the heading "Add news"
     And the following fields should be present "Headline, Kicker, Content, State"
     And the following fields should not be present "Groups audience"
+    # Check for existense of value.
+    And "State" field does not have the "Validated" option
     When I fill in the following:
       | Headline | New avengers member                  |
       | Kicker   | Black Widow                          |

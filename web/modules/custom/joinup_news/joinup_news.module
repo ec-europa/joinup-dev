@@ -6,8 +6,6 @@
  */
 
 use \Drupal\Core\Entity\EntityTypeInterface;
-use \Drupal\Core\Entity\EntityInterface;
-use \Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -23,30 +21,4 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
       $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
     }
   }
-}
-
-/**
- * Returns the owner entity of this node if it exists.
- *
- * The news entity can belong to a collection or a solution, depending on
- * how it was created. This function will return the parent of the entity.
- *
- * @param \Drupal\Core\Entity\EntityInterface $entity
- *    The news content entity.
- *
- * @return \Drupal\rdf_entity\RdfInterface|null
- *    The parent of the entity. This can be a collection or a solution.
- *    If there is no parent found, return NULL.
- */
-function joinup_news_get_parent(EntityInterface $entity) {
-  $parent = NULL;
-  if (!empty($entity->og_group_ref->first()->target_id)) {
-    /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    $parent = Rdf::load($entity->og_group_ref->first()->target_id);
-  }
-  if (!empty($entity->field_news_parent->first()->target_id)) {
-    /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    $parent = Rdf::load($entity->field_news_parent->first()->target_id);
-  }
-  return $parent;
 }

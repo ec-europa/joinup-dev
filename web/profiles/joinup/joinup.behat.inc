@@ -169,4 +169,15 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     ];
   }
 
+  /**
+   * Checks whether the select field does not have the given option.
+   *
+   * @Given (the ):select field does not have the :option option
+   */
+  public function checkSelectOption($select, $option) {
+    if ($this->getSession()->getPage()->findField($select)->hasSelect($option)) {
+      throw new \Exception("The option {$option} should not exist in the {$select} field but was found.");
+    }
+  }
+
 }
