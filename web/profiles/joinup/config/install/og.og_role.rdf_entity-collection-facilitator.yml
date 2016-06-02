@@ -27,4 +27,6 @@ permissions:
   - 'delete any event node'
   - 'update any news node'
   - 'delete any news node'
+  - 'update any navigation ogmenu_instance'
+  - 'add new links to og menu instance entities'
 role_type: standard
