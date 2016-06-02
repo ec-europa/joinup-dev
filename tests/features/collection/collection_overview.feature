@@ -21,6 +21,12 @@ Feature: Collections Overview
       | eHealth           | Supports health-related fields |
       | Open Data         | Facilitate access to data sets |
       | Connecting Europe | Reusable tools and services    |
+    # Check that visiting as an anonymous does not create cache for all users.
+    When I am an anonymous user
+    And I am on the homepage
+    Then I should see the link "Collections"
+    And I click "Collections"
+
     # Check page for authenticated users.
     When I am logged in as "Madam Shirley"
     And I am on the homepage
