@@ -134,6 +134,29 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       ];
     }
 
+    if ($collection_contexts && $collection_contexts['collection']->hasContextValue()
+    || $solution_contexts && $solution_contexts['solution']->hasContextValue()) {
+      $id = NULL;
+      if ($collection_contexts['collection']->hasContextValue()) {
+        $id = $collection_contexts['collection']->getContextValue()->id();
+      }
+      if ($solution_contexts['solution']->hasContextValue()) {
+        $id = $solution_contexts['solution']->getContextValue()->id();
+      }
+      if ($id) {
+        $news_url = Url::fromRoute('custom_page.rdf_entity_news.add', [
+          'rdf_entity' => $id,
+        ]);
+        $links['news'] = [
+          '#type' => 'link',
+          '#title' => $this->t('Add news'),
+          '#url' => $news_url,
+          '#attributes' => ['class' => ['button', 'button--small']],
+          '#access' => $news_url->access(),
+        ];
+      }
+    }
+
     if (!empty($this->assetReleaseContext)) {
       /** @var \Drupal\Core\Plugin\Context\Context[] $asset_release_contexts */
       $asset_release_contexts = $this->assetReleaseContext->getRuntimeContexts(['asset_release']);
@@ -181,10 +204,14 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
    */
   public function getCacheContexts() {
     $context = parent::getCacheContexts();
-    // The links are only visible for certain roles on certain
-    // collections. Normally cache contexts are added automatically but this
-    // links depends on an optional context which we manage ourselves.
+    // The links are only visible for certain roles on certain collections.
+    // Normally cache contexts are added automatically but these links depend on
+    // an optional context which we manage ourselves.
     return Cache::mergeContexts($context, [
+      // @todo Change 'user' to the OG Roles per group type cache context when
+      //   this exists.
+      // @see https://github.com/amitaibu/og/issues/219
+      'user',
       'user.roles',
       'collection',
       'asset_release',

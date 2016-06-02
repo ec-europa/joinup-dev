@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.node.news.body
     - field.field.node.news.field_news_kicker
+    - field.field.node.news.field_news_parent
     - field.field.node.news.field_news_source_url
     - field.field.node.news.og_group_ref
     - node.type.news
@@ -19,18 +20,25 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 1
     settings: {  }
     third_party_settings: {  }
   field_news_kicker:
-    weight: 102
+    weight: 2
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+  field_news_parent:
+    weight: 5
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_news_source_url:
-    weight: 103
+    weight: 3
     label: above
     settings:
       trim_length: 80
@@ -41,6 +49,14 @@ content:
     third_party_settings: {  }
     type: link
   links:
-    weight: 100
-hidden:
-  og_group_ref: true
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+  og_group_ref:
+    type: entity_reference_label
+    weight: 4
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+hidden: {  }

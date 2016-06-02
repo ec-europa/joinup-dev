@@ -3,6 +3,7 @@
 namespace Drupal\rdf_entity\Database\Driver\sparql;
 
 use Drupal\Core\Database\Log;
+use EasyRdf\Sparql\Client;
 
 /**
  * @addtogroup database
@@ -40,15 +41,15 @@ class Connection {
   /**
    * Constructs a Connection object.
    *
-   * @param \EasyRdf_Sparql_Client $connection
-   *   Object of the EasyRdf_Sparql_Client class which is a database connection.
+   * @param \EasyRdf\Sparql\Client $connection
+   *   Object of \EasyRdf\Sparql\Client which is a database connection.
    * @param array $connection_options
    *   An array of options for the connection. May include the following:
    *   - prefix
    *   - namespace
    *   - Other driver-specific options.
    */
-  public function __construct(\EasyRdf_Sparql_Client $connection, array $connection_options) {
+  public function __construct(Client $connection, array $connection_options) {
     $this->connection = $connection;
     $this->connectionOptions = $connection_options;
   }
@@ -125,13 +126,13 @@ class Connection {
    * @param array $connection_options
    *   The connection options as defined in settings.php.
    *
-   * @return \EasyRdf_Sparql_Client
+   * @return \EasyRdf\Sparql\Client
    *   The EasyRdf connection.
    */
   public static function open(array &$connection_options = array()) {
     // @todo Get endpoint string from settings file.
     $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql';
-    return new \EasyRdf_Sparql_Client($connect_string);
+    return new Client($connect_string);
   }
 
   /**
