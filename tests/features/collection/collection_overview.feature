@@ -13,18 +13,29 @@ Feature: Collections Overview
     Then I should see the heading "Collections"
 
   Scenario: View collection overview as an anonymous user
+    Given users:
+      | name          | mail                         | roles |
+      | Madam Shirley | i.see.the.future@example.com |       |
     Given collections:
       | title             | description                    |
       | eHealth           | Supports health-related fields |
       | Open Data         | Facilitate access to data sets |
       | Connecting Europe | Reusable tools and services    |
+    # Check page for authenticated users.
+    When I am logged in as "Madam Shirley"
+    And I am on the homepage
+    And I click "Collections"
+    Then I should see the text "eHealth"
+    And I should see the text "Open Data"
+    And I should see the text "Connecting Europe"
+
     When I am an anonymous user
     And I am on the homepage
     Then I should see the link "Collections"
-    When I click "Collections"
     # @todo Anonymous users do not see new collections because the page cache
     # is not invalidated correctly.
     # @see ISAICP-2484
+    # When I click "Collections"
     # Then I should see the link "eHealth"
     # And I should see the text "Supports health-related fields"
     # And I should see the link "Open Data"
