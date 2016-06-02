@@ -1,7 +1,19 @@
-<div class="section section--sidebar-left">
+<div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
   <div class="container-fluid">
     <div class="region region--sidebar-left">
-      {% include sidebar-menu.html %}<
+      <div class="sidebar-menu">
+        <button id="sidebar-menu"
+                class="sidebar-menu__button mdl-button mdl-js-button mdl-button--icon">
+          <i class="material-icons">menu</i>
+        </button>
+        <nav class="sidebar-menu__container mdl-menu mdl-menu--bottom-left mdl-js-menu" for="sidebar-menu">
+          <a class="mdl-menu__item sidebar-menu__item" href="#">About</a>
+          <a class="mdl-menu__item sidebar-menu__item" href="#">Overview</a>
+          <a class="mdl-menu__item sidebar-menu__item" href="#">Discussions</a>
+          <a class="mdl-menu__item sidebar-menu__item" href="#">Members</a>
+          <a class="mdl-menu__item sidebar-menu__item" href="#">Metrics</a>
+        </nav>
+      </div>
     </div>
   </div>
 </div>

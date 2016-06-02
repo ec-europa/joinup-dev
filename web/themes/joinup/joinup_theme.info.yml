@@ -1,14 +1,15 @@
-name: Joinup
+name: Joinup Theme
 description: Joinup theme based on Material design lite.
-base theme: stable
 package: Custom
 type: theme
-version: 1.0
+version: 8.1.1
 core: 8.x
+
+#Libraries
 libraries:
-  - joinup/global-styling
-stylesheets-remove:
-  - core/assets/vendor/normalize-css/normalize.css
+  - joinup_theme/material-design-lite
+  - joinup_theme/global-components
+
 regions:
   header: Header
   featured: Featured

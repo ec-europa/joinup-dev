@@ -1,0 +1,47 @@
+// Header menu
+//
+// Header menu component
+
+// Component
+// --------------------------------------------------
+.header-menu
+
+// Elements
+// --------------------------------------------------
+
+.header-menu__link
+  color: #fff
+  text-transform: uppercase
+  text-decoration: none
+  text-align: center
+  min-width: 160px
+  border-top: 2px solid #27456b
+
+.header-menu__text
+  display: inline-block
+  padding-left: 30px
+  line-height: 58px
+
+/*.search-bar__icon
+  width: 32px
+  height: 32px
+  background: url('../images/search-icon.png') no-repeat*/
+
+// Modifiers
+// --------------------------------------------------
+.header-menu__link--solutions
+  .header-menu__text
+    background: url('../images/solutions-icon.png') left center no-repeat
+
+.header-menu__link--collections
+  .header-menu__text
+    background: url('../images/collections-icon.png') left center no-repeat
+
+.header-menu__link--events
+  .header-menu__text
+    background: url('../images/events-icon.png') left center no-repeat
+
+a.header-menu__link.active-trail
+  background: #fff
+  border-top: 2px solid #f08c14
+  color: #27456b
