@@ -42,7 +42,7 @@ drupal.demo.users = administrator, moderator
 composer.bin = ${project.basedir}/vendor/bin/composer
 drush.bin = ${project.basedir}/vendor/bin/drush
 phing.bin = ${project.basedir}/vendor/bin/phing
-isql.bin = /usr/bin/isql
+isql.bin = /usr/bin/isql-vt
 
 # Files and directories inside the Drupal installation.
 documentroot.path = web
