@@ -1,3 +1,8 @@
-jQuery(document).ready(function($){
+/**
+ * @file
+ * Joinup theme scripts.
+ */
+
+jQuery(document).ready(function ($) {
 
 });
