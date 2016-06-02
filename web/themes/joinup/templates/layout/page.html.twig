@@ -42,33 +42,37 @@
 #}
 <div class="layout-container mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-  <header class="section--header" role="banner">
+  <header class="section section--header" role="banner">
     {{ page.header }}
   </header>
 
-  {{ page.featured }}
+  {% if page.featured %}
+    <div class="section section--featured">
+      {{ page.featured }}
+    </div>
+  {% endif %}
 
-  <main class="main-container" role="main">
+  <main class="main-container mdl-grid" role="main">
     <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
     {% if page.sidebar_left %}
-      <aside class="section--sidebar-left" role="complementary">
+      <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col" role="complementary">
         {{ page.sidebar_left }}
       </aside>
     {% endif %}
 
     {% if page.content_top %}
-      <div class="section--content-top">
+      <div class="section section--content-top">
         {{ page.content_top }}
       </div>
     {% endif %}
 
-    <div class="section--content">
+    <div class="section section--content mdl-cell mdl-cell--8-col">
       {{ page.content }}
     </div>{# /.layout-content #}
 
     {% if page.content_bottom %}
-      <div class="section--content-bottom">
+      <div class="section section--content-bottom">
         {{ page.content_bottom }}
       </div>
     {% endif %}
@@ -76,7 +80,7 @@
   </main>
 
   {% if page.footer %}
-    <footer class="section--footer" role="contentinfo">
+    <footer class="section section--footer" role="contentinfo">
       {{ page.footer }}
     </footer>
   {% endif %}
