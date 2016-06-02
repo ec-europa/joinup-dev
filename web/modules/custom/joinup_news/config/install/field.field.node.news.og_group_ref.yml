@@ -12,7 +12,7 @@ field_name: og_group_ref
 entity_type: node
 bundle: news
 label: 'Collection'
-description: 'The collection this news entity belongs to.'
+description: 'The collection this entity belongs to.'
 required: false
 translatable: true
 default_value: {  }
