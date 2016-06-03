@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "90d43ff81c8359a35f78ecb5bc5f3a64",
-    "content-hash": "b5ecf04ed342c8a038d6d6ac18fbba65",
+    "hash": "0bd712316dfa467291acc1b44cb608d1",
+    "content-hash": "a65c9a25d1b904f09b3b78518fa6dc98",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1379,7 +1379,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha15.zip",
-                "reference": null,
+                "reference": "f8f3ce33a9f608aa830688767fd5ffbd108eb889",
                 "shasum": null
             },
             "require": {
@@ -1710,6 +1710,17 @@
                 "orm"
             ],
             "time": "2016-05-01 10:27:43"
+        },
+        {
+            "name": "google/material-design-lite",
+            "version": "dev-v1.1.3",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:google/material-design-lite.git",
+                "reference": "v1.1.3"
+            },
+            "type": "drupal-theme-library",
+            "time": "2016-03-17 16:08:51"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2288,7 +2299,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2343,7 +2354,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -5698,6 +5709,9 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "time": "2016-03-01 16:28:35"
@@ -6039,7 +6053,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
+                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/10d7c48c9a4129463052321b52450d98983c4332",
                 "reference": "10d7c48c9a4129463052321b52450d98983c4332",
                 "shasum": ""
             },
@@ -7150,6 +7164,7 @@
         "drupal/og_menu": 20,
         "drupal/r4032login": 20,
         "easyrdf/easyrdf": 20,
+        "google/material-design-lite": 20,
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
