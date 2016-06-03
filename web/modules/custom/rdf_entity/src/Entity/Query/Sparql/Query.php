@@ -195,7 +195,7 @@ class Query extends QueryBase implements QueryInterface {
             $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping[$this->entityTypeId]))) . ">)";
             $this->condition->condition('?entity', '?label_type', '?label');
             $this->filter->filter('?label_type IN ' . $label_list);
-            $this->filter->filter('regex(?label, "' . $value . '", "i")');
+            $this->filter->filter('?label IN ("' . $value . '")');
           }
         }
 

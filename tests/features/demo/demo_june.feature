@@ -1,20 +1,21 @@
+@api
 Feature: June 2016 demo
   As users of the website
   I should be able to interact with the website and manage content.
 
   Scenario: Manage collection and view collection scenarios.
     Given collections:
-      | title          | description                           | logo     | moderation |
-      | S.H.I.E.L.D.   | Well, they are mostly flying around.  | logo.png | yes        |
-      | x-Men          | Based on Proffessor Xavier's mantion. | logo.png | no         |
-      | Avengers       | Based on Tony stark's tower.          | logo.png | yes        |
-      | Fantastic four | Based on Reed Richard's tower.        | logo.png | yes        |
+      | uri                                       | title          | description                           | logo     | moderation |
+      | http://joinup.eu/collection/shield        | S.H.I.E.L.D.   | Well, they are mostly flying around.  | logo.png | yes        |
+      | http://joinup.eu/collection/xmen          | x-Men          | Based on Proffessor Xavier's mantion. | logo.png | no         |
+      | http://joinup.eu/collection/avengers      | Avengers       | Based on Tony stark's tower.          | logo.png | yes        |
+      | http://joinup.eu/collection/fantasticfour | Fantastic four | Based on Reed Richard's tower.        | logo.png | yes        |
     And solutions:
-      | title                     | description                                | documentation | moderation | collection   |
-      | Avengers initiative       | Gather the strongest into a group.         | text.pdf      | no         | S.H.I.E.L.D. |
-      | Project Hawaii            | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        | S.H.I.E.L.D. |
-      | Hellicarrier              | Provide a flying fortress as headquarters. | text.pdf      | no         | S.H.I.E.L.D. |
-      | Project 'Captain America' | Bring 'Captain america' back into action.  | text.pdf      | yes        | S.H.I.E.L.D. |
+      | uri                                      | title                     | description                                | documentation | moderation | collection   |
+      | http://joinup.eu/solution/avengers       | Avengers initiative       | Gather the strongest into a group.         | text.pdf      | no         | S.H.I.E.L.D. |
+      | http://joinup.eu/solution/hawaii         | Project Hawaii            | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        | S.H.I.E.L.D. |
+      | http://joinup.eu/solution/hellicarrier   | Hellicarrier              | Provide a flying fortress as headquarters. | text.pdf      | no         | S.H.I.E.L.D. |
+      | http://joinup.eu/solution/captainamerica | Project 'Captain America' | Bring 'Captain america' back into action.  | text.pdf      | yes        | S.H.I.E.L.D. |
     And users:
       | name      | pass                 | mail                    | roles     |
       | Stan lee  | cameoineverymovie    | stan.lee@example.com    | moderator |
@@ -27,52 +28,52 @@ Feature: June 2016 demo
       | Avengers     | Wolverine | member                |
     # The og_group_ref references to a collection and the field_news_parent to a solution.
     And news content:
-      | Headline                    | Kicker                                    | Content                                                                                                                             | og_group_ref | field_news_parent         |
-      | Captain America not dead?   | Captain America found in the ice.         | Captain America's body was found intact and preserved in ice.                                                                       |              | Project 'Captain America' |
-      | Hellicarrier under attack   | The Hellicarrier was attacked by Loki.    | Loki and his servants have attacked us. Hawkeye took out one engine.                                                                |              | Hellicarrier              |
-      | Phil Coulson is down        | Phil Coulson fell by the hands of Loki.   | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                | S.H.I.E.L.D  |                           |
-      | Captain America & Avengers  | Captain America to lead the avengers?     | It is S.H.I.E.L.D.'s opinion that someone like Captain America can be a good leader for avengers.                                   |              | Avengers initiative       |
-      | Project Hawaii case 1       | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process                                                                               |              | Project Hawaii            |
-      | Phoenix is down             | Wolverine took down Jean Gray.            | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. | x-Men        |                           |
-      | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.     | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                | S.H.I.E.L.D. |                           |
-      | Who is Winter soldier?      | Captain America's child friend is alive?  | As it turns out, Hydra's agent, Winter soldier is no other than Bucky, Captain's America childhood friend.                          |              | Project 'Captain America' |
+      | title                       | field_news_kicker                         | body                                                                                                                                | field_news_parent         | og_group_ref |
+      | Captain America not dead?   | Captain America found in the ice.         | Captain America's body was found intact and preserved in ice.                                                                       | Project 'Captain America' |              |
+      | Hellicarrier under attack   | The Hellicarrier was attacked by Loki.    | Loki and his servants have attacked us. Hawkeye took out one engine.                                                                | Hellicarrier              |              |
+      | Phil Coulson is down        | Phil Coulson fell by the hands of Loki.   | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                |                           | S.H.I.E.L.D. |
+      | Captain America & Avengers  | Captain America to lead the avengers?     | It is S.H.I.E.L.D.'s opinion that someone like Captain America can be a good leader for avengers.                                   | Avengers initiative       |              |
+      | Project Hawaii case 1       | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process                                                                               | Project Hawaii            |              |
+      | Phoenix is down             | Wolverine took down Jean Gray.            | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. |                           | x-Men        |
+      | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.     | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                |                           | S.H.I.E.L.D. |
+      | Who is Winter soldier?      | Captain America's child friend is alive?  | As it turns out, Hydra's agent, Winter soldier is no other than Bucky, Captain's America childhood friend.                          | Project 'Captain America' |              |
     And custom_page content:
-      | title              | body                                                                                                                               | group audience |
-      | S.H.I.E.L.D. Home  | Welcome to S.H.I.E.L.D. webspace. <br />You can find anything about S.H.I.E.L.D. here.                                             | S.H.I.E.L.D.   |
-      | About S.H.I.E.L.D. | S.H.I.E.L.D. stands for Strategic Homeland Intervention, Enforcement and Logistics Division. That's all you need to know about it. | S.H.I.E.L.D.   |
-      | List of members    | Here is a list of members known to the public: <br><ul><li>Nick Fury</li></ul>                                                     | S.H.I.E.L.D.   |
+      | title              | body                                                                                                                               | group audience                     |
+      | S.H.I.E.L.D. Home  | Welcome to S.H.I.E.L.D. webspace. <br />You can find anything about S.H.I.E.L.D. here.                                             | http://joinup.eu/collection/shield |
+      | About S.H.I.E.L.D. | S.H.I.E.L.D. stands for Strategic Homeland Intervention, Enforcement and Logistics Division. That's all you need to know about it. | http://joinup.eu/collection/shield |
+      | List of members    | Here is a list of members known to the public: <br><ul><li>Nick Fury</li></ul>                                                     | http://joinup.eu/collection/shield |
 
     # Scenario A. A collection owner manages his own collection.
     And I am on the homepage
     When I go to "/user"
     And I fill in "Username" with "Nick Fury"
     And I fill in "Password" with "ihaveasecret"
-    And I press "Login"
+    And I press "Log in"
     # Login was successful if I see my profile page.
     Then I should see the heading "Nick Fury"
     And I should see the link "Collections"
 
     # Collections overview.
     When I click "Collections"
-    Then I should see the heading "S.H.I.E.L.D."
-    And I should see the heading "x-Men"
-    And I should see the heading "Avengers"
-    And I should see the heading "Fantastic four"
+    Then I should see the text "S.H.I.E.L.D."
+    And I should see the text "x-Men"
+    And I should see the text "Avengers"
+    And I should see the text "Fantastic four"
 
     # Collection overview.
     When I click "S.H.I.E.L.D"
-    Then I should see the heading "Avengers initiative"
-    And I should see the heading "Project Hawaii"
-    And I should see the heading "Hellicarrier"
-    And I should see the heading "Project 'Captain America'"
-    And I should see the heading "Captain America not dead?"
-    And I should see the heading "Hellicarrier under attack"
-    And I should see the heading "Phil Coulson is down"
-    And I should see the heading "Captain America & Avengers"
-    And I should see the heading "Project Hawaii case 1"
-    And I should see the heading "Phoenix is down"
-    And I should see the heading "S.H.I.E.L.D. is infiltrated"
-    And I should see the heading "Who is Winter soldier?"
+    Then I should see the text "Avengers initiative"
+    And I should see the text "Project Hawaii"
+    And I should see the text "Hellicarrier"
+    And I should see the text "Project 'Captain America'"
+    And I should see the text "Captain America not dead?"
+    And I should see the text "Hellicarrier under attack"
+    And I should see the text "Phil Coulson is down"
+    And I should see the text "Captain America & Avengers"
+    And I should see the text "Project Hawaii case 1"
+    And I should see the text "Phoenix is down"
+    And I should see the text "S.H.I.E.L.D. is infiltrated"
+    And I should see the text "Who is Winter soldier?"
 
     # See menu items.
     Then I should see the following collection menu items in the specified order:
@@ -118,7 +119,7 @@ Feature: June 2016 demo
     # Edit page.
     When I click "Edit"
     Then I should see the heading "Edit List of members"
-  @todo: We have to set the link to the other page.
+    # @todo: We have to set the link to the other page.
     When I fill in "Body" with "Here is a list of members known to the public: <br><ul><li>Nick Fury</li></ul><br />Want to apply? Check the other page for this."
     And I press "Save"
     Then I should see the heading "List of members"
@@ -143,26 +144,26 @@ Feature: June 2016 demo
 
     # Collections overview.
     When I click "Collections"
-    Then I should see the heading "S.H.I.E.L.D."
-    And I should see the heading "x-Men"
-    And I should see the heading "Avengers"
-    And I should see the heading "Fantastic four"
+    Then I should see the text "S.H.I.E.L.D."
+    And I should see the text "x-Men"
+    And I should see the text "Avengers"
+    And I should see the text "Fantastic four"
 
     # Collection overview.
     When I click "S.H.I.E.L.D"
-    Then I should see the heading "Avengers initiative"
-    And I should see the heading "Project Hawaii"
-    And I should see the heading "Hellicarrier"
-    And I should see the heading "Project 'Captain America'"
-    And I should see the heading "Captain America not dead?"
-    And I should see the heading "Hellicarrier under attack"
-    And I should see the heading "Phil Coulson is down"
-    And I should see the heading "Captain America & Avengers"
-    And I should see the heading "Project Hawaii case 1"
-    And I should see the heading "Phoenix is down"
-    And I should see the heading "S.H.I.E.L.D. is infiltrated"
-    And I should see the heading "Who is Winter soldier?"
-    And I should see the heading "New York under attack"
+    Then I should see the text "Avengers initiative"
+    And I should see the text "Project Hawaii"
+    And I should see the text "Hellicarrier"
+    And I should see the text "Project 'Captain America'"
+    And I should see the text "Captain America not dead?"
+    And I should see the text "Hellicarrier under attack"
+    And I should see the text "Phil Coulson is down"
+    And I should see the text "Captain America & Avengers"
+    And I should see the text "Project Hawaii case 1"
+    And I should see the text "Phoenix is down"
+    And I should see the text "S.H.I.E.L.D. is infiltrated"
+    And I should see the text "Who is Winter soldier?"
+    And I should see the text "New York under attack"
 
     # See menu items.
     Then I should see the following collection menu items in the specified order:
