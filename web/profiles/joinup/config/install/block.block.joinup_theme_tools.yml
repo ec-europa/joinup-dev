@@ -1,16 +1,16 @@
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - system.menu.tools
   module:
     - system
   theme:
-    - bartik
-id: bartik_tools
-theme: bartik
-region: sidebar_first
-weight: -4
+    - joinup_theme
+id: joinup_theme_tools
+theme: joinup_theme
+region: '-1'
+weight: -9
 provider: null
 plugin: 'system_menu_block:tools'
 settings:

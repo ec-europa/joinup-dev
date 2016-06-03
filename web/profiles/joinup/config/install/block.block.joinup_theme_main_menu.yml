@@ -6,11 +6,11 @@ dependencies:
   module:
     - system
   theme:
-    - bartik
-id: bartik_main_menu
-theme: bartik
-region: primary_menu
-weight: 0
+    - joinup_theme
+id: joinup_theme_main_menu
+theme: joinup_theme
+region: header
+weight: -8
 provider: null
 plugin: 'system_menu_block:main'
 settings:

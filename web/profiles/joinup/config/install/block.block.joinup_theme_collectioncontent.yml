@@ -5,10 +5,10 @@ dependencies:
     - collection
   theme:
     - joinup_theme
-id: collectioncontent
+id: joinup_theme_collectioncontent
 theme: joinup_theme
-region: featured
-weight: -8
+region: sidebar_left
+weight: -1
 provider: null
 plugin: collection_content_block
 settings:

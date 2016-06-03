@@ -4,11 +4,11 @@ dependencies:
   module:
     - system
   theme:
-    - bartik
-id: bartik_messages
-theme: bartik
-region: highlighted
-weight: 0
+    - joinup_theme
+id: joinup_theme_messages
+theme: joinup_theme
+region: content_top
+weight: -7
 provider: null
 plugin: system_messages_block
 settings:

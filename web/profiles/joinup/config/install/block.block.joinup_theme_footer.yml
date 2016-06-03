@@ -6,11 +6,11 @@ dependencies:
   module:
     - system
   theme:
-    - bartik
-id: bartik_footer
-theme: bartik
-region: footer_fifth
-weight: 0
+    - joinup_theme
+id: joinup_theme_footer
+theme: joinup_theme
+region: footer
+weight: -8
 provider: null
 plugin: 'system_menu_block:footer'
 settings:

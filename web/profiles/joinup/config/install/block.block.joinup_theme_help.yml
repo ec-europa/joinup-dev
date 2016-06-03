@@ -4,9 +4,9 @@ dependencies:
   module:
     - help
   theme:
-    - bartik
-id: bartik_help
-theme: bartik
+    - joinup_theme
+id: joinup_theme_help
+theme: joinup_theme
 region: content
 weight: -6
 provider: null

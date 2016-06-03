@@ -2,9 +2,9 @@ langcode: en
 status: true
 dependencies:
   theme:
-    - bartik
-id: bartik_page_title
-theme: bartik
+    - joinup_theme
+id: joinup_theme_page_title
+theme: joinup_theme
 region: content
 weight: -8
 provider: null
