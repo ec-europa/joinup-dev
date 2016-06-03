@@ -2,20 +2,20 @@ langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.spacial_coverage
+    - facets.facet.spatial_coverage
   module:
     - facets
   theme:
     - bartik
-id: spacialcoverage
+id: spatialcoverage
 theme: bartik
 region: sidebar_second
 weight: -7
 provider: null
-plugin: 'facet_block:spacial_coverage'
+plugin: 'facet_block:spatial_coverage'
 settings:
-  id: 'facet_block:spacial_coverage'
-  label: 'Spacial coverage'
+  id: 'facet_block:spatial_coverage'
+  label: 'Spatial coverage'
   provider: facets
   label_display: visible
 visibility:

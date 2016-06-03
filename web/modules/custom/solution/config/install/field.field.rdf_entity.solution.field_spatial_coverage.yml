@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_spacial_coverage
+    - field.storage.rdf_entity.field_spatial_coverage
     - rdf_entity.rdfentity.solution
     - taxonomy.vocabulary.spatial
-id: rdf_entity.solution.field_spacial_coverage
-field_name: field_spacial_coverage
+id: rdf_entity.solution.field_spatial_coverage
+field_name: field_spatial_coverage
 entity_type: rdf_entity
 bundle: solution
-label: 'Spacial coverage'
+label: 'Spatial coverage'
 description: ''
 required: false
 translatable: false

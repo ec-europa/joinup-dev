@@ -4,7 +4,7 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_policy_domain
-    - field.storage.rdf_entity.field_spacial_coverage
+    - field.storage.rdf_entity.field_spatial_coverage
     - field.storage.rdf_entity.field_status
     - field.storage.node.body
     - field.storage.node.field_document_short_title
@@ -50,13 +50,13 @@ field_settings:
       module:
         - taxonomy
   tid_1:
-    label: 'Spacial coverage » Taxonomy term » Term ID'
+    label: 'Spatial coverage » Taxonomy term » Term ID'
     datasource_id: 'entity:rdf_entity'
-    property_path: 'field_spacial_coverage:entity:tid'
+    property_path: 'field_spatial_coverage:entity:tid'
     type: string
     dependencies:
       config:
-        - field.storage.rdf_entity.field_spacial_coverage
+        - field.storage.rdf_entity.field_spatial_coverage
       module:
         - taxonomy
   tid_2:

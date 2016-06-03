@@ -1,9 +1,9 @@
 langcode: en
 status: true
 dependencies: {  }
-id: spacial_coverage
-name: 'Spacial coverage'
-url_alias: spacial_coverage
+id: spatial_coverage
+name: 'Spatial coverage'
+url_alias: spatial_coverage
 weight: 0
 show_only_one_result: false
 field_identifier: tid_1

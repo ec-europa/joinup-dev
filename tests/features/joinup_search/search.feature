@@ -15,12 +15,12 @@ Feature: Global search
       | title            | Spherification                                                          |
       | description      | Spherification is the culinary process of shaping a liquid into spheres |
       | collection       | Molecular cooking collection                                            |
-      | spacial coverage | http://publications.europa.eu/resource/authority/country/EUR            |
+      | spatial coverage | http://publications.europa.eu/resource/authority/country/EUR            |
     And the following solution:
       | title            | Foam                                                                                                                               |
       | description      | The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams |
       | collection       | Molecular cooking collection                                                                                                       |
-      | spacial coverage | http://publications.europa.eu/resource/authority/country/EUR                                                                       |
+      | spatial coverage | http://publications.europa.eu/resource/authority/country/EUR                                                                       |
     Then I commit the solr index
     Given I am logged in as a user with the "authenticated" role
     When I am at "/search"
