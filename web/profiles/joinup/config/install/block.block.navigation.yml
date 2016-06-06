@@ -6,11 +6,11 @@ dependencies:
   module:
     - collection
   theme:
-    - bartik
+    - joinup_theme
 id: navigation
-theme: bartik
-region: sidebar_first
-weight: -9
+theme: joinup_theme
+region: featured
+weight: -8
 provider: null
 plugin: 'collection_menu_block:navigation'
 settings:

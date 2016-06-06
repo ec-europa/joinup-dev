@@ -4,11 +4,11 @@ dependencies:
   module:
     - joinup
   theme:
-    - bartik
+    - joinup_theme
 id: joinup_add_content
-theme: bartik
-region: sidebar_first
-weight: -4
+theme: joinup_theme
+region: featured
+weight: -6
 provider: null
 plugin: add_content_block
 settings:

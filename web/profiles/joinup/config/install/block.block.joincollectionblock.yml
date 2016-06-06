@@ -6,11 +6,11 @@ dependencies:
     - system
     - user
   theme:
-    - bartik
+    - joinup_theme
 id: joincollectionblock
-theme: bartik
-region: sidebar_first
-weight: -5
+theme: joinup_theme
+region: featured
+weight: -7
 provider: null
 plugin: join_collection_block
 settings:
