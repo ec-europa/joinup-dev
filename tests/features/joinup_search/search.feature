@@ -29,9 +29,12 @@ Feature: Global search
     Then I should see the text "El Celler de Can Roca"
     Then I should see the text "Spherification"
     Then I should see the text "Foam"
+
     # Select link in the 'type' facet.
-    Then I click "solution" in the "Right sidebar" region
-    Then I should not see the text "Molecular cooking collection"
+    Then I click "solution" in the "Left sidebar" region
+    # @todo Re-enable this check when the tile view mode created.
+    # (The default view mode of solutions holds a link to it's collection)
+    # Then I should not see the text "Molecular cooking collection"
     Then I should not see the text "El Celler de Can Roca"
     Then I should see the text "Spherification"
     Then I should see the text "Foam"

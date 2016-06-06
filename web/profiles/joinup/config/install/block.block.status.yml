@@ -6,10 +6,10 @@ dependencies:
   module:
     - facets
   theme:
-    - bartik
+    - joinup_theme
 id: status
-theme: bartik
-region: sidebar_second
+theme: joinup_theme
+region: sidebar_left
 weight: -6
 provider: null
 plugin: 'facet_block:status'
