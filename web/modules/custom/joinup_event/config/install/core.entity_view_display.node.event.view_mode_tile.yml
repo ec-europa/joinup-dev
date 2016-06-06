@@ -1,9 +1,8 @@
-uuid: f1ae9043-540e-4e56-91fb-2a73bf63e8e0
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.display_mode_tile
+    - core.entity_view_mode.node.view_mode_tile
     - field.field.node.event.body
     - field.field.node.event.field_event_adtl_address_info
     - field.field.node.event.field_event_agenda
@@ -22,13 +21,13 @@ dependencies:
     - user
 _core:
   default_config_hash: 9-pEl0yXAJ17PBB1bwdPYGg_kscQX40-iZcG5ZjUIj4
-id: node.event.display_mode_tile
+id: node.event.view_mode_tile
 targetEntityType: node
 bundle: event
-mode: display_mode_tile
+mode: view_mode_tile
 content:
   field_event_end_date:
-    weight: 106
+    weight: 3
     label: hidden
     settings:
       format_type: medium
@@ -36,7 +35,7 @@ content:
     third_party_settings: {  }
     type: datetime_default
   field_event_logo:
-    weight: 104
+    weight: 0
     label: hidden
     settings:
       image_style: image_style_event_logo
@@ -44,14 +43,14 @@ content:
     third_party_settings: {  }
     type: image
   field_event_short_title:
-    weight: 102
+    weight: 1
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_event_start_date:
-    weight: 105
+    weight: 2
     label: hidden
     settings:
       format_type: medium
