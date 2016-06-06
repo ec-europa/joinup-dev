@@ -46,25 +46,28 @@ dependencies:
   - views
 
 themes:
-  - bartik
   - seven
+  - joinup_theme
 
 config_devel:
-  - block.block.bartik_account_menu
-  - block.block.bartik_branding
-  - block.block.bartik_breadcrumbs
-  - block.block.bartik_content
-  - block.block.bartik_footer
-  - block.block.bartik_help
-  - block.block.bartik_local_actions
-  - block.block.bartik_local_tasks
-  - block.block.bartik_main_menu
-  - block.block.bartik_messages
-  - block.block.bartik_page_title
-  - block.block.bartik_tools
   - block.block.collectioncontent
   - block.block.joincollectionblock
   - block.block.joinup_add_content
+  - block.block.joinup_theme_account_menu
+  - block.block.joinup_theme_branding
+  - block.block.joinup_theme_breadcrumbs
+  - block.block.joinup_theme_collectioncontent
+  - block.block.joinup_theme_content
+  - block.block.joinup_theme_footer
+  - block.block.joinup_theme_help
+  - block.block.joinup_theme_joincollectionblock
+  - block.block.joinup_theme_local_actions
+  - block.block.joinup_theme_local_tasks
+  - block.block.joinup_theme_main_menu
+  - block.block.joinup_theme_messages
+  - block.block.joinup_theme_page_title
+  - block.block.joinup_theme_solutioncontent
+  - block.block.joinup_theme_tools
   - block.block.navigation
   - block.block.policydomain
   - block.block.seven_breadcrumbs

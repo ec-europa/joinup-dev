@@ -21,7 +21,7 @@ default:
       blackbox: ~
       region_map:
         Primary menu: ".region-primary-menu"
-        Right sidebar: "#sidebar-second"
+        Header: ".section--featured"
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:

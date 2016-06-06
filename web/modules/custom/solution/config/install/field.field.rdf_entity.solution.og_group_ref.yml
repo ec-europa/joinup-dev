@@ -11,8 +11,8 @@ id: rdf_entity.solution.og_group_ref
 field_name: og_group_ref
 entity_type: rdf_entity
 bundle: solution
-label: 'Groups audience'
-description: 'OG group audience reference field.'
+label: 'Collection'
+description: 'The collection that this solution belongs to.'
 required: false
 translatable: true
 default_value: {  }

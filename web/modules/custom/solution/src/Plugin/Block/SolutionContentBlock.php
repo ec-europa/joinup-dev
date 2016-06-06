@@ -2,8 +2,12 @@
 
 namespace Drupal\solution\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Plugin\Context\ContextProviderInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Entity\EntityManager;
@@ -51,12 +55,12 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
    * @param string $plugin_definition
    *   The plugin implementation definition.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, CurrentRouteMatch $current_route_match, EntityManager $entity_manager
-  ) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, CurrentRouteMatch $current_route_match, EntityManager $entity_manager, ContextProviderInterface $solution_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
-    // Retrieve the solution from the route.
-    $this->solution = $this->currentRouteMatch->getParameter('rdf_entity');
+    if (!empty($solution_context->getRuntimeContexts(['solution'])['solution'])) {
+      $this->solution = $solution_context->getRuntimeContexts(['solution'])['solution']->getContextValue();
+    }
     $this->entityManager = $entity_manager;
   }
 
@@ -69,7 +73,8 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
       $plugin_id,
       $plugin_definition,
       $container->get('current_route_match'),
-      $container->get('entity.manager')
+      $container->get('entity.manager'),
+      $container->get('solution.solution_route_context')
     );
   }
 
@@ -102,6 +107,21 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
       ];
     }
     return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheMaxAge() {
+    // Disable caching.
+    return 0;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function blockAccess(AccountInterface $account) {
+    return (($this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical') && ($this->solution instanceof RdfInterface)) ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
 }

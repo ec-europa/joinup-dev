@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4eb1a2674355244e2a55b6092b65a455",
-    "content-hash": "487fc359e906ddb45c3b2773907c341f",
+    "hash": "296e5d2338e8a9013922513cc7ed9883",
+    "content-hash": "e9f15d919508f5dceca7e1cda65cd578",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1470,7 +1470,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "4952e63307bc2f382c6453f335a19beec68298e1"
+                "reference": "ae754fdf145874517984289269588fd7e69efe69"
             },
             "require": {
                 "drupal/core": "8.*",
@@ -1489,7 +1489,7 @@
             ],
             "description": "Offers an implementation of the Search API that uses an Apache Solr server for indexing content.",
             "homepage": "https://www.drupal.org/project/search_api_solr",
-            "time": "2016-05-27 16:24:14"
+            "time": "2016-06-01 13:17:01"
         },
         {
             "name": "drush/drush",
@@ -1781,6 +1781,17 @@
                 "orm"
             ],
             "time": "2016-05-01 10:27:43"
+        },
+        {
+            "name": "google/material-design-lite",
+            "version": "dev-v1.1.3",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:google/material-design-lite.git",
+                "reference": "v1.1.3"
+            },
+            "type": "drupal-theme-library",
+            "time": "2016-03-17 16:08:51"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -7279,6 +7290,7 @@
         "drupal/r4032login": 20,
         "drupal/search_api_solr": 20,
         "easyrdf/easyrdf": 20,
+        "google/material-design-lite": 20,
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
