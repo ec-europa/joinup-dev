@@ -28,10 +28,10 @@ Feature: June 2016 demo
       | Avengers     | Wolverine | member                             |
     # The field_news_parent refers to a parent solution.
     And news content:
-      | title                       | field_news_kicker                       | body                                                                                                                                | og_group_ref |
-      | Phil Coulson is down        | Phil Coulson fell by the hands of Loki. | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                | S.H.I.E.L.D. |
-      | Phoenix is down             | Wolverine took down Jean Gray.          | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. | x-Men        |
-      | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.   | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                | S.H.I.E.L.D. |
+      | title                       | field_news_kicker                       | body                                                                                                                                |
+      | Phil Coulson is down        | Phil Coulson fell by the hands of Loki. | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                |
+      | Phoenix is down             | Wolverine took down Jean Gray.          | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. |
+      | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.   | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                |
     And news content:
       | title                      | field_news_kicker                         | body                                                                                                        | field_news_parent         |
       | Captain America not dead?  | Captain America found in the ice.         | Captain America's body was found intact and preserved in ice.                                               | Project 'Captain America' |
