@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.14",
+            "version": "3.18.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "9398db378231fe723583fb8d7a919c1806f02be3"
+                "reference": "a50c0971d42867ac8184c52c5f35b27255a695b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9398db378231fe723583fb8d7a919c1806f02be3",
-                "reference": "9398db378231fe723583fb8d7a919c1806f02be3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a50c0971d42867ac8184c52c5f35b27255a695b2",
+                "reference": "a50c0971d42867ac8184c52c5f35b27255a695b2",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-05-26 20:43:24"
+            "time": "2016-06-02 20:13:40"
         },
         {
             "name": "composer/ca-bundle",
@@ -1380,7 +1380,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha15.zip",
-                "reference": "f8f3ce33a9f608aa830688767fd5ffbd108eb889",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -2300,7 +2300,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2355,7 +2355,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2821,16 +2821,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "ba6fb78f727cd09f2a649113b95468019e490585"
+                "reference": "3d265f7c079f5b37d33475f996d7a383c5fc8aeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/ba6fb78f727cd09f2a649113b95468019e490585",
-                "reference": "ba6fb78f727cd09f2a649113b95468019e490585",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/3d265f7c079f5b37d33475f996d7a383c5fc8aeb",
+                "reference": "3d265f7c079f5b37d33475f996d7a383c5fc8aeb",
                 "shasum": ""
             },
             "require": {
@@ -2850,6 +2850,9 @@
             },
             "type": "library",
             "autoload": {
+                "files": [
+                    "phpseclib/bootstrap.php"
+                ],
                 "psr-4": {
                     "phpseclib\\": "phpseclib/"
                 }
@@ -2906,7 +2909,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2016-01-18 17:07:21"
+            "time": "2016-05-13 01:15:21"
         },
         {
             "name": "psr/http-message",
@@ -5629,7 +5632,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "6572b554acc0df6216b1d278d6843b4e464b4be5"
+                "reference": "36c41a27cc44761986c1bec99b4d1c6007599ef3"
             },
             "require": {
                 "php": ">=5.4.0",
@@ -5651,7 +5654,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-05-26 15:50:37"
+            "time": "2016-06-04 10:05:38"
         },
         {
             "name": "drupal/config_devel",
@@ -5710,9 +5713,6 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "time": "2016-03-01 16:28:35"
@@ -5723,7 +5723,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "44d44182c3d8c92a4fa53ed5d3205e37b9203f5d"
+                "reference": "5c6a5068bbf9e3ea0c46ed34777b679a14a38580"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -5758,7 +5758,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2016-05-29 20:17:42"
+            "time": "2016-06-06 06:59:02"
         },
         {
             "name": "drupal/drupal-driver",
@@ -6054,7 +6054,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/10d7c48c9a4129463052321b52450d98983c4332",
+                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
                 "reference": "10d7c48c9a4129463052321b52450d98983c4332",
                 "shasum": ""
             },
