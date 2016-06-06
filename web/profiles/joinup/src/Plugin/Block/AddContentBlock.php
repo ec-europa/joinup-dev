@@ -144,7 +144,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
         $id = $solution_contexts['solution']->getContextValue()->id();
       }
       if ($id) {
-        $news_url = Url::fromRoute('custom_page.rdf_entity_news.add', [
+        $news_url = Url::fromRoute('joinup_news.rdf_entity_news.add', [
           'rdf_entity' => $id,
         ]);
         $links['news'] = [
@@ -216,6 +216,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       'collection',
       'asset_release',
       'solution',
+      'url.path',
     ]);
   }
 
