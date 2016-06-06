@@ -247,12 +247,12 @@ QUERY;
    */
   protected function predicateMapping() {
     $mapping = &drupal_static(__FUNCTION__);
-    if (empty($mapping)) {
+    if (empty($mapping[$this->entityTypeId])) {
       // Collect entities ids, bundles and languages.
       $rdf_bundle_entities = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->loadMultiple();
 
       // Collect impacted fields.
-      $mapping = [];
+      $mapping[$this->entityTypeId] = [];
       foreach ($rdf_bundle_entities as $rdf_bundle_entity) {
         $base_field_definitions = $this->entityManager->getBaseFieldDefinitions($this->entityTypeId);
         $field_definitions = $this->entityManager->getFieldDefinitions($this->entityTypeId, $rdf_bundle_entity->id());
@@ -268,7 +268,7 @@ QUERY;
             if (empty($predicate)) {
               continue;
             }
-            $mapping[$rdf_bundle_entity->id()][$predicate] = array(
+            $mapping[$this->entityTypeId][$rdf_bundle_entity->id()][$predicate] = array(
               'field_name' => $id,
               'column' => $column,
             );
@@ -285,7 +285,7 @@ QUERY;
               if (empty($predicate)) {
                 continue;
               }
-              $mapping[$rdf_bundle_entity->id()][$predicate] = array(
+              $mapping[$this->entityTypeId][$rdf_bundle_entity->id()][$predicate] = array(
                 'column' => $column,
                 'field_name' => $field_name,
                 'storage_definition' => $storage_definition,
@@ -295,7 +295,7 @@ QUERY;
         }
       }
     }
-    return $mapping;
+    return $mapping[$this->entityTypeId];
   }
 
   /**

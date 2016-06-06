@@ -24,6 +24,7 @@ dependencies:
   - joinup_event
   - joinup_licence
   - joinup_news
+  - joinup_search
   - joinup_subscription
   - joinup_user
   - menu_ui
@@ -45,26 +46,30 @@ dependencies:
   - views
 
 themes:
-  - bartik
   - seven
+  - joinup_theme
 
 config_devel:
-  - block.block.bartik_account_menu
-  - block.block.bartik_branding
-  - block.block.bartik_breadcrumbs
-  - block.block.bartik_content
-  - block.block.bartik_footer
-  - block.block.bartik_help
-  - block.block.bartik_local_actions
-  - block.block.bartik_local_tasks
-  - block.block.bartik_main_menu
-  - block.block.bartik_messages
-  - block.block.bartik_page_title
-  - block.block.bartik_tools
   - block.block.collectioncontent
   - block.block.joincollectionblock
   - block.block.joinup_add_content
+  - block.block.joinup_theme_account_menu
+  - block.block.joinup_theme_branding
+  - block.block.joinup_theme_breadcrumbs
+  - block.block.joinup_theme_collectioncontent
+  - block.block.joinup_theme_content
+  - block.block.joinup_theme_footer
+  - block.block.joinup_theme_help
+  - block.block.joinup_theme_joincollectionblock
+  - block.block.joinup_theme_local_actions
+  - block.block.joinup_theme_local_tasks
+  - block.block.joinup_theme_main_menu
+  - block.block.joinup_theme_messages
+  - block.block.joinup_theme_page_title
+  - block.block.joinup_theme_solutioncontent
+  - block.block.joinup_theme_tools
   - block.block.navigation
+  - block.block.policydomain
   - block.block.seven_breadcrumbs
   - block.block.seven_content
   - block.block.seven_help
@@ -75,6 +80,9 @@ config_devel:
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
   - block.block.solutioncontent
+  - block.block.spatialcoverage
+  - block.block.status
+  - block.block.type
   - core.date_format.fallback
   - core.date_format.html_date
   - core.date_format.html_datetime
@@ -119,14 +127,12 @@ config_devel:
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
+  - og_menu.ogmenu.navigation
   - og.og_membership_type.og_membership_type
   - og.og_role.rdf_entity-collection-administrator
   - og.og_role.rdf_entity-collection-member
   - og.og_role.rdf_entity-collection-non-member
   - og.settings
-  - og_menu.ogmenu.navigation
-  - search_api.index.collections
-  - search_api.server.database_search_server
   - system.theme
   - user.flood
   - user.mail
@@ -136,4 +142,5 @@ config_devel:
   - user.role.moderator
   - user.settings
   - views.view.collections
+  - views.view.search
   - views.view.user_admin_people

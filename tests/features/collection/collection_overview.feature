@@ -21,6 +21,7 @@ Feature: Collections Overview
       | eHealth           | Supports health-related fields |
       | Open Data         | Facilitate access to data sets |
       | Connecting Europe | Reusable tools and services    |
+    Then I commit the solr index
     # Check that visiting as an anonymous does not create cache for all users.
     When I am an anonymous user
     And I am on the homepage
