@@ -4,6 +4,7 @@ namespace Drupal\solution\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\og\OgAccess;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -56,6 +57,9 @@ class SolutionController extends ControllerBase {
     //   create solutions for the collections they manage.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2448
     if ($rdf_entity->bundle() == 'collection' && $this->currentUser()->hasPermission('propose solution rdf entity')) {
+      return AccessResult::allowed();
+    }
+    if (OgAccess::userAccess($rdf_entity, 'propose solution rdf entity')->isAllowed()) {
       return AccessResult::allowed();
     }
 

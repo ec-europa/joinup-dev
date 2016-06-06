@@ -4,6 +4,7 @@ namespace Drupal\joinup_news\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\og\OgAccess;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -51,8 +52,13 @@ class NewsController extends ControllerBase {
   public function createNewsAccess(RdfInterface $rdf_entity) {
     // Check that the passed in RDF entity is a collection or a solution,
     // and that the user has the permission to create news.
-    if (in_array($rdf_entity->bundle(), ['collection', 'solution']) && $this->currentUser()->hasPermission('create rdf entity news')) {
-      return AccessResult::allowed();
+    if (in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
+      if ($this->currentUser()->hasPermission('create rdf entity news')) {
+        return AccessResult::allowed();
+      }
+      if (OgAccess::userAccess($rdf_entity, 'create rdf entity news')->isAllowed()) {
+        return AccessResult::allowed();
+      }
     }
 
     return AccessResult::forbidden();
