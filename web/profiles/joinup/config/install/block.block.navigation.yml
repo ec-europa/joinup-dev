@@ -6,10 +6,10 @@ dependencies:
   module:
     - og_menu
   theme:
-    - bartik
+    - joinup_theme
 id: navigation
-theme: bartik
-region: primary_menu
+theme: joinup_theme
+region: featured
 weight: -8
 provider: null
 plugin: 'ogmenu_block:navigation'

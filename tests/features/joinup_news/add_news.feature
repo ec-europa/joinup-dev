@@ -54,7 +54,12 @@ Feature: "Add news" visibility options.
     And I press "Save"
     Then I should see the heading "We have some news"
     And I should see the success message "News We have some news has been created."
-    And the "Ironman's second house" collection has a news page titled "We have some news"
+    # The reference should be visible.
+    And I should see the text "Collection"
+    And I should see the link "Ironman's second house"
+    When I click "Ironman's second house"
+    Then I should see the heading "Ironman's second house"
+    Then I should see the link "We have some news"
 
     # Add news belonging to a solution
     When I go to the "Ironman's basement" solution
@@ -69,4 +74,9 @@ Feature: "Add news" visibility options.
     And I press "Save"
     Then I should see the heading "We have some news for the solution as well"
     And I should see the success message "News We have some news for the solution as well has been created."
-    And the "Ironman's basement" solution has a news page titled "We have some news for the solution as well"
+    # The reference should be visible.
+    And I should see the text "Solution"
+    And I should see the link "Ironman's basement"
+    When I click "Ironman's basement"
+    Then I should see the heading "Ironman's basement"
+    And I should see the link "We have some news for the solution as well"
