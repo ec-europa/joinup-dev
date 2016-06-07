@@ -14,7 +14,7 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
   // this depends on their level in the hierarchy.
   protected $bundlePredicate = [
     'http://www.w3.org/2004/02/skos/core#inScheme',
-    'http://www.w3.org/2004/02/skos/core#topConceptOf'
+    'http://www.w3.org/2004/02/skos/core#topConceptOf',
   ];
 
   /**
