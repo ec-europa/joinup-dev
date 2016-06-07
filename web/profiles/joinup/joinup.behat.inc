@@ -9,6 +9,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use \Behat\Gherkin\Node\TableNode;
 use \Drupal\file\Entity\File;
+use Drupal\search_api\Entity\Server;
 
 /**
  * Behat step definitions for testing users.
@@ -180,4 +181,27 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
   }
 
+  /**
+   * Commit the solr index for testing purposes.
+   *
+   * @Then I commit the solr index
+   */
+  public function iCommitTheSolrIndex() {
+    $search_servers = Server::loadMultiple();
+    /** @var \Drupal\search_api\Entity\Server $search_server */
+    foreach ($search_servers as $search_server) {
+      $backend_id = $search_server->getBackendId();
+      if (!$backend_id == 'search_api_solr') {
+        continue;
+      }
+      /** @var \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend $backend */
+      $backend = $search_server->getBackend();
+
+      /** @var \Solarium\Client $solarium_client */
+      $solarium_client = $backend->getSolrConnection();
+      $update = $solarium_client->createUpdate();
+      $update->addCommit(TRUE, TRUE);
+      $solarium_client->update($update);
+    }
+  }
 }

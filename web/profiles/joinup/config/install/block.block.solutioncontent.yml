@@ -5,10 +5,10 @@ dependencies:
     - solution
     - system
   theme:
-    - bartik
+    - joinup_theme
 id: solutioncontent
-theme: bartik
-region: sidebar_first
+theme: joinup_theme
+region: sidebar_left
 weight: -9
 provider: null
 plugin: solution_content_block

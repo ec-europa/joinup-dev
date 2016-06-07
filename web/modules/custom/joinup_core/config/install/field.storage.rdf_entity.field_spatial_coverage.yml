@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  rdf_entity:
+    mapping_target_id: 'http://www.w3.org/ns/dcat#spatial'
+id: rdf_entity.field_spatial_coverage
+field_name: field_spatial_coverage
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
