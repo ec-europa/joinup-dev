@@ -24,6 +24,7 @@ dependencies:
   - joinup_event
   - joinup_licence
   - joinup_news
+  - joinup_search
   - joinup_subscription
   - joinup_user
   - menu_ui
@@ -68,6 +69,7 @@ config_devel:
   - block.block.joinup_theme_solutioncontent
   - block.block.joinup_theme_tools
   - block.block.navigation
+  - block.block.policydomain
   - block.block.seven_breadcrumbs
   - block.block.seven_content
   - block.block.seven_help
@@ -78,6 +80,9 @@ config_devel:
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
   - block.block.solutioncontent
+  - block.block.spatialcoverage
+  - block.block.status
+  - block.block.type
   - core.date_format.fallback
   - core.date_format.html_date
   - core.date_format.html_datetime
@@ -122,14 +127,12 @@ config_devel:
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
+  - og_menu.ogmenu.navigation
   - og.og_membership_type.og_membership_type
   - og.og_role.rdf_entity-collection-administrator
   - og.og_role.rdf_entity-collection-member
   - og.og_role.rdf_entity-collection-non-member
   - og.settings
-  - og_menu.ogmenu.navigation
-  - search_api.index.collections
-  - search_api.server.database_search_server
   - system.theme
   - user.flood
   - user.mail
@@ -139,4 +142,5 @@ config_devel:
   - user.role.moderator
   - user.settings
   - views.view.collections
+  - views.view.search
   - views.view.user_admin_people
