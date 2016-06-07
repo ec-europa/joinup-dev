@@ -204,4 +204,5 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $solarium_client->update($update);
     }
   }
+
 }
