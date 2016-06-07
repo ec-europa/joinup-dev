@@ -13,7 +13,7 @@ Feature: June 2016 demo
     And solutions:
       | title                     | description                                | documentation | moderation | collection   |
       | Avengers initiative       | Gather the strongest into a group.         | text.pdf      | no         | S.H.I.E.L.D. |
-      | Project Hawaii            | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        | S.H.I.E.L.D. |
+      | Project Tahiti            | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        | S.H.I.E.L.D. |
       | Hellicarrier              | Provide a flying fortress as headquarters. | text.pdf      | no         | S.H.I.E.L.D. |
       | Project 'Captain America' | Bring 'Captain america' back into action.  | text.pdf      | yes        | S.H.I.E.L.D. |
     And users:
@@ -26,18 +26,18 @@ Feature: June 2016 demo
       | S.H.I.E.L.D. | Nick Fury | administrator, facilitator, member |
       | x-Men        | Wolverine | facilitator, member                |
       | Avengers     | Wolverine | member                             |
-    # The field_news_parent refers to a parent solution.
     And news content:
       | title                       | field_news_kicker                       | body                                                                                                                                |
       | Phil Coulson is down        | Phil Coulson fell by the hands of Loki. | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                |
       | Phoenix is down             | Wolverine took down Jean Gray.          | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. |
       | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.   | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                |
+    # The field_news_parent refers to a parent solution.
     And news content:
       | title                      | field_news_kicker                         | body                                                                                                        | field_news_parent         |
       | Captain America not dead?  | Captain America found in the ice.         | Captain America's body was found intact and preserved in ice.                                               | Project 'Captain America' |
       | Hellicarrier under attack  | The Hellicarrier was attacked by Loki.    | Loki and his servants have attacked us. Hawkeye took out one engine.                                        | Hellicarrier              |
       | Captain America & Avengers | Captain America to lead the avengers?     | It is S.H.I.E.L.D.'s opinion that someone like Captain America can be a good leader for avengers.           | Avengers initiative       |
-      | Project Hawaii case 1      | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process                                                       | Project Hawaii            |
+      | Project Tahiti case 1      | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process                                                       | Project Tahiti            |
       | Who is Winter soldier?     | Captain America's child friend is alive?  | As it turns out the Hydra's agent-Winter soldier-is no other than Bucky-Captain's America childhood friend. | Project 'Captain America' |
     And custom_page content:
       | title              | body                                                                                                                              |
@@ -81,7 +81,7 @@ Feature: June 2016 demo
     When I click "S.H.I.E.L.D"
     # Solutions belonging to the collection.
     Then I should see the text "Avengers initiative"
-    And I should see the text "Project Hawaii"
+    And I should see the text "Project Tahiti"
     And I should see the text "Hellicarrier"
     And I should see the text "Project 'Captain America'"
     # News belonging to the solution.
@@ -91,7 +91,7 @@ Feature: June 2016 demo
     And I should not see the text "Captain America not dead?"
     And I should not see the text "Hellicarrier under attack"
     And I should not see the text "Captain America & Avengers"
-    And I should not see the text "Project Hawaii case 1"
+    And I should not see the text "Project Tahiti case 1"
     And I should not see the text "Who is Winter soldier?"
     # News of other collections.
     And I should not see the text "Phoenix is down"
@@ -176,7 +176,7 @@ Feature: June 2016 demo
     When I click "S.H.I.E.L.D"
     # Solutions belonging to the collection.
     Then I should see the text "Avengers initiative"
-    And I should see the text "Project Hawaii"
+    And I should see the text "Project Tahiti"
     And I should see the text "Hellicarrier"
     And I should see the text "Project 'Captain America'"
     # News belonging to the solution.
@@ -187,7 +187,7 @@ Feature: June 2016 demo
     And I should not see the text "Captain America not dead?"
     And I should not see the text "Hellicarrier under attack"
     And I should not see the text "Captain America & Avengers"
-    And I should not see the text "Project Hawaii case 1"
+    And I should not see the text "Project Tahiti case 1"
     And I should not see the text "Who is Winter soldier?"
     # News of other collections.
     And I should not see the text "Phoenix is down"
