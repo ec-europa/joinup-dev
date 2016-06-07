@@ -22,131 +22,28 @@ dependencies:
     - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
-    - datetime
     - image
-    - link
-    - options
     - text
-_core:
-  default_config_hash: C3Rv59nDjiXKjolPCLekiwXNkZb80iArN8znamgsu1s
 id: rdf_entity.collection.view_mode_tile
 targetEntityType: rdf_entity
 bundle: collection
 mode: view_mode_tile
 content:
-  field_ar_abstract:
-    weight: 12
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  field_ar_access_url:
-    weight: 2
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  field_ar_affiliates:
-    weight: 10
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_ar_closed:
-    weight: 13
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-  field_ar_contact_information:
-    weight: 5
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_ar_creation_date:
-    weight: 3
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
   field_ar_description:
     weight: 1
-    label: above
-    settings: {  }
+    label: visually_hidden
+    settings:
+      trim_length: 200
     third_party_settings: {  }
-    type: text_default
-  field_ar_elibrary_creation:
-    weight: 14
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
+    type: text_trimmed
   field_ar_logo:
-    weight: 11
-    label: above
+    weight: 2
+    label: visually_hidden
     settings:
       image_style: image_style_collection_logo
       image_link: content
     third_party_settings: {  }
     type: image
-  field_ar_moderation:
-    weight: 15
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-  field_ar_modification_date:
-    weight: 4
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
-  field_ar_owner:
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_policy_domain:
-    weight: 7
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_spatial_coverage:
-    weight: 9
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_topic:
-    weight: 8
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
   label:
     label: hidden
     type: string
@@ -155,5 +52,17 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  field_ar_abstract: true
+  field_ar_access_url: true
+  field_ar_affiliates: true
+  field_ar_closed: true
+  field_ar_contact_information: true
+  field_ar_creation_date: true
+  field_ar_elibrary_creation: true
+  field_ar_moderation: true
+  field_ar_modification_date: true
+  field_ar_owner: true
   field_ar_shared_content: true
-
+  field_policy_domain: true
+  field_spatial_coverage: true
+  field_topic: true
