@@ -6,6 +6,9 @@
  */
 
 use \Drupal\Core\Entity\EntityTypeInterface;
+use \Drupal\node\NodeInterface;
+use \Drupal\Core\Session\AccountInterface;
+use \Drupal\Core\Access\AccessResult;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -21,4 +24,23 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
       $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
     }
   }
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * Interrupts the permissions for updating a node. The permission is not
+ * granted if there are no transitions allowed for the current state of the
+ * node.
+ */
+function joinup_news_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if ($op != 'update' || $node->bundle() != 'news') {
+    return AccessResult::neutral();
+  }
+
+  $allowed_transitions = $node->get('field_news_state')->first()->getTransitions();
+  if (empty($allowed_transitions)) {
+    return AccessResult::forbidden()->addCacheableDependency($node);
+  }
+  return AccessResult::neutral();
 }
