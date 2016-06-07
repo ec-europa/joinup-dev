@@ -4,9 +4,9 @@ package: Custom
 type: theme
 version: 8.1.1
 core: 8.x
-base theme: classy
 #Libraries
 libraries:
+  - joinup_theme/fonts
   - joinup_theme/material-design-lite
   - joinup_theme/global-components
 
