@@ -1,0 +1,16 @@
+uuid: 08a0cb2b-9f36-4a4c-a4dc-4e1115b3a144
+langcode: en
+status: true
+dependencies: {  }
+name: image_style_collection_logo
+label: 'Collection logo'
+effects:
+  44945a7e-eb75-4071-bdae-b0c0e6331dda:
+    uuid: 44945a7e-eb75-4071-bdae-b0c0e6331dda
+    id: image_scale
+    weight: 1
+    data:
+      width: 100
+      height: 100
+      upscale: false
+

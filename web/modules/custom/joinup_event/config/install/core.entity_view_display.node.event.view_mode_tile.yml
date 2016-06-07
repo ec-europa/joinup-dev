@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.view_mode_tile
     - field.field.node.event.body
     - field.field.node.event.field_event_adtl_address_info
     - field.field.node.event.field_event_agenda
@@ -17,83 +18,51 @@ dependencies:
   module:
     - datetime
     - image
-    - link
-    - text
     - user
-id: node.event.default
+_core:
+  default_config_hash: 9-pEl0yXAJ17PBB1bwdPYGg_kscQX40-iZcG5ZjUIj4
+id: node.event.view_mode_tile
 targetEntityType: node
 bundle: event
-mode: default
+mode: view_mode_tile
 content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 101
-    settings: {  }
-    third_party_settings: {  }
-  field_event_adtl_address_info:
-    weight: 107
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-  field_event_agenda:
-    weight: 103
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  field_event_contact_email:
-    weight: 108
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
   field_event_end_date:
-    weight: 106
-    label: above
+    weight: 3
+    label: hidden
     settings:
       format_type: medium
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
   field_event_logo:
-    weight: 104
-    label: above
+    weight: 0
+    label: hidden
     settings:
       image_style: image_style_event_logo
       image_link: content
     third_party_settings: {  }
     type: image
   field_event_short_title:
-    weight: 102
-    label: above
+    weight: 1
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_event_start_date:
-    weight: 105
-    label: above
+    weight: 2
+    label: hidden
     settings:
       format_type: medium
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
-  field_event_web_url:
-    weight: 109
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  links:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
 hidden:
+  body: true
+  field_event_adtl_address_info: true
+  field_event_agenda: true
+  field_event_contact_email: true
+  field_event_web_url: true
+  links: true
   og_group_ref: true
+
