@@ -10,11 +10,14 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use \Behat\Gherkin\Node\TableNode;
 use \Drupal\file\Entity\File;
 use Drupal\search_api\Entity\Server;
+use \Drupal\joinup\Traits\NodeTrait;
 
 /**
  * Behat step definitions for testing users.
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+  use NodeTrait;
+
   /**
    * Test files.
    *
@@ -203,6 +206,23 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $update->addCommit(TRUE, TRUE);
       $solarium_client->update($update);
     }
+  }
+
+  /**
+   * Navigates to the canonical page display of a node entity.
+   *
+   * @param string $bundle
+   *   The type of the node page.
+   * @param string $title
+   *   The title of the node.
+   *
+   * @When (I )go to the :bundle (content ) :title edit screen
+   * @When (I )visit the :bundle (content ) :title edit screen
+   */
+  public function visitCollection($bundle, $title) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title, $bundle);
+    $this->visitPath($node->toUrl('edit-form'));
   }
 
 }
