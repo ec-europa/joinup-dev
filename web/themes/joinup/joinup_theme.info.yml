@@ -13,6 +13,8 @@ libraries:
 
 regions:
   header: Header
+  header_central_menu: Main menu (header)
+  header_profile_menu: Profile menu (header)
   featured: Featured
   sidebar_left: 'Sidebar left'
   content_top: 'Content top'
