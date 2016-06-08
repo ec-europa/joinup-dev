@@ -60,35 +60,37 @@
   <main class="main-container mdl-grid" role="main">
     <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
-    {#{% if page.sidebar_left %}#}
+    {% if page.sidebar_left %}
       <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col" role="complementary">
         <div class="container-fluid">
           {{ page.sidebar_left }}
         </div>
       </aside>
-    {#{% endif %}#}
-
-    {% if page.content_top %}
-      <div class="section section--content-top">
-        <div class="container-fluid">
-          {{ page.content_top }}
-        </div>
-      </div>
     {% endif %}
 
-    <div class="section section--content mdl-cell mdl-cell--8-col">
-      <div class="container-fluid">
-        {{ page.content }}
-      </div>
-    </div>
+    <div class="content-container mdl-cell--8-col">
+      {% if page.content_top %}
+        <div class="section section--content-top">
+          <div class="container-fluid">
+            {{ page.content_top }}
+          </div>
+        </div>
+      {% endif %}
 
-    {% if page.content_bottom %}
-      <div class="section section--content-bottom">
+      <div class="section section--content">
         <div class="container-fluid">
-          {{ page.content_bottom }}
+          {{ page.content }}
         </div>
       </div>
-    {% endif %}
+
+      {% if page.content_bottom %}
+        <div class="section section--content-bottom">
+          <div class="container-fluid">
+            {{ page.content_bottom }}
+          </div>
+        </div>
+      {% endif %}
+    </div>{# /.content-container #}
 
   </main>{# /.main-container #}
 

@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' type='text/css'>
   <link rel="stylesheet" href="../material-design-lite/material.min.css">
-  <link rel="stylesheet" href="css/style.min.css">
+  <link rel="stylesheet" href="../css/style.min.css">
   <link rel="canonical" href="http://yourdomain.com/">
   <link rel="alternate" type="application/rss+xml" title="Joinup" href="http://yourdomain.com/feed.xml" />
 </head>
@@ -28,9 +28,24 @@
       <a href="/" class="header-logo mdl-layout-title" title="Home"></a>
       <div class="mdl-layout-spacer"></div>
       <nav class="header-menu mdl-navigation">
-        <a class="header-menu__link header-menu__link--solutions mdl-navigation__link" href="#"><span class="header-menu__text">Solutions</span></a>
-        <a class="header-menu__link header-menu__link--collections active-trail mdl-navigation__link" href="#"><span class="header-menu__text">Collections</span></a>
-        <a class="header-menu__link header-menu__link--events mdl-navigation__link" href="#"><span class="header-menu__text">Events</span></a>
+        <a class="header-menu__link active-trail mdl-navigation__link" href="#">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--solutions"></span>
+            <span class="header-menu__text">Solutions</span>            
+          </span>
+        </a>
+        <a class="header-menu__link mdl-navigation__link" href="#">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--collections"></span>
+            <span class="header-menu__text">Collections</span>
+          </span>
+        </a>
+        <a class="header-menu__link active-trail mdl-navigation__link" href="#">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--events"></span>
+            <span class="header-menu__text">Events</span>
+          </span>
+        </a>
       </nav>
       <div class="mdl-layout-spacer"></div>
       <div class="search-bar search-bar--header mdl-textfield mdl-js-textfield mdl-textfield--expandable
@@ -86,19 +101,20 @@
     <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
   <div class="container-fluid">
     <div class="region region--sidebar-left">
-      <div class="sidebar-menu">
-        <button id="sidebar-menu"
-                class="sidebar-menu__button mdl-button mdl-js-button mdl-button--icon">
-          <i class="material-icons">menu</i>
-        </button>
-        <nav class="sidebar-menu__container" for="sidebar-menu">
-          <a class="sidebar-menu__item" href="#">About</a>
-          <a class="sidebar-menu__item" href="#">Overview</a>
-          <a class="sidebar-menu__item" href="#">Discussions</a>
-          <a class="sidebar-menu__item" href="#">Members</a>
-          <a class="sidebar-menu__item" href="#">Metrics</a>
-        </nav>
-      </div>
+
+    <div class="sidebar-menu">
+  <button id="sidebar-menu" class="sidebar-menu__button mdl-button mdl-js-button mdl-button--icon">
+    <i class="material-icons">menu</i>
+  </button>
+  <nav class="sidebar-menu__container" for="sidebar-menu">
+    <a class="sidebar-menu__item" href="/about">About</a>
+    <a class="sidebar-menu__item" href="#">Overview</a>
+    <a class="sidebar-menu__item" href="#">Discussions</a>
+    <a class="sidebar-menu__item" href="#">Members</a>
+    <a class="sidebar-menu__item" href="#">Metrics</a>
+  </nav>
+</div>
+
     </div>
   </div>
 </div>
