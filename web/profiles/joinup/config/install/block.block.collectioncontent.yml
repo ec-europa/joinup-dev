@@ -8,7 +8,7 @@ dependencies:
 id: collectioncontent
 theme: joinup_theme
 region: featured
-weight: -8
+weight: -12
 provider: null
 plugin: collection_content_block
 settings:
