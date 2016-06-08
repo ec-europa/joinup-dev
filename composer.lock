@@ -1352,12 +1352,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og_menu.git",
-                "reference": "2eefb6d6c9fc0292ec1007e1bd9c90590d897ae9"
+                "reference": "35a79f26e4c9060dbfb80cd61054191f3d6baeed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/2eefb6d6c9fc0292ec1007e1bd9c90590d897ae9",
-                "reference": "2eefb6d6c9fc0292ec1007e1bd9c90590d897ae9",
+                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/35a79f26e4c9060dbfb80cd61054191f3d6baeed",
+                "reference": "35a79f26e4c9060dbfb80cd61054191f3d6baeed",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1370,7 +1370,7 @@
                 "issues": "https://drupal.org/project/issues/og_menu",
                 "source": "https://cgit.drupalcode.org/og_menu"
             },
-            "time": "2016-04-29 07:19:36"
+            "time": "2016-06-08 15:06:30"
         },
         {
             "name": "drupal/phing-drush-task",
