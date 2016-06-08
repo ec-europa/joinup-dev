@@ -1,0 +1,32 @@
+// Component
+// --------------------------------------------------
+.mdl-textfield
+  font-size: $font-size-large
+
+// Elements
+// --------------------------------------------------
+.mdl-textfield__input,
+.mdl-textfield__label
+  font-size: $font-size-large
+
+.mdl-textfield__input
+  padding-top: 12px
+  padding-bottom: 12px
+
+.mdl-textfield__label
+  top: 30px
+
+// Modifiers
+// --------------------------------------------------
+
+// States
+// --------------------------------------------------
+.mdl-textfield--floating-label.is-focused,
+.mdl-textfield--floating-label.is-dirty
+  .mdl-textfield__label
+    font-size: $font-size-small
+    color: $color-blue-medium
+
+.mdl-textfield--floating-label.is-focused
+  .mdl-textfield__label:after
+    background-color: $color-blue-medium
