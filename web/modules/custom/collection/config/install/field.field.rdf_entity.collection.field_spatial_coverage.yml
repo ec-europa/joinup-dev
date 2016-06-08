@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_spatial_coverage
     - rdf_entity.rdfentity.collection
+    - taxonomy.vocabulary.spatial
 id: rdf_entity.collection.field_spatial_coverage
 field_name: field_spatial_coverage
 entity_type: rdf_entity

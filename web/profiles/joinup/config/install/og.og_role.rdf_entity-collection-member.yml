@@ -12,7 +12,7 @@ group_bundle: collection
 group_id: null
 permissions:
   - 'accept facilitator invitation'
-  - 'unsubscribe'
+  - unsubscribe
   - 'update own custom_page node'
   - 'delete own custom_page node'
   - 'create document node'

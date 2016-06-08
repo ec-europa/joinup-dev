@@ -72,7 +72,20 @@ display:
       style:
         type: html_list
       row:
-        type: fields
+        type: search_api
+        options:
+          view_modes:
+            'entity:node':
+              custom_page: default
+              document: default
+              event: view_mode_tile
+              news: default
+            'entity:rdf_entity':
+              asset_distribution: default
+              asset_release: default
+              collection: view_mode_tile
+              licence: default
+              solution: view_mode_tile
       fields:
         search_api_language:
           table: search_api_index_collections

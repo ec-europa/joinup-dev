@@ -1,0 +1,15 @@
+langcode: en
+status: true
+dependencies: {  }
+name: image_style_event_logo
+label: 'Event logo'
+effects:
+  593d14fc-d5c4-4e3c-b6aa-9514a4b4cfc8:
+    uuid: 593d14fc-d5c4-4e3c-b6aa-9514a4b4cfc8
+    id: image_scale
+    weight: 1
+    data:
+      width: 100
+      height: 100
+      upscale: false
+
