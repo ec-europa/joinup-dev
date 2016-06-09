@@ -1,9 +1,11 @@
 <?php
-use Drupal\image\Entity\ImageStyle;
 /**
  * @file
  * Functions to support theming in the Joinup theme.
  */
+
+use Drupal\image\Entity\ImageStyle;
+use \Drupal\file\Entity\File;
 
 /**
  * Implements hook_preprocess_page().
@@ -32,7 +34,7 @@ function joinup_theme_preprocess_menu(&$variables) {
   if ($photo) {
     $reference = $photo->getValue();
     /** @var \Drupal\file\Entity\File $file */
-    $file = \Drupal\file\Entity\File::load($reference['target_id']);
+    $file = File::load($reference['target_id']);
     $uri = $file->getFileUri();
     $url = ImageStyle::load('profile_icon')->buildUrl($uri);
     $variables['profile_icon'] = $url;
