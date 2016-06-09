@@ -1,5 +1,5 @@
 <?php
-
+use Drupal\image\Entity\ImageStyle;
 /**
  * @file
  * Functions to support theming in the Joinup theme.
@@ -9,8 +9,32 @@
  * Implements hook_preprocess_page().
  */
 function joinup_theme_preprocess_page(&$variables) {
+  // Set page title.
   $request = \Drupal::request();
   $route_match = \Drupal::routeMatch();
   $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
   $variables['title'] = $title;
+}
+
+/**
+ * Implements hook_theme_preprocess_menu().
+ */
+function joinup_theme_preprocess_menu(&$variables) {
+  if ($variables['menu_name'] != 'account') {
+    return;
+  }
+  // Set the account logo.
+  $account = \Drupal::currentUser()->getAccount();
+  $user = user_load($account->id(), TRUE);
+  /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $photo */
+  $photo = $user->get('field_user_photo')->first();
+  $variables['profile_icon'] = '/themes/joinup/images/user-profile-icon.png';
+  if ($photo) {
+    $reference = $photo->getValue();
+    /** @var \Drupal\file\Entity\File $file */
+    $file = \Drupal\file\Entity\File::load($reference['target_id']);
+    $uri = $file->getFileUri();
+    $url = ImageStyle::load('profile_icon')->buildUrl($uri);
+    $variables['profile_icon'] = $url;
+  }
 }

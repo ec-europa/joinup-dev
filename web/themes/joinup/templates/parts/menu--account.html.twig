@@ -18,20 +18,19 @@
  *   - in_active_trail: TRUE if the link is in the active trail.
  */
 #}
-{% import _self as menus %}
 
+{% import _self as menus %}
 {#
   We call a macro which calls itself to render the full tree.
   @see http://twig.sensiolabs.org/doc/tags/macro.html
 #}
-{{ menus.menu_links(items, attributes, 0) }}
+{{ menus.menu_links(items, attributes, 0, profile_icon) }}
 
-{% macro menu_links(items, attributes, menu_level) %}
-  {% import _self as menus %}
+{% macro menu_links(items, attributes, menu_level, profile_icon) %}
   {% if items %}
     <div class="login-menu">
       <div id="login-menu__button" class="login-menu__button mdl-button mdl-js-button">
-        <img src="/themes/joinup/images/login-icon.png" />
+        <img style="border-radius: 20px; margin: 10px 0; padding: 0;" src="{{ profile_icon }}" />
       </div>
       <ul class="login-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="login-menu__button">
         {% for item in items %}
