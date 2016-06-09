@@ -7,8 +7,8 @@ dependencies:
     - joinup_theme
 id: joinup_add_content
 theme: joinup_theme
-region: sidebar_left
-weight: -10
+region: featured
+weight: -12
 provider: null
 plugin: add_content_block
 settings:

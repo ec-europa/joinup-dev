@@ -10,7 +10,7 @@ dependencies:
 id: joincollectionblock
 theme: joinup_theme
 region: sidebar_left
-weight: -11
+weight: -10
 provider: null
 plugin: join_collection_block
 settings:

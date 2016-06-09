@@ -7,8 +7,8 @@ dependencies:
     - joinup_theme
 id: collectioncontent
 theme: joinup_theme
-region: featured
-weight: -12
+region: sidebar_left
+weight: -11
 provider: null
 plugin: collection_content_block
 settings:
