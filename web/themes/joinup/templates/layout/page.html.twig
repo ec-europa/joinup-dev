@@ -50,11 +50,7 @@
   </header>
 
   {% if page.featured %}
-    <div class="section section--featured">
-      <div class="container-fluid">
-        {{ page.featured }}
-      </div>
-    </div>
+    {% include directory ~ '/templates/parts/featured.html.twig' %}
   {% endif %}
 
   <main class="main-container mdl-grid" role="main">
