@@ -41,7 +41,7 @@ Feature: Collections menu
     # When you hover over the menu, you will notice a little pencil icon
     # appearing at the end right of the region. Click on this icon to show the
     # "Edit menu" link.
-    Then I click the contextual link "Edit menu" in the "Header" region
+    Then I click the contextual link "Edit menu" in the "Left sidebar" region
     # To run on Selenium, uncomment next line:
     # Then I press the "Show row weights" button
     Then I select "5" from "Weight for Mines of Moria"
