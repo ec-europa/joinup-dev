@@ -3,6 +3,7 @@ status: true
 dependencies:
   module:
     - node
+    - state_machine
 id: node.field_news_state
 field_name: field_news_state
 entity_type: node

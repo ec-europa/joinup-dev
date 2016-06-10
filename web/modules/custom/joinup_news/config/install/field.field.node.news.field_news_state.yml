@@ -4,6 +4,8 @@ dependencies:
   config:
     - field.storage.node.field_news_state
     - node.type.news
+  module:
+    - state_machine
 id: node.news.field_news_state
 field_name: field_news_state
 entity_type: node
@@ -12,7 +14,9 @@ label: State
 description: ''
 required: true
 translatable: false
-default_value: {  }
+default_value:
+  -
+    value: __new__
 default_value_callback: ''
 settings:
   workflow: news_workflow
