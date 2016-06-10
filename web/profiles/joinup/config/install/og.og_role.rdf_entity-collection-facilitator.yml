@@ -25,6 +25,8 @@ permissions:
   - 'delete any document node'
   - 'update any event node'
   - 'delete any event node'
+  - 'create rdf entity news'
   - 'update any news node'
   - 'delete any news node'
+  - 'view any unpublished news content'
 role_type: standard
