@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_news\Guard;
 
+use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\state_machine\Guard\GuardInterface;
@@ -26,6 +27,11 @@ class FulfillmentGuard implements GuardInterface {
   const NON_MODERATED = 0;
 
   /**
+   * Virtual state.
+   */
+  const NON_STATE = '__new__';
+
+  /**
    * {@inheritdoc}
    *
    * We need to override default transitions allowed because this is also
@@ -35,8 +41,14 @@ class FulfillmentGuard implements GuardInterface {
    * roles by the system and the organic groups are checked.
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    $from_state = $entity->field_news_state->first()->value;
-    $parent = $this->getParent($entity);
+    $to_state = $transition->getToState()->getId();
+    // Disable virtual state.
+    if ($to_state == self::NON_STATE) {
+      return FALSE;
+    }
+
+    $from_state = $this->getState($entity);
+    $parent = joinup_news_get_parent($entity);
 
     $is_moderated = self::MODERATED;
     if ($parent) {
@@ -44,19 +56,19 @@ class FulfillmentGuard implements GuardInterface {
         $parent->field_ar_moderation->first()->value :
         $parent->field_is_moderation->first()->value;
     }
-    $to_state = $transition->getToState()->getId();
     $allowed_conditions = \Drupal::config('joinup_news.settings')->get('transitions');
 
     // Some transitions are not allowed per parent's moderation.
     // Check for the transitions allowed.
+    // @see: joinup_news.settings.yml
     if (!isset($allowed_conditions[$is_moderated][$to_state][$from_state])) {
       return FALSE;
     }
 
-    // This method called whenever the transitions are checked even outside the
-    // entity CRUD forms. Cases like this is e.g. when trying to edit the
-    // settings of the field. For this reason, variables regarding the parent
-    // entity are checked.
+    // This Guard class's method called whenever the transitions are checked
+    // even outside the entity CRUD forms. Cases like this is e.g. when trying
+    // to edit the settings of the field.
+    // In these cases, there is no parent entity so we need to check for it.
     if ($parent) {
       // Check if the user has one of the allowed system roles.
       $authorized_roles = $allowed_conditions[$is_moderated][$to_state][$from_state];
@@ -74,29 +86,33 @@ class FulfillmentGuard implements GuardInterface {
   }
 
   /**
-   * Returns the owner entity of this node if it exists.
+   * Retrieve the initial state value of the entity.
    *
-   * The news entity can belong to a collection or a solution, depending on
-   * how it was created. This function will return the parent of the entity.
+   * The state_machine module uses a protected property called initialValue to
+   * get the initial state which is inaccessible. During an entity update, the
+   * typedDataManager attempts to validate the field but the constraint again
+   * calls for the Guard to check the allowed states.
+   * The issue is that the entity object already carries the new value
+   * at this point, so it attempts to check a to_state to to_state transition.
+   * In order to check the initial value, we get the unchanged version of the
+   * object from the database.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The news content entity.
+   * @param \Drupal\node\NodeInterface $entity
+   *    The node entity.
    *
-   * @return \Drupal\rdf_entity\RdfInterface|null
-   *    The parent of the entity. This can be a collection or a solution.
-   *    If there is no parent found, return NULL.
+   * @return string
+   *    The machine name value of the state.
+   *
+   * @see https://www.drupal.org/node/2745673
    */
-  protected function getParent(EntityInterface $entity) {
-    $parent = NULL;
-    if (!empty($entity->og_group_ref->first()->target_id)) {
-      /** @var \Drupal\rdf_entity\RdfInterface $parent */
-      $parent = Rdf::load($entity->og_group_ref->first()->target_id);
+  protected function getState(NodeInterface $entity) {
+    if ($entity->isNew()) {
+      return $entity->field_news_state->first()->value;
     }
-    if (!empty($entity->field_news_parent->first()->target_id)) {
-      /** @var \Drupal\rdf_entity\RdfInterface $parent */
-      $parent = Rdf::load($entity->field_news_parent->first()->target_id);
+    else {
+      $unchanged_entity = \Drupal::entityTypeManager()->getStorage('node')->loadUnchanged($entity->id());
+      return $unchanged_entity->field_news_state->first()->value;
     }
-    return $parent;
   }
 
 }
