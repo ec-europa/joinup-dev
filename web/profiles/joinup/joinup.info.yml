@@ -104,6 +104,7 @@ config_devel:
   - core.entity_view_display.user.user.default
   - core.entity_view_mode.node.full
   - core.entity_view_mode.user.full
+  - ds.settings
   - editor.editor.content_editor
   - field.field.ogmenu_instance.navigation.og_group_ref
   - field.field.user.user.field_user_family_name
