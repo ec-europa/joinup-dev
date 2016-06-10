@@ -1,7 +1,9 @@
 {% if content %}
-  <a id="add-content" href="#" class="plus-button mdl-button mdl-js-button mdl-button--fab">
-    <i class="plus-button__icon material-icons">Add</i>
-  </a>
+  <div id="add-content" class="button--circle-wrapper">
+    <button href="#" class="button--circle mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
+      <span class="icon icon--plus"></span>
+    </button>
+  </div>
     <ul class="add-content-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="add-content">
     {% for list in content %}
       {% for item in list %}
