@@ -14,60 +14,71 @@
   background: #fff
 
 .listing__field
-  padding-left: 20px
   padding-right: 20px
   padding-bottom: 10px
+  padding-left: 20px
 
 .listing__image
-  max-width: 100%
-  height: auto
-  width: auto
   position: relative
   top: 50%
+  width: auto
+  max-width: 100%
+  height: auto
   -webkit-transform: translateY(-50%)
   -ms-transform: translateY(-50%)
   transform: translateY(-50%)
 
 .listing__avatar
-  margin-top: -20px
   z-index: 10
+  margin-top: -20px
 
 .listing__title
-  color: $color-blue-dark
   font-size: 16px
   font-weight: 600
   margin: 0
+  color: $color-blue-dark
 
 .listing__teaser
-  color: $color-grey-medium
   font-size: 14px
   font-weight: 300
   margin: 0
+  color: $color-grey-medium
 
-.listing__icons
+.listing__stats
+  position: absolute
+  bottom: 0
   width: 100%
   text-align: right
 
-.listing__icons-item
+.listing__stat
   display: inline-block
-  padding-right: 25px
-  color: $color-blue-dark
-  font-size: 12px
-  font-weight: 600
+  vertical-align: middle
+
+.listing__icon,
+.listing__text
+  display: inline-block
+  vertical-align: middle
+
+.listing__icon
+  color: $color-grey-medium
+  +icon-size(26px)
+
+.listing__text
+  font-size: $font-size-xsmall
+  color: $color-blue-default
+  font-weight: $font-weight-medium
 
 // Modifiers
 // --------------------------------------------------
 .listing__field--image-wrapper
   position: relative
-  text-align: center
   height: 140px
   padding: 0
+  text-align: center
 
-.listing__icons-item--solutions
-  background: url('../images/solutions-tile-icon.png') right center no-repeat
+.listing__card--stats-container
+  padding-bottom: 40px
+  height: 100%
 
-.listing__icons-item--members
-  background: url('../images/members-tile-icon.png') right center no-repeat
-
-.listing__icons-item--like
-  background: url('../images/like-tile-icon.png') right center no-repeat
+// Dependiencies
+// --------------------------------------------------
