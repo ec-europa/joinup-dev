@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @file
+ * Provides functionality for the news content entity.
+ */
+
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\RdfInterface;
 use \Drupal\Core\Entity\EntityTypeInterface;
 use \Drupal\Core\Entity\EntityInterface;
 use \Drupal\Core\Form\FormStateInterface;
@@ -42,7 +49,7 @@ function joinup_news_node_access(EntityInterface $node, $op, AccountInterface $a
   // Check if the user is a member and has the 'view any unpublished content'.
   if ($op == 'view' && $node->bundle() == 'news' && !$node->isPublished()) {
     $parent = joinup_news_get_parent($node);
-    if ($parent instanceof \Drupal\rdf_entity\RdfInterface) {
+    if ($parent instanceof RdfInterface) {
       if (OgAccess::userAccessEntity('view any unpublished content', $parent, $account)->isAllowed()) {
         return OgAccess::userAccessEntity('view any unpublished content', $parent, $account);
       }
@@ -134,11 +141,11 @@ function joinup_news_get_parent(EntityInterface $entity) {
   $parent = NULL;
   if (!empty($entity->og_group_ref->first()->target_id)) {
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    $parent = \Drupal\rdf_entity\Entity\Rdf::load($entity->og_group_ref->first()->target_id);
+    $parent = Rdf::load($entity->og_group_ref->first()->target_id);
   }
   if (!empty($entity->field_news_parent->first()->target_id)) {
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    $parent = \Drupal\rdf_entity\Entity\Rdf::load($entity->field_news_parent->first()->target_id);
+    $parent = Rdf::load($entity->field_news_parent->first()->target_id);
   }
   return $parent;
 }

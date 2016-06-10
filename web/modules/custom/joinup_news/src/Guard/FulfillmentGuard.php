@@ -4,7 +4,6 @@ namespace Drupal\joinup_news\Guard;
 
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
