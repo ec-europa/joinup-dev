@@ -59,19 +59,4 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     throw new \Exception("The custom page '$title' is not associated with collection '{$collection->label()}'.");
   }
 
-  /**
-   * Navigates to the canonical page display of a custom page.
-   *
-   * @param string $title
-   *   The name of the custom page.
-   *
-   * @When (I )go to the :title custom page
-   * @When (I )visit the :title custom page
-   */
-  public function visitCustomPage($title) {
-    /** @var \Drupal\node\Entity\Node $node */
-    $node = $this->getNodeByTitle($title, 'custom_page');
-    $this->visitPath($node->url());
-  }
-
 }

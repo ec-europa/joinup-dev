@@ -1,7 +1,7 @@
 <?php
 
 namespace Drupal\joinup\Traits;
-use Drupal\node\Entity\Node;
+
 
 /**
  * Helper methods when dealing with Nodes.
@@ -36,7 +36,9 @@ trait NodeTrait {
       throw new \InvalidArgumentException("The '$bundle' with the name '$title' does not exist.");
     }
 
-    return Node::load(reset($result));
+    // Reload from database to avoid caching issues and get latest version.
+    $id = reset($result);
+    return \Drupal::entityTypeManager()->getStorage('node')->loadUnchanged($id);
   }
 
 }

@@ -174,13 +174,49 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Checks whether the select field does not have the given option.
+   * Checks that the given select field has the given options.
    *
-   * @Given (the ):select field does not have the :option option
+   * To do this we extract the text of the field which is the values of the
+   * select box concatenated. Then we check if the value is in this string.
+   *
+   * @param string $select
+   *    The name of the field element.
+   * @param string $options
+   *    The options to be checked separated by comma. Only labels are accepted.
+   *
+   * @throws Exception
+   *    Throws an exception when a value does not exists.
+   *
+   * @Given (the ):select field has the :options option(s)
    */
-  public function checkSelectOption($select, $option) {
-    if ($this->getSession()->getPage()->findField($select)->hasSelect($option)) {
-      throw new \Exception("The option {$option} should not exist in the {$select} field but was found.");
+  public function checkSelectOption($select, $options) {
+    $values = $this->getSession()->getPage()->findField($select)->getText();
+    foreach (explode(',', $options) as $option) {
+      if (strpos($values, trim($option)) === FALSE) {
+        throw new \Exception("The option {$option} should exist in the {$select} field but was not found.");
+      }
+    }
+  }
+
+  /**
+   * Checks that the given select field does not have the given values.
+   *
+   * @param string $select
+   *    The name of the field element.
+   * @param string $options
+   *    The options to be checked separated by comma.
+   *
+   * @throws Exception
+   *    Throws an exception when a value exists.
+   *
+   * @Given (the ):select field does not have the :options option(s)
+   */
+  public function checkSelectOptionInverse($select, $options) {
+    $values = $this->getSession()->getPage()->findField($select)->getText();
+    foreach (explode(',', $options) as $option) {
+      if (strpos($values, trim($option)) !== FALSE) {
+        throw new \Exception("The option {$option} should not exist in the {$select} field but was found.");
+      }
     }
   }
 
@@ -222,7 +258,49 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function visitCollection($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
-    $this->visitPath($node->toUrl('edit-form'));
+    $this->visitPath($node->url('edit-form'));
+  }
+
+  /**
+   * Checks if a content entity is published.
+   *
+   * @param string $bundle
+   *   The node bunlde.
+   * @param string $title
+   *   The node title.
+   *
+   * @throws \Exception
+   *   Throws an exception if the content is not published.
+   *
+   * @Then the :title :bundle (content )should be published
+   */
+  public function nodePublished($bundle, $title) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title, $bundle);
+    if (!$node->isPublished()) {
+      throw new \Exception("$title content should be published but is not.");
+    }
+  }
+
+  /**
+   * Checks if a content entity is published.
+   *
+   * @param string $bundle
+   *   The node bunlde.
+   * @param string $title
+   *   The node title.
+   *
+   * @throws \Exception
+   *   Throws an exception if the content is not published.
+   *
+   * @Then the :title :bundle (content )should not be published
+   */
+  public function nodeNotPublished($bundle, $title) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title, $bundle);
+    if ($node->isPublished()) {
+      throw new \Exception("$title content should be published but is not.");
+    }
   }
 
 }
