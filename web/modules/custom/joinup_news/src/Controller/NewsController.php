@@ -4,6 +4,7 @@ namespace Drupal\joinup_news\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\og\Og;
 use Drupal\og\OgAccess;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -50,7 +51,7 @@ class NewsController extends ControllerBase {
       if ($this->currentUser()->hasPermission('create rdf entity news')) {
         return AccessResult::allowed();
       }
-      if (OgAccess::userAccess($rdf_entity, 'create rdf entity news')->isAllowed()) {
+      if (Og::isMember($rdf_entity, $this->currentUser()) && OgAccess::userAccess($rdf_entity, 'create rdf entity news')->isAllowed()) {
         return AccessResult::allowed();
       }
     }
@@ -76,7 +77,6 @@ class NewsController extends ControllerBase {
     return $this->entityTypeManager()->getStorage('node')->create([
       'type' => 'news',
       $field => $rdf_entity->id(),
-      'field_news_state' => 'draft',
     ]);
   }
 
