@@ -29,32 +29,34 @@ transitions:
 #moderation: 0|post-moderated.
   0:
     draft:
-      draft:
+      __new__:
         - moderator
         - rdf_entity-collection-member
     proposed:
-      draft:
-        - moderator
-        - rdf_entity-collection-member
       proposed:
         - moderator
-        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
       validated:
         - moderator
-        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
       in_assessment:
         - moderator
-        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
     validated:
+      __new__:
+        - moderator
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
       draft:
         - moderator
         - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
       proposed:
         - moderator
-        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
       validated:
         - moderator
-        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
     in_assessment:
       validated:
         - moderator
@@ -63,23 +65,29 @@ transitions:
 #moderation: 1|pre-moderated.
   1:
     draft:
-      draft:
+      __new__:
         - moderator
         - rdf_entity-collection-member
     proposed:
+      __new__:
+        - moderator
+        - rdf_entity-collection-member
       draft:
         - moderator
         - rdf_entity-collection-member
       proposed:
         - moderator
-        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
       validated:
         - moderator
-        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
       in_assessment:
         - moderator
-        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
     validated:
+      __new__:
+        - moderator
+        - rdf_entity-collection-facilitator
       draft:
         - moderator
         - rdf_entity-collection-facilitator
@@ -87,6 +95,9 @@ transitions:
         - moderator
         - rdf_entity-collection-facilitator
       validated:
+        - moderator
+        - rdf_entity-collection-facilitator
+      deletion_request:
         - moderator
         - rdf_entity-collection-facilitator
     in_assessment:

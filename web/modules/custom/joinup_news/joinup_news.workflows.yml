@@ -1,8 +1,17 @@
+# In the following workflow we have added one 'virtual' state called new.
+#
+# This state will be used for when the entity is being created. In order for the state_machine module to ensure that
+# there is at least one option for the field, it forces the first available state and checks it's available transitions.
+# Since we are implementing our own permission schema, we are removing the default value and we are only allowing our
+# desired target states.
+# The virtual state allowes to handle the initial values during a node create.
 news_workflow:
   id: news_workflow
   label: "Default"
   group: news
   states:
+    __new__:
+      label: New
     draft:
       label: Draft
     proposed:
@@ -14,13 +23,17 @@ news_workflow:
     in_assessment:
       label: In assessment
   transitions:
+    draft:
+      label: Create
+      from: [__new__]
+      to: draft
     propose:
       label: Propose
-      from: [draft, validated, in_assessment, proposed]
+      from: [__new__, draft, validated, in_assessment, proposed]
       to: proposed
     validate:
       label: Validate
-      from: [draft, validated, proposed, deletion_request]
+      from: [__new__, draft, validated, proposed, deletion_request]
       to: validated
     report:
       label: Report
