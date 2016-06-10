@@ -23,10 +23,10 @@ use Drupal\rdf_entity\Entity\Rdf;
 class CollectionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use FileTrait;
-  use RandomGeneratorTrait;
-  use RdfEntityTrait;
   use NodeTrait;
   use OgMenuTrait;
+  use RandomGeneratorTrait;
+  use RdfEntityTrait;
 
   /**
    * Test collections.

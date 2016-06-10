@@ -92,10 +92,10 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // the block configuration). This also means we have to take care of the
     // caching ourselves.
     /** @var \Drupal\Core\Plugin\Context\Context[] $collection_contexts */
-    $collection_contexts = $this->collectionContext->getRuntimeContexts(['collection']);
-    if ($collection_contexts && $collection_contexts['collection']->hasContextValue()) {
+    $collection_contexts = $this->collectionContext->getRuntimeContexts(['og']);
+    if ($collection_contexts && $collection_contexts['og']->hasContextValue()) {
       $page_url = Url::fromRoute('custom_page.collection_custom_page.add', [
-        'rdf_entity' => $collection_contexts['collection']->getContextValue()
+        'rdf_entity' => $collection_contexts['og']->getContextValue()
           ->id(),
       ]);
       if ($page_url->access()) {
@@ -108,7 +108,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       }
 
       $solution_url = Url::fromRoute('solution.collection_solution.add', [
-        'rdf_entity' => $collection_contexts['collection']->getContextValue()
+        'rdf_entity' => $collection_contexts['og']->getContextValue()
           ->id(),
       ]);
       if ($solution_url->access()) {
@@ -138,12 +138,12 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       }
     }
 
-    if ($collection_contexts && $collection_contexts['collection']->hasContextValue()
+    if ($collection_contexts && $collection_contexts['og']->hasContextValue()
       || $solution_contexts && $solution_contexts['solution']->hasContextValue()
     ) {
       $id = NULL;
-      if ($collection_contexts['collection']->hasContextValue()) {
-        $id = $collection_contexts['collection']->getContextValue()->id();
+      if ($collection_contexts['og']->hasContextValue()) {
+        $id = $collection_contexts['og']->getContextValue()->id();
       }
       if ($solution_contexts['solution']->hasContextValue()) {
         $id = $solution_contexts['solution']->getContextValue()->id();

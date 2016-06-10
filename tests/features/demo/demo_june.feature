@@ -84,10 +84,10 @@ Feature: June 2016 demo
     And I should see the text "Project Tahiti"
     And I should see the text "Hellicarrier"
     And I should see the text "Project 'Captain America'"
-    # News belonging to the solution.
+    # News belonging to the collection.
     And I should see the text "Phil Coulson is down"
     And I should see the text "S.H.I.E.L.D. is infiltrated"
-    # News from solutions.
+    # News belonging to a solution.
     And I should not see the text "Captain America not dead?"
     And I should not see the text "Hellicarrier under attack"
     And I should not see the text "Captain America & Avengers"
