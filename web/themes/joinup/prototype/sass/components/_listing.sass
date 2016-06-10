@@ -9,28 +9,33 @@
 
 // Elements
 // --------------------------------------------------
+.listing__card
+  height: 100%
+
 .listing__item
   min-width: 210px
   background: #fff
 
-.listing__field
-  padding-right: 20px
-  padding-bottom: 10px
-  padding-left: 20px
-
 .listing__image
   position: relative
-  top: 50%
-  width: auto
-  max-width: 100%
-  height: auto
-  -webkit-transform: translateY(-50%)
-  -ms-transform: translateY(-50%)
-  transform: translateY(-50%)
+  height: 140px
+  text-align: center
+  img
+    position: relative
+    top: 50%
+    width: auto
+    max-width: 100%
+    height: auto
+    -webkit-transform: translateY(-50%)
+    -ms-transform: translateY(-50%)
+    transform: translateY(-50%)
 
-.listing__avatar
-  z-index: 10
-  margin-top: -20px
+.listing__metadata,
+.listing__wrapper
+  padding: 20px
+
+.listing__field
+  margin-bottom: 10px
 
 .listing__title
   font-size: 16px
@@ -46,8 +51,11 @@
 
 .listing__stats
   position: absolute
+  right: 0
   bottom: 0
+  left: 0
   width: 100%
+  padding: 0 10px
   text-align: right
 
 .listing__stat
@@ -65,23 +73,43 @@
 
 .listing__text
   font-size: $font-size-xsmall
-  color: $color-blue-default
   font-weight: $font-weight-medium
+  color: $color-blue-default
 
 // Modifiers
 // --------------------------------------------------
-.listing__field--image-wrapper
-  position: relative
-  height: 140px
-  padding: 0
-  text-align: center
-
 .listing__card--stats-container
-  padding-bottom: 40px
   height: 100%
+  padding-bottom: 20px
 
-.listing__field--top-padding
-  padding-top: 10px
+.listing__fields--bottom-aligned
+  position: absolute
+  right: 20px
+  bottom: 20px
+  left: 20px
+  .listing__field:last-of-type
+    margin-bottom: 0
 
 // Dependiencies
 // --------------------------------------------------
+.listing__item--newsletter
+  background-color: $color-blue-medium
+  color: #fff
+  h3
+    margin-top: 0
+  .mdl-card
+    background-color: $color-blue-medium
+  .mdl-textfield__input
+    border-bottom-color: #fff
+  .mdl-textfield__input,
+  .mdl-textfield__label
+    color: #fff
+    opacity: 0.5
+  .mdl-textfield--floating-label.is-focused,
+  .mdl-textfield--floating-label.is-dirty
+    .mdl-textfield__input,
+    .mdl-textfield__label
+      color: #fff
+      opacity: 1
+  .mdl-textfield__label:after
+    background-color: #fff !important
