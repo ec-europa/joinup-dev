@@ -45,6 +45,7 @@ dependencies:
   - search_api
   - search_api_db
   - views
+  - view_unpublished
 
 themes:
   - seven
