@@ -30,7 +30,7 @@ visibility:
     collections: true
     negate: false
     context_mapping:
-      collection: '@collection.collection_route_context:collection'
+      og: '@collection.collection_route_context:og'
   other_facet:
     id: other_facet
     facets: ''

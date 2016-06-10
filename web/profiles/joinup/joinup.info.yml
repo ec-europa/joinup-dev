@@ -50,8 +50,6 @@ themes:
   - joinup_theme
 
 config_devel:
-  - block.block.collectioncontent
-  - block.block.joincollectionblock
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
   - block.block.joinup_theme_branding
@@ -79,7 +77,6 @@ config_devel:
   - block.block.seven_page_title
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
-  - block.block.solutioncontent
   - block.block.spatialcoverage
   - block.block.status
   - block.block.type
