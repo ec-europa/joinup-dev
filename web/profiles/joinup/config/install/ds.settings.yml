@@ -1,0 +1,11 @@
+disabled: false
+field_template: true
+ft-default: default
+ft-show-colon: false
+classes:
+  region:
+    - listing__metadata
+    - listing__card
+    - mdl-card
+    - listing__field--image-wrapper
+  field: {  }

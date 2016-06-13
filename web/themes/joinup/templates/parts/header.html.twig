@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <div class="region region--header mdl-layout__header-row">
+    <a href="/" class="header-logo mdl-layout-title" title="Home"></a>
+    <div class="mdl-layout-spacer"></div>
+    {{ page.header_central_menu }}
+    <div class="mdl-layout-spacer"></div>
+    <div class="search-bar search-bar--header mdl-textfield mdl-js-textfield mdl-textfield--expandable
+    mdl-textfield--floating-label mdl-textfield--align-right">
+      <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon"
+      for="search-bar__input">
+      <i class="search-bar__icon material-icons"></i>
+      </label>
+      <div class="search-bar__input-container mdl-textfield__expandable-holder">
+        <input class="search-bar__input mdl-textfield__input" type="text" name="search"
+        id="search-bar__input">
+      </div>
+    </div>
+
+      {{ page.header_profile_menu }}
+  </div>
+</div>
