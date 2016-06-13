@@ -4,6 +4,7 @@ dependencies:
   config:
     - search_api.index.collections
   module:
+    - joinup
     - search_api
 id: search
 label: Search
@@ -61,7 +62,11 @@ display:
             previous: ‹‹
             next: ››
       style:
-        type: html_list
+        type: tiles
+        options:
+          row_class: ''
+          default_row_class: true
+          uses_fields: false
       row:
         type: search_api
         options:

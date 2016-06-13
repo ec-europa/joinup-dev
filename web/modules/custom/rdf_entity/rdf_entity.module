@@ -280,3 +280,20 @@ function rdf_entity_entity_insert(EntityInterface $entity) {
       ->save();
   }
 }
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function rdf_entity_theme_suggestions_rdf_entity(array $variables) {
+  $suggestions = array();
+  $rdf_entity = $variables['elements']['#rdf_entity'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'rdf_entity__' . $sanitized_view_mode;
+  $suggestions[] = 'rdf_entity__' . $rdf_entity->bundle();
+  $suggestions[] = 'rdf_entity__' . $rdf_entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'rdf_entity__' . $rdf_entity->id();
+  $suggestions[] = 'rdf_entity__' . $rdf_entity->id() . '__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
