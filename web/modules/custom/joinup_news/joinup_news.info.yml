@@ -7,6 +7,7 @@ package: Joinup
 config_devel:
   - core.entity_form_display.node.news.default
   - core.entity_view_display.node.news.default
+  - core.entity_view_display.node.news.view_mode_tile
   - field.field.node.news.body
   - field.field.node.news.field_news_kicker
   - field.field.node.news.field_news_parent

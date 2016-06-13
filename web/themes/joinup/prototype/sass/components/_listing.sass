@@ -9,65 +9,107 @@
 
 // Elements
 // --------------------------------------------------
+.listing__card
+  height: 100%
+
 .listing__item
   min-width: 210px
   background: #fff
 
-.listing__field
-  padding-left: 20px
-  padding-right: 20px
-  padding-bottom: 10px
-
 .listing__image
-  max-width: 100%
-  height: auto
-  width: auto
   position: relative
-  top: 50%
-  -webkit-transform: translateY(-50%)
-  -ms-transform: translateY(-50%)
-  transform: translateY(-50%)
+  height: 140px
+  text-align: center
+  img
+    position: relative
+    top: 50%
+    width: auto
+    max-width: 100%
+    height: auto
+    -webkit-transform: translateY(-50%)
+    -ms-transform: translateY(-50%)
+    transform: translateY(-50%)
 
-.listing__avatar
-  margin-top: -20px
-  z-index: 10
+.listing__metadata,
+.listing__wrapper
+  padding: 20px
+
+.listing__field
+  margin-bottom: 10px
 
 .listing__title
-  color: $color-blue-dark
   font-size: 16px
   font-weight: 600
   margin: 0
+  color: $color-blue-dark
 
 .listing__teaser
-  color: $color-grey-medium
   font-size: 14px
   font-weight: 300
   margin: 0
+  color: $color-grey-medium
 
-.listing__icons
+.listing__stats
+  position: absolute
+  right: 0
+  bottom: 0
+  left: 0
   width: 100%
+  padding: 0 10px
   text-align: right
 
-.listing__icons-item
+.listing__stat
   display: inline-block
-  padding-right: 25px
-  color: $color-blue-dark
-  font-size: 12px
-  font-weight: 600
+  vertical-align: middle
+
+.listing__icon,
+.listing__text
+  display: inline-block
+  vertical-align: middle
+
+.listing__icon
+  color: $color-grey-medium
+  +icon-size(26px)
+
+.listing__text
+  font-size: $font-size-xsmall
+  font-weight: $font-weight-medium
+  color: $color-blue-default
 
 // Modifiers
 // --------------------------------------------------
-.listing__field--image-wrapper
-  position: relative
-  text-align: center
-  height: 140px
-  padding: 0
+.listing__card--stats-container
+  height: 100%
+  padding-bottom: 20px
 
-.listing__icons-item--solutions
-  background: url('../images/solutions-tile-icon.png') right center no-repeat
+.listing__fields--bottom-aligned
+  position: absolute
+  right: 20px
+  bottom: 20px
+  left: 20px
+  .listing__field:last-of-type
+    margin-bottom: 0
 
-.listing__icons-item--members
-  background: url('../images/members-tile-icon.png') right center no-repeat
-
-.listing__icons-item--like
-  background: url('../images/like-tile-icon.png') right center no-repeat
+// Dependiencies
+// --------------------------------------------------
+.listing__item--newsletter
+  background-color: $color-blue-medium
+  color: #fff
+  h3
+    margin-top: 0
+  .mdl-card
+    background-color: $color-blue-medium
+  .mdl-textfield__input
+    border-bottom-color: #fff
+  .mdl-textfield__input,
+  .mdl-textfield__label
+    color: #fff
+    opacity: 0.5
+  .mdl-textfield--floating-label.is-focused,
+  .mdl-textfield--floating-label.is-dirty
+    .mdl-textfield__input,
+    .mdl-textfield__label
+      color: #fff
+      opacity: 1
+  .mdl-textfield__label:after
+    background-color: #fff !important

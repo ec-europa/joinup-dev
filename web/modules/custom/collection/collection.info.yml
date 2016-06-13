@@ -48,4 +48,3 @@ config_devel:
   - field.storage.rdf_entity.field_ar_owner
   - field.storage.rdf_entity.field_ar_shared_content
   - rdf_entity.rdfentity.collection
-
