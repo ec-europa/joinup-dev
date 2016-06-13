@@ -15,6 +15,7 @@ dependencies:
   - contextual
   - custom_page
   - dashboard
+  - ds
   - dynamic_page_cache
   - editor
   - file

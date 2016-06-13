@@ -22,8 +22,33 @@ dependencies:
     - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
+    - datetime
+    - ds
     - image
+    - link
+    - options
     - text
+third_party_settings:
+  ds:
+    layout:
+      id: ds_1col
+      path: modules/contrib/ds
+      library: ''
+      disable_css: false
+      settings:
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+    regions:
+      ds_content:
+        - field_ar_logo
+        - label
+        - field_ar_description
 id: rdf_entity.collection.view_mode_tile
 targetEntityType: rdf_entity
 bundle: collection
@@ -31,38 +56,213 @@ mode: view_mode_tile
 content:
   field_ar_abstract:
     type: text_trimmed
-    weight: 1
+    weight: 0
     label: above
     settings:
-      trim_length: 150
+      trim_length: 600
+    third_party_settings: {  }
+  field_ar_access_url:
+    type: link_separate
+    weight: 0
+    label: above
+    settings:
+      trim_length: 80
+      rel: ''
+      target: ''
+      url_only: false
+      url_plain: false
+    third_party_settings: {  }
+  field_ar_affiliates:
+    type: entity_reference_label
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_ar_closed:
+    type: boolean
+    weight: 0
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+  field_ar_contact_information:
+    type: entity_reference_label
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_ar_creation_date:
+    type: datetime_plain
+    weight: 0
+    label: above
+    settings:
+      timezone_override: ''
+    third_party_settings: {  }
+  field_ar_description:
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: 200
+    third_party_settings:
+      ds:
+        ft:
+          id: expert
+          settings:
+            lb: ''
+            prefix: ''
+            lbw-el: ''
+            lbw-cl: ''
+            lbw-at: ''
+            ow: true
+            ow-el: div
+            ow-cl: listing__field
+            ow-at: ''
+            fis-el: ''
+            fis-cl: ''
+            fis-at: ''
+            fi: true
+            fi-el: div
+            fi-cl: listing__teaser
+            fi-at: ''
+            suffix: ''
+            lbw: false
+            lb-col: false
+            ow-def-at: false
+            ow-def-cl: false
+            fis: false
+            fis-def-at: false
+            fi-def-at: false
+    type: text_trimmed
+  field_ar_elibrary_creation:
+    type: list_default
+    weight: 0
+    label: above
+    settings: {  }
     third_party_settings: {  }
   field_ar_logo:
-    weight: 2
-    label: visually_hidden
+    weight: 0
+    label: hidden
     settings:
       image_style: image_style_collection_logo
-      image_link: content
-    third_party_settings: {  }
+      image_link: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: expert
+          settings:
+            lb: ''
+            prefix: ''
+            lbw-el: ''
+            lbw-cl: ''
+            lbw-at: ''
+            ow: true
+            ow-el: div
+            ow-cl: 'listing__field listing__field--image-wrapper'
+            ow-at: ''
+            fis-el: ''
+            fis-cl: ''
+            fis-at: ''
+            fi: true
+            fi-el: ''
+            fi-cl: listing__image
+            fi-at: ''
+            suffix: ''
+            lbw: false
+            lb-col: false
+            ow-def-at: false
+            ow-def-cl: false
+            fis: false
+            fis-def-at: false
+            fi-def-at: false
     type: image
+  field_ar_moderation:
+    type: boolean
+    weight: 0
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+  field_ar_modification_date:
+    type: datetime_plain
+    weight: 0
+    label: above
+    settings:
+      timezone_override: ''
+    third_party_settings: {  }
+  field_ar_owner:
+    type: entity_reference_label
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_ar_shared_content:
+    type: entity_reference_label
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_policy_domain:
+    type: entity_reference_label
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_spatial_coverage:
+    type: entity_reference_label
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_topic:
+    type: entity_reference_label
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
   label:
     label: hidden
     type: string
-    weight: 0
+    weight: 1
     settings:
       link_to_entity: false
-    third_party_settings: {  }
-hidden:
-  field_ar_access_url: true
-  field_ar_affiliates: true
-  field_ar_closed: true
-  field_ar_contact_information: true
-  field_ar_creation_date: true
-  field_ar_description: true
-  field_ar_elibrary_creation: true
-  field_ar_moderation: true
-  field_ar_modification_date: true
-  field_ar_owner: true
-  field_ar_shared_content: true
-  field_policy_domain: true
-  field_spatial_coverage: true
-  field_topic: true
+    third_party_settings:
+      ds:
+        ft:
+          id: expert
+          settings:
+            lb: ''
+            prefix: ''
+            lbw-el: ''
+            lbw-cl: ''
+            lbw-at: ''
+            ow: true
+            ow-el: div
+            ow-cl: listing__field
+            ow-at: ''
+            fis-el: ''
+            fis-cl: ''
+            fis-at: ''
+            fi: true
+            fi-el: h2
+            fi-cl: listing__title
+            fi-at: ''
+            suffix: ''
+            lbw: false
+            lb-col: false
+            ow-def-at: false
+            ow-def-cl: false
+            fis: false
+            fis-def-at: false
+            fi-def-at: false
+hidden: {  }

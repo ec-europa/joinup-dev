@@ -4,6 +4,9 @@ description: News content type.
 core: 8.x
 package: Joinup
 
+dependencies:
+  - ds
+
 config_devel:
   - core.entity_form_display.node.news.default
   - core.entity_view_display.node.news.default
