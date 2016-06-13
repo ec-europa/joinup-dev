@@ -9,8 +9,8 @@ dependencies:
     - joinup_theme
 id: joincollectionblock
 theme: joinup_theme
-region: sidebar_left
-weight: -10
+region: featured
+weight: -11
 provider: null
 plugin: join_collection_block
 settings:

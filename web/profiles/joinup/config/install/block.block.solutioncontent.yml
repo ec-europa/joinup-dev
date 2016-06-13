@@ -9,7 +9,7 @@ dependencies:
 id: solutioncontent
 theme: joinup_theme
 region: sidebar_left
-weight: -8
+weight: -9
 provider: null
 plugin: solution_content_block
 settings:

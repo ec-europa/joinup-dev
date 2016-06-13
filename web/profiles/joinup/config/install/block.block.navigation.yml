@@ -10,7 +10,7 @@ dependencies:
 id: navigation
 theme: joinup_theme
 region: sidebar_left
-weight: -9
+weight: -10
 provider: null
 plugin: 'ogmenu_block:navigation'
 settings:

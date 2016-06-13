@@ -10,7 +10,7 @@ dependencies:
 id: status
 theme: joinup_theme
 region: sidebar_left
-weight: -3
+weight: -4
 provider: null
 plugin: 'facet_block:status'
 settings:
