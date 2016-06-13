@@ -31,22 +31,30 @@ dependencies:
 third_party_settings:
   ds:
     layout:
-      id: ds_1col
+      id: ds_2col
       path: modules/contrib/ds
-      library: ''
-      disable_css: false
+      library: layout_plugin/ds_2col
+      disable_css: true
       settings:
         wrappers:
-          ds_content: div
+          left: div
+          right: div
         outer_wrapper: div
         attributes: ''
         link_attribute: ''
         link_custom: ''
         classes:
-          layout_class: {  }
+          layout_class:
+            listing__card: listing__card
+            mdl-card: mdl-card
+          left:
+            listing__field--image-wrapper: listing__field--image-wrapper
+          right:
+            listing__metadata: listing__metadata
     regions:
-      ds_content:
+      left:
         - field_ar_logo
+      right:
         - label
         - field_ar_description
 id: rdf_entity.collection.view_mode_tile
@@ -56,14 +64,14 @@ mode: view_mode_tile
 content:
   field_ar_abstract:
     type: text_trimmed
-    weight: 0
+    weight: 16
     label: above
     settings:
       trim_length: 600
     third_party_settings: {  }
   field_ar_access_url:
     type: link_separate
-    weight: 0
+    weight: 12
     label: above
     settings:
       trim_length: 80
@@ -74,14 +82,14 @@ content:
     third_party_settings: {  }
   field_ar_affiliates:
     type: entity_reference_label
-    weight: 0
+    weight: 11
     label: above
     settings:
       link: true
     third_party_settings: {  }
   field_ar_closed:
     type: boolean
-    weight: 0
+    weight: 13
     label: above
     settings:
       format: default
@@ -90,14 +98,14 @@ content:
     third_party_settings: {  }
   field_ar_contact_information:
     type: entity_reference_label
-    weight: 0
+    weight: 14
     label: above
     settings:
       link: true
     third_party_settings: {  }
   field_ar_creation_date:
     type: datetime_plain
-    weight: 0
+    weight: 15
     label: above
     settings:
       timezone_override: ''
@@ -139,7 +147,7 @@ content:
     type: text_trimmed
   field_ar_elibrary_creation:
     type: list_default
-    weight: 0
+    weight: 10
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -161,13 +169,13 @@ content:
             lbw-at: ''
             ow: true
             ow-el: div
-            ow-cl: 'listing__field listing__field--image-wrapper'
+            ow-cl: listing__field
             ow-at: ''
             fis-el: ''
             fis-cl: ''
             fis-at: ''
             fi: true
-            fi-el: ''
+            fi-el: div
             fi-cl: listing__image
             fi-at: ''
             suffix: ''
@@ -181,7 +189,7 @@ content:
     type: image
   field_ar_moderation:
     type: boolean
-    weight: 0
+    weight: 9
     label: above
     settings:
       format: default
@@ -190,42 +198,42 @@ content:
     third_party_settings: {  }
   field_ar_modification_date:
     type: datetime_plain
-    weight: 0
+    weight: 4
     label: above
     settings:
       timezone_override: ''
     third_party_settings: {  }
   field_ar_owner:
     type: entity_reference_label
-    weight: 0
+    weight: 3
     label: above
     settings:
       link: true
     third_party_settings: {  }
   field_ar_shared_content:
     type: entity_reference_label
-    weight: 0
+    weight: 5
     label: above
     settings:
       link: true
     third_party_settings: {  }
   field_policy_domain:
     type: entity_reference_label
-    weight: 0
+    weight: 6
     label: above
     settings:
       link: true
     third_party_settings: {  }
   field_spatial_coverage:
     type: entity_reference_label
-    weight: 0
+    weight: 8
     label: above
     settings:
       link: true
     third_party_settings: {  }
   field_topic:
     type: entity_reference_label
-    weight: 0
+    weight: 7
     label: above
     settings:
       link: true
