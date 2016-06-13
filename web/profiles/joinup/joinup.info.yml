@@ -64,6 +64,7 @@ config_devel:
   - block.block.joinup_theme_messages
   - block.block.joinup_theme_solutioncontent
   - block.block.navigation
+  - block.block.pagetitle
   - block.block.policydomain
   - block.block.seven_breadcrumbs
   - block.block.seven_content
