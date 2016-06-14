@@ -29,7 +29,8 @@
         "typhonius/behattask": "1.0",
         "ec-europa/infra": "~0.4",
         "drupal/state_machine": "~8.1.0-beta2",
-        "easyrdf/easyrdf": "dev-master as 0.9.1"
+        "easyrdf/easyrdf": "dev-master as 0.9.1",
+        "drupal/ds": "^8.2"
     },
     "require-dev": {
         "behat/mink": "~1.6",

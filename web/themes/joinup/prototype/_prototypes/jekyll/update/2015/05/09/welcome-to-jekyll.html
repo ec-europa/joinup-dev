@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' type='text/css'>
   <link rel="stylesheet" href="../material-design-lite/material.min.css">
-  <link rel="stylesheet" href="css/style.min.css">
+  <link rel="stylesheet" href="../css/style.min.css">
   <link rel="canonical" href="http://yourdomain.com/jekyll/update/2015/05/09/welcome-to-jekyll.html">
   <link rel="alternate" type="application/rss+xml" title="Joinup" href="http://yourdomain.com/feed.xml" />
 </head>
@@ -27,16 +27,31 @@
       <a href="/" class="header-logo mdl-layout-title" title="Home"></a>
       <div class="mdl-layout-spacer"></div>
       <nav class="header-menu mdl-navigation">
-        <a class="header-menu__link header-menu__link--solutions mdl-navigation__link" href="#"><span class="header-menu__text">Solutions</span></a>
-        <a class="header-menu__link header-menu__link--collections active-trail mdl-navigation__link" href="#"><span class="header-menu__text">Collections</span></a>
-        <a class="header-menu__link header-menu__link--events mdl-navigation__link" href="#"><span class="header-menu__text">Events</span></a>
+        <a class="header-menu__link active-trail mdl-navigation__link" href="#">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--solutions"></span>
+            <span class="header-menu__text">Solutions</span>            
+          </span>
+        </a>
+        <a class="header-menu__link mdl-navigation__link" href="#">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--collections"></span>
+            <span class="header-menu__text">Collections</span>
+          </span>
+        </a>
+        <a class="header-menu__link active-trail mdl-navigation__link" href="#">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--events"></span>
+            <span class="header-menu__text">Events</span>
+          </span>
+        </a>
       </nav>
       <div class="mdl-layout-spacer"></div>
-      <div class="search-bar mdl-textfield mdl-js-textfield mdl-textfield--expandable
+      <div class="search-bar search-bar--header mdl-textfield mdl-js-textfield mdl-textfield--expandable
       mdl-textfield--floating-label mdl-textfield--align-right">
         <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon"
         for="search-bar__input">
-        <i class="search-bar__icon material-icons">search</i>
+        <i class="search-bar__icon material-icons"></i>
         </label>
         <div class="search-bar__input-container mdl-textfield__expandable-holder">
           <input class="search-bar__input mdl-textfield__input" type="text" name="search"
@@ -44,14 +59,14 @@
         </div>
       </div>
       <div class="login-menu">
-      <div id="login-menu__button" class="login-menu__button mdl-button mdl-js-button">
-        <img src="../images/login-icon.png">
-      </div>
-      <ul class="login-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="login-menu__button">
-        <li class="mdl-menu__item"><a class="login-menu__link" href="#">My profile</a></li>
-        <li class="mdl-menu__item"><a class="login-menu__link" href="#">My page</a></li>
-        <li class="mdl-menu__item"><a class="login-menu__link" href="#">Logout</a></li>
-      </ul>
+        <div id="login-menu__button" class="login-menu__button mdl-button mdl-js-button">
+          <img src="../images/login-icon.png">
+        </div>
+        <ul class="login-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="login-menu__button">
+          <li class="mdl-menu__item"><a class="login-menu__link" href="#">My profile</a></li>
+          <li class="mdl-menu__item"><a class="login-menu__link" href="#">My page</a></li>
+          <li class="mdl-menu__item"><a class="login-menu__link" href="#">Logout</a></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -60,18 +75,20 @@
 
     <div class="section section--featured">
   <div class="container-fluid">
-    <div class="region region--featured mdl-grid">
-      <div class="mdl-cell mdl-cell--2-col"></div>
-      <div class="featured-center mdl-cell mdl-cell--8-col">
-        <div class="main-title">
-          <div class="main-title__logo">
-            <img src="../images/title-logo.png">
+    <div class="region region--featured">
+      <div class="featured mdl-grid">
+        <div class="featured__left mdl-cell mdl-cell--2-col"></div>
+        <div class="featured__center mdl-cell mdl-cell--8-col">
+          <div class="main-title">
+            <div class="main-title__logo">
+              <img src="../images/title-logo.png">
+            </div>
+            <div class="main-title__text">Querying the <br/>semantic web</div>
           </div>
-          <div class="main-title__text">Querying the <br/>semantic web</div>
+          <a href="#" class="plus-button mdl-button mdl-js-button mdl-button--fab">
+              <i class="plus-button__icon material-icons">add</i>
+          </a>
         </div>
-        <a href="#" class="plus-button mdl-button mdl-js-button mdl-button--fab">
-            <i class="plus-button__icon material-icons">add</i>
-        </a>
       </div>
     </div>
   </div>
@@ -83,19 +100,20 @@
     <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
   <div class="container-fluid">
     <div class="region region--sidebar-left">
-      <div class="sidebar-menu">
-        <button id="sidebar-menu"
-                class="sidebar-menu__button mdl-button mdl-js-button mdl-button--icon">
-          <i class="material-icons">menu</i>
-        </button>
-        <nav class="sidebar-menu__container mdl-menu mdl-menu--bottom-left mdl-js-menu" for="sidebar-menu">
-          <a class="mdl-menu__item sidebar-menu__item" href="#">About</a>
-          <a class="mdl-menu__item sidebar-menu__item" href="#">Overview</a>
-          <a class="mdl-menu__item sidebar-menu__item" href="#">Discussions</a>
-          <a class="mdl-menu__item sidebar-menu__item" href="#">Members</a>
-          <a class="mdl-menu__item sidebar-menu__item" href="#">Metrics</a>
-        </nav>
-      </div>
+
+    <div class="sidebar-menu">
+  <button id="sidebar-menu" class="sidebar-menu__button mdl-button mdl-js-button mdl-button--icon">
+    <i class="material-icons">menu</i>
+  </button>
+  <nav class="sidebar-menu__container" for="sidebar-menu">
+    <a class="sidebar-menu__item" href="/about">About</a>
+    <a class="sidebar-menu__item" href="#">Overview</a>
+    <a class="sidebar-menu__item" href="#">Discussions</a>
+    <a class="sidebar-menu__item" href="#">Members</a>
+    <a class="sidebar-menu__item" href="#">Metrics</a>
+  </nav>
+</div>
+
     </div>
   </div>
 </div>
@@ -114,169 +132,100 @@
     <div class="region region--content">
       <div class="block">
         <div class="listing listing--grid mdl-grid">
-          <div class="listing__item mdl-cell mdl-cell--4-col"><div class="listing__item--tile mdl-card">
-  <div class="listing__image">
-    <img src="../images/tile-image.png">
-  </div>
-  <div class="listing__field listing__avatar">
-    <img src="../images/login-icon.png">
-  </div>
-  <div class="listing__field">
-    <h2 class="listing__title">Optimy</h2>
-  </div>
-  <div class="listing__field">
-    <p class="listing-teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-    Aenan convallis.</p>
-  </div>
-  <div class="listing__field icons-bar mdl-card__actions">
-    <div class="icons-bar__item icons-bar__item--solutions">
-      154
-    </div>
-    <div class="icons-bar__item tile__icons-item--members">
-      13
-    </div>
-    <div class="icons-bar__item tile__icons-item--like">
-      22
-    </div>
-  </div>
-</div>
-</div>
-          <div class="listing__item mdl-cell mdl-cell--4-col"><div class="listing__item--tile mdl-card">
-  <div class="listing__image">
-    <img src="../images/tile-image.png">
-  </div>
-  <div class="listing__field listing__avatar">
-    <img src="../images/login-icon.png">
-  </div>
-  <div class="listing__field">
-    <h2 class="listing__title">Optimy</h2>
-  </div>
-  <div class="listing__field">
-    <p class="listing-teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-    Aenan convallis.</p>
-  </div>
-  <div class="listing__field icons-bar mdl-card__actions">
-    <div class="icons-bar__item icons-bar__item--solutions">
-      154
-    </div>
-    <div class="icons-bar__item tile__icons-item--members">
-      13
-    </div>
-    <div class="icons-bar__item tile__icons-item--like">
-      22
-    </div>
-  </div>
-</div>
-</div>
-          <div class="listing__item mdl-cell mdl-cell--4-col"><div class="listing__item--tile mdl-card">
-  <div class="listing__image">
-    <img src="../images/tile-image.png">
-  </div>
-  <div class="listing__field listing__avatar">
-    <img src="../images/login-icon.png">
-  </div>
-  <div class="listing__field">
-    <h2 class="listing__title">Optimy</h2>
-  </div>
-  <div class="listing__field">
-    <p class="listing-teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-    Aenan convallis.</p>
-  </div>
-  <div class="listing__field icons-bar mdl-card__actions">
-    <div class="icons-bar__item icons-bar__item--solutions">
-      154
-    </div>
-    <div class="icons-bar__item tile__icons-item--members">
-      13
-    </div>
-    <div class="icons-bar__item tile__icons-item--like">
-      22
-    </div>
-  </div>
-</div>
-</div>
-          <div class="listing__item mdl-cell mdl-cell--4-col"><div class="listing__item--tile mdl-card">
-  <div class="listing__image">
-    <img src="../images/tile-image.png">
-  </div>
-  <div class="listing__field listing__avatar">
-    <img src="../images/login-icon.png">
-  </div>
-  <div class="listing__field">
-    <h2 class="listing__title">Optimy</h2>
-  </div>
-  <div class="listing__field">
-    <p class="listing-teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-    Aenan convallis.</p>
-  </div>
-  <div class="listing__field icons-bar mdl-card__actions">
-    <div class="icons-bar__item icons-bar__item--solutions">
-      154
-    </div>
-    <div class="icons-bar__item tile__icons-item--members">
-      13
-    </div>
-    <div class="icons-bar__item tile__icons-item--like">
-      22
-    </div>
-  </div>
-</div>
-</div>
-          <div class="listing__item mdl-cell mdl-cell--4-col"><div class="listing__item--tile mdl-card">
-  <div class="listing__image">
-    <img src="../images/tile-image.png">
-  </div>
-  <div class="listing__field listing__avatar">
-    <img src="../images/login-icon.png">
-  </div>
-  <div class="listing__field">
-    <h2 class="listing__title">Optimy</h2>
-  </div>
-  <div class="listing__field">
-    <p class="listing-teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-    Aenan convallis.</p>
-  </div>
-  <div class="listing__field icons-bar mdl-card__actions">
-    <div class="icons-bar__item icons-bar__item--solutions">
-      154
-    </div>
-    <div class="icons-bar__item tile__icons-item--members">
-      13
-    </div>
-    <div class="icons-bar__item tile__icons-item--like">
-      22
-    </div>
-  </div>
-</div>
-</div>
-          <div class="listing__item mdl-cell mdl-cell--4-col"><div class="listing__item--tile mdl-card">
-  <div class="listing__image">
-    <img src="../images/tile-image.png">
-  </div>
-  <div class="listing__field listing__avatar">
-    <img src="../images/login-icon.png">
-  </div>
-  <div class="listing__field">
-    <h2 class="listing__title">Optimy</h2>
-  </div>
-  <div class="listing__field">
-    <p class="listing-teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-    Aenan convallis.</p>
-  </div>
-  <div class="listing__field icons-bar mdl-card__actions">
-    <div class="icons-bar__item icons-bar__item--solutions">
-      154
-    </div>
-    <div class="icons-bar__item tile__icons-item--members">
-      13
-    </div>
-    <div class="icons-bar__item tile__icons-item--like">
-      22
-    </div>
-  </div>
-</div>
-</div>
+  <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+    <div class="listing__card mdl-card">
+      <div class="listing__field listing__field--image-wrapper">
+        <img class="listing__image" src="../images/tile-image.png">
+      </div>
+      <div class="listing__field">
+        <img class="listing__avatar" src="../images/login-icon.png">
+      </div>
+      <div class="listing__field">
+        <h2 class="listing__title">Optimy</h2>
+      </div>
+      <div class="listing__field">
+        <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Aenan convallis.</p>
+      </div>
+      <div class="listing__field mdl-card__actions">
+        <div class="listing__icons">
+          <div class="listing__icons-item listing__icons-item--solutions">
+            154
+          </div>
+          <div class="listing__icons-item listing__icons-item--members">
+            13
+          </div>
+          <div class="listing__icons-item listing__icons-item--like">
+            22
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+    <div class="listing__card mdl-card">
+      <div class="listing__field listing__field--image-wrapper">
+        <img class="listing__image" src="../images/tile-image.png">
+      </div>
+      <div class="listing__field">
+        <img class="listing__avatar" src="../images/login-icon.png">
+      </div>
+      <div class="listing__field">
+        <h2 class="listing__title">Optimy</h2>
+      </div>
+      <div class="listing__field">
+        <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Aenan convallis.</p>
+      </div>
+      <div class="listing__field mdl-card__actions">
+        <div class="listing__icons">
+          <div class="listing__icons-item listing__icons-item--solutions">
+            154
+          </div>
+          <div class="listing__icons-item listing__icons-item--members">
+            13
+          </div>
+          <div class="listing__icons-item listing__icons-item--like">
+            22
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+    <div class="listing__card mdl-card">
+      <div class="listing__field listing__field--image-wrapper">
+        <img class="listing__image" src="../images/tile-image.png">
+      </div>
+      <div class="listing__field">
+        <img class="listing__avatar" src="../images/login-icon.png">
+      </div>
+      <div class="listing__field">
+        <h2 class="listing__title">Optimy</h2>
+      </div>
+      <div class="listing__field">
+        <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Aenan convallis.</p>
+      </div>
+      <div class="listing__field mdl-card__actions">
+        <div class="listing__icons">
+          <div class="listing__icons-item listing__icons-item--solutions">
+            154
+          </div>
+          <div class="listing__icons-item listing__icons-item--members">
+            13
+          </div>
+          <div class="listing__icons-item listing__icons-item--like">
+            22
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
       </div>
     </div>
   </div>
