@@ -43,7 +43,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   protected $entityTypeManager;
 
-  protected $bundlePredicate = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
+  protected $bundlePredicate = ['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'];
 
   /**
    * Initialize the storage backend.
@@ -178,10 +178,17 @@ QUERY;
     $values = [];
     foreach ($res as $entity_id => $entity_values) {
       // First determine the bundle of the returned entity.
-      $bundle_pred = $this->bundlePredicate;
-      if (!isset($entity_values[$bundle_pred])) {
+      $bundle_predicates = $this->bundlePredicate;
+      $pred_set = FALSE;
+      foreach ($bundle_predicates as $bundle_predicate) {
+        if (isset($entity_values[$bundle_predicate])) {
+          $pred_set = TRUE;
+        }
+      }
+      if (!$pred_set) {
         continue;
       }
+
       /** @var \Drupal\rdf_entity\Entity\RdfEntityType $bundle */
       $bundle = $this->getActiveBundle($entity_values);
       if (!$bundle) {
@@ -230,10 +237,15 @@ QUERY;
     foreach ($rdf_bundles[$this->entityType->getBundleEntityType()] as $rdf_bundle) {
       $settings = $rdf_bundle->getThirdPartySetting('rdf_entity', 'mapping_' . $this->bundleKey, FALSE);
       $type = array_pop($settings);
-      foreach ($entity_values[$this->bundlePredicate] as $lang => $items) {
-        foreach ($items as $item) {
-          if ($item == $type) {
-            $bundle = $rdf_bundle;
+      foreach ($this->bundlePredicate as $bundlePredicate) {
+        if (!isset($entity_values[$bundlePredicate])) {
+          continue;
+        }
+        foreach ($entity_values[$bundlePredicate] as $lang => $items) {
+          foreach ($items as $item) {
+            if ($item == $type) {
+              $bundle = $rdf_bundle;
+            }
           }
         }
       }
