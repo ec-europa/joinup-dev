@@ -12,6 +12,7 @@ use \Drupal\Core\Entity\EntityInterface;
 use \Drupal\Core\Form\FormStateInterface;
 use \Drupal\node\NodeInterface;
 use \Drupal\Core\Session\AccountInterface;
+use \Drupal\og\Og;
 use \Drupal\og\OgAccess;
 use \Drupal\Core\Access\AccessResult;
 
@@ -49,7 +50,8 @@ function joinup_news_node_access(EntityInterface $node, $op, AccountInterface $a
   // Check if the user is a member and has the 'view any unpublished content'.
   if ($op == 'view' && $node->bundle() == 'news' && !$node->isPublished()) {
     $parent = joinup_news_get_parent($node);
-    if ($parent instanceof RdfInterface) {
+    // Temporary workaround because Og is not checking for membership.
+    if ($parent instanceof RdfInterface && Og::isMember($parent, Drupal::currentUser())) {
       if (OgAccess::userAccessEntity('view any unpublished content', $parent, $account)->isAllowed()) {
         return OgAccess::userAccessEntity('view any unpublished content', $parent, $account);
       }

@@ -18,11 +18,7 @@ Feature: News moderation.
   Background:
     # The complete permission matrix is stored in configuration.
     # @see: modules/custom/joinup_news/config/install/joinup_news.settings.yml.
-    Given collections:
-      | title          | moderation |
-      | Justice League | no         |
-      | Legion of Doom | yes        |
-    And users:
+    Given users:
       | name          | pass             | mail                              | roles     |
       | Batman        | BatsEverywhere   | adminOfWayneINC@example.com       | moderator |
       | Superman      | PutYourGlassesOn | dailyPlanetEmployee23@example.com |           |
@@ -33,6 +29,10 @@ Feature: News moderation.
       | Cheetah       | meowmeow         | ihatewonderwoman@example.com      |           |
       | Mirror Master | hideinmirrors    | mirrormirroronthewall@example.com |           |
       | Metallo       | checkMyHeart     | kryptoniteEverywhere@example.com  |           |
+    Given collections:
+      | title          | moderation |
+      | Justice League | no         |
+      | Legion of Doom | yes        |
     And the following user memberships:
       | collection     | user          | roles         |
       | Justice League | Superman      | administrator |
@@ -76,6 +76,7 @@ Feature: News moderation.
     Then I should see the link "Add news"
     When I click "Add news"
     Then I should not see the heading "Access denied"
+    And I should see the text "State"
     And the "State" field has the "<options available>" options
     And the "State" field does not have the "<options unavailable>" options
     Examples:
@@ -156,7 +157,9 @@ Feature: News moderation.
     Then I should see the success message "News Eagle joins the JL has been created."
     And the "Eagle joins the JL" news content should not be published
     # Test a transition change.
-    When I go to the "news" content "Eagle joins the JL" edit screen
+    When I go to the "Eagle joins the JL" news page
+    Then I should see the link "Edit"
+    When I click "Edit"
     Then I should not see the heading "Access denied"
     And the "State" field has the "Validated" options
     And the "State" field does not have the "Proposed, In assessment, Request delection" options
@@ -187,12 +190,13 @@ Feature: News moderation.
     And the "Cheetah kills WonderWoman" news content should not be published
     And I should see the text "Collection"
     And I should see the text "Legion of Doom"
-    # Visit the collection's news entity and press edit
-    And I go to the "news" content "Cheetah kills WonderWoman" edit screen
-    Then I should see the heading "Access denied"
+    When I go to the "Cheetah kills WonderWoman" news page
+    Then I should not see the link "Edit"
     # Edit and publish the news as a facilitator
     When I am logged in as "Metallo"
-    And I go to the "news" content "Cheetah kills WonderWoman" edit screen
+    When I go to the "Cheetah kills WonderWoman" news page
+    Then I should see the link "Edit"
+    When I click "Edit"
     Then I should not see the heading "Access denied"
     And the "State" field has the "Proposed, Validated" options
     And the "State" field does not have the "Draft, In assessment, Request delection" options
@@ -206,7 +210,9 @@ Feature: News moderation.
   Scenario Outline: Members can only edit news they own for specific states.
     # Post moderated.
     Given I am logged in as "<user>"
-    When I visit the "news" content "<title>" edit screen
+    And I go to the "<title>" news page
+    Then I should see the link "Edit"
+    When I click "Edit"
     Then I should not see the heading "Access denied"
     And the "State" field has the "<options available>" options
     And the "State" field does not have the "<options unavailable>" options
@@ -223,8 +229,8 @@ Feature: News moderation.
 
   Scenario Outline: Members cannot edit news they own for specific states.
     Given I am logged in as "<user>"
-    When I visit the "news" content "<title>" edit screen
-    Then I should see the heading "Access denied"
+    And I go to the "<title>" news page
+    Then I should not see the link "Edit"
     Examples:
       | user          | title                     |
       # State: proposed
@@ -246,7 +252,9 @@ Feature: News moderation.
 
   Scenario Outline: Facilitators have access on content regardless of state.
     Given I am logged in as "<user>"
-    When I visit the "news" content "<title>" edit screen
+    And I go to the "<title>" news page
+    Then I should see the link "Edit"
+    When I click "Edit"
     Then I should not see the heading "Access denied"
     And the "State" field has the "<options available>" options
     And the "State" field does not have the "<options unavailable>" options
@@ -268,7 +276,7 @@ Feature: News moderation.
 
   Scenario Outline: Facilitators cannot view unpublished content of another collection.
     Given I am logged in as "<user>"
-    When I visit the "news" content "<title>" edit screen
+    And I go to the "<title>" news page
     Then I should see the heading "Access denied"
     Examples:
       | user     | title                   |
@@ -279,7 +287,9 @@ Feature: News moderation.
 
   Scenario Outline: Moderators can edit news regardless of their state.
     Given I am logged in as "Batman"
-    When I visit the "news" content "<title>" edit screen
+    And I go to the "<title>" news page
+    Then I should see the link "Edit"
+    When I click "Edit"
     Then I should not see the heading "Access denied"
     Examples:
       | title                         |
@@ -299,12 +309,15 @@ Feature: News moderation.
     # Validated, In assessment, Request deletion
     # and unpublished for Draft and Proposed.
     When I am logged in as "Hawkgirl"
-    And I go to the "news" content "Hawkgirl is a spy" edit screen
+    And I go to the "Hawkgirl is a spy" news page
+    Then I should see the link "Edit"
+    When I click "Edit"
     And I select "Validated" from "State"
     And I press "Save"
     Then I should see the success message "News Hawkgirl is a spy has been updated."
     Then the "Hawkgirl is a spy" "news" content should be published
-    And I go to the "news" content "Hawkgirl is a spy" edit screen
+    And I should see the link "Edit"
+    When I click "Edit"
     And I select "Proposed" from "State"
     And I press "Save"
     Then I should see the success message "News Hawkgirl is a spy has been updated."
