@@ -1,5 +1,5 @@
 # If you want to run this test through Selenium, uncomment the specified lines!
-@api
+@api @javascript
 Feature: Collections menu
 
   Scenario: Add a link to og menu
@@ -41,7 +41,7 @@ Feature: Collections menu
     # When you hover over the menu, you will notice a little pencil icon
     # appearing at the end right of the region. Click on this icon to show the
     # "Edit menu" link.
-    Then I click the contextual link "Edit menu" in the "Left sidebar" region
+    Then I click the contextual link "Edit menu" in the "Sidebar left" region
     # To run on Selenium, uncomment next line:
     # Then I press the "Show row weights" button
     Then I select "5" from "Weight for Mines of Moria"
@@ -57,3 +57,30 @@ Feature: Collections menu
     When I go to the homepage of the "Star Trek" collection
     Then I should not see the link "Mines of Moria"
     Then I should not see the link "Mordor"
+
+  Scenario: Remove a link from og menu
+    Given collections:
+      | title              | description                     |
+      | Lord of the rings  | A collection for true LOTR fans |
+      | Star Trek          | A collection for Trekkies       |
+    And users:
+      | name      | roles      |
+      | Gandalf   | moderator  |
+
+    # Create menu link
+    Given I am logged in as "Gandalf"
+    When I go to the homepage of the "Lord of the rings" collection
+    Then I should see the link "Add menu"
+    When I click "Add menu"
+    And I click "Add link"
+    And I fill in "Menu link title" with "Mines of Moria"
+    And I fill in "Link" with "/user"
+    Then I press the "Save" button
+    Then I should see the success message "The menu link has been saved."
+
+    # Remove the created menu link
+    When I click the contextual link "Edit menu" in the "Sidebar left" region
+
+    Then break
+
+
