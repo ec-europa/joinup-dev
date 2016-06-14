@@ -16,6 +16,25 @@ function joinup_theme_preprocess_page(&$variables) {
   $route_match = \Drupal::routeMatch();
   $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
   $variables['title'] = $title;
+
+  $route_name = $route_match->getRouteName();
+  $blue_header_routes = array(
+    'user.login',
+    'user.register',
+    'user.pass',
+  );
+
+  if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
+    $variables['is_blue_header'] = TRUE;
+  }
+
+  $entity = $route_match->getParameter('rdf_entity');
+  if (!empty($entity)) {
+    $entity_type = $entity->getType();
+    if ($entity_type == 'collection') {
+      $variables['is_collection'] = TRUE;
+    }
+  }
 }
 
 /**
@@ -38,5 +57,40 @@ function joinup_theme_preprocess_menu(&$variables) {
     $uri = $file->getFileUri();
     $url = ImageStyle::load('profile_icon')->buildUrl($uri);
     $variables['profile_icon'] = $url;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_alter().
+ */
+function joinup_theme_suggestions_alter(array &$suggestions, array $variables) {
+  if (isset($variables['element']) && isset($variables['element']['#type'])) {
+    if ($variables['element']['#type'] == 'form') {
+      $original_theme_hook = $variables['theme_hook_original'];
+      $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $variables['element']['#id']);
+    }
+    elseif ($variables['theme_hook_original'] == 'form_element') {
+      $original_theme_hook = $variables['theme_hook_original'];
+      $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $variables['element']['#type']);
+    }
+  }
+
+  return $suggestions;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function joinup_preprocess_form_element_label(&$variables) {
+  $label_for = array(
+    'edit-name',
+    'edit-pass',
+    'edit-mail',
+    'edit-field-user-first-name-0-value',
+    'edit-field-user-family-name-0-value',
+  );
+
+  if (isset($variables['attributes']['for']) && in_array($variables['attributes']['for'], $label_for)) {
+    $variables['is_mdl'] = TRUE;
   }
 }
