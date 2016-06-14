@@ -51,23 +51,20 @@ themes:
   - joinup_theme
 
 config_devel:
+  - block.block.joincollectionblock
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
-  - block.block.joinup_theme_branding
-  - block.block.joinup_theme_breadcrumbs
   - block.block.joinup_theme_collectioncontent
   - block.block.joinup_theme_content
   - block.block.joinup_theme_footer
   - block.block.joinup_theme_help
-  - block.block.joinup_theme_joincollectionblock
   - block.block.joinup_theme_local_actions
   - block.block.joinup_theme_local_tasks
   - block.block.joinup_theme_main_menu
   - block.block.joinup_theme_messages
-  - block.block.joinup_theme_page_title
   - block.block.joinup_theme_solutioncontent
-  - block.block.joinup_theme_tools
   - block.block.navigation
+  - block.block.pagetitle
   - block.block.policydomain
   - block.block.seven_breadcrumbs
   - block.block.seven_content
@@ -82,13 +79,13 @@ config_devel:
   - block.block.status
   - block.block.type
   - core.date_format.fallback
-  - core.date_format.html_date
   - core.date_format.html_datetime
+  - core.date_format.html_date
   - core.date_format.html_month
   - core.date_format.html_time
   - core.date_format.html_week
-  - core.date_format.html_year
   - core.date_format.html_yearless_date
+  - core.date_format.html_year
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
@@ -96,6 +93,7 @@ config_devel:
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
   - core.entity_form_display.user.user.register
+  - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_mode.rdf_entity.propose
   - core.entity_form_mode.user.register
   - core.entity_view_display.ogmenu_instance.navigation.default
@@ -130,6 +128,7 @@ config_devel:
   - og_menu.ogmenu.navigation
   - og.og_membership_type.og_membership_type
   - og.og_role.rdf_entity-collection-administrator
+  - og.og_role.rdf_entity-collection-facilitator
   - og.og_role.rdf_entity-collection-member
   - og.og_role.rdf_entity-collection-non-member
   - og.settings

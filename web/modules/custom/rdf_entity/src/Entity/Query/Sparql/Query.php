@@ -132,7 +132,9 @@ class Query extends QueryBase implements QueryInterface {
       case  $bundle . '-IN':
         $rdf_bundles = $entity_storage->getRdfBundleList($value);
         if ($rdf_bundles) {
-          $this->condition->condition('?entity', '<' . $entity_storage->bundlePredicate() . '>', '?type');
+          $this->condition->condition('?entity', '?bundlepredicate', '?type');
+          $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+          $this->filter->filter('?bundlepredicate IN ' . $predicates);
           $this->filter->filter('?type IN ' . $rdf_bundles);
         }
         return $this;
@@ -142,7 +144,9 @@ class Query extends QueryBase implements QueryInterface {
         $mapping = $mapping['rdf_entity'];
         $bundle = $mapping[$value];
         if ($bundle) {
-          $this->condition->condition('?entity', '<' . $entity_storage->bundlePredicate() . '>', SparqlArg::uri($bundle));
+          $this->condition->condition('?entity', '?bundlepredicate', SparqlArg::uri($bundle));
+          $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+          $this->filter->filter('?bundlepredicate IN ' . $predicates);
         }
         return $this;
 
