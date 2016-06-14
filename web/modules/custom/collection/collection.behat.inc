@@ -61,6 +61,24 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Assert the order of elements.
+   *
+   * @Then I should see the following collection menu items in the specified order:
+   */
+  public function assertRepeatedElementContainsText(TableNode $table) {
+    $parent = $this->getSession()->getPage()->findAll('css', '.block-ogmenu-blocknavigation .sidebar-menu__container .sidebar-menu__item');
+    $i = 0;
+    foreach ($table->getHash() as $repeatedElement) {
+      $child = $parent[$i];
+      \PHPUnit_Framework_Assert::assertEquals(
+        $child->find('css', '.sidebar-menu__item')->getText(),
+        $repeatedElement['text']
+      );
+      $i++;
+    }
+  }
+
+  /**
    * Returns the Collection with the given title.
    *
    * If multiple collections have the same title,
@@ -77,26 +95,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   protected function getCollectionByName($title) {
     return $this->getRdfEntityByLabel($title, 'collection');
-  }
-
-  /**
-   * Assert the order of elements.
-   *
-   * @Then I should see the following collection menu items in the specified order:
-   */
-  public function assertRepeatedElementContainsText(TableNode $table) {
-    $parent = $this->getSession()
-      ->getPage()
-      ->findAll('css', '.block-og-menu ul.menu .menu-item');
-    $i = 0;
-    foreach ($table->getHash() as $repeatedElement) {
-      $child = $parent[$i];
-      \PHPUnit_Framework_Assert::assertEquals(
-        $child->find('css', '.menu-item')->getText(),
-        $repeatedElement['text']
-      );
-      $i++;
-    }
   }
 
   /**

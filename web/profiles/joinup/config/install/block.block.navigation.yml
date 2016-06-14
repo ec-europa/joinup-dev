@@ -11,8 +11,8 @@ dependencies:
     - joinup_theme
 id: navigation
 theme: joinup_theme
-region: featured
-weight: -11
+region: sidebar_left
+weight: -10
 provider: null
 plugin: 'ogmenu_block:navigation'
 settings:

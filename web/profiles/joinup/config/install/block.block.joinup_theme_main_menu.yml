@@ -9,7 +9,7 @@ dependencies:
     - joinup_theme
 id: joinup_theme_main_menu
 theme: joinup_theme
-region: header
+region: header_central_menu
 weight: -11
 provider: null
 plugin: 'system_menu_block:main'

@@ -6,6 +6,7 @@ package: Joinup
 
 dependencies:
   - datetime
+  - ds
   - image
   - joinup_core
   - link
@@ -17,6 +18,7 @@ dependencies:
 config_devel:
   - core.entity_form_display.rdf_entity.collection.default
   - core.entity_view_display.rdf_entity.collection.default
+  - core.entity_view_display.rdf_entity.collection.view_mode_tile
   - field.field.rdf_entity.collection.field_ar_abstract
   - field.field.rdf_entity.collection.field_ar_access_url
   - field.field.rdf_entity.collection.field_ar_affiliates
@@ -47,4 +49,3 @@ config_devel:
   - field.storage.rdf_entity.field_ar_owner
   - field.storage.rdf_entity.field_ar_shared_content
   - rdf_entity.rdfentity.collection
-

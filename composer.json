@@ -25,7 +25,8 @@
         "phing/phing": "~2.10",
         "php": ">=5.5.9",
         "symfony/dependency-injection": "2.8.2",
-        "typhonius/behattask": "1.0"
+        "typhonius/behattask": "1.0",
+        "drupal/ds": "^8.2"
     },
     "require-dev": {
         "behat/mink": "~1.6",

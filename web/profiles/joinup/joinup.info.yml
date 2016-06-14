@@ -15,6 +15,7 @@ dependencies:
   - contextual
   - custom_page
   - dashboard
+  - ds
   - dynamic_page_cache
   - editor
   - file
@@ -101,6 +102,7 @@ config_devel:
   - core.entity_view_display.user.user.default
   - core.entity_view_mode.node.full
   - core.entity_view_mode.user.full
+  - ds.settings
   - editor.editor.content_editor
   - field.field.ogmenu_instance.navigation.og_group_ref
   - field.field.user.user.field_user_family_name
@@ -124,6 +126,7 @@ config_devel:
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
+  - image.style.profile_icon
   - og_menu.ogmenu.navigation
   - og.og_membership_type.og_membership_type
   - og.og_role.rdf_entity-collection-administrator

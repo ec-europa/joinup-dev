@@ -1,0 +1,55 @@
+// Component
+// --------------------------------------------------
+.button--default
+  font-weight: $font-weight-medium
+  min-height: 50px
+  padding: 0 20px
+  letter-spacing: 2px
+  +border-radius(4px)
+
+// Elements
+// --------------------------------------------------
+
+// Modifiers
+// --------------------------------------------------
+.button--blue
+  color: #fff
+  background-color: $color-blue-medium !important
+
+.button--blue-light
+  color: #fff
+  background-color: $color-blue-lighter !important
+
+.button--full-width
+  width: 100%
+
+// Dependiencies
+// --------------------------------------------------
+.featured
+  .button--circle-wrapper
+    position: absolute
+    right: 0
+    bottom: -68px
+    width: 80px
+    height: 80px
+    border-radius: 50%
+    background-color: $color-grey-bg
+  .button--circle
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    background-color: $color-orange !important
+    .icon
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      color: #fff
+      +icon-size(45px)
+    .mdl-ripple
+      background-color: #fff
+
+// States
+// --------------------------------------------------
+
