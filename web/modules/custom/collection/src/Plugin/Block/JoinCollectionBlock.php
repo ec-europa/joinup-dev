@@ -80,7 +80,7 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
    */
   public function build() {
     // Display the Join Collection form.
-    $collection = $this->contextProvider->getRuntimeContexts(['collection'])['collection']->getContextValue();
+    $collection = $this->contextProvider->getRuntimeContexts(['og'])['og']->getContextValue();
     return \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', $this->user, $collection);
   }
 

@@ -92,31 +92,33 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // the block configuration). This also means we have to take care of the
     // caching ourselves.
     /** @var \Drupal\Core\Plugin\Context\Context[] $collection_contexts */
-    $collection_contexts = $this->collectionContext->getRuntimeContexts(['collection']);
-    if ($collection_contexts && $collection_contexts['collection']->hasContextValue()) {
+    $collection_contexts = $this->collectionContext->getRuntimeContexts(['og']);
+    if ($collection_contexts && $collection_contexts['og']->hasContextValue()) {
       $page_url = Url::fromRoute('custom_page.collection_custom_page.add', [
-        'rdf_entity' => $collection_contexts['collection']->getContextValue()
+        'rdf_entity' => $collection_contexts['og']->getContextValue()
           ->id(),
       ]);
-      $links['custom_page'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Add custom page'),
-        '#url' => $page_url,
-        '#attributes' => ['class' => ['button', 'button--small']],
-        '#access' => $page_url->access(),
-      ];
+      if ($page_url->access()) {
+        $links['custom_page'] = [
+          '#type' => 'link',
+          '#title' => $this->t('Add custom page'),
+          '#url' => $page_url,
+          '#attributes' => ['class' => ['button', 'button--small']],
+        ];
+      }
 
       $solution_url = Url::fromRoute('solution.collection_solution.add', [
-        'rdf_entity' => $collection_contexts['collection']->getContextValue()
+        'rdf_entity' => $collection_contexts['og']->getContextValue()
           ->id(),
       ]);
-      $links['solution'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Add solution'),
-        '#url' => $solution_url,
-        '#attributes' => ['class' => ['button', 'button--small']],
-        '#access' => $solution_url->access(),
-      ];
+      if ($solution_url->access()) {
+        $links['solution'] = [
+          '#type' => 'link',
+          '#title' => $this->t('Add solution'),
+          '#url' => $solution_url,
+          '#attributes' => ['class' => ['button', 'button--small']],
+        ];
+      }
     }
 
     /** @var \Drupal\Core\Plugin\Context\Context[] $solution_contexts */
@@ -125,35 +127,39 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $release_url = Url::fromRoute('asset_release.solution_asset_release.add', [
         'rdf_entity' => $solution_contexts['solution']->getContextValue()->id(),
       ]);
-      $links['asset_release'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Add release'),
-        '#url' => $release_url,
-        '#attributes' => ['class' => ['button', 'button--small']],
-        '#access' => $release_url->access(),
-      ];
+
+      if ($release_url->access()) {
+        $links['asset_release'] = [
+          '#type' => 'link',
+          '#title' => $this->t('Add release'),
+          '#url' => $release_url,
+          '#attributes' => ['class' => ['button', 'button--small']],
+        ];
+      }
     }
 
-    if ($collection_contexts && $collection_contexts['collection']->hasContextValue()
-    || $solution_contexts && $solution_contexts['solution']->hasContextValue()) {
+    if ($collection_contexts && $collection_contexts['og']->hasContextValue()
+      || $solution_contexts && $solution_contexts['solution']->hasContextValue()
+    ) {
       $id = NULL;
-      if ($collection_contexts['collection']->hasContextValue()) {
-        $id = $collection_contexts['collection']->getContextValue()->id();
+      if ($collection_contexts['og']->hasContextValue()) {
+        $id = $collection_contexts['og']->getContextValue()->id();
       }
       if ($solution_contexts['solution']->hasContextValue()) {
         $id = $solution_contexts['solution']->getContextValue()->id();
       }
       if ($id) {
-        $news_url = Url::fromRoute('custom_page.rdf_entity_news.add', [
+        $news_url = Url::fromRoute('joinup_news.rdf_entity_news.add', [
           'rdf_entity' => $id,
         ]);
-        $links['news'] = [
-          '#type' => 'link',
-          '#title' => $this->t('Add news'),
-          '#url' => $news_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
-          '#access' => $news_url->access(),
-        ];
+        if ($news_url->access()) {
+          $links['news'] = [
+            '#type' => 'link',
+            '#title' => $this->t('Add news'),
+            '#url' => $news_url,
+            '#attributes' => ['class' => ['button', 'button--small']],
+          ];
+        }
       }
     }
 
@@ -165,22 +171,24 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           'rdf_entity' => $asset_release_contexts['asset_release']->getContextValue()
             ->id(),
         ]);
-        $links['asset_distribution'] = [
-          '#type' => 'link',
-          '#title' => $this->t('Add distribution'),
-          '#url' => $distribution_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
-          '#access' => $distribution_url->access(),
-        ];
+        if ($distribution_url->access()) {
+          $links['asset_distribution'] = [
+            '#type' => 'link',
+            '#title' => $this->t('Add distribution'),
+            '#url' => $distribution_url,
+            '#attributes' => ['class' => ['button', 'button--small']],
+          ];
+        }
       }
     }
 
     $licence_url = Url::fromRoute('joinup_licence.add');
-    $links['licence'] = [
-      '#title' => $this->t('Add licence'),
-      '#url' => $licence_url,
-      '#access' => $licence_url->access(),
-    ];
+    if ($licence_url->access()) {
+      $links['licence'] = [
+        '#title' => $this->t('Add licence'),
+        '#url' => $licence_url,
+      ];
+    }
 
     // Render the links as an unordered list, styled as buttons.
     $build = [
@@ -216,6 +224,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       'collection',
       'asset_release',
       'solution',
+      'url.path',
     ]);
   }
 
