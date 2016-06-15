@@ -25,9 +25,10 @@
  * @see template_preprocess_block()
  */
 #}
-
-<h1 class="page__title">
-  {% block content %}
-    {{ content }}
-  {% endblock %}
-</h1>
+{% if not is_login_page %}
+  <h1 class="page__title">
+    {% block content %}
+      {{ content }}
+    {% endblock %}
+  </h1>
+{% endif %}
