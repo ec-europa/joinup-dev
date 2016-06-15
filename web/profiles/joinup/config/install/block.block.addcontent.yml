@@ -1,0 +1,29 @@
+# Temporary block placed in the footer until we have wireframes for positioning
+# the buttons shown in this block.
+# @todo: to be removed along with the config_devel entry in the joinup profile.
+langcode: en
+status: true
+dependencies:
+  module:
+    - facets
+    - joinup
+  theme:
+    - joinup_theme
+id: addcontent
+theme: joinup_theme
+region: footer
+weight: -10
+provider: null
+plugin: add_content_block
+settings:
+  id: add_content_block
+  label: 'Add content'
+  provider: joinup
+  label_display: visible
+visibility:
+  other_facet:
+    id: other_facet
+    facets: ''
+    facet_value: ''
+    negate: false
+    context_mapping: {  }
