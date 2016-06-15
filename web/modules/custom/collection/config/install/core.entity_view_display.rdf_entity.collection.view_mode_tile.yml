@@ -62,6 +62,8 @@ targetEntityType: rdf_entity
 bundle: collection
 mode: view_mode_tile
 content:
+  collection_content:
+    weight: 100
   field_ar_abstract:
     type: text_trimmed
     weight: 16
