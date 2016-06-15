@@ -10,7 +10,7 @@ dependencies:
 id: joinup_theme_account_menu
 theme: joinup_theme
 region: header_profile_menu
-weight: -11
+weight: -9
 provider: null
 plugin: 'system_menu_block:account'
 settings:
