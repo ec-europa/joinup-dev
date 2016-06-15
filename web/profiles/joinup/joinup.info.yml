@@ -141,5 +141,6 @@ config_devel:
   - user.role.moderator
   - user.settings
   - views.view.collections
+  - views.view.collection_content
   - views.view.search
   - views.view.user_admin_people
