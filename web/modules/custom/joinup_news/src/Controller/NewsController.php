@@ -52,6 +52,9 @@ class NewsController extends ControllerBase {
   public function createNewsAccess(RdfInterface $rdf_entity) {
     // Check that the passed in RDF entity is a collection or a solution,
     // and that the user has the permission to create news.
+    // @todo This is a temporary workaround for the og permissions.
+    // Remove this when ISAICP-2369 is in.
+    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2369
     if (in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
       if ($this->currentUser()->hasPermission('create rdf entity news')) {
         return AccessResult::allowed();
