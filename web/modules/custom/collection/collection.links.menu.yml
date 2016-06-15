@@ -3,3 +3,9 @@ collection.collection_overview:
   weight: 0
   url: 'internal:/collections'
   menu_name: main
+
+collection.propose_form:
+  title: 'Propose collection'
+  weight: 0
+  url: 'route:collection.propose_form'
+  menu_name: footer
