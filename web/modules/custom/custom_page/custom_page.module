@@ -53,7 +53,9 @@ function custom_page_og_membership_insert(OgMembership $og_membership) {
  *
  * Create menu link when a custom page gets saved.
  *
- * @todo Fix this to take the parent hierarchy into account.
+ * @todo This will become obsolete when ISAICP-2369 is in.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2369
  */
 function custom_page_entity_insert(EntityInterface $entity) {
   if (!$entity instanceof Node) {
@@ -88,5 +90,4 @@ function custom_page_entity_insert(EntityInterface $entity) {
     'link' => ['uri' => 'internal:/node/' . $node->id()],
   ]);
   $menu_link_content->save();
-  MenuLinkContent::create();
 }
