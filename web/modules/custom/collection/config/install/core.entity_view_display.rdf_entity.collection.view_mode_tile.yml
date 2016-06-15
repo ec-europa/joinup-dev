@@ -156,7 +156,7 @@ content:
     label: hidden
     settings:
       image_style: image_style_collection_logo
-      image_link: ''
+      image_link: content
     third_party_settings:
       ds:
         ft:
@@ -243,34 +243,13 @@ content:
     type: string
     weight: 1
     settings:
-      link_to_entity: false
+      link_to_entity: true
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: h2
-            fi-cl: listing__title
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
+            classes: {  }
 hidden: {  }

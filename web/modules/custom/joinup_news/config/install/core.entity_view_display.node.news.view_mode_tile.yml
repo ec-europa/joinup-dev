@@ -30,6 +30,7 @@ third_party_settings:
         link_custom: ''
         classes:
           layout_class: {  }
+          ds_content: {  }
     regions:
       ds_content:
         - node_title
@@ -41,9 +42,9 @@ third_party_settings:
         label: hidden
         formatter: default
         settings:
+          link: true
           wrapper: ''
           class: ''
-          link: false
         ft:
           id: expert
           settings:

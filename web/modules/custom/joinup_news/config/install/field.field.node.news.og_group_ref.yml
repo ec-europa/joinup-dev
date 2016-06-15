@@ -11,7 +11,7 @@ id: node.news.og_group_ref
 field_name: og_group_ref
 entity_type: node
 bundle: news
-label: 'Collection'
+label: Collection
 description: 'The collection this entity belongs to.'
 required: false
 translatable: true
