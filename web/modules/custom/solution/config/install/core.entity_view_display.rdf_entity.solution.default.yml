@@ -87,7 +87,7 @@ content:
     type: datetime_default
   field_is_description:
     weight: 1
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default

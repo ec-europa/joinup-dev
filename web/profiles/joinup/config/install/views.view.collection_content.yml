@@ -72,7 +72,7 @@ display:
         options:
           view_modes:
             'entity:node':
-              custom_page: default
+              custom_page: view_mode_tile
               document: default
               event: view_mode_tile
               news: view_mode_tile
@@ -81,7 +81,7 @@ display:
               asset_release: default
               collection: view_mode_tile
               licence: default
-              solution: default
+              solution: view_mode_tile
       fields:
         id:
           table: search_api_index_collections
