@@ -1,5 +1,5 @@
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - collection
@@ -9,8 +9,8 @@ dependencies:
     - joinup_theme
 id: joincollectionblock
 theme: joinup_theme
-region: featured
-weight: -9
+region: '-1'
+weight: -8
 provider: null
 plugin: join_collection_block
 settings:
