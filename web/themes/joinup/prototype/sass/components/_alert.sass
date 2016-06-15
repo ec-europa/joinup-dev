@@ -1,0 +1,42 @@
+// Component
+// --------------------------------------------------
+.alert
+  position: relative
+  padding: 20px 60px
+  margin-bottom: 40px
+  +border-radius(4px)
+
+// Elements
+// --------------------------------------------------
+.alert__icon
+  position: absolute
+  top: 50%
+  left: 5px
+  transform: translateY(-50%)
+  color: #fff
+  +icon-size(50px)
+
+.alert__message
+  color: #fff
+
+.alert__close
+  position: absolute
+  top: 0
+  right: 0
+  color: #000
+  opacity: 0.4
+  +icon-size(50px)
+
+// Modifiers
+// --------------------------------------------------
+.alert--error
+  background-color: $color-error
+
+.alert--warning
+  background-color: $color-warning
+
+.alert--info
+  background-color: $color-info
+
+.alert--success
+  background-color: $color-success
