@@ -88,6 +88,15 @@ function joinup_theme_suggestions_alter(array &$suggestions, array $variables) {
       $suggestions[] = $original_theme_hook . '__hidden';
     }
   }
+  elseif (isset($variables['elements']['#id']) && $variables['elements']['#id'] == 'joinup_theme_content') {
+    $route_match = \Drupal::routeMatch();
+    $route_name = $route_match->getRouteName();
+
+    if ($route_name == 'view.collections.page_1') {
+      $original_theme_hook = $variables['theme_hook_original'];
+      $suggestions[] = $original_theme_hook . '__joinup_theme_content_view';
+    }
+  }
 
   return $suggestions;
 }
