@@ -79,7 +79,6 @@ function joinup_theme_preprocess_block(&$variables) {
       'user.login',
       'user.register',
       'user.pass',
-      'entity.rdf_entity.canonical',
     );
 
     if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
