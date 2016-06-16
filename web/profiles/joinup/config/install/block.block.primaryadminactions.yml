@@ -5,15 +5,15 @@ dependencies:
     - facets
   theme:
     - joinup_theme
-id: pagetitle
+id: primaryadminactions
 theme: joinup_theme
 region: content
-weight: -9
+weight: -8
 provider: null
-plugin: page_title_block
+plugin: local_actions_block
 settings:
-  id: page_title_block
-  label: 'Page title'
+  id: local_actions_block
+  label: 'Primary admin actions'
   provider: core
   label_display: '0'
 visibility:
