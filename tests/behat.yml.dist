@@ -26,9 +26,9 @@ default:
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:
-        message_selector: '.messages'
-        error_message_selector: '.messages.messages--error'
-        success_message_selector: '.messages.messages--status'
+        message_selector: '.alert'
+        error_message_selector: '.alert.alert--error'
+        success_message_selector: '.alert.alert--status'
       subcontexts:
         paths:
           - '${behat.subcontexts.path}'
