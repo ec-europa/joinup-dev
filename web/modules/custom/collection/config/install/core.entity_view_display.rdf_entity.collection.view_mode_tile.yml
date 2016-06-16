@@ -64,6 +64,8 @@ mode: view_mode_tile
 content:
   collection_content:
     weight: 100
+    settings: {  }
+    third_party_settings: {  }
   field_ar_abstract:
     type: text_trimmed
     weight: 16
@@ -249,9 +251,30 @@ content:
     third_party_settings:
       ds:
         ft:
-          id: default
+          id: expert
           settings:
             lb: ''
+            prefix: ''
+            lbw-el: ''
+            lbw-cl: ''
+            lbw-at: ''
+            ow: true
+            ow-el: div
+            ow-cl: listing__field
+            ow-at: ''
+            fis-el: ''
+            fis-cl: ''
+            fis-at: ''
+            fi: true
+            fi-el: div
+            fi-cl: listing__title
+            fi-at: ''
+            suffix: ''
+            lbw: false
             lb-col: false
-            classes: {  }
+            ow-def-at: false
+            ow-def-cl: false
+            fis: false
+            fis-def-at: false
+            fi-def-at: false
 hidden: {  }

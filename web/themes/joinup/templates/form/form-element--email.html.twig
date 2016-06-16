@@ -71,7 +71,7 @@
 %}
 <div{{ attributes.addClass(classes) }}>
   {% if label_display in ['before', 'invisible'] %}
-    <div> {{ label }} </div>
+    <div class="mdl-textfield__label"> {{ label }} </div>
   {% endif %}
   {% if prefix is not empty %}
     <span class="field-prefix">{{ prefix }}</span>

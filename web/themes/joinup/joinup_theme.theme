@@ -72,17 +72,18 @@ function joinup_theme_preprocess_block(&$variables) {
       $variables['is_view'] = TRUE;
     }
   }
-  elseif (isset($variables['elements']['#id']) && $variables['elements']['#id'] == 'joinup_theme_page_title') {
+  elseif (isset($variables['elements']['#id']) && $variables['elements']['#id'] == 'pagetitle') {
     $route_match = \Drupal::routeMatch();
     $route_name = $route_match->getRouteName();
     $blue_header_routes = array(
       'user.login',
       'user.register',
       'user.pass',
+      'entity.rdf_entity.canonical',
     );
 
     if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
-      $variables['is_login_page'] = TRUE;
+      $variables['hide_title'] = TRUE;
     }
   }
 }
@@ -103,21 +104,4 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
   }
 
   return $suggestions;
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function joinup_theme_preprocess_form_element_label(&$variables) {
-  $label_for = array(
-    'edit-name',
-    'edit-pass',
-    'edit-mail',
-    'edit-field-user-first-name-0-value',
-    'edit-field-user-family-name-0-value',
-  );
-
-  if (isset($variables['attributes']['for']) && in_array($variables['attributes']['for'], $label_for)) {
-    $variables['is_mdl'] = TRUE;
-  }
 }
