@@ -53,6 +53,7 @@ themes:
   - joinup_theme
 
 config_devel:
+  - block.block.addcontent
   - block.block.joincollectionblock
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
@@ -68,6 +69,7 @@ config_devel:
   - block.block.navigation
   - block.block.pagetitle
   - block.block.policydomain
+  - block.block.primaryadminactions
   - block.block.seven_breadcrumbs
   - block.block.seven_content
   - block.block.seven_help
@@ -143,5 +145,6 @@ config_devel:
   - user.role.moderator
   - user.settings
   - views.view.collections
+  - views.view.collection_content
   - views.view.search
   - views.view.user_admin_people

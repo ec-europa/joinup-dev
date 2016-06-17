@@ -83,7 +83,7 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
   public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityManagerInterface $entityManager, ContextProviderInterface $collection_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
-    $this->collection = $collection_context->getRuntimeContexts(['collection'])['collection']->getContextValue();
+    $this->collection = $collection_context->getRuntimeContexts(['og'])['og']->getContextValue();
 
     $this->entityManager = $entityManager;
   }

@@ -4,6 +4,7 @@ namespace Drupal\solution\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\og\OgAccess;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -52,10 +53,13 @@ class SolutionController extends ControllerBase {
   public function createSolutionAccess(RdfInterface $rdf_entity) {
     // Check that the passed in RDF entity is a collection, and that the user
     // has the permission to create solutions.
-    // @todo Collection owners and facilitators should also have the right to
-    //   create solutions for the collections they manage.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2448
+    // @todo This is a temporary workaround for the og permissions.
+    // Remove this when ISAICP-2369 is in.
+    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2369
     if ($rdf_entity->bundle() == 'collection' && $this->currentUser()->hasPermission('propose solution rdf entity')) {
+      return AccessResult::allowed();
+    }
+    if (OgAccess::userAccess($rdf_entity, 'propose solution rdf entity')->isAllowed()) {
       return AccessResult::allowed();
     }
 

@@ -19,7 +19,6 @@
 
 
   <body>
-
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
     <header class="section section--header mdl-layout__header">
@@ -28,21 +27,21 @@
       <a href="/" class="header-logo mdl-layout-title" title="Home"></a>
       <div class="mdl-layout-spacer"></div>
       <nav class="header-menu mdl-navigation">
-        <a class="header-menu__link active-trail mdl-navigation__link" href="#">
+        <a class="header-menu__link mdl-navigation__link" href="#">
           <span class="header-menu__wrapper">
-            <span class="header-menu__icon icon icon--solutions"></span>
+            <span class="header-menu__icon icon icon--solution"></span>
             <span class="header-menu__text">Solutions</span>            
+          </span>
+        </a>
+        <a class="header-menu__link mdl-navigation__link" href="/collections">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--collection"></span>
+            <span class="header-menu__text">Collections</span>
           </span>
         </a>
         <a class="header-menu__link mdl-navigation__link" href="#">
           <span class="header-menu__wrapper">
-            <span class="header-menu__icon icon icon--collections"></span>
-            <span class="header-menu__text">Collections</span>
-          </span>
-        </a>
-        <a class="header-menu__link active-trail mdl-navigation__link" href="#">
-          <span class="header-menu__wrapper">
-            <span class="header-menu__icon icon icon--events"></span>
+            <span class="header-menu__icon icon icon--event"></span>
             <span class="header-menu__text">Events</span>
           </span>
         </a>
@@ -74,19 +73,15 @@
 </header>
 
 
-    <div class="main-container mdl-grid">
+      <div class="main-container mdl-grid">
+        <div class="mdl-cell mdl-cell--1-col"></div>
+          <div class="section section--content mdl-cell mdl-cell--10-col">
+            <h1 class="page__title">About</h1>
+            <div class="page__content">
 
-    <div class="mdl-cell mdl-cell--1-col"></div>
+            <h1 style="margin-top: 0">Headings</h1>
 
-    <div class="section section--content mdl-cell mdl-cell--10-col">
-
-    <h1 class="page__title">About</h1>
-
-    <div class="page__content">
-
-      <h1 style="margin-top: 0">Headings</h1>
-
-      <!-- H1 -->
+            <!-- H1 -->
 <h1>Lorem ipsum h1 dolor sit amet</h1>
 
 <!-- H2 -->
@@ -98,26 +93,26 @@
 <!-- H4 -->
 <h4>Lorem ipsum h4 dolor sit amet</h4>
 
-      <h1>Paragraphs</h1>
+            <h1>Paragraphs</h1>
 
-      <!-- Paragraph 1 -->
+            <!-- Paragraph 1 -->
 <p>Lorem ipsum paragraph dolor sit amet, consectetur adipiscing elit. Suspendisse ac molestie felis. Nulla efficitur metus vel viverra aliquam.</p>
 
 <!-- Paragraph 2 -->
 <p>Lorem ipsum second paragraph dolor sit amet, consectetur adipiscing elit. Suspendisse ac molestie felis. Nulla efficitur metus vel viverra aliquam.</p>
 
-      <h1>Blockquote</h1>
+            <h1>Blockquote</h1>
 
-      <!-- Blockquote -->
+            <!-- Blockquote -->
 <blockquote>
   <div class="blockquote__paragraph">Lorem ipsum blockquote dolor sit amet, consectetur adipiscing elit. Suspendisse ac molestie felis. Nulla efficitur metus vel viverra aliquam. Donec sagittis lectus et quam vulputate, ut efficitur risus pretium. Aliquam quis venenatis purus. Phasellus nec rhoncus enim, quis vulputate enim. Suspendisse suscipit, leo eu elementum fringilla, lectus odio molestie tellus, ac ullamcorper eros lectus imperdiet nunc. Morbi mollis tellus eget sapien dapibus, quis ullamcorper lorem pulvinar.
   </div>
   <div class="blockquote__author">- Lorem Ipsum</div>
 </blockquote>
 
-      <h1>Lists</h1>
+            <h1>Lists</h1>
 
-      <!-- Unordered list -->
+            <!-- Unordered list -->
 <ul>
   <li>Lorem ipsum</li>
   <li>Lorem ipsum</li>
@@ -140,9 +135,9 @@
   <li>Lorem ipsum</li>
 </ol>
 
-      <h1>Table</h1>
+            <h1>Table</h1>
 
-      <!-- Table with ordinal number in first column -->
+            <!-- Table with ordinal number in first column -->
 <table>
   <thead>
     <tr>
@@ -180,62 +175,12 @@
   </tbody>
 </table>
 
-      <h1>Inputs</h1>
+            </div>
+          </div>
+        <div class="mdl-cell mdl-cell--1-col"></div>
+      </div>
 
-      <!-- Textfield with Floating Label -->
-<form>
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text">
-    <label class="mdl-textfield__label">Text label</label>
-  </div>
-</form>
-
-<!-- Numeric Textfield with Floating Label -->
-<form>
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
-    <label class="mdl-textfield__label">Number label</label>
-    <span class="mdl-textfield__error">Input is not a number!</span>
-  </div>
-</form>
-
-      <h1>Checkboxes</h1>
-
-      <!-- Checkbox on -->
-<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-1">
-  <input type="checkbox" id="checkbox-1" class="mdl-checkbox__input" checked>
-  <span class="mdl-checkbox__label">Checkbox on</span>
-</label>
-
-<!-- Checkbox off -->
-<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-2">
-  <input type="checkbox" id="checkbox-2" class="mdl-checkbox__input">
-  <span class="mdl-checkbox__label">Checkbox off</span>
-</label>
-
-      <h1>Radio buttons</h1>
-
-      <!-- Radio on -->
-<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
-  <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="1" checked>
-  <span class="mdl-radio__label">Radio on</span>
-</label>
-
-<!-- Radio off -->
-<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
-  <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="2">
-  <span class="mdl-radio__label">Radio off</span>
-</label>
-
-    </div>
-
-    </div>
-
-    <div class="mdl-cell mdl-cell--1-col"></div>
-
-    </div>
-
-    <footer class="section--footer">
+      <footer class="section--footer">
   <div class="container-fluid">
     <div class="region region--footer">
     </div>
@@ -243,7 +188,7 @@
 </footer>
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script defer src="../material-design-lite/material.min.js"></script>
 <script>
 $(document).ready(function(){
@@ -254,7 +199,5 @@ $(document).ready(function(){
 
 
     </div>
-
   </body>
-
 </html>
