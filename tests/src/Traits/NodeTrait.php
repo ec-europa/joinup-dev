@@ -2,7 +2,6 @@
 
 namespace Drupal\joinup\Traits;
 
-
 /**
  * Helper methods when dealing with Nodes.
  */

@@ -16,6 +16,7 @@ use \Drupal\joinup\Traits\NodeTrait;
  * Behat step definitions for testing users.
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
   use NodeTrait;
 
   /**
@@ -176,8 +177,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Checks that the given select field has the given options.
    *
-   * To do this we extract the text of the field which is the values of the
-   * select box concatenated. Then we check if the value is in this string.
+   * To do this we extract the field text which contains the values expected
+   * to be found in the select box as a concatenated string.
+   * Then we check if the value is contained in the extracted value.
    *
    * @param string $select
    *    The name of the field element.
@@ -189,7 +191,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Given (the ):select field has the :options option(s)
    */
-  public function checkSelectOption($select, $options) {
+  public function checkSelectOptions($select, $options) {
     $values = $this->getSession()->getPage()->findField($select)->getText();
     foreach (explode(',', $options) as $option) {
       if (strpos($values, trim($option)) === FALSE) {
@@ -199,7 +201,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Checks that the given select field does not have the given values.
+   * Checks if the given select field does not contain any of the given values.
    *
    * @param string $select
    *    The name of the field element.
@@ -211,7 +213,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Given (the ):select field does not have the :options option(s)
    */
-  public function checkSelectOptionInverse($select, $options) {
+  public function checkSelectOptionsInverse($select, $options) {
     $values = $this->getSession()->getPage()->findField($select)->getText();
     foreach (explode(',', $options) as $option) {
       if (strpos($values, trim($option)) !== FALSE) {
@@ -299,7 +301,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if ($node->isPublished()) {
-      throw new \Exception("$title content should be published but is not.");
+      throw new \Exception("$title content should not be published but is.");
     }
   }
 
