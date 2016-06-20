@@ -280,7 +280,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if (!$node->isPublished()) {
-      throw new \Exception("$title content should be published but is not.");
+      throw new \Exception("$title content should be published but it is not.");
     }
   }
 
@@ -301,7 +301,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if ($node->isPublished()) {
-      throw new \Exception("$title content should not be published but is.");
+      throw new \Exception("$title content should not be published but it is.");
     }
   }
 
