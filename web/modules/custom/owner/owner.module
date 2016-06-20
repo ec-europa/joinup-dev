@@ -4,3 +4,20 @@
  * @file
  * Main functions and hook implementations of the Owner module.
  */
+
+use \Drupal\Core\Entity\EntityTypeInterface;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function owner_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  // Make sure that the label is always unique for person and organization rdf
+  // entities.
+  if ($entity_type->id() == 'rdf_entity') {
+    $bundles = ['person', 'organization'];
+
+    if (in_array($bundle, $bundles) && !empty($fields['label'])) {
+      $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => [$bundle]]);
+    }
+  }
+}
