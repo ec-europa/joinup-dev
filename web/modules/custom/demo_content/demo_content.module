@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains demo_content.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function demo_content_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the demo_content module.
+    case 'help.page.demo_content':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Demo content for Joinup project') . '</p>';
+      return $output;
+
+    default:
+  }
+}
