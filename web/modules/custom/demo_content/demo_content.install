@@ -29,7 +29,7 @@ function demo_content_create_demo_content() {
 
       $uri = file_unmanaged_copy($file_path, 'public://' . $values['field_ar_logo']);
       $file = File::create(['uri' => $uri]);
-      $values['field_ar_logo'] = $file->id();
+      $values['field_ar_logo'] = [$file];
     }
 
     $values['rid'] = 'collection';
