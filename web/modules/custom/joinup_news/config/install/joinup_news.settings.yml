@@ -16,7 +16,7 @@
 # @endcode
 #
 # The array is a four dimensions array. The first level contains the
-# moderation calue of the parent entity. The second level is the
+# moderation value of the parent entity. The second level is the
 # target state the entity transits to. Each target
 # state is an array of allowed source states which in every check, is the
 # current state of the entity. Finally, the source states are arrays

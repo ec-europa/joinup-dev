@@ -4,7 +4,7 @@
 # This state will be used when the entity is being created.
 # In order for the state_machine module to ensure that
 # there is at least one option for the field, it forces
-# the first available state and checks it's available transitions.
+# the first available state and checks its available transitions.
 # Since we are implementing our own permission schema,
 # we are removing the default value and we are only allowing our
 # desired target states.

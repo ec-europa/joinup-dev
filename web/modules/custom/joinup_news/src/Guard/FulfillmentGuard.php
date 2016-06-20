@@ -68,20 +68,20 @@ class FulfillmentGuard implements GuardInterface {
     // even outside the entity CRUD forms. Cases like this is e.g. when trying
     // to edit the settings of the field.
     // In these cases, there is no parent entity so we need to check for it.
-    if ($parent) {
-      // Check if the user has one of the allowed system roles.
-      $authorized_roles = $allowed_conditions[$is_moderated][$to_state][$from_state];
-      $user = \Drupal::currentUser();
-      if (array_intersect($authorized_roles, $user->getRoles())) {
-        return TRUE;
-      }
-
-      // Check if the user has one of the allowed group roles.
-      $membership = Og::getUserMembership($user->getAccount(), $parent);
-      return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
+    if (empty($parent)) {
+      return FALSE;
     }
 
-    return FALSE;
+    // Check if the user has one of the allowed system roles.
+    $authorized_roles = $allowed_conditions[$is_moderated][$to_state][$from_state];
+    $user = \Drupal::currentUser();
+    if (array_intersect($authorized_roles, $user->getRoles())) {
+      return TRUE;
+    }
+
+    // Check if the user has one of the allowed group roles.
+    $membership = Og::getUserMembership($user->getAccount(), $parent);
+    return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
   }
 
   /**
