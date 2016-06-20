@@ -6,8 +6,12 @@
  */
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgMembership;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\user\Entity\User;
 
 /**
@@ -42,4 +46,48 @@ function custom_page_og_membership_insert(OgMembership $og_membership) {
   $tag = 'rdf_entity:' . $current_user->getEntityTypeId() . ':' . $current_user->id();
 
   Cache::invalidateTags([$tag]);
+}
+
+/**
+ * Implements hook_entity_insert().
+ *
+ * Create menu link when a custom page gets saved.
+ *
+ * @todo This will become obsolete when ISAICP-2369 is in.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2369
+ */
+function custom_page_entity_insert(EntityInterface $entity) {
+  if (!$entity instanceof Node) {
+    return;
+  }
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $entity;
+  if ($node->getType() != 'custom_page') {
+    return;
+  }
+  /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
+  $group = $node->get('og_group_ref')->first();
+  if (!$group) {
+    return;
+  }
+  $value = $group->getValue();
+  // Fetch the menu.
+  $values = [
+    'type' => 'navigation',
+    OgGroupAudienceHelper::DEFAULT_FIELD => $value['target_id'],
+  ];
+  $storage = \Drupal::entityManager()->getStorage('ogmenu_instance');
+  $instances = $storage->loadByProperties($values);
+  if (!$instances) {
+    return;
+  }
+  /** @var \Drupal\og_menu\Entity\OgMenuInstance $instance */
+  $instance = array_pop($instances);
+  $menu_link_content = MenuLinkContent::create([
+    'title' => $node->getTitle(),
+    'menu_name' => 'ogmenu-' . $instance->id(),
+    'link' => ['uri' => 'internal:/node/' . $node->id()],
+  ]);
+  $menu_link_content->save();
 }

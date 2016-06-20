@@ -16,9 +16,11 @@ Feature: Add asset distribution through the UI
       | title         | Asset release random name        |
       | description   | Some reusable random description |
       | is version of | Asset random name                |
-
     When I am logged in as a "moderator"
     And I go to the homepage of the "Asset release random name" asset release
+
+    # Click the + button.
+    Then I click "Add"
     Then I should see the link "Add distribution"
 
     When I am logged in as an "authenticated user"

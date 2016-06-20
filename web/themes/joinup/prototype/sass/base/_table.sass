@@ -1,0 +1,27 @@
+table
+  width: 100%
+  border-spacing: 0
+
+thead
+  th
+    background-color: #fff
+    text-align: left
+    border-bottom: 1px solid $color-grey-light
+
+tbody
+  tr
+    &:nth-child(odd)
+      background-color: #fff
+    &:nth-child(even)
+      background-color: $color-grey-ligher
+  td
+    &.no
+      color: $color-grey-medium
+
+thead,
+tbody
+  th,
+  td
+    padding: 15px
+    &.no
+      text-align: center

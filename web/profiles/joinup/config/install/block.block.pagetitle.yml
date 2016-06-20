@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - facets
+  theme:
+    - joinup_theme
+id: pagetitle
+theme: joinup_theme
+region: content
+weight: -9
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility:
+  other_facet:
+    id: other_facet
+    facets: ''
+    facet_value: ''
+    negate: false
+    context_mapping: {  }

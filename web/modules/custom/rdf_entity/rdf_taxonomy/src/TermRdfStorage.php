@@ -10,7 +10,12 @@ use Drupal\taxonomy\TermStorageInterface;
  * Defines a Controller class for taxonomy terms.
  */
 class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterface {
-  protected $bundlePredicate = 'http://www.w3.org/2004/02/skos/core#inScheme';
+  // SKOS has two predicates used on concepts to point to their vocabulary.
+  // this depends on their level in the hierarchy.
+  protected $bundlePredicate = [
+    'http://www.w3.org/2004/02/skos/core#inScheme',
+    'http://www.w3.org/2004/02/skos/core#topConceptOf',
+  ];
 
   /**
    * Array of loaded parents keyed by child term ID.
@@ -204,9 +209,10 @@ QUERY;
         $query = <<<QUERY
 SELECT DISTINCT ?tid ?label ?parent
 WHERE {
-  ?tid <http://www.w3.org/2004/02/skos/core#inScheme> <$concept_schema> .
+  ?tid ?relation <$concept_schema> .
   ?tid <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
   ?tid <http://www.w3.org/2004/02/skos/core#prefLabel> ?label .
+  FILTER (?relation IN (<http://www.w3.org/2004/02/skos/core#inScheme>, <http://www.w3.org/2004/02/skos/core#topConceptOf>) ) .
   FILTER (lang(?label) = 'en') .
   OPTIONAL {?tid <http://www.w3.org/2004/02/skos/core#broaderTransitive> ?parent }
 }
