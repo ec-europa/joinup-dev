@@ -109,6 +109,7 @@ $ cd tests; ./behat
 
 
 ## Contributing
+See our [contributors guide](docs/contribution.md).
 
 * You're thinking of setting up your own code repository using the Joinup
   codebase?
