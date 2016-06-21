@@ -7,14 +7,14 @@
 
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
-use \Drupal\Core\Entity\EntityTypeInterface;
-use \Drupal\Core\Entity\EntityInterface;
-use \Drupal\Core\Form\FormStateInterface;
-use \Drupal\node\NodeInterface;
-use \Drupal\Core\Session\AccountInterface;
-use \Drupal\og\Og;
-use \Drupal\og\OgAccess;
-use \Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\NodeInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\og\Og;
+use Drupal\og\OgAccess;
+use Drupal\Core\Access\AccessResult;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
