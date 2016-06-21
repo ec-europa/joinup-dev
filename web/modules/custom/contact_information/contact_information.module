@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains contact_information.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function contact_information_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the contact_information module.
+    case 'help.page.contact_information':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides Contact information entities for the Joinup project.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
