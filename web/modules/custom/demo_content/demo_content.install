@@ -5,8 +5,8 @@
  * Includes demo content for the joinup project.
  */
 
-use \Drupal\file\Entity\File;
-use \Drupal\rdf_entity\Entity\Rdf;
+use Drupal\file\Entity\File;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Implements hook_install().
@@ -35,6 +35,11 @@ function demo_content_create_demo_content() {
     $values['rid'] = 'collection';
     $collection = Rdf::create($values);
     $collection->save();
+  }
+
+  foreach (demo_content_get_asset_data() as $values) {
+    $solution = Rdf::create($values);
+    $solution->save();
   }
 }
 
@@ -146,6 +151,71 @@ function demo_content_get_collection_data() {
       'field_ar_logo' => 'logo4.png',
       'field_ar_moderation' => '0',
       'field_ar_modification_date' => '2016-06-08T13:26:13+00:00',
+    ],
+  ];
+}
+
+/**
+ * Defines an array of data of solutions and releases.
+ *
+ * @return array
+ *    An array of collections' values.
+ */
+function demo_content_get_asset_data() {
+  // @todo: This function includes commented lines. These lines refer to
+  // unimplemented fields and entities and are there for future convenience.
+  // When needed, remove the comments to add the values to the entity.
+  return [
+    [
+      'id' => 'http://www.w3.org/ns/person#',
+      'rid' => 'solution',
+      'label' => 'Core Person Vocabulary',
+      'field_is_creation_date' => '2012-05-07T09:35:24+02:00',
+      'field_is_description' => '<![CDATA[<h3>
+<span style="line-height: 1.5; color: rgb(0,0,0); font-size: 12px">The Person Core Vocabulary provides a minimum set of classes and properties for describing a natural person, i.e. the individual as opposed to any role they may play in society or the relationships they have to other people, organisations and property; all of which contribute significantly to the broader concept of identity. The vocabulary is closely integrated with the Location and Business Core Vocabularies.</span></h3>
+<p><span style="line-height: 1.5; color: rgb(0,0,0); font-size: 12px"><strong><em>The latest version of the Core Vocabularies can be downloaded from</em></strong><br />
+<a href="https://joinup.ec.europa.eu/asset/core_vocabularies/description"><strong><em>https://joinup.ec.europa.eu/asset/core_vocabularies/description.</em></strong></a><br />
+<strong><em>(direct link to </em></strong><a href="https://joinup.ec.europa.eu/asset/core_vocabularies/asset_release/core-vocabularies-v11#download"><strong><em>version 1.1</em></strong></a><strong><em>)</em></strong></span></p>
+<p>&nbsp;</p><p><span style="line-height: 1.5; color: rgb(0,0,0); font-size: 12px">
+<strong>Namespace</strong>:&nbsp;</span><a href="http://www.w3.org/ns/person#"><span style="line-height: 1.5">http://www.w3.org/ns/person#</span><span style="line-height: 1.5">&nbsp;</span></a></p>
+<p><span style="line-height: 1.5"><strong>Prefix</strong>: person</span></p><h3>Status</h3><p><strong>Final draft</strong>: Version 1.00 07 May 2012</p>
+<p>This specification was produced by the <a href="https://joinup.ec.europa.eu/asset/core_business/document/core-vocabularies-working-group-members">Core Vocabularies Working Group (Person Task Force)</a>, following the <a href="https://joinup.ec.europa.eu/node/43160">Process and Methodology for Developing Core Vocabularies</a>.&nbsp;It has been reviewed by representatives of the Member States of the European Union, <abbr title="Public Sector Information">PSI</abbr> publishers, and by other interested parties.&nbsp;<span style="line-height: 1.5; font-size: 13px">On 23 May 2012, the Member State representatives in the ISA Coordination Group have <a href="https://joinup.ec.europa.eu/node/48837">endorsed</a> the Core Person vocabulary v1.00, acknowledging the work and promising to further disseminate it at national level.&nbsp;</span></p>
+<section id="status"><p>&nbsp;</p><p><span style="font-size: 13px">Copyright &copy; 2012 European Union. This vocabulary is published under the&nbsp;</span><span style="font-size: 13px"><a href="https://joinup.ec.europa.eu/category/licence/isa-open-metadata-licence-v11" rel="license" style="font-size: 13px">ISA Open Metadata Licence v1.1</a></span></p>
+</section>]]>',
+      // These lines are commented because the entities do not currently exist.
+      // 'field_is_distribution' => [
+      // 'http://joinup.ec.europa.eu/site/core_person/CorePerson/CorePerson-v1.00.html',
+      // 'https://joinup.ec.europa.eu/catalogue/distribution/core_vocabularies-business_location_person_v100_rdf_schemahtml',
+      // 'https://joinup.ec.europa.eu/catalogue/distribution/core_vocabularies-business_location_person_v100_xml_schemas_rdf',
+      // 'https://joinup.ec.europa.eu/catalogue/distribution/core_vocabularies-business_location_person_v100_xml_schemas_xsd',
+      // 'https://joinup.ec.europa.eu/catalogue/distribution/core_vocabularies-business_location_person_v100_specification_in_pdf',
+      // 'https://joinup.ec.europa.eu/catalogue/distribution/core_vocabularies-person_issues_raised_within_working_group-v100zip',
+      // 'https://joinup.ec.europa.eu/system/files/project/Core_Vocabularies-Business_Location_Person_v1.00_RDF_Schema.zip',
+      // 'https://joinup.ec.europa.eu/catalogue/distribution/core_vocabularies-business_location_person_v100_conceptual_modelzip-0',
+      // 'https://joinup.ec.europa.eu/system/files/project/Core_Vocabularies-Business_Location_Person_v1.00_XML_Schemas.zip',
+      // 'https://joinup.ec.europe.be/Core_Vocabularies-Business_Location_Person_v1.00_Specification_final_zip',
+      // ],
+      // 'field_keywords' => [
+      // 'core vocabulary',
+      // 'FOAF',
+      // 'ISA',
+      // 'location',
+      // 'person',
+      // ].
+      'field_is_landing_page' => 'http://www.w3.org/ns/person#',
+      'field_is_modification_date' => '2014-12-05T14:02:24+01:00',
+      // 'field_is_owner' => 'http://ec.europa.eu/isa',
+      // 'field_is_solution_type' => [
+      // 'http://purl.org/adms/assettype/ReferenceData',
+      // 'http://purl.org/adms/assettype/SemanticView',
+      // 'http://purl.org/adms/solutiontype/Framework',
+      // ],
+      // 'field_spatial_coverage' => [
+      // 'http://sws.geonames.org/6255148',
+      // 'http://www.geonames.org/6695072',
+      // ],
+      // 'field_status' => 'http://purl.org/adms/status/Completed',
+      'og_group_ref' => 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1',
     ],
   ];
 }
