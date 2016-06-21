@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Includes demo content for the joinup project.
+ * Install, update and uninstall functions for the module.
  */
 
 use Drupal\file\Entity\File;
@@ -32,7 +32,6 @@ function demo_content_create_demo_content() {
       $values['field_ar_logo'] = [$file];
     }
 
-    $values['rid'] = 'collection';
     $collection = Rdf::create($values);
     $collection->save();
   }
@@ -53,6 +52,7 @@ function demo_content_get_collection_data() {
   return [
     [
       'id' => 'http://placeHolder/4d0a6736-b28a-4cf4-aefd-d7c4f5af70bb',
+      'rid' => 'collection',
       'label' => 'Open source observatory',
       'field_ar_abstract' => '<p>Open Source Observatory</p>',
       'field_ar_access_url' => 'http://collection/osor/description',
@@ -81,6 +81,7 @@ function demo_content_get_collection_data() {
     ],
     [
       'id' => 'http://placeHolder/4e56d06c-c8c3-40fd-b2a0-773301ebe9b8',
+      'rid' => 'collection',
       'label' => 'National Interoperability Framework Observatory - NIFO',
       'field_ar_closed' => '0',
       'field_ar_creation_date' => '2016-06-08T14:33:55+00:00',
@@ -99,6 +100,7 @@ function demo_content_get_collection_data() {
     ],
     [
       'id' => 'http://placeHolder/e682a47c-4fa3-49c7-9d42-416379751111',
+      'rid' => 'collection',
       'label' => 'Common Assessment Method for Standards and Specifications - CAMSS',
       'field_ar_abstract' => '<p>The objective of CAMSS is to establish a neutral and unbiased method for the assessment of technical specifications and standards in the field of ICT.</p>',
       'field_ar_access_url' => '',
@@ -116,6 +118,7 @@ function demo_content_get_collection_data() {
     ],
     [
       'id' => 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1',
+      'rid' => 'collection',
       'label' => 'Semantic Interoperability Community - SEMIC',
       'field_ar_closed' => '0',
       'field_ar_creation_date' => '2016-06-08T13:26:13+00:00',
@@ -171,7 +174,7 @@ function demo_content_get_asset_data() {
       'rid' => 'solution',
       'label' => 'Core Person Vocabulary',
       'field_is_creation_date' => '2012-05-07T09:35:24+02:00',
-      'field_is_description' => '<![CDATA[<h3>
+      'field_is_description' => '<h3>
 <span style="line-height: 1.5; color: rgb(0,0,0); font-size: 12px">The Person Core Vocabulary provides a minimum set of classes and properties for describing a natural person, i.e. the individual as opposed to any role they may play in society or the relationships they have to other people, organisations and property; all of which contribute significantly to the broader concept of identity. The vocabulary is closely integrated with the Location and Business Core Vocabularies.</span></h3>
 <p><span style="line-height: 1.5; color: rgb(0,0,0); font-size: 12px"><strong><em>The latest version of the Core Vocabularies can be downloaded from</em></strong><br />
 <a href="https://joinup.ec.europa.eu/asset/core_vocabularies/description"><strong><em>https://joinup.ec.europa.eu/asset/core_vocabularies/description.</em></strong></a><br />
@@ -181,7 +184,7 @@ function demo_content_get_asset_data() {
 <p><span style="line-height: 1.5"><strong>Prefix</strong>: person</span></p><h3>Status</h3><p><strong>Final draft</strong>: Version 1.00 07 May 2012</p>
 <p>This specification was produced by the <a href="https://joinup.ec.europa.eu/asset/core_business/document/core-vocabularies-working-group-members">Core Vocabularies Working Group (Person Task Force)</a>, following the <a href="https://joinup.ec.europa.eu/node/43160">Process and Methodology for Developing Core Vocabularies</a>.&nbsp;It has been reviewed by representatives of the Member States of the European Union, <abbr title="Public Sector Information">PSI</abbr> publishers, and by other interested parties.&nbsp;<span style="line-height: 1.5; font-size: 13px">On 23 May 2012, the Member State representatives in the ISA Coordination Group have <a href="https://joinup.ec.europa.eu/node/48837">endorsed</a> the Core Person vocabulary v1.00, acknowledging the work and promising to further disseminate it at national level.&nbsp;</span></p>
 <section id="status"><p>&nbsp;</p><p><span style="font-size: 13px">Copyright &copy; 2012 European Union. This vocabulary is published under the&nbsp;</span><span style="font-size: 13px"><a href="https://joinup.ec.europa.eu/category/licence/isa-open-metadata-licence-v11" rel="license" style="font-size: 13px">ISA Open Metadata Licence v1.1</a></span></p>
-</section>]]>',
+</section>',
       // These lines are commented because the entities do not currently exist.
       // 'field_is_distribution' => [
       // 'http://joinup.ec.europa.eu/site/core_person/CorePerson/CorePerson-v1.00.html',

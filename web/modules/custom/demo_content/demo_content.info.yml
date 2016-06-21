@@ -2,4 +2,4 @@ name: Demo content
 type: module
 description: Demo content for Joinup project
 core: 8.x
-package: joinup
+package: Joinup
