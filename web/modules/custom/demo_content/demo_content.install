@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Install, update and uninstall functions for the module.
+ * Install, update and uninstall functions for the Demo content module.
  */
 
 use Drupal\file\Entity\File;
