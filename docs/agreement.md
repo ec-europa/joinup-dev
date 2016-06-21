@@ -1,7 +1,8 @@
 # Joinup Individual Contributor Assignment Agreement
 
 Thank you for your interest in contributing to Joinup, owned by the European Union ("We" or "Us").
-This contributor agreement ("Agreement") documents the rights granted by contributors to Us. To make this document effective, please sign it and send it to Us through the contact form at https://joinup.ec.europa.eu/contact (Category: Questions on legal issues). This is a legally binding document, so please read it carefully before agreeing to it. The Agreement may cover more than one software project managed by Us.
+This contributor agreement ("Agreement") documents the rights granted by contributors to Us. By creating a pull request you implicitly agree with the contents of this document.
+This is a legally binding document, so please read it carefully before agreeing to it. The Agreement may cover more than one software project managed by Us.
 
 ##1 Definitions
       "You" means the individual who Submits a Contribution to Us.
@@ -25,9 +26,9 @@ This contributor agreement ("Agreement") documents the rights granted by contrib
 
 ### 2.3 Outbound License
 As a condition on the grant of rights in Sections 2.1 and 2.2, We agree to license the Contribution under the terms of the following initial licences (including any right to adopt any future version of these licences):
-To the extend the Work includes software (source code or binaries):
+To the extent the Work includes software (source code or binaries):
 * The EUPL v1.1 or later
-To the extend the Work includes Media:
+To the extent the Work includes Media:
 * The ISA Open Metadata Licence v1.1 or later
   Without prejudice to the former conditions - and for the exclusive purpose of ensuring copyleft compatibility, We may licence the Contribution under any licences which are approved by the Open Source Initiative, or the Free Software Foundation, or Creative Commons or equivalent nonproprietary licences published by the European Commission on or after the Effective Date, including both permissive and copyleft licences, whether or not such licences are subsequently disapproved by relevant organisations (including any right to adopt any future version of these licences).
 
@@ -51,7 +52,7 @@ To the extend the Work includes Media:
    EXCEPT FOR THE EXPRESS WARRANTIES IN SECTION 3, THE CONTRIBUTION IS PROVIDED "AS IS". MORE PARTICULARLY, ALL EXPRESS OR IMPLIED WARRANTIES INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE EXPRESSLY DISCLAIMED BY YOU TO US AND BY US TO YOU. TO THE EXTENT THAT ANY SUCH WARRANTIES CANNOT BE DISCLAIMED, SUCH WARRANTY IS LIMITED IN DURATION TO THE MINIMUM PERIOD PERMITTED BY LAW.
 
 ## 5. Consequential Damage Waiver
-   TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL YOU OR US BE LIABLE FOR ANY LOSS OF PROFITS, LOSS OF ANTICIPATED SAVINGS, LOSS OF DATA, INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL AND EXEMPLARY DAMAGES ARISING OUT OF THIS AGREEMENT REGARDLESS OF THE LEGAL OR EQUITABLE THEORY (CONTRACT, TORT OR OTHERWISE) UPON WHICH THE CLAIM IS BASED.
+   TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL YOU OR US BE LIABLE FOR ANY LOSS OF PROFITS, DAMAGE INFLICTED TO PETS INCLUDING BUT NOT LIMITED TO KITTENS, LOSS OF ANTICIPATED SAVINGS, LOSS OF DATA, INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL AND EXEMPLARY DAMAGES ARISING OUT OF THIS AGREEMENT REGARDLESS OF THE LEGAL OR EQUITABLE THEORY (CONTRACT, TORT OR OTHERWISE) UPON WHICH THE CLAIM IS BASED.
 
 ## 6. Miscellaneous
 ### 6.1 

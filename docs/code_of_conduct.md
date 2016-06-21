@@ -1,4 +1,4 @@
-# Contributor Covenant Code of Conduct
+# Joinup Contributor Covenant Code of Conduct
 
 ## Our Pledge
 
