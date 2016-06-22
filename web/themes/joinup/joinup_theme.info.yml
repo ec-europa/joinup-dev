@@ -6,11 +6,15 @@ version: 8.1.1
 core: 8.x
 #Libraries
 libraries:
+  - joinup_theme/icons
+  - joinup_theme/fonts
   - joinup_theme/material-design-lite
   - joinup_theme/global-components
 
 regions:
   header: Header
+  header_central_menu: Main menu (header)
+  header_profile_menu: Profile menu (header)
   featured: Featured
   sidebar_left: 'Sidebar left'
   content_top: 'Content top'

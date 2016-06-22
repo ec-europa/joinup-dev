@@ -10,7 +10,7 @@ dependencies:
 id: type
 theme: joinup_theme
 region: sidebar_left
-weight: -9
+weight: -7
 provider: null
 plugin: 'facet_block:type'
 settings:

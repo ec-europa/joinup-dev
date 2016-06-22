@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.spatial_coverage
+  module:
+    - facets
+  theme:
+    - joinup_theme
+id: spatialcoverage
+theme: joinup_theme
+region: sidebar_left
+weight: -5
+provider: null
+plugin: 'facet_block:spatial_coverage'
+settings:
+  id: 'facet_block:spatial_coverage'
+  label: 'Spatial coverage'
+  provider: facets
+  label_display: visible
+visibility:
+  other_facet:
+    id: other_facet
+    facets: ''
+    facet_value: ''
+    negate: false
+    context_mapping: {  }

@@ -43,13 +43,19 @@
 <div class="layout-container mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
   <header class="section section--header" role="banner">
-    {{ page.header }}
+    <div class="container-fluid">
+      {% include directory ~ '/templates/parts/header.html.twig' %}
+      {{ page.header }}
+    </div>
   </header>
 
   {% if page.featured %}
-    <div class="section section--featured">
-      {{ page.featured }}
-    </div>
+    {% if is_collection %}
+      {% include directory ~ '/templates/parts/featured--collection.html.twig' %}
+    {% elseif is_blue_header %}
+      {% include directory ~ '/templates/parts/featured--title.html.twig' %}
+    {% endif %}
+
   {% endif %}
 
   <main class="main-container mdl-grid" role="main">
@@ -57,31 +63,43 @@
 
     {% if page.sidebar_left %}
       <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col" role="complementary">
-        {{ page.sidebar_left }}
+        <div class="container-fluid">
+          {{ page.sidebar_left }}
+        </div>
       </aside>
     {% endif %}
 
-    {% if page.content_top %}
-      <div class="section section--content-top">
-        {{ page.content_top }}
+    <div class="content-container mdl-cell--8-col">
+      {% if page.content_top %}
+        <div class="section section--content-top">
+          <div class="container-fluid">
+            {{ page.content_top }}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="section section--content">
+        <div class="container-fluid">
+          {{ page.content }}
+        </div>
       </div>
-    {% endif %}
 
-    <div class="section section--content mdl-cell mdl-cell--8-col">
-      {{ page.content }}
-    </div>{# /.layout-content #}
+      {% if page.content_bottom %}
+        <div class="section section--content-bottom">
+          <div class="container-fluid">
+            {{ page.content_bottom }}
+          </div>
+        </div>
+      {% endif %}
+    </div>{# /.content-container #}
 
-    {% if page.content_bottom %}
-      <div class="section section--content-bottom">
-        {{ page.content_bottom }}
-      </div>
-    {% endif %}
-
-  </main>
+  </main>{# /.main-container #}
 
   {% if page.footer %}
     <footer class="section section--footer" role="contentinfo">
-      {{ page.footer }}
+      <div class="container-fluid">
+        {{ page.footer }}
+      </div>
     </footer>
   {% endif %}
 

@@ -122,6 +122,12 @@ field_settings:
     property_path: search_api_aggregation_1
     type: string
     indexed_locked: true
+  search_api_aggregation_2:
+    label: Collection
+    datasource_id: null
+    property_path: search_api_aggregation_2
+    type: string
+    indexed_locked: true
 processor_settings:
   add_url:
     plugin_id: add_url
@@ -138,6 +144,12 @@ processor_settings:
           fields:
             - 'entity:node/type'
             - 'entity:rdf_entity/rid'
+        search_api_aggregation_2:
+          label: Collection
+          type: union
+          fields:
+            - 'entity:node/og_group_ref'
+            - 'entity:rdf_entity/og_group_ref'
       weights:
         preprocess_index: -10
 options:

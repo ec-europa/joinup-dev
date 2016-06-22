@@ -4,12 +4,13 @@ dependencies:
   config:
     - og_menu.ogmenu.navigation
   module:
-    - collection
+    - facets
+    - og_menu
   theme:
     - joinup_theme
 id: navigation
 theme: joinup_theme
-region: featured
+region: sidebar_left
 weight: -8
 provider: null
 plugin: 'collection_menu_block:navigation'
@@ -21,11 +22,11 @@ settings:
   level: '1'
   depth: '1'
   context_mapping:
-    og: '@collection.collection_route_context:collection'
+    og: '@collection.collection_route_context:og'
 visibility:
-  collection:
-    id: collection
-    collections: true
+  other_facet:
+    id: other_facet
+    facets: ''
+    facet_value: ''
     negate: false
-    context_mapping:
-      collection: '@collection.collection_route_context:collection'
+    context_mapping: {  }

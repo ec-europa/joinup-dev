@@ -6,6 +6,7 @@
 // --------------------------------------------------
 .sidebar-menu
   width: 100%
+
 // Elements
 // --------------------------------------------------
 
@@ -13,7 +14,17 @@
   width: 100%
 
 .sidebar-menu__item
-  width: 100%
+  display: block
+  padding: 15px 15px 15px 20px
+  color: $color-base
+  border-left: 4px solid transparent
+  text-decoration: none
+  &:hover,
+  &:active,
+  &:focus
+    background-color: #fff
+    border-left-color: $color-orange
+    font-weight: $font-weight-medium
 
 // Modifiers
 // --------------------------------------------------

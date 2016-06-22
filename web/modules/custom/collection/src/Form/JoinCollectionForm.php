@@ -56,7 +56,18 @@ class JoinCollectionForm extends FormBase {
           'rdf_entity' => $collection->id(),
         ]),
         '#attributes' => [
-          'class' => ['use-ajax', 'button', 'button--small'],
+          'class' => [
+            'use-ajax',
+            'button',
+            'button--small',
+            'button--default',
+            'button--blue-light',
+            'mdl-button',
+            'mdl-js-button',
+            'mdl-button--raised',
+            'mdl-js-ripple-effect',
+            'mdl-button--accent',
+          ],
           'data-dialog-type' => 'modal',
           'data-dialog-options' => Json::encode(['width' => 'auto']),
         ],
@@ -67,6 +78,17 @@ class JoinCollectionForm extends FormBase {
     // If the user is not yet a member, show the join button.
     else {
       $form['join'] = [
+        '#attributes' => [
+          'class' => [
+            'button--default',
+            'button--blue-light',
+            'mdl-button',
+            'mdl-js-button',
+            'mdl-button--raised',
+            'mdl-js-ripple-effect',
+            'mdl-button--accent',
+          ],
+        ],
         '#type' => 'submit',
         '#value' => $this->t('Join this collection'),
       ];

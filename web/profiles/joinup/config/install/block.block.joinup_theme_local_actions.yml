@@ -1,17 +1,1 @@
-langcode: en
-status: true
-dependencies:
-  theme:
-    - joinup_theme
-id: joinup_theme_local_actions
-theme: joinup_theme
-region: content
-weight: -5
-provider: null
-plugin: local_actions_block
-settings:
-  id: local_actions_block
-  label: 'Primary admin actions'
-  provider: core
-  label_display: '0'
-visibility: {  }
+{  }

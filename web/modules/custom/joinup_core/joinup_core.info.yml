@@ -14,6 +14,7 @@ config_devel:
   - field.storage.rdf_entity.field_spatial_coverage
   - field.storage.rdf_entity.field_status
   - field.storage.rdf_entity.field_topic
+  - taxonomy.vocabulary.eira
   - taxonomy.vocabulary.eurovoc
   - taxonomy.vocabulary.policy_domain
   - taxonomy.vocabulary.spatial
