@@ -26,7 +26,7 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
    *   The OG permission event.
    */
   public function provideDefaultOgPermissions(PermissionEventInterface $event) {
-    if ($event->getEntityTypeId() === 'rdf_entity' && $event->getBundleId() === 'collection') {
+    if ($event->getGroupEntityTypeId() === 'rdf_entity' && $event->getGroupBundleId() === 'collection') {
       $event->setPermissions([
         'request collection deletion' => [
           'title' => t('Request to delete collections'),
