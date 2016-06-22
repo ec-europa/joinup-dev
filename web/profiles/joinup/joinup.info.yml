@@ -40,11 +40,13 @@ dependencies:
   - rdf_export
   - rdf_taxonomy
   - solution
+  - state_machine
   - text
   - toolbar
   - search_api
   - search_api_db
   - views
+  - view_unpublished
 
 themes:
   - seven

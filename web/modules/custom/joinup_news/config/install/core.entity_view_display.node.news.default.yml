@@ -6,10 +6,12 @@ dependencies:
     - field.field.node.news.field_news_kicker
     - field.field.node.news.field_news_parent
     - field.field.node.news.field_news_source_url
+    - field.field.node.news.field_news_state
     - field.field.node.news.og_group_ref
     - node.type.news
   module:
     - link
+    - options
     - text
     - user
 id: node.news.default
@@ -48,6 +50,12 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+  field_news_state:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
   links:
     weight: 0
     settings: {  }
