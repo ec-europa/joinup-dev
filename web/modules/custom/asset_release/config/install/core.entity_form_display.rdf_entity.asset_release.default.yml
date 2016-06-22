@@ -33,21 +33,29 @@ targetEntityType: rdf_entity
 bundle: asset_release
 mode: default
 content:
+  field_isr_contact_information:
+    type: entity_reference_autocomplete
+    weight: 11
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_isr_creation_date:
     type: datetime_create_update
-    weight: 7
+    weight: 5
     settings:
       behaviour: create
     third_party_settings: {  }
   field_isr_documentation:
-    weight: 5
+    weight: 4
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
   field_isr_language:
     type: entity_reference_autocomplete
-    weight: 19
+    weight: 10
     settings:
       match_operator: CONTAINS
       size: 60
@@ -55,7 +63,7 @@ content:
     third_party_settings: {  }
   field_isr_modification_date:
     type: datetime_create_update
-    weight: 8
+    weight: 6
     settings:
       behaviour: create
     third_party_settings: {  }
@@ -75,7 +83,7 @@ content:
     third_party_settings: {  }
   field_keywords:
     type: entity_reference_autocomplete
-    weight: 17
+    weight: 8
     settings:
       match_operator: CONTAINS
       size: 60
@@ -83,7 +91,7 @@ content:
     third_party_settings: {  }
   field_spatial_coverage:
     type: entity_reference_autocomplete
-    weight: 14
+    weight: 7
     settings:
       match_operator: CONTAINS
       size: 60
@@ -91,7 +99,7 @@ content:
     third_party_settings: {  }
   field_status:
     type: entity_reference_autocomplete
-    weight: 18
+    weight: 9
     settings:
       match_operator: CONTAINS
       size: 60
@@ -111,7 +119,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
-  field_isr_contact_information: true
   field_isr_description: true
   field_isr_distribution: true
   field_isr_has_version: true
