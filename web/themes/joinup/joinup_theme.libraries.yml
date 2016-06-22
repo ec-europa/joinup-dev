@@ -12,6 +12,10 @@ global-components:
       css/style.min.css: {}
   js:
     js/script.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/jquery.ui.slider
 
 fonts:
   css:
