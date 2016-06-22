@@ -3,6 +3,7 @@
 namespace Drupal\collection\EventSubscriber;
 
 use Drupal\og\Event\PermissionEventInterface;
+use Drupal\og\GroupPermission;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -28,27 +29,34 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
   public function provideDefaultOgPermissions(PermissionEventInterface $event) {
     if ($event->getGroupEntityTypeId() === 'rdf_entity' && $event->getGroupBundleId() === 'collection') {
       $event->setPermissions([
-        'request collection deletion' => [
+        new GroupPermission([
+          'name' => 'request collection deletion',
           'title' => t('Request to delete collections'),
-        ],
-        'request collection archival' => [
+        ]),
+        new GroupPermission([
+          'name' => 'request collection archival',
           'title' => t('Request to archive collections'),
-        ],
-        'invite members' => [
+        ]),
+        new GroupPermission([
+          'name' => 'invite members',
           'title' => t('Invite users to become collection members'),
-        ],
-        'approve membership requests' => [
+        ]),
+        new GroupPermission([
+          'name' => 'approve membership requests',
           'title' => t('Approve requests to join collections'),
-        ],
-        'invite facilitators' => [
+        ]),
+        new GroupPermission([
+          'name' => 'invite facilitators',
           'title' => t('Invite users to become collection facilitators'),
-        ],
-        'accept facilitator invitation' => [
+        ]),
+        new GroupPermission([
+          'name' => 'accept facilitator invitation',
           'title' => t('Accept invitation to become collection facilitator'),
-        ],
-        'highlight collections' => [
+        ]),
+        new GroupPermission([
+          'name' => 'highlight collections',
           'title' => t('Highlight collections'),
-        ],
+        ]),
       ]);
     }
   }
