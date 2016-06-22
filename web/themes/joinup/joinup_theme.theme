@@ -100,6 +100,17 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
       $original_theme_hook = $variables['theme_hook_original'];
       $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $variables['element']['#type']);
     }
+
+    $slider_ids = array(
+      'edit-field-ar-elibrary-creation',
+      'edit-field-test-lista',
+      'edit-field-test-luist-normal',
+    );
+
+    if ($variables['theme_hook_original'] == 'select' && in_array($variables['element']['#id'], $slider_ids)) {
+      $original_theme_hook = $variables['theme_hook_original'];
+      $suggestions[] = $original_theme_hook . '__slider';
+    }
   }
 
   return $suggestions;
