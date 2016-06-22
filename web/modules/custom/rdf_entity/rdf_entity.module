@@ -254,34 +254,6 @@ function rdf_entity_is_page(RdfInterface $rdf_entity) {
 }
 
 /**
- * Implements hook_entity_insert().
- *
- * @see og_entity_insert()
- */
-function rdf_entity_entity_insert(EntityInterface $entity) {
-  // We replicate the behaviour here that Og provides for entities
-  // implementing the EntityOwnerInterface. Because RdfEntity (currently?)
-  // doesn't implement this, we fall back to using the logged in user
-  // instead of the author.
-  if (!\Drupal::moduleHandler()->moduleExists('og')) {
-    return;
-  }
-  if (!Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
-    return;
-  }
-  if ($entity instanceof RdfInterface) {
-    // Subscribe the group manager.
-    $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
-    $membership
-      ->setUser(\Drupal::currentUser()->id())
-      ->setEntityId($entity->id())
-      ->setGroupEntityType($entity->getEntityTypeId())
-      ->setFieldName($membership->getFieldName())
-      ->save();
-  }
-}
-
-/**
  * Implements hook_theme_suggestions_HOOK().
  */
 function rdf_entity_theme_suggestions_rdf_entity(array $variables) {
