@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b013dea5dc79ec7e307d03ff0cb4d6b6",
-    "content-hash": "d8bdfd890af315e9ceccb0e48294e7ef",
+    "hash": "590659b4d2edc672913c58b3c41a5016",
+    "content-hash": "0756e16be0de717223b3ba912cf1c8fa",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1441,12 +1441,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "46f9cb5b767dd22195e6d2ec94973aeb5e00a5b3"
+                "reference": "7c6a46c3a4bc73eda4424ba82478e1e6d7fdf2eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/46f9cb5b767dd22195e6d2ec94973aeb5e00a5b3",
-                "reference": "46f9cb5b767dd22195e6d2ec94973aeb5e00a5b3",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/7c6a46c3a4bc73eda4424ba82478e1e6d7fdf2eb",
+                "reference": "7c6a46c3a4bc73eda4424ba82478e1e6d7fdf2eb",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1460,7 +1460,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-06-22 05:37:21"
+            "time": "2016-06-22 11:20:28"
         },
         {
             "name": "drupal/og_menu",
@@ -2604,7 +2604,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
