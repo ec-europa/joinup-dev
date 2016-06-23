@@ -79,6 +79,7 @@ Feature: June 2016 demo
 
     # Collection overview.
     When I click "S.H.I.E.L.D"
+    Then I break
     # Solutions belonging to the collection.
     Then I should see the text "Avengers initiative"
     And I should see the text "Project Tahiti"

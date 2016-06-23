@@ -8,14 +8,10 @@
 use \Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 use \Drupal\Core\Config\Entity\ConfigEntityInterface;
 use \Drupal\Core\Entity\BundleEntityFormBase;
-use \Drupal\Core\Entity\EntityInterface;
 use \Drupal\Core\Form\FormStateInterface;
 use \Drupal\Core\Render\Element;
 use \Drupal\Core\Url;
 use \Drupal\field\Entity\FieldStorageConfig;
-use \Drupal\og\Entity\OgMembership;
-use \Drupal\og\Og;
-use \Drupal\og\OgMembershipInterface;
 use \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 use \Drupal\rdf_entity\RdfInterface;
 
@@ -242,7 +238,7 @@ function template_preprocess_rdf_add_list(&$variables) {
  * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
  *   An RDF entity.
  *
- * @return int|FALSE
+ * @return int|false
  *   The ID of the RDF entity if this is a full page view, otherwise FALSE.
  */
 function rdf_entity_is_page(RdfInterface $rdf_entity) {

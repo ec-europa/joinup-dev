@@ -5,6 +5,8 @@
  */
 
 use \Drush\Log\LogLevel;
+use \Drupal\search_api\Entity\Server;
+use \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
 
 /**
  * Implements hook_drush_command().
@@ -51,6 +53,13 @@ WHERE {
 }
 QUERY;
     $endpoint->query($query);
+
+    $backend = Server::load('solr')->getBackend();
+    if ($backend instanceof SearchApiSolrBackend && $backend->getSolrHelper()->pingCore()) {
+      $index = $backend->getServer()->getIndexes()['collections'];
+      $backend->deleteAllIndexItems($index);
+    }
+
     drush_log('All triples have been removed.', LogLevel::INFO);
 
   }

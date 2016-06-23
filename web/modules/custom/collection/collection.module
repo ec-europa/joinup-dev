@@ -42,7 +42,7 @@ function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface
  * Implements hook_entity_insert().
  */
 function collection_entity_insert(EntityInterface $entity) {
-  if ($entity->bundle() !== 'collection' ) {
+  if ($entity->bundle() !== 'collection') {
     return;
   }
   collection_entity_update($entity);
@@ -64,7 +64,6 @@ function collection_entity_insert(EntityInterface $entity) {
   if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && !\Drupal::currentUser()->isAnonymous()) {
     // The group owner inherits all roles of a collection member, facilitator
     // and administrator.
-
     $roles = [
       OgRoleInterface::AUTHENTICATED,
       OgRoleInterface::ADMINISTRATOR,

@@ -2,9 +2,7 @@
 
 namespace Drupal\joinup_news\Controller;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\Og;
 use Drupal\og\OgAccess;
 use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;

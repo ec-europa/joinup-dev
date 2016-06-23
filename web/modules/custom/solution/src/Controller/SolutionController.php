@@ -2,7 +2,6 @@
 
 namespace Drupal\solution\Controller;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\OgAccess;
 use Drupal\og\OgAccessInterface;
