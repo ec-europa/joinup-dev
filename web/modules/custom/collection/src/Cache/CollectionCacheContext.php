@@ -57,4 +57,5 @@ class CollectionCacheContext extends ContainerAware implements CacheContextInter
     $meta_data->setCacheMaxAge(0);
     return $meta_data;
   }
+
 }
