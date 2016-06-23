@@ -4,6 +4,7 @@ namespace Drupal\joinup_news\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\og\Og;
 use Drupal\og\OgAccess;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -28,13 +29,7 @@ class NewsController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity) {
-    // Access is only allowed for collections and solutions.
-    $field = ($rdf_entity->bundle() == 'collection') ? 'og_group_ref' : 'field_news_parent';
-    $node = $this->entityTypeManager()->getStorage('node')->create(array(
-      'type' => 'news',
-      $field => $rdf_entity->id(),
-    ));
-
+    $node = $this->createNewsEntity($rdf_entity);
     $form = $this->entityFormBuilder()->getForm($node);
 
     return $form;
@@ -52,19 +47,37 @@ class NewsController extends ControllerBase {
   public function createNewsAccess(RdfInterface $rdf_entity) {
     // Check that the passed in RDF entity is a collection or a solution,
     // and that the user has the permission to create news.
-    // @todo This is a temporary workaround for the og permissions.
-    // Remove this when ISAICP-2369 is in.
-    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2369
     if (in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
       if ($this->currentUser()->hasPermission('create rdf entity news')) {
         return AccessResult::allowed();
       }
-      if (OgAccess::userAccess($rdf_entity, 'create rdf entity news')->isAllowed()) {
+      if (Og::isMember($rdf_entity, $this->currentUser()) && OgAccess::userAccess($rdf_entity, 'create rdf entity news')->isAllowed()) {
         return AccessResult::allowed();
       }
     }
 
     return AccessResult::forbidden();
+  }
+
+  /**
+   * Returns a news content entity.
+   *
+   * The news content entity is pre-filled with the parent Rdf entity and the
+   * initial state. The initial state is needed to provide the appropriate
+   * options to the user.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *    The parent that the news content entity belongs to.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface
+   *    A node entity.
+   */
+  protected function createNewsEntity(RdfInterface $rdf_entity) {
+    $field = ($rdf_entity->bundle() == 'collection') ? 'og_group_ref' : 'field_news_parent';
+    return $this->entityTypeManager()->getStorage('node')->create([
+      'type' => 'news',
+      $field => $rdf_entity->id(),
+    ]);
   }
 
 }
