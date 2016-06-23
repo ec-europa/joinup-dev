@@ -65,9 +65,9 @@ function collection_entity_insert(EntityInterface $entity) {
     // The group owner inherits all roles of a collection member, facilitator
     // and administrator.
     $roles = [
-      OgRoleInterface::AUTHENTICATED,
-      OgRoleInterface::ADMINISTRATOR,
-      'facilitator',
+      'rdf_entity-collection-' . OgRoleInterface::AUTHENTICATED,
+      'rdf_entity-collection-' . OgRoleInterface::ADMINISTRATOR,
+      'rdf_entity-collection-facilitator',
     ];
 
     /** @var \Drupal\og\OgMembershipInterface $membership */

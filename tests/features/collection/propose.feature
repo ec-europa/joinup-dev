@@ -45,7 +45,7 @@ Feature: Proposing a collection
     # There should not be any custom pages in the menu yet, so I should see a
     # button to create a custom page, with accompanying help text.
     # And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
-    When I click "Add a custom page"
+    When I click "Add custom page"
     Then I should see the heading "Add custom page"
     When I fill in the following:
       | Title | About                                       |
