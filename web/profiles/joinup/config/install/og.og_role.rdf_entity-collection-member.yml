@@ -8,6 +8,7 @@ group_type: rdf_entity
 group_bundle: collection
 group_id: null
 permissions:
+  - 'view own unpublished content'
   - 'accept facilitator invitation'
   - unsubscribe
   - 'edit own custom_page content'
