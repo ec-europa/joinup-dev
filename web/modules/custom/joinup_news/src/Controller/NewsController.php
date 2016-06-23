@@ -6,7 +6,9 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\Og;
 use Drupal\og\OgAccess;
+use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Controller that handles the form to add news to a collection or a solution.
@@ -16,6 +18,32 @@ use Drupal\rdf_entity\RdfInterface;
  * @package Drupal\joinup_news\Controller
  */
 class NewsController extends ControllerBase {
+
+  /**
+   * The OG access handler.
+   *
+   * @var \Drupal\og\OgAccessInterface
+   */
+  protected $ogAccess;
+
+  /**
+   * Constructs a CustomPageController.
+   *
+   * @param \Drupal\og\OgAccessInterface $og_access
+   *   The OG access handler.
+   */
+  public function __construct(OgAccessInterface $og_access) {
+    $this->ogAccess = $og_access;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('og.access')
+    );
+  }
 
   /**
    * Controller for the base form.
@@ -45,18 +73,7 @@ class NewsController extends ControllerBase {
    *   The access result object.
    */
   public function createNewsAccess(RdfInterface $rdf_entity) {
-    // Check that the passed in RDF entity is a collection or a solution,
-    // and that the user has the permission to create news.
-    if (in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
-      if ($this->currentUser()->hasPermission('create rdf entity news')) {
-        return AccessResult::allowed();
-      }
-      if (Og::isMember($rdf_entity, $this->currentUser()) && OgAccess::userAccess($rdf_entity, 'create rdf entity news')->isAllowed()) {
-        return AccessResult::allowed();
-      }
-    }
-
-    return AccessResult::forbidden();
+    return $this->ogAccess->userAccessEntity('create', $this->createNewsEntity($rdf_entity), $this->currentUser());
   }
 
   /**
