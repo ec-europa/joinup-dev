@@ -11,6 +11,7 @@ permissions:
   - 'use text format basic_html'
   - 'use text format content_editor'
   - 'view rdf entity'
+  - 'view own unpublished content'
   - 'view published og menu instance entities'
   - 'access dashboard'
   - 'manage own subscriptions'

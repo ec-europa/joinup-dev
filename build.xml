@@ -218,6 +218,15 @@
         </drush>
     </target>
 
+    <target name="virtuoso-set-dirsallowed">
+        <echo message="Allow importing of RDF data from all directories"/>
+        <exec dir="${project.basedir}"
+              command="sudo sed -i 's/DirsAllowed              = ., \/usr\/share\/virtuoso-opensource-6.1\/vad/DirsAllowed = \//g' /etc/virtuoso-opensource-6.1/virtuoso.ini;
+sudo /etc/init.d/virtuoso-opensource-6.1 restart"
+              checkreturn="true"
+              passthru="true"/>
+    </target>
+
     <target name="build-index">
         <echo message="Building Solr index"/>
         <exec dir="${project.basedir}"

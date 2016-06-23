@@ -18,7 +18,7 @@ permissions:
   - 'create event node'
   - 'update own event node'
   - 'delete own event node'
-  - 'create news node'
+  - 'create rdf entity news'
   - 'update own news node'
   - 'delete own news node'
 role_type: immutable

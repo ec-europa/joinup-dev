@@ -109,29 +109,7 @@ $ cd tests; ./behat
 
 
 ## Contributing
-
-* You're thinking of setting up your own code repository using the Joinup
-  codebase?
-* You are about to develop a big feature on top of this codebase?
-* You're having trouble installing this project?
-* If you want to report an issue?
-
-Use the Github issue queue to get in touch! We'd like to hear about your plans.
-
-
-## Code quality
-
-We try to keep the quality of this repository as high as possible, and
-therefore a few measures are put in place:
-* Coding standards are verified.
-* Behat tests to avoid regression.
-
-You can [check our current test scenarios here](/tests/features/).
-
-If you plan to make contributions to the Joinup codebase, we kindly ask you to
-run the coding standards checks, as well as the Behat test suite before making
-a pull request. Also make sure you add test coverage for the functionality
-covered in the pull request.
+See our [contributors guide](docs/contribution.md).
 
 ## Phing targets
 
