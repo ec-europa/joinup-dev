@@ -14,7 +14,7 @@
   <div class="slider__labels">
     {% for option in options %}
       {% if option.type == 'option' %}
-        <div class="slider__label {{ option.selected ? 'slider__label--selected' }}">{{ option.label }}</div>
+        <div class="slider__label">{{ option.label }}</div>
       {% endif %}
     {% endfor %}
   </div>
