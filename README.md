@@ -109,7 +109,7 @@ $ cd tests; ./behat
 
 
 ## Contributing
-See our [contributors guide](docs/contribution.md).
+See our [contributors guide](.github/CONTRIBUTING.md).
 
 ## Phing targets
 
