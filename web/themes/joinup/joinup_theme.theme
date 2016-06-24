@@ -11,28 +11,38 @@ use \Drupal\file\Entity\File;
  * Implements hook_preprocess_page().
  */
 function joinup_theme_preprocess_page(&$variables) {
-  // Set page title.
   $request = \Drupal::request();
   $route_match = \Drupal::routeMatch();
+  // Set page title.
   $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-  $variables['title'] = $title;
 
   $route_name = $route_match->getRouteName();
   $blue_header_routes = array(
     'user.login',
     'user.register',
     'user.pass',
+    'node.add',
+    'node.add_page',
+    'rdf_entity.rdf_add',
+    'entity.node.edit_form',
+    'collection.propose_form',
+    'rdf_entity.rdf_add_page',
   );
 
   if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
     $variables['is_blue_header'] = TRUE;
+    $title = $variables['page']['content']['pagetitle'];
+    unset($variables['page']['content']['pagetitle']);
   }
+
+  $variables['title'] = $title;
 
   $entity = $route_match->getParameter('rdf_entity');
   if (!empty($entity)) {
     $entity_type = $entity->getType();
     if ($entity_type == 'collection') {
       $variables['is_collection'] = TRUE;
+      unset($variables['page']['content']['pagetitle']);
     }
   }
 }
@@ -70,19 +80,6 @@ function joinup_theme_preprocess_block(&$variables) {
 
     if ($route_name == 'view.collections.page_1') {
       $variables['is_view'] = TRUE;
-    }
-  }
-  elseif (isset($variables['elements']['#id']) && $variables['elements']['#id'] == 'pagetitle') {
-    $route_match = \Drupal::routeMatch();
-    $route_name = $route_match->getRouteName();
-    $blue_header_routes = array(
-      'user.login',
-      'user.register',
-      'user.pass',
-    );
-
-    if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
-      $variables['hide_title'] = TRUE;
     }
   }
 }
