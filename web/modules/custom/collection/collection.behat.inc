@@ -355,6 +355,11 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Subscribes the given users to the given collections.
    *
+   * The role Id of organic group roles are consisting of 3 parts, the entity
+   * type ID and the bundle of the group, and the machine name of the role.
+   * Do not provide the complete ID of the Og role. The entity type ID and
+   * bundle are going to be added automatically.
+   *
    * Table format:
    * | collection               | user          | roles                      |
    * | Interoperability Friends | Verence II    | facilitator, administrator |
@@ -396,7 +401,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         foreach ($roles as $role) {
           // The role ID is comprised of the entity type ID, bundle ID and role
           // name, separated by dashes.
-          $role_id = 'rdf_entity-collection-' . trim($role);
+          $role_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . trim($role);
           $membership->addRole($role_id);
         }
       }
