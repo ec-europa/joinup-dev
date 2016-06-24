@@ -26,6 +26,7 @@ permissions:
   - 'update any event node'
   - 'delete any event node'
   - 'create rdf entity news'
+  - 'view any unpublished news content'
   - 'create news node'
   - 'update any news node'
   - 'delete any news node'
