@@ -1,20 +1,13 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\search_api_page\Plugin\facets\facet_source\SearchApiPage.
- */
-
 namespace Drupal\search_api_field\Plugin\facets\facet_source;
 
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\facets\FacetSource\SearchApiFacetSourceInterface;
 use Drupal\facets\Plugin\facets\facet_source\SearchApiBaseFacetSource;
-use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Query\ResultSetInterface;
-use Drupal\search_api_page\Entity\SearchApiPage as SearchApiPageEntity;
-
 
 /**
  * Represents a facet source which represents search_api_page pages.
@@ -61,7 +54,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
     // corresponding search api page and load its index.
     $field_id = $plugin_definition['search_api_field'];
     /* @var $page \Drupal\search_api_page\SearchApiPageInterface */
-    $field = FieldConfig::load($field_id);
+    $field = FieldStorageConfig::load($field_id);
     $index = $field->getSetting('index');
     $this->index = Index::load($index);
   }
@@ -77,20 +70,18 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
     // again. This happens when a page or block is cached, so Search API has
     // not fired an actual search.
     if (!$results) {
-      list(, $search_api_page) = explode(':', $this->pluginId);
-      /* @var $search_api_page \Drupal\search_api_page\SearchApiPageInterface */
-      $search_api_page = SearchApiPageEntity::load($search_api_page);
-
       /* @var $search_api_index \Drupal\search_api\IndexInterface */
-      $search_api_index = Index::load($search_api_page->getIndex());
+      $search_api_index = $this->getIndex();
 
       // Create the query.
-      $query = $search_api_index->query([
+      $options = [
         'parse_mode' => 'direct',
-        'limit' => $search_api_page->getLimit(),
+        // @Todo Fix limit, get it from field settings.
+        'limit' => 10,
         'offset' => isset($_GET['page']) ? $_GET['page'] : 0,
-        'search id' => 'search_api_page:' . $search_api_page->id(),
-      ]);
+        'search id' => $this->pluginId,
+      ];
+      $query = $search_api_index->query($options);
 
       // Keys.
       $keys = \Drupal::request()->get('keys');
@@ -99,7 +90,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
       }
 
       // Index fields.
-      $query->setFulltextFields($search_api_page->getSearchedFields());
+      $query->setFulltextFields();
 
       // Execute the query.
       $results = $query->execute();
@@ -135,32 +126,17 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    * {@inheritdoc}
    */
   public function getPath() {
-    /* @var $search_api_page \Drupal\search_api_page\SearchApiPageInterface */
-    list(, $search_api_page_name) = explode(':', $this->pluginId);
-    $search_api_page = SearchApiPageEntity::load($search_api_page_name);
-    if ($search_api_page->getCleanUrl()) {
-      return '/' . $search_api_page->getPath() . '/' . \Drupal::request()->get('keys');
-    }
-    else {
-      return '/' . $search_api_page->getPath();
-    }
+    // @todo Is this always right?
+    $path = \Drupal::service('path.current')->getPath();
+    return $path . \Drupal::request()->get('keys');
   }
 
   /**
    * {@inheritdoc}
    */
   public function isRenderedInCurrentRequest() {
-    $request = \Drupal::requestStack()->getMasterRequest();
-
-    $explode = explode('.', $request->get('_route'));
-    $prefix = isset($explode[0]) ? $explode[0] : '';
-    $id = isset($explode[2]) ? $explode[2] : '';
-    if (!empty($prefix) && !empty($id)) {
-      if ($prefix . ':' . $id == $this->pluginId) {
-        return TRUE;
-      }
-    }
-    return FALSE;
+    // @todo Find out how this works.
+    return TRUE;
   }
 
   /**
@@ -169,4 +145,5 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
   public function getIndex() {
     return $this->index;
   }
+
 }

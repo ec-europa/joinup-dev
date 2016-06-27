@@ -2,16 +2,10 @@
 
 namespace Drupal\search_api_field\Plugin\Field\FieldFormatter;
 
-use Drupal\Component\Utility\Unicode;
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Url;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\link\LinkItemInterface;
 use Drupal\search_api\Entity\Index;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -27,6 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInterface {
+
   /**
    * {@inheritdoc}
    */
@@ -73,22 +68,26 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $request = \Drupal::request();
-    $element = array();
     $entity = $items->getEntity();
-    $settings = $this->getSettings();
+    // Avoid infinite recursion when a search node is shown as a result.
+    if ($entity->do_not_recurse) {
+      return [];
+    }
     /** @var \Drupal\field\Entity\FieldConfig $field_definition */
     $field_definition = $items->getFieldDefinition();
     $index = $field_definition->getSetting('index');
     /* @var $search_api_index \Drupal\search_api\IndexInterface */
     $search_api_index = Index::load($index);
-    $limit = 10; // @todo Get from field settings
+    // @todo Get from field settings.
+    $limit = 10;
 
     // Create the query.
-    $query = $search_api_index->query([
+    $options = [
       'limit' => $limit,
       'offset' => !is_null($request->get('page')) ? $request->get('page') * $limit : 0,
-      'search id' => 'search_api_field:' . 'fixme',
-    ]);
+      'search id' => 'search_api_field:' . $field_definition->getTargetEntityTypeId() . '.' . $field_definition->getName(),
+    ];
+    $query = $search_api_index->query($options);
 
     $query->setParseMode('direct');
 
@@ -112,11 +111,13 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       if (!$entity) {
         continue;
       }
+      $entity->do_not_recurse = TRUE;
 
       // Render as view modes.
       if (TRUE) {
         $key = 'entity:' . $entity->getEntityTypeId() . '_' . $entity->bundle();
-        $view_mode_configuration = []; //$search_api_page->getViewModeConfiguration();
+        // @todo $search_api_page->getViewModeConfiguration();
+        $view_mode_configuration = [];
         $view_mode = isset($view_mode_configuration[$key]) ? $view_mode_configuration[$key] : 'default';
         // @todo Inject...
         $results[] = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId())->view($entity, $view_mode);
@@ -149,7 +150,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
         '#type' => 'pager',
       );
     }
-    else  {
+    else {
       $build['#no_results_found'] = array(
         '#markup' => $this->t('Your search yielded no results.'),
       );
@@ -163,10 +164,13 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       );
     }
 
-
-    foreach ($items as $delta => $item) {
-
-    }
+    $results['#cache'] = [
+      'max-age' => [
+        // The "current user" is used above, which depends on the request,
+        // so we tell Drupal to vary by the 'user' cache context.
+        0,
+      ],
+    ];
 
     return $results;
   }
