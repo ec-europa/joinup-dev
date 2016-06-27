@@ -6,7 +6,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_abstract
     - field.field.rdf_entity.collection.field_ar_access_url
     - field.field.rdf_entity.collection.field_ar_affiliates
-    - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
     - field.field.rdf_entity.collection.field_ar_creation_date
     - field.field.rdf_entity.collection.field_ar_description
@@ -90,15 +89,6 @@ content:
     label: above
     settings:
       link: true
-    third_party_settings: {  }
-  field_ar_closed:
-    type: boolean
-    weight: 13
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
     third_party_settings: {  }
   field_ar_contact_information:
     type: entity_reference_label

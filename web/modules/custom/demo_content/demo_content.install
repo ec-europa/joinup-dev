@@ -56,7 +56,6 @@ function demo_content_get_collection_data() {
       'label' => 'Open source observatory',
       'field_ar_abstract' => '<p>Open Source Observatory</p>',
       'field_ar_access_url' => 'http://collection/osor/description',
-      'field_ar_closed' => '0',
       'field_ar_creation_date' => '2016-06-08T09:30:56+00:00',
       'field_ar_description' => '<p>The Open Source Observatory is a community for exchanging information, experiences and best practices around <a href="https://en.wikipedia.org/wiki/Open_source">open source</a> solutions for use in public administrations. We help you find open source software made available by other public administrations, and solve issues related to development. OSOR lets you share your own solutions. This is the place to learn from best practices in Europe and around the world.</p>
         <h3>Join us!</h3>
@@ -83,7 +82,6 @@ function demo_content_get_collection_data() {
       'id' => 'http://placeHolder/4e56d06c-c8c3-40fd-b2a0-773301ebe9b8',
       'rid' => 'collection',
       'label' => 'National Interoperability Framework Observatory - NIFO',
-      'field_ar_closed' => '0',
       'field_ar_creation_date' => '2016-06-08T14:33:55+00:00',
       'field_ar_description' => '<p>The NIFO community is a dedicated space for sharing experience and best practices on policies, systems, challenges and successes related to interoperability.&nbsp;</p>
         <p>The objectives of this community is to gather contacts nominated by European countries and other stakeholders.&nbsp;</p>
@@ -120,7 +118,6 @@ function demo_content_get_collection_data() {
       'id' => 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1',
       'rid' => 'collection',
       'label' => 'Semantic Interoperability Community - SEMIC',
-      'field_ar_closed' => '0',
       'field_ar_creation_date' => '2016-06-08T13:26:13+00:00',
       'field_ar_description' => '<h3>About SEMIC</h3>
         <p>The&nbsp;<strong>Semantic Interoperability Community (SEMIC)</strong>&nbsp;is a European Commission initiative aiming to improve the semantic interoperability of interconnected e-Government systems. It is funded under&nbsp;<a href="http://ec.europa.eu/isa/actions/01-trusted-information-exchange/1-1action_en.htm">Action 1.1</a>&nbsp;(<em>Improving semantic interoperability in European e-Government systems</em>) of the&nbsp;<a href="http://ec.europa.eu/isa/index_en.htm">Interoperability Solutions for European Public Administrations (ISA) Programme</a>.</p>
