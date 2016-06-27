@@ -7,7 +7,6 @@ Feature: Global search
       | title      | Molecular cooking collection |
       | logo       | logo.png                     |
       | moderation | no                           |
-      | closed     | yes                          |
     And news content:
       | title                 | body             | collection                   |
       | El Celler de Can Roca | The best in town | Molecular cooking collection |

@@ -10,7 +10,6 @@ Feature: Document API
       | owner             | Joinup Derp          |
       | logo              | logo.png             |
       | moderation        | yes                  |
-      | closed            | yes                  |
       | elibrary creation | facilitators         |
     And document content:
       | title    | field_document_short_title | body               | collection              |

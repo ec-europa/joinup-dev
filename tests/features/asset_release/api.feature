@@ -8,7 +8,6 @@ Feature: Solution API
       | title             | Solution API foo |
       | logo              | logo.png         |
       | moderation        | yes              |
-      | closed            | yes              |
       | elibrary creation | facilitators     |
     And the following solution:
       | title             | My first solution                    |
@@ -34,7 +33,6 @@ Feature: Solution API
       | title             | Solution API bar |
       | logo              | logo.png         |
       | moderation        | yes              |
-      | closed            | yes              |
       | elibrary creation | facilitators     |
     Given the following solution:
       | title             | My first solution mandatory |

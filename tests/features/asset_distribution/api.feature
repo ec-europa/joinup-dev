@@ -9,7 +9,6 @@ Feature: Asset distribution API
       | title             | Asset distribution collection API foo |
       | logo              | logo.png                              |
       | moderation        | yes                                   |
-      | closed            | yes                                   |
       | elibrary creation | facilitators                          |
     And the following solution:
       | title             | Asset distribution solution           |
@@ -42,7 +41,6 @@ Feature: Asset distribution API
       | title             | Asset distribution short API bar |
       | logo              | logo.png                         |
       | moderation        | yes                              |
-      | closed            | yes                              |
       | elibrary creation | facilitators                     |
     Given the following solution:
       | title             | AD first solution mandatory short |
