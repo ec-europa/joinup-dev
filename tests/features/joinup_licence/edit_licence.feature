@@ -18,7 +18,8 @@ Feature: Edit licence through UI
       | description | Some dummy description |
     When I am logged in as a "moderator"
     And I am on the homepage
-    And I click "Licences"
+    When I click "Dashboard"
+    When I click "Licences overview"
     # Check that proper access has been granted.
     Then I should see the heading "Licences"
     And I should see the text "Licence 1"

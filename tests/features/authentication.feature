@@ -47,6 +47,7 @@ Feature: User authentication
       | rdf_entity/add            |
       | rdf_entity/add/collection |
       | rdf_entity/add/solution   |
+      | licence                   |
 
   @api
   Scenario Outline: Authenticated user can access pages they are authorized to
@@ -82,6 +83,7 @@ Feature: User authentication
       | rdf_entity/add            |
       | rdf_entity/add/collection |
       | rdf_entity/add/solution   |
+      | licence                   |
 
   @api
   Scenario Outline: Moderator can access pages they are authorized to
@@ -93,6 +95,7 @@ Feature: User authentication
       | admin/people      |
       | admin/content/rdf |
       | dashboard         |
+      | licence                   |
 
   @api
   Scenario Outline: Moderator cannot access restricted pages
