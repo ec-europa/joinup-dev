@@ -1441,12 +1441,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "af32b2581cb4e5888361e66f27a849522812187e"
+                "reference": "463d5c35a1b5aa7f5b6df40a30cd878af23f8bb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/af32b2581cb4e5888361e66f27a849522812187e",
-                "reference": "af32b2581cb4e5888361e66f27a849522812187e",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/463d5c35a1b5aa7f5b6df40a30cd878af23f8bb4",
+                "reference": "463d5c35a1b5aa7f5b6df40a30cd878af23f8bb4",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1460,7 +1460,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-06-24 12:15:17"
+            "time": "2016-06-27 10:56:29"
         },
         {
             "name": "drupal/og_menu",
