@@ -85,7 +85,7 @@ content:
     weight: 8
     settings: {  }
     third_party_settings: {  }
-    type: options_select
+    type: options_buttons
   field_is_issue_tracker:
     weight: 12
     settings:
