@@ -56,7 +56,6 @@ class CollectionRouteContext implements ContextProviderInterface {
    */
   public function getRuntimeContexts(array $unqualified_context_ids) {
     $result = [];
-    $context_definition = new ContextDefinition('entity:rdf_entity:collection', NULL, FALSE);
     $value = NULL;
     if (($route_object = $this->routeMatch->getRouteObject()) && ($route_contexts = $route_object->getOption('parameters')) && isset($route_contexts['rdf_entity'])) {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
@@ -88,10 +87,10 @@ class CollectionRouteContext implements ContextProviderInterface {
     $cacheability = new CacheableMetadata();
     $cacheability->setCacheContexts(['route']);
 
-    $context = new Context($context_definition, $value);
+    $collection_context_definition = new ContextDefinition('entity', $this->t('Organic group provided by collection'), FALSE);
+    $context = new Context($collection_context_definition, $value);
     $context->addCacheableDependency($cacheability);
-
-    $result['collection'] = $context;
+    $result['og'] = $context;
 
     return $result;
   }
@@ -100,8 +99,8 @@ class CollectionRouteContext implements ContextProviderInterface {
    * {@inheritdoc}
    */
   public function getAvailableContexts() {
-    $context = new Context(new ContextDefinition('entity:rdf_entity:collection', $this->t('Collection from URL')));
-    return ['collection' => $context];
+    $og_context = new Context(new ContextDefinition('og', $this->t('Collection from URL')));
+    return ['og' => $og_context];
   }
 
   /**

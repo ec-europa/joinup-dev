@@ -22,7 +22,7 @@ Feature: Solution API
       | collection        | Solution API foo                     |
     And the following asset release:
       | title          | My first release  |
-      | description    | A sample solution |
+      | description    | A sample release  |
       | documentation  | text.pdf          |
       | release number | 1                 |
       | release notes  | Changed release   |
@@ -42,9 +42,9 @@ Feature: Solution API
       | elibrary creation | members                     |
       | collection        | Solution API bar            |
     And the following asset release:
-      | title          | My first mandatory release |
-      | description    | A sample solution          |
-      | release number | 3                          |
-      | release notes  | Changed release            |
-      | is version of  | My first solution          |
+      | title          | My first mandatory release  |
+      | description    | A sample release            |
+      | release number | 3                           |
+      | release notes  | Changed release             |
+      | is version of  | My first solution mandatory |
     Then I should have 1 asset release

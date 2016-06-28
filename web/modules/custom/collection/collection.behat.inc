@@ -9,9 +9,11 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\NodeTrait;
+use Drupal\joinup\Traits\OgMenuTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\Og;
+use Drupal\og\Entity\OgMembership;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -21,6 +23,8 @@ use Drupal\rdf_entity\Entity\Rdf;
 class CollectionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use FileTrait;
+  use NodeTrait;
+  use OgMenuTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
 
@@ -351,6 +355,11 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Subscribes the given users to the given collections.
    *
+   * The role Id of organic group roles are consisting of 3 parts, the entity
+   * type ID and the bundle of the group, and the machine name of the role.
+   * Do not provide the complete ID of the Og role. The entity type ID and
+   * bundle are going to be added automatically.
+   *
    * Table format:
    * | collection               | user          | roles                      |
    * | Interoperability Friends | Verence II    | facilitator, administrator |
@@ -378,24 +387,93 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         throw new \Exception("User " . $values['user'] . " not found.");
       }
 
-      /** @var \Drupal\og\Entity\OgMembership $membership */
-      $membership = Og::membershipStorage()->create(Og::membershipDefault());
+      /** @var \Drupal\og\OgMembershipInterface $membership */
+      $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
       $membership
+        ->setUser($member->id())
+        ->setEntityId($group->id())
         ->setGroupEntityType($group->getEntityTypeId())
-        ->setEntityid($group->id())
-        ->setState(OgMembershipInterface::STATE_ACTIVE)
-        ->setUser($member->id());
+        ->setFieldName($membership->getFieldName())
+        ->save();
 
       if (!empty($values['roles'])) {
         $roles = explode(',', $values['roles']);
         foreach ($roles as $role) {
           // The role ID is comprised of the entity type ID, bundle ID and role
           // name, separated by dashes.
-          $role_id = 'rdf_entity-collection-' . trim($role);
+          $role_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . trim($role);
           $membership->addRole($role_id);
         }
       }
       $membership->save();
+    }
+  }
+
+  /**
+   * Make group content part of a collection.
+   *
+   * Table format:
+   * | content                | collection          |
+   * | Content entity 1 title | Collection 1 title  |
+   * | Content entity 2 title | Collection 1 title  |
+   * | Content entity 3 title | Collection 2 title  |
+   *
+   * @param string $bundle
+   *   The bundle of the content entity.
+   * @param TableNode $membership_table
+   *   The membership table.
+   *
+   * @Given (the following ):bundle content belong to the corresponding collections:
+   */
+  public function givenContentMemberships($bundle, TableNode $membership_table) {
+    foreach ($membership_table->getColumnsHash() as $values) {
+      $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
+      /** @var \Drupal\node\NodeInterface $content */
+      $content = $this->getNodeByTitle($values['content'], $bundle);
+      $content->get('og_group_ref')->set(0, $group->id());
+      $content->save();
+    }
+  }
+
+  /**
+   * Creates menu items for an og group menu.
+   *
+   * This function uses only the navigation menu for the items.
+   * If the collection passed does not have a menu yet, one is created.
+   * Nodes are loaded by title.
+   *
+   * Table format:
+   * | collection   | label             | page         | weight |
+   * | Collection 1 | Page 1 menu label | Page 1 title | 0      |
+   * | Collection 1 | Page 2 menu label | Page 2 title | 1      |
+   * | Collection 2 | Page 3 menu label | Page 3 title | 0      |
+   *
+   * @param string $bundle
+   *   The bundle of the content entity.
+   * @param TableNode $menu_table
+   *   The menu table.
+   *
+   * @Given (the following ):bundle content menu items for the corresponding collections:
+   */
+  public function givenCollectionMenuItems($bundle, TableNode $menu_table) {
+    foreach ($menu_table->getColumnsHash() as $values) {
+      $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
+      $content = $this->getNodeByTitle($values['page'], $bundle);
+      $og_menu_instance = $this->getOgMenuInstance($group->id());
+      if (empty($og_menu_instance)) {
+        $og_menu_instance = $this->createOgMenuInstance($group->id());
+      }
+
+      // Prepare the array to pass to MenuLinkContent::create method.
+      $menu_item_data = [
+        'title' => $values['label'],
+        'link' => ['uri' => 'internal:/node/' . $content->id()],
+        'menu_name' => self::$ogMenuEntityTypeId . '-' . $og_menu_instance->id(),
+        'weight' => $values['weight'],
+        'expanded' => TRUE,
+      ];
+
+      $this->createOgMenuItem($menu_item_data);
     }
   }
 

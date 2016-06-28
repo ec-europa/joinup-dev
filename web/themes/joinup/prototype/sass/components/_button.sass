@@ -2,8 +2,9 @@
 // --------------------------------------------------
 .button--default
   font-weight: $font-weight-medium
-  min-height: 50px
-  padding: 0 20px
+  line-height: initial
+  height: auto
+  padding: 20px
   letter-spacing: 2px
   +border-radius(4px)
 
@@ -22,6 +23,9 @@
 
 .button--full-width
   width: 100%
+
+.button--margin
+  margin-top: 15px
 
 // Dependiencies
 // --------------------------------------------------
@@ -47,9 +51,9 @@
       transform: translate(-50%, -50%)
       color: #fff
       +icon-size(45px)
+
     .mdl-ripple
       background-color: #fff
 
 // States
 // --------------------------------------------------
-

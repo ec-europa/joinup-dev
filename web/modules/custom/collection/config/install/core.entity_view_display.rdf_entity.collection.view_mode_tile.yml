@@ -62,6 +62,10 @@ targetEntityType: rdf_entity
 bundle: collection
 mode: view_mode_tile
 content:
+  collection_content:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
   field_ar_abstract:
     type: text_trimmed
     weight: 16
@@ -156,7 +160,7 @@ content:
     label: hidden
     settings:
       image_style: image_style_collection_logo
-      image_link: ''
+      image_link: content
     third_party_settings:
       ds:
         ft:
@@ -243,7 +247,7 @@ content:
     type: string
     weight: 1
     settings:
-      link_to_entity: false
+      link_to_entity: true
     third_party_settings:
       ds:
         ft:
@@ -262,7 +266,7 @@ content:
             fis-cl: ''
             fis-at: ''
             fi: true
-            fi-el: h2
+            fi-el: div
             fi-cl: listing__title
             fi-at: ''
             suffix: ''

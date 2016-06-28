@@ -2,10 +2,10 @@
 
 namespace Drupal\custom_page\Controller;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\OgAccess;
+use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class CustomPageController.
@@ -16,6 +16,32 @@ use Drupal\rdf_entity\RdfInterface;
  * @package Drupal\custom_page\Controller
  */
 class CustomPageController extends ControllerBase {
+
+  /**
+   * The OG access handler.
+   *
+   * @var \Drupal\og\OgAccessInterface
+   */
+  protected $ogAccess;
+
+  /**
+   * Constructs a CustomPageController.
+   *
+   * @param \Drupal\og\OgAccessInterface $og_access
+   *   The OG access handler.
+   */
+  public function __construct(OgAccessInterface $og_access) {
+    $this->ogAccess = $og_access;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('og.access')
+    );
+  }
 
   /**
    * Controller for the base form.
@@ -47,21 +73,7 @@ class CustomPageController extends ControllerBase {
    *   The access result object.
    */
   public function createCustomPageAccess(RdfInterface $rdf_entity) {
-    // Check that the passed in RDF entity is a collection, and that the user
-    // has the permission to create custom pages.
-    // @todo Collection owners and facilitators should also have the right to
-    //   create custom pages for the collections they manage.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2443
-    if ($rdf_entity->bundle() == 'collection' && $this->currentUser()->hasPermission('create custom collection page')) {
-      return AccessResult::allowed();
-    }
-
-    // Check if the user has the OG permission to create a custom page.
-    if (OgAccess::userAccessGroupContentEntityCrud('create', $rdf_entity, $this->createNewCustomPage($rdf_entity))->isAllowed()) {
-      return AccessResult::allowed();
-    }
-
-    return AccessResult::forbidden();
+    return $this->ogAccess->userAccessEntity('create', $this->createNewCustomPage($rdf_entity), $this->currentUser());
   }
 
   /**

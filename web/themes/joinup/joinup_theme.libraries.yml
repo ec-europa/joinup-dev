@@ -10,8 +10,8 @@ global-components:
   css:
     theme:
       css/style.min.css: {}
-      js:
-        js/script.js: {}
+  js:
+    js/script.js: {}
 
 fonts:
   css:

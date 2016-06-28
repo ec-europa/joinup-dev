@@ -28,27 +28,26 @@
     set classes = [
       'messages',
       'messages--' ~ type,
+      'alert',
+      'alert--' ~ type,
     ]
   %}
   <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
-    {% if type == 'error' %}
-      <div role="alert">
-    {% endif %}
+    <span class="alert__icon icon {{ 'icon--' ~ type }}"></span>
+    <span class="alert__message">
       {% if status_headings[type] %}
         <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
       {% endif %}
       {% if messages|length > 1 %}
-        <ul class="messages__list">
+        <ul class="alert__list">
           {% for message in messages %}
-            <li class="messages__item">{{ message }}</li>
+            <li class="alert__item">{{ message }}</li>
           {% endfor %}
         </ul>
       {% else %}
         {{ messages|first }}
       {% endif %}
-    {% if type == 'error' %}
-      </div>
-    {% endif %}
+    </span>
   </div>
   {# Remove type specific classes. #}
   {{ attributes.removeClass(classes) }}

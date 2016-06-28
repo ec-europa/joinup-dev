@@ -7,8 +7,8 @@ dependencies:
     - joinup_theme
 id: joinup_theme_collectioncontent
 theme: joinup_theme
-region: sidebar_left
-weight: -2
+region: content_bottom
+weight: -9
 provider: null
 plugin: collection_content_block
 settings:
@@ -22,4 +22,4 @@ visibility:
     collections: true
     negate: false
     context_mapping:
-      collection: '@collection.collection_route_context:collection'
+      og: '@collection.collection_route_context:og'

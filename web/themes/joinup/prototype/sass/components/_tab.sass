@@ -1,0 +1,33 @@
+// Component
+// --------------------------------------------------
+.tab
+  background-color: $color-grey-ligher
+
+.tabs
+  border-bottom: 1px solid $color-grey-light
+
+// Elements
+// --------------------------------------------------
+.tab 
+  a
+    color: $color-base
+    text-decoration: none
+    &:hover,
+    &:focus,
+    &:active
+      color: $color-orange
+
+// Modifiers
+// --------------------------------------------------
+.tab--horizontal
+  border-bottom: 1px solid $color-grey-light
+
+// Dependiencies
+// --------------------------------------------------
+
+// States
+// --------------------------------------------------
+.tab--horizontal.is-active
+  border-bottom: 1px solid #fff
+  background-color: #fff
+  font-weight: $font-weight-medium

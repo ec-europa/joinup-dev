@@ -50,7 +50,12 @@
   </header>
 
   {% if page.featured %}
-    {% include directory ~ '/templates/parts/featured.html.twig' %}
+    {% if is_collection %}
+      {% include directory ~ '/templates/parts/featured--collection.html.twig' %}
+    {% elseif is_blue_header %}
+      {% include directory ~ '/templates/parts/featured--title.html.twig' %}
+    {% endif %}
+
   {% endif %}
 
   <main class="main-container mdl-grid" role="main">
