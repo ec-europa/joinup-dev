@@ -7,8 +7,7 @@
 .featured
   position: relative
   margin: 0 auto
-  padding: 20px 0
-  background: url('../images/featured-bg.png') no-repeat center center fixed
+  background: url('../images/featured-bg.jpg') no-repeat center top
   -webkit-background-size: cover
   -moz-background-size: cover
   -o-background-size: cover
@@ -16,20 +15,26 @@
 
 // Elements
 // --------------------------------------------------
-.featured__center
+.featured__wrapper
   position: relative
   z-index: 2
+  max-width: 1200px
+  margin: 0 auto
   text-align: center
+  +breakpoint(sm-mobile, mobile)
+    padding: 40px 0 80px 0
+  +breakpoint(tablet)
+    padding: 20px 0
 
-.featured__overlay
-  position: absolute
-  z-index: 1
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  opacity: .6
-  background-color: $color-blue-default
+//  .featured__overlay
+//    position: absolute
+//    z-index: 1
+//    top: 0
+//    left: 0
+//    width: 100%
+//    height: 100%
+//    opacity: .6
+//    background-color: $color-blue-default
 
 .featured__text
   position: relative
@@ -45,7 +50,7 @@
     bottom: 0
     left: 0
     display: block
-    width: 40px
+    width: 50px
     height: 3px
     margin: 0 auto
     content: ''
@@ -53,12 +58,14 @@
 
 .featured__stats
   display: inline-block
-  margin-right: 20px
-  padding: 15px 30px
+  margin-bottom: 20px
   text-align: left
   vertical-align: middle
-  background-color: #fff
   +border-radius(3px)
+  +breakpoint(tablet)
+    margin: 0 20px 0 0
+    padding: 15px 30px
+    background-color: #fff
 
   .stats__column
     float: left
@@ -69,9 +76,64 @@
   .stats__text
     display: inline-block
     vertical-align: middle
+    color: #fff
+    +breakpoint(tablet)
+      color: $color-base
 
   .stats__icon
     +icon-size(30px)
 
+.featured__menu
+  position: absolute
+  bottom: 10px
+  left: 10px
+  +breakpoint(desktop)
+    display: none
+  .icon
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    +icon-size(60px)
+
+.featured__menu-link
+  text-decoration: none
+  color: $color-base
+
 // Modifiers
 // --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.featured
+  .button--default
+    +breakpoint(sm-mobile, mobile)
+      display: block
+      margin: 0 auto
+  .button--circle-wrapper
+    position: absolute
+    right: 20px
+    bottom: -40px
+    width: 80px
+    height: 80px
+    border-radius: 50%
+    background-color: $color-grey-bg
+    +breakpoint(lg-desktop)
+      right: 0
+  .button--circle
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    background-color: $color-orange !important
+    .icon
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      color: #fff
+      +icon-size(45px)
+
+    .mdl-ripple
+      background-color: #fff
+

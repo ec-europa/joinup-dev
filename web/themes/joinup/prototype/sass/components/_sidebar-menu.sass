@@ -9,7 +9,6 @@
 
 // Elements
 // --------------------------------------------------
-
 .sidebar-menu__container
   width: 100%
 
@@ -26,5 +25,20 @@
     border-left-color: $color-orange
     font-weight: $font-weight-medium
 
+.sidebar-menu
+  .icon
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    +icon-size(60px)
+
 // Modifiers
 // --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.section--sidebar-left
+  .sidebar-menu
+    +breakpoint(sm-mobile, tablet)
+      display: none
