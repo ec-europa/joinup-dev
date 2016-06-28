@@ -40,6 +40,7 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - file
+    - inline_entity_form
     - link
     - rdf_entity
     - text
@@ -49,12 +50,16 @@ bundle: solution
 mode: default
 content:
   field_is_contact_information:
-    type: entity_reference_autocomplete
+    type: inline_entity_form_complex
     weight: 6
     settings:
+      form_mode: default
+      label_singular: ''
+      label_plural: ''
+      allow_new: true
+      allow_existing: true
       match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+      override_labels: false
     third_party_settings: {  }
   field_is_description:
     weight: 2

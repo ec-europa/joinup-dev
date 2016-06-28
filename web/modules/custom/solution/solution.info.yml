@@ -8,6 +8,7 @@ dependencies:
   - contact_information
   - datetime
   - image
+  - inline_entity_form
   - joinup_core
   - link
   - options
