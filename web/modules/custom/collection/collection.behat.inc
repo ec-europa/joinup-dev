@@ -13,7 +13,7 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgMenuTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\Og;
+use Drupal\og\Entity\OgMembership;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -355,6 +355,11 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Subscribes the given users to the given collections.
    *
+   * The role Id of organic group roles are consisting of 3 parts, the entity
+   * type ID and the bundle of the group, and the machine name of the role.
+   * Do not provide the complete ID of the Og role. The entity type ID and
+   * bundle are going to be added automatically.
+   *
    * Table format:
    * | collection               | user          | roles                      |
    * | Interoperability Friends | Verence II    | facilitator, administrator |
@@ -382,20 +387,21 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         throw new \Exception("User " . $values['user'] . " not found.");
       }
 
-      /** @var \Drupal\og\Entity\OgMembership $membership */
-      $membership = Og::membershipStorage()->create(Og::membershipDefault());
+      /** @var \Drupal\og\OgMembershipInterface $membership */
+      $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
       $membership
+        ->setUser($member->id())
+        ->setEntityId($group->id())
         ->setGroupEntityType($group->getEntityTypeId())
-        ->setEntityid($group->id())
-        ->setState(OgMembershipInterface::STATE_ACTIVE)
-        ->setUser($member->id());
+        ->setFieldName($membership->getFieldName())
+        ->save();
 
       if (!empty($values['roles'])) {
         $roles = explode(',', $values['roles']);
         foreach ($roles as $role) {
           // The role ID is comprised of the entity type ID, bundle ID and role
           // name, separated by dashes.
-          $role_id = 'rdf_entity-collection-' . trim($role);
+          $role_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . trim($role);
           $membership->addRole($role_id);
         }
       }

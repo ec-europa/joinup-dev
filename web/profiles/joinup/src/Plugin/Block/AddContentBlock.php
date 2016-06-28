@@ -168,8 +168,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $asset_release_contexts = $this->assetReleaseContext->getRuntimeContexts(['asset_release']);
       if ($asset_release_contexts && $asset_release_contexts['asset_release']->hasContextValue()) {
         $distribution_url = Url::fromRoute('asset_distribution.asset_release_asset_distribution.add', [
-          'rdf_entity' => $asset_release_contexts['asset_release']->getContextValue()
-            ->id(),
+          'rdf_entity' => $asset_release_contexts['asset_release']->getContextValue()->id(),
         ]);
         if ($distribution_url->access()) {
           $links['asset_distribution'] = [
