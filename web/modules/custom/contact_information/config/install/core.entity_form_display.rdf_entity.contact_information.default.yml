@@ -27,12 +27,6 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
-  id:
-    type: auto_uri
-    weight: 0
-    settings:
-      prefix: 'http://example.org/joinup/contact'
-    third_party_settings: {  }
   label:
     type: string_textfield
     weight: 2
