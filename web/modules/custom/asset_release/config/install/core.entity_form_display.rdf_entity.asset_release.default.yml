@@ -26,6 +26,7 @@ dependencies:
     - rdf_entity.rdfentity.asset_release
   module:
     - file
+    - inline_entity_form
     - rdf_entity
     - text
 id: rdf_entity.asset_release.default
@@ -34,12 +35,16 @@ bundle: asset_release
 mode: default
 content:
   field_isr_contact_information:
-    type: entity_reference_autocomplete
+    type: inline_entity_form_complex
     weight: 11
     settings:
+      form_mode: default
+      label_singular: ''
+      label_plural: ''
+      allow_new: true
+      allow_existing: true
       match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+      override_labels: false
     third_party_settings: {  }
   field_isr_creation_date:
     type: datetime_create_update
