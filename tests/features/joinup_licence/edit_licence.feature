@@ -4,14 +4,6 @@ Feature: Edit licence through UI
   As a moderator
   I need to be able to edit licences through the UI.
 
-  Scenario: Moderators must be able to access licence overview page.
-    When I am logged in as an "authenticated user"
-    And I am on the homepage
-    Then I should not see the link "Licences"
-    When I am logged in as a "moderator"
-    And I am on the homepage
-    Then I should see the link "Licences"
-
   Scenario: Moderators must be able to view created licences and edit them.
     Given the following licence:
       | title       | Licence 1              |
