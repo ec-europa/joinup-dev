@@ -49,11 +49,6 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
     // Replace the column aliases with the actual field names.
     foreach ($collection_table->getRowsHash() as $key => $value) {
       if (array_key_exists($key, $aliases)) {
-        // The email field can have multiple values separated by comma.
-        if ($key == 'email') {
-          $value = array_map('trim', explode(',', $value));
-        }
-
         $values[$aliases[$key]] = $value;
       }
       else {
