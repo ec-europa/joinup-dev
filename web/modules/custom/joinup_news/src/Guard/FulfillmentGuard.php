@@ -80,7 +80,7 @@ class FulfillmentGuard implements GuardInterface {
     }
 
     // Check if the user has one of the allowed group roles.
-    $membership = Og::getUserMembership($user->getAccount(), $parent);
+    $membership = Og::getMembership($user->getAccount(), $parent);
     return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
   }
 
