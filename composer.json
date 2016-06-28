@@ -70,7 +70,8 @@
         },
         "patches": {
             "drupal/core": {
-                "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
+                "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
+                "URI ids in entity references.": "https://www.drupal.org/files/issues/0001-Issue-2756401-Support-uri-based-entity-ids-in-entity.patch"
             },
             "drupal/r4032login": {
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"

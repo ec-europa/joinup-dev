@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b013dea5dc79ec7e307d03ff0cb4d6b6",
-    "content-hash": "d8bdfd890af315e9ceccb0e48294e7ef",
+    "hash": "060c889885234ed1ca361127ec335b56",
+    "content-hash": "be3be7cf8d1cba653369051c5def1b08",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1249,7 +1249,8 @@
             "type": "drupal-core",
             "extra": {
                 "patches_applied": {
-                    "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
+                    "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
+                    "URI ids in entity references.": "https://www.drupal.org/files/issues/0001-Issue-2756401-Support-uri-based-entity-ids-in-entity.patch"
                 }
             },
             "autoload": {
@@ -1286,7 +1287,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/ds-8.x-2.4.zip",
-                "reference": null,
+                "reference": "67031590f884653c40f6353d8f43d1c5565ec2ac",
                 "shasum": null
             },
             "require": {
