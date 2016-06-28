@@ -11,7 +11,7 @@ Use the Github issue queue to get in touch! We'd like to hear about your plans.
 
 ## Legal
 By submitting a pull request to the Joinup repository, you implicitly accept the conditions in the
- [Joinup Individual Contributor Assignment Agreement](agreement.md) as well as the  [code of conduct](code_of_conduct.md).
+ [Joinup Individual Contributor Assignment Agreement](/docs/agreement.md) as well as the  [code of conduct](/docs/code_of_conduct.md).
 
 The Joinup codebase is released under the [European Union Public Licence (EUPL)](https://joinup.ec.europa.eu/community/eupl/og_page/eupl).
 

@@ -16,3 +16,4 @@ permissions:
   - 'access dashboard'
   - 'manage own subscriptions'
   - 'export rdf metadata'
+  - 'access contextual links'

@@ -20,6 +20,8 @@ Joinup is licensed under the
 [EUPL](https://en.wikipedia.org/wiki/European_Union_Public_Licence), which is
 compatible with the GPL.
 
+## Contributing
+See our [contributors guide](.github/CONTRIBUTING.md).
 
 ## Running your own instance of Joinup
 
@@ -106,10 +108,6 @@ Run the Behat test suite to validate your installation.
 ```
 $ cd tests; ./behat
 ```
-
-
-## Contributing
-See our [contributors guide](docs/contribution.md).
 
 ## Phing targets
 
