@@ -8,6 +8,7 @@
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Behat\Gherkin\Node\TableNode;
+use Drupal\DrupalExtension\Context\MinkContext;
 use Drupal\file\Entity\File;
 use Drupal\search_api\Entity\Server;
 use Drupal\joinup\Traits\NodeTrait;
@@ -303,6 +304,55 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if ($node->isPublished()) {
       throw new \Exception("$title content should not be published but it is.");
     }
+  }
+
+  /**
+   * Clicks a link inside the add content menu.
+   *
+   * @param string $link
+   *   The text of the link to click.
+   *
+   * @When I click :link from the add content menu
+   */
+  public function clickLinkInAddContentMenu($link) {
+    $page = $this->getSession()->getPage();
+
+    $region = $page->find('css', '.region--featured');
+
+    $region->find('css', '.button--circle-wrapper')->click();
+    $link = $region->findLink($link);
+
+    $this->waitUntil(5000, function () use ($link) {
+      return $link->isVisible();
+    });
+
+    $link->click();
+
+  }
+
+  /**
+   * Waits until callback result is a truthy value or timeout occurs.
+   *
+   * @param int $timeout
+   *   The timeout in milliseconds.
+   * @param callable $callback
+   *   The code to run.
+   *
+   * @return bool
+   *   The last result of the callback invocation.
+   *
+   * @see MinkContext::iWaitForAjaxToFinish()
+   */
+  protected function waitUntil($timeout, callable $callback) {
+    $start = microtime(TRUE);
+    $end = $start + $timeout / 1000.0;
+
+    do {
+      $result = call_user_func($callback);
+      usleep(100000);
+    } while (microtime(TRUE) < $end && !$result);
+
+    return (bool) $result;
   }
 
 }
