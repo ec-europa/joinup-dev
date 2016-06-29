@@ -62,33 +62,41 @@ content:
     third_party_settings: {  }
     type: file_generic
   field_is_elibrary_creation:
-    weight: 6
+    weight: 11
     settings: {  }
     third_party_settings: {  }
     type: options_select
   field_is_issue_tracker:
-    weight: 10
+    weight: 15
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
   field_is_landing_page:
-    weight: 8
+    weight: 13
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+  field_is_language:
+    type: entity_reference_autocomplete
+    weight: 10
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_is_metrics_page:
-    weight: 9
+    weight: 14
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
   field_is_moderation:
-    weight: 7
+    weight: 12
     settings:
       display_label: false
     third_party_settings: {  }
@@ -101,8 +109,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+  field_is_solution_type:
+    type: entity_reference_autocomplete
+    weight: 7
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_is_wiki:
-    weight: 11
+    weight: 16
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -111,6 +127,27 @@ content:
   field_policy_domain:
     type: entity_reference_autocomplete
     weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_spatial_coverage:
+    type: entity_reference_autocomplete
+    weight: 6
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_status:
+    type: options_buttons
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+  field_topic:
+    type: entity_reference_autocomplete
+    weight: 9
     settings:
       match_operator: CONTAINS
       size: 60
@@ -138,11 +175,9 @@ hidden:
   field_is_distribution: true
   field_is_has_version: true
   field_is_included_asset: true
-  field_is_language: true
   field_is_modification_date: true
   field_is_owner: true
   field_is_product_type: true
-  field_is_solution_type: true
   field_is_source_code_repository: true
   field_is_standardization_level: true
   field_is_test_resource_type: true
@@ -151,7 +186,4 @@ hidden:
   field_is_webdav_creation: true
   field_is_webdav_url: true
   field_keywords: true
-  field_spatial_coverage: true
-  field_status: true
-  field_topic: true
   og_group_ref: true
