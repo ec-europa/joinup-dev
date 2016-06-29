@@ -65,12 +65,14 @@ function demo_content_get_user_data() {
       'mail' => 'collection_facilitator@example.com',
       'pass' => 'collection_facilitator',
       'roles' => [User::AUTHENTICATED_ROLE],
+      'status' => 1,
     ],
     [
-      'name' => 'collection_facilitator',
-      'mail' => 'collection_facilitator@example.com',
-      'pass' => 'collection_facilitator',
+      'name' => 'solution_facilitator',
+      'mail' => 'solution_facilitator@example.com',
+      'pass' => 'solution_facilitator',
       'roles' => [User::AUTHENTICATED_ROLE],
+      'status' => 1,
     ],
   ];
 }
