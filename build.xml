@@ -193,6 +193,18 @@
             <option name="password" value="user"/>
             <param>user</param>
         </drush>
+        <!-- Create a user with only "authenticated user" role assigned.
+             to be used as a facilitator -->
+        <drush
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="mail" value="facilitator@example.com"/>
+            <option name="password" value="facilitator"/>
+            <param>facilitator</param>
+        </drush>
     </target>
 
     <!-- Create a demo user. Subtarget of "create-demo-users". -->
@@ -216,6 +228,15 @@
             <option name="name" value="${drupal.demo.user}"/>
             <param>${drupal.demo.user}</param>
         </drush>
+    </target>
+
+    <target name="virtuoso-set-dirsallowed">
+        <echo message="Allow importing of RDF data from all directories"/>
+        <exec dir="${project.basedir}"
+              command="sudo sed -i 's/DirsAllowed              = ., \/usr\/share\/virtuoso-opensource-6.1\/vad/DirsAllowed = \//g' /etc/virtuoso-opensource-6.1/virtuoso.ini;
+sudo /etc/init.d/virtuoso-opensource-6.1 restart"
+              checkreturn="true"
+              passthru="true"/>
     </target>
 
     <target name="build-index">

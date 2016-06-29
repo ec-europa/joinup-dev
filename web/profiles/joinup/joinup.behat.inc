@@ -7,14 +7,18 @@
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use \Behat\Gherkin\Node\TableNode;
-use \Drupal\file\Entity\File;
+use Behat\Gherkin\Node\TableNode;
+use Drupal\file\Entity\File;
 use Drupal\search_api\Entity\Server;
+use Drupal\joinup\Traits\NodeTrait;
 
 /**
  * Behat step definitions for testing users.
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
+  use NodeTrait;
+
   /**
    * Test files.
    *
@@ -92,7 +96,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         file_unmanaged_copy($path, $uri);
         $file = File::create(['uri' => $uri]);
         $file->save();
-        $values[$field_name] = $file->id();
+        $values[$field_name] = $file->get('uri')->value;
 
         $this->files[$file->id()] = $file;
       }
@@ -171,6 +175,54 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks that the given select field has the given options.
+   *
+   * To do this we extract the field text which contains the values expected
+   * to be found in the select box as a concatenated string.
+   * Then we check if the value is contained in the extracted value.
+   *
+   * @param string $select
+   *    The name of the field element.
+   * @param string $options
+   *    The options to be checked separated by comma. Only labels are accepted.
+   *
+   * @throws Exception
+   *    Throws an exception when a value does not exists.
+   *
+   * @Given (the ):select field has the :options option(s)
+   */
+  public function checkSelectOptions($select, $options) {
+    $values = $this->getSession()->getPage()->findField($select)->getText();
+    foreach (explode(',', $options) as $option) {
+      if (strpos($values, trim($option)) === FALSE) {
+        throw new \Exception("The option {$option} should exist in the {$select} field but was not found.");
+      }
+    }
+  }
+
+  /**
+   * Checks if the given select field does not contain any of the given values.
+   *
+   * @param string $select
+   *    The name of the field element.
+   * @param string $options
+   *    The options to be checked separated by comma.
+   *
+   * @throws Exception
+   *    Throws an exception when a value exists.
+   *
+   * @Given (the ):select field does not have the :options option(s)
+   */
+  public function checkSelectOptionsInverse($select, $options) {
+    $values = $this->getSession()->getPage()->findField($select)->getText();
+    foreach (explode(',', $options) as $option) {
+      if (strpos($values, trim($option)) !== FALSE) {
+        throw new \Exception("The option {$option} should not exist in the {$select} field but was found.");
+      }
+    }
+  }
+
+  /**
    * Commit the solr index for testing purposes.
    *
    * @Then I commit the solr index
@@ -191,6 +243,65 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $update = $solarium_client->createUpdate();
       $update->addCommit(TRUE, TRUE);
       $solarium_client->update($update);
+    }
+  }
+
+  /**
+   * Navigates to the canonical page display of a node entity.
+   *
+   * @param string $bundle
+   *   The type of the node page.
+   * @param string $title
+   *   The title of the node.
+   *
+   * @When (I )go to the :bundle (content ) :title edit screen
+   * @When (I )visit the :bundle (content ) :title edit screen
+   */
+  public function visitCollection($bundle, $title) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title, $bundle);
+    $this->visitPath($node->url('edit-form'));
+  }
+
+  /**
+   * Checks if a content entity is published.
+   *
+   * @param string $bundle
+   *   The node bunlde.
+   * @param string $title
+   *   The node title.
+   *
+   * @throws \Exception
+   *   Throws an exception if the content is not published.
+   *
+   * @Then the :title :bundle (content )should be published
+   */
+  public function nodePublished($bundle, $title) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title, $bundle);
+    if (!$node->isPublished()) {
+      throw new \Exception("$title content should be published but it is not.");
+    }
+  }
+
+  /**
+   * Checks if a content entity is published.
+   *
+   * @param string $bundle
+   *   The node bunlde.
+   * @param string $title
+   *   The node title.
+   *
+   * @throws \Exception
+   *   Throws an exception if the content is not published.
+   *
+   * @Then the :title :bundle (content )should not be published
+   */
+  public function nodeNotPublished($bundle, $title) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title, $bundle);
+    if ($node->isPublished()) {
+      throw new \Exception("$title content should not be published but it is.");
     }
   }
 

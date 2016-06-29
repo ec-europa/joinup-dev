@@ -28,3 +28,4 @@ permissions:
   - 'view rdf entity overview'
   - 'delete licence rdf entity'
   - 'edit licence rdf entity'
+  - 'view any unpublished news content'
