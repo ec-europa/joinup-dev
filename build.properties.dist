@@ -33,6 +33,7 @@ drupal.admin.email = admin@example.com
 # Comma-separated list of demo users to create. The username and password will
 # be taken from the role.
 drupal.demo.users = administrator, moderator
+drupal.demo.authenticated_users = user
 
 
 # Paths

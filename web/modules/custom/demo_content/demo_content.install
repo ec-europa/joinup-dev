@@ -5,6 +5,7 @@
  * Install, update and uninstall functions for the Demo content module.
  */
 
+use Drupal\user\Entity\User;
 use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -19,6 +20,15 @@ function demo_content_install() {
  * Creates demo content for the joinup project.
  */
 function demo_content_create_demo_content() {
+  // Create demo users.
+  foreach (demo_content_get_user_data() as $user_data) {
+    $facilitator = user_load_by_name($user_data['name']);
+    if (empty($facilitator)) {
+      $facilitator = User::create($user_data);
+      $facilitator->save();
+    }
+  }
+
   $asset_path = \Drupal::moduleHandler()->getModule('demo_content')->getPath() . '/includes/images';
   foreach (demo_content_get_collection_data() as $values) {
     if (!empty($values['field_ar_logo'])) {
@@ -40,6 +50,29 @@ function demo_content_create_demo_content() {
     $solution = Rdf::create($values);
     $solution->save();
   }
+}
+
+/**
+ * Get demo user data.
+ *
+ * @return array
+ *    An array of data that will be used to create demo users.
+ */
+function demo_content_get_user_data() {
+  return [
+    [
+      'name' => 'collection_facilitator',
+      'mail' => 'collection_facilitator@example.com',
+      'pass' => 'collection_facilitator',
+      'roles' => [User::AUTHENTICATED_ROLE],
+    ],
+    [
+      'name' => 'collection_facilitator',
+      'mail' => 'collection_facilitator@example.com',
+      'pass' => 'collection_facilitator',
+      'roles' => [User::AUTHENTICATED_ROLE],
+    ],
+  ];
 }
 
 /**

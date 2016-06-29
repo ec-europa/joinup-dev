@@ -182,50 +182,42 @@
     <!-- Create demo users. -->
     <target name="create-demo-users" description="Create demo users.">
         <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter="," />
-        <!-- Create a user with only "authenticated user" role assigned. -->
-        <drush
-                command="user-create"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-            <option name="mail" value="user@example.com"/>
-            <option name="password" value="user"/>
-            <param>user</param>
-        </drush>
-        <!-- Create a user with only "authenticated user" role assigned.
-             to be used as a facilitator -->
-        <drush
-                command="user-create"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-            <option name="mail" value="facilitator@example.com"/>
-            <option name="password" value="facilitator"/>
-            <param>facilitator</param>
-        </drush>
+        <foreach list="${drupal.demo.authenticated_users}" param="drupal.demo.user" target="create-demo-authenticated_user" delimiter="," />
     </target>
 
     <!-- Create a demo user. Subtarget of "create-demo-users". -->
     <target name="create-demo-user">
         <drush
-            command="user-create"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
             <option name="mail" value="${drupal.demo.user}@example.com"/>
             <option name="password" value="${drupal.demo.user}"/>
             <param>${drupal.demo.user}</param>
         </drush>
         <drush
-            command="user-add-role"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+                command="user-add-role"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
             <option name="name" value="${drupal.demo.user}"/>
+            <param>${drupal.demo.user}</param>
+        </drush>
+    </target>
+
+    <!-- Create a demo authenticated user. Subtarget of "create-demo-users". -->
+    <target name="create-demo-authenticated_user">
+        <drush
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="mail" value="${drupal.demo.user}@example.com"/>
+            <option name="password" value="${drupal.demo.user}"/>
             <param>${drupal.demo.user}</param>
         </drush>
     </target>

@@ -13,15 +13,15 @@ use Drupal\og\OgMembershipInterface;
  * Implements hook_ENTITY_TYPE_create().
  */
 function demo_content_rdf_entity_create(EntityInterface $entity) {
-  if ($entity->bundle() !== 'collection') {
+  if (!in_array($entity->bundle(), ['collection', 'solution'])) {
     return;
   }
-
-  // Set 'facilitator' user as a facilitator for the collection.
-  $facilitator = user_load_by_name('facilitator');
+  $user_name = $entity->bundle() . '_facilitator';
+  $facilitator = user_load_by_name($user_name);
   if (empty($facilitator)) {
     return;
   }
+  $role_id = $entity->getEntityTypeId() . '-' . $entity->bundle() . '-facilitator';
 
   /** @var \Drupal\og\OgMembershipInterface $membership */
   $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
@@ -30,6 +30,6 @@ function demo_content_rdf_entity_create(EntityInterface $entity) {
     ->setEntityId($entity->id())
     ->setGroupEntityType($entity->getEntityTypeId())
     ->setFieldName($membership->getFieldName())
-    ->addRole('rdf_entity-collection-facilitator')
+    ->addRole($role_id)
     ->save();
 }
