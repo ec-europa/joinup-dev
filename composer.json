@@ -9,9 +9,9 @@
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",
-        "drupal/core": "~8.1.0",
+        "drupal/core": "8.1.x-dev",
         "drupal/facets" : "~8.1.0-alpha3",
-        "drupal/og": "dev-ISAICP-2362",
+        "drupal/og": "dev-check-group-content-crud-access",
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x",
@@ -125,7 +125,7 @@
         {
             "_comment": "This is the development repository of the D8 port of Organic Groups. Remove this when an official alpha release is made.",
             "type": "vcs",
-            "url": "git@github.com:ec-europa/og"
+            "url": "git@github.com:amitaibu/og"
         },
         {
             "_comment": "Use a fork of Behat Drupal Extension with a fix for #266.",

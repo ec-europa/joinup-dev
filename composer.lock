@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b013dea5dc79ec7e307d03ff0cb4d6b6",
-    "content-hash": "d8bdfd890af315e9ceccb0e48294e7ef",
+    "hash": "70b49030f11bc2a03446f99de5978d6e",
+    "content-hash": "068874eed5946457221af9ac3e3c90d7",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.19",
+            "version": "3.18.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2ffb032afe91b143293f75b48ec7593659c66ddb"
+                "reference": "d1a990d3a7c1fec992abdb508b47271ba089586e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2ffb032afe91b143293f75b48ec7593659c66ddb",
-                "reference": "2ffb032afe91b143293f75b48ec7593659c66ddb",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d1a990d3a7c1fec992abdb508b47271ba089586e",
+                "reference": "d1a990d3a7c1fec992abdb508b47271ba089586e",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-06-21 21:41:45"
+            "time": "2016-06-28 23:29:43"
         },
         {
             "name": "composer/ca-bundle",
@@ -206,16 +206,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "b2cf67b1a575d7e648c742be2454339232ef32b2"
+                "reference": "30ab6f1c1753267d181839142fafe022313c3c9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/b2cf67b1a575d7e648c742be2454339232ef32b2",
-                "reference": "b2cf67b1a575d7e648c742be2454339232ef32b2",
+                "url": "https://api.github.com/repos/composer/composer/zipball/30ab6f1c1753267d181839142fafe022313c3c9a",
+                "reference": "30ab6f1c1753267d181839142fafe022313c3c9a",
                 "shasum": ""
             },
             "require": {
@@ -279,7 +279,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2016-05-31 18:48:12"
+            "time": "2016-06-26 14:42:08"
         },
         {
             "name": "composer/installers",
@@ -1105,16 +1105,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.1.3",
+            "version": "8.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "ac94c29c14d85c8e77f5cb1d0ab38036f5f25c9c"
+                "reference": "b2ae74ac743464c65778d22535dfb1f9638a7191"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/ac94c29c14d85c8e77f5cb1d0ab38036f5f25c9c",
-                "reference": "ac94c29c14d85c8e77f5cb1d0ab38036f5f25c9c",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/b2ae74ac743464c65778d22535dfb1f9638a7191",
+                "reference": "b2ae74ac743464c65778d22535dfb1f9638a7191",
                 "shasum": ""
             },
             "require": {
@@ -1169,8 +1169,10 @@
                 "drupal/content_translation": "self.version",
                 "drupal/contextual": "self.version",
                 "drupal/core-annotation": "self.version",
+                "drupal/core-assertion": "self.version",
                 "drupal/core-bridge": "self.version",
                 "drupal/core-datetime": "self.version",
+                "drupal/core-dependency-injection": "self.version",
                 "drupal/core-diff": "self.version",
                 "drupal/core-discovery": "self.version",
                 "drupal/core-event-dispatcher": "self.version",
@@ -1274,19 +1276,19 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-06-15 20:08:27"
+            "time": "2016-06-28 17:48:29"
         },
         {
             "name": "drupal/ds",
-            "version": "8.2.4",
+            "version": "8.2.5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/ds",
-                "reference": "67031590f884653c40f6353d8f43d1c5565ec2ac"
+                "reference": "f8c434e10066dd1d1c9906e2091500d536eef164"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/ds-8.x-2.4.zip",
+                "url": "https://ftp.drupal.org/files/projects/ds-8.x-2.5.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1335,7 +1337,7 @@
                 "layout",
                 "php"
             ],
-            "time": "2016-05-05 15:02:06"
+            "time": "2016-06-24 10:26:48"
         },
         {
             "name": "drupal/facets",
@@ -1348,7 +1350,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha3.zip",
-                "reference": null,
+                "reference": "ae38a8e49082f418f9fc533bb575f931d4c2e277",
                 "shasum": null
             },
             "require": {
@@ -1437,16 +1439,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-ISAICP-2362",
+            "version": "dev-check-group-content-crud-access",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ec-europa/og.git",
-                "reference": "46f9cb5b767dd22195e6d2ec94973aeb5e00a5b3"
+                "url": "https://github.com/amitaibu/og.git",
+                "reference": "4f1b190d54dd1b704834666986365afde9d0f4f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/46f9cb5b767dd22195e6d2ec94973aeb5e00a5b3",
-                "reference": "46f9cb5b767dd22195e6d2ec94973aeb5e00a5b3",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/4f1b190d54dd1b704834666986365afde9d0f4f8",
+                "reference": "4f1b190d54dd1b704834666986365afde9d0f4f8",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1460,7 +1462,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-06-22 05:37:21"
+            "time": "2016-06-28 19:49:06"
         },
         {
             "name": "drupal/og_menu",
@@ -1539,7 +1541,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha15.zip",
-                "reference": null,
+                "reference": "f8f3ce33a9f608aa830688767fd5ffbd108eb889",
                 "shasum": null
             },
             "require": {
@@ -1586,12 +1588,12 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "29ea9ae1e94b1331c9a8eb4bb9fef41911a26f2f"
+                "reference": "0dfad05b23a39034186d03d3e2f0310de45ead51"
             },
             "require": {
                 "drupal/core": "8.*",
                 "drupal/search_api": "8.*",
-                "solarium/solarium": "~3.5.1"
+                "solarium/solarium": "3.6.*"
             },
             "type": "drupal-module",
             "extra": {
@@ -1605,7 +1607,7 @@
             ],
             "description": "Offers an implementation of the Search API that uses an Apache Solr server for indexing content.",
             "homepage": "https://www.drupal.org/project/search_api_solr",
-            "time": "2016-06-12 16:10:54"
+            "time": "2016-06-28 20:42:56"
         },
         {
             "name": "drush/drush",
@@ -2024,16 +2026,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "31382fef2889136415751badebbd1cb022a4ed72"
+                "reference": "5c6447c9df362e8f8093bda8f5d8873fe5c7f65b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/31382fef2889136415751badebbd1cb022a4ed72",
-                "reference": "31382fef2889136415751badebbd1cb022a4ed72",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/5c6447c9df362e8f8093bda8f5d8873fe5c7f65b",
+                "reference": "5c6447c9df362e8f8093bda8f5d8873fe5c7f65b",
                 "shasum": ""
             },
             "require": {
@@ -2049,7 +2051,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -2078,7 +2080,7 @@
                 "stream",
                 "uri"
             ],
-            "time": "2016-04-13 19:56:01"
+            "time": "2016-06-24 23:00:38"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -3396,25 +3398,25 @@
         },
         {
             "name": "solarium/solarium",
-            "version": "3.5.1",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/solariumphp/solarium.git",
-                "reference": "96f441f53c4de10f1154b386c925f51b08bf2fa6"
+                "reference": "b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/96f441f53c4de10f1154b386c925f51b08bf2fa6",
-                "reference": "96f441f53c4de10f1154b386c925f51b08bf2fa6",
+                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5",
+                "reference": "b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "symfony/event-dispatcher": "~2.3"
+                "symfony/event-dispatcher": "~2.3|~3.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~3.7",
-                "satooshi/php-coveralls": "~0.6",
+                "satooshi/php-coveralls": "~1.0",
                 "squizlabs/php_codesniffer": "~1.4",
                 "zendframework/zendframework1": "~1.12"
             },
@@ -3446,7 +3448,7 @@
                 "search",
                 "solr"
             ],
-            "time": "2015-12-19 16:00:15"
+            "time": "2016-05-03 07:08:49"
         },
         {
             "name": "stack/builder",
@@ -5872,7 +5874,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "5ebc42e0014720e4d9037273dadc3355d772ccd0"
+                "reference": "a53cb1dd16f80fd95db1198583e8006a46762848"
             },
             "require": {
                 "php": ">=5.4.0",
@@ -5894,7 +5896,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-06-16 22:06:40"
+            "time": "2016-06-25 14:58:52"
         },
         {
             "name": "drupal/config_devel",
@@ -5963,7 +5965,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "5c6a5068bbf9e3ea0c46ed34777b679a14a38580"
+                "reference": "47be309dd2c13251ec1a4d84b059160802e9c4ff"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -5998,7 +6000,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2016-06-06 06:59:02"
+            "time": "2016-06-28 19:49:57"
         },
         {
             "name": "drupal/drupal-driver",
@@ -6290,12 +6292,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jcalderonzumba/MinkPhantomJSDriver.git",
-                "reference": "10d7c48c9a4129463052321b52450d98983c4332"
+                "reference": "f6867c5e5ad1727936b5e70075d92c2ec060e1a1"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
-                "reference": "10d7c48c9a4129463052321b52450d98983c4332",
+                "reference": "f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
                 "shasum": ""
             },
             "require": {
@@ -6343,7 +6345,7 @@
                 "phantomjs",
                 "testing"
             ],
-            "time": "2015-10-05 18:24:44"
+            "time": "2016-03-04 20:15:21"
         },
         {
             "name": "mikey179/vfsStream",
@@ -7548,6 +7550,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "composer/composer": 15,
+        "drupal/core": 20,
         "drupal/og": 20,
         "drupal/og_menu": 20,
         "drupal/r4032login": 20,
