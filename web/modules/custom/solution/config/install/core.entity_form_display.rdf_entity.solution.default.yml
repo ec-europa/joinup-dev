@@ -62,33 +62,33 @@ content:
     third_party_settings: {  }
     type: file_generic
   field_is_elibrary_creation:
-    weight: 5
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_select
   field_is_issue_tracker:
-    weight: 9
+    weight: 10
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
   field_is_landing_page:
-    weight: 7
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-  field_is_metrics_page:
     weight: 8
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+  field_is_metrics_page:
+    weight: 9
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
   field_is_moderation:
-    weight: 6
+    weight: 7
     settings:
       display_label: false
     third_party_settings: {  }
@@ -102,12 +102,20 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_is_wiki:
-    weight: 10
+    weight: 11
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+  field_policy_domain:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   id:
     type: auto_uri
     weight: 0
@@ -143,7 +151,6 @@ hidden:
   field_is_webdav_creation: true
   field_is_webdav_url: true
   field_keywords: true
-  field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
   field_topic: true

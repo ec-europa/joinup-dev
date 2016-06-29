@@ -33,9 +33,10 @@ Feature: "Add solution" visibility options.
     And the following fields should be present "Title, Description, Documentation"
     And the following fields should not be present "Groups audience, Other groups"
     When I fill in the following:
-      | Title             | Collection solution add solution |
-      | Description       | This is a test text              |
-      | Documentation     | text.pdf                         |
+      | Title         | Collection solution add solution                                |
+      | Description   | This is a test text                                             |
+      | Documentation | text.pdf                                                        |
+      | Policy Domain | Environment (WIP!) (http://joinup.eu/policy-domain/environment) |
     And I press "Save"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "Collection solution add solution"
