@@ -1,11 +1,12 @@
 <?php
+
 /**
  * @file
  * Functions to support theming in the Joinup theme.
  */
 
 use Drupal\image\Entity\ImageStyle;
-use \Drupal\file\Entity\File;
+use Drupal\file\Entity\File;
 
 /**
  * Implements hook_preprocess_page().
