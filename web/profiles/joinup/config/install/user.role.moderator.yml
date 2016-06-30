@@ -29,3 +29,5 @@ permissions:
   - 'delete licence rdf entity'
   - 'edit licence rdf entity'
   - 'view any unpublished news content'
+  - 'delete contact_information rdf entity'
+  - 'edit contact_information rdf entity'
