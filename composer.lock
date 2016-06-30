@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "75690369673492d4422ee323fe0a1a1e",
-    "content-hash": "fd842d7b7f4d2c55f38e74da7325a685",
+    "hash": "99d11bd2dc980b65e771b4f137e06eb2",
+    "content-hash": "e573495218d8e7ebad3e3c511bd9a4fa",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -6156,16 +6156,16 @@
         },
         {
             "name": "drupal/drupal-extension",
-            "version": "dev-support-drupal-8.1",
+            "version": "dev-wysiwyg-support",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pfrenssen/drupalextension.git",
-                "reference": "156e36891687dd5775e9a1d8bcbd4eb27df08649"
+                "url": "https://github.com/ec-europa/drupalextension.git",
+                "reference": "0f480532cd5c72348a68f59a43aa5478240b5baf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/drupalextension/zipball/156e36891687dd5775e9a1d8bcbd4eb27df08649",
-                "reference": "156e36891687dd5775e9a1d8bcbd4eb27df08649",
+                "url": "https://api.github.com/repos/ec-europa/drupalextension/zipball/0f480532cd5c72348a68f59a43aa5478240b5baf",
+                "reference": "0f480532cd5c72348a68f59a43aa5478240b5baf",
                 "shasum": ""
             },
             "require": {
@@ -6186,7 +6186,7 @@
             "type": "behat-extension",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.2.x-dev"
+                    "dev-master": "4.0.x-dev"
                 }
             },
             "autoload": {
@@ -6213,9 +6213,9 @@
                 "web"
             ],
             "support": {
-                "source": "https://github.com/pfrenssen/drupalextension/tree/support-drupal-8.1"
+                "source": "https://github.com/ec-europa/drupalextension/tree/wysiwyg-support"
             },
-            "time": "2016-04-08 14:45:33"
+            "time": "2016-06-30 12:21:07"
         },
         {
             "name": "fabpot/goutte",

@@ -38,7 +38,7 @@
         "drupal/config_devel": "dev-8.x-1.x",
         "drupal/config_update": "dev-8.x-1.x",
         "drupal/devel": "dev-8.x-1.x",
-        "drupal/drupal-extension": "dev-support-drupal-8.1",
+        "drupal/drupal-extension": "dev-wysiwyg-support",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "dev-master#10d7c48c9a4129463052321b52450d98983c4332",
         "mikey179/vfsStream": "~1.2",
@@ -134,9 +134,9 @@
             "url": "git@github.com:ec-europa/og"
         },
         {
-            "_comment": "Use a fork of Behat Drupal Extension with a fix for #266.",
+            "_comment": "Use a fork of Behat Drupal Extension with a fix for #2404.",
             "type": "vcs",
-            "url": "https://github.com/pfrenssen/drupalextension.git"
+            "url": "https://github.com/ec-europa/drupalextension.git"
         },
         {
             "type": "vcs",
