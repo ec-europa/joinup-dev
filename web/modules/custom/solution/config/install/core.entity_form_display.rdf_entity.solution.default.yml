@@ -110,12 +110,9 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_is_solution_type:
-    type: entity_reference_autocomplete
+    type: options_select
     weight: 7
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
   field_is_wiki:
     weight: 16
