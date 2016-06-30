@@ -33,13 +33,13 @@ Feature: "Add solution" visibility options.
     And the following fields should be present "Title, Description, Documentation"
     And the following fields should not be present "Groups audience, Other groups"
     When I fill in the following:
-      | Title            | Collection solution add solution                                        |
-      | Description      | This is a test text                                                     |
-      | Documentation    | text.pdf                                                                |
-      | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)         |
-      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)  |
-      | Topic            | man-made disaster (http://eurovoc.europa.eu/412)                        |
-      | Language         | Flemish (http://publications.europa.eu/resource/authority/language/VLS) |
+      | Title            | Collection solution add solution                                          |
+      | Description      | This is a test text                                                       |
+      | Documentation    | text.pdf                                                                  |
+      | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)           |
+      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)    |
+      | Topic            | Health (http://publications.europa.eu/resource/authority/data-theme/HEAL) |
+      | Language         | Flemish (http://publications.europa.eu/resource/authority/language/VLS)   |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I press "Save"
     # The name of the solution should exist in the block of the relative content in a collection.
