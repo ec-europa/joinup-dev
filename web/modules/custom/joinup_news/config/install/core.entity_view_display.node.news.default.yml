@@ -7,6 +7,8 @@ dependencies:
     - field.field.node.news.field_news_parent
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_state
+    - field.field.node.news.field_spatial_coverage
+    - field.field.node.news.field_topic
     - field.field.node.news.og_group_ref
     - node.type.news
   module:
@@ -56,6 +58,20 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
+  field_spatial_coverage:
+    weight: 105
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_topic:
+    weight: 106
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   links:
     weight: 0
     settings: {  }
