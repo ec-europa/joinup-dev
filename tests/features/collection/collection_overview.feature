@@ -55,8 +55,9 @@ Feature: Collections Overview
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
     When I fill in the following:
-      | Title       | Colonies in space                   |
-      | Description | Some space mumbo jumbo description. |
+      | Title         | Colonies in space                                                       |
+      | Description   | Some space mumbo jumbo description.                                     |
+      | Policy domain | Internal Market (WIP!) (http://joinup.eu/policy-domain/internal-market) |
     And I attach the file "logo.png" to "Logo"
     And I press "Save"
     Then I should see the text "Colonies in space"
