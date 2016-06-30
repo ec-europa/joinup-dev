@@ -96,7 +96,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         file_unmanaged_copy($path, $uri);
         $file = File::create(['uri' => $uri]);
         $file->save();
-        $values[$field_name] = $file->id();
+        $values[$field_name] = $file->get('uri')->value;
 
         $this->files[$file->id()] = $file;
       }

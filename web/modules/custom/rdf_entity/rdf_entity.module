@@ -8,14 +8,10 @@
 use \Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 use \Drupal\Core\Config\Entity\ConfigEntityInterface;
 use \Drupal\Core\Entity\BundleEntityFormBase;
-use \Drupal\Core\Entity\EntityInterface;
 use \Drupal\Core\Form\FormStateInterface;
 use \Drupal\Core\Render\Element;
 use \Drupal\Core\Url;
 use \Drupal\field\Entity\FieldStorageConfig;
-use \Drupal\og\Entity\OgMembership;
-use \Drupal\og\Og;
-use \Drupal\og\OgMembershipInterface;
 use \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 use \Drupal\rdf_entity\RdfInterface;
 
@@ -251,34 +247,6 @@ function rdf_entity_is_page(RdfInterface $rdf_entity) {
     $page_rdf_entity = $route_match->getParameter('rdf_entity');
   }
   return (!empty($page_rdf_entity) ? $page_rdf_entity->id() == $rdf_entity->id() : FALSE);
-}
-
-/**
- * Implements hook_entity_insert().
- *
- * @see og_entity_insert()
- */
-function rdf_entity_entity_insert(EntityInterface $entity) {
-  // We replicate the behaviour here that Og provides for entities
-  // implementing the EntityOwnerInterface. Because RdfEntity (currently?)
-  // doesn't implement this, we fall back to using the logged in user
-  // instead of the author.
-  if (!\Drupal::moduleHandler()->moduleExists('og')) {
-    return;
-  }
-  if (!Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
-    return;
-  }
-  if ($entity instanceof RdfInterface) {
-    // Subscribe the group manager.
-    $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
-    $membership
-      ->setUser(\Drupal::currentUser()->id())
-      ->setEntityId($entity->id())
-      ->setGroupEntityType($entity->getEntityTypeId())
-      ->setFieldName($membership->getFieldName())
-      ->save();
-  }
 }
 
 /**
