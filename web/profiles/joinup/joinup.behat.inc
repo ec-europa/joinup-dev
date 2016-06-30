@@ -8,7 +8,6 @@
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Behat\Gherkin\Node\TableNode;
-use Drupal\DrupalExtension\Context\MinkContext;
 use Drupal\file\Entity\File;
 use Drupal\search_api\Entity\Server;
 use Drupal\joinup\Traits\NodeTrait;
