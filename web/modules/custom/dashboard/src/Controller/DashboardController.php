@@ -43,31 +43,28 @@ class DashboardController extends ControllerBase {
     ]);
 
     $links['subscription_settings'] = [
-      '#type' => 'link',
-      '#title' => $this->t('My subscriptions'),
-      '#url' => $subscription_settings_url,
-      '#attributes' => ['class' => ['button', 'button--small']],
+      'title' => $this->t('My subscriptions'),
+      'url' => $subscription_settings_url,
+      'attributes' => ['class' => ['button', 'button--small']],
     ];
 
     $licences_url = Url::fromRoute('joinup_licence.overview');
     $links['licences'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Licences overview'),
-      '#url' => $licences_url,
-      '#attributes' => ['class' => ['button', 'button--small']],
+      'title' => $this->t('Licences overview'),
+      'url' => $licences_url,
+      'attributes' => ['class' => ['button', 'button--small']],
     ];
 
     $links = array_filter($links, function ($link) {
-      return $link['#url']->access();
+      return $link['url']->access();
     });
 
-    $item_list = [
-      '#theme' => 'item_list',
-      '#list_type' => 'ul',
-      '#items' => $links,
+    $links = [
+      '#theme' => 'links',
+      '#links' => $links,
     ];
 
-    return $item_list;
+    return $links;
   }
 
 }
