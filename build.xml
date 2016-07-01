@@ -193,6 +193,18 @@
             <option name="password" value="user"/>
             <param>user</param>
         </drush>
+        <!-- Create a user with only "authenticated user" role assigned.
+             to be used as a facilitator -->
+        <drush
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="mail" value="facilitator@example.com"/>
+            <option name="password" value="facilitator"/>
+            <param>facilitator</param>
+        </drush>
     </target>
 
     <!-- Create a demo user. Subtarget of "create-demo-users". -->

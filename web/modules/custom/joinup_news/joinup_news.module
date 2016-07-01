@@ -13,7 +13,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Og;
-use Drupal\og\OgAccess;
 use Drupal\Core\Access\AccessResult;
 
 /**
@@ -57,12 +56,12 @@ function joinup_news_node_access(EntityInterface $node, $op, AccountInterface $a
     // Temporary workaround because Og is not checking for membership.
     if ($parent instanceof RdfInterface && Og::isMember($parent, Drupal::currentUser())) {
       /** @var \Drupal\Core\Access\AccessResult $global_permission */
-      $global_permission = OgAccess::userAccessEntity('view any unpublished content', $parent, $account);
+      $global_permission = \Drupal::service('og.access')->userAccessEntity('view any unpublished content', $parent, $account);
       if ($global_permission->isAllowed()) {
         return $global_permission;
       }
 
-      $global_permission = OgAccess::userAccessEntity('view any unpublished news content', $parent, $account);
+      $global_permission = \Drupal::service('og.access')->userAccessEntity('view any unpublished news content', $parent, $account);
       if ($global_permission->isAllowed()) {
         return $global_permission;
       }
