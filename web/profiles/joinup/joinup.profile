@@ -130,6 +130,26 @@ function joinup_og_user_access_alter(&$permissions, &$cacheable_metadata, $conte
 }
 
 /**
+ * Implements hook_field_widget_inline_entity_form_complex_form_alter().
+ *
+ * Simplifies the widget buttons when only a bundle is configured.
+ */
+function contact_information_field_widget_inline_entity_form_complex_form_alter(&$element, FormStateInterface $form_state, $context) {
+  if ($element['actions']['bundle']['#type'] == 'value') {
+    $buttons = [
+      'ief_add' => t('Add existing'),
+      'ief_add_existing' => t('Add new'),
+    ];
+
+    foreach ($buttons as $key => $label) {
+      if (!empty($element['actions'][$key])) {
+        $element['actions'][$key]['#value'] = $label;
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function joinup_theme($existing, $type, $theme, $path) {
