@@ -56,4 +56,3 @@
 #    When I go to the homepage of the "Star Trek" collection
 #    Then I should not see the link "Mines of Moria"
 #    Then I should not see the link "Mordor"
->>>>>>> develop
