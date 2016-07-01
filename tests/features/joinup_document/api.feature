@@ -6,13 +6,14 @@ Feature: Document API
 
   Scenario: Programmatically create a Custom Page
     Given the following collection:
-      | title             | Joinup document name |
-      | owner             | Joinup Derp          |
-      | logo              | logo.png             |
-      | moderation        | yes                  |
-      | closed            | yes                  |
-      | elibrary creation | facilitators         |
+      | uri               | http://joinup.eu/document_api_collection |
+      | title             | Joinup document name                     |
+      | owner             | Joinup Derp                              |
+      | logo              | logo.png                                 |
+      | moderation        | yes                                      |
+      | closed            | yes                                      |
+      | elibrary creation | facilitators                             |
     And document content:
-      | title    | field_document_short_title | body               | og_group_ref            |
-      | JD title | Short                      | Dummy description. | http://joinup.eu/jd/jde |
+      | title    | field_document_short_title | body               | og_group_ref                             |
+      | JD title | Short                      | Dummy description. | http://joinup.eu/document_api_collection |
     Then I should have a "Document" page titled "JD title"
