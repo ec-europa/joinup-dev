@@ -94,7 +94,11 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   Thrown when a collection with the given title does not exist.
    */
   protected function getCollectionByName($title) {
-    return $this->getRdfEntityByLabel($title, 'collection');
+    $collection = $this->getRdfEntityByLabel($title, 'collection');
+    if ($collection) {
+      $this->collections[$collection->id()] = $collection;
+    }
+    return $collection;
   }
 
   /**

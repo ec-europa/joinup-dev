@@ -60,6 +60,7 @@ Feature: Collections Overview
       | Policy domain | Internal Market (WIP!) (http://joinup.eu/policy-domain/internal-market) |
     And I attach the file "logo.png" to "Logo"
     And I press "Save"
+    Then I visit the "Colonies in space" collection
     Then I should see the text "Colonies in space"
     # Non UATable step.
     When I commit the solr index
