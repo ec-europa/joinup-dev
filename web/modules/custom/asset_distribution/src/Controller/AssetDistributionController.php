@@ -4,7 +4,10 @@ namespace Drupal\asset_distribution\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\og\Og;
+use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AssetDistributionController.
@@ -15,6 +18,32 @@ use Drupal\rdf_entity\RdfInterface;
  * @package Drupal\asset_distribution\Controller
  */
 class AssetDistributionController extends ControllerBase {
+
+  /**
+   * The OG access handler.
+   *
+   * @var \Drupal\og\OgAccessInterface
+   */
+  protected $ogAccess;
+
+  /**
+   * Constructs a CustomPageController.
+   *
+   * @param \Drupal\og\OgAccessInterface $og_access
+   *   The OG access handler.
+   */
+  public function __construct(OgAccessInterface $og_access) {
+    $this->ogAccess = $og_access;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('og.access')
+    );
+  }
 
   /**
    * Controller for the base form.
@@ -48,18 +77,14 @@ class AssetDistributionController extends ControllerBase {
    *   The access result object.
    */
   public function createAssetDistributionAccess(RdfInterface $rdf_entity) {
-    // Check that the passed in RDF entity is a solution, and that the user
-    // has the permission to create distribution entities.
-    // @todo Collection owners and facilitators should also have the right to
-    //   create distributions related to the solutions they manage.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2450
-    if ($rdf_entity->bundle() == 'asset_release' && $this->currentUser()
-        ->hasPermission('create asset_distribution rdf entity')
-    ) {
-      return AccessResult::allowed();
+    $solution = asset_distribution_get_release_solution($rdf_entity);
+    $user = \Drupal::currentUser();
+    if (empty($solution) && !$user->isAnonymous()) {
+      return AccessResult::neutral();
     }
-
-    return AccessResult::forbidden();
+    $membership = Og::getMembership($user, $solution);
+    // @todo: Remove check for empty membership after ISAICP-2369 is in.
+    return (!empty($membership) && $membership->hasPermission('create asset_distribution rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
 }

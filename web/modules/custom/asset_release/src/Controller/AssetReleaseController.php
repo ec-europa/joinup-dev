@@ -4,7 +4,10 @@ namespace Drupal\asset_release\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\og\Og;
+use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AssetReleaseController.
@@ -27,6 +30,32 @@ class AssetReleaseController extends ControllerBase {
     'field_policy_domain' => 'field_policy_domain',
     'field_topic' => 'field_topic',
   ];
+
+  /**
+   * The OG access handler.
+   *
+   * @var \Drupal\og\OgAccessInterface
+   */
+  protected $ogAccess;
+
+  /**
+   * Constructs a CustomPageController.
+   *
+   * @param \Drupal\og\OgAccessInterface $og_access
+   *   The OG access handler.
+   */
+  public function __construct(OgAccessInterface $og_access) {
+    $this->ogAccess = $og_access;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('og.access')
+    );
+  }
 
   /**
    * Controller for the base form.
@@ -73,18 +102,29 @@ class AssetReleaseController extends ControllerBase {
    *   The access result object.
    */
   public function createAssetReleaseAccess(RdfInterface $rdf_entity) {
-    // Check that the passed in RDF entity is a collection, and that the user
-    // has the permission to create asset_releases.
-    // @todo Collection owners and facilitators should also have the right to
-    //   create asset_releases for the collections they manage.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2448
-    if ($rdf_entity->bundle() == 'solution' && $this->currentUser()
-        ->hasPermission('create asset_release rdf entity')
-    ) {
-      return AccessResult::allowed();
+    $user = \Drupal::currentUser();
+    if ($user->isAnonymous()) {
+      return AccessResult::neutral();
     }
+    $membership = Og::getMembership($user, $rdf_entity);
+    // @todo: Remove check for empty after ISAICP-2369 is in.
+    return (!empty($membership) && $membership->hasPermission('create asset_release rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
+  }
 
-    return AccessResult::forbidden();
+  /**
+   * Creates a new asset_release entity.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The solution that the asset_release is version of.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   The unsaved asset_release entity.
+   */
+  protected function createNewAssetRelease(RdfInterface $rdf_entity) {
+    return $this->entityTypeManager()->getStorage('rdf_entity')->create([
+      'rid' => 'asset_release',
+      'field_isr_is_version_of' => $rdf_entity->id(),
+    ]);
   }
 
 }

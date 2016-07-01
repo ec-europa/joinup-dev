@@ -26,7 +26,7 @@ class SolutionController extends ControllerBase {
   protected $ogAccess;
 
   /**
-   * Constructs a CustomPageController.
+   * Constructs a SolutionController.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
@@ -69,7 +69,7 @@ class SolutionController extends ControllerBase {
    * Handles access to the solution add form through collection pages.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The RDF entity for which the custom page is created.
+   *   The RDF entity for which the solution is created.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
@@ -79,19 +79,19 @@ class SolutionController extends ControllerBase {
   }
 
   /**
-   * Creates a new custom page entity.
+   * Creates a new solution entity.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection with which the custom page will be associated.
+   *   The collection with which the solution will be associated.
    *
    * @return \Drupal\Core\Entity\EntityInterface
-   *   The unsaved custom page entity.
+   *   The unsaved solution entity.
    */
   protected function createNewSolution(RdfInterface $rdf_entity) {
-    return $this->entityTypeManager()->getStorage('rdf_entity')->create(array(
+    return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'solution',
-      'og_group_ref' => $rdf_entity->id(),
-    ));
+      'field_is_affiliations_requests' => $rdf_entity->id(),
+    ]);
   }
 
 }
