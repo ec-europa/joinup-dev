@@ -200,9 +200,10 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    * @throws \Exception
    *   Thrown when a fieldset is not found.
    *
+   * @Then (the following )field widgets should be present :fieldsets
    * @Then (the following )fieldsets should be present :fieldsets
    */
-  public function assertFieldsetPresent($fieldsets) {
+  public function assertFieldsetsPresent($fieldsets) {
     $fieldsets = explode(',', $fieldsets);
     $fieldsets = array_map('trim', $fieldsets);
     $fieldsets = array_filter($fieldsets);

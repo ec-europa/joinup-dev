@@ -33,7 +33,7 @@ Feature: "Add release" visibility options.
     And I click "Add release"
     Then I should see the heading "Add Asset release"
     And the following fields should be present "Name, Release number, Release notes"
-    And the following fieldsets should be present "Contact information"
+    And the following field widgets should be present "Contact information"
     When I fill in "Name" with "Release Test 2"
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."
