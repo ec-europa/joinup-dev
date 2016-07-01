@@ -30,6 +30,7 @@ Feature: Proposing a collection
     When I am on the homepage
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
+    And the following fieldsets should be present "Contact information"
     When I fill in the following:
     | Title       | Ancient and Classical Mythology                                                                      |
     | Description | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
