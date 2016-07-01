@@ -63,12 +63,12 @@ content:
     weight: 8
     settings:
       form_mode: default
-      label_singular: ''
-      label_plural: ''
+      override_labels: true
+      label_singular: 'Contact information'
+      label_plural: 'Contact information'
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
-      override_labels: false
     third_party_settings: {  }
     type: inline_entity_form_complex
   field_ar_creation_date:
