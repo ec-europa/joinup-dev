@@ -39,15 +39,39 @@ Feature: Collections Overview
     When I am an anonymous user
     And I am on the homepage
     Then I should see the link "Collections"
-    # @todo Anonymous users do not see new collections because the page cache
-    # is not invalidated correctly.
-    # @see ISAICP-2484
-    # When I click "Collections"
-    # Then I should see the link "eHealth"
-    # And I should see the text "Supports health-related fields"
-    # And I should see the link "Open Data"
-    # And I should see the text "Facilitate access to data sets"
-    # And I should see the link "Connecting Europe"
-    # And I should see the text "Reusable tools and services"
-    # When I click "eHealth"
-    # Then I should see the heading "eHealth"
+    When I click "Collections"
+    Then I should see the link "eHealth"
+    And I should see the text "Supports health-related fields"
+    And I should see the link "Open Data"
+    And I should see the text "Facilitate access to data sets"
+    And I should see the link "Connecting Europe"
+    And I should see the text "Reusable tools and services"
+    When I click "eHealth"
+    Then I should see the heading "eHealth"
+
+    # Add new collection.
+    Given I am logged in as "Madam Shirley"
+    When I am on the homepage
+    And I click "Propose collection"
+    Then I should see the heading "Propose collection"
+    When I fill in the following:
+      | Title       | Colonies in space                   |
+      | Description | Some space mumbo jumbo description. |
+    And I attach the file "logo.png" to "Logo"
+    And I press "Save"
+    Then I should see the text "Colonies in space"
+    # Non UATable step.
+    When I commit the solr index
+
+    And I am on the homepage
+    And I click "Collections"
+    Then I should see the text "Colonies in space"
+
+    # @todo: Normally the collection should go through a moderation process.
+    # It will not be immediately available.
+    # Check the new collection as an anonymous user.
+    When I am an anonymous user
+    And I am on the homepage
+    Then I should see the link "Collections"
+    When I click "Collections"
+    Then I should see the link "Colonies in space"
