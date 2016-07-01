@@ -137,8 +137,8 @@ function joinup_og_user_access_alter(&$permissions, &$cacheable_metadata, $conte
 function contact_information_field_widget_inline_entity_form_complex_form_alter(&$element, FormStateInterface $form_state, $context) {
   if ($element['actions']['bundle']['#type'] == 'value') {
     $buttons = [
-      'ief_add' => t('Add existing'),
-      'ief_add_existing' => t('Add new'),
+      'ief_add' => t('Add new'),
+      'ief_add_existing' => t('Add existing'),
     ];
 
     foreach ($buttons as $key => $label) {
