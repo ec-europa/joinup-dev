@@ -13,6 +13,6 @@ Feature: News API
       | closed            | yes             |
       | elibrary creation | facilitators    |
     And news content:
-      | title      | body                                     | collection      |
+      | title      | body                                     | og_group_ref    |
       | Dummy News | This is some dummy content like foo:bar. | Le Foie Heureux |
     Then I should have a "News" page titled "Dummy News"

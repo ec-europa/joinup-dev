@@ -13,6 +13,6 @@ Feature: Document API
       | closed            | yes                  |
       | elibrary creation | facilitators         |
     And document content:
-      | title    | field_document_short_title | body               | collection              |
+      | title    | field_document_short_title | body               | og_group_ref            |
       | JD title | Short                      | Dummy description. | http://joinup.eu/jd/jde |
     Then I should have a "Document" page titled "JD title"
