@@ -39,10 +39,11 @@ Feature: "Add solution" visibility options.
     When I fill in "Title" with "Collection solution add solution"
     And I attach the file "text.pdf" to "Documentation"
     And I enter "This is a test text" in the Description text editor
-    And I press "Add existing rdf entity"
+    # Click the button to select an existing contact information.
+    And I press "Add existing"
     And I wait for AJAX to finish
-    And I fill in "Rdf Entity" with "Contact information example"
-    And I press "Add rdf entity"
+    And I fill in "Contact Information" with "Contact information example"
+    And I press "Add Contact information"
     And I wait for AJAX to finish
     And I press "Save"
     # The name of the solution should exist in the block of the relative content in a collection.
