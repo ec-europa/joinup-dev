@@ -5,7 +5,9 @@
  * Contains hooks regarding the solution rdf entity bundle.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -14,4 +16,39 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'solution' && !empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueSolutionTitle', []);
   }
+}
+
+/**
+ * Implements hook_entity_insert().
+ *
+ * The solution is connected to the collection with the affiliation field in the
+ * collection entity. The process of linking a solution to a collection is:
+ *  - Request an affiliation. This request is registered by adding the
+ *    collection to the affiliation_request field of the solution.
+ *  - Accept the affiliation. The collection is removed from the affiliation
+ *    request of the solution and the solution is added to the affiliates field
+ *    of the collection.
+ * If we want to create a solution and initialize it with a collection affiliate
+ * we simply need to pass the affiliate_request to the new entity before it is
+ * saved. The hook below will take care of automatically linking it.
+ */
+function solution_entity_insert(EntityInterface $entity) {
+  /** @var Rdf $entity */
+  if ($entity->getEntityTypeId() != 'rdf_entity' || $entity->bundle() != 'solution' || empty($entity->field_is_affiliations_requests->first())) {
+    return;
+  }
+  $affiliate = $entity->field_is_affiliations_requests->first()->target_id;
+  if (empty($affiliate)) {
+    return;
+  }
+
+  $collection = Rdf::load($affiliate);
+  if (empty($collection) || $collection->bundle() != 'collection') {
+    return;
+  }
+  /** @var \Drupal\rdf_entity\RdfInterface $collection */
+  $collection->set('field_ar_affiliates', $entity->id());
+  $collection->save();
+
+  $entity->set('field_is_affiliations_requests', NULL);
 }

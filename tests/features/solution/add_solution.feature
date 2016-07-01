@@ -9,7 +9,7 @@ Feature: "Add solution" visibility options.
       | title | Collection solution test |
       | logo  | logo.png                 |
 
-    When I am logged in as a "moderator"
+    When I am logged in as a "facilitator" of the "Collection solution test" collection
     And I go to the homepage of the "Collection solution test" collection
     Then I should see the link "Add solution"
 
@@ -25,7 +25,7 @@ Feature: "Add solution" visibility options.
     Given the following collection:
       | title | Collection solution test 2 |
       | logo  | logo.png                   |
-    And I am logged in as a moderator
+    And I am logged in as a facilitator of the "Collection solution test 2" collection
 
     When I go to the homepage of the "Collection solution test 2" collection
     And I click "Add solution"

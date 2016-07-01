@@ -2,11 +2,10 @@
 
 namespace Drupal\solution\Controller;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\OgAccess;
-use Drupal\og\OgAccessInterface;
+use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class SolutionController.
@@ -17,32 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @package Drupal\solution\Controller
  */
 class SolutionController extends ControllerBase {
-
-  /**
-   * The OG access handler.
-   *
-   * @var \Drupal\og\OgAccessInterface
-   */
-  protected $ogAccess;
-
-  /**
-   * Constructs a SolutionController.
-   *
-   * @param \Drupal\og\OgAccessInterface $og_access
-   *   The OG access handler.
-   */
-  public function __construct(OgAccessInterface $og_access) {
-    $this->ogAccess = $og_access;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('og.access')
-    );
-  }
 
   /**
    * Controller for the base form.
@@ -75,7 +48,12 @@ class SolutionController extends ControllerBase {
    *   The access result object.
    */
   public function createSolutionAccess(RdfInterface $rdf_entity) {
-    return $this->ogAccess->userAccessEntity('create', $this->createNewSolution($rdf_entity), $this->currentUser());
+    $user = \Drupal::currentUser();
+    if (empty($rdf_entity) && !$user->isAnonymous()) {
+      return AccessResult::neutral();
+    }
+    $membership = Og::getMembership($user, $rdf_entity);
+    return (!empty($membership) && $membership->hasPermission('create solution rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
   /**
