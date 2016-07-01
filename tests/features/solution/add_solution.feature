@@ -48,7 +48,7 @@ Feature: "Add solution" visibility options.
     And I should see the link "Collection solution test 2"
     And I should see the link "Environment (WIP!)"
     And I should see the link "Belgium"
-    And I should see the link "man-made disaster"
+    And I should see the link "Health"
     And I should see the link "Flemish"
     When I click "Collection solution test 2"
     Then I should see the heading "Collection solution test 2"
