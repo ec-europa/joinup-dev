@@ -5,9 +5,7 @@ namespace Drupal\asset_distribution\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\Og;
-use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AssetDistributionController.
@@ -18,32 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @package Drupal\asset_distribution\Controller
  */
 class AssetDistributionController extends ControllerBase {
-
-  /**
-   * The OG access handler.
-   *
-   * @var \Drupal\og\OgAccessInterface
-   */
-  protected $ogAccess;
-
-  /**
-   * Constructs a CustomPageController.
-   *
-   * @param \Drupal\og\OgAccessInterface $og_access
-   *   The OG access handler.
-   */
-  public function __construct(OgAccessInterface $og_access) {
-    $this->ogAccess = $og_access;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('og.access')
-    );
-  }
 
   /**
    * Controller for the base form.
