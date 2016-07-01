@@ -11,6 +11,8 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\file\Entity\File;
 use Drupal\search_api\Entity\Server;
 use Drupal\joinup\Traits\NodeTrait;
+use Drupal\joinup\Traits\OgTrait;
+use Drupal\joinup\Traits\RdfEntityTrait;
 
 /**
  * Behat step definitions for testing users.
@@ -18,6 +20,8 @@ use Drupal\joinup\Traits\NodeTrait;
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use NodeTrait;
+  use OgTrait;
+  use RdfEntityTrait;
 
   /**
    * Test files.
@@ -65,6 +69,35 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     $user = (object) $values;
     $this->userCreate($user);
+  }
+
+  /**
+   * Creates and authenticates a user with the given og role(s).
+   *
+   * @Given I am logged in as a user with the :role role(s) of the :rdf_entity :rdf_entity_bundle
+   * @Given I am logged in as a/an :role of the :rdf_entity :rdf_entity_bundle
+   */
+  public function assertAuthenticatedByOgRole($role, $rdf_entity, $rdf_entity_bunlde) {
+    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bunlde);
+    $roles = explode(',', $role);
+    $roles = array_map('trim', $roles);
+    $roles = $this->convertOgRoleNamesToIds($roles, $entity);
+
+    // Check if a user with this role is already logged in.
+    if (!$this->loggedInWithOgRole($roles, $entity)) {
+      $random = $this->getRandom()->name(8);
+      // Create user (and project)
+      $user = (object) array(
+        'name' => $random,
+        'pass' => $random,
+      );
+      $user->mail = "{$user->name}@example.com";
+      $this->userCreate($user);
+      $this->subscribeUserToGroup($user, $entity, $roles);
+
+      // Login.
+      $this->login();
+    }
   }
 
   /**

@@ -3,7 +3,6 @@
 namespace Drupal\joinup\Traits;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
@@ -34,8 +33,8 @@ trait OgTrait {
     if (!$this->loggedIn() || !$this->user) {
       return FALSE;
     }
-
-    $membership = Og::getMembership($this->user, $entity);
+    $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($this->user->uid);
+    $membership = Og::getMembership($user, $entity);
     if (empty($membership)) {
       return FALSE;
     }
@@ -49,7 +48,7 @@ trait OgTrait {
   /**
    * Creates an Og membership to a group optionally assigning roles as well.
    *
-   * @param AccountInterface $user
+   * @param object $user
    *    The user to be assigned as an Og member.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The organic group entity.
@@ -61,10 +60,7 @@ trait OgTrait {
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $entity, $roles = []) {
-    if ($user->isAnonymous()) {
-      throw new \Exception("Memberships cannot be created for anonymous users.");
-    }
+  protected function subscribeUserToGroup($user, EntityInterface $entity, $roles = []) {
     if (!Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
       throw new \Exception("The {$entity->label()} is not a group.");
     }
@@ -72,7 +68,7 @@ trait OgTrait {
     /** @var \Drupal\og\OgMembershipInterface $membership */
     $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
     $membership
-      ->setUser($user->id())
+      ->setUser($user->uid)
       ->setEntityId($entity->id())
       ->setGroupEntityType($entity->getEntityTypeId())
       ->setFieldName($membership->getFieldName());
@@ -99,7 +95,7 @@ trait OgTrait {
   protected function convertOgRoleNamesToIds(array $roles, EntityInterface $entity) {
     $role_prefix = $entity->getEntityTypeId() . '-' . $entity->bundle() . '-';
     foreach ($roles as $key => $role) {
-      $roles[$key] = $role_prefix . $roles;
+      $roles[$key] = $role_prefix . $role;
     }
 
     return $roles;
