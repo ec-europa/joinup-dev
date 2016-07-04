@@ -41,8 +41,9 @@ drupal.demo.users = administrator, moderator
 # Paths to executables.
 composer.bin = ${project.basedir}/vendor/bin/composer
 drush.bin = ${project.basedir}/vendor/bin/drush
-phing.bin = ${project.basedir}/vendor/bin/phing
 isql.bin = /usr/bin/isql-vt
+phing.bin = ${project.basedir}/vendor/bin/phing
+solr.bin = ${solr.dir}/bin/solr
 
 # Files and directories inside the Drupal installation.
 documentroot.path = web
@@ -63,6 +64,9 @@ website.themes.dir = ${website.drupal.dir}/themes
 
 # Composer related paths.
 composer.json = ${project.basedir}/composer.json
+
+# Temporary files.
+tmp.dir = ${project.basedir}/tmp
 
 
 # Behat configuration
@@ -140,6 +144,32 @@ phpcs.prepush.enable = 0
 # The source and destination paths of the git pre-push hook.
 phpcs.prepush.source = ${project.basedir}/vendor/pfrenssen/phpcs-pre-push/pre-push
 phpcs.prepush.destination = ${project.basedir}/.git/hooks/pre-push
+
+
+# Apache Solr configuration
+# -------------------------
+
+# Apache Solr version to use.
+solr.version = 6.1.0
+
+# Filename of the download.
+solr.tarball.filename = solr-${solr.version}.tgz
+
+# Download URL.
+solr.download.url = http://www-eu.apache.org/dist/lucene/solr/${solr.version}/${solr.tarball.filename}
+
+# Installation path.
+solr.vendor.dir = ${project.basedir}/vendor/apache
+solr.dir = ${solr.vendor.dir}/solr-${solr.version}
+
+# Search API configuration path.
+solr.config.dir = ${website.modules.dir}/contrib/search_api_solr/solr-conf/6.x
+
+# The name of our Solr core.
+solr.core = drupal
+
+# The path to the data files of our Solr core.
+solr.core.dir = ${solr.dir}/server/solr/${solr.core}
 
 
 # Development options
