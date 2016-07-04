@@ -1,4 +1,4 @@
-@api @javascript
+@api
 Feature: "Custom page" deleteing.
   In order to manage custom pages
   As a moderator or collection facilitator
