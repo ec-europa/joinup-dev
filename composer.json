@@ -36,11 +36,12 @@
         "drupal/coder": "dev-8.x-2.x",
         "drupal/config_devel": "dev-8.x-1.x",
         "drupal/config_update": "dev-8.x-1.x",
-        "drupal/devel": "dev-8.x-1.x",
+        "drupal/devel": "~8.1.0-alpha1",
         "drupal/drupal-extension": "dev-support-drupal-8.1",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "dev-master#10d7c48c9a4129463052321b52450d98983c4332",
         "mikey179/vfsStream": "~1.2",
+        "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.0",
         "phpunit/phpunit": "~4.8",
         "symfony/css-selector": "~2.8.0"
