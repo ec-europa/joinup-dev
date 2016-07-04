@@ -21,6 +21,7 @@ dependencies:
   - file
   - help
   - image
+  - inline_entity_form
   - joinup_document
   - joinup_event
   - joinup_licence
@@ -40,11 +41,13 @@ dependencies:
   - rdf_export
   - rdf_taxonomy
   - solution
+  - state_machine
   - text
   - toolbar
   - search_api
   - search_api_db
   - views
+  - view_unpublished
 
 themes:
   - seven

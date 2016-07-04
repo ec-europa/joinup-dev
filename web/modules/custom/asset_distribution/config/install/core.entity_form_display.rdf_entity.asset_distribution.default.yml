@@ -97,12 +97,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-  id:
-    type: auto_uri
-    weight: 1
-    settings:
-      prefix: 'http://example.org/joinup/licence'
-    third_party_settings: {  }
   label:
     type: string_textfield
     weight: 2

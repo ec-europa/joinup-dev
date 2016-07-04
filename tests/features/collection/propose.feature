@@ -30,6 +30,7 @@ Feature: Proposing a collection
     When I am on the homepage
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
+    And the following field widgets should be present "Contact information"
     When I fill in the following:
     | Title       | Ancient and Classical Mythology                                                                      |
     | Description | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
@@ -42,6 +43,17 @@ Feature: Proposing a collection
     Then I should see the heading "Ancient and Classical Mythology"
     # The user that proposed the collection should be auto-subscribed.
     And the "Ancient and Classical Mythology" collection should have 1 member
+    # There should not be any custom pages in the menu yet, so I should see a
+    # button to create a custom page, with accompanying help text.
+    # And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
+    When I click "Add custom page"
+    Then I should see the heading "Add custom page"
+    When I fill in the following:
+      | Title | About                                       |
+      | Body  | Some more information about the collection. |
+    And I press "Save"
+    Then I should see the success message "Custom page About has been created."
+
     # Clean up the collection that was created.
     Then I delete the "Ancient and Classical Mythology" collection
 
