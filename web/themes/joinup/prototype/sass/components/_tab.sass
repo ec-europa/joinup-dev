@@ -22,6 +22,32 @@
 .tab--horizontal
   border-bottom: 1px solid $color-grey-light
 
+.tab--content-type
+  position: relative
+  +breakpoint(mobile)
+    display: inline-block
+    vertical-align: top
+    &:last-child
+      margin-right: 0
+  .tab__icon
+    color: lighten($color-grey-medium, 10%)
+    position: absolute
+    top: -12px
+    left: -18px
+    +icon-size(80px)
+  .tab__text
+    margin-bottom: 15px
+    padding-left: 60px
+  .tab__text--upper,
+  .tab__text--lower
+    text-align: left
+  .tab__text--upper
+    font-size: 32px
+    font-weight: $font-weight-bold
+
+.tabs--content-type
+  text-align: center
+
 // Dependiencies
 // --------------------------------------------------
 
@@ -31,3 +57,27 @@
   border-bottom: 1px solid #fff
   background-color: #fff
   font-weight: $font-weight-medium
+
+.tab--content-type.is-active
+  position: relative
+  border-bottom: 2px solid $color-orange
+  .tab__icon
+    color: $color-base
+  &:after
+    content: ""
+    position: absolute
+    right: 0
+    left: 0
+    margin: 0 auto
+    width: 0
+    height: 0
+    border-left: 6px solid transparent
+    border-right: 6px solid transparent
+    border-top: 6px solid $color-orange
+
+
+
+
+
+
+
