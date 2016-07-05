@@ -73,6 +73,9 @@
             "drupal/core": {
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
             },
+            "drupal/search_api": {
+                "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
+            },
             "drupal/r4032login": {
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
             }

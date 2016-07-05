@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "058bb724955b0e92df0a38642adcdf96",
-    "content-hash": "56088ae1e6bcfa1b238e381551bfba8d",
+    "hash": "fa5c357dd0ad9c9e73bd48f6aeb976c1",
+    "content-hash": "d86951df739d202b2934021171d78984",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1587,6 +1587,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
+                },
+                "patches_applied": {
+                    "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
