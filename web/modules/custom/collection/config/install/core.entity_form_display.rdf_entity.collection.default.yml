@@ -111,11 +111,15 @@ content:
   field_ar_owner:
     weight: 9
     settings:
+      form_mode: default
+      override_labels: true
+      label_singular: Owner
+      label_plural: Owners
+      allow_new: true
+      allow_existing: true
       match_operator: CONTAINS
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: inline_entity_form_complex
   field_ar_shared_content:
     weight: 17
     settings:
