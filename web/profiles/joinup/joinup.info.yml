@@ -34,6 +34,7 @@ dependencies:
   - og
   - og_menu
   - options
+  - owner
   - page_cache
   - path
   - r4032login
