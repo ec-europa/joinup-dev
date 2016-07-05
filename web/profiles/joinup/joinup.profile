@@ -134,8 +134,8 @@ function joinup_og_user_access_alter(&$permissions, &$cacheable_metadata, $conte
  *
  * Simplifies the widget buttons when only a bundle is configured.
  */
-function contact_information_field_widget_inline_entity_form_complex_form_alter(&$element, FormStateInterface $form_state, $context) {
-  if ($element['actions']['bundle']['#type'] == 'value') {
+function joinup_field_widget_inline_entity_form_complex_form_alter(&$element, FormStateInterface $form_state, $context) {
+  if (isset($element['actions']['bundle']['#type']) && $element['actions']['bundle']['#type'] == 'value') {
     $buttons = [
       'ief_add' => t('Add new'),
       'ief_add_existing' => t('Add existing'),
