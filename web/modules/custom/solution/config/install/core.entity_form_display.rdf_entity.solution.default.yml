@@ -42,7 +42,6 @@ dependencies:
     - file
     - inline_entity_form
     - link
-    - rdf_entity
     - text
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
@@ -51,7 +50,7 @@ mode: default
 content:
   field_is_contact_information:
     type: inline_entity_form_complex
-    weight: 6
+    weight: 5
     settings:
       form_mode: default
       override_labels: true
@@ -62,52 +61,64 @@ content:
       match_operator: CONTAINS
     third_party_settings: {  }
   field_is_description:
-    weight: 2
+    weight: 1
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
   field_is_documentation:
-    weight: 3
+    weight: 2
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
   field_is_elibrary_creation:
-    weight: 5
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     type: options_select
   field_is_issue_tracker:
-    weight: 10
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-  field_is_landing_page:
-    weight: 8
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-  field_is_metrics_page:
     weight: 9
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
-  field_is_moderation:
+  field_is_landing_page:
     weight: 7
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  field_is_metrics_page:
+    weight: 8
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  field_is_moderation:
+    weight: 6
     settings:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
+  field_is_owner:
+    type: inline_entity_form_complex
+    weight: 11
+    settings:
+      form_mode: default
+      override_labels: true
+      label_singular: Owner
+      label_plural: Owners
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+    third_party_settings: {  }
   field_is_related_solutions:
-    weight: 4
+    weight: 3
     settings:
       match_operator: CONTAINS
       size: 60
@@ -115,7 +126,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_is_wiki:
-    weight: 11
+    weight: 10
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -129,7 +140,7 @@ content:
     third_party_settings: {  }
   label:
     type: string_textfield
-    weight: 1
+    weight: 0
     settings:
       size: 60
       placeholder: ''
@@ -144,7 +155,6 @@ hidden:
   field_is_included_asset: true
   field_is_language: true
   field_is_modification_date: true
-  field_is_owner: true
   field_is_product_type: true
   field_is_solution_type: true
   field_is_source_code_repository: true
