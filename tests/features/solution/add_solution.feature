@@ -21,7 +21,6 @@ Feature: "Add solution" visibility options.
     And I go to the homepage of the "Collection solution test" collection
     Then I should not see the link "Add solution"
 
-  @javascript
   Scenario: Add solution as a moderator.
     Given the following collection:
       | title | Collection solution test 2 |
@@ -32,19 +31,18 @@ Feature: "Add solution" visibility options.
     And I am logged in as a moderator
 
     When I go to the homepage of the "Collection solution test 2" collection
-    And I click "Add solution" from the add content menu
+    And I click "Add solution"
     Then I should see the heading "Add Interoperability Solution"
     And the following fields should be present "Title, Description, Documentation"
     And the following fields should not be present "Groups audience, Other groups"
-    When I fill in "Title" with "Collection solution add solution"
+    When I fill in the following:
+      | Title             | Collection solution add solution |
+      | Description       | This is a test text              |
     And I attach the file "text.pdf" to "Documentation"
-    And I enter "This is a test text" in the Description text editor
     # Click the button to select an existing contact information.
     And I press "Add existing"
-    And I wait for AJAX to finish
     And I fill in "Contact Information" with "Contact information example"
     And I press "Add Contact information"
-    And I wait for AJAX to finish
     And I press "Save"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "Collection solution add solution"
