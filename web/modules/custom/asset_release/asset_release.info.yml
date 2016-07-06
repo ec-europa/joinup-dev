@@ -12,6 +12,7 @@ dependencies:
   - joinup_core
   - link
   - options
+  - owner
   - rdf_entity
   - text
 
