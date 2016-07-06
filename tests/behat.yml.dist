@@ -7,7 +7,6 @@ default:
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\DrupalExtension\Context\MinkContext
-        - Drupal\DrupalExtension\Context\WysiwygContext
       filters:
         tags: "~@wip"
   extensions:
