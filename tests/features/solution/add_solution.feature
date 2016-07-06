@@ -28,6 +28,8 @@ Feature: "Add solution" visibility options.
     And the following contact information:
       | email | foo@bar.com                 |
       | name  | Contact information example |
+    And the following organization:
+      | name | Organization example |
     And I am logged in as a moderator
 
     When I go to the homepage of the "Collection solution test 2" collection
@@ -43,6 +45,10 @@ Feature: "Add solution" visibility options.
     And I press "Add existing"
     And I fill in "Contact Information" with "Contact information example"
     And I press "Add Contact information"
+    # Click the button to select an existing owner.
+    And I press "Add existing Owner"
+    And I fill in "Owner" with "Organization example"
+    And I press "Add Owner"
     And I press "Save"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "Collection solution add solution"
