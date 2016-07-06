@@ -17,7 +17,7 @@ function owner_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $ent
     $bundles = ['person', 'organization'];
 
     if (in_array($bundle, $bundles) && !empty($fields['label'])) {
-      $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => [$bundle]]);
+      $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => [$bundles]]);
     }
   }
 }
