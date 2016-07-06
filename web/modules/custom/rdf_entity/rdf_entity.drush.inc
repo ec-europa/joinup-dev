@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Purge the triple store from the cli.

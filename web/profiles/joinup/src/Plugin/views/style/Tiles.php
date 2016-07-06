@@ -1,5 +1,7 @@
 <?php
+
 namespace Drupal\joinup\Plugin\views\style;
+
 use Drupal\views\Plugin\views\style\StylePluginBase;
 
 /**
