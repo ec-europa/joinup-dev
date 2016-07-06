@@ -34,6 +34,7 @@ Feature: "Custom page" editing.
     # A moderator can edit all custom pages.
     When I am logged in as a user with the moderator role
     And I go to the "Buena Vista Distribution Company" custom page
+    # Moderators have the 'administer nodes' permission.
     Then I should see the link "Edit"
     # A normal logged in user should not be able to edit the custom page.
     When I am logged in as a user with the authenticated role
