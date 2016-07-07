@@ -7,6 +7,7 @@ third_party_settings:
       target_id: 'http://purl.org/dc/terms/LicenseDocument'
     mapping_label:
       value: 'http://purl.org/dc/terms/title'
+    graph_default: 'http://joinup.eu/licence/published'
 name: Licence
 rid: licence
 description: ''

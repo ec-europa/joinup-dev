@@ -94,11 +94,31 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
   }
   $base_fields = \Drupal::entityManager()->getBaseFieldDefinitions($entity_name);
   $idKey = $storage->getEntityType()->getKey('id');
+
+  $form['rdf_graph'] = array(
+    '#type' => 'details',
+    '#title' => t('Rdf graphs'),
+    '#description' => t('Graph URI mapping'),
+    '#weight' => 99,
+    '#open' => TRUE,
+  );
+  foreach ($storage->getGraphsDefinition() as $definedGraphName => $definedGraph) {
+    $default_value = $entity->getThirdPartySetting('rdf_entity', 'graph_' . $definedGraphName, FALSE);
+    $form['rdf_graph']['graph_' . $definedGraphName] = array(
+      '#type' => 'url',
+      '#title' => $definedGraph['title'],
+      '#description' => $definedGraph['description'],
+      '#default_value' => $default_value,
+      '#required' => TRUE,
+
+    );
+  }
   $form['rdf_mapping'] = array(
     '#type' => 'details',
     '#title' => t('Rdf field mapping'),
     '#description' => t('This field uses a Sparql backend. Please map the fields to their corresponding rdf properties.'),
     '#weight' => 99,
+    '#open' => TRUE,
   );
 
   /** @var \Drupal\Core\Field\BaseFieldDefinition $base_field */
@@ -116,7 +136,7 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
         $title .= ' (' . $column_name . ')';
       }
       $form['rdf_mapping']['mapping_' . $id . '_' . $column_name] = array(
-        '#type' => 'textfield',
+        '#type' => 'url',
         '#title' => $title,
         '#description' => $base_field->getDescription(),
         '#weight' => 150,
@@ -147,6 +167,10 @@ function rdf_entity_bundle_config($entity_type, ConfigEntityInterface $entity, a
       $settings[$column_name] = $form_state->getValue('mapping_' . $id . '_' . $column_name);
     }
     $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $id, $settings);
+  }
+  foreach ($storage->getGraphsDefinition() as $definedGraphName => $definedGraph) {
+    $graph_uri = $form_state->getValue('graph_' . $definedGraphName);
+    $entity->setThirdPartySetting('rdf_entity', 'graph_' . $definedGraphName, $graph_uri);
   }
 }
 

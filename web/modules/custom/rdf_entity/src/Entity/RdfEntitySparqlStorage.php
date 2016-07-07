@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Defines a entity storage backend that uses a Sparql endpoint.
  */
 class RdfEntitySparqlStorage extends ContentEntityStorageBase {
+  // @Todo Create a proper interface that this class implements...
   /**
    * Sparql database connection.
    *
@@ -45,6 +46,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
   protected $bundlePredicate = ['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'];
 
+  protected $activeGraph = 'default';
+
   /**
    * Initialize the storage backend.
    */
@@ -61,6 +64,59 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   public function bundlePredicate() {
     return $this->bundlePredicate;
+  }
+
+  function getGraphsDefinition() {
+    $graphs_definition = [];
+    $graphs_definition['default'] = [
+      'title' => $this->t('Default'),
+      'description' => $this->t('The default graph used to store entities of this type.'),
+    ];
+    // @todo Alter().
+    return $graphs_definition;
+  }
+
+  public function setActiveGraphType(string $graph_type) {
+    $definitions = $this->getGraphsDefinition();
+    if (!isset($definitions[$graph_type])) {
+      throw new \Exception('Unknown graph type ' . $graph_type);
+    }
+    $this->activeGraph = $graph_type;
+  }
+
+  public function getActiveGraphType() {
+    return $this->activeGraph;
+  }
+
+  protected function getActiveGraph($bundle) {
+    $bundle = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->load($bundle);
+    $graph = $bundle->getThirdPartySetting('rdf_entity', 'graph_' . $this->getActiveGraphType(), FALSE);
+    if (!$graph) {
+      throw new \Exception(format_string('Unable to determine graph %graph for bundle %bundle', [
+          '%graph' => $this->getActiveGraphType(),
+          '%bundle'
+        ]). $bundle->id());
+    }
+    return $graph;
+  }
+
+  public function getGraphs($graph_type = NULL) {
+    if (!$graph_type) {
+      $graph_type = $this->getActiveGraphType();
+    }
+    $bundles = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->loadMultiple();
+    $graphs = [];
+    foreach ($bundles as $bundle) {
+      $graph = $bundle->getThirdPartySetting('rdf_entity', 'graph_' . $graph_type, FALSE);
+      if (!$graph) {
+        throw new \Exception(format_string('Unable to determine graph %graph for bundle %bundle', [
+            '%graph' => $this->getActiveGraphType(),
+            '%bundle'
+          ]). $bundle->id());
+      }
+      $graphs[$graph][] = $bundle->id();
+    }
+    return $graphs;
   }
 
   /**
@@ -84,6 +140,10 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   public function create(array $values = array()) {
     if (!isset($values[$this->idKey])) {
       $values[$this->idKey] = $this->generateId();
+    }
+    // Set the graph so it can be saved correctly later.
+    if (!isset($values['graph'])) {
+      $values['graph'] = $this->getActiveGraph($values[$this->bundleKey]);
     }
     return parent::create($values);
   }
@@ -145,16 +205,24 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       return [];
     }
     $ids_string = "<" . implode(">, <", $ids) . ">";
+    $graphs = $this->getGraphs();
+    $named_graph = '';
+    foreach (array_keys($graphs) as $graph) {
+      $named_graph .= 'FROM NAMED <' . $graph . '>' . "\n";
+    }
 
     // @todo Get rid of the language filter. It's here because of eurovoc:
     // \Drupal\taxonomy\Form\OverviewTerms::buildForm loads full entities
     // of the whole tree: 7000+ terms in 24 languages is just too much.
     $query = <<<QUERY
-SELECT ?entity_id ?predicate ?field_value
+SELECT ?graph ?entity_id ?predicate ?field_value
+$named_graph
 WHERE{
-  ?entity_id ?predicate ?field_value
-  FILTER (?entity_id IN ( $ids_string ) )
-  FILTER(!isLiteral(?field_value) || (lang(?field_value) = "" || langMatches(lang(?field_value), "EN")))
+  GRAPH ?graph {
+    ?entity_id ?predicate ?field_value
+    FILTER (?entity_id IN ( $ids_string ) )
+    FILTER(!isLiteral(?field_value) || (lang(?field_value) = "" || langMatches(lang(?field_value), "EN")))
+  }
 }
 QUERY;
     /** @var \EasyRdf_Sparql_Result $entity_values */
@@ -165,6 +233,8 @@ QUERY;
     $res = [];
     foreach ($entity_values as $result) {
       $entity_id = (string) $result->entity_id;
+      $entity_graph =  (string) $result->graph;
+
 
       $lang = LanguageInterface::LANGCODE_DEFAULT;
       if ($result->field_value instanceof \EasyRdf_Literal) {
@@ -197,6 +267,7 @@ QUERY;
       // Map bundle and entity id.
       $values[$entity_id][$this->bundleKey][LanguageInterface::LANGCODE_DEFAULT] = $bundle->id();
       $values[$entity_id][$this->idKey][LanguageInterface::LANGCODE_DEFAULT] = $entity_id;
+      $values[$entity_id]['graph'] = $entity_graph;
 
       $rdf_type = NULL;
       foreach ($entity_values as $predicate => $field) {
@@ -526,6 +597,7 @@ QUERY;
     // storage's current entity type is used.
     $query = \Drupal::service($this->getQueryServiceName())
       ->get($this->entityType, $conjunction);
+    $query->setGraphType();
     return $query;
   }
 
@@ -582,6 +654,7 @@ QUERY;
    * {@inheritdoc}
    */
   protected function doSave($id, EntityInterface $entity) {
+    $graph = $entity->graph;
     $insert = '';
     $properties = $this->getMappedProperties($entity);
     $subj = '<' . (string) $id . '>';
@@ -613,12 +686,12 @@ QUERY;
 
     $query = <<<QUERY
 DELETE {
-  GRAPH ?g {
+  GRAPH <$graph> {
     <$id> ?field ?value
   }
 }
 WHERE {
-  GRAPH ?g {
+  GRAPH <$graph> { 
     <$id> ?field ?value .
     FILTER (?field IN ($properties_list))
   }
@@ -631,7 +704,7 @@ QUERY;
     // @todo Do in one transaction... If possible.
     // @todo How to deal with graphs? Now we use the default,
     // ... This needs some thought and most probably some discussion.
-    $query = "INSERT DATA INTO <http://localhost:8890/DAV> {\n" .
+    $query = "INSERT DATA INTO <$graph> {\n" .
       $insert . "\n" .
       '}';
     $this->sparql->query($query);

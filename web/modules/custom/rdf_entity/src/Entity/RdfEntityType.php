@@ -35,9 +35,7 @@ use Drupal\rdf_entity\RdfEntityTypeInterface;
  *   config_export = {
  *     "name",
  *     "rid",
- *     "description",
- *     "rdftype",
- *     "rdf_label",
+ *     "description"
  *   }
  * )
  */
