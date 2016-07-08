@@ -8,7 +8,7 @@ id: rdf_entity.contact_information.field_ci_email
 field_name: field_ci_email
 entity_type: rdf_entity
 bundle: contact_information
-label: 'Email of the contact'
+label: 'E-mail address'
 description: ''
 required: true
 translatable: false

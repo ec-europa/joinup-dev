@@ -10,7 +10,7 @@ id: rdf_entity.contact_information.field_ci_webpage
 field_name: field_ci_webpage
 entity_type: rdf_entity
 bundle: contact_information
-label: 'Webpage of the contact'
+label: 'Website URL'
 description: ''
 required: false
 translatable: false
