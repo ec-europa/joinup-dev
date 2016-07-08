@@ -4,7 +4,7 @@ Feature: Document API
   As a backend developer
   I need to be able to use the Node API to handle the "Documents" bundle
 
-  Scenario: Programmatically create a Custom Page
+  Scenario: Programmatically create a document
     Given the following collection:
       | title             | Joinup document name                     |
       | owner             | Joinup Derp                              |
