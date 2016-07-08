@@ -29,7 +29,7 @@ Feature: June 2016 demo
       | Avengers     | Wolverine | member                             |
 
     And news content:
-      | title                       | field_news_kicker                         | body                                                                                                                                |
+      | title                       | kicker                                    | body                                                                                                                                |
       | Phil Coulson is down        | Phil Coulson fell by the hands of Loki.   | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                |
       | Phoenix is down             | Wolverine took down Jean Gray.            | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. |
       | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.     | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                |
