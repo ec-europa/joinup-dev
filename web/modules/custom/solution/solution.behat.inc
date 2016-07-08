@@ -324,7 +324,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'distribution' => 'field_is_distribution',
       'documentation' => 'field_is_documentation',
       'elibrary creation' => 'field_is_elibrary_creation',
-      'issue tracker' => 'field_is_issue_tracker',
       'keywords' => 'field_keywords',
       'landing page' => 'field_is_landing_page',
       'language' => 'field_is_language',

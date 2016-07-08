@@ -10,7 +10,6 @@ Feature: Event API
       | owner             | Event Owner      |
       | logo              | logo.png         |
       | moderation        | yes              |
-      | closed            | yes              |
       | elibrary creation | facilitators     |
     And event content:
       | title       | field_event_short_title | body                                     | collection       | field_start_date    |

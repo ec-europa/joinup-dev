@@ -178,7 +178,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'abstract' => 'field_ar_abstract',
       'access url' => 'field_ar_access_url',
       'affiliates' => 'field_ar_affiliates',
-      'closed' => 'field_ar_closed',
       'contact information' => 'field_ar_contact_information',
       'creation date' => 'field_ar_creation_date',
       'description' => 'field_ar_description',
@@ -210,7 +209,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'field_ar_moderation' => ['no' => 0, 'yes' => 1],
       'field_ar_elibrary_creation' =>
         ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
-      'field_ar_closed' => ['no' => 0, 'yes' => 1],
     ];
 
     foreach ($fields as $field => $value) {

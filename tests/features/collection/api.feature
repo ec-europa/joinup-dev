@@ -8,7 +8,6 @@ Feature: Collection API
       | title             | Open Data Initiative |
       | logo              | logo.png             |
       | moderation        | no                   |
-      | closed            | no                   |
       | elibrary creation | facilitators         |
     Then I should have 1 collection
 

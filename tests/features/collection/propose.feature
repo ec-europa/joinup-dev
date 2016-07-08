@@ -35,7 +35,6 @@ Feature: Proposing a collection
     | Description | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
     # Todo: test adding a "Policy domain" once ISAICP-2356 is done.
     And I attach the file "logo.png" to "Logo"
-    And I check "Closed collection"
     And I select "Only members can publish new content" from "eLibrary creation"
     And I check "Moderated"
     And I press "Save"
