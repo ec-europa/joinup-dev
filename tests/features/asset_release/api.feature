@@ -4,7 +4,7 @@ Feature: Solution API
   I need to be able to use the Solution API
 
   Scenario: Programmatically create a solution
-    And the following solution:
+    Given the following solution:
       | title             | My first solution                    |
       | description       | A sample solution                    |
       | documentation     | text.pdf                             |
@@ -13,7 +13,7 @@ Feature: Solution API
       | webdav creation   | no                                   |
       | webdav url        | http://joinup.eu/solution/foo/webdav |
       | wiki              | http://example.wiki/foobar/wiki      |
-    Given the following collection:
+    And the following collection:
       | title             | Solution API foo  |
       | logo              | logo.png          |
       | moderation        | yes               |

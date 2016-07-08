@@ -74,7 +74,7 @@ class AssetReleaseController extends ControllerBase {
    *   The access result object.
    */
   public function createAssetReleaseAccess(RdfInterface $rdf_entity) {
-    $user = \Drupal::currentUser();
+    $user = $this->currentUser();
     if ($user->isAnonymous()) {
       return AccessResult::neutral();
     }

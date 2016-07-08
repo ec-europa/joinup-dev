@@ -182,42 +182,38 @@
     <!-- Create demo users. -->
     <target name="create-demo-users" description="Create demo users.">
         <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter="," />
-        <foreach list="${drupal.demo.authenticated_users}" param="drupal.demo.user" target="create-demo-authenticated_user" delimiter="," />
+        <!-- Create a user with only "authenticated user" role assigned. -->
+        <drush
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="mail" value="user@example.com"/>
+            <option name="password" value="user"/>
+            <param>user</param>
+        </drush>
     </target>
 
     <!-- Create a demo user. Subtarget of "create-demo-users". -->
     <target name="create-demo-user">
         <drush
-                command="user-create"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+            command="user-create"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
             <option name="mail" value="${drupal.demo.user}@example.com"/>
             <option name="password" value="${drupal.demo.user}"/>
             <param>${drupal.demo.user}</param>
         </drush>
         <drush
-                command="user-add-role"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+            command="user-add-role"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
             <option name="name" value="${drupal.demo.user}"/>
-            <param>${drupal.demo.user}</param>
-        </drush>
-    </target>
-
-    <!-- Create a demo authenticated user. Subtarget of "create-demo-users". -->
-    <target name="create-demo-authenticated_user">
-        <drush
-                command="user-create"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-            <option name="mail" value="${drupal.demo.user}@example.com"/>
-            <option name="password" value="${drupal.demo.user}"/>
             <param>${drupal.demo.user}</param>
         </drush>
     </target>
@@ -296,6 +292,19 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
             bin="${drush.bin}"
             verbose="${drush.verbose}">
             <param>${drupal.modules.dev}</param>
+        </drush>
+    </target>
+
+    <!-- Enable UAT modules. This is different from dev as it can contain modules not needed for development
+    like demo content modules. -->
+    <target name="enable-uat-modules">
+        <drush
+            command="pm-enable"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <param>${drupal.modules.uat}</param>
         </drush>
     </target>
     

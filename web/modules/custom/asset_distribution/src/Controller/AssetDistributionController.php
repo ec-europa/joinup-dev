@@ -2,10 +2,12 @@
 
 namespace Drupal\asset_distribution\Controller;
 
+use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AssetDistributionController.
@@ -16,6 +18,29 @@ use Drupal\rdf_entity\RdfInterface;
  * @package Drupal\asset_distribution\Controller
  */
 class AssetDistributionController extends ControllerBase {
+
+  /**
+   * Drupal\asset_distribution\AssetDistributionRelations definition.
+   *
+   * @var \Drupal\asset_distribution\AssetDistributionRelations
+   */
+  protected $assetDistributionRelations;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(AssetDistributionRelations $asset_distribution_relations) {
+    $this->assetDistributionRelations = $asset_distribution_relations;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('asset_distribution.relations')
+    );
+  }
 
   /**
    * Controller for the base form.
@@ -49,8 +74,8 @@ class AssetDistributionController extends ControllerBase {
    *   The access result object.
    */
   public function createAssetDistributionAccess(RdfInterface $rdf_entity) {
-    $solution = asset_distribution_get_release_solution($rdf_entity);
-    $user = \Drupal::currentUser();
+    $solution = $this->assetDistributionRelations->getReleaseSolution($rdf_entity);
+    $user = $this->currentUser();
     if (empty($solution) && !$user->isAnonymous()) {
       return AccessResult::neutral();
     }

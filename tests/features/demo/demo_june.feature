@@ -4,18 +4,18 @@ Feature: June 2016 demo
   I should be able to interact with the website and manage content.
 
   Scenario: Manage collection and view collection scenarios.
-    And solutions:
+    Given solutions:
       | title                     | description                                | documentation | moderation |
       | Avengers initiative       | Gather the strongest into a group.         | text.pdf      | no         |
       | Project Tahiti            | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        |
       | Hellicarrier              | Provide a flying fortress as headquarters. | text.pdf      | no         |
       | Project 'Captain America' | Bring 'Captain america' back into action.  | text.pdf      | yes        |
-    Given collections:
-      | title          | description                           | logo     | moderation | affiliates                                                                   |
-      | S.H.I.E.L.D.   | Well, they are mostly flying around.  | logo.png | yes        | Avengers initiative, Project Tahiti, Hellicarrier, Project 'Captain America' |
-      | x-Men          | Based on Proffessor Xavier's mantion. | logo.png | no         |                                                                              |
-      | Avengers       | Based on Tony stark's tower.          | logo.png | yes        |                                                                              |
-      | Fantastic four | Based on Reed Richard's tower.        | logo.png | yes        |                                                                              |
+    And collections:
+      | title          | description                          | logo     | moderation | affiliates                                                                   |
+      | S.H.I.E.L.D.   | Well, they are mostly flying around. | logo.png | yes        | Avengers initiative, Project Tahiti, Hellicarrier, Project 'Captain America' |
+      | x-Men          | Based on Professor Xavier's mansion. | logo.png | no         |                                                                              |
+      | Avengers       | Based on Tony stark's tower.         | logo.png | yes        |                                                                              |
+      | Fantastic four | Based on Reed Richard's tower.       | logo.png | yes        |                                                                              |
 
     And users:
       | name      | pass                 | mail                    | roles     |
@@ -164,7 +164,6 @@ Feature: June 2016 demo
       | Headline | New York under attack                                                                    |
       | Kicker   | S.H.I.E.L.D. to nuke New York?                                                           |
       | Content  | In a desperate attempt to stop the nuke, Nick fury shot down an airplane of S.H.I.E.L.D. |
-    And I select "Validated" from "State"
     And I press "Save"
     And I should see the heading "New York under attack"
     And I should see the text "S.H.I.E.L.D. to nuke New York?"

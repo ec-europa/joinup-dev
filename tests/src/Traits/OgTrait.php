@@ -15,7 +15,7 @@ use Drupal\og\OgMembershipInterface;
 trait OgTrait {
 
   /**
-   * User with a given og role is already logged in.
+   * Checks that with a given og role is already logged in.
    *
    * If the user has more than the required roles, he might have permissions
    * from the rest of the roles that will lead the test to a false positive.
@@ -23,18 +23,18 @@ trait OgTrait {
    *
    * @param array $roles
    *   An array of roles to check.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   A single role, or multiple comma-separated roles in a single string.
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *   The group that is checked if the user has the role.
    *
    * @return bool
    *   Returns TRUE if the current logged in user has this role (or roles).
    */
-  protected function loggedInWithOgRole($roles, EntityInterface $entity) {
+  protected function loggedInWithOgRole($roles, EntityInterface $group) {
     if (!$this->loggedIn() || !$this->user) {
       return FALSE;
     }
     $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($this->user->uid);
-    $membership = Og::getMembership($user, $entity);
+    $membership = Og::getMembership($user, $group);
     if (empty($membership)) {
       return FALSE;
     }
@@ -48,8 +48,8 @@ trait OgTrait {
   /**
    * Creates an Og membership to a group optionally assigning roles as well.
    *
-   * @param object $user
-   *    The user to be assigned as an Og member.
+   * @param int $user_id
+   *    The id of the user to be assigned as an Og member.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The organic group entity.
    * @param array $roles
@@ -60,7 +60,7 @@ trait OgTrait {
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup($user, EntityInterface $entity, $roles = []) {
+  protected function subscribeUserToGroup($user_id, EntityInterface $entity, $roles = []) {
     if (!Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
       throw new \Exception("The {$entity->label()} is not a group.");
     }
@@ -68,7 +68,7 @@ trait OgTrait {
     /** @var \Drupal\og\OgMembershipInterface $membership */
     $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
     $membership
-      ->setUser($user->uid)
+      ->setUser($user_id)
       ->setEntityId($entity->id())
       ->setGroupEntityType($entity->getEntityTypeId())
       ->setFieldName($membership->getFieldName());

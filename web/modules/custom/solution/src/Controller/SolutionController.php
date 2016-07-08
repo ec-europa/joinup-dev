@@ -48,7 +48,7 @@ class SolutionController extends ControllerBase {
    *   The access result object.
    */
   public function createSolutionAccess(RdfInterface $rdf_entity) {
-    $user = \Drupal::currentUser();
+    $user = $this->currentUser();
     if (empty($rdf_entity) && !$user->isAnonymous()) {
       return AccessResult::neutral();
     }

@@ -6,18 +6,20 @@ Feature: Add asset distribution through the UI
 
   Scenario: "Add distribution" button should only be shown to moderators.
     Given the following solution:
-      | title       | Asset random name                |
+      | title       | Solution random x name           |
       | description | Some reusable random description |
     And the following collection:
       | title      | Asset Distribution Test |
       | logo       | logo.png                |
-      | affiliates | Asset random name       |
+      | affiliates | Solution random x name  |
     And the following asset release:
       | title         | Asset release random name        |
       | description   | Some reusable random description |
-      | is version of | Asset random name                |
-    When I am logged in as a "facilitator" of the "Asset random name" solution
+      | is version of | Solution random x name           |
+    When I am logged in as a "facilitator" of the "Solution random x name" solution
     And I go to the homepage of the "Asset release random name" asset release
+    # Click the + button.
+    Then I click "Add"
     Then I should see the link "Add distribution"
 
     When I am logged in as an "authenticated user"
@@ -30,17 +32,17 @@ Feature: Add asset distribution through the UI
 
   Scenario: Add distribution as a moderator.
     Given the following solution:
-      | title       | Asset random name 2              |
+      | title       | Solution random x name 2         |
       | description | Some reusable random description |
     And the following collection:
       | title      | Asset Distribution Test 2 |
       | logo       | logo.png                  |
-      | affiliates | Asset random name 2       |
+      | affiliates | Solution random x name 2  |
     And the following asset release:
       | title         | Asset release random name 2      |
       | description   | Some reusable random description |
-      | is version of | Asset random name 2              |
-    When I am logged in as a "facilitator" of the "Asset random name 2" solution
+      | is version of | Solution random x name 2         |
+    When I am logged in as a "facilitator" of the "Solution random x name 2" solution
     When I go to the homepage of the "Asset release random name 2" asset release
     And I click "Add distribution"
     Then I should see the heading "Add Asset distribution"

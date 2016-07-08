@@ -17,16 +17,27 @@ function demo_content_install() {
 }
 
 /**
+ * Implements hook_uninstall().
+ *
+ * Deletes demo users.
+ */
+function demo_content_uninstall() {
+  foreach (demo_content_get_user_data() as $user_data) {
+    $facilitator = user_load_by_name($user_data['name']);
+    if (!empty($facilitator)) {
+      user_delete($facilitator->id());
+    }
+  }
+}
+
+/**
  * Creates demo content for the joinup project.
  */
 function demo_content_create_demo_content() {
   // Create demo users.
   foreach (demo_content_get_user_data() as $user_data) {
-    $facilitator = user_load_by_name($user_data['name']);
-    if (empty($facilitator)) {
-      $facilitator = User::create($user_data);
-      $facilitator->save();
-    }
+    $facilitator = User::create($user_data);
+    $facilitator->save();
   }
 
   $asset_path = \Drupal::moduleHandler()->getModule('demo_content')->getPath() . '/includes/images';

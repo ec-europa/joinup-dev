@@ -5,7 +5,7 @@ Feature: Asset distribution API
   I need to be able to use the Solution API
 
   Scenario: Programmatically create a distribution
-    And the following solution:
+    Given the following solution:
       | title             | Asset distribution solution          |
       | description       | Asset distribution sample solution   |
       | documentation     | text.pdf                             |
@@ -14,7 +14,7 @@ Feature: Asset distribution API
       | webdav creation   | no                                   |
       | webdav url        | http://joinup.eu/solution/foo/webdav |
       | wiki              | http://example.wiki/foobar/wiki      |
-    Given the following collection:
+    And the following collection:
       | title             | Asset distribution collection API foo |
       | logo              | logo.png                              |
       | moderation        | yes                                   |

@@ -11,6 +11,13 @@ use Drupal\og\OgMembershipInterface;
 
 /**
  * Implements hook_ENTITY_TYPE_create().
+ *
+ * We have two organic groups, the collection and the solution, and two users
+ * intended to be used as facilitators, the collection_facilitator and the
+ * solution_facilitator respectively.
+ *
+ * This function will assign the appropriate user as a facilitator to the entity
+ * passed.
  */
 function demo_content_rdf_entity_create(EntityInterface $entity) {
   if (!in_array($entity->bundle(), ['collection', 'solution'])) {

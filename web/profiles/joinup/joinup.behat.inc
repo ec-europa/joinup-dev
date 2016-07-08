@@ -74,6 +74,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Creates and authenticates a user with the given og role(s).
    *
+   * Multiple roles can be passed separated with comma.
+   *
    * @Given I am logged in as a user with the :role role(s) of the :rdf_entity :rdf_entity_bundle
    * @Given I am logged in as a/an :role of the :rdf_entity :rdf_entity_bundle
    */
@@ -93,7 +95,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       );
       $user->mail = "{$user->name}@example.com";
       $this->userCreate($user);
-      $this->subscribeUserToGroup($user, $entity, $roles);
+      $this->subscribeUserToGroup($user->uid, $entity, $roles);
 
       // Login.
       $this->login();
