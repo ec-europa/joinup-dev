@@ -54,8 +54,8 @@ content:
     settings:
       form_mode: default
       override_labels: true
-      label_singular: 'Contact information'
-      label_plural: 'Contact information'
+      label_singular: 'contact information'
+      label_plural: 'contact information'
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
