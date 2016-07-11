@@ -18,7 +18,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
-    - field.field.rdf_entity.collection.field_topic
     - image.style.thumbnail
     - rdf_entity.rdfentity.collection
   module:
@@ -122,14 +121,6 @@ content:
     type: entity_reference_autocomplete
   field_spatial_coverage:
     weight: 12
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-  field_topic:
-    weight: 11
     settings:
       match_operator: CONTAINS
       size: 60

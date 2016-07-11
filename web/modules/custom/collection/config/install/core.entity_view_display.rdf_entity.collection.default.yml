@@ -17,7 +17,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
-    - field.field.rdf_entity.collection.field_topic
     - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
@@ -136,13 +135,6 @@ content:
     type: entity_reference_label
   field_spatial_coverage:
     weight: 10
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_topic:
-    weight: 9
     label: above
     settings:
       link: true
