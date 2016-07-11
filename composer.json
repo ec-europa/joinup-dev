@@ -15,8 +15,8 @@
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x",
-        "drupal/search_api": "8.1.0-alpha15",
-        "drupal/search_api_solr": "8.1.0-alpha4",
+        "drupal/search_api": "~8.1.0-alpha15",
+        "drupal/search_api_solr": "~8.1.0-alpha5",
         "drupal/view_unpublished": "dev-8.x-1.x",
         "drush/drush": "~8.0",
         "easyrdf/easyrdf": "dev-master as 0.9.1",
@@ -29,7 +29,7 @@
         "typhonius/behattask": "1.0",
         "drupal/state_machine": "~8.1.0-beta2",
         "drupal/ds": "^8.2",
-        "solarium/solarium": "~3.5.1"
+        "solarium/solarium": "~3.6.0"
     },
     "require-dev": {
         "behat/mink": "~1.6",

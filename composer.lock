@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ffb085d3dbe9c15366e880115720351e",
-    "content-hash": "8801d269c5c10a1a94bc951562f770f8",
+    "hash": "86e8bffc0dd8c4125398b193f0b66796",
+    "content-hash": "d6f647629ff8aa809d350187482609f1",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1291,7 +1291,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/ds-8.x-2.5.zip",
-                "reference": null,
+                "reference": "f8c434e10066dd1d1c9906e2091500d536eef164",
                 "shasum": null
             },
             "require": {
@@ -1352,7 +1352,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha3.zip",
-                "reference": null,
+                "reference": "ae38a8e49082f418f9fc533bb575f931d4c2e277",
                 "shasum": null
             },
             "require": {
@@ -1540,20 +1540,21 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha15",
+            "version": "8.1.0-alpha16",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "f8f3ce33a9f608aa830688767fd5ffbd108eb889"
+                "reference": "895b50787d54cd3f6bc3f8d4833cec809a8d021d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha15.zip",
-                "reference": "f8f3ce33a9f608aa830688767fd5ffbd108eb889",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha16.zip",
+                "reference": null,
                 "shasum": null
             },
             "require": {
-                "drupal/core": "8.*"
+                "drupal/core": "8.*",
+                "drupal/system": ">=8.1.0"
             },
             "replace": {
                 "drupal/search_api_db": "self.version",
@@ -1591,26 +1592,32 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-05-20 10:43:24"
+            "time": "2016-07-05 14:54:42"
         },
         {
             "name": "drupal/search_api_solr",
-            "version": "8.1.0-alpha4",
+            "version": "8.1.0-alpha5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "6cde24a4d4f4949d3bc849393a658e2e5b76120a"
+                "reference": "220cbdf1ddb83252777e13951f5b649c14d2a5e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha4.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha5.zip",
                 "reference": null,
                 "shasum": null
             },
             "require": {
                 "drupal/core": "8.*",
                 "drupal/search_api": "8.*",
-                "solarium/solarium": "~3.5.1"
+                "solarium/solarium": "3.6.*"
+            },
+            "replace": {
+                "drupal/search_api_solr_defaults": "self.version"
+            },
+            "suggest": {
+                "drupal/core": "Required by drupal/search_api_solr_defaults"
             },
             "type": "drupal-module",
             "extra": {
@@ -1624,7 +1631,7 @@
             ],
             "description": "Offers an implementation of the Search API that uses an Apache Solr server for indexing content.",
             "homepage": "https://www.drupal.org/project/search_api_solr",
-            "time": "2016-05-21 17:56:05"
+            "time": "2016-07-07 17:49:37"
         },
         {
             "name": "drupal/state_machine",
@@ -2562,7 +2569,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -3472,25 +3479,25 @@
         },
         {
             "name": "solarium/solarium",
-            "version": "3.5.1",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/solariumphp/solarium.git",
-                "reference": "96f441f53c4de10f1154b386c925f51b08bf2fa6"
+                "reference": "b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/96f441f53c4de10f1154b386c925f51b08bf2fa6",
-                "reference": "96f441f53c4de10f1154b386c925f51b08bf2fa6",
+                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5",
+                "reference": "b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "symfony/event-dispatcher": "~2.3"
+                "symfony/event-dispatcher": "~2.3|~3.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~3.7",
-                "satooshi/php-coveralls": "~0.6",
+                "satooshi/php-coveralls": "~1.0",
                 "squizlabs/php_codesniffer": "~1.4",
                 "zendframework/zendframework1": "~1.12"
             },
@@ -3522,7 +3529,7 @@
                 "search",
                 "solr"
             ],
-            "time": "2015-12-19 16:00:15"
+            "time": "2016-05-03 07:08:49"
         },
         {
             "name": "stack/builder",
@@ -6029,6 +6036,9 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "time": "2016-03-01 16:28:35"
@@ -6370,7 +6380,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
+                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/10d7c48c9a4129463052321b52450d98983c4332",
                 "reference": "10d7c48c9a4129463052321b52450d98983c4332",
                 "shasum": ""
             },
