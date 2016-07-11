@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9d98718d69627fe1a040618f6ec46df5",
-    "content-hash": "c37a663f9b6c92146fdd606a326355e9",
+    "hash": "906ebd9271b73edbb711125e9a810994",
+    "content-hash": "b6f00d4f2504228302fc89ad3abf8936",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1396,6 +1396,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
+                },
+                "patches_applied": {
+                    "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
@@ -7640,6 +7643,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "composer/composer": 15,
+        "drupal/inline_entity_form": 20,
         "drupal/og": 20,
         "drupal/og_menu": 20,
         "drupal/r4032login": 20,
@@ -7647,7 +7651,6 @@
         "drupal/view_unpublished": 20,
         "easyrdf/easyrdf": 20,
         "google/material-design-lite": 20,
-        "drupal/inline_entity_form": 20,
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
