@@ -149,7 +149,7 @@ phpcs.prepush.destination = ${project.basedir}/.git/hooks/pre-push
 # Development modules to enable.
 drupal.modules.dev = config_update field_ui menu_ui views_ui
 
-# UAT modules to enable.
+# Modules to enable for doing user acceptance testing.
 drupal.modules.uat = demo_content
 
 # Verbosity of Drush commands. Set to 'yes' for verbose output.

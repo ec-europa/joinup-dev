@@ -15,7 +15,7 @@ use Drupal\og\OgMembershipInterface;
 trait OgTrait {
 
   /**
-   * Checks that with a given og role is already logged in.
+   * Checks that the logged in user has the given OG roles in the given group.
    *
    * If the user has more than the required roles, he might have permissions
    * from the rest of the roles that will lead the test to a false positive.
@@ -49,11 +49,11 @@ trait OgTrait {
    * Creates an Og membership to a group optionally assigning roles as well.
    *
    * @param int $user_id
-   *    The id of the user to be assigned as an Og member.
+   *    The ID of the user to be assigned as an Og member.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The organic group entity.
    * @param array $roles
-   *    An array of roles to be passed to the membership. The full id should be
+   *    An array of roles to be passed to the membership. The full ID should be
    *    passed.
    *
    * @throws \Exception
