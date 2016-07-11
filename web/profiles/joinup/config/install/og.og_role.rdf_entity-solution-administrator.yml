@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: rdf_entity-solution-administrator
-label: Solutin owner
+label: Solution owner
 weight: 2
 group_type: rdf_entity
 group_bundle: solution
