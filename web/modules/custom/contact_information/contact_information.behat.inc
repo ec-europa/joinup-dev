@@ -75,6 +75,18 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
   }
 
   /**
+   * Deletes an contact information entity.
+   *
+   * @param string $name
+   *   The name of the contact information to delete.
+   *
+   * @When I delete the :contact contact information
+   */
+  public function deleteContactInformation($name) {
+    $this->getRdfEntityByLabel($name, 'contact_information')->delete();
+  }
+
+  /**
    * Remove any created contact information entities.
    *
    * @AfterScenario
