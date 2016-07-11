@@ -119,7 +119,7 @@ phpcs.standard = ${project.basedir}/phpcs-ruleset.xml.dist
 phpcs.files = ${website.modules.dir};${website.profiles.dir};${website.themes.dir}
 
 # Paths to ignore, delimited by semicolons.
-phpcs.ignore = ${website.modules.dir}/contrib
+phpcs.ignore = ${website.modules.dir}/contrib;${website.themes.dir}/joinup/prototype/node_modules
 
 # The report format. For example 'full', 'summary', 'diff', 'xml', 'json'.
 phpcs.report = full
