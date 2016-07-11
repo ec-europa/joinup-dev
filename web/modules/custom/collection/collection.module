@@ -161,3 +161,13 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
     ],
   ];
 }
+
+/**
+ * Implements hook__field_widget_form_alter to attach javascript.
+ */
+function collection_field_widget_form_alter(&$element, \Drupal\Core\Form\FormStateInterface $form_state, $context) {
+  $field_name = $context['items']->getFieldDefinition()->getName();
+  if ($field_name == 'field_ar_closed') {
+    $element['#attached']['library'][] = 'collection/collection_form';
+  }
+}
