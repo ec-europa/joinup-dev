@@ -10,13 +10,16 @@
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",
         "drupal/core": "~8.1.0",
+        "drupal/ds": "^8.2",
         "drupal/facets" : "~8.1.0-alpha3",
+        "drupal/inline_entity_form": "8.1.x-dev",
         "drupal/og": "dev-ISAICP-2362-DEV",
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x",
         "drupal/search_api": "~8.1.0-alpha15",
         "drupal/search_api_solr": "dev-8.x-1.x",
+        "drupal/state_machine": "~8.1.0-beta2",
         "drupal/view_unpublished": "dev-8.x-1.x",
         "drush/drush": "~8.0",
         "easyrdf/easyrdf": "dev-master as 0.9.1",
@@ -26,10 +29,7 @@
         "phing/phing": "~2.10",
         "php": ">=5.5.9",
         "symfony/dependency-injection": "2.8.2",
-        "typhonius/behattask": "1.0",
-        "drupal/state_machine": "~8.1.0-beta2",
-        "drupal/ds": "^8.2",
-        "drupal/inline_entity_form": "8.1.x-dev"
+        "typhonius/behattask": "1.0"
     },
     "require-dev": {
         "behat/mink": "~1.6",
@@ -76,11 +76,11 @@
             "drupal/inline_entity_form": {
                 "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"
             },
-            "drupal/search_api": {
-                "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
-            },
             "drupal/r4032login": {
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
+            },
+            "drupal/search_api": {
+                "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
             }
         }
     },
