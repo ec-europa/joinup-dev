@@ -1,12 +1,12 @@
 langcode: en
 status: true
 dependencies: {  }
-id: type
-name: Type
-url_alias: type
+id: spatial_coverage
+name: 'Spatial coverage'
+url_alias: spatial_coverage
 weight: 0
 show_only_one_result: false
-field_identifier: aggregated_field
+field_identifier: tid_1
 query_type_name: null
 facet_source_id: 'search_api_views:search:page_1'
 widget: links
@@ -35,6 +35,11 @@ processor_configs:
       sort: -10
     settings:
       sort: ASC
+  translate_taxonomy:
+    processor_id: translate_taxonomy
+    weights:
+      build: 5
+    settings: {  }
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
