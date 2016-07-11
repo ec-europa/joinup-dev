@@ -29,7 +29,7 @@ trait OgTrait {
    * @return bool
    *   Returns TRUE if the current logged in user has this role (or roles).
    */
-  protected function loggedInWithOgRole($roles, EntityInterface $group) {
+  protected function loggedInWithOgRole(array $roles, EntityInterface $group) {
     if (!$this->loggedIn() || !$this->user) {
       return FALSE;
     }
@@ -60,7 +60,7 @@ trait OgTrait {
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup($user_id, EntityInterface $entity, $roles = []) {
+  protected function subscribeUserToGroup($user_id, EntityInterface $entity, array $roles = []) {
     if (!Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
       throw new \Exception("The {$entity->label()} is not a group.");
     }
