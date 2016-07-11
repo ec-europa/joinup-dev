@@ -8,11 +8,11 @@ Feature: Global search
       | Spherification | Spherification is the culinary process of shaping a liquid into spheres                                                            | http://publications.europa.eu/resource/authority/country/EUR |
       | Foam           | The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams | http://publications.europa.eu/resource/authority/country/EUR |
     And the following collection:
-      | title      | Molecular cooking collection  |
-      | logo       | logo.png                      |
-      | moderation | no                            |
-      | closed     | yes                           |
-      | affiliates | Spherification, Foam          |
+      | title      | Molecular cooking collection |
+      | logo       | logo.png                     |
+      | moderation | no                           |
+      | closed     | yes                          |
+      | affiliates | Spherification, Foam         |
     And news content:
       | title                 | body             | collection                   |
       | El Celler de Can Roca | The best in town | Molecular cooking collection |
