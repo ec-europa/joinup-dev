@@ -58,6 +58,7 @@ Feature: Collections Overview
       | Title       | Colonies in space                   |
       | Description | Some space mumbo jumbo description. |
     And I attach the file "logo.png" to "Logo"
+    And I attach the file "banner.jpg" to "Banner"
     And I press "Save"
     Then I should see the text "Colonies in space"
     # Non UATable step.

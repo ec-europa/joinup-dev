@@ -85,9 +85,9 @@ Feature: Organic Groups integration
 
   Scenario: Edit a Collection
     Given collections:
-      | title                       | logo     | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation |
-      | Überwaldean Land Eels       | logo.png | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        |
-      | Folk Dance and Song Society | logo.png | Cats are cool!                             | http://mashable.com/category/cats/     | no     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         |
+      | title                       | logo     | banner     | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation |
+      | Überwaldean Land Eels       | logo.png | banner.jpg | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        |
+      | Folk Dance and Song Society | logo.png | banner.jpg | Cats are cool!                             | http://mashable.com/category/cats/     | no     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         |
     And users:
       | name             | roles         |
       | Collection admin | administrator |

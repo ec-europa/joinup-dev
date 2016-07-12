@@ -178,6 +178,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'abstract' => 'field_ar_abstract',
       'access url' => 'field_ar_access_url',
       'affiliates' => 'field_ar_affiliates',
+      'banner' => 'field_ar_banner',
       'closed' => 'field_ar_closed',
       'contact information' => 'field_ar_contact_information',
       'creation date' => 'field_ar_creation_date',
@@ -239,9 +240,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   Thrown when a given image is not found.
    */
   protected function createCollection(array $values) {
-    // Add image.
-    if (!empty($values['field_ar_logo'])) {
-      $values['field_ar_logo'] = [$this->createFile($values['field_ar_logo'], $this->getMinkParameter('files_path'))];
+    // Add images.
+    $image_fields = ['field_ar_banner', 'field_ar_logo'];
+    foreach ($image_fields as $field_name) {
+      if (!empty($values[$field_name])) {
+        $values[$field_name] = [$this->createFile($values[$field_name], $this->getMinkParameter('files_path'))];
+      }
     }
 
     // @todo Remove this after the widget in ISAICP-2301 is build.
