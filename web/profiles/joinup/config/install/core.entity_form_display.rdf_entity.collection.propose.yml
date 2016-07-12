@@ -6,6 +6,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_abstract
     - field.field.rdf_entity.collection.field_ar_access_url
     - field.field.rdf_entity.collection.field_ar_affiliates
+    - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
     - field.field.rdf_entity.collection.field_ar_creation_date
@@ -38,7 +39,7 @@ content:
     third_party_settings: {  }
     type: text_textarea
   field_ar_access_url:
-    weight: 5
+    weight: 6
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -52,6 +53,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+  field_ar_banner:
+    type: image_image
+    weight: 5
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
   field_ar_closed:
     weight: 14
     settings:
@@ -59,7 +67,7 @@ content:
     third_party_settings: {  }
     type: boolean_checkbox
   field_ar_contact_information:
-    weight: 8
+    weight: 9
     settings:
       match_operator: CONTAINS
       size: 60
@@ -67,7 +75,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_ar_creation_date:
-    weight: 6
+    weight: 7
     settings:
       behaviour: create
     third_party_settings: {  }
@@ -98,13 +106,13 @@ content:
     third_party_settings: {  }
     type: boolean_checkbox
   field_ar_modification_date:
-    weight: 7
+    weight: 8
     settings:
       behaviour: modified
     third_party_settings: {  }
     type: datetime_create_update
   field_ar_owner:
-    weight: 9
+    weight: 10
     settings:
       match_operator: CONTAINS
       size: 60
@@ -112,7 +120,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_policy_domain:
-    weight: 10
+    weight: 11
     settings:
       match_operator: CONTAINS
       size: 60

@@ -6,6 +6,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_abstract
     - field.field.rdf_entity.collection.field_ar_access_url
     - field.field.rdf_entity.collection.field_ar_affiliates
+    - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
     - field.field.rdf_entity.collection.field_ar_creation_date
@@ -269,4 +270,5 @@ content:
             fis: false
             fis-def-at: false
             fi-def-at: false
-hidden: {  }
+hidden:
+  field_ar_banner: true
