@@ -6,6 +6,7 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -13,6 +14,7 @@ use Drupal\file\Entity\File;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\og\Og;
 use Drupal\search_api\Entity\Server;
 
 /**
@@ -101,6 +103,39 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // Login.
       $this->login();
     }
+  }
+
+  /**
+   * Checks that the logged in user has the given OG roles in the given group.
+   *
+   * If the user has more than the required roles, he might have permissions
+   * from the rest of the roles that will lead the test to a false positive.
+   * For this reason, we request check for the specific roles passed.
+   *
+   * @param array $roles
+   *   An array of roles to check.
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *   The group that is checked if the user has the role.
+   *
+   * @return bool
+   *   Returns TRUE if the current logged in user has this role (or roles).
+   *
+   * @see \Drupal\DrupalExtension\Context\RawDrupalContext::loggedInWithRole
+   */
+  protected function loggedInWithOgRole(array $roles, EntityInterface $group) {
+    if (!$this->loggedIn() || !$this->user) {
+      return FALSE;
+    }
+    $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($this->user->uid);
+    $membership = Og::getMembership($user, $group);
+    if (empty($membership)) {
+      return FALSE;
+    }
+    if ($roles == $membership->getRolesIds()) {
+      return FALSE;
+    }
+
+    return TRUE;
   }
 
   /**

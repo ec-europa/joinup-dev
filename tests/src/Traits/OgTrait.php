@@ -15,37 +15,6 @@ use Drupal\og\OgMembershipInterface;
 trait OgTrait {
 
   /**
-   * Checks that the logged in user has the given OG roles in the given group.
-   *
-   * If the user has more than the required roles, he might have permissions
-   * from the rest of the roles that will lead the test to a false positive.
-   * For this reason, we request check for the specific roles passed.
-   *
-   * @param array $roles
-   *   An array of roles to check.
-   * @param \Drupal\Core\Entity\EntityInterface $group
-   *   The group that is checked if the user has the role.
-   *
-   * @return bool
-   *   Returns TRUE if the current logged in user has this role (or roles).
-   */
-  protected function loggedInWithOgRole(array $roles, EntityInterface $group) {
-    if (!$this->loggedIn() || !$this->user) {
-      return FALSE;
-    }
-    $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($this->user->uid);
-    $membership = Og::getMembership($user, $group);
-    if (empty($membership)) {
-      return FALSE;
-    }
-    if ($roles == $membership->getRolesIds()) {
-      return FALSE;
-    }
-
-    return TRUE;
-  }
-
-  /**
    * Creates an Og membership to a group optionally assigning roles as well.
    *
    * @param int $user_id
