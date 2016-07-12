@@ -17,6 +17,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_issue_tracker
     - field.field.rdf_entity.solution.field_is_landing_page
     - field.field.rdf_entity.solution.field_is_language
+    - field.field.rdf_entity.solution.field_is_logo
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_modification_date
@@ -407,4 +408,5 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_is_logo: true
