@@ -5,6 +5,7 @@ dependencies:
     - core.entity_view_mode.rdf_entity.view_mode_tile
     - field.field.rdf_entity.solution.field_is_actor
     - field.field.rdf_entity.solution.field_is_affiliations_requests
+    - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_creation_date
@@ -409,4 +410,5 @@ content:
       link: true
     third_party_settings: {  }
 hidden:
+  field_is_banner: true
   field_is_logo: true

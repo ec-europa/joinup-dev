@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.rdf_entity.solution.field_is_actor
     - field.field.rdf_entity.solution.field_is_affiliations_requests
+    - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_creation_date
@@ -66,6 +67,21 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_is_banner:
+    weight: 37
+    label: above
+    settings:
+      image_style: banner
+      image_link: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: image
   field_is_business_process:
     weight: 32
     label: above
