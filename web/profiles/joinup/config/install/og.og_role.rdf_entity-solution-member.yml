@@ -8,4 +8,4 @@ group_type: rdf_entity
 group_bundle: solution
 group_id: null
 permissions: { }
-role_type: immutable
+role_type: required
