@@ -137,11 +137,6 @@
             "url": "git@github.com:ec-europa/og"
         },
         {
-            "_comment": "Use a fork of Behat Drupal Extension with a fix for #266.",
-            "type": "vcs",
-            "url": "https://github.com/pfrenssen/drupalextension.git"
-        },
-        {
             "type": "vcs",
             "url": "git@github.com:ec-europa/og_menu"
         },
