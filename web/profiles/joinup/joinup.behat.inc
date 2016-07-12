@@ -81,6 +81,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Given I am logged in as a user with the :role role(s) of the :rdf_entity :rdf_entity_bundle
    * @Given I am logged in as a/an :role of the :rdf_entity :rdf_entity_bundle
+   *
+   * @see \Drupal\DrupalExtension\Context\DrupalContext::assertAuthenticatedByRole()
    */
   public function assertAuthenticatedByOgRole($role, $rdf_entity, $rdf_entity_bunlde) {
     $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bunlde);
