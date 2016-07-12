@@ -15,7 +15,7 @@ use Drupal\og\OgMembershipInterface;
 trait OgTrait {
 
   /**
-   * Checks that with a given og role is already logged in.
+   * Checks that the logged in user has the given OG roles in the given group.
    *
    * If the user has more than the required roles, he might have permissions
    * from the rest of the roles that will lead the test to a false positive.
@@ -29,7 +29,7 @@ trait OgTrait {
    * @return bool
    *   Returns TRUE if the current logged in user has this role (or roles).
    */
-  protected function loggedInWithOgRole($roles, EntityInterface $group) {
+  protected function loggedInWithOgRole(array $roles, EntityInterface $group) {
     if (!$this->loggedIn() || !$this->user) {
       return FALSE;
     }
@@ -49,18 +49,18 @@ trait OgTrait {
    * Creates an Og membership to a group optionally assigning roles as well.
    *
    * @param int $user_id
-   *    The id of the user to be assigned as an Og member.
+   *    The ID of the user to be assigned as an Og member.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The organic group entity.
    * @param array $roles
-   *    An array of roles to be passed to the membership. The full id should be
+   *    An array of roles to be passed to the membership. The full ID should be
    *    passed.
    *
    * @throws \Exception
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup($user_id, EntityInterface $entity, $roles = []) {
+  protected function subscribeUserToGroup($user_id, EntityInterface $entity, array $roles = []) {
     if (!Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
       throw new \Exception("The {$entity->label()} is not a group.");
     }

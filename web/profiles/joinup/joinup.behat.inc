@@ -5,14 +5,15 @@
  * Contains \UserSubContext.
  */
 
+use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Behat\Gherkin\Node\TableNode;
+use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
-use Drupal\search_api\Entity\Server;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\search_api\Entity\Server;
 
 /**
  * Behat step definitions for testing users.
@@ -103,7 +104,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Save files and change filename into a file id.
+   * Save files and change filename into a file ID.
    */
   private function handleFileFields(&$values, $entity_type, $bundle) {
     $entity_manager = \Drupal::entityManager();
@@ -338,6 +339,84 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if ($node->isPublished()) {
       throw new \Exception("$title content should not be published but it is.");
     }
+  }
+
+  /**
+   * Replaces human readable labels and values with their real counterparts.
+   *
+   * This allows us to:
+   * - use human readable labels like 'short title' and 'collection' in test
+   *   scenarios, and map them to the actual field names like
+   *   'field_document_short_title' and 'og_group_ref'.
+   * - use human readable values such as a collection name instead of the URL
+   *   that is actually used in the OG reference field.
+   *
+   * @param \Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope $scope
+   *   An object containing the entity properties and fields that are to be used
+   *   for creating the node as properties on the object.
+   *
+   * @BeforeNodeCreate
+   */
+  public function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+    $node = $scope->getEntity();
+
+    // Replace field label aliases with the actual field names.
+    foreach (get_object_vars($node) as $alias => $value) {
+      $name = $this->getNodeFieldNameFromAlias($node->type, $alias);
+      if ($name !== $alias) {
+        unset($node->alias);
+        $node->$name = $value;
+      }
+    }
+
+    // Replace collection and solution group references that use titles with the
+    // actual URI. Note that this fails if a URI is supplied for a collection or
+    // solution in a Behat test. This is by design, the URIs are not exposed to
+    // end users of the site so they should not be used in BDD scenarios.
+    if (!empty($node->og_group_ref)) {
+      $entity = $this->getRdfEntityByLabel($node->og_group_ref);
+      $node->og_group_ref = $entity->id();
+    }
+  }
+
+  /**
+   * Returns the actual field name for a given node field alias.
+   *
+   * @param string $type
+   *   The node type for which to return the field name.
+   * @param string $alias
+   *   The human readable node field alias.
+   *
+   * @return string
+   *   The actual field name, or the original string if the alias is not known.
+   */
+  protected function getNodeFieldNameFromAlias($type, $alias) {
+    $aliases = [
+      'document' => [
+        'short title' => 'field_document_short_title',
+      ],
+      'event' => [
+        'short title' => 'field_event_short_title',
+        'start date' => 'field_start_date',
+      ],
+      'news' => [
+        'kicker' => 'field_news_kicker',
+        'state' => 'field_news_state',
+      ],
+      'shared' => [
+        'collection' => 'og_group_ref',
+        'solution' => 'og_group_ref',
+      ],
+    ];
+
+    // Check both the node type specific aliases as well as the shared aliases.
+    foreach ([$type, 'shared'] as $key) {
+      if (!empty($aliases[$key][$alias])) {
+        return $aliases[$key][$alias];
+      }
+    }
+
+    return $alias;
   }
 
 }

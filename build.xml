@@ -295,8 +295,9 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
         </drush>
     </target>
 
-    <!-- Enable UAT modules. This is different from dev as it can contain modules not needed for development
-    like demo content modules. -->
+    <!-- Enable modules for user acceptance testing. These are different from the
+      ones in enable-dev-modules as it can contain modules not needed for development
+      like demo content modules. -->
     <target name="enable-uat-modules">
         <drush
             command="pm-enable"
