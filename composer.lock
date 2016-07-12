@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cc38222bee0024b14aea1c3564a37a85",
-    "content-hash": "00c94767a57f417ad68a6e24a64132e5",
+    "hash": "a827183cb3db37e3e420ec324beabf7a",
+    "content-hash": "f8bf818e2ce067d82a11d3797dc18f44",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1291,7 +1291,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/ds-8.x-2.5.zip",
-                "reference": "f8c434e10066dd1d1c9906e2091500d536eef164",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -1343,17 +1343,11 @@
         },
         {
             "name": "drupal/facets",
-            "version": "8.1.0-alpha3",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/facets.git",
-                "reference": "ae38a8e49082f418f9fc533bb575f931d4c2e277"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha3.zip",
-                "reference": null,
-                "shasum": null
+                "reference": "11d6f5e89b2688d047c3a1fe46d99ae42daf82b0"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -1383,7 +1377,7 @@
             ],
             "description": "Faceted search interfaces that can be used on Search API searchers.",
             "homepage": "https://www.drupal.org/project/facets",
-            "time": "2016-05-21 17:51:25"
+            "time": "2016-07-11 15:32:59"
         },
         {
             "name": "drupal/layout_plugin",
@@ -2624,7 +2618,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -6036,9 +6030,6 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "time": "2016-03-01 16:28:35"
@@ -6145,27 +6136,25 @@
         },
         {
             "name": "drupal/drupal-extension",
-            "version": "dev-support-drupal-8.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/drupalextension.git",
-                "reference": "156e36891687dd5775e9a1d8bcbd4eb27df08649"
+                "reference": "f153fc102a042adc9b04271db80f9f60af1894d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/drupalextension/zipball/156e36891687dd5775e9a1d8bcbd4eb27df08649",
-                "reference": "156e36891687dd5775e9a1d8bcbd4eb27df08649",
+                "url": "https://api.github.com/repos/pfrenssen/drupalextension/zipball/f153fc102a042adc9b04271db80f9f60af1894d7",
+                "reference": "f153fc102a042adc9b04271db80f9f60af1894d7",
                 "shasum": ""
             },
             "require": {
-                "behat/behat": "~3.1.0-rc2",
+                "behat/behat": "~3.1.0-rc1",
                 "behat/mink": "~1.5",
                 "behat/mink-extension": "~2.0",
                 "behat/mink-goutte-driver": "~1.0",
                 "behat/mink-selenium2-driver": "~1.1",
-                "drupal/drupal-driver": "dev-master",
-                "symfony/dependency-injection": "~2.7",
-                "symfony/event-dispatcher": "~2.7"
+                "drupal/drupal-driver": "dev-master"
             },
             "require-dev": {
                 "behat/mink-zombie-driver": "^1.2",
@@ -6202,9 +6191,9 @@
                 "web"
             ],
             "support": {
-                "source": "https://github.com/pfrenssen/drupalextension/tree/support-drupal-8.1"
+                "source": "https://github.com/pfrenssen/drupalextension/tree/master"
             },
-            "time": "2016-04-08 14:45:33"
+            "time": "2016-01-23 17:41:44"
         },
         {
             "name": "fabpot/goutte",
@@ -6372,20 +6361,20 @@
         },
         {
             "name": "jcalderonzumba/mink-phantomjs-driver",
-            "version": "dev-master",
+            "version": "v0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jcalderonzumba/MinkPhantomJSDriver.git",
-                "reference": "f6867c5e5ad1727936b5e70075d92c2ec060e1a1"
+                "reference": "782892dbea4af7d04024374672b3790b6c008def"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
-                "reference": "f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
+                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/782892dbea4af7d04024374672b3790b6c008def",
+                "reference": "782892dbea4af7d04024374672b3790b6c008def",
                 "shasum": ""
             },
             "require": {
-                "behat/mink": "~1.7",
+                "behat/mink": "~1.6",
                 "jcalderonzumba/gastonjs": "~1.0",
                 "php": ">=5.4",
                 "twig/twig": "~1.20|~2.0"
@@ -6429,7 +6418,7 @@
                 "phantomjs",
                 "testing"
             ],
-            "time": "2016-03-04 20:15:21"
+            "time": "2015-12-04 13:55:02"
         },
         {
             "name": "mikey179/vfsStream",
@@ -7634,6 +7623,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "composer/composer": 15,
+        "drupal/facets": 20,
         "drupal/og": 20,
         "drupal/og_menu": 20,
         "drupal/r4032login": 20,
@@ -7644,9 +7634,7 @@
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
         "drupal/devel": 20,
-        "drupal/drupal-extension": 20,
-        "jcalderonzumba/gastonjs": 20,
-        "jcalderonzumba/mink-phantomjs-driver": 20
+        "jcalderonzumba/gastonjs": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
