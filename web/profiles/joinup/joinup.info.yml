@@ -45,8 +45,8 @@ dependencies:
   - state_machine
   - text
   - toolbar
-  - views
   - view_unpublished
+  - views
 
 themes:
   - seven
@@ -83,13 +83,13 @@ config_devel:
   - block.block.status
   - block.block.type
   - core.date_format.fallback
-  - core.date_format.html_datetime
   - core.date_format.html_date
+  - core.date_format.html_datetime
   - core.date_format.html_month
   - core.date_format.html_time
   - core.date_format.html_week
-  - core.date_format.html_yearless_date
   - core.date_format.html_year
+  - core.date_format.html_yearless_date
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
@@ -129,13 +129,13 @@ config_devel:
   - filter.format.full_html
   - filter.format.restricted_html
   - image.style.profile_icon
-  - og_menu.ogmenu.navigation
   - og.og_membership_type.og_membership_type
   - og.og_role.rdf_entity-collection-administrator
   - og.og_role.rdf_entity-collection-facilitator
   - og.og_role.rdf_entity-collection-member
   - og.og_role.rdf_entity-collection-non-member
   - og.settings
+  - og_menu.ogmenu.navigation
   - system.theme
   - user.flood
   - user.mail
@@ -144,7 +144,7 @@ config_devel:
   - user.role.authenticated
   - user.role.moderator
   - user.settings
-  - views.view.collections
   - views.view.collection_content
+  - views.view.collections
   - views.view.search
   - views.view.user_admin_people
