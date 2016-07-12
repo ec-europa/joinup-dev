@@ -31,19 +31,18 @@
                 </div>
               </div>
               <button class="button--default button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Download</button>
-              <div class="button--circle-wrapper">
-                <button href="#" class="button--circle mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
-                  <span class="icon icon--plus"></span>
-                </button>
-              </div>
+
+              {% include circle-menu.html %}
+
+              <!-- Menu visible on tablet and mobile -->
               <div class="featured__menu">
-                <div id="featured__menu-button" class="mdl-button mdl-js-button">
+                <div id="featured__menu-button" class="featured__menu-button mdl-button mdl-js-button">
                   <span class="icon icon--menu"></span>
                 </div>
-                <ul class="featured__menu-dropdown mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="featured__menu-button">
-                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="#">Item #1</a></li>
-                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="#">Item #2</a></li>
-                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="#">Item #3</a></li>
+                <ul class="featured__menu-dropdown mdl-menu mdl-menu--bottom-left mdl-js-menu" for="featured__menu-button">
+                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/login">Login</a></li>
+                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/about">About</a></li>
+                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/alerts">Alerts</a></li>
                 </ul>
               </div>
             </div>

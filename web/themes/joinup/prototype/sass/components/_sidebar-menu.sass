@@ -6,13 +6,29 @@
 // --------------------------------------------------
 .sidebar-menu
   width: 100%
+  .mdl-menu__container,
+  .mdl-menu__outline,
+  .mdl-menu
+    width: 100% !important
+  .mdl-menu
+    padding: 0
+  .mdl-menu__outline
+    background-color: transparent
+    box-shadow: none
+
+
 
 // Elements
 // --------------------------------------------------
-.sidebar-menu__container
-  width: 100%
+.sidebar-menu__button
+  width: 60px
+  height: 60px
+  border-radius: 0
 
 .sidebar-menu__item
+  padding: 0
+
+.sidebar-menu__link
   display: block
   padding: 15px 15px 15px 20px
   color: $color-base

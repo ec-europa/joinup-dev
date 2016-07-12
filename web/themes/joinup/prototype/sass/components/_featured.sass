@@ -82,6 +82,10 @@
   .stats__icon
     +icon-size(30px)
 
+.featured__menu-button
+  width: 60px
+  height: 60px
+
 .featured__menu
   position: absolute
   bottom: 10px
@@ -110,29 +114,26 @@
     +breakpoint(sm-mobile, mobile)
       display: block
       margin: 0 auto
-  .button--circle-wrapper
-    position: absolute
-    right: 20px
-    bottom: -40px
-    width: 80px
-    height: 80px
-    border-radius: 50%
-    background-color: $color-grey-bg
+  .circle-menu
+    position: fixed
+    right: 40px
+    bottom: 40px
+    +breakpoint(mobile)
+      position: absolute
+      bottom: -40px
+      width: 80px
+      height: 80px
+      border-radius: 50%
+      background-color: $color-grey-bg
     +breakpoint(lg-desktop)
       right: 0
-  .button--circle
+  .circle-menu__button
     position: absolute
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
-    background-color: $color-orange !important
     .icon
       position: absolute
       top: 50%
       left: 50%
       transform: translate(-50%, -50%)
-      color: #fff
-      +icon-size(45px)
-    .mdl-ripple
-      background-color: #fff
-
