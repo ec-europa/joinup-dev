@@ -4,10 +4,12 @@ description: News content type.
 core: 8.x
 package: Joinup
 dependencies:
- - state_machine
-
-dependencies:
+  - collection
   - ds
+  - og
+  - solution
+  - state_machine
+  - view_unpublished
 
 config_devel:
   - core.entity_form_display.node.news.default

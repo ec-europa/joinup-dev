@@ -12,7 +12,6 @@ dependencies:
   - block
   - ckeditor
   - collection
-  - solution
   - contextual
   - custom_page
   - dashboard
@@ -40,11 +39,12 @@ dependencies:
   - rdf_entity
   - rdf_export
   - rdf_taxonomy
+  - search_api
+  - search_api_db
+  - solution
   - state_machine
   - text
   - toolbar
-  - search_api
-  - search_api_db
   - views
   - view_unpublished
 
