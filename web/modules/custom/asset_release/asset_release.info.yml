@@ -26,6 +26,7 @@ config_devel:
   - field.field.rdf_entity.asset_release.field_isr_is_version_of
   - field.field.rdf_entity.asset_release.field_keywords
   - field.field.rdf_entity.asset_release.field_isr_language
+  - field.field.rdf_entity.asset_release.field_isr_logo
   - field.field.rdf_entity.asset_release.field_isr_modification_date
   - field.field.rdf_entity.asset_release.field_isr_owner
   - field.field.rdf_entity.asset_release.field_policy_domain
@@ -45,6 +46,7 @@ config_devel:
   - field.storage.rdf_entity.field_isr_included_asset
   - field.storage.rdf_entity.field_isr_is_version_of
   - field.storage.rdf_entity.field_isr_language
+  - field.storage.rdf_entity.field_isr_logo
   - field.storage.rdf_entity.field_isr_modification_date
   - field.storage.rdf_entity.field_isr_owner
   - field.storage.rdf_entity.field_isr_release_number

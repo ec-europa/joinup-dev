@@ -11,6 +11,7 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_included_asset
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
     - field.field.rdf_entity.asset_release.field_isr_language
+    - field.field.rdf_entity.asset_release.field_isr_logo
     - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
@@ -22,10 +23,13 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_policy_domain
     - field.field.rdf_entity.asset_release.field_spatial_coverage
     - field.field.rdf_entity.asset_release.field_status
+    - image.style.thumbnail
     - rdf_entity.rdfentity.asset_release
   module:
     - datetime
+    - ds
     - file
+    - image
     - text
 id: rdf_entity.asset_release.default
 targetEntityType: rdf_entity
@@ -143,6 +147,21 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_isr_logo:
+    weight: 23
+    label: above
+    settings:
+      image_style: thumbnail
+      image_link: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: image
   field_isr_metrics_page:
     weight: 18
     label: above
