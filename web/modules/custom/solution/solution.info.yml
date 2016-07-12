@@ -44,7 +44,6 @@ config_devel:
   - field.field.rdf_entity.solution.field_status
   - field.field.rdf_entity.solution.field_is_standardization_level
   - field.field.rdf_entity.solution.field_is_test_resource_type
-  - field.field.rdf_entity.solution.field_topic
   - field.field.rdf_entity.solution.field_is_translation
   - field.field.rdf_entity.solution.field_is_webdav_creation
   - field.field.rdf_entity.solution.field_is_webdav_url
