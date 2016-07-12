@@ -75,9 +75,6 @@ class AssetReleaseController extends ControllerBase {
    */
   public function createAssetReleaseAccess(RdfInterface $rdf_entity) {
     $user = $this->currentUser();
-    if ($user->isAnonymous()) {
-      return AccessResult::neutral();
-    }
     $membership = Og::getMembership($user, $rdf_entity);
     // @todo: Remove check for empty after ISAICP-2369 is in.
     return (!empty($membership) && $membership->hasPermission('create asset_release rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();

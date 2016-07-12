@@ -76,8 +76,11 @@ class AssetDistributionController extends ControllerBase {
   public function createAssetDistributionAccess(RdfInterface $rdf_entity) {
     $solution = $this->assetDistributionRelations->getReleaseSolution($rdf_entity);
     $user = $this->currentUser();
+
+    // This form is meant only if a user is adding a distribution through a
+    // release of a solution.
     if (empty($solution) && !$user->isAnonymous()) {
-      return AccessResult::neutral();
+      return AccessResult::forbidden();
     }
     $membership = Og::getMembership($user, $solution);
     // @todo: Remove check for empty membership after ISAICP-2369 is in.
