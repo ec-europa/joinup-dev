@@ -1,7 +1,11 @@
 uuid: null
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - views.view.search
+  modules:
+    - joinup_core
 id: search_api_views__search__page_1
 name: 'search_api_views:search:page_1'
 filter_key: null
