@@ -22,6 +22,7 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - image
+    - inline_entity_form
     - link
     - rdf_entity
     - text
@@ -68,11 +69,15 @@ content:
   field_ar_contact_information:
     weight: 9
     settings:
+      form_mode: default
+      override_labels: true
+      label_singular: 'contact information'
+      label_plural: 'contact information'
+      allow_new: true
+      allow_existing: true
       match_operator: CONTAINS
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: inline_entity_form_complex
   field_ar_creation_date:
     weight: 7
     settings:
@@ -113,11 +118,15 @@ content:
   field_ar_owner:
     weight: 10
     settings:
+      form_mode: default
+      override_labels: true
+      label_singular: owner
+      label_plural: owners
+      allow_new: true
+      allow_existing: true
       match_operator: CONTAINS
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: inline_entity_form_complex
   field_ar_shared_content:
     weight: 17
     settings:

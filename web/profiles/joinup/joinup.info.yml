@@ -21,6 +21,7 @@ dependencies:
   - file
   - help
   - image
+  - inline_entity_form
   - joinup_document
   - joinup_event
   - joinup_licence
@@ -33,6 +34,7 @@ dependencies:
   - og
   - og_menu
   - options
+  - owner
   - page_cache
   - path
   - r4032login
