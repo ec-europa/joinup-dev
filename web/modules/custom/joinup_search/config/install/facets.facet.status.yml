@@ -1,6 +1,8 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - facets.facet_source.search_api_views__search__page_1
 id: status
 name: Status
 url_alias: status
