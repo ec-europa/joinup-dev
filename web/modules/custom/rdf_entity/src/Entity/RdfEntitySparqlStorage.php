@@ -173,7 +173,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   public function doLoadMultiple(array $ids = NULL) {
     // Attempt to load entities from the persistent cache. This will remove IDs
     // that were loaded from $ids.
-    $entities_from_cache = []; //$this->getFromPersistentCache($ids);
+    $entities_from_cache = $this->getFromPersistentCache($ids);
     // Load any remaining entities from the database.
     $entities_from_storage = $this->getFromStorage($ids);
 
@@ -534,12 +534,16 @@ QUERY;
    * {@inheritdoc}
    */
   protected function doDelete($entities) {
-    $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
+    $entities_by_graph = [];
+    foreach ($entities as $id => $entity) {
+      $entities_by_graph[$entity->graph][$id] = $entity;
+    }
+    foreach ($entities_by_graph as $graph => $entities_to_delete) {
+      $graph = $entity->graph;
+      $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
 
-    // @todo The hardcoding will be fixed in future issue.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2343
-    $query = <<<QUERY
-DELETE FROM <http://localhost:8890/DAV>
+      $query = <<<QUERY
+DELETE FROM <$graph>
 {
   ?entity ?field ?value
 }
@@ -551,7 +555,8 @@ WHERE
   )
 }
 QUERY;
-    $this->sparql->query($query);
+      $this->sparql->query($query);
+    }
   }
 
   /**
