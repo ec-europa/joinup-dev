@@ -42,8 +42,8 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - file
-    - inline_entity_form
     - image
+    - inline_entity_form
     - link
     - text
 id: rdf_entity.solution.default
@@ -52,7 +52,7 @@ bundle: solution
 mode: default
 content:
   field_is_banner:
-    weight: 4
+    weight: 3
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
@@ -60,7 +60,7 @@ content:
     type: image_image
   field_is_contact_information:
     type: inline_entity_form_complex
-    weight: 5
+    weight: 4
     settings:
       form_mode: default
       override_labels: true
@@ -78,53 +78,53 @@ content:
     third_party_settings: {  }
     type: text_textarea
   field_is_documentation:
-    weight: 5
+    weight: 6
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
   field_is_elibrary_creation:
-    weight: 7
+    weight: 8
     settings: {  }
     third_party_settings: {  }
     type: options_select
   field_is_issue_tracker:
-    weight: 11
+    weight: 12
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
   field_is_landing_page:
-    weight: 9
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-  field_is_logo:
-    weight: 3
-    settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
-    third_party_settings: {  }
-    type: image_image
-  field_is_metrics_page:
     weight: 10
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+  field_is_logo:
+    weight: 2
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+  field_is_metrics_page:
+    weight: 11
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
   field_is_moderation:
-    weight: 8
+    weight: 9
     settings:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
   field_is_owner:
     type: inline_entity_form_complex
-    weight: 11
+    weight: 5
     settings:
       form_mode: default
       override_labels: true
@@ -135,7 +135,7 @@ content:
       match_operator: CONTAINS
     third_party_settings: {  }
   field_is_related_solutions:
-    weight: 6
+    weight: 7
     settings:
       match_operator: CONTAINS
       size: 60
@@ -143,7 +143,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_is_wiki:
-    weight: 12
+    weight: 13
     settings:
       placeholder_url: ''
       placeholder_title: ''
