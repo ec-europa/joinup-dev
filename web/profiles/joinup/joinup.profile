@@ -130,6 +130,44 @@ function joinup_og_user_access_alter(&$permissions, &$cacheable_metadata, $conte
 }
 
 /**
+ * Implements hook_field_widget_inline_entity_form_complex_form_alter().
+ *
+ * Simplifies the widget buttons when only a bundle is configured.
+ */
+function joinup_field_widget_inline_entity_form_complex_form_alter(&$element, FormStateInterface $form_state, $context) {
+  if (isset($element['actions']['bundle']['#type']) && $element['actions']['bundle']['#type'] == 'value') {
+    $buttons = [
+      'ief_add' => t('Add new'),
+      'ief_add_existing' => t('Add existing'),
+    ];
+
+    foreach ($buttons as $key => $label) {
+      if (!empty($element['actions'][$key])) {
+        $element['actions'][$key]['#value'] = $label;
+      }
+    }
+  }
+
+  // If no title is provided for the fieldset wrapping the create form, add the
+  // label of the bundle of the entity being created.
+  if (empty($element['form']['#title']) && !empty($element['form']['inline_entity_form']['#bundle'])) {
+    $entity_type = $element['form']['inline_entity_form']['#entity_type'];
+    $bundle = $element['form']['inline_entity_form']['#bundle'];
+
+    $bundle_info = \Drupal::entityManager()->getBundleInfo($entity_type);
+    $element['form']['#title'] = $bundle_info[$bundle]['label'];
+  }
+}
+
+/**
+ * Implements hook_inline_entity_form_reference_form_alter().
+ */
+function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form_state) {
+  // Avoid showing two labels one after each other.
+  $reference_form['entity_id']['#title_display'] = 'invisible';
+}
+
+/**
  * Implements hook_theme().
  */
 function joinup_theme($existing, $type, $theme, $path) {

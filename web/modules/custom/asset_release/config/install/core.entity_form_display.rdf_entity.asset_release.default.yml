@@ -27,6 +27,7 @@ dependencies:
     - rdf_entity.rdfentity.asset_release
   module:
     - file
+    - inline_entity_form
     - rdf_entity
     - text
 id: rdf_entity.asset_release.default
@@ -34,6 +35,18 @@ targetEntityType: rdf_entity
 bundle: asset_release
 mode: default
 content:
+  field_isr_contact_information:
+    type: inline_entity_form_complex
+    weight: 10
+    settings:
+      form_mode: default
+      override_labels: true
+      label_singular: 'contact information'
+      label_plural: 'contact information'
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+    third_party_settings: {  }
   field_isr_creation_date:
     type: datetime_create_update
     weight: 5
@@ -60,16 +73,28 @@ content:
     settings:
       behaviour: create
     third_party_settings: {  }
+  field_isr_owner:
+    type: inline_entity_form_complex
+    weight: 11
+    settings:
+      form_mode: default
+      override_labels: true
+      label_singular: owner
+      label_plural: owners
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+    third_party_settings: {  }
   field_isr_release_notes:
     type: text_textarea
-    weight: 3
+    weight: 2
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
   field_isr_release_number:
     type: string_textfield
-    weight: 2
+    weight: 1
     settings:
       size: 60
       placeholder: ''
@@ -98,29 +123,21 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  id:
-    type: auto_uri
-    weight: 0
-    settings:
-      prefix: 'http://joinup.eu/adms/asset'
-    third_party_settings: {  }
   label:
     type: string_textfield
-    weight: 1
+    weight: 0
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
 hidden:
   field_isr_banner: true
-  field_isr_contact_information: true
   field_isr_description: true
   field_isr_distribution: true
   field_isr_has_version: true
   field_isr_included_asset: true
   field_isr_is_version_of: true
   field_isr_logo: true
-  field_isr_owner: true
   field_isr_related_solutions: true
   field_isr_solution_type: true
   field_isr_translation: true

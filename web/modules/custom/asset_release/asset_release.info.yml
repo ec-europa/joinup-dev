@@ -5,12 +5,15 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - contact_information
   - datetime
   - ds
   - image
+  - inline_entity_form
   - joinup_core
   - link
   - options
+  - owner
   - rdf_entity
   - text
 
