@@ -60,6 +60,7 @@ Feature: Collections Overview
       | Title       | Colonies in space                   |
       | Description | Some space mumbo jumbo description. |
     And I attach the file "logo.png" to "Logo"
+    And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.
     And I press "Add existing Owner"
     And I fill in "Owner" with "Organization example"
