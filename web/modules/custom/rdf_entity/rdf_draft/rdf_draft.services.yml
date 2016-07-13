@@ -1,0 +1,10 @@
+services:
+  rdf_draft.route_subscriber:
+      class: Drupal\rdf_draft\Routing\RouteSubscriber
+      arguments: ['@entity_type.manager']
+      tags:
+        - { name: event_subscriber }
+  rdf_draft.subscriber:
+    class: Drupal\rdf_draft\EventSubscriber\ActiveGraphSubscriber
+    tags:
+      - { name: event_subscriber }

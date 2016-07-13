@@ -66,16 +66,23 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     return $this->bundlePredicate;
   }
 
-  function getGraphsDefinition() {
+  /**
+   * Get the defined graph types for this entity type.
+   */
+  public function getGraphsDefinition() {
     $graphs_definition = [];
     $graphs_definition['default'] = [
       'title' => $this->t('Default'),
       'description' => $this->t('The default graph used to store entities of this type.'),
     ];
-    // @todo Alter().
+    // @todo Consider turning this into an event.
+    $this->moduleHandler->alter('rdf_graph_definition', $graphs_definition);
     return $graphs_definition;
   }
 
+  /**
+   * Set the graph type to use when interacting with entities.
+   */
   public function setActiveGraphType(string $graph_type) {
     $definitions = $this->getGraphsDefinition();
     if (!isset($definitions[$graph_type])) {
@@ -84,22 +91,34 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $this->activeGraph = $graph_type;
   }
 
+  /**
+   * Get the graph type in use.
+   */
   public function getActiveGraphType() {
     return $this->activeGraph;
   }
 
-  protected function getActiveGraph($bundle) {
+  /**
+   * Get the (active) graph URI for a given bundle.
+   */
+  public function getGraph($bundle, $graph_type = NULL) {
+    if (!$graph_type) {
+      $graph_type = $this->getActiveGraphType();
+    }
     $bundle = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->load($bundle);
-    $graph = $bundle->getThirdPartySetting('rdf_entity', 'graph_' . $this->getActiveGraphType(), FALSE);
+    $graph = $bundle->getThirdPartySetting('rdf_entity', 'graph_' . $graph_type, FALSE);
     if (!$graph) {
       throw new \Exception(format_string('Unable to determine graph %graph for bundle %bundle', [
-          '%graph' => $this->getActiveGraphType(),
-          '%bundle'
-        ]). $bundle->id());
+        '%graph' => $graph_type,
+        '%bundle' => $bundle->id(),
+      ]));
     }
     return $graph;
   }
 
+  /**
+   * Get the graph URIs for each bundle.
+   */
   public function getGraphs($graph_type = NULL) {
     if (!$graph_type) {
       $graph_type = $this->getActiveGraphType();
@@ -109,10 +128,10 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     foreach ($bundles as $bundle) {
       $graph = $bundle->getThirdPartySetting('rdf_entity', 'graph_' . $graph_type, FALSE);
       if (!$graph) {
-        throw new \Exception(format_string('Unable to determine graph %graph for bundle %bundle', [
-            '%graph' => $this->getActiveGraphType(),
-            '%bundle'
-          ]). $bundle->id());
+        throw new \Exception(format_string('Unable to determine graph "!graph" for bundle "!bundle"', [
+          '!graph' => $this->getActiveGraphType(),
+          '!bundle' => $bundle->id(),
+        ]));
       }
       $graphs[$graph][] = $bundle->id();
     }
@@ -143,7 +162,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     }
     // Set the graph so it can be saved correctly later.
     if (!isset($values['graph'])) {
-      $values['graph'] = $this->getActiveGraph($values[$this->bundleKey]);
+      $values['graph'] = $this->getGraph($values[$this->bundleKey]);
     }
     return parent::create($values);
   }
@@ -154,7 +173,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   public function doLoadMultiple(array $ids = NULL) {
     // Attempt to load entities from the persistent cache. This will remove IDs
     // that were loaded from $ids.
-    $entities_from_cache = $this->getFromPersistentCache($ids);
+    $entities_from_cache = []; //$this->getFromPersistentCache($ids);
     // Load any remaining entities from the database.
     $entities_from_storage = $this->getFromStorage($ids);
 
@@ -233,8 +252,7 @@ QUERY;
     $res = [];
     foreach ($entity_values as $result) {
       $entity_id = (string) $result->entity_id;
-      $entity_graph =  (string) $result->graph;
-
+      $entity_graph = (string) $result->graph;
 
       $lang = LanguageInterface::LANGCODE_DEFAULT;
       if ($result->field_value instanceof \EasyRdf_Literal) {
@@ -494,6 +512,8 @@ QUERY;
    * {@inheritdoc}
    */
   public function loadRevision($revision_id) {
+    list($entity_id, $graph) = explode('||', $revision_id);
+
     return NULL;
   }
 
@@ -702,8 +722,6 @@ QUERY;
       $this->sparql->query($query);
     }
     // @todo Do in one transaction... If possible.
-    // @todo How to deal with graphs? Now we use the default,
-    // ... This needs some thought and most probably some discussion.
     $query = "INSERT DATA INTO <$graph> {\n" .
       $insert . "\n" .
       '}';

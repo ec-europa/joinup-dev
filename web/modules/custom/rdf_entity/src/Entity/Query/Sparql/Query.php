@@ -68,6 +68,9 @@ class Query extends QueryBase implements QueryInterface {
       ->result();
   }
 
+  /**
+   * Set the graph type.
+   */
   public function setGraphType($graph_type = 'default') {
     // @todo Getting the storage container here looks wrong...
     $entity_storage = \Drupal::service('entity.manager')
