@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Main functions and hook implementations of the Joinup core module.
+ */
+
+/**
  * Implements hook_theme().
  */
 function joinup_core_theme($existing, $type, $theme, $path) {
