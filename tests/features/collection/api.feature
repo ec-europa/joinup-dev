@@ -7,6 +7,7 @@ Feature: Collection API
     Given the following collection:
       | title             | Open Data Initiative |
       | logo              | logo.png             |
+      | banner            | banner.jpg           |
       | moderation        | no                   |
       | closed            | no                   |
       | elibrary creation | facilitators         |

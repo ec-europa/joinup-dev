@@ -25,6 +25,11 @@ Feature: "Add solution" visibility options.
     Given the following collection:
       | title | Collection solution test 2 |
       | logo  | logo.png                   |
+    And the following contact information:
+      | email | foo@bar.com                 |
+      | name  | Contact information example |
+    And the following organization:
+      | name | Organization example |
     And I am logged in as a facilitator of the "Collection solution test 2" collection
 
     When I go to the homepage of the "Collection solution test 2" collection
@@ -35,7 +40,15 @@ Feature: "Add solution" visibility options.
     When I fill in the following:
       | Title             | Collection solution add solution |
       | Description       | This is a test text              |
-      | Documentation     | text.pdf                         |
+    And I attach the file "text.pdf" to "Documentation"
+    # Click the button to select an existing contact information.
+    And I press "Add existing"
+    And I fill in "Contact information" with "Contact information example"
+    And I press "Add contact information"
+    # Click the button to select an existing owner.
+    And I press "Add existing owner"
+    And I fill in "Owner" with "Organization example"
+    And I press "Add owner"
     And I press "Save"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "Collection solution add solution"
