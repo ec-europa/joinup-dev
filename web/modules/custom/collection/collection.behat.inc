@@ -8,6 +8,7 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgMenuTrait;
@@ -22,6 +23,7 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class CollectionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use EntityReferenceTrait;
   use FileTrait;
   use NodeTrait;
   use OgMenuTrait;
@@ -222,6 +224,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         $fields[$field] = $mapped_values[$field][$value];
       }
     }
+
+    // Convert any entity reference field label value with the entity id.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'collection', $fields);
 
     return $fields;
   }
