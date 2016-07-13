@@ -23,6 +23,7 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - image
+    - inline_entity_form
     - link
     - rdf_entity
     - text
@@ -62,11 +63,15 @@ content:
   field_ar_contact_information:
     weight: 8
     settings:
+      form_mode: default
+      override_labels: true
+      label_singular: 'contact information'
+      label_plural: 'contact information'
+      allow_new: true
+      allow_existing: true
       match_operator: CONTAINS
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: inline_entity_form_complex
   field_ar_creation_date:
     weight: 6
     settings:
@@ -107,11 +112,15 @@ content:
   field_ar_owner:
     weight: 9
     settings:
+      form_mode: default
+      override_labels: true
+      label_singular: Owner
+      label_plural: Owners
+      allow_new: true
+      allow_existing: true
       match_operator: CONTAINS
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: inline_entity_form_complex
   field_policy_domain:
     weight: 10
     settings:
@@ -136,12 +145,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-  id:
-    type: auto_uri
-    weight: 0
-    settings:
-      prefix: 'http://joinup.eu/adms/asset-repository'
-    third_party_settings: {  }
   label:
     type: string_textfield
     weight: 1

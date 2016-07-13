@@ -199,24 +199,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     // Standard field, used as unique if primary index.
     $fields['id'] = BaseFieldDefinition::create('uri')
-      ->setLabel(t('ID'))
-      ->setRequired(TRUE)
-      ->setDescription(t('The ID of the RDF entity.'))
-      // @todo We should use 'UniqueField' constraint here, however this casts
-      // the entity id to an int.
-      ->setTranslatable(FALSE)
-      ->setRevisionable(FALSE)
-      ->setSetting('max_length', 255)
-      ->setDisplayOptions('view', array(
-        'label' => 'hidden',
-        'type' => 'hidden',
-      ))
-      ->setDisplayOptions('form', array(
-        'type' => 'string_textfield',
-        'weight' => -10,
-      ))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', FALSE);
+      ->setLabel(t('ID'));
 
     $fields['rid'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Rdf Type'))
