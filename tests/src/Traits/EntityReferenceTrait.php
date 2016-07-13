@@ -35,13 +35,18 @@ trait EntityReferenceTrait {
       $target_entity_type = $settings['target_type'];
       $target_entity_bundles = $settings['handler_settings']['target_bundles'];
 
-      $id = $this->getEntityIdByLabel($values[$name], $target_entity_type, $target_entity_bundles);
+      // Multi-value fields are separated by comma.
+      $labels = explode(', ', $values[$name]);
+      $values[$name] = [];
+      foreach ($labels as $label) {
+        $id = $this->getEntityIdByLabel($label, $target_entity_type, $target_entity_bundles);
 
-      if (!$id) {
-        throw new \Exception("Entity with label '{$values[$name]}' could not be found to fill field '$name'.");
+        if (!$id) {
+          throw new \Exception("Entity with label '$label' could not be found to fill field '$name'.");
+        }
+
+        $values[$name][] = $id;
       }
-
-      $values[$name] = [$id];
     }
 
     return $values;

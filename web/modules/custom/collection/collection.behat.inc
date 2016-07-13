@@ -252,16 +252,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
     }
 
-    // Handle child solutions.
-    if (!empty($values['field_ar_affiliates'])) {
-      $solutions = explode(',', $values['field_ar_affiliates']);
-      $values['field_ar_affiliates'] = [];
-      foreach ($solutions as $solution) {
-        $entity = $this->getRdfEntityByLabel(trim($solution), 'solution');
-        $values['field_ar_affiliates'][] = $entity->id();
-      }
-    }
-
     // @todo Remove this after the widget in ISAICP-2301 is build.
     $values['rid'] = 'collection';
     $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
