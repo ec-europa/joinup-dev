@@ -5,7 +5,9 @@ Feature: Document API
   I need to be able to use the Node API to handle the "Documents" bundle
 
   Scenario: Programmatically create a Custom Page
-    Given the following collection:
+    Given the following person:
+      | name | Joinup Derp |
+    And the following collection:
       | title             | Joinup document name |
       | owner             | Joinup Derp          |
       | logo              | logo.png             |

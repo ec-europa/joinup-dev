@@ -1,0 +1,14 @@
+name: Owner
+type: module
+description: Provides Owners for the Joinup project.
+core: 8.x
+package: Joinup
+
+dependencies:
+  - joinup_core
+
+config_devel:
+  - core.entity_form_display.rdf_entity.person.default
+  - rdf_entity.rdfentity.person
+  - core.entity_form_display.rdf_entity.organization.default
+  - rdf_entity.rdfentity.organization

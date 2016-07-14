@@ -23,16 +23,19 @@ Feature: "Add release" visibility options.
     Then I should not see the link "Add release"
 
   Scenario: Add release as a moderator.
-    Given the following solutions:
-      | title          | description        | documentation |
-      | Release Test 1 | test description 1 | text.pdf      |
-      | Release Test 2 | test description 2 | text.pdf      |
+    Given the following organization:
+     | name | Organization example |
+    And the following solutions:
+      | title          | description        | documentation | owner                |
+      | Release Test 1 | test description 1 | text.pdf      | Organization example |
+      | Release Test 2 | test description 2 | text.pdf      | Organization example |
     # Check that the release cannot take the title of another solution.
     And I am logged in as a moderator
     When I go to the homepage of the "Release Test 1" solution
     And I click "Add release"
     Then I should see the heading "Add Asset release"
     And the following fields should be present "Name, Release number, Release notes"
+    And the following field widgets should be present "Contact information, Owner"
     When I fill in "Name" with "Release Test 2"
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."
