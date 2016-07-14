@@ -36,7 +36,7 @@ trait EntityReferenceTrait {
       $target_entity_bundles = $settings['handler_settings']['target_bundles'];
 
       // Multi-value fields are separated by comma.
-      $labels = explode(', ', $values[$name]);
+      $labels = array_filter(explode(', ', $values[$name]));
       $values[$name] = [];
       foreach ($labels as $label) {
         $id = $this->getEntityIdByLabel($label, $target_entity_type, $target_entity_bundles);
