@@ -26,7 +26,6 @@ class AssetReleaseController extends ControllerBase {
     'field_is_included_asset' => 'field_isr_included_asset',
     'field_is_translation' => 'field_isr_translation',
     'field_policy_domain' => 'field_policy_domain',
-    'field_topic' => 'field_topic',
   ];
 
   /**

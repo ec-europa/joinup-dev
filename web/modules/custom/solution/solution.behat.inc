@@ -198,8 +198,16 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *   Thrown when a given image is not found.
    */
   protected function createSolution(array $values) {
-    if (!empty($values['field_is_documentation'])) {
-      $values['field_is_documentation'] = [$this->createFile($values['field_is_documentation'], $this->getMinkParameter('files_path'))];
+    $file_fields = [
+      'field_is_documentation',
+      'field_is_banner',
+      'field_is_logo',
+    ];
+
+    foreach ($file_fields as $field_name) {
+      if (!empty($values[$field_name])) {
+        $values[$field_name] = [$this->createFile($values[$field_name], $this->getMinkParameter('files_path'))];
+      }
     }
 
     $values['rid'] = 'solution';
@@ -348,6 +356,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'uri' => 'id',
       'title' => 'label',
       'affiliations requests' => 'field_is_affiliations_requests',
+      'banner' => 'field_is_banner',
       'contact information' => 'field_is_contact_information',
       'creation date' => 'field_is_creation_date',
       'description' => 'field_is_description',
@@ -359,6 +368,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'landing page' => 'field_is_landing_page',
       'language' => 'field_is_language',
       'latest release' => 'field_is_latest_release',
+      'logo' => 'field_is_logo',
       'metrics page' => 'field_is_metrics_page',
       'moderation' => 'field_is_moderation',
       'modification date' => 'field_is_modification_date',

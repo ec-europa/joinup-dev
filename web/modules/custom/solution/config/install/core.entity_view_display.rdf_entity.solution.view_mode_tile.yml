@@ -5,6 +5,7 @@ dependencies:
     - core.entity_view_mode.rdf_entity.view_mode_tile
     - field.field.rdf_entity.solution.field_is_actor
     - field.field.rdf_entity.solution.field_is_affiliations_requests
+    - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_creation_date
@@ -17,6 +18,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_issue_tracker
     - field.field.rdf_entity.solution.field_is_landing_page
     - field.field.rdf_entity.solution.field_is_language
+    - field.field.rdf_entity.solution.field_is_logo
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_modification_date
@@ -36,7 +38,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
-    - field.field.rdf_entity.solution.field_topic
     - rdf_entity.rdfentity.solution
   module:
     - datetime
@@ -365,13 +366,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_topic:
-    weight: 11
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
   label:
     label: hidden
     type: string
@@ -407,4 +401,6 @@ content:
             fis: false
             fis-def-at: false
             fi-def-at: false
-hidden: {  }
+hidden:
+  field_is_banner: true
+  field_is_logo: true

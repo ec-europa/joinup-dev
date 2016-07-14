@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.rdf_entity.solution.field_is_actor
     - field.field.rdf_entity.solution.field_is_affiliations_requests
+    - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_creation_date
@@ -16,6 +17,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_issue_tracker
     - field.field.rdf_entity.solution.field_is_landing_page
     - field.field.rdf_entity.solution.field_is_language
+    - field.field.rdf_entity.solution.field_is_logo
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_modification_date
@@ -35,10 +37,10 @@ dependencies:
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
-    - field.field.rdf_entity.solution.field_topic
     - rdf_entity.rdfentity.solution
   module:
     - file
+    - image
     - inline_entity_form
     - link
     - text
@@ -47,9 +49,16 @@ targetEntityType: rdf_entity
 bundle: solution
 mode: default
 content:
+  field_is_banner:
+    weight: 3
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
   field_is_contact_information:
     type: inline_entity_form_complex
-    weight: 5
+    weight: 4
     settings:
       form_mode: default
       override_labels: true
@@ -67,46 +76,53 @@ content:
     third_party_settings: {  }
     type: text_textarea
   field_is_documentation:
-    weight: 2
+    weight: 6
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
   field_is_elibrary_creation:
-    weight: 4
+    weight: 8
     settings: {  }
     third_party_settings: {  }
     type: options_select
   field_is_issue_tracker:
-    weight: 9
+    weight: 12
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
   field_is_landing_page:
-    weight: 7
+    weight: 10
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+  field_is_logo:
+    weight: 2
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
   field_is_metrics_page:
-    weight: 8
+    weight: 11
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
   field_is_moderation:
-    weight: 6
+    weight: 9
     settings:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
   field_is_owner:
     type: inline_entity_form_complex
-    weight: 11
+    weight: 5
     settings:
       form_mode: default
       override_labels: true
@@ -117,7 +133,7 @@ content:
       match_operator: CONTAINS
     third_party_settings: {  }
   field_is_related_solutions:
-    weight: 3
+    weight: 7
     settings:
       match_operator: CONTAINS
       size: 60
@@ -125,7 +141,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_is_wiki:
-    weight: 10
+    weight: 13
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -167,4 +183,3 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
-  field_topic: true

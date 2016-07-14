@@ -7,6 +7,8 @@ Feature: Solution API
     And the following solution:
       | title             | My first solution                    |
       | description       | A sample solution                    |
+      | logo              | logo.png                             |
+      | banner            | banner.jpg                           |
       | documentation     | text.pdf                             |
       | elibrary creation | registered users                     |
       | landing page      | http://foo-example.com/landing       |
@@ -34,5 +36,4 @@ Feature: Solution API
       | closed            | yes                         |
       | elibrary creation | facilitators                |
       | affiliates        | My first solution mandatory |
-
     Then I should have 1 solution
