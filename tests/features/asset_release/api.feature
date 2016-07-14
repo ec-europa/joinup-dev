@@ -34,7 +34,7 @@ Feature: Solution API
       | title             | My first solution mandatory |
       | description       | Another sample solution     |
       | elibrary creation | members                     |
-    Given the following collection:
+    And the following collection:
       | title             | Solution API bar            |
       | logo              | logo.png                    |
       | moderation        | yes                         |

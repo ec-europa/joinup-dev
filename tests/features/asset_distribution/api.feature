@@ -42,7 +42,7 @@ Feature: Asset distribution API
       | title             | AD first solution mandatory short |
       | description       | Another sample solution           |
       | elibrary creation | members                           |
-    Given the following collection:
+    And the following collection:
       | title             | Asset distribution short API bar  |
       | logo              | logo.png                          |
       | moderation        | yes                               |
