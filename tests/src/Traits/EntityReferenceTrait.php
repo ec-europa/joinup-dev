@@ -26,7 +26,7 @@ trait EntityReferenceTrait {
   public function convertEntityReferencesValues($entity_type, $entity_bundle, $values) {
     $definitions = \Drupal::entityManager()->getFieldDefinitions($entity_type, $entity_bundle);
     foreach ($definitions as $name => $definition) {
-      if ($definition->getType() != 'entity_reference' || !array_key_exists($name, $values)) {
+      if ($definition->getType() != 'entity_reference' || !array_key_exists($name, $values) || !strlen($values[$name])) {
         continue;
       }
 
@@ -36,7 +36,7 @@ trait EntityReferenceTrait {
       $target_entity_bundles = $settings['handler_settings']['target_bundles'];
 
       // Multi-value fields are separated by comma.
-      $labels = array_filter(explode(', ', $values[$name]));
+      $labels = explode(', ', $values[$name]);
       $values[$name] = [];
       foreach ($labels as $label) {
         $id = $this->getEntityIdByLabel($label, $target_entity_type, $target_entity_bundles);
