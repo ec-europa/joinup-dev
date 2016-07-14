@@ -13,6 +13,7 @@ dependencies:
   - search_api_solr
   - taxonomy
   - text
+  - views
 
 config_devel:
  - facets.facet.policy_domain
