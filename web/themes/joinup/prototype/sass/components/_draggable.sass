@@ -3,10 +3,14 @@
 
 // Elements
 // --------------------------------------------------
-.mdl-checkbox__ripple-container
-  .mdl-ripple
-    background-color: $color-blue-medium
-
+.draggable__icon
+  color: $color-grey-medium
+  +icon-size(40px)
+  &:hover,
+  &:active,
+  &:focus
+    color: $color-base
+  
 // Modifiers
 // --------------------------------------------------
 
@@ -15,8 +19,3 @@
 
 // States
 // --------------------------------------------------
-.mdl-checkbox.is-checked
-  .mdl-checkbox__box-outline
-    border-color: $color-blue-medium
-  .mdl-checkbox__tick-outline
-    background-color: $color-blue-medium
