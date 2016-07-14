@@ -4,7 +4,7 @@ Feature: Solution API
   I need to be able to use the Solution API
 
   Scenario: Programmatically create a solution
-    And the following solution:
+    Given the following solution:
       | title             | My first solution                    |
       | description       | A sample solution                    |
       | logo              | logo.png                             |
