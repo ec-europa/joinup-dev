@@ -1105,16 +1105,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.1.3",
+            "version": "8.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "ac94c29c14d85c8e77f5cb1d0ab38036f5f25c9c"
+                "reference": "a6555edbe58e0a6a1d107cbf8c6568dd5e4531a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/ac94c29c14d85c8e77f5cb1d0ab38036f5f25c9c",
-                "reference": "ac94c29c14d85c8e77f5cb1d0ab38036f5f25c9c",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/a6555edbe58e0a6a1d107cbf8c6568dd5e4531a2",
+                "reference": "a6555edbe58e0a6a1d107cbf8c6568dd5e4531a2",
                 "shasum": ""
             },
             "require": {
@@ -1169,8 +1169,10 @@
                 "drupal/content_translation": "self.version",
                 "drupal/contextual": "self.version",
                 "drupal/core-annotation": "self.version",
+                "drupal/core-assertion": "self.version",
                 "drupal/core-bridge": "self.version",
                 "drupal/core-datetime": "self.version",
+                "drupal/core-dependency-injection": "self.version",
                 "drupal/core-diff": "self.version",
                 "drupal/core-discovery": "self.version",
                 "drupal/core-event-dispatcher": "self.version",
@@ -1274,7 +1276,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-06-15 20:08:27"
+            "time": "2016-07-11 13:07:34"
         },
         {
             "name": "drupal/ds",
