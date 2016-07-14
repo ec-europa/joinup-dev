@@ -27,7 +27,23 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
     if ($defaults['_route']) {
       $route_parts = explode('.', $defaults['_route']);
       $last_part = array_pop($route_parts);
-      if (in_array($last_part, ['rdf_draft', 'edit_form'])) {
+      if ($last_part == 'edit_form') {
+        $entity_type_id = substr($event->getDefinition()['type'], strlen('entity:'));
+        $storage = \Drupal::entityManager()->getStorage($entity_type_id);
+        $storage->setActiveGraphType('draft');
+        // Draft version already exists.
+        if ($storage->load($event->getValue())) {
+          $event->setGraph('draft');
+        }
+        // Use published version to create draft.
+        else {
+          // Keep track that the entity needs to be stored in the draft graph.
+          $storage->setSaveGraph('draft');
+          $event->setGraph('default');
+        }
+
+      }
+      if ($last_part == 'rdf_draft') {
         $event->setGraph('draft');
       }
     }

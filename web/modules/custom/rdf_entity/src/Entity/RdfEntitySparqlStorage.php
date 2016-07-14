@@ -48,6 +48,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
   protected $activeGraph = 'default';
 
+  protected $saveGraph = NULL;
+
   /**
    * Initialize the storage backend.
    */
@@ -117,6 +119,16 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   }
 
   /**
+   * Set the save graph.
+   *
+   * @param string $graph
+   *    The graph to use.
+   */
+  public function setSaveGraph($graph) {
+    $this->saveGraph = $graph;
+  }
+
+  /**
    * Get the graph URIs for each bundle.
    */
   public function getGraphs($graph_type = NULL) {
@@ -179,6 +191,13 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
     return $entities_from_cache + $entities_from_storage;
 
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function buildCacheId($id) {
+    return "values:{$this->entityTypeId}:$id:{$this->activeGraph}";
   }
 
   /**
@@ -679,7 +698,14 @@ QUERY;
    * {@inheritdoc}
    */
   protected function doSave($id, EntityInterface $entity) {
-    $graph = $entity->graph;
+    $bundle = $entity->bundle();
+    // Force the graph.
+    if ($this->saveGraph) {
+      $graph = $this->getGraph($bundle, $this->saveGraph);
+    }
+    else {
+      $graph = $entity->graph;
+    }
     $insert = '';
     $properties = $this->getMappedProperties($entity);
     $subj = '<' . (string) $id . '>';
@@ -703,7 +729,6 @@ QUERY;
       }
     }
     // Save the bundle.
-    $bundle = $entity->bundle();
     $rdf_mapping = $this->getRdfBundleMapping();
     $rdf_field = $rdf_mapping[$entity->getEntityTypeId()][$bundle];
     $pred = 'rdf:type';
