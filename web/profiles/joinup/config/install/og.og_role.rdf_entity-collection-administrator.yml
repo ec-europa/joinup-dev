@@ -2,8 +2,9 @@ langcode: en
 status: true
 dependencies: {  }
 id: rdf_entity-collection-administrator
-label: Collection owner
+label: 'Collection owner'
 weight: 2
+is_admin: null
 group_type: rdf_entity
 group_bundle: collection
 group_id: null

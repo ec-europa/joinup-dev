@@ -1,12 +1,14 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - facets.facet_source.search_api_views__search__page_1
 id: type
 name: Type
 url_alias: type
 weight: 0
 show_only_one_result: false
-field_identifier: search_api_aggregation_1
+field_identifier: aggregated_field
 query_type_name: null
 facet_source_id: 'search_api_views:search:page_1'
 widget: links

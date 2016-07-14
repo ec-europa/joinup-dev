@@ -1,8 +1,6 @@
 # @todo: Will be re enabled in ISAICP-2369.
 # If you want to run this test through Selenium, uncomment the specified lines!
-@api
-Feature: Collections menu
-
+# @api
 #  Scenario: Add a link to og menu
 #    Given collections:
 #      | title              | description                     |

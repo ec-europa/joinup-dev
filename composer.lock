@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6f2a23743862268cb2420982088a0b4a",
-    "content-hash": "ba0595c4e8ba225892742a57034db0d7",
+    "hash": "05065a90aa8c629e8ee11ae235eb40cb",
+    "content-hash": "a0bce42063aab499a4943664f2df3d3c",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.24",
+            "version": "3.18.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c74f6f316282b0ac6a3cd8a681171343c0e07ec3"
+                "reference": "c75d3ba185d5db6998124fa1a99a63e5d529b247"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c74f6f316282b0ac6a3cd8a681171343c0e07ec3",
-                "reference": "c74f6f316282b0ac6a3cd8a681171343c0e07ec3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c75d3ba185d5db6998124fa1a99a63e5d529b247",
+                "reference": "c75d3ba185d5db6998124fa1a99a63e5d529b247",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-07-01 21:27:27"
+            "time": "2016-07-13 20:34:06"
         },
         {
             "name": "composer/ca-bundle",
@@ -283,16 +283,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.0.25",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "36e5b5843203d7f1cf6ffb0305a97e014387bd8e"
+                "reference": "a3595c5272a6f247228abb20076ed27321e4aae9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/36e5b5843203d7f1cf6ffb0305a97e014387bd8e",
-                "reference": "36e5b5843203d7f1cf6ffb0305a97e014387bd8e",
+                "url": "https://api.github.com/repos/composer/installers/zipball/a3595c5272a6f247228abb20076ed27321e4aae9",
+                "reference": "a3595c5272a6f247228abb20076ed27321e4aae9",
                 "shasum": ""
             },
             "require": {
@@ -339,6 +339,7 @@
                 "MODX Evo",
                 "Mautic",
                 "OXID",
+                "RadPHP",
                 "SMF",
                 "Thelia",
                 "WolfCMS",
@@ -354,6 +355,7 @@
                 "dokuwiki",
                 "drupal",
                 "elgg",
+                "expressionengine",
                 "fuelphp",
                 "grav",
                 "installer",
@@ -379,7 +381,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2016-04-13 19:46:30"
+            "time": "2016-07-05 06:18:20"
         },
         {
             "name": "composer/semver",
@@ -1105,16 +1107,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.1.3",
+            "version": "8.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "ac94c29c14d85c8e77f5cb1d0ab38036f5f25c9c"
+                "reference": "a6555edbe58e0a6a1d107cbf8c6568dd5e4531a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/ac94c29c14d85c8e77f5cb1d0ab38036f5f25c9c",
-                "reference": "ac94c29c14d85c8e77f5cb1d0ab38036f5f25c9c",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/a6555edbe58e0a6a1d107cbf8c6568dd5e4531a2",
+                "reference": "a6555edbe58e0a6a1d107cbf8c6568dd5e4531a2",
                 "shasum": ""
             },
             "require": {
@@ -1169,8 +1171,10 @@
                 "drupal/content_translation": "self.version",
                 "drupal/contextual": "self.version",
                 "drupal/core-annotation": "self.version",
+                "drupal/core-assertion": "self.version",
                 "drupal/core-bridge": "self.version",
                 "drupal/core-datetime": "self.version",
+                "drupal/core-dependency-injection": "self.version",
                 "drupal/core-diff": "self.version",
                 "drupal/core-discovery": "self.version",
                 "drupal/core-event-dispatcher": "self.version",
@@ -1274,7 +1278,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-06-15 20:08:27"
+            "time": "2016-07-11 13:07:34"
         },
         {
             "name": "drupal/ds",
@@ -1339,17 +1343,11 @@
         },
         {
             "name": "drupal/facets",
-            "version": "8.1.0-alpha3",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/facets.git",
-                "reference": "ae38a8e49082f418f9fc533bb575f931d4c2e277"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha3.zip",
-                "reference": "ae38a8e49082f418f9fc533bb575f931d4c2e277",
-                "shasum": null
+                "reference": "70f2b89823e2499ad8b097190145943a0e412e85"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -1379,7 +1377,7 @@
             ],
             "description": "Faceted search interfaces that can be used on Search API searchers.",
             "homepage": "https://www.drupal.org/project/facets",
-            "time": "2016-05-21 17:51:25"
+            "time": "2016-07-12 18:47:39"
         },
         {
             "name": "drupal/layout_plugin",
@@ -1441,12 +1439,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "463d5c35a1b5aa7f5b6df40a30cd878af23f8bb4"
+                "reference": "7e4c3e80df900c1a7cd604910ffffc6b7281f027"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/463d5c35a1b5aa7f5b6df40a30cd878af23f8bb4",
-                "reference": "463d5c35a1b5aa7f5b6df40a30cd878af23f8bb4",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/7e4c3e80df900c1a7cd604910ffffc6b7281f027",
+                "reference": "7e4c3e80df900c1a7cd604910ffffc6b7281f027",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1460,7 +1458,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-06-27 10:56:29"
+            "time": "2016-07-05 12:14:21"
         },
         {
             "name": "drupal/og_menu",
@@ -1536,20 +1534,21 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha15",
+            "version": "8.1.0-alpha16",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "f8f3ce33a9f608aa830688767fd5ffbd108eb889"
+                "reference": "895b50787d54cd3f6bc3f8d4833cec809a8d021d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha15.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha16.zip",
                 "reference": null,
                 "shasum": null
             },
             "require": {
-                "drupal/core": "8.*"
+                "drupal/core": "8.*",
+                "drupal/system": ">=8.1.0"
             },
             "replace": {
                 "drupal/search_api_db": "self.version",
@@ -1587,15 +1586,21 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-05-20 10:43:24"
+            "time": "2016-07-05 14:54:42"
         },
         {
             "name": "drupal/search_api_solr",
-            "version": "dev-8.x-1.x",
+            "version": "8.1.0-alpha5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "9945244119284a964aae839e2342e6d4fc921641"
+                "reference": "220cbdf1ddb83252777e13951f5b649c14d2a5e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha5.zip",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "drupal/core": "8.*",
@@ -1620,7 +1625,7 @@
             ],
             "description": "Offers an implementation of the Search API that uses an Apache Solr server for indexing content.",
             "homepage": "https://www.drupal.org/project/search_api_solr",
-            "time": "2016-07-04 11:56:16"
+            "time": "2016-07-07 17:49:37"
         },
         {
             "name": "drupal/state_machine",
@@ -1879,16 +1884,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "1.2.12",
+            "version": "1.2.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "cbfe3ee6f758225559b1111048e05a3e4c2e26cf"
+                "reference": "b8bb147f46cc9790326ce2440a13be06cc5a63bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/cbfe3ee6f758225559b1111048e05a3e4c2e26cf",
-                "reference": "cbfe3ee6f758225559b1111048e05a3e4c2e26cf",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/b8bb147f46cc9790326ce2440a13be06cc5a63bb",
+                "reference": "b8bb147f46cc9790326ce2440a13be06cc5a63bb",
                 "shasum": ""
             },
             "require": {
@@ -1927,7 +1932,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2016-05-15 10:06:34"
+            "time": "2016-07-03 21:52:18"
         },
         {
             "name": "gabordemooij/redbean",
@@ -5944,7 +5949,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "a53cb1dd16f80fd95db1198583e8006a46762848"
+                "reference": "6d717e1a5a5dd592ebbeaafad11746849fb52532"
             },
             "require": {
                 "php": ">=5.4.0",
@@ -5966,7 +5971,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-06-25 14:58:52"
+            "time": "2016-07-05 20:48:03"
         },
         {
             "name": "drupal/config_devel",
@@ -6080,16 +6085,16 @@
         },
         {
             "name": "drupal/drupal-driver",
-            "version": "dev-master",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/DrupalDriver.git",
-                "reference": "801f70790332d1ca9f5c6de722d3edd27b8802b8"
+                "reference": "125d39918c97f7a08e3110d456a0a1db864dae46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/801f70790332d1ca9f5c6de722d3edd27b8802b8",
-                "reference": "801f70790332d1ca9f5c6de722d3edd27b8802b8",
+                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/125d39918c97f7a08e3110d456a0a1db864dae46",
+                "reference": "125d39918c97f7a08e3110d456a0a1db864dae46",
                 "shasum": ""
             },
             "require": {
@@ -6133,20 +6138,20 @@
                 "test",
                 "web"
             ],
-            "time": "2016-06-20 16:28:37"
+            "time": "2016-06-20 16:29:51"
         },
         {
             "name": "drupal/drupal-extension",
-            "version": "dev-support-drupal-8.1",
+            "version": "v3.2.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pfrenssen/drupalextension.git",
-                "reference": "156e36891687dd5775e9a1d8bcbd4eb27df08649"
+                "url": "https://github.com/jhedstrom/drupalextension.git",
+                "reference": "abe3a33abd94382ab62423dd972fa820c63962e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/drupalextension/zipball/156e36891687dd5775e9a1d8bcbd4eb27df08649",
-                "reference": "156e36891687dd5775e9a1d8bcbd4eb27df08649",
+                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/abe3a33abd94382ab62423dd972fa820c63962e3",
+                "reference": "abe3a33abd94382ab62423dd972fa820c63962e3",
                 "shasum": ""
             },
             "require": {
@@ -6155,7 +6160,7 @@
                 "behat/mink-extension": "~2.0",
                 "behat/mink-goutte-driver": "~1.0",
                 "behat/mink-selenium2-driver": "~1.1",
-                "drupal/drupal-driver": "dev-master",
+                "drupal/drupal-driver": "~1.2",
                 "symfony/dependency-injection": "~2.7",
                 "symfony/event-dispatcher": "~2.7"
             },
@@ -6177,6 +6182,7 @@
                     "Drupal\\DrupalExtension": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
@@ -6193,10 +6199,7 @@
                 "test",
                 "web"
             ],
-            "support": {
-                "source": "https://github.com/pfrenssen/drupalextension/tree/support-drupal-8.1"
-            },
-            "time": "2016-04-08 14:45:33"
+            "time": "2016-06-30 21:12:18"
         },
         {
             "name": "fabpot/goutte",
@@ -6364,20 +6367,20 @@
         },
         {
             "name": "jcalderonzumba/mink-phantomjs-driver",
-            "version": "dev-master",
+            "version": "v0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jcalderonzumba/MinkPhantomJSDriver.git",
-                "reference": "f6867c5e5ad1727936b5e70075d92c2ec060e1a1"
+                "reference": "782892dbea4af7d04024374672b3790b6c008def"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
-                "reference": "f6867c5e5ad1727936b5e70075d92c2ec060e1a1",
+                "url": "https://api.github.com/repos/jcalderonzumba/MinkPhantomJSDriver/zipball/782892dbea4af7d04024374672b3790b6c008def",
+                "reference": "782892dbea4af7d04024374672b3790b6c008def",
                 "shasum": ""
             },
             "require": {
-                "behat/mink": "~1.7",
+                "behat/mink": "~1.6",
                 "jcalderonzumba/gastonjs": "~1.0",
                 "php": ">=5.4",
                 "twig/twig": "~1.20|~2.0"
@@ -6421,7 +6424,7 @@
                 "phantomjs",
                 "testing"
             ],
-            "time": "2016-03-04 20:15:21"
+            "time": "2015-12-04 13:55:02"
         },
         {
             "name": "mikey179/vfsStream",
@@ -7552,16 +7555,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.6.1",
+            "version": "2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "fb72ed32f8418db5e7770be1653e62e0d6f5dd3d"
+                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/fb72ed32f8418db5e7770be1653e62e0d6f5dd3d",
-                "reference": "fb72ed32f8418db5e7770be1653e62e0d6f5dd3d",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4edb770cb853def6e60c93abb088ad5ac2010c83",
+                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83",
                 "shasum": ""
             },
             "require": {
@@ -7626,7 +7629,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-05-30 22:24:32"
+            "time": "2016-07-13 23:29:13"
         },
         {
             "name": "symfony/browser-kit",
@@ -7746,19 +7749,17 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "composer/composer": 15,
+        "drupal/facets": 20,
         "drupal/og": 20,
         "drupal/og_menu": 20,
         "drupal/r4032login": 20,
-        "drupal/search_api_solr": 20,
         "drupal/view_unpublished": 20,
         "easyrdf/easyrdf": 20,
         "google/material-design-lite": 20,
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
-        "drupal/drupal-extension": 20,
-        "jcalderonzumba/gastonjs": 20,
-        "jcalderonzumba/mink-phantomjs-driver": 20
+        "jcalderonzumba/gastonjs": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
