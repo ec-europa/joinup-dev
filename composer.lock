@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "472417a2d08d3db16d046e320e2d5996",
-    "content-hash": "00ce9a5befc13a08eb44a2999a8a9fdd",
+    "hash": "316e43251e1c7cc6b88b24ea4471a78c",
+    "content-hash": "7fe313269c3bfeaaf7aabc5e9f19b134",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -6064,11 +6064,17 @@
         },
         {
             "name": "drupal/devel",
-            "version": "dev-8.x-1.x",
+            "version": "8.1.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "b8bcdc6f61f976c9bd50099b42bd2809266e9670"
+                "reference": "930b7b89c2fa2047ebbb0fb3ba53f45a67409242"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-alpha1.zip",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "drupal/core": "8.*"
@@ -6103,7 +6109,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2016-07-01 18:41:23"
+            "time": "2016-06-23 14:14:07"
         },
         {
             "name": "drupal/drupal-driver",
@@ -7662,7 +7668,6 @@
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
-        "drupal/devel": 20,
         "jcalderonzumba/gastonjs": 20
     },
     "prefer-stable": true,

@@ -38,7 +38,7 @@
         "drupal/coder": "dev-8.x-2.x#5ebc42e0014720e4d9037273dadc3355d772ccd0",
         "drupal/config_devel": "dev-8.x-1.x#92f735cae8e9fb328edca285340a5bfbf72028cc",
         "drupal/config_update": "dev-8.x-1.x#ac1526df5836a611f04bb421945beddb6306b7f2",
-        "drupal/devel": "dev-8.x-1.x#5c6a5068bbf9e3ea0c46ed34777b679a14a38580",
+        "drupal/devel": "~8.1.0-alpha1",
         "drupal/drupal-extension": "~3.2",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
