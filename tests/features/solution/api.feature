@@ -13,6 +13,8 @@ Feature: Solution API
     And the following solution:
       | title             | My first solution                    |
       | description       | A sample solution                    |
+      | logo              | logo.png                             |
+      | banner            | banner.jpg                           |
       | documentation     | text.pdf                             |
       | elibrary creation | registered users                     |
       | landing page      | http://foo-example.com/landing       |
@@ -32,6 +34,8 @@ Feature: Solution API
     Given the following solution:
       | title             | My first solution mandatory       |
       | description       | Another sample solution           |
+      | logo              | logo.png                          |
+      | banner            | banner.jpg                        |
       | elibrary creation | members                           |
       | collection        | Solution API bar                  |
     Then I should have 1 solution
