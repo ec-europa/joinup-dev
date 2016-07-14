@@ -8,6 +8,7 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -19,6 +20,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use FileTrait;
+  use EntityReferenceTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
 
@@ -376,6 +378,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
         $fields[$field] = $mapped_values[$field][$value];
       }
     }
+
+    // Convert any entity reference field label value with the entity id.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $fields);
 
     // Check for the OG group.
     if (isset($fields['field_is_distribution'])) {

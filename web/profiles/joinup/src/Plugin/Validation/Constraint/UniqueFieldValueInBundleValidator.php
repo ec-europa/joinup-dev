@@ -34,7 +34,7 @@ class UniqueFieldValueInBundleValidator extends ConstraintValidator {
 
     $query = \Drupal::entityQuery($entity_type_id)
       ->condition($field_name, $item->value)
-      ->condition($bundle_key, $bundle);
+      ->condition($bundle_key, $bundles, 'IN');
     if (!empty($entity->id())) {
       $query->condition($id_key, $items->getEntity()->id(), '<>');
     }
