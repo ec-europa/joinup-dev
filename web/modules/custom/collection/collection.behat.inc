@@ -63,7 +63,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Assert the order of elements.
+   * Asserts the order of elements.
    *
    * @Then I should see the following collection menu items in the specified order:
    */
@@ -167,10 +167,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Field alias mapping.
+   * Returns the field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *    The field alias mapping.
    */
   protected static function collectionFieldAliases() {
     // Mapping alias - field name.
@@ -418,7 +418,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Make group content part of a collection.
+   * Makes group content part of a collection.
    *
    * Table format:
    * | content                | collection          |
@@ -486,7 +486,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Remove any created collections.
+   * Removes any created collections.
    *
    * @AfterScenario
    */

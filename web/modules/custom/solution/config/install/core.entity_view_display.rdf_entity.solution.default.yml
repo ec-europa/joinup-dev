@@ -37,8 +37,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
-    - field.field.rdf_entity.solution.og_group_ref
-    - image.style.thumbnail
     - rdf_entity.rdfentity.solution
   module:
     - datetime
@@ -354,12 +352,5 @@ content:
     weight: 0
     settings:
       link_to_entity: false
-    third_party_settings: {  }
-  og_group_ref:
-    type: entity_reference_label
-    weight: 35
-    label: above
-    settings:
-      link: true
     third_party_settings: {  }
 hidden: {  }

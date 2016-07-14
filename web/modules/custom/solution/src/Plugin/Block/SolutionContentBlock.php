@@ -90,7 +90,7 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
 
     // Get news referencing to this solution.
     $entities = $this->entityManager->getStorage('node')
-      ->loadByProperties(['field_news_parent' => $this->solution->id()]);
+      ->loadByProperties(['og_group_ref' => $this->solution->id()]);
     $items = [];
     foreach ($entities as $entity) {
       $items[] = array('#markup' => $entity->link());

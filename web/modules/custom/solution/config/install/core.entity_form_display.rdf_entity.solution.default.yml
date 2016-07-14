@@ -37,8 +37,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
-    - field.field.rdf_entity.solution.og_group_ref
-    - image.style.thumbnail
     - rdf_entity.rdfentity.solution
   module:
     - file
@@ -185,4 +183,3 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
-  og_group_ref: true
