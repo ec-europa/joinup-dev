@@ -129,8 +129,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $graph = $bundle->getThirdPartySetting('rdf_entity', 'graph_' . $graph_type, FALSE);
       if (!$graph) {
         throw new \Exception(format_string('Unable to determine graph "!graph" for bundle "!bundle"', [
-          '!graph' => $this->getActiveGraphType(),
-          '!bundle' => $bundle->id(),
+          '%graph' => $this->getActiveGraphType(),
+          '%bundle' => $bundle->id(),
         ]));
       }
       $graphs[$graph][] = $bundle->id();
