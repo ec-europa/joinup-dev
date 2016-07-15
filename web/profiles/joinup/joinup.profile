@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Enables modules and site configuration for the Joinup profile.
@@ -165,29 +166,4 @@ function joinup_field_widget_inline_entity_form_complex_form_alter(&$element, Fo
 function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form_state) {
   // Avoid showing two labels one after each other.
   $reference_form['entity_id']['#title_display'] = 'invisible';
-}
-
-/**
- * Implements hook_theme().
- */
-function joinup_theme($existing, $type, $theme, $path) {
-  return array(
-    'joinup_tiles' => array(
-      'path' => drupal_get_path('profile', 'joinup') . '/templates',
-    ),
-  );
-}
-
-/**
- * Prepares variables for views joinup_tiles template.
- *
- * Template: joinup-tiles.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - view: The view object.
- *   - rows: An array of row items. Each row is an array of content.
- */
-function template_preprocess_joinup_tiles(&$variables) {
-  template_preprocess_views_view_unformatted($variables);
 }
