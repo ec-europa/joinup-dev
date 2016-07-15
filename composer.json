@@ -11,7 +11,7 @@
         "drupal/console": "~0.10",
         "drupal/core": "~8.1.0",
         "drupal/facets" : "~8.1.0-alpha3",
-        "drupal/og": "dev-update-group-mapping",
+        "drupal/og": "dev-check-group-content-crud-access",
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x",
@@ -69,6 +69,9 @@
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
         "patches": {
+            "drupal/og": {
+                "Support for special permission on Og.": "https://patch-diff.githubusercontent.com/raw/amitaibu/og/pull/250.patch"
+            },
             "drupal/core": {
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
             },
@@ -133,7 +136,7 @@
         {
             "_comment": "This is a temporary branch of a forked repository of the dev branch of Og, including changes not yet merged. @see ISAICP-2622.",
             "type": "vcs",
-            "url": "git@github.com:ec-europa/og"
+            "url": "git@github.com:amitaibu/og"
         },
         {
             "_comment": "Use a fork of Behat Drupal Extension with a fix for #266.",
