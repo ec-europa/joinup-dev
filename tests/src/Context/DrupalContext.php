@@ -191,4 +191,32 @@ class DrupalContext extends DrupalExtensionDrupalContext {
     }
   }
 
+  /**
+   * Assert that certain fieldsets are present on the page.
+   *
+   * @param string $fieldsets
+   *    The fieldset names to search for, separated by comma.
+   *
+   * @throws \Exception
+   *   Thrown when a fieldset is not found.
+   *
+   * @Then (the following )field widgets should be present :fieldsets
+   * @Then (the following )fieldsets should be present :fieldsets
+   */
+  public function assertFieldsetsPresent($fieldsets) {
+    $fieldsets = explode(',', $fieldsets);
+    $fieldsets = array_map('trim', $fieldsets);
+    $fieldsets = array_filter($fieldsets);
+    $not_found = [];
+    foreach ($fieldsets as $fieldset) {
+      $is_found = $this->getSession()->getPage()->find('named', array('fieldset', $fieldset));
+      if (!$is_found) {
+        $not_found[] = $fieldset;
+      }
+    }
+    if ($not_found) {
+      throw new \Exception("Fieldset(s) expected, but not found: " . implode(', ', $not_found));
+    }
+  }
+
 }

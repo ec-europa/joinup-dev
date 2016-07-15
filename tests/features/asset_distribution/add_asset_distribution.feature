@@ -5,20 +5,19 @@ Feature: Add asset distribution through the UI
   I need to be able to add "Asset distribution" RDF entities through the UI.
 
   Scenario: "Add distribution" button should only be shown to moderators.
-    Given the following collection:
-      | title | Asset Distribution Test |
-      | logo  | logo.png                |
-    And the following solution:
-      | title       | Asset random name                |
+    Given the following solution:
+      | title       | Solution random x name           |
       | description | Some reusable random description |
-      | collection  | Asset Distribution Test          |
+    And the following collection:
+      | title      | Asset Distribution Test |
+      | logo       | logo.png                |
+      | affiliates | Solution random x name  |
     And the following asset release:
       | title         | Asset release random name        |
       | description   | Some reusable random description |
-      | is version of | Asset random name                |
-    When I am logged in as a "moderator"
+      | is version of | Solution random x name           |
+    When I am logged in as a "facilitator" of the "Solution random x name" solution
     And I go to the homepage of the "Asset release random name" asset release
-
     # Click the + button.
     Then I click "Add"
     Then I should see the link "Add distribution"
@@ -32,18 +31,18 @@ Feature: Add asset distribution through the UI
     Then I should not see the link "Add distribution"
 
   Scenario: Add distribution as a moderator.
-    Given the following collection:
-      | title | Asset Distribution Test 2 |
-      | logo  | logo.png                  |
-    And the following solution:
-      | title       | Asset random name 2              |
+    Given the following solution:
+      | title       | Solution random x name 2         |
       | description | Some reusable random description |
-      | collection  | Asset Distribution Test 2        |
+    And the following collection:
+      | title      | Asset Distribution Test 2 |
+      | logo       | logo.png                  |
+      | affiliates | Solution random x name 2  |
     And the following asset release:
       | title         | Asset release random name 2      |
       | description   | Some reusable random description |
-      | is version of | Asset random name 2              |
-    And I am logged in as a moderator
+      | is version of | Solution random x name 2         |
+    When I am logged in as a "facilitator" of the "Solution random x name 2" solution
     When I go to the homepage of the "Asset release random name 2" asset release
     And I click "Add distribution"
     Then I should see the heading "Add Asset distribution"

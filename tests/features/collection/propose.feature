@@ -27,17 +27,25 @@ Feature: Proposing a collection
 
   Scenario: Propose a collection
     Given I am logged in as a user with the "authenticated" role
+    And the following organization:
+      | name | Organization example |
     When I am on the homepage
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
+    And the following field widgets should be present "Contact information, Owner"
     When I fill in the following:
     | Title       | Ancient and Classical Mythology                                                                      |
     | Description | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
     # Todo: test adding a "Policy domain" once ISAICP-2356 is done.
     And I attach the file "logo.png" to "Logo"
+    And I attach the file "banner.jpg" to "Banner"
     And I check "Closed collection"
     And I select "Only members can publish new content" from "eLibrary creation"
     And I check "Moderated"
+    # Click the button to select an existing owner.
+    And I press "Add existing Owner"
+    And I fill in "Owner" with "Organization example"
+    And I press "Add Owner"
     And I press "Save"
     Then I should see the heading "Ancient and Classical Mythology"
     # The user that proposed the collection should be auto-subscribed.

@@ -5,6 +5,7 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - contact_information
   - datetime
   - ds
   - image
@@ -13,6 +14,7 @@ dependencies:
   - og
   - og_menu
   - options
+  - owner
   - rdf_entity
   - text
 
@@ -23,6 +25,7 @@ config_devel:
   - field.field.rdf_entity.collection.field_ar_abstract
   - field.field.rdf_entity.collection.field_ar_access_url
   - field.field.rdf_entity.collection.field_ar_affiliates
+  - field.field.rdf_entity.collection.field_ar_banner
   - field.field.rdf_entity.collection.field_ar_closed
   - field.field.rdf_entity.collection.field_ar_contact_information
   - field.field.rdf_entity.collection.field_ar_creation_date
@@ -35,10 +38,10 @@ config_devel:
   - field.field.rdf_entity.collection.field_policy_domain
   - field.field.rdf_entity.collection.field_ar_shared_content
   - field.field.rdf_entity.collection.field_spatial_coverage
-  - field.field.rdf_entity.collection.field_topic
   - field.storage.rdf_entity.field_ar_abstract
   - field.storage.rdf_entity.field_ar_access_url
   - field.storage.rdf_entity.field_ar_affiliates
+  - field.storage.rdf_entity.field_ar_banner
   - field.storage.rdf_entity.field_ar_closed
   - field.storage.rdf_entity.field_ar_contact_information
   - field.storage.rdf_entity.field_ar_creation_date
