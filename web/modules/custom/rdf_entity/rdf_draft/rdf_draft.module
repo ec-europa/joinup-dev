@@ -53,3 +53,16 @@ function rdf_draft_entity_operation(EntityInterface $entity) {
   }
   return $operations;
 }
+
+
+/**
+ * Implements hook_entity_create().
+ */
+function rdf_draft_entity_create(\Drupal\Core\Entity\EntityInterface $entity) {
+  $entity_type = $entity->getEntityTypeId();
+  $storage = \Drupal::entityManager()->getStorage($entity_type);
+  if ($storage instanceof RdfEntitySparqlStorage) {
+    // Create new entities in the draft graph instead of the published.
+    $entity->graph = $storage->getGraph($entity->bundle(), 'draft');
+  }
+}

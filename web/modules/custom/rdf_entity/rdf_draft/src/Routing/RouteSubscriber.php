@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteSubscriberBase;
 use Drupal\Core\Routing\RoutingEvents;
+use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -31,13 +32,23 @@ class RouteSubscriber extends RouteSubscriberBase {
     $this->entityTypeManager = $entity_manager;
   }
 
+
+
   /**
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
     foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {
-      if ($route = $this->getRdfGraphRoute($entity_type)) {
-        $collection->add("entity.$entity_type_id.rdf_draft", $route);
+      $storage = \Drupal::entityManager()->getStorage($entity_type_id);
+      if ($storage instanceof RdfEntitySparqlStorage) {
+        $definitions = $storage->getGraphsDefinition();
+        unset($definitions['default']);
+        foreach ($definitions as $name => $definition) {
+          $definition['name'] = $name;
+          if ($route = $this->getRdfGraphRoute($entity_type, $definition)) {
+            $collection->add("entity.$entity_type_id.rdf_draft", $route);
+          }
+        }
       }
     }
   }
@@ -51,7 +62,7 @@ class RouteSubscriber extends RouteSubscriberBase {
    * @return \Symfony\Component\Routing\Route|null
    *   The generated route, if available.
    */
-  protected function getRdfGraphRoute(EntityTypeInterface $entity_type) {
+  protected function getRdfGraphRoute(EntityTypeInterface $entity_type, $graph_definition) {
     if ($rdf_draft = $entity_type->getLinkTemplate('rdf-draft')) {
       $entity_type_id = $entity_type->id();
 
@@ -59,10 +70,10 @@ class RouteSubscriber extends RouteSubscriberBase {
       $route
         ->addDefaults([
           '_controller' => '\Drupal\rdf_draft\Controller\RdfController::view',
-          '_title' => 'View draft',
+          '_title' => (string) t('View @title', ['@title' => (string) $graph_definition['title']]),
         ])
         ->addRequirements([
-          '_permission' => 'export rdf metadata',
+          '_permission' => 'view ' . $graph_definition['name']. ' graph',
         ])
         ->setOption('entity_type_id', $entity_type_id)
         ->setOption('parameters', [

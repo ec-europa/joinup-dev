@@ -4,6 +4,7 @@ namespace Drupal\rdf_entity\Entity\Controller;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
+use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 
 /**
  * Provides a list controller for rdf_entity entity.
@@ -25,6 +26,11 @@ class RdfListBuilder extends EntityListBuilder {
     }
     $query = $rdf_storage->getQuery()
       ->condition('rid', NULL, 'IN');
+    // @todo Use the right graph here :)
+    // @todo Find a nice way of doing this...
+    //if (!empty($_GET['graph'])) {
+    //  $query->setGraphType($_GET['graph']);
+    //}
 
     // Only add the pager if a limit is specified.
     if ($this->limit) {
@@ -44,6 +50,24 @@ class RdfListBuilder extends EntityListBuilder {
    * buildHeader() and buildRow() implementations.
    */
   public function render() {
+    /** @var RdfEntitySparqlStorage $storage */
+    $storage = $this->storage;
+    $definitions = $storage->getGraphsDefinition();
+    if (count($definitions)) {
+      $options = [];
+      foreach ($definitions as $name => $definition) {
+        $options[$name] = $definition['title'];
+      }
+      $build['graph_select'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Graph'),
+        '#options' => $options,
+      ];
+      $build['submit'] = [
+        '#type' => 'submit',
+      ];
+    }
+    // <<< Get through form here >>>
     $build['description'] = array(
       '#markup' => $this->t('The Rdf entities are stored in a triple store.'),
     );
