@@ -1,0 +1,33 @@
+// Component
+// --------------------------------------------------
+.filter
+  margin-bottom: 15px
+  +breakpoint(mobile)
+    display: inline-block
+    vertical-align: top
+    margin-right: 8px
+    &:last-of-type
+      margin-right: 0
+
+// Elements
+// --------------------------------------------------
+.filter__label,
+.filter__term,
+.filter__icon
+  display: inline-block
+  vertical-align: middle
+
+.filter__term
+  color: $color-orange
+
+.filter__icon
+  +icon-size(20px)
+
+// Modifiers
+// --------------------------------------------------
+.filters--horizontal
+  text-align: center
+  margin-bottom: 30px
+
+// Dependiencies
+// --------------------------------------------------
