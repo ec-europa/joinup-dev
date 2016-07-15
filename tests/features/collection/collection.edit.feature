@@ -11,10 +11,12 @@ Feature: Collection edited by owner
     Given users:
       | name            | pass          | mail                        |
       | Bob the builder | bobthebuilder | bob.the.builder@example.com |
+    And the following person:
+      | name | Foo |
     And collections:
-      | title         | description                           | logo     | moderation |
-      | Wendy's house | Let's build a house for Wendy.        | logo.png | yes        |
-      | Mayor's house | We cannot build a house for Mr. Mayor | logo.png | yes        |
+      | title         | description                           | logo     | banner     | owner | moderation |
+      | Wendy's house | Let's build a house for Wendy.        | logo.png | banner.jpg | Foo   | yes        |
+      | Mayor's house | We cannot build a house for Mr. Mayor | logo.png | banner.jpg | Foo   | yes        |
     And user memberships:
       | collection    | user            | roles                      |
       # Assigning the default roles as when we create a collection through UI.
