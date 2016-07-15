@@ -9,6 +9,7 @@
 // Elements
 // --------------------------------------------------
 .page__title
+  position: relative
   margin: 40px 60px
   letter-spacing: 1px
 
@@ -19,3 +20,14 @@
 
 // Modifiers
 // --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.page__title
+  .icon
+    position: absolute
+    top: 50%
+    left: -55px
+    transform: translateY(-50%)
+    +icon-size(50px)
+
