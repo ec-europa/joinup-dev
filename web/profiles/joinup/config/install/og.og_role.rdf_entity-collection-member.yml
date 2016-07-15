@@ -23,4 +23,4 @@ permissions:
   - 'create news content'
   - 'edit own news content'
   - 'delete own news content'
-role_type: immutable
+role_type: required
