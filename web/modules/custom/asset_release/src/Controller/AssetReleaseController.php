@@ -4,6 +4,7 @@ namespace Drupal\asset_release\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -72,18 +73,26 @@ class AssetReleaseController extends ControllerBase {
    *   The access result object.
    */
   public function createAssetReleaseAccess(RdfInterface $rdf_entity) {
-    // Check that the passed in RDF entity is a collection, and that the user
-    // has the permission to create asset_releases.
-    // @todo Collection owners and facilitators should also have the right to
-    //   create asset_releases for the collections they manage.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2448
-    if ($rdf_entity->bundle() == 'solution' && $this->currentUser()
-        ->hasPermission('create asset_release rdf entity')
-    ) {
-      return AccessResult::allowed();
-    }
+    $user = $this->currentUser();
+    $membership = Og::getMembership($user, $rdf_entity);
+    // @todo: Remove check for empty after ISAICP-2369 is in.
+    return (!empty($membership) && $membership->hasPermission('create asset_release rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
+  }
 
-    return AccessResult::forbidden();
+  /**
+   * Creates a new asset_release entity.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The solution that the asset_release is version of.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   The unsaved asset_release entity.
+   */
+  protected function createNewAssetRelease(RdfInterface $rdf_entity) {
+    return $this->entityTypeManager()->getStorage('rdf_entity')->create([
+      'rid' => 'asset_release',
+      'field_isr_is_version_of' => $rdf_entity->id(),
+    ]);
   }
 
 }

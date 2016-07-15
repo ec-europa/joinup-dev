@@ -53,7 +53,6 @@ config_devel:
   - field.field.rdf_entity.solution.field_is_webdav_creation
   - field.field.rdf_entity.solution.field_is_webdav_url
   - field.field.rdf_entity.solution.field_is_wiki
-  - field.field.rdf_entity.solution.og_group_ref
   - field.storage.rdf_entity.field_is_actor
   - field.storage.rdf_entity.field_is_affiliations_requests
   - field.storage.rdf_entity.field_is_banner
@@ -84,5 +83,4 @@ config_devel:
   - field.storage.rdf_entity.field_is_webdav_creation
   - field.storage.rdf_entity.field_is_webdav_url
   - field.storage.rdf_entity.field_is_wiki
-  - field.storage.rdf_entity.og_group_ref
   - rdf_entity.rdfentity.solution

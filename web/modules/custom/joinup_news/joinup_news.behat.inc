@@ -29,14 +29,16 @@ class NewsSubContext extends DrupalSubContextBase implements DrupalSubContextInt
    *   The title of the news page to check.
    * @param string $rdf_entity
    *   The name of the collection to check.
+   * @param string $rdf_entity_bundle
+   *   The bundle of the parent.
    *
    * @throws \Exception
-   *   Thrown when a custom page with the given title doesn't exist.
+   *   Thrown when a news content entity with the given title does not exist.
    *
-   * @Then the :rdf_entity collection has a news page titled :title
+   * @Then the :rdf_entity :rdf_entity_bundle has a news page titled :title
    */
-  public function assertOgMembership($title, $rdf_entity) {
-    $rdf_entity = $this->getRdfEntityByLabel($rdf_entity, 'collection');
+  public function assertOgMembership($title, $rdf_entity, $rdf_entity_bundle) {
+    $rdf_entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
 
     $news = \Drupal::entityTypeManager()
       ->getStorage('node')
@@ -56,38 +58,7 @@ class NewsSubContext extends DrupalSubContextBase implements DrupalSubContextInt
       }
     }
 
-    throw new \Exception("The news page '$title' is not associated with collection '{$rdf_entity->label()}'.");
-  }
-
-  /**
-   * Checks if the given news page belongs to the given solution.
-   *
-   * If there are multiple news pages or solutions with the same name, then
-   * only the first one is checked.
-   *
-   * @param string $title
-   *   The title of the news page to check.
-   * @param string $rdf_entity
-   *   The name of the solution to check.
-   *
-   * @throws \Exception
-   *   Thrown when a custom page with the given title does not exist or is not
-   *   related to the solution.
-   *
-   * @Then the :rdf_entity solution has a news page titled :title
-   */
-  public function assertSolutionParent($title, $rdf_entity) {
-    $rdf_entity = $this->getRdfEntityByLabel($rdf_entity, 'solution');
-
-    $news = \Drupal::entityTypeManager()
-      ->getStorage('node')
-      ->loadByProperties(['title' => $title, 'field_news_parent' => $rdf_entity->id()]);
-    /** @var \Drupal\node\NodeInterface $new */
-    $new = reset($news);
-
-    if (empty($new)) {
-      throw new \Exception("The news page titled '$title' was not found or the entity is not related to solution {$rdf_entity->id()}.");
-    }
+    throw new \Exception("The news page '$title' is not associated with {$rdf_entity_bundle} '{$rdf_entity->label()}'.");
   }
 
   /**

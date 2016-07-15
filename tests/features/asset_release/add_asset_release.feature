@@ -10,7 +10,7 @@ Feature: "Add release" visibility options.
       | description   | My awesome solution   |
       | documentation | text.pdf              |
 
-    When I am logged in as a "moderator"
+    When I am logged in as a "facilitator" of the "Release solution test" solution
     And I go to the homepage of the "Release solution test" solution
     Then I should see the link "Add release"
 
@@ -30,7 +30,7 @@ Feature: "Add release" visibility options.
       | Release Test 1 | test description 1 | text.pdf      | Organization example |
       | Release Test 2 | test description 2 | text.pdf      | Organization example |
     # Check that the release cannot take the title of another solution.
-    And I am logged in as a moderator
+    When I am logged in as a "facilitator" of the "Release Test 1" solution
     When I go to the homepage of the "Release Test 1" solution
     And I click "Add release"
     Then I should see the heading "Add Asset release"
@@ -55,7 +55,7 @@ Feature: "Add release" visibility options.
     And I should see the text "Release Test 1 v2"
 
     # Check that the release cannot take the title of another release in another solution.
-    And I am logged in as a moderator
+    When I am logged in as a "facilitator" of the "Release Test 2" solution
     When I go to the homepage of the "Release Test 2" solution
     And I click "Add release"
     Then I should see the heading "Add Asset release"

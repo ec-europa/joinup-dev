@@ -1,0 +1,4 @@
+services:
+  asset_distribution.relations:
+    class: Drupal\asset_distribution\AssetDistributionRelations
+    arguments: ["@entity_type.manager"]
