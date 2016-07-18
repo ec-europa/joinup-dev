@@ -82,3 +82,6 @@ Feature: Collections Overview
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the link "Colonies in space"
+
+    # Clean up the collection that was created manually.
+    Then I delete the "Colonies in space" collection

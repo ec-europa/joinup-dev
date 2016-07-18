@@ -77,10 +77,6 @@ class NewsController extends ControllerBase {
   /**
    * Returns a news content entity.
    *
-   * The news content entity is pre-filled with the parent Rdf entity and the
-   * initial state. The initial state is needed to provide the appropriate
-   * options to the user.
-   *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *    The parent that the news content entity belongs to.
    *
@@ -88,10 +84,9 @@ class NewsController extends ControllerBase {
    *    A node entity.
    */
   protected function createNewsEntity(RdfInterface $rdf_entity) {
-    $field = ($rdf_entity->bundle() == 'collection') ? 'og_group_ref' : 'field_news_parent';
     return $this->entityTypeManager()->getStorage('node')->create([
       'type' => 'news',
-      $field => $rdf_entity->id(),
+      'og_group_ref' => $rdf_entity->id(),
     ]);
   }
 

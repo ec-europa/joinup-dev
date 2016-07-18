@@ -15,6 +15,6 @@ Feature: Event API
       | closed            | yes              |
       | elibrary creation | facilitators     |
     And event content:
-      | title       | field_event_short_title | body                                     | collection       | field_start_date    |
-      | Dummy Event | Short                   | This is some dummy content like foo:bar. | Le Event Heureux | 2016-03-15T11:12:12 |
+      | title       | short title | body                                     | collection       | start date          |
+      | Dummy Event | Short       | This is some dummy content like foo:bar. | Le Event Heureux | 2016-03-15T11:12:12 |
     Then I should have a "Event" page titled "Dummy Event"

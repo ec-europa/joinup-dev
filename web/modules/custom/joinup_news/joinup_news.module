@@ -152,9 +152,5 @@ function joinup_news_get_parent(EntityInterface $entity) {
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
     $parent = Rdf::load($entity->og_group_ref->first()->target_id);
   }
-  if (!empty($entity->field_news_parent->first()->target_id)) {
-    /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    $parent = Rdf::load($entity->field_news_parent->first()->target_id);
-  }
   return $parent;
 }

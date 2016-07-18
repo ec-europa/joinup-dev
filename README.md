@@ -17,7 +17,7 @@ tries to follow the 'drupal-way' as much as possible.
 
 You are free to fork this project to host your own collaborative platform.
 Joinup is licensed under the
-[EUPL](https://en.wikipedia.org/wiki/European_Union_Public_Licence), which is
+[EUPL](https://joinup.ec.europa.eu/community/eupl/og_page/eupl), which is
 compatible with the GPL.
 
 ## Contributing
