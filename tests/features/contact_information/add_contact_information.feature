@@ -9,9 +9,12 @@ Feature: Creation of contact information through UI
     When I visit "rdf_entity/add/contact_information"
     Then I should see the heading "Add Contact information"
     When I fill in the following:
-      | E-mail | foo@bar.com                 |
+      | E-mail | foo@bar                     |
       | Name   | Contact information example |
       | URL    | http://www.example.org      |
+    And I press "Save"
+    Then I should see the error message "The e-mail foo@bar is not valid."
+    When I fill in "E-mail" with "foo@bar.com"
     And I press "Save"
     Then I should see the heading "Contact information example"
     # Cleanup created contact information.
