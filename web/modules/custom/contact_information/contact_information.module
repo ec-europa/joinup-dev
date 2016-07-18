@@ -6,6 +6,16 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function contact_information_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'contact_information' && !empty($fields['field_ci_email'])) {
+    $fields['field_ci_email']->addConstraint('JoinupEmail');
+  }
+}
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
