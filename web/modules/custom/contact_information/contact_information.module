@@ -4,3 +4,19 @@
  * @file
  * Provides functionality for the contact information module.
  */
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function contact_information_rdf_entity_presave(EntityInterface $entity) {
+  // Handle only contact information entities.
+  if ($entity->bundle() != 'contact_information') {
+    return;
+  }
+
+  // Generate the label using the values of the name field.
+  $names = array_column($entity->get('field_ci_name')->getValue(), 'value');
+  $entity->set('label', implode(', ', $names));
+}
