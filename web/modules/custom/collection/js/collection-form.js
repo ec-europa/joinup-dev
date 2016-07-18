@@ -1,3 +1,8 @@
+/**
+ * @file
+ * Joinup collection edit form script.
+ */
+
 (function ($) {
 
   "use strict";
