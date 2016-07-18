@@ -244,7 +244,6 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
       'solution type' => 'field_isr_solution_type',
       'spatial coverage' => 'field_spatial_coverage',
       'status' => 'field_status',
-      'topic' => 'field_topic',
       'translation' => 'field_isr_translation',
     ];
   }

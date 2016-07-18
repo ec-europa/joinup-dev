@@ -14,23 +14,12 @@
  * @see template_preprocess_menu_local_task()
  */
 #}
-{% if is_active %}
-{%
-  set classes = [
-    'tab',
-    'tab--horizontal',
-    'is-active',
-    'mdl-tabs__tab',
-  ]
-%}
-{% else %}
 {%
   set classes = [
     'tab',
     'tab--horizontal',
     'mdl-tabs__tab',
+    is_active ? 'is-active',
   ]
 %}
-{% endif %}
-
 <li{{ attributes.addClass(classes) }}>{{ link }}</li>

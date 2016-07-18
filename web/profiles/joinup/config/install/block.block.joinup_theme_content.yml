@@ -8,7 +8,7 @@ dependencies:
 id: joinup_theme_content
 theme: joinup_theme
 region: content
-weight: -4
+weight: -5
 provider: null
 plugin: system_main_block
 settings:

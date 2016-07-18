@@ -3,9 +3,13 @@ type: module
 description: News content type.
 core: 8.x
 package: Joinup
-
 dependencies:
+  - collection
   - ds
+  - og
+  - solution
+  - state_machine
+  - view_unpublished
 
 config_devel:
   - core.entity_form_display.node.news.default
@@ -13,10 +17,10 @@ config_devel:
   - core.entity_view_display.node.news.view_mode_tile
   - field.field.node.news.body
   - field.field.node.news.field_news_kicker
-  - field.field.node.news.field_news_parent
   - field.field.node.news.field_news_source_url
+  - field.field.node.news.field_news_state
   - field.field.node.news.og_group_ref
   - field.storage.node.field_news_kicker
-  - field.storage.node.field_news_parent
   - field.storage.node.field_news_source_url
+  - field.storage.node.field_news_state
   - node.type.news

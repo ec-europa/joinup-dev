@@ -1,10 +1,10 @@
 {% if content %}
-  <div id="add-content" class="button--circle-wrapper">
+  <div {{ attributes.addClass('button--circle-wrapper') }}>
     <button href="#" class="button--circle mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
       <span class="icon icon--plus"></span>
     </button>
   </div>
-    <ul class="add-content-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="add-content">
+    <ul class="add-content-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="{{ attributes.id }}">
     {% for list in content %}
       {% for item in list %}
         {%  if item is iterable %}

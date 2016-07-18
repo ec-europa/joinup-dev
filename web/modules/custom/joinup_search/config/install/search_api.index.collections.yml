@@ -116,30 +116,38 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_isr_description
-  search_api_aggregation_1:
-    label: Type
+  aggregated_field:
+    label: 'Aggregated field'
     datasource_id: null
-    property_path: search_api_aggregation_1
+    property_path: aggregated_field
     type: string
-    indexed_locked: true
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/type'
+        - 'entity:rdf_entity/rid'
+  aggregated_field_1:
+    label: 'Aggregated field'
+    datasource_id: null
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/og_group_ref'
+        - 'entity:rdf_entity/og_group_ref'
 processor_settings:
+  rendered_item:
+    plugin_id: rendered_item
+    settings: {  }
+  aggregated_field:
+    plugin_id: aggregated_field
+    settings: {  }
   add_url:
     plugin_id: add_url
     settings:
       weights:
         preprocess_index: -30
-  aggregated_field:
-    plugin_id: aggregated_field
-    settings:
-      fields:
-        search_api_aggregation_1:
-          label: Type
-          type: union
-          fields:
-            - 'entity:node/type'
-            - 'entity:rdf_entity/rid'
-      weights:
-        preprocess_index: -10
 options:
   index_directly: true
   cron_limit: 50

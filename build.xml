@@ -218,6 +218,15 @@
         </drush>
     </target>
 
+    <target name="virtuoso-set-dirsallowed">
+        <echo message="Allow importing of RDF data from all directories"/>
+        <exec dir="${project.basedir}"
+              command="sudo sed -i 's/DirsAllowed              = ., \/usr\/share\/virtuoso-opensource-6.1\/vad/DirsAllowed = \//g' /etc/virtuoso-opensource-6.1/virtuoso.ini;
+sudo /etc/init.d/virtuoso-opensource-6.1 restart"
+              checkreturn="true"
+              passthru="true"/>
+    </target>
+
     <target name="build-index">
         <echo message="Building Solr index"/>
         <exec dir="${project.basedir}"
@@ -283,6 +292,20 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
             bin="${drush.bin}"
             verbose="${drush.verbose}">
             <param>${drupal.modules.dev}</param>
+        </drush>
+    </target>
+
+    <!-- Enable modules for user acceptance testing. These are different from the
+      ones in enable-dev-modules as it can contain modules not needed for development
+      like demo content modules. -->
+    <target name="enable-uat-modules">
+        <drush
+            command="pm-enable"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <param>${drupal.modules.uat}</param>
         </drush>
     </target>
     

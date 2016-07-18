@@ -5,18 +5,21 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - ds
   - og
   - node
   - field
   - path
   - text
   - menu_ui
+  - user
 
 config_devel:
 - core.base_field_override.node.custom_page.promote
 - core.base_field_override.node.custom_page.status
 - core.entity_form_display.node.custom_page.default
 - core.entity_view_display.node.custom_page.default
+- core.entity_view_display.node.custom_page.view_mode_tile
 - field.field.node.custom_page.body
 - field.field.node.custom_page.og_group_ref
 - field.storage.node.og_group_ref
