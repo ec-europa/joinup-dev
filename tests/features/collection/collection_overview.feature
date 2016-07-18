@@ -2,17 +2,13 @@
 Feature: Collections Overview
 
   Scenario: Check visibility of "Collections" menu link.
-    Given I am an anonymous user
-    Then I should see the link "Collections"
-    When I click "Collections"
-    Then I should see the heading "Collections"
-    # Check that all logged in users can see and access the link as well.
+    # Check that all logged in users can see and access the link.
     Given I am logged in as a user with the "authenticated user" role
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the heading "Collections"
 
-  Scenario: View collection overview as an anonymous user
+  Scenario: View collection overview as an authenticated user
     Given users:
       | name          | mail                         | roles |
       | Madam Shirley | i.see.the.future@example.com |       |
@@ -24,21 +20,9 @@ Feature: Collections Overview
     Given organization:
       | name | Organization example |
     Then I commit the solr index
-    # Check that visiting as an anonymous does not create cache for all users.
-    When I am an anonymous user
-    And I am on the homepage
-    Then I should see the link "Collections"
-    And I click "Collections"
 
     # Check page for authenticated users.
     When I am logged in as "Madam Shirley"
-    And I am on the homepage
-    And I click "Collections"
-    Then I should see the text "eHealth"
-    And I should see the text "Open Data"
-    And I should see the text "Connecting Europe"
-
-    When I am an anonymous user
     And I am on the homepage
     Then I should see the link "Collections"
     When I click "Collections"
@@ -76,9 +60,9 @@ Feature: Collections Overview
 
     # @todo: Normally the collection should go through a moderation process.
     # It will not be immediately available.
-    # Check the new collection as an anonymous user.
-    When I am an anonymous user
-    And I am on the homepage
+    # Check the new collection as an authenticated user.
+    Given I am logged in as "Madam Shirley"
+    When I am on the homepage
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the link "Colonies in space"
