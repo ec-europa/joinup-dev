@@ -9,9 +9,9 @@ Feature: Creation of contact information through UI
     When I visit "rdf_entity/add/contact_information"
     Then I should see the heading "Add Contact information"
     When I fill in the following:
-      | E-mail      | foo@bar.com                 |
-      | Name        | Contact information example |
-      | Website URL | http://www.example.org      |
+      | E-mail | foo@bar.com                 |
+      | Name   | Contact information example |
+      | URL    | http://www.example.org      |
     And I press "Save"
     Then I should see the heading "Contact information example"
     # Cleanup created contact information.
