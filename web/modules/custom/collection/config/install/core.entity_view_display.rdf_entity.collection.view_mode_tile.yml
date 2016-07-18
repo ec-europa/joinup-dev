@@ -6,6 +6,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_abstract
     - field.field.rdf_entity.collection.field_ar_access_url
     - field.field.rdf_entity.collection.field_ar_affiliates
+    - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
     - field.field.rdf_entity.collection.field_ar_creation_date
@@ -18,7 +19,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
-    - field.field.rdf_entity.collection.field_topic
     - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
@@ -62,6 +62,10 @@ targetEntityType: rdf_entity
 bundle: collection
 mode: view_mode_tile
 content:
+  collection_content:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
   field_ar_abstract:
     type: text_trimmed
     weight: 16
@@ -231,13 +235,6 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-  field_topic:
-    type: entity_reference_label
-    weight: 7
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
   label:
     label: hidden
     type: string
@@ -247,9 +244,31 @@ content:
     third_party_settings:
       ds:
         ft:
-          id: default
+          id: expert
           settings:
             lb: ''
+            prefix: ''
+            lbw-el: ''
+            lbw-cl: ''
+            lbw-at: ''
+            ow: true
+            ow-el: div
+            ow-cl: listing__field
+            ow-at: ''
+            fis-el: ''
+            fis-cl: ''
+            fis-at: ''
+            fi: true
+            fi-el: div
+            fi-cl: listing__title
+            fi-at: ''
+            suffix: ''
+            lbw: false
             lb-col: false
-            classes: {  }
-hidden: {  }
+            ow-def-at: false
+            ow-def-cl: false
+            fis: false
+            fis-def-at: false
+            fi-def-at: false
+hidden:
+  field_ar_banner: true

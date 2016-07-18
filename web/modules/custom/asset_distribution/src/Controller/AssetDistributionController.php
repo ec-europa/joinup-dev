@@ -2,9 +2,12 @@
 
 namespace Drupal\asset_distribution\Controller;
 
+use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AssetDistributionController.
@@ -15,6 +18,29 @@ use Drupal\rdf_entity\RdfInterface;
  * @package Drupal\asset_distribution\Controller
  */
 class AssetDistributionController extends ControllerBase {
+
+  /**
+   * Drupal\asset_distribution\AssetDistributionRelations definition.
+   *
+   * @var \Drupal\asset_distribution\AssetDistributionRelations
+   */
+  protected $assetDistributionRelations;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(AssetDistributionRelations $asset_distribution_relations) {
+    $this->assetDistributionRelations = $asset_distribution_relations;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('asset_distribution.relations')
+    );
+  }
 
   /**
    * Controller for the base form.
@@ -48,18 +74,17 @@ class AssetDistributionController extends ControllerBase {
    *   The access result object.
    */
   public function createAssetDistributionAccess(RdfInterface $rdf_entity) {
-    // Check that the passed in RDF entity is a solution, and that the user
-    // has the permission to create distribution entities.
-    // @todo Collection owners and facilitators should also have the right to
-    //   create distributions related to the solutions they manage.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2450
-    if ($rdf_entity->bundle() == 'asset_release' && $this->currentUser()
-        ->hasPermission('create asset_distribution rdf entity')
-    ) {
-      return AccessResult::allowed();
-    }
+    $solution = $this->assetDistributionRelations->getReleaseSolution($rdf_entity);
+    $user = $this->currentUser();
 
-    return AccessResult::forbidden();
+    // This form is meant only if a user is adding a distribution through a
+    // release of a solution.
+    if (empty($solution) && !$user->isAnonymous()) {
+      return AccessResult::forbidden();
+    }
+    $membership = Og::getMembership($user, $solution);
+    // @todo: Remove check for empty membership after ISAICP-2369 is in.
+    return (!empty($membership) && $membership->hasPermission('create asset_distribution rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
 }

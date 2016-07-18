@@ -8,7 +8,9 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -18,7 +20,9 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use EntityReferenceTrait;
   use FileTrait;
+  use NodeTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
 
@@ -156,6 +160,32 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Make group content part of a solution.
+   *
+   * Table format:
+   * | content                | solution          |
+   * | Content entity 1 title | Solution 1 title  |
+   * | Content entity 2 title | Solution 1 title  |
+   * | Content entity 3 title | Solution 2 title  |
+   *
+   * @param string $bundle
+   *   The bundle of the content entity.
+   * @param TableNode $membership_table
+   *   The membership table.
+   *
+   * @Given (the following ):bundle content belong to the corresponding solutions:
+   */
+  public function givenContentMemberships($bundle, TableNode $membership_table) {
+    foreach ($membership_table->getColumnsHash() as $values) {
+      $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
+      /** @var \Drupal\node\NodeInterface $content */
+      $content = $this->getNodeByTitle($values['content'], $bundle);
+      $content->get('og_group_ref')->set(0, $group->id());
+      $content->save();
+    }
+  }
+
+  /**
    * Creates a solution from the given property and field data.
    *
    * @param array $values
@@ -168,8 +198,16 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *   Thrown when a given image is not found.
    */
   protected function createSolution(array $values) {
-    if (!empty($values['field_is_documentation'])) {
-      $values['field_is_documentation'] = [$this->createFile($values['field_is_documentation'], $this->getMinkParameter('files_path'))];
+    $file_fields = [
+      'field_is_documentation',
+      'field_is_banner',
+      'field_is_logo',
+    ];
+
+    foreach ($file_fields as $field_name) {
+      if (!empty($values[$field_name])) {
+        $values[$field_name] = [$this->createFile($values[$field_name], $this->getMinkParameter('files_path'))];
+      }
     }
 
     $values['rid'] = 'solution';
@@ -318,6 +356,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'uri' => 'id',
       'title' => 'label',
       'affiliations requests' => 'field_is_affiliations_requests',
+      'banner' => 'field_is_banner',
       'contact information' => 'field_is_contact_information',
       'creation date' => 'field_is_creation_date',
       'description' => 'field_is_description',
@@ -329,6 +368,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'landing page' => 'field_is_landing_page',
       'language' => 'field_is_language',
       'latest release' => 'field_is_latest_release',
+      'logo' => 'field_is_logo',
       'metrics page' => 'field_is_metrics_page',
       'moderation' => 'field_is_moderation',
       'modification date' => 'field_is_modification_date',
@@ -376,6 +416,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
         $fields[$field] = $mapped_values[$field][$value];
       }
     }
+
+    // Convert any entity reference field label value with the entity id.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $fields);
 
     // Check for the OG group.
     if (isset($fields['field_is_distribution'])) {

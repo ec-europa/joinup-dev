@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - facets
+  theme:
+    - joinup_theme
+id: primaryadminactions
+theme: joinup_theme
+region: content
+weight: -8
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility:
+  other_facet:
+    id: other_facet
+    facets: ''
+    facet_value: ''
+    negate: false
+    context_mapping: {  }
