@@ -159,14 +159,14 @@ display:
       empty: {  }
       relationships: {  }
       arguments:
-        search_api_aggregation_2:
-          id: search_api_aggregation_2
+        aggregated_field_1:
+          id: aggregated_field_1
           table: search_api_index_collections
-          field: search_api_aggregation_2
+          field: aggregated_field_1
           relationship: none
           group_type: group
           admin_label: ''
-          default_action: 'not found'
+          default_action: default
           exception:
             value: all
             title_enable: false
