@@ -33,15 +33,27 @@
         {% for item in items %}
           {%
           set classes = [
-          'header-menu__link',
-          'mdl-navigation__link',
-          'sidebar-header-menu__link mdl-navigation__link',
-          item.is_expanded ? 'menu-item--expanded',
-          item.is_collapsed ? 'menu-item--collapsed',
-          item.in_active_trail ? 'active-trail',
+            'header-menu__link',
+            'mdl-navigation__link',
+            'sidebar-header-menu__link mdl-navigation__link',
+            item.is_expanded ? 'menu-item--expanded',
+            item.is_collapsed ? 'menu-item--collapsed',
+            item.in_active_trail ? 'active-trail',
           ]
           %}
-          {{ link(item.title, item.url, { 'class': classes }) }}
+          {%
+          set icon_classes = [
+            'header-menu__icon',
+            'icon',
+            'icon--' ~ item.title|clean_class,
+          ]
+          %}
+          <a {{ attributes.addClass(classes) }} href="{{ item.url }}">
+            <span class="header-menu__wrapper">
+              <span {{ attributes.removeClass(classes).addClass(icon_classes) }} ></span>
+              <span class="header-menu__text">{{ item.title }}</span>
+            </span>
+          </a>
         {% endfor %}
       </nav>
   {% endif %}

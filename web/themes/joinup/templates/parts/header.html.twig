@@ -6,7 +6,7 @@
     <div class="mdl-layout-spacer"></div>
 
     {{ page.header_central_menu }}
-    
+
     <div class="mdl-layout-spacer"></div>
     <div class="search-bar search-bar--header mdl-textfield mdl-js-textfield mdl-textfield--expandable
     mdl-textfield--floating-label mdl-textfield--align-right">
@@ -14,10 +14,10 @@
       for="search-bar__input">
       <i class="search-bar__icon material-icons"></i>
       </label>
-      <div class="search-bar__input-container mdl-textfield__expandable-holder">
-        <input class="search-bar__input mdl-textfield__input" type="text" name="search"
+      <form action="search" class="search-bar__input-container mdl-textfield__expandable-holder">
+        <input class="search-bar__input mdl-textfield__input" type="text" name="q"
         id="search-bar__input">
-      </div>
+      </form>
     </div>
 
       {{ page.header_profile_menu }}
