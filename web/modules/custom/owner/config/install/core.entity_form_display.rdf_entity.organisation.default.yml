@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.rdf_entity.organization.field_oo_name
-    - rdf_entity.rdfentity.organization
-id: rdf_entity.organization.default
+    - field.field.rdf_entity.organisation.field_oo_name
+    - rdf_entity.rdfentity.organisation
+id: rdf_entity.organisation.default
 targetEntityType: rdf_entity
-bundle: organization
+bundle: organisation
 mode: default
 content:
   field_oo_name:

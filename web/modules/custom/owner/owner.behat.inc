@@ -46,7 +46,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   }
 
   /**
-   * Creates a organization owner with data provided in a table.
+   * Creates a organisation owner with data provided in a table.
    *
    * Table format:
    * | name | Red birds |
@@ -54,13 +54,13 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @param TableNode $collection_table
    *   The collection data.
    *
-   * @Given (the following )organization:
+   * @Given (the following )organisation:
    */
-  public function givenOrganization(TableNode $collection_table) {
+  public function givenOrganisation(TableNode $collection_table) {
     // Convert aliased field names.
-    $values = $this->convertFieldAliases('organization', $collection_table);
+    $values = $this->convertFieldAliases('organisation', $collection_table);
 
-    $this->createOwner('organization', $values);
+    $this->createOwner('organisation', $values);
   }
 
   /**
@@ -79,18 +79,18 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   }
 
   /**
-   * Checks the number of available organizations.
+   * Checks the number of available organisations.
    *
    * @param int $number
-   *   The expected number of organizations.
+   *   The expected number of organisations.
    *
    * @throws \Exception
    *   Throws an exception when the expected number is not equal to the given.
    *
-   * @Then I should have :number organization(s)
+   * @Then I should have :number organisation(s)
    */
-  public function assertOrganizationCount($number) {
-    $this->assertRdfEntityCount($number, 'organization');
+  public function assertOrganisationCount($number) {
+    $this->assertRdfEntityCount($number, 'organisation');
   }
 
   /**
@@ -106,15 +106,15 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   }
 
   /**
-   * Deletes an owner entity of type organization.
+   * Deletes an owner entity of type organisation.
    *
    * @param string $name
-   *   The name of the organization to delete.
+   *   The name of the organisation to delete.
    *
-   * @When I delete the :owner organization
+   * @When I delete the :owner organisation
    */
-  public function deleteOrganization($name) {
-    $this->getRdfEntityByLabel($name, 'organization')->delete();
+  public function deleteOrganisation($name) {
+    $this->getRdfEntityByLabel($name, 'organisation')->delete();
   }
 
   /**

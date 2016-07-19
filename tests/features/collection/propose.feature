@@ -27,8 +27,8 @@ Feature: Proposing a collection
 
   Scenario: Propose a collection
     Given I am logged in as a user with the "authenticated" role
-    And the following organization:
-      | name | Organization example |
+    And the following organisation:
+      | name | Organisation example |
     When I am on the homepage
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
@@ -44,7 +44,7 @@ Feature: Proposing a collection
     And I check "Moderated"
     # Click the button to select an existing owner.
     And I press "Add existing Owner"
-    And I fill in "Owner" with "Organization example"
+    And I fill in "Owner" with "Organisation example"
     And I press "Add Owner"
     And I press "Save"
     Then I should see the heading "Ancient and Classical Mythology"

@@ -23,12 +23,12 @@ Feature: "Add release" visibility options.
     Then I should not see the link "Add release"
 
   Scenario: Add release as a moderator.
-    Given the following organization:
-     | name | Organization example |
+    Given the following organisation:
+     | name | Organisation example |
     And the following solutions:
       | title          | description        | documentation | owner                |
-      | Release Test 1 | test description 1 | text.pdf      | Organization example |
-      | Release Test 2 | test description 2 | text.pdf      | Organization example |
+      | Release Test 1 | test description 1 | text.pdf      | Organisation example |
+      | Release Test 2 | test description 2 | text.pdf      | Organisation example |
     # Check that the release cannot take the title of another solution.
     When I am logged in as a "facilitator" of the "Release Test 1" solution
     When I go to the homepage of the "Release Test 1" solution

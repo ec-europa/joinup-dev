@@ -9,10 +9,10 @@ dependencies:
 
 config_devel:
   - core.entity_form_display.rdf_entity.person.default
-  - core.entity_form_display.rdf_entity.organization.default
+  - core.entity_form_display.rdf_entity.organisation.default
   - rdf_entity.rdfentity.person
-  - rdf_entity.rdfentity.organization
-  - field.field.rdf_entity.organization.field_oo_name
+  - rdf_entity.rdfentity.organisation
+  - field.field.rdf_entity.organisation.field_oo_name
   - field.field.rdf_entity.person.field_op_name
   - field.storage.rdf_entity.field_oo_name
   - field.storage.rdf_entity.field_op_name

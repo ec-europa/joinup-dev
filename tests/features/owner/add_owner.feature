@@ -7,7 +7,7 @@ Feature: Creation of owners through UI
   Scenario: Create a owner of type person with an unique name
     Given the following person:
       | name | Foo |
-    And the following organization:
+    And the following organisation:
       | name | Bar |
     When I am logged in as an "authenticated user"
     And I visit "rdf_entity/add/person"
@@ -26,14 +26,14 @@ Feature: Creation of owners through UI
     # Cleanup created owner.
     Then I delete the "Baz" person
 
-  Scenario: Create a owner of type organization with an unique name
+  Scenario: Create a owner of type organisation with an unique name
     Given the following person:
       | name | Foo |
-    And the following organization:
+    And the following organisation:
       | name | Bar |
     When I am logged in as an "authenticated user"
-    And I visit "rdf_entity/add/organization"
-    Then I should see the heading "Add Organization"
+    And I visit "rdf_entity/add/organisation"
+    Then I should see the heading "Add Organisation"
     # Verify uniqueness of name amongst owners.
     When I fill in "Name" with "Foo"
     And I press "Save"
@@ -46,4 +46,4 @@ Feature: Creation of owners through UI
     And I press "Save"
     Then I should see the heading "Baz"
     # Cleanup created owner.
-    Then I delete the "Baz" organization
+    Then I delete the "Baz" organisation

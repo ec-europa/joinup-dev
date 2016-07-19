@@ -21,8 +21,8 @@ Feature: Collections Overview
       | eHealth           | Supports health-related fields |
       | Open Data         | Facilitate access to data sets |
       | Connecting Europe | Reusable tools and services    |
-    Given organization:
-      | name | Organization example |
+    Given organisation:
+      | name | Organisation example |
     Then I commit the solr index
     # Check that visiting as an anonymous does not create cache for all users.
     When I am an anonymous user
@@ -63,7 +63,7 @@ Feature: Collections Overview
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.
     And I press "Add existing Owner"
-    And I fill in "Owner" with "Organization example"
+    And I fill in "Owner" with "Organisation example"
     And I press "Add Owner"
     And I press "Save"
     Then I should see the text "Colonies in space"
