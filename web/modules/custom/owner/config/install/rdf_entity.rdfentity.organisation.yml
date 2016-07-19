@@ -4,7 +4,7 @@ dependencies: {  }
 third_party_settings:
   rdf_entity:
     mapping_rid:
-      target_id: 'http://xmlns.com/foaf/0.1/#term_Organization'
+      target_id: 'foaf:Organization'
     mapping_label:
       value: 'http://joinup.eu/organisation/label'
 name: Organisation

@@ -4,7 +4,7 @@ dependencies: {  }
 third_party_settings:
   rdf_entity:
     mapping_rid:
-      target_id: 'http://xmlns.com/foaf/0.1/#term_Person'
+      target_id: 'foaf:Person'
     mapping_label:
       value: 'http://joinup.eu/person/label'
 name: Person
