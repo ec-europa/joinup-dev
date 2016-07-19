@@ -270,7 +270,7 @@ sudo /etc/init.d/virtuoso-opensource-6.1 restart"
             </then>
             <else>
                 <symlink
-                        target="${solr.bin}"
+                        target="${solr.dir}/bin/solr"
                         link="${project.basedir}/vendor/bin/solr"
                 />
             </else>
