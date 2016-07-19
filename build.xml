@@ -274,6 +274,19 @@ sudo /etc/init.d/virtuoso-opensource-6.1 restart"
                 </if>
             </else>
         </if>
+        <!-- Create a symlink of the solr exec file to vendor/bin directory. -->
+        <if>
+            <available file="${project.basedir}/vendor/bin/solr" type="file" property="file.Exists"/>
+            <then>
+                <echo message="Solr binary already exists in ${project.basedir}/vendor/bin/. Skip creating symlink" />
+            </then>
+            <else>
+                <symlink
+                        target="${solr.bin}"
+                        link="${project.basedir}/vendor/bin/solr"
+                />
+            </else>
+        </if>
     </target>
 
     <target
