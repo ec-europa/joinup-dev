@@ -76,3 +76,15 @@ Feature: Proposing a collection
     And I attach the file "logo.png" to "Logo"
     And I press "Save"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
+
+  @javascript
+  Scenario: Propose closed collection
+    Given I am logged in as a user with the "moderator" role
+    When I go to "collection/propose"
+    Then I should see the heading "Propose collection"
+    And I check "Closed collection"
+    Then I should see "Only collection facilitator can create new content"
+    And I should not see "Any registered user can publish new content"
+    Then I uncheck "Closed collection"
+    And I should see "Any registered user can publish new content"
+    And I should not see "Only collection facilitator can create new content"
