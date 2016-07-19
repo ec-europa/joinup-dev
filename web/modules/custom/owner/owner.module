@@ -5,7 +5,8 @@
  * Main functions and hook implementations of the Owner module.
  */
 
-use \Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -20,4 +21,24 @@ function owner_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $ent
       $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => $bundles]);
     }
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function owner_rdf_entity_presave(EntityInterface $entity) {
+  $fields = [
+    'organisation' => 'field_oo_name',
+    'person' => 'field_op_name',
+  ];
+
+  // Handle only our entity bundles.
+  if (!isset($fields[$entity->bundle()])) {
+    return;
+  }
+
+  // Generate the label using the values of the name field.
+  $field = $fields[$entity->bundle()];
+  $names = array_column($entity->get($field)->getValue(), 'value');
+  $entity->set('label', implode(', ', $names));
 }
