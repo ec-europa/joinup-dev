@@ -44,7 +44,7 @@ composer.bin = ${project.basedir}/vendor/bin/composer
 drush.bin = ${project.basedir}/vendor/bin/drush
 isql.bin = /usr/bin/isql-vt
 phing.bin = ${project.basedir}/vendor/bin/phing
-solr.bin = ${solr.dir}/bin/solr
+solr.bin = ${project.basedir}/vendor/bin/solr
 
 # Files and directories inside the Drupal installation.
 documentroot.path = web
