@@ -144,7 +144,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    *   Thrown when a column name is incorrect.
    */
   protected function convertFieldAliases($type, TableNode $collection_table) {
-    $aliases = self::ownerFieldAliases();
+    $aliases = self::ownerFieldAliases($type);
 
     $values = [];
     // Replace the column aliases with the actual field names.
@@ -185,15 +185,33 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   /**
    * Field alias mapping.
    *
+   * @param string $bundle
+   *   The bundle for which to retrieve the mappings.
+   *
    * @return array
    *    Mapping.
+   *
+   * @throws \Exception
+   *   Thrown the bundle is unknown.
    */
-  protected static function ownerFieldAliases() {
+  protected static function ownerFieldAliases($bundle) {
     // Mapping alias - field name.
-    return [
-      'uri' => 'id',
-      'name' => 'label',
+    $map = [
+      'organisation' => [
+        'uri' => 'id',
+        'name' => 'field_oo_name',
+      ],
+      'person' => [
+        'uri' => 'id',
+        'name' => 'field_op_name',
+      ],
     ];
+
+    if (!isset($map[$bundle])) {
+      throw new \Exception("Unknown field aliases for bundle $bundle.");
+    }
+
+    return $map[$bundle];
   }
 
 }
