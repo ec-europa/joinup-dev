@@ -61,7 +61,6 @@ class CollectionMenuBlock extends OgMenuBlock {
         '#type' => 'link',
         '#title' => $this->t('Add a new page'),
         '#url' => $create_url,
-        '#attributes' => ['class' => ['button', 'button--small']],
         '#access' => $create_url->access(),
       ];
     }
