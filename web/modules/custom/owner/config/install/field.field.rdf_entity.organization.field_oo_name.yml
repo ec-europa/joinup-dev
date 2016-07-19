@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_oo_name
+    - rdf_entity.rdfentity.organization
+id: rdf_entity.organization.field_oo_name
+field_name: field_oo_name
+entity_type: rdf_entity
+bundle: organization
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

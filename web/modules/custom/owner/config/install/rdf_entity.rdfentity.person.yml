@@ -6,7 +6,7 @@ third_party_settings:
     mapping_rid:
       target_id: 'http://xmlns.com/foaf/0.1/#term_Person'
     mapping_label:
-      value: 'foaf:name'
+      value: 'http://joinup.eu/person/label'
 name: Person
 rid: person
 description: ''
