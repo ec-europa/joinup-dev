@@ -129,7 +129,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
       'uri' => 'id',
       'email' => 'field_ci_email',
       'name' => 'field_ci_name',
-      'web page' => 'field_ci_webpage',
+      'Website URL' => 'field_ci_webpage',
     ];
   }
 
