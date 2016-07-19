@@ -12,6 +12,7 @@
         "drupal/core": "~8.1.0",
         "drupal/ds": "^8.2",
         "drupal/facets" : "dev-8.x-1.x#70f2b89823e2499ad8b097190145943a0e412e85",
+        "drupal/inline_entity_form": "8.1.x-dev",
         "drupal/og": "dev-ISAICP-2362-DEV",
         "drupal/og_menu": "dev-8.x-1.x#8b3cdc10cfa72767a08789828d5583604e68bc53",
         "drupal/phing-drush-task": "1.0",
@@ -74,11 +75,14 @@
             "drupal/core": {
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
             },
-            "drupal/search_api": {
-                "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
+            "drupal/inline_entity_form": {
+                "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"
             },
             "drupal/r4032login": {
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
+            },
+            "drupal/search_api": {
+                "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
             }
         }
     },

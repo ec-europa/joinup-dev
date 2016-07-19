@@ -4,18 +4,19 @@ Feature: June 2016 demo
   I should be able to interact with the website and manage content.
 
   Scenario: Manage collection and view collection scenarios.
-    Given collections:
-      | title          | description                           | logo     | moderation |
-      | S.H.I.E.L.D.   | Well, they are mostly flying around.  | logo.png | yes        |
-      | x-Men          | Based on Proffessor Xavier's mantion. | logo.png | no         |
-      | Avengers       | Based on Tony stark's tower.          | logo.png | yes        |
-      | Fantastic four | Based on Reed Richard's tower.        | logo.png | yes        |
-    And solutions:
-      | title                     | description                                | documentation | moderation | collection   |
-      | Avengers initiative       | Gather the strongest into a group.         | text.pdf      | no         | S.H.I.E.L.D. |
-      | Project Tahiti            | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        | S.H.I.E.L.D. |
-      | Hellicarrier              | Provide a flying fortress as headquarters. | text.pdf      | no         | S.H.I.E.L.D. |
-      | Project 'Captain America' | Bring 'Captain america' back into action.  | text.pdf      | yes        | S.H.I.E.L.D. |
+    Given solutions:
+      | title                     | description                                | documentation | moderation |
+      | Avengers initiative       | Gather the strongest into a group.         | text.pdf      | no         |
+      | Project Tahiti            | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        |
+      | Hellicarrier              | Provide a flying fortress as headquarters. | text.pdf      | no         |
+      | Project 'Captain America' | Bring 'Captain america' back into action.  | text.pdf      | yes        |
+    And collections:
+      | title          | description                          | logo     | moderation | affiliates                                                                   |
+      | S.H.I.E.L.D.   | Well, they are mostly flying around. | logo.png | yes        | Avengers initiative, Project Tahiti, Hellicarrier, Project 'Captain America' |
+      | x-Men          | Based on Professor Xavier's mansion. | logo.png | no         |                                                                              |
+      | Avengers       | Based on Tony stark's tower.         | logo.png | yes        |                                                                              |
+      | Fantastic four | Based on Reed Richard's tower.       | logo.png | yes        |                                                                              |
+
     And users:
       | name      | pass                 | mail                    | roles     |
       | Stan lee  | cameoineverymovie    | stan.lee@example.com    | moderator |
@@ -26,19 +27,30 @@ Feature: June 2016 demo
       | S.H.I.E.L.D. | Nick Fury | administrator, facilitator, member |
       | x-Men        | Wolverine | facilitator, member                |
       | Avengers     | Wolverine | member                             |
+
     And news content:
-      | title                       | field_news_kicker                       | body                                                                                                                                |
-      | Phil Coulson is down        | Phil Coulson fell by the hands of Loki. | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                |
-      | Phoenix is down             | Wolverine took down Jean Gray.          | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. |
-      | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.   | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                |
-    # The field_news_parent refers to a parent solution.
-    And news content:
-      | title                      | field_news_kicker                         | body                                                                                                        | field_news_parent         |
-      | Captain America not dead?  | Captain America found in the ice.         | Captain America's body was found intact and preserved in ice.                                               | Project 'Captain America' |
-      | Hellicarrier under attack  | The Hellicarrier was attacked by Loki.    | Loki and his servants have attacked us. Hawkeye took out one engine.                                        | Hellicarrier              |
-      | Captain America & Avengers | Captain America to lead the avengers?     | It is S.H.I.E.L.D.'s opinion that someone like Captain America can be a good leader for avengers.           | Avengers initiative       |
-      | Project Tahiti case 1      | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process                                                       | Project Tahiti            |
-      | Who is Winter soldier?     | Captain America's child friend is alive?  | As it turns out the Hydra's agent-Winter soldier-is no other than Bucky-Captain's America childhood friend. | Project 'Captain America' |
+      | title                       | kicker                                    | body                                                                                                                                |
+      | Phil Coulson is down        | Phil Coulson fell by the hands of Loki.   | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                |
+      | Phoenix is down             | Wolverine took down Jean Gray.            | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. |
+      | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.     | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                |
+      | Captain America not dead?   | Captain America found in the ice.         | Captain America's body was found intact and preserved in ice.                                                                       |
+      | Hellicarrier under attack   | The Hellicarrier was attacked by Loki.    | Loki and his servants have attacked us. Hawkeye took out one engine.                                                                |
+      | Captain America & Avengers  | Captain America to lead the avengers?     | It is S.H.I.E.L.D.'s opinion that someone like Captain America can be a good leader for avengers.                                   |
+      | Project Tahiti case 1       | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process.                                                                              |
+      | Who is Winter soldier?      | Captain America's child friend is alive?  | As it turns out the Hydra's agent-Winter soldier-is no other than Bucky-Captain's America childhood friend.                         |
+    And the following "news" content belong to the corresponding collections:
+      | content                     | collection   |
+      | Phil Coulson is down        | S.H.I.E.L.D. |
+      | Phoenix is down             | x-Men        |
+      | S.H.I.E.L.D. is infiltrated | S.H.I.E.L.D. |
+    And the following "news" content belong to the corresponding solutions:
+      | content                    | solution                  |
+      | Captain America not dead?  | Project 'Captain America' |
+      | Hellicarrier under attack  | Hellicarrier              |
+      | Captain America & Avengers | Avengers initiative       |
+      | Project Tahiti case 1      | Project Tahiti            |
+      | Who is Winter soldier?     | Project 'Captain America' |
+
     And custom_page content:
       | title              | body                                                                                                                              |
       | S.H.I.E.L.D. Home  | Welcome to S.H.I.E.L.D. webspace. <br />You can find anything about S.H.I.E.L.D. here.                                            |
@@ -49,11 +61,6 @@ Feature: June 2016 demo
       | S.H.I.E.L.D. Home  | S.H.I.E.L.D. |
       | About S.H.I.E.L.D. | S.H.I.E.L.D. |
       | List of members    | S.H.I.E.L.D. |
-    And the following "news" content belong to the corresponding collections:
-      | content                     | collection   |
-      | Phil Coulson is down        | S.H.I.E.L.D. |
-      | Phoenix is down             | x-Men        |
-      | S.H.I.E.L.D. is infiltrated | S.H.I.E.L.D. |
     And the following "custom_page" content menu items for the corresponding collections:
       | collection   | label              | page               | weight |
       | S.H.I.E.L.D. | S.H.I.E.L.D. Home  | S.H.I.E.L.D. Home  | 1      |

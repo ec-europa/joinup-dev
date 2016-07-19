@@ -5,22 +5,22 @@ Feature: Asset distribution API
   I need to be able to use the Solution API
 
   Scenario: Programmatically create a distribution
-    Given the following collection:
+    Given the following solution:
+      | title             | Asset distribution solution          |
+      | description       | Asset distribution sample solution   |
+      | documentation     | text.pdf                             |
+      | elibrary creation | registered users                     |
+      | landing page      | http://foo-example.com/landing       |
+      | webdav creation   | no                                   |
+      | webdav url        | http://joinup.eu/solution/foo/webdav |
+      | wiki              | http://example.wiki/foobar/wiki      |
+    And the following collection:
       | title             | Asset distribution collection API foo |
       | logo              | logo.png                              |
       | moderation        | yes                                   |
       | closed            | yes                                   |
       | elibrary creation | facilitators                          |
-    And the following solution:
-      | title             | Asset distribution solution           |
-      | description       | Asset distribution sample solution    |
-      | documentation     | text.pdf                              |
-      | elibrary creation | registered users                      |
-      | landing page      | http://foo-example.com/landing        |
-      | webdav creation   | no                                    |
-      | webdav url        | http://joinup.eu/solution/foo/webdav  |
-      | wiki              | http://example.wiki/foobar/wiki       |
-      | collection        | Asset distribution collection API foo |
+      | affiliates        | Asset distribution solution           |
     And the following asset distribution:
       | title       | Asset distribution entity foo         |
       | description | Asset distribution sample description |
@@ -38,17 +38,17 @@ Feature: Asset distribution API
     And I should have 1 asset distribution
 
   Scenario: Programmatically create a distribution using only the mandatory fields
-    Given the following collection:
-      | title             | Asset distribution short API bar |
-      | logo              | logo.png                         |
-      | moderation        | yes                              |
-      | closed            | yes                              |
-      | elibrary creation | facilitators                     |
     Given the following solution:
       | title             | AD first solution mandatory short |
       | description       | Another sample solution           |
       | elibrary creation | members                           |
-      | collection        | Asset distribution short API bar  |
+    And the following collection:
+      | title             | Asset distribution short API bar  |
+      | logo              | logo.png                          |
+      | moderation        | yes                               |
+      | closed            | yes                               |
+      | elibrary creation | facilitators                      |
+      | affiliates        | AD first solution mandatory short |
     And the following asset distribution:
       | title       | Asset distribution entity foo short   |
       | description | Asset distribution sample description |

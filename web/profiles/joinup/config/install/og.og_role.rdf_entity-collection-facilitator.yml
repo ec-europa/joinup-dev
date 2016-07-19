@@ -25,13 +25,10 @@ permissions:
   - 'delete any document content'
   - 'edit any event content'
   - 'delete any event content'
-  - 'create rdf entity news'
   - 'create news content'
   - 'edit any news content'
   - 'delete any news content'
   - 'update any navigation ogmenu_instance'
   - 'add new links to og menu instance entities'
-  - 'create asset_distribution rdf_entity'
-  - 'create asset_release rdf_entity'
   - 'create solution rdf_entity'
 role_type: standard

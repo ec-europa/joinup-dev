@@ -11,4 +11,4 @@ group_id: null
 permissions:
   - 'accept facilitator invitation'
   - subscribe
-role_type: immutable
+role_type: required
