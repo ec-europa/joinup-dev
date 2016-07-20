@@ -19,6 +19,10 @@ function contact_information_entity_bundle_field_info_alter(&$fields, EntityType
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Concatenates the names into a single string. This entity has support for
+ * multiple names and entity label does not support this. For this reason,
+ * the label actually inherits all values from field_ci_name field.
  */
 function contact_information_rdf_entity_presave(EntityInterface $entity) {
   // Handle only contact information entities.
@@ -33,6 +37,9 @@ function contact_information_rdf_entity_presave(EntityInterface $entity) {
 
 /**
  * Implements hook_inline_entity_form_table_fields_alter().
+ *
+ * Alters the name of the header of the entity column in the inline entity form
+ * table in the create form. Header label was 'title' before.
  */
 function contact_information_inline_entity_form_table_fields_alter(&$fields, $context) {
   // Replace the label in the contact information table.
