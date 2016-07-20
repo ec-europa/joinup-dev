@@ -140,7 +140,7 @@
             }
         },
         {
-            "_comment": "This is a temporary branch of a forked repository of the dev branch of Og, including changes not yet merged. @see ISAICP-2622.",
+            "_comment": "This is the development repository of the D8 port of Organic Groups. Remove this when an official alpha release is made.",
             "type": "vcs",
             "url": "git@github.com:amitaibu/og"
         },
