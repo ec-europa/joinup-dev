@@ -69,7 +69,14 @@ function joinup_theme_preprocess_block(&$variables) {
     $route_match = \Drupal::routeMatch();
     $route_name = $route_match->getRouteName();
 
-    if ($route_name == 'view.collections.page_1') {
+    // Get entity type
+    $entity = $route_match->getParameter('rdf_entity');
+    if (!empty($entity)) {
+      $entity_type = $entity->getType();
+    }
+
+    // Check if page is a listing and should not have a white background.
+    if ($route_name == 'view.collections.page_1' || (isset($entity_type) && $entity_type == 'collection' && $route_name == 'entity.rdf_entity.canonical')) {
       $variables['is_view'] = TRUE;
     }
   }
