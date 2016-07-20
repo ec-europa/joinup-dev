@@ -127,9 +127,9 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
     // Mapping alias - field name.
     return [
       'uri' => 'id',
-      'name' => 'label',
       'email' => 'field_ci_email',
-      'web page' => 'field_ci_webpage',
+      'name' => 'field_ci_name',
+      'Website URL' => 'field_ci_webpage',
     ];
   }
 
