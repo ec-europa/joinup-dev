@@ -48,12 +48,12 @@
             'icon--' ~ item.title|clean_class,
           ]
           %}
-          <a {{ attributes.addClass(classes) }} href="{{ item.url }}">
-            <span class="header-menu__wrapper">
-              <span {{ attributes.removeClass(classes).addClass(icon_classes) }} ></span>
-              <span class="header-menu__text">{{ item.title }}</span>
-            </span>
-          </a>
+          {% set icon_wrapper = '<span class="' ~ icon_classes|join(' ') ~ '"></span>' %}
+          {% set item_title = {'#markup': item.title} %}
+          {% set item_title = item_title|merge({'#prefix': '<span class="header-menu__wrapper">' ~ icon_wrapper ~ '<span class="header-menu__text">'}) %}
+          {% set item_title = item_title|merge({'#suffix': '</span></span>'}) %}
+
+          {{ link(item_title, item.url, { 'class': classes }) }}
         {% endfor %}
       </nav>
   {% endif %}
