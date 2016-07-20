@@ -24,7 +24,7 @@ function owner_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $ent
       $field_name = $bundles[$bundle];
 
       if (!empty($fields[$field_name])) {
-        $fields[$field_name]->addConstraint('UniqueFieldInBundle', ['bundles' => array_keys($bundles)]);
+        $fields[$field_name]->addConstraint('UniqueFieldInBundle', ['bundles' => [$bundle]]);
       }
     }
   }
