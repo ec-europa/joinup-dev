@@ -4,17 +4,14 @@
  */
 
 (function ($) {
-
   "use strict";
   Drupal.behaviors.collection = {
     attach: function() {
       if ($('#edit-field-ar-closed-value').length && $('#edit-field-ar-elibrary-creation').length) {
-
         var option = null;
         var label = null;
 
         $('#edit-field-ar-closed-value').change(function () {
-
           // Append the previously removed option to the select, if any.
           if (option != null) {
             option.appendTo('#edit-field-ar-elibrary-creation');
@@ -23,7 +20,8 @@
             label.appendTo('div.slider__labels');
           }
           if ($(this).prop('checked') === true) {
-            // If the collection is closed only options 0 and 1 should be available.
+            // If the collection is closed only options 0 and 1 should be
+            // available.
             // Disabling option 2 if it exists.
             var optionText = $('option[value="2"]', '#edit-field-ar-elibrary-creation').text();
             // Select option 1 if option 2 is selected.
@@ -32,8 +30,10 @@
             }
             option = $('option[value="2"]', '#edit-field-ar-elibrary-creation').remove();
             label = $('.slider__labels').find(':contains("' + optionText + '")').remove();
-          } else {
-            // If the collection is opened only options 1 and 2 should be available.
+          }
+          else {
+            // If the collection is opened only options 1 and 2 should be
+            // available.
             // Disabling option 0 if it exists.
             var optionText = $('option[value="0"]', '#edit-field-ar-elibrary-creation').text();
             // Select option 1 if option 0 is selected.
