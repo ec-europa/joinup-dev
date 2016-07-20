@@ -22,7 +22,7 @@ Feature: "Add release" visibility options.
     And I go to the homepage of the "Release solution test" solution
     Then I should not see the link "Add release"
 
-  Scenario: Add release as a moderator.
+  Scenario: Add release as a solution facilitator.
     Given the following organization:
      | name | Organization example |
     And the following solutions:
