@@ -39,12 +39,32 @@ run the Behat test, please refer directly to the documention of
 
 ### Initial setup
 
-* Clone this repository.  Use [composer](https://getcomposer.org/) to install
-* the dependencies.  Install Virtuoso. See [setting up
+* Clone this repository.
+
+    ```
+    $ git clone https://github.com/ec-europa/joinup-dev.git
+    ```
+
+* Use [composer](https://getcomposer.org/) to install the dependencies.
+
+    ```
+    $ cd joinup-dev
+    $ composer install
+    ```
+
+* Install Solr. If you already have Solr installed you can configure it manually
+  by [following the installation
+  instructions](http://cgit.drupalcode.org/search_api_solr/plain/INSTALL.txt?h=8.x-1.x)
+  from the Search API Solr module. Or you can execute the following command to
+  download and configure a local instance of Solr. It will be installed in the
+  folder `./vendor/apache/solr`.
+
+    ```
+    $ ./vendor/bin/phing setup-apache-solr
+    ```
+
+* Install Virtuoso. See [setting up
   Virtuoso](/web/modules/custom/rdf_entity/README.md).
-* Set up a Solr search server, using the configuration provided inside the
-  `search_api_solr` module. For installation instructions, refer to
-  `INSTALL.txt` inside the `search_api_solr` module.
 * Point the document root of your webserver to the 'web/' directory.
 
 ### Create a local build properties file
