@@ -52,13 +52,4 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $this->assertSession()->elementNotExists('css', "img[src$='.$extension'][src*='$filename']");
   }
 
-  /**
-   * Maximize the browser window for javascript tests so elements are visible.
-   *
-   * @Given I maximize browser window
-   */
-  public function iMaximizeBrowserWindow() {
-    $this->getSession()->getDriver()->maximizeWindow();
-  }
-
 }
