@@ -6,7 +6,8 @@
 
 use Drupal\image\Entity\ImageStyle;
 use \Drupal\file\Entity\File;
-
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Unicode;
 /**
  * Implements hook_preprocess_page().
  */
@@ -88,13 +89,8 @@ function joinup_theme_preprocess_block(&$variables) {
  * Implements hook_theme_suggestions_alter().
  */
 function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables) {
-
   if (isset($variables['element']) && isset($variables['element']['#type'])) {
-    if ($variables['element']['#type'] == 'form') {
-      $original_theme_hook = $variables['theme_hook_original'];
-      $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $variables['element']['#id']);
-    }
-
+    $original_theme_hook = $variables['theme_hook_original'];
     $floating_label_types = array(
       'textfield',
       'url',
@@ -103,14 +99,21 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
       'entity_autocomplete',
     );
 
+    if ($variables['element']['#type'] == 'form') {
+      $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $variables['element']['#id']);
+    }
+
     if (in_array($variables['element']['#type'], $floating_label_types)) {
-      $original_theme_hook = $variables['theme_hook_original'];
       if ($original_theme_hook == 'form_element') {
         $suggestions[] = 'form_element__floating';
       }
       elseif ((strpos($original_theme_hook, 'input') !== FALSE)) {
         $suggestions[] = 'input__floating';
       }
+    } elseif ($variables['element']['#type'] == 'submit') {
+      $button_value = Html::cleanCssIdentifier($variables['element']['#value'], array(' ' => '_'));
+      $button_value = Unicode::strtolower($button_value);
+      $suggestions[] = $original_theme_hook . '__' . $button_value;
     }
 
     if ($variables['theme_hook_original'] == 'form_element') {
