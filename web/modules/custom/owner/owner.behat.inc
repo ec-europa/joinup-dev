@@ -46,6 +46,28 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   }
 
   /**
+   * Creates a number of person owners with data provided in a table.
+   *
+   * Table format:
+   * | name          |
+   * | Mightily Oats |
+   * | John Irwin    |
+   *
+   * @param TableNode $person_table
+   *   The person table.
+   *
+   * @Given (the following )persons:
+   */
+  public function givenPersons(TableNode $person_table) {
+    foreach ($person_table->getColumnsHash() as $person) {
+      // Convert aliased field names.
+      $values = $this->convertFieldAliases('person', $person);
+
+      $this->createOwner('person', $values);
+    }
+  }
+
+  /**
    * Creates a organization owner with data provided in a table.
    *
    * Table format:
@@ -61,6 +83,28 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
     $values = $this->convertFieldAliases('organization', $organisation_table->getRowsHash());
 
     $this->createOwner('organization', $values);
+  }
+
+  /**
+   * Creates a number of organisation owners with data provided in a table.
+   *
+   * Table format:
+   * | name      |
+   * | Red birds |
+   * | Acme Inc. |
+   *
+   * @param TableNode $organisation_table
+   *   The organisation table.
+   *
+   * @Given (the following )organisations:
+   */
+  public function givenOrganisations(TableNode $organisation_table) {
+    foreach ($organisation_table->getColumnsHash() as $organisation) {
+      // Convert aliased field names.
+      $values = $this->convertFieldAliases('person', $organisation);
+
+      $this->createOwner('organization', $values);
+    }
   }
 
   /**
