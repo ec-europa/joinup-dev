@@ -33,14 +33,14 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * Table format:
    * | name | Mightily Oats |
    *
-   * @param TableNode $collection_table
-   *   The collection data.
+   * @param TableNode $person_table
+   *   The person table.
    *
    * @Given (the following )person:
    */
-  public function givenPerson(TableNode $collection_table) {
+  public function givenPerson(TableNode $person_table) {
     // Convert aliased field names.
-    $values = $this->convertFieldAliases('person', $collection_table);
+    $values = $this->convertFieldAliases('person', $person_table->getRowsHash());
 
     $this->createOwner('person', $values);
   }
@@ -51,14 +51,14 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * Table format:
    * | name | Red birds |
    *
-   * @param TableNode $collection_table
-   *   The collection data.
+   * @param TableNode $organisation_table
+   *   The organisation table.
    *
    * @Given (the following )organization:
    */
-  public function givenOrganization(TableNode $collection_table) {
+  public function givenOrganization(TableNode $organisation_table) {
     // Convert aliased field names.
-    $values = $this->convertFieldAliases('organization', $collection_table);
+    $values = $this->convertFieldAliases('organization', $organisation_table->getRowsHash());
 
     $this->createOwner('organization', $values);
   }
@@ -134,8 +134,8 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    *
    * @param string $type
    *   The type of the owner.
-   * @param TableNode $collection_table
-   *   The collection data.
+   * @param array $aliased_values
+   *   An array of values keyed by field alias.
    *
    * @return array
    *   The field values keyed by real field name.
@@ -143,19 +143,19 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    */
-  protected function convertFieldAliases($type, TableNode $collection_table) {
+  protected function convertFieldAliases($type, array $aliased_values) {
     $aliases = self::ownerFieldAliases();
 
     $values = [];
     // Replace the column aliases with the actual field names.
-    foreach ($collection_table->getRowsHash() as $key => $value) {
+    foreach ($aliased_values as $key => $value) {
       if (array_key_exists($key, $aliases)) {
         $values[$aliases[$key]] = $value;
       }
       else {
         throw new \Exception("Unknown column '$key' in $type table.");
       }
-    };
+    }
 
     return $values;
   }
