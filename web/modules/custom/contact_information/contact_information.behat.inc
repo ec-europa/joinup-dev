@@ -60,6 +60,42 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
   }
 
   /**
+   * Creates a number of contact information with data provided in a table.
+   *
+   * Table format:
+   * | email                            | name       |
+   * | foo@example.com, bar@example.com | John Irwin |
+   * | baz@example.com                  | Jack Smith |
+   *
+   * @param TableNode $contact_table
+   *   The contacts table.
+   *
+   * @throws \Exception
+   *   Thrown when a column name is incorrect.
+   *
+   * @Given (the following )contacts:
+   */
+  public function givenContactEntities(TableNode $contact_table) {
+    $aliases = self::contactInformationFieldAliases();
+
+    foreach ($contact_table->getColumnsHash() as $entity) {
+      $values = [];
+
+      foreach ($entity as $key => $value) {
+        // Replace aliases with the actual field names.
+        if (array_key_exists($key, $aliases)) {
+          $values[$aliases[$key]] = $value;
+        }
+        else {
+          throw new \Exception("Unknown column '$key' in contact information table.");
+        }
+      }
+
+      $this->createContactInformation($values);
+    }
+  }
+
+  /**
    * Checks the number of available contact information entities.
    *
    * @param int $number
