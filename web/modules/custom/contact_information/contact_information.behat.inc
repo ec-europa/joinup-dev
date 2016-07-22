@@ -34,20 +34,20 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * | email | foo@bar.com, baz@qux.com |
    * | name  | Jack Smith               |
    *
-   * @param TableNode $collection_table
-   *   The collection data.
+   * @param TableNode $contact_table
+   *   The contact table.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )contact information:
+   * @Given (the following )contact:
    */
-  public function givenContactInformation(TableNode $collection_table) {
+  public function givenContactEntity(TableNode $contact_table) {
     $aliases = self::contactInformationFieldAliases();
 
     $values = [];
     // Replace the column aliases with the actual field names.
-    foreach ($collection_table->getRowsHash() as $key => $value) {
+    foreach ($contact_table->getRowsHash() as $key => $value) {
       if (array_key_exists($key, $aliases)) {
         $values[$aliases[$key]] = $value;
       }
