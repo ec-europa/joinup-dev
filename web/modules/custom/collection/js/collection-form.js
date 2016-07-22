@@ -6,7 +6,7 @@
 (function ($) {
   "use strict";
   Drupal.behaviors.collection = {
-    attach: function() {
+    attach: function () {
       if ($('#edit-field-ar-closed-value').length && $('#edit-field-ar-elibrary-creation').length) {
         var option = null;
         var label = null;
