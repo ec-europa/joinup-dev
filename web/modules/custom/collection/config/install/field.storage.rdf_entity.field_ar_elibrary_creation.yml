@@ -14,13 +14,13 @@ type: list_integer
 settings:
   allowed_values:
     -
-      value: 0
+      value: 'facilitators'
       label: 'Only collection facilitator can create new content'
     -
-      value: 1
+      value: 'members'
       label: 'Only members can publish new content'
     -
-      value: 2
+      value: 'registered users'
       label: 'Any registered user can publish new content'
   allowed_values_function: ''
 module: options

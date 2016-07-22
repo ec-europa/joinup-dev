@@ -402,8 +402,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   protected function convertValueAliases($fields) {
     $mapped_values = [
       'field_is_moderation' => ['no' => 0, 'yes' => 1],
-      'field_is_elibrary_creation' =>
-        ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
       'field_is_webdav_creation' => ['no' => 0, 'yes' => 1],
     ];
 
