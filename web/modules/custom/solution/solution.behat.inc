@@ -11,6 +11,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
+use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -23,6 +24,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use EntityReferenceTrait;
   use FileTrait;
   use NodeTrait;
+  use OgTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
 
@@ -329,6 +331,51 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       ->execute();
     if ($actual != $number) {
       throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
+    }
+  }
+
+  /**
+   * Subscribes the given users to the given solution.
+   *
+   * The role Id of organic group roles are consisting of 3 parts, the entity
+   * type ID and the bundle of the group, and the machine name of the role.
+   * Do not provide the complete ID of the Og role. The entity type ID and
+   * bundle are going to be added automatically.
+   *
+   * Table format:
+   * | solution          | user | roles                      |
+   * | Sample solution A | John | facilitator, administrator |
+   * | Sample solution B | Jack |                            |
+   *
+   * @param TableNode $membership_table
+   *   The membership table.
+   *
+   * @throws \Exception
+   *   Thrown when a solution is not found.
+   *
+   * @Given (the following )solution user memberships:
+   */
+  public function givenSolutionUserMemberships(TableNode $membership_table) {
+    foreach ($membership_table->getColumnsHash() as $values) {
+      // Load group.
+      $group = $this->getSolutionByName($values['solution']);
+      if (empty($group)) {
+        throw new \Exception('Solution ' . $values['solution'] . ' not found.');
+      }
+
+      // Load member.
+      $member = user_load_by_name($values['user']);
+      if (empty($member)) {
+        throw new \Exception('User ' . $values['user'] . ' not found.');
+      }
+
+      // Convert role names to role IDs.
+      $roles = array();
+      if (!empty($values['roles'])) {
+        $roles = $this->convertOgRoleNamesToIds(explode(', ', $values['roles']), $group);
+      }
+
+      $this->subscribeUserToGroup($member->id(), $group, $roles);
     }
   }
 
