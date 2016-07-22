@@ -13,7 +13,7 @@ Feature: "Custom page" editing.
       | title       | Dumbo Collective                                                            |
       | description | Featuring a semi-anthropomorphic elephant who is cruelly nicknamed "Dumbo". |
       | logo        | logo.png                                                                    |
-    And the following user memberships:
+    And the following collection user memberships:
       | collection       | user         | roles       |
       | Dumbo Collective | Mickey Mouse | facilitator |
       | Dumbo Collective | Pluto        | member      |

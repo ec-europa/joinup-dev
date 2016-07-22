@@ -33,7 +33,7 @@ Feature: News moderation.
       | title          | moderation |
       | Justice League | no         |
       | Legion of Doom | yes        |
-    And the following user memberships:
+    And the following collection user memberships:
       | collection     | user          | roles         |
       | Justice League | Superman      | administrator |
       | Justice League | Hawkgirl      | facilitator   |
