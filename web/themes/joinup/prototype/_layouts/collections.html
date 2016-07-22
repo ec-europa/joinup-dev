@@ -64,6 +64,15 @@
 
         <div class="section section--content mdl-cell mdl-cell--8-col">
           <div class="container-fluid">
+            <div class="search-bar__wrapper">
+              <div class="search-bar--section mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--align-right">
+                <label class="search-bar__label icon icon--search mdl-button mdl-js-button"
+                for="search-bar__input">
+                </label>
+                <input class="search-bar__input mdl-textfield__input" placeholder="Start typing to search..." type="text" name="search"
+                  id="search-bar__input">
+              </div>              
+            </div>
 
             {% include tab--content-type.html %}
 
