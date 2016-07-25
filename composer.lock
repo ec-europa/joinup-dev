@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "316e43251e1c7cc6b88b24ea4471a78c",
-    "content-hash": "7fe313269c3bfeaaf7aabc5e9f19b134",
+    "hash": "78192d33316a4fcdfedd29142d58a44a",
+    "content-hash": "57aaa4581d7561189e339cc2624f8a36",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1291,7 +1291,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/ds-8.x-2.5.zip",
-                "reference": null,
+                "reference": "f8c434e10066dd1d1c9906e2091500d536eef164",
                 "shasum": null
             },
             "require": {
@@ -1463,19 +1463,24 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-ISAICP-2362-DEV",
+            "version": "dev-check-group-content-crud-access",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ec-europa/og.git",
-                "reference": "7e4c3e80df900c1a7cd604910ffffc6b7281f027"
+                "url": "https://github.com/amitaibu/og.git",
+                "reference": "7a21262cab7c667c61afe3da2bfa974b2d2c9078"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/7e4c3e80df900c1a7cd604910ffffc6b7281f027",
-                "reference": "7e4c3e80df900c1a7cd604910ffffc6b7281f027",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/7a21262cab7c667c61afe3da2bfa974b2d2c9078",
+                "reference": "7a21262cab7c667c61afe3da2bfa974b2d2c9078",
                 "shasum": ""
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "Support for special permission on Og.": "https://patch-diff.githubusercontent.com/raw/amitaibu/og/pull/250.patch"
+                }
+            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -1486,7 +1491,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-07-05 12:14:21"
+            "time": "2016-07-14 11:00:00"
         },
         {
             "name": "drupal/og_menu",
@@ -1571,7 +1576,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha16.zip",
-                "reference": null,
+                "reference": "895b50787d54cd3f6bc3f8d4833cec809a8d021d",
                 "shasum": null
             },
             "require": {
@@ -1627,7 +1632,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha5.zip",
-                "reference": null,
+                "reference": "220cbdf1ddb83252777e13951f5b649c14d2a5e7",
                 "shasum": null
             },
             "require": {
@@ -1666,7 +1671,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta2.zip",
-                "reference": null,
+                "reference": "9af95093ed41eaf653ba51415ff85b8a42f6532f",
                 "shasum": null
             },
             "require": {
@@ -2591,7 +2596,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2646,7 +2651,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -6058,6 +6063,9 @@
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "time": "2016-03-01 16:28:35"
