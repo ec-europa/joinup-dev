@@ -227,4 +227,15 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     ]);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    // @todo: This is a temporary workaround for the lack of og cache
+    // contexts/tags. Remove this when Og provides proper cache context and
+    // instead add the proper context to the getCacheContexts method.
+    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2628
+    return Cache::mergeContexts(parent::getCacheTags(), ['user.roles']);
+  }
+
 }
