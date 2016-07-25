@@ -10,44 +10,50 @@
 
       <div class="bg--blue">
         <div class="main-container mdl-grid">
-          <div class="mdl-cell mdl-cell--1-col"></div>
-          <div class="mdl-cell mdl-cell--10-col">
+          <div class="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">
             <h1 class="page__title">
               <span class="icon icon--plus"></span>
               Form
             </h1>
           </div>
-          <div class="mdl-cell mdl-cell--1-col"></div>
         </div>
       </div>
       <div class="main-container mdl-grid">
-        <div class="mdl-cell mdl-cell--1-col"></div>
-          <div class="section section--content mdl-cell mdl-cell--10-col">
-            <div class="page__content">
+        <div class="mdl-cell mdl-cell--2-col">
+          
+        {% include sidebar-tabs.html %}
 
-              <h1 style="margin-top: 0">Inputs</h1>
+        </div>
+        <div class="section section--content mdl-cell mdl-cell--8-col">
+          <div class="page__content">
 
-              {% include input.html %}
+            <h1 style="margin-top: 0">Inputs</h1>
 
-              <h1>Checkboxes</h1>
+            {% include input.html %}
 
-              {% include checkbox.html %}
+            <h1>Checkboxes</h1>
 
-              <h1>Radios</h1>
+            {% include checkbox.html %}
 
-              {% include radio.html %}
+            <h1>Radios</h1>
 
-              <h1>Upload</h1>
+            {% include radio.html %}
 
-              {% include file-upload.html %}
+            <h1>Upload</h1>
 
-              <h1>Draggable</h1>
+            {% include file-upload.html %}
 
-              {% include draggable.html %}
+            <h1>Draggable</h1>
 
-            </div>
+            {% include draggable.html %}
+
           </div>
-        <div class="mdl-cell mdl-cell--1-col"></div>
+          <div class="form__actions">
+            <button class="button--default button--transparent mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Cancel</button>
+            <button class="button--default button--transparent mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save as draft</button>
+            <button class="button--default button--blue mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent pull-right">Publish</button>
+          </div>
+        </div>
       </div>
 
       {% include section--footer.html %}
