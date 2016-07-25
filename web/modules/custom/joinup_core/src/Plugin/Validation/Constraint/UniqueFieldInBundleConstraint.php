@@ -23,7 +23,7 @@ class UniqueFieldInBundleConstraint extends Constraint {
    * {@inheritdoc}
    */
   public function validatedBy() {
-    return '\Drupal\joinup\Plugin\Validation\Constraint\UniqueFieldValueInBundleValidator';
+    return '\Drupal\joinup_core\Plugin\Validation\Constraint\UniqueFieldValueInBundleValidator';
   }
 
   /**
