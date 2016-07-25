@@ -62,9 +62,9 @@ Feature: Collections Overview
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.
-    And I press "Add existing Owner"
+    And I press "Add existing owner"
     And I fill in "Owner" with "Organisation example"
-    And I press "Add Owner"
+    And I press "Add owner"
     And I press "Save"
     Then I should see the text "Colonies in space"
     # Non UATable step.
