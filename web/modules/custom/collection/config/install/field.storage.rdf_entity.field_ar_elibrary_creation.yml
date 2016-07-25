@@ -10,7 +10,7 @@ third_party_settings:
 id: rdf_entity.field_ar_elibrary_creation
 field_name: field_ar_elibrary_creation
 entity_type: rdf_entity
-type: list_integer
+type: list_string
 settings:
   allowed_values:
     -

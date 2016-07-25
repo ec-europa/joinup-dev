@@ -19,4 +19,4 @@ default_value:
     value: 'members'
 default_value_callback: ''
 settings: {  }
-field_type: list_integer
+field_type: list_string
