@@ -3,6 +3,7 @@
 namespace Drupal\collection\Form;
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -11,6 +12,7 @@ use Drupal\Core\Url;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgMembershipInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\Entity\User;
@@ -143,11 +145,17 @@ class JoinCollectionForm extends FormBase {
       ->setGroupEntityType('rdf_entity')
       ->setEntityid($collection->id())
       ->setState(OgMembershipInterface::STATE_ACTIVE)
+      ->setRoles([$collection->getEntityTypeId() . '-' . $collection->bundle() . '-' . OgRoleInterface::AUTHENTICATED])
       ->save();
 
     drupal_set_message($this->t('You are now a member of %collection.', [
       '%collection' => $collection->getName(),
     ]));
+
+    // @todo: This is a temporary workaround for the lack of og cache
+    // contexts/tags. Remove this when Og provides proper cache context.
+    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2628
+    Cache::invalidateTags(['user.roles']);
   }
 
 }

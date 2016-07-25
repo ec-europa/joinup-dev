@@ -43,6 +43,7 @@
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
         "mikey179/vfsStream": "~1.2",
+        "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.0",
         "phpunit/phpunit": "~4.8",
         "symfony/css-selector": "~2.8.0"
@@ -71,6 +72,9 @@
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
         "patches": {
+            "drupal/og": {
+                "Support for special permission on Og.": "https://patch-diff.githubusercontent.com/raw/amitaibu/og/pull/250.patch"
+            },
             "drupal/core": {
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
             },
