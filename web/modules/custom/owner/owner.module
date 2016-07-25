@@ -6,29 +6,6 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
-
-/**
- * Implements hook_entity_bundle_field_info_alter().
- */
-function owner_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
-  // Make sure that the label is always unique for person and organisation rdf
-  // entities.
-  if ($entity_type->id() == 'rdf_entity') {
-    $bundles = [
-      'organisation' => 'field_oo_name',
-      'person' => 'field_op_name',
-    ];
-
-    if (isset($bundles[$bundle])) {
-      $field_name = $bundles[$bundle];
-
-      if (!empty($fields[$field_name])) {
-        $fields[$field_name]->addConstraint('UniqueFieldInBundle', ['bundles' => [$bundle]]);
-      }
-    }
-  }
-}
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
