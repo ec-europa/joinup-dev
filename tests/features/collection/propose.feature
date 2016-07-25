@@ -43,9 +43,9 @@ Feature: Proposing a collection
     And I select "Only members can publish new content" from "eLibrary creation"
     And I check "Moderated"
     # Click the button to select an existing owner.
-    And I press "Add existing Owner"
+    And I press "Add existing owner"
     And I fill in "Owner" with "Organisation example"
-    And I press "Add Owner"
+    And I press "Add owner"
     And I press "Save"
     Then I should see the heading "Ancient and Classical Mythology"
     # The user that proposed the collection should be auto-subscribed.
