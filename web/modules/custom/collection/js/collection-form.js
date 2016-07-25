@@ -16,6 +16,7 @@
           if (option != null) {
             option.appendTo('#edit-field-ar-elibrary-creation');
           }
+
           if (label != null) {
             label.appendTo('div.slider__labels');
           }
@@ -23,25 +24,34 @@
             // If the collection is closed only options 0 and 1 should be
             // available.
             // Disabling option 2 if it exists.
-            var optionText = $('option[value="2"]', '#edit-field-ar-elibrary-creation').text();
+            var option_2 = $('option[value="2"]', '#edit-field-ar-elibrary-creation');
+            var optionText = option_2.text();
             // Select option 1 if option 2 is selected.
-            if ($('option[value="2"]', '#edit-field-ar-elibrary-creation').is(':selected')) {
+            if (option_2.is(':selected')) {
               $('option[value="1"]', '#edit-field-ar-elibrary-creation').attr('selected', 'selected');
             }
-            option = $('option[value="2"]', '#edit-field-ar-elibrary-creation').remove();
-            label = $('.slider__labels').find(':contains("' + optionText + '")').remove();
+            option_2.attr('selected', false);
+            option = option_2.remove();
+            if (optionText) {
+              label = $('.slider__labels').find(':contains("' + optionText + '")').remove();
+            }
           }
           else {
             // If the collection is opened only options 1 and 2 should be
             // available.
             // Disabling option 0 if it exists.
-            var optionText = $('option[value="0"]', '#edit-field-ar-elibrary-creation').text();
+            var option_0 = $('option[value="0"]', '#edit-field-ar-elibrary-creation');
+            var optionText = option_0.text();
             // Select option 1 if option 0 is selected.
-            if ($('option[value="0"]', '#edit-field-ar-elibrary-creation').is(':selected')) {
+            if (option_0.is(':selected')) {
               $('option[value="1"]', '#edit-field-ar-elibrary-creation').attr('selected', 'selected');
             }
-            option = $('option[value="0"]', '#edit-field-ar-elibrary-creation').remove();
-            label = $('.slider__labels').find(':contains("' + optionText + '")').remove();
+            option_0.attr('selected', false);
+            option = option_0.remove();
+
+            if (optionText) {
+              label = $('.slider__labels').find(':contains("' + optionText + '")').remove();
+            }
           }
 
           // Update the select slider to reflect only the available options.

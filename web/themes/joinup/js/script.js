@@ -16,7 +16,8 @@
         range: "min",
         value: select[ 0 ].selectedIndex + 1,
         slide: function (event, ui) {
-          select[ 0 ].selectedIndex = ui.value - 1;
+          select.find('option').removeAttr('selected');
+          $(select.find('option')[ui.value - 1]).attr('selected', 'selected');
         }
       });
    });
