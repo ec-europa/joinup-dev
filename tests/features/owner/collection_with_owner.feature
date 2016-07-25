@@ -7,6 +7,7 @@ Feature: Creation of owners through UI
   Scenario: Propose a collection
     Given the following organisation:
       | name | My organisation |
+
     And I am logged in as a user with the "authenticated" role
     When I am on the homepage
     And I click "Propose collection"
@@ -27,7 +28,7 @@ Feature: Creation of owners through UI
 
     # Click the button to select an existing owner.
     And I press "Add existing owner" at the "Owner" field
-    And I fill in "Owner" with "Organisation example"
+    And I fill in "Owner" with "My organisation"
     And I press "Add owner"
     And I press "Save"
     Then I should see the heading "Classical and Ancient Mythology"
