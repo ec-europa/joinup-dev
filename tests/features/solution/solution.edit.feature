@@ -36,7 +36,7 @@ Feature: Solution editing.
       And the following field widgets should be present "Contact information, Owner"
       # Logo and banner fields are required, so they are filled up during
       # the creation of the solution to simulate a real case scenario.
-      # Unfortunately, ile fields with a file already attached cannot be
+      # Unfortunately, file fields with a file already attached cannot be
       # found by named xpath, so we look for the related labels.
       And I should see the text "Logo"
       And I should see the text "Banner"
