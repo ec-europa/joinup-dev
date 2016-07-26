@@ -1,69 +1,75 @@
 @api
 Feature: Solution editing.
   In order to manage solutions
-  As a moderator or solution facilitator
+  As a solution owner or solution facilitator
   I need to be able to edit solutions through UI.
 
   Background:
-    Given the following contacts:
-      | name           | email              |
-      | Seward Shawn   | seward@example.com |
-      | Hedley Gardner | hedley@example.com |
-    And organisations:
-      | name           |
-      | Avengers       |
-      | Justice League |
+    Given the following contact:
+      | name  | Seward Shawn       |
+      | email | seward@example.com |
+    And organization:
+      | name | Acme inc. |
     And users:
-      | name           | mail                       |
-      | Yancy Burton   | yancy.burton@example.com   |
-      | Nikolas Dalton | nikolas.dalton@example.com |
-    And solutions:
-      | title      | description   | logo     | banner     | contact information | owner          |
-      | Solution A | First letter  | logo.png | banner.jpg | Seward Shawn        | Avengers       |
-      | Solution B | Second letter | logo.png | banner.jpg | Hedley Gardner      | Justice League |
-    And the following solution user memberships:
-      | solution   | user           | roles                      |
-      | Solution A | Yancy Burton   | administrator, facilitator |
-      | Solution B | Nikolas Dalton | facilitator                |
+      | name         | mail                     |
+      | Yancy Burton | yancy.burton@example.com |
+    And collection:
+      | title | Collection example |
+    # Assign facilitator role in order to allow creation of a solution.
+    # In UAT this can be done by creating the collection through the UI
+    # with the related user.
+    And the following collection user memberships:
+      | collection         | user         | roles       |
+      | Collection example | Yancy Burton | facilitator |
+    And solution:
+      | title               | Another solution  |
+      | description         | Just another one. |
+      | logo                | logo.png          |
+      | banner              | banner.jpg        |
+      | contact information | Seward Shawn      |
+      | owner               | Acme inc.         |
 
     Scenario: A solution owner can edit only its own solutions.
       When I am logged in as "Yancy Burton"
-      And I go to the homepage of the "Solution A" solution
-      Then I should see the link "Edit"
+      And I go to the homepage of the "Collection example" collection
+      And I click "Add solution"
+      Then I should see the heading "Add Interoperability Solution"
+      When I fill in the following:
+        | Title             | Solution A   |
+        | Description       | First letter |
+      And I attach the file "logo.png" to "Logo"
+      And I attach the file "banner.jpg" to "Banner"
+      # Click the button to select an existing contact information.
+      And I press "Add existing"
+      And I fill in "Contact information" with "Seward Shawn"
+      And I press "Add contact information"
+      # Click the button to select an existing owner.
+      And I press "Add existing owner"
+      And I fill in "Owner" with "Acme inc."
+      And I press "Add owner"
+      And I press "Save"
+      Then I should see the heading "Solution A"
+
+      And I should see the link "Edit"
       When I go to the "Solution A" solution edit form
       Then I should see the heading "Edit Interoperability Solution Solution A"
       And the following fields should be present "Title, Description, Documentation, Related Solutions, eLibrary creation, Moderated, Landing page, Metrics page, Issue tracker, Wiki"
       And the following field widgets should be present "Contact information, Owner"
       # Logo and banner fields are required, so they are filled up during
-      # the creation of the solution to simulate a real case scenario.
-      # Unfortunately, file fields with a file already attached cannot be
-      # found by named xpath, so we look for the related labels.
+      # the creation of the solution. Unfortunately, file fields with a file
+      # already attached cannot be found by named xpath, so we look for the
+      # related labels.
       And I should see the text "Logo"
       And I should see the text "Banner"
       When I fill in "Title" with "Solution A revised"
       And I press "Save"
       Then I should see the heading "Solution A revised"
 
-      When I go to the homepage of the "Solution B" solution
+      # This user is an owner only of Solution A.
+      When I go to the homepage of the "Another solution" solution
       Then I should not see the link "Edit"
-      When I go to the "Solution B" solution edit form
+      When I go to the "Another solution" solution edit form
       Then I should get an access denied error
 
-    Scenario: A solution facilitator can edit only the solutions he's associated with.
-      When I am logged in as "Nikolas Dalton"
-      And I go to the homepage of the "Solution B" solution
-      Then I should see the link "Edit"
-      When I go to the "Solution B" solution edit form
-      Then I should see the heading "Edit Interoperability Solution Solution B"
-      And the following fields should be present "Title, Description, Documentation, Related Solutions, eLibrary creation, Moderated, Landing page, Metrics page, Issue tracker, Wiki"
-      And the following field widgets should be present "Contact information, Owner"
-      And I should see the text "Logo"
-      And I should see the text "Banner"
-      When I fill in "Title" with "Solution B revised"
-      And I press "Save"
-      Then I should see the heading "Solution B revised"
-
-      When I go to the homepage of the "Solution A" solution
-      Then I should not see the link "Edit"
-      When I go to the "Solution A" solution edit form
-      Then I should get an access denied error
+      # Clean up the solution that was created through the UI.
+      Then I delete the "Solution A revised" solution
