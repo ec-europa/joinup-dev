@@ -5,7 +5,7 @@ Feature: User registration
   Scenario: User can find the register page
     Given I am an anonymous user
     When I am on the homepage
-    And I click "Log in"
+    And I click "Sign in"
     Then I am at "/user/login"
     When I click "Create new account"
     Then I am at "/user/register"
