@@ -15,7 +15,7 @@
         max: selectLength,
         range: "min",
         value: select[ 0 ].selectedIndex + 1,
-        slide: function (event, ui) {
+        change: function (event, ui) {
           select.find('option').removeAttr('selected');
           $(select.find('option')[ui.value - 1]).attr('selected', 'selected');
         }

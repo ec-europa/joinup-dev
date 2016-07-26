@@ -61,4 +61,99 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $this->getSession()->getDriver()->maximizeWindow();
   }
 
+  /**
+   * For javascript find text on page and click on it.
+   *
+   * @param string $label
+   *   Text to find in page.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *
+   * @When I click the label :label
+   */
+  public function iClickTheLabel($label) {
+
+    $node = $this->getSession()->getPage()->find('named', array('content', $label));
+
+    if (!is_object($node)) {
+      throw new \Behat\Mink\Exception\ElementNotFoundException('Node with text ' . $label . " not found in page.");
+    }
+
+    $node->click();
+  }
+
+  /**
+   * Find the selected option of the select and check the text.
+   *
+   * @param string $option
+   *   Text value of the option to find.
+   * @param string $select
+   *   Css selector of the select field.
+   *
+   * @throws \Exception
+   *
+   * @Then the option with text :option from select :select is selected
+   */
+  public function theOptionWithTextFromSelectIsSelected($option, $select)
+  {
+    $selectField = $this->getSession()->getPage()->find('css', $select);
+    if (null === $selectField) {
+      throw new \Exception(sprintf(
+        'The select "%s" was not found in the page %s',
+        $select, $this->getSession()->getCurrentUrl())
+      );
+    }
+
+    $optionField = $selectField->find('xpath', '//option[@selected="selected"]');
+    if (null === $optionField) {
+      throw new \Exception(sprintf(
+        'No option is selected in the %s select in the page %s',
+        $select, $this->getSession()->getCurrentUrl())
+      );
+    }
+
+    if ($optionField->getHtml() != $option) {
+      throw new \Exception(sprintf(
+        'The option "%s" was not selected in the page %s, %s was selected',
+        $option,
+        $this->getSession()->getCurrentUrl(),
+        $optionField->getHtml())
+      );
+    }
+  }
+
+  /**
+   * Find the selected option of the select and check the text.
+   *
+   * @param string $option
+   *   Text value of the option to find.
+   * @param string $select
+   *   Css selector of the select field.
+   *
+   * @throws \Exception
+   *
+   * @Then the option with text :option from select :select is not selected
+   */
+  public function theOptionWithTextFromSelectIsNotSelected($option, $select)
+  {
+    $selectField = $this->getSession()->getPage()->find('css', $select);
+    if (null === $selectField) {
+      throw new \Exception(sprintf(
+          'The select "%s" was not found in the page %s',
+          $select, $this->getSession()->getCurrentUrl())
+      );
+    }
+
+    $optionField = $selectField->find('xpath', '//option[@selected="selected"]');
+    if (null !== $optionField) {
+      if ($optionField->getHtml() == $option) {
+        throw new \Exception(sprintf(
+            'The option "%s" was selected in the page %s',
+            $option,
+            $this->getSession()->getCurrentUrl()
+        ));
+      }
+    }
+  }
+
 }
