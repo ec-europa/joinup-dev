@@ -9,10 +9,6 @@ Feature: "Add custom page" visibility options.
       | title  | Code Camp          |
       | logo   | logo.png           |
 
-    When I am logged in as a "facilitator" of the "Code Camp" collection
-    And I go to the homepage of the "Code Camp" collection
-    Then I should see the link "Add custom page"
-
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Code Camp" collection
     Then I should not see the link "Add custom page"
