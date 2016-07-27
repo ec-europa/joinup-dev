@@ -76,21 +76,18 @@ Feature: Proposing a collection
     And I press "Save"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
 
-  #@javascript
+  @javascript
   Scenario: Propose closed collection
     Given I am logged in as a user with the "moderator" role
-    # Uncomment for javascript test
-    #Given I maximize browser window
+    Given I maximize browser window
     When I go to "collection/propose"
     Then I should see the heading "Propose collection"
     And I check "Closed collection"
     Then I should see "Only collection facilitators can create new content"
-    # Uncomment for javascript test
-    #And I should not see "Any registered users can create new content"
+    And I should not see "Any registered users can create new content"
     Then I uncheck "Closed collection"
     And I should see "Any registered users can create new content"
-    # Uncomment for javascript test
-    #And I should not see "Only collection facilitators can create new content"
+    And I should not see "Only collection facilitators can create new content"
 
   Scenario: Propose regression eLibrary options plural
     Given I am logged in as a user with the "authenticated" role
@@ -100,23 +97,20 @@ Feature: Proposing a collection
     Then I uncheck "Closed collection"
     And I should see "Any registered users can create new content"
 
-  # Uncomment for javascript test
-  #@javascript
-  #Scenario: Regression test - Radio button doesn't update after moving eLibrary creation slider
-    #Given I am logged in as a user with the "authenticated" role
-    #Given I maximize browser window
-    #When I go to "collection/propose"
-    #And I click the label "Any registered users can create new content."
-    #Then The option with text "Any registered users can create new content." from select "#edit-field-ar-elibrary-creation" is selected
-    #And The option with text "Only members can publish new content." from select "#edit-field-ar-elibrary-creation" is not selected
+  @javascript
+  Scenario: Regression test - Radio button doesn't update after moving eLibrary creation slider
+    Given I am logged in as a user with the "authenticated" role
+    Given I maximize browser window
+    When I go to "collection/propose"
+    And I click the label "Any registered users can create new content."
+    Then The option with text "Any registered users can create new content." from select "#edit-field-ar-elibrary-creation" is selected
+    And The option with text "Only members can publish new content." from select "#edit-field-ar-elibrary-creation" is not selected
 
-  # Uncomment for javascript test
-  #@javascript
-  #Scenario: Regression test: Wrong radio button selected after changing open collection to closed
-    #Given I am logged in as a user with the "authenticated" role
-    #Given I maximize browser window
-    #When I go to "collection/propose"
-    #And I check "Closed collection"
-    #Then The option with text "Only members can create new content." from select "#edit-field-ar-elibrary-creation" is selected
-    #And The option with text "Only collection facilitators can create new content." from select "#edit-field-ar-elibrary-creation" is not selected
-
+  @javascript
+  Scenario: Regression test: Wrong radio button selected after changing open collection to closed
+    Given I am logged in as a user with the "authenticated" role
+    Given I maximize browser window
+    When I go to "collection/propose"
+    And I check "Closed collection"
+    Then The option with text "Only members can create new content." from select "#edit-field-ar-elibrary-creation" is selected
+    And The option with text "Only collection facilitators can create new content." from select "#edit-field-ar-elibrary-creation" is not selected
