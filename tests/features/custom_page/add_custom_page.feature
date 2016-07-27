@@ -4,10 +4,14 @@ Feature: "Add custom page" visibility options.
   As a collection member
   I need to be able to add "Custom page" content through UI.
 
-  Scenario: "Add custom page" button should only be shown to moderators.
+  Scenario: "Add custom page" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following collection:
       | title  | Code Camp          |
       | logo   | logo.png           |
+
+    When I am logged in as a member of the "Code Camp" collection
+    And I go to the homepage of the "Code Camp" collection
+    Then I should not see the link "Add custom page"
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Code Camp" collection
