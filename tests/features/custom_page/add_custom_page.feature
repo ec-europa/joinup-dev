@@ -6,8 +6,8 @@ Feature: "Add custom page" visibility options.
 
   Scenario: "Add custom page" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following collection:
-      | title  | Code Camp          |
-      | logo   | logo.png           |
+      | title  | Code Camp |
+      | logo   | logo.png  |
 
     When I am logged in as a member of the "Code Camp" collection
     And I go to the homepage of the "Code Camp" collection
@@ -21,11 +21,12 @@ Feature: "Add custom page" visibility options.
     And I go to the homepage of the "Code Camp" collection
     Then I should not see the link "Add custom page"
 
-  Scenario: Add custom page as a moderator.
-    Given the following collection:
-      | title  | Open Collective              |
-      | logo   | logo.png                     |
-    And I am logged in as a "facilitator" of the "Open Collective" collection
+  Scenario: Add custom page as a facilitator.
+    Given collections:
+      | title           | logo     |
+      | Open Collective | logo.png |
+      | Code Camp       | logo.png |
+    And I am logged in as a facilitator of the "Open Collective" collection
 
     When I go to the homepage of the "Open Collective" collection
     And I click "Add custom page"
