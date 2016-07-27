@@ -46,3 +46,7 @@ Feature: "Add custom page" visibility options.
     # Check that the collection content such as the 'Join collection block' is
     # available in context of the custom page.
     Then I should see the link "Leave this collection"
+
+    # I should not be able to add a custom page to a different collection
+    When I go to the homepage of the "Code Camp" collection
+    Then I should not see the link "Add custom page"
