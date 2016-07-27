@@ -41,23 +41,9 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
  * @see https://www.w3.org/TR/vocab-adms/#the-adms-domain-model
  */
 function solution_rdf_entity_insert(EntityInterface $entity) {
-  if ($entity->bundle() != 'solution' || empty($entity->field_is_affiliations_requests->first())) {
+  if ($entity->bundle() != 'solution') {
     return;
   }
-  $affiliate = $entity->field_is_affiliations_requests->first()->target_id;
-  if (empty($affiliate)) {
-    return;
-  }
-
-  $collection = Rdf::load($affiliate);
-  if (empty($collection) || $collection->bundle() != 'collection') {
-    return;
-  }
-  /** @var \Drupal\rdf_entity\RdfInterface $collection */
-  $collection->set('field_ar_affiliates', $entity->id());
-  $collection->save();
-
-  $entity->set('field_is_affiliations_requests', NULL);
 
   // When a new solution is created, give the current user the 'group owner'
   // role, if it is not the anonymous user.
@@ -79,4 +65,22 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
       ->setRoles($roles)
       ->save();
   }
+
+  if (empty($entity->field_is_affiliations_requests->first())) {
+    return;
+  }
+  $affiliate = $entity->field_is_affiliations_requests->first()->target_id;
+  if (empty($affiliate)) {
+    return;
+  }
+
+  $collection = Rdf::load($affiliate);
+  if (empty($collection) || $collection->bundle() != 'collection') {
+    return;
+  }
+  /** @var \Drupal\rdf_entity\RdfInterface $collection */
+  $collection->set('field_ar_affiliates', $entity->id());
+  $collection->save();
+
+  $entity->set('field_is_affiliations_requests', NULL);
 }
