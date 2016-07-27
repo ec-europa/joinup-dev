@@ -359,9 +359,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     foreach ($membership_table->getColumnsHash() as $values) {
       // Load group.
       $group = $this->getSolutionByName($values['solution']);
-      if (empty($group)) {
-        throw new \Exception('Solution ' . $values['solution'] . ' not found.');
-      }
 
       // Load member.
       $member = user_load_by_name($values['user']);

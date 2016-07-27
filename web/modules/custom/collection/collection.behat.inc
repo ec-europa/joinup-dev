@@ -387,9 +387,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     foreach ($membership_table->getColumnsHash() as $values) {
       // Load group.
       $group = $this->getCollectionByName($values['collection']);
-      if (empty($group)) {
-        throw new \Exception("Collection " . $values['collection'] . " not found.");
-      }
 
       // Load member.
       $member = user_load_by_name($values['user']);
