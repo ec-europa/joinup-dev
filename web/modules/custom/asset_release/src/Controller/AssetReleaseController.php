@@ -2,10 +2,10 @@
 
 namespace Drupal\asset_release\Controller;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\Og;
+use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AssetReleaseController.
@@ -16,6 +16,32 @@ use Drupal\rdf_entity\RdfInterface;
  * @package Drupal\asset_release\Controller
  */
 class AssetReleaseController extends ControllerBase {
+
+  /**
+   * The OG access handler.
+   *
+   * @var \Drupal\og\OgAccessInterface
+   */
+  protected $ogAccess;
+
+  /**
+   * Constructs a CustomPageController.
+   *
+   * @param \Drupal\og\OgAccessInterface $og_access
+   *   The OG access handler.
+   */
+  public function __construct(OgAccessInterface $og_access) {
+    $this->ogAccess = $og_access;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('og.access')
+    );
+  }
 
   protected $fieldsToCopy = [
     'field_is_description' => 'field_isr_description',
@@ -73,10 +99,7 @@ class AssetReleaseController extends ControllerBase {
    *   The access result object.
    */
   public function createAssetReleaseAccess(RdfInterface $rdf_entity) {
-    $user = $this->currentUser();
-    $membership = Og::getMembership($user, $rdf_entity);
-    // @todo: Remove check for empty after ISAICP-2369 is in.
-    return (!empty($membership) && $membership->hasPermission('create asset_release rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
+    return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $this->currentUser());
   }
 
   /**
