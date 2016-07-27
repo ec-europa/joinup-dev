@@ -35,7 +35,6 @@ Feature: "Edit" visibility options.
     Then I should not see the link "Edit" in the "Entity actions" region
 
   Scenario: Edit a release as a solution facilitator.
-    # Check that the release cannot take the title of another solution.
     When I am logged in as a "facilitator" of the "Release Test 1" solution
     And I go to the homepage of the "My awesome solution abc v1" asset release
     And I click "Edit"
