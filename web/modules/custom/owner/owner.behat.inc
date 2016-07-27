@@ -185,14 +185,16 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   /**
    * Selects option in select field at a Owner inline entity widget.
    *
-   * @When (I )select :option in the dropdown( list) of the :fieldset( field)
+   * @param string $option
+   *    The option to choose from the dropdown list.
+   *
+   * @When (I )select :option in the dropdown( list) of the "Owner"( field)
    */
-  public function selectOption($select, $option, $fieldset) {
+  public function selectOption($option) {
     // Fixes a step argument (with \\" replaced back to ")
     // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
-    $select = str_replace('\\"', '"', $select);
     $option = str_replace('\\"', '"', $option);
-    $this->getSession()->getPage()->find('named', array('fieldset', 'field_ar_owner[actions][bundle]'))->selectFieldOption($select, $option);
+    $this->getSession()->getPage()->find('named', array('fieldset', 'Owner'))->selectFieldOption('field_ar_owner[actions][bundle]', $option);
   }
 
   /**
