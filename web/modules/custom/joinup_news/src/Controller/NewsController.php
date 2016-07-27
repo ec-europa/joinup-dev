@@ -2,8 +2,8 @@
 
 namespace Drupal\joinup_news\Controller;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\OgAccess;
 use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -64,6 +64,10 @@ class NewsController extends ControllerBase {
   /**
    * Handles access to the news add form through rdf entity pages.
    *
+   * Access is granted to moderators and group members that have the permission
+   * to create news articles inside of their group, which in practice means this
+   * is granted to collection and solution facilitators.
+   *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the news entity is created.
    *
@@ -71,7 +75,14 @@ class NewsController extends ControllerBase {
    *   The access result object.
    */
   public function createNewsAccess(RdfInterface $rdf_entity) {
-    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createNewsEntity($rdf_entity), $this->currentUser());
+    $user = $this->currentUser();
+    // Grant access if the user is a moderator.
+    if (in_array('moderator', $user->getRoles())) {
+      return AccessResult::allowed()->addCacheContexts(['user.roles']);
+    }
+    // Grant access depending on whether the user has permission to create a
+    // custom page according to their OG role.
+    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createNewsEntity($rdf_entity), $user);
   }
 
   /**
