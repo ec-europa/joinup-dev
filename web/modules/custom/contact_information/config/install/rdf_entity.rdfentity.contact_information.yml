@@ -6,7 +6,7 @@ third_party_settings:
     mapping_rid:
       target_id: 'http://www.w3.org/2006/vcard/ns#Kind'
     mapping_label:
-      value: 'vcard:label'
+      value: 'http://purl.org/dc/terms/title'
 name: 'Contact information'
 rid: contact_information
 description: ''
