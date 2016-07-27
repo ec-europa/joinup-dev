@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup\Plugin\Validation\Constraint;
+namespace Drupal\joinup_core\Plugin\Validation\Constraint;
 
 use Drupal\Component\Utility\Unicode;
 use Symfony\Component\Validator\Constraint;

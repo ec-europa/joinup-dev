@@ -10,7 +10,7 @@ use Drupal\og\Entity\OgMembership;
 use Drupal\og\OgMembershipInterface;
 
 /**
- * Implements hook_ENTITY_TYPE_create().
+ * Implements hook_ENTITY_TYPE_insert().
  *
  * There are two organic groups, the collection and the solution, and two users
  * intended to be used as facilitators, the collection_facilitator and the
@@ -19,7 +19,7 @@ use Drupal\og\OgMembershipInterface;
  * This function will assign the appropriate user as a facilitator to the entity
  * passed.
  */
-function demo_content_rdf_entity_create(EntityInterface $entity) {
+function demo_content_rdf_entity_insert(EntityInterface $entity) {
   if (!in_array($entity->bundle(), ['collection', 'solution'])) {
     return;
   }
