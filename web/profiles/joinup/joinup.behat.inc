@@ -471,20 +471,4 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $this->getSession()->getPage()->find('named', array('fieldset', $fieldset))->pressButton($button);
   }
 
-  /**
-   * Selects option in select field at a widget.
-   *
-   * Example: When I select "Bats" from "user_fears" at "Fieldset"
-   * Example: And I select "Bats" from "user_fears" at "Custom widget"
-   *
-   * @When (I )select :option from :select at( the) :fieldset( field)
-   */
-  public function selectOption($select, $option, $fieldset) {
-    // Fixes a step argument (with \\" replaced back to ")
-    // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
-    $select = str_replace('\\"', '"', $select);
-    $option = str_replace('\\"', '"', $option);
-    $this->getSession()->getPage()->find('named', array('fieldset', $fieldset))->selectFieldOption($select, $option);
-  }
-
 }

@@ -25,7 +25,7 @@ Feature: Creation of owners through UI
     # Create a person owner as well.
     # There is no label for the bundle type so we have to provide the machine name "field_ar_owner[actions][bundle]".
     # field_ar_owner[actions][bundle] is the select field where the user selects "person" or "organisation".
-    And I select "Person" from "field_ar_owner[actions][bundle]" at the "Owner" field
+    And I select "Person" in the dropdown of the "Owner" field
     And I press "Add new owner" at the "Owner" field
     And I fill in "Name" with "Person created example"
     And I press "Create owner"
