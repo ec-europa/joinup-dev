@@ -50,3 +50,23 @@ Feature: "Add custom page" visibility options.
     # I should not be able to add a custom page to a different collection
     When I go to the homepage of the "Code Camp" collection
     Then I should not see the link "Add custom page"
+
+  Scenario: Add custom page as a moderator.
+    Given users:
+      | name    | roles     |
+      | Falstad | moderator |
+    And collections:
+      | title           | logo     |
+      | Open Collective | logo.png |
+      | Code Camp       | logo.png |
+    And user memberships:
+      | collection      | user    | roles  |
+      | Open Collective | Falstad | member |
+
+    # Moderators can add custom pages in any collection, whether they are a member or not.
+    Given I am logged in as "Falstad"
+    When I go to the homepage of the "Open Collective" collection
+    Then I should see the link "Add custom page"
+
+    When I go to the homepage of the "Code Camp" collection
+    Then I should see the link "Add custom page"
