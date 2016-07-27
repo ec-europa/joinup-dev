@@ -4,6 +4,7 @@ namespace Drupal\joinup_news\Guard;
 
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
@@ -47,7 +48,7 @@ class FulfillmentGuard implements GuardInterface {
     }
 
     $from_state = $this->getState($entity);
-    $parent = joinup_news_get_parent($entity);
+    $parent = $this->getParent($entity);
 
     $is_moderated = self::MODERATED;
     if ($parent) {
@@ -112,6 +113,36 @@ class FulfillmentGuard implements GuardInterface {
       $unchanged_entity = \Drupal::entityTypeManager()->getStorage('node')->loadUnchanged($entity->id());
       return $unchanged_entity->field_news_state->first()->value;
     }
+  }
+
+  /**
+   * Returns the owner entity of this node if it exists.
+   *
+   * The news entity can belong to a collection or a solution, depending on
+   * how it was created. This function will return the parent of the entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The news content entity.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface|null
+   *    The parent of the entity. This can be a collection or a solution.
+   *    If there is no parent found, return NULL.
+   *
+   * @todo This is currently called in joinup_news_node_access() as a workaround
+   *   for the lack of access checking in OG. Turn this in a protected method as
+   *   soon as this is fixed in OG.
+   *
+   * @see joinup_news_node_access()
+   * @see https://github.com/amitaibu/og/pull/217
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2622
+   */
+  public static function getParent(EntityInterface $entity) {
+    $parent = NULL;
+    if (!empty($entity->og_group_ref->first()->target_id)) {
+      /** @var \Drupal\rdf_entity\RdfInterface $parent */
+      $parent = Rdf::load($entity->og_group_ref->first()->target_id);
+    }
+    return $parent;
   }
 
 }
