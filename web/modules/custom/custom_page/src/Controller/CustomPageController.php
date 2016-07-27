@@ -73,7 +73,7 @@ class CustomPageController extends ControllerBase {
    *   The access result object.
    */
   public function createCustomPageAccess(RdfInterface $rdf_entity) {
-    return $this->ogAccess->userAccessEntity('create', $this->createNewCustomPage($rdf_entity), $this->currentUser());
+    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createNewCustomPage($rdf_entity), $this->currentUser());
   }
 
   /**

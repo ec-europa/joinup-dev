@@ -9,10 +9,6 @@ Feature: "Add custom page" visibility options.
       | title  | Code Camp          |
       | logo   | logo.png           |
 
-    When I am logged in as a "moderator"
-    And I go to the homepage of the "Code Camp" collection
-    Then I should see the link "Add custom page"
-
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Code Camp" collection
     Then I should not see the link "Add custom page"
@@ -25,7 +21,7 @@ Feature: "Add custom page" visibility options.
     Given the following collection:
       | title  | Open Collective              |
       | logo   | logo.png                     |
-    And I am logged in as a moderator
+    And I am logged in as a "facilitator" of the "Open Collective" collection
 
     When I go to the homepage of the "Open Collective" collection
     And I click "Add custom page"
@@ -44,4 +40,4 @@ Feature: "Add custom page" visibility options.
     And I click "About us"
     # Check that the collection content such as the 'Join collection block' is
     # available in context of the custom page.
-    Then I should see the "Join this collection" button
+    Then I should see the link "Leave this collection"
