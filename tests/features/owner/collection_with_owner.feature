@@ -10,8 +10,8 @@ Feature: Creation of owners through UI
     And I am logged in as a user with the "authenticated" role
     When I am on the homepage
     And I click "Propose collection"
-    And the following field widgets should be present "Contact information, Owner"
-    And I fill in the following:
+    Then the following field widgets should be present "Contact information, Owner"
+    When I fill in the following:
       | Title       | Classical and Ancient Mythology                                                                      |
       | Description | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
     And I attach the file "logo.png" to "Logo"
