@@ -384,8 +384,22 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function givenCollectionUserMemberships(TableNode $membership_table) {
     foreach ($membership_table->getColumnsHash() as $values) {
+      // Load group.
       $group = $this->getCollectionByName($values['collection']);
-      $this->createOgMembership($group, $values['user'], $values['roles']);
+
+      // Load member.
+      $member = user_load_by_name($values['user']);
+      if (empty($member)) {
+        throw new \Exception("User " . $values['user'] . " not found.");
+      }
+
+      // Convert role names to role IDs.
+      $roles = array();
+      if (!empty($values['roles'])) {
+        $roles = $this->convertOgRoleNamesToIds(explode(', ', $values['roles']), $group);
+      }
+
+      $this->subscribeUserToGroup($member->id(), $group, $roles);
     }
   }
 
