@@ -63,7 +63,7 @@
             max: selectLength,
             range: 'min',
             value: select[0].selectedIndex + 1,
-            change: function(event, ui) {
+            change: function (event, ui) {
               select.find('option').removeAttr('selected');
               $(select.find('option')[ui.value - 1]).attr('selected', 'selected');
             }
@@ -73,7 +73,7 @@
           $(".slider__labels .slider__label").unbind("click");
 
           // Bind click to all sliderlabels.
-          $(".slider__labels .slider__label").bind("click", function() {
+          $(".slider__labels .slider__label").bind("click", function () {
             $("#slider").slider("value", $(this).index() + 1);
             $("#slider").trigger("slide");
           });
