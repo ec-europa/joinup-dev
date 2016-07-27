@@ -73,3 +73,29 @@ Feature: Solution editing.
 
       # Clean up the solution that was created through the UI.
       Then I delete the "Solution A revised" solution
+
+    Scenario: A solution facilitator can edit only the solutions he's associated with.
+      Given the following solution:
+        | title               | Solution B    |
+        | description         | Second letter |
+        | logo                | logo.png      |
+        | banner              | banner.jpg    |
+        | contact information | Seward Shawn  |
+        | owner               | Acme inc.     |
+      When I am logged in as a facilitator of the "Solution B" solution
+      And I go to the homepage of the "Solution B" solution
+      Then I should see the link "Edit"
+      When I go to the "Solution B" solution edit form
+      Then I should see the heading "Edit Interoperability Solution Solution B"
+      And the following fields should be present "Title, Description, Documentation, Related Solutions, eLibrary creation, Moderated, Landing page, Metrics page, Issue tracker, Wiki"
+      And the following field widgets should be present "Contact information, Owner"
+      And I should see the text "Logo"
+      And I should see the text "Banner"
+      When I fill in "Title" with "Solution B revised"
+      And I press "Save"
+      Then I should see the heading "Solution B revised"
+
+      When I go to the homepage of the "Another solution" solution
+      Then I should not see the link "Edit"
+      When I go to the "Another solution" solution edit form
+      Then I should get an access denied error
