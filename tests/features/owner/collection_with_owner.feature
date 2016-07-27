@@ -16,9 +16,6 @@ Feature: Creation of owners through UI
       | Description | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
-    And I check "Closed collection"
-    And I select "Only members can publish new content" from "eLibrary creation"
-    And I check "Moderated"
 
     # Click the button to create an organisation owner.
     And I press "Add new owner" at the "Owner" field
