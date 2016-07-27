@@ -357,22 +357,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function givenSolutionUserMemberships(TableNode $membership_table) {
     foreach ($membership_table->getColumnsHash() as $values) {
-      // Load group.
       $group = $this->getSolutionByName($values['solution']);
-
-      // Load member.
-      $member = user_load_by_name($values['user']);
-      if (empty($member)) {
-        throw new \Exception('User ' . $values['user'] . ' not found.');
-      }
-
-      // Convert role names to role IDs.
-      $roles = array();
-      if (!empty($values['roles'])) {
-        $roles = $this->convertOgRoleNamesToIds(explode(', ', $values['roles']), $group);
-      }
-
-      $this->subscribeUserToGroup($member->id(), $group, $roles);
+      $this->createOgMembership($group, $values['user'], $values['roles']);
     }
   }
 

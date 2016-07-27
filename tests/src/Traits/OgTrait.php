@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Contains helper methods regarding the organic groups.
@@ -68,6 +69,34 @@ trait OgTrait {
     }
 
     return $roles;
+  }
+
+  /**
+   * Creates a membership for a user to an rdf entity.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $group
+   *    The rdf entity group.
+   * @param string $user_name
+   *    The user's username.
+   * @param string $roles
+   *    The roles that the user will be assigned. multiple roles should be
+   *    passed as a string separating the roles with a comma.
+   *
+   * @throws \Exception
+   *    Throws an exception when the user is not found as memberships cannot be
+   *    created for anonymous users.
+   */
+  protected function createOgMembership(RdfInterface $group, $user_name, $roles) {
+    $member = user_load_by_name($user_name);
+    if (empty($member)) {
+      throw new \Exception('User ' . $user_name . ' not found.');
+    }
+
+    if (!empty($roles)) {
+      $roles = $this->convertOgRoleNamesToIds(explode(', ', $roles), $group);
+    }
+
+    $this->subscribeUserToGroup($member->id(), $group, $roles);
   }
 
 }
