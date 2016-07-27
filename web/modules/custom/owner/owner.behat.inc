@@ -56,9 +56,9 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @param TableNode $person_table
    *   The person table.
    *
-   * @Given (the following )persons:
+   * @Given (the following )people:
    */
-  public function givenPersons(TableNode $person_table) {
+  public function givenPeople(TableNode $person_table) {
     foreach ($person_table->getColumnsHash() as $person) {
       // Convert aliased field names.
       $values = $this->convertFieldAliases('person', $person);
