@@ -25,7 +25,7 @@ Feature: "Add solution" visibility options.
     Given the following collection:
       | title | Collection solution test 2 |
       | logo  | logo.png                   |
-    And the following contact information:
+    And the following contact:
       | email | foo@bar.com                 |
       | name  | Contact information example |
     And the following organisation:

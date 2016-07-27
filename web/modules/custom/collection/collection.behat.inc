@@ -12,9 +12,9 @@ use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgMenuTrait;
+use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\Entity\OgMembership;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -27,6 +27,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use FileTrait;
   use NodeTrait;
   use OgMenuTrait;
+  use OgTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
 
@@ -379,15 +380,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *   Thrown when a collection is not found.
    *
-   * @Given (the following )user memberships:
+   * @Given (the following )collection user memberships:
    */
-  public function givenUserMemberships(TableNode $membership_table) {
+  public function givenCollectionUserMemberships(TableNode $membership_table) {
     foreach ($membership_table->getColumnsHash() as $values) {
       // Load group.
       $group = $this->getCollectionByName($values['collection']);
-      if (empty($group)) {
-        throw new \Exception("Collection " . $values['collection'] . " not found.");
-      }
 
       // Load member.
       $member = user_load_by_name($values['user']);
@@ -395,25 +393,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         throw new \Exception("User " . $values['user'] . " not found.");
       }
 
-      /** @var \Drupal\og\OgMembershipInterface $membership */
-      $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
-      $membership
-        ->setUser($member->id())
-        ->setEntityId($group->id())
-        ->setGroupEntityType($group->getEntityTypeId())
-        ->setFieldName($membership->getFieldName())
-        ->save();
-
+      // Convert role names to role IDs.
+      $roles = array();
       if (!empty($values['roles'])) {
-        $roles = explode(',', $values['roles']);
-        foreach ($roles as $role) {
-          // The role ID is comprised of the entity type ID, bundle ID and role
-          // name, separated by dashes.
-          $role_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . trim($role);
-          $membership->addRole($role_id);
-        }
+        $roles = $this->convertOgRoleNamesToIds(explode(', ', $values['roles']), $group);
       }
-      $membership->save();
+
+      $this->subscribeUserToGroup($member->id(), $group, $roles);
     }
   }
 

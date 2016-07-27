@@ -33,16 +33,38 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * Table format:
    * | name | Mightily Oats |
    *
-   * @param TableNode $collection_table
-   *   The collection data.
+   * @param TableNode $person_table
+   *   The person table.
    *
    * @Given (the following )person:
    */
-  public function givenPerson(TableNode $collection_table) {
+  public function givenPerson(TableNode $person_table) {
     // Convert aliased field names.
-    $values = $this->convertFieldAliases('person', $collection_table);
+    $values = $this->convertFieldAliases('person', $person_table->getRowsHash());
 
     $this->createOwner('person', $values);
+  }
+
+  /**
+   * Creates a number of person owners with data provided in a table.
+   *
+   * Table format:
+   * | name          |
+   * | Mightily Oats |
+   * | John Irwin    |
+   *
+   * @param TableNode $person_table
+   *   The person table.
+   *
+   * @Given (the following )people:
+   */
+  public function givenPeople(TableNode $person_table) {
+    foreach ($person_table->getColumnsHash() as $person) {
+      // Convert aliased field names.
+      $values = $this->convertFieldAliases('person', $person);
+
+      $this->createOwner('person', $values);
+    }
   }
 
   /**
@@ -51,16 +73,38 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * Table format:
    * | name | Red birds |
    *
-   * @param TableNode $collection_table
-   *   The collection data.
+   * @param TableNode $organisation_table
+   *   The organisation table.
    *
    * @Given (the following )organisation:
    */
-  public function givenOrganisation(TableNode $collection_table) {
+  public function givenOrganisation(TableNode $organisation_table) {
     // Convert aliased field names.
-    $values = $this->convertFieldAliases('organisation', $collection_table);
+    $values = $this->convertFieldAliases('organisation', $organisation_table->getRowsHash());
 
     $this->createOwner('organisation', $values);
+  }
+
+  /**
+   * Creates a number of organisation owners with data provided in a table.
+   *
+   * Table format:
+   * | name      |
+   * | Red birds |
+   * | Acme Inc. |
+   *
+   * @param TableNode $organisation_table
+   *   The organisation table.
+   *
+   * @Given (the following )organisations:
+   */
+  public function givenOrganisations(TableNode $organisation_table) {
+    foreach ($organisation_table->getColumnsHash() as $organisation) {
+      // Convert aliased field names.
+      $values = $this->convertFieldAliases('person', $organisation);
+
+      $this->createOwner('organization', $values);
+    }
   }
 
   /**
@@ -134,8 +178,8 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    *
    * @param string $type
    *   The type of the owner.
-   * @param TableNode $collection_table
-   *   The collection data.
+   * @param array $aliased_values
+   *   An array of values keyed by field alias.
    *
    * @return array
    *   The field values keyed by real field name.
@@ -143,19 +187,19 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    */
-  protected function convertFieldAliases($type, TableNode $collection_table) {
+  protected function convertFieldAliases($type, array $aliased_values) {
     $aliases = self::ownerFieldAliases($type);
 
     $values = [];
     // Replace the column aliases with the actual field names.
-    foreach ($collection_table->getRowsHash() as $key => $value) {
+    foreach ($aliased_values as $key => $value) {
       if (array_key_exists($key, $aliases)) {
         $values[$aliases[$key]] = $value;
       }
       else {
         throw new \Exception("Unknown column '$key' in $type table.");
       }
-    };
+    }
 
     return $values;
   }
