@@ -7,12 +7,11 @@ Feature: Creation of owners through UI
   Scenario: Propose a collection
     Given the following organisation:
       | name | My organisation |
-
     And I am logged in as a user with the "authenticated" role
     When I am on the homepage
     And I click "Propose collection"
     And the following field widgets should be present "Contact information, Owner"
-    When I fill in the following:
+    And I fill in the following:
       | Title       | Classical and Ancient Mythology                                                                      |
       | Description | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
     And I attach the file "logo.png" to "Logo"
@@ -26,6 +25,14 @@ Feature: Creation of owners through UI
     And I fill in "Name" with "Organisation example 2"
     And I press "Create owner"
 
+    # Create a person owner as well.
+    # There is no label for the bundle type so we have to provide the machine name "field_ar_owner[actions][bundle]".
+    # field_ar_owner[actions][bundle] is the select field where the user selects "person" or "organisation".
+    And I select "Person" from "field_ar_owner[actions][bundle]" at the "Owner" field
+    And I press "Add new owner" at the "Owner" field
+    And I fill in "Name" with "Person created example"
+    And I press "Create owner"
+
     # Click the button to select an existing owner.
     And I press "Add existing owner" at the "Owner" field
     And I fill in "Owner" with "My organisation"
@@ -35,5 +42,5 @@ Feature: Creation of owners through UI
 
     # Clean up the collection that was created.
     Then I delete the "Classical and Ancient Mythology" collection
-    Then I delete the "My organisation" organisation
+    Then I delete the "Person created example" person
     Then I delete the "Organisation example 2" organisation
