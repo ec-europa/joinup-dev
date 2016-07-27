@@ -1,7 +1,7 @@
 @api
 Feature: "Add release" visibility options.
   In order to manage asset releases
-  As a moderator
+  As a solution facilitator
   I need to be able to add "Release" rdf entities through UI.
 
   Scenario: "Add release" button should only be shown to solution facilitators.
