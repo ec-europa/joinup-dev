@@ -86,13 +86,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
-  field_is_issue_tracker:
-    weight: 12
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
   field_is_landing_page:
     weight: 10
     settings:
@@ -140,13 +133,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-  field_is_wiki:
-    weight: 13
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
   id:
     type: auto_uri
     weight: 0
@@ -168,6 +154,7 @@ hidden:
   field_is_distribution: true
   field_is_has_version: true
   field_is_included_asset: true
+  field_is_issue_tracker: true
   field_is_language: true
   field_is_modification_date: true
   field_is_product_type: true
@@ -179,6 +166,7 @@ hidden:
   field_is_version: true
   field_is_webdav_creation: true
   field_is_webdav_url: true
+  field_is_wiki: true
   field_keywords: true
   field_policy_domain: true
   field_spatial_coverage: true
