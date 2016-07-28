@@ -129,7 +129,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    *    Fields.
    *
    * @throws \Exception
-   *   Thrown when a column name is incorrect.
+   *   Thrown when an expected field is not present.
    *
    * @Then /^(?:|the following )fields should be present? "(?P<fields>[^"]*)"$/
    */
