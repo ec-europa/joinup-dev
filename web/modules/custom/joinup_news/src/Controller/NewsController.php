@@ -62,11 +62,18 @@ class NewsController extends ControllerBase {
   }
 
   /**
-   * Handles access to the news add form through rdf entity pages.
+   * Handles access to the news add form through RDF entity pages.
    *
    * Access is granted to moderators and group members that have the permission
    * to create news articles inside of their group, which in practice means this
    * is granted to collection and solution facilitators.
+   * 
+   * @todo Depending on the 'eLibrary creation' setting, members should be able
+   *   to create news.
+   * @todo If a collection is open non-members should be able to create news.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2654
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2445
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the news entity is created.
