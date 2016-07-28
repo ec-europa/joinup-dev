@@ -18,5 +18,5 @@ permissions:
   - 'export rdf metadata'
   - 'access contextual links'
   - 'create contact_information rdf entity'
-  - 'create organization rdf entity'
+  - 'create organisation rdf entity'
   - 'create person rdf entity'

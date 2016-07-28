@@ -8,7 +8,7 @@ Feature: Owner API
       | name             | Owner API person |
     Then I should have 1 person
 
-  Scenario: Programmatically create a organization
-    Given the following organization:
-      | name             | Owner API organization |
-    Then I should have 1 organization
+  Scenario: Programmatically create a organisation
+    Given the following organisation:
+      | name             | Owner API organisation |
+    Then I should have 1 organisation
