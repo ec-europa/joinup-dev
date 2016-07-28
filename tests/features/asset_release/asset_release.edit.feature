@@ -5,17 +5,27 @@ Feature: "Edit" visibility options.
   I need to be able to edit "Release" rdf entities through UI.
 
   Background:
+    Given the following person:
+      | name | Awesome person |
+    And the following contact:
+      | name        | Awesome contact            |
+      | email       | awesomecontact@example.com |
+      | Website URL | http://example.com         |
     Given the following solution:
-      | title         | My awesome solution abc |
-      | description   | My awesome solution     |
-      | documentation | text.pdf                |
+      | title               | My awesome solution abc |
+      | description         | My awesome solution     |
+      | documentation       | text.pdf                |
+      | owner               | Awesome person          |
+      | contact information | Awesome contact         |
     And the following asset release:
-      | title          | My awesome solution abc v1 |
-      | description    | A sample release           |
-      | documentation  | text.pdf                   |
-      | release number | 1                          |
-      | release notes  | Changed release            |
-      | is version of  | My awesome solution abc          |
+      | title               | My awesome solution abc v1 |
+      | description         | A sample release           |
+      | documentation       | text.pdf                   |
+      | release number      | 1                          |
+      | release notes       | Changed release            |
+      | is version of       | My awesome solution abc    |
+      | owner               | Awesome person             |
+      | contact information | Awesome contact            |
 
   Scenario: "Edit" button should only be shown to solution facilitators.
     When I am logged in as a "facilitator" of the "My awesome solution abc" solution
@@ -38,7 +48,7 @@ Feature: "Edit" visibility options.
     When I am logged in as a "facilitator" of the "My awesome solution abc" solution
     And I go to the homepage of the "My awesome solution abc v1" asset release
     And I click "Edit"
-    Then I should see the heading "Edit My awesome solution abc v1"
+    Then I should see the heading "Edit Asset release My awesome solution abc v1"
     And the following fields should be present "Name, Release number, Release notes"
     And the following field widgets should be present "Contact information, Owner"
     When I fill in "Name" with "My awesome solution abc v1.1"
