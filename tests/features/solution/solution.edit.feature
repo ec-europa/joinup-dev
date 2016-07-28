@@ -53,7 +53,8 @@ Feature: Solution editing.
       And I should see the link "Edit"
       When I go to the "Solution A" solution edit form
       Then I should see the heading "Edit Interoperability Solution Solution A"
-      And the following fields should be present "Title, Description, Documentation, Related Solutions, eLibrary creation, Moderated, Landing page, Metrics page, Issue tracker, Wiki"
+      And the following fields should be present "Title, Description, Documentation, Related Solutions, eLibrary creation, Moderated, Landing page, Metrics page"
+      And the following fields should not be present "Issue tracker, Wiki"
       And the following field widgets should be present "Contact information, Owner"
       # Logo and banner fields are required, so they are filled up during
       # the creation of the solution. Unfortunately, file fields with a file
@@ -87,7 +88,8 @@ Feature: Solution editing.
       Then I should see the link "Edit"
       When I go to the "Solution B" solution edit form
       Then I should see the heading "Edit Interoperability Solution Solution B"
-      And the following fields should be present "Title, Description, Documentation, Related Solutions, eLibrary creation, Moderated, Landing page, Metrics page, Issue tracker, Wiki"
+      And the following fields should be present "Title, Description, Documentation, Related Solutions, eLibrary creation, Moderated, Landing page, Metrics page"
+      And the following fields should not be present "Issue tracker, Wiki"
       And the following field widgets should be present "Contact information, Owner"
       And I should see the text "Logo"
       And I should see the text "Banner"
