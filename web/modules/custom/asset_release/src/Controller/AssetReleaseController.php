@@ -25,7 +25,7 @@ class AssetReleaseController extends ControllerBase {
   protected $ogAccess;
 
   /**
-   * Constructs a CustomPageController.
+   * Constructs a AssetReleaseController.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
@@ -90,7 +90,7 @@ class AssetReleaseController extends ControllerBase {
   }
 
   /**
-   * Handles access to the asset_release add form through collection pages.
+   * Handles access to the asset_release add form through solution pages.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the custom page is created.
