@@ -16,8 +16,6 @@
     background-color: transparent
     box-shadow: none
 
-
-
 // Elements
 // --------------------------------------------------
 .sidebar-menu__button
@@ -56,5 +54,14 @@
 // --------------------------------------------------
 .section--sidebar-left
   .sidebar-menu
+    .mdl-menu__container,
+    .mdl-menu
+      z-index: 999
+      visibility: visible
+    .mdl-menu
+      opacity: 1
+      clip: rect(0px 181.328px 144px 0px)
+    .mdl-menu__item
+      opacity: 1
     +breakpoint(sm-mobile, tablet)
       display: none

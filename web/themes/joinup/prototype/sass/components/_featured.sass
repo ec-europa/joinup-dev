@@ -59,26 +59,21 @@
 .featured__stats
   display: inline-block
   margin-bottom: 20px
+  padding: 15px 30px
   text-align: left
   vertical-align: middle
+  background-color: #fff
   +border-radius(3px)
   +breakpoint(tablet)
     margin: 0 20px 0 0
-    padding: 15px 30px
-    background-color: #fff
-
   .stats__column
     float: left
     &:first-of-type
       margin-right: 40px
-
   .stats__icon,
   .stats__text
     display: inline-block
     vertical-align: middle
-    color: #fff
-    +breakpoint(tablet)
-      color: $color-base
   .stats__icon
     +icon-size(30px)
 
@@ -93,11 +88,11 @@
   +breakpoint(desktop)
     display: none
   .icon
-    color: #fff
     position: absolute
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
+    color: #fff
     +icon-size(60px)
 
 .featured__menu-link
@@ -141,3 +136,4 @@
       top: 50%
       left: 50%
       transform: translate(-50%, -50%)
+
