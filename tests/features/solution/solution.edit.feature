@@ -8,7 +8,7 @@ Feature: Solution editing.
     Given the following contact:
       | name  | Seward Shawn       |
       | email | seward@example.com |
-    And organization:
+    And organisation:
       | name | Acme inc. |
     And users:
       | name         | mail                     |

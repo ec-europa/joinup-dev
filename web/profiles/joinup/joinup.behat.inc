@@ -456,4 +456,19 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     return $alias;
   }
 
+  /**
+   * Presses button with specified id|name|title|alt|value at a widget.
+   *
+   * Example: When I press "Log In" at "Fieldset"
+   * Example: And I press "Log In" at "Custom widget".
+   *
+   * @When I press :button at( the) :fieldset( field)
+   */
+  public function pressButtonInFieldset($button, $fieldset) {
+    // Fixes a step argument (with \\" replaced back to ")
+    // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
+    $button = str_replace('\\"', '"', $button);
+    $this->getSession()->getPage()->find('named', array('fieldset', $fieldset))->pressButton($button);
+  }
+
 }

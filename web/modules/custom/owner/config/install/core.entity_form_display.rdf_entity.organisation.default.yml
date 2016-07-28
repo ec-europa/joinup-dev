@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.rdf_entity.person.field_op_name
-    - rdf_entity.rdfentity.person
-id: rdf_entity.person.default
+    - field.field.rdf_entity.organisation.field_oo_name
+    - rdf_entity.rdfentity.organisation
+id: rdf_entity.organisation.default
 targetEntityType: rdf_entity
-bundle: person
+bundle: organisation
 mode: default
 content:
-  field_op_name:
+  field_oo_name:
     weight: -9
     settings:
       size: 60
