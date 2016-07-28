@@ -16,7 +16,7 @@ default:
       goutte: ~
       javascript_session: 'selenium2'
       selenium2:
-        wd_host: "http://localhost:8643/wd/hub"
+        wd_host: '${behat.webdriver_url}'
     Drupal\DrupalExtension:
       api_driver: 'drupal'
       blackbox: ~
