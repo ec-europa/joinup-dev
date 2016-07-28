@@ -40,10 +40,6 @@ Feature: "Edit" visibility options.
     And I go to the homepage of the "My awesome solution abc v1" asset release
     Then I should not see the link "Edit" in the "Entity actions" region
 
-    When I am logged in as a "moderator"
-    And I go to the homepage of the "My awesome solution abc v1" asset release
-    Then I should not see the link "Edit" in the "Entity actions" region
-
   Scenario: Edit a release as a solution facilitator.
     When I am logged in as a "facilitator" of the "My awesome solution abc" solution
     And I go to the homepage of the "My awesome solution abc v1" asset release
