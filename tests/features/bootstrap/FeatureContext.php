@@ -63,27 +63,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Click on the field label.
-   *
-   * @param string $label
-   *   The label text to find in the page.
-   *
-   * @throws \Behat\Mink\Exception\ElementNotFoundException
-   *   Thrown when the element with the given label is not found.
-   *
-   * @When I click the label :label
-   */
-  public function clickLabel($label) {
-    $node = $this->getSession()->getPage()->find('named', array('content', $label));
-
-    if (!is_object($node)) {
-      throw new ElementNotFoundException('Node with text ' . $label . " not found in page.");
-    }
-
-    $node->click();
-  }
-
-  /**
    * Find the selected option of the select and check the text.
    *
    * @param string $option
