@@ -17,7 +17,7 @@ Feature: Add asset distribution through the UI
       | description   | Some reusable random description |
       | is version of | Solution random x name           |
 
-    Scenario: "Add distribution" button should only be shown to moderators.
+    Scenario: "Add distribution" button should not be shown to unprivileged users.
       When I am logged in as a "facilitator" of the "Solution random x name" solution
       And I go to the homepage of the "Asset release random name" asset release
       # Click the + button.
@@ -32,7 +32,7 @@ Feature: Add asset distribution through the UI
       And I go to the homepage of the "Asset release random name" asset release
       Then I should not see the link "Add distribution"
 
-    Scenario: Add distribution as a moderator.
+    Scenario: Add distribution as a facilitator.
       When I am logged in as a "facilitator" of the "Solution random x name" solution
       When I go to the homepage of the "Asset release random name" asset release
       And I click "Add distribution"
