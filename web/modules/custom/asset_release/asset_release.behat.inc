@@ -8,6 +8,7 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -18,6 +19,7 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use EntityReferenceTrait;
   use FileTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
@@ -261,13 +263,12 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *    Throws an exception when a mapped value is not found.
    */
   protected function convertValueAliases($fields) {
-    // Check for the OG group.
-    if (isset($fields['field_isr_distribution'])) {
-      $distribution = $this->getRdfEntityByLabel($fields['field_isr_distribution'], 'asset_distribution');
-      $fields['field_isr_distribution'] = [$distribution->id()];
-    }
+    // Convert any entity reference field label value with the entity id.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'asset_release', $fields);
 
     // Conver the name of the is version of field to an id.
+    // This is handled separatelly as it is not an entity reference but an
+    // og_standard_reference.
     if (isset($fields['field_isr_is_version_of'])) {
       $collection = $this->getRdfEntityByLabel($fields['field_isr_is_version_of'], 'solution');
       $fields['field_isr_is_version_of'] = $collection->id();

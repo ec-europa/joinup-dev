@@ -34,7 +34,7 @@ Feature: "Add release" visibility options.
     When I go to the homepage of the "Release Test 1" solution
     And I click "Add release"
     Then I should see the heading "Add Asset release"
-    And the following fields should be present "Name, Release number, Release notes"
+    And the following fields should be present "Name, Release number, Release notes, Documentation, Spatial coverage, Keyword, Status, Language"
     And the following field widgets should be present "Contact information, Owner"
     When I fill in "Name" with "Release Test 2"
     And I fill in "Release number" with "1.1"
