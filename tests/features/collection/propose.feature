@@ -91,17 +91,6 @@ Feature: Proposing a collection
     And I should see the text "Any registered user can create new content."
 
   @javascript
-  # This is a regression test for a bug in which the correct option was not
-  # selected after moving the slider.
-  # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
-  Scenario: Radio button doesn't update after moving eLibrary creation slider
-    Given I am logged in as a user with the "authenticated" role
-    When I go to the propose collection form
-    And I move the "eLibrary creation" slider to the right
-    Then the option "Any registered user can create new content." should be selected
-    And the option "Only members can create new content." should not be selected
-
-  @javascript
   Scenario: eLibrary creation options should adapt to the state of the 'closed collection' option
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
@@ -110,6 +99,10 @@ Feature: Proposing a collection
     Then the option "Only members can create new content." should be selected
     And the option "Any registered user can create new content." should not be selected
     And I should not see the text "Only collection facilitators can create new content."
+
+    When I move the "eLibrary creation" slider to the right
+    Then the option "Any registered user can create new content." should be selected
+    And the option "Only members can create new content." should not be selected
 
     # When toggling to closed, the option 'any registered user' should disappear
     # and the option for facilitators should appear.
