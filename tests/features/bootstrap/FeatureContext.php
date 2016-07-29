@@ -1,12 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains \FeatureContext.
- */
-
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 
 /**
@@ -74,30 +68,19 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the option with text :option from select :select is selected
    */
-  public function theOptionWithTextFromSelectIsSelected($option, $select) {
+  public function assertOptionWithTextSelected($option, $select) {
     $selectField = $this->getSession()->getPage()->find('css', $select);
     if ($selectField === NULL) {
-      throw new \Exception(sprintf(
-        'The select "%s" was not found in the page %s',
-        $select, $this->getSession()->getCurrentUrl())
-      );
+      throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
 
     $optionField = $selectField->find('xpath', '//option[@selected="selected"]');
     if ($optionField === NULL) {
-      throw new \Exception(sprintf(
-        'No option is selected in the %s select in the page %s',
-        $select, $this->getSession()->getCurrentUrl())
-      );
+      throw new \Exception(sprintf('No option is selected in the %s select in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
 
     if ($optionField->getHtml() != $option) {
-      throw new \Exception(sprintf(
-        'The option "%s" was not selected in the page %s, %s was selected',
-        $option,
-        $this->getSession()->getCurrentUrl(),
-        $optionField->getHtml())
-      );
+      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $optionField->getHtml()));
     }
   }
 
@@ -113,23 +96,16 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the option with text :option from select :select is not selected
    */
-  public function theOptionWithTextFromSelectIsNotSelected($option, $select) {
+  public function assertOptionWithTextNotSelected($option, $select) {
     $selectField = $this->getSession()->getPage()->find('css', $select);
     if ($selectField === NULL) {
-      throw new \Exception(sprintf(
-          'The select "%s" was not found in the page %s',
-          $select, $this->getSession()->getCurrentUrl())
-      );
+      throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
 
     $optionField = $selectField->find('xpath', '//option[@selected="selected"]');
     if ($optionField !== NULL) {
       if ($optionField->getHtml() == $option) {
-        throw new \Exception(sprintf(
-            'The option "%s" was selected in the page %s',
-            $option,
-            $this->getSession()->getCurrentUrl()
-        ));
+        throw new \Exception(sprintf('The option "%s" was selected in the page %s', $option, $this->getSession()->getCurrentUrl()));
       }
     }
   }
