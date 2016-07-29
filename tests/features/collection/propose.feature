@@ -79,7 +79,7 @@ Feature: Proposing a collection
   @javascript
   Scenario: Propose closed collection
     Given I am logged in as a user with the "moderator" role
-    Given I maximize browser window
+    Given I maximize the browser window
     When I go to "collection/propose"
     Then I should see the heading "Propose collection"
     And I check "Closed collection"
@@ -100,7 +100,7 @@ Feature: Proposing a collection
   @javascript
   Scenario: Regression test - Radio button doesn't update after moving eLibrary creation slider
     Given I am logged in as a user with the "authenticated" role
-    Given I maximize browser window
+    Given I maximize the browser window
     When I go to "collection/propose"
     And I click the label "Any registered users can create new content."
     Then The option with text "Any registered users can create new content." from select "#edit-field-ar-elibrary-creation" is selected
@@ -109,7 +109,7 @@ Feature: Proposing a collection
   @javascript
   Scenario: Regression test: Wrong radio button selected after changing open collection to closed
     Given I am logged in as a user with the "authenticated" role
-    Given I maximize browser window
+    Given I maximize the browser window
     When I go to "collection/propose"
     And I check "Closed collection"
     Then The option with text "Only members can create new content." from select "#edit-field-ar-elibrary-creation" is selected

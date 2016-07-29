@@ -55,9 +55,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Maximize the browser window for javascript tests so elements are visible.
    *
-   * @Given I maximize browser window
+   * @Given I maximize the browser window
    */
-  public function iMaximizeBrowserWindow() {
+  public function maximizeBrowserWindow() {
     $this->getSession()->getDriver()->maximizeWindow();
   }
 
