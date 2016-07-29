@@ -37,6 +37,12 @@ Feature: Add asset distribution through the UI
       When I go to the homepage of the "Asset release random name" asset release
       And I click "Add distribution"
       Then I should see the heading "Add Asset distribution"
+      And the following fields should be present "Title, Description, License, Format, Representation technique, GITB compliant"
+      # Field labels are implemented not consistently, so we are
+      # forced to check for the widget heading.
+      # @todo to be handled in ISAICP-2655
+      And I should see the text "Access URL"
+      And I should see the text "Distribution file"
       When I fill in "Title" with "Custom title of asset distribution"
       And I attach the file "test.zip" to "Add a new file"
       And I press "Save"
