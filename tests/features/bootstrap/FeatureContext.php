@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains step definitions for the Joinup project.
+ */
+
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 
