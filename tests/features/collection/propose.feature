@@ -98,7 +98,6 @@ Feature: Proposing a collection
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     And I move the "eLibrary creation" slider to the right
-    # todo users -> user
     Then the option "Any registered user can create new content." should be selected
     And the option "Only members can create new content." should not be selected
 
