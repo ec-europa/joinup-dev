@@ -6,6 +6,7 @@
  */
 
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 
 /**
@@ -62,21 +63,21 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * For javascript find text on page and click on it.
+   * Click on the field label.
    *
    * @param string $label
-   *   Text to find in page.
+   *   The label text to find in the page.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the element with the given label is not found.
    *
    * @When I click the label :label
    */
-  public function iClickTheLabel($label) {
-
+  public function clickLabel($label) {
     $node = $this->getSession()->getPage()->find('named', array('content', $label));
 
     if (!is_object($node)) {
-      throw new \Behat\Mink\Exception\ElementNotFoundException('Node with text ' . $label . " not found in page.");
+      throw new ElementNotFoundException('Node with text ' . $label . " not found in page.");
     }
 
     $node->click();
@@ -94,10 +95,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the option with text :option from select :select is selected
    */
-  public function theOptionWithTextFromSelectIsSelected($option, $select)
-  {
+  public function theOptionWithTextFromSelectIsSelected($option, $select) {
     $selectField = $this->getSession()->getPage()->find('css', $select);
-    if (null === $selectField) {
+    if ($selectField === NULL) {
       throw new \Exception(sprintf(
         'The select "%s" was not found in the page %s',
         $select, $this->getSession()->getCurrentUrl())
@@ -105,7 +105,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
 
     $optionField = $selectField->find('xpath', '//option[@selected="selected"]');
-    if (null === $optionField) {
+    if ($optionField === NULL) {
       throw new \Exception(sprintf(
         'No option is selected in the %s select in the page %s',
         $select, $this->getSession()->getCurrentUrl())
@@ -128,16 +128,15 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @param string $option
    *   Text value of the option to find.
    * @param string $select
-   *   Css selector of the select field.
+   *   CSS selector of the select field.
    *
    * @throws \Exception
    *
    * @Then the option with text :option from select :select is not selected
    */
-  public function theOptionWithTextFromSelectIsNotSelected($option, $select)
-  {
+  public function theOptionWithTextFromSelectIsNotSelected($option, $select) {
     $selectField = $this->getSession()->getPage()->find('css', $select);
-    if (null === $selectField) {
+    if ($selectField === NULL) {
       throw new \Exception(sprintf(
           'The select "%s" was not found in the page %s',
           $select, $this->getSession()->getCurrentUrl())
@@ -145,7 +144,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
 
     $optionField = $selectField->find('xpath', '//option[@selected="selected"]');
-    if (null !== $optionField) {
+    if ($optionField !== NULL) {
       if ($optionField->getHtml() == $option) {
         throw new \Exception(sprintf(
             'The option "%s" was selected in the page %s',
