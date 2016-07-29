@@ -84,9 +84,9 @@ Feature: Proposing a collection
     Then I should see the heading "Propose collection"
     And I check "Closed collection"
     Then I should see "Only collection facilitators can create new content"
-    And I should not see "Any registered users can create new content"
+    And I should not see "Any registered user can create new content"
     Then I uncheck "Closed collection"
-    And I should see "Any registered users can create new content"
+    And I should see "Any registered user can create new content"
     And I should not see "Only collection facilitators can create new content"
 
   Scenario: Propose regression eLibrary options plural
@@ -95,15 +95,15 @@ Feature: Proposing a collection
     And I check "Closed collection"
     Then I should see "Only collection facilitators can create new content"
     Then I uncheck "Closed collection"
-    And I should see "Any registered users can create new content"
+    And I should see "Any registered user can create new content"
 
   @javascript
   Scenario: Regression test - Radio button doesn't update after moving eLibrary creation slider
     Given I am logged in as a user with the "authenticated" role
     Given I maximize the browser window
     When I go to "collection/propose"
-    And I click the label "Any registered users can create new content."
-    Then The option with text "Any registered users can create new content." from select "#edit-field-ar-elibrary-creation" is selected
+    And I click the label "Any registered user can create new content."
+    Then the option with text "Any registered user can create new content." from select "#edit-field-ar-elibrary-creation" is selected
     And The option with text "Only members can publish new content." from select "#edit-field-ar-elibrary-creation" is not selected
 
   @javascript

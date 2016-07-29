@@ -21,7 +21,7 @@ settings:
       label: 'Only members can create new content'
     -
       value: 2
-      label: 'Any registered users can create new content'
+      label: 'Any registered user can create new content'
   allowed_values_function: ''
 module: options
 locked: false
