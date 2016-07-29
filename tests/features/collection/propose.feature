@@ -77,40 +77,59 @@ Feature: Proposing a collection
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
 
   @javascript
-  Scenario: Propose closed collection
-    Given I am logged in as a user with the "moderator" role
-    Given I maximize the browser window
-    When I go to "collection/propose"
-    Then I should see the heading "Propose collection"
-    And I check "Closed collection"
-    Then I should see "Only collection facilitators can create new content"
-    And I should not see "Any registered user can create new content"
-    Then I uncheck "Closed collection"
-    And I should see "Any registered user can create new content"
-    And I should not see "Only collection facilitators can create new content"
-
-  Scenario: Propose regression eLibrary options plural
+  # This is a regression test for a bug in which the label texts of the options
+  # vanished after performing an AJAX request in a different element on the
+  # page.
+  # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
+  Scenario: E-library options should not vanish after AJAX request.
     Given I am logged in as a user with the "authenticated" role
-    When I go to "collection/propose"
-    And I check "Closed collection"
-    Then I should see "Only collection facilitators can create new content"
-    Then I uncheck "Closed collection"
-    And I should see "Any registered user can create new content"
+    When I go to the propose collection form
+    And I attach the file "banner.jpg" to "Banner"
+    And I wait for AJAX to finish
+    Then I should see the link "banner.jpg"
+    And I should see the text "Only members can create new content."
+    And I should see the text "Any registered user can create new content."
 
   @javascript
-  Scenario: Regression test - Radio button doesn't update after moving eLibrary creation slider
+  # This is a regression test for a bug in which the correct option was not
+  # selected after moving the slider.
+  # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
+  Scenario: Radio button doesn't update after moving eLibrary creation slider
     Given I am logged in as a user with the "authenticated" role
-    Given I maximize the browser window
-    When I go to "collection/propose"
-    And I click the label "Any registered user can create new content."
-    Then the option with text "Any registered user can create new content." from select "#edit-field-ar-elibrary-creation" is selected
-    And The option with text "Only members can publish new content." from select "#edit-field-ar-elibrary-creation" is not selected
+    When I go to the propose collection form
+    And I move the "eLibrary creation" slider to the right
+    # todo users -> user
+    Then the option "Any registered user can create new content." should be selected
+    And the option "Only members can create new content." should not be selected
 
   @javascript
-  Scenario: Regression test: Wrong radio button selected after changing open collection to closed
+  Scenario: eLibrary creation options should adapt to the state of the 'closed collection' option
     Given I am logged in as a user with the "authenticated" role
-    Given I maximize the browser window
-    When I go to "collection/propose"
+    When I go to the propose collection form
+
+    # Initially the collection is open, check if the eLibrary options are OK.
+    Then the option "Only members can create new content." should be selected
+    And the option "Any registered user can create new content." should not be selected
+    And I should not see the text "Only collection facilitators can create new content."
+
+    # When toggling to closed, the option 'any registered user' should disappear
+    # and the option for facilitators should appear.
+    When I check "Closed collection"
+    Then the option "Only members can create new content." should be selected
+    And the option "Only collection facilitators can create new content." should not be selected
+    And I should not see the text "Any registered user can create new content."
+
+    # Check if moving the slider selects the correct option. Visually the handle
+    # of the slider moves underneath the other option.
+    When I move the "eLibrary creation" slider to the right
+    Then the option "Only collection facilitators can create new content." should be selected
+    And the option "Only members can create new content." should not be selected
+
+    # This is a regression test for a bug in which the both the previous option
+    # and the default option were selected after cycling the collection
+    # checkbox status open-closed-open-closed.
+    # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
+    When I uncheck "Closed collection"
     And I check "Closed collection"
-    Then The option with text "Only members can create new content." from select "#edit-field-ar-elibrary-creation" is selected
-    And The option with text "Only collection facilitators can create new content." from select "#edit-field-ar-elibrary-creation" is not selected
+    Then the option "Only members can create new content." should be selected
+    And the option "Only collection facilitators can create new content." should not be selected
