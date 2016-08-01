@@ -48,6 +48,7 @@ Feature: Add asset distribution through the UI
       And I press "Save"
       Then I should have 1 asset distribution
       # Check if the asset distribution is accessible as an anonymous user
+      When I am an anonymous user
       When I go to the homepage of the "Asset release random name" asset release
       Then I should see the text "Distribution"
       And I should see the link "Custom title of asset distribution"
