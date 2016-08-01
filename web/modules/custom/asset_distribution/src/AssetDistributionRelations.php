@@ -2,7 +2,7 @@
 
 namespace Drupal\asset_distribution;
 
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -13,16 +13,16 @@ use Drupal\rdf_entity\RdfInterface;
 class AssetDistributionRelations {
 
   /**
-   * Drupal\Core\Entity\EntityTypeManager definition.
+   * Drupal\Core\Entity\EntityTypeManagerInterface definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
    * Initialize injected objects.
    */
-  public function __construct(EntityTypeManager $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
   }
 
