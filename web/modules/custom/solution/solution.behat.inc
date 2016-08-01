@@ -14,6 +14,7 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -185,6 +186,37 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       $content->get('og_group_ref')->set(0, $group->id());
       $content->save();
     }
+  }
+
+  /**
+   * Asserts that a user is an owner of the given solution.
+   *
+   * To be owner of a solution, a user should be an administrator and
+   * a facilitator.
+   *
+   * @param string $username
+   *    The name of the user.
+   * @param string $rdf_entity
+   *    The label of the group entity.
+   *
+   * @throws \Exception
+   *    Throws an exception when the user is not found.
+   *
+   * @Given (the user ):username should be the owner of the :rdf_entity solution
+   */
+  public function assertCollectionOwnership($username, $rdf_entity) {
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      throw new \Exception("User {$username} could not be found.");
+    }
+
+    $solution = $this->getRdfEntityByLabel($rdf_entity, 'solution');
+    $owner_roles = [
+      OgRoleInterface::ADMINISTRATOR,
+      'facilitator',
+    ];
+
+    $this->assertOgGroupOwnership($user, $solution, $owner_roles);
   }
 
   /**

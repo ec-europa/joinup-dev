@@ -39,9 +39,6 @@ Feature: Proposing a collection
     # Todo: test adding a "Policy domain" once ISAICP-2356 is done.
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
-    And I check "Closed collection"
-    And I select "Only members can publish new content" from "eLibrary creation"
-    And I check "Moderated"
     # Click the button to select an existing owner.
     And I press "Add existing owner"
     And I fill in "Owner" with "Organisation example"
