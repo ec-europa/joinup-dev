@@ -224,6 +224,20 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
+   * Navigates to the canonical page display of an asset release.
+   *
+   * @param string $title
+   *   The title of the asset distribution.
+   *
+   * @When (I )go to (the homepage of )the :asset_distribution asset distribution
+   * @When (I )visit (the homepage of )the :asset_distribution asset distribution
+   */
+  public function visitAssetDistribution($title) {
+    $distribution = $this->getAssetDistributionByName($title);
+    $this->visitPath($distribution->url());
+  }
+
+  /**
    * Remove any created asset distributions.
    *
    * @AfterScenario
