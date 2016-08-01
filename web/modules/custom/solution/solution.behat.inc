@@ -463,18 +463,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // Convert any entity reference field label value with the entity id.
     $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $fields);
 
-    // Check for the OG group.
-    if (isset($fields['field_is_distribution'])) {
-      $distribution = $this->getRdfEntityByLabel($fields['field_is_distribution'], 'asset_distribution');
-      $fields['field_is_distribution'] = [$distribution->id()];
-    }
-
-    // Check for the OG group.
-    if (isset($fields['og_group_ref'])) {
-      $collection = $this->getRdfEntityByLabel($fields['og_group_ref'], 'collection');
-      $fields['og_group_ref'] = $collection->id();
-    }
-
     return $fields;
   }
 
