@@ -1,7 +1,7 @@
 @api
 Feature: Add asset distribution through the UI
   In order to manage distributions
-  As a moderator
+  As a facilitator
   I need to be able to add "Asset distribution" RDF entities through the UI.
 
   Background:
