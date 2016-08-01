@@ -42,14 +42,12 @@
 #}
 <div class="layout-container mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-  {% if not is_front or logged_in %}
-    <header class="section section--header" role="banner">
-      <div class="container-fluid">
-        {% include directory ~ '/templates/parts/header.html.twig' %}
-        {{ page.header }}
-      </div>
-    </header>
-  {% endif %}
+  <header class="section section--header" role="banner">
+    <div class="container-fluid">
+      {% include directory ~ '/templates/parts/header.html.twig' %}
+      {{ page.header }}
+    </div>
+  </header>
 
   {% if is_front and not logged_in %}
     {% include directory ~ '/templates/parts/featured--anonymous.html.twig' %}
