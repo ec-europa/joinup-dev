@@ -8,12 +8,14 @@ use Drupal\image\Entity\ImageStyle;
 use \Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
+
 /**
  * Implements hook_preprocess_page().
  */
 function joinup_theme_preprocess_page(&$variables) {
   $request = \Drupal::request();
   $route_match = \Drupal::routeMatch();
+
   // Set page title.
   $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
 
@@ -36,15 +38,36 @@ function joinup_theme_preprocess_page(&$variables) {
     unset($variables['page']['content']['pagetitle']);
   }
 
-  $variables['title'] = $title;
-
   $entity = $route_match->getParameter('rdf_entity');
   if (!empty($entity)) {
     $entity_type = $entity->getType();
     if ($entity_type == 'collection') {
       $variables['is_collection'] = TRUE;
+      $title = $variables['page']['content']['pagetitle'];
       unset($variables['page']['content']['pagetitle']);
     }
+  }
+
+  $variables['title'] = $title;
+}
+
+/**
+ * Implements hook_preprocess_page_title().
+ */
+function joinup_theme_preprocess_page_title(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
+  // Array contains create pages.
+  $create_content_routes = array(
+    'node.add',
+    'node.add_page',
+    'rdf_entity.rdf_add',
+    'rdf_entity.rdf_add_page',
+  );
+
+  if (!empty($route_name) && in_array($route_name, $create_content_routes)) {
+    $variables['is_create_page'] = TRUE;
   }
 }
 
@@ -110,7 +133,8 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
       elseif ((strpos($original_theme_hook, 'input') !== FALSE)) {
         $suggestions[] = 'input__floating';
       }
-    } elseif ($variables['element']['#type'] == 'submit') {
+    }
+    elseif ($variables['element']['#type'] == 'submit') {
       $button_value = Html::cleanCssIdentifier($variables['element']['#value'], array(' ' => '_'));
       $button_value = Unicode::strtolower($button_value);
       $suggestions[] = $original_theme_hook . '__' . $button_value;
