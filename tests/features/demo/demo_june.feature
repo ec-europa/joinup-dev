@@ -22,7 +22,7 @@ Feature: June 2016 demo
       | Stan lee  | cameoineverymovie    | stan.lee@example.com    | moderator |
       | Nick Fury | ihaveasecret         | nick.fury@example.com   |           |
       | Wolverine | smellslikemetalclaws | logan.x.men@example.com |           |
-    And user memberships:
+    And collection user memberships:
       | collection   | user      | roles                              |
       | S.H.I.E.L.D. | Nick Fury | administrator, facilitator, member |
       | x-Men        | Wolverine | facilitator, member                |

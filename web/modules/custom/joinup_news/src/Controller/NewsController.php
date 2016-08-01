@@ -71,7 +71,7 @@ class NewsController extends ControllerBase {
    *   The access result object.
    */
   public function createNewsAccess(RdfInterface $rdf_entity) {
-    return $this->ogAccess->userAccessEntity('create', $this->createNewsEntity($rdf_entity), $this->currentUser());
+    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createNewsEntity($rdf_entity), $this->currentUser());
   }
 
   /**

@@ -34,20 +34,20 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * | email | foo@bar.com, baz@qux.com |
    * | name  | Jack Smith               |
    *
-   * @param TableNode $collection_table
-   *   The collection data.
+   * @param TableNode $contact_table
+   *   The contact table.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )contact information:
+   * @Given (the following )contact:
    */
-  public function givenContactInformation(TableNode $collection_table) {
+  public function givenContactEntity(TableNode $contact_table) {
     $aliases = self::contactInformationFieldAliases();
 
     $values = [];
     // Replace the column aliases with the actual field names.
-    foreach ($collection_table->getRowsHash() as $key => $value) {
+    foreach ($contact_table->getRowsHash() as $key => $value) {
       if (array_key_exists($key, $aliases)) {
         $values[$aliases[$key]] = $value;
       }
@@ -57,6 +57,42 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
     };
 
     $this->createContactInformation($values);
+  }
+
+  /**
+   * Creates a number of contact information with data provided in a table.
+   *
+   * Table format:
+   * | email                            | name       |
+   * | foo@example.com, bar@example.com | John Irwin |
+   * | baz@example.com                  | Jack Smith |
+   *
+   * @param TableNode $contact_table
+   *   The contacts table.
+   *
+   * @throws \Exception
+   *   Thrown when a column name is incorrect.
+   *
+   * @Given (the following )contacts:
+   */
+  public function givenContactEntities(TableNode $contact_table) {
+    $aliases = self::contactInformationFieldAliases();
+
+    foreach ($contact_table->getColumnsHash() as $entity) {
+      $values = [];
+
+      foreach ($entity as $key => $value) {
+        // Replace aliases with the actual field names.
+        if (array_key_exists($key, $aliases)) {
+          $values[$aliases[$key]] = $value;
+        }
+        else {
+          throw new \Exception("Unknown column '$key' in contact information table.");
+        }
+      }
+
+      $this->createContactInformation($values);
+    }
   }
 
   /**

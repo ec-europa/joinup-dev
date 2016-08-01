@@ -33,34 +33,78 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * Table format:
    * | name | Mightily Oats |
    *
-   * @param TableNode $collection_table
-   *   The collection data.
+   * @param TableNode $person_table
+   *   The person table.
    *
    * @Given (the following )person:
    */
-  public function givenPerson(TableNode $collection_table) {
+  public function givenPerson(TableNode $person_table) {
     // Convert aliased field names.
-    $values = $this->convertFieldAliases('person', $collection_table);
+    $values = $this->convertFieldAliases('person', $person_table->getRowsHash());
 
     $this->createOwner('person', $values);
   }
 
   /**
-   * Creates a organization owner with data provided in a table.
+   * Creates a number of person owners with data provided in a table.
+   *
+   * Table format:
+   * | name          |
+   * | Mightily Oats |
+   * | John Irwin    |
+   *
+   * @param TableNode $person_table
+   *   The person table.
+   *
+   * @Given (the following )people:
+   */
+  public function givenPeople(TableNode $person_table) {
+    foreach ($person_table->getColumnsHash() as $person) {
+      // Convert aliased field names.
+      $values = $this->convertFieldAliases('person', $person);
+
+      $this->createOwner('person', $values);
+    }
+  }
+
+  /**
+   * Creates a organisation owner with data provided in a table.
    *
    * Table format:
    * | name | Red birds |
    *
-   * @param TableNode $collection_table
-   *   The collection data.
+   * @param TableNode $organisation_table
+   *   The organisation table.
    *
-   * @Given (the following )organization:
+   * @Given (the following )organisation:
    */
-  public function givenOrganization(TableNode $collection_table) {
+  public function givenOrganisation(TableNode $organisation_table) {
     // Convert aliased field names.
-    $values = $this->convertFieldAliases('organization', $collection_table);
+    $values = $this->convertFieldAliases('organisation', $organisation_table->getRowsHash());
 
-    $this->createOwner('organization', $values);
+    $this->createOwner('organisation', $values);
+  }
+
+  /**
+   * Creates a number of organisation owners with data provided in a table.
+   *
+   * Table format:
+   * | name      |
+   * | Red birds |
+   * | Acme Inc. |
+   *
+   * @param TableNode $organisation_table
+   *   The organisation table.
+   *
+   * @Given (the following )organisations:
+   */
+  public function givenOrganisations(TableNode $organisation_table) {
+    foreach ($organisation_table->getColumnsHash() as $organisation) {
+      // Convert aliased field names.
+      $values = $this->convertFieldAliases('person', $organisation);
+
+      $this->createOwner('organization', $values);
+    }
   }
 
   /**
@@ -79,18 +123,18 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   }
 
   /**
-   * Checks the number of available organizations.
+   * Checks the number of available organisations.
    *
    * @param int $number
-   *   The expected number of organizations.
+   *   The expected number of organisations.
    *
    * @throws \Exception
    *   Throws an exception when the expected number is not equal to the given.
    *
-   * @Then I should have :number organization(s)
+   * @Then I should have :number organisation(s)
    */
-  public function assertOrganizationCount($number) {
-    $this->assertRdfEntityCount($number, 'organization');
+  public function assertOrganisationCount($number) {
+    $this->assertRdfEntityCount($number, 'organisation');
   }
 
   /**
@@ -106,15 +150,15 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   }
 
   /**
-   * Deletes an owner entity of type organization.
+   * Deletes an owner entity of type organisation.
    *
    * @param string $name
-   *   The name of the organization to delete.
+   *   The name of the organisation to delete.
    *
-   * @When I delete the :owner organization
+   * @When I delete the :owner organisation
    */
-  public function deleteOrganization($name) {
-    $this->getRdfEntityByLabel($name, 'organization')->delete();
+  public function deleteOrganisation($name) {
+    $this->getRdfEntityByLabel($name, 'organisation')->delete();
   }
 
   /**
@@ -134,8 +178,8 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    *
    * @param string $type
    *   The type of the owner.
-   * @param TableNode $collection_table
-   *   The collection data.
+   * @param array $aliased_values
+   *   An array of values keyed by field alias.
    *
    * @return array
    *   The field values keyed by real field name.
@@ -143,19 +187,19 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    */
-  protected function convertFieldAliases($type, TableNode $collection_table) {
-    $aliases = self::ownerFieldAliases();
+  protected function convertFieldAliases($type, array $aliased_values) {
+    $aliases = self::ownerFieldAliases($type);
 
     $values = [];
     // Replace the column aliases with the actual field names.
-    foreach ($collection_table->getRowsHash() as $key => $value) {
+    foreach ($aliased_values as $key => $value) {
       if (array_key_exists($key, $aliases)) {
         $values[$aliases[$key]] = $value;
       }
       else {
         throw new \Exception("Unknown column '$key' in $type table.");
       }
-    };
+    }
 
     return $values;
   }
@@ -183,17 +227,50 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   }
 
   /**
+   * Selects option in select field at a Owner inline entity widget.
+   *
+   * @param string $option
+   *    The option to choose from the dropdown list.
+   *
+   * @When (I )select :option in the dropdown( list) of the "Owner"( field)
+   */
+  public function selectOption($option) {
+    // Fixes a step argument (with \\" replaced back to ")
+    // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
+    $option = str_replace('\\"', '"', $option);
+    $this->getSession()->getPage()->find('named', array('fieldset', 'Owner'))->selectFieldOption('field_ar_owner[actions][bundle]', $option);
+  }
+
+  /**
    * Field alias mapping.
+   *
+   * @param string $bundle
+   *   The bundle for which to retrieve the mappings.
    *
    * @return array
    *    Mapping.
+   *
+   * @throws \Exception
+   *   Thrown the bundle is unknown.
    */
-  protected static function ownerFieldAliases() {
+  protected static function ownerFieldAliases($bundle) {
     // Mapping alias - field name.
-    return [
-      'uri' => 'id',
-      'name' => 'label',
+    $map = [
+      'organisation' => [
+        'uri' => 'id',
+        'name' => 'field_oo_name',
+      ],
+      'person' => [
+        'uri' => 'id',
+        'name' => 'field_op_name',
+      ],
     ];
+
+    if (!isset($map[$bundle])) {
+      throw new \Exception("Unknown field aliases for bundle $bundle.");
+    }
+
+    return $map[$bundle];
   }
 
 }
