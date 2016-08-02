@@ -67,12 +67,15 @@ Feature: Solution API
       | Description | We do not care that much about descriptions. |
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
+    And I press "Add existing" at the "Contact information" field
+    And I fill in "Contact information" with "Contact point solution API example"
+    And I press "Add contact information"
     And I press "Add existing owner" at the "Owner" field
     And I fill in "Owner" with "Organisation solution API example"
     And I press "Add owner"
-    And I press "Add existing" at the "Contact information" field
-    And I fill in "Contact information" with "Person solution API example"
-    And I press "Add contact information"
     And I press "Save"
     Then I should see the heading "Solution API example"
     And the user "Solution API user" should be the owner of the "Solution API example" solution
+
+    # Cleanup step.
+    Then I delete the "Solution API example" solution

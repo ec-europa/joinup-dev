@@ -43,3 +43,6 @@ Feature: Collection API
     And I press "Save"
     Then I should see the heading "Collection API example"
     And the user "Collection API user" should be the owner of the "Collection API example" collection
+
+    # Cleanup step.
+    Then I delete the "Collection API example" collection
