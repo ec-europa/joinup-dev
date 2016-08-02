@@ -5,8 +5,8 @@ namespace Drupal\joinup\Traits;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
+use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
-use Drupal\og\OgMembershipInterface;
 
 /**
  * Contains helper methods regarding the organic groups.
@@ -22,9 +22,8 @@ trait OgTrait {
    *    The user to be assigned as a group member.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The organic group entity.
-   * @param array $roles
-   *    An array of roles to be passed to the membership. The full ID should be
-   *    passed.
+   * @param \Drupal\og\Entity\OgRole[] $roles
+   *    An array of OgRoles to be passed to the membership.
    *
    * @throws \Exception
    *    Throws an exception when the user is anonymous or the entity is not a
@@ -68,6 +67,22 @@ trait OgTrait {
     }
 
     return $roles;
+  }
+
+  /**
+   * Returns the OgRole objects identified by the given role names.
+   *
+   * @param array $roles
+   *    An array of role names for which to return the roles.
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *    The group entity to which the roles belong.
+   *
+   * @return \Drupal\og\Entity\OgRole[]
+   *    The OgRole objects.
+   */
+  protected function getOgRoles(array $roles, EntityInterface $group) {
+    $ids = $this->convertOgRoleNamesToIds($roles, $group);
+    return OgRole::loadMultiple($ids);
   }
 
 }

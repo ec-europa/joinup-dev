@@ -89,7 +89,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bunlde);
     $roles = explode(',', $role);
     $roles = array_map('trim', $roles);
-    $roles = $this->convertOgRoleNamesToIds($roles, $entity);
+    $roles = $this->getOgRoles($roles, $entity);
 
     // Check if a user with this role is already logged in.
     if (!$this->loggedInWithOgRoles($roles, $entity)) {
@@ -118,7 +118,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * from the rest of the roles that will lead the test to a false positive.
    * For this reason, we request check for the specific roles passed.
    *
-   * @param array $roles
+   * @param \Drupal\og\Entity\OgRole[] $roles
    *   An array of roles to check.
    * @param \Drupal\Core\Entity\EntityInterface $group
    *   The group that is checked if the user has the role.
