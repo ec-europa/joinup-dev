@@ -4,7 +4,7 @@ Feature: "Add solution" visibility options.
   As a moderator
   I need to be able to add "Solution" rdf entities through UI.
 
-  Scenario: "Add solution" button should only be shown to moderators.
+  Scenario: "Add solution" button should only be shown to moderators and facilitators.
     Given the following collection:
       | title | Collection solution test |
       | logo  | logo.png                 |
@@ -21,7 +21,7 @@ Feature: "Add solution" visibility options.
     And I go to the homepage of the "Collection solution test" collection
     Then I should not see the link "Add solution"
 
-  Scenario: Add solution as a moderator.
+  Scenario: Add solution as a facilitator.
     Given the following collection:
       | title | Collection solution test 2 |
       | logo  | logo.png                   |
