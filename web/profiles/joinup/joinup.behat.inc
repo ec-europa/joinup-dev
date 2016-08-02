@@ -99,8 +99,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'pass' => $random,
       );
       $user->mail = "{$user->name}@example.com";
-      $user = $this->userCreate($user);
-      $this->subscribeUserToGroup($user, $entity, $roles);
+      $this->userCreate($user);
+
+      // Load the actual user account.
+      $account = \Drupal\user\Entity\User::load($this->user->uid);
+      $this->subscribeUserToGroup($account, $entity, $roles);
 
       // Login.
       $this->login();
