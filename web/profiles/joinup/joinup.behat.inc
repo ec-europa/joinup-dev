@@ -95,10 +95,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if (!$this->loggedInWithOgRoles($roles, $entity)) {
       $random = $this->getRandom()->name(8);
       // Create user (and project)
-      $user = (object) array(
+      $user = (object) [
         'name' => $random,
         'pass' => $random,
-      );
+      ];
       $user->mail = "{$user->name}@example.com";
       $this->userCreate($user);
 
