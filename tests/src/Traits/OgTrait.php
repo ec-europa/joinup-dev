@@ -39,8 +39,7 @@ trait OgTrait {
     $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
     $membership
       ->setUser($user)
-      ->setEntityId($entity->id())
-      ->setGroupEntityType($entity->getEntityTypeId())
+      ->setGroup($entity)
       ->setFieldName($membership->getFieldName());
     foreach ($roles as $role) {
       $membership->addRole($role);

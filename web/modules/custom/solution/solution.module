@@ -59,8 +59,7 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
     $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
     $membership
       ->setUser(\Drupal::currentUser())
-      ->setEntityId($entity->id())
-      ->setGroupEntityType($entity->getEntityTypeId())
+      ->setGroup($entity)
       ->setFieldName($membership->getFieldName())
       ->setRoles($roles)
       ->save();
@@ -98,8 +97,7 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
     $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
     $membership
       ->setUser(\Drupal::currentUser())
-      ->setEntityId($entity->id())
-      ->setGroupEntityType($entity->getEntityTypeId())
+      ->setGroup($entity)
       ->setFieldName($membership->getFieldName())
       ->setRoles($roles)
       ->save();

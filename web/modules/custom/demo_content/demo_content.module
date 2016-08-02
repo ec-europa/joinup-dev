@@ -34,8 +34,7 @@ function demo_content_rdf_entity_insert(EntityInterface $entity) {
   $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
   $membership
     ->setUser($facilitator)
-    ->setEntityId($entity->id())
-    ->setGroupEntityType($entity->getEntityTypeId())
+    ->setGroup($entity)
     ->setFieldName($membership->getFieldName())
     ->addRole($role_id)
     ->save();
