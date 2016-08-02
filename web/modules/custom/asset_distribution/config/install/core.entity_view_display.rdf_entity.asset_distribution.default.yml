@@ -13,6 +13,7 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.field_ad_modification_date
     - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
     - field.field.rdf_entity.asset_distribution.field_status
+    - field.field.rdf_entity.asset_distribution.og_group_ref
     - rdf_entity.rdfentity.asset_distribution
   module:
     - datetime
@@ -111,4 +112,5 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  og_group_ref: true

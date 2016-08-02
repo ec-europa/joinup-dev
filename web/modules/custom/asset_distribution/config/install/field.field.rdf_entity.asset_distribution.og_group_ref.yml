@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.og_group_ref
+    - rdf_entity.rdfentity.asset_distribution
+  module:
+    - joinup_core
+    - og
+    - rdf_entity
+id: rdf_entity.asset_distribution.og_group_ref
+field_name: og_group_ref
+entity_type: rdf_entity
+bundle: asset_distribution
+label: 'Groups audience'
+description: 'OG group audience reference field.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'og:default'
+  handler_settings:
+    target_bundles:
+      solution: solution
+  access_override: false
+field_type: og_standard_reference
