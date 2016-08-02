@@ -126,6 +126,10 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
       $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $variables['element']['#id']);
     }
 
+    if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-field-ar-owner-actions') {
+      $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $variables['element']['#id']);
+    }
+
     if (in_array($variables['element']['#type'], $floating_label_types)) {
       if ($original_theme_hook == 'form_element') {
         $suggestions[] = 'form_element__floating';
@@ -148,6 +152,7 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
     $slider_ids = array(
       'edit-field-ar-elibrary-creation',
       'edit-field-is-elibrary-creation',
+      'edit-field-ar-owner-actions-bundle',
     );
 
     if ($variables['theme_hook_original'] == 'select' && in_array($variables['element']['#id'], $slider_ids)) {
