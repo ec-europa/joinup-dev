@@ -5,12 +5,7 @@
  * Contains asset_distribution.module.
  */
 
-use Drupal\asset_distribution\AssetDistributionRelations;
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\og\Og;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -74,27 +69,4 @@ function asset_distribution_rdf_load_bundle_alter($entity_values, &$bundle) {
   if ($bundle->id() == 'solution' && isset($entity_values['http://purl.org/dc/terms/isVersionOf'])) {
     $bundle = \Drupal::entityTypeManager()->getStorage('rdf_type')->load('asset_release');
   }
-}
-
-/**
- * Implements hook_rdf_entity_access().
- */
-function asset_distribution_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  // The permission to edit an asset distribution lies in the related solution.
-  if ($entity->bundle() == 'asset_distribution' && $operation == 'edit') {
-    $relation_handler = new AssetDistributionRelations(\Drupal::entityTypeManager());
-
-    $asset_release = $relation_handler->getDistributionRelease($entity);
-    if ($asset_release) {
-      $solution = $relation_handler->getReleaseSolution($asset_release);
-      if ($solution) {
-        $membership = Og::getMembership($account, $solution);
-
-        // @todo: Remove check for empty membership after ISAICP-2369 is in.
-        return AccessResult::allowedIf(!empty($membership) && $membership->hasPermission('update any asset_distribution rdf_entity'));
-      }
-    }
-  }
-
-  return AccessResult::neutral();
 }
