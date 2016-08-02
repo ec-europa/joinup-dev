@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\User\Entity\User;
 use Drupal\file\Entity\File;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -102,7 +103,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $this->userCreate($user);
 
       // Load the actual user account.
-      $account = \Drupal\user\Entity\User::load($this->user->uid);
+      $account = User::load($this->user->uid);
       $this->subscribeUserToGroup($account, $entity, $roles);
 
       // Login.
