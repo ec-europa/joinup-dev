@@ -86,7 +86,7 @@ class NewsController extends ControllerBase {
   protected function createNewsEntity(RdfInterface $rdf_entity) {
     return $this->entityTypeManager()->getStorage('node')->create([
       'type' => 'news',
-      'og_group_ref' => $rdf_entity->id(),
+      'og_audience' => $rdf_entity->id(),
     ]);
   }
 

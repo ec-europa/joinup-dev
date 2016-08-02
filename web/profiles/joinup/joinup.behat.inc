@@ -384,7 +384,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * This allows us to:
    * - use human readable labels like 'short title' and 'collection' in test
    *   scenarios, and map them to the actual field names like
-   *   'field_document_short_title' and 'og_group_ref'.
+   *   'field_document_short_title' and 'og_audience'.
    * - use human readable values such as a collection name instead of the URL
    *   that is actually used in the OG reference field.
    *
@@ -410,9 +410,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // actual URI. Note that this fails if a URI is supplied for a collection or
     // solution in a Behat test. This is by design, the URIs are not exposed to
     // end users of the site so they should not be used in BDD scenarios.
-    if (!empty($node->og_group_ref)) {
-      $entity = $this->getRdfEntityByLabel($node->og_group_ref);
-      $node->og_group_ref = $entity->id();
+    if (!empty($node->og_audience)) {
+      $entity = $this->getRdfEntityByLabel($node->og_audience);
+      $node->og_audience = $entity->id();
     }
   }
 
@@ -441,8 +441,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'state' => 'field_news_state',
       ],
       'shared' => [
-        'collection' => 'og_group_ref',
-        'solution' => 'og_group_ref',
+        'collection' => 'og_audience',
+        'solution' => 'og_audience',
       ],
     ];
 

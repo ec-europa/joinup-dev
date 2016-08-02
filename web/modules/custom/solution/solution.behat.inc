@@ -182,7 +182,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
       $content = $this->getNodeByTitle($values['content'], $bundle);
-      $content->get('og_group_ref')->set(0, $group->id());
+      $content->get('og_audience')->set(0, $group->id());
       $content->save();
     }
   }
@@ -427,7 +427,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
-      'collection' => 'og_group_ref',
+      'collection' => 'og_audience',
     ];
   }
 

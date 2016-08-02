@@ -424,7 +424,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
       /** @var \Drupal\node\NodeInterface $content */
       $content = $this->getNodeByTitle($values['content'], $bundle);
-      $content->get('og_group_ref')->set(0, $group->id());
+      $content->get('og_audience')->set(0, $group->id());
       $content->save();
     }
   }

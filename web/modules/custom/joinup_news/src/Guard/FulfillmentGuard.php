@@ -138,9 +138,9 @@ class FulfillmentGuard implements GuardInterface {
    */
   public static function getParent(EntityInterface $entity) {
     $parent = NULL;
-    if (!empty($entity->og_group_ref->first()->target_id)) {
+    if (!empty($entity->og_audience->first()->target_id)) {
       /** @var \Drupal\rdf_entity\RdfInterface $parent */
-      $parent = Rdf::load($entity->og_group_ref->first()->target_id);
+      $parent = Rdf::load($entity->og_audience->first()->target_id);
     }
     return $parent;
   }

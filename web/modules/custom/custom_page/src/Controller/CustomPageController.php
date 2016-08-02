@@ -88,7 +88,7 @@ class CustomPageController extends ControllerBase {
   protected function createNewCustomPage(RdfInterface $rdf_entity) {
     return $this->entityTypeManager()->getStorage('node')->create([
       'type' => 'custom_page',
-      'og_group_ref' => $rdf_entity->id(),
+      'og_audience' => $rdf_entity->id(),
     ]);
   }
 

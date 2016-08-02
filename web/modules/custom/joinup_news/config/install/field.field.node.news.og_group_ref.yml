@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.og_group_ref
+    - field.storage.node.og_audience
     - node.type.news
     - rdf_entity.rdfentity.collection
     - rdf_entity.rdfentity.solution
   module:
     - og
-id: node.news.og_group_ref
-field_name: og_group_ref
+id: node.news.og_audience
+field_name: og_audience
 entity_type: node
 bundle: news
 label: Collection

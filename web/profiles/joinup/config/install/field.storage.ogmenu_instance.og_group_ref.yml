@@ -5,8 +5,8 @@ dependencies:
     - og
     - og_menu
     - rdf_entity
-id: ogmenu_instance.og_group_ref
-field_name: og_group_ref
+id: ogmenu_instance.og_audience
+field_name: og_audience
 entity_type: ogmenu_instance
 type: og_standard_reference
 settings:
