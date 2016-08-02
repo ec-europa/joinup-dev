@@ -16,7 +16,7 @@ Feature: Solution API
       | webdav creation   | no                                   |
       | webdav url        | http://joinup.eu/solution/foo/webdav |
       | wiki              | http://example.wiki/foobar/wiki      |
-    And the following solution:
+    And the following collection:
       | title             | Solution API foo  |
       | logo              | logo.png          |
       | moderation        | yes               |
@@ -30,7 +30,7 @@ Feature: Solution API
       | title             | My first solution mandatory |
       | description       | Another sample solution     |
       | elibrary creation | members                     |
-    And the following solution:
+    And the following collection:
       | title             | Solution API bar            |
       | logo              | logo.png                    |
       | moderation        | yes                         |
