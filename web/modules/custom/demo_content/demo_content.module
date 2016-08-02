@@ -31,11 +31,10 @@ function demo_content_rdf_entity_insert(EntityInterface $entity) {
   $role_id = $entity->getEntityTypeId() . '-' . $entity->bundle() . '-facilitator';
 
   /** @var \Drupal\og\OgMembershipInterface $membership */
-  $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
+  $membership = OgMembership::create();
   $membership
     ->setUser($facilitator)
     ->setGroup($entity)
-    ->setFieldName($membership->getFieldName())
     ->addRole($role_id)
     ->save();
 }

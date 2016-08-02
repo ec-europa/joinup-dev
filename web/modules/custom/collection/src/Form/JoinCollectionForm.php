@@ -138,12 +138,10 @@ class JoinCollectionForm extends FormBase {
     /** @var \Drupal\user\UserInterface $user */
     $user = User::load($form_state->getValue('user_id'));
 
-    $membership = Og::membershipStorage()->create(Og::membershipDefault());
+    $membership = Og::membershipStorage()->create();
     $membership
-      ->setFieldName(OgGroupAudienceHelper::DEFAULT_FIELD)
       ->setUser($user)
-      ->setGroupEntityType('rdf_entity')
-      ->setEntityid($collection->id())
+      ->setGroup($collection)
       ->setState(OgMembershipInterface::STATE_ACTIVE)
       ->setRoles([$collection->getEntityTypeId() . '-' . $collection->bundle() . '-' . OgRoleInterface::AUTHENTICATED])
       ->save();
