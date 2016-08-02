@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\og\Entity\OgMembership;
+use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -59,7 +60,7 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
     $membership
       ->setUser(\Drupal::currentUser())
       ->setGroup($entity)
-      ->setRoles($roles)
+      ->setRoles(OgRole::loadMultiple($roles))
       ->save();
   }
 
