@@ -17,7 +17,6 @@ Feature: Solution API
       | title             | Solution API foo  |
       | logo              | logo.png          |
       | moderation        | yes               |
-      | closed            | yes               |
       | elibrary creation | facilitators      |
       | affiliates        | My first solution |
     And the following asset release:
@@ -38,7 +37,6 @@ Feature: Solution API
       | title             | Solution API bar            |
       | logo              | logo.png                    |
       | moderation        | yes                         |
-      | closed            | yes                         |
       | elibrary creation | facilitators                |
       | affiliates        | My first solution mandatory |
     And the following asset release:
