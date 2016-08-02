@@ -82,7 +82,7 @@ class AssetDistributionController extends ControllerBase {
     if (empty($solution) && !$user->isAnonymous()) {
       return AccessResult::forbidden();
     }
-    $membership = Og::getMembership($user, $solution);
+    $membership = Og::getMembership($solution, $user);
     // @todo: Remove check for empty membership after ISAICP-2369 is in.
     return (!empty($membership) && $membership->hasPermission('create asset_distribution rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
   }
