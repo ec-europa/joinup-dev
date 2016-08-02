@@ -8,7 +8,6 @@ use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\Entity\User;
