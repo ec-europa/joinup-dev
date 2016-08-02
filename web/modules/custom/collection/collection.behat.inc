@@ -396,7 +396,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       // Convert role names to role IDs.
       $roles = [];
       if (!empty($values['roles'])) {
-        $roles = $this->convertOgRoleNamesToIds(explode(', ', $values['roles']), $group);
+        $roles = $this->getOgRoles(explode(', ', $values['roles']), $group);
       }
 
       $this->subscribeUserToGroup($member, $group, $roles);
