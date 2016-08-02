@@ -9,6 +9,8 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
+use Drupal\og\Entity\OgMembership;
+use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
@@ -136,13 +138,14 @@ class JoinCollectionForm extends FormBase {
     $collection = Rdf::load($form_state->getValue('collection_id'));
     /** @var \Drupal\user\UserInterface $user */
     $user = User::load($form_state->getValue('user_id'));
+    $role_id = $collection->getEntityTypeId() . '-' . $collection->bundle() . '-' . OgRoleInterface::AUTHENTICATED;
 
-    $membership = Og::membershipStorage()->create();
+    $membership = OgMembership::create();
     $membership
       ->setUser($user)
       ->setGroup($collection)
       ->setState(OgMembershipInterface::STATE_ACTIVE)
-      ->setRoles([$collection->getEntityTypeId() . '-' . $collection->bundle() . '-' . OgRoleInterface::AUTHENTICATED])
+      ->setRoles([OgRole::load($role_id)])
       ->save();
 
     drupal_set_message($this->t('You are now a member of %collection.', [
