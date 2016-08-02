@@ -35,11 +35,10 @@ trait OgTrait {
     }
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
+    $membership = OgMembership::create();
     $membership
       ->setUser($user)
-      ->setGroup($entity)
-      ->setFieldName($membership->getFieldName());
+      ->setGroup($entity);
     foreach ($roles as $role) {
       $membership->addRole($role);
     }
