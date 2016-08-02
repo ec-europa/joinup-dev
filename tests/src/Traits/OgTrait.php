@@ -3,6 +3,7 @@
 namespace Drupal\joinup\Traits;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
@@ -17,8 +18,8 @@ trait OgTrait {
   /**
    * Creates an Og membership to a group optionally assigning roles as well.
    *
-   * @param int $user_id
-   *    The ID of the user to be assigned as an Og member.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *    The user to be assigned as a group member.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The organic group entity.
    * @param array $roles
@@ -29,7 +30,7 @@ trait OgTrait {
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup($user_id, EntityInterface $entity, array $roles = []) {
+  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $entity, array $roles = []) {
     if (!Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
       throw new \Exception("The {$entity->label()} is not a group.");
     }
@@ -37,7 +38,7 @@ trait OgTrait {
     /** @var \Drupal\og\OgMembershipInterface $membership */
     $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
     $membership
-      ->setUser($user_id)
+      ->setUser($user)
       ->setEntityId($entity->id())
       ->setGroupEntityType($entity->getEntityTypeId())
       ->setFieldName($membership->getFieldName());

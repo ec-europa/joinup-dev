@@ -33,7 +33,7 @@ function demo_content_rdf_entity_insert(EntityInterface $entity) {
   /** @var \Drupal\og\OgMembershipInterface $membership */
   $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
   $membership
-    ->setUser($facilitator->id())
+    ->setUser($facilitator)
     ->setEntityId($entity->id())
     ->setGroupEntityType($entity->getEntityTypeId())
     ->setFieldName($membership->getFieldName())

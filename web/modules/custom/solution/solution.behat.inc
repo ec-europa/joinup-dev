@@ -367,12 +367,12 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
 
       // Convert role names to role IDs.
-      $roles = array();
+      $roles = [];
       if (!empty($values['roles'])) {
         $roles = $this->convertOgRoleNamesToIds(explode(', ', $values['roles']), $group);
       }
 
-      $this->subscribeUserToGroup($member->id(), $group, $roles);
+      $this->subscribeUserToGroup($member, $group, $roles);
     }
   }
 

@@ -73,7 +73,7 @@ function collection_entity_insert(EntityInterface $entity) {
     /** @var \Drupal\og\OgMembershipInterface $membership */
     $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
     $membership
-      ->setUser(\Drupal::currentUser()->id())
+      ->setUser(\Drupal::currentUser())
       ->setEntityId($entity->id())
       ->setGroupEntityType($entity->getEntityTypeId())
       ->setFieldName($membership->getFieldName())

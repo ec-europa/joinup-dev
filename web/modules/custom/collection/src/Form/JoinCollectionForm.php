@@ -141,7 +141,7 @@ class JoinCollectionForm extends FormBase {
     $membership = Og::membershipStorage()->create(Og::membershipDefault());
     $membership
       ->setFieldName(OgGroupAudienceHelper::DEFAULT_FIELD)
-      ->setUser($user->id())
+      ->setUser($user)
       ->setGroupEntityType('rdf_entity')
       ->setEntityid($collection->id())
       ->setState(OgMembershipInterface::STATE_ACTIVE)
