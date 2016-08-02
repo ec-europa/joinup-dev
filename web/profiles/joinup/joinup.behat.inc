@@ -92,7 +92,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $roles = $this->convertOgRoleNamesToIds($roles, $entity);
 
     // Check if a user with this role is already logged in.
-    if (!$this->loggedInWithOgRole($roles, $entity)) {
+    if (!$this->loggedInWithOgRoles($roles, $entity)) {
       $random = $this->getRandom()->name(8);
       // Create user (and project)
       $user = (object) array(
@@ -128,7 +128,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @see \Drupal\DrupalExtension\Context\RawDrupalContext::loggedInWithRole
    */
-  protected function loggedInWithOgRole(array $roles, EntityInterface $group) {
+  protected function loggedInWithOgRoles(array $roles, EntityInterface $group) {
     if (!$this->loggedIn() || !$this->user) {
       return FALSE;
     }
