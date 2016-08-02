@@ -53,14 +53,14 @@ trait OgTrait {
    *
    * @param array $roles
    *    An array of roles to convert names.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $group
    *    The group entity.
    *
    * @return array
    *    An array with the converted names.
    */
-  protected function convertOgRoleNamesToIds(array $roles, EntityInterface $entity) {
-    $role_prefix = $entity->getEntityTypeId() . '-' . $entity->bundle() . '-';
+  protected function convertOgRoleNamesToIds(array $roles, EntityInterface $group) {
+    $role_prefix = $group->getEntityTypeId() . '-' . $group->bundle() . '-';
     foreach ($roles as $key => $role) {
       $roles[$key] = $role_prefix . $role;
     }
