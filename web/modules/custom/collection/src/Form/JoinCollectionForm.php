@@ -10,7 +10,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;

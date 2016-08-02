@@ -10,14 +10,13 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\views\Views;
+use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelper;
-use Drupal\og\Entity\OgMembership;
-use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
+use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\views\Views;
 
 /**
  * Implements hook_form_FORM_ID_alter().

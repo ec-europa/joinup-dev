@@ -7,11 +7,10 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\og\Og;
 use Drupal\og\Entity\OgMembership;
-use Drupal\og\OgMembershipInterface;
+use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
