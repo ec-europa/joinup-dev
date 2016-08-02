@@ -5,12 +5,17 @@
  * Contains \UserSubContext.
  */
 
+use Behat\Gherkin\Node\TableNode;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Behat\Gherkin\Node\TableNode;
+use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
-use Drupal\search_api\Entity\Server;
 use Drupal\joinup\Traits\NodeTrait;
+use Drupal\joinup\Traits\OgTrait;
+use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\og\Og;
+use Drupal\search_api\Entity\Server;
 
 /**
  * Behat step definitions for testing users.
@@ -18,6 +23,8 @@ use Drupal\joinup\Traits\NodeTrait;
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use NodeTrait;
+  use OgTrait;
+  use RdfEntityTrait;
 
   /**
    * Test files.
@@ -68,7 +75,73 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Save files and change filename into a file id.
+   * Creates and authenticates a user with the given og role(s).
+   *
+   * Multiple roles can be passed separated with comma.
+   *
+   * @Given I am logged in as a user with the :role role(s) of the :rdf_entity :rdf_entity_bundle
+   * @Given I am logged in as a/an :role of the :rdf_entity :rdf_entity_bundle
+   *
+   * @see \Drupal\DrupalExtension\Context\DrupalContext::assertAuthenticatedByRole()
+   */
+  public function assertAuthenticatedByOgRole($role, $rdf_entity, $rdf_entity_bunlde) {
+    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bunlde);
+    $roles = explode(',', $role);
+    $roles = array_map('trim', $roles);
+    $roles = $this->convertOgRoleNamesToIds($roles, $entity);
+
+    // Check if a user with this role is already logged in.
+    if (!$this->loggedInWithOgRole($roles, $entity)) {
+      $random = $this->getRandom()->name(8);
+      // Create user (and project)
+      $user = (object) array(
+        'name' => $random,
+        'pass' => $random,
+      );
+      $user->mail = "{$user->name}@example.com";
+      $this->userCreate($user);
+      $this->subscribeUserToGroup($user->uid, $entity, $roles);
+
+      // Login.
+      $this->login();
+    }
+  }
+
+  /**
+   * Checks that the logged in user has the given OG roles in the given group.
+   *
+   * If the user has more than the required roles, he might have permissions
+   * from the rest of the roles that will lead the test to a false positive.
+   * For this reason, we request check for the specific roles passed.
+   *
+   * @param array $roles
+   *   An array of roles to check.
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *   The group that is checked if the user has the role.
+   *
+   * @return bool
+   *   Returns TRUE if the current logged in user has this role (or roles).
+   *
+   * @see \Drupal\DrupalExtension\Context\RawDrupalContext::loggedInWithRole
+   */
+  protected function loggedInWithOgRole(array $roles, EntityInterface $group) {
+    if (!$this->loggedIn() || !$this->user) {
+      return FALSE;
+    }
+    $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($this->user->uid);
+    $membership = Og::getMembership($user, $group);
+    if (empty($membership)) {
+      return FALSE;
+    }
+    if ($roles == $membership->getRolesIds()) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * Save files and change filename into a file ID.
    */
   private function handleFileFields(&$values, $entity_type, $bundle) {
     $entity_manager = \Drupal::entityManager();
@@ -303,6 +376,99 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if ($node->isPublished()) {
       throw new \Exception("$title content should not be published but it is.");
     }
+  }
+
+  /**
+   * Replaces human readable labels and values with their real counterparts.
+   *
+   * This allows us to:
+   * - use human readable labels like 'short title' and 'collection' in test
+   *   scenarios, and map them to the actual field names like
+   *   'field_document_short_title' and 'og_group_ref'.
+   * - use human readable values such as a collection name instead of the URL
+   *   that is actually used in the OG reference field.
+   *
+   * @param \Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope $scope
+   *   An object containing the entity properties and fields that are to be used
+   *   for creating the node as properties on the object.
+   *
+   * @BeforeNodeCreate
+   */
+  public function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+    $node = $scope->getEntity();
+
+    // Replace field label aliases with the actual field names.
+    foreach (get_object_vars($node) as $alias => $value) {
+      $name = $this->getNodeFieldNameFromAlias($node->type, $alias);
+      if ($name !== $alias) {
+        unset($node->alias);
+        $node->$name = $value;
+      }
+    }
+
+    // Replace collection and solution group references that use titles with the
+    // actual URI. Note that this fails if a URI is supplied for a collection or
+    // solution in a Behat test. This is by design, the URIs are not exposed to
+    // end users of the site so they should not be used in BDD scenarios.
+    if (!empty($node->og_group_ref)) {
+      $entity = $this->getRdfEntityByLabel($node->og_group_ref);
+      $node->og_group_ref = $entity->id();
+    }
+  }
+
+  /**
+   * Returns the actual field name for a given node field alias.
+   *
+   * @param string $type
+   *   The node type for which to return the field name.
+   * @param string $alias
+   *   The human readable node field alias.
+   *
+   * @return string
+   *   The actual field name, or the original string if the alias is not known.
+   */
+  protected function getNodeFieldNameFromAlias($type, $alias) {
+    $aliases = [
+      'document' => [
+        'short title' => 'field_document_short_title',
+      ],
+      'event' => [
+        'short title' => 'field_event_short_title',
+        'start date' => 'field_start_date',
+      ],
+      'news' => [
+        'kicker' => 'field_news_kicker',
+        'state' => 'field_news_state',
+      ],
+      'shared' => [
+        'collection' => 'og_group_ref',
+        'solution' => 'og_group_ref',
+      ],
+    ];
+
+    // Check both the node type specific aliases as well as the shared aliases.
+    foreach ([$type, 'shared'] as $key) {
+      if (!empty($aliases[$key][$alias])) {
+        return $aliases[$key][$alias];
+      }
+    }
+
+    return $alias;
+  }
+
+  /**
+   * Presses button with specified id|name|title|alt|value at a widget.
+   *
+   * Example: When I press "Log In" at "Fieldset"
+   * Example: And I press "Log In" at "Custom widget".
+   *
+   * @When I press :button at( the) :fieldset( field)
+   */
+  public function pressButtonInFieldset($button, $fieldset) {
+    // Fixes a step argument (with \\" replaced back to ")
+    // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
+    $button = str_replace('\\"', '"', $button);
+    $this->getSession()->getPage()->find('named', array('fieldset', $fieldset))->pressButton($button);
   }
 
 }

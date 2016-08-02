@@ -33,7 +33,7 @@ Feature: News moderation.
       | title          | moderation |
       | Justice League | no         |
       | Legion of Doom | yes        |
-    And the following user memberships:
+    And the following collection user memberships:
       | collection     | user          | roles         |
       | Justice League | Superman      | administrator |
       | Justice League | Hawkgirl      | facilitator   |
@@ -44,7 +44,7 @@ Feature: News moderation.
       | Legion of Doom | Mirror Master | member        |
       | Legion of Doom | Cheetah       | member        |
     And "news" content:
-      | title                         | field_news_kicker                           | body                                                                    | field_news_state | author        |
+      | title                         | kicker                                      | body                                                                    | state            | author        |
       | Creating Justice League       | 6 Members to start with                     | TBD                                                                     | draft            | Eagle         |
       | Hawkgirl is a spy             | Her race lies in another part of the galaxy | Hawkgirl has been giving information about Earth to Thanagarians.       | proposed         | Eagle         |
       | Hawkgirl helped Green Lantern | Hawkgirl went against Thanagarians?         | It was all of a sudden when Hawkgirl turned her back to her own people. | validated        | Eagle         |
@@ -101,6 +101,10 @@ Feature: News moderation.
     Then I should not see the link "Add news"
     # User from another collection should not be able to see the 'Add news'.
     When I am logged in as "Cheetah"
+    And I go to the homepage of the "Justice League" collection
+    Then I should not see the link "Add news"
+    # Site moderators should not be able to add news.
+    When I am logged in as "Batman"
     And I go to the homepage of the "Justice League" collection
     Then I should not see the link "Add news"
     # Administrators cannot create content. Facilitators are the moderators of

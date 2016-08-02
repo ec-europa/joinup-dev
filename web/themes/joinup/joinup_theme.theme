@@ -1,11 +1,13 @@
 <?php
+
 /**
  * @file
  * Functions to support theming in the Joinup theme.
  */
 
+use Drupal\Core\Template\Attribute;
+use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
-use \Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 
@@ -106,6 +108,18 @@ function joinup_theme_preprocess_block(&$variables) {
       $variables['is_view'] = TRUE;
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for fieldset.html.twig.
+ */
+function joinup_theme_preprocess_fieldset(&$variables) {
+  // Make sure the "for" attribute is added to the label so it is clear to which
+  // of the wrapped elements this label belongs. This is important for
+  // accessibility.
+  $variables['legend']['attributes'] = new Attribute([
+    'for' => $variables['element']['#id'],
+  ]);
 }
 
 /**

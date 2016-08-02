@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings:
+  rdf_entity:
+    mapping_rid:
+      target_id: 'http://www.w3.org/2006/vcard/ns#Kind'
+    mapping_label:
+      value: 'http://purl.org/dc/terms/title'
+name: 'Contact information'
+rid: contact_information
+description: ''
+rdftype: ''
+rdf_label: ''

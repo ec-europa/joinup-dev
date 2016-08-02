@@ -129,7 +129,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    *    Fields.
    *
    * @throws \Exception
-   *   Thrown when a column name is incorrect.
+   *   Thrown when an expected field is not present.
    *
    * @Then /^(?:|the following )fields should be present? "(?P<fields>[^"]*)"$/
    */
@@ -139,7 +139,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
     $fields = array_filter($fields);
     $not_found = [];
     foreach ($fields as $field) {
-      $is_found = $this->getSession()->getPage()->find('named', array('field', $field));
+      $is_found = $this->getSession()->getPage()->find('named', ['field', $field]);
       if (!$is_found) {
         $not_found[] = $field;
       }
@@ -165,7 +165,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
     $fields = array_map('trim', $fields);
     $fields = array_filter($fields);
     foreach ($fields as $field) {
-      $is_found = $this->getSession()->getPage()->find('named', array('field', $field));
+      $is_found = $this->getSession()->getPage()->find('named', ['field', $field]);
       if ($is_found) {
         throw new \Exception("Field should not be found, but is present: " . $field);
       }
@@ -188,6 +188,34 @@ class DrupalContext extends DrupalExtensionDrupalContext {
 
     if (empty($user)) {
       throw new \Exception("Unable to load expected user " . $username);
+    }
+  }
+
+  /**
+   * Assert that certain fieldsets are present on the page.
+   *
+   * @param string $fieldsets
+   *    The fieldset names to search for, separated by comma.
+   *
+   * @throws \Exception
+   *   Thrown when a fieldset is not found.
+   *
+   * @Then (the following )field widgets should be present :fieldsets
+   * @Then (the following )fieldsets should be present :fieldsets
+   */
+  public function assertFieldsetsPresent($fieldsets) {
+    $fieldsets = explode(',', $fieldsets);
+    $fieldsets = array_map('trim', $fieldsets);
+    $fieldsets = array_filter($fieldsets);
+    $not_found = [];
+    foreach ($fieldsets as $fieldset) {
+      $is_found = $this->getSession()->getPage()->find('named', ['fieldset', $fieldset]);
+      if (!$is_found) {
+        $not_found[] = $fieldset;
+      }
+    }
+    if ($not_found) {
+      throw new \Exception("Fieldset(s) expected, but not found: " . implode(', ', $not_found));
     }
   }
 

@@ -31,7 +31,8 @@ drupal.admin.password = admin
 drupal.admin.email = admin@example.com
 
 # Comma-separated list of demo users to create. The username and password will
-# be taken from the role.
+# be taken from the role. A normal authenticated user with username and password
+# 'user' will also be created.
 drupal.demo.users = administrator, moderator
 
 
@@ -41,8 +42,9 @@ drupal.demo.users = administrator, moderator
 # Paths to executables.
 composer.bin = ${project.basedir}/vendor/bin/composer
 drush.bin = ${project.basedir}/vendor/bin/drush
-phing.bin = ${project.basedir}/vendor/bin/phing
 isql.bin = /usr/bin/isql-vt
+phing.bin = ${project.basedir}/vendor/bin/phing
+solr.bin = ${project.basedir}/vendor/bin/solr
 
 # Files and directories inside the Drupal installation.
 documentroot.path = web
@@ -64,6 +66,9 @@ website.themes.dir = ${website.drupal.dir}/themes
 # Composer related paths.
 composer.json = ${project.basedir}/composer.json
 
+# Temporary files.
+tmp.dir = ${project.basedir}/tmp
+
 
 # Behat configuration
 # -------------------
@@ -82,6 +87,9 @@ behat.yml.path = ${behat.dir}/behat.yml
 
 # The base URL to use in Behat tests.
 behat.base_url = http://localhost
+
+# The URL of the webdriver host (PhantomJS or Selenium):
+behat.webdriver_url = http://localhost:4444/wd/hub
 
 # The location to search for Behat subcontexts.
 behat.subcontexts.path = ${website.modules.dir}
@@ -142,11 +150,40 @@ phpcs.prepush.source = ${project.basedir}/vendor/pfrenssen/phpcs-pre-push/pre-pu
 phpcs.prepush.destination = ${project.basedir}/.git/hooks/pre-push
 
 
+# Apache Solr configuration
+# -------------------------
+
+# Apache Solr version to use.
+solr.version = 6.1.0
+
+# Filename of the download.
+solr.tarball.filename = solr-${solr.version}.tgz
+
+# Download URL.
+solr.download.url = http://www-eu.apache.org/dist/lucene/solr/${solr.version}/${solr.tarball.filename}
+
+# Installation path.
+solr.vendor.dir = ${project.basedir}/vendor/apache
+solr.dir = ${solr.vendor.dir}/solr-${solr.version}
+
+# Search API configuration path.
+solr.config.dir = ${website.modules.dir}/contrib/search_api_solr/solr-conf/6.x
+
+# The name of our Solr core.
+solr.core = drupal
+
+# The path to the data files of our Solr core.
+solr.core.dir = ${solr.dir}/server/solr/${solr.core}
+
+
 # Development options
 # -------------------
 
 # Development modules to enable.
 drupal.modules.dev = config_update field_ui menu_ui views_ui
+
+# Modules to enable for doing user acceptance testing.
+drupal.modules.uat = demo_content
 
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = no
