@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "18e010361e880c8bffe2063b15b6b92c",
-    "content-hash": "bfbbe143f4cb9d8e070bc0ee95fd9ab3",
+    "hash": "504115dc93bfc7162b184b7c7f04a042",
+    "content-hash": "b1d3d4ee065f24d23893366c36af01a4",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.35",
+            "version": "3.18.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "8133c4ce336c8cac97218546f896f491bb6ffd7e"
+                "reference": "48362bce008fa9c20a71dfa6a68aebac65a8ab1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8133c4ce336c8cac97218546f896f491bb6ffd7e",
-                "reference": "8133c4ce336c8cac97218546f896f491bb6ffd7e",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/48362bce008fa9c20a71dfa6a68aebac65a8ab1b",
+                "reference": "48362bce008fa9c20a71dfa6a68aebac65a8ab1b",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-07-29 01:07:59"
+            "time": "2016-08-02 20:49:01"
         },
         {
             "name": "composer/ca-bundle",
@@ -1485,7 +1485,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/inline_entity_form",
-                "reference": "95b22227b926083e730870efc3e3b352b735be91"
+                "reference": "7b8d6107692d5b8379c53f84e278fecf40e8d3cb"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -1505,7 +1505,7 @@
             ],
             "description": "Provides a widget for inline management (creation, modification, removal) of referenced entities. ",
             "homepage": "https://www.drupal.org/project/inline_entity_form",
-            "time": "2016-05-31 12:49:34"
+            "time": "2016-08-02 20:14:40"
         },
         {
             "name": "drupal/layout_plugin",
@@ -1567,15 +1567,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "bbc5f946c100ec55463286c02411a3dfa5f14190"
+                "reference": "7a21262cab7c667c61afe3da2bfa974b2d2c9078"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/bbc5f946c100ec55463286c02411a3dfa5f14190",
-                "reference": "bbc5f946c100ec55463286c02411a3dfa5f14190",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/7a21262cab7c667c61afe3da2bfa974b2d2c9078",
+                "reference": "7a21262cab7c667c61afe3da2bfa974b2d2c9078",
                 "shasum": ""
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": []
+            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -1586,7 +1589,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-07-25 14:58:04"
+            "time": "2016-07-14 11:00:00"
         },
         {
             "name": "drupal/og_menu",
