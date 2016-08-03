@@ -94,6 +94,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
           throw new \Exception("Unknown column '$key' in asset distribution table.");
         }
       };
+
+      $values = $this->convertValueAliases($values);
+
       $this->createAssetDistribution($values);
     }
   }
@@ -131,6 +134,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
         throw new \Exception("Unknown column '$key' in solution table.");
       }
     };
+
+    $values = $this->convertValueAliases($values);
+
     $this->createAssetDistribution($values);
   }
 
@@ -269,8 +275,27 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       'licence' => 'field_ad_licence',
       'modification date' => 'field_ad_modification_date',
       'representation technique' => 'field_ad_repr_technique',
+      'solution' => 'og_group_ref',
       'status' => 'field_status',
     ];
+  }
+
+  /**
+   * Converts values from user friendly to normal machine values.
+   *
+   * @param array $fields
+   *    An array of fields keyed by field name.
+   *
+   * @return array
+   *    The array with the values converted.
+   */
+  protected function convertValueAliases($fields) {
+    if (isset($fields['og_group_ref'])) {
+      $solution = $this->getRdfEntityByLabel($fields['og_group_ref'], 'solution');
+      $fields['og_group_ref'] = $solution->id();
+    }
+
+    return $fields;
   }
 
 }

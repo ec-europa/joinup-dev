@@ -16,6 +16,7 @@ Feature: Asset distribution editing.
       | title       | Asset distribution example |
       | description | Sample description         |
       | file        | test.zip                   |
+      | solution    | Solution A                 |
     And the following asset release:
       | title         | Asset release example      |
       | description   | Release description        |
