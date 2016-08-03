@@ -60,7 +60,7 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
     $membership
       ->setUser(\Drupal::currentUser())
       ->setGroup($entity)
-      ->setRoles(OgRole::loadMultiple($roles))
+      ->setRoles(array_values(OgRole::loadMultiple($roles)))
       ->save();
   }
 
