@@ -19,7 +19,7 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'og:default'
+  handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
       solution: solution
