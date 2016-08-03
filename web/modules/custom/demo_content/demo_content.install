@@ -5,9 +5,10 @@
  * Install, update and uninstall functions for the Demo content module.
  */
 
-use Drupal\user\Entity\User;
 use Drupal\file\Entity\File;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\user\Entity\User;
 
 /**
  * Implements hook_install().
@@ -264,7 +265,7 @@ function demo_content_get_asset_data() {
       // 'http://www.geonames.org/6695072',
       // ],
       // 'field_status' => 'http://purl.org/adms/status/Completed',
-      'og_audience' => 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1',
+      OgGroupAudienceHelper::DEFAULT_FIELD => 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1',
     ],
   ];
 }

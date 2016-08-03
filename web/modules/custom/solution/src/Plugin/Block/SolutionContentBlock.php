@@ -7,6 +7,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
@@ -90,7 +91,7 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
 
     // Get news referencing to this solution.
     $entities = $this->entityManager->getStorage('node')
-      ->loadByProperties(['og_audience' => $this->solution->id()]);
+      ->loadByProperties([OgGroupAudienceHelper::DEFAULT_FIELD => $this->solution->id()]);
     $items = [];
     foreach ($entities as $entity) {
       $items[] = array('#markup' => $entity->link());
