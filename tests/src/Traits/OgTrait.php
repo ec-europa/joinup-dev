@@ -81,7 +81,7 @@ trait OgTrait {
    */
   protected function getOgRoles(array $roles, EntityInterface $group) {
     $ids = $this->convertOgRoleNamesToIds($roles, $group);
-    return OgRole::loadMultiple($ids);
+    return array_values(OgRole::loadMultiple($ids));
   }
 
 }
