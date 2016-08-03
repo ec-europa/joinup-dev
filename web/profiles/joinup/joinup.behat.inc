@@ -133,7 +133,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       return FALSE;
     }
     $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($this->user->uid);
-    $membership = Og::getMembership($user, $group);
+    $membership = Og::getMembership($group, $user);
     if (empty($membership)) {
       return FALSE;
     }
