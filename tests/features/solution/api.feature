@@ -39,12 +39,12 @@ Feature: Solution API
       | affiliates        | My first solution mandatory |
     Then I should have 1 solution
 
-  Scenario: Assign OG ownership during creation of solutions through UI
+  Scenario: Assign ownership during creation of solutions through UI
     Given the following organisation:
-      | name | Organisation solution API example |
+      | name | Leechidna |
     And the following contact:
-      | name  | Contact point solution API example |
-      | email | solutionAPI@example.com            |
+      | name  | Gopheadow               |
+      | email | solutionAPI@example.com |
     And users:
       | name              | pass |
       | Solution API user | pass |
@@ -68,10 +68,10 @@ Feature: Solution API
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I press "Add existing" at the "Contact information" field
-    And I fill in "Contact information" with "Contact point solution API example"
+    And I fill in "Contact information" with "Gopheadow"
     And I press "Add contact information"
     And I press "Add existing owner" at the "Owner" field
-    And I fill in "Owner" with "Organisation solution API example"
+    And I fill in "Owner" with "Leechidna"
     And I press "Add owner"
     And I press "Save"
     Then I should see the heading "Solution API example"

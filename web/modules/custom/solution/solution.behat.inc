@@ -196,21 +196,21 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @param string $username
    *    The name of the user.
-   * @param string $rdf_entity
+   * @param string $solution
    *    The label of the group entity.
    *
    * @throws \Exception
    *    Throws an exception when the user is not found.
    *
-   * @Given (the user ):username should be the owner of the :rdf_entity solution
+   * @Given (the user ):username should be the owner of the :solution solution
    */
-  public function assertCollectionOwnership($username, $rdf_entity) {
+  public function assertSolutionOwnership($username, $solution) {
     $user = user_load_by_name($username);
     if (empty($user)) {
       throw new \Exception("User {$username} could not be found.");
     }
 
-    $solution = $this->getRdfEntityByLabel($rdf_entity, 'solution');
+    $solution = $this->getRdfEntityByLabel($solution, 'solution');
     $owner_roles = [
       OgRoleInterface::ADMINISTRATOR,
       'facilitator',

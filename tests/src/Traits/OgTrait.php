@@ -73,10 +73,9 @@ trait OgTrait {
   }
 
   /**
-   * Asserts the ownership of a user to a given group.
+   * Asserts that a group is owned by a user.
    *
-   * An ownership is defined as having a specific collection of roles in that
-   * group.
+   * An ownership is defined as having a specific set of roles in that group.
    *
    * @param AccountInterface $user
    *    The user to be checked.
@@ -92,12 +91,12 @@ trait OgTrait {
   protected function assertOgGroupOwnership(AccountInterface $user, RdfInterface $group, $roles) {
     $membership = Og::getMembership($user, $group);
     if (empty($membership)) {
-      throw new \Exception("User {$user->name} is no member of the {$group->label()} group.");
+      throw new \Exception("User {$user->getAccountName()} is not a member of the {$group->label()} group.");
     }
 
     $roles = $this->convertOgRoleNamesToIds($roles, $group);
     if (array_intersect($roles, $membership->getRolesIds()) != $roles) {
-      throw new \Exception("User {$user->name} is not the owner of the {$group->label()} group.");
+      throw new \Exception("User {$user->getAccountName()} is not the owner of the {$group->label()} group.");
     }
   }
 
