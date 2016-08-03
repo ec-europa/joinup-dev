@@ -44,11 +44,11 @@ Feature: "Add solution" visibility options.
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing contact information.
-    And I press "Add existing"
+    And I press "Add existing" at the "Contact information" field
     And I fill in "Contact information" with "Contact information example"
     And I press "Add contact information"
     # Click the button to select an existing owner.
-    And I press "Add existing owner"
+    And I press "Add existing owner" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
     And I press "Save"
