@@ -67,7 +67,7 @@ class NewsController extends ControllerBase {
    * Access is granted to moderators and group members that have the permission
    * to create news articles inside of their group, which in practice means this
    * is granted to collection and solution facilitators.
-   * 
+   *
    * @todo Depending on the 'eLibrary creation' setting, members should be able
    *   to create news.
    * @todo If a collection is open non-members should be able to create news.
