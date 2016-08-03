@@ -35,4 +35,15 @@ class JoinupController extends ControllerBase {
     return $form;
   }
 
+  /**
+   * Provides empty homepage..
+   *
+   * @return array
+   *   A render array for the homepage.
+   */
+  public function homepageContent() {
+    $build = array();
+    return $build;
+  }
+
 }
