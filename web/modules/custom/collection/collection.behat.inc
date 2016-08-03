@@ -39,13 +39,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   protected $collections = [];
 
   /**
-   * Navigates to the add collection form.
+   * Navigates to the propose collection form.
    *
-   * @When (I )go to the add collection form
-   * @When (I )visit the add collection form
+   * @When (I )go to the propose collection form
+   * @When (I )visit the propose collection form
    */
-  public function visitAddCollectionForm() {
-    $this->visitPath('/rdf_entity/add/collection');
+  public function visitProposeCollectionForm() {
+    $this->visitPath('collection/propose');
   }
 
   /**

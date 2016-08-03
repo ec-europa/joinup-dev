@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.35",
+            "version": "3.18.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "8133c4ce336c8cac97218546f896f491bb6ffd7e"
+                "reference": "48362bce008fa9c20a71dfa6a68aebac65a8ab1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8133c4ce336c8cac97218546f896f491bb6ffd7e",
-                "reference": "8133c4ce336c8cac97218546f896f491bb6ffd7e",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/48362bce008fa9c20a71dfa6a68aebac65a8ab1b",
+                "reference": "48362bce008fa9c20a71dfa6a68aebac65a8ab1b",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-07-29 01:07:59"
+            "time": "2016-08-02 20:49:01"
         },
         {
             "name": "composer/ca-bundle",
@@ -1207,16 +1207,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.1.7",
+            "version": "8.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "3870ff6a47e723e3dce857473329d2f143e88d93"
+                "reference": "3f06f574ccc1e18b61ef150780fb1900c2f40abc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/3870ff6a47e723e3dce857473329d2f143e88d93",
-                "reference": "3870ff6a47e723e3dce857473329d2f143e88d93",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/3f06f574ccc1e18b61ef150780fb1900c2f40abc",
+                "reference": "3f06f574ccc1e18b61ef150780fb1900c2f40abc",
                 "shasum": ""
             },
             "require": {
@@ -1225,7 +1225,7 @@
                 "doctrine/common": "2.5.*",
                 "easyrdf/easyrdf": "0.9.*",
                 "egulias/email-validator": "1.2.*",
-                "guzzlehttp/guzzle": "~6.2",
+                "guzzlehttp/guzzle": "^6.2.1",
                 "masterminds/html5": "~2.1",
                 "paragonie/random_compat": "~1.0",
                 "php": ">=5.5.9",
@@ -1282,9 +1282,11 @@
                 "drupal/core-filesystem": "self.version",
                 "drupal/core-gettext": "self.version",
                 "drupal/core-graph": "self.version",
+                "drupal/core-http-foundation": "self.version",
                 "drupal/core-php-storage": "self.version",
                 "drupal/core-plugin": "self.version",
                 "drupal/core-proxy-builder": "self.version",
+                "drupal/core-render": "self.version",
                 "drupal/core-serialization": "self.version",
                 "drupal/core-transliteration": "self.version",
                 "drupal/core-utility": "self.version",
@@ -1378,7 +1380,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-07-18 15:01:43"
+            "time": "2016-08-03 14:09:08"
         },
         {
             "name": "drupal/ds",
@@ -1485,7 +1487,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/inline_entity_form",
-                "reference": "95b22227b926083e730870efc3e3b352b735be91"
+                "reference": "7b8d6107692d5b8379c53f84e278fecf40e8d3cb"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -1505,7 +1507,7 @@
             ],
             "description": "Provides a widget for inline management (creation, modification, removal) of referenced entities. ",
             "homepage": "https://www.drupal.org/project/inline_entity_form",
-            "time": "2016-05-31 12:49:34"
+            "time": "2016-08-02 20:14:40"
         },
         {
             "name": "drupal/layout_plugin",
@@ -1567,12 +1569,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "3394ad5f1ed3fa53b5a81d5adcb839c4ee852c55"
+                "reference": "7a301837d638c30cb419f49f55617ed0ee43aaee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/3394ad5f1ed3fa53b5a81d5adcb839c4ee852c55",
-                "reference": "3394ad5f1ed3fa53b5a81d5adcb839c4ee852c55",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/7a301837d638c30cb419f49f55617ed0ee43aaee",
+                "reference": "7a301837d638c30cb419f49f55617ed0ee43aaee",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1586,7 +1588,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-08-02 11:48:37"
+            "time": "2016-08-03 09:15:44"
         },
         {
             "name": "drupal/og_menu",

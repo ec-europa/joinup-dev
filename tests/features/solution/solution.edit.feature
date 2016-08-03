@@ -53,8 +53,9 @@ Feature: Solution editing.
       And I should see the link "Edit"
       When I go to the "Solution A" solution edit form
       Then I should see the heading "Edit Interoperability Solution Solution A"
-      And the following fields should be present "Title, Description, Documentation, Related Solutions, eLibrary creation, Moderated, Landing page, Metrics page, Issue tracker, Wiki"
-      And the following field widgets should be present "Contact information, Owner"
+      And the following fields should be present "Title, Description, Documentation, Related Solutions, Moderated, Landing page, Metrics page"
+      And the following fields should not be present "Issue tracker, Wiki"
+      And the following field widgets should be present "Contact information, Owner, eLibrary creation"
       # Logo and banner fields are required, so they are filled up during
       # the creation of the solution. Unfortunately, file fields with a file
       # already attached cannot be found by named xpath, so we look for the
@@ -87,8 +88,9 @@ Feature: Solution editing.
       Then I should see the link "Edit"
       When I go to the "Solution B" solution edit form
       Then I should see the heading "Edit Interoperability Solution Solution B"
-      And the following fields should be present "Title, Description, Documentation, Related Solutions, eLibrary creation, Moderated, Landing page, Metrics page, Issue tracker, Wiki"
-      And the following field widgets should be present "Contact information, Owner"
+      And the following fields should be present "Title, Description, Documentation, Related Solutions, Moderated, Landing page, Metrics page"
+      And the following fields should not be present "Issue tracker, Wiki"
+      And the following field widgets should be present "Contact information, Owner, eLibrary creation"
       And I should see the text "Logo"
       And I should see the text "Banner"
       When I fill in "Title" with "Solution B revised"

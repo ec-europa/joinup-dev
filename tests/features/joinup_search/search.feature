@@ -13,7 +13,6 @@ Feature: Global search
       | title      | Molecular cooking collection |
       | logo       | logo.png                     |
       | moderation | no                           |
-      | closed     | yes                          |
       | affiliates | Spherification, Foam         |
     And news content:
       | title                 | body             | collection                   |

@@ -95,8 +95,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $collection_contexts = $this->collectionContext->getRuntimeContexts(['og']);
     if ($collection_contexts && $collection_contexts['og']->hasContextValue()) {
       $page_url = Url::fromRoute('custom_page.collection_custom_page.add', [
-        'rdf_entity' => $collection_contexts['og']->getContextValue()
-          ->id(),
+        'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
       ]);
       if ($page_url->access()) {
         $links['custom_page'] = [
@@ -108,8 +107,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       }
 
       $solution_url = Url::fromRoute('solution.collection_solution.add', [
-        'rdf_entity' => $collection_contexts['og']->getContextValue()
-          ->id(),
+        'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
       ]);
       if ($solution_url->access()) {
         $links['solution'] = [

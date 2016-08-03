@@ -8,22 +8,23 @@ default:
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\DrupalExtension\Context\MinkContext
       filters:
-        tags: "~@wip"
+        tags: '~@wip'
   extensions:
     Behat\MinkExtension:
       base-url: '${behat.base_url}'
       files_path: '${behat.files.path}'
       goutte: ~
       javascript_session: 'selenium2'
-      selenium2: ~
+      selenium2:
+        wd_host: '${behat.webdriver_url}'
     Drupal\DrupalExtension:
       api_driver: 'drupal'
       blackbox: ~
       region_map:
-        Primary menu: ".region-primary-menu"
-        Header: ".section--featured"
-        Left sidebar: ".section--sidebar-left"
-        Entity actions: ".block-local-tasks-block"
+        Primary menu: '.region-primary-menu'
+        Header: '.section--featured'
+        Left sidebar: '.section--sidebar-left'
+        Entity actions: '.block-local-tasks-block'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:

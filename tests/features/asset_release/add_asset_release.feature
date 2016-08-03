@@ -12,6 +12,8 @@ Feature: "Add release" visibility options.
 
     When I am logged in as a "facilitator" of the "Release solution test" solution
     And I go to the homepage of the "Release solution test" solution
+    # The user has to press the '+' button for the option "Add release" to be
+    # visible.
     Then I should see the link "Add release"
 
     When I am logged in as an "authenticated user"
