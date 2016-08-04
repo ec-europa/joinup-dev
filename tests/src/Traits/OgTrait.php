@@ -3,9 +3,10 @@
 namespace Drupal\joinup\Traits;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
+use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
-use Drupal\og\OgMembershipInterface;
 
 /**
  * Contains helper methods regarding the organic groups.
@@ -17,30 +18,27 @@ trait OgTrait {
   /**
    * Creates an Og membership to a group optionally assigning roles as well.
    *
-   * @param int $user_id
-   *    The ID of the user to be assigned as an Og member.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *    The user to be assigned as a group member.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The organic group entity.
-   * @param array $roles
-   *    An array of roles to be passed to the membership. The full ID should be
-   *    passed.
+   * @param \Drupal\og\Entity\OgRole[] $roles
+   *    An array of OgRoles to be passed to the membership.
    *
    * @throws \Exception
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup($user_id, EntityInterface $entity, array $roles = []) {
+  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $entity, array $roles = []) {
     if (!Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
       throw new \Exception("The {$entity->label()} is not a group.");
     }
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
+    $membership = OgMembership::create();
     $membership
-      ->setUser($user_id)
-      ->setEntityId($entity->id())
-      ->setGroupEntityType($entity->getEntityTypeId())
-      ->setFieldName($membership->getFieldName());
+      ->setUser($user)
+      ->setGroup($entity);
     foreach ($roles as $role) {
       $membership->addRole($role);
     }
@@ -55,19 +53,35 @@ trait OgTrait {
    *
    * @param array $roles
    *    An array of roles to convert names.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $group
    *    The group entity.
    *
    * @return array
    *    An array with the converted names.
    */
-  protected function convertOgRoleNamesToIds(array $roles, EntityInterface $entity) {
-    $role_prefix = $entity->getEntityTypeId() . '-' . $entity->bundle() . '-';
+  protected function convertOgRoleNamesToIds(array $roles, EntityInterface $group) {
+    $role_prefix = $group->getEntityTypeId() . '-' . $group->bundle() . '-';
     foreach ($roles as $key => $role) {
       $roles[$key] = $role_prefix . $role;
     }
 
     return $roles;
+  }
+
+  /**
+   * Returns the OgRole objects identified by the given role names.
+   *
+   * @param array $roles
+   *    An array of role names for which to return the roles.
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *    The group entity to which the roles belong.
+   *
+   * @return \Drupal\og\Entity\OgRole[]
+   *    The OgRole objects.
+   */
+  protected function getOgRoles(array $roles, EntityInterface $group) {
+    $ids = $this->convertOgRoleNamesToIds($roles, $group);
+    return array_values(OgRole::loadMultiple($ids));
   }
 
 }

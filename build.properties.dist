@@ -88,6 +88,9 @@ behat.yml.path = ${behat.dir}/behat.yml
 # The base URL to use in Behat tests.
 behat.base_url = http://localhost
 
+# The URL of the webdriver host (PhantomJS or Selenium):
+behat.webdriver_url = http://localhost:4444/wd/hub
+
 # The location to search for Behat subcontexts.
 behat.subcontexts.path = ${website.modules.dir}
 

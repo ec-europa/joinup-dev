@@ -18,7 +18,6 @@ Feature: Asset distribution API
       | title             | Asset distribution collection API foo |
       | logo              | logo.png                              |
       | moderation        | yes                                   |
-      | closed            | yes                                   |
       | elibrary creation | facilitators                          |
       | affiliates        | Asset distribution solution           |
     And the following asset distribution:
@@ -46,7 +45,6 @@ Feature: Asset distribution API
       | title             | Asset distribution short API bar  |
       | logo              | logo.png                          |
       | moderation        | yes                               |
-      | closed            | yes                               |
       | elibrary creation | facilitators                      |
       | affiliates        | AD first solution mandatory short |
     And the following asset distribution:

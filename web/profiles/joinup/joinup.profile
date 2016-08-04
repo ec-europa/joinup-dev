@@ -71,8 +71,12 @@ function joinup_form_install_settings_form_save($form, FormStateInterface $form_
 function joinup_entity_type_alter(array &$entity_types) {
   // Add the "Propose" form operation to nodes and RDF entities so that we can
   // add propose form displays to them.
-  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
-  $entity_types['rdf_entity']->setFormclass('propose', 'Drupal\rdf_entity\Form\RdfForm');
+  // Skip this during installation, since the RDF entity will not yet be
+  // registered.
+  if (!drupal_installation_attempted()) {
+    /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+    $entity_types['rdf_entity']->setFormclass('propose', 'Drupal\rdf_entity\Form\RdfForm');
+  }
 }
 
 /**

@@ -19,10 +19,6 @@ function contact_information_entity_bundle_field_info_alter(&$fields, EntityType
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
- *
- * Concatenates the names into a single string. This entity has support for
- * multiple names and entity label does not support this. For this reason,
- * the label actually inherits all values from field_ci_name field.
  */
 function contact_information_rdf_entity_presave(EntityInterface $entity) {
   // Handle only contact information entities.
@@ -30,9 +26,7 @@ function contact_information_rdf_entity_presave(EntityInterface $entity) {
     return;
   }
 
-  // Generate the label using the values of the name field.
-  $names = array_column($entity->get('field_ci_name')->getValue(), 'value');
-  $entity->set('label', implode(', ', $names));
+  contact_information_entity_auto_label($entity);
 }
 
 /**
@@ -50,4 +44,52 @@ function contact_information_inline_entity_form_table_fields_alter(&$fields, $co
   ) {
     $fields['label']['label'] = t('Name');
   }
+}
+
+/**
+ * Implements hook_inline_entity_form_entity_form_alter().
+ *
+ * Adds an entity builder callback to fill the label field with the values of
+ * the name field. This is needed because inline entity form doesn't save
+ * the entity until the parent entity is saved. Due to this, the label column
+ * in the widget table would be empty.
+ */
+function contact_information_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
+  // Add an entity builder callback to fill the label field with the values of
+  // the name field. This is needed because inline entity form doesn't save
+  // the entity until the parent entity is saved. Due to this, the label column
+  // in the widget table would be empty.
+  $entity_form['#entity_builders'][] = 'contact_information_inline_entity_form_entity_builder';
+}
+
+/**
+ * Entity builder callback for the inline entity creation form.
+ *
+ * @param string $entity_type
+ *   The type of the entity being created.
+ * @param EntityInterface $entity
+ *   The entity being built.
+ */
+function contact_information_inline_entity_form_entity_builder($entity_type, EntityInterface $entity) {
+  // Handle only contact information entities.
+  if ($entity->bundle() != 'contact_information') {
+    return;
+  }
+  contact_information_entity_auto_label($entity);
+}
+
+/**
+ * Generates the entity label from the name field for contact entities.
+ *
+ * This entity has support for multiple names according to ADMS scheme
+ * and entity label does not support this. For this reason,
+ * the label actually concatenates all values from field_ci_name field.
+ *
+ * @param EntityInterface $entity
+ *   The entity to process.
+ */
+function contact_information_entity_auto_label(EntityInterface $entity) {
+  // Generate the label using the values of the name field.
+  $names = array_column($entity->get('field_ci_name')->getValue(), 'value');
+  $entity->set('label', implode(', ', $names));
 }

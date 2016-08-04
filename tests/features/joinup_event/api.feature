@@ -12,7 +12,6 @@ Feature: Event API
       | owner             | Event Owner      |
       | logo              | logo.png         |
       | moderation        | yes              |
-      | closed            | yes              |
       | elibrary creation | facilitators     |
     And event content:
       | title       | short title | body                                     | collection       | start date          |

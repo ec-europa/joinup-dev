@@ -1,27 +1,19 @@
 @api
 Feature: Collection edited by owner
   In order to manage my collections
-  As the collection owner
+  As the collection facilitator
   I need to be able to edit my collection but not other collections.
 
-  # A collection owner does not actually have permission to edit a collection.
-  # The permission derive from the facilitator role. A user that creates a
-  # a collection is automatically an owner and a facilitator.
-  Scenario: Owner of a collection should be able to edit only his collection.
-    Given users:
-      | name            | pass          | mail                        |
-      | Bob the builder | bobthebuilder | bob.the.builder@example.com |
-    And the following person:
+  # A collection owner also has permission to edit a collection because he is also a facilitator.
+  # A user that creates a collection is automatically an owner.
+  Scenario: A collection facilitator should be able to edit only his collection.
+    Given the following person:
       | name | Foo |
     And collections:
       | title         | description                           | logo     | banner     | owner | moderation |
       | Wendy's house | Let's build a house for Wendy.        | logo.png | banner.jpg | Foo   | yes        |
       | Mayor's house | We cannot build a house for Mr. Mayor | logo.png | banner.jpg | Foo   | yes        |
-    And user memberships:
-      | collection    | user            | roles                      |
-      # Assigning the default roles as when we create a collection through UI.
-      | Wendy's house | Bob the builder | owner, facilitator, member |
-    When I am logged in as "Bob the builder"
+    When I am logged in as a "facilitator" of the "Wendy's house" collection
     And I go to the homepage of the "Wendy's house" collection
     Then I should see the link "Edit"
     When I click "Edit"
