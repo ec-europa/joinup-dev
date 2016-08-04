@@ -11,7 +11,7 @@ dependencies:
     - field.field.node.event.field_event_short_title
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
-    - field.field.node.event.og_group_ref
+    - field.field.node.event.og_audience
     - image.style.thumbnail
     - node.type.event
   module:
@@ -99,7 +99,7 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  og_group_ref: true
+  og_audience: true
   path: true
   promote: true
   sticky: true

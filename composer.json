@@ -13,7 +13,7 @@
         "drupal/ds": "^8.2",
         "drupal/facets" : "dev-8.x-1.x#70f2b89823e2499ad8b097190145943a0e412e85",
         "drupal/inline_entity_form": "8.1.x-dev",
-        "drupal/og": "dev-check-group-content-crud-access#7a21262cab7c667c61afe3da2bfa974b2d2c9078",
+        "drupal/og": "dev-check-group-content-crud-access",
         "drupal/og_menu": "dev-8.x-1.x#8b3cdc10cfa72767a08789828d5583604e68bc53",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
@@ -72,9 +72,6 @@
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
         "patches": {
-            "drupal/og": {
-                "Support for special permission on Og.": "https://patch-diff.githubusercontent.com/raw/amitaibu/og/pull/250.patch"
-            },
             "drupal/core": {
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
             },

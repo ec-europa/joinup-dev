@@ -52,7 +52,7 @@ class SolutionController extends ControllerBase {
     if (empty($rdf_entity) && !$user->isAnonymous()) {
       return AccessResult::neutral();
     }
-    $membership = Og::getMembership($user, $rdf_entity);
+    $membership = Og::getMembership($rdf_entity, $user);
     return (!empty($membership) && $membership->hasPermission('create solution rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
   }
 

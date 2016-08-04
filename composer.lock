@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "504115dc93bfc7162b184b7c7f04a042",
-    "content-hash": "b1d3d4ee065f24d23893366c36af01a4",
+    "hash": "18e010361e880c8bffe2063b15b6b92c",
+    "content-hash": "bfbbe143f4cb9d8e070bc0ee95fd9ab3",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1207,16 +1207,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.1.7",
+            "version": "8.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "3870ff6a47e723e3dce857473329d2f143e88d93"
+                "reference": "3f06f574ccc1e18b61ef150780fb1900c2f40abc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/3870ff6a47e723e3dce857473329d2f143e88d93",
-                "reference": "3870ff6a47e723e3dce857473329d2f143e88d93",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/3f06f574ccc1e18b61ef150780fb1900c2f40abc",
+                "reference": "3f06f574ccc1e18b61ef150780fb1900c2f40abc",
                 "shasum": ""
             },
             "require": {
@@ -1225,7 +1225,7 @@
                 "doctrine/common": "2.5.*",
                 "easyrdf/easyrdf": "0.9.*",
                 "egulias/email-validator": "1.2.*",
-                "guzzlehttp/guzzle": "~6.2",
+                "guzzlehttp/guzzle": "^6.2.1",
                 "masterminds/html5": "~2.1",
                 "paragonie/random_compat": "~1.0",
                 "php": ">=5.5.9",
@@ -1282,9 +1282,11 @@
                 "drupal/core-filesystem": "self.version",
                 "drupal/core-gettext": "self.version",
                 "drupal/core-graph": "self.version",
+                "drupal/core-http-foundation": "self.version",
                 "drupal/core-php-storage": "self.version",
                 "drupal/core-plugin": "self.version",
                 "drupal/core-proxy-builder": "self.version",
+                "drupal/core-render": "self.version",
                 "drupal/core-serialization": "self.version",
                 "drupal/core-transliteration": "self.version",
                 "drupal/core-utility": "self.version",
@@ -1378,7 +1380,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-07-18 15:01:43"
+            "time": "2016-08-03 14:09:08"
         },
         {
             "name": "drupal/ds",
@@ -1567,18 +1569,15 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "7a21262cab7c667c61afe3da2bfa974b2d2c9078"
+                "reference": "7a301837d638c30cb419f49f55617ed0ee43aaee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/7a21262cab7c667c61afe3da2bfa974b2d2c9078",
-                "reference": "7a21262cab7c667c61afe3da2bfa974b2d2c9078",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/7a301837d638c30cb419f49f55617ed0ee43aaee",
+                "reference": "7a301837d638c30cb419f49f55617ed0ee43aaee",
                 "shasum": ""
             },
             "type": "drupal-module",
-            "extra": {
-                "patches_applied": []
-            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -1589,7 +1588,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-07-14 11:00:00"
+            "time": "2016-08-03 09:15:44"
         },
         {
             "name": "drupal/og_menu",
