@@ -134,8 +134,8 @@ field_settings:
     configuration:
       type: union
       fields:
-        - 'entity:node/og_group_ref'
-        - 'entity:rdf_entity/og_group_ref'
+        - 'entity:node/og_audience'
+        - 'entity:rdf_entity/og_audience'
 processor_settings:
   rendered_item:
     plugin_id: rendered_item

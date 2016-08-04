@@ -2,18 +2,17 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.og_group_ref
-    - node.type.news
+    - field.storage.node.og_audience
+    - node.type.event
     - rdf_entity.rdfentity.collection
-    - rdf_entity.rdfentity.solution
   module:
     - og
-id: node.news.og_group_ref
-field_name: og_group_ref
+id: node.event.og_audience
+field_name: og_audience
 entity_type: node
-bundle: news
-label: Collection
-description: 'The collection this entity belongs to.'
+bundle: event
+label: 'Groups audience'
+description: 'OG group audience reference field.'
 required: false
 translatable: true
 default_value: {  }
@@ -21,11 +20,8 @@ default_value_callback: ''
 settings:
   handler: 'default:rdf_entity'
   handler_settings:
+    target_type: rdf_entity
     target_bundles:
       collection: collection
-      solution: solution
-    sort:
-      field: _none
-    target_type: rdf_entity
   access_override: false
 field_type: og_standard_reference

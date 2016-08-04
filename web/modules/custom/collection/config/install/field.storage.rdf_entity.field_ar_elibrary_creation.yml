@@ -15,13 +15,13 @@ settings:
   allowed_values:
     -
       value: 0
-      label: 'Only collection facilitator can create new content'
+      label: 'Only collection facilitators can create new content.'
     -
       value: 1
-      label: 'Only members can publish new content'
+      label: 'Only members can create new content.'
     -
       value: 2
-      label: 'Any registered user can publish new content'
+      label: 'Any registered user can create new content.'
   allowed_values_function: ''
 module: options
 locked: false

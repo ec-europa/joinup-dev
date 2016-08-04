@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_op_name
+    - rdf_entity.rdfentity.person
+id: rdf_entity.person.field_op_name
+field_name: field_op_name
+entity_type: rdf_entity
+bundle: person
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

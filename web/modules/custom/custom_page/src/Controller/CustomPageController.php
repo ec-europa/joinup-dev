@@ -5,6 +5,7 @@ namespace Drupal\custom_page\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\OgAccessInterface;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -100,7 +101,7 @@ class CustomPageController extends ControllerBase {
   protected function createNewCustomPage(RdfInterface $rdf_entity) {
     return $this->entityTypeManager()->getStorage('node')->create([
       'type' => 'custom_page',
-      'og_group_ref' => $rdf_entity->id(),
+      OgGroupAudienceHelper::DEFAULT_FIELD => $rdf_entity->id(),
     ]);
   }
 

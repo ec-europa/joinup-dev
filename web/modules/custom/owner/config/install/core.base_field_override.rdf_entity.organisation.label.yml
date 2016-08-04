@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.rdfentity.organization
-id: rdf_entity.organization.label
+    - rdf_entity.rdfentity.organisation
+id: rdf_entity.organisation.label
 field_name: label
 entity_type: rdf_entity
-bundle: organization
+bundle: organisation
 label: 'Name'
 description: ''
 required: true
