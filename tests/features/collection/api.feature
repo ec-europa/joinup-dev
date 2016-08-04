@@ -38,7 +38,6 @@ Feature: Collection API
     And I fill in "Owner" with "Prayfish"
     And I press "Add owner"
     And I check "Closed collection"
-    And I select "Only members can publish new content" from "eLibrary creation"
     And I check "Moderated"
     And I press "Save"
     Then I should see the heading "Collection API example"
