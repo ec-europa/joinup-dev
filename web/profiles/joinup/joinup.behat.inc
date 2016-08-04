@@ -387,9 +387,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Replaces human readable labels and values with their real counterparts.
    *
    * This allows us to:
-   * - use human readable labels like 'short title' and 'collection' in test
-   *   scenarios, and map them to the actual field names like
-   *   'field_document_short_title' and 'OgGroupAudienceHelper::DEFAULT_FIELD'.
+   * - use human readable labels like 'short title' in test scenarios, and map
+   *   them to the actual field names like 'field_document_short_title'.
    * - use human readable values such as a collection name instead of the URL
    *   that is actually used in the OG reference field.
    *
