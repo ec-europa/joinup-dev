@@ -103,10 +103,6 @@ Feature: News moderation.
     When I am logged in as "Cheetah"
     And I go to the homepage of the "Justice League" collection
     Then I should not see the link "Add news"
-    # Site moderators should not be able to add news.
-    When I am logged in as "Batman"
-    And I go to the homepage of the "Justice League" collection
-    Then I should not see the link "Add news"
     # Administrators cannot create content. Facilitators are the moderators of
     # the collection.
     When I am logged in as "Superman"
@@ -122,6 +118,10 @@ Feature: News moderation.
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Justice League" collection
     Then I should not see the link "Add news"
+    # Site moderators should be able to add news.
+    When I am logged in as "Batman"
+    And I go to the homepage of the "Justice League" collection
+    Then I should see the link "Add news"
     # User from another collection should not be able to see the 'Add news'.
     When I am logged in as "Cheetah"
     And I go to the homepage of the "Justice League" collection
