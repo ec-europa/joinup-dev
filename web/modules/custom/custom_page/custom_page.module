@@ -67,7 +67,7 @@ function custom_page_entity_insert(EntityInterface $entity) {
     return;
   }
   /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-  $group = $node->get('og_group_ref')->first();
+  $group = $node->get(OgGroupAudienceHelper::DEFAULT_FIELD)->first();
   if (!$group) {
     return;
   }

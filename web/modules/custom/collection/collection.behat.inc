@@ -15,6 +15,7 @@ use Drupal\joinup\Traits\OgMenuTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -394,12 +395,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
 
       // Convert role names to role IDs.
-      $roles = array();
+      $roles = [];
       if (!empty($values['roles'])) {
-        $roles = $this->convertOgRoleNamesToIds(explode(', ', $values['roles']), $group);
+        $roles = $this->getOgRoles(explode(', ', $values['roles']), $group);
       }
 
-      $this->subscribeUserToGroup($member->id(), $group, $roles);
+      $this->subscribeUserToGroup($member, $group, $roles);
     }
   }
 
@@ -424,7 +425,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
       /** @var \Drupal\node\NodeInterface $content */
       $content = $this->getNodeByTitle($values['content'], $bundle);
-      $content->get('og_group_ref')->set(0, $group->id());
+      $content->get(OgGroupAudienceHelper::DEFAULT_FIELD)->set(0, $group->id());
       $content->save();
     }
   }

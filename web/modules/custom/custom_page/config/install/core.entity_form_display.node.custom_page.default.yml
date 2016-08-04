@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.custom_page.body
-    - field.field.node.custom_page.og_group_ref
+    - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
     - text
@@ -29,7 +29,7 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  og_group_ref: true
+  og_audience: true
   path: true
   promote: true
   sticky: true

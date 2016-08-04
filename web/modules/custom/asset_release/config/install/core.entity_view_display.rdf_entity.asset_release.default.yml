@@ -330,4 +330,4 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
-  og_group_ref: true
+  og_audience: true

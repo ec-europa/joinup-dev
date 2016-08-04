@@ -7,11 +7,11 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\og\Og;
 use Drupal\og\Entity\OgMembership;
-use Drupal\og\OgMembershipInterface;
+use Drupal\og\Entity\OgRole;
+use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -56,13 +56,11 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
     ];
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
+    $membership = OgMembership::create();
     $membership
-      ->setUser(\Drupal::currentUser()->id())
-      ->setEntityId($entity->id())
-      ->setGroupEntityType($entity->getEntityTypeId())
-      ->setFieldName($membership->getFieldName())
-      ->setRoles($roles)
+      ->setUser(\Drupal::currentUser())
+      ->setGroup($entity)
+      ->setRoles(array_values(OgRole::loadMultiple($roles)))
       ->save();
   }
 
@@ -83,25 +81,4 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
   $collection->save();
 
   $entity->set('field_is_affiliations_requests', NULL);
-
-  // When a new solution is created, give the current user the 'group owner'
-  // role, if it is not the anonymous user.
-  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && !\Drupal::currentUser()->isAnonymous()) {
-    // The group owner inherits all roles of a solution facilitator and
-    // administrator.
-    $roles = [
-      'rdf_entity-solution-' . OgRoleInterface::ADMINISTRATOR,
-      'rdf_entity-solution-facilitator',
-    ];
-
-    /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
-    $membership
-      ->setUser(\Drupal::currentUser()->id())
-      ->setEntityId($entity->id())
-      ->setGroupEntityType($entity->getEntityTypeId())
-      ->setFieldName($membership->getFieldName())
-      ->setRoles($roles)
-      ->save();
-  }
 }
