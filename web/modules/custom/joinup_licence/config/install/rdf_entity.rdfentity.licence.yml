@@ -8,8 +8,7 @@ third_party_settings:
     mapping_label:
       value: 'http://purl.org/dc/terms/title'
     graph_default: 'http://joinup.eu/licence/published'
+    graph_draft: 'http://joinup.eu/licence/draft'
 name: Licence
 rid: licence
 description: ''
-rdftype: 'http://purl.org/dc/terms/LicenseDocument'
-rdf_label: 'http://purl.org/dc/terms/title'

@@ -8,6 +8,7 @@ third_party_settings:
     mapping_label:
       value: 'http://purl.org/dc/terms/title'
     graph_default: 'http://joinup.eu/collection/published'
+    graph_draft: 'http://joinup.eu/collection/draft'
 name: Collection
 rid: collection
 description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
