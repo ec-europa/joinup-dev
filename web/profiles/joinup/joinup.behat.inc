@@ -16,6 +16,7 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\Og;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\search_api\Entity\Server;
 
 /**
@@ -388,7 +389,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * This allows us to:
    * - use human readable labels like 'short title' and 'collection' in test
    *   scenarios, and map them to the actual field names like
-   *   'field_document_short_title' and 'og_audience'.
+   *   'field_document_short_title' and 'OgGroupAudienceHelper::DEFAULT_FIELD'.
    * - use human readable values such as a collection name instead of the URL
    *   that is actually used in the OG reference field.
    *
@@ -414,9 +415,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // actual URI. Note that this fails if a URI is supplied for a collection or
     // solution in a Behat test. This is by design, the URIs are not exposed to
     // end users of the site so they should not be used in BDD scenarios.
-    if (!empty($node->og_audience)) {
-      $entity = $this->getRdfEntityByLabel($node->og_audience);
-      $node->og_audience = $entity->id();
+    if (!empty($node->{OgGroupAudienceHelper::DEFAULT_FIELD})) {
+      $entity = $this->getRdfEntityByLabel($node->{OgGroupAudienceHelper::DEFAULT_FIELD});
+      $node->{OgGroupAudienceHelper::DEFAULT_FIELD} = $entity->id();
     }
   }
 
@@ -445,8 +446,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'state' => 'field_news_state',
       ],
       'shared' => [
-        'collection' => 'og_audience',
-        'solution' => 'og_audience',
+        'collection' => OgGroupAudienceHelper::DEFAULT_FIELD,
+        'solution' => OgGroupAudienceHelper::DEFAULT_FIELD,
       ],
     ];
 
