@@ -14,6 +14,7 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -183,7 +184,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
       $content = $this->getNodeByTitle($values['content'], $bundle);
-      $content->get('og_group_ref')->set(0, $group->id());
+      $content->get(OgGroupAudienceHelper::DEFAULT_FIELD)->set(0, $group->id());
       $content->save();
     }
   }
@@ -399,12 +400,12 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
 
       // Convert role names to role IDs.
-      $roles = array();
+      $roles = [];
       if (!empty($values['roles'])) {
-        $roles = $this->convertOgRoleNamesToIds(explode(', ', $values['roles']), $group);
+        $roles = $this->getOgRoles(explode(', ', $values['roles']), $group);
       }
 
-      $this->subscribeUserToGroup($member->id(), $group, $roles);
+      $this->subscribeUserToGroup($member, $group, $roles);
     }
   }
 
@@ -439,7 +440,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'distribution' => 'field_is_distribution',
       'documentation' => 'field_is_documentation',
       'elibrary creation' => 'field_is_elibrary_creation',
-      'issue tracker' => 'field_is_issue_tracker',
       'keywords' => 'field_keywords',
       'landing page' => 'field_is_landing_page',
       'language' => 'field_is_language',
@@ -459,7 +459,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
-      'collection' => 'og_group_ref',
+      'collection' => OgGroupAudienceHelper::DEFAULT_FIELD,
     ];
   }
 

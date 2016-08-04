@@ -7,7 +7,6 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\og\Entity\OgMembership;
-use Drupal\og\OgMembershipInterface;
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
@@ -31,12 +30,10 @@ function demo_content_rdf_entity_insert(EntityInterface $entity) {
   $role_id = $entity->getEntityTypeId() . '-' . $entity->bundle() . '-facilitator';
 
   /** @var \Drupal\og\OgMembershipInterface $membership */
-  $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
+  $membership = OgMembership::create();
   $membership
-    ->setUser($facilitator->id())
-    ->setEntityId($entity->id())
-    ->setGroupEntityType($entity->getEntityTypeId())
-    ->setFieldName($membership->getFieldName())
+    ->setUser($facilitator)
+    ->setGroup($entity)
     ->addRole($role_id)
     ->save();
 }

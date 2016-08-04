@@ -20,7 +20,6 @@ Feature: Solution API
       | title             | Solution API foo  |
       | logo              | logo.png          |
       | moderation        | yes               |
-      | closed            | yes               |
       | elibrary creation | facilitators      |
       | affiliates        | My first solution |
     Then I should have 1 solution
@@ -34,7 +33,6 @@ Feature: Solution API
       | title             | Solution API bar            |
       | logo              | logo.png                    |
       | moderation        | yes                         |
-      | closed            | yes                         |
       | elibrary creation | facilitators                |
       | affiliates        | My first solution mandatory |
     Then I should have 1 solution

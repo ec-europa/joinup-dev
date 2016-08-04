@@ -5,8 +5,8 @@ dependencies:
     - node
     - og
     - rdf_entity
-id: node.og_group_ref
-field_name: og_group_ref
+id: node.og_audience
+field_name: og_audience
 entity_type: node
 type: og_standard_reference
 settings:

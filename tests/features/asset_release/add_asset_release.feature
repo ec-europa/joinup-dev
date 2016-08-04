@@ -12,6 +12,8 @@ Feature: "Add release" visibility options.
 
     When I am logged in as a "facilitator" of the "Release solution test" solution
     And I go to the homepage of the "Release solution test" solution
+    # The user has to press the '+' button for the option "Add release" to be
+    # visible.
     Then I should see the link "Add release"
 
     When I am logged in as an "authenticated user"
@@ -34,7 +36,7 @@ Feature: "Add release" visibility options.
     When I go to the homepage of the "Release Test 1" solution
     And I click "Add release"
     Then I should see the heading "Add Asset release"
-    And the following fields should be present "Name, Release number, Release notes"
+    And the following fields should be present "Name, Release number, Release notes, Documentation, Spatial coverage, Keyword, Status, Language"
     And the following field widgets should be present "Contact information, Owner"
     When I fill in "Name" with "Release Test 2"
     And I fill in "Release number" with "1.1"

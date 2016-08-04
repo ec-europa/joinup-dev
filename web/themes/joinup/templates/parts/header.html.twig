@@ -1,10 +1,12 @@
 <div class="container-fluid">
   <div class="region region--header mdl-layout__header-row">
-    <a href="/" class="header-logo mdl-layout-title" title="Home"></a>
+    <a href="/" class="header-logo mdl-layout-title" title="Home">
+      <img src="{{ base_path ~ directory }}/images/logo.png">
+    </a>
     <div class="mdl-layout-spacer"></div>
 
     {{ page.header_central_menu }}
-    
+
     <div class="mdl-layout-spacer"></div>
     <div class="search-bar search-bar--header mdl-textfield mdl-js-textfield mdl-textfield--expandable
     mdl-textfield--floating-label mdl-textfield--align-right">
@@ -12,10 +14,11 @@
       for="search-bar__input">
       <i class="search-bar__icon material-icons"></i>
       </label>
-      <div class="search-bar__input-container mdl-textfield__expandable-holder">
-        <input class="search-bar__input mdl-textfield__input" type="text" name="search"
+      {# @todo Create search form - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2637 #}
+      <form action="{{ path("view.search.page_1") }}" class="search-bar__input-container mdl-textfield__expandable-holder">
+        <input class="search-bar__input mdl-textfield__input" type="text" name="q"
         id="search-bar__input">
-      </div>
+      </form>
     </div>
 
       {{ page.header_profile_menu }}

@@ -1,0 +1,24 @@
+joinup_theme.mobile:
+  label: mobile
+  mediaQuery: ''
+  weight: 0
+  multipliers:
+    - 1x
+joinup_theme.tablet:
+  label: tablet
+  mediaQuery: 'all and (min-width: 768px) and (max-width: 991px)'
+  weight: 1
+  multipliers:
+    - 1x
+joinup_theme.desktop:
+  label: desktop
+  mediaQuery: 'all and (min-width: 992px) and (max-width: 1199px)'
+  weight: 2
+  multipliers:
+    - 1x
+joinup_theme.lg-desktop:
+  label: lg-desktop
+  mediaQuery: 'all and (min-width: 1200px)'
+  weight: 3
+  multipliers:
+    - 1x

@@ -12,7 +12,6 @@ Feature: Custom page API
       | owner             | Rufus Drumknott |
       | logo              | logo.png        |
       | moderation        | yes             |
-      | closed            | yes             |
       | elibrary creation | facilitators    |
     And custom_page content:
       | title      | body                                     | collection      |

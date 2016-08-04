@@ -6,7 +6,7 @@ dependencies:
     - field.field.node.news.field_news_kicker
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_state
-    - field.field.node.news.og_group_ref
+    - field.field.node.news.og_audience
     - node.type.news
   module:
     - link
@@ -52,7 +52,7 @@ content:
     weight: 0
     settings: {  }
     third_party_settings: {  }
-  og_group_ref:
+  og_audience:
     type: entity_reference_label
     weight: 4
     label: above
