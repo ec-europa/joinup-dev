@@ -59,7 +59,7 @@ Feature: "Add custom page" visibility options.
       | title           | logo     |
       | Open Collective | logo.png |
       | Code Camp       | logo.png |
-    And user memberships:
+    And collection user memberships:
       | collection      | user    | roles  |
       | Open Collective | Falstad | member |
 
