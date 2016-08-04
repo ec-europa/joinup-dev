@@ -14,3 +14,9 @@ collection.propose_form:
     parameters:
       rdf_type:
         type: entity:rdf_type
+homepage.content:
+  path: '/homepage'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\JoinupController::homepageContent'
+  requirements:
+    _permission: 'access content'
