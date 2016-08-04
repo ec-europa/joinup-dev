@@ -16,6 +16,7 @@ config_devel:
   - field.storage.rdf_entity.field_topic
   - taxonomy.vocabulary.eira
   - taxonomy.vocabulary.eurovoc
+  - taxonomy.vocabulary.licence_type
   - taxonomy.vocabulary.policy_domain
   - taxonomy.vocabulary.spatial
   - taxonomy.vocabulary.status
