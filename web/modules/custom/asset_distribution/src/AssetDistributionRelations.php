@@ -43,34 +43,4 @@ class AssetDistributionRelations {
     return $this->entityTypeManager->getStorage('rdf_entity')->load($target_id);
   }
 
-  /**
-   * Returns the release related to a distribution.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $asset_distribution
-   *   The asset distribution rdf entity.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface|null
-   *   The release rdf entity if found, null otherwise.
-   */
-  public function getDistributionRelease(RdfInterface $asset_distribution) {
-    if ($asset_distribution->bundle() != 'asset_distribution') {
-      return NULL;
-    }
-
-    /** @var \Drupal\Core\Entity\Query\QueryInterface $query */
-    $query = $this->entityTypeManager->getStorage('rdf_entity')->getQuery();
-    $result = $query
-      ->condition('field_isr_distribution', $asset_distribution->id())
-      ->range(0, 1)
-      ->execute();
-
-    if (empty($result)) {
-      return NULL;
-    }
-
-    $target_id = reset($result);
-
-    return $this->entityTypeManager->getStorage('rdf_entity')->load($target_id);
-  }
-
 }
