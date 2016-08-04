@@ -109,7 +109,7 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
     $entities = $this->entityManager->getStorage('node')->loadByProperties([OgGroupAudienceHelper::DEFAULT_FIELD => $this->solution->id()]);
     $items = [];
     foreach ($entities as $entity) {
-      $items[] = array('#markup' => $entity->link());
+      $items[] = ['#markup' => $entity->link()];
     }
     if ($items) {
       return [

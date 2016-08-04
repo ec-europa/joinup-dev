@@ -473,7 +473,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // Fixes a step argument (with \\" replaced back to ")
     // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
     $button = str_replace('\\"', '"', $button);
-    $this->getSession()->getPage()->find('named', array('fieldset', $fieldset))->pressButton($button);
+    $this->getSession()->getPage()->find('named', ['fieldset', $fieldset])->pressButton($button);
   }
 
 }
