@@ -19,7 +19,7 @@ config_devel:
   - field.field.node.news.field_news_kicker
   - field.field.node.news.field_news_source_url
   - field.field.node.news.field_news_state
-  - field.field.node.news.og_group_ref
+  - field.field.node.news.og_audience
   - field.storage.node.field_news_kicker
   - field.storage.node.field_news_source_url
   - field.storage.node.field_news_state
