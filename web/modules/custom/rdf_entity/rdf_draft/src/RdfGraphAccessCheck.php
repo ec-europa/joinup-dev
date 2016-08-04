@@ -9,20 +9,20 @@ use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 use Symfony\Component\Routing\Route;
 
 /**
-* Checks access for displaying configuration translation page.
-*/
+ * Checks access for displaying configuration translation page.
+ */
 class RdfGraphAccessCheck implements AccessInterface {
 
   /**
-  * A custom access check.
-  *
-  * @param \Drupal\Core\Session\AccountInterface $account
-  *   Run access checks for this account.
-  */
+   * A custom access check.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   Run access checks for this account.
+   */
   public function access(AccountInterface $account, Route $route, Rdf $rdf_entity) {
     $graph = $route->getOption('graph_name');
     $entity_type_id = $route->getOption('entity_type_id');
-    //@todo inject...
+    // @todo inject...
     $storage = \Drupal::entityManager()->getStorage($entity_type_id);
     if (!$storage instanceof RdfEntitySparqlStorage) {
       throw new \Exception('Storage not supported.');
@@ -44,4 +44,5 @@ class RdfGraphAccessCheck implements AccessInterface {
     }
     return AccessResult::neutral();
   }
+
 }

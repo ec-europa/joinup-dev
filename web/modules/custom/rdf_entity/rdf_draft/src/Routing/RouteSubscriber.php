@@ -71,7 +71,7 @@ class RouteSubscriber extends RouteSubscriberBase {
           '_title' => (string) t('View @title', ['@title' => (string) $graph_definition['title']]),
         ])
         ->addRequirements([
-          '_access_rdf_graph' =>  'TRUE',
+          '_access_rdf_graph' => 'TRUE',
         ])
         ->setOption('entity_type_id', $entity_type_id)
         ->setOption('graph_name', $graph_definition['name'])

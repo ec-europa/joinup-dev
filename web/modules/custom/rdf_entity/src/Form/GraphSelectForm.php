@@ -4,7 +4,11 @@ namespace Drupal\rdf_entity\Form;
 use \Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
+/**
+ * Form to select which graph to load from in the entity listing page.
+ */
 class GraphSelectForm extends FormBase {
+
   /**
    * {@inheritdoc}
    */
@@ -48,6 +52,5 @@ class GraphSelectForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Required by interface, but never called due to GET method.
   }
-
 
 }
