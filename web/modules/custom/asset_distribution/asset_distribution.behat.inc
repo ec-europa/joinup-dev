@@ -11,6 +11,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -275,7 +276,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       'licence' => 'field_ad_licence',
       'modification date' => 'field_ad_modification_date',
       'representation technique' => 'field_ad_repr_technique',
-      'solution' => 'og_group_ref',
+      'solution' => OgGroupAudienceHelper::DEFAULT_FIELD,
       'status' => 'field_status',
     ];
   }
@@ -290,9 +291,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *    The array with the values converted.
    */
   protected function convertValueAliases($fields) {
-    if (isset($fields['og_group_ref'])) {
-      $solution = $this->getRdfEntityByLabel($fields['og_group_ref'], 'solution');
-      $fields['og_group_ref'] = $solution->id();
+    if (isset($fields[OgGroupAudienceHelper::DEFAULT_FIELD])) {
+      $solution = $this->getRdfEntityByLabel($fields[OgGroupAudienceHelper::DEFAULT_FIELD], 'solution');
+      $fields[OgGroupAudienceHelper::DEFAULT_FIELD] = $solution->id();
     }
 
     return $fields;

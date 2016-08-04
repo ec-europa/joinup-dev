@@ -13,7 +13,7 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.field_ad_modification_date
     - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
     - field.field.rdf_entity.asset_distribution.field_status
-    - field.field.rdf_entity.asset_distribution.og_group_ref
+    - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
     - asset_distribution
@@ -107,4 +107,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_status: true
-  og_group_ref: true
+  og_audience: true
