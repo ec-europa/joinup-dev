@@ -26,11 +26,16 @@ class RdfListBuilder extends EntityListBuilder {
     }
     $query = $rdf_storage->getQuery()
       ->condition('rid', NULL, 'IN');
-    // @todo Use the right graph here :)
-    // @todo Find a nice way of doing this...
-    //if (!empty($_GET['graph'])) {
-    //  $query->setGraphType($_GET['graph']);
-    //}
+    // If a graph type is set in the url, validate it, and use it in the query.
+    if (!empty($_GET['graph'])) {
+      $def = $rdf_storage->getGraphsDefinition();
+      if (is_string($_GET['graph']) && isset($def[$_GET['graph']])) {
+        // Use the graph to build the list.
+        $query->setGraphType($_GET['graph']);
+        // Use the graph to do the 'load multiple'.
+        $this->storage->setActiveGraphType($_GET['graph']);
+      }
+    }
 
     // Only add the pager if a limit is specified.
     if ($this->limit) {
@@ -58,19 +63,12 @@ class RdfListBuilder extends EntityListBuilder {
       foreach ($definitions as $name => $definition) {
         $options[$name] = $definition['title'];
       }
-      $build['graph_select'] = [
-        '#type' => 'select',
-        '#title' => $this->t('Graph'),
-        '#options' => $options,
-      ];
-      $build['submit'] = [
-        '#type' => 'submit',
-      ];
+      // Embed the graph selection form.
+      $form = \Drupal::formBuilder()->getForm('Drupal\rdf_entity\Form\GraphSelectForm', $options);
+      if ($form) {
+        $build['graph_form'] = $form;
+      }
     }
-    // <<< Get through form here >>>
-    $build['description'] = array(
-      '#markup' => $this->t('The Rdf entities are stored in a triple store.'),
-    );
     $build['table'] = parent::render();
     return $build;
   }

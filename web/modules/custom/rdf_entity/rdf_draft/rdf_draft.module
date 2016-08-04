@@ -33,7 +33,12 @@ function rdf_draft_entity_type_alter(array &$entity_types) {
       $storage = \Drupal::service('entity.manager')->getStorage($entity_type_id);
       $recurse = FALSE;
       if ($storage  instanceof RdfEntitySparqlStorage) {
-        $entity_type->setLinkTemplate('rdf-draft', "/rdf-draft/$entity_type_id/{{$entity_type_id}}");
+        $definitions = $storage->getGraphsDefinition();
+        unset($definitions['default']);
+        // Set the link templates for each graph type.
+        foreach ($definitions as $name => $definition) {
+          $entity_type->setLinkTemplate('rdf-draft-' . $name, "/rdf-draft/$entity_type_id/{{$entity_type_id}}/$name");
+        }
       }
     }
   }
@@ -44,16 +49,20 @@ function rdf_draft_entity_type_alter(array &$entity_types) {
  */
 function rdf_draft_entity_operation(EntityInterface $entity) {
   $operations = array();
-  if ($entity->hasLinkTemplate('rdf-draft')) {
-    $operations['draft'] = array(
-      'title' => t('Draft'),
-      'weight' => 100,
-      'url' => $entity->toUrl('rdf-draft'),
-    );
+  $storage = \Drupal::service('entity.manager')->getStorage($entity->getEntityTypeId());
+  if ($storage  instanceof RdfEntitySparqlStorage) {
+    $definitions = $storage->getGraphsDefinition();
+    foreach ($definitions as $name => $definition)
+    if ($entity->hasLinkTemplate('rdf-draft-' . $name)) {
+      $operations[$name] = array(
+        'title' => t('View @graph', ['@graph' => $name]),
+        'weight' => 100,
+        'url' => $entity->toUrl('rdf-draft-' . $name),
+      );
+    }
   }
   return $operations;
 }
-
 
 /**
  * Implements hook_entity_create().

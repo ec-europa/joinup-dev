@@ -8,3 +8,9 @@ services:
     class: Drupal\rdf_draft\EventSubscriber\ActiveGraphSubscriber
     tags:
       - { name: event_subscriber }
+
+  rdf_draft.access_checker:
+      class: Drupal\rdf_draft\RdfGraphAccessCheck
+      arguments: []
+      tags:
+        - { name: access_check, applies_to: _access_rdf_graph }

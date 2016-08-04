@@ -68,6 +68,10 @@ class RdfController extends ControllerBase {
     $original = $storage->getActiveGraphType();
     $storage->setActiveGraphType('draft');
     $draft_entity = $storage->load($entity->id());
+    if (!$draft_entity) {
+      // Should not occur: RdfGraphAccessCheck validates that the entity exists.
+      throw new \Exception('Entity not loaded from graph');
+    }
     $storage->setActiveGraphType($original);
     $page = $this->entityManager
       ->getViewBuilder($entity->getEntityTypeId())

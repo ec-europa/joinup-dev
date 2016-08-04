@@ -32,8 +32,6 @@ class RouteSubscriber extends RouteSubscriberBase {
     $this->entityTypeManager = $entity_manager;
   }
 
-
-
   /**
    * {@inheritdoc}
    */
@@ -46,7 +44,7 @@ class RouteSubscriber extends RouteSubscriberBase {
         foreach ($definitions as $name => $definition) {
           $definition['name'] = $name;
           if ($route = $this->getRdfGraphRoute($entity_type, $definition)) {
-            $collection->add("entity.$entity_type_id.rdf_draft", $route);
+            $collection->add("entity.$entity_type_id.rdf_draft_$name", $route);
           }
         }
       }
@@ -63,7 +61,7 @@ class RouteSubscriber extends RouteSubscriberBase {
    *   The generated route, if available.
    */
   protected function getRdfGraphRoute(EntityTypeInterface $entity_type, $graph_definition) {
-    if ($rdf_draft = $entity_type->getLinkTemplate('rdf-draft')) {
+    if ($rdf_draft = $entity_type->getLinkTemplate('rdf-draft-' . $graph_definition['name'])) {
       $entity_type_id = $entity_type->id();
 
       $route = new Route($rdf_draft);
@@ -73,9 +71,10 @@ class RouteSubscriber extends RouteSubscriberBase {
           '_title' => (string) t('View @title', ['@title' => (string) $graph_definition['title']]),
         ])
         ->addRequirements([
-          '_permission' => 'view ' . $graph_definition['name']. ' graph',
+          '_access_rdf_graph' =>  'TRUE',
         ])
         ->setOption('entity_type_id', $entity_type_id)
+        ->setOption('graph_name', $graph_definition['name'])
         ->setOption('parameters', [
           $entity_type_id => ['type' => 'entity:' . $entity_type_id],
         ]);

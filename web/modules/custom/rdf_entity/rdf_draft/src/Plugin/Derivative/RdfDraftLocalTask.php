@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
+use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -52,14 +53,22 @@ class RdfDraftLocalTask extends DeriverBase implements ContainerDeriverInterface
   public function getDerivativeDefinitions($base_plugin_definition) {
     $this->derivatives = array();
     foreach ($this->entityManager->getDefinitions() as $entity_type_id => $entity_type) {
-      $has_export_path = $entity_type->hasLinkTemplate('rdf-draft');
-      if ($has_export_path) {
-        $this->derivatives["$entity_type_id.rdf_draft_tab"] = array(
-          'route_name' => "entity.$entity_type_id.rdf_draft",
-          'title' => $this->t('View draft'),
-          'base_route' => "entity.$entity_type_id.canonical",
-          'weight' => 100,
-        );
+      $storage = $this->entityManager->getStorage($entity_type_id);
+      if (!$storage instanceof RdfEntitySparqlStorage) {
+        continue;
+      }
+      $definitions = $storage->getGraphsDefinition();
+      unset($definitions['default']);
+      foreach ($definitions as $name => $definition) {
+        $has_export_path = $entity_type->hasLinkTemplate('rdf-draft-' . $name);
+        if ($has_export_path) {
+          $this->derivatives["entity.$entity_type_id.rdf_draft_$name"] = array(
+            'route_name' => "entity.$entity_type_id.rdf_draft_$name",
+            'title' => $this->t('View @graph', ['@graph' => $name]),
+            'base_route' => "entity.$entity_type_id.canonical",
+            'weight' => 100,
+          );
+        }
       }
     }
     foreach ($this->derivatives as &$entry) {

@@ -26,8 +26,8 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
     $defaults = $event->getDefaults();
     if ($defaults['_route']) {
       $route_parts = explode('.', $defaults['_route']);
-      $last_part = array_pop($route_parts);
-      if ($last_part == 'edit_form') {
+      // On the edit form.
+      if (array_search('edit_form', $route_parts)) {
         $entity_type_id = substr($event->getDefinition()['type'], strlen('entity:'));
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
         $storage->setActiveGraphType('draft');
@@ -43,8 +43,11 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
         }
 
       }
-      if ($last_part == 'rdf_draft') {
-        $event->setGraph('draft');
+      // Viewing the entity on a graph specific tab.
+      if (isset($route_parts[2]) && (strpos($route_parts[2], 'rdf_draft_') === 0)) {
+        // Retrieve the graph name from the route.
+        $graph_name = str_replace('rdf_draft_', '', $route_parts[2]);
+        $event->setGraph($graph_name);
       }
     }
   }
