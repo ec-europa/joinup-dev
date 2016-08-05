@@ -38,7 +38,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    * @When (I )go to (the homepage of )the :licence licence
    * @When (I )visit (the homepage of )the :licence licence
    */
-  public function visitDistribution($licence) {
+  public function visitLicence($licence) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $licence */
     $licence = $this->getLicenceByName($licence);
     $this->visitPath($licence->url());
