@@ -51,6 +51,12 @@ function demo_content_create_demo_content() {
 
   foreach (demo_content_get_asset_data() as $values) {
     $solution = Rdf::create($values);
+    // Fill any empty required field with random data.
+    foreach ($solution->getFieldDefinitions() as $definition_id => $fieldDefinition) {
+      if ($fieldDefinition->isRequired() && empty($values[$definition_id])) {
+        $solution->{$definition_id}->generateSampleItems();
+      }
+    }
     $solution->save();
   }
 }
