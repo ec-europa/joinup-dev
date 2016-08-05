@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\og\Entity\OgMembership;
+use Drupal\og\Entity\OgRole;
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
@@ -34,6 +35,6 @@ function demo_content_rdf_entity_insert(EntityInterface $entity) {
   $membership
     ->setUser($facilitator)
     ->setGroup($entity)
-    ->addRole($role_id)
+    ->addRole(OgRole::load($role_id))
     ->save();
 }
