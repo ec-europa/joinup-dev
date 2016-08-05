@@ -5,8 +5,9 @@
  * Install, update and uninstall functions for the Demo content module.
  */
 
-use Drupal\user\Entity\User;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\user\Entity\User;
 
 /**
  * Implements hook_install().
@@ -36,29 +37,102 @@ function demo_content_create_demo_content() {
   // Create demo users.
   foreach (demo_content_get_user_data() as $user_data) {
     $facilitator = User::create($user_data);
+    demo_content_entity_randomize_field($facilitator, array_keys($user_data));
     $facilitator->save();
   }
+
+  foreach (demo_content_get_contact_information_data() as $values) {
+    $contact = Rdf::create($values);
+    demo_content_entity_randomize_field($contact, array_keys($values));
+    $contact->save();
+  }
+
+  foreach (demo_content_get_owner_data() as $values) {
+    $owner = Rdf::create($values);
+    demo_content_entity_randomize_field($owner, array_keys($values));
+    $owner->save();
+  }
+
   foreach (demo_content_get_collection_data() as $values) {
     $collection = Rdf::create($values);
-    // Fill any empty required field with random data.
-    foreach ($collection->getFieldDefinitions() as $definition_id => $fieldDefinition) {
-      if ($fieldDefinition->isRequired() && empty($values[$definition_id])) {
-        $collection->{$definition_id}->generateSampleItems();
-      }
-    }
+    demo_content_entity_randomize_field($collection, array_keys($values));
     $collection->save();
   }
 
   foreach (demo_content_get_asset_data() as $values) {
     $solution = Rdf::create($values);
-    // Fill any empty required field with random data.
-    foreach ($solution->getFieldDefinitions() as $definition_id => $fieldDefinition) {
-      if ($fieldDefinition->isRequired() && empty($values[$definition_id])) {
-        $solution->{$definition_id}->generateSampleItems();
-      }
-    }
+    demo_content_entity_randomize_field($solution, array_keys($values));
     $solution->save();
   }
+}
+
+/**
+ * Fills all mandatory fields of an entity not yet filled with random data.
+ *
+ * This method skips all entity keys except from the label.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *    The entity to edit.
+ * @param array $keys_to_skip
+ *    A list of keys to skip and not randomise.
+ */
+function demo_content_entity_randomize_field(EntityInterface $entity, array $keys_to_skip) {
+  // Skip fields handled by core except label.
+  $entity_keys = $entity->getEntityType()->getKeys();
+  unset($entity_keys['label']);
+  $keys_to_skip = array_merge($keys_to_skip, $entity->getEntityType()->getKeys());
+
+  $field_definitions = $entity->getFieldDefinitions();
+  foreach ($field_definitions as $id => $field_definition) {
+    if (in_array($id, $keys_to_skip)) {
+      continue;
+    }
+
+    if ($field_definition->isRequired() && empty($entity->{$id}->getValue())) {
+      $entity->{$id}->generateSampleItems();
+    }
+  }
+}
+
+/**
+ * Get demo contact information data.
+ *
+ * @return array
+ *    An array of data that will be used to create demo contact entities.
+ */
+function demo_content_get_contact_information_data() {
+  return [
+    [
+      'rid' => 'contact_information',
+      'field_ci_email' => 'caterpillar@example.com',
+      'field_ci_name' => 'Caterpillar',
+    ],
+    [
+      'rid' => 'contact_information',
+      'field_ci_email' => 'butterfly@example.com',
+      'field_ci_name' => 'Butterfly',
+      'field_ci_webpage' => 'http://valeyofbutterflies.com',
+    ],
+  ];
+}
+
+/**
+ * Get demo owner data.
+ *
+ * @return array
+ *    An array of data that will be used to create owner entities.
+ */
+function demo_content_get_owner_data() {
+  return [
+    [
+      'rid' => 'person',
+      'field_op_name' => 'Grandma',
+    ],
+    [
+      'rid' => 'organisation',
+      'field_oo_name' => 'Red riding hood inc.',
+    ],
+  ];
 }
 
 /**
