@@ -33,6 +33,9 @@ Feature: Add asset distribution through the UI
       Then I should not see the link "Add distribution"
 
     Scenario: Add distribution as a facilitator.
+      Given the following licence:
+        | title       | WTFPL                                    |
+        | description | The WTFPL is a rather permissive licence |
       When I am logged in as a "facilitator" of the "Solution random x name" solution
       When I go to the homepage of the "Asset release random name" asset release
       And I click "Add distribution"
@@ -45,6 +48,7 @@ Feature: Add asset distribution through the UI
       And I should see the text "Distribution file"
       When I fill in "Title" with "Custom title of asset distribution"
       And I attach the file "test.zip" to "Add a new file"
+      And I fill in "License" with "WTFPL"
       And I press "Save"
       Then I should have 1 asset distribution
       # Check if the asset distribution is accessible as an anonymous user
