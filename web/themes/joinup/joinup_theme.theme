@@ -5,6 +5,7 @@
  * Functions to support theming in the Joinup theme.
  */
 
+use Drupal\block\Entity\Block;
 use Drupal\Core\Template\Attribute;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
@@ -35,6 +36,18 @@ function joinup_theme_preprocess_page(&$variables) {
     $entity_type = $entity->getType();
     if ($entity_type == 'collection') {
       $variables['is_collection'] = TRUE;
+
+      // Join collection button.
+      $join_collection = Block::load('joinup_theme_joincollectionblock');
+      $variables['join_collection'] = \Drupal::entityTypeManager()
+        ->getViewBuilder('block')
+        ->view($join_collection);
+
+      // Add content button.
+      $add_content  = Block::load('joinup_add_content');
+      $variables['add_content'] = \Drupal::entityTypeManager()
+        ->getViewBuilder('block')
+        ->view($add_content);
     }
   }
 }

@@ -9,7 +9,6 @@
       {% include section--header.html %}
 
       <div class="section section--featured">
-        <div class="container-fluid">
           <div class="featured">
             <div class="featured__wrapper">
               <div class="featured__logo">
@@ -23,7 +22,7 @@
                     <span class="stats__text"><span class="bold">13</span><span> Members</span></span>
                   </div>
                   <div class="stats__wrapper">
-                    <span class="stats__icon icon icon--solution"></span>
+                    <span class="stats__icon icon icon--solutions"></span>
                     <span class="stats__text"><span class="bold">124</span><span> Solutions</span></span>
                   </div>
                 </div>
@@ -56,8 +55,7 @@
             </div>
             <div class="featured__overlay"></div>
           </div>
-        </div>
-      </div>
+
       <div class="main-container mdl-grid">
 
         {% include section--sidebar-left.html %}
@@ -71,7 +69,7 @@
                 </label>
                 <input class="search-bar__input mdl-textfield__input" placeholder="Start typing to search..." type="text" name="search"
                   id="search-bar__input">
-              </div>              
+              </div>
             </div>
 
             {% include tab--content-type.html %}
@@ -79,7 +77,7 @@
             {% include filters.html %}
 
             {% include listing.html %}
-            
+
           </div>
         </div>
       </div>
@@ -87,7 +85,6 @@
     {% include section--footer.html %}
 
     {% include scripts.html %}
-
     </div>
   </body>
 </html>
