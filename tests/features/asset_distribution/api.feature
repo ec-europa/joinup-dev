@@ -24,6 +24,7 @@ Feature: Asset distribution API
       | title       | Asset distribution entity foo         |
       | description | Asset distribution sample description |
       | file        | test.zip                              |
+      | solution    | Asset distribution solution           |
     And the following asset release:
       | title          | Asset distribution asset release   |
       | description    | Asset distribution sample solution |
@@ -51,6 +52,7 @@ Feature: Asset distribution API
       | title       | Asset distribution entity foo short   |
       | description | Asset distribution sample description |
       | file        | test.zip                              |
+      | solution    | AD first solution mandatory short     |
     And the following asset release:
       | title          | AD first release                    |
       | description    | Asset distribution sample solution  |

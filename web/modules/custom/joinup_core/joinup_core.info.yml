@@ -5,6 +5,7 @@ core: 8.x
 package: Custom
 
 dependencies:
+  - og
   - rdf_entity
   - rdf_taxonomy
 
@@ -14,6 +15,7 @@ config_devel:
   - field.storage.rdf_entity.field_spatial_coverage
   - field.storage.rdf_entity.field_status
   - field.storage.rdf_entity.field_topic
+  - field.storage.rdf_entity.og_audience
   - taxonomy.vocabulary.eira
   - taxonomy.vocabulary.eurovoc
   - taxonomy.vocabulary.licence_type
