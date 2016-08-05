@@ -10,7 +10,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
-use Drupal\User\Entity\User;
 use Drupal\file\Entity\File;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -18,6 +17,7 @@ use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\search_api\Entity\Server;
+use Drupal\User\Entity\User;
 
 /**
  * Behat step definitions for testing users.
@@ -387,9 +387,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Replaces human readable labels and values with their real counterparts.
    *
    * This allows us to:
-   * - use human readable labels like 'short title' and 'collection' in test
-   *   scenarios, and map them to the actual field names like
-   *   'field_document_short_title' and 'OgGroupAudienceHelper::DEFAULT_FIELD'.
+   * - use human readable labels like 'short title' in test scenarios, and map
+   *   them to the actual field names like 'field_document_short_title'.
    * - use human readable values such as a collection name instead of the URL
    *   that is actually used in the OG reference field.
    *

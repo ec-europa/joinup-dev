@@ -17,6 +17,7 @@ use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgMembershipInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -470,6 +471,38 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
 
       $this->createOgMenuItem($menu_item_data);
     }
+  }
+
+  /**
+   * Asserts that a user is an owner of the given collection.
+   *
+   * To be owner of a collection, a user should be an administrator,
+   * a facilitator and a member.
+   *
+   * @param string $username
+   *    The name of the user.
+   * @param string $rdf_entity
+   *    The label of the group entity.
+   *
+   * @throws \Exception
+   *    Throws an exception when the user is not found.
+   *
+   * @Given (the user ):username should be the owner of the :rdf_entity collection
+   */
+  public function assertCollectionOwnership($username, $rdf_entity) {
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      throw new \Exception("User {$username} could not be found.");
+    }
+
+    $collection = $this->getRdfEntityByLabel($rdf_entity, 'collection');
+    $owner_roles = [
+      OgRoleInterface::ADMINISTRATOR,
+      OgRoleInterface::AUTHENTICATED,
+      'facilitator',
+    ];
+
+    $this->assertOgGroupOwnership($user, $collection, $owner_roles);
   }
 
   /**

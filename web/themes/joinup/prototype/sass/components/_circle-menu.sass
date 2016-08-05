@@ -1,0 +1,36 @@
+// Component
+// --------------------------------------------------
+.circle-menu
+
+// Elements
+// --------------------------------------------------
+.circle-menu__button
+  background-color: $color-orange !important
+
+// Modifiers
+// --------------------------------------------------
+.circle-menu--tablet
+  display: none
+  +breakpoint(mobile)
+    display: block
+
+.circle-menu--mobile
+  +breakpoint(mobile)
+    display: none
+
+// Dependiencies
+// --------------------------------------------------
+.circle-menu--tablet
+  .mdl-menu__container
+    top: 80px !important
+
+.circle-menu--mobile
+  .mdl-menu__container
+    bottom: 40px !important
+
+.circle-menu__button
+  .icon
+    color: #fff
+    +icon-size(45px)
+  .mdl-ripple
+    background-color: #fff
