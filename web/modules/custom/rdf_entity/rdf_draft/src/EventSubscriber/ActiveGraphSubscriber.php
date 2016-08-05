@@ -26,7 +26,7 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
     $defaults = $event->getDefaults();
     if ($defaults['_route']) {
       $route_parts = explode('.', $defaults['_route']);
-      // On the edit form.
+      // On the edit form, load from draft graph if possible.
       if (array_search('edit_form', $route_parts)) {
         $entity_type_id = substr($event->getDefinition()['type'], strlen('entity:'));
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
@@ -41,10 +41,25 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
           $storage->setSaveGraph('draft');
           $event->setGraph('default');
         }
-
+      }
+      // On the delete form, select the first available graph.
+      elseif (array_search('delete_form', $route_parts)) {
+        $entity_type_id = substr($event->getDefinition()['type'], strlen('entity:'));
+        $storage = \Drupal::entityManager()->getStorage($entity_type_id);
+        $found = FALSE;
+        foreach ($storage->getGraphsDefinition() as $name => $definition) {
+          if ($found) {
+            continue;
+          }
+          $storage->setActiveGraphType($name);
+          if ($storage->load($event->getValue())) {
+            $event->setGraph($name);
+            $found = TRUE;
+          }
+        }
       }
       // Viewing the entity on a graph specific tab.
-      if (isset($route_parts[2]) && (strpos($route_parts[2], 'rdf_draft_') === 0)) {
+      elseif (isset($route_parts[2]) && (strpos($route_parts[2], 'rdf_draft_') === 0)) {
         // Retrieve the graph name from the route.
         $graph_name = str_replace('rdf_draft_', '', $route_parts[2]);
         $event->setGraph($graph_name);
