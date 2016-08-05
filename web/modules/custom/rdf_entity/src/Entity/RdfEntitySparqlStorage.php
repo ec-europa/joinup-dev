@@ -78,7 +78,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       'description' => $this->t('The default graph used to store entities of this type.'),
     ];
     // @todo Consider turning this into an event.
-    $this->moduleHandler->alter('rdf_graph_definition', $graphs_definition);
+
+    $this->moduleHandler->alter('rdf_graph_definition', $this->entityTypeId, $graphs_definition);
     return $graphs_definition;
   }
 

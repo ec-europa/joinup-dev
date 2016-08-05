@@ -10,7 +10,12 @@ use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 /**
  * Implements hook_rdf_graph_definition_alter().
  */
-function rdf_draft_rdf_graph_definition_alter(&$definitions) {
+function rdf_draft_rdf_graph_definition_alter($entity_type_id, &$definitions) {
+  // @todo Replace this hard-coded setting with a settings form
+  // where you can enable entity types.
+  if ($entity_type_id != 'rdf_entity') {
+    return;
+  }
   $definitions['default']['title'] = t('Published');
   $definitions['draft'] = [
     'title' => t('Draft'),
