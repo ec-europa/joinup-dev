@@ -124,6 +124,25 @@ function joinup_theme_preprocess_fieldset(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for container.html.twig.
+ */
+function joinup_theme_preprocess_container(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+  $form_routes = array(
+    'node.add',
+    'rdf_entity.rdf_add',
+    'entity.node.edit_form',
+    'collection.propose_form',
+    'entity.rdf_entity.edit_form',
+  );
+  // Check if container is field element - it has only one parent.
+  if (!empty($route_name) && in_array($route_name, $form_routes) && isset($variables['element']['#parents']) && count($variables['element']['#parents']) == 1) {
+    $variables['is_form_wrapper'] = TRUE;
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_alter().
  */
 function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables) {
