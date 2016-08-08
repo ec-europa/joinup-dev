@@ -542,6 +542,9 @@ QUERY;
   protected function doDelete($entities) {
     $entities_by_graph = [];
     foreach ($entities as $id => $entity) {
+      if (!$entity->graph) {
+        $entity->graph = $this->getGraph($entity->bundle(), 'default');
+      }
       $entities_by_graph[$entity->graph][$id] = $entity;
     }
     foreach ($entities_by_graph as $graph => $entities_to_delete) {
