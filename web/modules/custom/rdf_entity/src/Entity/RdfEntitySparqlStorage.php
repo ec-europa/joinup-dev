@@ -694,6 +694,13 @@ QUERY;
       $id = $this->generateId();
       $entity->{$this->idKey} = (string) $id;
     }
+    // Force the graph.
+    if ($this->saveGraph) {
+      $graph = $this->getGraph($bundle, $this->saveGraph);
+    }
+    else {
+      $graph = $entity->graph;
+    }
     $insert = '';
     $properties = $this->getMappedProperties($entity);
     $subj = '<' . (string) $id . '>';
