@@ -1,6 +1,7 @@
 <?php
 
 namespace Drupal\rdf_entity;
+
 use Symfony\Component\EventDispatcher\Event;
 
 /**

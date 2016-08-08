@@ -1,6 +1,7 @@
 <?php
 
 namespace Drupal\rdf_entity\Form;
+
 use \Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\rdf_draft;
 
 use Drupal\Core\Access\AccessResult;
