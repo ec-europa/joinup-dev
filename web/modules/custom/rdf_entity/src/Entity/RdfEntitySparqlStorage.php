@@ -698,8 +698,11 @@ QUERY;
     if ($this->saveGraph) {
       $graph = $this->getGraph($bundle, $this->saveGraph);
     }
-    else {
+    elseif (isset($entity->graph)) {
       $graph = $entity->graph;
+    }
+    else {
+      $graph = $this->getGraph($bundle, 'default');
     }
     $insert = '';
     $properties = $this->getMappedProperties($entity);

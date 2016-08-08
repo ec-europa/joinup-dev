@@ -9,7 +9,6 @@ third_party_settings:
       value: 'http://joinup.eu/organisation/label'
     graph_default: 'http://joinup.eu/organisation/published'
     graph_draft: 'http://joinup.eu/organisation/draft'
-    name: 'Contact information'
 name: Organisation
 rid: organisation
 description: ''
