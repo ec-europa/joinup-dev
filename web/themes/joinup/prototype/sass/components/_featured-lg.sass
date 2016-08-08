@@ -1,0 +1,87 @@
+// Featured large
+//
+// Featured large component
+
+// Component
+// --------------------------------------------------
+.featured-lg
+  position: relative
+  margin: 0 auto
+  padding: 20px 0
+  background: url('../images/featured-lg-bg.jpg') no-repeat center top
+  -webkit-background-size: cover
+  -moz-background-size: cover
+  -o-background-size: cover
+  background-size: cover
+
+// Elements
+// --------------------------------------------------
+.featured-lg__wrapper
+  position: relative
+  z-index: 2
+  max-width: 970px
+  margin: 0 auto
+  text-align: center
+  color: #fff
+
+.featured-lg__logo,
+.featured-lg__text,
+.featured-lg__search-bar
+  margin-bottom: 40px
+  +breakpoint(tablet)
+    margin-bottom: 80px
+
+.featured-lg__logo
+  margin-top: 40px
+  img
+    width: 150px
+
+.featured-lg__text
+  padding: 0 20px
+  font-weight: $font-weight-thin
+
+// Dependiencies
+// --------------------------------------------------
+.featured-lg__stats
+  margin-bottom: 40px
+  .stats__wrapper
+    position: relative
+    +breakpoint(sm-mobile, mobile)
+      width: 200px
+      margin: 0 auto 30px auto
+    +breakpoint(mobile)
+      display: inline-block
+      vertical-align: top
+      &:last-child
+        margin-right: 0
+    +breakpoint(mobile, tablet)
+      width: 25%
+      margin-right: 5%
+    +breakpoint(tablet)
+      width: 200px
+      margin-right: 40px
+
+  .stats__icon
+    position: absolute
+    top: -12px
+    left: -18px
+    +icon-size(80px)
+
+  .stats__text
+    margin-bottom: 15px
+    padding-left: 60px
+
+  .stats__description
+    text-align: left
+
+// Modifiers
+// --------------------------------------------------
+.featured-lg__stats
+  .stats__text--upper,
+  .stats__text--lower
+    text-align: left
+
+  .stats__text--upper
+    font-size: 32px
+
+    

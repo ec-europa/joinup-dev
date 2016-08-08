@@ -3,6 +3,7 @@
 namespace Drupal\collection\Form;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -100,17 +101,18 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $user = User::load($this->currentUser()->id());
-    $membership_ids = \Drupal::entityQuery('og_membership')
-      ->condition('uid', $user->id())
-      ->condition('entity_id', $this->collection->id())
-      ->condition('entity_type', 'rdf_entity')
-      ->execute();
-    $memberships = Og::membershipStorage()->loadMultiple($membership_ids);
-    Og::membershipStorage()->delete($memberships);
+
+    $membership = Og::getMembership($this->collection, $user);
+    $membership->delete();
 
     drupal_set_message($this->t('You are no longer a member of %collection.', [
       '%collection' => $this->collection->getName(),
     ]));
+
+    // @todo: This is a temporary workaround for the lack of og cache
+    // contexts/tags. Remove this when Og provides proper cache context.
+    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2628
+    Cache::invalidateTags(['user.roles']);
 
     $form_state->setRedirectUrl($this->getCancelUrl());
   }

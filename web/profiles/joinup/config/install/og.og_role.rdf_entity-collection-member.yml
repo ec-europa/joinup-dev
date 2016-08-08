@@ -4,6 +4,7 @@ dependencies: {  }
 id: rdf_entity-collection-member
 label: Member
 weight: 1
+is_admin: null
 group_type: rdf_entity
 group_bundle: collection
 group_id: null
@@ -22,4 +23,4 @@ permissions:
   - 'create news content'
   - 'edit own news content'
   - 'delete own news content'
-role_type: immutable
+role_type: required

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Enables modules and site configuration for the Joinup profile.
@@ -70,8 +71,12 @@ function joinup_form_install_settings_form_save($form, FormStateInterface $form_
 function joinup_entity_type_alter(array &$entity_types) {
   // Add the "Propose" form operation to nodes and RDF entities so that we can
   // add propose form displays to them.
-  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
-  $entity_types['rdf_entity']->setFormclass('propose', 'Drupal\rdf_entity\Form\RdfForm');
+  // Skip this during installation, since the RDF entity will not yet be
+  // registered.
+  if (!drupal_installation_attempted()) {
+    /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+    $entity_types['rdf_entity']->setFormclass('propose', 'Drupal\rdf_entity\Form\RdfForm');
+  }
 }
 
 /**
@@ -130,26 +135,39 @@ function joinup_og_user_access_alter(&$permissions, &$cacheable_metadata, $conte
 }
 
 /**
- * Implements hook_theme().
+ * Implements hook_field_widget_inline_entity_form_complex_form_alter().
+ *
+ * Simplifies the widget buttons when only a bundle is configured.
  */
-function joinup_theme($existing, $type, $theme, $path) {
-  return array(
-    'joinup_tiles' => array(
-      'path' => drupal_get_path('profile', 'joinup') . '/templates',
-    ),
-  );
+function joinup_field_widget_inline_entity_form_complex_form_alter(&$element, FormStateInterface $form_state, $context) {
+  if (isset($element['actions']['bundle']['#type']) && $element['actions']['bundle']['#type'] == 'value') {
+    $buttons = [
+      'ief_add' => t('Add new'),
+      'ief_add_existing' => t('Add existing'),
+    ];
+
+    foreach ($buttons as $key => $label) {
+      if (!empty($element['actions'][$key])) {
+        $element['actions'][$key]['#value'] = $label;
+      }
+    }
+  }
+
+  // If no title is provided for the fieldset wrapping the create form, add the
+  // label of the bundle of the entity being created.
+  if (empty($element['form']['#title']) && !empty($element['form']['inline_entity_form']['#bundle'])) {
+    $entity_type = $element['form']['inline_entity_form']['#entity_type'];
+    $bundle = $element['form']['inline_entity_form']['#bundle'];
+
+    $bundle_info = \Drupal::entityManager()->getBundleInfo($entity_type);
+    $element['form']['#title'] = $bundle_info[$bundle]['label'];
+  }
 }
 
 /**
- * Prepares variables for views joinup_tiles template.
- *
- * Template: joinup-tiles.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - view: The view object.
- *   - rows: An array of row items. Each row is an array of content.
+ * Implements hook_inline_entity_form_reference_form_alter().
  */
-function template_preprocess_joinup_tiles(&$variables) {
-  template_preprocess_views_view_unformatted($variables);
+function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form_state) {
+  // Avoid showing two labels one after each other.
+  $reference_form['entity_id']['#title_display'] = 'invisible';
 }

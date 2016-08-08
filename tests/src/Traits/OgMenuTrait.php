@@ -1,6 +1,7 @@
 <?php
 
 namespace Drupal\joinup\Traits;
+
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og_menu\Entity\OgMenuInstance;

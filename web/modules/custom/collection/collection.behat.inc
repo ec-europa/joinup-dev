@@ -8,13 +8,16 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgMenuTrait;
+use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\Entity\OgMembership;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgMembershipInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -22,9 +25,11 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class CollectionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use EntityReferenceTrait;
   use FileTrait;
   use NodeTrait;
   use OgMenuTrait;
+  use OgTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
 
@@ -36,13 +41,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   protected $collections = [];
 
   /**
-   * Navigates to the add collection form.
+   * Navigates to the propose collection form.
    *
-   * @When (I )go to the add collection form
-   * @When (I )visit the add collection form
+   * @When (I )go to the propose collection form
+   * @When (I )visit the propose collection form
    */
-  public function visitAddCollectionForm() {
-    $this->visitPath('/rdf_entity/add/collection');
+  public function visitProposeCollectionForm() {
+    $this->visitPath('collection/propose');
   }
 
   /**
@@ -61,7 +66,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Assert the order of elements.
+   * Asserts the order of elements.
    *
    * @Then I should see the following collection menu items in the specified order:
    */
@@ -169,10 +174,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Field alias mapping.
+   * Returns the field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *    The field alias mapping.
    */
   protected static function collectionFieldAliases() {
     // Mapping alias - field name.
@@ -182,6 +187,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'abstract' => 'field_ar_abstract',
       'access url' => 'field_ar_access_url',
       'affiliates' => 'field_ar_affiliates',
+      'banner' => 'field_ar_banner',
       'closed' => 'field_ar_closed',
       'contact information' => 'field_ar_contact_information',
       'creation date' => 'field_ar_creation_date',
@@ -193,7 +199,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'owner' => 'field_ar_owner',
       'policy domain' => 'field_policy_domain',
       'spatial coverage' => 'field_spatial_coverage',
-      'topic' => 'field_topic',
     ];
   }
 
@@ -227,6 +232,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
     }
 
+    // Convert any entity reference field label value with the entity id.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'collection', $fields);
+
     return $fields;
   }
 
@@ -243,9 +251,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   Thrown when a given image is not found.
    */
   protected function createCollection(array $values) {
-    // Add image.
-    if (!empty($values['field_ar_logo'])) {
-      $values['field_ar_logo'] = [$this->createFile($values['field_ar_logo'], $this->getMinkParameter('files_path'))];
+    // Add images.
+    $image_fields = ['field_ar_banner', 'field_ar_logo'];
+    foreach ($image_fields as $field_name) {
+      if (!empty($values[$field_name])) {
+        $values[$field_name] = [$this->createFile($values[$field_name], $this->getMinkParameter('files_path'))];
+      }
     }
 
     // @todo Remove this after the widget in ISAICP-2301 is build.
@@ -375,15 +386,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *   Thrown when a collection is not found.
    *
-   * @Given (the following )user memberships:
+   * @Given (the following )collection user memberships:
    */
-  public function givenUserMemberships(TableNode $membership_table) {
+  public function givenCollectionUserMemberships(TableNode $membership_table) {
     foreach ($membership_table->getColumnsHash() as $values) {
       // Load group.
       $group = $this->getCollectionByName($values['collection']);
-      if (empty($group)) {
-        throw new \Exception("Collection " . $values['collection'] . " not found.");
-      }
 
       // Load member.
       $member = user_load_by_name($values['user']);
@@ -391,30 +399,18 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         throw new \Exception("User " . $values['user'] . " not found.");
       }
 
-      /** @var \Drupal\og\OgMembershipInterface $membership */
-      $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
-      $membership
-        ->setUser($member->id())
-        ->setEntityId($group->id())
-        ->setGroupEntityType($group->getEntityTypeId())
-        ->setFieldName($membership->getFieldName())
-        ->save();
-
+      // Convert role names to role IDs.
+      $roles = [];
       if (!empty($values['roles'])) {
-        $roles = explode(',', $values['roles']);
-        foreach ($roles as $role) {
-          // The role ID is comprised of the entity type ID, bundle ID and role
-          // name, separated by dashes.
-          $role_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . trim($role);
-          $membership->addRole($role_id);
-        }
+        $roles = $this->getOgRoles(explode(', ', $values['roles']), $group);
       }
-      $membership->save();
+
+      $this->subscribeUserToGroup($member, $group, $roles);
     }
   }
 
   /**
-   * Make group content part of a collection.
+   * Makes group content part of a collection.
    *
    * Table format:
    * | content                | collection          |
@@ -434,7 +430,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
       /** @var \Drupal\node\NodeInterface $content */
       $content = $this->getNodeByTitle($values['content'], $bundle);
-      $content->get('og_group_ref')->set(0, $group->id());
+      $content->get(OgGroupAudienceHelper::DEFAULT_FIELD)->set(0, $group->id());
       $content->save();
     }
   }
@@ -482,7 +478,39 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Remove any created collections.
+   * Asserts that a user is an owner of the given collection.
+   *
+   * To be owner of a collection, a user should be an administrator,
+   * a facilitator and a member.
+   *
+   * @param string $username
+   *    The name of the user.
+   * @param string $rdf_entity
+   *    The label of the group entity.
+   *
+   * @throws \Exception
+   *    Throws an exception when the user is not found.
+   *
+   * @Given (the user ):username should be the owner of the :rdf_entity collection
+   */
+  public function assertCollectionOwnership($username, $rdf_entity) {
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      throw new \Exception("User {$username} could not be found.");
+    }
+
+    $collection = $this->getRdfEntityByLabel($rdf_entity, 'collection');
+    $owner_roles = [
+      OgRoleInterface::ADMINISTRATOR,
+      OgRoleInterface::AUTHENTICATED,
+      'facilitator',
+    ];
+
+    $this->assertOgGroupOwnership($user, $collection, $owner_roles);
+  }
+
+  /**
+   * Removes any created collections.
    *
    * @AfterScenario
    */

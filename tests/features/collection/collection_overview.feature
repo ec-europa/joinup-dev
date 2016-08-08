@@ -12,6 +12,7 @@ Feature: Collections Overview
     When I click "Collections"
     Then I should see the heading "Collections"
 
+  # @todo The small header, which contains collections link, should be removed for anonymous users on the homepage - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639.
   Scenario: View collection overview as an anonymous user
     Given users:
       | name          | mail                         | roles |
@@ -21,6 +22,8 @@ Feature: Collections Overview
       | eHealth           | Supports health-related fields |
       | Open Data         | Facilitate access to data sets |
       | Connecting Europe | Reusable tools and services    |
+    Given organisation:
+      | name | Organisation example |
     Then I commit the solr index
     # Check that visiting as an anonymous does not create cache for all users.
     When I am an anonymous user
@@ -59,6 +62,11 @@ Feature: Collections Overview
       | Description   | Some space mumbo jumbo description.                                     |
       | Policy domain | Internal Market (WIP!) (http://joinup.eu/policy-domain/internal-market) |
     And I attach the file "logo.png" to "Logo"
+    And I attach the file "banner.jpg" to "Banner"
+    # Click the button to select an existing owner.
+    And I press "Add existing owner"
+    And I fill in "Owner" with "Organisation example"
+    And I press "Add owner"
     And I press "Save"
     Then I visit the "Colonies in space" collection
     Then I should see the text "Colonies in space"
@@ -77,3 +85,6 @@ Feature: Collections Overview
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the link "Colonies in space"
+
+    # Clean up the collection that was created manually.
+    Then I delete the "Colonies in space" collection

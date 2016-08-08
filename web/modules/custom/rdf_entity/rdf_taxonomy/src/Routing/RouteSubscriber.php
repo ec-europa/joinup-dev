@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\rdf_taxonomy\Routing;
 
 use Drupal\Core\Routing\RouteSubscriberBase;

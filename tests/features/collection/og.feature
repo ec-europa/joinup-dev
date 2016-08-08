@@ -85,10 +85,12 @@ Feature: Organic Groups integration
     And the "Folk Dance and Song Society" collection should have 0 members
 
   Scenario: Edit a Collection
+    Given the following organisation:
+      | name | Organisation example |
     Given collections:
-      | title                       | logo     | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation | policy domain                                                   |
-      | Überwaldean Land Eels       | logo.png | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        | http://joinup.eu/policy-domain/environment |
-      | Folk Dance and Song Society | logo.png | Cats are cool!                             | http://mashable.com/category/cats/     | no     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         | http://joinup.eu/policy-domain/environment |
+      | title                       | logo     | banner     | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation | policy domain                              | owner                |
+      | Überwaldean Land Eels       | logo.png | banner.jpg | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        | http://joinup.eu/policy-domain/environment | Organisation example |
+      | Folk Dance and Song Society | logo.png | banner.jpg | Cats are cool!                             | http://mashable.com/category/cats/     | no     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         | http://joinup.eu/policy-domain/environment | Organisation example |
     And users:
       | name             | roles         |
       | Collection admin | administrator |
@@ -106,7 +108,8 @@ Feature: Organic Groups integration
 
     # Edit a collection.
     When I go to the "Überwaldean Land Eels" collection edit form
-    Then the following fields should be present "Title, Description, Abstract, Contact information, Owner, Policy domain, Topic, Spatial coverage, Affiliates, Closed collection, eLibrary creation, Moderated"
+    Then the following fields should be present "Title, Description, Abstract, Policy domain, Spatial coverage, Affiliates, Closed collection, eLibrary creation, Moderated"
+    And the following field widgets should be present "Contact information, Owner"
     And I fill in "Title" with "Überwaldean Sea Eels"
     And I press the "Save" button
     Then I should see the heading "Überwaldean Sea Eels"

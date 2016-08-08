@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.rdf_entity.asset_release.field_isr_banner
     - field.field.rdf_entity.asset_release.field_isr_contact_information
     - field.field.rdf_entity.asset_release.field_isr_creation_date
     - field.field.rdf_entity.asset_release.field_isr_description
@@ -11,6 +12,7 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_included_asset
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
     - field.field.rdf_entity.asset_release.field_isr_language
+    - field.field.rdf_entity.asset_release.field_isr_logo
     - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
@@ -22,11 +24,13 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_policy_domain
     - field.field.rdf_entity.asset_release.field_spatial_coverage
     - field.field.rdf_entity.asset_release.field_status
-    - field.field.rdf_entity.asset_release.field_topic
+    - image.style.thumbnail
     - rdf_entity.rdfentity.asset_release
   module:
     - datetime
+    - ds
     - file
+    - image
     - text
 id: rdf_entity.asset_release.default
 targetEntityType: rdf_entity
@@ -54,6 +58,21 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_isr_banner:
+    weight: 24
+    label: above
+    settings:
+      image_style: banner
+      image_link: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: image
   field_isr_contact_information:
     weight: 5
     label: above
@@ -144,6 +163,21 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_isr_logo:
+    weight: 23
+    label: above
+    settings:
+      image_style: thumbnail
+      image_link: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: image
   field_isr_metrics_page:
     weight: 18
     label: above
@@ -288,13 +322,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_topic:
-    weight: 10
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
   label:
     label: hidden
     type: string
@@ -303,4 +330,4 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
-  og_group_ref: true
+  og_audience: true

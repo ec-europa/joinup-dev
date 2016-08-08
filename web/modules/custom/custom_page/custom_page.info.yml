@@ -21,6 +21,6 @@ config_devel:
 - core.entity_view_display.node.custom_page.default
 - core.entity_view_display.node.custom_page.view_mode_tile
 - field.field.node.custom_page.body
-- field.field.node.custom_page.og_group_ref
-- field.storage.node.og_group_ref
+- field.field.node.custom_page.og_audience
+- field.storage.node.og_audience
 - node.type.custom_page
