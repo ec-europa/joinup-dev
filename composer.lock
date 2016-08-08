@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "18e010361e880c8bffe2063b15b6b92c",
-    "content-hash": "bfbbe143f4cb9d8e070bc0ee95fd9ab3",
+    "hash": "ca09f656279e9ed92968cfa6c8970117",
+    "content-hash": "b3162755f3973a204fe4a65422bb3048",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.36",
+            "version": "3.18.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "48362bce008fa9c20a71dfa6a68aebac65a8ab1b"
+                "reference": "0d4abd38caf09fbda9177e8c1fd2a9ec73d71d66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/48362bce008fa9c20a71dfa6a68aebac65a8ab1b",
-                "reference": "48362bce008fa9c20a71dfa6a68aebac65a8ab1b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0d4abd38caf09fbda9177e8c1fd2a9ec73d71d66",
+                "reference": "0d4abd38caf09fbda9177e8c1fd2a9ec73d71d66",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-08-02 20:49:01"
+            "time": "2016-08-04 21:27:47"
         },
         {
             "name": "composer/ca-bundle",
@@ -1565,16 +1565,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-check-group-content-crud-access",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "7a301837d638c30cb419f49f55617ed0ee43aaee"
+                "reference": "371abcbe63d2c95494ea2c3084538a66c5b62ef6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/7a301837d638c30cb419f49f55617ed0ee43aaee",
-                "reference": "7a301837d638c30cb419f49f55617ed0ee43aaee",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/371abcbe63d2c95494ea2c3084538a66c5b62ef6",
+                "reference": "371abcbe63d2c95494ea2c3084538a66c5b62ef6",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1588,7 +1588,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-08-03 09:15:44"
+            "time": "2016-08-06 10:35:16"
         },
         {
             "name": "drupal/og_menu",
@@ -1768,7 +1768,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta2.zip",
-                "reference": null,
+                "reference": "9af95093ed41eaf653ba51415ff85b8a42f6532f",
                 "shasum": null
             },
             "require": {
@@ -2752,7 +2752,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -3359,16 +3359,16 @@
         },
         {
             "name": "psr/http-message",
-            "version": "1.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-message.git",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298"
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
                 "shasum": ""
             },
             "require": {
@@ -3396,6 +3396,7 @@
                 }
             ],
             "description": "Common interface for HTTP messages",
+            "homepage": "https://github.com/php-fig/http-message",
             "keywords": [
                 "http",
                 "http-message",
@@ -3404,7 +3405,7 @@
                 "request",
                 "response"
             ],
-            "time": "2015-05-04 20:22:00"
+            "time": "2016-08-06 14:39:51"
         },
         {
             "name": "psr/log",
@@ -6132,7 +6133,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "6d717e1a5a5dd592ebbeaafad11746849fb52532"
+                "reference": "5ebc42e0014720e4d9037273dadc3355d772ccd0"
             },
             "require": {
                 "php": ">=5.4.0",
@@ -6154,7 +6155,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-07-05 20:48:03"
+            "time": "2016-06-16 22:06:40"
         },
         {
             "name": "drupal/config_devel",
@@ -6187,7 +6188,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_update.git",
-                "reference": "0c8717fc15472342f699dbe8ce87dfffa25539fb"
+                "reference": "ac1526df5836a611f04bb421945beddb6306b7f2"
             },
             "require": {
                 "drupal/config": "8.*",
@@ -6212,7 +6213,7 @@
             ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
-            "time": "2016-07-21 18:32:32"
+            "time": "2016-03-01 16:28:35"
         },
         {
             "name": "drupal/devel",
