@@ -5,15 +5,15 @@
  * Provides functionality for the news content entity.
  */
 
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\NodeInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\og\Og;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_news\Guard\FulfillmentGuard;
+use Drupal\node\NodeInterface;
+use Drupal\og\Og;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -52,8 +52,11 @@ function joinup_news_node_access(EntityInterface $node, $op, AccountInterface $a
 
   // Check if the user is a member and has a global permission.
   if ($op == 'view' && !$node->isPublished()) {
-    $parent = joinup_news_get_parent($node);
+    $parent = FulfillmentGuard::getParent($node);
     // Temporary workaround because Og is not checking for membership.
+    // @todo Remove workaround as soon as this is fixed in OG.
+    // @see https://github.com/amitaibu/og/pull/217
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2622
     if ($parent instanceof RdfInterface && Og::isMember($parent, Drupal::currentUser())) {
       /** @var \Drupal\Core\Access\AccessResult $global_permission */
       $global_permission = \Drupal::service('og.access')->userAccessEntity('view any unpublished content', $parent, $account);
@@ -131,30 +134,4 @@ function joinup_news_field_widget_form_alter(&$element, FormStateInterface $form
     $default_value = array_keys($allowed_transitions);
     $element['#default_value'] = reset($default_value);
   }
-}
-
-/**
- * Returns the owner entity of this node if it exists.
- *
- * The news entity can belong to a collection or a solution, depending on
- * how it was created. This function will return the parent of the entity.
- *
- * @param \Drupal\Core\Entity\EntityInterface $entity
- *    The news content entity.
- *
- * @return \Drupal\rdf_entity\RdfInterface|null
- *    The parent of the entity. This can be a collection or a solution.
- *    If there is no parent found, return NULL.
- */
-function joinup_news_get_parent(EntityInterface $entity) {
-  $parent = NULL;
-  if (!empty($entity->og_group_ref->first()->target_id)) {
-    /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    $parent = Rdf::load($entity->og_group_ref->first()->target_id);
-  }
-  if (!empty($entity->field_news_parent->first()->target_id)) {
-    /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    $parent = Rdf::load($entity->field_news_parent->first()->target_id);
-  }
-  return $parent;
 }

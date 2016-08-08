@@ -17,7 +17,7 @@ config_devel:
   - field.field.node.event.field_event_short_title
   - field.field.node.event.field_event_start_date
   - field.field.node.event.field_event_web_url
-  - field.field.node.event.og_group_ref
+  - field.field.node.event.og_audience
   - field.storage.node.field_event_adtl_address_info
   - field.storage.node.field_event_agenda
   - field.storage.node.field_event_contact_email

@@ -1,0 +1,37 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_isr_banner
+    - rdf_entity.rdfentity.asset_release
+  module:
+    - image
+id: rdf_entity.asset_release.field_isr_banner
+field_name: field_isr_banner
+entity_type: rdf_entity
+bundle: asset_release
+label: Banner
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: 'asset_release/[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'png jpg jpeg'
+  max_filesize: '3 MB'
+  max_resolution: ''
+  min_resolution: 2400x770
+  alt_field: false
+  alt_field_required: true
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: image

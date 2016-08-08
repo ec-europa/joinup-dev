@@ -10,37 +10,40 @@
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~0.10",
         "drupal/core": "~8.1.0",
-        "drupal/facets" : "~8.1.0-alpha3",
-        "drupal/og": "dev-ISAICP-2362-DEV",
-        "drupal/og_menu": "dev-8.x-1.x",
+        "drupal/ds": "^8.2",
+        "drupal/facets" : "dev-8.x-1.x#70f2b89823e2499ad8b097190145943a0e412e85",
+        "drupal/inline_entity_form": "8.1.x-dev",
+        "drupal/og": "dev-check-group-content-crud-access",
+        "drupal/og_menu": "dev-8.x-1.x#8b3cdc10cfa72767a08789828d5583604e68bc53",
         "drupal/phing-drush-task": "1.0",
-        "drupal/r4032login": "dev-8.x-1.x",
-        "drupal/search_api": "~8.1.0-alpha15",
-        "drupal/search_api_solr": "dev-8.x-1.x",
-        "drupal/view_unpublished": "dev-8.x-1.x",
+        "drupal/r4032login": "dev-8.x-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
+        "drupal/search_api": "~8.1.0-alpha16",
+        "drupal/search_api_solr": "~8.1.0-alpha5",
+        "drupal/state_machine": "~8.1.0-beta2",
+        "drupal/view_unpublished": "dev-8.x-1.x#869c5b6b80f6badc0b39dff07ba852c9c967b9c7",
         "drush/drush": "~8.0",
-        "easyrdf/easyrdf": "dev-master as 0.9.1",
-        "google/material-design-lite": "dev-v1.1.3",
+        "easyrdf/easyrdf": "dev-master#1371c8af2abd3a948c50962b2212fce1912000e7 as 0.9.1",
         "ec-europa/infra": "~0.5",
+        "google/material-design-lite": "dev-v1.1.3",
         "pear/console_table": "~1.3.0",
         "phing/phing": "~2.10",
         "php": ">=5.5.9",
+        "solarium/solarium": "~3.6.0",
         "symfony/dependency-injection": "2.8.2",
-        "typhonius/behattask": "1.0",
-        "drupal/state_machine": "~8.1.0-beta2",
-        "drupal/ds": "^8.2"
+        "typhonius/behattask": "1.0"
     },
     "require-dev": {
         "behat/mink": "~1.6",
         "behat/mink-goutte-driver": "~1.2",
-        "drupal/coder": "dev-8.x-2.x",
-        "drupal/config_devel": "dev-8.x-1.x",
-        "drupal/config_update": "dev-8.x-1.x",
-        "drupal/devel": "dev-8.x-1.x",
-        "drupal/drupal-extension": "dev-support-drupal-8.1",
+        "drupal/coder": "dev-8.x-2.x#5ebc42e0014720e4d9037273dadc3355d772ccd0",
+        "drupal/config_devel": "dev-8.x-1.x#92f735cae8e9fb328edca285340a5bfbf72028cc",
+        "drupal/config_update": "dev-8.x-1.x#ac1526df5836a611f04bb421945beddb6306b7f2",
+        "drupal/devel": "~8.1.0-alpha1",
+        "drupal/drupal-extension": "~3.2",
         "jcalderonzumba/gastonjs": "^1.1@dev",
-        "jcalderonzumba/mink-phantomjs-driver": "dev-master#10d7c48c9a4129463052321b52450d98983c4332",
+        "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
         "mikey179/vfsStream": "~1.2",
+        "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.0",
         "phpunit/phpunit": "~4.8",
         "symfony/css-selector": "~2.8.0"
@@ -72,11 +75,14 @@
             "drupal/core": {
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
             },
-            "drupal/search_api": {
-                "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
+            "drupal/inline_entity_form": {
+                "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"
             },
             "drupal/r4032login": {
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
+            },
+            "drupal/search_api": {
+                "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
             }
         }
     },
@@ -133,12 +139,7 @@
         {
             "_comment": "This is the development repository of the D8 port of Organic Groups. Remove this when an official alpha release is made.",
             "type": "vcs",
-            "url": "git@github.com:ec-europa/og"
-        },
-        {
-            "_comment": "Use a fork of Behat Drupal Extension with a fix for #266.",
-            "type": "vcs",
-            "url": "https://github.com/pfrenssen/drupalextension.git"
+            "url": "git@github.com:amitaibu/og"
         },
         {
             "type": "vcs",

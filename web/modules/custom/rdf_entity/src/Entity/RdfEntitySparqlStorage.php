@@ -169,20 +169,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * {@inheritdoc}
    */
-  public function create(array $values = array()) {
-    if (!isset($values[$this->idKey])) {
-      $values[$this->idKey] = $this->generateId();
-    }
-    // Set the graph so it can be saved correctly later.
-    if (!isset($values['graph'])) {
-      $values['graph'] = $this->getGraph($values[$this->bundleKey]);
-    }
-    return parent::create($values);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function doLoadMultiple(array $ids = NULL) {
     // Attempt to load entities from the persistent cache. This will remove IDs
     // that were loaded from $ids.
@@ -700,12 +686,13 @@ QUERY;
    */
   protected function doSave($id, EntityInterface $entity) {
     $bundle = $entity->bundle();
-    // Force the graph.
-    if ($this->saveGraph) {
-      $graph = $this->getGraph($bundle, $this->saveGraph);
-    }
-    else {
-      $graph = $entity->graph;
+    // Generate an ID before saving, if none is available. If the ID generation
+    // occurs earlier in the process (like on EntityInterface::create()), the
+    // entity might be considered not new by modules that don't strictly use the
+    // EntityInterface::isNew() method.
+    if (empty($id)) {
+      $id = $this->generateId();
+      $entity->{$this->idKey} = (string) $id;
     }
     $insert = '';
     $properties = $this->getMappedProperties($entity);

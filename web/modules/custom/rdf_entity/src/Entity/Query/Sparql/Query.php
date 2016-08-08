@@ -253,7 +253,13 @@ class Query extends QueryBase implements QueryInterface {
         return $this;
       }
 
-      list ($field_name, $column) = explode('.', $property);
+      // @todo this code will be handled in ISAICP-2631
+      if (strpos($property, '.') !== FALSE) {
+        list ($field_name, $column) = explode('.', $property);
+      }
+      else {
+        $field_name = $property;
+      }
 
       $field_rdf_name = $this->getFieldRdfPropertyName($field_name, $field_storage_definitions);
 

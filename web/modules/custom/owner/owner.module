@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the Owner module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function owner_rdf_entity_presave(EntityInterface $entity) {
+  owner_entity_auto_label($entity);
+}
+
+/**
+ * Implements hook_inline_entity_form_table_fields_alter().
+ */
+function owner_inline_entity_form_table_fields_alter(&$fields, $context) {
+  // Replace headers in the table rendered in inline entity form widgets.
+  if (
+    $context['entity_type'] == 'rdf_entity' &&
+    $context['allowed_bundles'] === ['organisation', 'person']
+  ) {
+    if (isset($fields['label'])) {
+      $fields['label']['label'] = t('Name');
+    }
+
+    if (isset($fields['rid'])) {
+      $fields['rid']['label'] = t('Type');
+    }
+  }
+}
+
+/**
+ * Implements hook_inline_entity_form_entity_form_alter().
+ */
+function owner_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
+  // Add an entity builder callback to fill the label field with the values of
+  // the name field. This is needed because inline entity form doesn't save
+  // the entity until the parent entity is saved. Due to this, the label column
+  // in the widget table would be empty.
+  $entity_form['#entity_builders'][] = 'owner_inline_entity_form_entity_builder';
+}
+
+/**
+ * Entity builder callback for the inline entity creation form.
+ *
+ * @param string $entity_type
+ *   The type of the entity being created.
+ * @param EntityInterface $entity
+ *   The entity being built.
+ */
+function owner_inline_entity_form_entity_builder($entity_type, EntityInterface $entity) {
+  owner_entity_auto_label($entity);
+}
+
+/**
+ * Generates the entity label from the name field for owner entities.
+ *
+ * @param EntityInterface $entity
+ *   The entity to process.
+ */
+function owner_entity_auto_label(EntityInterface $entity) {
+  $fields = [
+    'organisation' => 'field_oo_name',
+    'person' => 'field_op_name',
+  ];
+
+  // Handle only our entity bundles.
+  if (!isset($fields[$entity->bundle()])) {
+    return;
+  }
+
+  // Generate the label using the values of the name field.
+  $field = $fields[$entity->bundle()];
+  $names = array_column($entity->get($field)->getValue(), 'value');
+  $entity->set('label', implode(', ', $names));
+}

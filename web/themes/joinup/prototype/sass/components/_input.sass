@@ -15,11 +15,13 @@
 
 .mdl-textfield__label
   top: 30px
+  &:after
+    top: 36px
+    bottom: auto
 
 .textfield__helptext
   font-size: $font-size-small - 1px
   font-weight: $font-weight-thin
-  position: absolute
   display: block
   margin-top: 6px
   color: $color-grey-medium
@@ -46,3 +48,4 @@
 .mdl-textfield--floating-label.is-focused
   .mdl-textfield__label:after
     background-color: $color-blue-medium
+    top: 62px
