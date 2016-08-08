@@ -32,12 +32,16 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
         $storage->setActiveGraphType('draft');
         // Draft version already exists.
-        if ($storage->load($event->getValue())) {
-          $event->setGraph('draft');
+        $entity = $storage->load($event->getValue());
+        if ($entity) {
+          if ($this->draftEnabled($entity_type_id, $entity->bundle())) {
+            $event->setGraph('draft');
+          }
         }
         // Use published version to create draft.
         else {
           // Keep track that the entity needs to be stored in the draft graph.
+          // @todo Check if drafting is enabled for this bundle here!!!
           $storage->setSaveGraph('draft');
           $event->setGraph('default');
         }
@@ -73,6 +77,22 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     $events['rdf_graph.entity_convert'][] = array('graphForEntityConvert');
     return $events;
+  }
+
+  /**
+   * Check if user enabled draft for this bundle.
+   *
+   * @param string $entity_type_id
+   *   Entity type name.
+   * @param string $bundle
+   *   Bundle name.
+   *
+   * @return bool
+   *   Enabled?
+   */
+  protected function draftEnabled($entity_type_id, $bundle) {
+    $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_' . $entity_type_id);
+    return !empty($enabled_bundles[$bundle]);
   }
 
 }

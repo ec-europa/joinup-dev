@@ -10,3 +10,11 @@ rdf_entity_rdf.admin.structure.settings:
   description: 'Create RDF bundles and manage their default settings.'
   route_name:  entity.rdf_type.collection
   parent: system.admin_structure
+
+rdf_entity.admin_index:
+  title: RDF
+  route_name: rdf_entity.admin_index
+  parent: system.admin_config
+  description: 'Administer the suite of RDF modules.'
+  position: right
+  weight: -5
