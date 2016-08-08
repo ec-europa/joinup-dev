@@ -137,17 +137,17 @@ field_settings:
         - 'entity:node/og_audience'
         - 'entity:rdf_entity/og_audience'
 processor_settings:
+  add_url:
+    plugin_id: add_url
+    settings:
+      weights:
+        preprocess_index: -30
   rendered_item:
     plugin_id: rendered_item
     settings: {  }
   aggregated_field:
     plugin_id: aggregated_field
     settings: {  }
-  add_url:
-    plugin_id: add_url
-    settings:
-      weights:
-        preprocess_index: -30
 options:
   index_directly: true
   cron_limit: 50

@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.node.news.body
     - field.field.node.news.field_news_kicker
+    - field.field.node.news.field_news_parent
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_state
     - field.field.node.news.field_spatial_coverage
@@ -70,6 +71,7 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_news_parent: true
   og_audience: true
   path: true
   promote: true

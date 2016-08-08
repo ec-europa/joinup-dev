@@ -5,8 +5,11 @@ dependencies:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.news.body
     - field.field.node.news.field_news_kicker
+    - field.field.node.news.field_news_parent
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_state
+    - field.field.node.news.field_spatial_coverage
+    - field.field.node.news.field_topic
     - field.field.node.news.og_audience
     - node.type.news
   module:
@@ -170,4 +173,7 @@ content:
       link: true
     third_party_settings: {  }
 hidden:
+  field_news_parent: true
   field_news_state: true
+  field_spatial_coverage: true
+  field_topic: true

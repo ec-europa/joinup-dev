@@ -13,7 +13,7 @@ entity_type: rdf_entity
 type: og_standard_reference
 settings:
   target_type: rdf_entity
-module: core
+module: og
 locked: false
 cardinality: 1
 translatable: true
