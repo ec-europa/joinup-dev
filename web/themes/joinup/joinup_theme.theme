@@ -136,8 +136,12 @@ function joinup_theme_preprocess_container(&$variables) {
     'collection.propose_form',
     'entity.rdf_entity.edit_form',
   );
+
   // Check if container is field element - it has only one parent.
-  if (!empty($route_name) && in_array($route_name, $form_routes) && isset($variables['element']['#parents']) && count($variables['element']['#parents']) == 1) {
+  if (!empty($route_name) && in_array($route_name, $form_routes)
+    && isset($variables['element']['#parents'])
+    && count($variables['element']['#parents']) == 1
+    && $variables['element']['#id'] != 'edit-actions') {
     $variables['is_form_wrapper'] = TRUE;
   }
 }
@@ -146,7 +150,7 @@ function joinup_theme_preprocess_container(&$variables) {
  * Implements hook_theme_suggestions_alter().
  */
 function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables) {
-  if (isset($variables['element']) && isset($variables['element']['#type'])) {
+  if (isset($variables['element']['#type'])) {
     $original_theme_hook = $variables['theme_hook_original'];
     $floating_label_types = array(
       'textfield',
@@ -178,15 +182,13 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
       $suggestions[] = $original_theme_hook . '__' . $button_value;
     }
 
-    if ($variables['theme_hook_original'] == 'form_element') {
-      $original_theme_hook = $variables['theme_hook_original'];
+    if ($original_theme_hook == 'form_element') {
       $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $variables['element']['#type']);
     }
 
     $slider_ids = array(
       'edit-field-ar-elibrary-creation',
       'edit-field-is-elibrary-creation',
-      'edit-field-ar-owner-actions-bundle',
     );
 
     if ($variables['theme_hook_original'] == 'select' && in_array($variables['element']['#id'], $slider_ids)) {
