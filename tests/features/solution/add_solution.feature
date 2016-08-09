@@ -43,8 +43,7 @@ Feature: "Add solution" visibility options.
       | Documentation    | text.pdf                                                                  |
       | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)           |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)    |
-      | Topic            | Health (http://publications.europa.eu/resource/authority/data-theme/HEAL) |
-      | Language         | Flemish (http://publications.europa.eu/resource/authority/language/VLS)   |
+      | Language         | http://publications.europa.eu/resource/authority/language/VLS   |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I attach the file "text.pdf" to "Documentation"
     And I attach the file "logo.png" to "Logo"
@@ -64,7 +63,6 @@ Feature: "Add solution" visibility options.
     And I should see the link "Collection solution test 2"
     And I should see the link "Environment (WIP!)"
     And I should see the link "Belgium"
-    And I should see the link "Health"
     And I should see the link "Flemish"
     When I click "Collection solution test 2"
     Then I should see the heading "Collection solution test 2"

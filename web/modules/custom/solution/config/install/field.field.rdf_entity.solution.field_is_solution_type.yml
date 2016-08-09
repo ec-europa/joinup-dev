@@ -10,8 +10,8 @@ field_name: field_is_solution_type
 entity_type: rdf_entity
 bundle: solution
 label: 'Solution type'
-description: ''
-required: false
+description: 'EIA Building block'
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
