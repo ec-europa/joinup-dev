@@ -188,7 +188,6 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
 
     $slider_ids = array(
       'edit-field-ar-elibrary-creation',
-      'edit-field-is-elibrary-creation',
     );
 
     if ($variables['theme_hook_original'] == 'select' && in_array($variables['element']['#id'], $slider_ids)) {
