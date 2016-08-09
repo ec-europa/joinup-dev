@@ -36,7 +36,6 @@ Feature: Proposing a collection
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
       | Policy domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)                                      |
-      | Topic            | Economy and finance (http://publications.europa.eu/resource/authority/data-theme/ECON)               |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)                               |
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
@@ -50,7 +49,6 @@ Feature: Proposing a collection
     And I press "Save"
     Then I should see the heading "Ancient and Classical Mythology"
     And I should see the text "Environment (WIP!)"
-    And I should see the text "Economy and finance"
     And I should see the text "Belgium"
 
     # The user that proposed the collection should be auto-subscribed.
