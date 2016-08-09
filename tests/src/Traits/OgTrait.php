@@ -7,6 +7,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Contains helper methods regarding the organic groups.
@@ -66,6 +67,34 @@ trait OgTrait {
     }
 
     return $roles;
+  }
+
+  /**
+   * Asserts that a group is owned by a user.
+   *
+   * An ownership is defined as having a specific set of roles in that group.
+   *
+   * @param AccountInterface $user
+   *    The user to be checked.
+   * @param RdfInterface $group
+   *    The group entity. In this project, only rdf entities are groups.
+   * @param array $roles
+   *    An array of roles to be checked. Roles must be passed as simple names
+   *    and not as full IDs. Names will be converted accordingly to IDs.
+   *
+   * @throws \Exception
+   *    Throws exception when the user is not a member or is not an owner.
+   */
+  protected function assertOgGroupOwnership(AccountInterface $user, RdfInterface $group, $roles) {
+    $membership = Og::getMembership($group, $user);
+    if (empty($membership)) {
+      throw new \Exception("User {$user->getAccountName()} is not a member of the {$group->label()} group.");
+    }
+
+    $roles = $this->convertOgRoleNamesToIds($roles, $group);
+    if (array_intersect($roles, $membership->getRolesIds()) != $roles) {
+      throw new \Exception("User {$user->getAccountName()} is not the owner of the {$group->label()} group.");
+    }
   }
 
   /**

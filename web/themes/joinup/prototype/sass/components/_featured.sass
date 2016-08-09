@@ -39,7 +39,7 @@
 .featured__text
   position: relative
   margin: 0 0 30px 0
-  padding: 25px 0
+  padding: 25px 20px
   text-align: center
   letter-spacing: 2px
   text-transform: uppercase
@@ -59,29 +59,27 @@
 .featured__stats
   display: inline-block
   margin-bottom: 20px
+  padding: 15px 30px
   text-align: left
   vertical-align: middle
+  background-color: #fff
   +border-radius(3px)
   +breakpoint(tablet)
     margin: 0 20px 0 0
-    padding: 15px 30px
-    background-color: #fff
-
   .stats__column
     float: left
     &:first-of-type
       margin-right: 40px
-
   .stats__icon,
   .stats__text
     display: inline-block
     vertical-align: middle
-    color: #fff
-    +breakpoint(tablet)
-      color: $color-base
-
   .stats__icon
     +icon-size(30px)
+
+.featured__menu-button
+  width: 60px
+  height: 60px
 
 .featured__menu
   position: absolute
@@ -94,6 +92,7 @@
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
+    color: #fff
     +icon-size(60px)
 
 .featured__menu-link
@@ -114,29 +113,26 @@
     +breakpoint(sm-mobile, mobile)
       display: block
       margin: 0 auto
-  .button--circle-wrapper
-    position: absolute
-    right: 20px
-    bottom: -40px
-    width: 80px
-    height: 80px
-    border-radius: 50%
-    background-color: $color-grey-bg
+  .circle-menu
+    position: fixed
+    right: 40px
+    bottom: 40px
+    +breakpoint(mobile)
+      position: absolute
+      bottom: -40px
+      width: 80px
+      height: 80px
+      border-radius: 50%
+      background-color: $color-grey-bg
     +breakpoint(lg-desktop)
       right: 0
-  .button--circle
+  .circle-menu__button
     position: absolute
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
-    background-color: $color-orange !important
     .icon
       position: absolute
       top: 50%
       left: 50%
       transform: translate(-50%, -50%)
-      color: #fff
-      +icon-size(45px)
-
-    .mdl-ripple
-      background-color: #fff
