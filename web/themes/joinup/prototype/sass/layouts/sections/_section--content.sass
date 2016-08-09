@@ -15,8 +15,12 @@
 
 .page__content
   min-height: min-content
-  padding: 40px 60px
+  padding: 20px
   background-color: #fff
+  +breakpoint(tablet)
+    padding: 40px 30px
+  +breakpoint(desktop)
+    padding: 40px 60px
 
 // Modifiers
 // --------------------------------------------------
@@ -30,4 +34,3 @@
     left: -55px
     transform: translateY(-50%)
     +icon-size(50px)
-
