@@ -11,6 +11,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -94,6 +95,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
           throw new \Exception("Unknown column '$key' in asset distribution table.");
         }
       };
+
+      $values = $this->convertValueAliases($values);
+
       $this->createAssetDistribution($values);
     }
   }
@@ -131,6 +135,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
         throw new \Exception("Unknown column '$key' in solution table.");
       }
     };
+
+    $values = $this->convertValueAliases($values);
+
     $this->createAssetDistribution($values);
   }
 
@@ -224,6 +231,20 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
+   * Navigates to the canonical page display of an asset release.
+   *
+   * @param string $title
+   *   The title of the asset distribution.
+   *
+   * @When (I )go to (the homepage of )the :asset_distribution asset distribution
+   * @When (I )visit (the homepage of )the :asset_distribution asset distribution
+   */
+  public function visitAssetDistribution($title) {
+    $distribution = $this->getAssetDistributionByName($title);
+    $this->visitPath($distribution->url());
+  }
+
+  /**
    * Remove any created asset distributions.
    *
    * @AfterScenario
@@ -255,8 +276,27 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       'licence' => 'field_ad_licence',
       'modification date' => 'field_ad_modification_date',
       'representation technique' => 'field_ad_repr_technique',
+      'solution' => OgGroupAudienceHelper::DEFAULT_FIELD,
       'status' => 'field_status',
     ];
+  }
+
+  /**
+   * Converts values from user friendly to normal machine values.
+   *
+   * @param array $fields
+   *    An array of fields keyed by field name.
+   *
+   * @return array
+   *    The array with the values converted.
+   */
+  protected function convertValueAliases($fields) {
+    if (isset($fields[OgGroupAudienceHelper::DEFAULT_FIELD])) {
+      $solution = $this->getRdfEntityByLabel($fields[OgGroupAudienceHelper::DEFAULT_FIELD], 'solution');
+      $fields[OgGroupAudienceHelper::DEFAULT_FIELD] = $solution->id();
+    }
+
+    return $fields;
   }
 
 }

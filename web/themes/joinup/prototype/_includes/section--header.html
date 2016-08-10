@@ -1,10 +1,13 @@
 <header class="section section--header mdl-layout__header">
   <div class="container-fluid">
-    <div class="region region--header mdl-layout__header-row">
-      <a href="/" class="header-logo mdl-layout-title" title="Home"></a>
+    <div class="mdl-layout__header-row">
+      <a href="/" class="header-logo mdl-layout-title" title="Home">
+        <img src="../images/logo.png">
+      </a>
       <div class="mdl-layout-spacer"></div>
+      <!-- Header menu displayed from 840px -->
       <nav class="header-menu mdl-navigation">
-        <a class="header-menu__link mdl-navigation__link" href="#">
+        <a class="header-menu__link mdl-navigation__link" href="/solutions">
           <span class="header-menu__wrapper">
             <span class="header-menu__icon icon icon--solution"></span>
             <span class="header-menu__text">Solutions</span>            
@@ -28,7 +31,7 @@
       mdl-textfield--floating-label mdl-textfield--align-right">
         <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon"
         for="search-bar__input">
-        <i class="search-bar__icon material-icons"></i>
+          <span class="search-bar__icon icon icon--search"></span>
         </label>
         <div class="search-bar__input-container mdl-textfield__expandable-holder">
           <input class="search-bar__input mdl-textfield__input" type="text" name="search"
@@ -48,3 +51,11 @@
     </div>
   </div>
 </header>
+<!-- Header menu displayed to 839px -->
+<div class="mdl-layout__drawer">
+  <nav class="mdl-navigation">
+    <a class="mdl-navigation__link" href="/solutions">Solutions</a>
+    <a class="mdl-navigation__link" href="/collections">Collections</a>
+    <a class="mdl-navigation__link" href="">Events</a>
+  </nav>
+</div>

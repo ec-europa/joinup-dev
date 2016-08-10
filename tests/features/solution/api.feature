@@ -1,3 +1,4 @@
+@api
 Feature: Solution API
   In order to manage solutions programmatically
   As a backend developer
@@ -19,7 +20,6 @@ Feature: Solution API
       | title             | Solution API foo  |
       | logo              | logo.png          |
       | moderation        | yes               |
-      | closed            | yes               |
       | elibrary creation | facilitators      |
       | affiliates        | My first solution |
     Then I should have 1 solution
@@ -33,7 +33,47 @@ Feature: Solution API
       | title             | Solution API bar            |
       | logo              | logo.png                    |
       | moderation        | yes                         |
-      | closed            | yes                         |
       | elibrary creation | facilitators                |
       | affiliates        | My first solution mandatory |
     Then I should have 1 solution
+
+  Scenario: Assign ownership during creation of solutions through UI
+    Given the following organisation:
+      | name | Leechidna |
+    And the following contact:
+      | name  | Gopheadow               |
+      | email | solutionAPI@example.com |
+    And users:
+      | name              | pass |
+      | Solution API user | pass |
+    And the following collection:
+      | title             | This is a klm collection |
+      | logo              | logo.png                 |
+      | banner            | banner.jpg               |
+      | moderation        | no                       |
+      | closed            | no                       |
+      | elibrary creation | facilitators             |
+    And the following collection user memberships:
+      | user              | collection               | roles       |
+      | Solution API user | This is a klm collection | facilitator |
+    And I am logged in as "Solution API user"
+    When I visit the "This is a klm collection" collection
+    Then I should see the link "Add solution"
+    And I click "Add solution"
+    When I fill in the following:
+      | Title       | Solution API example                         |
+      | Description | We do not care that much about descriptions. |
+    And I attach the file "logo.png" to "Logo"
+    And I attach the file "banner.jpg" to "Banner"
+    And I press "Add existing" at the "Contact information" field
+    And I fill in "Contact information" with "Gopheadow"
+    And I press "Add contact information"
+    And I press "Add existing owner" at the "Owner" field
+    And I fill in "Owner" with "Leechidna"
+    And I press "Add owner"
+    And I press "Save"
+    Then I should see the heading "Solution API example"
+    And the user "Solution API user" should be the owner of the "Solution API example" solution
+
+    # Cleanup step.
+    Then I delete the "Solution API example" solution

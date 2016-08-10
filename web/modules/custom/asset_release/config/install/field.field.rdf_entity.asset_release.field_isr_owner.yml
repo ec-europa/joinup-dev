@@ -4,7 +4,7 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_isr_owner
     - rdf_entity.rdfentity.asset_release
-    - rdf_entity.rdfentity.organization
+    - rdf_entity.rdfentity.organisation
     - rdf_entity.rdfentity.person
 id: rdf_entity.asset_release.field_isr_owner
 field_name: field_isr_owner
@@ -20,10 +20,10 @@ settings:
   handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
-      organization: organization
+      organisation: organisation
       person: person
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: organization
+    auto_create_bundle: organisation
 field_type: entity_reference

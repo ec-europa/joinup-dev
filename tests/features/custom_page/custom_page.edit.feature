@@ -13,7 +13,7 @@ Feature: "Custom page" editing.
       | title       | Dumbo Collective                                                            |
       | description | Featuring a semi-anthropomorphic elephant who is cruelly nicknamed "Dumbo". |
       | logo        | logo.png                                                                    |
-    And the following user memberships:
+    And the following collection user memberships:
       | collection       | user         | roles       |
       | Dumbo Collective | Mickey Mouse | facilitator |
       | Dumbo Collective | Pluto        | member      |
@@ -33,6 +33,7 @@ Feature: "Custom page" editing.
     # A moderator can edit all custom pages.
     When I am logged in as a user with the moderator role
     And I go to the "Buena Vista Distribution Company" custom page
+    # Moderators have the 'administer nodes' permission.
     Then I should see the link "Edit"
     # A normal logged in user should not be able to edit the custom page.
     When I am logged in as a user with the authenticated role

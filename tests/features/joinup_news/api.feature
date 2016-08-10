@@ -12,7 +12,6 @@ Feature: News API
       | owner             | Rufus Drumknott |
       | logo              | logo.png        |
       | moderation        | yes             |
-      | closed            | yes             |
       | elibrary creation | facilitators    |
     And news content:
       | title      | body                                     | collection      |
