@@ -18,3 +18,15 @@
 
 .right
   text-align: right
+
+.hide--phone
+  +breakpoint(sm-mobile, mobile)
+    display: none !important
+
+.hide--tablet
+  +breakpoint(mobile, tablet)
+    display: none !important
+
+.hide--desktop
+  +breakpoint(tablet, desktop)
+    display: none !important
