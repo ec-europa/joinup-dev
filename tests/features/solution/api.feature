@@ -58,6 +58,7 @@ Feature: Solution API
       | Solution API user | This is a klm collection | facilitator |
     And I am logged in as "Solution API user"
     When I visit the "This is a klm collection" collection
+    # And I click on element ".mdl-button__ripple-container"
     Then I should see the link "Add solution"
     And I click "Add solution"
     When I fill in the following:
@@ -66,10 +67,15 @@ Feature: Solution API
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I press "Add existing" at the "Contact information" field
+    # Then I wait for AJAX to finish
     And I fill in "Contact information" with "Gopheadow"
     And I press "Add contact information"
     And I press "Add existing owner" at the "Owner" field
+    # Then I wait for AJAX to finish
     And I fill in "Owner" with "Leechidna"
+    And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
+    And I fill in "Policy Domain" with "Health"
+    And I select "[ABB8] Citizen" from "Solution type"
     And I press "Add owner"
     And I press "Save"
     Then I should see the heading "Solution API example"
