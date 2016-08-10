@@ -144,13 +144,6 @@ content:
     weight: 10
     settings: {  }
     third_party_settings: {  }
-  field_is_wiki:
-    weight: 17
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
   field_policy_domain:
     type: entity_reference_autocomplete
     weight: 5
@@ -203,5 +196,6 @@ hidden:
   field_is_version: true
   field_is_webdav_creation: true
   field_is_webdav_url: true
+  field_is_wiki: true
   field_keywords: true
   og_group_ref: true
