@@ -39,4 +39,12 @@
       });
     }
   };
+
+  Drupal.behaviors.ajaxReload = {
+    attach: function (context, settings) {
+      $(document).ajaxComplete(function (event, xhr, settings) {
+        componentHandler.upgradeAllRegistered();
+      });
+    }
+  }
 })(jQuery);
