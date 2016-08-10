@@ -106,7 +106,8 @@ Feature: Proposing a collection
 
     # When toggling to closed, the option 'any registered user' should disappear
     # and the option for facilitators should appear.
-    When I check "Closed collection"
+    # When I check "Closed collection"
+    When I click on element ".js-form-item-field-ar-closed-value label"
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected
     And I should not see the text "Any registered user can create new content."
@@ -121,7 +122,9 @@ Feature: Proposing a collection
     # and the default option were selected after cycling the collection
     # checkbox status open-closed-open-closed.
     # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
-    When I uncheck "Closed collection"
-    And I check "Closed collection"
+    # When I uncheck "Closed collection"
+    When I click on element ".js-form-item-field-ar-closed-value label"
+    # And I check "Closed collection"
+    When I click on element ".js-form-item-field-ar-closed-value label"
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected
