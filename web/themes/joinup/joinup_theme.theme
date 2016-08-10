@@ -67,6 +67,7 @@ function joinup_theme_preprocess_page_title(&$variables) {
     'node.add_page',
     'rdf_entity.rdf_add',
     'rdf_entity.rdf_add_page',
+    'collection.propose_form',
   );
 
   if (!empty($route_name) && in_array($route_name, $create_content_routes)) {
