@@ -12,10 +12,12 @@ use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgMenuTrait;
+use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\Entity\OgMembership;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgMembershipInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -27,6 +29,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use FileTrait;
   use NodeTrait;
   use OgMenuTrait;
+  use OgTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
 
@@ -38,13 +41,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   protected $collections = [];
 
   /**
-   * Navigates to the add collection form.
+   * Navigates to the propose collection form.
    *
-   * @When (I )go to the add collection form
-   * @When (I )visit the add collection form
+   * @When (I )go to the propose collection form
+   * @When (I )visit the propose collection form
    */
-  public function visitAddCollectionForm() {
-    $this->visitPath('/rdf_entity/add/collection');
+  public function visitProposeCollectionForm() {
+    $this->visitPath('collection/propose');
   }
 
   /**
@@ -377,15 +380,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *   Thrown when a collection is not found.
    *
-   * @Given (the following )user memberships:
+   * @Given (the following )collection user memberships:
    */
-  public function givenUserMemberships(TableNode $membership_table) {
+  public function givenCollectionUserMemberships(TableNode $membership_table) {
     foreach ($membership_table->getColumnsHash() as $values) {
       // Load group.
       $group = $this->getCollectionByName($values['collection']);
-      if (empty($group)) {
-        throw new \Exception("Collection " . $values['collection'] . " not found.");
-      }
 
       // Load member.
       $member = user_load_by_name($values['user']);
@@ -393,25 +393,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         throw new \Exception("User " . $values['user'] . " not found.");
       }
 
-      /** @var \Drupal\og\OgMembershipInterface $membership */
-      $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
-      $membership
-        ->setUser($member->id())
-        ->setEntityId($group->id())
-        ->setGroupEntityType($group->getEntityTypeId())
-        ->setFieldName($membership->getFieldName())
-        ->save();
-
+      // Convert role names to role IDs.
+      $roles = [];
       if (!empty($values['roles'])) {
-        $roles = explode(',', $values['roles']);
-        foreach ($roles as $role) {
-          // The role ID is comprised of the entity type ID, bundle ID and role
-          // name, separated by dashes.
-          $role_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . trim($role);
-          $membership->addRole($role_id);
-        }
+        $roles = $this->getOgRoles(explode(', ', $values['roles']), $group);
       }
-      $membership->save();
+
+      $this->subscribeUserToGroup($member, $group, $roles);
     }
   }
 
@@ -436,7 +424,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
       /** @var \Drupal\node\NodeInterface $content */
       $content = $this->getNodeByTitle($values['content'], $bundle);
-      $content->get('og_group_ref')->set(0, $group->id());
+      $content->get(OgGroupAudienceHelper::DEFAULT_FIELD)->set(0, $group->id());
       $content->save();
     }
   }
@@ -481,6 +469,38 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
 
       $this->createOgMenuItem($menu_item_data);
     }
+  }
+
+  /**
+   * Asserts that a user is an owner of the given collection.
+   *
+   * To be owner of a collection, a user should be an administrator,
+   * a facilitator and a member.
+   *
+   * @param string $username
+   *    The name of the user.
+   * @param string $rdf_entity
+   *    The label of the group entity.
+   *
+   * @throws \Exception
+   *    Throws an exception when the user is not found.
+   *
+   * @Given (the user ):username should be the owner of the :rdf_entity collection
+   */
+  public function assertCollectionOwnership($username, $rdf_entity) {
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      throw new \Exception("User {$username} could not be found.");
+    }
+
+    $collection = $this->getRdfEntityByLabel($rdf_entity, 'collection');
+    $owner_roles = [
+      OgRoleInterface::ADMINISTRATOR,
+      OgRoleInterface::AUTHENTICATED,
+      'facilitator',
+    ];
+
+    $this->assertOgGroupOwnership($user, $collection, $owner_roles);
   }
 
   /**

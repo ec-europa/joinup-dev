@@ -11,8 +11,11 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
+use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -23,6 +26,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use EntityReferenceTrait;
   use FileTrait;
   use NodeTrait;
+  use OgTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
 
@@ -180,9 +184,40 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
       $content = $this->getNodeByTitle($values['content'], $bundle);
-      $content->get('og_group_ref')->set(0, $group->id());
+      $content->get(OgGroupAudienceHelper::DEFAULT_FIELD)->set(0, $group->id());
       $content->save();
     }
+  }
+
+  /**
+   * Asserts that a user is an owner of the given solution.
+   *
+   * To be owner of a solution, a user should be an administrator and
+   * a facilitator.
+   *
+   * @param string $username
+   *    The name of the user.
+   * @param string $solution
+   *    The label of the group entity.
+   *
+   * @throws \Exception
+   *    Throws an exception when the user is not found.
+   *
+   * @Given (the user ):username should be the owner of the :solution solution
+   */
+  public function assertSolutionOwnership($username, $solution) {
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      throw new \Exception("User {$username} could not be found.");
+    }
+
+    $solution = $this->getRdfEntityByLabel($solution, 'solution');
+    $owner_roles = [
+      OgRoleInterface::ADMINISTRATOR,
+      'facilitator',
+    ];
+
+    $this->assertOgGroupOwnership($user, $solution, $owner_roles);
   }
 
   /**
@@ -333,6 +368,48 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Subscribes the given users to the given solution.
+   *
+   * The role Id of organic group roles are consisting of 3 parts, the entity
+   * type ID and the bundle of the group, and the machine name of the role.
+   * Do not provide the complete ID of the Og role. The entity type ID and
+   * bundle are going to be added automatically.
+   *
+   * Table format:
+   * | solution          | user | roles                      |
+   * | Sample solution A | John | facilitator, administrator |
+   * | Sample solution B | Jack |                            |
+   *
+   * @param TableNode $membership_table
+   *   The membership table.
+   *
+   * @throws \Exception
+   *   Thrown when a solution is not found.
+   *
+   * @Given (the following )solution user memberships:
+   */
+  public function givenSolutionUserMemberships(TableNode $membership_table) {
+    foreach ($membership_table->getColumnsHash() as $values) {
+      // Load group.
+      $group = $this->getSolutionByName($values['solution']);
+
+      // Load member.
+      $member = user_load_by_name($values['user']);
+      if (empty($member)) {
+        throw new \Exception('User ' . $values['user'] . ' not found.');
+      }
+
+      // Convert role names to role IDs.
+      $roles = [];
+      if (!empty($values['roles'])) {
+        $roles = $this->getOgRoles(explode(', ', $values['roles']), $group);
+      }
+
+      $this->subscribeUserToGroup($member, $group, $roles);
+    }
+  }
+
+  /**
    * Remove any created solutions.
    *
    * @AfterScenario
@@ -363,7 +440,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'distribution' => 'field_is_distribution',
       'documentation' => 'field_is_documentation',
       'elibrary creation' => 'field_is_elibrary_creation',
-      'issue tracker' => 'field_is_issue_tracker',
       'keywords' => 'field_keywords',
       'landing page' => 'field_is_landing_page',
       'language' => 'field_is_language',
@@ -383,7 +459,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
-      'collection' => 'og_group_ref',
+      'collection' => OgGroupAudienceHelper::DEFAULT_FIELD,
     ];
   }
 
@@ -417,18 +493,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     // Convert any entity reference field label value with the entity id.
     $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $fields);
-
-    // Check for the OG group.
-    if (isset($fields['field_is_distribution'])) {
-      $distribution = $this->getRdfEntityByLabel($fields['field_is_distribution'], 'asset_distribution');
-      $fields['field_is_distribution'] = [$distribution->id()];
-    }
-
-    // Check for the OG group.
-    if (isset($fields['og_group_ref'])) {
-      $collection = $this->getRdfEntityByLabel($fields['og_group_ref'], 'collection');
-      $fields['og_group_ref'] = $collection->id();
-    }
 
     return $fields;
   }

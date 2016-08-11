@@ -22,6 +22,70 @@
 .tab--horizontal
   border-bottom: 1px solid $color-grey-light
 
+.tab--content-type
+  position: relative
+  +breakpoint(sm-mobile, mobile)
+    margin-bottom: 30px
+    &:last-of-type
+      margin-bottom: 0
+  +breakpoint(mobile)
+    width: 28%
+    height: 100px
+    margin-right: 30px
+  .tab__icon
+    color: lighten($color-grey-medium, 10%)
+    position: absolute
+    top: -12px
+    left: -18px
+    +icon-size(80px)
+  .tab__text
+    margin-bottom: 15px
+    padding-left: 60px
+  .tab__text--upper,
+  .tab__text--lower
+    text-align: left
+  .tab__text--upper
+    font-size: 32px
+    font-weight: $font-weight-bold
+
+.tabs--content-type
+  margin: 30px 0
+  border-bottom: 1px solid darken($color-grey-light, 5%)
+  +breakpoint(mobile)
+    display: flex
+    justify-content: center
+    align-items: center
+    text-align: center
+    border-bottom: none
+
+.tab--more-wrapper
+  +breakpoint(tablet)
+    width: 100%
+    position: absolute
+    top: 30%
+    left: 50%
+    transform: translate(-50%, -50%)
+
+.tab--more
+  position: relative
+  text-align: center
+  +breakpoint(sm-mobile, tablet)
+    padding: 20px 0
+  +breakpoint(tablet)
+    width: 16%
+    height: 100px
+  .tab__text,
+  .tab__icon
+    display: inline-block
+    vertical-align: middle
+    color: $color-orange
+  .tab__text
+    font-size: $font-size-small
+    text-transform: uppercase
+    font-weight: $font-weight-bold
+  .tab__icon
+    +icon-size(25px)
+
 // Dependiencies
 // --------------------------------------------------
 
@@ -31,3 +95,21 @@
   border-bottom: 1px solid #fff
   background-color: #fff
   font-weight: $font-weight-medium
+
+.tab--content-type.is-active
+  position: relative
+  border-bottom: 2px solid $color-orange
+  .tab__icon
+    color: $color-base
+  &:after
+    content: ""
+    position: absolute
+    right: 0
+    left: 0
+    bottom: -6px
+    margin: 0 auto
+    width: 0
+    height: 0
+    border-left: 4px solid transparent
+    border-right: 4px solid transparent
+    border-top: 4px solid $color-orange

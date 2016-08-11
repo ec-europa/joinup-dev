@@ -7,7 +7,7 @@ dependencies:
     - field.field.node.document.field_document_publication_date
     - field.field.node.document.field_document_short_title
     - field.field.node.document.field_document_source_url
-    - field.field.node.document.og_group_ref
+    - field.field.node.document.og_audience
     - node.type.document
   module:
     - datetime
@@ -60,4 +60,4 @@ content:
     type: link
 hidden:
   links: true
-  og_group_ref: true
+  og_audience: true

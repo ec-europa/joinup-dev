@@ -13,7 +13,6 @@
   height: 100%
 
 .listing__item
-  min-width: 210px
   background: #fff
 
 .listing__image
@@ -86,10 +85,11 @@
   padding-bottom: 20px
 
 .listing__fields--bottom-aligned
-  position: absolute
-  right: 20px
-  bottom: 20px
-  left: 20px
+  +breakpoint(mobile)
+    position: absolute
+    right: 20px
+    bottom: 20px
+    left: 20px
   .listing__field:last-of-type
     margin-bottom: 0
 

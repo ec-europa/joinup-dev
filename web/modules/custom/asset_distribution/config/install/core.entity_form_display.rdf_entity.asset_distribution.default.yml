@@ -13,6 +13,7 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.field_ad_modification_date
     - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
     - field.field.rdf_entity.asset_distribution.field_status
+    - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
     - asset_distribution
@@ -25,7 +26,7 @@ bundle: asset_distribution
 mode: default
 content:
   field_ad_access_url:
-    weight: 4
+    weight: 3
     settings:
       file_fields:
         - field_ad_file
@@ -35,12 +36,12 @@ content:
     type: url_file_synchronizer_widget
   field_ad_creation_date:
     type: datetime_create_update
-    weight: 9
+    weight: 8
     settings:
       behaviour: create
     third_party_settings: {  }
   field_ad_description:
-    weight: 3
+    weight: 2
     settings:
       rows: 9
       summary_rows: 3
@@ -48,7 +49,7 @@ content:
     third_party_settings: {  }
     type: text_textarea_with_summary
   field_ad_file:
-    weight: 5
+    weight: 4
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
@@ -63,7 +64,7 @@ content:
       size_type: '1048576'
     third_party_settings: {  }
   field_ad_format:
-    weight: 7
+    weight: 6
     settings:
       match_operator: CONTAINS
       size: 60
@@ -72,11 +73,11 @@ content:
     type: entity_reference_autocomplete
   field_ad_gitb_compliant:
     type: options_select
-    weight: 11
+    weight: 10
     settings: {  }
     third_party_settings: {  }
   field_ad_licence:
-    weight: 6
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: 60
@@ -85,12 +86,12 @@ content:
     type: entity_reference_autocomplete
   field_ad_modification_date:
     type: datetime_create_update
-    weight: 10
+    weight: 9
     settings:
       behaviour: create
     third_party_settings: {  }
   field_ad_repr_technique:
-    weight: 8
+    weight: 7
     settings:
       match_operator: CONTAINS
       size: 60
@@ -99,11 +100,11 @@ content:
     type: entity_reference_autocomplete
   label:
     type: string_textfield
-    weight: 2
+    weight: 1
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
 hidden:
-  field_ad_file_size: true
   field_status: true
+  og_audience: true

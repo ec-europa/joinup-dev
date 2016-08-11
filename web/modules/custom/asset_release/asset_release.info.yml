@@ -12,6 +12,7 @@ dependencies:
   - inline_entity_form
   - joinup_core
   - link
+  - og
   - options
   - owner
   - rdf_entity
