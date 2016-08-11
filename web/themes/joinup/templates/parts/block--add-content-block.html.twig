@@ -1,18 +1,39 @@
 {% if content %}
-  <div {{ attributes.addClass('button--circle-wrapper') }}>
-    <button href="#" class="button--circle mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
+  {# Menu visible on desktop and tablet #}
+  <div class="circle-menu circle-menu--tablet">
+    <button href="#" id="circle-menu__button--tablet" class="circle-menu__button mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
       <span class="icon icon--plus"></span>
     </button>
-  </div>
-    <ul class="add-content-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="{{ attributes.id }}">
+
+    <ul class="circle-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu" for="circle-menu__button--tablet">
     {% for list in content %}
       {% for item in list %}
         {%  if item is iterable %}
-          <li class="mdl-menu__item">
+          <li class="circle-menu__item mdl-menu__item">
             {{ item }}
           </li>
         {% endif %}
       {% endfor %}
     {% endfor %}
     </ul>
+  </div>
+
+  {# Menu visible on mobile #}
+  <div class="circle-menu circle-menu--mobile">
+    <button href="#" id="circle-menu__button--mobile" class="circle-menu__button mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
+      <span class="icon icon--plus"></span>
+    </button>
+
+    <ul class="circle-menu__dropdown mdl-menu mdl-menu--top-right mdl-js-menu" for="circle-menu__button--mobile">
+    {% for list in content %}
+      {% for item in list %}
+        {%  if item is iterable %}
+          <li class="circle-menu__item mdl-menu__item">
+            {{ item }}
+          </li>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+    </ul>
+  </div>
 {% endif %}
