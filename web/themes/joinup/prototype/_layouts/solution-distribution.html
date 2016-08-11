@@ -28,16 +28,9 @@
             {% include circle-menu.html %}
 
             <!-- Menu visible on tablet and mobile -->
-            <div class="featured__menu">
-              <div id="featured__menu-button" class="featured__menu-button mdl-button mdl-js-button">
-                <span class="icon icon--menu"></span>
-              </div>
-              <ul class="featured__menu-dropdown mdl-menu mdl-menu--bottom-left mdl-js-menu" for="featured__menu-button">
-                <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/solution-distribution">Distribution</a></li>
-                <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/solution-release">Release</a></li>
-                <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/solution-download">Download</a></li>
-              </ul>
-            </div>
+
+            {% include featured-menu--solutions.html %}
+
           </div>
           <div class="featured__overlay"></div>
         </div>
@@ -45,16 +38,9 @@
       <div class="section section--content">
         <div class="main-container mdl-grid">
           <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
-            <div class="sidebar-menu">
-              <button id="sidebar-menu__button" class="sidebar-menu__button mdl-button mdl-js-button mdl-button--icon">
-                <span class="icon icon--menu"></span>
-              </button>
-              <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu" for="sidebar-menu__button">
-                <li class="sidebar-menu__item mdl-menu__item"><a class="sidebar-menu__link" href="/solution-distribution">Distribution</a></li>
-                <li class="sidebar-menu__item mdl-menu__item"><a class="sidebar-menu__link" href="/solution-release">Release</a></li>
-                <li class="sidebar-menu__item mdl-menu__item"><a class="sidebar-menu__link" href="/solution-download">Download</a></li>
-              </ul>
-            </div>
+
+            {% include sidebar-menu--solutions.html %}
+
           </div>
           <div class="section section--main mdl-cell mdl-cell--8-col">       
             <div class="page__title">
@@ -89,85 +75,87 @@
       <div class="section section--post-content">
         <div class="main-container mdl-grid">
           <div class="listing listing--grid mdl-cell--8-col mdl-cell--2-offset-desktop">
-            <div class="mdl-grid">
-              <div class="listing__header mdl-cell mdl-cell--12-col">
-                <h3 class="listing__block-title">Other distributions in</h3>
-                <div class="listing__etiquette etiquette etiquette--blue">Oasis UBL v2.1</div>
-              </div>
-              <!-- Listing item 1 - Default -->
-              <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
-                <div class="listing__card listing__card--detail-container mdl-card">
-                  <div class="listing__metadata">
-                    <div class="listing__field">
-                      <a href="/" class="listing__title">Oasis UBL v2.1.tar.gz</a>
-                    </div>
-                    <div class="listing__field">
-                      <div class="label gray">Weight:</div>
-                      <div class="value bold">24MB</div>
-                    </div>
-                    <div class="listing__field">
-                      <div class="label gray">OS:</div>
-                      <div class="value bold underline">Linux</div>
-                    </div>
-                    <div class="listing__field">
-                      <div class="label gray">Licence:</div>
-                      <div class="value bold underline">EUPL</div>
-                    </div>
-                    <div class="listing__action-link__wrapper action-link__wrapper center">
-                      <a href="/" class="listing__action-link action-link">Details</a>
-                      <a href="/" class="listing__action-link action-link">Download</a>
+            <div class="row">
+              <div class="mdl-grid">
+                <div class="listing__header mdl-cell mdl-cell--12-col">
+                  <h3 class="listing__block-title">Other distributions in</h3>
+                  <div class="listing__etiquette etiquette etiquette--blue">Oasis UBL v2.1</div>
+                </div>
+                <!-- Listing item 1 - Default -->
+                <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+                  <div class="listing__card listing__card--detail-container mdl-card">
+                    <div class="listing__metadata">
+                      <div class="listing__field">
+                        <a href="/" class="listing__title">Oasis UBL v2.1.tar.gz</a>
+                      </div>
+                      <div class="listing__field">
+                        <div class="label gray">Weight:</div>
+                        <div class="value bold">24MB</div>
+                      </div>
+                      <div class="listing__field">
+                        <div class="label gray">OS:</div>
+                        <div class="value bold underline">Linux</div>
+                      </div>
+                      <div class="listing__field">
+                        <div class="label gray">Licence:</div>
+                        <div class="value bold underline">EUPL</div>
+                      </div>
+                      <div class="listing__action-link__wrapper action-link__wrapper center">
+                        <a href="/" class="listing__action-link action-link">Details</a>
+                        <a href="/" class="listing__action-link action-link">Download</a>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <!-- Listing item 2 - Default -->
-              <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
-                <div class="listing__card listing__card--detail-container mdl-card">
-                  <div class="listing__metadata">
-                    <div class="listing__field">
-                      <a href="/" class="listing__title">Oasis UBL v2.1.tar.gz</a>
-                    </div>
-                    <div class="listing__field">
-                      <div class="label gray">Weight:</div>
-                      <div class="value bold">24MB</div>
-                    </div>
-                    <div class="listing__field">
-                      <div class="label gray">OS:</div>
-                      <div class="value bold underline">Linux</div>
-                    </div>
-                    <div class="listing__field">
-                      <div class="label gray">Licence:</div>
-                      <div class="value bold underline">EUPL</div>
-                    </div>
-                    <div class="listing__action-link__wrapper action-link__wrapper center">
-                      <a href="/" class="listing__action-link action-link">Details</a>
-                      <a href="/" class="listing__action-link action-link">Download</a>
+                <!-- Listing item 2 - Default -->
+                <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+                  <div class="listing__card listing__card--detail-container mdl-card">
+                    <div class="listing__metadata">
+                      <div class="listing__field">
+                        <a href="/" class="listing__title">Oasis UBL v2.1.tar.gz</a>
+                      </div>
+                      <div class="listing__field">
+                        <div class="label gray">Weight:</div>
+                        <div class="value bold">24MB</div>
+                      </div>
+                      <div class="listing__field">
+                        <div class="label gray">OS:</div>
+                        <div class="value bold underline">Linux</div>
+                      </div>
+                      <div class="listing__field">
+                        <div class="label gray">Licence:</div>
+                        <div class="value bold underline">EUPL</div>
+                      </div>
+                      <div class="listing__action-link__wrapper action-link__wrapper center">
+                        <a href="/" class="listing__action-link action-link">Details</a>
+                        <a href="/" class="listing__action-link action-link">Download</a>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <!-- Listing item 3 - Default -->
-              <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
-                <div class="listing__card listing__card--detail-container mdl-card">
-                  <div class="listing__metadata">
-                    <div class="listing__field">
-                      <a href="/" class="listing__title">Oasis UBL v2.1.tar.gz</a>
-                    </div>
-                    <div class="listing__field">
-                      <div class="label gray">Weight:</div>
-                      <div class="value bold">24MB</div>
-                    </div>
-                    <div class="listing__field">
-                      <div class="label gray">OS:</div>
-                      <div class="value bold underline">Linux</div>
-                    </div>
-                    <div class="listing__field">
-                      <div class="label gray">Licence:</div>
-                      <div class="value bold underline">EUPL</div>
-                    </div>
-                    <div class="listing__action-link__wrapper action-link__wrapper center">
-                      <a href="/" class="listing__action-link action-link">Details</a>
-                      <a href="/" class="listing__action-link action-link">Download</a>
+                <!-- Listing item 3 - Default -->
+                <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+                  <div class="listing__card listing__card--detail-container mdl-card">
+                    <div class="listing__metadata">
+                      <div class="listing__field">
+                        <a href="/" class="listing__title">Oasis UBL v2.1.tar.gz</a>
+                      </div>
+                      <div class="listing__field">
+                        <div class="label gray">Weight:</div>
+                        <div class="value bold">24MB</div>
+                      </div>
+                      <div class="listing__field">
+                        <div class="label gray">OS:</div>
+                        <div class="value bold underline">Linux</div>
+                      </div>
+                      <div class="listing__field">
+                        <div class="label gray">Licence:</div>
+                        <div class="value bold underline">EUPL</div>
+                      </div>
+                      <div class="listing__action-link__wrapper action-link__wrapper center">
+                        <a href="/" class="listing__action-link action-link">Details</a>
+                        <a href="/" class="listing__action-link action-link">Download</a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -175,109 +163,111 @@
             </div>
           </div>
           <div class="listing listing--grid listing--separated mdl-cell--8-col mdl-cell--2-offset-desktop">
-            <div class="mdl-grid">
-              <div class="listing__header mdl-cell mdl-cell--12-col">
-                <h3 class="listing__block-title">Shared in</h3>
-              </div>
-              <!-- Listing item 1 - Default -->
-              <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
-                <div class="listing__card listing__card--stats-container mdl-card">
-                  <div class="listing__image">
-                    <img src="../images/tile-image.png">
-                  </div>
-                  <div class="listing__metadata">
-                  <div class="listing__field">
-                    <img class="listing__avatar" src="../images/login-icon.png">
-                  </div>
-                  <div class="listing__field">
-                    <h2 class="listing__title">Optimy</h2>
-                  </div>
-                  <div class="listing__field">
-                    <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Aenan convallis.</p>
-                  </div>
-                  <div class="listing__field listing__stats mdl-card__actions">
-                    <div class="listing__stat">
-                      <span class="listing__text">154</span>
-                      <span class="listing__icon icon icon--download"></span>
+            <div class="row">
+              <div class="mdl-grid">
+                <div class="listing__header mdl-cell mdl-cell--12-col">
+                  <h3 class="listing__block-title">Shared in</h3>
+                </div>
+                <!-- Listing item 1 - Default -->
+                <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+                  <div class="listing__card listing__card--stats-container mdl-card">
+                    <div class="listing__image">
+                      <img src="../images/tile-image.png">
                     </div>
-                    <div class="listing__stat">
-                      <span class="listing__text">13</span>
-                      <span class="listing__icon icon icon--user"></span>
+                    <div class="listing__metadata">
+                    <div class="listing__field">
+                      <img class="listing__avatar" src="../images/login-icon.png">
                     </div>
-                    <div class="listing__stat">
-                      <span class="listing__text">22</span>
-                      <span class="listing__icon icon icon--like"></span>
+                    <div class="listing__field">
+                      <h2 class="listing__title">Optimy</h2>
                     </div>
-                  </div>        
+                    <div class="listing__field">
+                      <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Aenan convallis.</p>
+                    </div>
+                    <div class="listing__field listing__stats mdl-card__actions">
+                      <div class="listing__stat">
+                        <span class="listing__text">154</span>
+                        <span class="listing__icon icon icon--download"></span>
+                      </div>
+                      <div class="listing__stat">
+                        <span class="listing__text">13</span>
+                        <span class="listing__icon icon icon--user"></span>
+                      </div>
+                      <div class="listing__stat">
+                        <span class="listing__text">22</span>
+                        <span class="listing__icon icon icon--like"></span>
+                      </div>
+                    </div>        
+                    </div>
                   </div>
                 </div>
-              </div>
-              <!-- Listing item 2 - Default -->
-              <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
-                <div class="listing__card listing__card--stats-container mdl-card">
-                  <div class="listing__image">
-                    <img src="../images/tile-image.png">
-                  </div>
-                  <div class="listing__metadata">
-                  <div class="listing__field">
-                    <img class="listing__avatar" src="../images/login-icon.png">
-                  </div>
-                  <div class="listing__field">
-                    <h2 class="listing__title">Optimy</h2>
-                  </div>
-                  <div class="listing__field">
-                    <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Aenan convallis.</p>
-                  </div>
-                  <div class="listing__field listing__stats mdl-card__actions">
-                    <div class="listing__stat">
-                      <span class="listing__text">154</span>
-                      <span class="listing__icon icon icon--download"></span>
+                <!-- Listing item 2 - Default -->
+                <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+                  <div class="listing__card listing__card--stats-container mdl-card">
+                    <div class="listing__image">
+                      <img src="../images/tile-image.png">
                     </div>
-                    <div class="listing__stat">
-                      <span class="listing__text">13</span>
-                      <span class="listing__icon icon icon--user"></span>
+                    <div class="listing__metadata">
+                    <div class="listing__field">
+                      <img class="listing__avatar" src="../images/login-icon.png">
                     </div>
-                    <div class="listing__stat">
-                      <span class="listing__text">22</span>
-                      <span class="listing__icon icon icon--like"></span>
+                    <div class="listing__field">
+                      <h2 class="listing__title">Optimy</h2>
                     </div>
-                  </div>        
+                    <div class="listing__field">
+                      <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Aenan convallis.</p>
+                    </div>
+                    <div class="listing__field listing__stats mdl-card__actions">
+                      <div class="listing__stat">
+                        <span class="listing__text">154</span>
+                        <span class="listing__icon icon icon--download"></span>
+                      </div>
+                      <div class="listing__stat">
+                        <span class="listing__text">13</span>
+                        <span class="listing__icon icon icon--user"></span>
+                      </div>
+                      <div class="listing__stat">
+                        <span class="listing__text">22</span>
+                        <span class="listing__icon icon icon--like"></span>
+                      </div>
+                    </div>        
+                    </div>
                   </div>
                 </div>
-              </div>
-              <!-- Listing item 3 - Default -->
-              <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
-                <div class="listing__card listing__card--stats-container mdl-card">
-                  <div class="listing__image">
-                    <img src="../images/tile-image.png">
-                  </div>
-                  <div class="listing__metadata">
-                  <div class="listing__field">
-                    <img class="listing__avatar" src="../images/login-icon.png">
-                  </div>
-                  <div class="listing__field">
-                    <h2 class="listing__title">Optimy</h2>
-                  </div>
-                  <div class="listing__field">
-                    <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Aenan convallis.</p>
-                  </div>
-                  <div class="listing__field listing__stats mdl-card__actions">
-                    <div class="listing__stat">
-                      <span class="listing__text">154</span>
-                      <span class="listing__icon icon icon--download"></span>
+                <!-- Listing item 3 - Default -->
+                <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+                  <div class="listing__card listing__card--stats-container mdl-card">
+                    <div class="listing__image">
+                      <img src="../images/tile-image.png">
                     </div>
-                    <div class="listing__stat">
-                      <span class="listing__text">13</span>
-                      <span class="listing__icon icon icon--user"></span>
+                    <div class="listing__metadata">
+                    <div class="listing__field">
+                      <img class="listing__avatar" src="../images/login-icon.png">
                     </div>
-                    <div class="listing__stat">
-                      <span class="listing__text">22</span>
-                      <span class="listing__icon icon icon--like"></span>
+                    <div class="listing__field">
+                      <h2 class="listing__title">Optimy</h2>
                     </div>
-                  </div>        
+                    <div class="listing__field">
+                      <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Aenan convallis.</p>
+                    </div>
+                    <div class="listing__field listing__stats mdl-card__actions">
+                      <div class="listing__stat">
+                        <span class="listing__text">154</span>
+                        <span class="listing__icon icon icon--download"></span>
+                      </div>
+                      <div class="listing__stat">
+                        <span class="listing__text">13</span>
+                        <span class="listing__icon icon icon--user"></span>
+                      </div>
+                      <div class="listing__stat">
+                        <span class="listing__text">22</span>
+                        <span class="listing__icon icon icon--like"></span>
+                      </div>
+                    </div>        
+                    </div>
                   </div>
                 </div>
               </div>

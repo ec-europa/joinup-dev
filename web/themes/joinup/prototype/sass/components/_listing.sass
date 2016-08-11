@@ -70,7 +70,7 @@
   vertical-align: middle
 
 .listing__icon
-  color: $color-grey-medium
+  color: lighten($color-grey-medium, 10%)
   +icon-size(26px)
 
 .listing__text
@@ -79,7 +79,8 @@
   color: $color-blue-default
 
 .listing__header
-  margin: 30px 0
+  margin-top: 30px
+  margin-bottom: 30px
 
 .listing__block-title
   display: inline-block
@@ -113,13 +114,15 @@
   .listing__image
     +breakpoint(mobile)
       min-width: 220px
-  .listing__title
-    color: $color-orange
-    text-decoration: underline
+      img
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
 
 .listing__card--stats-container
-  height: 100%
-  padding-bottom: 20px
+  .listing__metadata
+    padding-bottom: 40px
 
 .listing__fields--bottom-aligned
   +breakpoint(mobile)
@@ -132,6 +135,12 @@
 
 // Dependiencies
 // --------------------------------------------------
+.listing__title
+  .icon
+    position: relative
+    top: 7px
+    +icon-size(32px)
+
 .listing__item--newsletter
   color: #fff
   background-color: $color-blue-medium
