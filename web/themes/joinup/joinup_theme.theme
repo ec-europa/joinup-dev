@@ -30,10 +30,17 @@ function joinup_theme_preprocess_page(&$variables) {
     $variables['is_blue_header'] = TRUE;
   }
 
-  $entity = $route_match->getParameter('rdf_entity');
+  // Check if page is collection or custom page.
+  if ($route_match->getParameter('rdf_entity')) {
+    $entity = $route_match->getParameter('rdf_entity');
+  }
+  elseif ($route_match->getParameter('node')) {
+    $entity = $route_match->getParameter('node');
+  }
+
   if (!empty($entity)) {
     $entity_type = $entity->getType();
-    if ($entity_type == 'collection') {
+    if ($entity_type == 'collection' || $entity_type == 'custom_page') {
       $variables['is_collection'] = TRUE;
     }
   }
