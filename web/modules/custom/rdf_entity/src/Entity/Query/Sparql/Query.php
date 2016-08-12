@@ -27,6 +27,16 @@ class Query extends QueryBase implements QueryInterface {
   protected $results = NULL;
 
   /**
+   * True if a type filter has been already added to the query.
+   *
+   * Currently there is no easy method to avoid multiple conditions on rdf type,
+   * so we keep track if a condition has already added such filter.
+   *
+   * @var bool
+   */
+  protected $filterAdded = FALSE;
+
+  /**
    * Constructs a query object.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
@@ -133,6 +143,7 @@ class Query extends QueryBase implements QueryInterface {
         $rdf_bundles = $entity_storage->getRdfBundleList($value);
         if ($rdf_bundles) {
           $this->condition->condition('?entity', '?bundlepredicate', '?type');
+          $this->filterAdded = TRUE;
           $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
           $this->filter->filter('?bundlepredicate IN ' . $predicates);
           $this->filter->filter('?type IN ' . $rdf_bundles);
@@ -147,15 +158,19 @@ class Query extends QueryBase implements QueryInterface {
           $this->condition->condition('?entity', '?bundlepredicate', SparqlArg::uri($bundle));
           $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
           $this->filter->filter('?bundlepredicate IN ' . $predicates);
+          $this->filterAdded = TRUE;
         }
         return $this;
 
       case $id . '-IN':
         if ($value) {
           $ids_list = "(<" . implode(">, <", $value) . ">)";
-          $this->condition->condition('?entity', '?bundlepredicate', '?type');
-          $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
-          $this->filter->filter('?bundlepredicate IN ' . $predicates);
+          if (!$this->filterAdded) {
+            $this->condition->condition('?entity', '?bundlepredicate', '?type');
+            $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+            $this->filter->filter('?bundlepredicate IN ' . $predicates);
+            $this->filterAdded = TRUE;
+          }
           $this->filter->filter('?entity IN ' . $ids_list);
         }
         return $this;
@@ -170,9 +185,12 @@ class Query extends QueryBase implements QueryInterface {
             $ids_list = "(<" . $value . ">)";
           }
 
-          $this->condition->condition('?entity', '?bundlepredicate', '?type');
-          $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
-          $this->filter->filter('?bundlepredicate IN ' . $predicates);
+          if (!$this->filterAdded) {
+            $this->condition->condition('?entity', '?bundlepredicate', '?type');
+            $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+            $this->filter->filter('?bundlepredicate IN ' . $predicates);
+            $this->filterAdded = TRUE;
+          }
           $this->filter->filter('!(?entity IN ' . $ids_list . ')');
         }
         return $this;
@@ -182,9 +200,12 @@ class Query extends QueryBase implements QueryInterface {
           return $this;
         }
         $id = '<' . $value . '>';
-        $this->condition->condition('?entity', '?bundlepredicate', '?type');
-        $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
-        $this->filter->filter('?bundlepredicate IN ' . $predicates);
+        if (!$this->filterAdded) {
+          $this->condition->condition('?entity', '?bundlepredicate', '?type');
+          $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+          $this->filter->filter('?bundlepredicate IN ' . $predicates);
+          $this->filterAdded = TRUE;
+        }
         $this->filter->filter('?entity IN ' . SparqlArg::literal($id));
         break;
 
@@ -205,7 +226,7 @@ class Query extends QueryBase implements QueryInterface {
             $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping[$this->entityTypeId]))) . ">)";
             $this->condition->condition('?entity', '?label_type', '?label');
             $this->filter->filter('?label_type IN ' . $label_list);
-            $this->filter->filter('regex(?label, "' . $value . '", "i")');
+            $this->filter->filter('str(?label) = "' . $value . '"');
           }
         }
 
