@@ -9,3 +9,7 @@ services:
     arguments: ['@request_stack']
     tags:
       - { name: cache.context }
+  solution.fulfillment_guard:
+    class: Drupal\solution\Guard\FulfillmentGuard
+    tags:
+      - { name: state_machine.guard, group: solution }
