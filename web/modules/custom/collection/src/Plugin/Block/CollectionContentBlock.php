@@ -9,8 +9,8 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\og\MembershipManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\og\Og;
 
 /**
  * Provides a block that shows all content within the collection.
@@ -51,6 +51,13 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
   protected $entityTypeManager;
 
   /**
+   * The OG membership manager.
+   *
+   * @var \Drupal\og\MembershipManagerInterface
+   */
+  protected $membershipManager;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
@@ -60,7 +67,8 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
       $plugin_definition,
       $container->get('current_route_match'),
       $container->get('entity.manager'),
-      $container->get('collection.collection_route_context')
+      $container->get('collection.collection_route_context'),
+      $container->get('og.membership_manager')
     );
   }
 
@@ -79,12 +87,15 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
    *   The entity type manager.
    * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $collection_context
    *   The collection context.
+   * @param \Drupal\og\MembershipManagerInterface $membership_manager
+   *   The OG membership manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityTypeManagerInterface $entity_type_manager, ContextProviderInterface $collection_context) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityTypeManagerInterface $entity_type_manager, ContextProviderInterface $collection_context, MembershipManagerInterface $membership_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
     $this->collection = $collection_context->getRuntimeContexts(['og'])['og']->getContextValue();
     $this->entityTypeManager = $entity_type_manager;
+    $this->membershipManager = $membership_manager;
   }
 
   /**
@@ -94,7 +105,7 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
     if (empty($this->collection)) {
       throw new \Exception('The "Collection content" block can only be shown on collection pages.');
     }
-    $content_ids = Og::getGroupContentIds($this->collection);
+    $content_ids = $this->membershipManager->getGroupContentIds($this->collection);
     $list = array();
     foreach ($content_ids as $entity_type => $ids) {
       $storage = $this->entityTypeManager->getStorage($entity_type);
