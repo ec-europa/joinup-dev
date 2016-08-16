@@ -10,7 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_news\Guard\FulfillmentGuard;
+use Drupal\joinup_news\Guard\JoinupNewsFulfillmentGuard;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
@@ -52,7 +52,7 @@ function joinup_news_node_access(EntityInterface $node, $op, AccountInterface $a
 
   // Check if the user is a member and has a global permission.
   if ($op == 'view' && !$node->isPublished()) {
-    $parent = FulfillmentGuard::getParent($node);
+    $parent = JoinupNewsFulfillmentGuard::getParent($node);
     // Temporary workaround because Og is not checking for membership.
     // @todo Remove workaround as soon as this is fixed in OG.
     // @see https://github.com/amitaibu/og/pull/217
