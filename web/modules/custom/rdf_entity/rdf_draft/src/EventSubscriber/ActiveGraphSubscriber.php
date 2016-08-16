@@ -30,19 +30,19 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
       if (array_search('edit_form', $route_parts)) {
         $entity_type_id = substr($event->getDefinition()['type'], strlen('entity:'));
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
-        $storage->setActiveGraphType('draft');
+        $storage->setActiveGraphType($this->defaultSaveGraph($entity_type_id));
         // Draft version already exists.
         $entity = $storage->load($event->getValue());
         if ($entity) {
           if ($this->draftEnabled($entity_type_id, $entity->bundle())) {
-            $event->setGraph('draft');
+            $event->setGraph($this->defaultSaveGraph($entity_type_id));
           }
         }
         // Use published version to create draft.
         else {
           // Keep track that the entity needs to be stored in the draft graph.
           // @todo Check if drafting is enabled for this bundle here!!!
-          $storage->setSaveGraph('draft');
+          $storage->setSaveGraph($this->defaultSaveGraph($entity_type_id));
           $event->setGraph('default');
         }
       }
@@ -93,6 +93,20 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
   protected function draftEnabled($entity_type_id, $bundle) {
     $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_' . $entity_type_id);
     return !empty($enabled_bundles[$bundle]);
+  }
+
+  /**
+   * Get the graph to use when storing a entity through the create form.
+   *
+   * @param string $entity_type_id
+   *    The entity type id.
+   *
+   * @return string
+   *    The graph to use as default when creating entities.
+   */
+  protected function defaultSaveGraph($entity_type_id) {
+    $default_save_graph = \Drupal::config('rdf_draft.settings')->get('default_save_graph_' . $entity_type_id);
+    return !empty($default_save_graph) ? $default_save_graph : 'default';
   }
 
 }

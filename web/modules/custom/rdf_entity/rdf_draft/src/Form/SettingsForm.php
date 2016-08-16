@@ -52,6 +52,20 @@ class SettingsForm extends ConfigFormBase {
         if ($enabled_bundles) {
           $form['revision_bundles:' . $name]['#default_value'] = $enabled_bundles;
         }
+        $graphs = [];
+        /** @var ContentEntityType $def */
+        foreach ($storage->getGraphsDefinition() as $key => $def) {
+          $graphs[$key] = $def['title'];
+        }
+        $default_save_graph = $this->config('rdf_draft.settings')->get('default_save_graph_' . $name);
+        $form['default_save_graph:' . $name] = [
+          '#title' => $this->t('Default graph to save to'),
+          '#type' => 'select',
+          '#options' => $graphs,
+        ];
+        if ($default_save_graph) {
+          $form['default_save_graph:' . $name]['#default_value'] = $default_save_graph;
+        }
       }
     }
     return parent::buildForm($form, $form_state);
@@ -66,7 +80,9 @@ class SettingsForm extends ConfigFormBase {
     foreach ($definitions as $name => $definition) {
       $storage = \Drupal::entityManager()->getStorage($name);
       if ($storage instanceof RdfEntitySparqlStorage) {
-        $config = $this->config('rdf_draft.settings')->set('revision_bundle_' . $name, $form_state->getValue('revision_bundles:' . $name));
+        $config = $this->config('rdf_draft.settings')
+          ->set('revision_bundle_' . $name, $form_state->getValue('revision_bundles:' . $name))
+          ->set('default_save_graph_' . $name, $form_state->getValue('default_save_graph:' . $name));
         $config->save();
       }
     }
