@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_news\Guard;
+namespace Drupal\solution\Guard;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_core\WorkflowUserProvider;
