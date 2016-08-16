@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping_uuid:
+      value: ''
+    mapping_vid:
+      target_id: 'http://purl.org/adms/licencetype/1.1'
+    mapping_langcode:
+      value: ''
+    mapping_name:
+      value: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+    mapping_description:
+      value: 'http://www.w3.org/2004/02/skos/core#definition'
+      format: ''
+    mapping_weight:
+      value: ''
+    mapping_parent:
+      target_id: 'http://www.w3.org/2004/02/skos/core#broader'
+    mapping_changed:
+      value: ''
+    mapping_default_langcode:
+      value: ''
+    mapping_path: {  }
+name: 'Licence type'
+vid: licence_type
+description: ''
+hierarchy: 0
+weight: 0

@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.rdf_entity.field_is_owner
-    - rdf_entity.rdfentity.organization
+    - rdf_entity.rdfentity.organisation
     - rdf_entity.rdfentity.person
     - rdf_entity.rdfentity.solution
 id: rdf_entity.solution.field_is_owner
@@ -20,10 +20,10 @@ settings:
   handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
-      organization: organization
+      organisation: organisation
       person: person
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: organization
+    auto_create_bundle: organisation
 field_type: entity_reference

@@ -18,13 +18,13 @@ Feature: Asset distribution API
       | title             | Asset distribution collection API foo |
       | logo              | logo.png                              |
       | moderation        | yes                                   |
-      | closed            | yes                                   |
       | elibrary creation | facilitators                          |
       | affiliates        | Asset distribution solution           |
     And the following asset distribution:
       | title       | Asset distribution entity foo         |
       | description | Asset distribution sample description |
       | file        | test.zip                              |
+      | solution    | Asset distribution solution           |
     And the following asset release:
       | title          | Asset distribution asset release   |
       | description    | Asset distribution sample solution |
@@ -46,13 +46,13 @@ Feature: Asset distribution API
       | title             | Asset distribution short API bar  |
       | logo              | logo.png                          |
       | moderation        | yes                               |
-      | closed            | yes                               |
       | elibrary creation | facilitators                      |
       | affiliates        | AD first solution mandatory short |
     And the following asset distribution:
       | title       | Asset distribution entity foo short   |
       | description | Asset distribution sample description |
       | file        | test.zip                              |
+      | solution    | AD first solution mandatory short     |
     And the following asset release:
       | title          | AD first release                    |
       | description    | Asset distribution sample solution  |

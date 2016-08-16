@@ -4,9 +4,9 @@ dependencies: {  }
 third_party_settings:
   rdf_entity:
     mapping_rid:
-      target_id: 'http://xmlns.com/foaf/0.1/#term_Person'
+      target_id: 'http://xmlns.com/foaf/spec/#term_Person'
     mapping_label:
-      value: 'foaf:name'
+      value: 'http://purl.org/dc/terms/title'
 name: Person
 rid: person
 description: ''

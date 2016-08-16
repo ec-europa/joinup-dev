@@ -72,9 +72,6 @@
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
         "patches": {
-            "drupal/og": {
-                "Support for special permission on Og.": "https://patch-diff.githubusercontent.com/raw/amitaibu/og/pull/250.patch"
-            },
             "drupal/core": {
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
             },

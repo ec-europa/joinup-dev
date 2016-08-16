@@ -8,12 +8,11 @@ Feature: Document API
     Given the following person:
       | name | Joinup Derp |
     And the following collection:
-      | title             | Joinup document name                     |
-      | owner             | Joinup Derp                              |
-      | logo              | logo.png                                 |
-      | moderation        | yes                                      |
-      | closed            | yes                                      |
-      | elibrary creation | facilitators                             |
+      | title             | Joinup document name |
+      | owner             | Joinup Derp          |
+      | logo              | logo.png             |
+      | moderation        | yes                  |
+      | elibrary creation | facilitators         |
     And document content:
       | title    | short title | body               | collection           |
       | JD title | Short       | Dummy description. | Joinup document name |

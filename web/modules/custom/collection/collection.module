@@ -10,14 +10,14 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\views\Views;
+use Drupal\og\Entity\OgMembership;
+use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelper;
-use Drupal\og\Entity\OgMembership;
-use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
+use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\views\Views;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -71,13 +71,11 @@ function collection_entity_insert(EntityInterface $entity) {
     ];
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
+    $membership = OgMembership::create();
     $membership
-      ->setUser(\Drupal::currentUser()->id())
-      ->setEntityId($entity->id())
-      ->setGroupEntityType($entity->getEntityTypeId())
-      ->setFieldName($membership->getFieldName())
-      ->setRoles($roles)
+      ->setUser(\Drupal::currentUser())
+      ->setGroup($entity)
+      ->setRoles(array_values(OgRole::loadMultiple($roles)))
       ->save();
   }
 }
@@ -160,4 +158,14 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
       $entity->id(),
     ],
   ];
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function collection_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+  $field_name = $context['items']->getFieldDefinition()->getName();
+  if ($field_name == 'field_ar_closed') {
+    $element['#attached']['library'][] = 'collection/collection_form';
+  }
 }
