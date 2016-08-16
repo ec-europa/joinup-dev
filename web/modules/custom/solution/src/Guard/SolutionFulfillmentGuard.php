@@ -3,6 +3,7 @@
 namespace Drupal\joinup_news\Guard;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\joinup_core\WorkflowUserProvider\WorkflowUserProvider;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelper;
@@ -18,10 +19,28 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
  * @package Drupal\solution\Guard
  */
 class SolutionFulfillmentGuard implements GuardInterface {
+
   /**
    * Virtual state.
    */
   const NON_STATE = '__new__';
+
+  /**
+   * Holds the workflow user object needed for the checks.
+   *
+   * This will almost always return the logged in users but in case a check is
+   * needed to be done on a different account, it should be possible.
+   *
+   * @var \Drupal\joinup_core\WorkflowUserProvider\WorkflowUserProvider
+   */
+  private $workflowUserProvider;
+
+  /**
+   * Instantiates a SolutionFulfillmentGuard service.
+   */
+  public function __construct(WorkflowUserProvider $workflow_user_provider) {
+    $this->workflowUserProvider = $workflow_user_provider;
+  }
 
   /**
    * {@inheritdoc}
@@ -43,13 +62,13 @@ class SolutionFulfillmentGuard implements GuardInterface {
 
     // Check if the user has one of the allowed system roles.
     $authorized_roles = $allowed_conditions[$to_state][$from_state];
-    $user = \Drupal::currentUser();
+    $user = $this->workflowUserProvider->getUser();
     if (array_intersect($authorized_roles, $user->getRoles())) {
       return TRUE;
     }
 
     // Check if the user has one of the allowed group roles.
-    $membership = Og::getMembership($entity, $user->getAccount());
+    $membership = Og::getMembership($entity, $user);
     return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
   }
 
