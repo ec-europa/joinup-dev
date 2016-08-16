@@ -55,6 +55,7 @@ class CollectionRouteContext implements ContextProviderInterface {
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match object.
    * @param \Drupal\og\MembershipManagerInterface $membership_manager
+   *   The OG membership manager.
    */
   public function __construct(RouteMatchInterface $route_match, MembershipManagerInterface $membership_manager) {
     $this->routeMatch = $route_match;
