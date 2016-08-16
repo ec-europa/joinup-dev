@@ -31,11 +31,11 @@ solution_workflow:
   transitions:
     draft:
       label: Create
-      from: [__new__, draft, in_assessment]
+      from: [__new__, draft, validated, in_assessment]
       to: draft
     propose:
       label: Propose
-      from: [__new__, draft, in_assessment, blacklisted]
+      from: [__new__, draft, validated, in_assessment, blacklisted]
       to: proposed
     validate:
       label: Validate

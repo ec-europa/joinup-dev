@@ -37,17 +37,19 @@ transitions:
       - rdf_entity-collection-facilitator
     draft:
       - rdf_entity-solution-facilitator
+    validated:
+      - rdf_entity-solution-facilitator
     in_assessment:
       - rdf_entity-solution-facilitator
-  proposed: draft, validated, proposed, in_assessment, blacklisted
+  proposed:
     __new__:
       - moderator
       - authenticated
       - rdf_entity-collection-facilitator
     draft:
       - rdf_entity-solution-facilitator
-    proposed: { }
-    validated: { }
+    validated:
+      - rdf_entity-solution-facilitator
     in_assessment:
       - rdf_entity-solution-facilitator
     blacklisted:
