@@ -27,7 +27,30 @@ class SolutionFulfillmentGuard implements GuardInterface {
    * {@inheritdoc}
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    return TRUE;
+    $to_state = $transition->getToState()->getId();
+    // Disable virtual state.
+    if ($to_state == self::NON_STATE) {
+      return FALSE;
+    }
+
+    $from_state = $this->getState($entity);
+
+    // Allowed transitions are already filtered so we only need to check
+    // for the transitions defined in the settings if they include a role the
+    // user has.
+    // @see: solution.settings.yml
+    $allowed_conditions = \Drupal::config('solution.settings')->get('transitions');
+
+    // Check if the user has one of the allowed system roles.
+    $authorized_roles = $allowed_conditions[$to_state][$from_state];
+    $user = \Drupal::currentUser();
+    if (array_intersect($authorized_roles, $user->getRoles())) {
+      return TRUE;
+    }
+
+    // Check if the user has one of the allowed group roles.
+    $membership = Og::getMembership($entity, $user->getAccount());
+    return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
   }
 
   /**
