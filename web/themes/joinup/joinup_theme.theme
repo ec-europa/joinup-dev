@@ -42,6 +42,14 @@ function joinup_theme_preprocess_page(&$variables) {
     $entity_type = $entity->getType();
     if ($entity_type == 'collection' || $entity_type == 'custom_page') {
       $variables['is_collection'] = TRUE;
+      $logo_id = $entity->field_ar_logo->target_id;
+      $variables['logo'] = _joinup_theme_load_image($logo_id, 'image_style_collection_logo');
+
+      $banner_id = $entity->field_ar_banner->target_id;
+      $banner = File::load($banner_id);
+      $path = $banner->getFileUri();
+      $url = ImageStyle::load('banner')->buildUrl($path);
+      $variables['banner_url'] = $url;
     }
   }
 }
@@ -135,4 +143,41 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
   }
 
   return $suggestions;
+}
+
+/**
+ * Loads image file.
+ */
+function _joinup_theme_load_image($file_id, $image_style) {
+  $file = File::load($file_id);
+
+  $img_vars = array(
+    'style_name' => $image_style,
+    'uri' => $file->getFileUri(),
+  );
+
+  // The image.factory service will check if our image is valid.
+  $image = \Drupal::service('image.factory')->get($file->getFileUri());
+  if ($image->isValid()) {
+    $img_vars['width'] = $image->getWidth();
+    $img_vars['height'] = $image->getHeight();
+  }
+  else {
+    $img_vars['width'] = $img_vars['height'] = NULL;
+  }
+
+  $logo_render_array = [
+    '#theme' => 'image_style',
+    '#width' => $img_vars['width'],
+    '#height' => $img_vars['height'],
+    '#style_name' => $img_vars['style_name'],
+    '#uri' => $img_vars['uri'],
+  ];
+
+  // Add the file entity to the cache dependencies.
+  // This will clear our cache when this entity updates.
+  $renderer = \Drupal::service('renderer');
+  $renderer->addCacheableDependency($logo_render_array, $file);
+
+  return $logo_render_array;
 }

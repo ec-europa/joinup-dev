@@ -7,7 +7,7 @@
 .featured
   position: relative
   margin: 0 auto
-  background: url('../images/featured-bg.jpg') no-repeat center top
+  background: no-repeat center top
   -webkit-background-size: cover
   -moz-background-size: cover
   -o-background-size: cover
@@ -26,15 +26,15 @@
   +breakpoint(tablet)
     padding: 20px 0
 
-//  .featured__overlay
-//    position: absolute
-//    z-index: 1
-//    top: 0
-//    left: 0
-//    width: 100%
-//    height: 100%
-//    opacity: .6
-//    background-color: $color-blue-default
+.featured__overlay
+  position: absolute
+  z-index: 1
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  opacity: .6
+  background-color: $color-blue-default
 
 .featured__text
   position: relative
