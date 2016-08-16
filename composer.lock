@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aab84aea357abae9e1de83a272bcd6ae",
-    "content-hash": "a61cc74d4d4c36e0b06bb5b0b913e49a",
+    "hash": "7369932b6a8c28295fb3004348c6d8ee",
+    "content-hash": "05cd523b5804be76e40b6910246a0a3a",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1207,16 +1207,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.1.x-dev",
+            "version": "8.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "1f1d4cf1a16d83895c5438cde3c7523c476d677e"
+                "reference": "3f06f574ccc1e18b61ef150780fb1900c2f40abc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/1f1d4cf1a16d83895c5438cde3c7523c476d677e",
-                "reference": "1f1d4cf1a16d83895c5438cde3c7523c476d677e",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/3f06f574ccc1e18b61ef150780fb1900c2f40abc",
+                "reference": "3f06f574ccc1e18b61ef150780fb1900c2f40abc",
                 "shasum": ""
             },
             "require": {
@@ -1380,7 +1380,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-08-15 22:27:58"
+            "time": "2016-08-03 14:09:08"
         },
         {
             "name": "drupal/ds",
@@ -1565,16 +1565,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-check-group-content-crud-access",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "7a301837d638c30cb419f49f55617ed0ee43aaee"
+                "reference": "7524c7a8d9e7aab20f464737c23b28595bd5baa1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/7a301837d638c30cb419f49f55617ed0ee43aaee",
-                "reference": "7a301837d638c30cb419f49f55617ed0ee43aaee",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/7524c7a8d9e7aab20f464737c23b28595bd5baa1",
+                "reference": "7524c7a8d9e7aab20f464737c23b28595bd5baa1",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1588,7 +1588,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-08-03 09:15:44"
+            "time": "2016-08-13 13:34:34"
         },
         {
             "name": "drupal/og_menu",
@@ -7735,7 +7735,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "composer/composer": 15,
-        "drupal/core": 20,
         "drupal/facets": 20,
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,
