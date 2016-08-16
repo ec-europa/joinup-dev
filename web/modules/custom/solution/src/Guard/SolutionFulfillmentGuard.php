@@ -3,11 +3,8 @@
 namespace Drupal\joinup_news\Guard;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\joinup_core\WorkflowUserProvider\WorkflowUserProvider;
-use Drupal\node\NodeInterface;
+use Drupal\joinup_core\WorkflowUserProvider;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -31,12 +28,15 @@ class SolutionFulfillmentGuard implements GuardInterface {
    * This will almost always return the logged in users but in case a check is
    * needed to be done on a different account, it should be possible.
    *
-   * @var \Drupal\joinup_core\WorkflowUserProvider\WorkflowUserProvider
+   * @var \Drupal\joinup_core\WorkflowUserProvider
    */
   private $workflowUserProvider;
 
   /**
    * Instantiates a SolutionFulfillmentGuard service.
+   *
+   * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
+   *    The WorkflowUserProvider service.
    */
   public function __construct(WorkflowUserProvider $workflow_user_provider) {
     $this->workflowUserProvider = $workflow_user_provider;

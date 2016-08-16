@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_core\WorkflowUserProvider;
+namespace Drupal\joinup_core;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -8,7 +8,7 @@ use Drupal\Core\Session\AccountProxyInterface;
 /**
  * Provides a user object to the state_machine workflow guard classes.
  *
- * @package Drupal\joinup_core\WorkflowUserProvider
+ * @package Drupal\joinup_core
  */
 class WorkflowUserProvider {
 
