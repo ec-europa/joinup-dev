@@ -113,4 +113,46 @@ trait OgTrait {
     return array_values(OgRole::loadMultiple($ids));
   }
 
+  /**
+   * Checks that the given group has the expected number of group content items.
+   *
+   * @param int $count
+   *   The number of group content items that are expected to be associated with
+   *   the group.
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *   The group to check.
+   * @param string $group_content_entity_type_id
+   *   The entity type ID of the group content items.
+   * @param string $group_content_bundle_id
+   *   The bundle ID of the group content items.
+   *
+   * @throws \Exception
+   *   Thrown when the actual number of group content items does not match the
+   *   expectation.
+   */
+  protected function assertGroupContentCount($count, EntityInterface $group, $group_content_entity_type_id, $group_content_bundle_id) {
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $ids = $membership_manager->getGroupContentIds($group, [
+      $group_content_entity_type_id,
+    ])[$group_content_entity_type_id];
+
+    $result = [];
+    if (!empty($ids)) {
+      $entity_type_manager = \Drupal::entityTypeManager();
+      $entity_type = $entity_type_manager->getDefinition($group_content_entity_type_id);
+      $result = $entity_type_manager
+        ->getStorage($group_content_entity_type_id)
+        ->getQuery()
+        ->condition($entity_type->getKey('bundle'), $group_content_bundle_id)
+        ->condition($entity_type->getKey('id'), $ids, 'IN')
+        ->execute();
+    }
+    $actual = count($result);
+
+    if ($actual != $count) {
+      throw new \Exception("Wrong number of $group_content_bundle_id group content. Expected number: $count, actual number: $actual.");
+    }
+  }
+
 }

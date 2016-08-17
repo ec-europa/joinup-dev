@@ -7,17 +7,19 @@
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\NodeTrait;
+use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelper;
-use Drupal\joinup\Traits\NodeTrait;
 
 /**
  * Behat step definitions for testing custom pages.
  */
 class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
-  use RdfEntityTrait;
   use NodeTrait;
+  use OgTrait;
+  use RdfEntityTrait;
 
   /**
    * Checks if the given custom page belongs to the given collection.
@@ -72,6 +74,24 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, 'custom_page');
     $this->visitPath($node->url());
+  }
+
+  /**
+   * Checks the number of custom pages a collection or solution has.
+   *
+   * @param int $count
+   *   The expected number of custom pages.
+   * @param string $name
+   *   The name of the collection or solution to which the custom pages belong.
+   * @param string $type
+   *   The RDF entity type to which the custom pages belong. Can be either
+   *   'collection' or 'solution'.
+   *
+   * @Then the :name :type should have :number custom page(s)
+   */
+  public function assertContactInformationCount($count, $name, $type) {
+    $group = $this->getRdfEntityByLabel($name, $type);
+    $this->assertGroupContentCount($count, $group, 'node', 'custom_page');
   }
 
 }
