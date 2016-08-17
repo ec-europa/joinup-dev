@@ -120,7 +120,9 @@ function asset_distribution_rdf_entity_view(array &$build, EntityInterface $enti
   }
 
   // Add licence labels as extra element.
-  $build['licence'] = [];
+  $build['licence'] = [
+    '#type' => 'container',
+  ];
   foreach ($licences as $licence) {
     $build['licence'][] = [
       '#plain_text' => $licence->label(),
