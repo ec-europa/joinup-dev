@@ -41,8 +41,6 @@ transitions:
       - rdf_entity-solution-facilitator
     in_assessment:
       - rdf_entity-solution-facilitator
-    blacklisted:
-      - rdf_entity-solution-facilitator
   proposed:
     __new__:
       - moderator
@@ -54,8 +52,6 @@ transitions:
       - rdf_entity-solution-facilitator
     in_assessment:
       - rdf_entity-solution-facilitator
-    blacklisted:
-      - rdf_entity-solution-facilitator
   validated:
     __new__:
       - moderator
@@ -66,6 +62,8 @@ transitions:
     validated:
       - moderator
     blacklisted:
+      - moderator
+    in_assessment:
       - moderator
     deletion_request:
       - moderator
