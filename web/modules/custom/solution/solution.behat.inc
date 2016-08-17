@@ -459,6 +459,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
+      'state' => 'field_is_status',
       'collection' => OgGroupAudienceHelper::DEFAULT_FIELD,
     ];
   }
