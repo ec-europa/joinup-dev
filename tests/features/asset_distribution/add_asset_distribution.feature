@@ -58,5 +58,9 @@ Feature: Add asset distribution through the UI
       When I click "Custom title of asset distribution"
       Then I should see the heading "Custom title of asset distribution"
       And I should see the link "WTFPL"
+
+      # The licence label should be shown also in the solution UI.
+      When I go to the homepage of the "Solution random x name" solution
+      Then I should see the text "WTFPL"
       # Clean up the asset distribution that was created through the UI.
       Then I delete the "Custom title of asset distribution" asset distribution
