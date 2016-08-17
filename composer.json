@@ -14,7 +14,7 @@
         "drupal/facets" : "dev-8.x-1.x#70f2b89823e2499ad8b097190145943a0e412e85",
         "drupal/inline_entity_form": "8.1.x-dev",
         "drupal/og": "dev-8.x-1.x",
-        "drupal/og_menu": "dev-8.x-1.x#8b3cdc10cfa72767a08789828d5583604e68bc53",
+        "drupal/og_menu": "dev-og-permissions",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
         "drupal/search_api": "~8.1.0-alpha16",

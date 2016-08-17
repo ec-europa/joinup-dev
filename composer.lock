@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7369932b6a8c28295fb3004348c6d8ee",
-    "content-hash": "05cd523b5804be76e40b6910246a0a3a",
+    "hash": "e1301599c65af62e6802a702a592be17",
+    "content-hash": "be57d16ffd13604df86ae41eaed7aa75",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.39",
+            "version": "3.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "85f1fddaeb40b95106b2a2764268e9c89fc258ce"
+                "reference": "204337efe872a0207781089833de0f8594fc5fd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/85f1fddaeb40b95106b2a2764268e9c89fc258ce",
-                "reference": "85f1fddaeb40b95106b2a2764268e9c89fc258ce",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/204337efe872a0207781089833de0f8594fc5fd7",
+                "reference": "204337efe872a0207781089833de0f8594fc5fd7",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-08-11 16:40:35"
+            "time": "2016-08-16 20:55:18"
         },
         {
             "name": "composer/ca-bundle",
@@ -1592,16 +1592,16 @@
         },
         {
             "name": "drupal/og_menu",
-            "version": "dev-8.x-1.x",
+            "version": "dev-og-permissions",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og_menu.git",
-                "reference": "8b3cdc10cfa72767a08789828d5583604e68bc53"
+                "reference": "cf211c551a3bc1f10933c52f494d7c99919ec426"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/8b3cdc10cfa72767a08789828d5583604e68bc53",
-                "reference": "8b3cdc10cfa72767a08789828d5583604e68bc53",
+                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/cf211c551a3bc1f10933c52f494d7c99919ec426",
+                "reference": "cf211c551a3bc1f10933c52f494d7c99919ec426",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1614,7 +1614,7 @@
                 "issues": "https://drupal.org/project/issues/og_menu",
                 "source": "https://cgit.drupalcode.org/og_menu"
             },
-            "time": "2016-06-08 21:08:50"
+            "time": "2016-06-06 13:42:47"
         },
         {
             "name": "drupal/phing-drush-task",
@@ -6155,7 +6155,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-08-15 11:24:42"
+            "time": "2016-08-15 11:25:34"
         },
         {
             "name": "drupal/config_devel",
