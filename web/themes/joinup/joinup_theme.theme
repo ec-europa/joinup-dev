@@ -18,6 +18,7 @@ function joinup_theme_preprocess_page(&$variables) {
   $route_match = \Drupal::routeMatch();
   $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
   $variables['title'] = $title;
+  $variables['featured_title'] = $title;
 
   $route_name = $route_match->getRouteName();
   $blue_header_routes = array(
@@ -47,6 +48,7 @@ function joinup_theme_preprocess_page(&$variables) {
       if (isset($entity->og_audience->target_id) && $entity_type != 'solution') {
         // Load collection.
         $entity = entity_load('rdf_entity', $entity->og_audience->target_id);
+        $variables['featured_title'] = $entity->label->value;
       }
 
       if ($entity_type == 'solution') {
