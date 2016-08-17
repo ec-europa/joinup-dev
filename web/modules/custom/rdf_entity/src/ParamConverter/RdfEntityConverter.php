@@ -56,6 +56,9 @@ class RdfEntityConverter extends EntityConverter {
       if ($graph_type = $graph->getGraph()) {
         $storage->setActiveGraphType($graph_type);
       }
+      else {
+        $storage->setActiveGraphType('default');
+      }
 
       $entity = $storage->load($value);
       // If the entity type is translatable, ensure we return the proper

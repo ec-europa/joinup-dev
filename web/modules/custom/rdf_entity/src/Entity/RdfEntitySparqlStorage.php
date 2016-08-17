@@ -812,4 +812,45 @@ QUERY;
     $this->moduleHandler->alter('rdf_apply_default_fields', $storage, $values);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function resetCache(array $ids = NULL) {
+    // Consider the graph when statically caching entities.
+    if ($this->entityType->isStaticallyCacheable() && isset($ids)) {
+      foreach ($ids as $id) {
+        unset($this->entities[$this->activeGraph][$id]);
+      }
+    }
+    else {
+      $this->entities[$this->activeGraph] = array();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getFromStaticCache(array $ids) {
+    // Consider the graph when statically caching entities.
+    $entities = array();
+    // Load any available entities from the internal cache.
+    if ($this->entityType->isStaticallyCacheable() && !empty($this->entities[$this->activeGraph])) {
+      $entities += array_intersect_key($this->entities[$this->activeGraph], array_flip($ids));
+    }
+    return $entities;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setStaticCache(array $entities) {
+    // Consider the graph when statically caching entities.
+    if ($this->entityType->isStaticallyCacheable()) {
+      if (empty($this->entities[$this->activeGraph])) {
+        $this->entities[$this->activeGraph] = [];
+      }
+      $this->entities[$this->activeGraph] += $entities;
+    }
+  }
+
 }
