@@ -40,16 +40,37 @@ function joinup_theme_preprocess_page(&$variables) {
 
   if (!empty($entity)) {
     $entity_type = $entity->getType();
-    if ($entity_type == 'collection' || $entity_type == 'custom_page') {
-      $variables['is_collection'] = TRUE;
-      $logo_id = $entity->field_ar_logo->target_id;
-      $variables['logo'] = _joinup_theme_load_image($logo_id, 'image_style_collection_logo');
+    if ($entity_type == 'collection' || $entity_type == 'solution' || isset($entity->og_audience->target_id)) {
 
-      $banner_id = $entity->field_ar_banner->target_id;
-      $banner = File::load($banner_id);
-      $path = $banner->getFileUri();
-      $url = ImageStyle::load('banner')->buildUrl($path);
-      $variables['banner_url'] = $url;
+      // Set variable, which displays big header on node and rdf pages.
+      $variables['is_featured_content'] = TRUE;
+      if (isset($entity->og_audience->target_id) && $entity_type != 'solution') {
+        // Load collection.
+        $entity = entity_load('rdf_entity', $entity->og_audience->target_id);
+      }
+
+      if ($entity_type == 'solution') {
+        $variables['is_solution'] = TRUE;
+        $logo_id = $entity->field_is_logo->target_id;
+        $banner_id = $entity->field_is_banner->target_id;
+      }
+      else {
+        $variables['is_collection'] = TRUE;
+        $logo_id = $entity->field_ar_logo->target_id;
+        $banner_id = $entity->field_ar_banner->target_id;
+      }
+      // Create logo render array.
+      if (!empty($logo_id)) {
+        $variables['logo'] = _joinup_theme_load_image($logo_id, 'image_style_collection_logo');
+      }
+
+      // Load banner url.
+      if (!empty($banner_id)) {
+        $banner = File::load($banner_id);
+        $path = $banner->getFileUri();
+        $url = ImageStyle::load('banner')->buildUrl($path);
+        $variables['banner_url'] = $url;
+      }
     }
   }
 }
@@ -146,7 +167,7 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
 }
 
 /**
- * Loads image file.
+ * Load image file.
  */
 function _joinup_theme_load_image($file_id, $image_style) {
   $file = File::load($file_id);
@@ -166,7 +187,7 @@ function _joinup_theme_load_image($file_id, $image_style) {
     $img_vars['width'] = $img_vars['height'] = NULL;
   }
 
-  $logo_render_array = [
+  $render_array = [
     '#theme' => 'image_style',
     '#width' => $img_vars['width'],
     '#height' => $img_vars['height'],
@@ -177,7 +198,7 @@ function _joinup_theme_load_image($file_id, $image_style) {
   // Add the file entity to the cache dependencies.
   // This will clear our cache when this entity updates.
   $renderer = \Drupal::service('renderer');
-  $renderer->addCacheableDependency($logo_render_array, $file);
+  $renderer->addCacheableDependency($render_array, $file);
 
-  return $logo_render_array;
+  return $render_array;
 }

@@ -55,8 +55,8 @@
   {% endif %}
 
   {% if page.featured %}
-    {% if is_collection %}
-      {% include directory ~ '/templates/parts/featured--collection.html.twig' %}
+    {% if is_featured_content %}
+      {% include directory ~ '/templates/parts/featured--content.html.twig' %}
     {% elseif is_blue_header %}
       {% include directory ~ '/templates/parts/featured--title.html.twig' %}
     {% endif %}

@@ -40,9 +40,7 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - datetime
-    - ds
     - file
-    - image
     - link
     - options
     - text
@@ -65,21 +63,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_is_banner:
-    weight: 37
-    label: above
-    settings:
-      image_style: banner
-      image_link: ''
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: image
   field_is_business_process:
     weight: 32
     label: above
@@ -170,21 +153,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_is_logo:
-    weight: 36
-    label: above
-    settings:
-      image_style: thumbnail
-      image_link: ''
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: image
   field_is_metrics_page:
     weight: 21
     label: above
@@ -353,4 +321,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_is_banner: true
+  field_is_logo: true
