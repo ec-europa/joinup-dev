@@ -232,18 +232,6 @@ function demo_content_get_asset_data() {
 <section id="status"><p>&nbsp;</p><p><span style="font-size: 13px">Copyright &copy; 2012 European Union. This vocabulary is published under the&nbsp;</span><span style="font-size: 13px"><a href="https://joinup.ec.europa.eu/category/licence/isa-open-metadata-licence-v11" rel="license" style="font-size: 13px">ISA Open Metadata Licence v1.1</a></span></p>
 </section>',
       // These lines are commented because the entities do not currently exist.
-      // 'field_is_distribution' => [
-      // 'http://joinup.ec.europa.eu/site/core_person/CorePerson/CorePerson-v1.00.html',
-      // 'https://joinup.ec.europa.eu/catalogue/distribution/core_vocabularies-business_location_person_v100_rdf_schemahtml',
-      // 'https://joinup.ec.europa.eu/catalogue/distribution/core_vocabularies-business_location_person_v100_xml_schemas_rdf',
-      // 'https://joinup.ec.europa.eu/catalogue/distribution/core_vocabularies-business_location_person_v100_xml_schemas_xsd',
-      // 'https://joinup.ec.europa.eu/catalogue/distribution/core_vocabularies-business_location_person_v100_specification_in_pdf',
-      // 'https://joinup.ec.europa.eu/catalogue/distribution/core_vocabularies-person_issues_raised_within_working_group-v100zip',
-      // 'https://joinup.ec.europa.eu/system/files/project/Core_Vocabularies-Business_Location_Person_v1.00_RDF_Schema.zip',
-      // 'https://joinup.ec.europa.eu/catalogue/distribution/core_vocabularies-business_location_person_v100_conceptual_modelzip-0',
-      // 'https://joinup.ec.europa.eu/system/files/project/Core_Vocabularies-Business_Location_Person_v1.00_XML_Schemas.zip',
-      // 'https://joinup.ec.europe.be/Core_Vocabularies-Business_Location_Person_v1.00_Specification_final_zip',
-      // ],
       // 'field_keywords' => [
       // 'core vocabulary',
       // 'FOAF',

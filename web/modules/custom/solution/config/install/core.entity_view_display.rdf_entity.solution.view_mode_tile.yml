@@ -10,7 +10,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
-    - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
     - field.field.rdf_entity.solution.field_is_elibrary_creation
     - field.field.rdf_entity.solution.field_is_has_version
@@ -143,13 +142,6 @@ content:
             fis-def-at: false
             fi-def-at: false
     type: text_trimmed
-  field_is_distribution:
-    weight: 25
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
   field_is_documentation:
     weight: 33
     label: above
@@ -404,3 +396,4 @@ content:
 hidden:
   field_is_banner: true
   field_is_logo: true
+  licence: true
