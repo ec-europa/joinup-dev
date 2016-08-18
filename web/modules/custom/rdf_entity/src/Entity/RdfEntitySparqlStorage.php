@@ -3,6 +3,7 @@
 namespace Drupal\rdf_entity\Entity;
 
 use Drupal\Component\Uuid\Php;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\ContentEntityStorageBase;
@@ -817,13 +818,21 @@ QUERY;
    */
   public function resetCache(array $ids = NULL) {
     // Consider the graph when statically caching entities.
-    if ($this->entityType->isStaticallyCacheable() && isset($ids)) {
+    if ($ids) {
+      $cids = array();
       foreach ($ids as $id) {
         unset($this->entities[$this->activeGraph][$id]);
+        $cids[] = $this->buildCacheId($id);
+      }
+      if ($this->entityType->isPersistentlyCacheable()) {
+        $this->cacheBackend->deleteMultiple($cids);
       }
     }
     else {
-      $this->entities[$this->activeGraph] = array();
+      $this->entities = array();
+      if ($this->entityType->isPersistentlyCacheable()) {
+        Cache::invalidateTags(array($this->entityTypeId . '_values'));
+      }
     }
   }
 
