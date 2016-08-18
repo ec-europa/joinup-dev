@@ -1,11 +1,10 @@
 @api
-Feature: Solution API
+Feature: Solution moderation
   In order to manage solutions programmatically
-  As a backend developer
-  I need to be able to use the Solution API
+  As a user of the website
+  I need to be able to transit the solutions from one state to another.
 
-  # @todo: Fix these comments
-  Scenario: Programmatically create a solution
+  Scenario: Test the moderation workflow available states.
     Given the following organisation:
       | name | Angelos Agathe |
     And the following contact:
@@ -44,6 +43,15 @@ Feature: Solution API
       | The Guardian of the Stream | William Curtis  | facilitator   |
       | Flames in the Swords       | William Curtis  | facilitator   |
 
+    # The following table tests the allowed transitions in a solution.
+    # For each entry, the following steps must be performed:
+    # Login with the given user (or a user with the same permissions).
+    # Go to the homepage of the given solution.
+    # If the expected states (states column) are empty, I should not have access
+    # to the edit screen.
+    # If the expected states are not empty, then I see the "Edit" link.
+    # When I click the "Edit" link
+    # Then the state field should have only the given states available.
     Then for the following solution, the corresponding user should have the corresponding available options:
       | solution                   | user             | states                                |
       | Azure Ship                 | Franklin Walker  |                                       |
