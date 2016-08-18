@@ -8,6 +8,7 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -17,6 +18,7 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use EntityReferenceTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
 
@@ -36,7 +38,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    * @When (I )go to (the homepage of )the :licence licence
    * @When (I )visit (the homepage of )the :licence licence
    */
-  public function visitDistribution($licence) {
+  public function visitLicence($licence) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $licence */
     $licence = $this->getLicenceByName($licence);
     $this->visitPath($licence->url());
@@ -76,6 +78,9 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
           throw new \Exception("Unknown column '$key' in licence table.");
         }
       };
+
+      $values = $this->convertEntityReferencesValues('rdf_entity', 'licence', $values);
+
       $this->createLicence($values);
     }
   }
@@ -112,6 +117,9 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
         throw new \Exception("Unknown column '$key' in solution table.");
       }
     };
+
+    $values = $this->convertEntityReferencesValues('rdf_entity', 'licence', $values);
+
     $this->createLicence($values);
   }
 

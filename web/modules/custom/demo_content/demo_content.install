@@ -5,8 +5,9 @@
  * Install, update and uninstall functions for the Demo content module.
  */
 
-use Drupal\file\Entity\File;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\user\Entity\User;
 
 /**
  * Implements hook_install().
@@ -16,30 +17,147 @@ function demo_content_install() {
 }
 
 /**
+ * Implements hook_uninstall().
+ *
+ * Deletes demo users.
+ */
+function demo_content_uninstall() {
+  foreach (demo_content_get_user_data() as $user_data) {
+    $facilitator = user_load_by_name($user_data['name']);
+    if (!empty($facilitator)) {
+      user_delete($facilitator->id());
+    }
+  }
+}
+
+/**
  * Creates demo content for the joinup project.
  */
 function demo_content_create_demo_content() {
-  $asset_path = \Drupal::moduleHandler()->getModule('demo_content')->getPath() . '/includes/images';
+  // Create demo users.
+  foreach (demo_content_get_user_data() as $user_data) {
+    $facilitator = User::create($user_data);
+    demo_content_entity_randomize_field($facilitator, array_keys($user_data));
+    $facilitator->save();
+  }
+
+  foreach (demo_content_get_contact_information_data() as $values) {
+    $contact = Rdf::create($values);
+    demo_content_entity_randomize_field($contact, array_keys($values));
+    $contact->save();
+  }
+
+  foreach (demo_content_get_owner_data() as $values) {
+    $owner = Rdf::create($values);
+    demo_content_entity_randomize_field($owner, array_keys($values));
+    $owner->save();
+  }
+
   foreach (demo_content_get_collection_data() as $values) {
-    if (!empty($values['field_ar_logo'])) {
-      $file_path = rtrim(realpath($asset_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $values['field_ar_logo'];
-      if (!is_file($file_path)) {
-        throw new \Exception("File '{$values['field_ar_logo']}' was not found in file path '$asset_path'.");
-      }
-
-      $uri = file_unmanaged_copy($file_path, 'public://' . $values['field_ar_logo']);
-      $file = File::create(['uri' => $uri]);
-      $values['field_ar_logo'] = [$file];
-    }
-
     $collection = Rdf::create($values);
+    demo_content_entity_randomize_field($collection, array_keys($values));
     $collection->save();
   }
 
   foreach (demo_content_get_asset_data() as $values) {
     $solution = Rdf::create($values);
+    demo_content_entity_randomize_field($solution, array_keys($values));
     $solution->save();
   }
+}
+
+/**
+ * Fills all mandatory fields of an entity not yet filled with random data.
+ *
+ * This method skips all entity keys except from the label.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *    The entity to edit.
+ * @param array $keys_to_skip
+ *    A list of keys to skip and not randomise.
+ */
+function demo_content_entity_randomize_field(EntityInterface $entity, array $keys_to_skip) {
+  // Skip fields handled by core except label.
+  $entity_keys = $entity->getEntityType()->getKeys();
+  unset($entity_keys['label']);
+  $keys_to_skip = array_merge($keys_to_skip, $entity->getEntityType()->getKeys());
+
+  $field_definitions = $entity->getFieldDefinitions();
+  foreach ($field_definitions as $id => $field_definition) {
+    if (in_array($id, $keys_to_skip)) {
+      continue;
+    }
+
+    if ($field_definition->isRequired() && empty($entity->{$id}->getValue())) {
+      $entity->{$id}->generateSampleItems();
+    }
+  }
+}
+
+/**
+ * Get demo contact information data.
+ *
+ * @return array
+ *    An array of data that will be used to create demo contact entities.
+ */
+function demo_content_get_contact_information_data() {
+  return [
+    [
+      'rid' => 'contact_information',
+      'field_ci_email' => 'caterpillar@example.com',
+      'field_ci_name' => 'Caterpillar',
+    ],
+    [
+      'rid' => 'contact_information',
+      'field_ci_email' => 'butterfly@example.com',
+      'field_ci_name' => 'Butterfly',
+      'field_ci_webpage' => 'http://valeyofbutterflies.com',
+    ],
+  ];
+}
+
+/**
+ * Get demo owner data.
+ *
+ * @return array
+ *    An array of data that will be used to create owner entities.
+ */
+function demo_content_get_owner_data() {
+  return [
+    [
+      'rid' => 'person',
+      'field_op_name' => 'Grandma',
+    ],
+    [
+      'rid' => 'organisation',
+      'field_oo_name' => 'Red riding hood inc.',
+    ],
+  ];
+}
+
+/**
+ * Get demo user data.
+ *
+ * @return array
+ *    An array of data that will be used to create demo users.
+ */
+function demo_content_get_user_data() {
+  return [
+    [
+      'name' => 'collection_facilitator',
+      'mail' => 'collection_facilitator@example.com',
+      'pass' => 'collection_facilitator',
+      'roles' => [User::AUTHENTICATED_ROLE],
+      'status' => 1,
+    ],
+    [
+      'name' => 'solution_facilitator',
+      'mail' => 'solution_facilitator@example.com',
+      'pass' => 'solution_facilitator',
+      'roles' => [User::AUTHENTICATED_ROLE],
+      'status' => 1,
+    ],
+  ];
 }
 
 /**
@@ -55,9 +173,6 @@ function demo_content_get_collection_data() {
       'rid' => 'collection',
       'label' => 'Open source observatory',
       'field_ar_abstract' => '<p>Open Source Observatory</p>',
-      'field_ar_access_url' => 'http://collection/osor/description',
-      'field_ar_closed' => '0',
-      'field_ar_creation_date' => '2016-06-08T09:30:56+00:00',
       'field_ar_description' => '<p>The Open Source Observatory is a community for exchanging information, experiences and best practices around <a href="https://en.wikipedia.org/wiki/Open_source">open source</a> solutions for use in public administrations. We help you find open source software made available by other public administrations, and solve issues related to development. OSOR lets you share your own solutions. This is the place to learn from best practices in Europe and around the world.</p>
         <h3>Join us!</h3>
         <p>Join the OSOR; get access to the latest news &amp; events, learn about solutions of the month and pick up the most recent case study. Membership gives you automatic updates, and is the easiest way to contribute. Please share your own news items, events, studies and solutions. Join our community!</p>
@@ -74,17 +189,11 @@ function demo_content_get_collection_data() {
         <h3>Stay up to date</h3>
         <p>Follow <a href="https://twitter.com/osoreu">@osoreu</a> on Twitter</p>
         <p>Join <a href="http://www.linkedin.com/groups?home=&amp;gid=2600644&amp;trk">OSOR</a> on LinkedIn</p>',
-      'field_ar_elibrary_creation' => '1',
-      'field_ar_logo' => 'logo1.png',
-      'field_ar_moderation' => '0',
-      'field_ar_modification_date' => '2016-06-08T09:30:56+00:00',
     ],
     [
       'id' => 'http://placeHolder/4e56d06c-c8c3-40fd-b2a0-773301ebe9b8',
       'rid' => 'collection',
       'label' => 'National Interoperability Framework Observatory - NIFO',
-      'field_ar_closed' => '0',
-      'field_ar_creation_date' => '2016-06-08T14:33:55+00:00',
       'field_ar_description' => '<p>The NIFO community is a dedicated space for sharing experience and best practices on policies, systems, challenges and successes related to interoperability.&nbsp;</p>
         <p>The objectives of this community is to gather contacts nominated by European countries and other stakeholders.&nbsp;</p>
         <p>NIFO analyses the National Interoperability Frameworks (NIFs) of the Member States and associated countries and their alignment with the European Interoperability Framework (EIF). &nbsp;The aim of this observatory is to serve as a source of inspiration towards the establishment and further development of the National Interoperability Frameworks. The analysis is based on a model that allows the various aspects of the NIFs to be compared with the EIF and aims to highlight characteristics that are similar. The model takes into account the Digital Agenda.</p>
@@ -93,17 +202,12 @@ function demo_content_get_collection_data() {
         <h3>Our services</h3>
         <img alt="Services" data-align="center" data-entity-type="file" data-entity-uuid="463f5b28-7fee-476c-9603-30215c2079f1" src="/sites/default/files/inline-images/Description_Image_0.PNG" />
         <p>&nbsp;</p>',
-      'field_ar_elibrary_creation' => '1',
-      'field_ar_logo' => 'logo2.png',
-      'field_ar_moderation' => '0',
-      'field_ar_modification_date' => '2016-06-08T14:33:55+00:00',
     ],
     [
       'id' => 'http://placeHolder/e682a47c-4fa3-49c7-9d42-416379751111',
       'rid' => 'collection',
       'label' => 'Common Assessment Method for Standards and Specifications - CAMSS',
       'field_ar_abstract' => '<p>The objective of CAMSS is to establish a neutral and unbiased method for the assessment of technical specifications and standards in the field of ICT.</p>',
-      'field_ar_access_url' => '',
       'field_ar_creation_date' => '2016-06-08T14:03:26+00:00',
       'field_ar_description' => '<p>The assessment of standards and specifications for eGovernment solutions is currently organised on a national basis, e.g. within the context of Member States’ National Interoperability Frameworks. "CAMSS" is an initiative to promote collaboration between EU Member States in defining a "Common Assessment Method for Standards and Specifications" and to share with other countries the assessment study results for the development of eGovernment services.</p>
         <p>In this way interoperability between EU Member States in the area of eGovernment will be expanded through the sharing of information and knowledge, the alignment of national processes and by reusing best practices. It will also speed up the assessment processes, reduce their cost throughout European public administrations and avoid ICT vendor specific lock-in.</p>
@@ -111,17 +215,11 @@ function demo_content_get_collection_data() {
         <p>The expected beneficiaries of the CAMSS are the public administrations in the Member States and EU institutions, standardisation bodies and IT services industry. For these beneficiaries, CAMSS aims at providing a best practice (common) assessment method and guidance for the assessment of ICT technical specification or standards when defining ICT architectures and establishing European public services.</p>
         <p>The use of the CAMSS by Member States will help to promote transparency in the choice of eGovernment solutions and standards. It should also lead to a more efficient use of public funds via sharing and reuse among eGovernment projects. The CAMSS toolkit consists of a documented reference assessment process, a set of quality requirements (criteria), and assessment tools.</p>
         <p>More information on CAMSS, its objectives, potential benefits and overall approach is available at the&nbsp;<a href="http://ec.europa.eu/isa/actions/02-interoperability-architecture/2-2action_en.htm">European Commission\'s Interoperability Solutions for European Public Administrations - ISA programme website</a>."</p>',
-      'field_ar_elibrary_creation' => '1',
-      'field_ar_logo' => 'logo3.jpg',
-      'field_ar_moderation' => '0',
-      'field_ar_modification_date' => '2016-06-08T14:03:26+00:00',
     ],
     [
       'id' => 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1',
       'rid' => 'collection',
       'label' => 'Semantic Interoperability Community - SEMIC',
-      'field_ar_closed' => '0',
-      'field_ar_creation_date' => '2016-06-08T13:26:13+00:00',
       'field_ar_description' => '<h3>About SEMIC</h3>
         <p>The&nbsp;<strong>Semantic Interoperability Community (SEMIC)</strong>&nbsp;is a European Commission initiative aiming to improve the semantic interoperability of interconnected e-Government systems. It is funded under&nbsp;<a href="http://ec.europa.eu/isa/actions/01-trusted-information-exchange/1-1action_en.htm">Action 1.1</a>&nbsp;(<em>Improving semantic interoperability in European e-Government systems</em>) of the&nbsp;<a href="http://ec.europa.eu/isa/index_en.htm">Interoperability Solutions for European Public Administrations (ISA) Programme</a>.</p>
         <p><strong>Semantic interoperability</strong>&nbsp;refers to the preservation of meaning in the exchange of electronic information (see also&nbsp;<a href="http://ec.europa.eu/isa/documents/isa_annex_ii_eif_en.pdf">European Interoperability Framework</a>). It means that, in the context of an information exchange, the receiver and the sender of information can understand and interpret it the same way. The lack of semantic interoperability between European e-Government systems is one of the major obstacles in the provision of cross-border and cross-sector digital public services.&nbsp;</p>
@@ -150,10 +248,6 @@ function demo_content_get_collection_data() {
         SEMIC Conference</h4>
         <p><br />The SEMIC conference is an annual international event which brings together policy makers, ICT solution developers, industry and researchers with a common interest in topics related to information exchange and management for public administration.<br />
         Read more about the SEMIC conference <a href="https://joinup.ec.europa.eu/node/145999">here</a>.</p>',
-      'field_ar_elibrary_creation' => '1',
-      'field_ar_logo' => 'logo4.png',
-      'field_ar_moderation' => '0',
-      'field_ar_modification_date' => '2016-06-08T13:26:13+00:00',
     ],
   ];
 }
@@ -218,7 +312,7 @@ function demo_content_get_asset_data() {
       // 'http://www.geonames.org/6695072',
       // ],
       // 'field_status' => 'http://purl.org/adms/status/Completed',
-      'og_group_ref' => 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1',
+      'og_audience' => 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1',
     ],
   ];
 }

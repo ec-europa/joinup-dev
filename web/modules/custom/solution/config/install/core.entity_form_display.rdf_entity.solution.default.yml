@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.rdf_entity.solution.field_is_actor
     - field.field.rdf_entity.solution.field_is_affiliations_requests
+    - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_creation_date
@@ -16,6 +17,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_issue_tracker
     - field.field.rdf_entity.solution.field_is_landing_page
     - field.field.rdf_entity.solution.field_is_language
+    - field.field.rdf_entity.solution.field_is_logo
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_modification_date
@@ -35,79 +37,102 @@ dependencies:
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
-    - field.field.rdf_entity.solution.field_topic
-    - field.field.rdf_entity.solution.og_group_ref
     - rdf_entity.rdfentity.solution
   module:
     - file
+    - image
+    - inline_entity_form
     - link
-    - rdf_entity
     - text
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
 bundle: solution
 mode: default
 content:
+  field_is_banner:
+    weight: 3
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+  field_is_contact_information:
+    type: inline_entity_form_complex
+    weight: 4
+    settings:
+      form_mode: default
+      override_labels: true
+      label_singular: 'contact information'
+      label_plural: 'contact information'
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+    third_party_settings: {  }
   field_is_description:
-    weight: 2
+    weight: 1
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
   field_is_documentation:
-    weight: 3
+    weight: 6
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
   field_is_elibrary_creation:
-    weight: 5
+    weight: 8
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-  field_is_issue_tracker:
-    weight: 9
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
+    type: options_buttons
   field_is_landing_page:
-    weight: 7
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-  field_is_metrics_page:
-    weight: 8
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-  field_is_moderation:
-    weight: 6
-    settings:
-      display_label: false
-    third_party_settings: {  }
-    type: boolean_checkbox
-  field_is_related_solutions:
-    weight: 4
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-  field_is_wiki:
     weight: 10
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+  field_is_logo:
+    weight: 2
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+  field_is_metrics_page:
+    weight: 11
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  field_is_moderation:
+    weight: 9
+    settings:
+      display_label: false
+    third_party_settings: {  }
+    type: boolean_checkbox
+  field_is_owner:
+    type: inline_entity_form_complex
+    weight: 5
+    settings:
+      form_mode: default
+      override_labels: true
+      label_singular: owner
+      label_plural: owners
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+    third_party_settings: {  }
+  field_is_related_solutions:
+    weight: 7
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
   id:
     type: auto_uri
     weight: 0
@@ -116,7 +141,7 @@ content:
     third_party_settings: {  }
   label:
     type: string_textfield
-    weight: 1
+    weight: 0
     settings:
       size: 60
       placeholder: ''
@@ -125,14 +150,13 @@ hidden:
   field_is_actor: true
   field_is_affiliations_requests: true
   field_is_business_process: true
-  field_is_contact_information: true
   field_is_creation_date: true
   field_is_distribution: true
   field_is_has_version: true
   field_is_included_asset: true
+  field_is_issue_tracker: true
   field_is_language: true
   field_is_modification_date: true
-  field_is_owner: true
   field_is_product_type: true
   field_is_solution_type: true
   field_is_source_code_repository: true
@@ -142,9 +166,8 @@ hidden:
   field_is_version: true
   field_is_webdav_creation: true
   field_is_webdav_url: true
+  field_is_wiki: true
   field_keywords: true
   field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
-  field_topic: true
-  og_group_ref: true

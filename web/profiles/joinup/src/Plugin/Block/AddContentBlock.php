@@ -95,8 +95,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $collection_contexts = $this->collectionContext->getRuntimeContexts(['og']);
     if ($collection_contexts && $collection_contexts['og']->hasContextValue()) {
       $page_url = Url::fromRoute('custom_page.collection_custom_page.add', [
-        'rdf_entity' => $collection_contexts['og']->getContextValue()
-          ->id(),
+        'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
       ]);
       if ($page_url->access()) {
         $links['custom_page'] = [
@@ -108,8 +107,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       }
 
       $solution_url = Url::fromRoute('solution.collection_solution.add', [
-        'rdf_entity' => $collection_contexts['og']->getContextValue()
-          ->id(),
+        'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
       ]);
       if ($solution_url->access()) {
         $links['solution'] = [
@@ -168,8 +166,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $asset_release_contexts = $this->assetReleaseContext->getRuntimeContexts(['asset_release']);
       if ($asset_release_contexts && $asset_release_contexts['asset_release']->hasContextValue()) {
         $distribution_url = Url::fromRoute('asset_distribution.asset_release_asset_distribution.add', [
-          'rdf_entity' => $asset_release_contexts['asset_release']->getContextValue()
-            ->id(),
+          'rdf_entity' => $asset_release_contexts['asset_release']->getContextValue()->id(),
         ]);
         if ($distribution_url->access()) {
           $links['asset_distribution'] = [
@@ -226,6 +223,17 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       'solution',
       'url.path',
     ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    // @todo: This is a temporary workaround for the lack of og cache
+    // contexts/tags. Remove this when Og provides proper cache context and
+    // instead add the proper context to the getCacheContexts method.
+    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2628
+    return Cache::mergeContexts(parent::getCacheTags(), ['user.roles']);
   }
 
 }

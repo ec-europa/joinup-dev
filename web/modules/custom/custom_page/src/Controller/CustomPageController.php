@@ -4,8 +4,10 @@ namespace Drupal\custom_page\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\OgAccess;
+use Drupal\og\OgAccessInterface;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\RdfInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class CustomPageController.
@@ -16,6 +18,32 @@ use Drupal\rdf_entity\RdfInterface;
  * @package Drupal\custom_page\Controller
  */
 class CustomPageController extends ControllerBase {
+
+  /**
+   * The OG access handler.
+   *
+   * @var \Drupal\og\OgAccessInterface
+   */
+  protected $ogAccess;
+
+  /**
+   * Constructs a CustomPageController.
+   *
+   * @param \Drupal\og\OgAccessInterface $og_access
+   *   The OG access handler.
+   */
+  public function __construct(OgAccessInterface $og_access) {
+    $this->ogAccess = $og_access;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('og.access')
+    );
+  }
 
   /**
    * Controller for the base form.
@@ -40,6 +68,10 @@ class CustomPageController extends ControllerBase {
   /**
    * Handles access to the custom page add form through collection pages.
    *
+   * Access is granted to moderators and group members that have the permission
+   * to create custom pages inside of their group, which in practice means this
+   * is granted to collection and solution facilitators.
+   *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the custom page is created.
    *
@@ -47,21 +79,14 @@ class CustomPageController extends ControllerBase {
    *   The access result object.
    */
   public function createCustomPageAccess(RdfInterface $rdf_entity) {
-    // Check that the passed in RDF entity is a collection, and that the user
-    // has the permission to create custom pages.
-    // @todo This is a temporary workaround for the og permissions.
-    // Remove this when ISAICP-2369 is in.
-    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2369
-    if ($rdf_entity->bundle() == 'collection' && $this->currentUser()->hasPermission('create custom collection page')) {
-      return AccessResult::allowed();
+    $user = $this->currentUser();
+    // Grant access if the user is a moderator.
+    if (in_array('moderator', $user->getRoles())) {
+      return AccessResult::allowed()->addCacheContexts(['user.roles']);
     }
-
-    // Check if the user has the OG permission to create a custom page.
-    if (OgAccess::userAccessGroupContentEntityCrud('create', $rdf_entity, $this->createNewCustomPage($rdf_entity))->isAllowed()) {
-      return AccessResult::allowed();
-    }
-
-    return AccessResult::forbidden();
+    // Grant access depending on whether the user has permission to create a
+    // custom page according to their OG role.
+    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createNewCustomPage($rdf_entity), $user);
   }
 
   /**
@@ -76,7 +101,7 @@ class CustomPageController extends ControllerBase {
   protected function createNewCustomPage(RdfInterface $rdf_entity) {
     return $this->entityTypeManager()->getStorage('node')->create([
       'type' => 'custom_page',
-      'og_group_ref' => $rdf_entity->id(),
+      OgGroupAudienceHelper::DEFAULT_FIELD => $rdf_entity->id(),
     ]);
   }
 

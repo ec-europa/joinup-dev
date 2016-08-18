@@ -4,9 +4,10 @@ namespace Drupal\joinup_news\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\Og;
-use Drupal\og\OgAccess;
+use Drupal\og\OgAccessInterface;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\RdfInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Controller that handles the form to add news to a collection or a solution.
@@ -16,6 +17,32 @@ use Drupal\rdf_entity\RdfInterface;
  * @package Drupal\joinup_news\Controller
  */
 class NewsController extends ControllerBase {
+
+  /**
+   * The OG access handler.
+   *
+   * @var \Drupal\og\OgAccessInterface
+   */
+  protected $ogAccess;
+
+  /**
+   * Constructs a CustomPageController.
+   *
+   * @param \Drupal\og\OgAccessInterface $og_access
+   *   The OG access handler.
+   */
+  public function __construct(OgAccessInterface $og_access) {
+    $this->ogAccess = $og_access;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('og.access')
+    );
+  }
 
   /**
    * Controller for the base form.
@@ -36,7 +63,18 @@ class NewsController extends ControllerBase {
   }
 
   /**
-   * Handles access to the news add form through rdf entity pages.
+   * Handles access to the news add form through RDF entity pages.
+   *
+   * Access is granted to moderators and group members that have the permission
+   * to create news articles inside of their group, which in practice means this
+   * is granted to collection and solution facilitators.
+   *
+   * @todo Depending on the 'eLibrary creation' setting, members should be able
+   *   to create news.
+   * @todo If a collection is open non-members should be able to create news.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2654
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2445
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the news entity is created.
@@ -45,26 +83,18 @@ class NewsController extends ControllerBase {
    *   The access result object.
    */
   public function createNewsAccess(RdfInterface $rdf_entity) {
-    // Check that the passed in RDF entity is a collection or a solution,
-    // and that the user has the permission to create news.
-    if (in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
-      if ($this->currentUser()->hasPermission('create rdf entity news')) {
-        return AccessResult::allowed();
-      }
-      if (Og::isMember($rdf_entity, $this->currentUser()) && OgAccess::userAccess($rdf_entity, 'create rdf entity news')->isAllowed()) {
-        return AccessResult::allowed();
-      }
+    $user = $this->currentUser();
+    // Grant access if the user is a moderator.
+    if (in_array('moderator', $user->getRoles())) {
+      return AccessResult::allowed()->addCacheContexts(['user.roles']);
     }
-
-    return AccessResult::forbidden();
+    // Grant access depending on whether the user has permission to create a
+    // custom page according to their OG role.
+    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createNewsEntity($rdf_entity), $user);
   }
 
   /**
    * Returns a news content entity.
-   *
-   * The news content entity is pre-filled with the parent Rdf entity and the
-   * initial state. The initial state is needed to provide the appropriate
-   * options to the user.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *    The parent that the news content entity belongs to.
@@ -73,10 +103,9 @@ class NewsController extends ControllerBase {
    *    A node entity.
    */
   protected function createNewsEntity(RdfInterface $rdf_entity) {
-    $field = ($rdf_entity->bundle() == 'collection') ? 'og_group_ref' : 'field_news_parent';
     return $this->entityTypeManager()->getStorage('node')->create([
       'type' => 'news',
-      $field => $rdf_entity->id(),
+      OgGroupAudienceHelper::DEFAULT_FIELD => $rdf_entity->id(),
     ]);
   }
 

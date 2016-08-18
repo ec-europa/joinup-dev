@@ -82,5 +82,5 @@ hidden:
   field_user_group_types: true
   field_user_subscription_events: true
   language: true
-  og_group_ref: true
+  og_audience: true
   timezone: true

@@ -6,26 +6,28 @@ Feature: Add licence through UI
 
   Scenario: "Add licence" button should be shown only to the moderators.
     When I am logged in as a "moderator"
-    # The link should be visible wherever the block is visible.
-    # We are using homepage for convenience.
+    # The dashboard link is visible by clicking the user icon.
     And I am on the homepage
+    Then I should see the link "Dashboard"
+    When I click "Dashboard"
+    Then I should see the link "Licences overview"
+    When I click "Licences overview"
     Then I should see the link "Add licence"
-
-    When I am logged in as an "authenticated user"
-    And I am on the homepage
-    Then I should not see the link "Add licence"
-
-    When I am an anonymous user
-    And I am on the homepage
-    Then I should not see the link "Add licence"
 
   Scenario: Add licence as a moderator.
     Given I am logged in as a moderator
     And I am on the homepage
+    When I click "Dashboard"
+    When I click "Licences overview"
     When I click "Add licence"
     Then I should see the heading "Add Licence"
     When I fill in "Title" with "This is a random licence"
     And I fill in "Description" with "Licence details go here.."
+    And I fill in "Type" with "Public domain"
     And I press "Save"
     Then I should have 1 licence
+    When I go to the homepage of the "This is a random licence" licence
+    Then I should see the heading "This is a random licence"
+    And I should see the link "Public domain"
+    # Clean up the licence that was created through the UI.
     Then I delete the "This is a random licence" licence

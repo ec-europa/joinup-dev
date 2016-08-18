@@ -22,13 +22,12 @@ function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterf
  * Implements hook_ENTITY_TYPE_create().
  *
  * This takes care of the reverse reference.
- * When a release is created, it has it's isVersionOf prefilled
+ * When a release is created, it has it's isVersionOf pre-filled
  * and is connected to its parent. But the parent needs to have the hasVersion
  * field filled as well.
  */
-function solution_rdf_entity_insert(EntityInterface $entity) {
+function asset_release_rdf_entity_insert(EntityInterface $entity) {
   if ($entity->bundle() == 'asset_release' && !empty($entity->get('field_isr_is_version_of')->getValue()[0]['target_id'])) {
-    // Assign the entity to the parent.
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
     $parent = Rdf::load($entity->get('field_isr_is_version_of')->getValue()[0]['target_id']);
 

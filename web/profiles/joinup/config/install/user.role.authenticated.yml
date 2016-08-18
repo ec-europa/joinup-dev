@@ -16,3 +16,7 @@ permissions:
   - 'access dashboard'
   - 'manage own subscriptions'
   - 'export rdf metadata'
+  - 'access contextual links'
+  - 'create contact_information rdf entity'
+  - 'create organisation rdf entity'
+  - 'create person rdf entity'

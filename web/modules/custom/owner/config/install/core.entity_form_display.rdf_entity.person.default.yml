@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.person.field_op_name
+    - rdf_entity.rdfentity.person
+id: rdf_entity.person.default
+targetEntityType: rdf_entity
+bundle: person
+mode: default
+content:
+  field_op_name:
+    weight: -9
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  id:
+    type: auto_uri
+    weight: -10
+    settings:
+      prefix: 'http://example.org/joinup/publisher'
+    third_party_settings: {  }
+hidden:
+  label: true

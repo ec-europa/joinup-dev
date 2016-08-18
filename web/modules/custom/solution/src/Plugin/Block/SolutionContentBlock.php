@@ -4,13 +4,14 @@ namespace Drupal\solution\Plugin\Block;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Entity\EntityManager;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\Context\ContextProviderInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Routing\CurrentRouteMatch;
-use Drupal\Core\Entity\EntityManager;
 
 /**
  * Provides a 'SolutionContentBlock' demonstration block.
@@ -32,9 +33,9 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
   protected $solution;
 
   /**
-   * Drupal\Core\Routing\CurrentRouteMatch definition.
+   * The route matcher.
    *
-   * @var \Drupal\Core\Routing\CurrentRouteMatch
+   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected $currentRouteMatch;
 
@@ -42,11 +43,15 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
    * Drupal\Core\Entity\EntityManager definition.
    *
    * @var \Drupal\Core\Entity\EntityManager
+   *
+   * @todo EntityManager is deprecated. Use EntityTypeManager instead.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2669
    */
   protected $entityManager;
 
   /**
-   * Construct.
+   * Constructs a SolutionContentBlock.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -54,8 +59,18 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The plugin_id for the plugin instance.
    * @param string $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $current_route_match
+   *   The route matcher.
+   * @param \Drupal\Core\Entity\EntityManager $entity_manager
+   *   The deprecated entity manager.
+   * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $solution_context
+   *   The context provider for the solution context.
+   *
+   * @todo EntityManager is deprecated. Use EntityTypeManager instead.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2669
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, CurrentRouteMatch $current_route_match, EntityManager $entity_manager, ContextProviderInterface $solution_context) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityManager $entity_manager, ContextProviderInterface $solution_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
     if (!empty($solution_context->getRuntimeContexts(['solution'])['solution'])) {
@@ -89,11 +104,12 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
     }
 
     // Get news referencing to this solution.
-    $entities = $this->entityManager->getStorage('node')
-      ->loadByProperties(['field_news_parent' => $this->solution->id()]);
+    // @todo EntityManager is deprecated. Use EntityTypeManager instead.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2669
+    $entities = $this->entityManager->getStorage('node')->loadByProperties([OgGroupAudienceHelper::DEFAULT_FIELD => $this->solution->id()]);
     $items = [];
     foreach ($entities as $entity) {
-      $items[] = array('#markup' => $entity->link());
+      $items[] = ['#markup' => $entity->link()];
     }
     if ($items) {
       return [

@@ -6,6 +6,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_abstract
     - field.field.rdf_entity.collection.field_ar_access_url
     - field.field.rdf_entity.collection.field_ar_affiliates
+    - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
     - field.field.rdf_entity.collection.field_ar_creation_date
@@ -18,7 +19,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
-    - field.field.rdf_entity.collection.field_topic
     - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
@@ -235,13 +235,6 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-  field_topic:
-    type: entity_reference_label
-    weight: 7
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
   label:
     label: hidden
     type: string
@@ -277,4 +270,5 @@ content:
             fis: false
             fis-def-at: false
             fi-def-at: false
-hidden: {  }
+hidden:
+  field_ar_banner: true

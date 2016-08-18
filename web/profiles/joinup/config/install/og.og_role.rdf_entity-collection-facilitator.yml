@@ -1,36 +1,37 @@
 langcode: en
 status: true
 dependencies: {  }
-# todo: The actual ID is 'rdf_entity-collection-facilitator'. Update this
-# when PR #216 is fixed.
-# @see https://github.com/amitaibu/og/issues/216
-id: facilitator
-label: Collection facilitator
+id: rdf_entity-collection-facilitator
+label: 'Collection facilitator'
 weight: 2
+is_admin: null
 group_type: rdf_entity
 group_bundle: collection
 group_id: null
 permissions:
+  - 'add new links to og menu instance entities'
   - 'add user'
   - 'approve and deny subscription'
+  - 'create asset_distribution rdf_entity'
+  - 'create asset_release rdf_entity'
+  - 'create custom_page content'
+  - 'create news content'
+  - 'create rdf entity news'
+  - 'create solution rdf_entity'
+  - 'delete any custom_page content'
+  - 'delete any document content'
+  - 'delete any event content'
+  - 'delete any news content'
+  - 'edit any custom_page content'
+  - 'edit any document content'
+  - 'edit any event content'
+  - 'edit any news content'
   - 'highlight collections'
   - 'invite facilitators'
   - 'manage members'
   - 'request collection archival'
+  - 'update any navigation ogmenu_instance'
   - 'update group'
-  - 'create custom_page node'
-  - 'update any custom_page node'
-  - 'delete any custom_page node'
-  - 'update any document node'
-  - 'delete any document node'
-  - 'update any event node'
-  - 'delete any event node'
-  - 'create rdf entity news'
+  - 'view any unpublished content'
   - 'view any unpublished news content'
-  - 'create news node'
-  - 'update any news node'
-  - 'delete any news node'
-  - 'create asset_distribution rdf entity'
-  - 'create asset_release rdf entity'
-  - 'propose solution rdf entity'
 role_type: standard
