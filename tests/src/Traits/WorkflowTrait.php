@@ -3,10 +3,6 @@
 namespace Drupal\joinup\Traits;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\node\NodeInterface;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
