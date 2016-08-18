@@ -6,7 +6,7 @@ rdf_entity.propose_form:
   path: '/rdf_entity/{rdf_type}/propose'
   defaults:
     _controller: '\Drupal\joinup\Controller\JoinupController::proposeRdfEntity'
-    _title: 'Propose a Collection'
+    _title: 'Propose an Rdf entity'
   requirements:
     _custom_access: '\Drupal\joinup\Controller\JoinupController::createAssetReleaseAccess'
   options:
