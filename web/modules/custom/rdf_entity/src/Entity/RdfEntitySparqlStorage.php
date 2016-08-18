@@ -87,7 +87,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * Set the graph type to use when interacting with entities.
    */
-  public function setActiveGraphType(string $graph_type) {
+  public function setActiveGraphType($graph_type) {
     $definitions = $this->getGraphsDefinition();
     if (!isset($definitions[$graph_type])) {
       throw new \Exception('Unknown graph type ' . $graph_type);
