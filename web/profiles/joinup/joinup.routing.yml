@@ -2,14 +2,13 @@
 # profile rather than in the Collection module to avoid a circular dependency.
 # This route depends on the JoinupController, but Joinup already depends on the
 # Collection module.
-collection.propose_form:
-  path: '/collection/propose'
+rdf_entity.propose_form:
+  path: '/rdf_entity/{rdf_type}/propose'
   defaults:
     _controller: '\Drupal\joinup\Controller\JoinupController::proposeRdfEntity'
     _title: 'Propose a Collection'
-    rdf_type: 'collection'
   requirements:
-    _permission: 'propose collection rdf entity'
+    _custom_access: '\Drupal\joinup\Controller\JoinupController::createAssetReleaseAccess'
   options:
     parameters:
       rdf_type:
