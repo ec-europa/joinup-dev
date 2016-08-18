@@ -1,5 +1,8 @@
+# Temporary block placed in the footer until we have wireframes for positioning
+# the buttons shown in this block.
+# @todo: to be removed along with the config_devel entry in the joinup profile.
 langcode: en
-status: false
+status: true
 dependencies:
   module:
     - facets
@@ -8,8 +11,8 @@ dependencies:
     - joinup_theme
 id: addcontent
 theme: joinup_theme
-region: '-1'
-weight: -8
+region: footer
+weight: -10
 provider: null
 plugin: add_content_block
 settings:
