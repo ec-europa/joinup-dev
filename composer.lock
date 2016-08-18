@@ -1520,7 +1520,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/layout_plugin-8.x-1.0-alpha22.zip",
-                "reference": "90be55a68dd33d3564c26fab77573b62f6cda77e",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -1568,27 +1568,35 @@
             "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/amitaibu/og.git",
-                "reference": "7524c7a8d9e7aab20f464737c23b28595bd5baa1"
+                "url": "https://git.drupal.org/project/og",
+                "reference": "561f49b1a8384bcd032838772e51f09de3ee394d"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/7524c7a8d9e7aab20f464737c23b28595bd5baa1",
-                "reference": "7524c7a8d9e7aab20f464737c23b28595bd5baa1",
-                "shasum": ""
+            "require": {
+                "drupal/core": "8.*",
+                "drupal/field": "8.*",
+                "drupal/options": "8.*",
+                "drupal/text": "8.*",
+                "drupal/user": "8.*"
+            },
+            "replace": {
+                "drupal/og_ui": "self.version"
+            },
+            "suggest": {
+                "drupal/core": "Required by drupal/og_ui"
             },
             "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
-            "support": {
-                "issues": "https://drupal.org/project/issues/og",
-                "irc": "irc://irc.freenode.org/drupal-og",
-                "source": "https://cgit.drupalcode.org/og"
-            },
-            "time": "2016-08-13 13:34:34"
+            "time": "2016-08-17 18:09:56"
         },
         {
             "name": "drupal/og_menu",
@@ -1596,12 +1604,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og_menu.git",
-                "reference": "cf211c551a3bc1f10933c52f494d7c99919ec426"
+                "reference": "2b71eae35e962ff8e8ad16e517034c9dde97b1f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/cf211c551a3bc1f10933c52f494d7c99919ec426",
-                "reference": "cf211c551a3bc1f10933c52f494d7c99919ec426",
+                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/2b71eae35e962ff8e8ad16e517034c9dde97b1f9",
+                "reference": "2b71eae35e962ff8e8ad16e517034c9dde97b1f9",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1614,7 +1622,7 @@
                 "issues": "https://drupal.org/project/issues/og_menu",
                 "source": "https://cgit.drupalcode.org/og_menu"
             },
-            "time": "2016-06-06 13:42:47"
+            "time": "2016-08-17 16:52:14"
         },
         {
             "name": "drupal/phing-drush-task",
@@ -2697,7 +2705,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -3848,7 +3856,7 @@
             ],
             "authors": [
                 {
-                    "name": "Symfony CMF Community",
+                    "name": "Symfony CMF community",
                     "homepage": "https://github.com/symfony-cmf/Routing/contributors"
                 }
             ],
@@ -6133,7 +6141,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "0fa79f3642e0b5fcdff939bdb59c450a07641fae"
+                "reference": "5ebc42e0014720e4d9037273dadc3355d772ccd0"
             },
             "require": {
                 "php": ">=5.4.0",
@@ -6155,7 +6163,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-08-15 11:25:34"
+            "time": "2016-06-16 22:06:40"
         },
         {
             "name": "drupal/config_devel",
@@ -6188,7 +6196,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_update.git",
-                "reference": "0c8717fc15472342f699dbe8ce87dfffa25539fb"
+                "reference": "ac1526df5836a611f04bb421945beddb6306b7f2"
             },
             "require": {
                 "drupal/config": "8.*",
@@ -6213,7 +6221,7 @@
             ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
-            "time": "2016-07-21 18:32:32"
+            "time": "2016-03-01 16:28:35"
         },
         {
             "name": "drupal/devel",
@@ -7334,23 +7342,23 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "1.3.7",
+            "version": "1.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "4e8f0da10ac5802913afc151413bc8c53b6c2716"
+                "reference": "be2c607e43ce4c89ecd60e75c6a85c126e754aea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/4e8f0da10ac5802913afc151413bc8c53b6c2716",
-                "reference": "4e8f0da10ac5802913afc151413bc8c53b6c2716",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/be2c607e43ce4c89ecd60e75c6a85c126e754aea",
+                "reference": "be2c607e43ce4c89ecd60e75c6a85c126e754aea",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": "^5.3.3 || ^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.4"
+                "phpunit/phpunit": "^4.8 || ^5.0"
             },
             "type": "library",
             "extra": {
@@ -7380,7 +7388,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2016-05-17 03:18:57"
+            "time": "2016-08-18 05:49:44"
         },
         {
             "name": "sebastian/exporter",
