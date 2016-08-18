@@ -18,4 +18,4 @@ persist_with_no_fields: false
 custom_storage: false
 third_party_settings:
   rdf_entity:
-    mapping_target_id: 'http://joinup.eu/is/workflow_status'
+    mapping_value: 'http://joinup.eu/is/workflow_status'
