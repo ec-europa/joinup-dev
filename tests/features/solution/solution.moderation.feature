@@ -94,3 +94,27 @@ Feature: Solution API
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the "State" field has the "Validate" options
+
+  # Access checks are not being made here. They are run in the solution add feature.
+  Scenario: 'Draft' and 'Propose' states are available but moderators should also see 'Validated' state.
+    Given the following collection:
+      | title | Collection propose state test |
+      | logo  | logo.png                      |
+
+    When I am logged in as an "authenticated user"
+    And I go to the homepage
+    And I click "Propose solution"
+    Then the "State" field has the "Draft, Proposed" options
+    And the "State" field does not have the "Validated, In assessment, Blacklisted, Request deletion" options
+
+    When I am logged in as a user with the "moderator" role
+    And I go to the homepage
+    And I click "Propose solution"
+    Then the "State" field has the "Draft, Proposed, Validated" options
+    And the "State" field does not have the "In assessment, Blacklisted, Request deletion" options
+
+    When I am logged in as a "facilitator" of the "Collection propose state test" collection
+    And I go to the homepage of the "Collection propose state test" collection
+    And I click "Add solution"
+    Then the "State" field has the "Draft, Proposed" options
+    And the "State" field does not have the "Validated, In assessment, Blacklisted, Request deletion" options
