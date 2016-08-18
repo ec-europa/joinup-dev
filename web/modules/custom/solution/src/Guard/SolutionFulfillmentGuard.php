@@ -61,7 +61,7 @@ class SolutionFulfillmentGuard implements GuardInterface {
     $allowed_conditions = \Drupal::config('solution.settings')->get('transitions');
 
     // Check if the user has one of the allowed system roles.
-    $authorized_roles = $allowed_conditions[$to_state][$from_state];
+    $authorized_roles = isset($allowed_conditions[$to_state][$from_state]) ? $allowed_conditions[$to_state][$from_state] : [];
     $user = $this->workflowUserProvider->getUser();
     if (array_intersect($authorized_roles, $user->getRoles())) {
       return TRUE;
