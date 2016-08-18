@@ -39,11 +39,11 @@ solution_workflow:
       to: proposed
     validate:
       label: Validate
-      from: [__new__, draft, validated, proposed, blacklisted, deletion_request]
+      from: [__new__, draft, proposed, validated, in_assessment, blacklisted, deletion_request]
       to: validated
-    report:
+    in_assessment:
       label: Report
-      from: [validated]
+      from: [proposed, validated]
       to: in_assessment
     request_deletion:
       label: Request deletion
