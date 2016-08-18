@@ -45,7 +45,7 @@ class WorkflowUserProvider {
    * @param \Drupal\Core\Session\AccountInterface $account
    *    A user object.
    */
-  public function setSetUser(AccountInterface $account) {
+  public function setUser(AccountInterface $account) {
     $this->account = $account;
   }
 
