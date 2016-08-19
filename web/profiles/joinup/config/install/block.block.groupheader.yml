@@ -16,7 +16,7 @@ settings:
   id: group_header_block
   label: 'Group header'
   provider: joinup
-  label_display: visible
+  label_display: '0'
   context_mapping:
     og: '@joinup.active_og_route_context:og'
 visibility:
