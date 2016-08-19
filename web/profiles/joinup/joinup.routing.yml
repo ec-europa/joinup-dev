@@ -3,7 +3,7 @@
 # This route depends on the JoinupController, but Joinup already depends on the
 # Collection module.
 rdf_entity.propose_form:
-  path: '/rdf_entity/{rdf_type}/propose'
+  path: '/propose/{rdf_type}'
   defaults:
     _controller: '\Drupal\joinup\Controller\JoinupController::proposeRdfEntity'
     _title: 'Propose an Rdf entity'
