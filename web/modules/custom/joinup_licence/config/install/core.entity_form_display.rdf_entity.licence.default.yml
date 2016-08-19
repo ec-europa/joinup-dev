@@ -6,7 +6,6 @@ dependencies:
     - field.field.rdf_entity.licence.field_licence_type
     - rdf_entity.rdfentity.licence
   module:
-    - rdf_entity
     - text
 id: rdf_entity.licence.default
 targetEntityType: rdf_entity
