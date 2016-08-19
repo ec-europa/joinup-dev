@@ -21,7 +21,47 @@ Feature: "Add solution" visibility options.
     And I go to the homepage of the "Collection solution test" collection
     Then I should not see the link "Add solution"
 
-  Scenario: Add solution as a facilitator.
+  Scenario: "Propose solution" button should be shown to everyone.
+    Given the following collection:
+      | title | Collection propose solution test |
+      | logo  | logo.png                         |
+
+    When I am an anonymous user
+    And I go to the homepage
+    Then I should see the link "Propose solution"
+    When I go to the homepage of the "Collection propose solution test" collection
+    Then I should see the link "Propose solution"
+    When I click "Propose solution"
+    # Anonymous users are prompted to login.
+    Then I should see the error message "Access denied. You must log in to view this page."
+
+    When I am logged in as an "authenticated user"
+    And I go to the homepage
+    Then I should see the link "Propose solution"
+    When I go to the homepage of the "Collection propose solution test" collection
+    Then I should see the link "Propose solution"
+    When I click "Propose solution"
+    # Authenticated users can propose solutions.
+    Then I should not see the heading "Access denied"
+
+    When I am logged in as a user with the "moderator" role
+    And I go to the homepage
+    Then I should see the link "Propose solution"
+    When I go to the homepage of the "Collection propose solution test" collection
+    Then I should see the link "Propose solution"
+    When I click "Propose solution"
+    # Authenticated users can propose solutions.
+    Then I should not see the heading "Access denied"
+
+    When I am logged in as a "facilitator" of the "Collection propose solution test" collection
+    And I go to the homepage
+    Then I should see the link "Propose solution"
+    When I go to the homepage of the "Collection propose solution test" collection
+    # For facilitators of a collection, the button changes to 'Add solution'.
+    Then I should not see the link "Propose solution"
+    But I should see the link "Add solution"
+
+  Scenario: Add solution as a collection facilitator.
     Given the following collection:
       | title | Collection solution test 2 |
       | logo  | logo.png                   |
@@ -38,8 +78,8 @@ Feature: "Add solution" visibility options.
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
     And the following fields should not be present "Groups audience, Other groups"
     When I fill in the following:
-      | Title             | Collection solution add solution |
-      | Description       | This is a test text              |
+      | Title       | Collection solution add solution |
+      | Description | This is a test text              |
     And I attach the file "text.pdf" to "Documentation"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"

@@ -27,6 +27,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
+    - field.field.rdf_entity.solution.field_is_state
     - field.field.rdf_entity.solution.field_is_test_resource_type
     - field.field.rdf_entity.solution.field_is_translation
     - field.field.rdf_entity.solution.field_is_version
@@ -37,6 +38,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
+    - image.style.thumbnail
     - rdf_entity.rdfentity.solution
   module:
     - file
@@ -133,6 +135,11 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+  field_is_state:
+    type: options_select
+    weight: 12
+    settings: {  }
+    third_party_settings: {  }
   id:
     type: auto_uri
     weight: 0

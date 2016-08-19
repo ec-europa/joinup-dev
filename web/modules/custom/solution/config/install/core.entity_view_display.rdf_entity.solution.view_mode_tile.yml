@@ -28,6 +28,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
+    - field.field.rdf_entity.solution.field_is_state
     - field.field.rdf_entity.solution.field_is_test_resource_type
     - field.field.rdf_entity.solution.field_is_translation
     - field.field.rdf_entity.solution.field_is_version
@@ -174,6 +175,7 @@ hidden:
   field_is_solution_type: true
   field_is_source_code_repository: true
   field_is_standardization_level: true
+  field_is_state: true
   field_is_test_resource_type: true
   field_is_translation: true
   field_is_version: true
