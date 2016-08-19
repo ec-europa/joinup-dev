@@ -65,7 +65,7 @@ class GroupHeaderBlock extends BlockBase implements ContainerFactoryPluginInterf
     $group = $this->getContext('og')->getContextValue();
     $view_builder = $this->entityTypeManager->getViewBuilder($group->getEntityTypeId());
 
-    $build['group'] = $view_builder->view($group);
+    $build['group'] = $view_builder->view($group, 'group_header');
 
     return $build;
   }
