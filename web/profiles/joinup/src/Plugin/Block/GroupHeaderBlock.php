@@ -3,6 +3,7 @@
 namespace Drupal\joinup\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -68,6 +69,17 @@ class GroupHeaderBlock extends BlockBase implements ContainerFactoryPluginInterf
     $build['group'] = $view_builder->view($group, 'group_header');
 
     return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    // The block by itself doesn't really vary by user, but some of its
+    // implementations are (collection module, I'm looking at you). For the sake
+    // of semplicity, we add the user context here already.
+    $contexts = parent::getCacheContexts();
+    return Cache::mergeContexts($contexts, ['user']);
   }
 
 }
