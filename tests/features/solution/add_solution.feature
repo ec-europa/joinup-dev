@@ -33,7 +33,7 @@ Feature: "Add solution" visibility options.
     Then I should see the link "Propose solution"
     When I click "Propose solution"
     # Anonymous users are prompted to login.
-    Then I should get an access denied error
+    Then I should see the error message "Access denied. You must log in to view this page."
 
     When I am logged in as an "authenticated user"
     And I go to the homepage
