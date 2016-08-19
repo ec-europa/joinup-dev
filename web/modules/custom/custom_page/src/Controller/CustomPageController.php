@@ -123,10 +123,13 @@ class CustomPageController extends ControllerBase {
     // menu is suitable for webmasters, but we need a simpler title since this
     // form is exposed to regular visitors.
     $group = $ogmenu_instance->og_audience->entity;
-    return ['#markup' => t('Edit navigation menu of the %group @type', [
-      '%group' =>$ogmenu_instance->label(),
-      '@type' => $group->bundle(),
-    ]), '#allowed_tags' => Xss::getHtmlTagList()];
+    return [
+      '#markup' => t('Edit navigation menu of the %group @type', [
+        '%group' => $ogmenu_instance->label(),
+        '@type' => $group->bundle(),
+      ]),
+      '#allowed_tags' => Xss::getHtmlTagList(),
+    ];
   }
 
 }
