@@ -5,6 +5,7 @@
  * Main functions and hook implementations of the Collection module.
  */
 
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -168,4 +169,36 @@ function collection_field_widget_form_alter(&$element, FormStateInterface $form_
   if ($field_name == 'field_ar_closed') {
     $element['#attached']['library'][] = 'collection/collection_form';
   }
+}
+
+/**
+ * Implements hook_block_view_BASE_BLOCK_ID_alter().
+ */
+function collection_block_view_group_header_block_alter(array &$build, BlockPluginInterface $block) {
+  /** @var \Drupal\Core\Entity\EntityInterface $group */
+  $group = $block->getContext('og')->getContextValue();
+
+  if ($group->getEntityTypeId() === 'rdf_entity' && $group->bundle() === 'collection') {
+    $build['#pre_render'][] = 'collection_block_group_header_block_pre_render';
+  }
+}
+
+/**
+ * Pre-render callback for the group header block.
+ *
+ * @param array $build
+ *   The block build array.
+ *
+ * @return array
+ *   The final build array.
+ */
+function collection_block_group_header_block_pre_render($build) {
+  /** @var \Drupal\Core\Entity\EntityInterface $collection */
+  $collection = $build['content']['group']['#rdf_entity'];
+
+  $form = \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', \Drupal::currentUser(), $collection);
+
+  $build['content']['join_collection'] = $form;
+
+  return $build;
 }
