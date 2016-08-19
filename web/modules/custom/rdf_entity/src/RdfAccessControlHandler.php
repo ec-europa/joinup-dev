@@ -30,7 +30,7 @@ class RdfAccessControlHandler extends EntityAccessControlHandler {
       case 'delete':
         return AccessResult::allowedIfHasPermission($account, 'delete ' . $entity_bundle . ' rdf entity');
     }
-    return AccessResult::allowed();
+    return AccessResult::neutral();
   }
 
   /**

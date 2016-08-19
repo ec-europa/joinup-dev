@@ -24,6 +24,8 @@ class Query extends QueryBase implements QueryInterface {
    */
   protected $filter;
 
+  protected $graphs = NULL;
+
   protected $results = NULL;
 
   /**
@@ -77,6 +79,16 @@ class Query extends QueryBase implements QueryInterface {
   }
 
   /**
+   * Set the graph type.
+   */
+  public function setGraphType($graph_type = 'default') {
+    // @todo Getting the storage container here looks wrong...
+    $entity_storage = \Drupal::service('entity.manager')
+      ->getStorage($this->entityTypeId);
+    $this->graphs = $entity_storage->getGraphs($graph_type);
+  }
+
+  /**
    * Initialize the query.
    *
    * @return $this
@@ -95,6 +107,12 @@ class Query extends QueryBase implements QueryInterface {
       $this->query = 'SELECT ?entity ';
     }
     $this->query .= "\n";
+
+    if ($this->graphs) {
+      foreach (array_keys($this->graphs) as $graph) {
+        $this->query .= 'FROM <' . $graph . '>' . "\n";
+      }
+    }
     return $this;
   }
 
@@ -139,6 +157,7 @@ class Query extends QueryBase implements QueryInterface {
     $id = $this->entityType->getKey('id');
     $label = $this->entityType->getKey('label');
     switch ($key) {
+      // @todo Limit the graphs here to the set bundles.
       case  $bundle . '-IN':
         $rdf_bundles = $entity_storage->getRdfBundleList($value);
         if ($rdf_bundles) {

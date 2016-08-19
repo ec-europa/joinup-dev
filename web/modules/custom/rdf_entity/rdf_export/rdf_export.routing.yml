@@ -1,5 +1,5 @@
 rdf_export.settings_form:
-  path: '/admin/config/rdf_export/settings'
+  path: '/admin/config/rdf_entity/export-settings'
   defaults:
     _form: '\Drupal\rdf_export\Form\SettingsForm'
     _title: 'Rdf export settings'
