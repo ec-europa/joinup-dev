@@ -64,7 +64,7 @@
     </skos:Concept>
     <skos:Concept rdf:about="http://joinup.eu/policy-domain/health">
         <skos:notation>Health</skos:notation>
-        <skos:prefLabel xml:lang="en">Health (WIP!)</skos:prefLabel>
+        <skos:prefLabel xml:lang="en">Health</skos:prefLabel>
         <skos:topConceptOf rdf:resource="http://joinup.eu/policy-domain"/>
     </skos:Concept>
 </rdf:RDF>
