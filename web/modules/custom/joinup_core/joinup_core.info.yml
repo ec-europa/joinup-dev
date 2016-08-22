@@ -5,6 +5,7 @@ core: 8.x
 package: Custom
 
 dependencies:
+  - image
   - og
   - rdf_entity
   - rdf_taxonomy
