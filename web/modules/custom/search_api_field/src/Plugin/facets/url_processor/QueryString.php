@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\facets\Plugin\facets\url_processor;
+namespace Drupal\search_api_field\Plugin\facets\url_processor;
 
 use Drupal\Core\Url;
 use Drupal\facets\FacetInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
  *   description = @Translation("Query string is the default Facets URL processor, and uses GET parameters, for example ?f[0]=brand:drupal&f[1]=color:blue")
  * )
  */
-class SearchFieldProcessor extends UrlProcessorPluginBase {
+class QueryString extends UrlProcessorPluginBase {
 
   /**
    * A string that separates the filters in the query string.

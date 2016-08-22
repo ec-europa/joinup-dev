@@ -74,7 +74,10 @@ class SearchWidget extends WidgetBase {
       list($entity_type, $entity_id) = explode('/', substr($uri, 7), 2);
       // Show the 'entity:' URI as the entity autocomplete would.
       $entity_manager = \Drupal::entityManager();
-      if ($entity_manager->getDefinition($entity_type, FALSE) && $entity = \Drupal::entityManager()->getStorage($entity_type)->load($entity_id)) {
+      if ($entity_manager->getDefinition($entity_type, FALSE) && $entity = \Drupal::entityManager()
+          ->getStorage($entity_type)
+          ->load($entity_id)
+      ) {
         $displayable_string = EntityAutocomplete::getEntityLabels(array($entity));
       }
     }
@@ -261,6 +264,13 @@ class SearchWidget extends WidgetBase {
       ),
     );
 
+    $default = $item->get('value')->getValue();
+    $element['show_textfield'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show full-text search field.'),
+      '#default_value' => !empty($default['show_textfield']) ? $default['show_textfield'] : FALSE,
+    ];
+
     return $element;
   }
 
@@ -363,11 +373,13 @@ class SearchWidget extends WidgetBase {
    */
   protected function buildFacetRow(Facet $facet, SearchItem $item) {
     $value = $item->get('value');
-    $areas = $value->getValue();
+    $areas = $value->getValue()['fields'];
     $facet_config = NULL;
-    foreach ($areas as $facet_name => $facet_data) {
-      if ($facet_name == $facet->id()) {
-        $facet_config = $facet_data;
+    if ($areas) {
+      foreach ($areas as $facet_name => $facet_data) {
+        if ($facet_name == $facet->id()) {
+          $facet_config = $facet_data;
+        }
       }
     }
     $display_options = NULL;
@@ -395,7 +407,12 @@ class SearchWidget extends WidgetBase {
           '#title_display' => 'invisible',
           '#options' => array_combine($regions, $regions),
           '#empty_value' => '',
-          '#attributes' => array('class' => array('js-field-parent', 'field-parent')),
+          '#attributes' => array(
+            'class' => array(
+              'js-field-parent',
+              'field-parent',
+            ),
+          ),
         ),
         'hidden_name' => array(
           '#type' => 'hidden',
@@ -511,17 +528,23 @@ class SearchWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
-    foreach ($values as &$value) {
-      $struct = [];
-      foreach ($value['fields'] as $fn => $field) {
-        $struct[$fn] = [
-          'weight' => $field['weight'],
-          'region' => $field['plugin']['type'],
-        ];
-        $value = ['value' => $struct];
+    if (empty($values)) {
+      return;
+    }
+    $ordered_values = [];
+    foreach ($values as $delta => $value) {
+      $ordered_values[$delta]['value']['show_textfield'] = $value['show_textfield'];
+
+      if (!empty($value['fields'])) {
+        foreach ($value['fields'] as $fn => $field) {
+          $ordered_values[$delta]['value']['fields'][$fn] = [
+            'weight' => $field['weight'],
+            'region' => $field['plugin']['type'],
+          ];
+        }
       }
     }
-    return $values;
+    return $ordered_values;
   }
 
 }

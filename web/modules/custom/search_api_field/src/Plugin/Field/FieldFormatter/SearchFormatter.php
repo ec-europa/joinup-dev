@@ -84,13 +84,17 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     // Create the query.
     $options = [
       'limit' => $limit,
-      'offset' => !is_null($request->get('page')) ? $request->get('page') * $limit : 0,
+    // !is_null($request->get('page')) ? $request->get('page') * $limit : 0,.
+      'offset' => 0,
       'search id' => 'search_api_field:' . $field_definition->getTargetEntityTypeId() . '.' . $field_definition->getName(),
     ];
     $query = $search_api_index->query($options);
 
-    $query->setParseMode('direct');
-
+    $parse_mode = \Drupal::getContainer()
+      ->get('plugin.manager.search_api.parse_mode')
+      ->createInstance('direct');
+    $query->setParseMode($parse_mode);
+    $keys = $request->get('keys');
     // Search for keys.
     if (!empty($keys)) {
       $query->keys($keys);
@@ -100,12 +104,17 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     $query->setFulltextFields();
 
     $result = $query->execute();
-    $items = $result->getResultItems();
+    $result_items = $result->getResultItems();
 
-    /* @var $item \Drupal\search_api\Item\ItemInterface*/
+    $settings = $items->first()->getValue()['value'];
+    if ($settings['show_textfield']) {
+      $build['#form'] = \Drupal::formBuilder()
+        ->getForm('Drupal\search_api_field\Form\SearchApiFieldBlockForm');
+    }
+
     $results = array();
-    foreach ($items as $item) {
-
+    /* @var $item \Drupal\search_api\Item\ItemInterface */
+    foreach ($result_items as $item) {
       /** @var \Drupal\Core\Entity\EntityInterface $entity */
       $entity = $item->getOriginalObject()->getValue();
       if (!$entity) {
@@ -114,22 +123,14 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       $entity->do_not_recurse = TRUE;
 
       // Render as view modes.
-      if (TRUE) {
-        $key = 'entity:' . $entity->getEntityTypeId() . '_' . $entity->bundle();
-        // @todo $search_api_page->getViewModeConfiguration();
-        $view_mode_configuration = [];
-        $view_mode = isset($view_mode_configuration[$key]) ? $view_mode_configuration[$key] : 'default';
-        // @todo Inject...
-        $results[] = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId())->view($entity, $view_mode);
-      }
-      // Render as snippets.
-      else {
-        $results[] = array(
-          '#theme' => 'search_api_page_result',
-          '#item' => $item,
-          '#entity' => $entity,
-        );
-      }
+      $key = 'entity:' . $entity->getEntityTypeId() . '_' . $entity->bundle();
+      // @todo $search_api_page->getViewModeConfiguration();
+      $view_mode_configuration = [];
+      $view_mode = isset($view_mode_configuration[$key]) ? $view_mode_configuration[$key] : 'default';
+      // @todo Inject...
+      $results[] = \Drupal::entityTypeManager()
+        ->getViewBuilder($entity->getEntityTypeId())
+        ->view($entity, $view_mode);
     }
 
     if (!empty($results)) {
@@ -165,14 +166,12 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     }
 
     $results['#cache'] = [
-      'max-age' => [
-        // The "current user" is used above, which depends on the request,
-        // so we tell Drupal to vary by the 'user' cache context.
-        0,
-      ],
+      'max-age' => 0,
     ];
 
-    return $results;
+    $build['#theme'] = 'search_api_field';
+
+    return $build;
   }
 
 }

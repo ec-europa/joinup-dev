@@ -21,6 +21,13 @@ use Drupal\search_api\Query\ResultSetInterface;
  */
 class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetSourceInterface {
 
+  /**
+   * {@inheritdoc}
+   */
+  public function calculateDependencies() {
+    // TODO: Implement calculateDependencies() method.
+  }
+
   use DependencySerializationTrait;
 
   /**
