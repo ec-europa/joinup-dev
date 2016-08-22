@@ -94,6 +94,11 @@ function joinup_theme_preprocess_block(&$variables) {
       $variables['hide_title'] = TRUE;
     }
   }
+
+  // Get the ID of the block and add this to the main menu theme attributes.
+  if (isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main') {
+    $variables['content']['#attributes']['block'] = $variables['attributes']['id'];
+  }
 }
 
 /**
@@ -106,6 +111,18 @@ function joinup_theme_preprocess_fieldset(&$variables) {
   $variables['legend']['attributes'] = new Attribute([
     'for' => $variables['element']['#id'],
   ]);
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
+  // Remove the block and replace dashes with underscores in the block ID to
+  // use for the hook name.
+  if (isset($variables['attributes']['block'])) {
+    $hook = str_replace(array('block-', '-'), array('', '_'), $variables['attributes']['block']);
+    $suggestions[] = $variables['theme_hook_original'] . '__' . $hook;
+  }
 }
 
 /**
