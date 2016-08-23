@@ -131,7 +131,6 @@ config_devel:
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
-  - image.style.banner
   - image.style.profile_icon
   - og.og_membership_type.og_membership_type
   - og.og_role.rdf_entity-collection-administrator
