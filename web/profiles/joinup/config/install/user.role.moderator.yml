@@ -10,6 +10,7 @@ permissions:
   - 'access toolbar'
   - 'access user profiles'
   - 'add og menu instance entities'
+  - 'administer group'
   - 'administer nodes'
   - 'administer users'
   - 'administer views'
