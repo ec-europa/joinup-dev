@@ -127,7 +127,7 @@ class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPlugin
         ];
 
         $image_style->transformDimensions($dimensions, $uri);
-        $uri = $image_style->buildUri($uri);
+        $uri = $image_style->buildUrl($uri);
       }
 
       $elements[$delta] = [
