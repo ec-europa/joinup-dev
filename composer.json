@@ -74,7 +74,7 @@
         "patches": {
             "drupal/core": {
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
-                "URI ids in entity references.": "https://www.drupal.org/files/issues/0001-Issue-2756401-Support-uri-based-entity-ids-in-entity.patch"
+                "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch"
             },
             "drupal/inline_entity_form": {
                 "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"
