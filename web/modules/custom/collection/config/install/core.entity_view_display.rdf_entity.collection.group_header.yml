@@ -22,13 +22,11 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
-    - image.style.banner
     - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
     - ds
     - image
-    - joinup_core
 third_party_settings:
   ds:
     layout:
@@ -63,6 +61,7 @@ content:
     label: hidden
     settings:
       image_style: banner
+      image_link: ''
     third_party_settings:
       ds:
         ft:
