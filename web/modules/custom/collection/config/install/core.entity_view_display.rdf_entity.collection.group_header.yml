@@ -1,3 +1,6 @@
+# The sequence of the fields is taken into account when rendering the
+# display suite "1 column" template. The issue is that display suite doesn't
+# use field names as keys, forcing us to hardcode the key number.
 langcode: en
 status: true
 dependencies:

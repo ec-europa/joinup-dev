@@ -9,10 +9,10 @@
  * - ds_content: content region
  */
 #}
-<{{ ds_content_wrapper }}{{ attributes.addClass('ds-1col', 'clearfix') }}>
+<{{ ds_content_wrapper }}{{ attributes.addClass('ds-1col', 'clearfix')|without('style') }} style="background-image: url('{{ field_ar_banner }}');{{ attributes.style }}">
 
   {{ title_suffix.contextual_links }}
 
-  {{ ds_content }}
+  {{ ds_content|without('0') }}
 
 </{{ ds_content_wrapper }}>
