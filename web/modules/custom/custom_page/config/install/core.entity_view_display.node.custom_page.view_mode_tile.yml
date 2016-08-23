@@ -13,10 +13,11 @@ dependencies:
 third_party_settings:
   ds:
     layout:
-      id: ds_1col
+      id: ds_1col_wrapper
       path: modules/contrib/ds
       library: ''
       disable_css: false
+      entity_classes: all_classes
       settings:
         wrappers:
           ds_content: div
@@ -25,8 +26,11 @@ third_party_settings:
         link_attribute: ''
         link_custom: ''
         classes:
-          layout_class: {  }
-          ds_content: {  }
+          layout_class:
+            listing__card: listing__card
+            mdl-card: mdl-card
+          ds_content:
+            listing__metadata: listing__metadata
     regions:
       ds_content:
         - node_title
@@ -57,7 +61,7 @@ third_party_settings:
             fis-cl: ''
             fis-at: ''
             fi: true
-            fi-el: h2
+            fi-el: div
             fi-cl: listing__title
             fi-at: ''
             suffix: ''
