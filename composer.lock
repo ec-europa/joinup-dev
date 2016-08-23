@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.0",
+            "version": "3.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "204337efe872a0207781089833de0f8594fc5fd7"
+                "reference": "40d7696b738c1376d5c1d1462e113c2a5648156b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/204337efe872a0207781089833de0f8594fc5fd7",
-                "reference": "204337efe872a0207781089833de0f8594fc5fd7",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/40d7696b738c1376d5c1d1462e113c2a5648156b",
+                "reference": "40d7696b738c1376d5c1d1462e113c2a5648156b",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-08-16 20:55:18"
+            "time": "2016-08-18 22:54:26"
         },
         {
             "name": "composer/ca-bundle",
@@ -1520,7 +1520,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/layout_plugin-8.x-1.0-alpha22.zip",
-                "reference": null,
+                "reference": "90be55a68dd33d3564c26fab77573b62f6cda77e",
                 "shasum": null
             },
             "require": {
@@ -1569,7 +1569,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/og",
-                "reference": "561f49b1a8384bcd032838772e51f09de3ee394d"
+                "reference": "c42ca5f5e114b75fd03f0456de4c6e2ba72a3a57"
             },
             "require": {
                 "drupal/core": "8.*",
@@ -1596,7 +1596,7 @@
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
-            "time": "2016-08-17 18:09:56"
+            "time": "2016-08-23 06:39:07"
         },
         {
             "name": "drupal/og_menu",
@@ -1604,12 +1604,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og_menu.git",
-                "reference": "2b71eae35e962ff8e8ad16e517034c9dde97b1f9"
+                "reference": "2a4453fc04ce941b245468efa101ab282295bbf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/2b71eae35e962ff8e8ad16e517034c9dde97b1f9",
-                "reference": "2b71eae35e962ff8e8ad16e517034c9dde97b1f9",
+                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/2a4453fc04ce941b245468efa101ab282295bbf5",
+                "reference": "2a4453fc04ce941b245468efa101ab282295bbf5",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1622,7 +1622,7 @@
                 "issues": "https://drupal.org/project/issues/og_menu",
                 "source": "https://cgit.drupalcode.org/og_menu"
             },
-            "time": "2016-08-17 16:52:14"
+            "time": "2016-08-19 08:01:22"
         },
         {
             "name": "drupal/phing-drush-task",
@@ -2705,7 +2705,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -3275,16 +3275,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "2.0.2",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "3d265f7c079f5b37d33475f996d7a383c5fc8aeb"
+                "reference": "41f85e9c2582b3f6d1b7d20395fb40c687ad5370"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/3d265f7c079f5b37d33475f996d7a383c5fc8aeb",
-                "reference": "3d265f7c079f5b37d33475f996d7a383c5fc8aeb",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/41f85e9c2582b3f6d1b7d20395fb40c687ad5370",
+                "reference": "41f85e9c2582b3f6d1b7d20395fb40c687ad5370",
                 "shasum": ""
             },
             "require": {
@@ -3363,7 +3363,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2016-05-13 01:15:21"
+            "time": "2016-08-18 18:49:14"
         },
         {
             "name": "psr/http-message",
@@ -3856,7 +3856,7 @@
             ],
             "authors": [
                 {
-                    "name": "Symfony CMF community",
+                    "name": "Symfony CMF Community",
                     "homepage": "https://github.com/symfony-cmf/Routing/contributors"
                 }
             ],
@@ -6141,7 +6141,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "5ebc42e0014720e4d9037273dadc3355d772ccd0"
+                "reference": "a775d0fc1bf79379b1e541fcddc3dcf78f0674c5"
             },
             "require": {
                 "php": ">=5.4.0",
@@ -6163,7 +6163,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-06-16 22:06:40"
+            "time": "2016-08-21 21:15:47"
         },
         {
             "name": "drupal/config_devel",
@@ -6196,7 +6196,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_update.git",
-                "reference": "ac1526df5836a611f04bb421945beddb6306b7f2"
+                "reference": "0c8717fc15472342f699dbe8ce87dfffa25539fb"
             },
             "require": {
                 "drupal/config": "8.*",
@@ -6221,7 +6221,7 @@
             ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
-            "time": "2016-03-01 16:28:35"
+            "time": "2016-07-21 18:32:32"
         },
         {
             "name": "drupal/devel",
