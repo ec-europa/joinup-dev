@@ -9,38 +9,18 @@
       {% include section--header.html %}
 
       <div class="section section--featured">
-          <div class="featured" style="background-image: url('../images/featured-bg.jpg') !important;">
+        <div class="featured">
+          <div class="featured__outer-wrapper" style="background-image: url('../images/featured-bg.jpg') !important;">
             <div class="featured__overlay"></div>
-            <div class="featured__wrapper">
+            <div class="featured__inner-wrapper">
               <div class="featured__logo">
                 <img src="../images/featured-img.png">
               </div>
               <h1 class="featured__text">Querying the <br/>semantic web</h1>
-              <div class="featured__stats">
-                <div class="stats__column">
-                  <div class="stats__wrapper">
-                    <span class="stats__icon icon icon--user"></span>
-                    <span class="stats__text"><span class="bold">13</span><span> Members</span></span>
-                  </div>
-                  <div class="stats__wrapper">
-                    <span class="stats__icon icon icon--solutions"></span>
-                    <span class="stats__text"><span class="bold">124</span><span> Solutions</span></span>
-                  </div>
-                </div>
-                <div class="stats__column">
-                  <div class="stats__wrapper">
-                    <span class="stats__icon icon icon--message"></span>
-                    <span class="stats__text"><span class="bold">9</span><span> Communications</span></span>
-                  </div>
-                  <div class="stats__wrapper">
-                    <span class="stats__icon icon icon--like"></span>
-                    <span class="stats__text"><span class="bold">75</span><span> Likes</span></span>
-                  </div>
-                </div>
-              </div>
+
               <button class="button--default button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Join this collection</button>
 
-              {% include circle-menu.html %}
+
 
               <!-- Menu visible on tablet and mobile -->
               <div class="featured__menu">
@@ -54,9 +34,12 @@
                 </ul>
               </div>
             </div>
-            <div class="featured__overlay"></div>
           </div>
-
+          <div class="featured__menu-wrapper">
+            {% include circle-menu.html %}
+          </div>
+          </div>
+        </div>
       <div class="main-container mdl-grid">
 
         {% include section--sidebar-left.html %}
@@ -86,6 +69,6 @@
     {% include section--footer.html %}
 
     {% include scripts.html %}
-    </div>
+
   </body>
 </html>
