@@ -23,6 +23,11 @@ Feature: Add licence through UI
     Then I should see the heading "Add Licence"
     When I fill in "Title" with "This is a random licence"
     And I fill in "Description" with "Licence details go here.."
+    And I fill in "Type" with "Public domain"
     And I press "Save"
     Then I should have 1 licence
+    When I go to the homepage of the "This is a random licence" licence
+    Then I should see the heading "This is a random licence"
+    And I should see the link "Public domain"
+    # Clean up the licence that was created through the UI.
     Then I delete the "This is a random licence" licence

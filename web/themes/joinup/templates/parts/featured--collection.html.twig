@@ -1,9 +1,8 @@
 <div class="region region--featured">
-  <div class="featured mdl-grid">
-    <div class="featured__left mdl-cell mdl-cell--2-col"></div>
-    <div class="featured__center mdl-cell mdl-cell--8-col">
+  <div class="featured">
+    <div class="featured__wrapper">
       <div class="featured__logo">
-        <img src="/themes/joinup/images/featured-img.png">
+        <img src="{{ base_path ~ directory }}/images/featured-img.png">
       </div>
       <div class="featured__text">{{ title }}</div>
       <div class="featured__stats">
@@ -13,7 +12,7 @@
             <span class="stats__text">13 Members</span>
           </div>
           <div class="stats__wrapper">
-            <span class="stats__icon icon icon--solution"></span>
+            <span class="stats__icon icon icon--solutions"></span>
             <span class="stats__text">124 Solutions</span>
           </div>
         </div>
@@ -28,9 +27,8 @@
           </div>
         </div>
       </div>
-      {{ page.featured}}
+      {{ page.featured }}
     </div>
-    <div class="featured__right mdl-cell mdl-cell--2-col"></div>
-    <div class="featured__overlay"></div>
   </div>
+  <div class="featured__overlay"></div>
 </div>
