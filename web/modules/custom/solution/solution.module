@@ -5,7 +5,7 @@
  * Contains hooks regarding the solution rdf entity bundle.
  */
 
-use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Url;
@@ -13,6 +13,7 @@ use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\Entity\RdfEntityType;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -90,37 +91,36 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_block_view_BASE_BLOCK_ID_alter().
+ * Implements hook_entity_extra_field_info().
  */
-function solution_block_view_group_header_block_alter(array &$build, BlockPluginInterface $block) {
-  /** @var \Drupal\Core\Entity\EntityInterface $group */
-  $group = $block->getContext('og')->getContextValue();
+function solution_entity_extra_field_info() {
+  $fields = [];
 
-  if ($group->getEntityTypeId() === 'rdf_entity' && $group->bundle() === 'solution') {
-    $build['#pre_render'][] = 'solution_block_group_header_block_pre_render';
-  }
+  $solution = RdfEntityType::load('solution');
+  $fields['rdf_entity'][$solution->id()]['display']['releases_overview'] = [
+    'label' => t('Releases overview'),
+    'description' => t('A link to the releases overview page'),
+    'visible' => FALSE,
+  ];
+
+  return $fields;
 }
 
 /**
- * Pre-render callback for the group header block.
- *
- * @param array $build
- *   The block build array.
- *
- * @return array
- *   The final build array.
+ * Implements hook_ENTITY_TYPE_view().
  */
-function solution_block_group_header_block_pre_render($build) {
-  /** @var \Drupal\Core\Entity\EntityInterface $solution */
-  $solution = $build['content']['group']['#rdf_entity'];
+function solution_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() != 'solution') {
+    return;
+  }
 
-  $build['content']['releases_overview'] = [
-    '#type' => 'link',
-    '#title' => t('Download'),
-    '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
-      'rdf_entity' => $solution->id(),
-    ]),
-  ];
-
-  return $build;
+  if ($display->getComponent('releases_overview')) {
+    $build['releases_overview'] = [
+      '#type' => 'link',
+      '#title' => t('Download'),
+      '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
+        'rdf_entity' => $entity->id(),
+      ]),
+    ];
+  }
 }
