@@ -9,7 +9,13 @@
  * - ds_content: content region
  */
 #}
-<{{ ds_content_wrapper }}{{ attributes.addClass('ds-1col', 'clearfix', 'featured__outer-wrapper')|without('style') }} style="background-image: url('{{ field_ar_banner }}');{{ attributes.style }}">
+{% if field_ar_banner is not empty %}
+  {% set banner_url = field_ar_banner %}
+{% elseif field_is_banner is not empty %}
+  {% set banner_url = field_is_banner %}
+{% endif %}
+
+<{{ ds_content_wrapper }}{{ attributes.addClass('ds-1col', 'clearfix', 'featured__outer-wrapper')|without('style') }} style="background-image: url('{{ banner_url }}');{{ attributes.style }}">
 
   {{ title_suffix.contextual_links }}
   <div class="featured__overlay"></div>

@@ -1,6 +1,3 @@
-# The sequence of the fields is taken into account when rendering the
-# display suite "1 column" template. The issue is that display suite doesn't
-# use field names as keys, forcing us to hardcode the key number.
 langcode: en
 status: true
 dependencies:
@@ -22,11 +19,13 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
+    - image.style.banner
     - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
     - ds
     - image
+    - joinup_core
 third_party_settings:
   ds:
     layout:
@@ -50,6 +49,7 @@ third_party_settings:
         - field_ar_banner
         - field_ar_logo
         - label
+        - join_collection
 id: rdf_entity.collection.group_header
 targetEntityType: rdf_entity
 bundle: collection
@@ -61,7 +61,6 @@ content:
     label: hidden
     settings:
       image_style: banner
-      image_link: ''
     third_party_settings:
       ds:
         ft:
@@ -106,6 +105,10 @@ content:
             fis: false
             fis-def-at: false
             fi-def-at: false
+  join_collection:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
   label:
     label: hidden
     type: string
