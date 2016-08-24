@@ -13,3 +13,13 @@ Feature: Navigation menu for custom pages
     And I go to the homepage of the "Rainbow tables" collection
     And I click the contextual link "Edit menu" in the "Left sidebar" region
     Then I should see the heading "Edit navigation menu of the Rainbow tables collection"
+    # The 'Add link' local action that is present in the default implementation
+    # of OG Menu should not be visible. We are managing the menu links behind
+    # the scenes. The end user should not interact with these.
+    And I should not see the link "Add link"
+
+    # The form to add a new menu link should not be accessible by anyone. This
+    # is functionality provided by Drupal which is intended for webmasters. We
+    # are showing the menu overview to collection facilitators so they can
+    # reorder the navigation menu, but they should not be able to access the
+    # related menu administration screens.
