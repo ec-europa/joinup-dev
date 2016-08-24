@@ -1,3 +1,6 @@
+# The sequence of the fields is taken into account when rendering the
+# display suite "1 column" template. The issue is that display suite doesn't
+# use field names as keys, forcing us to hardcode the key number.
 langcode: en
 status: true
 dependencies:
@@ -19,18 +22,41 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
-    - image.style.thumbnail
+    - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
     - ds
     - image
+third_party_settings:
+  ds:
+    layout:
+      id: ds_1col
+      path: modules/contrib/ds
+      library: ''
+      disable_css: false
+      entity_classes: no_classes
+      settings:
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+          ds_content: {  }
+    regions:
+      ds_content:
+        - field_ar_banner
+        - field_ar_logo
+        - label
 id: rdf_entity.collection.group_header
 targetEntityType: rdf_entity
 bundle: collection
 mode: group_header
 content:
   field_ar_banner:
-    type: image
+    type: image_url_formatter
     weight: 0
     label: hidden
     settings:
@@ -46,26 +72,75 @@ content:
             classes: {  }
   field_ar_logo:
     type: image
-    weight: 2
+    weight: 1
     label: hidden
     settings:
-      image_style: thumbnail
+      image_style: image_style_collection_logo
       image_link: ''
     third_party_settings:
       ds:
         ft:
-          id: default
+          id: expert
           settings:
             lb: ''
+            prefix: ''
+            lbw-el: ''
+            lbw-cl: ''
+            lbw-at: ''
+            ow-el: ''
+            ow-cl: ''
+            ow-at: ''
+            fis-el: ''
+            fis-cl: ''
+            fis-at: ''
+            fi: true
+            fi-el: div
+            fi-cl: featured__logo
+            fi-at: ''
+            suffix: ''
+            lbw: false
             lb-col: false
-            classes: {  }
+            ow: false
+            ow-def-at: false
+            ow-def-cl: false
+            fis: false
+            fis-def-at: false
+            fi-def-at: false
   label:
     label: hidden
     type: string
-    weight: 1
+    weight: 2
     settings:
       link_to_entity: false
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: expert
+          settings:
+            lb: ''
+            prefix: ''
+            lbw-el: ''
+            lbw-cl: ''
+            lbw-at: ''
+            ow-el: ''
+            ow-cl: ''
+            ow-at: ''
+            fis-el: ''
+            fis-cl: ''
+            fis-at: ''
+            fi: true
+            fi-el: h1
+            fi-cl: featured__text
+            fi-at: ''
+            suffix: ''
+            lbw: false
+            lb-col: false
+            ow: false
+            ow-def-at: false
+            ow-def-cl: false
+            fis: false
+            fis-def-at: false
+            fi-def-at: false
 hidden:
   collection_content: true
   field_ar_abstract: true

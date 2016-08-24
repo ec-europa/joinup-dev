@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_core\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\image\Plugin\Field\FieldFormatter\ImageFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -73,6 +74,17 @@ class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
+  public function view(FieldItemListInterface $items, $langcode = NULL) {
+    // Default the language to the current content language.
+    if (empty($langcode)) {
+      $langcode = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+    }
+    return $this->viewElements($items, $langcode);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = array();
     $files = $this->getEntitiesToView($items, $langcode);
@@ -115,18 +127,18 @@ class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPlugin
         ];
 
         $image_style->transformDimensions($dimensions, $uri);
-        $uri = $image_style->buildUri($uri);
+        $uri = $image_style->buildUrl($uri);
       }
 
-      $elements[$delta] = array(
+      $elements[$delta] = [
         '#plain_text' => file_create_url($uri),
         '#item' => $item,
         '#item_attributes' => $item_attributes,
         '#image_style' => $image_style_setting,
-        '#cache' => array(
+        '#cache' => [
           'tags' => $cache_tags,
-        ),
-      );
+        ],
+      ];
     }
 
     return $elements;
