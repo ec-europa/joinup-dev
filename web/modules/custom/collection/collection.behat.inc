@@ -100,9 +100,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   protected function getCollectionByName($title) {
     $collection = $this->getRdfEntityByLabel($title, 'collection');
-    if ($collection) {
-      $this->collections[$collection->id()] = $collection;
-    }
     return $collection;
   }
 
