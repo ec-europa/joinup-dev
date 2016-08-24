@@ -22,7 +22,6 @@ config_devel:
   - field.field.node.news.field_spatial_coverage
   - field.field.node.news.field_topic
   - field.field.node.news.og_audience
-  - field.field.node.news.og_group_ref
   - field.storage.node.field_news_kicker
   - field.storage.node.field_news_source_url
   - field.storage.node.field_news_state
