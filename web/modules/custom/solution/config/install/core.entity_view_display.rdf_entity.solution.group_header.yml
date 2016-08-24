@@ -67,6 +67,7 @@ third_party_settings:
         - field_is_banner
         - field_is_logo
         - label
+        - licence
         - releases_overview
 id: rdf_entity.solution.group_header
 targetEntityType: rdf_entity
@@ -165,8 +166,12 @@ content:
             fis: false
             fis-def-at: false
             fi-def-at: false
-  releases_overview:
+  licence:
     weight: 3
+    settings: {  }
+    third_party_settings: {  }
+  releases_overview:
+    weight: 4
     settings: {  }
     third_party_settings: {  }
 hidden:
@@ -203,4 +208,3 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
-  licence: true

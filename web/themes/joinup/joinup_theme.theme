@@ -141,7 +141,11 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
       $original_theme_hook = $variables['theme_hook_original'];
       $suggestions[] = $original_theme_hook . '__slider';
     }
-  }
 
+    if (isset($variables['element']['#theme']) && $variables['element']['#theme'] == 'licence') {
+      $original_theme_hook = $variables['theme_hook_original'];
+      $suggestions[] = $original_theme_hook . '__licence';
+    }
+  }
   return $suggestions;
 }
