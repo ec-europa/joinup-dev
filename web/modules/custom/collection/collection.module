@@ -145,6 +145,10 @@ function collection_entity_extra_field_info() {
  * Implements hook_ENTITY_TYPE_view().
  */
 function collection_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() != 'collection') {
+    return;
+  }
+
   if ($display->getComponent('collection_content')) {
     $view_name = 'collection_content';
     $display_id = 'default';
