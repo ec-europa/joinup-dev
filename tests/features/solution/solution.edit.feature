@@ -39,6 +39,10 @@ Feature: Solution editing.
         | Description       | First letter |
       And I attach the file "logo.png" to "Logo"
       And I attach the file "banner.jpg" to "Banner"
+      And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
+      And I fill in "Policy Domain" with "Health"
+      And I select "[ABB8] Citizen" from "Solution type"
+
       # Click the button to select an existing contact information.
       And I press "Add existing" at the "Contact information" field
       And I fill in "Contact information" with "Seward Shawn"
@@ -88,6 +92,9 @@ Feature: Solution editing.
       Then I should see the link "Edit"
       When I go to the "Solution B" solution edit form
       Then I should see the heading "Edit Interoperability Solution Solution B"
+      And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
+      And I fill in "Policy Domain" with "Health"
+      And I select "[ABB8] Citizen" from "Solution type"
       And the following fields should be present "Title, Description, Documentation, Related Solutions, Moderated, Landing page, Metrics page"
       And the following fields should not be present "Issue tracker, Wiki"
       And the following field widgets should be present "Contact information, Owner, eLibrary creation"
