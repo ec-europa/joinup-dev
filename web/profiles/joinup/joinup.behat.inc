@@ -104,11 +104,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $this->userCreate($user);
 
       // Load the actual user account.
-      $account = User::load($this->user->uid);
+      $account = User::load($user->uid);
       $this->subscribeUserToGroup($account, $entity, $roles);
 
       // Login.
-      $this->login();
+      $this->login($user);
     }
   }
 
@@ -130,10 +130,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @see \Drupal\DrupalExtension\Context\RawDrupalContext::loggedInWithRole
    */
   protected function loggedInWithOgRoles(array $roles, EntityInterface $group) {
-    if (!$this->loggedIn() || !$this->user) {
+    if ($this->getUserManager()->currentUserIsAnonymous() || !$this->loggedIn()) {
       return FALSE;
     }
-    $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($this->user->uid);
+    $current_user = $this->getUserManager()->getCurrentUser();
+    $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($current_user->uid);
     $membership = Og::getMembership($group, $user);
     if (empty($membership)) {
       return FALSE;
