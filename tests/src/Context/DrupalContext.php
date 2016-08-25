@@ -219,4 +219,20 @@ class DrupalContext extends DrupalExtensionDrupalContext {
     }
   }
 
+  /**
+   * Click on an element by css class.
+   *
+   * @Then /^I click on element "([^"]*)"$/
+   */
+  public function iClickOn($element) {
+    $page = $this->getSession()->getPage();
+    $findName = $page->find("css", $element);
+    if (!$findName) {
+      throw new \Exception($element . " could not be found");
+    }
+    else {
+      $findName->click();
+    }
+  }
+
 }

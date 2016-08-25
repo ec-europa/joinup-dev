@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "18e010361e880c8bffe2063b15b6b92c",
-    "content-hash": "bfbbe143f4cb9d8e070bc0ee95fd9ab3",
+    "hash": "58f0f14b19e66d7259a2c820a7291e33",
+    "content-hash": "70b45fb601e054e776f853ec8a3573b1",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1356,7 +1356,8 @@
             "type": "drupal-core",
             "extra": {
                 "patches_applied": {
-                    "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
+                    "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
+                    "URI ids in entity references.": "https://www.drupal.org/files/issues/0001-Issue-2756401-Support-uri-based-entity-ids-in-entity.patch"
                 }
             },
             "autoload": {
@@ -1393,7 +1394,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/ds-8.x-2.5.zip",
-                "reference": null,
+                "reference": "f8c434e10066dd1d1c9906e2091500d536eef164",
                 "shasum": null
             },
             "require": {
@@ -1673,7 +1674,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha16.zip",
-                "reference": null,
+                "reference": "895b50787d54cd3f6bc3f8d4833cec809a8d021d",
                 "shasum": null
             },
             "require": {
@@ -1729,7 +1730,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha5.zip",
-                "reference": null,
+                "reference": "220cbdf1ddb83252777e13951f5b649c14d2a5e7",
                 "shasum": null
             },
             "require": {
@@ -1768,7 +1769,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta2.zip",
-                "reference": null,
+                "reference": "9af95093ed41eaf653ba51415ff85b8a42f6532f",
                 "shasum": null
             },
             "require": {
@@ -2697,7 +2698,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2752,7 +2753,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }

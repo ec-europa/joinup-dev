@@ -37,6 +37,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
+    - image.style.thumbnail
     - rdf_entity.rdfentity.solution
   module:
     - file
@@ -76,23 +77,28 @@ content:
     third_party_settings: {  }
     type: text_textarea
   field_is_documentation:
-    weight: 6
+    weight: 7
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
   field_is_elibrary_creation:
-    weight: 8
+    weight: 12
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
   field_is_landing_page:
-    weight: 10
+    weight: 14
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+  field_is_language:
+    type: options_select
+    weight: 16
+    settings: {  }
+    third_party_settings: {  }
   field_is_logo:
     weight: 2
     settings:
@@ -101,21 +107,21 @@ content:
     third_party_settings: {  }
     type: image_image
   field_is_metrics_page:
-    weight: 11
+    weight: 15
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
   field_is_moderation:
-    weight: 9
+    weight: 13
     settings:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
   field_is_owner:
     type: inline_entity_form_complex
-    weight: 5
+    weight: 6
     settings:
       form_mode: default
       override_labels: true
@@ -126,13 +132,39 @@ content:
       match_operator: CONTAINS
     third_party_settings: {  }
   field_is_related_solutions:
-    weight: 7
+    weight: 9
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+  field_is_solution_type:
+    type: options_select
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+  field_policy_domain:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_spatial_coverage:
+    type: entity_reference_autocomplete
+    weight: 8
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_status:
+    type: options_buttons
+    weight: 11
+    settings: {  }
+    third_party_settings: {  }
   id:
     type: auto_uri
     weight: 0
@@ -155,10 +187,8 @@ hidden:
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true
-  field_is_language: true
   field_is_modification_date: true
   field_is_product_type: true
-  field_is_solution_type: true
   field_is_source_code_repository: true
   field_is_standardization_level: true
   field_is_test_resource_type: true
@@ -168,6 +198,4 @@ hidden:
   field_is_webdav_url: true
   field_is_wiki: true
   field_keywords: true
-  field_policy_domain: true
-  field_spatial_coverage: true
-  field_status: true
+  og_group_ref: true

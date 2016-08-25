@@ -12,8 +12,9 @@ Feature: Creation of owners through UI
     And I click "Propose collection"
     Then the following field widgets should be present "Contact information, Owner"
     When I fill in the following:
-      | Title       | Classical and Ancient Mythology                                                                      |
-      | Description | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
+      | Title         | Classical and Ancient Mythology                                                                      |
+      | Description   | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
+      | Policy domain | Environment (WIP!) (http://joinup.eu/policy-domain/environment)                                      |
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
 

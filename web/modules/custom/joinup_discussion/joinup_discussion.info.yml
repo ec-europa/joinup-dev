@@ -1,0 +1,20 @@
+name: Discussion
+type: module
+description: A discussion content bundle for the Joinup project.
+core: 8.x
+package: Joinup
+dependencies:
+  - joinup_core
+
+config_devel:
+  - core.base_field_override.node.discussion.promote
+  - core.base_field_override.node.discussion.status
+  - core.base_field_override.node.document.title
+  - core.entity_view_display.node.discussion.default
+  - field.field.node.discussion.field_discussion_active
+  - field.field.node.discussion.field_discussion_content
+  - field.field.node.discussion.field_topic
+  - field.field.node.discussion.og_audience
+  - field.storage.node.field_discussion_active
+  - field.storage.node.field_discussion_content
+  - node.type.discussion

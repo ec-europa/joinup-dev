@@ -2,16 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_policy_domain
-    - rdf_entity.rdfentity.collection
-    - taxonomy.vocabulary.policy_domain
-id: rdf_entity.collection.field_policy_domain
-field_name: field_policy_domain
-entity_type: rdf_entity
-bundle: collection
-label: 'Policy domain'
+    - node.type.discussion
+id: node.discussion.field_topic
+field_name: field_topic
+entity_type: node
+bundle: discussion
+label: Topic
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -19,7 +17,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      policy_domain: policy_domain
+      themes: themes
     sort:
       field: _none
     auto_create: false
