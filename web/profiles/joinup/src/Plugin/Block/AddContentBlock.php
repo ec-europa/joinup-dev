@@ -153,6 +153,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
         $id = $solution_contexts['solution']->getContextValue()->id();
       }
       if ($id) {
+        // 'Add news' link.
         $news_url = Url::fromRoute('joinup_news.rdf_entity_news.add', [
           'rdf_entity' => $id,
         ]);
@@ -161,6 +162,19 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
             '#type' => 'link',
             '#title' => $this->t('Add news'),
             '#url' => $news_url,
+            '#attributes' => ['class' => ['button', 'button--small']],
+          ];
+        }
+        
+        // 'Add event' link.
+        $event_url = Url::fromRoute('joinup_event.rdf_entity_event.add', [
+          'rdf_entity' => $id,
+        ]);
+        if ($event_url->access()) {
+          $links['event'] = [
+            '#type' => 'link',
+            '#title' => $this->t('Add event'),
+            '#url' => $event_url,
             '#attributes' => ['class' => ['button', 'button--small']],
           ];
         }
