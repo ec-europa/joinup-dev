@@ -8,7 +8,6 @@ dependencies:
     - rdf_entity.rdfentity.contact_information
   module:
     - link
-    - rdf_entity
 id: rdf_entity.contact_information.default
 targetEntityType: rdf_entity
 bundle: contact_information

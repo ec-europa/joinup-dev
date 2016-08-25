@@ -4,6 +4,7 @@ Feature: Organic Groups integration
   As an authenticated user
   I need to be able to join and leave collections
 
+
   Scenario: Joining and leaving a collection
     Given collections:
       | title                       | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation |
@@ -86,10 +87,10 @@ Feature: Organic Groups integration
   Scenario: Edit a Collection
     Given the following organisation:
       | name | Organisation example |
-    And collections:
-      | title                       | logo     | banner     | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation | owner                |
-      | Überwaldean Land Eels       | logo.png | banner.jpg | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        | Organisation example |
-      | Folk Dance and Song Society | logo.png | banner.jpg | Cats are cool!                             | http://mashable.com/category/cats/     | no     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         | Organisation example |
+    Given collections:
+      | title                       | logo     | banner     | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation | policy domain | owner                |
+      | Überwaldean Land Eels       | logo.png | banner.jpg | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        | Health        | Organisation example |
+      | Folk Dance and Song Society | logo.png | banner.jpg | Cats are cool!                             | http://mashable.com/category/cats/     | no     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         | Health        | Organisation example |
     And users:
       | name             | roles         |
       | Collection admin | administrator |

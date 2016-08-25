@@ -6,6 +6,8 @@ dependencies:
     - field.field.node.news.field_news_kicker
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_state
+    - field.field.node.news.field_spatial_coverage
+    - field.field.node.news.field_topic
     - field.field.node.news.og_audience
     - node.type.news
   module:
@@ -43,6 +45,22 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
+  field_spatial_coverage:
+    weight: 27
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_topic:
+    weight: 28
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
   title:
     type: string_textfield
     weight: 0

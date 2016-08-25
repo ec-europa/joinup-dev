@@ -8,7 +8,7 @@ third_party_settings:
     mapping_uuid:
       value: ''
     mapping_vid:
-      target_id: 'http://purl.org/adms/representationtechnique/1.0'
+      target_id: 'http://joinup.eu/policy-domain'
     mapping_langcode:
       value: ''
     mapping_name:
