@@ -165,7 +165,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
             '#attributes' => ['class' => ['button', 'button--small']],
           ];
         }
-        
+
         // 'Add event' link.
         $event_url = Url::fromRoute('joinup_event.rdf_entity_event.add', [
           'rdf_entity' => $id,
