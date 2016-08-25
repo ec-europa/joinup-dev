@@ -475,4 +475,26 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $this->getSession()->getPage()->find('named', ['fieldset', $fieldset])->pressButton($button);
   }
 
+  /**
+   * Fills a date or time field at a datetime widget.
+   *
+   * Example: When I fill in "Date" with "29-08-2016" at "Start date".
+   * Example: When I fill in "Time" with "26:59:00" at "Start date".
+   *
+   * @When I fill in :field with :value at the :field_group date time field
+   */
+  public function fillDateField($field, $value, $field_group) {
+    // From the title, we navigate two parents back to reach the field.
+    $field_selectors = $this->getSession()->getPage()->findAll('css', '.field--type-datetime');
+    $field_selectors = array_filter($field_selectors, function ($field_selector) use ($field_group) {
+      return $field_selector->has('named', ['content', $field_group]);
+    });
+    if (count($field_selectors) > 1) {
+      throw new \Exception("More than one elements were found.");
+    }
+    $field_selector = reset($field_selectors);
+
+    $field_selector->fillField($field, $value);
+  }
+
 }
