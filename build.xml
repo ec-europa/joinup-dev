@@ -2,6 +2,7 @@
 
 <project name="Joinup" default="help">
 
+    <import file="${project.basedir}/build.common.xml" optional="true"/>
     <property file="build.properties.local" />
     <property file="build.properties" />
     <property file="build.properties.dist" />
