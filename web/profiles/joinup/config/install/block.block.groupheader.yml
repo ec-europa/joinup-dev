@@ -8,8 +8,8 @@ dependencies:
     - joinup_theme
 id: groupheader
 theme: joinup_theme
-region: header
-weight: null
+region: featured
+weight: -9
 provider: null
 plugin: group_header_block
 settings:

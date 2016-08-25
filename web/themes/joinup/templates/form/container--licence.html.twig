@@ -19,11 +19,13 @@
  * @see template_preprocess_container()
  */
 #}
-<div class="featured__stats">
-  <div class="stats__column">
-    <div class="stats__wrapper">
-      <span class="stats__text">{{ 'Licence'|t }}</span>
-      <span class="stats__text bold underline">{{ children }}</span>
+{% if children is not empty %}
+  <div class="featured__stats">
+    <div class="stats__column">
+      <div class="stats__wrapper">
+        <span class="stats__text">{{ 'Licence:'|t }}</span>
+        <span class="stats__text bold underline">{{ children }}</span>
+      </div>
     </div>
   </div>
-</div>
+{% endif %}

@@ -29,23 +29,6 @@ function joinup_theme_preprocess_page(&$variables) {
   if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
     $variables['is_blue_header'] = TRUE;
   }
-
-  // Check if page is collection or custom page.
-  if ($route_match->getParameter('rdf_entity')) {
-    $entity = $route_match->getParameter('rdf_entity');
-  }
-  elseif ($route_match->getParameter('node')) {
-    $entity = $route_match->getParameter('node');
-  }
-
-  if (!empty($entity)) {
-    $entity_type = $entity->getType();
-    if ($entity_type == 'collection' || $entity_type == 'solution' || isset($entity->og_audience->target_id)) {
-
-      // Set variable, which displays big header on node and rdf pages.
-      $variables['is_featured_content'] = TRUE;
-    }
-  }
 }
 
 /**
