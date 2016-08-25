@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_news\Controller;
+namespace Drupal\joinup_event\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
@@ -10,13 +10,13 @@ use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Controller that handles the form to add news to a collection or a solution.
+ * Controller that handles the form to add event to a collection.
  *
  * The parent is passed as a parameter from the route.
  *
- * @package Drupal\joinup_news\Controller
+ * @package Drupal\joinup_event\Controller
  */
-class NewsController extends ControllerBase {
+class EventController extends ControllerBase {
 
   /**
    * The OG access handler.
@@ -26,7 +26,7 @@ class NewsController extends ControllerBase {
   protected $ogAccess;
 
   /**
-   * Constructs a NewsController.
+   * Constructs an EventController.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
@@ -56,33 +56,26 @@ class NewsController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity) {
-    $node = $this->createNewsEntity($rdf_entity);
+    $node = $this->createEventEntity($rdf_entity);
     $form = $this->entityFormBuilder()->getForm($node);
 
     return $form;
   }
 
   /**
-   * Handles access to the news add form through RDF entity pages.
+   * Handles access to the event add form through RDF entity pages.
    *
    * Access is granted to moderators and group members that have the permission
-   * to create news articles inside of their group, which in practice means this
-   * is granted to collection and solution facilitators.
-   *
-   * @todo Depending on the 'eLibrary creation' setting, members should be able
-   *   to create news.
-   * @todo If a collection is open non-members should be able to create news.
-   *
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2654
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2445
+   * to create event articles inside of their group, which in practice means
+   * this is granted to collection facilitators.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The RDF entity for which the news entity is created.
+   *   The RDF entity for which the event entity is created.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createNewsAccess(RdfInterface $rdf_entity) {
+  public function createEventAccess(RdfInterface $rdf_entity) {
     $user = $this->currentUser();
     // Grant access if the user is a moderator.
     if (in_array('moderator', $user->getRoles())) {
@@ -90,21 +83,21 @@ class NewsController extends ControllerBase {
     }
     // Grant access depending on whether the user has permission to create a
     // custom page according to their OG role.
-    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createNewsEntity($rdf_entity), $user);
+    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createEventEntity($rdf_entity), $user);
   }
 
   /**
-   * Returns a news content entity.
+   * Returns a event content entity.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *    The parent that the news content entity belongs to.
+   *    The parent that the event content entity belongs to.
    *
    * @return \Drupal\Core\Entity\EntityInterface
    *    A node entity.
    */
-  protected function createNewsEntity(RdfInterface $rdf_entity) {
+  protected function createEventEntity(RdfInterface $rdf_entity) {
     return $this->entityTypeManager()->getStorage('node')->create([
-      'type' => 'news',
+      'type' => 'event',
       OgGroupAudienceHelper::DEFAULT_FIELD => $rdf_entity->id(),
     ]);
   }
