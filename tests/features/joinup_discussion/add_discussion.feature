@@ -48,7 +48,7 @@ Feature: "Add discussion" visibility options.
       | Content | This is going to be an amazing discussion. |
     And I press "Save"
     Then I should see the heading "An amazing discussion"
-    And I should see the success message "Event An amazing discussion has been created."
+    And I should see the success message "Discussion An amazing discussion has been created."
     And the "The World of the Waves" collection has a discussion titled "An amazing discussion"
     # Check that the link to the discussion is visible on the collection page.
     When I go to the homepage of the "The World of the Waves" collection
