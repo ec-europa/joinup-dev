@@ -135,7 +135,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
   public function getPath() {
     // @todo Is this always right?
     $path = \Drupal::service('path.current')->getPath();
-    return $path . \Drupal::request()->get('keys');
+    return $path . '/?keys=' . \Drupal::request()->get('keys');
   }
 
   /**
