@@ -54,6 +54,9 @@
 // --------------------------------------------------
 .section--sidebar-left
   .sidebar-menu
+    margin-top: 100px
+    +breakpoint(sm-mobile, tablet)
+      display: none
     .mdl-menu__container,
     .mdl-menu
       z-index: 999
@@ -64,5 +67,5 @@
       clip: rect(0px 181.328px 144px 0px)
     .mdl-menu__item
       opacity: 1
-    +breakpoint(sm-mobile, tablet)
+    .sidebar-menu__button
       display: none
