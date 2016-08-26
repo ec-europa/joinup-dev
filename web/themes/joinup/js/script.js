@@ -15,19 +15,19 @@
   Drupal.behaviors.silderSelect = {
     attach: function (context, settings) {
       $(context).find('.slider__select').once('sliderSelect').each(function () {
-         var select = $(this);
-         var selectLength = $(this).find('option').length;
+        var $select = $(this);
+        var selectLength = $select.find('option').length;
 
-         var slider = $("<div id='slider' class='slider__slider'></div>").insertAfter(select).slider({
-            min: 1,
-            max: selectLength,
-            range: "min",
-            value: select[ 0 ].selectedIndex + 1,
-            change: function (event, ui) {
-              select.find('option').removeAttr('selected');
-              $(select.find('option')[ui.value - 1]).attr('selected', 'selected');
-            }
-          });
+        var $slider = $("<div id='slider' class='slider__slider'></div>").insertAfter($select).slider({
+          min: 1,
+          max: selectLength,
+          range: "min",
+          value: $select[ 0 ].selectedIndex + 1,
+          change: function (event, ui) {
+            $select.find('option').removeAttr('selected');
+            $($select.find('option')[ui.value - 1]).attr('selected', 'selected');
+          }
+        });
       });
     }
   };
@@ -42,8 +42,10 @@
 
   Drupal.behaviors.ajaxReload = {
     attach: function (context, settings) {
-      $(document).ajaxComplete(function (event, xhr, settings) {
-        componentHandler.upgradeAllRegistered();
+      $(context).find('form').once('ajaxReload').each(function () {
+        $(document).ajaxComplete(function (event, xhr, settings) {
+          componentHandler.upgradeAllRegistered();
+        });
       });
     }
   }
