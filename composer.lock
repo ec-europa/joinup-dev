@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "04588a2ddb207312e0702fd8ec1c1c66",
-    "content-hash": "f1896b1d8ad3a869cf5cfb3c6e9ef865",
+    "hash": "0ea112a5af36f24043503f752d2d1d98",
+    "content-hash": "a20b3faab711eb172abc15869ce3067b",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -6131,11 +6131,17 @@
         },
         {
             "name": "drupal/coder",
-            "version": "dev-8.x-2.x",
+            "version": "dev-2790529+2790657",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/coder",
-                "reference": "848e79d2d2951b6f0467ca557b151c45f0730a07"
+                "url": "https://github.com/pfrenssen/coder.git",
+                "reference": "20bb99c0c67e1ddbc907870123f8d7cd353b50c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pfrenssen/coder/zipball/20bb99c0c67e1ddbc907870123f8d7cd353b50c4",
+                "reference": "20bb99c0c67e1ddbc907870123f8d7cd353b50c4",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0",
@@ -6146,7 +6152,6 @@
                 "phpunit/phpunit": ">=3.7"
             },
             "type": "library",
-            "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
@@ -6157,7 +6162,11 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-08-26 15:05:55"
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/coder",
+                "source": "https://www.drupal.org/project/coder"
+            },
+            "time": "2016-08-26 15:55:11"
         },
         {
             "name": "drupal/config_devel",
