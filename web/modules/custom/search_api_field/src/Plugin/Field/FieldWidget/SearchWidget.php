@@ -15,23 +15,13 @@ use Drupal\search_api_field\Plugin\Field\FieldType\SearchItem;
  *
  * @FieldWidget(
  *   id = "search_default",
- *   label = @Translation("Link"),
+ *   label = @Translation("Search widget"),
  *   field_types = {
  *     "search"
  *   }
  * )
  */
 class SearchWidget extends WidgetBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultSettings() {
-    return array(
-      'placeholder_url' => '',
-      'placeholder_title' => '',
-    ) + parent::defaultSettings();
-  }
 
   /**
    * Gets the URI without the 'internal:' or 'entity:' scheme.
@@ -330,6 +320,7 @@ class SearchWidget extends WidgetBase {
     $op = $trigger['#op'];
 
     // Pick the elements that need to receive the ajax-new-content effect.
+    $updated_rows = $updated_columns = [];
     switch ($op) {
       case 'edit':
         $updated_rows = array($trigger['#field_name']);
@@ -372,8 +363,8 @@ class SearchWidget extends WidgetBase {
    *    Render array of the row.
    */
   protected function buildFacetRow(Facet $facet, SearchItem $item) {
-    $value = $item->get('value');
-    $areas = $value->getValue()['fields'];
+    $value = $item->get('value')->getValue();
+    $areas = !empty($value['fields']) ? $value['fields'] : [];
     $facet_config = NULL;
     if ($areas) {
       foreach ($areas as $facet_name => $facet_data) {
@@ -477,64 +468,13 @@ class SearchWidget extends WidgetBase {
   /**
    * {@inheritdoc}
    */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    $elements = parent::settingsForm($form, $form_state);
-
-    $elements['placeholder_url'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Placeholder for URL'),
-      '#default_value' => $this->getSetting('placeholder_url'),
-      '#description' => $this->t('Text that will be shown inside the field until a value is entered. This hint is usually a sample value or a brief description of the expected format.'),
-    );
-    $elements['placeholder_title'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Placeholder for link text'),
-      '#default_value' => $this->getSetting('placeholder_title'),
-      '#description' => $this->t('Text that will be shown inside the field until a value is entered. This hint is usually a sample value or a brief description of the expected format.'),
-      '#states' => array(
-        'invisible' => array(
-          ':input[name="instance[settings][title]"]' => array('value' => DRUPAL_DISABLED),
-        ),
-      ),
-    );
-
-    return $elements;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsSummary() {
-    $summary = array();
-
-    $placeholder_title = $this->getSetting('placeholder_title');
-    $placeholder_url = $this->getSetting('placeholder_url');
-    if (empty($placeholder_title) && empty($placeholder_url)) {
-      $summary[] = $this->t('No placeholders');
-    }
-    else {
-      if (!empty($placeholder_title)) {
-        $summary[] = $this->t('Title placeholder: @placeholder_title', array('@placeholder_title' => $placeholder_title));
-      }
-      if (!empty($placeholder_url)) {
-        $summary[] = $this->t('URL placeholder: @placeholder_url', array('@placeholder_url' => $placeholder_url));
-      }
-    }
-
-    return $summary;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     if (empty($values)) {
-      return;
+      return $values;
     }
+
     $ordered_values = [];
     foreach ($values as $delta => $value) {
-      $ordered_values[$delta]['value']['show_textfield'] = $value['show_textfield'];
-
       if (!empty($value['fields'])) {
         foreach ($value['fields'] as $fn => $field) {
           $ordered_values[$delta]['value']['fields'][$fn] = [
