@@ -1,0 +1,4 @@
+services:
+  joinup_core.workflow.user_provider:
+    class: Drupal\joinup_core\WorkflowUserProvider
+    arguments: ['@current_user']

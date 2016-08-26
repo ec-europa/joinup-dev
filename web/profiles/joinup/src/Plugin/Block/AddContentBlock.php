@@ -83,7 +83,13 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // anonymous users.
     $links['collection'] = [
       '#title' => $this->t('Propose collection'),
-      '#url' => Url::fromRoute('collection.propose_form'),
+      '#url' => Url::fromRoute('rdf_entity.propose_form', ['rdf_type' => 'collection']),
+    ];
+    // Add a link to propose a solution. This is visible for everyone, even
+    // anonymous users.
+    $links['solution'] = [
+      '#title' => $this->t('Propose solution'),
+      '#url' => Url::fromRoute('rdf_entity.propose_form', ['rdf_type' => 'solution']),
     ];
 
     // Retrieve the collection from the context service. This needs to be done

@@ -16,7 +16,7 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
  *
  * @package Drupal\joinup_news\Guard
  */
-class FulfillmentGuard implements GuardInterface {
+class JoinupNewsFulfillmentGuard implements GuardInterface {
   /**
    * Constant representing the pre-moderating parent.
    */
