@@ -2,12 +2,18 @@
 
 namespace Drupal\search_api_field\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\search_api\Entity\Index;
+use Drupal\search_api\ParseMode\ParseModePluginManager;
+use Drupal\search_api\Query\QueryInterface;
+use Drupal\search_api\SearchApiException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Plugin implementation of the 'link' formatter.
@@ -23,6 +29,59 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInterface {
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The query parse mode manager.
+   *
+   * @var \Drupal\search_api\ParseMode\ParseModePluginManager
+   */
+  protected $parseModeManager;
+
+  /**
+   * The current request object.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
+   */
+  protected $request;
+
+  /**
+   * Constructs a SearchFormatter object.
+   *
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+   *   The definition of the field to which the formatter is associated.
+   * @param array $settings
+   *   The formatter settings.
+   * @param string $label
+   *   The formatter label display setting.
+   * @param string $view_mode
+   *   The view mode.
+   * @param array $third_party_settings
+   *   Any third party settings.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The current request object.
+   * @param \Drupal\search_api\ParseMode\ParseModePluginManager $parse_mode_manager
+   *   The query parse mode manager.
+   */
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, Request $request, ParseModePluginManager $parse_mode_manager) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
+
+    $this->entityTypeManager = $entity_type_manager;
+    $this->parseModeManager = $parse_mode_manager;
+    $this->request = $request;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
@@ -33,15 +92,11 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       $configuration['settings'],
       $configuration['label'],
       $configuration['view_mode'],
-      $configuration['third_party_settings']
+      $configuration['third_party_settings'],
+      $container->get('entity_type.manager'),
+      $container->get('request_stack')->getCurrentRequest(),
+      $container->get('plugin.manager.search_api.parse_mode')
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultSettings() {
-    return array() + parent::defaultSettings();
   }
 
   /**
@@ -67,50 +122,42 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $request = \Drupal::request();
     $entity = $items->getEntity();
+    $field_definition = $this->fieldDefinition;
+
     // Avoid infinite recursion when a search node is shown as a result.
     if ($entity->do_not_recurse) {
       return [];
     }
-    /** @var \Drupal\field\Entity\FieldConfig $field_definition */
-    $field_definition = $items->getFieldDefinition();
-    $index = $field_definition->getSetting('index');
-    /* @var $search_api_index \Drupal\search_api\IndexInterface */
-    $search_api_index = Index::load($index);
-    // @todo Get from field settings.
-    $limit = 10;
 
-    // Create the query.
+    $index_id = $field_definition->getSetting('index');
+    /* @var $search_api_index \Drupal\search_api\IndexInterface */
+    $search_api_index = Index::load($index_id);
+
+    if (empty($search_api_index)) {
+      throw new SearchApiException("Could not load index with ID '$index_id'.");
+    }
+
+    // At the moment, this formatter supports only single-value fields.
+    $settings = $items->first()->value;
+
+    $limit = !empty($settings['limit']) ? $settings['limit'] : 10;
+
     $options = [
       'limit' => $limit,
-    // !is_null($request->get('page')) ? $request->get('page') * $limit : 0,.
-      'offset' => 0,
+      'offset' => !is_null($this->request->get('page')) ? $this->request->get('page') * $limit : 0,
       'search id' => 'search_api_field:' . $field_definition->getTargetEntityTypeId() . '.' . $field_definition->getName(),
     ];
     $query = $search_api_index->query($options);
 
-    $parse_mode = \Drupal::getContainer()
-      ->get('plugin.manager.search_api.parse_mode')
-      ->createInstance('direct');
-    $query->setParseMode($parse_mode);
-    $keys = $request->get('keys');
-    // Search for keys.
-    if (!empty($keys)) {
-      $query->keys($keys);
-    }
+    $query->setParseMode($this->parseModeManager->createInstance('direct'));
 
-    // Index fields.
-    $query->setFulltextFields();
+    if (!empty($settings['query_presets'])) {
+      $this->applyPresets($query, $settings['query_presets']);
+    }
 
     $result = $query->execute();
     $result_items = $result->getResultItems();
-
-    $settings = $items->first()->getValue()['value'];
-    if ($settings['show_textfield']) {
-      $build['#form'] = \Drupal::formBuilder()
-        ->getForm('Drupal\search_api_field\Form\SearchApiFieldBlockForm');
-    }
 
     $results = array();
     /* @var $item \Drupal\search_api\Item\ItemInterface */
@@ -127,10 +174,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       // @todo $search_api_page->getViewModeConfiguration();
       $view_mode_configuration = [];
       $view_mode = isset($view_mode_configuration[$key]) ? $view_mode_configuration[$key] : 'default';
-      // @todo Inject...
-      $results[] = \Drupal::entityTypeManager()
-        ->getViewBuilder($entity->getEntityTypeId())
-        ->view($entity, $view_mode);
+      $results[] = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, $view_mode);
     }
 
     if (!empty($results)) {
@@ -172,6 +216,36 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     $build['#theme'] = 'search_api_field';
 
     return $build;
+  }
+
+  /**
+   * Applies query presets configured in the field instance.
+   *
+   * @param \Drupal\search_api\Query\QueryInterface $query
+   *   The search query object.
+   * @param string $presets
+   *   The presets string.
+   */
+  protected function applyPresets(QueryInterface $query, $presets) {
+    $list = explode("\n", $presets);
+    $list = array_map('trim', $list);
+    $list = array_filter($list, 'strlen');
+
+    foreach ($list as $line) {
+      $matches = [];
+      if (preg_match('/([^\|]*)\|([^\|]*)(?:\|(.*))?/', $line, $matches)) {
+        $field = trim($matches[1]);
+        $value = trim($matches[2]);
+        $operator = !empty($matches[3]) ? trim($matches[3]) : '=';
+
+        if ($operator === 'IN') {
+          $value = explode(',', $value);
+          $value = array_map('trim', $value);
+        }
+
+        $query->addCondition($field, $value, $operator);
+      }
+    }
   }
 
 }
