@@ -254,11 +254,12 @@ class SearchWidget extends WidgetBase {
       ),
     );
 
-    $default = $item->get('value')->getValue();
-    $element['show_textfield'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Show full-text search field.'),
-      '#default_value' => !empty($default['show_textfield']) ? $default['show_textfield'] : FALSE,
+    $default_values = $item->get('value')->getValue();
+    $element['query_presets'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Query presets'),
+      '#description' => $this->t('Presets to apply to the query when it is executed. Must be entered in LUCENE syntax.'),
+      '#default_value' => isset($default_values['query_presets']) ? $default_values['query_presets'] : '',
     ];
 
     return $element;
@@ -483,6 +484,8 @@ class SearchWidget extends WidgetBase {
           ];
         }
       }
+
+      $ordered_values[$delta]['value']['query_presets'] = $values[$delta]['query_presets'];
     }
     return $ordered_values;
   }
