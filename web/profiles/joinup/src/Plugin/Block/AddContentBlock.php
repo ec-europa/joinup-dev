@@ -168,7 +168,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
 
         // 'Add event' link.
         $event_url = Url::fromRoute('joinup_event.rdf_entity_event.add', [
-          'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
+          'rdf_entity' => $id,
         ]);
         if ($event_url->access()) {
           $links['event'] = [
