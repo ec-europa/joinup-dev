@@ -20,43 +20,45 @@ class EventSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   use NodeTrait;
 
   /**
-   * Checks if the given event belongs to the given collection.
+   * Checks if the given event belongs to the given parent rdf entity.
    *
-   * If there are multiple events or collections with the same name, then
+   * If there are multiple events or parents with the same name, then
    * only the first one is checked.
    *
-   * @param string $title
+   * @param string $event
    *   The title of the event to check.
-   * @param string $collection
+   * @param string $bundle
+   *   The bundle of the parent.
+   * @param string $parent
    *   The name of the collection to check.
    *
    * @throws \Exception
    *   Thrown when a event with the given title does not exist.
    *
-   * @Then the :collection collection has a event titled :title
+   * @Then the :collection :bundle has a event titled :title
    */
-  public function assertOgMembership($title, $collection) {
-    $collection = $this->getRdfEntityByLabel($collection, 'collection');
+  public function assertOgMembership($event, $bundle, $parent) {
+    $parent = $this->getRdfEntityByLabel($parent, $bundle);
 
     $events = \Drupal::entityTypeManager()
       ->getStorage('node')
-      ->loadByProperties(['title' => $title]);
+      ->loadByProperties(['title' => $event]);
     /** @var \Drupal\node\NodeInterface $event */
     $event = reset($events);
 
     if (empty($event)) {
-      throw new \Exception("The event titled '$title' was not found.");
+      throw new \Exception("The event titled '$event' was not found.");
     }
 
     /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
     foreach ($event->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
-      if ($group->getValue()['target_id'] == $collection->id()) {
+      if ($group->getValue()['target_id'] == $parent->id()) {
         // Test passes.
         return;
       }
     }
 
-    throw new \Exception("The event '$title' is not associated with collection '{$collection->label()}'.");
+    throw new \Exception("The event '$event' is not associated with the '{$parent->label()}' {$bundle}.");
   }
 
   /**
