@@ -123,6 +123,19 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           '#attributes' => ['class' => ['button', 'button--small']],
         ];
       }
+
+      // 'Add document' link.
+      $document_url = Url::fromRoute('joinup_document.rdf_entity_document.add', [
+        'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
+      ]);
+      if ($document_url->access()) {
+        $links['document'] = [
+          '#type' => 'link',
+          '#title' => $this->t('Add document'),
+          '#url' => $document_url,
+          '#attributes' => ['class' => ['button', 'button--small']],
+        ];
+      }
     }
 
     /** @var \Drupal\Core\Plugin\Context\Context[] $solution_contexts */
