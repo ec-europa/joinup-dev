@@ -18,10 +18,6 @@ Feature: "Add event" visibility options.
     And I go to the homepage of the "Ragged Tower" solution
     Then I should not see the link "Add event"
 
-    When I am logged in as a member of the "Ragged Tower" solution
-    And I go to the homepage of the "Ragged Tower" solution
-    Then I should not see the link "Add event"
-
     When I am logged in as a "facilitator" of the "Ragged Tower" solution
     And I go to the homepage of the "Ragged Tower" solution
     Then I should see the link "Add event"
@@ -38,7 +34,6 @@ Feature: "Add event" visibility options.
       | title                | logo     | banner     |
       | The Luscious Bridges | logo.png | banner.jpg |
     And I am logged in as a facilitator of the "The Luscious Bridges" solution
-
     When I go to the homepage of the "The Luscious Bridges" solution
     And I click "Add event"
     Then I should see the heading "Add event"
