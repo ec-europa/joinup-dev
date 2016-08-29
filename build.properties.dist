@@ -213,6 +213,7 @@ drupal.modules.uat = demo_content
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = no
 
+
 # AWS SDK
 # -------
 aws.profile = default
@@ -222,6 +223,7 @@ aws.region = eu-west-1
 # AWS CodeDeploy
 # --------------
 deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
+
 
 # Packer configuration
 # --------------------
