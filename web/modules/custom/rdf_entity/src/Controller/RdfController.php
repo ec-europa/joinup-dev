@@ -54,7 +54,7 @@ class RdfController extends ControllerBase {
    *   A RDF submission form.
    */
   public function add(RdfEntityTypeInterface $rdf_type) {
-    $rdf_entity = $this->entityManager()
+    $rdf_entity = $this->entityTypeManager()
       ->getStorage('rdf_entity')
       ->create(array(
         'rid' => $rdf_type->id(),
@@ -80,7 +80,7 @@ class RdfController extends ControllerBase {
     $build = [
       '#theme' => 'rdf_add_list',
       '#cache' => [
-        'tags' => $this->entityManager()
+        'tags' => $this->entityTypeManager()
           ->getDefinition('rdf_type')
           ->getListCacheTags(),
       ],
@@ -89,10 +89,8 @@ class RdfController extends ControllerBase {
     $content = array();
 
     // Only use RDF types the user has access to.
-    foreach ($this->entityManager()
-               ->getStorage('rdf_type')
-               ->loadMultiple() as $type) {
-      $access = $this->entityManager()
+    foreach ($this->entityTypeManager()->getStorage('rdf_type')->loadMultiple() as $type) {
+      $access = $this->entityTypeManager()
         ->getAccessControlHandler('rdf_entity')
         ->createAccess($type->id(), NULL, [], TRUE);
       if ($access->isAllowed()) {
