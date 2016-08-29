@@ -25,19 +25,19 @@ class EventSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * If there are multiple events or parents with the same name, then
    * only the first one is checked.
    *
-   * @param string $event
-   *   The title of the event to check.
-   * @param string $bundle
-   *   The bundle of the parent.
    * @param string $parent
    *   The name of the collection to check.
+   * @param string $bundle
+   *   The bundle of the parent.
+   * @param string $event
+   *   The title of the event to check.
    *
    * @throws \Exception
    *   Thrown when a event with the given title does not exist.
    *
-   * @Then the :collection :bundle has a event titled :title
+   * @Then the :parent :bundle has a event titled :event
    */
-  public function assertOgMembership($event, $bundle, $parent) {
+  public function assertOgMembership($parent, $bundle, $event) {
     $parent = $this->getRdfEntityByLabel($parent, $bundle);
 
     $events = \Drupal::entityTypeManager()
