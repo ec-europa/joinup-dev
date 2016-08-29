@@ -123,19 +123,6 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           '#attributes' => ['class' => ['button', 'button--small']],
         ];
       }
-
-      // 'Add discussion' link.
-      $discussion_url = Url::fromRoute('joinup_discussion.rdf_entity_discussion.add', [
-        'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
-      ]);
-      if ($discussion_url->access()) {
-        $links['discussion'] = [
-          '#type' => 'link',
-          '#title' => $this->t('Add discussion'),
-          '#url' => $discussion_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
-        ];
-      }
     }
 
     /** @var \Drupal\Core\Plugin\Context\Context[] $solution_contexts */
@@ -174,6 +161,19 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
             '#type' => 'link',
             '#title' => $this->t('Add news'),
             '#url' => $news_url,
+            '#attributes' => ['class' => ['button', 'button--small']],
+          ];
+        }
+
+        // 'Add discussion' link.
+        $discussion_url = Url::fromRoute('joinup_discussion.rdf_entity_discussion.add', [
+          'rdf_entity' => $id,
+        ]);
+        if ($discussion_url->access()) {
+          $links['discussion'] = [
+            '#type' => 'link',
+            '#title' => $this->t('Add discussion'),
+            '#url' => $discussion_url,
             '#attributes' => ['class' => ['button', 'button--small']],
           ];
         }
