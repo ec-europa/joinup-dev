@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1e1de33905fba1f89a1e100d5c459ef0",
-    "content-hash": "bd2b913fe5e15ee37d18522d8eba2410",
+    "hash": "7f3828ccee54f6112efbfc1cac24d52f",
+    "content-hash": "2be53965f1ffa742af31cffd803cffce",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.1",
+            "version": "3.19.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "40d7696b738c1376d5c1d1462e113c2a5648156b"
+                "reference": "3cb90413129da42c9d3289d542bee0ae1049892c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/40d7696b738c1376d5c1d1462e113c2a5648156b",
-                "reference": "40d7696b738c1376d5c1d1462e113c2a5648156b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3cb90413129da42c9d3289d542bee0ae1049892c",
+                "reference": "3cb90413129da42c9d3289d542bee0ae1049892c",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-08-18 22:54:26"
+            "time": "2016-08-23 20:58:48"
         },
         {
             "name": "composer/ca-bundle",
@@ -1356,7 +1356,8 @@
             "type": "drupal-core",
             "extra": {
                 "patches_applied": {
-                    "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
+                    "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
+                    "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch"
                 }
             },
             "autoload": {
@@ -1393,7 +1394,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/ds-8.x-2.5.zip",
-                "reference": null,
+                "reference": "f8c434e10066dd1d1c9906e2091500d536eef164",
                 "shasum": null
             },
             "require": {
@@ -1449,7 +1450,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/facets.git",
-                "reference": "70f2b89823e2499ad8b097190145943a0e412e85"
+                "reference": "d5c0117eb59ab2593f6430e3f3035d60bc084653"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -1479,7 +1480,7 @@
             ],
             "description": "Faceted search interfaces that can be used on Search API searchers.",
             "homepage": "https://www.drupal.org/project/facets",
-            "time": "2016-07-12 18:47:39"
+            "time": "2016-08-24 17:38:22"
         },
         {
             "name": "drupal/inline_entity_form",
@@ -1569,7 +1570,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/og",
-                "reference": "c42ca5f5e114b75fd03f0456de4c6e2ba72a3a57"
+                "reference": "d83bdb4c0b1f8ee630f38e45e6b925a9a96b72f7"
             },
             "require": {
                 "drupal/core": "8.*",
@@ -1596,7 +1597,7 @@
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
-            "time": "2016-08-23 06:39:07"
+            "time": "2016-08-27 21:35:26"
         },
         {
             "name": "drupal/og_menu",
@@ -1672,15 +1673,15 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha16",
+            "version": "8.1.0-alpha17",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "895b50787d54cd3f6bc3f8d4833cec809a8d021d"
+                "reference": "dde5cecfbde386ae55b0aa799d1e146b509b3ffa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha16.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha17.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1690,10 +1691,11 @@
             },
             "replace": {
                 "drupal/search_api_db": "self.version",
-                "drupal/search_api_db_defaults": "self.version"
+                "drupal/search_api_db_defaults": "self.version",
+                "drupal/search_api_views_taxonomy": "self.version"
             },
             "suggest": {
-                "drupal/core": "Required by drupal/search_api_db, drupal/search_api_db_defaults"
+                "drupal/core": "Required by drupal/search_api_db, drupal/search_api_db_defaults, drupal/search_api_views_taxonomy"
             },
             "type": "drupal-module",
             "extra": {
@@ -1724,19 +1726,19 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-07-05 14:54:42"
+            "time": "2016-08-25 08:47:35"
         },
         {
             "name": "drupal/search_api_solr",
-            "version": "8.1.0-alpha5",
+            "version": "8.1.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "220cbdf1ddb83252777e13951f5b649c14d2a5e7"
+                "reference": "1b949c59477031ce5880c13537eb73a5f3cb4096"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha5.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha6.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1763,7 +1765,7 @@
             ],
             "description": "Offers an implementation of the Search API that uses an Apache Solr server for indexing content.",
             "homepage": "https://www.drupal.org/project/search_api_solr",
-            "time": "2016-07-07 17:49:37"
+            "time": "2016-08-25 11:28:46"
         },
         {
             "name": "drupal/state_machine",
@@ -1776,7 +1778,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta2.zip",
-                "reference": null,
+                "reference": "9af95093ed41eaf653ba51415ff85b8a42f6532f",
                 "shasum": null
             },
             "require": {
@@ -6141,7 +6143,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "a775d0fc1bf79379b1e541fcddc3dcf78f0674c5"
+                "reference": "dff18faba1a20a4faece16499cc71e15a2dfbe14"
             },
             "require": {
                 "php": ">=5.4.0",
@@ -6163,7 +6165,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-08-21 21:15:47"
+            "time": "2016-08-28 18:42:05"
         },
         {
             "name": "drupal/config_devel",
@@ -6234,7 +6236,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-alpha1.zip",
-                "reference": null,
+                "reference": "930b7b89c2fa2047ebbb0fb3ba53f45a67409242",
                 "shasum": null
             },
             "require": {
@@ -6274,16 +6276,16 @@
         },
         {
             "name": "drupal/drupal-driver",
-            "version": "v1.2.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/DrupalDriver.git",
-                "reference": "125d39918c97f7a08e3110d456a0a1db864dae46"
+                "reference": "801f70790332d1ca9f5c6de722d3edd27b8802b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/125d39918c97f7a08e3110d456a0a1db864dae46",
-                "reference": "125d39918c97f7a08e3110d456a0a1db864dae46",
+                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/801f70790332d1ca9f5c6de722d3edd27b8802b8",
+                "reference": "801f70790332d1ca9f5c6de722d3edd27b8802b8",
                 "shasum": ""
             },
             "require": {
@@ -6327,20 +6329,20 @@
                 "test",
                 "web"
             ],
-            "time": "2016-06-20 16:29:51"
+            "time": "2016-06-20 16:28:37"
         },
         {
             "name": "drupal/drupal-extension",
-            "version": "v3.2.2",
+            "version": "dev-306-poc",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jhedstrom/drupalextension.git",
-                "reference": "abe3a33abd94382ab62423dd972fa820c63962e3"
+                "url": "https://github.com/ec-europa/drupalextension.git",
+                "reference": "1dc5e8fa49a3cf6c89d608d982ff8a271a5f951a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/abe3a33abd94382ab62423dd972fa820c63962e3",
-                "reference": "abe3a33abd94382ab62423dd972fa820c63962e3",
+                "url": "https://api.github.com/repos/ec-europa/drupalextension/zipball/1dc5e8fa49a3cf6c89d608d982ff8a271a5f951a",
+                "reference": "1dc5e8fa49a3cf6c89d608d982ff8a271a5f951a",
                 "shasum": ""
             },
             "require": {
@@ -6349,7 +6351,7 @@
                 "behat/mink-extension": "~2.0",
                 "behat/mink-goutte-driver": "~1.0",
                 "behat/mink-selenium2-driver": "~1.1",
-                "drupal/drupal-driver": "~1.2",
+                "drupal/drupal-driver": "dev-master",
                 "symfony/dependency-injection": "~2.7",
                 "symfony/event-dispatcher": "~2.7"
             },
@@ -6361,7 +6363,7 @@
             "type": "behat-extension",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.2.x-dev"
+                    "dev-master": "4.0.x-dev"
                 }
             },
             "autoload": {
@@ -6371,7 +6373,6 @@
                     "Drupal\\DrupalExtension": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
@@ -6388,7 +6389,10 @@
                 "test",
                 "web"
             ],
-            "time": "2016-06-30 21:12:18"
+            "support": {
+                "source": "https://github.com/ec-europa/drupalextension/tree/306-poc"
+            },
+            "time": "2016-08-26 16:11:29"
         },
         {
             "name": "fabpot/goutte",
@@ -7754,6 +7758,7 @@
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
+        "drupal/drupal-extension": 20,
         "jcalderonzumba/gastonjs": 20
     },
     "prefer-stable": true,

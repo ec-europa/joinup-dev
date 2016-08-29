@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_isr_language
     - rdf_entity.rdfentity.asset_release
+    - taxonomy.vocabulary.language
 id: rdf_entity.asset_release.field_isr_language
 field_name: field_isr_language
 entity_type: rdf_entity
@@ -15,6 +16,12 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:rdf_entity'
-  handler_settings: {  }
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      language: language
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference

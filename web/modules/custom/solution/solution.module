@@ -5,8 +5,10 @@
  * Contains hooks regarding the solution rdf entity bundle.
  */
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgRoleInterface;
@@ -85,4 +87,26 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
     $collection->save();
     $entity->set('field_is_affiliations_requests', NULL);
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ *
+ * Interrupts the permissions for updating a solution. The permission is not
+ * granted if there are no transitions allowed for the current state of the
+ * node.
+ */
+function solution_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->bundle() != 'solution') {
+    return AccessResult::neutral();
+  }
+
+  if ($operation == 'edit') {
+    $allowed_transitions = $entity->get('field_is_state')->first()->getTransitions();
+    if (empty($allowed_transitions)) {
+      return AccessResult::forbidden();
+    }
+  }
+
+  return AccessResult::neutral();
 }

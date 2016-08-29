@@ -39,7 +39,7 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
   /**
    * The current user.
    *
-   * @var \Drupal\Core\Session\AccountProxyInterface $user
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected $user;
 

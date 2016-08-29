@@ -44,7 +44,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    * @Then I click the contextual link :linkText in the :region region
    */
   public function iClickTheContextualLinkInTheRegion($linkText, $region) {
-    $account = user_load($this->user->uid);
+    $account = user_load($this->getUserManager()->getCurrentUser()->uid);
     $links = array();
     /** @var \Drupal\Core\Menu\ContextualLinkManager $contextual_links_manager */
     $contextual_links_manager = \Drupal::service('plugin.manager.menu.contextual_link');
@@ -216,6 +216,22 @@ class DrupalContext extends DrupalExtensionDrupalContext {
     }
     if ($not_found) {
       throw new \Exception("Fieldset(s) expected, but not found: " . implode(', ', $not_found));
+    }
+  }
+
+  /**
+   * Click on an element by css class.
+   *
+   * @Then /^I click on element "([^"]*)"$/
+   */
+  public function iClickOn($element) {
+    $page = $this->getSession()->getPage();
+    $findName = $page->find("css", $element);
+    if (!$findName) {
+      throw new \Exception($element . " could not be found");
+    }
+    else {
+      $findName->click();
     }
   }
 
