@@ -25,6 +25,9 @@
     <echo msg="Loading PHP Codesniffer Configuration task." />
     <taskdef name="phpcodesnifferconfiguration" classname="\DrupalProject\Phing\PhpCodeSnifferConfigurationTask" />
 
+    <echo msg="Loading PHPUnit Configuration task." />
+    <taskdef name="phpunitconfiguration" classname="\DrupalProject\Phing\PhpUnitConfigurationTask" />
+
     <echo msg="Loading Remove Patched Packages task." />
     <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
 
@@ -170,6 +173,24 @@
             config="${behat.yml.path}"
             strict="${behat.options.strict}"
             verbose="${behat.options.verbosity}"
+        />
+    </target>
+
+    <!-- Set up PHPUnit. -->
+    <target name="setup-phpunit" description="Generate the configuration file for PHPUnit.">
+        <if>
+            <available file="${phpunit.config}" type="file" property="phpunit.config.available" />
+            <then>
+                <echo message="Deleting existing PHPUnit configuration file." />
+                <delete file="${phpunit.config}" failonerror="false" />
+            </then>
+        </if>
+        <phpunitconfiguration
+                configFile="${phpunit.config}"
+                distFile="${phpunit.dist}"
+                files="${phpunit.files}"
+                directories="${phpunit.directories}"
+                testsuiteName="${phpunit.testsuite.name}"
         />
     </target>
 

@@ -1,14 +1,17 @@
 # Drupal configuration
 # --------------------
 
+# The project name.
+project.name = joinup
+
 # The install profile to use.
-website.profile.name = joinup
+website.profile.name = ${project.name}
 
 # The site name.
 website.site.name = Joinup
 
 # The site type ( Infrastructure stack )
-infra.type = joinup
+infra.type = ${project.name}
 
 # Database settings.
 drupal.db.type = mysql
@@ -150,6 +153,28 @@ phpcs.prepush.source = ${project.basedir}/vendor/pfrenssen/phpcs-pre-push/pre-pu
 phpcs.prepush.destination = ${project.basedir}/.git/hooks/pre-push
 
 
+# PHPUnit configuration
+# ---------------------
+
+# The path to the configuration file template.
+phpunit.dist = ${project.basedir}/phpunit.xml.dist
+
+# The path to the generated configuration file. This is typically inside the web
+# root.
+phpunit.config = ${website.drupal.dir}/phpunit.xml
+
+# The name to give to the test suite of the project.
+phpunit.testsuite.name = ${project.name}
+
+# Comma-separated list of directories containing tests to execute. These are
+# relative to the Drupal root.
+phpunit.directories = ./modules/custom,./profiles,./themes/custom
+
+# Comma-separated list of test files to execute. These are relative to the
+# Drupal root.
+phpunit.files =
+
+
 # Apache Solr configuration
 # -------------------------
 
@@ -201,6 +226,4 @@ deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
 # Packer configuration
 # --------------------
 packer.path = /usr/bin/env packer
-application.name = joinup
-
-
+application.name = ${project.name}
