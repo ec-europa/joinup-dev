@@ -478,13 +478,26 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Fills a date or time field at a datetime widget.
    *
-   * Example: When I fill in "Date" with "29-08-2016" at "Start date".
-   * Example: When I fill in "Time" with "26:59:00" at "Start date".
+   * Example: When I fill in "Start date" with the date "29-08-2016".
+   * Example: When I fill in "Start date" with the time "26:59:00".
    *
-   * @When I fill in :field with :value at the :field_group date time field
+   * @param string $field_group
+   *    The field component's label.
+   * @param string $field_name
+   *    The field to be filled.
+   * @param string $value
+   *    The value of the field.
+   *
+   * @throws \Exception
+   *    Thrown when more than one elements match the given field in the given
+   *    field group.
+   *
+   * @When I fill in :field_group with the :field_name :value
    */
-  public function fillDateField($field, $value, $field_group) {
-    // From the title, we navigate two parents back to reach the field.
+  public function fillDateField($field_group, $field_name, $value) {
+    // Get the datetime fields and check which one of them has the label
+    // provided. This is because datetime fields have use a complex widget and
+    // render their title as a simple header, not as a label for the field.
     $field_selectors = $this->getSession()->getPage()->findAll('css', '.field--type-datetime');
     $field_selectors = array_filter($field_selectors, function ($field_selector) use ($field_group) {
       return $field_selector->has('named', ['content', $field_group]);
@@ -494,7 +507,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     $field_selector = reset($field_selectors);
 
-    $field_selector->fillField($field, $value);
+    $field_selector->fillField(ucfirst($field_name), $value);
   }
 
 }
