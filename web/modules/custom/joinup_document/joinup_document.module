@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\core\Form\FormStateInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -21,38 +20,5 @@ function joinup_document_entity_bundle_field_info_alter(&$fields, EntityTypeInte
     if (!empty($fields['title'])) {
       $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['document']]);
     }
-  }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function joinup_document_form_node_document_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'joinup_document_form_default_validate';
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function joinup_document_form_node_document_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'joinup_document_form_default_validate';
-}
-
-/**
- * Validates the default document form.
- *
- * The validation includes the file submission.
- * The file can be submitted either by file or by link so these two fields
- * cannot be empty.
- *
- * @param array $form
- *   The form array.
- * @param \Drupal\core\Form\FormStateInterface $form_state
- *   The form state object.
- */
-function joinup_document_form_default_validate(&$form, FormStateInterface $form_state) {
-  if (empty($form_state->getValue('field_document_file')[0]['fids']) && empty($form_state->getValue('field_document_source_url')[0]['uri'])) {
-    $form_state->setErrorByName('field_document_file');
-    $form_state->setErrorByName('field_document_source_url', t('One of the file sources must be filled.'));
   }
 }
