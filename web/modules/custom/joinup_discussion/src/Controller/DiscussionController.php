@@ -76,6 +76,9 @@ class DiscussionController extends ControllerBase {
    *   The access result object.
    */
   public function createDiscussionAccess(RdfInterface $rdf_entity) {
+    if ($rdf_entity->bundle() != 'collection') {
+      return AccessResult::forbidden();
+    }
     $user = $this->currentUser();
     // Grant access if the user is a moderator.
     if (in_array('moderator', $user->getRoles())) {
