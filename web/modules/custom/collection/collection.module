@@ -86,11 +86,6 @@ function collection_entity_insert(EntityInterface $entity) {
  * Invalidate the og_content cache tag of the groups this entity belongs to.
  */
 function collection_entity_update(EntityInterface $entity) {
-  // @todo Fix cache invalidating.
-  // @see ISAICP-2475.
-  if (TRUE) {
-    return;
-  }
   $entity_type_id = $entity->getEntityTypeId();
   $bundle = $entity->bundle();
   if (Og::isGroupContent($entity_type_id, $bundle)) {
