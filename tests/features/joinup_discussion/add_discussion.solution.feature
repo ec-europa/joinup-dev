@@ -18,10 +18,6 @@ Feature: "Add discussion" visibility options.
     And I go to the homepage of the "Eager Sliver" solution
     Then I should not see the link "Add discussion"
 
-    When I am logged in as a member of the "Eager Sliver" solution
-    And I go to the homepage of the "Eager Sliver" solution
-    Then I should see the link "Add discussion"
-
     When I am logged in as a "facilitator" of the "Eager Sliver" solution
     And I go to the homepage of the "Eager Sliver" solution
     Then I should see the link "Add discussion"

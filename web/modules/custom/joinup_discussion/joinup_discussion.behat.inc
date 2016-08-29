@@ -25,19 +25,19 @@ class DiscussionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * If there are multiple discussions or parents with the same name, then
    * only the first one is checked.
    *
-   * @param string $discussion
-   *   The title of the discussion to check.
-   * @param string $bundle
-   *   The bundle of the parent.
    * @param string $parent
    *   The name of the collection to check.
+   * @param string $bundle
+   *   The bundle of the parent.
+   * @param string $discussion
+   *   The title of the discussion to check.
    *
    * @throws \Exception
    *   Thrown when a discussion with the given title does not exist.
    *
-   * @Then the :collection :bundle has a discussion titled :title
+   * @Then the :parent :bundle has a discussion titled :title
    */
-  public function assertOgMembership($discussion, $bundle, $parent) {
+  public function assertOgMembership($parent, $bundle, $discussion) {
     $parent = $this->getRdfEntityByLabel($parent, $bundle);
 
     $discussions = \Drupal::entityTypeManager()
