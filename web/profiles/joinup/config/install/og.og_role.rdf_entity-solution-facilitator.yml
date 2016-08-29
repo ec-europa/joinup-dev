@@ -11,6 +11,7 @@ permissions:
   - 'add user'
   - 'create asset_distribution rdf_entity'
   - 'create asset_release rdf_entity'
+  - 'create discussion content'
   - 'create news content'
   - 'delete any news content'
   - 'edit any news content'
