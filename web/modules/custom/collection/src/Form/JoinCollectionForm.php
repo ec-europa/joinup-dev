@@ -36,6 +36,8 @@ class JoinCollectionForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, AccountProxyInterface $user = NULL, RdfInterface $collection = NULL) {
+    $form['#access'] = $this->access();
+
     $user = User::load($user->id());
     $form['collection_id'] = [
       '#type' => 'hidden',
@@ -156,6 +158,16 @@ class JoinCollectionForm extends FormBase {
     // contexts/tags. Remove this when Og provides proper cache context.
     // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2628
     Cache::invalidateTags(['user.roles']);
+  }
+
+  /**
+   * Access check for the form.
+   *
+   * @return bool
+   *   True if the form can be access, false otherwise.
+   */
+  public function access() {
+    return $this->currentUser()->isAuthenticated() && $this->getRouteMatch()->getRouteName() !== 'collection.leave_confirm_form';
   }
 
 }
