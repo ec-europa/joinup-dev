@@ -1,0 +1,42 @@
+// Action link
+//
+// Action link component
+
+// Component
+// --------------------------------------------------
+.action-link
+  font-size: $font-size-xsmall
+  font-weight: $font-weight-medium
+  margin-right: 10px
+  text-decoration: none
+  text-transform: uppercase
+  color: $color-base
+  &:last-of-type
+    margin-right: 0
+
+// Elements
+// --------------------------------------------------
+.action-link__icon,
+.action-link__title
+  display: inline-block
+  vertical-align: middle
+
+.action-link__icon
+  +icon-size(25px)
+
+// Modifiers
+// --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.listing
+  .action-link__wrapper
+    margin-top: 20px
+
+.timeline__listing
+  > .action-link__wrapper
+    margin: 30px 20px 10px 20px
+
+.timeline__listing-item
+  > .action-link__wrapper
+    margin-top: 10px
