@@ -10,9 +10,9 @@ Feature: Collection edited by owner
     Given the following person:
       | name | Foo |
     And collections:
-      | title         | description                           | logo     | banner     | owner | moderation |
-      | Wendy's house | Let's build a house for Wendy.        | logo.png | banner.jpg | Foo   | yes        |
-      | Mayor's house | We cannot build a house for Mr. Mayor | logo.png | banner.jpg | Foo   | yes        |
+      | title         | description                           | logo     | banner     | owner | moderation | policy domain |
+      | Wendy's house | Let's build a house for Wendy.        | logo.png | banner.jpg | Foo   | yes        | Health        |
+      | Mayor's house | We cannot build a house for Mr. Mayor | logo.png | banner.jpg | Foo   | yes        | Health        |
     When I am logged in as a "facilitator" of the "Wendy's house" collection
     And I go to the homepage of the "Wendy's house" collection
     Then I should see the link "Edit"

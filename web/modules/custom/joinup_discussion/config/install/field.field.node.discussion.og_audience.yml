@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.discussion
+  module:
+    - og
+id: node.discussion.og_audience
+field_name: og_audience
+entity_type: node
+bundle: discussion
+label: 'Parent Entity'
+description: 'OG group audience reference field.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      collection: collection
+      solution: solution
+    sort:
+      field: _none
+    target_type: rdf_entity
+  access_override: false
+field_type: og_standard_reference
