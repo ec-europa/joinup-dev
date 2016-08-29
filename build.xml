@@ -36,7 +36,7 @@
 
     <echo msg="Loading Import RDF fixtures task." />
     <taskdef name="importrdffixtures" classname="\DrupalProject\Phing\ImportRdfFixtures" />
-    
+
     <echo msg="Loading AWS additional tasks." />
     <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />
     <property name="aws.profile" value="" />
@@ -455,7 +455,7 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
             <param>${drupal.modules.uat}</param>
         </drush>
     </target>
-    
+
     <target name="setup-continuousphp">
         <copy
             file="./vendor/ec-europa/infra/continuousphp/odbc.ini"
