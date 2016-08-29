@@ -11,7 +11,7 @@
         "drupal/console": "~0.10",
         "drupal/core": "~8.1.0",
         "drupal/ds": "^8.2",
-        "drupal/facets" : "dev-8.x-1.x#70f2b89823e2499ad8b097190145943a0e412e85",
+        "drupal/facets" : "dev-8.x-1.x#d5c0117eb59ab2593f6430e3f3035d60bc084653",
         "drupal/inline_entity_form": "8.1.x-dev",
         "drupal/og": "dev-check-group-content-crud-access",
         "drupal/og_menu": "dev-8.x-1.x#8b3cdc10cfa72767a08789828d5583604e68bc53",
