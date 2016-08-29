@@ -201,8 +201,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $this->getSession()->getPage()->pressButton("Create new account");
 
     // Get the last registered user.
-    $results = \Drupal::entityManager()->getStorage('user')
-        ->loadByProperties(['name' => $username]);
+    $results = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => $username]);
     /** @var \Drupal\user\UserInterface $user */
     $user = reset($results);
 
