@@ -48,12 +48,12 @@ Feature: "Add event" visibility options.
       | Title       | An amazing event                      |
       | Short title | Amazing event                         |
       | Description | This is going to be an amazing event. |
-    And I fill in "Date" with "29-08-2018" at the "Start date" date time field
-    And I fill in "Time" with "23:59:00" at the "Start date" date time field
+    And I fill in "Start date" with the date "29-08-2018"
+    And I fill in "Start date" with the time "23:59:00"
     And I press "Save"
     Then I should see the heading "An amazing event"
     And I should see the success message "Event An amazing event has been created."
     And the "Stream of Dreams" collection has a event titled "An amazing event"
     # Check that the link to the event is visible on the collection page.
     When I go to the homepage of the "Stream of Dreams" collection
-    And I click "An amazing event"
+    Then I should see the link "An amazing event"
