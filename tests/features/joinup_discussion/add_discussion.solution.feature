@@ -2,7 +2,7 @@
 Feature: "Add discussion" visibility options.
   In order to manage discussions
   As a solution member
-  I need to be able to add "Event" content through UI.
+  I need to be able to add "Discussion" content through UI.
 
   Scenario: "Add discussion" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following solutions:
