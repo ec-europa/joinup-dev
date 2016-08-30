@@ -54,4 +54,4 @@ Feature: "Add document" visibility options.
     And I should see the success message "Document An amazing document has been created."
     # Check that the link to the document is visible on the collection page.
     When I go to the homepage of the "Hunter in the Swords" collection
-    And I click "An amazing document"
+    Then I should see the link "An amazing document"
