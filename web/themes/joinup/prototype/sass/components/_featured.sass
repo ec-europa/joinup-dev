@@ -71,23 +71,25 @@
 .featured__stats
   display: inline-block
   margin-bottom: 20px
-  padding: 15px 30px
   text-align: left
   vertical-align: middle
   background-color: #fff
+  padding: 0 15px
   +border-radius(3px)
   +breakpoint(tablet)
     margin: 0 20px 0 0
   .stats__column
     float: left
-    &:first-of-type
-      margin-right: 40px
+    padding: 15px
+    min-width: 0
   .stats__icon,
   .stats__text
     display: inline-block
     vertical-align: middle
+    line-height: 30px
   .stats__icon
     +icon-size(30px)
+
 
 .featured__menu-button
   width: 60px
@@ -115,8 +117,23 @@
   display: inline-block
   vertical-align: middle
 
+.featured__form-button
+  display: inline-block
+
 // Modifiers
 // --------------------------------------------------
+.featured__stats
+  .stats__wrapper--centered
+    text-align: center
+  .stats__column--border
+    border-right: 1px solid $color-grey-light
+  +breakpoint(desktop)
+    .stats__column--wide
+      min-width: 165px
+    .stats__column--icons
+      padding-left: 30px
+    .stats__column--border
+      padding-right: 30px
 
 // Dependiencies
 // --------------------------------------------------
