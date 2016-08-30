@@ -191,6 +191,8 @@
                 files="${phpunit.files}"
                 directories="${phpunit.directories}"
                 testsuiteName="${phpunit.testsuite.name}"
+                baseUrl="${phpunit.base_url}"
+                dbUrl="${phpunit.db_url}"
         />
     </target>
 
