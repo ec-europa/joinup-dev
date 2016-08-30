@@ -85,8 +85,8 @@ class EventController extends ControllerBase {
     if (in_array('moderator', $user->getRoles())) {
       return AccessResult::allowed()->addCacheContexts(['user.roles']);
     }
-    // Grant access depending on whether the user has permission to create a
-    // custom page according to their OG role.
+    // Grant access depending on whether the user has permission to create an
+    // event node entity according to their OG role.
     return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createEventEntity($rdf_entity), $user);
   }
 

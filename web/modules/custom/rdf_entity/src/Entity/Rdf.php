@@ -137,7 +137,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   /**
    * Entity bundle.
    *
-   * @var string $rid
+   * @var string
    */
   protected $rid;
 
