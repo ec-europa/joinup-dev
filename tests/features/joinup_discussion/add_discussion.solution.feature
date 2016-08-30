@@ -58,4 +58,4 @@ Feature: "Add discussion" visibility options.
     And the "Emerald in the Luck" solution has a discussion titled "Flight of Girlfriend"
     # Check that the link to the discussion is visible on the solution page.
     When I go to the homepage of the "Emerald in the Luck" solution
-    And I click "Flight of Girlfriend"
+    Then I should see the link "Flight of Girlfriend"
