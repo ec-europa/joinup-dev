@@ -48,9 +48,6 @@ Feature: "Add document" visibility options.
       | Title       | An amazing document                      |
       | Short title | Amazing document                         |
       | Description | This is going to be an amazing document. |
-    # Ensure that validation for one of the file source is properly occurring.
-    And I press "Save"
-    Then I should see the error message "One of the file sources must be filled."
     When I attach the file "test.zip" to "File"
     And I press "Save"
     Then I should see the heading "An amazing document"
