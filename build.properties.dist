@@ -13,7 +13,7 @@ website.site.name = Joinup
 # The site type ( Infrastructure stack )
 infra.type = ${project.name}
 
-# Database settings.
+# SQL database settings.
 drupal.db.type = mysql
 drupal.db.name = db_name
 drupal.db.user = db_user
@@ -22,6 +22,7 @@ drupal.db.host = 127.0.0.1
 drupal.db.port = 3306
 drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${drupal.db.name}
 
+# SPARQL database settings.
 sparql.host = localhost
 sparql.port = 8890
 sparql.dsn = localhost
