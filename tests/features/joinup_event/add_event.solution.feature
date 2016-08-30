@@ -61,4 +61,4 @@ Feature: "Add event" visibility options.
     And the "The Luscious Bridges" solution has a event titled "An amazing event"
     # Check that the link to the event is visible on the solution page.
     When I go to the homepage of the "The Luscious Bridges" solution
-    And I click "An amazing event"
+    Then I should see the link "An amazing event"
