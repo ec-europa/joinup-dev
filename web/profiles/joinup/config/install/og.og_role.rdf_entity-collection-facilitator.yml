@@ -16,6 +16,7 @@ permissions:
   - 'create asset_release rdf_entity'
   - 'create custom_page content'
   - 'create document content'
+  - 'create event content'
   - 'create news content'
   - 'create rdf entity news'
   - 'create solution rdf_entity'
