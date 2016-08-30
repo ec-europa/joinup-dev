@@ -60,7 +60,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
     // Load facet plugin definition and depending on those settings; load the
     // corresponding search api page and load its index.
     $field_id = $plugin_definition['search_api_field'];
-    /* @var $page \Drupal\search_api_page\SearchApiPageInterface */
+    /* @var $page \Drupal\search_api\Utility\QueryHelper */
     $field = FieldStorageConfig::load($field_id);
     $index = $field->getSetting('index');
     $this->index = Index::load($index);
@@ -71,7 +71,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    */
   public function fillFacetsWithResults($facets) {
     // Check if there are results in the static cache.
-    $results = $this->searchApiResultsCache->getResults($this->pluginId);
+    $results = $this->searchApiQueryHelper->getResults($this->pluginId);
 
     // If there are no results, execute the search page and check for results
     // again. This happens when a page or block is cached, so Search API has
