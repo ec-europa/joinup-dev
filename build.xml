@@ -481,7 +481,7 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit" />
 
     <target
         name="setup-dev"
