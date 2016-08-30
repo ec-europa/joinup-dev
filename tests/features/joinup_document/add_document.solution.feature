@@ -9,6 +9,11 @@ Feature: "Add document" visibility options.
       | title               | logo     | banner     |
       | Seventh Name        | logo.png | banner.jpg |
       | The Obsessed Stream | logo.png | banner.jpg |
+    And the following collection:
+      | title      | Collective Seventh Name           |
+      | logo       | logo.png                          |
+      | banner     | banner.jpg                        |
+      | affiliates | Seventh Name, The Obsessed Stream |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Seventh Name" solution
@@ -33,6 +38,11 @@ Feature: "Add document" visibility options.
     Given solutions:
       | title               | logo     | banner     |
       | Winter of Beginning | logo.png | banner.jpg |
+    And the following collection:
+      | title      | Collective Winter of Beginning |
+      | logo       | logo.png                       |
+      | banner     | banner.jpg                     |
+      | affiliates | Winter of Beginning            |
     And I am logged in as a facilitator of the "Winter of Beginning" solution
 
     When I go to the homepage of the "Winter of Beginning" solution
