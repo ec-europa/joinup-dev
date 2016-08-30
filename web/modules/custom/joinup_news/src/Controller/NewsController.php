@@ -26,7 +26,7 @@ class NewsController extends ControllerBase {
   protected $ogAccess;
 
   /**
-   * Constructs a CustomPageController.
+   * Constructs a NewsController.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.

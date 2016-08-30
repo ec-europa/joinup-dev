@@ -23,5 +23,6 @@ settings:
     target_type: rdf_entity
     target_bundles:
       collection: collection
+      solution: solution
   access_override: false
 field_type: og_standard_reference

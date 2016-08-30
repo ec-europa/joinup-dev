@@ -12,14 +12,22 @@
   margin: 0
   letter-spacing: 1px
   +breakpoint(mobile)
-  	margin: 40px 60px
+    margin: 40px 60px
 
 .page__content
   min-height: min-content
   padding: 20px
   background-color: #fff
   +breakpoint(mobile)
-  	padding: 40px 60px
+    padding: 40px 60px
 
 // Modifiers
 // --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.page__title
+  h1
+    margin: 0
+    display: inline-block
+    vertical-align: middle

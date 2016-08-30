@@ -2,7 +2,7 @@
 Feature: "Add discussion" visibility options.
   In order to manage discussions
   As a collection member
-  I need to be able to add "Event" content through UI.
+  I need to be able to add "Discussion" content through UI.
 
   Scenario: "Add discussion" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following collections:
@@ -52,4 +52,4 @@ Feature: "Add discussion" visibility options.
     And the "The World of the Waves" collection has a discussion titled "An amazing discussion"
     # Check that the link to the discussion is visible on the collection page.
     When I go to the homepage of the "The World of the Waves" collection
-    And I click "An amazing discussion"
+    Then I should see the link "An amazing discussion"

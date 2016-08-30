@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_logo
+    - field.field.node.event.field_event_organisation
     - field.field.node.event.field_event_short_title
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
@@ -65,6 +66,13 @@ content:
       image_link: content
     third_party_settings: {  }
     type: image
+  field_event_organisation:
+    weight: 110
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_event_short_title:
     weight: 102
     label: above
