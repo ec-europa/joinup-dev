@@ -61,4 +61,4 @@ Feature: "Add document" visibility options.
     And the "Winter of Beginning" solution has a document titled "The Sparks of the Butterfly"
     # Check that the link to the document is visible on the solution page.
     When I go to the homepage of the "Winter of Beginning" solution
-    And I click "The Sparks of the Butterfly"
+    And I should see the link "The Sparks of the Butterfly"
