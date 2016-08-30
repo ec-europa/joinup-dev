@@ -24,9 +24,9 @@ drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${dr
 
 sparql.host = localhost
 sparql.port = 8890
-sparql.dsn = Virtuoso
-sparql.user = ${drupal.db.user}
-sparql.password = ${drupal.db.password}
+sparql.dsn = localhost
+sparql.user = dba
+sparql.password = dba
 
 # Admin user.
 drupal.admin.username = admin
