@@ -30,10 +30,13 @@ class RdfListBuilder extends EntityListBuilder {
       $def = $rdf_storage->getGraphsDefinition();
       if (is_string($_GET['graph']) && isset($def[$_GET['graph']])) {
         // Use the graph to build the list.
-        $query->setGraphType($_GET['graph']);
+        $query->setGraphType([$_GET['graph']]);
         // Use the graph to do the 'load multiple'.
-        $this->storage->setActiveGraphType($_GET['graph']);
+        $this->storage->setActiveGraphType([$_GET['graph']]);
       }
+    }
+    else {
+      $this->storage->setActiveGraphType(['default', 'draft']);
     }
 
     // Only add the pager if a limit is specified.
@@ -92,6 +95,11 @@ class RdfListBuilder extends EntityListBuilder {
         'field' => 'rid',
         'specifier' => 'rid',
       ),
+      'status' => array(
+        'data' => $this->t('Status'),
+        'field' => 'status',
+        'specifier' => 'status',
+      ),
     );
     return $header + parent::buildHeader();
   }
@@ -103,6 +111,7 @@ class RdfListBuilder extends EntityListBuilder {
     /* @var $entity \Drupal\rdf_entity\Entity\Rdf */
     $row['id'] = $entity->link();
     $row['rid'] = $entity->bundle();
+    $row['status'] = $entity->isPublished() ? $this->t('Published') : $this->t('Unpublished');
     return $row + parent::buildRow($entity);
   }
 

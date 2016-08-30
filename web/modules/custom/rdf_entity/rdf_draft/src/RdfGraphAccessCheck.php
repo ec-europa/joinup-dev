@@ -29,7 +29,7 @@ class RdfGraphAccessCheck implements AccessInterface {
       throw new \Exception('Storage not supported.');
     }
     $active_graph = $storage->getActiveGraphType();
-    $storage->setActiveGraphType($graph);
+    $storage->setActiveGraphType([$graph]);
     // @todo Check if user has permission to view this...
     // (fine grained permissions per graph are needed)
     if (!$account->hasPermission('view draft graph')) {

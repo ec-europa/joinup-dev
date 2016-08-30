@@ -47,7 +47,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
   protected $bundlePredicate = ['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'];
 
-  protected $activeGraph = 'default';
+  protected $activeGraph = ['default'];
 
   protected $saveGraph = NULL;
 
@@ -60,6 +60,10 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $this->languageManager = $language_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->moduleHandler = $module_handler;
+    // Allow altering the default active graph.
+    $graph = $this->activeGraph;
+    $this->moduleHandler->alter('rdf_default_active_graph', $entity_type, $graph);
+    $this->activeGraph = $graph;
   }
 
   /**
@@ -87,12 +91,14 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * Set the graph type to use when interacting with entities.
    */
-  public function setActiveGraphType($graph_type) {
+  public function setActiveGraphType($graph_types) {
     $definitions = $this->getGraphsDefinition();
-    if (!isset($definitions[$graph_type])) {
-      throw new \Exception('Unknown graph type ' . $graph_type);
+    foreach ($graph_types as $graph_type) {
+      if (!isset($definitions[$graph_type])) {
+        throw new \Exception('Unknown graph type ' . $graph_type);
+      }
+      $this->activeGraph[] = $graph_type;
     }
-    $this->activeGraph = $graph_type;
   }
 
   /**
@@ -133,21 +139,23 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * Get the graph URIs for each bundle.
    */
-  public function getGraphs($graph_type = NULL) {
-    if (!$graph_type) {
-      $graph_type = $this->getActiveGraphType();
+  public function getGraphs($graph_types = NULL) {
+    if (!$graph_types) {
+      $graph_types = $this->getActiveGraphType();
     }
     $bundles = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->loadMultiple();
     $graphs = [];
     foreach ($bundles as $bundle) {
-      $graph = $bundle->getThirdPartySetting('rdf_entity', 'graph_' . $graph_type, FALSE);
-      if (!$graph) {
-        throw new \Exception(format_string('Unable to determine graph "@graph" for bundle "@bundle"', [
-          '@graph' => $this->getActiveGraphType(),
-          '@bundle' => $bundle->id(),
-        ]));
+      foreach ($graph_types as $graph_type) {
+        $graph = $bundle->getThirdPartySetting('rdf_entity', 'graph_' . $graph_type, FALSE);
+        if (!$graph) {
+          throw new \Exception(format_string('Unable to determine graph "@graph" for bundle "@bundle"', [
+            '@graph' => $this->getActiveGraphType(),
+            '@bundle' => $bundle->id(),
+          ]));
+        }
+        $graphs[$graph][] = $bundle->id();
       }
-      $graphs[$graph][] = $bundle->id();
     }
     return $graphs;
   }
@@ -185,7 +193,9 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * {@inheritdoc}
    */
   protected function buildCacheId($id) {
-    return "values:{$this->entityTypeId}:$id:{$this->activeGraph}";
+    // @todo This isn't optimal...
+    $graph_id = implode('-', $this->activeGraph);
+    return "values:{$this->entityTypeId}:$id:{$graph_id}";
   }
 
   /**
@@ -257,9 +267,10 @@ QUERY;
     $mapping = $this->predicateMapping();
 
     $res = [];
+    $entity_graphs = [];
     foreach ($entity_values as $result) {
       $entity_id = (string) $result->entity_id;
-      $entity_graph = (string) $result->graph;
+      $entity_graphs[$entity_id] = (string) $result->graph;
 
       $lang = LanguageInterface::LANGCODE_DEFAULT;
       if ($result->field_value instanceof \EasyRdf_Literal) {
@@ -292,7 +303,7 @@ QUERY;
       // Map bundle and entity id.
       $values[$entity_id][$this->bundleKey][LanguageInterface::LANGCODE_DEFAULT] = $bundle->id();
       $values[$entity_id][$this->idKey][LanguageInterface::LANGCODE_DEFAULT] = $entity_id;
-      $values[$entity_id]['graph'] = $entity_graph;
+      $values[$entity_id]['graph'][LanguageInterface::LANGCODE_DEFAULT] = $entity_graphs[$entity_id];
 
       $rdf_type = NULL;
       foreach ($entity_values as $predicate => $field) {
@@ -542,14 +553,16 @@ QUERY;
    */
   protected function doDelete($entities) {
     $entities_by_graph = [];
+    /** @var string $id */
+    /** @var ContentEntityInterface $entity */
     foreach ($entities as $id => $entity) {
-      if (!$entity->graph) {
-        $entity->graph = $this->getGraph($entity->bundle(), 'default');
+      if (!$entity->get('graph')) {
+        $entity->graph[LanguageInterface::LANGCODE_DEFAULT] = $this->getGraph($entity->bundle(), 'default');
       }
-      $entities_by_graph[$entity->graph][$id] = $entity;
+      $entities_by_graph[$entity->graph[LanguageInterface::LANGCODE_DEFAULT]][$id] = $entity;
     }
     foreach ($entities_by_graph as $graph => $entities_to_delete) {
-      $graph = $entity->graph;
+      $graph = $entity->get('graph');
       $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
 
       $query = <<<QUERY
@@ -632,7 +645,23 @@ QUERY;
     // storage's current entity type is used.
     $query = \Drupal::service($this->getQueryServiceName())
       ->get($this->entityType, $conjunction);
-    $query->setGraphType();
+
+    /*
+     * Hold on tight this ain't easy...
+     *
+     * When the storage class supports the notion of a 'published state'
+     * by implementing the published interface, we then have to determine
+     * if drafting has been enabled for this entity type (rdf_draft module).
+     * If so, the 'draft' graph will hold the unpublished versions, 'default'
+     * graph contains the published entities.
+     */
+
+    if (in_array('Drupal\Core\Entity\EntityPublishedInterface', class_implements($this->entityClass))) {
+      if (\Drupal::moduleHandler()->moduleExists('rdf_draft')) {
+        $query->setGraphType(['draft', 'default']);
+      }
+    }
+
     return $query;
   }
 
@@ -699,14 +728,24 @@ QUERY;
       $entity->{$this->idKey} = (string) $id;
     }
     // Force the graph.
+    $loaded_from_graph = $entity->get('graph')->first()->getValue();
     if ($this->saveGraph) {
       $graph = $this->getGraph($bundle, $this->saveGraph);
     }
-    elseif (isset($entity->graph)) {
-      $graph = $entity->graph;
+    elseif (!empty($loaded_from_graph)) {
+      $graph = $loaded_from_graph['value'];
     }
+    // Fallback.
     else {
-      $graph = $this->getGraph($bundle, 'default');
+      $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_' . $entity->getEntityTypeId());
+      $default_save_graph = \Drupal::config('rdf_draft.settings')->get('default_save_graph_' . $entity->getEntityTypeId());
+      if (!empty($enabled_bundles[$bundle])) {
+        // Create new entities in the default save graph.
+        $graph = $this->getGraph($bundle, $default_save_graph);
+      }
+      else {
+        $graph = $this->getGraph($bundle, 'default');
+      }
     }
     $insert = '';
     $properties = $this->getMappedProperties($entity);
@@ -840,11 +879,12 @@ QUERY;
    * {@inheritdoc}
    */
   protected function getFromStaticCache(array $ids) {
+    $key = implode('-', $this->activeGraph);
     // Consider the graph when statically caching entities.
     $entities = array();
     // Load any available entities from the internal cache.
-    if ($this->entityType->isStaticallyCacheable() && !empty($this->entities[$this->activeGraph])) {
-      $entities += array_intersect_key($this->entities[$this->activeGraph], array_flip($ids));
+    if ($this->entityType->isStaticallyCacheable() && !empty($this->entities[$key])) {
+      $entities += array_intersect_key($this->entities[$key], array_flip($ids));
     }
     return $entities;
   }
@@ -854,11 +894,12 @@ QUERY;
    */
   protected function setStaticCache(array $entities) {
     // Consider the graph when statically caching entities.
+    $key = implode('-', $this->activeGraph);
     if ($this->entityType->isStaticallyCacheable()) {
-      if (empty($this->entities[$this->activeGraph])) {
-        $this->entities[$this->activeGraph] = [];
+      if (empty($this->entities[$key])) {
+        $this->entities[$key] = [];
       }
-      $this->entities[$this->activeGraph] += $entities;
+      $this->entities[$key] += $entities;
     }
   }
 
