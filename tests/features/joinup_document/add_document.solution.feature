@@ -6,8 +6,8 @@ Feature: "Add document" visibility options.
 
   Scenario: "Add document" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following solutions:
-      | title                   | logo     | banner     |
-      | Seventh Name           | logo.png | banner.jpg |
+      | title               | logo     | banner     |
+      | Seventh Name        | logo.png | banner.jpg |
       | The Obsessed Stream | logo.png | banner.jpg |
 
     When I am logged in as an "authenticated user"
@@ -31,7 +31,7 @@ Feature: "Add document" visibility options.
 
   Scenario: Add document as a facilitator.
     Given solutions:
-      | title                | logo     | banner     |
+      | title               | logo     | banner     |
       | Winter of Beginning | logo.png | banner.jpg |
     And I am logged in as a facilitator of the "Winter of Beginning" solution
 
@@ -41,13 +41,10 @@ Feature: "Add document" visibility options.
     And the following fields should be present "Title, Short title, Description, File, Source URL"
     And the following fields should not be present "Groups audience"
     When I fill in the following:
-      | Title       | The Sparks of the Butterfly                      |
+      | Title       | The Sparks of the Butterfly              |
       | Short title | Amazing document                         |
       | Description | This is going to be an amazing document. |
-    # Ensure that validation for one of the file source is properly occurring.
-    And I press "Save"
-    Then I should see the error message "One of the file sources must be filled."
-    When I attach the file "test.zip" to "File"
+    And I attach the file "test.zip" to "File"
     And I press "Save"
     Then I should see the heading "The Sparks of the Butterfly"
     And I should see the success message "Document The Sparks of the Butterfly has been created."
