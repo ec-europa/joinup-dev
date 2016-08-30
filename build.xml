@@ -417,6 +417,15 @@
     </target>
 
     <target name="setup-continuousphp">
+        <echo message="Check if we are running on ContinuousPHP"/>
+        <if>
+            <not>
+                <available file="/home/cphp" type="dir" property="environment.cphp" />
+            </not>
+            <then>
+                <fail message="Only run this target on a ContinuousPHP test environment" />
+            </then>
+        </if>
         <echo message="Put the odbc configuration file in the home folder where CPHP can find it"/>
         <copy
             file="./vendor/ec-europa/infra/continuousphp/odbc.ini"
