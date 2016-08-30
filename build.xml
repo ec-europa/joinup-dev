@@ -467,6 +467,11 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
         />
     </target>
 
+    <!-- provision new demo/test stack on AWS -->
+    <target name="provision-stack"
+            description="Provision a stack on AWS"
+            depends="setup-aws, run-stack, setup-deployment-group" />
+
     <!-- Install Composer dependencies for the build system. -->
     <target name="install-composer-dependencies">
         <composer command="install" composer="${composer.bin}">
@@ -492,11 +497,6 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="install, setup-dev, create-demo-users" />
-
-    <!-- provision new demo/test stack on AWS -->
-    <target name="provision-stack"
-            description="Provision a stack on AWS"
-            depends="setup-aws, run-stack, setup-deployment-group" />
+        depends="setup-virtuoso-permissions, import-rdf-fixtures, install, setup-dev, create-demo-users" />
 
 </project>
