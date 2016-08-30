@@ -48,7 +48,7 @@ Feature: "Add document" visibility options.
       | Title       | An amazing document                      |
       | Short title | Amazing document                         |
       | Description | This is going to be an amazing document. |
-    When I attach the file "test.zip" to "File"
+    And I attach the file "test.zip" to "File"
     And I press "Save"
     Then I should see the heading "An amazing document"
     And I should see the success message "Document An amazing document has been created."
