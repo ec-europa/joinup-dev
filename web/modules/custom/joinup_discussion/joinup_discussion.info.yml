@@ -7,9 +7,8 @@ dependencies:
   - joinup_core
 
 config_devel:
-  - core.base_field_override.node.discussion.promote
-  - core.base_field_override.node.discussion.status
-  - core.base_field_override.node.document.title
+  - core.entity_form_display.node.discussion.default
+  - core.entity_view_display.node.discussion.default
   - core.entity_view_display.node.discussion.default
   - field.field.node.discussion.field_discussion_active
   - field.field.node.discussion.field_discussion_content
