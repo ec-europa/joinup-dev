@@ -9,6 +9,11 @@ Feature: "Add event" visibility options.
       | title           | logo     | banner     |
       | Ragged Tower    | logo.png | banner.jpg |
       | Prince of Magic | logo.png | banner.jpg |
+    And the following collection:
+      | title      | Collective Ragged tower       |
+      | logo       | logo.png                      |
+      | banner     | banner.jpg                    |
+      | affiliates | Ragged Tower, Prince of Magic |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Ragged Tower" solution
@@ -33,6 +38,11 @@ Feature: "Add event" visibility options.
     Given solutions:
       | title                | logo     | banner     |
       | The Luscious Bridges | logo.png | banner.jpg |
+    And the following collection:
+      | title      | Collective The Luscious Bridges |
+      | logo       | logo.png                        |
+      | banner     | banner.jpg                      |
+      | affiliates | The Luscious Bridges            |
     And I am logged in as a facilitator of the "The Luscious Bridges" solution
     When I go to the homepage of the "The Luscious Bridges" solution
     And I click "Add event"
