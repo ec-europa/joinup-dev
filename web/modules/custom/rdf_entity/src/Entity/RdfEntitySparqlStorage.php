@@ -24,6 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   // @Todo Create a proper interface that this class implements...
+
   /**
    * Sparql database connection.
    *
@@ -34,14 +35,14 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * Language manager.
    *
-   * @var \Drupal\Core\Language\LanguageManagerInterface sdfsdf.
+   * @var \Drupal\Core\Language\LanguageManagerInterface
    */
   protected $languageManager;
 
   /**
    * Entity type manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface sdfsdfsdf.
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
@@ -429,9 +430,10 @@ QUERY;
    * Get the mapping between bundle names and their rdf objects.
    */
   public function getRdfBundleMapping() {
-    $bundle_rdf_bundle_mapping = array();
-    foreach ($this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())
-               ->loadMultiple() as $entity) {
+    $bundle_rdf_bundle_mapping = [];
+    $bundle_type = $this->entityType->getBundleEntityType();
+    $entities = $this->entityTypeManager->getStorage($bundle_type)->loadMultiple();
+    foreach ($entities as $entity) {
       $settings = $entity->getThirdPartySetting('rdf_entity', 'mapping_' . $this->bundleKey, FALSE);
       if (!is_array($settings)) {
         throw new \Exception('No rdf:type mapping set for bundle ' . $entity->label());
@@ -512,8 +514,9 @@ QUERY;
    */
   public function getLabelMapping() {
     $bundle_label_mapping = array();
-    foreach ($this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())
-               ->loadMultiple() as $entity) {
+    $bundle_type = $this->entityType->getBundleEntityType();
+    $entities = $this->entityTypeManager->getStorage($bundle_type)->loadMultiple();
+    foreach ($entities as $entity) {
       $label = $this->entityType->getKey('label');
       $settings = $entity->getThirdPartySetting('rdf_entity', 'mapping_' . $label, FALSE);
       if (!is_array($settings)) {

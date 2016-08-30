@@ -37,7 +37,8 @@ Feature: User authentication
       | admin/content/rdf         |
       | admin/people              |
       | admin/structure           |
-      | collection/propose        |
+      | propose/collection        |
+      | propose/solution          |
       | dashboard                 |
       | node/add                  |
       | node/add/custom_page      |
@@ -56,7 +57,8 @@ Feature: User authentication
 
     Examples:
       | path               |
-      | collection/propose |
+      | propose/collection |
+      | propose/solution   |
       | collections        |
       | dashboard          |
       | user               |
@@ -95,7 +97,7 @@ Feature: User authentication
       | admin/people      |
       | admin/content/rdf |
       | dashboard         |
-      | licence                   |
+      | licence           |
 
   @api
   Scenario Outline: Moderator cannot access restricted pages

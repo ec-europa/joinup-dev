@@ -3,6 +3,7 @@ status: true
 dependencies:
   module:
     - rdf_entity
+    - taxonomy
 third_party_settings:
   rdf_entity:
     mapping_target_id: 'http://purl.org/dc/terms/language'
@@ -11,7 +12,7 @@ field_name: field_is_language
 entity_type: rdf_entity
 type: entity_reference
 settings:
-  target_type: rdf_entity
+  target_type: taxonomy_term
 module: core
 locked: false
 cardinality: -1

@@ -83,7 +83,13 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // anonymous users.
     $links['collection'] = [
       '#title' => $this->t('Propose collection'),
-      '#url' => Url::fromRoute('collection.propose_form'),
+      '#url' => Url::fromRoute('rdf_entity.propose_form', ['rdf_type' => 'collection']),
+    ];
+    // Add a link to propose a solution. This is visible for everyone, even
+    // anonymous users.
+    $links['solution'] = [
+      '#title' => $this->t('Propose solution'),
+      '#url' => Url::fromRoute('rdf_entity.propose_form', ['rdf_type' => 'solution']),
     ];
 
     // Retrieve the collection from the context service. This needs to be done
@@ -114,6 +120,32 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           '#type' => 'link',
           '#title' => $this->t('Add solution'),
           '#url' => $solution_url,
+          '#attributes' => ['class' => ['button', 'button--small']],
+        ];
+      }
+
+      // 'Add document' link.
+      $document_url = Url::fromRoute('joinup_document.rdf_entity_document.add', [
+        'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
+      ]);
+      if ($document_url->access()) {
+        $links['document'] = [
+          '#type' => 'link',
+          '#title' => $this->t('Add document'),
+          '#url' => $document_url,
+          '#attributes' => ['class' => ['button', 'button--small']],
+        ];
+      }
+
+      // 'Add event' link.
+      $event_url = Url::fromRoute('joinup_event.rdf_entity_event.add', [
+        'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
+      ]);
+      if ($event_url->access()) {
+        $links['event'] = [
+          '#type' => 'link',
+          '#title' => $this->t('Add event'),
+          '#url' => $event_url,
           '#attributes' => ['class' => ['button', 'button--small']],
         ];
       }

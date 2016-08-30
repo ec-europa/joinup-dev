@@ -11,8 +11,8 @@ dependencies:
     - joinup_theme
 id: addcontent
 theme: joinup_theme
-region: footer
-weight: -10
+region: content_bottom
+weight: 100
 provider: null
 plugin: add_content_block
 settings:

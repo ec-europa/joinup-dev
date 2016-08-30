@@ -192,7 +192,9 @@ class Query extends QueryBase implements QueryInterface {
         if ($value) {
           $ids_list = "(<" . implode(">, <", $value) . ">)";
           if (!$this->filterAdded) {
-            $this->condition->condition('?entity', 'rdf:type', '?type');
+            $this->condition->condition('?entity', '?bundlepredicate', '?type');
+            $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+            $this->filter->filter('?bundlepredicate IN ' . $predicates);
             $this->filterAdded = TRUE;
           }
           $this->filter->filter('?entity IN ' . $ids_list);
@@ -210,7 +212,9 @@ class Query extends QueryBase implements QueryInterface {
           }
 
           if (!$this->filterAdded) {
-            $this->condition->condition('?entity', 'rdf:type', '?type');
+            $this->condition->condition('?entity', '?bundlepredicate', '?type');
+            $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+            $this->filter->filter('?bundlepredicate IN ' . $predicates);
             $this->filterAdded = TRUE;
           }
           $this->filter->filter('!(?entity IN ' . $ids_list . ')');
@@ -223,7 +227,9 @@ class Query extends QueryBase implements QueryInterface {
         }
         $id = '<' . $value . '>';
         if (!$this->filterAdded) {
-          $this->condition->condition('?entity', 'rdf:type', '?type');
+          $this->condition->condition('?entity', '?bundlepredicate', '?type');
+          $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+          $this->filter->filter('?bundlepredicate IN ' . $predicates);
           $this->filterAdded = TRUE;
         }
         $this->filter->filter('?entity IN ' . SparqlArg::literal($id));
