@@ -45,7 +45,7 @@ class RdfEntityType extends ConfigEntityBundleBase implements RdfEntityTypeInter
   /**
    * The bundle type of RDF entity.
    *
-   * @var string $rid
+   * @var string
    *   The bundle.
    */
   protected $rid;
@@ -53,7 +53,7 @@ class RdfEntityType extends ConfigEntityBundleBase implements RdfEntityTypeInter
   /**
    * The human readable name of the entity.
    *
-   * @var string $name
+   * @var string
    *    Human readable name
    */
   protected $name;

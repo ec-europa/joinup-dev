@@ -14,6 +14,7 @@ config_devel:
   - field.field.node.event.field_event_contact_email
   - field.field.node.event.field_event_end_date
   - field.field.node.event.field_event_logo
+  - field.field.node.event.field_event_organisation
   - field.field.node.event.field_event_short_title
   - field.field.node.event.field_event_start_date
   - field.field.node.event.field_event_web_url
@@ -23,6 +24,7 @@ config_devel:
   - field.storage.node.field_event_contact_email
   - field.storage.node.field_event_end_date
   - field.storage.node.field_event_logo
+  - field.storage.node.field_event_organisation
   - field.storage.node.field_event_short_title
   - field.storage.node.field_event_start_date
   - field.storage.node.field_event_web_url
