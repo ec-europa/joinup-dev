@@ -52,4 +52,4 @@ Feature: "Add discussion" visibility options.
     And the "The World of the Waves" collection has a discussion titled "An amazing discussion"
     # Check that the link to the discussion is visible on the collection page.
     When I go to the homepage of the "The World of the Waves" collection
-    And I click "An amazing discussion"
+    Then I should see the link "An amazing discussion"
