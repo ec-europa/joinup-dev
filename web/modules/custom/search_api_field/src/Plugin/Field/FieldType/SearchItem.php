@@ -10,6 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Url;
 use Drupal\link\LinkItemInterface;
+use Drupal\search_api\Entity\Index as SearchApiIndex;
 
 /**
  * Plugin implementation of the 'link' field type.
@@ -31,6 +32,7 @@ class SearchItem extends FieldItemBase implements LinkItemInterface {
     return array(
       'index' => NULL,
       'facet_regions' => [],
+      'view_modes' => [],
     ) + parent::defaultStorageSettings();
   }
 
@@ -70,48 +72,142 @@ class SearchItem extends FieldItemBase implements LinkItemInterface {
    * {@inheritdoc}
    */
   public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data) {
-    $index_options = array();
-    // @FIXME Inject properly.
     $search_api_indexes = \Drupal::entityTypeManager()->getStorage('search_api_index')->loadMultiple();
+    $index_options = array();
     /* @var  $search_api_index \Drupal\search_api\IndexInterface */
     foreach ($search_api_indexes as $search_api_index) {
       $index_options[$search_api_index->id()] = $search_api_index->label();
     }
-    $element['index'] = array(
+
+    $element['index'] = [
       '#type' => 'select',
       '#title' => $this->t('Search API index'),
       '#options' => $index_options,
       '#default_value' => $this->getSetting('index'),
       '#required' => TRUE,
-    );
+      '#ajax' => [
+        'callback' => [$this, 'buildAjaxForm'],
+        'wrapper' => 'search-api-field-item-view-modes-wrapper',
+      ],
+    ];
 
     $facet_regions = $this->getSetting('facet_regions');
     $facet_regions_function = $this->getSetting('facet_regions_function');
 
-    $element['facet_regions'] = array(
+    $element['facet_regions'] = [
       '#type' => 'textarea',
       '#title' => t('Facet regions'),
+      '#description' => $this->allowedValuesDescription(),
       '#default_value' => $this->allowedValuesString($facet_regions),
       '#rows' => 10,
       '#access' => empty($facet_regions_function),
-      '#element_validate' => array(array(get_class($this), 'validateAllowedValues')),
+      '#element_validate' => [[get_class($this), 'validateAllowedValues']],
       '#field_has_data' => $has_data,
       '#field_name' => $this->getFieldDefinition()->getName(),
       '#entity_type' => $this->getEntity()->getEntityTypeId(),
       '#facet_regions' => $facet_regions,
-    );
+    ];
 
-    $element['facet_regions']['#description'] = $this->allowedValuesDescription();
-
-    $element['facet_regions_function'] = array(
+    $element['facet_regions_function'] = [
       '#type' => 'item',
       '#title' => t('Allowed values list'),
-      '#markup' => t('The value of this field is being determined by the %function function and may not be changed.', array('%function' => $facet_regions_function)),
+      '#markup' => t('The value of this field is being determined by the %function function and may not be changed.', ['%function' => $facet_regions_function]),
       '#access' => !empty($facet_regions_function),
       '#value' => $facet_regions_function,
-    );
+    ];
+
+    // In order to allow ajax rendering of the view mode fieldset upon selecting
+    // a search index, an additional wrapper element needs to contain the whole
+    // view modes structure. Since the valid keys must be specified in the
+    // self::defaultStorageSettings() method, the top parent has to hold the key
+    // specified in there or the value will be lost before saving the config
+    // entity. In the storageSettingsToConfigData() the data is normalized
+    // back to remove the extra wrapping of the values.
+    $element['view_modes'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'id' => 'search-api-field-item-view-modes-wrapper',
+      ],
+    ];
+
+    if ($form_state->isRebuilding()) {
+      $index_id = $form_state->getValue(['settings', 'index']);
+    }
+    else {
+      $index_id = $this->getSetting('index');
+    }
+    if (!empty($index_id)) {
+      $element['view_modes']['wrapper'] = [
+        '#type' => 'details',
+        '#title' => $this->t('View modes'),
+        '#open' => FALSE,
+      ];
+
+      $element['view_modes']['wrapper'] += $this->buildViewModesElements($index_id);
+    }
 
     return $element;
+  }
+
+  /**
+   * Builds the view modes form options for the selected index datasources.
+   *
+   * @param string $index_id
+   *   The id of the search_api index.
+   *
+   * @return array
+   *   The form definition for the view modes element.
+   *
+   * @see \Drupal\search_api\Plugin\views\row\SearchApiRow::buildOptionsForm()
+   */
+  protected function buildViewModesElements($index_id) {
+    $element = [];
+    $settings = $this->getSetting('view_modes');
+
+    /* @var $search_api_index \Drupal\search_api\IndexInterface */
+    $search_api_index = SearchApiIndex::load($index_id);
+
+    foreach ($search_api_index->getDatasources() as $datasource_id => $datasource) {
+      /** @var \Drupal\search_api\Plugin\search_api\datasource\ContentEntity $datasource_label */
+      $datasource_label = $datasource->label();
+      $bundles = $datasource->getBundles();
+      if (!$datasource->getViewModes()) {
+        $element[$datasource_id] = array(
+          '#type' => 'item',
+          '#title' => $this->t('Default View mode for datasource %name', array('%name' => $datasource_label)),
+          '#description' => $this->t("This datasource doesn't have any view modes available. It is therefore not possible to display results of this datasource."),
+        );
+        continue;
+      }
+
+      foreach ($bundles as $bundle_id => $bundle_label) {
+        $title = $this->t('View mode for datasource %datasource, bundle %bundle', array('%datasource' => $datasource_label, '%bundle' => $bundle_label));
+        $view_modes = $datasource->getViewModes($bundle_id);
+        if (!$view_modes) {
+          $element[$datasource_id][$bundle_id] = array(
+            '#type' => 'item',
+            '#title' => $title,
+            '#description' => $this->t("This bundle doesn't have any view modes available. It is therefore not possible to display results of this bundle using."),
+          );
+          continue;
+        }
+        $element[$datasource_id][$bundle_id] = array(
+          '#type' => 'select',
+          '#options' => $view_modes,
+          '#title' => $title,
+          '#default_value' => !empty($settings[$datasource_id][$bundle_id]) ? $settings[$datasource_id][$bundle_id] : key($view_modes),
+        );
+      }
+    }
+
+    return $element;
+  }
+
+  /**
+   * Ajax callback to update view modes fieldset when the index field changes.
+   */
+  public function buildAjaxForm(array $form, FormStateInterface $form_state) {
+    return $form['settings']['view_modes'];
   }
 
   /**
@@ -291,6 +387,11 @@ class SearchItem extends FieldItemBase implements LinkItemInterface {
   public function getUrl() {
     return Url::fromUri($this->uri);
   }
+  public static function storageSettingsToConfigData(array $settings) {
+    // Remove the extra 'wrapper' element that was added to allow ajax rendering
+    // of the view modes fieldset.
+    // @see self::storageSettingsForm()
+    $settings['view_modes'] = $settings['view_modes']['wrapper'];
 
   /**
    * {@inheritdoc}
