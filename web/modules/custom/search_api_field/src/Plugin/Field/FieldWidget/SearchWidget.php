@@ -179,7 +179,13 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
   }
 
   /**
-   * The region this row belongs to.
+   * Returns the region to which a row belongs.
+   *
+   * @param array $row
+   *   The row element.
+   *
+   * @return string|null
+   *   The region name this row belongs to.
    */
   public function getRowRegion($row) {
     return $row['plugin']['type']['#value'];
