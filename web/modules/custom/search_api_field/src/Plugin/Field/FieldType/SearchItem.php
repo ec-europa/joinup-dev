@@ -3,13 +3,10 @@
 namespace Drupal\search_api_field\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
-use Drupal\Core\Url;
-use Drupal\link\LinkItemInterface;
 use Drupal\search_api\Entity\Index as SearchApiIndex;
 
 /**
@@ -23,7 +20,7 @@ use Drupal\search_api\Entity\Index as SearchApiIndex;
  *   default_formatter = "search",
  * )
  */
-class SearchItem extends FieldItemBase implements LinkItemInterface {
+class SearchItem extends FieldItemBase {
 
   /**
    * {@inheritdoc}
@@ -48,6 +45,13 @@ class SearchItem extends FieldItemBase implements LinkItemInterface {
   /**
    * {@inheritdoc}
    */
+  public static function mainPropertyName() {
+    return 'value';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
     return array(
       'columns' => array(
@@ -64,8 +68,7 @@ class SearchItem extends FieldItemBase implements LinkItemInterface {
    * {@inheritdoc}
    */
   public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
-    $element = array();
-    return $element;
+    return [];
   }
 
   /**
@@ -219,6 +222,7 @@ class SearchItem extends FieldItemBase implements LinkItemInterface {
    * @param FormStateInterface $form_state
    *   The current state of the form for the form this element belongs to.
    *
+   * @see \Drupal\options\Plugin\Field\FieldType\ListItemBase::validateAllowedValues()
    * @see \Drupal\Core\Render\Element\FormElement::processPattern()
    */
   public static function validateAllowedValues($element, FormStateInterface $form_state) {
@@ -259,6 +263,7 @@ class SearchItem extends FieldItemBase implements LinkItemInterface {
    * @return array|null
    *   The array of extracted key/value pairs, or NULL if the string is invalid.
    *
+   * @see \Drupal\options\Plugin\Field\FieldType\ListItemBase::extractAllowedValues()
    * @see \Drupal\options\Plugin\Field\FieldType\ListTextItem::allowedValuesString()
    */
   protected static function extractAllowedValues($string, $has_data) {
@@ -309,13 +314,13 @@ class SearchItem extends FieldItemBase implements LinkItemInterface {
    *
    * @param string $option
    *   The option value entered by the user.
+   *
+   * @see \Drupal\options\Plugin\Field\FieldType\ListItemBase::validateAllowedValue()
    */
-  protected static function validateAllowedValue($option) {
-
-  }
+  protected static function validateAllowedValue($option) {}
 
   /**
-   * Generates a string representation of an array of 'allowed values'.
+   * Generates a string representation of an array of 'facet_regions'.
    *
    * This string format is suitable for edition in a textarea.
    *
@@ -327,6 +332,8 @@ class SearchItem extends FieldItemBase implements LinkItemInterface {
    *   The string representation of the $values array:
    *    - Values are separated by a carriage return.
    *    - Each value is in the format "value|label" or "value".
+   *
+   * @see \Drupal\options\Plugin\Field\FieldType\ListItemBase::allowedValuesString()
    */
   protected function allowedValuesString($values) {
     $lines = array();
@@ -344,11 +351,7 @@ class SearchItem extends FieldItemBase implements LinkItemInterface {
    */
   protected function allowedValuesDescription() {
     $description = '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.');
-    $description .= '<br/>' . t('The key is the stored value, and must be numeric. The label will be used in displayed values and edit forms.');
-    $description .= '<br/>' . t('The label is optional: if a line contains a single number, it will be used as key and label.');
-    $description .= '<br/>' . t('Lists of labels are also accepted (one label per line), only if the field does not hold any values yet. Numeric keys will be automatically generated from the positions in the list.');
     $description .= '</p>';
-    $description .= '<p>' . t('Allowed HTML tags in labels: @tags', array('@tags' => FieldFilteredMarkup::displayAllowedTags())) . '</p>';
     return $description;
   }
 
@@ -370,51 +373,13 @@ class SearchItem extends FieldItemBase implements LinkItemInterface {
   /**
    * {@inheritdoc}
    */
-  public function isExternal() {
-    return $this->getUrl()->isExternal();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function mainPropertyName() {
-    return 'value';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getUrl() {
-    return Url::fromUri($this->uri);
-  }
   public static function storageSettingsToConfigData(array $settings) {
     // Remove the extra 'wrapper' element that was added to allow ajax rendering
     // of the view modes fieldset.
     // @see self::storageSettingsForm()
     $settings['view_modes'] = $settings['view_modes']['wrapper'];
 
-  /**
-   * {@inheritdoc}
-   */
-  public function setValue($values, $notify = TRUE) {
-    // Treat the values as property value of the main property, if no array is
-    // given.
-    if (isset($values) && !is_array($values)) {
-      $values = [static::mainPropertyName() => $values];
-    }
-    if (isset($values)) {
-      $values += [
-        'options' => [],
-      ];
-    }
-    // Unserialize the values.
-    // @todo The storage controller should take care of this, see
-    //   SqlContentEntityStorage::loadFieldItems, see
-    //   https://www.drupal.org/node/2414835
-    if (is_string($values['options'])) {
-      $values['options'] = unserialize($values['options']);
-    }
-    parent::setValue($values, $notify);
+    return $settings;
   }
 
 }
