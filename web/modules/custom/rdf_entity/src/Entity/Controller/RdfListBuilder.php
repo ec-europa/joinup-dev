@@ -36,7 +36,12 @@ class RdfListBuilder extends EntityListBuilder {
       }
     }
     else {
-      $this->storage->setActiveGraphType(['default', 'draft']);
+      if (\Drupal::moduleHandler()->moduleExists('rdf_draft')) {
+        $this->storage->setActiveGraphType(['default', 'draft']);
+      }
+      else {
+        $this->storage->setActiveGraphType(['default']);
+      }
     }
 
     // Only add the pager if a limit is specified.

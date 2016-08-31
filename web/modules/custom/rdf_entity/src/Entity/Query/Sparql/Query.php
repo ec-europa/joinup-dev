@@ -193,7 +193,7 @@ class Query extends QueryBase implements QueryInterface {
           $ids_list = "(<" . implode(">, <", $value) . ">)";
           if (!$this->filterAdded) {
             $this->condition->condition('?entity', '?bundlepredicate', '?type');
-            $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+            $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
             $this->filter->filter('?bundlepredicate IN ' . $predicates);
             $this->filterAdded = TRUE;
           }
@@ -213,7 +213,7 @@ class Query extends QueryBase implements QueryInterface {
 
           if (!$this->filterAdded) {
             $this->condition->condition('?entity', '?bundlepredicate', '?type');
-            $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+            $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
             $this->filter->filter('?bundlepredicate IN ' . $predicates);
             $this->filterAdded = TRUE;
           }
@@ -228,7 +228,7 @@ class Query extends QueryBase implements QueryInterface {
         $id = '<' . $value . '>';
         if (!$this->filterAdded) {
           $this->condition->condition('?entity', '?bundlepredicate', '?type');
-          $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+          $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
           $this->filter->filter('?bundlepredicate IN ' . $predicates);
           $this->filterAdded = TRUE;
         }

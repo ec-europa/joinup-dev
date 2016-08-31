@@ -559,13 +559,13 @@ QUERY;
     /** @var string $id */
     /** @var ContentEntityInterface $entity */
     foreach ($entities as $id => $entity) {
-      if (!$entity->get('graph')) {
-        $entity->graph[LanguageInterface::LANGCODE_DEFAULT] = $this->getGraph($entity->bundle(), 'default');
+      if (!$entity->get('graph')->first()->getValue()) {
+        $entity->set('graph', $this->getGraph($entity->bundle(), 'default'));
       }
-      $entities_by_graph[$entity->graph[LanguageInterface::LANGCODE_DEFAULT]][$id] = $entity;
+      $graph = $entity->get('graph')->first()->getValue()['value'];
+      $entities_by_graph[$graph][$id] = $entity;
     }
     foreach ($entities_by_graph as $graph => $entities_to_delete) {
-      $graph = $entity->get('graph');
       $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
 
       $query = <<<QUERY
@@ -862,8 +862,9 @@ QUERY;
     // Consider the graph when statically caching entities.
     if ($ids) {
       $cids = array();
+      $key = implode('-', $this->activeGraph);
       foreach ($ids as $id) {
-        unset($this->entities[$this->activeGraph][$id]);
+        unset($this->entities[$key][$id]);
         $cids[] = $this->buildCacheId($id);
       }
       if ($this->entityType->isPersistentlyCacheable()) {
