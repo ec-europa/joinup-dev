@@ -86,7 +86,7 @@ class EventController extends ControllerBase {
     }
     // Grant access depending on whether the user has permission to create an
     // event node entity according to their OG role.
-    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createEventEntity($rdf_entity), $user);
+    return $this->ogAccess->userAccessGroupContentEntityOperation('create', $rdf_entity, $this->createEventEntity($rdf_entity), $user);
   }
 
   /**
