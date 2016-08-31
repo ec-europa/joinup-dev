@@ -94,4 +94,52 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     $this->assertGroupContentCount($count, $group, 'node', 'custom_page');
   }
 
+  /**
+   * Checks if the user does not have access to the OG Menu administration UI.
+   *
+   * We only expose the OG Menu instance overview to the end user. We do not
+   * expose any of the other administration pages. The adding of menu links to
+   * the OG Menus is handled behind the scenes, e.g. when a custom page is
+   * created a link is automatically added to the navigation menu.
+   *
+   * @param string $menu
+   *   The name of the OG Menu instance of which the administration pages should
+   *   be inaccessible.
+   * @param string $title
+   *   The title of the group to which the OG Menu instance belongs.
+   * @param string $type
+   *   The entity type of the group to which the OG Menu instance belongs.
+   *
+   * @throws \Exception
+   *   Thrown when no OG Menu instance was found that matches the given
+   *   arguments.
+   *
+   * @Then I should not have access to the menu link administration pages for the :menu menu of the :title :type
+   */
+  public function assertNoAccessToOgMenuAdministration($menu, $title, $type) {
+    // Retrieve the OG Menu instance for the given menu and group.
+    $group = $this->getRdfEntityByLabel($title, $type);
+    $values = [
+      'type' => $menu,
+      OgGroupAudienceHelper::DEFAULT_FIELD => $group->id(),
+    ];
+    $instances = \Drupal::entityTypeManager()->getStorage('ogmenu_instance')->loadByProperties($values);
+    if (empty($instances)) {
+      throw new \Exception("There is no $menu menu associated with the $title $type.");
+    }
+    /** @var \Drupal\og_menu\Entity\OgMenuInstance $instance */
+    $instance = reset($instances);
+
+
+    // Compile a list of routes to which the user should not have access.
+    // Note that this excludes the 'entity.ogmenu_instance.add_link' route to
+    // which the collection facilitator has access.
+    $routes = [
+      'entity.ogmenu_instance.canonical' => ['ogmenu_instance' => $instance],
+    ];
+
+    // @todo Finish this.
+    $url = \Drupal\Core\Url::fromRoute($route, $parameters);
+  }
+
 }

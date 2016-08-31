@@ -23,3 +23,4 @@ Feature: Navigation menu for custom pages
     # are showing the menu overview to collection facilitators so they can
     # reorder the navigation menu, but they should not be able to access the
     # related menu administration screens.
+    And I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
