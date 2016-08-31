@@ -7,6 +7,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
+use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -111,6 +112,48 @@ trait OgTrait {
   protected function getOgRoles(array $roles, EntityInterface $group) {
     $ids = $this->convertOgRoleNamesToIds($roles, $group);
     return array_values(OgRole::loadMultiple($ids));
+  }
+
+  /**
+   * Checks if the given content belongs to the given parent rdf entity.
+   *
+   * If there are multiple entities or parents with the same title, then
+   * only the first one is checked.
+   *
+   * @param string $parent
+   *   The name of the parent.
+   * @param string $parent_type
+   *   The bundle of the parent.
+   * @param string $content_type
+   *   The bundle of the content.
+   * @param string $content
+   *   The title of the content.
+   *
+   * @throws \Exception
+   *   Thrown when a event with the given title does not exist.
+   */
+  public function assertOgMembership($parent, $parent_type, $content_type, $content) {
+    $parent = $this->getRdfEntityByLabel($parent, $parent_type);
+
+    $results = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties(['title' => $content, 'type' => $content_type]);
+    /** @var \Drupal\node\NodeInterface $content */
+    $content = reset($results);
+
+    if (empty($content)) {
+      throw new \Exception("The $content_type titled '$content' was not found.");
+    }
+
+    /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
+    foreach ($content->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
+      if ($group->getValue()['target_id'] == $parent->id()) {
+        // Test passes.
+        return;
+      }
+    }
+
+    throw new \Exception("The $content_type '$content' is not associated with the '{$parent->label()}' {$parent_type}.");
   }
 
 }
