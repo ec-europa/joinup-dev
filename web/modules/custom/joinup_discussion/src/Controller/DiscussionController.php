@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_document\Controller;
+namespace Drupal\joinup_discussion\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
@@ -10,13 +10,13 @@ use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Controller that handles the form to add document to a collection.
+ * Controller that handles the form to add discussion to a collection.
  *
  * The parent is passed as a parameter from the route.
  *
- * @package Drupal\joinup_document\Controller
+ * @package Drupal\joinup_discussion\Controller
  */
-class DocumentController extends ControllerBase {
+class DiscussionController extends ControllerBase {
 
   /**
    * The OG access handler.
@@ -26,7 +26,7 @@ class DocumentController extends ControllerBase {
   protected $ogAccess;
 
   /**
-   * Constructs an DocumentController.
+   * Constructs an DiscussionController.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
@@ -56,52 +56,51 @@ class DocumentController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity) {
-    $node = $this->createDocumentEntity($rdf_entity);
+    $node = $this->createDiscussionEntity($rdf_entity);
     $form = $this->entityFormBuilder()->getForm($node);
 
     return $form;
   }
 
   /**
-   * Handles access to the document add form through RDF entity pages.
+   * Handles access to the discussion add form through RDF entity pages.
    *
    * Access is granted to moderators and group members that have the permission
-   * to create document articles inside of their group, which in practice means
-   * this is granted to collection and solution facilitators.
+   * to create discussion articles inside of their group, which in practice
+   * means this is granted to collection facilitators.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The RDF entity for which the document entity is created.
+   *   The RDF entity for which the discussion entity is created.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createDocumentAccess(RdfInterface $rdf_entity) {
-    if (!in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
+  public function createDiscussionAccess(RdfInterface $rdf_entity) {
+    if ($rdf_entity->bundle() != 'collection') {
       return AccessResult::forbidden();
     }
-
     $user = $this->currentUser();
     // Grant access if the user is a moderator.
     if (in_array('moderator', $user->getRoles())) {
       return AccessResult::allowed()->addCacheContexts(['user.roles']);
     }
     // Grant access depending on whether the user has permission to create a
-    // document node entity according to their OG role.
-    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createDocumentEntity($rdf_entity), $user);
+    // discussion node entity according to their OG role.
+    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createDiscussionEntity($rdf_entity), $user);
   }
 
   /**
-   * Returns a document content entity.
+   * Returns a discussion content entity.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *    The parent that the document content entity belongs to.
+   *    The parent that the discussion content entity belongs to.
    *
    * @return \Drupal\Core\Entity\EntityInterface
    *    A node entity.
    */
-  protected function createDocumentEntity(RdfInterface $rdf_entity) {
+  protected function createDiscussionEntity(RdfInterface $rdf_entity) {
     return $this->entityTypeManager()->getStorage('node')->create([
-      'type' => 'document',
+      'type' => 'discussion',
       OgGroupAudienceHelper::DEFAULT_FIELD => $rdf_entity->id(),
     ]);
   }
