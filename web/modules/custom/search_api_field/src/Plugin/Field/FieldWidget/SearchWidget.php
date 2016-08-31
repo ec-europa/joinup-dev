@@ -2,13 +2,15 @@
 
 namespace Drupal\search_api_field\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Entity\Element\EntityAutocomplete;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\facets\Entity\Facet;
-use Drupal\link\LinkItemInterface;
 use Drupal\search_api_field\Plugin\Field\FieldType\SearchItem;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'link' widget.
@@ -351,30 +353,6 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $facet_storage = $this->entityTypeManager->getStorage('facets_facet');
     $facets = $facet_storage->loadByProperties(['facet_source_id' => 'search_api_field:' . $storage->id()]);
     return $facets;
-  }
-
-  /**
-   * Indicates enabled support for link to routes.
-   *
-   * @return bool
-   *   Returns TRUE if the LinkItem field is configured to support links to
-   *   routes, otherwise FALSE.
-   */
-  protected function supportsInternalLinks() {
-    $link_type = $this->getFieldSetting('link_type');
-    return (bool) ($link_type & LinkItemInterface::LINK_INTERNAL);
-  }
-
-  /**
-   * Indicates enabled support for link to external URLs.
-   *
-   * @return bool
-   *   Returns TRUE if the LinkItem field is configured to support links to
-   *   external URLs, otherwise FALSE.
-   */
-  protected function supportsExternalLinks() {
-    $link_type = $this->getFieldSetting('link_type');
-    return (bool) ($link_type & LinkItemInterface::LINK_EXTERNAL);
   }
 
   /**
