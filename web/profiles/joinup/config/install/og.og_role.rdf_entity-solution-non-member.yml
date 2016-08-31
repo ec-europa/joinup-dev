@@ -9,5 +9,5 @@ group_bundle: solution
 group_id: null
 permissions:
   - 'accept facilitator invitation'
-  - subscribe
+  - 'subscribe'
 role_type: required
