@@ -25,6 +25,9 @@
     <echo msg="Loading PHP Codesniffer Configuration task." />
     <taskdef name="phpcodesnifferconfiguration" classname="\DrupalProject\Phing\PhpCodeSnifferConfigurationTask" />
 
+    <echo msg="Loading PHPUnit Configuration task." />
+    <taskdef name="phpunitconfiguration" classname="\DrupalProject\Phing\PhpUnitConfigurationTask" />
+
     <echo msg="Loading Remove Patched Packages task." />
     <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
 
@@ -33,7 +36,7 @@
 
     <echo msg="Loading Import RDF fixtures task." />
     <taskdef name="importrdffixtures" classname="\DrupalProject\Phing\ImportRdfFixtures" />
-    
+
     <echo msg="Loading AWS additional tasks." />
     <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />
     <property name="aws.profile" value="" />
@@ -170,6 +173,26 @@
             config="${behat.yml.path}"
             strict="${behat.options.strict}"
             verbose="${behat.options.verbosity}"
+        />
+    </target>
+
+    <!-- Set up PHPUnit. -->
+    <target name="setup-phpunit" description="Generate the configuration file for PHPUnit.">
+        <if>
+            <available file="${phpunit.config}" type="file" property="phpunit.config.available" />
+            <then>
+                <echo message="Deleting existing PHPUnit configuration file." />
+                <delete file="${phpunit.config}" failonerror="false" />
+            </then>
+        </if>
+        <phpunitconfiguration
+                configFile="${phpunit.config}"
+                distFile="${phpunit.dist}"
+                files="${phpunit.files}"
+                directories="${phpunit.directories}"
+                testsuiteName="${phpunit.testsuite.name}"
+                baseUrl="${phpunit.base_url}"
+                dbUrl="${phpunit.db_url}"
         />
     </target>
 
@@ -434,7 +457,7 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
             <param>${drupal.modules.uat}</param>
         </drush>
     </target>
-    
+
     <target name="setup-continuousphp">
         <copy
             file="./vendor/ec-europa/infra/continuousphp/odbc.ini"
@@ -460,7 +483,7 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit" />
 
     <target
         name="setup-dev"
