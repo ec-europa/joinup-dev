@@ -124,6 +124,19 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
         ];
       }
 
+      // 'Add discussion' link.
+      $discussion_url = Url::fromRoute('joinup_discussion.rdf_entity_discussion.add', [
+        'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
+      ]);
+      if ($discussion_url->access()) {
+        $links['discussion'] = [
+          '#type' => 'link',
+          '#title' => $this->t('Add discussion'),
+          '#url' => $discussion_url,
+          '#attributes' => ['class' => ['button', 'button--small']],
+        ];
+      }
+
       // 'Add event' link.
       $event_url = Url::fromRoute('joinup_event.rdf_entity_event.add', [
         'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
@@ -200,6 +213,19 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
             '#type' => 'link',
             '#title' => $this->t('Add document'),
             '#url' => $document_url,
+            '#attributes' => ['class' => ['button', 'button--small']],
+          ];
+        }
+
+        // 'Add event' link.
+        $event_url = Url::fromRoute('joinup_event.rdf_entity_event.add', [
+          'rdf_entity' => $id,
+        ]);
+        if ($event_url->access()) {
+          $links['event'] = [
+            '#type' => 'link',
+            '#title' => $this->t('Add event'),
+            '#url' => $event_url,
             '#attributes' => ['class' => ['button', 'button--small']],
           ];
         }
