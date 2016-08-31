@@ -102,8 +102,8 @@ drupal.db.password = hunter2
 drupal.admin.username = admin
 drupal.admin.password = admin
 
-# The base URL to use in Behat tests.
-behat.base_url = http://joinup.local
+# The base URL to use in tests.
+drupal.base_url = http://joinup.local
 
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = yes
@@ -126,8 +126,17 @@ $ ./vendor/bin/phing install-dev
 Run the Behat test suite to validate your installation.
 
 ```
-$ cd tests; ./behat
+$ cd tests
+$ ./behat
 ```
+
+Also run the PHPUnit tests, from the web root.
+
+```
+$ cd web
+$ ../vendor/bin/phpunit
+```
+
 
 ## Phing targets
 
