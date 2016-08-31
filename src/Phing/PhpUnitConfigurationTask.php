@@ -50,6 +50,20 @@ class PhpUnitConfigurationTask extends \Task {
   private $testsuiteName = 'project';
 
   /**
+   * The base URL to use in functional tests.
+   *
+   * @var string
+   */
+  private $baseUrl = 'http://localhost';
+
+  /**
+   * The database URL to use in kernel tests and functional tests.
+   *
+   * @var string
+   */
+  private $dbUrl = 'mysql://root@localhost/db';
+
+  /**
    * Configures PHPUnit.
    */
   public function main() {
@@ -61,6 +75,12 @@ class PhpUnitConfigurationTask extends \Task {
     $document->preserveWhiteSpace = FALSE;
     $document->formatOutput = TRUE;
     $document->load($this->distFile);
+
+    // Set the base URL.
+    $this->setEnvironmentVariable('SIMPLETEST_BASE_URL', $this->baseUrl, $document);
+
+    // Set the database URL.
+    $this->setEnvironmentVariable('SIMPLETEST_DB', $this->dbUrl, $document);
 
     // Add a test suite for the Drupal project.
     $test_suite = $document->createElement('testsuite');
@@ -84,6 +104,26 @@ class PhpUnitConfigurationTask extends \Task {
 
     // Save the file.
     file_put_contents($this->configFile, $document->saveXML());
+  }
+
+  /**
+   * Sets the value of a pre-existing environment variable.
+   *
+   * @param string $variableName
+   *   The name of the environment variable for which to set the value.
+   * @param string $value
+   *   The value to set.
+   * @param \DOMDocument $document
+   *   The document in which the change should take place.
+   */
+  protected function setEnvironmentVariable($variableName, $value, \DOMDocument $document) {
+    /** @var \DOMElement $element */
+    foreach ($document->getElementsByTagName('env') as $element) {
+      if ($element->getAttribute('name') === $variableName) {
+        $element->setAttribute('value', $value);
+        break;
+      }
+    }
   }
 
   /**
@@ -161,6 +201,26 @@ class PhpUnitConfigurationTask extends \Task {
    */
   public function setTestsuiteName($testsuiteName) {
     $this->testsuiteName = $testsuiteName;
+  }
+
+  /**
+   * Sets the base URL.
+   *
+   * @param string $baseUrl
+   *   The base URL.
+   */
+  public function setBaseUrl($baseUrl) {
+    $this->baseUrl = $baseUrl;
+  }
+
+  /**
+   * Sets the database URL.
+   *
+   * @param string $dbUrl
+   *   The database URL.
+   */
+  public function setDbUrl($dbUrl) {
+    $this->dbUrl = $dbUrl;
   }
 
 }

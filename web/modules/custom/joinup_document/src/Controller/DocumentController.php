@@ -67,7 +67,7 @@ class DocumentController extends ControllerBase {
    *
    * Access is granted to moderators and group members that have the permission
    * to create document articles inside of their group, which in practice means
-   * this is granted to collection facilitators.
+   * this is granted to collection and solution facilitators.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the document entity is created.
@@ -76,16 +76,17 @@ class DocumentController extends ControllerBase {
    *   The access result object.
    */
   public function createDocumentAccess(RdfInterface $rdf_entity) {
-    if ($rdf_entity->bundle() != 'collection') {
+    if (!in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
       return AccessResult::forbidden();
     }
+
     $user = $this->currentUser();
     // Grant access if the user is a moderator.
     if (in_array('moderator', $user->getRoles())) {
       return AccessResult::allowed()->addCacheContexts(['user.roles']);
     }
     // Grant access depending on whether the user has permission to create a
-    // custom page according to their OG role.
+    // document node entity according to their OG role.
     return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createDocumentEntity($rdf_entity), $user);
   }
 
