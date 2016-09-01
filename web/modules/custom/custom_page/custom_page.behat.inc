@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Session\AnonymousUserSession;
+use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\NodeTrait;
@@ -162,7 +163,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     $current_user = $this->getUserManager()->getCurrentUser();
     $user = $current_user ? \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($current_user->uid) : new AnonymousUserSession();
     foreach ($routes as $route => $parameters) {
-      $url = \Drupal\Core\Url::fromRoute($route, $parameters);
+      $url = Url::fromRoute($route, $parameters);
       if ($url->access($user)) {
         $uri = $url->toString();
         throw new \Exception("The current user has access to '$uri' in the OG Menu administration for the $menu menu of the $title $type.");
