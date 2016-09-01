@@ -112,11 +112,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = array();
-
-    $settings = $this->getSettings();
-
-    return $summary;
+    return [];
   }
 
   /**
@@ -150,7 +146,6 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       'search id' => 'search_api_field:' . $field_definition->getTargetEntityTypeId() . '.' . $field_definition->getName(),
     ];
     $query = $search_api_index->query($options);
-
     $query->setParseMode($this->parseModeManager->createInstance('direct'));
 
     if (!empty($settings['query_presets'])) {
