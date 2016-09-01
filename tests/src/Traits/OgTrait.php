@@ -7,7 +7,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -121,39 +120,37 @@ trait OgTrait {
    * only the first one is checked.
    *
    * @param string $parent
-   *   The name of the parent.
-   * @param string $parent_type
-   *   The bundle of the parent.
-   * @param string $content_type
-   *   The bundle of the content.
+   *   The name of the parent rdf entity.
+   * @param string $parent_bundle
+   *   The bundle of the parent rdf entity.
    * @param string $content
-   *   The title of the content.
+   *   The title of the group content.
+   * @param string $content_bundle
+   *   The bundle of the group content.
    *
    * @throws \Exception
    *   Thrown when a event with the given title does not exist.
    */
-  public function assertOgMembership($parent, $parent_type, $content_type, $content) {
-    $parent = $this->getRdfEntityByLabel($parent, $parent_type);
+  public function assertOgMembership($parent, $parent_bundle, $content, $content_bundle) {
+    $parent = $this->getRdfEntityByLabel($parent, $parent_bundle);
 
     $results = \Drupal::entityTypeManager()
       ->getStorage('node')
-      ->loadByProperties(['title' => $content, 'type' => $content_type]);
+      ->loadByProperties(['title' => $content, 'type' => $content_bundle]);
     /** @var \Drupal\node\NodeInterface $content */
     $content = reset($results);
 
     if (empty($content)) {
-      throw new \Exception("The $content_type titled '$content' was not found.");
+      throw new \Exception("The $content_bundle titled '$content' was not found.");
     }
 
-    /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-    foreach ($content->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
-      if ($group->getValue()['target_id'] == $parent->id()) {
-        // Test passes.
-        return;
-      }
+    $group_ids = Og::getGroupIds($content, $parent->getEntityTypeId(), $parent_bundle);
+    if (!empty($group_ids) && in_array($parent->id(), $group_ids[$parent->getENtityTypeId()])) {
+      // Test passes.
+      return;
     }
 
-    throw new \Exception("The $content_type '$content' is not associated with the '{$parent->label()}' {$parent_type}.");
+    throw new \Exception("The $content_bundle '$content' is not associated with the '{$parent->label()}' {$parent_bundle}.");
   }
 
 }

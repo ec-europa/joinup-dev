@@ -518,17 +518,17 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @param string $parent
    *   The name of the parent.
-   * @param string $parent_type
+   * @param string $parent_bundle
    *   The bundle of the parent.
-   * @param string $content_type
+   * @param string $content_bundle
    *   The bundle of the content.
    * @param string $content
    *   The title of the content.
    *
    * @Then the :parent :parent_type has a :content_type titled :content
    */
-  public function assertContentOgMembership($parent, $parent_type, $content_type, $content) {
-    $this->assertOgMembership($parent, $parent_type, $content_type, $content);
+  public function assertContentOgMembership($parent, $parent_bundle, $content_bundle, $content) {
+    $this->assertOgMembership($parent, $parent_bundle, $content, $content_bundle);
   }
 
 }
