@@ -1,6 +1,6 @@
 @api
 Feature: "Edit" visibility options.
-  In order to manage asset releases
+  In order to manage releases
   As a solution facilitator
   I need to be able to edit "Release" rdf entities through UI.
 
@@ -17,7 +17,7 @@ Feature: "Edit" visibility options.
       | documentation       | text.pdf                |
       | owner               | Awesome person          |
       | contact information | Awesome contact         |
-    And the following asset release:
+    And the following release:
       | title               | My awesome solution abc v1 |
       | description         | A sample release           |
       | documentation       | text.pdf                   |
@@ -44,7 +44,7 @@ Feature: "Edit" visibility options.
     When I am logged in as a "facilitator" of the "My awesome solution abc" solution
     And I go to the homepage of the "My awesome solution abc v1" asset release
     And I click "Edit"
-    Then I should see the heading "Edit Asset release My awesome solution abc v1"
+    Then I should see the heading "Edit Release My awesome solution abc v1"
     When I fill in "Name" with "My awesome solution abc v1.1"
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."

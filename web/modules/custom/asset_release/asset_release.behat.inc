@@ -107,7 +107,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )asset release:
+   * @Given (the following )release:
    */
   public function givenAssetRelease(TableNode $asset_release_table) {
     $aliases = self::assetReleaseFieldAliases();
@@ -184,25 +184,29 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
-   * Checks the number of available asset releases.
+   * Checks the number of available releases.
    *
    * @param int $number
-   *   The expected number of asset releases.
+   *   The expected number of releases.
    *
    * @throws \Exception
    *   Throws an exception when the expected number
    *   does not match the one found.
    *
-   * @Then I should have :number asset release(s)
+   * @Then I should have :number release(s)
    */
-  public function assertAssetReleaseCount($number) {
+  public function assertReleaseCount($number) {
+    // We cannot rely on $this->assertRdfEntityCount() because a release shares
+    // the same bundle with a solution. We need to distinguish them by the
+    // presence of the 'is_version_of' field - if this field is missing it is a
+    // solution, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'asset_release')
       ->exists('field_isr_is_version_of')
       ->count()
       ->execute();
     if ($actual != $number) {
-      throw new \Exception("Wrong number of asset release entities. Expected number: $number, actual number: $actual.");
+      throw new \Exception("Wrong number of release entities. Expected number: $number, actual number: $actual.");
     }
   }
 
