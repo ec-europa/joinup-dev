@@ -378,7 +378,9 @@ class SearchItem extends FieldItemBase {
     // Remove the extra 'wrapper' element that was added to allow ajax rendering
     // of the view modes fieldset.
     // @see self::storageSettingsForm()
-    $settings['view_modes'] = $settings['view_modes']['wrapper'];
+    if (array_key_exists('wrapper', $settings['view_modes'])) {
+      $settings['view_modes'] = $settings['view_modes']['wrapper'];
+    }
 
     return $settings;
   }
