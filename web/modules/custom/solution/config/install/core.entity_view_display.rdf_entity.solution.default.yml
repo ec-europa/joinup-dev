@@ -26,6 +26,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
+    - field.field.rdf_entity.solution.field_is_state
     - field.field.rdf_entity.solution.field_is_test_resource_type
     - field.field.rdf_entity.solution.field_is_translation
     - field.field.rdf_entity.solution.field_is_version
@@ -227,6 +228,12 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_is_state:
+    type: list_default
+    weight: 36
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_is_test_resource_type:
     weight: 28
     label: above

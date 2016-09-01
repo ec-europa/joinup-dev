@@ -16,7 +16,7 @@ class RdfTypeForm extends BundleEntityFormBase {
   /**
    * The vocabulary storage.
    *
-   * @var \Drupal\taxonomy\VocabularyStorageInterface.
+   * @var \Drupal\taxonomy\VocabularyStorageInterface
    */
   protected $rdfTypeStorage;
 

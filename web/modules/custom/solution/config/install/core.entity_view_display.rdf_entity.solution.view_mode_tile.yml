@@ -27,6 +27,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
+    - field.field.rdf_entity.solution.field_is_state
     - field.field.rdf_entity.solution.field_is_test_resource_type
     - field.field.rdf_entity.solution.field_is_translation
     - field.field.rdf_entity.solution.field_is_version
@@ -106,110 +107,6 @@ content:
             fis-def-at: false
             fi-def-at: false
     type: text_trimmed
-  field_is_documentation:
-    weight: 33
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: file_default
-  field_is_elibrary_creation:
-    weight: 15
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-  field_is_has_version:
-    weight: 27
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_included_asset:
-    weight: 9
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_issue_tracker:
-    weight: 21
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  field_is_landing_page:
-    weight: 18
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  field_is_language:
-    weight: 13
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_metrics_page:
-    weight: 20
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  field_is_moderation:
-    weight: 16
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-  field_is_modification_date:
-    weight: 3
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
-  field_is_owner:
-    weight: 5
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_product_type:
-    weight: 32
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_related_solutions:
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
   field_is_solution_category:
     weight: 3
     label: above
@@ -268,4 +165,24 @@ hidden:
   field_is_landing_page: true
   field_is_language: true
   field_is_logo: true
+  field_is_metrics_page: true
+  field_is_moderation: true
+  field_is_modification_date: true
+  field_is_owner: true
+  field_is_product_type: true
+  field_is_related_solutions: true
+  field_is_solution_type: true
+  field_is_source_code_repository: true
+  field_is_standardization_level: true
+  field_is_test_resource_type: true
+  field_is_translation: true
+  field_is_version: true
+  field_is_webdav_creation: true
+  field_is_webdav_url: true
+  field_is_wiki: true
+  field_keywords: true
+  field_policy_domain: true
+  field_spatial_coverage: true
+  field_status: true
+  field_is_state: true
   licence: true

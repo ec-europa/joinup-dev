@@ -22,6 +22,7 @@ dependencies:
   - help
   - image
   - inline_entity_form
+  - joinup_discussion
   - joinup_document
   - joinup_event
   - joinup_licence

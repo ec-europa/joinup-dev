@@ -14,6 +14,7 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -29,6 +30,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use OgTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
+  use WorkflowTrait;
 
   /**
    * Test solutions.
@@ -56,7 +58,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @When (I )go to (the homepage of )the :solution solution
    * @When (I )visit (the homepage of )the :solution solution
    */
-  public function visitCollection($solution) {
+  public function visitSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
     $solution = $this->getSolutionByName($solution);
     $this->visitPath($solution->url());
@@ -458,6 +460,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
+      'state' => 'field_is_state',
       'collection' => OgGroupAudienceHelper::DEFAULT_FIELD,
     ];
   }
@@ -496,6 +499,42 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $fields);
 
     return $fields;
+  }
+
+  /**
+   * Checks that a user has the available state options for the solution.
+   *
+   * The method also checks that these options are the only options available.
+   *
+   * Table format:
+   * | solution   | user | options          |
+   * | Solution A | John | Status1          |
+   * | Solution B | Jack | Status1, Status2 |
+   *
+   * @param TableNode $check_table
+   *   The table with the triplets solution-user-options.
+   *
+   * @throws \Exception
+   *    Thrown when the user does not exist.
+   *
+   * @Given for the following solution, the corresponding user should have the corresponding (available )options:
+   */
+  public function verifyWorkflowStates(TableNode $check_table) {
+    foreach ($check_table->getColumnsHash() as $values) {
+      // Load entity.
+      $solution = $this->getSolutionByName($values['solution']);
+
+      // Load user.
+      $user = user_load_by_name($values['user']);
+      if (empty($user)) {
+        throw new \Exception('User ' . $values['user'] . ' not found.');
+      }
+
+      // Convert states to an array.
+      $states = empty($values['states']) ? [] : explode(', ', $values['states']);
+
+      $this->assertAvailableStates($solution, $user, $states);
+    }
   }
 
 }
