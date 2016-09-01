@@ -24,3 +24,16 @@ Feature: Navigation menu for custom pages
     # reorder the navigation menu, but they should not be able to access the
     # related menu administration screens.
     And I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
+
+    # Members of the collection should not have access to the administration
+    # pages either.
+    Given I am logged in as a member of the "Rainbow tables" collection
+    Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
+
+    # Even moderators should not have access to the administration pages.
+    Given I am logged in as a moderator
+    Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
+
+    # Anonymous users should definitely not have access.
+    Given I am an anonymous user
+    Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection

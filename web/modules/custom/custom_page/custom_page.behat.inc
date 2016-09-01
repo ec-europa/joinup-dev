@@ -5,6 +5,7 @@
  * Contains \CustomPageSubContext.
  */
 
+use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\NodeTrait;
@@ -129,17 +130,44 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
     /** @var \Drupal\og_menu\Entity\OgMenuInstance $instance */
     $instance = reset($instances);
-
+    $menu = $instance->bundle();
 
     // Compile a list of routes to which the user should not have access.
-    // Note that this excludes the 'entity.ogmenu_instance.add_link' route to
-    // which the collection facilitator has access.
+    // Note that this excludes the 'entity.ogmenu_instance.edit_form' route to
+    // which the collection facilitator should have access; this is used to
+    // reorder the pages in the menu.
     $routes = [
-      'entity.ogmenu_instance.canonical' => ['ogmenu_instance' => $instance],
+      'entity.ogmenu_instance.canonical' => [
+        'ogmenu_instance' => $instance->id(),
+      ],
+      'entity.ogmenu_instance.delete_form' => [
+        'ogmenu_instance' => $instance->id(),
+      ],
+      'entity.ogmenu_instance.add_link' => [
+        'ogmenu_instance' => $instance->id(),
+      ],
+      'entity.ogmenu_instance.create' => [
+        'ogmenu' => $menu,
+        'og_group_entity_type' => $group->getEntityTypeId(),
+        'og_group' => $group->id(),
+      ],
+      'entity.ogmenu.collection' => [],
+      'entity.ogmenu.add_form' => [],
+      'entity.ogmenu.overview_form' => ['ogmenu' => $menu],
+      'entity.ogmenu.edit_form' => ['ogmenu' => $menu],
+      'entity.ogmenu.delete_form' => ['ogmenu' => $menu],
     ];
 
-    // @todo Finish this.
-    $url = \Drupal\Core\Url::fromRoute($route, $parameters);
+    // Check if the currently logged in user has access to these routes.
+    $current_user = $this->getUserManager()->getCurrentUser();
+    $user = $current_user ? \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($current_user->uid) : new AnonymousUserSession();
+    foreach ($routes as $route => $parameters) {
+      $url = \Drupal\Core\Url::fromRoute($route, $parameters);
+      if ($url->access($user)) {
+        $uri = $url->toString();
+        throw new \Exception("The current user has access to '$uri' in the OG Menu administration for the $menu menu of the $title $type.");
+      }
+    }
   }
 
 }
