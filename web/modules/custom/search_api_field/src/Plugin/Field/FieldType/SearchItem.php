@@ -109,6 +109,7 @@ class SearchItem extends FieldItemBase {
       '#field_name' => $this->getFieldDefinition()->getName(),
       '#entity_type' => $this->getEntity()->getEntityTypeId(),
       '#facet_regions' => $facet_regions,
+      '#allowed_values' => $facet_regions,
     ];
 
     $element['facet_regions_function'] = [
