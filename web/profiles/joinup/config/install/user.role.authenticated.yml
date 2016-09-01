@@ -8,6 +8,7 @@ is_admin: false
 permissions:
   - 'access content'
   - 'propose collection rdf entity'
+  - 'propose solution rdf entity'
   - 'use text format basic_html'
   - 'use text format content_editor'
   - 'view rdf entity'

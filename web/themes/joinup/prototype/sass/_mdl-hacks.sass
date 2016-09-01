@@ -14,9 +14,26 @@
 .textfield--helptext-container
   margin-bottom: 0 !important
 
+.mdl-cell--12-col-tablet
+  +breakpoint(mobile, tablet)
+    width: 100%
+
+.form-wrapper
+  margin-bottom: 25px
+
 .section--sidebar-left #edit-join
   margin-left: -100px
 
 form .description
   color: #a0a1a2
   font-size: 12px
+
+.messages
+  background-image: none
+
+.mdl-menu
+  .mdl-menu__item
+    padding: 0
+    a
+      display: block
+      padding: 16px

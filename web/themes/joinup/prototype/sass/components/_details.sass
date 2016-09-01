@@ -1,0 +1,36 @@
+// Component
+// --------------------------------------------------
+
+// Elements
+// --------------------------------------------------
+.details__element
+  font-size: $font-size-xsmall
+  display: inline-block
+  margin-right: 10px
+  padding-right: 10px
+  vertical-align: top
+  border-right: 1px solid $color-grey-medium
+  &:last-of-type
+    margin-right: 0
+    padding-right: 0
+    border-right: none
+  *
+    display: inline
+
+// Modifiers
+// --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.page__title
+  .details
+    margin: 10px 0
+    +breakpoint(mobile)
+      margin: 0
+
+.timeline__listing-details
+  .details__element
+    +breakpoint(sm-mobile, mobile)
+      margin-right: 0
+      padding-right: 0
+      border-right: none

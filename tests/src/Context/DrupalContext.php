@@ -44,7 +44,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    * @Then I click the contextual link :linkText in the :region region
    */
   public function iClickTheContextualLinkInTheRegion($linkText, $region) {
-    $account = user_load($this->user->uid);
+    $account = user_load($this->getUserManager()->getCurrentUser()->uid);
     $links = array();
     /** @var \Drupal\Core\Menu\ContextualLinkManager $contextual_links_manager */
     $contextual_links_manager = \Drupal::service('plugin.manager.menu.contextual_link');

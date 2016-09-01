@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - state_machine
+id: rdf_entity.field_is_state
+field_name: field_is_state
+entity_type: rdf_entity
+type: state
+settings: {  }
+module: state_machine
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
+third_party_settings:
+  rdf_entity:
+    mapping_value: 'http://joinup.eu/is/workflow_status'

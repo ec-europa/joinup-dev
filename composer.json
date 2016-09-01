@@ -11,7 +11,7 @@
         "drupal/console": "~0.10",
         "drupal/core": "~8.1.0",
         "drupal/ds": "^8.2",
-        "drupal/facets" : "dev-8.x-1.x#70f2b89823e2499ad8b097190145943a0e412e85",
+        "drupal/facets" : "dev-8.x-1.x#d5c0117eb59ab2593f6430e3f3035d60bc084653",
         "drupal/inline_entity_form": "8.1.x-dev",
         "drupal/og": "dev-check-group-content-crud-access",
         "drupal/og_menu": "dev-8.x-1.x#8b3cdc10cfa72767a08789828d5583604e68bc53",
@@ -35,11 +35,11 @@
     "require-dev": {
         "behat/mink": "~1.6",
         "behat/mink-goutte-driver": "~1.2",
-        "drupal/coder": "dev-8.x-2.x#5ebc42e0014720e4d9037273dadc3355d772ccd0",
+        "drupal/coder": "dev-8.x-2.x#dff18faba1a20a4faece16499cc71e15a2dfbe14",
         "drupal/config_devel": "dev-8.x-1.x#92f735cae8e9fb328edca285340a5bfbf72028cc",
         "drupal/config_update": "dev-8.x-1.x#ac1526df5836a611f04bb421945beddb6306b7f2",
         "drupal/devel": "~8.1.0-alpha1",
-        "drupal/drupal-extension": "~3.2",
+        "drupal/drupal-extension": "dev-306-poc",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
         "mikey179/vfsStream": "~1.2",
@@ -73,7 +73,8 @@
         },
         "patches": {
             "drupal/core": {
-                "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
+                "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
+                "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch"
             },
             "drupal/inline_entity_form": {
                 "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"
@@ -90,10 +91,6 @@
         {
             "type": "composer",
             "url": "https://packagist.drupal-composer.org"
-        },
-        {
-            "type": "vcs",
-            "url": "https://git.drupal.org/project/coder.git"
         },
         {
             "type": "package",
@@ -144,6 +141,10 @@
         {
             "type": "vcs",
             "url": "git@github.com:ec-europa/og_menu"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:ec-europa/drupalextension"
         },
         {
             "type": "package",

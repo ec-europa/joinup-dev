@@ -1,0 +1,49 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.discussion.field_discussion_active
+    - field.field.node.discussion.field_discussion_content
+    - field.field.node.discussion.field_topic
+    - field.field.node.discussion.og_audience
+    - node.type.discussion
+  module:
+    - options
+    - text
+    - user
+id: node.discussion.default
+targetEntityType: node
+bundle: discussion
+mode: default
+content:
+  field_discussion_active:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+  field_discussion_content:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_topic:
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  links:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+  og_audience:
+    label: above
+    type: entity_reference_label
+    settings:
+      link: true
+    weight: 2
+    third_party_settings: {  }
+hidden: {  }
