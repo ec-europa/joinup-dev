@@ -11,6 +11,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\ParseMode\ParseModePluginManager;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -157,43 +158,73 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     }
 
     $result = $query->execute();
-    $result_items = $result->getResultItems();
+    return $this->renderSearchResults($result, $limit);
+  }
 
-    $results = array();
+  /**
+   * Builds a renderable array for the search results.
+   *
+   * @param \Drupal\search_api\Query\ResultSetInterface $result
+   *   The query results object.
+   * @param int $limit
+   *   The number of results to show for each page.
+   *
+   * @return array
+   *   The render array for the search results.
+   */
+  protected function renderSearchResults(ResultSetInterface $result, $limit) {
+    $view_mode_settings = $this->fieldDefinition->getSetting('view_modes');
+
+    $results = [];
     /* @var $item \Drupal\search_api\Item\ItemInterface */
-    foreach ($result_items as $item) {
+    foreach ($result->getResultItems() as $item) {
       /** @var \Drupal\Core\Entity\EntityInterface $entity */
       $entity = $item->getOriginalObject()->getValue();
+      // Search results might be stale, so we check if the entity has been
+      // found in the system.
       if (!$entity) {
         continue;
       }
+
+      // Avoid recursions when an entity contains another search field.
       $entity->do_not_recurse = TRUE;
 
-      // Render as view modes.
-      $key = 'entity:' . $entity->getEntityTypeId() . '_' . $entity->bundle();
-      // @todo $search_api_page->getViewModeConfiguration();
-      $view_mode_configuration = [];
-      $view_mode = isset($view_mode_configuration[$key]) ? $view_mode_configuration[$key] : 'default';
-      $results[] = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, $view_mode);
+      // Use the view mode configured in the field type settings or fallback
+      // to default view mode.
+      $entity_type = $entity->getEntityTypeId();
+      $entity_bundle = $entity->bundle();
+      $datasource_id = 'entity:' . $entity_type;
+      if (!empty($view_mode_settings[$datasource_id][$entity_bundle])) {
+        $view_mode = $view_mode_settings[$datasource_id][$entity_bundle];
+      }
+      else {
+        $view_mode = 'default';
+      }
+
+      $results[] = $this->entityTypeManager->getViewBuilder($entity_type)
+        ->view($entity, $view_mode);
     }
 
+    $build = [
+      '#theme' => 'search_api_field',
+    ];
+
     if (!empty($results)) {
-
-      $build['#search_title'] = array(
-        '#markup' => $this->t('Search results'),
-      );
-
-      $build['#no_of_results'] = array(
-        '#markup' => $this->formatPlural($result->getResultCount(), '1 result found', '@count results found'),
-      );
-
-      $build['#results'] = $results;
+      $build += [
+        '#search_title' => [
+          '#markup' => $this->t('Search results'),
+        ],
+        '#no_of_results' => [
+          '#markup' => $this->formatPlural($result->getResultCount(), '1 result found', '@count results found'),
+        ],
+        '#results' => $results,
+        '#pager' => [
+          '#type' => 'pager',
+        ],
+      ];
 
       // Build pager.
       pager_default_initialize($result->getResultCount(), $limit);
-      $build['#pager'] = array(
-        '#type' => 'pager',
-      );
     }
     else {
       $build['#no_results_found'] = array(
@@ -208,12 +239,6 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
 </ul>'),
       );
     }
-
-    $results['#cache'] = [
-      'max-age' => 0,
-    ];
-
-    $build['#theme'] = 'search_api_field';
 
     return $build;
   }
