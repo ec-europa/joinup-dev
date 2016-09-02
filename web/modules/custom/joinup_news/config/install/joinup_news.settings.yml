@@ -32,6 +32,10 @@ transitions:
       __new__:
         - moderator
         - rdf_entity-collection-member
+      draft:
+        - moderator
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
     proposed:
       proposed:
         - moderator
@@ -68,6 +72,10 @@ transitions:
       __new__:
         - moderator
         - rdf_entity-collection-member
+      draft:
+        - moderator
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
     proposed:
       __new__:
         - moderator

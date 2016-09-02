@@ -70,6 +70,13 @@ Feature: News moderation.
       | Stealing complete             | Legion of Doom |
       | Kill the sun                  | Legion of Doom |
 
+  Scenario: Draft state doesn't change when facilitator edits news.
+    Given I am logged in as "Eagle"
+    When I go to the "Creating Justice League" news page
+    And I click "Edit"
+    And I press "Save"
+    Then the "Creating Justice League" news content should have the "draft" state
+
   Scenario Outline: Users and facilitators can see and add news.
     Given I am logged in as "<user>"
     And I go to the homepage of the "<title>" collection
