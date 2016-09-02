@@ -13,7 +13,7 @@ use Drupal\facets\Widget\WidgetPluginBase;
  * @FacetsWidget(
  *   id = "type",
  *   label = @Translation("Render the type facet"),
- *   description = @Translation("A simple widget that shows a list of links with icons"),
+ *   description = @Translation("A widget that shows some of the results as tabs"),
  * )
  */
 class TypeWidget extends WidgetPluginBase {
