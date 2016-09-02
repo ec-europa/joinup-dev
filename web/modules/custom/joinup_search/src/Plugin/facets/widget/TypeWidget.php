@@ -1,10 +1,9 @@
 <?php
 
-namespace Drupal\search_api_field\Plugin\facets\widget;
+namespace Drupal\joinup_search\Plugin\facets\widget;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\facets\FacetInterface;
-use Drupal\facets\Result\Result;
 use Drupal\facets\Result\ResultInterface;
 use Drupal\facets\Widget\WidgetPluginBase;
 
