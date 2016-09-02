@@ -18,15 +18,15 @@ trait WorkflowTrait {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The entity with the states.
-   * @param mixed $user
-   *    The account interface object. Can be left empty.
    * @param array $available_states
    *    The states to check for availability.
+   * @param object|null $user
+   *    The account interface object. Can be left empty.
    *
    * @throws \Exception
    *    Thrown when the entity has no state fields.
    */
-  private function assertAvailableStates(EntityInterface $entity, $user = NULL, array $available_states) {
+  private function assertAvailableStates(EntityInterface $entity, array $available_states, $user = NULL) {
     if ($user == NULL) {
       $user = \Drupal::currentUser();
     }
