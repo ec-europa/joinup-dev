@@ -2,22 +2,25 @@
  * @file
  * Joinup theme scripts.
  */
- var loadMore = loadMore || {};
+
+var loadMore = loadMore || {};
 
  function itemWidth() {
    var itemsCounter = $('.listing--load-more').children('.listing__item').length;
 
-   switch(itemsCounter % 3) {
+   switch (itemsCounter % 3) {
      case 0:
        $('.listing__item--load-more').removeClass('mdl-cell--8-col');
        $('.listing__item--load-more').removeClass('mdl-cell--12-col');
        $('.listing__item--load-more').addClass('mdl-cell--4-col');
      break;
+
      case 1:
        $('.listing__item--load-more').removeClass('mdl-cell--4-col');
        $('.listing__item--load-more').removeClass('mdl-cell--8-col');
        $('.listing__item--load-more').addClass('mdl-cell--12-col');
      break;
+
      case 2:
        $('.listing__item--load-more').removeClass('mdl-cell--4-col');
        $('.listing__item--load-more').removeClass('mdl-cell--12-col');
@@ -26,19 +29,19 @@
    }
 }
 
- (function($, loadMore) {
+ (function ($, loadMore) {
    'use strict';
 
    var pageMore = 'load-more',
    button = '.listing__item--load-more',
    container = '.listing--load-more';
 
-   loadMore.load = function() {
+   loadMore.load = function () {
      var url = './' + pageMore;
 
      $.ajax({
        url: url,
-       success: function(response) {
+       success: function (response) {
 
          if (!response || response.trim() == 'NONE') {
            $(button).fadeOut();
@@ -46,13 +49,13 @@
          }
          appendContent(response);
        },
-       error: function(response) {
+       error: function (response) {
          $(button).text('There was an error. Please refresh the page.');
        }
      });
    };
 
-   var appendContent = function(response) {
+   var appendContent = function (response) {
      $(container).append($(response), $(button));
      itemWidth();
    };
