@@ -101,12 +101,7 @@ function search_api_field_theme() {
     'facets_type_wrapper' => array(
       'variables' => array(
         'items' => array(),
-        'title' => '',
-        'list_type' => 'ul',
-        'wrapper_attributes' => array(),
         'attributes' => array(),
-        'empty' => NULL,
-        'context' => array(),
       ),
     ),
     'facets_type_result_item' => $result_item_variables,
