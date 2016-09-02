@@ -29,7 +29,7 @@ news_workflow:
   transitions:
     draft:
       label: Create
-      from: [__new__]
+      from: [__new__, draft]
       to: draft
     propose:
       label: Propose
