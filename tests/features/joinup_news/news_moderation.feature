@@ -82,7 +82,7 @@ Feature: News moderation.
     And I go to the homepage of the "<title>" collection
     Then I should see the link "Add news"
     When I click "Add news"
-    Then I should not see the heading "Access denied"
+    Then I should see the heading "Add news"
     And I should see the text "State"
     And the "State" field has the "<options available>" options
     And the "State" field does not have the "<options unavailable>" options
