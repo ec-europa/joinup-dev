@@ -27,38 +27,34 @@
 }
 
  (function($, loadMore) {
-   "use strict";
+   'use strict';
 
-   var pageMore = "load-more",
-   button = ".listing__item--load-more",
-   loading = ".listing__loading-div",
-   container = ".listing--load-more";
+   var pageMore = 'load-more',
+   button = '.listing__item--load-more',
+   container = '.listing--load-more';
 
    loadMore.load = function() {
-     var url = "./" + pageMore;
-     $(button).hide();
-     $(loading).show();
+     var url = './' + pageMore;
 
      $.ajax({
        url: url,
        success: function(response) {
-         if (!response || response.trim() == "NONE") {
+
+         if (!response || response.trim() == 'NONE') {
            $(button).fadeOut();
            return;
          }
          appendContent(response);
        },
        error: function(response) {
-         $(loading).text("There was an error. Please refresh the page.");
+         $(button).text('There was an error. Please refresh the page.');
        }
      });
    };
 
    var appendContent = function(response) {
-     $(loading).hide();
      $(container).append($(response), $(button));
      itemWidth();
-     $(button).show();
    };
 
  })(jQuery, loadMore);
