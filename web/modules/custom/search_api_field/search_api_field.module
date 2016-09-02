@@ -36,8 +36,7 @@ function search_api_field_entity_extra_field_info() {
       foreach ($bundles_lookup[$id] as $bundle) {
         $name = str_replace('.', '_', "$id.$region_id");
         $extra[$field_config->getTargetEntityTypeId()][$bundle]['display'][$name] = array(
-          'label' => $region_label,
-          'description' => 'Some desc',
+          'label' => t('Facet region: @region', ['@region' => $region_label]),
           'weight' => 0,
           'visible' => FALSE,
         );
