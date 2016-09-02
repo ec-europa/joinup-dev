@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.2",
+            "version": "3.19.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3cb90413129da42c9d3289d542bee0ae1049892c"
+                "reference": "f67bc37fa4b76d85423052eae2a9577aab99adc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3cb90413129da42c9d3289d542bee0ae1049892c",
-                "reference": "3cb90413129da42c9d3289d542bee0ae1049892c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f67bc37fa4b76d85423052eae2a9577aab99adc1",
+                "reference": "f67bc37fa4b76d85423052eae2a9577aab99adc1",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-08-23 20:58:48"
+            "time": "2016-09-01 21:37:32"
         },
         {
             "name": "composer/ca-bundle",
@@ -285,16 +285,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "a3595c5272a6f247228abb20076ed27321e4aae9"
+                "reference": "d78064c68299743e0161004f2de3a0204e33b804"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/a3595c5272a6f247228abb20076ed27321e4aae9",
-                "reference": "a3595c5272a6f247228abb20076ed27321e4aae9",
+                "url": "https://api.github.com/repos/composer/installers/zipball/d78064c68299743e0161004f2de3a0204e33b804",
+                "reference": "d78064c68299743e0161004f2de3a0204e33b804",
                 "shasum": ""
             },
             "require": {
@@ -341,6 +341,7 @@
                 "MODX Evo",
                 "Mautic",
                 "OXID",
+                "Plentymarkets",
                 "RadPHP",
                 "SMF",
                 "Thelia",
@@ -348,9 +349,11 @@
                 "agl",
                 "aimeos",
                 "annotatecms",
+                "attogram",
                 "bitrix",
                 "cakephp",
                 "chef",
+                "cockpit",
                 "codeigniter",
                 "concrete5",
                 "croogo",
@@ -374,29 +377,31 @@
                 "piwik",
                 "ppi",
                 "puppet",
+                "reindex",
                 "roundcube",
                 "shopware",
                 "silverstripe",
                 "symfony",
                 "typo3",
                 "wordpress",
+                "yawik",
                 "zend",
                 "zikula"
             ],
-            "time": "2016-07-05 06:18:20"
+            "time": "2016-08-13 20:53:52"
         },
         {
             "name": "composer/semver",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "03c9de5aa25e7672c4ad251eeaba0c47a06c8b98"
+                "reference": "c7cb9a2095a074d131b65a8a0cd294479d785573"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/03c9de5aa25e7672c4ad251eeaba0c47a06c8b98",
-                "reference": "03c9de5aa25e7672c4ad251eeaba0c47a06c8b98",
+                "url": "https://api.github.com/repos/composer/semver/zipball/c7cb9a2095a074d131b65a8a0cd294479d785573",
+                "reference": "c7cb9a2095a074d131b65a8a0cd294479d785573",
                 "shasum": ""
             },
             "require": {
@@ -445,7 +450,7 @@
                 "validation",
                 "versioning"
             ],
-            "time": "2016-06-02 09:04:51"
+            "time": "2016-08-30 16:08:34"
         },
         {
             "name": "composer/spdx-licenses",
@@ -1605,12 +1610,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og_menu.git",
-                "reference": "2a4453fc04ce941b245468efa101ab282295bbf5"
+                "reference": "96a0ab623329a3ba8850244dc03628d63b20d5e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/2a4453fc04ce941b245468efa101ab282295bbf5",
-                "reference": "2a4453fc04ce941b245468efa101ab282295bbf5",
+                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/96a0ab623329a3ba8850244dc03628d63b20d5e2",
+                "reference": "96a0ab623329a3ba8850244dc03628d63b20d5e2",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1623,7 +1628,7 @@
                 "issues": "https://drupal.org/project/issues/og_menu",
                 "source": "https://cgit.drupalcode.org/og_menu"
             },
-            "time": "2016-08-19 08:01:22"
+            "time": "2016-09-01 16:25:01"
         },
         {
             "name": "drupal/phing-drush-task",
@@ -1996,16 +2001,16 @@
         },
         {
             "name": "ec-europa/infra",
-            "version": "0.5.2",
+            "version": "0.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "66b3fe13372dbecc582709825f2487184d4dd4c2"
+                "reference": "175e0f37826c139b8d05f1b69a3d1500aa23360b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/66b3fe13372dbecc582709825f2487184d4dd4c2",
-                "reference": "66b3fe13372dbecc582709825f2487184d4dd4c2",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/175e0f37826c139b8d05f1b69a3d1500aa23360b",
+                "reference": "175e0f37826c139b8d05f1b69a3d1500aa23360b",
                 "shasum": ""
             },
             "require": {
@@ -2024,7 +2029,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2016-06-07 10:38:52"
+            "time": "2016-08-30 16:02:33"
         },
         {
             "name": "egulias/email-validator",
@@ -5337,16 +5342,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.24.1",
+            "version": "v1.24.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "3566d311a92aae4deec6e48682dc5a4528c4a512"
+                "reference": "33093f6e310e6976baeac7b14f3a6ec02f2d79b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3566d311a92aae4deec6e48682dc5a4528c4a512",
-                "reference": "3566d311a92aae4deec6e48682dc5a4528c4a512",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/33093f6e310e6976baeac7b14f3a6ec02f2d79b7",
+                "reference": "33093f6e310e6976baeac7b14f3a6ec02f2d79b7",
                 "shasum": ""
             },
             "require": {
@@ -5394,7 +5399,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-05-30 09:11:59"
+            "time": "2016-09-01 17:50:53"
         },
         {
             "name": "typhonius/behattask",
@@ -6198,7 +6203,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_update.git",
-                "reference": "0c8717fc15472342f699dbe8ce87dfffa25539fb"
+                "reference": "f84f49be150c2032921e2cb99ffea5dbcb5f89ca"
             },
             "require": {
                 "drupal/config": "8.*",
@@ -6223,7 +6228,7 @@
             ],
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
-            "time": "2016-07-21 18:32:32"
+            "time": "2016-08-31 19:41:53"
         },
         {
             "name": "drupal/devel",
@@ -7602,16 +7607,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.6.2",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83"
+                "reference": "571e27b6348e5b3a637b2abc82ac0d01e6d7bbed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4edb770cb853def6e60c93abb088ad5ac2010c83",
-                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/571e27b6348e5b3a637b2abc82ac0d01e6d7bbed",
+                "reference": "571e27b6348e5b3a637b2abc82ac0d01e6d7bbed",
                 "shasum": ""
             },
             "require": {
@@ -7676,7 +7681,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-07-13 23:29:13"
+            "time": "2016-09-01 23:53:02"
         },
         {
             "name": "symfony/browser-kit",
