@@ -4,7 +4,6 @@ namespace Drupal\collection\Form;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -100,11 +99,11 @@ class JoinCollectionForm extends FormBase {
     }
 
     // This form varies by user and collection.
-    $metadata = new CacheableMetadata();
-    $metadata
-      ->merge(CacheableMetadata::createFromObject($user))
-      ->merge(CacheableMetadata::createFromObject($collection))
-      ->applyTo($form);
+    // $metadata = new CacheableMetadata();
+    // $metadata
+    // ->merge(CacheableMetadata::createFromObject($user))
+    // ->merge(CacheableMetadata::createFromObject($collection))
+    // ->applyTo($form);
     return $form;
   }
 
