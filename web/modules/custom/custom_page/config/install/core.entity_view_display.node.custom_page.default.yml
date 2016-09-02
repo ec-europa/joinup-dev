@@ -3,9 +3,11 @@ status: true
 dependencies:
   config:
     - field.field.node.custom_page.body
+    - field.field.node.custom_page.field_cp_search
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
+    - search_api_field
     - text
     - user
 id: node.custom_page.default
@@ -19,8 +21,22 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
+  field_cp_search:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: search
   links:
     weight: 0
+    settings: {  }
+    third_party_settings: {  }
+  node_field_cp_search_bottom:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+  node_field_cp_search_top:
+    weight: 4
     settings: {  }
     third_party_settings: {  }
   og_audience:

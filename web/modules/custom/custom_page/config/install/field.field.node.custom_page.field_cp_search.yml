@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_cp_search
+    - node.type.custom_page
+  module:
+    - search_api_field
+id: node.custom_page.field_cp_search
+field_name: field_cp_search
+entity_type: node
+bundle: custom_page
+label: Search
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value:
+      query_presets: ''
+default_value_callback: ''
+settings: {  }
+field_type: search

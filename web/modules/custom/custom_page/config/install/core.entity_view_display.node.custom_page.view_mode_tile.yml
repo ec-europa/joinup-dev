@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.custom_page.body
+    - field.field.node.custom_page.field_cp_search
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
@@ -123,4 +124,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_cp_search: true
+  node_field_cp_search_bottom: true
+  node_field_cp_search_top: true
