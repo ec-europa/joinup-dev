@@ -87,15 +87,15 @@ Feature: News moderation.
     And the "State" field has the "<options available>" options
     And the "State" field does not have the "<options unavailable>" options
     Examples:
-      | user          | title          | options available | options unavailable                              |
+      | user          | title          | options available          | options unavailable                       |
       # Post-moderated collection, member
-      | Eagle         | Justice League | Draft, Validated  | Proposed, In assessment, Request deletion        |
+      | Eagle         | Justice League | Draft, Validated           | Proposed, In assessment, Request deletion |
       # Post-moderated collection, facilitator
-      | Hawkgirl      | Justice League | Validated         | Draft, Proposed, In assessment, Request deletion |
+      | Hawkgirl      | Justice League | Draft, Validated           | Proposed, In assessment, Request deletion |
       # Pre-moderated collection, member
-      | Mirror Master | Legion of Doom | Draft, Propose    | Validate, In assessment, Request deletion        |
+      | Mirror Master | Legion of Doom | Draft, Proposed            | Validate, In assessment, Request deletion |
       # Pre-moderated collection, facilitator
-      | Metallo       | Legion of Doom | Validated         | Draft, Propose, In assessment, Request deletion  |
+      | Metallo       | Legion of Doom | Draft, Validated, Proposed | In assessment, Request deletion           |
 
   Scenario: Non-members and administrators cannot see the 'Add news' button.
     # Check visibility for anonymous users.
@@ -173,7 +173,7 @@ Feature: News moderation.
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the "State" field has the "Validated" options
-    And the "State" field does not have the "Proposed, In assessment, Request delection" options
+    And the "State" field does not have the "Proposed, In assessment, Request deletion" options
     When I select "Validated" from "State"
     And I press "Save"
     Then I should see the text "Validated"
@@ -188,7 +188,7 @@ Feature: News moderation.
     And I go to the homepage of the "Legion of Doom" collection
     And I click "Add news"
     And the "State" field has the "Draft, Proposed" options
-    And the "State" field does not have the "Validated, In assessment, Request delection" options
+    And the "State" field does not have the "Validated, In assessment, Request deletion" options
     When I fill in the following:
       | Headline | Cheetah kills WonderWoman                             |
       | Kicker   | Scarch of poison                                      |
@@ -210,7 +210,7 @@ Feature: News moderation.
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the "State" field has the "Proposed, Validated" options
-    And the "State" field does not have the "Draft, In assessment, Request delection" options
+    And the "State" field does not have the "Draft, In assessment, Request deletion" options
     When I select "Validated" from "State"
     And I press "Save"
     Then I should see the text "Validated"
@@ -228,15 +228,15 @@ Feature: News moderation.
     And the "State" field has the "<options available>" options
     And the "State" field does not have the "<options unavailable>" options
     Examples:
-      | user          | title                         | options available | options unavailable                              |
+      | user          | title                         | options available | options unavailable                         |
       # State: draft, owned by Eagle
-      | Eagle         | Creating Justice League       | Validated         | Draft, Proposed, In assessment                   |
+      | Eagle         | Creating Justice League       | Draft, Validated  | Proposed, In assessment                     |
       # State: validated, can report
-      | Eagle         | Hawkgirl helped Green Lantern | In assessment     | Draft, Validated, Proposed                       |
+      | Eagle         | Hawkgirl helped Green Lantern | In assessment     | Draft, Validated, Proposed                  |
       # State: draft, can propose
-      | Mirror Master | Creating Legion of Doom       | Propose           | Draft, Validate, In assessment, Request deletion |
+      | Mirror Master | Creating Legion of Doom       | Draft, Proposed   | Validate, In assessment, Request deletion   |
       # State: validated, can report
-      | Mirror Master | Stealing from Batman          | In assessment     | Draft, Propose, Validate, Request deletion       |
+      | Mirror Master | Stealing from Batman          | In assessment     | Draft, Proposed, Validate, Request deletion |
 
   Scenario Outline: Members cannot edit news they own for specific states.
     Given I am logged in as "<user>"
@@ -267,21 +267,22 @@ Feature: News moderation.
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
+    Then I break
     And the "State" field has the "<options available>" options
     And the "State" field does not have the "<options unavailable>" options
     Examples:
       | user     | title                         | options available   | options unavailable                               |
       # Post moderated
-      | Hawkgirl | Hawkgirl is a spy             | Proposed, Validated | Draft, In assessment, Request deletion            |
+      | Hawkgirl | Hawkgirl is a spy             | Proposed, Validated, In assessment | Draft, Request deletion            |
       # Members can move to 'in assessment' state.
-      | Hawkgirl | Hawkgirl helped Green Lantern | Validated, Proposed | Draft, Request deletion , In assessment           |
+      | Hawkgirl | Hawkgirl helped Green Lantern | Validated, Proposed | Draft, In assessment, Request deletion            |
       | Hawkgirl | Space cannon fired            | Proposed            | Draft, Validated, In assessment, Request deletion |
       # Pre moderated
       # Facilitators have access to create news and directly put it to validate. For created and proposed, member role should be used.
-      | Metallo  | Creating Legion of Doom       | Validated           | Draft, Proposed, In assessment, Request deletion  |
+      | Metallo  | Creating Legion of Doom       | Draft, Proposed, Validated    | In assessment, Request deletion         |
       # Members can move to 'in assessment' state.
-      | Metallo  | Stealing from Batman          | Proposed, Validated | Draft, In assessment, Request deletion            |
-      | Metallo  | Learn batman's secret         | Proposed, Validated | Draft, In assessment, Request deletion            |
+      | Metallo  | Stealing from Batman          | Proposed, In assessment, Validated | Draft,  Request deletion           |
+      | Metallo  | Learn batman's secret         | Proposed, In assessment, Validated | Draft,  Request deletion           |
       | Metallo  | Stealing complete             | Proposed            | Draft, Request deletion                           |
       | Metallo  | Kill the sun                  | Validated           | Draft, Proposed, In assessment, Request deletion  |
 
