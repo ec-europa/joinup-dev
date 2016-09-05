@@ -175,6 +175,14 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       '#default_value' => isset($default_values['query_presets']) ? $default_values['query_presets'] : '',
     ];
 
+    $element['limit'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Limit'),
+      '#description' => $this->t('The number of results to show per page.'),
+      '#default_value' => isset($default_values['limit']) ? $default_values['limit'] : 10,
+      '#min' => 1,
+    ];
+
     return $element;
   }
 
@@ -381,6 +389,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       }
 
       $ordered_values[$delta]['value']['query_presets'] = $values[$delta]['query_presets'];
+      $ordered_values[$delta]['value']['limit'] = $values[$delta]['limit'];
     }
     return $ordered_values;
   }
