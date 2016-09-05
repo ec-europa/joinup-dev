@@ -22,6 +22,7 @@ default_value:
           weight: '0'
           region: top
       query_presets: ''
+      limit: '12'
 default_value_callback: ''
 settings: {  }
 field_type: search
