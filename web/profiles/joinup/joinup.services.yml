@@ -9,3 +9,8 @@ services:
     arguments: ['@entity.manager']
     tags:
      - { name: event_subscriber }
+  joinup.active_og_route_context:
+    class: Drupal\joinup\ContextProvider\ActiveOgRouteContext
+    arguments: ['@current_route_match', '@og.group.manager']
+    tags:
+      - { name: 'context_provider' }
