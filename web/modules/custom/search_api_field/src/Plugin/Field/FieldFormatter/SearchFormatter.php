@@ -173,8 +173,13 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     $results = [];
     /* @var $item \Drupal\search_api\Item\ItemInterface */
     foreach ($result->getResultItems() as $item) {
-      /** @var \Drupal\Core\Entity\EntityInterface $entity */
-      $entity = $item->getOriginalObject()->getValue();
+      try {
+        /** @var \Drupal\Core\Entity\EntityInterface $entity */
+        $entity = $item->getOriginalObject()->getValue();
+      }
+      catch (SearchApiException $e) {
+        $entity = NULL;
+      }
       // Search results might be stale, so we check if the entity has been
       // found in the system.
       if (!$entity) {
