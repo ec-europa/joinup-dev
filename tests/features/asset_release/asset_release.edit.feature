@@ -29,20 +29,20 @@ Feature: "Edit" visibility options.
 
   Scenario: "Edit" button should only be shown to solution facilitators.
     When I am logged in as a "facilitator" of the "My awesome solution abc" solution
-    And I go to the homepage of the "My awesome solution abc v1" asset release
+    And I go to the homepage of the "My awesome solution abc v1" release
     Then I should see the link "Edit" in the "Entity actions" region
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "My awesome solution abc v1" asset release
+    And I go to the homepage of the "My awesome solution abc v1" release
     Then I should not see the link "Edit" in the "Entity actions" region
 
     When I am an anonymous user
-    And I go to the homepage of the "My awesome solution abc v1" asset release
+    And I go to the homepage of the "My awesome solution abc v1" release
     Then I should not see the link "Edit" in the "Entity actions" region
 
   Scenario: Edit a release as a solution facilitator.
     When I am logged in as a "facilitator" of the "My awesome solution abc" solution
-    And I go to the homepage of the "My awesome solution abc v1" asset release
+    And I go to the homepage of the "My awesome solution abc v1" release
     And I click "Edit"
     Then I should see the heading "Edit Release My awesome solution abc v1"
     When I fill in "Name" with "My awesome solution abc v1.1"

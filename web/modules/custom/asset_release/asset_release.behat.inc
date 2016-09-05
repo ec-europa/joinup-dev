@@ -25,7 +25,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   use RdfEntityTrait;
 
   /**
-   * Test asset releases.
+   * Test releases.
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]
    */
@@ -37,8 +37,8 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @param string $asset_release
    *   The name of the asset_release.
    *
-   * @When (I )go to (the homepage of )the :asset_release asset release
-   * @When (I )visit (the homepage of )the :asset_release asset release
+   * @When (I )go to (the homepage of )the :asset_release release
+   * @When (I )visit (the homepage of )the :asset_release release
    */
   public function visitCollection($asset_release) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
@@ -160,7 +160,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @param string $asset_release
    *   The name of the asset release.
    *
-   * @When (I )delete the :asset_release asset release
+   * @When (I )delete the :asset_release release
    */
   public function deleteAssetRelease($asset_release) {
     /** @var \Drupal\rdf_entity\RdfInterface $asset_release */

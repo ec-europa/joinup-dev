@@ -77,4 +77,4 @@ Feature: "Add release" visibility options.
     And I should see the text "Release Test 1"
 
     # Cleanup created release.
-    Then I delete the "Release Test 1 v2" asset release
+    Then I delete the "Release Test 1 v2" release
