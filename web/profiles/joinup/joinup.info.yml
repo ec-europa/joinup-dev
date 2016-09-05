@@ -57,7 +57,7 @@ themes:
 
 config_devel:
   - block.block.addcontent
-  - block.block.joincollectionblock
+  - block.block.groupheader
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
   - block.block.joinup_theme_collectioncontent
@@ -106,6 +106,7 @@ config_devel:
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.default
   - core.entity_view_mode.node.full
+  - core.entity_view_mode.rdf_entity.group_header
   - core.entity_view_mode.user.full
   - ds.settings
   - editor.editor.content_editor
@@ -131,7 +132,6 @@ config_devel:
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
-  - image.style.banner
   - image.style.profile_icon
   - og.og_membership_type.og_membership_type
   - og.og_role.rdf_entity-collection-administrator

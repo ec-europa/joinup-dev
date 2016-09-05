@@ -439,7 +439,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'contact information' => 'field_is_contact_information',
       'creation date' => 'field_is_creation_date',
       'description' => 'field_is_description',
-      'distribution' => 'field_is_distribution',
       'documentation' => 'field_is_documentation',
       'elibrary creation' => 'field_is_elibrary_creation',
       'keywords' => 'field_keywords',
