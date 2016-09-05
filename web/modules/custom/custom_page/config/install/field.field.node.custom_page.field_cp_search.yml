@@ -17,6 +17,10 @@ translatable: false
 default_value:
   -
     value:
+      fields:
+        field_cp_search_content_type:
+          weight: '0'
+          region: top
       query_presets: ''
 default_value_callback: ''
 settings: {  }

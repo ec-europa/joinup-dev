@@ -12,7 +12,6 @@ settings:
   index: collections
   facet_regions:
     top: Top
-    bottom: Bottom
   view_modes:
     'entity:node':
       custom_page: view_mode_tile
