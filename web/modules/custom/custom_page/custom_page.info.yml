@@ -12,6 +12,7 @@ dependencies:
   - path
   - text
   - menu_ui
+  - search_api_field
   - user
 
 config_devel:

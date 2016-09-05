@@ -10,6 +10,7 @@ dependencies:
   - node
   - rdf_entity
   - search_api
+  - search_api_field
   - search_api_solr
   - taxonomy
   - text
