@@ -2,7 +2,6 @@
 
 namespace Drupal\search_api_field\Plugin\facets\facet_source;
 
-use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\facets\FacetSource\SearchApiFacetSourceInterface;
 use Drupal\facets\Plugin\facets\facet_source\SearchApiBaseFacetSource;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -20,15 +19,6 @@ use Drupal\search_api\Query\ResultSetInterface;
  * )
  */
 class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetSourceInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function calculateDependencies() {
-    // TODO: Implement calculateDependencies() method.
-  }
-
-  use DependencySerializationTrait;
 
   /**
    * The entity manager.
@@ -151,6 +141,13 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    */
   public function getIndex() {
     return $this->index;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function calculateDependencies() {
+    return [];
   }
 
 }
