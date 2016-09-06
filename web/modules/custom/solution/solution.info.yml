@@ -1,4 +1,4 @@
-name: Interoperability Solution
+name: Solution
 type: module
 description: The interoperability solution RDF entity.
 core: 8.x
