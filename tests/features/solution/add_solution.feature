@@ -74,7 +74,7 @@ Feature: "Add solution" visibility options.
 
     When I go to the homepage of the "Collection solution test 2" collection
     And I click "Add solution"
-    Then I should see the heading "Add Interoperability Solution"
+    Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
     And the following fields should not be present "Groups audience, Other groups"
     When I fill in the following:

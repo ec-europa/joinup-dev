@@ -9,6 +9,6 @@ third_party_settings:
       value: 'http://purl.org/dc/terms/title'
     graph_default: 'http://joinup.eu/asset_distribution/published'
     graph_draft: 'http://joinup.eu/asset_distribution/draft'
-name: 'Asset distribution'
+name: 'Distribution'
 rid: asset_distribution
 description: ''

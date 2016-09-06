@@ -10,58 +10,61 @@
 
       <div class="section section--featured">
         <div class="featured">
-          <div class="featured__wrapper">
-            <div class="featured__logo">
-              <img src="../images/featured-img.png">
-            </div>
-            <h1 class="featured__text">Querying the <br/>semantic web</h1>
-            <div class="featured__stats">
-              <div class="stats__column">
-                <div class="stats__wrapper">
-                  <span class="stats__icon icon icon--user"></span>
-                  <span class="stats__text"><span class="bold">13</span><span> Members</span></span>
+          <div class="featured__outer-wrapper" style="background-image: url('../images/featured-bg.jpg') !important;">
+            <div class="featured__overlay"></div>
+            <div class="featured__inner-wrapper">
+              <div class="featured__logo">
+                <img src="../images/featured-img.png">
+              </div>
+              <h1 class="featured__text">Querying the <br/>semantic web</h1>
+              <div class="featured__stats">
+                <div class="stats__column stats__column--border stats__column--wide">
+                  <div class="stats__wrapper stats__wrapper--centered">
+                    <span class="stats__text">Activity</span>
+                  </div>
+                  <div class="stats__wrapper stats__wrapper--centered">
+                    <span class="stats__text bold">Medium</span>
+                  </div>
                 </div>
-                <div class="stats__wrapper">
-                  <span class="stats__icon icon icon--solution"></span>
-                  <span class="stats__text"><span class="bold">124</span><span> Solutions</span></span>
+                <div class="stats__column stats__column--wide stats__column--icons">
+                  <div class="stats__wrapper">
+                    <span class="stats__icon icon icon--user"></span>
+                    <span class="stats__text">13 Members</span>
+                  </div>
+                  <div class="stats__wrapper">
+                    <span class="stats__icon icon icon--solutions"></span>
+                    <span class="stats__text">124 Solutions</span>
+                  </div>
                 </div>
               </div>
-              <div class="stats__column">
-                <div class="stats__wrapper">
-                  <span class="stats__icon icon icon--message"></span>
-                  <span class="stats__text"><span class="bold">9</span><span> Communications</span></span>
-                </div>
-                <div class="stats__wrapper">
-                  <span class="stats__icon icon icon--like"></span>
-                  <span class="stats__text"><span class="bold">75</span><span> Likes</span></span>
-                </div>
-              </div>
-            </div>
-            <button class="button--default button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Join this collection</button>
+              <form class="featured__form-button">
+                <input class="button--default button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Join this collection"></input>
+              </form>
 
-            {% include circle-menu.html %}
-
-            <!-- Menu visible on tablet and mobile -->
-            <div class="featured__menu">
-              <div id="featured__menu-button" class="featured__menu-button mdl-button mdl-js-button">
-                <span class="icon icon--menu"></span>
+              <!-- Menu visible on tablet and mobile -->
+              <div class="featured__menu">
+                <div id="featured__menu-button" class="featured__menu-button mdl-button mdl-js-button">
+                  <span class="icon icon--menu"></span>
+                </div>
+                <ul class="featured__menu-dropdown mdl-menu mdl-menu--bottom-left mdl-js-menu" for="featured__menu-button">
+                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/login">Login</a></li>
+                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/about">About</a></li>
+                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/alerts">Alerts</a></li>
+                </ul>
               </div>
-              <ul class="featured__menu-dropdown mdl-menu mdl-menu--bottom-left mdl-js-menu" for="featured__menu-button">
-                <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/login">Login</a></li>
-                <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/about">About</a></li>
-                <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/alerts">Alerts</a></li>
-              </ul>
             </div>
           </div>
-          <div class="featured__overlay"></div>
+          <div class="featured__menu-wrapper">
+            {% include circle-menu.html %}
+          </div>
+          </div>
         </div>
-      </div>
-      <div class="section section--content">
-        <div class="main-container mdl-grid">
+      <div class="main-container mdl-grid">
 
-          {% include section--sidebar-left.html %}
+        {% include section--sidebar-left.html %}
 
-          <div class="section section--main mdl-cell mdl-cell--8-col">
+        <div class="section section--content mdl-cell mdl-cell--8-col">
+          <div class="container-fluid">
             <div class="search-bar__wrapper">
               <div class="search-bar--section mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--align-right">
                 <label class="search-bar__label icon icon--search mdl-button mdl-js-button"
@@ -76,11 +79,8 @@
 
             {% include filters.html %}
 
-            <div class="row">
+            {% include listing.html %}
 
-              {% include listing.html %}
-
-            </div>
           </div>
         </div>
       </div>
@@ -89,6 +89,5 @@
 
     {% include scripts.html %}
 
-    </div>
   </body>
 </html>

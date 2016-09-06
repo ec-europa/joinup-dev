@@ -1,6 +1,6 @@
-name: Interoperability AssetRelease
+name: Release
 type: module
-description: The interoperability asset_release RDF entity.
+description: The release RDF entity.
 core: 8.x
 package: Joinup
 
