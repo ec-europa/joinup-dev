@@ -1,6 +1,6 @@
 @api
 Feature: "Add release" visibility options.
-  In order to manage asset releases
+  In order to manage releases
   As a solution facilitator
   I need to be able to add "Release" rdf entities through UI.
 
