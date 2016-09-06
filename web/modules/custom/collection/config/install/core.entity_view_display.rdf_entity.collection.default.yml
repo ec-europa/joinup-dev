@@ -18,11 +18,9 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
-    - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
     - datetime
-    - image
     - link
     - options
     - text
@@ -59,21 +57,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_ar_banner:
-    weight: 12
-    label: above
-    settings:
-      image_style: banner
-      image_link: ''
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: image
   field_ar_closed:
     weight: 14
     label: above
@@ -110,14 +93,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
-  field_ar_logo:
-    weight: 11
-    label: above
-    settings:
-      image_style: image_style_collection_logo
-      image_link: content
-    third_party_settings: {  }
-    type: image
   field_ar_moderation:
     weight: 16
     label: above
@@ -164,4 +139,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  field_ar_banner: true
+  field_ar_logo: true
   field_ar_shared_content: true
