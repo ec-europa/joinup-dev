@@ -16,7 +16,7 @@ use Drupal\Core\Session\AccountInterface;
  * Grand access to fields of type search only to moderators.
  */
 function joinup_search_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
-  if ($field_definition->getType() === 'search' && !$account->hasPermission('administer search fields')) {
+  if ($operation === 'edit' && $field_definition->getType() === 'search' && !$account->hasPermission('administer search fields')) {
     return AccessResult::forbidden()->addCacheContexts(['user.permissions']);
   }
 
