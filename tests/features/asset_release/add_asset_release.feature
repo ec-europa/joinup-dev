@@ -1,6 +1,6 @@
 @api
 Feature: "Add release" visibility options.
-  In order to manage asset releases
+  In order to manage releases
   As a solution facilitator
   I need to be able to add "Release" rdf entities through UI.
 
@@ -35,7 +35,7 @@ Feature: "Add release" visibility options.
     When I am logged in as a "facilitator" of the "Release Test 1" solution
     When I go to the homepage of the "Release Test 1" solution
     And I click "Add release"
-    Then I should see the heading "Add Asset release"
+    Then I should see the heading "Add Release"
     And the following fields should be present "Name, Release number, Release notes, Documentation, Spatial coverage, Keyword, Status, Language"
     And the following field widgets should be present "Contact information, Owner"
     When I fill in "Name" with "Release Test 2"
@@ -60,7 +60,7 @@ Feature: "Add release" visibility options.
     When I am logged in as a "facilitator" of the "Release Test 2" solution
     When I go to the homepage of the "Release Test 2" solution
     And I click "Add release"
-    Then I should see the heading "Add Asset release"
+    Then I should see the heading "Add Release"
     And the following fields should be present "Name, Release number, Release notes"
     When I fill in "Name" with "Release Test 1 v2"
     And I fill in "Release number" with "1.1"
@@ -77,4 +77,4 @@ Feature: "Add release" visibility options.
     And I should see the text "Release Test 1"
 
     # Cleanup created release.
-    Then I delete the "Release Test 1 v2" asset release
+    Then I delete the "Release Test 1 v2" release
