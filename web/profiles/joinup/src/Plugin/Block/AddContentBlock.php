@@ -179,6 +179,19 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           ];
         }
 
+        // 'Add discussion' link.
+        $discussion_url = Url::fromRoute('joinup_discussion.rdf_entity_discussion.add', [
+          'rdf_entity' => $id,
+        ]);
+        if ($discussion_url->access()) {
+          $links['discussion'] = [
+            '#type' => 'link',
+            '#title' => $this->t('Add discussion'),
+            '#url' => $discussion_url,
+            '#attributes' => ['class' => ['button', 'button--small']],
+          ];
+        }
+
         // 'Add document' link.
         $document_url = Url::fromRoute('joinup_document.rdf_entity_document.add', [
           'rdf_entity' => $id,
