@@ -55,7 +55,7 @@
           }
 
           // Update the select slider to reflect only the available options.
-          $('#slider').empty();
+
           var select = $('#edit-field-ar-elibrary-creation');
           var selectLength = select.find('option').length;
           var slider = $('#slider').slider({
@@ -72,7 +72,7 @@
           // Unbind click event from all slider labels.
           $(".slider__labels .slider__label").unbind("click");
 
-          // Bind click to all sliderlabels.
+          // Bind click to all slider labels.
           $(".slider__labels .slider__label").bind("click", function () {
             $("#slider").slider("value", $(this).index() + 1);
             $("#slider").trigger("slide");
