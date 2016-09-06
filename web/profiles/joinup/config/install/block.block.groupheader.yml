@@ -1,22 +1,24 @@
 langcode: en
-status: false
+status: true
 dependencies:
   module:
     - facets
     - joinup
   theme:
     - joinup_theme
-id: addcontent
+id: groupheader
 theme: joinup_theme
-region: '-1'
-weight: -8
+region: featured
+weight: -9
 provider: null
-plugin: add_content_block
+plugin: group_header_block
 settings:
-  id: add_content_block
-  label: 'Add content'
+  id: group_header_block
+  label: 'Group header'
   provider: joinup
-  label_display: visible
+  label_display: '0'
+  context_mapping:
+    og: '@joinup.active_og_route_context:og'
 visibility:
   other_facet:
     id: other_facet

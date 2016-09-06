@@ -7,15 +7,20 @@
 .featured
   position: relative
   margin: 0 auto
-  background: url('../images/featured-bg.jpg') no-repeat center top
+
+
+// Elements
+// --------------------------------------------------
+.featured__outer-wrapper
+  position: relative
+  margin: 0 auto
+  background: no-repeat center top
   -webkit-background-size: cover
   -moz-background-size: cover
   -o-background-size: cover
   background-size: cover
 
-// Elements
-// --------------------------------------------------
-.featured__wrapper
+.featured__inner-wrapper
   position: relative
   z-index: 2
   max-width: 1200px
@@ -26,15 +31,22 @@
   +breakpoint(tablet)
     padding: 20px 0
 
-//  .featured__overlay
-//    position: absolute
-//    z-index: 1
-//    top: 0
-//    left: 0
-//    width: 100%
-//    height: 100%
-//    opacity: .6
-//    background-color: $color-blue-default
+.featured__menu-wrapper
+  position: relative
+  z-index: 2
+  max-width: 1200px
+  margin: 0 auto
+  text-align: center
+
+.featured__overlay
+  position: absolute
+  z-index: 1
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  opacity: .6
+  background-color: $color-blue-default
 
 .featured__text
   position: relative
@@ -59,25 +71,25 @@
 .featured__stats
   display: inline-block
   margin-bottom: 20px
-  padding: 15px 30px
   text-align: left
   vertical-align: middle
   background-color: #fff
+  padding: 0 15px
   +border-radius(3px)
   +breakpoint(tablet)
     margin: 0 20px 0 0
   .stats__column
     float: left
-    &:first-of-type
-      margin-right: 40px
-      &:last-of-type
-        margin-right: 0
+    padding: 15px
+    min-width: 0
   .stats__icon,
   .stats__text
     display: inline-block
     vertical-align: middle
+    line-height: 30px
   .stats__icon
     +icon-size(30px)
+
 
 .featured__menu-button
   width: 60px
@@ -105,12 +117,27 @@
   display: inline-block
   vertical-align: middle
 
+.featured__form-button
+  display: inline-block
+
 // Modifiers
 // --------------------------------------------------
+.featured__stats
+  .stats__wrapper--centered
+    text-align: center
+  .stats__column--border
+    border-right: 1px solid $color-grey-light
+  +breakpoint(desktop)
+    .stats__column--wide
+      min-width: 165px
+    .stats__column--icons
+      padding-left: 30px
+    .stats__column--border
+      padding-right: 30px
 
 // Dependiencies
 // --------------------------------------------------
-.featured
+.featured__menu-wrapper
   .button--default
     +breakpoint(sm-mobile, mobile)
       display: block
