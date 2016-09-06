@@ -31,7 +31,7 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
  * Implements hook_ENTITY_TYPE_insert().
  *
  * This function grants the 'owner' and 'facilitator' roles to the user that
- * creates thesolution.
+ * creates the solution.
  *
  * @see https://www.w3.org/TR/vocab-adms/#the-adms-domain-model
  */
