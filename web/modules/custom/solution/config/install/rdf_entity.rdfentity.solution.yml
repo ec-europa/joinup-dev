@@ -7,7 +7,7 @@ third_party_settings:
       target_id: 'http://www.w3.org/ns/adms#Asset'
     mapping_label:
       value: 'http://purl.org/dc/terms/title'
-name: 'Interoperability Solution'
+name: 'Solution'
 rid: solution
 description: ''
 rdftype: 'http://www.w3.org/ns/adms#Asset'

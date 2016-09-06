@@ -29,7 +29,7 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
   // there is no field provided for it. Without a release the asset
   // distribution will be dangling and won't be reachable.
   if (!$asset_release instanceof RdfInterface || $asset_release->bundle() !== 'asset_release') {
-    throw new \InvalidArgumentException('Asset distributions can only be created in context of an interoperability solution.');
+    throw new \InvalidArgumentException('Distributions can only be created in context of a solution.');
   }
 
   $form_state->set('asset_release_id', $asset_release->id());

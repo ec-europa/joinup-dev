@@ -12,12 +12,12 @@ Feature: Asset distribution editing.
     And the following collection:
       | title      | Collection example     |
       | affiliates | Solution A, Solution B |
-    And the following asset distribution:
+    And the following distribution:
       | title       | Asset distribution example |
       | description | Sample description         |
       | file        | test.zip                   |
       | solution    | Solution A                 |
-    And the following asset release:
+    And the following release:
       | title         | Asset release example      |
       | description   | Release description        |
       | is version of | Solution A                 |
@@ -44,7 +44,7 @@ Feature: Asset distribution editing.
       When I am logged in as a facilitator of the "Solution A" solution
       And I go to the homepage of the "Asset distribution example" asset distribution
       And I click "Edit"
-      Then I should see the heading "Edit Asset distribution Asset distribution example"
+      Then I should see the heading "Edit Distribution Asset distribution example"
       When I fill in "Title" with "Asset distribution example revised"
       And I press "Save"
       Then I should see the heading "Asset distribution example revised"
