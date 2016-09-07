@@ -106,7 +106,6 @@ config_devel:
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.default
   - core.entity_view_mode.node.full
-  - core.entity_view_mode.rdf_entity.group_header
   - core.entity_view_mode.user.full
   - ds.settings
   - editor.editor.content_editor
@@ -150,5 +149,4 @@ config_devel:
   - user.settings
   - views.view.collection_content
   - views.view.collections
-  - views.view.search
   - views.view.user_admin_people
