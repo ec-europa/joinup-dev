@@ -86,3 +86,10 @@ function rdf_draft_entity_create(EntityInterface $entity) {
     }
   }
 }
+
+/**
+ * Implements hook_rdf_default_active_graph_alter().
+ */
+function rdf_draft_rdf_default_active_graph_alter($entity_type, &$graph) {
+  $graph[] = 'draft';
+}

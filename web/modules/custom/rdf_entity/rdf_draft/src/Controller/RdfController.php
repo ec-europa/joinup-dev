@@ -67,7 +67,7 @@ class RdfController extends ControllerBase {
     $storage = $this->entityManager->getStorage($entity->getEntityTypeId());
     $original = $storage->getActiveGraphType();
     $graph_name = $route_match->getRouteObject()->getOption('graph_name');
-    $storage->setActiveGraphType($graph_name);
+    $storage->setActiveGraphType([$graph_name]);
     $draft_entity = $storage->load($entity->id());
     if (!$draft_entity) {
       // Should not occur: RdfGraphAccessCheck validates that the entity exists.

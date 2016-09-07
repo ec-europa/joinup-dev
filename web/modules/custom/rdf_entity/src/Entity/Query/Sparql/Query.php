@@ -8,6 +8,7 @@ use Drupal\Core\Entity\Query\QueryBase;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Entity\Query\Sql\ConditionAggregate;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 
 /**
  * The base entity query class for Rdf entities.
@@ -39,6 +40,13 @@ class Query extends QueryBase implements QueryInterface {
   protected $filterAdded = FALSE;
 
   /**
+   * Entity storage.
+   *
+   * @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage
+   */
+  protected $entityStorage = NULL;
+
+  /**
    * Constructs a query object.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
@@ -55,6 +63,11 @@ class Query extends QueryBase implements QueryInterface {
     parent::__construct($entity_type, $conjunction, $namespaces);
     $this->filter = new SparqlFilter();
     $this->connection = $connection;
+    // @todo Is there a way to inject this?
+    $this->entityStorage = \Drupal::service('entity.manager')->getStorage($this->entityTypeId);
+    if (!$this->entityStorage instanceof RdfEntitySparqlStorage) {
+      throw new \Exception('Sparql storage is required for this query.');
+    }
   }
 
   /**
@@ -81,11 +94,8 @@ class Query extends QueryBase implements QueryInterface {
   /**
    * Set the graph type.
    */
-  public function setGraphType($graph_type = 'default') {
-    // @todo Getting the storage container here looks wrong...
-    $entity_storage = \Drupal::service('entity.manager')
-      ->getStorage($this->entityTypeId);
-    $this->graphs = $entity_storage->getGraphs($graph_type);
+  public function setGraphType($graph_types = ['default']) {
+    $this->graphs = $this->entityStorage->getGraphs($graph_types);
   }
 
   /**
@@ -144,9 +154,6 @@ class Query extends QueryBase implements QueryInterface {
    */
   public function condition($property, $value = NULL, $operator = '=', $langcode = NULL) {
     $key = $property . '-' . $operator;
-    // @todo Getting the storage container here looks wrong...
-    $entity_storage = \Drupal::service('entity.manager')
-      ->getStorage($this->entityTypeId);
     $field_storage_definitions = \Drupal::service('entity.manager')
       ->getFieldStorageDefinitions($this->entityTypeId);
     /*
@@ -159,23 +166,23 @@ class Query extends QueryBase implements QueryInterface {
     switch ($key) {
       // @todo Limit the graphs here to the set bundles.
       case  $bundle . '-IN':
-        $rdf_bundles = $entity_storage->getRdfBundleList($value);
+        $rdf_bundles = $this->entityStorage->getRdfBundleList($value);
         if ($rdf_bundles) {
           $this->condition->condition('?entity', '?bundlepredicate', '?type');
           $this->filterAdded = TRUE;
-          $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+          $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
           $this->filter->filter('?bundlepredicate IN ' . $predicates);
           $this->filter->filter('?type IN ' . $rdf_bundles);
         }
         return $this;
 
       case $bundle . '-=':
-        $mapping = $entity_storage->getRdfBundleMapping();
+        $mapping = $this->entityStorage->getRdfBundleMapping();
         $mapping = $mapping['rdf_entity'];
         $bundle = $mapping[$value];
         if ($bundle) {
           $this->condition->condition('?entity', '?bundlepredicate', SparqlArg::uri($bundle));
-          $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+          $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
           $this->filter->filter('?bundlepredicate IN ' . $predicates);
           $this->filterAdded = TRUE;
         }
@@ -186,7 +193,7 @@ class Query extends QueryBase implements QueryInterface {
           $ids_list = "(<" . implode(">, <", $value) . ">)";
           if (!$this->filterAdded) {
             $this->condition->condition('?entity', '?bundlepredicate', '?type');
-            $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+            $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
             $this->filter->filter('?bundlepredicate IN ' . $predicates);
             $this->filterAdded = TRUE;
           }
@@ -206,7 +213,7 @@ class Query extends QueryBase implements QueryInterface {
 
           if (!$this->filterAdded) {
             $this->condition->condition('?entity', '?bundlepredicate', '?type');
-            $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+            $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
             $this->filter->filter('?bundlepredicate IN ' . $predicates);
             $this->filterAdded = TRUE;
           }
@@ -221,7 +228,7 @@ class Query extends QueryBase implements QueryInterface {
         $id = '<' . $value . '>';
         if (!$this->filterAdded) {
           $this->condition->condition('?entity', '?bundlepredicate', '?type');
-          $predicates = "(<" . implode(">, <", $entity_storage->bundlePredicate()) . ">)";
+          $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
           $this->filter->filter('?bundlepredicate IN ' . $predicates);
           $this->filterAdded = TRUE;
         }
@@ -241,7 +248,7 @@ class Query extends QueryBase implements QueryInterface {
             $this->filter->filter('?entity IN ' . $ids);
           }
           else {
-            $mapping = $entity_storage->getLabelMapping();
+            $mapping = $this->entityStorage->getLabelMapping();
             $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping[$this->entityTypeId]))) . ">)";
             $this->condition->condition('?entity', '?label_type', '?label');
             $this->filter->filter('?label_type IN ' . $label_list);
@@ -252,7 +259,7 @@ class Query extends QueryBase implements QueryInterface {
         return $this;
 
       case $label . '-CONTAINS':
-        $mapping = $entity_storage->getLabelMapping();
+        $mapping = $this->entityStorage->getLabelMapping();
         $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping[$this->entityTypeId]))) . ">)";
         $this->condition->condition('?entity', '?label_type', '?label');
         $this->filter->filter('?label_type IN ' . $label_list);

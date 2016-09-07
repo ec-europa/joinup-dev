@@ -224,6 +224,10 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
+    $fields['graph'] = BaseFieldDefinition::create('uri')
+      ->setLabel(t('The graph where the entity is stored.'))
+      ->setComputed(TRUE);
+
     return $fields;
   }
 
@@ -265,6 +269,23 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    */
   public function getWeight() {
     return 0;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isPublished() {
+    $storage = $this->entityManager()->getStorage($this->getEntityTypeId());
+    $published_graph = $storage->getGraph($this->bundle(), 'default');
+    $graph = $this->get('graph')->first()->getValue()['value'];
+    return ($graph === $published_graph);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setPublished($published) {
+    // TODO: Implement setPublished() method.
   }
 
 }

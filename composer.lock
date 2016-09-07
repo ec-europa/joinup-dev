@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e1e34ac5e2dcfcd4122b59913fbe98a1",
-    "content-hash": "ca2972267e96e73518c6c1ddf1eee9cf",
+    "hash": "21d4b38097e01a6300217c31df9a608e",
+    "content-hash": "2d7c1e72f7e7484fb49c5a847e32ad9d",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1357,7 +1357,8 @@
             "extra": {
                 "patches_applied": {
                     "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
-                    "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch"
+                    "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
+                    "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface.patch"
                 }
             },
             "autoload": {
@@ -1674,7 +1675,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha17.zip",
-                "reference": null,
+                "reference": "dde5cecfbde386ae55b0aa799d1e146b509b3ffa",
                 "shasum": null
             },
             "require": {
@@ -1731,7 +1732,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha6.zip",
-                "reference": null,
+                "reference": "1b949c59477031ce5880c13537eb73a5f3cb4096",
                 "shasum": null
             },
             "require": {
@@ -2699,7 +2700,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2754,7 +2755,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }

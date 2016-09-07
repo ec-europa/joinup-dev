@@ -29,8 +29,9 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
       // On the edit form, load from draft graph if possible.
       if (array_search('edit_form', $route_parts)) {
         $entity_type_id = substr($event->getDefinition()['type'], strlen('entity:'));
+        /** @var RdfEntitySparqlStorage $storage */
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
-        $storage->setActiveGraphType($this->defaultSaveGraph($entity_type_id));
+        $storage->setActiveGraphType([$this->defaultSaveGraph($entity_type_id)]);
         // Draft version already exists.
         $entity = $storage->load($event->getValue());
         if ($entity) {
@@ -49,6 +50,7 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
       // On the delete form, select the first available graph.
       elseif (array_search('delete_form', $route_parts)) {
         $entity_type_id = substr($event->getDefinition()['type'], strlen('entity:'));
+        /** @var RdfEntitySparqlStorage $storage */
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
         $found = FALSE;
         foreach ($storage->getGraphsDefinition() as $name => $definition) {
