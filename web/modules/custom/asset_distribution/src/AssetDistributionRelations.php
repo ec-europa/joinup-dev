@@ -3,6 +3,7 @@
 namespace Drupal\asset_distribution;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -41,6 +42,33 @@ class AssetDistributionRelations {
     }
     $target_id = $asset_release->field_isr_is_version_of->first()->target_id;
     return $this->entityTypeManager->getStorage('rdf_entity')->load($target_id);
+  }
+
+  /**
+   * Returns the distributions that are part of a solution.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $solution
+   *   The solution rdf entity.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface[]
+   *   An array of distributions related to the solution.
+   */
+  public function getSolutionDistributions(RdfInterface $solution) {
+    $group_content_ids = Og::getGroupContentIds($solution, ['rdf_entity']);
+
+    if (empty($group_content_ids['rdf_entity'])) {
+      return [];
+    }
+
+    /** @var array $group_content */
+    $group_content = $this->entityTypeManager->getStorage('rdf_entity')
+      ->loadMultiple($group_content_ids['rdf_entity']);
+    /** @var RdfInterface[] $distributions */
+    $distributions = array_filter($group_content, function (RdfInterface $entity) {
+      return ($entity->bundle() === 'asset_distribution');
+    });
+
+    return $distributions;
   }
 
 }
