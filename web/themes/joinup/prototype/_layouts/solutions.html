@@ -8,70 +8,74 @@
 
       {% include section--header.html %}
 
-      <div class="section section--featured">
-        <div class="container-fluid">
-          <div class="featured">
-            <div class="featured__wrapper">
-              <div class="featured__logo">
-                <img src="../images/featured-img.png">
-              </div>
-              <h1 class="featured__text">Exemplary solution</h1>
-              <div class="featured__stats">
-                <div class="stats__column">
-                  <div class="stats__wrapper">
-                    <span class="stats__text">Licence:</span>
-                    <span class="stats__text bold underline">EUPL</span>
-                  </div>
-                </div>
-                <div class="stats__column">
-                  <div class="stats__wrapper">
-                    <span class="stats__text">Downloads:</span>
-                    <span class="stats__text bold">1234</span>
-                  </div>
-                </div>
-              </div>
-              <button class="button--default button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Download</button>
-
-              {% include circle-menu.html %}
-
-              <!-- Menu visible on tablet and mobile -->
-              <div class="featured__menu">
-                <div id="featured__menu-button" class="featured__menu-button mdl-button mdl-js-button">
-                  <span class="icon icon--menu"></span>
-                </div>
-                <ul class="featured__menu-dropdown mdl-menu mdl-menu--bottom-left mdl-js-menu" for="featured__menu-button">
-                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/login">Login</a></li>
-                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/about">About</a></li>
-                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/alerts">Alerts</a></li>
-                </ul>
-              </div>
+      <div class="section section--pre-content">
+        <div class="announcement">
+          <div class="main-container mdl-grid">
+            <div class="announcement__content mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras pretium fringilla metus ac imperdiet. Aliquam imperdiet maximus libero at semper. Maecenas in egestas mi, eu placerat diam. In vitae mattis tortor. Curabitur felis magna, tincidunt a ultricies id, malesuada in mi. Sed facilisis dapibus neque, eu aliquet libero aliquet eu. Duis gravida tortor eu orci pulvinar, sed hendrerit ipsum lobortis. In finibus condimentum dignissim.
             </div>
-            <div class="featured__overlay"></div>
           </div>
         </div>
       </div>
-      <div class="main-container mdl-grid">
-
-        {% include section--sidebar-left.html %}
-
-        <div class="section section--content mdl-cell mdl-cell--8-col">
-          <div class="container-fluid">
-            <div class="search-bar__wrapper">
-              <div class="search-bar--section mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--align-right">
-                <label class="search-bar__label icon icon--search mdl-button mdl-js-button"
-                for="search-bar__input">
-                </label>
-                <input class="search-bar__input mdl-textfield__input" placeholder="Start typing to search..." type="text" name="search"
-                  id="search-bar__input">
-              </div>              
+      <div class="section section--content">
+        <div class="main-container mdl-grid">
+          <div class="section section--main mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">
+            <div class="filters filters--horizontal filters--solutions left">
+              <div class="filter">
+                <div class="filter__term">All Solutions (74)</div>
+                <div class="filter__icon icon icon--arrow-down"></div>
+              </div>
+              <div class="filter">
+                <div class="filter__label">about:</div>
+                <div class="filter__term">eHealth (18)</div>
+                <div class="filter__icon icon icon--arrow-down"></div>
+              </div>
+              <div class="filter">
+                <div class="filter__label">of type:</div>
+                <div class="filter__term">Type (18)</div>
+                <div class="filter__icon icon icon--arrow-down"></div>
+              </div>
+              <button class="filter filter__dropdown-toggle">
+                <span class="filter__label underline">Advanced search</span>
+              </button>
+              <div class="filter__dropdown">
+                <div class="search-bar__wrapper">
+                  <div class="search-bar--section mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--align-right">
+                    <label class="search-bar__label icon icon--search mdl-button mdl-js-button"
+                      for="search-bar__input">
+                    </label>
+                    <input class="search-bar__input mdl-textfield__input" placeholder="Start typing to search..." type="text" name="search"
+                      id="search-bar__input">
+                  </div>
+                </div>
+                <div class="filters filters--horizontal left">
+                  <div class="filter">
+                    <div class="filter__term">All Solutions (74)</div>
+                    <div class="filter__icon icon icon--arrow-down"></div>
+                  </div>
+                  <div class="filter">
+                    <div class="filter__label">about:</div>
+                    <div class="filter__term">eHealth (18)</div>
+                    <div class="filter__icon icon icon--arrow-down"></div>
+                  </div>
+                  <div class="filter">
+                    <div class="filter__label">located in:</div>
+                    <div class="filter__term">Belgium (8)</div>
+                    <div class="filter__icon icon icon--arrow-down"></div>
+                  </div>
+                  <div class="filter">
+                    <div class="filter__label">sorted by:</div>
+                    <div class="filter__term">reputation</div>
+                    <div class="filter__icon icon icon--arrow-down"></div>
+                  </div>
+                </div>
+              </div>
             </div>
+            <div class="row">
 
-            {% include tab--content-type.html %}
+              {% include listing.html %}
 
-            {% include filters.html %}
-
-            {% include listing.html %}
-            
+            </div>
           </div>
         </div>
       </div>

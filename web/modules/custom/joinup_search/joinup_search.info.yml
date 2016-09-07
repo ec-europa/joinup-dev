@@ -23,3 +23,4 @@ config_devel:
  - facets.facet_source.search_api_views__search__page_1
  - search_api.server.solr
  - search_api.index.collections
+ - views.view.search

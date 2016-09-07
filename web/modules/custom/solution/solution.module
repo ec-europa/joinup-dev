@@ -5,12 +5,17 @@
  * Contains hooks regarding the solution rdf entity bundle.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\Entity\RdfEntityType;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -84,5 +89,63 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
     $collection->set('field_ar_affiliates', $entity->id());
     $collection->save();
     $entity->set('field_is_affiliations_requests', NULL);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ *
+ * Interrupts the permissions for updating a solution. The permission is not
+ * granted if there are no transitions allowed for the current state of the
+ * node.
+ */
+function solution_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->bundle() != 'solution') {
+    return AccessResult::neutral();
+  }
+
+  if ($operation == 'edit') {
+    $allowed_transitions = $entity->get('field_is_state')->first()->getTransitions();
+    if (empty($allowed_transitions)) {
+      return AccessResult::forbidden();
+    }
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function solution_entity_extra_field_info() {
+  $fields = [];
+
+  $solution = RdfEntityType::load('solution');
+  $fields['rdf_entity'][$solution->id()]['display']['releases_overview'] = [
+    'label' => t('Releases overview'),
+    'description' => t('A link to the releases overview page'),
+    'visible' => FALSE,
+  ];
+
+  return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function solution_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() != 'solution') {
+    return;
+  }
+
+  if ($display->getComponent('releases_overview')) {
+    $build['releases_overview'] = [
+      '#type' => 'link',
+      '#title' => t('Download'),
+      '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
+        'rdf_entity' => $entity->id(),
+      ]),
+      '#attributes' => array('class' => 'button--default button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'),
+    ];
   }
 }

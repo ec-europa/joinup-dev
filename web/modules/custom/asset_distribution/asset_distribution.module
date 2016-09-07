@@ -28,7 +28,7 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
   // there is no field provided for it. Without a release the asset
   // distribution will be dangling and won't be reachable.
   if (!$asset_release instanceof RdfInterface || $asset_release->bundle() !== 'asset_release') {
-    throw new \InvalidArgumentException('Asset distributions can only be created in context of an interoperability solution.');
+    throw new \InvalidArgumentException('Distributions can only be created in context of a solution.');
   }
 
   $form_state->set('asset_release_id', $asset_release->id());
@@ -67,9 +67,13 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_submit(&$for
 
 /**
  * Implements hook_rdf_load_bundle_alter().
+ *
+ * There is an initial check whether the bundle is empty because the method
+ * that invokes this hook is also called for taxonomies and the bundle is
+ * currently being skipped for the taxonomies.
  */
 function asset_distribution_rdf_load_bundle_alter($entity_values, &$bundle) {
-  if ($bundle->id() == 'solution' && isset($entity_values['http://purl.org/dc/terms/isVersionOf'])) {
+  if (!empty($bundle) && $bundle->id() == 'solution' && isset($entity_values['http://purl.org/dc/terms/isVersionOf'])) {
     $bundle = \Drupal::entityTypeManager()->getStorage('rdf_type')->load('asset_release');
   }
 }
@@ -121,6 +125,7 @@ function asset_distribution_rdf_entity_view(array &$build, EntityInterface $enti
   // Add licence labels as extra element.
   $build['licence'] = [
     '#type' => 'container',
+    '#theme' => 'licence',
   ];
   foreach ($licences as $licence) {
     $build['licence'][] = [

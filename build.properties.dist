@@ -1,16 +1,19 @@
 # Drupal configuration
 # --------------------
 
+# The project name.
+project.name = joinup
+
 # The install profile to use.
-website.profile.name = joinup
+website.profile.name = ${project.name}
 
 # The site name.
 website.site.name = Joinup
 
 # The site type ( Infrastructure stack )
-infra.type = joinup
+infra.type = ${project.name}
 
-# Database settings.
+# SQL database settings.
 drupal.db.type = mysql
 drupal.db.name = db_name
 drupal.db.user = db_user
@@ -19,11 +22,12 @@ drupal.db.host = 127.0.0.1
 drupal.db.port = 3306
 drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${drupal.db.name}
 
+# SPARQL database settings.
 sparql.host = localhost
 sparql.port = 8890
-sparql.dsn = Virtuoso
-sparql.user = ${drupal.db.user}
-sparql.password = ${drupal.db.password}
+sparql.dsn = localhost
+sparql.user = dba
+sparql.password = dba
 
 # Admin user.
 drupal.admin.username = admin
@@ -34,6 +38,9 @@ drupal.admin.email = admin@example.com
 # be taken from the role. A normal authenticated user with username and password
 # 'user' will also be created.
 drupal.demo.users = administrator, moderator
+
+# The base URL. This is used for doing functional tests in Behat and PHPUnit.
+drupal.base_url = http://localhost
 
 
 # Paths
@@ -86,7 +93,7 @@ behat.yml.template = ${behat.dir}/behat.yml.dist
 behat.yml.path = ${behat.dir}/behat.yml
 
 # The base URL to use in Behat tests.
-behat.base_url = http://localhost
+behat.base_url = ${drupal.base_url}
 
 # The URL of the webdriver host (PhantomJS or Selenium):
 behat.webdriver_url = http://localhost:4444/wd/hub
@@ -150,6 +157,34 @@ phpcs.prepush.source = ${project.basedir}/vendor/pfrenssen/phpcs-pre-push/pre-pu
 phpcs.prepush.destination = ${project.basedir}/.git/hooks/pre-push
 
 
+# PHPUnit configuration
+# ---------------------
+
+# The path to the configuration file template.
+phpunit.dist = ${project.basedir}/phpunit.xml.dist
+
+# The path to the generated configuration file. This is typically inside the web
+# root.
+phpunit.config = ${website.drupal.dir}/phpunit.xml
+
+# The name to give to the test suite of the project.
+phpunit.testsuite.name = ${project.name}
+
+# Comma-separated list of directories containing tests to execute. These are
+# relative to the Drupal root.
+phpunit.directories = ./modules/custom,./profiles,./themes/custom
+
+# Comma-separated list of test files to execute. These are relative to the
+# Drupal root.
+phpunit.files =
+
+# The base URL to use in functional tests.
+phpunit.base_url = ${drupal.base_url}
+
+# The database URL to use in kernel tests and functional tests.
+phpunit.db_url = ${drupal.db.url}
+
+
 # Apache Solr configuration
 # -------------------------
 
@@ -188,6 +223,7 @@ drupal.modules.uat = demo_content
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = no
 
+
 # AWS SDK
 # -------
 aws.profile = default
@@ -198,9 +234,8 @@ aws.region = eu-west-1
 # --------------
 deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
 
+
 # Packer configuration
 # --------------------
 packer.path = /usr/bin/env packer
-application.name = joinup
-
-
+application.name = ${project.name}

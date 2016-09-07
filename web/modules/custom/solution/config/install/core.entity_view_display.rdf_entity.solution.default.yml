@@ -26,6 +26,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
+    - field.field.rdf_entity.solution.field_is_state
     - field.field.rdf_entity.solution.field_is_test_resource_type
     - field.field.rdf_entity.solution.field_is_translation
     - field.field.rdf_entity.solution.field_is_version
@@ -40,9 +41,7 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - datetime
-    - ds
     - file
-    - image
     - link
     - options
     - text
@@ -65,21 +64,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_is_banner:
-    weight: 34
-    label: above
-    settings:
-      image_style: banner
-      image_link: ''
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: image
   field_is_business_process:
     weight: 30
     label: above
@@ -163,21 +147,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_is_logo:
-    weight: 33
-    label: above
-    settings:
-      image_style: thumbnail
-      image_link: ''
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: image
   field_is_metrics_page:
     weight: 20
     label: above
@@ -259,6 +228,12 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_is_state:
+    type: list_default
+    weight: 36
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_is_test_resource_type:
     weight: 28
     label: above
@@ -350,4 +325,6 @@ content:
     weight: 35
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_is_banner: true
+  field_is_logo: true
