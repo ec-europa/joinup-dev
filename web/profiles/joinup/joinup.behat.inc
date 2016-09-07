@@ -510,4 +510,25 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $field_selector->fillField(ucfirst($field_name), $value);
   }
 
+  /**
+   * Checks if the given content belongs to the given parent rdf entity.
+   *
+   * If there are multiple entities or parents with the same title, then
+   * only the first one is checked.
+   *
+   * @param string $parent
+   *   The name of the parent.
+   * @param string $parent_bundle
+   *   The bundle of the parent.
+   * @param string $content_bundle
+   *   The bundle of the content.
+   * @param string $content
+   *   The title of the content.
+   *
+   * @Then the :parent :parent_type has a :content_type titled :content
+   */
+  public function assertContentOgMembership($parent, $parent_bundle, $content_bundle, $content) {
+    $this->assertOgMembership($parent, $parent_bundle, $content, $content_bundle);
+  }
+
 }
