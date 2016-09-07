@@ -1,4 +1,6 @@
 # Ignore generated directories
+css
+prototype/css/*.css
 prototype/node_modules
 prototype/_prototypes
 !prototype/_prototypes/css
