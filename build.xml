@@ -500,6 +500,11 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
     </target>
 
     <target
+        name="build-dist"
+        description="Build a distribution package."
+        depends="compile-sass" />
+
+    <target
         name="build-dev"
         description="Build a development environment."
         depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, compile-sass" />
