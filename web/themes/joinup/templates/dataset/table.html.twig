@@ -39,12 +39,9 @@
  * @see template_preprocess_table()
  */
 #}
-{% if is_form %}
-  <label {{ label.attributes.addClass('form__label')}}>{{ label.content }}</label>
-{% endif %}
 <table{{ attributes.addClass('form-table') }}>
-  {% if caption and not is_form %}
-    <caption>{{ caption }}</caption>
+  {% if caption %}
+    <caption class="form__label">{{ caption }}</caption>
   {% endif %}
 
   {% for colgroup in colgroups %}
@@ -59,12 +56,12 @@
     {% endif %}
   {% endfor %}
 
-  {% if header and not is_form %}
+  {% if header %}
     <thead>
       <tr>
         {% for cell in header %}
-          <{{ cell.tag }}{{ cell.attributes }}>
-            {{- cell.content -}}
+          <{{ cell.tag }}{{ cell.attributes.addClass('form-table__header') }}>
+            <label class="form__label">{{- cell.content.title -}}</label>
           </{{ cell.tag }}>
         {% endfor %}
       </tr>

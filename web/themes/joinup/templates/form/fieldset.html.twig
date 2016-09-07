@@ -36,7 +36,7 @@
       required ? 'form-required',
     ]
   %}
-  {#  Always wrap fieldset legends in a SPAN for CSS positioning. #}
+  
   <label{{ legend.attributes.addClass(legend_span_classes) }}>{{ legend.title }}</label>
   <div class="fieldset-wrapper">
     {% if errors %}

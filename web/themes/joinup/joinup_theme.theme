@@ -151,29 +151,29 @@ function joinup_theme_preprocess_container(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for table.html.twig.
+ * Implements hook_preprocess_HOOK() for field-multiple-value-form.html.twig.
  */
-function joinup_theme_preprocess_table(&$variables) {
-  // Check if table is on node or rdf form page.
-  $route_match = \Drupal::routeMatch();
-  $route_path = $route_match->getRouteObject()->getPath();
-  $form_patterns = array(
-    '/propose/{rdf_type}',
-    '/rdf_entity/add/{rdf_type}',
-    '/rdf_entity/{rdf_entity}/edit',
-    '/node/add/{node_type}',
-    '/node/{node}/edit',
-  );
+function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
+  if ($variables['multiple']) {
+    // Set new variable label, which contains title.
+    $label = $variables['element']['#title'];
+    $variables['label']['content'] = $label;
 
-  if (!empty($route_path) && in_array($route_path, $form_patterns)) {
-    $variables['is_form'] = TRUE;
-    $variables['label']['content']['#markup'] = $variables['header'][0]['content']['title']['#markup'];
+    // Lists of element types.
+    $elements = array(
+      'target_id',
+      'value',
+      'uri',
+    );
 
     // Set first input 'id' as 'for' attribute for table label.
-    if (isset($variables['rows'][0]['cells'][1]['content']['target_id']['#id'])) {
-      $variables['label']['attributes'] = new Attribute([
-        'for' => $variables['rows'][0]['cells'][1]['content']['target_id']['#id'],
-      ]);
+    foreach ($elements as $value_element) {
+      if (isset($variables['element']['0'][$value_element]['#id'])) {
+        $variables['label']['attributes'] = new Attribute([
+          'for' => $variables['element']['0'][$value_element]['#id'],
+        ]);
+        break;
+      }
     }
   }
 }
