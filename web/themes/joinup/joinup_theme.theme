@@ -8,8 +8,6 @@
 use Drupal\Core\Template\Attribute;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\Unicode;
 
 /**
  * Implements hook_preprocess_page().
@@ -172,23 +170,19 @@ function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array 
 }
 
 /**
- * Implements hook_theme_suggestions_HOOK_alter() for input.html.twig.
- */
-function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $variables) {
-  if ($variables['element']['#type'] == 'submit') {
-    $button_value = Html::cleanCssIdentifier($variables['element']['#value'], array(' ' => '_'));
-    $button_value = Unicode::strtolower($button_value);
-    $suggestions[] = 'input__submit' . $button_value;
-  }
-}
-
-/**
  * Implements hook_theme_suggestions_HOOK_alter() for container.html.twig.
  */
 function joinup_theme_theme_suggestions_container_alter(array &$suggestions, array $variables) {
   if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-field-ar-owner-actions') {
     $suggestions[] = 'container__' . str_replace('-', '_', $variables['element']['#id']);
   }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for form.html.twig.
+ */
+function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $variables) {
+  $suggestions[] = 'form__' . str_replace('-', '_', $variables['element']['#form_id']);
 }
 
 /**
