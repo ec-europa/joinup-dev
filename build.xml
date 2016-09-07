@@ -484,10 +484,22 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
         </composer>
     </target>
 
+    <!-- Compile SASS to CSS. -->
+    <target name="compile-sass"
+            description="Compile the SASS to CSS.">
+        <!-- Make sure the CSS directory exists. -->
+        <mkdir dir="${sass.output.dir}" />
+        <sass
+            executable="${sass.bin}"
+            style="${sass.style}"
+            input="${sass.input}"
+            output="${sass.output.dir}/${sass.output.file}" />
+    </target>
+
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, compile-sass" />
 
     <target
         name="setup-dev"
