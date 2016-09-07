@@ -197,13 +197,13 @@ function joinup_theme_theme_suggestions_container_alter(array &$suggestions, arr
 function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
   if (!empty($variables['element']['#type'])) {
     // Array contains form elements, which are displayed with floating label.
-    $floating_label_types = array(
-      'textfield',
-      'url',
-      'password',
+    $floating_label_types = [
       'email',
       'entity_autocomplete',
-    );
+      'password',
+      'textfield',
+      'url',
+    ];
 
     if (in_array($variables['element']['#type'], $floating_label_types)) {
       if ($hook == 'form_element') {
