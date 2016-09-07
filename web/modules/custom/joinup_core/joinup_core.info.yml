@@ -11,6 +11,7 @@ dependencies:
   - rdf_taxonomy
 
 config_devel:
+  - core.entity_view_mode.rdf_entity.group_header
   - field.storage.node.field_spatial_coverage
   - field.storage.node.field_topic
   - field.storage.rdf_entity.field_keywords
