@@ -9,7 +9,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
-    - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
     - field.field.rdf_entity.solution.field_is_elibrary_creation
     - field.field.rdf_entity.solution.field_is_has_version
@@ -42,9 +41,7 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - datetime
-    - ds
     - file
-    - image
     - link
     - options
     - text
@@ -54,7 +51,7 @@ bundle: solution
 mode: default
 content:
   field_is_actor:
-    weight: 30
+    weight: 29
     label: above
     settings:
       link: true
@@ -67,23 +64,8 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_is_banner:
-    weight: 35
-    label: above
-    settings:
-      image_style: banner
-      image_link: ''
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: image
   field_is_business_process:
-    weight: 31
+    weight: 30
     label: above
     settings:
       link: true
@@ -110,13 +92,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
-  field_is_distribution:
-    weight: 26
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
   field_is_documentation:
     weight: 2
     label: above
@@ -130,7 +105,7 @@ content:
     third_party_settings: {  }
     type: list_default
   field_is_has_version:
-    weight: 27
+    weight: 26
     label: above
     settings:
       link: true
@@ -172,21 +147,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_is_logo:
-    weight: 34
-    label: above
-    settings:
-      image_style: thumbnail
-      image_link: ''
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: image
   field_is_metrics_page:
     weight: 20
     label: above
@@ -223,7 +183,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   field_is_product_type:
-    weight: 32
+    weight: 31
     label: above
     settings:
       link: true
@@ -262,7 +222,7 @@ content:
     third_party_settings: {  }
     type: link
   field_is_standardization_level:
-    weight: 33
+    weight: 32
     label: above
     settings:
       link: true
@@ -275,7 +235,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_is_test_resource_type:
-    weight: 29
+    weight: 28
     label: above
     settings:
       link: true
@@ -289,7 +249,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   field_is_version:
-    weight: 28
+    weight: 27
     label: above
     settings:
       link_to_entity: false
@@ -361,4 +321,10 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-hidden: {  }
+  licence:
+    weight: 35
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_is_banner: true
+  field_is_logo: true

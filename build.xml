@@ -25,6 +25,9 @@
     <echo msg="Loading PHP Codesniffer Configuration task." />
     <taskdef name="phpcodesnifferconfiguration" classname="\DrupalProject\Phing\PhpCodeSnifferConfigurationTask" />
 
+    <echo msg="Loading PHPUnit Configuration task." />
+    <taskdef name="phpunitconfiguration" classname="\DrupalProject\Phing\PhpUnitConfigurationTask" />
+
     <echo msg="Loading Remove Patched Packages task." />
     <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
 
@@ -33,7 +36,7 @@
 
     <echo msg="Loading Import RDF fixtures task." />
     <taskdef name="importrdffixtures" classname="\DrupalProject\Phing\ImportRdfFixtures" />
-    
+
     <echo msg="Loading AWS additional tasks." />
     <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />
     <property name="aws.profile" value="" />
@@ -173,6 +176,26 @@
         />
     </target>
 
+    <!-- Set up PHPUnit. -->
+    <target name="setup-phpunit" description="Generate the configuration file for PHPUnit.">
+        <if>
+            <available file="${phpunit.config}" type="file" property="phpunit.config.available" />
+            <then>
+                <echo message="Deleting existing PHPUnit configuration file." />
+                <delete file="${phpunit.config}" failonerror="false" />
+            </then>
+        </if>
+        <phpunitconfiguration
+                configFile="${phpunit.config}"
+                distFile="${phpunit.dist}"
+                files="${phpunit.files}"
+                directories="${phpunit.directories}"
+                testsuiteName="${phpunit.testsuite.name}"
+                baseUrl="${phpunit.base_url}"
+                dbUrl="${phpunit.db_url}"
+        />
+    </target>
+
     <!-- Link the site root to the document root of the webserver. -->
     <target
         name="link-docroot"
@@ -217,15 +240,6 @@
             <option name="name" value="${drupal.demo.user}"/>
             <param>${drupal.demo.user}</param>
         </drush>
-    </target>
-
-    <target name="virtuoso-set-dirsallowed">
-        <echo message="Allow importing of RDF data from all directories"/>
-        <exec dir="${project.basedir}"
-              command="sudo sed -i 's/DirsAllowed              = ., \/usr\/share\/virtuoso-opensource-6.1\/vad/DirsAllowed = \//g' /etc/virtuoso-opensource-6.1/virtuoso.ini;
-sudo /etc/init.d/virtuoso-opensource-6.1 restart"
-              checkreturn="true"
-              passthru="true"/>
     </target>
 
     <target name="download-apache-solr">
@@ -353,39 +367,6 @@ sudo /etc/init.d/virtuoso-opensource-6.1 restart"
         description="Set up Apache Solr."
         depends="download-apache-solr, start-apache-solr, configure-apache-solr" />
 
-    <target name="build-index">
-        <echo message="Building Solr index"/>
-        <exec dir="${project.basedir}"
-              command="sudo curl -o /opt/solr/search_api_solr.tar.gz https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha4.tar.gz;
-sudo tar xvzf /opt/solr/search_api_solr.tar.gz -C /opt/solr;
-sudo /opt/solr/bin/solr create_core -c drupal;
-sudo mkdir /opt/solr/server/solr/drupal;
-sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/drupal/conf/"
-              checkreturn="true"
-              passthru="true"/>
-    </target>
-
-    <target name="restart-solr">
-        <exec dir="${project.basedir}"
-              command="sudo /opt/solr/bin/solr restart"
-              checkreturn="true"
-              passthru="true"
-              spawn="true"/>
-    </target>
-
-    <target name="solr-status">
-        <exec dir="${project.basedir}"
-              command="sudo /opt/solr/bin/solr status"
-              checkreturn="true"
-              passthru="true"/>
-    </target>
-
-    <target name="solr-query-test">
-        <exec dir="${project.basedir}"
-              command="sudo curl http://localhost:8983/solr/drupal/select?q=tid:0"
-              checkreturn="true"/>
-    </target>
-
     <!-- Set up development configuration, including on-screen error logging and debugging options. -->
     <target name="enable-dev-settings">
         <phingcall target="writable-settings-folder"/>
@@ -434,13 +415,49 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
             <param>${drupal.modules.uat}</param>
         </drush>
     </target>
-    
+
     <target name="setup-continuousphp">
+        <echo message="Check if we are running on ContinuousPHP"/>
+        <if>
+            <not>
+                <available file="/home/cphp" type="dir" property="environment.cphp" />
+            </not>
+            <then>
+                <fail message="Only run this target on a ContinuousPHP test environment" />
+            </then>
+        </if>
+        <echo message="Put the odbc configuration file in the home folder where CPHP can find it"/>
         <copy
             file="./vendor/ec-europa/infra/continuousphp/odbc.ini"
             tofile="${user.home}/.odbc.ini"
             overwrite="true"
         />
+        <echo message="Allow importing of RDF data from all directories"/>
+        <exec dir="${project.basedir}"
+              command="sudo sed -i 's/DirsAllowed              = ., \/usr\/share\/virtuoso-opensource-6.1\/vad/DirsAllowed = \//g' /etc/virtuoso-opensource-6.1/virtuoso.ini;
+sudo /etc/init.d/virtuoso-opensource-6.1 restart"
+              checkreturn="true"
+              passthru="true"/>
+        <echo message="Create Solr index"/>
+        <exec dir="${project.basedir}"
+              command="sudo curl -o /opt/solr/search_api_solr.tar.gz https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha4.tar.gz;
+sudo tar xvzf /opt/solr/search_api_solr.tar.gz -C /opt/solr;
+sudo /opt/solr/bin/solr create_core -c drupal;
+sudo mkdir /opt/solr/server/solr/drupal;
+sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/drupal/conf/"
+              checkreturn="true"
+              passthru="true"/>
+        <echo message="Report Solr status"/>
+        <exec dir="${project.basedir}"
+              command="sudo /opt/solr/bin/solr status"
+              checkreturn="true"
+              passthru="true"/>
+        <echo message="Restart Solr"/>
+        <exec dir="${project.basedir}"
+              command="sudo /opt/solr/bin/solr restart"
+              checkreturn="true"
+              passthru="true"
+              spawn="true"/>
     </target>
 
     <!-- Remove all packages that are patched with cweagans/composer-patches. -->
@@ -449,6 +466,11 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
             composerJsonPath="${composer.json}"
         />
     </target>
+
+    <!-- provision new demo/test stack on AWS -->
+    <target name="provision-stack"
+            description="Provision a stack on AWS"
+            depends="setup-aws, run-stack, setup-deployment-group" />
 
     <!-- Install Composer dependencies for the build system. -->
     <target name="install-composer-dependencies">
@@ -460,7 +482,7 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit" />
 
     <target
         name="setup-dev"
@@ -475,11 +497,6 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="install, setup-dev, create-demo-users" />
-
-    <!-- provision new demo/test stack on AWS -->
-    <target name="provision-stack"
-            description="Provision a stack on AWS"
-            depends="setup-aws, run-stack, setup-deployment-group" />
+        depends="setup-virtuoso-permissions, import-rdf-fixtures, install, setup-dev, create-demo-users" />
 
 </project>

@@ -74,12 +74,17 @@ Feature: "Add solution" visibility options.
 
     When I go to the homepage of the "Collection solution test 2" collection
     And I click "Add solution"
-    Then I should see the heading "Add Interoperability Solution"
+    Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
     And the following fields should not be present "Groups audience, Other groups"
     When I fill in the following:
-      | Title       | Collection solution add solution |
-      | Description | This is a test text              |
+      | Title            | Collection solution add solution                                          |
+      | Description      | This is a test text                                                       |
+      | Documentation    | text.pdf                                                                  |
+      | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)           |
+      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)    |
+      | Language         | http://publications.europa.eu/resource/authority/language/VLS   |
+    Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I attach the file "text.pdf" to "Documentation"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
@@ -96,6 +101,9 @@ Feature: "Add solution" visibility options.
     Then I should see the heading "Collection solution add solution"
     And I should see the text "This is a test text"
     And I should see the link "Collection solution test 2"
+    And I should see the link "Environment (WIP!)"
+    And I should see the link "Belgium"
+    And I should see the link "Flemish"
     When I click "Collection solution test 2"
     Then I should see the heading "Collection solution test 2"
     Then I should see the link "Collection solution add solution"

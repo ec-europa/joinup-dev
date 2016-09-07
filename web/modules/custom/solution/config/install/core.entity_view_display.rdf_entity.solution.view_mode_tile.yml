@@ -10,7 +10,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
-    - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
     - field.field.rdf_entity.solution.field_is_elibrary_creation
     - field.field.rdf_entity.solution.field_is_has_version
@@ -186,3 +185,5 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
+  field_is_state: true
+  licence: true

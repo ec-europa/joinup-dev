@@ -15,6 +15,7 @@ build.common.xml
 build.properties.local
 phpcs.xml
 tests/behat.yml
+web/phpunit.xml
 web/sites/default/services.yml
 web/sites/default/settings.local.php
 web/sites/default/settings.php

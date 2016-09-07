@@ -12,6 +12,7 @@ Feature: Collection API
       | moderation        | no                   |
       | closed            | no                   |
       | elibrary creation | facilitators         |
+      | policy domain     | Health               |
     Then I should have 1 collection
 
   Scenario: Programmatically create a collection using only the name
@@ -30,8 +31,9 @@ Feature: Collection API
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
     When I fill in the following:
-      | Title       | Collection API example                       |
-      | Description | We do not care that much about descriptions. |
+      | Title         | Collection API example                       |
+      | Description   | We do not care that much about descriptions. |
+      | Policy domain | Health                                       |
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I press "Add existing owner" at the "Owner" field

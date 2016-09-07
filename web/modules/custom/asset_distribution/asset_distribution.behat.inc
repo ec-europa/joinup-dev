@@ -120,7 +120,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )asset distribution:
+   * @Given (the following )distribution:
    */
   public function givenAssetDistribution(TableNode $asset_distribution_table) {
     $aliases = self::assetDistributionFieldAliases();
@@ -224,7 +224,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param int $number
    *   The expected number of asset distributions.
    *
-   * @Then I should have :number asset distribution(s)
+   * @Then I should have :number distribution(s)
    */
   public function assertAssetDistributionCount($number) {
     $this->assertRdfEntityCount($number, 'asset_distribution');

@@ -33,12 +33,16 @@ Feature: Solution editing.
       When I am logged in as "Yancy Burton"
       And I go to the homepage of the "Collection example" collection
       And I click "Add solution"
-      Then I should see the heading "Add Interoperability Solution"
+      Then I should see the heading "Add Solution"
       When I fill in the following:
         | Title             | Solution A   |
         | Description       | First letter |
       And I attach the file "logo.png" to "Logo"
       And I attach the file "banner.jpg" to "Banner"
+      And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
+      And I fill in "Policy Domain" with "Health"
+      And I select "[ABB8] Citizen" from "Solution type"
+
       # Click the button to select an existing contact information.
       And I press "Add existing" at the "Contact information" field
       And I fill in "Contact information" with "Seward Shawn"
@@ -52,7 +56,7 @@ Feature: Solution editing.
 
       And I should see the link "Edit"
       When I go to the "Solution A" solution edit form
-      Then I should see the heading "Edit Interoperability Solution Solution A"
+      Then I should see the heading "Edit Solution Solution A"
       And the following fields should be present "Title, Description, Documentation, Related Solutions, Moderated, Landing page, Metrics page"
       And the following fields should not be present "Issue tracker, Wiki"
       And the following field widgets should be present "Contact information, Owner, eLibrary creation"
@@ -87,7 +91,10 @@ Feature: Solution editing.
       And I go to the homepage of the "Solution B" solution
       Then I should see the link "Edit"
       When I go to the "Solution B" solution edit form
-      Then I should see the heading "Edit Interoperability Solution Solution B"
+      Then I should see the heading "Edit Solution Solution B"
+      And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
+      And I fill in "Policy Domain" with "Health"
+      And I select "[ABB8] Citizen" from "Solution type"
       And the following fields should be present "Title, Description, Documentation, Related Solutions, Moderated, Landing page, Metrics page"
       And the following fields should not be present "Issue tracker, Wiki"
       And the following field widgets should be present "Contact information, Owner, eLibrary creation"
