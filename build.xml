@@ -458,6 +458,11 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
               checkreturn="true"
               passthru="true"
               spawn="true"/>
+        <echo message="Install the SASS compiler"/>
+        <exec dir="${project.basedir}"
+              command="gem install sass"
+              checkreturn="true"
+              passthru="true"/>
     </target>
 
     <!-- Remove all packages that are patched with cweagans/composer-patches. -->
