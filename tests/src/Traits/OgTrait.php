@@ -186,7 +186,8 @@ trait OgTrait {
       throw new \Exception("The $content_bundle titled '$content' was not found.");
     }
 
-    $group_ids = Og::getGroupIds($content, $parent->getEntityTypeId(), $parent_bundle);
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $group_ids = $membership_manager->getGroupIds($content, $parent->getEntityTypeId(), $parent_bundle);
     if (!empty($group_ids) && in_array($parent->id(), $group_ids[$parent->getENtityTypeId()])) {
       // Test passes.
       return;
