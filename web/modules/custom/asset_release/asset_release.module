@@ -22,7 +22,7 @@ function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterf
  * Implements hook_ENTITY_TYPE_create().
  *
  * This takes care of the reverse reference.
- * When a release is created, it has it's isVersionOf pre-filled
+ * When a release is created, it has its isVersionOf pre-filled
  * and is connected to its parent. But the parent needs to have the hasVersion
  * field filled as well.
  */

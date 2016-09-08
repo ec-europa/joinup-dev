@@ -31,7 +31,7 @@ class JoinCollectionBlock extends BlockBase implements ContainerFactoryPluginInt
   /**
    * The current user.
    *
-   * @var \Drupal\Core\Session\AccountProxyInterface $user
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected $user;
 

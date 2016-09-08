@@ -5,8 +5,11 @@
  * Contains asset_distribution.module.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -25,7 +28,7 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
   // there is no field provided for it. Without a release the asset
   // distribution will be dangling and won't be reachable.
   if (!$asset_release instanceof RdfInterface || $asset_release->bundle() !== 'asset_release') {
-    throw new \InvalidArgumentException('Asset distributions can only be created in context of an interoperability solution.');
+    throw new \InvalidArgumentException('Distributions can only be created in context of a solution.');
   }
 
   $form_state->set('asset_release_id', $asset_release->id());
@@ -64,9 +67,69 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_submit(&$for
 
 /**
  * Implements hook_rdf_load_bundle_alter().
+ *
+ * There is an initial check whether the bundle is empty because the method
+ * that invokes this hook is also called for taxonomies and the bundle is
+ * currently being skipped for the taxonomies.
  */
 function asset_distribution_rdf_load_bundle_alter($entity_values, &$bundle) {
-  if ($bundle->id() == 'solution' && isset($entity_values['http://purl.org/dc/terms/isVersionOf'])) {
+  if (!empty($bundle) && $bundle->id() == 'solution' && isset($entity_values['http://purl.org/dc/terms/isVersionOf'])) {
     $bundle = \Drupal::entityTypeManager()->getStorage('rdf_type')->load('asset_release');
+  }
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function asset_distribution_entity_extra_field_info() {
+  $fields = [];
+
+  // Aggregate the licences of the distributions belonging to a solution in a
+  // pseudo-field.
+  $bundle = RdfEntityType::load('solution');
+  // During installation, this bundle might not yet be available.
+  if ($bundle) {
+    $fields['rdf_entity'][$bundle->id()]['display']['licence'] = [
+      'label' => t('Licence'),
+      'description' => t('The licence type, aggregated from the related releases'),
+      'visible' => TRUE,
+    ];
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function asset_distribution_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() !== 'solution' || !$display->getComponent('licence')) {
+    return;
+  }
+
+  // Retrieve all the distributions related to this solution.
+  $relation_manager = \Drupal::service('asset_distribution.relations');
+  $distributions = $relation_manager->getSolutionDistributions($entity);
+
+  // Loop over all the distributions and fetch the related licence entity, if
+  // any.
+  $licences = [];
+  foreach ($distributions as $distribution) {
+    $licence_field = $distribution->get('field_ad_licence');
+    if (!$licence_field->isEmpty()) {
+      $licence = $licence_field->first()->get('entity')->getValue();
+      $licences[$licence->id()] = $licence;
+    }
+  }
+
+  // Add licence labels as extra element.
+  $build['licence'] = [
+    '#type' => 'container',
+    '#theme' => 'licence',
+  ];
+  foreach ($licences as $licence) {
+    $build['licence'][] = [
+      '#plain_text' => $licence->label(),
+    ];
   }
 }

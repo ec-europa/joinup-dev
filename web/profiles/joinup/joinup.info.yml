@@ -22,6 +22,7 @@ dependencies:
   - help
   - image
   - inline_entity_form
+  - joinup_discussion
   - joinup_document
   - joinup_event
   - joinup_licence
@@ -56,7 +57,7 @@ themes:
 
 config_devel:
   - block.block.addcontent
-  - block.block.joincollectionblock
+  - block.block.groupheader
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
   - block.block.joinup_theme_collectioncontent
@@ -130,7 +131,6 @@ config_devel:
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
-  - image.style.banner
   - image.style.profile_icon
   - og.og_membership_type.og_membership_type
   - og.og_role.rdf_entity-collection-administrator
@@ -149,5 +149,4 @@ config_devel:
   - user.settings
   - views.view.collection_content
   - views.view.collections
-  - views.view.search
   - views.view.user_admin_people

@@ -1,4 +1,4 @@
-name: Interoperability Solution
+name: Solution
 type: module
 description: The interoperability solution RDF entity.
 core: 8.x
@@ -14,11 +14,13 @@ dependencies:
   - options
   - owner
   - rdf_entity
+  - state_machine
   - text
 
 config_devel:
   - core.entity_form_display.rdf_entity.solution.default
   - core.entity_view_display.rdf_entity.solution.default
+  - core.entity_view_display.rdf_entity.solution.group_header
   - core.entity_view_display.rdf_entity.solution.view_mode_tile
   - field.field.rdf_entity.solution.field_is_actor
   - field.field.rdf_entity.solution.field_is_affiliations_requests

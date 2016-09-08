@@ -47,7 +47,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When (I )visit the propose collection form
    */
   public function visitProposeCollectionForm() {
-    $this->visitPath('collection/propose');
+    $this->visitPath('propose/collection');
   }
 
   /**
@@ -99,7 +99,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   Thrown when a collection with the given title does not exist.
    */
   protected function getCollectionByName($title) {
-    return $this->getRdfEntityByLabel($title, 'collection');
+    $collection = $this->getRdfEntityByLabel($title, 'collection');
+    return $collection;
   }
 
   /**

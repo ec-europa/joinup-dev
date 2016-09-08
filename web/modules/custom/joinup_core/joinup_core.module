@@ -5,6 +5,9 @@
  * Main functions and hook implementations of the Joinup core module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
+
 /**
  * Implements hook_theme().
  */
@@ -28,4 +31,43 @@ function joinup_core_theme($existing, $type, $theme, $path) {
  */
 function template_preprocess_joinup_tiles(&$variables) {
   template_preprocess_views_view_unformatted($variables);
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ *
+ * The state_machine forces the current value to be available in the options.
+ * However, there are cases where the user cannot keep the node in the same
+ * state when editing it.
+ * Since we are already checking for the allowed states and we are blocking the
+ * access if there are no available transitions, it is safe to simply remove
+ * the default value if it is not included in the allowed transitions.
+ *
+ * @see \Drupal\state_machine\Plugin\Field\FieldType\StateItem::getAllowedStates
+ * @see https://www.drupal.org/node/2746091
+ */
+function joinup_core_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+  $fieldType = $context['items']->getFieldDefinition()->getType();
+  if ($fieldType != 'state' || empty($form_state->getBuildInfo()['callback_object'])) {
+    return;
+  }
+  $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
+  if (!($entity instanceof ContentEntityInterface)) {
+    return;
+  }
+
+  // Get the field name.
+  $field_name = $context['items']->getFieldDefinition()->getName();
+  $default_value = reset($element['#default_value']);
+  $allowed_transitions = $entity->get($field_name)->first()->getTransitions();
+  $allowed_states = array_map(function ($transition) {
+    return $transition->getToState()->getId();
+  }, $allowed_transitions);
+
+  if (!in_array($default_value, $allowed_states)) {
+    unset($element['#options'][$default_value], $element['#default_value']);
+    // Re-set a default because otherwise the 'empty' value will be available.
+    $default_value = array_keys($allowed_transitions);
+    $element['#default_value'] = reset($default_value);
+  }
 }

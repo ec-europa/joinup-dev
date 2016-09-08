@@ -3,9 +3,12 @@
 namespace Drupal\asset_release\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class AssetReleaseController.
@@ -100,6 +103,62 @@ class AssetReleaseController extends ControllerBase {
    */
   public function createAssetReleaseAccess(RdfInterface $rdf_entity) {
     return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $this->currentUser());
+  }
+
+  /**
+   * Returns a build array for the solution releases overview page.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The solution rdf entity.
+   *
+   * @return array
+   *   The build array for the page.
+   */
+  public function overview(RdfInterface $rdf_entity) {
+    $build = [];
+
+    $build['placeholder'] = [
+      '#markup' => $this->t('Placeholder.'),
+    ];
+
+    return $build;
+  }
+
+  /**
+   * Page title callback for the solution releases overview.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The solution rdf entity.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The page title.
+   */
+  public function overviewPageTitle(RdfInterface $rdf_entity) {
+    return $this->t('Releases for %solution solution', ['%solution' => $rdf_entity->label()]);
+  }
+
+  /**
+   * Access callback for the solution releases overview.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The solution rdf entity.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match object to be checked.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account being checked.
+   *
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
+   *
+   * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+   *   Thrown when the rdf entity is not a solution.
+   */
+  public function overviewAccess(RdfInterface $rdf_entity, RouteMatchInterface $route_match, AccountInterface $account) {
+    if ($rdf_entity->bundle() !== 'solution') {
+      throw new NotFoundHttpException();
+    }
+
+    return $rdf_entity->access('view', $account, TRUE);
   }
 
   /**

@@ -10,8 +10,15 @@ use Drupal\taxonomy\TermStorageInterface;
  * Defines a Controller class for taxonomy terms.
  */
 class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterface {
-  // SKOS has two predicates used on concepts to point to their vocabulary.
-  // this depends on their level in the hierarchy.
+
+  /**
+   * Bundle predicate array.
+   *
+   * SKOS has two predicates used on concepts to point to their vocabulary.
+   * this depends on their level in the hierarchy.
+   *
+   * @var array
+   */
   protected $bundlePredicate = [
     'http://www.w3.org/2004/02/skos/core#inScheme',
     'http://www.w3.org/2004/02/skos/core#topConceptOf',
