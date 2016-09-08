@@ -267,7 +267,6 @@ Feature: News moderation.
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
-    Then I break
     And the "State" field has the "<options available>" options
     And the "State" field does not have the "<options unavailable>" options
     Examples:
