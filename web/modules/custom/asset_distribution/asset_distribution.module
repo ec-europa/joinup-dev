@@ -5,7 +5,6 @@
  * Contains asset_distribution.module.
  */
 
-use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
