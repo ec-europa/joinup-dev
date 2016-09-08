@@ -101,7 +101,7 @@ Feature: News moderation.
       # Pre-moderated collection, owner
       | Vandal Savage | Legion of Doom | Draft, Validated, Proposed | In assessment, Request deletion           |
 
-  Scenario: Non-members and administrators cannot see the 'Add news' button.
+  Scenario: Anonymous users and non-members cannot see the 'Add news' button.
     # Check visibility for anonymous users.
     When I am not logged in
     And I go to the homepage of the "Justice League" collection
@@ -112,11 +112,6 @@ Feature: News moderation.
     Then I should not see the link "Add news"
     # User from another collection should not be able to see the 'Add news'.
     When I am logged in as "Cheetah"
-    And I go to the homepage of the "Justice League" collection
-    Then I should not see the link "Add news"
-    # Administrators cannot create content. Facilitators are the moderators of
-    # the collection.
-    When I am logged in as "Superman"
     And I go to the homepage of the "Justice League" collection
     Then I should not see the link "Add news"
 
@@ -137,14 +132,15 @@ Feature: News moderation.
     When I am logged in as "Cheetah"
     And I go to the homepage of the "Justice League" collection
     Then I should not see the link "Add news"
-    # Administrators cannot create content. Facilitators are the moderators of
-    # the collection.
+    # Owners should be able to add news.
     When I am logged in as "Superman"
     And I go to the homepage of the "Justice League" collection
-    Then I should not see the link "Add news"
+    Then I should see the link "Add news"
+    # Facilitators should be able to add news.
     When I am logged in as "Hawkgirl"
     And I go to the homepage of the "Justice League" collection
     Then I should see the link "Add news"
+    # A normal member should be able to add news.
     When I am logged in as "Eagle"
     And I go to the homepage of the "Justice League" collection
     Then I should see the link "Add news"
