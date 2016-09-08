@@ -399,7 +399,15 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       // Convert role names to role IDs.
       $roles = [];
       if (!empty($values['roles'])) {
-        $roles = $this->getOgRoles(explode(', ', $values['roles']), $group);
+        $role_names = explode(', ', $values['roles']);
+        // Every owner is also a facilitator. In Joinup the facilitator role is
+        // assigned to the owner when they create the collection. Since in this
+        // step the collections are already created, mimick this behaviour by
+        // making sure every owner also has the 'facilitator' role.
+        if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
+          $role_names[] = 'facilitator';
+        }
+        $roles = $this->getOgRoles($role_names, $group);
       }
 
       $this->subscribeUserToGroup($member, $group, $roles);
