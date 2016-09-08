@@ -36,8 +36,10 @@
       required ? 'form-required',
     ]
   %}
-  
-  <label{{ legend.attributes.addClass(legend_span_classes) }}>{{ legend.title }}</label>
+
+  <legend>
+    <label{{ legend.attributes.addClass(legend_span_classes) }}>{{ legend.title }}</label>
+  </legend>
   <div class="fieldset-wrapper">
     {% if errors %}
       <div>
