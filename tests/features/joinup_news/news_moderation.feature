@@ -77,7 +77,7 @@ Feature: News moderation.
     And I press "Save"
     Then the "Creating Justice League" news content should have the "draft" state
 
-  Scenario Outline: Users and facilitators can see and add news.
+  Scenario Outline: Members, facilitators and owners can see and add news.
     Given I am logged in as "<user>"
     And I go to the homepage of the "<title>" collection
     Then I should see the link "Add news"
@@ -92,10 +92,14 @@ Feature: News moderation.
       | Eagle         | Justice League | Draft, Validated           | Proposed, In assessment, Request deletion |
       # Post-moderated collection, facilitator
       | Hawkgirl      | Justice League | Draft, Validated           | Proposed, In assessment, Request deletion |
+      # Post-moderated collection, owner
+      | Superman      | Justice League | Draft, Validated           | Proposed, In assessment, Request deletion |
       # Pre-moderated collection, member
       | Mirror Master | Legion of Doom | Draft, Proposed            | Validate, In assessment, Request deletion |
       # Pre-moderated collection, facilitator
       | Metallo       | Legion of Doom | Draft, Validated, Proposed | In assessment, Request deletion           |
+      # Pre-moderated collection, owner
+      | Vandal Savage | Legion of Doom | Draft, Validated, Proposed | In assessment, Request deletion           |
 
   Scenario: Non-members and administrators cannot see the 'Add news' button.
     # Check visibility for anonymous users.
