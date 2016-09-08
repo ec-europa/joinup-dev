@@ -155,4 +155,44 @@ trait OgTrait {
     }
   }
 
+  /**
+   * Checks if the given content belongs to the given parent rdf entity.
+   *
+   * If there are multiple entities or parents with the same title, then
+   * only the first one is checked.
+   *
+   * @param string $parent
+   *   The name of the parent rdf entity.
+   * @param string $parent_bundle
+   *   The bundle of the parent rdf entity.
+   * @param string $content
+   *   The title of the group content.
+   * @param string $content_bundle
+   *   The bundle of the group content.
+   *
+   * @throws \Exception
+   *   Thrown when a event with the given title does not exist.
+   */
+  public function assertOgMembership($parent, $parent_bundle, $content, $content_bundle) {
+    $parent = $this->getRdfEntityByLabel($parent, $parent_bundle);
+
+    $results = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties(['title' => $content, 'type' => $content_bundle]);
+    /** @var \Drupal\node\NodeInterface $content */
+    $content = reset($results);
+
+    if (empty($content)) {
+      throw new \Exception("The $content_bundle titled '$content' was not found.");
+    }
+
+    $group_ids = Og::getGroupIds($content, $parent->getEntityTypeId(), $parent_bundle);
+    if (!empty($group_ids) && in_array($parent->id(), $group_ids[$parent->getENtityTypeId()])) {
+      // Test passes.
+      return;
+    }
+
+    throw new \Exception("The $content_bundle '$content' is not associated with the '{$parent->label()}' {$parent_bundle}.");
+  }
+
 }

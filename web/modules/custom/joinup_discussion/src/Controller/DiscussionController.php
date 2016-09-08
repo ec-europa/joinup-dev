@@ -67,7 +67,7 @@ class DiscussionController extends ControllerBase {
    *
    * Access is granted to moderators and group members that have the permission
    * to create discussion articles inside of their group, which in practice
-   * means this is granted to collection facilitators.
+   * means this is granted to collection and solution facilitators.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the discussion entity is created.
@@ -76,7 +76,7 @@ class DiscussionController extends ControllerBase {
    *   The access result object.
    */
   public function createDiscussionAccess(RdfInterface $rdf_entity) {
-    if ($rdf_entity->bundle() != 'collection') {
+    if (!in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
       return AccessResult::forbidden();
     }
     $user = $this->currentUser();

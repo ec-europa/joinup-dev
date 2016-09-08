@@ -343,33 +343,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Checks the number of available releases.
-   *
-   * @param int $number
-   *   The expected number of releases.
-   *
-   * @throws \Exception
-   *   Thrown when the number of release entities do not
-   *   match the expectation.
-   *
-   * @Then I should have :number release(s)
-   */
-  public function assertReleaseCount($number) {
-    // We cannot rely on $this->assertRdfEntityCount() because a release shares
-    // the same bundle with a solution. We need to distinguish them by the
-    // presence of the 'is_version_of' field - if this field is missing it is a
-    // solution, if it is present it is a release.
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'asset_release')
-      ->exists('field_isr_is_version_of')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
-    }
-  }
-
-  /**
    * Subscribes the given users to the given solution.
    *
    * The role Id of organic group roles are consisting of 3 parts, the entity
@@ -439,7 +412,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'contact information' => 'field_is_contact_information',
       'creation date' => 'field_is_creation_date',
       'description' => 'field_is_description',
-      'distribution' => 'field_is_distribution',
       'documentation' => 'field_is_documentation',
       'elibrary creation' => 'field_is_elibrary_creation',
       'keywords' => 'field_keywords',
