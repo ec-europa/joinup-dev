@@ -11,6 +11,6 @@ services:
      - { name: event_subscriber }
   joinup.active_og_route_context:
     class: Drupal\joinup\ContextProvider\ActiveOgRouteContext
-    arguments: ['@current_route_match', '@og.group.manager']
+    arguments: ['@current_route_match', '@og.group_type_manager']
     tags:
       - { name: 'context_provider' }

@@ -9,7 +9,7 @@ use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\og\GroupManager;
+use Drupal\og\GroupTypeManager;
 use Drupal\og\Og;
 
 /**
@@ -20,11 +20,11 @@ class ActiveOgRouteContext implements ContextProviderInterface {
   use StringTranslationTrait;
 
   /**
-   * The group manager object.
+   * The group type manager.
    *
-   * @var \Drupal\og\GroupManager
+   * @var \Drupal\og\GroupTypeManager
    */
-  protected $groupManager;
+  protected $groupTypeManager;
 
   /**
    * The route match object.
@@ -38,11 +38,11 @@ class ActiveOgRouteContext implements ContextProviderInterface {
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match object.
-   * @param \Drupal\og\GroupManager $group_manager
+   * @param \Drupal\og\GroupTypeManager $group_type_manager
    *   The group manager object.
    */
-  public function __construct(RouteMatchInterface $route_match, GroupManager $group_manager) {
-    $this->groupManager = $group_manager;
+  public function __construct(RouteMatchInterface $route_match, GroupTypeManager $group_type_manager) {
+    $this->groupTypeManager = $group_type_manager;
     $this->routeMatch = $route_match;
   }
 
@@ -62,7 +62,7 @@ class ActiveOgRouteContext implements ContextProviderInterface {
         $entity_bundle = $entity->bundle();
 
         // If this entity is a group, we stop looking for other matches.
-        if ($this->groupManager->isGroup($entity_type, $entity_bundle)) {
+        if ($this->groupTypeManager->isGroup($entity_type, $entity_bundle)) {
           $value = $entity;
         }
         elseif (Og::isGroupContent($entity_type, $entity_bundle)) {
