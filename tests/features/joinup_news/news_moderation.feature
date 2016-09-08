@@ -11,8 +11,8 @@
   # cannot be tested through the UI and are only for ensuring proper
   # functionality.
 Feature: News moderation.
-  As a facilitator, member or collection administrator, or a site administrator
-  In order to manage collection news
+  As a member, facilitator or collection owner
+  In order to manage news about my collection
   I need to be able to have a workflow based news management system.
 
   Background:
@@ -34,15 +34,15 @@ Feature: News moderation.
       | Justice League | no         |
       | Legion of Doom | yes        |
     And the following collection user memberships:
-      | collection     | user          | roles         |
-      | Justice League | Superman      | administrator |
-      | Justice League | Hawkgirl      | facilitator   |
-      | Justice League | Eagle         | member        |
-      | Justice League | Question      | member        |
-      | Legion of Doom | Vandal Savage | administrator |
-      | Legion of Doom | Metallo       | facilitator   |
-      | Legion of Doom | Mirror Master | member        |
-      | Legion of Doom | Cheetah       | member        |
+      | collection     | user          | roles       |
+      | Justice League | Superman      | owner       |
+      | Justice League | Hawkgirl      | facilitator |
+      | Justice League | Eagle         | member      |
+      | Justice League | Question      | member      |
+      | Legion of Doom | Vandal Savage | owner       |
+      | Legion of Doom | Metallo       | facilitator |
+      | Legion of Doom | Mirror Master | member      |
+      | Legion of Doom | Cheetah       | member      |
     And "news" content:
       | title                         | kicker                                      | body                                                                    | state            | author        |
       | Creating Justice League       | 6 Members to start with                     | TBD                                                                     | draft            | Eagle         |

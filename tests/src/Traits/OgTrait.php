@@ -63,6 +63,9 @@ trait OgTrait {
   protected function convertOgRoleNamesToIds(array $roles, EntityInterface $group) {
     $role_prefix = $group->getEntityTypeId() . '-' . $group->bundle() . '-';
     foreach ($roles as $key => $role) {
+      // What is called a "collection owner" or a "solution owner" in Joinup, is
+      // known as an "administrator" in OG.
+      $role = $role === 'owner' ? 'administrator' : $role;
       $roles[$key] = $role_prefix . $role;
     }
 
