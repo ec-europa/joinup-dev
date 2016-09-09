@@ -26,8 +26,6 @@
 {% for type, messages in message_list %}
   {%
     set classes = [
-      'messages',
-      'messages--' ~ type,
       'alert',
       'alert--' ~ type,
     ]
