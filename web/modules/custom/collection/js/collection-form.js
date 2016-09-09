@@ -56,7 +56,6 @@
           }
 
           // Update the select slider to reflect only the available options.
-
           var select = $('#edit-field-ar-elibrary-creation');
           var selectLength = select.find('option').length;
           var slider = $('#slider').slider({
