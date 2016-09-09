@@ -3,8 +3,9 @@
  * Joinup collection edit form script.
  */
 
+"use strict";
+
 (function ($) {
-  "use strict";
   Drupal.behaviors.collection = {
     attach: function () {
       if ($('#edit-field-ar-closed-value').length && $('#edit-field-ar-elibrary-creation').length) {
