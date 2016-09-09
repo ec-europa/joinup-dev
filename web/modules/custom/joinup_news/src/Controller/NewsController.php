@@ -83,6 +83,11 @@ class NewsController extends ControllerBase {
    *   The access result object.
    */
   public function createNewsAccess(RdfInterface $rdf_entity) {
+    // @todo Add also 'solution' when a workflow for news will be in place.
+    if (!in_array($rdf_entity->bundle(), ['collection'])) {
+      return AccessResult::forbidden();
+    }
+
     $user = $this->currentUser();
     // Grant access if the user is a moderator.
     if (in_array('moderator', $user->getRoles())) {
