@@ -202,15 +202,15 @@ Feature: News moderation.
     And I should see the text "Collection"
     And I should see the text "Legion of Doom"
     When I go to the "Cheetah kills WonderWoman" news page
-    Then I should not see the link "Edit"
+    Then I should see the link "Edit"
     # Edit and publish the news as a facilitator
     When I am logged in as "Metallo"
     When I go to the "Cheetah kills WonderWoman" news page
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
-    And the "State" field has the "Proposed, Validated" options
-    And the "State" field does not have the "Draft, In assessment, Request deletion" options
+    And the "State" field has the "Proposed, In assessment, Validated" options
+    And the "State" field does not have the "Draft, Request deletion" options
     When I select "Validated" from "State"
     And I press "Save"
     Then I should see the text "Validated"
