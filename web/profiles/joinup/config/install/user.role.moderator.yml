@@ -37,3 +37,5 @@ permissions:
   - 'view any unpublished news content'
   - 'view licence overview page'
   - 'view rdf entity overview'
+  - 'view draft graph'
+  - 'view unpublished rdf entity'

@@ -37,4 +37,6 @@ permissions:
   - 'update group'
   - 'view any unpublished content'
   - 'view any unpublished news content'
+  - 'view draft graph'
+  - 'view unpublished rdf entity'
 role_type: standard
