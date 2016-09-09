@@ -196,6 +196,7 @@ Feature: News moderation.
     And I select "Proposed" from "State"
     And I press "Save"
     # Check reference to news page.
+ # Todo: Why should we not see a success message after creating a news article? See ISAICP-2761
     Then I should not see the success message "News <em>Cheetah kills WonderWoman</em> has been created."
     Then I should see the heading "Cheetah kills WonderWoman"
     And the "Cheetah kills WonderWoman" news content should not be published
@@ -241,6 +242,7 @@ Feature: News moderation.
     Examples:
       | user          | title                     |
       # State: in assessment
+      # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
       | Eagle         | Space cannon fired        |
       # State: validated
       # Todo: validated content should still be editable, for as long as it can
@@ -251,6 +253,7 @@ Feature: News moderation.
       # State: draft, not owned
       | Cheetah       | Creating Legion of Doom   |
       # State: in assessment
+      # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
       | Mirror Master | Stealing complete         |
       # State: validated
       # Todo: validated content should still be editable, for as long as it can
