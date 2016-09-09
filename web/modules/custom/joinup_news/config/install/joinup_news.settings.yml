@@ -62,7 +62,7 @@ transitions:
         - moderator
         - rdf_entity-collection-facilitator
     in_assessment:
-      validated:
+      proposed:
         - moderator
         - rdf_entity-collection-member
     deletion_request: { }
@@ -109,7 +109,7 @@ transitions:
         - moderator
         - rdf_entity-collection-facilitator
     in_assessment:
-      validated:
+      proposed:
         - moderator
         - rdf_entity-collection-member
     deletion_request:

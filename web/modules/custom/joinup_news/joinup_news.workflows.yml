@@ -41,7 +41,7 @@ news_workflow:
       to: validated
     report:
       label: Report
-      from: [validated]
+      from: [proposed]
       to: in_assessment
     request_deletion:
       label: Request deletion

@@ -270,7 +270,7 @@ Feature: News moderation.
     And the "State" field has the "<options available>" options
     And the "State" field does not have the "<options unavailable>" options
     Examples:
-      | user     | title                         | options available   | options unavailable                               |
+      | user     | title                         | options available                  | options unavailable                |
       # Post moderated
       | Hawkgirl | Hawkgirl is a spy             | Proposed, Validated, In assessment | Draft, Request deletion            |
       # Members can move to 'in assessment' state.
