@@ -270,22 +270,22 @@ Feature: News moderation.
     And the "State" field has the "<options available>" options
     And the "State" field does not have the "<options unavailable>" options
     Examples:
-      | user     | title                         | options available                  | options unavailable                |
+      | user     | title                         | options available                  | options unavailable                               |
       # Post moderated
-      | Hawkgirl | Hawkgirl is a spy             | Proposed, Validated, In assessment | Draft, Request deletion            |
+      | Hawkgirl | Hawkgirl is a spy             | Proposed, Validated, In assessment | Draft, Request deletion                           |
       # Members can move to 'in assessment' state.
-      | Hawkgirl | Hawkgirl helped Green Lantern | Validated, Proposed | Draft, In assessment, Request deletion            |
-      | Hawkgirl | Space cannon fired            | Proposed            | Draft, Validated, In assessment, Request deletion |
+      | Hawkgirl | Hawkgirl helped Green Lantern | Validated, Proposed                | Draft, In assessment, Request deletion            |
+      | Hawkgirl | Space cannon fired            | Proposed                           | Draft, Validated, In assessment, Request deletion |
       # Pre moderated
       # Facilitators have access to create news and directly put it to validate. For created and proposed, member role should be used.
-      | Metallo  | Creating Legion of Doom       | Draft, Proposed, Validated    | In assessment, Request deletion         |
+      | Metallo  | Creating Legion of Doom       | Draft, Proposed, Validated         | In assessment, Request deletion                   |
       # Validated content can be moved back to 'Proposed' state by a facilitator.Scenario:
       # @Todo: it should also be possible to move to 'Draft'. See ISAICP-2761
-      | Metallo  | Stealing from Batman          | Proposed, Validated | Draft, In assessment, Request deletion           |
+      | Metallo  | Stealing from Batman          | Proposed, Validated                | Draft, In assessment, Request deletion            |
       # Members can move to 'in assessment' state.
-      | Metallo  | Learn batman's secret         | Proposed, In assessment, Validated | Draft,  Request deletion           |
-      | Metallo  | Stealing complete             | Proposed            | Draft, Request deletion                           |
-      | Metallo  | Kill the sun                  | Validated           | Draft, Proposed, In assessment, Request deletion  |
+      | Metallo  | Learn batman's secret         | Proposed, In assessment, Validated | Draft,  Request deletion                          |
+      | Metallo  | Stealing complete             | Proposed                           | Draft, Request deletion                           |
+      | Metallo  | Kill the sun                  | Validated                          | Draft, Proposed, In assessment, Request deletion  |
 
   Scenario Outline: Facilitators cannot view unpublished content of another collection.
     Given I am logged in as "<user>"
