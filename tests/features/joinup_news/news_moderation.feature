@@ -229,38 +229,38 @@ Feature: News moderation.
     And the "State" field has the "<options available>" options
     And the "State" field does not have the "<options unavailable>" options
     Examples:
-      | user          | title                         | options available | options unavailable                         |
+      | user          | title                   | options available | options unavailable                       |
       # State: draft, owned by Eagle
-      | Eagle         | Creating Justice League       | Draft, Validated  | Proposed, In assessment                     |
+      | Eagle         | Creating Justice League | Draft, Validated  | Proposed, In assessment                   |
       # State: draft, can propose
-      | Mirror Master | Creating Legion of Doom       | Draft, Proposed   | Validate, In assessment, Request deletion   |
+      | Mirror Master | Creating Legion of Doom | Draft, Proposed   | Validate, In assessment, Request deletion |
 
   Scenario Outline: Members cannot edit news they own for specific states.
     Given I am logged in as "<user>"
     And I go to the "<title>" news page
     Then I should not see the link "Edit"
     Examples:
-      | user          | title                     |
+      | user          | title                         |
       # State: in assessment
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
-      | Eagle         | Space cannon fired        |
+      | Eagle         | Space cannon fired            |
       # State: validated
       # Todo: validated content should still be editable, for as long as it can
       # does not stay in 'validated' state. See ISAICP-2761.
       | Eagle         | Hawkgirl helped Green Lantern |
       # State: draft, not owned
-      | Eagle         | Question joined JL        |
+      | Eagle         | Question joined JL            |
       # State: draft, not owned
-      | Cheetah       | Creating Legion of Doom   |
+      | Cheetah       | Creating Legion of Doom       |
       # State: in assessment
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
-      | Mirror Master | Stealing complete         |
+      | Mirror Master | Stealing complete             |
       # State: validated
       # Todo: validated content should still be editable, for as long as it can
       # does not stay in 'validated' state. See ISAICP-2761.
-      | Mirror Master | Stealing from Batman         |
+      | Mirror Master | Stealing from Batman          |
       # State: deletion request
-      | Mirror Master | Kill the sun              |
+      | Mirror Master | Kill the sun                  |
 
   Scenario Outline: Facilitators have access on content regardless of state.
     Given I am logged in as "<user>"
