@@ -279,8 +279,10 @@ Feature: News moderation.
       # Pre moderated
       # Facilitators have access to create news and directly put it to validate. For created and proposed, member role should be used.
       | Metallo  | Creating Legion of Doom       | Draft, Proposed, Validated    | In assessment, Request deletion         |
+      # Validated content can be moved back to 'Proposed' state by a facilitator.Scenario:
+      # @Todo: it should also be possible to move to 'Draft'. See ISAICP-2761
+      | Metallo  | Stealing from Batman          | Proposed, Validated | Draft, In assessment, Request deletion           |
       # Members can move to 'in assessment' state.
-      | Metallo  | Stealing from Batman          | Proposed, In assessment, Validated | Draft,  Request deletion           |
       | Metallo  | Learn batman's secret         | Proposed, In assessment, Validated | Draft,  Request deletion           |
       | Metallo  | Stealing complete             | Proposed            | Draft, Request deletion                           |
       | Metallo  | Kill the sun                  | Validated           | Draft, Proposed, In assessment, Request deletion  |
