@@ -25,10 +25,7 @@
  * @see template_preprocess_block()
  */
 #}
-{% if not hide_title %}
-  <h1 class="page__title">
-    {% block content %}
-      {{ content }}
-    {% endblock %}
-  </h1>
-{% endif %}
+
+  {% block content %}
+    {{ content }}
+  {% endblock %}

@@ -55,25 +55,17 @@
     title_display not in ['after', 'before'] ? 'form-no-label',
     disabled == 'disabled' ? 'form-disabled',
     errors ? 'form-item--error',
-    'textfield--full-width',
-    'textfield--helptext-container',
-    'mdl-textfield',
-    'mdl-js-textfield',
-    'mdl-textfield--floating-label',
-    'textfield--helptext-container',
   ]
 %}
 {%
   set description_classes = [
-    'description',
+    'description description--checkbox',
+    'form__description',
+    'form__description--checkbox',
     description_display == 'invisible' ? 'visually-hidden',
-    'textfield__helptext',
   ]
 %}
 <div{{ attributes.addClass(classes) }}>
-  {% if label_display in ['before', 'invisible'] %}
-    <div class="mdl-textfield__label"> {{ label }} </div>
-  {% endif %}
   {% if prefix is not empty %}
     <span class="field-prefix">{{ prefix }}</span>
   {% endif %}
@@ -82,12 +74,12 @@
       {{ description.content }}
     </div>
   {% endif %}
-  {{ children }}
+  <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+    <span class="mdl-checkbox__label form__label"> {{ label }} </span>
+    {{ children }}
+  </label>
   {% if suffix is not empty %}
     <span class="field-suffix">{{ suffix }}</span>
-  {% endif %}
-  {% if label_display == 'after' %}
-    {{ label }}
   {% endif %}
   {% if errors %}
     <div class="form-item--error-message">

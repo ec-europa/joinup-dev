@@ -226,7 +226,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    */
   public function iClickOn($element) {
     $page = $this->getSession()->getPage();
-    $findName = $page->find("css", $element);
+    $findName = $page->find('css', $element);
     if (!$findName) {
       throw new \Exception($element . " could not be found");
     }

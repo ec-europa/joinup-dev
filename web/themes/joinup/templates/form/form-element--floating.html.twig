@@ -56,16 +56,16 @@
     disabled == 'disabled' ? 'form-disabled',
     errors ? 'form-item--error',
     'textfield--full-width',
-    'textfield--helptext-container',
     'mdl-textfield',
     'mdl-js-textfield',
     'mdl-textfield--floating-label',
-    'textfield--helptext-container',
+    description ? 'textfield--helptext-container',
   ]
 %}
 {%
   set description_classes = [
     'description',
+    'form__description',
     description_display == 'invisible' ? 'visually-hidden',
     'textfield__helptext',
   ]
