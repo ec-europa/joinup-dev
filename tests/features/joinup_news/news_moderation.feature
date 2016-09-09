@@ -240,20 +240,14 @@ Feature: News moderation.
     Then I should not see the link "Edit"
     Examples:
       | user          | title                     |
-      # State: proposed
-      | Eagle         | Hawkgirl is a spy         |
       # State: in assessment
       | Eagle         | Space cannon fired        |
-      # State: proposed
-      | Eagle         | Eagle to join in season 4 |
       # State: validated
       # Todo: validated content should still be editable, for as long as it can
       # does not stay in 'validated' state. See ISAICP-2761.
       | Eagle         | Hawkgirl helped Green Lantern |
       # State: draft, not owned
       | Eagle         | Question joined JL        |
-      # State: proposed
-      | Mirror Master | Learn batman's secret     |
       # State: draft, not owned
       | Cheetah       | Creating Legion of Doom   |
       # State: in assessment
