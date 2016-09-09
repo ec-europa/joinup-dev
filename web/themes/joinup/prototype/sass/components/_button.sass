@@ -4,8 +4,10 @@
   font-weight: $font-weight-medium
   line-height: initial
   height: auto
-  padding: 20px
+  padding: 15px 30px
   letter-spacing: 2px
+  border-width: 3px
+  border-style: solid
   +border-radius(4px)
 
 // Elements
@@ -15,10 +17,12 @@
 // --------------------------------------------------
 .button--blue
   color: #fff
+  border-color: $color-blue-medium
   background-color: $color-blue-medium !important
 
 .button--blue-light
   color: #fff
+  border-color: $color-blue-lighter
   background-color: $color-blue-lighter !important
   min-width: 200px
 
@@ -27,6 +31,11 @@
 
 .button--margin
   margin-top: 15px
+
+.button--transparent
+  color: $color-grey-medium !important
+  border-color: $color-grey-medium
+  background-color: transparent !important
 
 // Dependiencies
 // --------------------------------------------------
