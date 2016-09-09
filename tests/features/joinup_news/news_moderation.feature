@@ -231,12 +231,8 @@ Feature: News moderation.
       | user          | title                         | options available | options unavailable                         |
       # State: draft, owned by Eagle
       | Eagle         | Creating Justice League       | Draft, Validated  | Proposed, In assessment                     |
-      # State: validated, can report
-      | Eagle         | Hawkgirl helped Green Lantern | In assessment     | Draft, Validated, Proposed                  |
       # State: draft, can propose
       | Mirror Master | Creating Legion of Doom       | Draft, Proposed   | Validate, In assessment, Request deletion   |
-      # State: validated, can report
-      | Mirror Master | Stealing from Batman          | In assessment     | Draft, Proposed, Validate, Request deletion |
 
   Scenario Outline: Members cannot edit news they own for specific states.
     Given I am logged in as "<user>"
@@ -250,6 +246,10 @@ Feature: News moderation.
       | Eagle         | Space cannon fired        |
       # State: proposed
       | Eagle         | Eagle to join in season 4 |
+      # State: validated
+      # Todo: validated content should still be editable, for as long as it can
+      # does not stay in 'validated' state. See ISAICP-2761.
+      | Eagle         | Hawkgirl helped Green Lantern |
       # State: draft, not owned
       | Eagle         | Question joined JL        |
       # State: proposed
@@ -258,6 +258,10 @@ Feature: News moderation.
       | Cheetah       | Creating Legion of Doom   |
       # State: in assessment
       | Mirror Master | Stealing complete         |
+      # State: validated
+      # Todo: validated content should still be editable, for as long as it can
+      # does not stay in 'validated' state. See ISAICP-2761.
+      | Mirror Master | Stealing from Batman         |
       # State: deletion request
       | Mirror Master | Kill the sun              |
 
