@@ -413,7 +413,7 @@
     </target>
 
     <target name="setup-continuousphp"
-            depends = "check-continuousphp">
+            depends="check-continuousphp">
         <echo message="Put the odbc configuration file in the home folder where CPHP can find it" />
         <copy
             file="./vendor/ec-europa/infra/continuousphp/odbc.ini"
@@ -460,7 +460,7 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
     </target>
 
     <target name="build-continuousphp"
-            depends = "check-continuousphp">
+            depends="check-continuousphp">
         <echo message="Install the SASS compiler" />
         <exec dir="${project.basedir}"
               command="gem install sass"
