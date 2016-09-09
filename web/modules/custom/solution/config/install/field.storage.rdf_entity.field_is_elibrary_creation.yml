@@ -14,14 +14,14 @@ type: list_integer
 settings:
   allowed_values:
     -
-      value: 0
-      label: 'Only collection facilitators can create new content'
+      value: 'facilitators'
+      label: 'Only collection facilitators can create new content.'
     -
-      value: 1
-      label: 'Only members can create new content'
+      value: 'members'
+      label: 'Only members can create new content.'
     -
-      value: 2
-      label: 'Any registered user can create new content'
+      value: 'registered users'
+      label: 'Any registered user can create new content.'
   allowed_values_function: ''
 module: options
 locked: false

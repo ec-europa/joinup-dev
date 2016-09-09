@@ -10,17 +10,17 @@ third_party_settings:
 id: rdf_entity.field_ar_elibrary_creation
 field_name: field_ar_elibrary_creation
 entity_type: rdf_entity
-type: list_integer
+type: list_string
 settings:
   allowed_values:
     -
-      value: 0
+      value: 'facilitators'
       label: 'Only collection facilitators can create new content.'
     -
-      value: 1
+      value: 'members'
       label: 'Only members can create new content.'
     -
-      value: 2
+      value: 'registered users'
       label: 'Any registered user can create new content.'
   allowed_values_function: ''
 module: options

@@ -214,8 +214,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   protected function convertValueAliases($fields) {
     $mapped_values = [
       'field_ar_moderation' => ['no' => 0, 'yes' => 1],
-      'field_ar_elibrary_creation' =>
-        ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
       'field_ar_closed' => ['no' => 0, 'yes' => 1],
     ];
 
