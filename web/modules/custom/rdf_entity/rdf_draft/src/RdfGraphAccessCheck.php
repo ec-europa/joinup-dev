@@ -3,28 +3,54 @@
 namespace Drupal\rdf_draft;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\Routing\Route;
 
 /**
  * Checks access for displaying configuration translation page.
  */
 class RdfGraphAccessCheck implements AccessInterface {
+  /**
+   * The entity manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityManager;
+
+  /**
+   * Constructs a EntityCreateAccessCheck object.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_manager
+   *   The entity manager.
+   */
+  public function __construct(EntityTypeManagerInterface $entity_manager) {
+    $this->entityManager = $entity_manager;
+  }
 
   /**
    * A custom access check.
    *
    * @param \Drupal\Core\Session\AccountInterface $account
-   *   Run access checks for this account.
+   *    Run access checks for this account.
+   * @param \Symfony\Component\Routing\Route $route
+   *    The current route.
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *    The entity object.
+   *
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *    The result of the access check.
+   *
+   * @throws \Exception
+   *    Thrown when the storage does not support graphs.
    */
-  public function access(AccountInterface $account, Route $route, Rdf $rdf_entity) {
+  public function access(AccountInterface $account, Route $route, RdfInterface $rdf_entity) {
     $graph = $route->getOption('graph_name');
     $entity_type_id = $route->getOption('entity_type_id');
-    // @todo inject...
-    $storage = \Drupal::entityManager()->getStorage($entity_type_id);
+    $storage = $this->entityManager->getStorage($entity_type_id);
     if (!$storage instanceof RdfEntitySparqlStorage) {
       throw new \Exception('Storage not supported.');
     }
