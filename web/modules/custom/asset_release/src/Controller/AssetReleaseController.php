@@ -41,7 +41,7 @@ class AssetReleaseController extends ControllerBase {
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
-   * @param \Drupal\Core\Entity\Query\QueryFactory
+   * @param \Drupal\Core\Entity\Query\QueryFactory $query_factory
    *   The entity query factory service.
    */
   public function __construct(OgAccessInterface $og_access, QueryFactory $query_factory) {
