@@ -18,6 +18,7 @@ dependencies:
   - ds
   - dynamic_page_cache
   - editor
+  - field_group
   - file
   - help
   - image

@@ -22,11 +22,83 @@ dependencies:
     - image.style.thumbnail
     - rdf_entity.rdfentity.collection
   module:
+    - field_group
     - image
     - inline_entity_form
     - link
     - rdf_entity
     - text
+third_party_settings:
+  field_group:
+    group_general:
+      children:
+        - group_main
+        - group_description
+        - group_categorisation
+      parent_name: ''
+      weight: 0
+      label: General
+      format_type: tabs
+      format_settings:
+        label: General
+        id: ''
+        classes: ''
+        direction: vertical
+    group_main:
+      children:
+        - label
+        - field_ar_description
+        - field_ar_logo
+        - field_ar_banner
+        - field_ar_closed
+        - field_ar_elibrary_creation
+        - field_ar_moderation
+      parent_name: group_general
+      weight: 5
+      label: Main
+      format_type: tab
+      format_settings:
+        label: Main
+        id: ''
+        classes: ''
+        formatter: open
+        description: ''
+        required_fields: true
+    group_description:
+      children:
+        - field_ar_abstract
+        - field_ar_access_url
+        - field_ar_creation_date
+        - field_ar_modification_date
+        - field_ar_contact_information
+        - field_ar_owner
+        - field_ar_affiliates
+      parent_name: group_general
+      weight: 6
+      label: Description
+      format_type: tab
+      format_settings:
+        label: Description
+        id: ''
+        classes: ''
+        formatter: closed
+        description: 'Lorem ipsum dolor sit amet.'
+        required_fields: true
+    group_categorisation:
+      children:
+        - field_policy_domain
+        - field_spatial_coverage
+      parent_name: group_general
+      weight: 7
+      label: Categorisation
+      format_type: tab
+      format_settings:
+        label: Categorisation
+        id: ''
+        classes: ''
+        formatter: closed
+        description: 'Quisque quam urna, sagittis non efficitur.'
+        required_fields: true
 id: rdf_entity.collection.propose
 targetEntityType: rdf_entity
 bundle: collection
@@ -40,14 +112,14 @@ content:
     third_party_settings: {  }
     type: text_textarea
   field_ar_access_url:
-    weight: 6
+    weight: 4
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
   field_ar_affiliates:
-    weight: 13
+    weight: 11
     settings:
       match_operator: CONTAINS
       size: 60
@@ -56,13 +128,13 @@ content:
     type: entity_reference_autocomplete
   field_ar_banner:
     type: image_image
-    weight: 5
+    weight: 4
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
   field_ar_closed:
-    weight: 14
+    weight: 5
     settings:
       display_label: false
     third_party_settings: {  }
@@ -80,7 +152,7 @@ content:
     third_party_settings: {  }
     type: inline_entity_form_complex
   field_ar_creation_date:
-    weight: 7
+    weight: 5
     settings:
       behaviour: create
     third_party_settings: {  }
@@ -93,25 +165,25 @@ content:
     third_party_settings: {  }
     type: text_textarea
   field_ar_elibrary_creation:
-    weight: 15
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_select
   field_ar_logo:
-    weight: 4
+    weight: 3
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
   field_ar_moderation:
-    weight: 16
+    weight: 7
     settings:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
   field_ar_modification_date:
-    weight: 8
+    weight: 6
     settings:
       behaviour: modified
     third_party_settings: {  }
@@ -129,7 +201,7 @@ content:
     third_party_settings: {  }
     type: inline_entity_form_complex
   field_policy_domain:
-    weight: 11
+    weight: 9
     settings:
       match_operator: CONTAINS
       size: 60
@@ -137,7 +209,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_spatial_coverage:
-    weight: 12
+    weight: 10
     settings:
       match_operator: CONTAINS
       size: 60
