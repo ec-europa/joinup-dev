@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e1e34ac5e2dcfcd4122b59913fbe98a1",
-    "content-hash": "ca2972267e96e73518c6c1ddf1eee9cf",
+    "hash": "c5546c1a607cae1f51187e34c6caebde",
+    "content-hash": "cb7a3d831b9af4642d625b393f086dc6",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1565,6 +1565,70 @@
             "time": "2016-01-11 16:56:15"
         },
         {
+            "name": "drupal/message",
+            "version": "8.1.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message",
+                "reference": "22e2a0fb93565459117c23a307ca457f0aa2a3b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-alpha1.zip",
+                "reference": "22e2a0fb93565459117c23a307ca457f0aa2a3b3",
+                "shasum": null
+            },
+            "require": {
+                "drupal/core": "8.*"
+            },
+            "replace": {
+                "drupal/message_example": "self.version"
+            },
+            "suggest": {
+                "drupal/core": "Required by drupal/message_example",
+                "drupal/token": "Required by drupal/message_example"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "A general message logging utility.",
+            "homepage": "https://www.drupal.org/project/message",
+            "time": "2016-08-01 19:43:39"
+        },
+        {
+            "name": "drupal/message_notify",
+            "version": "dev-8.x-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message_notify",
+                "reference": "31eb9e2fbbe75d4244f3fa74eb7b5e05ed4edc08"
+            },
+            "require": {
+                "drupal/core": "8.*",
+                "drupal/message": "~8.1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Message notify.",
+            "homepage": "https://drupal.org/project/message_notify",
+            "time": "2016-08-28 18:09:51"
+        },
+        {
             "name": "drupal/og",
             "version": "dev-check-group-content-crud-access",
             "source": {
@@ -1674,7 +1738,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha17.zip",
-                "reference": null,
+                "reference": "dde5cecfbde386ae55b0aa799d1e146b509b3ffa",
                 "shasum": null
             },
             "require": {
@@ -1731,7 +1795,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha6.zip",
-                "reference": null,
+                "reference": "1b949c59477031ce5880c13537eb73a5f3cb4096",
                 "shasum": null
             },
             "require": {
@@ -1780,6 +1844,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
+                },
+                "patches_applied": {
+                    "Add a transition event.": "https://www.drupal.org/files/issues/state_machine_should-2794537-3.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
@@ -2699,7 +2766,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2754,7 +2821,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }

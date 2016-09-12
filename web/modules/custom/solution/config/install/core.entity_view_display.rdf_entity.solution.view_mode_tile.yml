@@ -174,6 +174,7 @@ hidden:
   field_is_solution_type: true
   field_is_source_code_repository: true
   field_is_standardization_level: true
+  field_is_state: true
   field_is_test_resource_type: true
   field_is_translation: true
   field_is_version: true
@@ -184,5 +185,5 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
-  field_is_state: true
   licence: true
+  releases_overview: true
