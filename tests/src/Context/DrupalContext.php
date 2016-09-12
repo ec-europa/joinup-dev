@@ -169,6 +169,87 @@ class DrupalContext extends DrupalExtensionDrupalContext {
   }
 
   /**
+   * Assert that certain fields are present and visible on the page.
+   *
+   * @param string $fields
+   *    Fields.
+   *
+   * @throws \Exception
+   *   Thrown when an expected field is not present or is not visible.
+   *
+   * @Then /^(?:|the following )fields should be visible? "(?P<fields>[^"]*)"$/
+   */
+  public function assertFieldsVisible($fields) {
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $not_found = [];
+    $not_visible = [];
+    foreach ($fields as $field) {
+      $element = $this->getSession()->getPage()->find('named', ['field', $field]);
+      if (!$element) {
+        $not_found[] = $field;
+        continue;
+      }
+      elseif (!$element->isVisible()) {
+        // Retrieve the first standard form item wrapper around our field.
+        // Some fields, like text areas or checkboxes, are actually hidden but
+        // their label and container are not.
+        $wrapper = $element->find('xpath', "ancestor-or-self::div[@class and contains(concat(' ', normalize-space(@class), ' '), ' form-item ')][1]");
+
+        if (!$wrapper->isVisible()) {
+          $not_visible[] = $field;
+        }
+      }
+    }
+
+    if ($not_found) {
+      throw new \Exception("Field(s) expected, but not found: " . implode(', ', $not_found));
+    }
+    if ($not_visible) {
+      throw new \Exception("Field(s) expected, but not visible: " . implode(', ', $not_visible));
+    }
+  }
+
+  /**
+   * Assert that certain fields are present but not visible on the page.
+   *
+   * @param string $fields
+   *    Fields.
+   *
+   * @throws \Exception
+   *   Thrown when a field is not present or is visible.
+   *
+   * @Then /^(?:|the following )fields should not be visible? "(?P<fields>[^"]*)"$/
+   */
+  public function assertFieldsNotVisible($fields) {
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $not_found = [];
+    $visible = [];
+    foreach ($fields as $field) {
+      $element = $this->getSession()->getPage()->find('named', ['field', $field]);
+      if (!$element) {
+        $not_found[] = $field;
+        continue;
+      }
+
+      // Retrieve the first standard form item wrapper around our field.
+      // Some fields, like text areas or checkboxes, are actually hidden but
+      // their label and container are not.
+      $wrapper = $element->find('xpath', "ancestor-or-self::div[@class and contains(concat(' ', normalize-space(@class), ' '), ' form-item ')][1]");
+      // Neither the field or its wrapper should be visible at all.
+      if ($element->isVisible() || $wrapper->isVisible()) {
+        $visible[] = $field;
+      }
+    }
+
+    if ($not_found) {
+      throw new \Exception("Field(s) expected, but not found: " . implode(', ', $not_found));
+    }
+    if ($visible) {
+      throw new \Exception("Field(s) should not be visible: " . implode(', ', $visible));
+    }
+  }
+
+  /**
    * Checks the users existence.
    *
    * @param string $username
@@ -210,6 +291,76 @@ class DrupalContext extends DrupalExtensionDrupalContext {
     }
     if ($not_found) {
       throw new \Exception("Fieldset(s) expected, but not found: " . implode(', ', $not_found));
+    }
+  }
+
+  /**
+   * Assert that certain fieldsets are present and visible on the page.
+   *
+   * @param string $fieldsets
+   *    The fieldset names to search for, separated by comma.
+   *
+   * @throws \Exception
+   *   Thrown when a fieldset is not found or is not visible.
+   *
+   * @Then (the following )field widgets should be visible :fieldsets
+   * @Then (the following )fieldsets should be visible :fieldsets
+   */
+  public function assertFieldsetsVisible($fieldsets) {
+    $fieldsets = $this->explodeCommaSeparatedStepArgument($fieldsets);
+    $not_found = [];
+    $not_visible = [];
+    foreach ($fieldsets as $fieldset) {
+      $is_found = $this->getSession()->getPage()->find('named', ['fieldset', $fieldset]);
+      if (!$is_found) {
+        $not_found[] = $fieldset;
+      }
+
+      if (!$is_found->isVisible()) {
+        $not_visible[] = $fieldset;
+      }
+    }
+
+    if ($not_found) {
+      throw new \Exception("Fieldset(s) expected, but not found: " . implode(', ', $not_found));
+    }
+    if ($not_visible) {
+      throw new \Exception("Fieldset(s) expected, but not visible: " . implode(', ', $not_visible));
+    }
+  }
+
+  /**
+   * Assert that certain fieldsets are present and visible on the page.
+   *
+   * @param string $fieldsets
+   *    The fieldset names to search for, separated by comma.
+   *
+   * @throws \Exception
+   *   Thrown when a fieldset is not found or is visible.
+   *
+   * @Then (the following )field widgets should not be visible :fieldsets
+   * @Then (the following )fieldsets should not be visible :fieldsets
+   */
+  public function assertFieldsetsNotVisible($fieldsets) {
+    $fieldsets = $this->explodeCommaSeparatedStepArgument($fieldsets);
+    $not_found = [];
+    $visible = [];
+    foreach ($fieldsets as $fieldset) {
+      $is_found = $this->getSession()->getPage()->find('named', ['fieldset', $fieldset]);
+      if (!$is_found) {
+        $not_found[] = $fieldset;
+      }
+
+      if ($is_found->isVisible()) {
+        $visible[] = $fieldset;
+      }
+    }
+
+    if ($not_found) {
+      throw new \Exception("Fieldset(s) expected, but not found: " . implode(', ', $not_found));
+    }
+    if ($visible) {
+      throw new \Exception("Fieldset(s) should not be visible: " . implode(', ', $visible));
     }
   }
 
