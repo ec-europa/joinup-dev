@@ -135,3 +135,21 @@ Feature: Proposing a collection
     When I click on element ".js-form-item-field-ar-closed-value label"
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected
+
+  @javascript
+  Scenario: Propose collection form fields should be organized in groups.
+    Given I am logged in as an "authenticated user"
+    When I go to the propose collection form
+    Then the following fields should be visible "Title, Description,  Closed collection, eLibrary creation, Moderated"
+    And the following fields should not be visible "Abstract, Affiliates, Policy domain, Spatial coverage"
+    And the following field widgets should not be visible "Contact information, Owner"
+
+    When I click "Description"
+    Then the following fields should be visible "Abstract, Affiliates"
+    And the following field widgets should be visible "Contact information, Owner"
+    And the following fields should not be visible "Title, Description, Closed collection, eLibrary creation, Moderated, Policy domain, Spatial coverage"
+
+    When I click "Categorisation"
+    Then the following fields should be visible "Policy domain, Spatial coverage"
+    And the following fields should not be visible "Title, Description, Closed collection, eLibrary creation, Moderated, Abstract, Affiliates"
+    And the following field widgets should not be visible "Contact information, Owner"
