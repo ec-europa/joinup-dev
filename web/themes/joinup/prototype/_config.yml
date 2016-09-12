@@ -17,7 +17,7 @@ markdown: kramdown
 destination: ./_prototypes
 
 # Keep symbolic links to theme libraries
-keep_files: [bootstrap-sass, css, images, js]
+keep_files: [bootstrap-sass, css, images, js, material-design-lite]
 
 # Exclude dirs and files that should not be copied into rendered prototype
 exclude: [bootstrap-sass, css, images, js, node_modules, sass, styleguide, templates, Gemfile, Gruntfile.js, gulpfile.js, package.json, README.md, feed.xml, template.php]
