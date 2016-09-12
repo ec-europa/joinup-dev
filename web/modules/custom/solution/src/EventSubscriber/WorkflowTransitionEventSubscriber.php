@@ -13,7 +13,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
 
-  /** @var \Drupal\message_notify\MessageNotifier MessageNotifier */
+
+  /**
+   * The message notifier service.
+   *
+   * @var \Drupal\message_notify\MessageNotifier
+   */
   protected $messageNotifier;
 
   /**
@@ -23,21 +28,27 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     $this->messageNotifier = $messageNotifier;
   }
 
+  /**
+   * On workflow transition.
+   *
+   * @param \Drupal\state_machine\Event\StateChangeEvent $event
+   *   The state change event.
+   *
+   * @throws \Drupal\message_notify\Exception\MessageNotifyException
+   */
   public function onChangeToValidated(StateChangeEvent $event) {
     $state = $event->getState();
     $entity = $event->getEntity();
     // @todo Check type!
     $message_template = MessageTemplate::load('workflow_transition');
     $message = Message::create([
-        'template' => $message_template->id(),
-        'uid' => 1,
-        'field_message_content' => $entity->id(),
-      ]
-    );
+      'template' => $message_template->id(),
+      'uid' => 1,
+      'field_message_content' => $entity->id(),
+    ]);
     $message->save();
     $this->messageNotifier->send($message, [], 'email');
   }
-
 
   /**
    * {@inheritdoc}
