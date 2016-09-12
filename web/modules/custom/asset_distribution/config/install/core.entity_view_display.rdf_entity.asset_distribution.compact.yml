@@ -18,7 +18,6 @@ dependencies:
     - rdf_entity.rdfentity.asset_distribution
   module:
     - digital_size_formatter
-    - ds
     - file
 id: rdf_entity.asset_distribution.compact
 targetEntityType: rdf_entity
@@ -43,14 +42,7 @@ content:
     label: hidden
     settings:
       link: true
-    third_party_settings:
-      ds:
-        ft:
-          id: minimal
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: { }
 hidden:
   field_ad_access_url: true
   field_ad_creation_date: true
