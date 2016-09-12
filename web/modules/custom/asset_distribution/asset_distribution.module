@@ -5,7 +5,6 @@
  * Contains asset_distribution.module.
  */
 
-use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -109,7 +108,7 @@ function asset_distribution_rdf_entity_view(array &$build, EntityInterface $enti
   }
 
   // Retrieve all the distributions related to this solution.
-  $relation_manager = new AssetDistributionRelations(\Drupal::entityTypeManager());
+  $relation_manager = \Drupal::service('asset_distribution.relations');
   $distributions = $relation_manager->getSolutionDistributions($entity);
 
   // Loop over all the distributions and fetch the related licence entity, if
