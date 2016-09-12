@@ -134,9 +134,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    * @Then /^(?:|the following )fields should be present? "(?P<fields>[^"]*)"$/
    */
   public function assertFieldsPresent($fields) {
-    $fields = explode(',', $fields);
-    $fields = array_map('trim', $fields);
-    $fields = array_filter($fields);
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
     $not_found = [];
     foreach ($fields as $field) {
       $is_found = $this->getSession()->getPage()->find('named', ['field', $field]);
@@ -161,9 +159,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    * @Then /^(?:|the following )fields should not be present? "(?P<fields>[^"]*)"$/
    */
   public function assertFieldsNotPresent($fields) {
-    $fields = explode(',', $fields);
-    $fields = array_map('trim', $fields);
-    $fields = array_filter($fields);
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
     foreach ($fields as $field) {
       $is_found = $this->getSession()->getPage()->find('named', ['field', $field]);
       if ($is_found) {
@@ -204,9 +200,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    * @Then (the following )fieldsets should be present :fieldsets
    */
   public function assertFieldsetsPresent($fieldsets) {
-    $fieldsets = explode(',', $fieldsets);
-    $fieldsets = array_map('trim', $fieldsets);
-    $fieldsets = array_filter($fieldsets);
+    $fieldsets = $this->explodeCommaSeparatedStepArgument($fieldsets);
     $not_found = [];
     foreach ($fieldsets as $fieldset) {
       $is_found = $this->getSession()->getPage()->find('named', ['fieldset', $fieldset]);
@@ -233,6 +227,23 @@ class DrupalContext extends DrupalExtensionDrupalContext {
     else {
       $findName->click();
     }
+  }
+
+  /**
+   * Explodes and sanitizes a comma separated step argument.
+   *
+   * @param string $argument
+   *   The string argument.
+   *
+   * @return array
+   *   The argument as array, with trimmed non-empty values.
+   */
+  protected function explodeCommaSeparatedStepArgument($argument) {
+    $argument = explode(',', $argument);
+    $argument = array_map('trim', $argument);
+    $argument = array_filter($argument);
+
+    return $argument;
   }
 
 }
