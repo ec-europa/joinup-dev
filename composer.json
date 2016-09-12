@@ -12,6 +12,7 @@
         "drupal/core": "~8.1.0",
         "drupal/ds": "^8.2",
         "drupal/facets" : "dev-8.x-1.x#d5c0117eb59ab2593f6430e3f3035d60bc084653",
+        "drupal/field_group": "8.1.x-dev",
         "drupal/inline_entity_form": "8.1.x-dev",
         "drupal/og": "dev-check-group-content-crud-access",
         "drupal/og_menu": "dev-8.x-1.x#8b3cdc10cfa72767a08789828d5583604e68bc53",

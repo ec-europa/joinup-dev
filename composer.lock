@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e1e34ac5e2dcfcd4122b59913fbe98a1",
-    "content-hash": "ca2972267e96e73518c6c1ddf1eee9cf",
+    "hash": "e5261d3b313c2748dd4e2b86e7b5445f",
+    "content-hash": "c4f5c5ffe3ea1aea95e49923a161eebf",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1483,6 +1483,38 @@
             "time": "2016-08-24 17:38:22"
         },
         {
+            "name": "drupal/field_group",
+            "version": "dev-8.x-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/field_group",
+                "reference": "77c5dfa28f7a4d7880bedc1cd2accf2d5986697c"
+            },
+            "require": {
+                "drupal/core": "8.*",
+                "drupal/field": "8.*"
+            },
+            "replace": {
+                "drupal/field_group_migrate": "self.version"
+            },
+            "suggest": {
+                "drupal/core": "Required by drupal/field_group_migrate"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Provides the ability to group your fields on both form and display.",
+            "homepage": "https://www.drupal.org/project/field_group",
+            "time": "2016-06-25 12:10:54"
+        },
+        {
             "name": "drupal/inline_entity_form",
             "version": "dev-8.x-1.x",
             "source": {
@@ -1674,7 +1706,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha17.zip",
-                "reference": null,
+                "reference": "dde5cecfbde386ae55b0aa799d1e146b509b3ffa",
                 "shasum": null
             },
             "require": {
@@ -1731,7 +1763,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha6.zip",
-                "reference": null,
+                "reference": "1b949c59477031ce5880c13537eb73a5f3cb4096",
                 "shasum": null
             },
             "require": {
@@ -2699,7 +2731,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2754,7 +2786,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -6228,7 +6260,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-alpha1.zip",
-                "reference": "930b7b89c2fa2047ebbb0fb3ba53f45a67409242",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -7747,6 +7779,7 @@
         "drupal/view_unpublished": 20,
         "easyrdf/easyrdf": 20,
         "google/material-design-lite": 20,
+        "drupal/field_group": 20,
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
