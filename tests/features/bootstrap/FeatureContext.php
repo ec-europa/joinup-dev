@@ -8,11 +8,16 @@
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 
 /**
  * Defines generic step definitions.
  */
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
+
+  use EntityTrait;
+  use UtilityTrait;
 
   /**
    * Define ASCII values for key presses.
@@ -526,66 +531,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $slider->focus();
     $slider->keyDown($key);
     $slider->keyUp($key);
-  }
-
-  /**
-   * Explodes and sanitizes a comma separated step argument.
-   *
-   * @param string $argument
-   *   The string argument.
-   *
-   * @return array
-   *   The argument as array, with trimmed non-empty values.
-   */
-  protected function explodeCommaSeparatedStepArgument($argument) {
-    $argument = explode(',', $argument);
-    $argument = array_map('trim', $argument);
-    $argument = array_filter($argument);
-
-    return $argument;
-  }
-
-  /**
-   * Returns the entity with the given type, bundle and label.
-   *
-   * If multiple entities have the same label then the first one is returned.
-   *
-   * @param string $entity_type
-   *   The entity type to check.
-   * @param string $label
-   *   The label to check.
-   * @param string $bundle
-   *   Optional bundle to check. If omitted, the entity can be of any bundle.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
-   *   The requested entity.
-   *
-   * @throws \Exception
-   *   Thrown when an entity with the given type, label and bundle does not
-   *   exist.
-   */
-  protected function getEntityByLabel($entity_type, $label, $bundle = NULL) {
-    $entity_manager = \Drupal::entityTypeManager();
-    $storage = $entity_manager->getStorage($entity_type);
-    $entity = $entity_manager->getDefinition($entity_type);
-
-    $query = $storage->getQuery()
-      ->condition($entity->getKey('label'), $label)
-      ->range(0, 1);
-
-    // Optionally filter by bundle.
-    if ($bundle) {
-      $query->condition($entity->getKey('bundle'), $bundle);
-    }
-
-    $result = $query->execute();
-
-    if ($result) {
-      $result = reset($result);
-      return $storage->load($result);
-    }
-
-    throw new \Exception("The entity with label '$label' was not found.");
   }
 
 }
