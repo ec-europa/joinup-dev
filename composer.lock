@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f6e21cfbec1dfa6c80c40707af296556",
-    "content-hash": "19ed65f76a0bd557cc1aea4321c81578",
+    "hash": "31551bc98a5dd057dcbe2c08cdd5d3ec",
+    "content-hash": "230811e2051005f5cf0260d263c84612",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.5",
+            "version": "3.19.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "8fbd79d2f7c771b97879cbab09190d77a4fce9fb"
+                "reference": "34060bf0db260031697b17dbb37fa1bbec92f1c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8fbd79d2f7c771b97879cbab09190d77a4fce9fb",
-                "reference": "8fbd79d2f7c771b97879cbab09190d77a4fce9fb",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/34060bf0db260031697b17dbb37fa1bbec92f1c4",
+                "reference": "34060bf0db260031697b17dbb37fa1bbec92f1c4",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-09-06 22:14:20"
+            "time": "2016-09-08 20:27:15"
         },
         {
             "name": "composer/ca-bundle",
@@ -209,16 +209,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "b49a006748a460f8dae6500ec80ed021501ce969"
+                "reference": "16422c4b1ac4286f7caecf5211136dc073191672"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/b49a006748a460f8dae6500ec80ed021501ce969",
-                "reference": "b49a006748a460f8dae6500ec80ed021501ce969",
+                "url": "https://api.github.com/repos/composer/composer/zipball/16422c4b1ac4286f7caecf5211136dc073191672",
+                "reference": "16422c4b1ac4286f7caecf5211136dc073191672",
                 "shasum": ""
             },
             "require": {
@@ -282,7 +282,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2016-07-18 23:28:52"
+            "time": "2016-09-12 09:27:20"
         },
         {
             "name": "composer/installers",
@@ -1390,6 +1390,43 @@
             "time": "2016-09-07 19:16:42"
         },
         {
+            "name": "drupal/digital_size_formatter",
+            "version": "dev-8.x-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/digital_size_formatter.git",
+                "reference": "56ce85f21ea989e04ac06638f9355af12c44bd15"
+            },
+            "require": {
+                "drupal/core": "8.*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Provides a numeric field formatter that shows numbers formatted digital size (2KB, 1GB. 2MB, etc).",
+            "homepage": "https://www.drupal.org/project/digital_size_formatter",
+            "keywords": [
+                "Drupal",
+                "field",
+                "formatter",
+                "php"
+            ],
+            "time": "2016-09-09 11:02:06"
+        },
+        {
             "name": "drupal/ds",
             "version": "8.2.5",
             "source": {
@@ -1462,10 +1499,11 @@
                 "drupal/core": "8.*"
             },
             "replace": {
-                "drupal/core_search_facets": "self.version"
+                "drupal/core_search_facets": "self.version",
+                "drupal/rest_facets": "self.version"
             },
             "suggest": {
-                "drupal/core": "Required by drupal/core_search_facets",
+                "drupal/core": "Required by drupal/core_search_facets, drupal/rest_facets",
                 "drupal/search": "Required by drupal/core_search_facets"
             },
             "type": "drupal-module",
@@ -1576,7 +1614,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/og",
-                "reference": "acfcc21e5461d7cfab2e96c9d6aa00f81baf86be"
+                "reference": "fd0e98e8e51740045d7beef988164cd0e7d972d0"
             },
             "require": {
                 "drupal/core": "8.*",
@@ -1587,6 +1625,9 @@
             },
             "replace": {
                 "drupal/og_ui": "self.version"
+            },
+            "require-dev": {
+                "drupal/coder": "^8.2"
             },
             "suggest": {
                 "drupal/core": "Required by drupal/og_ui"
@@ -1603,7 +1644,7 @@
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
-            "time": "2016-09-07 18:31:31"
+            "time": "2016-09-11 17:08:09"
         },
         {
             "name": "drupal/og_menu",
@@ -1688,7 +1729,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha17.zip",
-                "reference": "dde5cecfbde386ae55b0aa799d1e146b509b3ffa",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -1745,7 +1786,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha6.zip",
-                "reference": "1b949c59477031ce5880c13537eb73a5f3cb4096",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -6152,7 +6193,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "bea82e2d8a088a476603f84cfcf08cf6de322607"
+                "reference": "b35b964962a4a6bd493ae58761a70c0df9097b24"
             },
             "require": {
                 "ext-mbstring": "*",
@@ -6175,7 +6216,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-09-06 08:10:31"
+            "time": "2016-09-09 14:05:33"
         },
         {
             "name": "drupal/config_devel",
@@ -7757,6 +7798,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "composer/composer": 15,
+        "drupal/digital_size_formatter": 20,
         "drupal/facets": 20,
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,
