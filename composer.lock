@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "04ea8c1af10c096d916b80eac23de7f7",
-    "content-hash": "8afdec350391d7364ab85af242b619c2",
+    "hash": "31551bc98a5dd057dcbe2c08cdd5d3ec",
+    "content-hash": "230811e2051005f5cf0260d263c84612",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1390,6 +1390,43 @@
             "time": "2016-09-07 19:16:42"
         },
         {
+            "name": "drupal/digital_size_formatter",
+            "version": "dev-8.x-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/digital_size_formatter.git",
+                "reference": "56ce85f21ea989e04ac06638f9355af12c44bd15"
+            },
+            "require": {
+                "drupal/core": "8.*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Provides a numeric field formatter that shows numbers formatted digital size (2KB, 1GB. 2MB, etc).",
+            "homepage": "https://www.drupal.org/project/digital_size_formatter",
+            "keywords": [
+                "Drupal",
+                "field",
+                "formatter",
+                "php"
+            ],
+            "time": "2016-09-09 11:02:06"
+        },
+        {
             "name": "drupal/ds",
             "version": "8.2.5",
             "source": {
@@ -1683,15 +1720,15 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-beta1",
+            "version": "8.1.0-alpha17",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "1fcc7e9c46cae1a95fa90033f01bac95be6eee9b"
+                "reference": "dde5cecfbde386ae55b0aa799d1e146b509b3ffa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-beta1.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha17.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1712,7 +1749,9 @@
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
                 },
-                "patches_applied": []
+                "patches_applied": {
+                    "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
+                }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "license": [
@@ -1734,7 +1773,7 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-09-05 16:06:48"
+            "time": "2016-08-25 08:47:35"
         },
         {
             "name": "drupal/search_api_solr",
@@ -7759,6 +7798,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "composer/composer": 15,
+        "drupal/digital_size_formatter": 20,
         "drupal/facets": 20,
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,

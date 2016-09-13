@@ -8,5 +8,8 @@ dependencies:
   - options
   - entity_reference
 
+config_devel:
+  - core.entity_view_mode.rdf_entity.compact
+
 version: '8.x-1.x-dev'
 core: '8.x'

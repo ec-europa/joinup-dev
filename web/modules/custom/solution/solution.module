@@ -17,6 +17,7 @@ use Drupal\og\Entity\OgRole;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -152,4 +153,27 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       '#attributes' => array('class' => 'button--default button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'),
     ];
   }
+}
+
+/**
+ * Gets the latest release of a solution.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $solution
+ *   The 'solution' RDF entity.
+ *
+ * @return string|null
+ *   The latest release entity ID or NULL id there are no releases.
+ */
+function solution_get_latest_release(RdfInterface $solution) {
+  if ($solution->bundle() !== 'solution') {
+    throw new \InvalidArgumentException('Passed argument is not a solution RDF entity.');
+  }
+
+  $ids = \Drupal::entityQuery('rdf_entity')
+    ->condition('rid', 'asset_release')
+    ->condition('field_isr_is_version_of', $solution->id())
+    ->sort('field_isr_creation_date', 'DESC')
+    ->range(0, 1)
+    ->execute();
+  return $ids ? reset($ids) : NULL;
 }

@@ -19,6 +19,7 @@ web/phpunit.xml
 web/sites/default/services.yml
 web/sites/default/settings.local.php
 web/sites/default/settings.php
+web/sites/simpletest/
 
 # Ignore compiled CSS
 web/themes/joinup/css
