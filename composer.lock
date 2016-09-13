@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c5546c1a607cae1f51187e34c6caebde",
-    "content-hash": "cb7a3d831b9af4642d625b393f086dc6",
+    "hash": "5c2a0878183cc34b04df832ba74ec683",
+    "content-hash": "97fbaf5729478ece69aaf93c08dbc539",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1856,6 +1856,37 @@
             "description": "Provides code-driven workflow functionality.",
             "homepage": "https://www.drupal.org/project/state_machine",
             "time": "2016-03-07 15:00:57"
+        },
+        {
+            "name": "drupal/token",
+            "version": "8.1.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/token",
+                "reference": "1c68e82525fda1bd12021502da81b929b9ae5c02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/token-8.x-1.0-beta1.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "drupal/core": "8.*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Provides a user interface for the Token API and some missing core tokens.",
+            "homepage": "https://www.drupal.org/project/token",
+            "time": "2016-08-09 07:03:16"
         },
         {
             "name": "drupal/view_unpublished",
