@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\Core\Entity\EntityChangedTrait;
 
@@ -91,6 +92,7 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *     "id" = "id",
  *     "bundle" = "rid",
  *     "label" = "label",
+ *     "uuid" = "uuid",
  *   },
  *   bundle_entity_type = "rdf_type",
  *   links = {
@@ -223,6 +225,15 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ))
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
+
+    // The UUID field is provided just to allow core or modules to retrieve RDF
+    // entities by UUID. In fact UUID is computed with the same value as ID.
+    $fields[$entity_type->getKey('uuid')] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('UUID'))
+      ->setRevisionable(FALSE)
+      ->setReadOnly(TRUE)
+      ->setComputed(TRUE)
+      ->setCustomStorage(TRUE);
 
     return $fields;
   }
