@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5609f40b634e7db54dff1780fb7115da",
-    "content-hash": "06b46ad95e64dfe80d3fc88b7687567b",
+    "hash": "04ea8c1af10c096d916b80eac23de7f7",
+    "content-hash": "8afdec350391d7364ab85af242b619c2",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.5",
+            "version": "3.19.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "8fbd79d2f7c771b97879cbab09190d77a4fce9fb"
+                "reference": "34060bf0db260031697b17dbb37fa1bbec92f1c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8fbd79d2f7c771b97879cbab09190d77a4fce9fb",
-                "reference": "8fbd79d2f7c771b97879cbab09190d77a4fce9fb",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/34060bf0db260031697b17dbb37fa1bbec92f1c4",
+                "reference": "34060bf0db260031697b17dbb37fa1bbec92f1c4",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-09-06 22:14:20"
+            "time": "2016-09-08 20:27:15"
         },
         {
             "name": "composer/ca-bundle",
@@ -209,16 +209,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "b49a006748a460f8dae6500ec80ed021501ce969"
+                "reference": "16422c4b1ac4286f7caecf5211136dc073191672"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/b49a006748a460f8dae6500ec80ed021501ce969",
-                "reference": "b49a006748a460f8dae6500ec80ed021501ce969",
+                "url": "https://api.github.com/repos/composer/composer/zipball/16422c4b1ac4286f7caecf5211136dc073191672",
+                "reference": "16422c4b1ac4286f7caecf5211136dc073191672",
                 "shasum": ""
             },
             "require": {
@@ -282,7 +282,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2016-07-18 23:28:52"
+            "time": "2016-09-12 09:27:20"
         },
         {
             "name": "composer/installers",
@@ -1462,10 +1462,11 @@
                 "drupal/core": "8.*"
             },
             "replace": {
-                "drupal/core_search_facets": "self.version"
+                "drupal/core_search_facets": "self.version",
+                "drupal/rest_facets": "self.version"
             },
             "suggest": {
-                "drupal/core": "Required by drupal/core_search_facets",
+                "drupal/core": "Required by drupal/core_search_facets, drupal/rest_facets",
                 "drupal/search": "Required by drupal/core_search_facets"
             },
             "type": "drupal-module",
@@ -1576,7 +1577,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/og",
-                "reference": "acfcc21e5461d7cfab2e96c9d6aa00f81baf86be"
+                "reference": "fd0e98e8e51740045d7beef988164cd0e7d972d0"
             },
             "require": {
                 "drupal/core": "8.*",
@@ -1587,6 +1588,9 @@
             },
             "replace": {
                 "drupal/og_ui": "self.version"
+            },
+            "require-dev": {
+                "drupal/coder": "^8.2"
             },
             "suggest": {
                 "drupal/core": "Required by drupal/og_ui"
@@ -1603,7 +1607,7 @@
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
-            "time": "2016-09-07 18:31:31"
+            "time": "2016-09-11 17:08:09"
         },
         {
             "name": "drupal/og_menu",
@@ -1679,15 +1683,15 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha17",
+            "version": "8.1.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "dde5cecfbde386ae55b0aa799d1e146b509b3ffa"
+                "reference": "1fcc7e9c46cae1a95fa90033f01bac95be6eee9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha17.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-beta1.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1708,9 +1712,7 @@
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
                 },
-                "patches_applied": {
-                    "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
-                }
+                "patches_applied": []
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "license": [
@@ -1732,7 +1734,7 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-08-25 08:47:35"
+            "time": "2016-09-05 16:06:48"
         },
         {
             "name": "drupal/search_api_solr",
@@ -1745,7 +1747,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha6.zip",
-                "reference": "1b949c59477031ce5880c13537eb73a5f3cb4096",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -3143,16 +3145,16 @@
         },
         {
             "name": "phing/phing",
-            "version": "2.14.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phingofficial/phing.git",
-                "reference": "7dd73c83c377623def54b58121f46b4dcb35dd61"
+                "reference": "5178bf7a0a504a76dc904b634d2651ed45616747"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phingofficial/phing/zipball/7dd73c83c377623def54b58121f46b4dcb35dd61",
-                "reference": "7dd73c83c377623def54b58121f46b4dcb35dd61",
+                "url": "https://api.github.com/repos/phingofficial/phing/zipball/5178bf7a0a504a76dc904b634d2651ed45616747",
+                "reference": "5178bf7a0a504a76dc904b634d2651ed45616747",
                 "shasum": ""
             },
             "require": {
@@ -3175,6 +3177,7 @@
                 "phpunit/phpunit": ">=3.7",
                 "sebastian/git": "~1.0",
                 "sebastian/phpcpd": "2.x",
+                "siad007/versioncontrol_hg": "^1.0",
                 "squizlabs/php_codesniffer": "~2.2",
                 "symfony/yaml": "~2.7"
             },
@@ -3189,6 +3192,7 @@
                 "phpunit/php-code-coverage": "Library that provides collection, processing, and rendering functionality for PHP code coverage information",
                 "phpunit/phpunit": "The PHP Unit Testing Framework",
                 "sebastian/phpcpd": "Copy/Paste Detector (CPD) for PHP code",
+                "siad007/versioncontrol_hg": "A library for interfacing with Mercurial repositories.",
                 "tedivm/jshrink": "Javascript Minifier built in PHP"
             },
             "bin": [
@@ -3197,7 +3201,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.14.x-dev"
+                    "dev-master": "2.15.x-dev"
                 }
             },
             "autoload": {
@@ -3230,7 +3234,7 @@
                 "task",
                 "tool"
             ],
-            "time": "2016-03-10 21:39:23"
+            "time": "2016-08-30 19:08:54"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -6150,7 +6154,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "bea82e2d8a088a476603f84cfcf08cf6de322607"
+                "reference": "b35b964962a4a6bd493ae58761a70c0df9097b24"
             },
             "require": {
                 "ext-mbstring": "*",
@@ -6173,7 +6177,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-09-06 08:10:31"
+            "time": "2016-09-09 14:05:33"
         },
         {
             "name": "drupal/config_devel",
@@ -7763,6 +7767,7 @@
         "drupal/view_unpublished": 20,
         "easyrdf/easyrdf": 20,
         "google/material-design-lite": 20,
+        "phing/phing": 20,
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,

@@ -78,12 +78,12 @@ Feature: "Add solution" visibility options.
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
     And the following fields should not be present "Groups audience, Other groups"
     When I fill in the following:
-      | Title            | Collection solution add solution                                          |
-      | Description      | This is a test text                                                       |
-      | Documentation    | text.pdf                                                                  |
-      | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)           |
-      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)    |
-      | Language         | http://publications.europa.eu/resource/authority/language/VLS   |
+      | Title            | Collection solution add solution                                       |
+      | Description      | This is a test text                                                    |
+      | Documentation    | text.pdf                                                               |
+      | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)        |
+      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
+      | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I attach the file "text.pdf" to "Documentation"
     And I attach the file "logo.png" to "Logo"
@@ -107,5 +107,38 @@ Feature: "Add solution" visibility options.
     When I click "Collection solution test 2"
     Then I should see the heading "Collection solution test 2"
     Then I should see the link "Collection solution add solution"
+
+
+    # Make sure that when another solution is added, both are affiliated.
+    When I go to the homepage of the "Collection solution test 2" collection
+    And I click "Add solution"
+    When I fill in the following:
+      | Title            | Salaries awaiting                                                      |
+      | Description      | This is a test text                                                    |
+      | Documentation    | text.pdf                                                               |
+      | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)        |
+      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
+      | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
+    Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
+    And I attach the file "text.pdf" to "Documentation"
+    And I attach the file "logo.png" to "Logo"
+    And I attach the file "banner.jpg" to "Banner"
+    # Click the button to select an existing contact information.
+    And I press "Add existing" at the "Contact information" field
+    And I fill in "Contact information" with "Contact information example"
+    And I press "Add contact information"
+    # Click the button to select an existing owner.
+    And I press "Add existing owner" at the "Owner" field
+    And I fill in "Owner" with "Organisation example"
+    And I press "Add owner"
+    And I press "Save"
+    # The name of the solution should exist in the block of the relative content in a collection.
+    Then I should see the heading "Salaries awaiting"
+    When I click "Collection solution test 2"
+    Then I should see the heading "Collection solution test 2"
+    Then I should see the link "Collection solution add solution"
+    Then I should see the link "Salaries awaiting"
+
     # Clean up the solution that was created through the UI.
     Then I delete the "Collection solution add solution" solution
+    Then I delete the "Salaries awaiting" solution
