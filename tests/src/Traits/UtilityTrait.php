@@ -3,7 +3,7 @@
 namespace Drupal\joinup\Traits;
 
 /**
- *
+ * Contains utility methods.
  */
 trait UtilityTrait {
 
