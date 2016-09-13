@@ -533,4 +533,29 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $slider->keyUp($key);
   }
 
+  /**
+   * Finds a vertical tab given its text and clicks it.
+   *
+   * @param string $tab
+   *   The tab text.
+   *
+   * @throws \Exception
+   *   When the tab is not found on the page.
+   *
+   * @When I click :tab tab
+   */
+  public function assertVerticalTabLink($tab) {
+    $page = $this->getSession()->getPage();
+
+    $xpath = "//li[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item ')]";
+    $xpath .= "//a[./@href][normalize-space(string(.)) = '$tab']";
+    $tab = $page->find('xpath', $xpath);
+
+    if ($tab === NULL) {
+      throw new \Exception('Tab not found: ' . $tab);
+    }
+
+    $tab->click();
+  }
+
 }
