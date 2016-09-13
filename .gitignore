@@ -21,7 +21,8 @@ web/sites/default/settings.local.php
 web/sites/default/settings.php
 web/sites/simpletest/
 
-# Ignore compiled CSS
+# Ignore compiled CSS and SASS cache.
+.sass-cache/
 web/themes/joinup/css
 web/themes/joinup/prototype/css/*.css
 
