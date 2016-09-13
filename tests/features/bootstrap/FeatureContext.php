@@ -217,4 +217,66 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $slider->keyUp($key);
   }
 
+  /**
+   * Checks that the contextual links button is visible in the browser.
+   *
+   * This checks actual visibility in the browser, so this needs the
+   * '@javascript' tag to be present on the test scenario.
+   *
+   * @param string $region
+   *   The region in which the contextual link is expected to be visible.
+   *
+   * @Then I (should )see the contextual links button in the :region( region)
+   * @Then the contextual links button should be visible in the :region( region)
+   */
+  public function assertContextualLinkButtonVisible($region) {
+    $button = $this->findContextualLinkButtonInRegion($region);
+    $this->assertVisuallyVisible($button);
+  }
+
+  /**
+   * Clicks the contextual links button in the given region.
+   *
+   * @param string $region
+   *   The name of the region where the contextual links button resides.
+   *
+   * @When I click the contextual links button in the :region( region)
+   */
+  public function clickContextualLinkButton($region) {
+    $button = $this->findContextualLinkButtonInRegion($region);
+    $button->click();
+  }
+
+  /**
+   * Checks that the given named element is not visible for human eyes.
+   *
+   * This is similar to methods like MinkContext::assertLinkRegion() but
+   * instead of verifying the presence of the element in the DOM it checks
+   * with the browser if the element is actually invisible.
+   *
+   * This is intended for verifying things like hover states.
+   *
+   * @Then the :locator :element in the :region( region) should not be visible
+   */
+  public function assertElementNotVisibleInRegion($locator, $element, $region) {
+    $element = $this->findNamedElementInRegion($locator, $element, $region);
+    $this->assertNotVisuallyVisible($element);
+  }
+
+  /**
+   * Checks that the given named element is visible for human eyes.
+   *
+   * This is similar to methods like MinkContext::assertLinkRegion() but instead
+   * of verifying the presence of the element in the DOM it checks with the
+   * browser if the element is actually visible.
+   *
+   * This is intended for verifying things like hover states.
+   *
+   * @Then the :locator :element in the :region( region) should be visible
+   */
+  public function assertElementVisibleInRegion($locator, $element, $region) {
+    $element = $this->findNamedElementInRegion($locator, $element, $region);
+    $this->assertVisuallyVisible($element);
+  }
+
 }
