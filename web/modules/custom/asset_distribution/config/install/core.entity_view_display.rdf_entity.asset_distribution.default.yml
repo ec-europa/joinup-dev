@@ -17,6 +17,7 @@ dependencies:
     - rdf_entity.rdfentity.asset_distribution
   module:
     - datetime
+    - digital_size_formatter
     - file
     - link
     - options
@@ -58,11 +59,11 @@ content:
     third_party_settings: {  }
     type: file_default
   field_ad_file_size:
+    type: digital_size
     weight: 10
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: number_unformatted
   field_ad_format:
     weight: 7
     label: above
