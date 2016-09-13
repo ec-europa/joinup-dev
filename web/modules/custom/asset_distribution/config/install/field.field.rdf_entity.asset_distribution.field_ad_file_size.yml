@@ -18,5 +18,5 @@ settings:
   min: null
   max: null
   prefix: ''
-  suffix: KB
-field_type: float
+  suffix: ''
+field_type: integer
