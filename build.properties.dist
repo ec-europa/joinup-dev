@@ -239,3 +239,22 @@ deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
 # --------------------
 packer.path = /usr/bin/env packer
 application.name = ${project.name}
+
+
+# SASS compiler configuration
+# ---------------------------
+
+# The ruby sass executable.
+sass.bin = sass
+
+# The code style. Can be 'nested', 'compact', 'compressed' or 'expanded'.
+sass.style = compressed
+
+# The path to the SASS file to compile.
+sass.input =
+
+# The directory where the compiled CSS file should be placed.
+sass.output.dir =
+
+# The filename of the compiled CSS file.
+sass.output.file = stylesheet.min.css
