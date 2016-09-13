@@ -3,6 +3,7 @@
 namespace Drupal\rdf_draft\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Render\RendererInterface;
@@ -41,7 +42,7 @@ class RdfController extends ControllerBase {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritdoc}gitq
    */
   public static function create(ContainerInterface $container) {
     return new static(
@@ -58,6 +59,9 @@ class RdfController extends ControllerBase {
    *
    * @return array
    *   Render array.
+   *
+   * @throws \Exception
+   *   Thrown when the entity is not found in the given graph.
    */
   public function view(RouteMatchInterface $route_match) {
     $parameter_name = $route_match->getRouteObject()

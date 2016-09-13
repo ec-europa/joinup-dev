@@ -16,6 +16,33 @@ use Drupal\og\Entity\OgRole;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\og\Og;
+
+/**
+ * Implements hook_entity_access().
+ */
+function solution_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->getEntityTypeId() != 'rdf_entity' || $entity->bundle() != 'solution' || $account->isAnonymous() || $operation != 'view') {
+    return AccessResult::neutral();
+  }
+
+  $membership = Og::getMembership($entity, $account);
+  if (empty($membership)) {
+    return AccessResult::neutral();
+  }
+  $roleIds = $membership->getRolesIds();
+  if ($membership->hasPermission('view unpublished rdf_entity')) {
+    return AccessResult::allowed();
+  }
+  elseif (in_array('rdf_entity-solution-administrator', $roleIds)) {
+    return AccessResult::allowed();
+  }
+  elseif (in_array('rdf_entity-solution-facilitator', $roleIds)) {
+    return AccessResult::allowed();
+  }
+
+  return AccessResult::neutral();
+}
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -147,5 +174,35 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       ]),
       '#attributes' => array('class' => 'button--default button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'),
     ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Default graph is published. Draft graph is draft.
+ */
+function solution_rdf_entity_presave(EntityInterface $entity) {
+  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
+  if (empty($enabled_bundles) || $entity->bundle() != 'solution' || !in_array($entity->bundle(), $enabled_bundles)) {
+    return;
+  }
+
+  $storage = \Drupal::entityManager()->getStorage($entity->getEntityTypeId());
+  $published = $storage->getGraph($entity->bundle(), 'default');
+  $draft = $storage->getGraph($entity->bundle(), 'draft');
+
+  $state = $entity->field_is_state->value;
+  if (in_array($state, ['draft', 'proposed', 'in_assessment', 'blacklisted'])) {
+    $entity->graph = $draft;
+  }
+  elseif (in_array($state, ['validated', 'deletion_request'])) {
+    $entity->graph = $published;
+  }
+  elseif (empty($state)) {
+    throw new \Exception("State field not found while trying to get the appropriate graph.");
+  }
+  else {
+    throw new \Exception("State field value is invalid. Current value found: " . $state);
   }
 }

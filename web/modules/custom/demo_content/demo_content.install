@@ -80,7 +80,8 @@ function demo_content_entity_randomize_field(EntityInterface $entity, array $key
   // Skip fields handled by core except label.
   $entity_keys = $entity->getEntityType()->getKeys();
   unset($entity_keys['label']);
-  $keys_to_skip = array_merge($keys_to_skip, $entity->getEntityType()->getKeys());
+  $keys_to_skip = array_merge($keys_to_skip, $entity->getEntityType()
+    ->getKeys());
 
   $field_definitions = $entity->getFieldDefinitions();
   foreach ($field_definitions as $id => $field_definition) {
@@ -172,6 +173,7 @@ function demo_content_get_collection_data() {
       'id' => 'http://placeHolder/4d0a6736-b28a-4cf4-aefd-d7c4f5af70bb',
       'rid' => 'collection',
       'label' => 'Open source observatory',
+      'field_ar_affiliates' => 'http://www.w3.org/ns/person#',
       'field_ar_abstract' => '<p>Open Source Observatory</p>',
       'field_ar_description' => '<p>The Open Source Observatory is a community for exchanging information, experiences and best practices around <a href="https://en.wikipedia.org/wiki/Open_source">open source</a> solutions for use in public administrations. We help you find open source software made available by other public administrations, and solve issues related to development. OSOR lets you share your own solutions. This is the place to learn from best practices in Europe and around the world.</p>
         <h3>Join us!</h3>
@@ -289,17 +291,18 @@ function demo_content_get_asset_data() {
       // ].
       'field_is_landing_page' => 'http://www.w3.org/ns/person#',
       'field_is_modification_date' => '2014-12-05T14:02:24+01:00',
-      // 'field_is_owner' => 'http://ec.europa.eu/isa',
-      // 'field_is_solution_type' => [
-      // 'http://purl.org/adms/assettype/ReferenceData',
-      // 'http://purl.org/adms/assettype/SemanticView',
-      // 'http://purl.org/adms/solutiontype/Framework',
-      // ],
-      // 'field_spatial_coverage' => [
-      // 'http://sws.geonames.org/6255148',
-      // 'http://www.geonames.org/6695072',
-      // ],
-      // 'field_status' => 'http://purl.org/adms/status/Completed',
+      'field_is_owner' => 'http://ec.europa.eu/isa',
+      'field_is_solution_type' => [
+        'http://purl.org/adms/assettype/ReferenceData',
+        'http://purl.org/adms/assettype/SemanticView',
+        'http://purl.org/adms/solutiontype/Framework',
+      ],
+      'field_spatial_coverage' => [
+        'http://sws.geonames.org/6255148',
+        'http://www.geonames.org/6695072',
+      ],
+      'field_is_state' => 'draft',
+      'field_status' => 'http://purl.org/adms/status/Completed',
       'og_audience' => 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1',
     ],
   ];

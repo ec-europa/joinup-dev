@@ -423,6 +423,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'moderation' => 'field_is_moderation',
       'modification date' => 'field_is_modification_date',
       'owner' => 'field_is_owner',
+      'policy domain' => 'field_policy_domain',
       'related solutions' => 'field_is_related_solutions',
       'solution type' => 'field_is_solution_type',
       'source code repository' => 'field_is_source_code_repository',
