@@ -28,6 +28,7 @@ See our [contributors guide](.github/CONTRIBUTING.md).
 ### Requirements
 * A regular LAMP stack
 * Virtuoso (Triplestore database)
+* SASS compiler
 * Apache Solr
 
 ### Dependency management and builds
@@ -71,6 +72,13 @@ run the Behat test, please refer directly to the documention of
 
     ```
     DirsAllowed = /var/www/joinup/resources/fixtures, /usr/share/virtuoso-opensource-7/vad
+    ```
+
+* Install the official [SASS compiler](https://github.com/sass/sass). This
+  depends on Ruby being installed on your system.
+
+    ```
+    $ gem install sass
     ```
 
 * Point the document root of your webserver to the 'web/' directory.

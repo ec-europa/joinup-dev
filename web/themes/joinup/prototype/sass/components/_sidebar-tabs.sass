@@ -1,0 +1,36 @@
+// Sidebar tabs
+//
+// Sidebar tabs component
+
+// Component
+// --------------------------------------------------
+.sidebar-tabs
+  margin-right: -16px
+
+.sidebar-tab
+  display: block
+  padding: 20px 30px
+  border-bottom: 1px solid $color-grey-light
+  background-color: $color-grey-ligher
+
+// Elements
+// --------------------------------------------------
+.sidebar-tab__title
+  color: $color-base
+
+.sidebar-tab__helptext
+  font-size: $font-size-small - 1px
+  font-weight: $font-weight-thin
+  margin-top: 4px
+  color: $color-grey-medium
+
+// Modifiers
+// --------------------------------------------------
+
+// States
+// --------------------------------------------------
+.sidebar-tab.is-active
+  background-color: #fff
+  .sidebar-tab__title
+    font-weight: $font-weight-medium
+

@@ -10,6 +10,7 @@ use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\OgGroupAudienceHelper;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @Block(
  *  id = "solution_content_block",
- *  admin_label = @Translation("Solution content"),
+ *  admin_label = @Translation("Solution relations"),
  * )
  */
 class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginInterface {
@@ -111,13 +112,27 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
     foreach ($entities as $entity) {
       $items[] = ['#markup' => $entity->link()];
     }
+
+    // Also retrieve related collections.
+    $ids = $this->entityManager->getStorage('rdf_entity')->getQuery()
+      ->condition('field_ar_affiliates', $this->solution->id())
+      ->execute();
+    $entities = Rdf::loadMultiple($ids);
+    foreach ($entities as $entity) {
+      $items[] = ['#markup' => $entity->link()];
+    }
+
+    // Build the array output.
     if ($items) {
       return [
         'list' => [
           '#theme' => 'item_list',
           '#items' => $items,
           '#cache' => [
-            'tags' => ['entity:node:news'],
+            'tags' => [
+              'entity:node:news',
+              'entity:rdf_entity:collection',
+            ],
           ],
         ],
       ];
