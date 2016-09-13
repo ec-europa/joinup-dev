@@ -7,11 +7,16 @@
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 
 /**
  * Defines generic step definitions.
  */
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
+
+  use EntityTrait;
+  use UtilityTrait;
 
   /**
    * Define ASCII values for key presses.
