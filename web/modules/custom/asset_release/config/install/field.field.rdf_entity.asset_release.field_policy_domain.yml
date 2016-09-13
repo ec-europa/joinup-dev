@@ -11,7 +11,7 @@ entity_type: rdf_entity
 bundle: asset_release
 label: 'Policy Domain'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

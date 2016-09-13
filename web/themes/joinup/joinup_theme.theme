@@ -13,36 +13,59 @@ use Drupal\image\Entity\ImageStyle;
  * Implements hook_preprocess_page().
  */
 function joinup_theme_preprocess_page(&$variables) {
-  // Set page title.
   $request = \Drupal::request();
   $route_match = \Drupal::routeMatch();
-  $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-  $variables['title'] = $title;
 
+  // Set page title.
+  $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+
+  // We need to show the header in a blue variant on certain routes:
+  // node and rdf entity forms, user forms.
   $route_name = $route_match->getRouteName();
   $blue_header_routes = array(
+    'collection.propose_form',
+    'entity.node.edit_form',
+    'entity.rdf_entity.edit_form',
+    'node.add',
+    'node.add_page',
+    'rdf_entity.rdf_add',
+    'rdf_entity.rdf_add_page',
     'user.login',
-    'user.register',
     'user.pass',
+    'user.register',
   );
 
   if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
     $variables['is_blue_header'] = TRUE;
+
+    // Move the title from the content region to featured region.
+    $title = $variables['page']['content']['pagetitle'];
+    unset($variables['page']['content']['pagetitle']);
   }
 
-  // Check if page is collection or custom page.
-  if ($route_match->getParameter('rdf_entity')) {
-    $entity = $route_match->getParameter('rdf_entity');
-  }
-  elseif ($route_match->getParameter('node')) {
-    $entity = $route_match->getParameter('node');
-  }
+  $variables['title'] = $title;
+}
 
-  if (!empty($entity)) {
-    $entity_type = $entity->getType();
-    if ($entity_type == 'collection' || $entity_type == 'custom_page') {
-      $variables['is_collection'] = TRUE;
-    }
+/**
+ * Implements hook_preprocess_page_title().
+ */
+function joinup_theme_preprocess_page_title(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
+  // Array contains create pages.
+  $create_content_routes = array(
+    'node.add',
+    'node.add_page',
+    'rdf_entity.rdf_add',
+    'rdf_entity.rdf_add_page',
+    'collection.propose_form',
+  );
+
+  // Set a flag when we are on content creation routes
+  // in order to customise some templates.
+  if (!empty($route_name) && in_array($route_name, $create_content_routes)) {
+    $variables['is_create_page'] = TRUE;
   }
 }
 
@@ -88,19 +111,6 @@ function joinup_theme_preprocess_block(&$variables) {
       $variables['is_view'] = TRUE;
     }
   }
-  elseif (isset($variables['elements']['#id']) && $variables['elements']['#id'] == 'pagetitle') {
-    $route_match = \Drupal::routeMatch();
-    $route_name = $route_match->getRouteName();
-    $blue_header_routes = array(
-      'user.login',
-      'user.register',
-      'user.pass',
-    );
-
-    if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
-      $variables['hide_title'] = TRUE;
-    }
-  }
 
   // Get the ID of the block and add this to the main menu theme attributes.
   if (isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main') {
@@ -133,30 +143,92 @@ function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $v
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for container.html.twig.
+ */
+function joinup_theme_preprocess_container(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+  $form_routes = array(
+    'node.add',
+    'rdf_entity.rdf_add',
+    'entity.node.edit_form',
+    'collection.propose_form',
+    'entity.rdf_entity.edit_form',
+  );
+
+  // Check if container is field element - it has only one parent.
+  if (!empty($route_name) && in_array($route_name, $form_routes)
+    && isset($variables['element']['#parents'])
+    && count($variables['element']['#parents']) == 1
+    && $variables['element']['#id'] != 'edit-actions') {
+    $variables['is_form_wrapper'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for form-element.html.twig.
+ */
+function joinup_theme_theme_suggestions_form_element_alter(array &$suggestions, array $variables) {
+  $suggestions[] = 'form_element__' . str_replace('-', '_', $variables['element']['#type']);
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for select.html.twig.
+ */
+function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array $variables) {
+  // Array contains all select elements ids, which are displayed as slider.
+  $slider_ids = array(
+    'edit-field-ar-elibrary-creation',
+  );
+
+  if (in_array($variables['element']['#id'], $slider_ids)) {
+    $suggestions[] = 'select__slider';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for container.html.twig.
+ */
+function joinup_theme_theme_suggestions_container_alter(array &$suggestions, array $variables) {
+  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-field-ar-owner-actions') {
+    $suggestions[] = 'container__' . str_replace('-', '_', $variables['element']['#id']);
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for form.html.twig.
+ */
+function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $variables) {
+  $suggestions[] = 'form__' . str_replace('-', '_', $variables['element']['#form_id']);
+}
+
+/**
  * Implements hook_theme_suggestions_alter().
  */
-function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables) {
-  if (isset($variables['element']) && isset($variables['element']['#type'])) {
-    if ($variables['element']['#type'] == 'form') {
-      $original_theme_hook = $variables['theme_hook_original'];
-      $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $variables['element']['#id']);
-    }
-    if ($variables['theme_hook_original'] == 'form_element') {
-      $original_theme_hook = $variables['theme_hook_original'];
-      $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $variables['element']['#type']);
+function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  if (!empty($variables['element']['#type'])) {
+    // Array contains form elements, which are displayed with floating label.
+    $floating_label_types = [
+      'email',
+      'entity_autocomplete',
+      'password',
+      'textfield',
+      'url',
+    ];
+
+    if (in_array($variables['element']['#type'], $floating_label_types)) {
+      if ($hook == 'form_element') {
+        $suggestions[] = 'form_element__floating';
+      }
+      elseif ($hook == 'input') {
+        $suggestions[] = 'input__floating';
+      }
     }
 
-    $slider_ids = array(
-      'edit-field-ar-elibrary-creation',
-      'edit-field-test-lista',
-      'edit-field-test-luist-normal',
-    );
-
-    if ($variables['theme_hook_original'] == 'select' && in_array($variables['element']['#id'], $slider_ids)) {
+    if (isset($variables['element']['#theme']) && $variables['element']['#theme'] == 'licence') {
       $original_theme_hook = $variables['theme_hook_original'];
-      $suggestions[] = $original_theme_hook . '__slider';
+      $suggestions[] = $original_theme_hook . '__licence';
     }
   }
-
   return $suggestions;
 }

@@ -10,3 +10,16 @@ asset_release.solution_asset_release.add:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+
+# Route to show an overview of releases belonging to a solution.
+asset_release.solution_asset_release.overview:
+  path: '/rdf_entity/{rdf_entity}/releases'
+  defaults:
+    _controller: '\Drupal\asset_release\Controller\AssetReleaseController::overview'
+    _title_callback: '\Drupal\asset_release\Controller\AssetReleaseController::overviewPageTitle'
+  requirements:
+    _custom_access: '\Drupal\asset_release\Controller\AssetReleaseController::overviewAccess'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity

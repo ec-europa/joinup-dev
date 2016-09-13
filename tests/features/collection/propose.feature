@@ -13,15 +13,15 @@ Feature: Proposing a collection
   # though you need to log in to do so.
   Scenario: Anonymous user needs to log in before creating a collection
     Given users:
-    | name          | pass  |
-    | Cecil Clapman | claps |
+      | name          | pass  |
+      | Cecil Clapman | claps |
     Given I am an anonymous user
     When I am on the homepage
     And I click "Propose collection"
     Then I should see the error message "Access denied. You must log in to view this page."
     When I fill in the following:
-    | Username | Cecil Clapman |
-    | Password | claps         |
+      | Username | Cecil Clapman |
+      | Password | claps         |
     And I press "Log in"
     Then I should see the heading "Propose collection"
   Scenario: Propose a collection
@@ -33,9 +33,10 @@ Feature: Proposing a collection
     Then I should see the heading "Propose collection"
     And the following field widgets should be present "Contact information, Owner"
     When I fill in the following:
-    | Title       | Ancient and Classical Mythology                                                                      |
-    | Description | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
-    # Todo: test adding a "Policy domain" once ISAICP-2356 is done.
+      | Title            | Ancient and Classical Mythology                                                                      |
+      | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
+      | Policy domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)                                      |
+      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)                               |
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I check "Closed collection"
@@ -47,6 +48,9 @@ Feature: Proposing a collection
     And I press "Add owner"
     And I press "Save"
     Then I should see the heading "Ancient and Classical Mythology"
+    And I should see the text "Environment (WIP!)"
+    And I should see the text "Belgium"
+
     # The user that proposed the collection should be auto-subscribed.
     And the "Ancient and Classical Mythology" collection should have 1 member
     # There should not be any custom pages in the menu yet, so I should see a
@@ -70,8 +74,8 @@ Feature: Proposing a collection
     When I am on the homepage
     And I click "Propose collection"
     And I fill in the following:
-    | Title       | The Ratcatcher's Guild                                            |
-    | Description | A guild of serious men with sacks in which things are struggling. |
+      | Title       | The Ratcatcher's Guild                                            |
+      | Description | A guild of serious men with sacks in which things are struggling. |
     And I attach the file "logo.png" to "Logo"
     And I press "Save"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
@@ -106,7 +110,9 @@ Feature: Proposing a collection
 
     # When toggling to closed, the option 'any registered user' should disappear
     # and the option for facilitators should appear.
-    When I check "Closed collection"
+    # When I check "Closed collection"
+    # Workaround, fixed in ISAICP-2703
+    When I click on element ".js-form-item-field-ar-closed-value label"
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected
     And I should not see the text "Any registered user can create new content."
@@ -121,7 +127,11 @@ Feature: Proposing a collection
     # and the default option were selected after cycling the collection
     # checkbox status open-closed-open-closed.
     # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
-    When I uncheck "Closed collection"
-    And I check "Closed collection"
+    # When I uncheck "Closed collection"
+    # Workaround, fixed in ISAICP-2703
+    When I click on element ".js-form-item-field-ar-closed-value label"
+    # And I check "Closed collection"
+    # Workaround, fixed in ISAICP-2703
+    When I click on element ".js-form-item-field-ar-closed-value label"
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected

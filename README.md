@@ -25,9 +25,10 @@ See our [contributors guide](.github/CONTRIBUTING.md).
 
 ## Running your own instance of Joinup
 
-### Dependencies
+### Requirements
 * A regular LAMP stack
 * Virtuoso (Triplestore database)
+* SASS compiler
 * Apache Solr
 
 ### Dependency management and builds
@@ -39,7 +40,7 @@ run the Behat test, please refer directly to the documention of
 
 ### Initial setup
 
-* Clone this repository.
+* Clone the repository.
 
     ```
     $ git clone https://github.com/ec-europa/joinup-dev.git
@@ -63,8 +64,23 @@ run the Behat test, please refer directly to the documention of
     $ ./vendor/bin/phing setup-apache-solr
     ```
 
-* Install Virtuoso. See [setting up
-  Virtuoso](/web/modules/custom/rdf_entity/README.md).
+* Install Virtuoso. For basic instructions, see [setting up
+  Virtuoso](/web/modules/custom/rdf_entity/README.md). During installation some
+  RDF based taxonomies will be imported from the `resources/fixtures` folder.
+  Make sure Virtuoso can read from this folder by adding it to the `DirsAllowed`
+  setting in your `virtuoso.ini`. For example:
+
+    ```
+    DirsAllowed = /var/www/joinup/resources/fixtures, /usr/share/virtuoso-opensource-7/vad
+    ```
+
+* Install the official [SASS compiler](https://github.com/sass/sass). This
+  depends on Ruby being installed on your system.
+
+    ```
+    $ gem install sass
+    ```
+
 * Point the document root of your webserver to the 'web/' directory.
 
 ### Create a local build properties file
@@ -93,17 +109,28 @@ Example `build.properties.local`:
 # The location of the Composer binary.
 composer.bin = /usr/bin/composer
 
-# Database settings.
+# The location of the Virtuoso console (Debian / Ubuntu).
+isql.bin = /usr/bin/virtuoso-isql
+# The location of the Virtuoso console (Arch Linux).
+isql.bin = /usr/bin/virtuoso-isql
+# The location of the Virtuoso console (Redhat / Fedora).
+isql.bin = /usr/local/bin/isql
+
+# SQL database settings.
 drupal.db.name = my_database
 drupal.db.user = root
 drupal.db.password = hunter2
+
+# SPARQL database settings.
+sparql.user = my_username
+sparql.password = qwerty123
 
 # Admin user.
 drupal.admin.username = admin
 drupal.admin.password = admin
 
-# The base URL to use in Behat tests.
-behat.base_url = http://joinup.local
+# The base URL to use in tests.
+drupal.base_url = http://joinup.local
 
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = yes
@@ -126,28 +153,13 @@ $ ./vendor/bin/phing install-dev
 Run the Behat test suite to validate your installation.
 
 ```
-$ cd tests; ./behat
+$ cd tests
+$ ./behat
 ```
 
-## Phing targets
+Also run the PHPUnit tests, from the web root.
 
-These are some extra phing targets that will help you setup some things.
-* setup-virtuoso-permissions: For this you will need to specify some variables
-in your build.properties.local file. These parameters are
-  * sparql.host: The host of your virtuoso server
-  * sparql.port: The port of your virtuoso server
-  * sparql.dsn: The virtuoso odbc alias. Check https://github.com/AKSW/OntoWiki/wiki/VirtuosoBackend#setting-up-odbc
-  for more details.
-  * sparql.user: Your administrator username for virtuoso.
-  * sparql.password: Your administrator password for virtuoso.
-  * isql.bin = The full path of your isql (or isql-vt) binary.
-This phing target will give the SPARQL user, the update permission.
-* import-rdf-fixtures: The same variables as setup-virtuoso-permissions need to
-be set to your build.properties.local file for this to work.
-This will import rdf files located in the
-`[project root directory]/resources/fixtures` directory. In order to let
-virtuoso accept importing files from this directory, you have to append this
-directory to the configuration file of your virtuoso. Locate and open the
-virtuoso configuration file and search for the `DirsAllowed` key under the
-`[Parameters]` section and append the full path of the fixtures directory.
-Restart your virtuoso server and then you can import the rdf files.
+```
+$ cd web
+$ ../vendor/bin/phpunit
+```

@@ -2,6 +2,7 @@
 
 <project name="Joinup" default="help">
 
+    <import file="${project.basedir}/build.common.xml" optional="true" />
     <property file="build.properties.local" />
     <property file="build.properties" />
     <property file="build.properties.dist" />
@@ -24,6 +25,9 @@
     <echo msg="Loading PHP Codesniffer Configuration task." />
     <taskdef name="phpcodesnifferconfiguration" classname="\DrupalProject\Phing\PhpCodeSnifferConfigurationTask" />
 
+    <echo msg="Loading PHPUnit Configuration task." />
+    <taskdef name="phpunitconfiguration" classname="\DrupalProject\Phing\PhpUnitConfigurationTask" />
+
     <echo msg="Loading Remove Patched Packages task." />
     <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
 
@@ -32,7 +36,7 @@
 
     <echo msg="Loading Import RDF fixtures task." />
     <taskdef name="importrdffixtures" classname="\DrupalProject\Phing\ImportRdfFixtures" />
-    
+
     <echo msg="Loading AWS additional tasks." />
     <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />
     <property name="aws.profile" value="" />
@@ -63,11 +67,11 @@
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
-            <option name="db-url" value="${drupal.db.url}"/>
-            <option name="site-name" value="${website.site.name}"/>
-            <option name="account-name" value="${drupal.admin.username}"/>
-            <option name="account-pass" value="${drupal.admin.password}"/>
-            <option name="account-mail" value="${drupal.admin.email}"/>
+            <option name="db-url" value="${drupal.db.url}" />
+            <option name="site-name" value="${website.site.name}" />
+            <option name="account-name" value="${drupal.admin.username}" />
+            <option name="account-pass" value="${drupal.admin.password}" />
+            <option name="account-mail" value="${drupal.admin.email}" />
             <param>${website.profile.name}</param>
             <!-- Disable sending of e-mails during installation. -->
             <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
@@ -81,8 +85,7 @@
             IsqlPath="${isql.bin}"
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
-            Password="${sparql.password}"
-        />
+            Password="${sparql.password}" />
     </target>
 
     <target name="import-rdf-fixtures">
@@ -90,8 +93,7 @@
                 IsqlPath="${isql.bin}"
                 DataSourceName="${sparql.dsn}"
                 Username="${sparql.user}"
-                Password="${sparql.password}"
-        />
+                Password="${sparql.password}" />
     </target>
 
     <!-- Set up PHP CodeSniffer. -->
@@ -123,7 +125,7 @@
         />
 
         <!-- Set up the git pre-push hook. -->
-        <phingcall target="disable-pre-push"/>
+        <phingcall target="disable-pre-push" />
         <if>
             <equals arg1="${phpcs.prepush.enable}" arg2="1" />
             <then>
@@ -172,6 +174,26 @@
         />
     </target>
 
+    <!-- Set up PHPUnit. -->
+    <target name="setup-phpunit" description="Generate the configuration file for PHPUnit.">
+        <if>
+            <available file="${phpunit.config}" type="file" property="phpunit.config.available" />
+            <then>
+                <echo message="Deleting existing PHPUnit configuration file." />
+                <delete file="${phpunit.config}" failonerror="false" />
+            </then>
+        </if>
+        <phpunitconfiguration
+                configFile="${phpunit.config}"
+                distFile="${phpunit.dist}"
+                files="${phpunit.files}"
+                directories="${phpunit.directories}"
+                testsuiteName="${phpunit.testsuite.name}"
+                baseUrl="${phpunit.base_url}"
+                dbUrl="${phpunit.db_url}"
+        />
+    </target>
+
     <!-- Link the site root to the document root of the webserver. -->
     <target
         name="link-docroot"
@@ -189,8 +211,8 @@
                 root="${website.drupal.dir}"
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
-            <option name="mail" value="user@example.com"/>
-            <option name="password" value="user"/>
+            <option name="mail" value="user@example.com" />
+            <option name="password" value="user" />
             <param>user</param>
         </drush>
     </target>
@@ -203,8 +225,8 @@
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
-            <option name="mail" value="${drupal.demo.user}@example.com"/>
-            <option name="password" value="${drupal.demo.user}"/>
+            <option name="mail" value="${drupal.demo.user}@example.com" />
+            <option name="password" value="${drupal.demo.user}" />
             <param>${drupal.demo.user}</param>
         </drush>
         <drush
@@ -213,18 +235,9 @@
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
-            <option name="name" value="${drupal.demo.user}"/>
+            <option name="name" value="${drupal.demo.user}" />
             <param>${drupal.demo.user}</param>
         </drush>
-    </target>
-
-    <target name="virtuoso-set-dirsallowed">
-        <echo message="Allow importing of RDF data from all directories"/>
-        <exec dir="${project.basedir}"
-              command="sudo sed -i 's/DirsAllowed              = ., \/usr\/share\/virtuoso-opensource-6.1\/vad/DirsAllowed = \//g' /etc/virtuoso-opensource-6.1/virtuoso.ini;
-sudo /etc/init.d/virtuoso-opensource-6.1 restart"
-              checkreturn="true"
-              passthru="true"/>
     </target>
 
     <target name="download-apache-solr">
@@ -253,8 +266,7 @@ sudo /etc/init.d/virtuoso-opensource-6.1 restart"
                             command='tar xzf "${tmp.dir}/${solr.tarball.filename}" -C "${solr.vendor.dir}"'
                             dir="${project.basedir}"
                             passthru="true"
-                            checkreturn="true"
-                        />
+                            checkreturn="true" />
                     </then>
                     <else>
                         <untar file="${tmp.dir}/${solr.tarball.filename}" todir="${solr.vendor.dir}" />
@@ -264,7 +276,7 @@ sudo /etc/init.d/virtuoso-opensource-6.1 restart"
         </if>
         <!-- Create a symlink of the Solr executable in the vendor/bin directory. -->
         <if>
-            <available file="${solr.bin}" type="file" property="file.exists"/>
+            <available file="${solr.bin}" type="file" property="file.exists" />
             <then>
                 <echo message="Symlink to Solr binary already exists in ${solr.bin}. Skipping creation of symlink." />
             </then>
@@ -294,7 +306,7 @@ sudo /etc/init.d/virtuoso-opensource-6.1 restart"
                 <exec dir="${solr.dir}"
                       command="./bin/solr start"
                       checkreturn="true"
-                      passthru="true"/>
+                      passthru="true" />
             </else>
         </if>
     </target>
@@ -352,46 +364,13 @@ sudo /etc/init.d/virtuoso-opensource-6.1 restart"
         description="Set up Apache Solr."
         depends="download-apache-solr, start-apache-solr, configure-apache-solr" />
 
-    <target name="build-index">
-        <echo message="Building Solr index"/>
-        <exec dir="${project.basedir}"
-              command="sudo curl -o /opt/solr/search_api_solr.tar.gz https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha4.tar.gz;
-sudo tar xvzf /opt/solr/search_api_solr.tar.gz -C /opt/solr;
-sudo /opt/solr/bin/solr create_core -c drupal;
-sudo mkdir /opt/solr/server/solr/drupal;
-sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/drupal/conf/"
-              checkreturn="true"
-              passthru="true"/>
-    </target>
-
-    <target name="restart-solr">
-        <exec dir="${project.basedir}"
-              command="sudo /opt/solr/bin/solr restart"
-              checkreturn="true"
-              passthru="true"
-              spawn="true"/>
-    </target>
-
-    <target name="solr-status">
-        <exec dir="${project.basedir}"
-              command="sudo /opt/solr/bin/solr status"
-              checkreturn="true"
-              passthru="true"/>
-    </target>
-
-    <target name="solr-query-test">
-        <exec dir="${project.basedir}"
-              command="sudo curl http://localhost:8983/solr/drupal/select?q=tid:0"
-              checkreturn="true"/>
-    </target>
-
     <!-- Set up development configuration, including on-screen error logging and debugging options. -->
     <target name="enable-dev-settings">
-        <phingcall target="writable-settings-folder"/>
+        <phingcall target="writable-settings-folder" />
         <!-- Copy settings file containing development values, but preserve any existing local settings. -->
         <copy file="${website.settings.local.php.example}" tofile="${website.settings.local.php}" overwrite="false" />
         <!-- Uncomment the inclusion of the local settings file in settings.php. -->
-        <phingcall target="writable-settings-php"/>
+        <phingcall target="writable-settings-php" />
         <reflexive>
             <fileset dir="${website.settings.dir}">
                 <include pattern="settings.php" />
@@ -401,8 +380,7 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
                     <regexp
                         pattern="^# (if \(file_exists\(__DIR__ \. '\/settings\.local\.php'\)\) \{\n)# (  include __DIR__ \. '\/settings\.local\.php';\n)# (\})"
                         replace="\1\2\3"
-                        modifiers="m"
-                    />
+                        modifiers="m" />
                 </replaceregexp>
             </filterchain>
         </reflexive>
@@ -433,13 +411,61 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
             <param>${drupal.modules.uat}</param>
         </drush>
     </target>
-    
-    <target name="setup-continuousphp">
+
+    <target name="setup-continuousphp"
+            depends="check-continuousphp">
+        <echo message="Put the odbc configuration file in the home folder where CPHP can find it" />
         <copy
             file="./vendor/ec-europa/infra/continuousphp/odbc.ini"
             tofile="${user.home}/.odbc.ini"
-            overwrite="true"
-        />
+            overwrite="true" />
+        <echo message="Allow importing of RDF data from all directories" />
+        <exec dir="${project.basedir}"
+              command="sudo sed -i 's/DirsAllowed              = ., \/usr\/share\/virtuoso-opensource-6.1\/vad/DirsAllowed = \//g' /etc/virtuoso-opensource-6.1/virtuoso.ini;
+sudo /etc/init.d/virtuoso-opensource-6.1 restart"
+              checkreturn="true"
+              passthru="true" />
+        <echo message="Create Solr index" />
+        <exec dir="${project.basedir}"
+              command="sudo curl -o /opt/solr/search_api_solr.tar.gz https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha4.tar.gz;
+sudo tar xvzf /opt/solr/search_api_solr.tar.gz -C /opt/solr;
+sudo /opt/solr/bin/solr create_core -c drupal;
+sudo mkdir /opt/solr/server/solr/drupal;
+sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/drupal/conf/"
+              checkreturn="true"
+              passthru="true" />
+        <echo message="Report Solr status" />
+        <exec dir="${project.basedir}"
+              command="sudo /opt/solr/bin/solr status"
+              checkreturn="true"
+              passthru="true" />
+        <echo message="Restart Solr" />
+        <exec dir="${project.basedir}"
+              command="sudo /opt/solr/bin/solr restart"
+              checkreturn="true"
+              passthru="true"
+              spawn="true" />
+    </target>
+
+    <target name="check-continuousphp">
+        <echo message="Check if we are running on ContinuousPHP" />
+        <if>
+            <not>
+                <available file="/home/cphp" type="dir" property="environment.cphp" />
+            </not>
+            <then>
+                <fail message="Only run this target on a ContinuousPHP test environment" />
+            </then>
+        </if>
+    </target>
+
+    <target name="build-continuousphp"
+            depends="check-continuousphp">
+        <echo message="Install the SASS compiler" />
+        <exec dir="${project.basedir}"
+              command="gem install sass"
+              checkreturn="true"
+              passthru="true" />
     </target>
 
     <!-- Remove all packages that are patched with cweagans/composer-patches. -->
@@ -449,6 +475,11 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
         />
     </target>
 
+    <!-- provision new demo/test stack on AWS -->
+    <target name="provision-stack"
+            description="Provision a stack on AWS"
+            depends="setup-aws, run-stack, setup-deployment-group" />
+
     <!-- Install Composer dependencies for the build system. -->
     <target name="install-composer-dependencies">
         <composer command="install" composer="${composer.bin}">
@@ -456,10 +487,27 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
         </composer>
     </target>
 
+    <!-- Compile SASS to CSS. -->
+    <target name="compile-sass"
+            description="Compile the SASS to CSS.">
+        <!-- Make sure the CSS directory exists. -->
+        <mkdir dir="${sass.output.dir}" />
+        <sass
+            executable="${sass.bin}"
+            style="${sass.style}"
+            input="${sass.input}"
+            output="${sass.output.dir}/${sass.output.file}" />
+    </target>
+
+    <target
+        name="build-dist"
+        description="Build a distribution package."
+        depends="compile-sass" />
+
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, compile-sass" />
 
     <target
         name="setup-dev"
@@ -474,11 +522,6 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="install, setup-dev, create-demo-users" />
-
-    <!-- provision new demo/test stack on AWS -->
-    <target name="provision-stack"
-            description="Provision a stack on AWS"
-            depends="setup-aws, run-stack, setup-deployment-group" />
+        depends="setup-virtuoso-permissions, import-rdf-fixtures, install, setup-dev, create-demo-users" />
 
 </project>

@@ -50,11 +50,13 @@
   {% endif %}
 
   {% if page.featured %}
-    {% if is_collection %}
-      {% include directory ~ '/templates/parts/featured--collection.html.twig' %}
-    {% elseif is_blue_header %}
-      {% include directory ~ '/templates/parts/featured--title.html.twig' %}
-    {% endif %}
+    <div class="section section--featured">
+      {% if is_blue_header %}
+        {% include directory ~ '/templates/parts/featured--title.html.twig' %}
+      {% else %}
+        {{ page.featured }}
+      {% endif %}
+    </div>
   {% endif %}
 
   <main class="main-container mdl-grid" role="main">

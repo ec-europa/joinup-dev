@@ -14,7 +14,7 @@ provider: null
 plugin: solution_content_block
 settings:
   id: solution_content_block
-  label: 'Solution content'
+  label: 'Solution relations'
   provider: solution
   label_display: visible
 visibility:

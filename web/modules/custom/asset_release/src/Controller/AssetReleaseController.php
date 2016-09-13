@@ -3,9 +3,14 @@
 namespace Drupal\asset_release\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Entity\Query\QueryFactory;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\og\OgAccessInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class AssetReleaseController.
@@ -25,13 +30,23 @@ class AssetReleaseController extends ControllerBase {
   protected $ogAccess;
 
   /**
+   * The entity query factory service.
+   *
+   * @var \Drupal\Core\Entity\Query\QueryInterface
+   */
+  protected $queryFactory;
+
+  /**
    * Constructs a AssetReleaseController.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
+   * @param \Drupal\Core\Entity\Query\QueryFactory $query_factory
+   *   The entity query factory service.
    */
-  public function __construct(OgAccessInterface $og_access) {
+  public function __construct(OgAccessInterface $og_access, QueryFactory $query_factory) {
     $this->ogAccess = $og_access;
+    $this->queryFactory = $query_factory;
   }
 
   /**
@@ -39,7 +54,8 @@ class AssetReleaseController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('og.access')
+      $container->get('og.access'),
+      $container->get('entity.query')
     );
   }
 
@@ -100,6 +116,72 @@ class AssetReleaseController extends ControllerBase {
    */
   public function createAssetReleaseAccess(RdfInterface $rdf_entity) {
     return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $this->currentUser());
+  }
+
+  /**
+   * Returns a build array for the solution releases overview page.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The solution rdf entity.
+   *
+   * @return array
+   *   The build array for the page.
+   */
+  public function overview(RdfInterface $rdf_entity) {
+    $view_builder = $this->entityTypeManager()->getViewBuilder('rdf_entity');
+    $ids = $this->queryFactory->get('rdf_entity', 'AND')
+      ->condition('rid', 'asset_release')
+      ->condition('field_isr_is_version_of', $rdf_entity->id())
+      ->sort('field_isr_creation_date', 'DESC')
+      ->execute();
+
+    $releases = [];
+    /** @var \Drupal\rdf_entity\RdfInterface $release */
+    foreach (Rdf::loadMultiple($ids) as $release) {
+      $releases[] = $view_builder->view($release, 'compact');
+    }
+
+    return [
+      '#theme' => 'asset_release_releases_download',
+      '#releases' => $releases,
+    ];
+  }
+
+  /**
+   * Page title callback for the solution releases overview.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The solution rdf entity.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The page title.
+   */
+  public function overviewPageTitle(RdfInterface $rdf_entity) {
+    return $this->t('Releases for %solution solution', ['%solution' => $rdf_entity->label()]);
+  }
+
+  /**
+   * Access callback for the solution releases overview.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The solution rdf entity.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match object to be checked.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account being checked.
+   *
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
+   *
+   * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+   *   Thrown when the rdf entity is not a solution.
+   */
+  public function overviewAccess(RdfInterface $rdf_entity, RouteMatchInterface $route_match, AccountInterface $account) {
+    if ($rdf_entity->bundle() !== 'solution') {
+      throw new NotFoundHttpException();
+    }
+
+    return $rdf_entity->access('view', $account, TRUE);
   }
 
   /**
