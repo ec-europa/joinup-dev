@@ -32,6 +32,10 @@ transitions:
       __new__:
         - moderator
         - rdf_entity-collection-member
+      draft:
+        - moderator
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
     proposed:
       proposed:
         - moderator
@@ -58,7 +62,10 @@ transitions:
         - moderator
         - rdf_entity-collection-facilitator
     in_assessment:
-      validated:
+      # @todo: The in_assessment state should also be accessible by moderators
+      #   when the entity is validated (e.g. inform the user that the entity
+      #   needs update after reports).
+      proposed:
         - moderator
         - rdf_entity-collection-member
     deletion_request: { }
@@ -68,6 +75,10 @@ transitions:
       __new__:
         - moderator
         - rdf_entity-collection-member
+      draft:
+        - moderator
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
     proposed:
       __new__:
         - moderator
@@ -101,7 +112,10 @@ transitions:
         - moderator
         - rdf_entity-collection-facilitator
     in_assessment:
-      validated:
+      # @todo: The in_assessment state should also be accessible by moderators
+      #   when the entity is validated (e.g. inform the user that the entity
+      #   needs update after reports).
+      proposed:
         - moderator
         - rdf_entity-collection-member
     deletion_request:

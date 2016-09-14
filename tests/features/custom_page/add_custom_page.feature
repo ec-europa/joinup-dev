@@ -28,8 +28,13 @@ Feature: "Add custom page" visibility options.
       | Code Camp       | logo.png |
     And I am logged in as a facilitator of the "Open Collective" collection
 
+    # Initially there are no custom pages. A help text should inform the user
+    # that it is possible to add custom pages.
     When I go to the homepage of the "Open Collective" collection
-    And I click "Add custom page"
+    Then the "Open Collective" collection should have 0 custom pages
+    And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
+    And I should see the link "Add a new page"
+    When I click "Add a new page"
     Then I should see the heading "Add custom page"
     And the following fields should be present "Title, Body"
     And the following fields should not be present "Groups audience, Other groups"

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6f1e53c775d34dd74b55796a7b8c75d6",
-    "content-hash": "6a2a2d2c3fbc91812cc009b212ddfb6e",
+    "hash": "31551bc98a5dd057dcbe2c08cdd5d3ec",
+    "content-hash": "230811e2051005f5cf0260d263c84612",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1610,43 +1610,54 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-check-group-content-crud-access",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/amitaibu/og.git",
-                "reference": "7a301837d638c30cb419f49f55617ed0ee43aaee"
+                "url": "https://git.drupal.org/project/og",
+                "reference": "fd0e98e8e51740045d7beef988164cd0e7d972d0"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/7a301837d638c30cb419f49f55617ed0ee43aaee",
-                "reference": "7a301837d638c30cb419f49f55617ed0ee43aaee",
-                "shasum": ""
+            "require": {
+                "drupal/core": "8.*",
+                "drupal/field": "8.*",
+                "drupal/options": "8.*",
+                "drupal/text": "8.*",
+                "drupal/user": "8.*"
+            },
+            "replace": {
+                "drupal/og_ui": "self.version"
+            },
+            "require-dev": {
+                "drupal/coder": "^8.2"
+            },
+            "suggest": {
+                "drupal/core": "Required by drupal/og_ui"
             },
             "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
-            "support": {
-                "issues": "https://drupal.org/project/issues/og",
-                "irc": "irc://irc.freenode.org/drupal-og",
-                "source": "https://cgit.drupalcode.org/og"
-            },
-            "time": "2016-08-03 09:15:44"
+            "time": "2016-09-11 17:08:09"
         },
         {
             "name": "drupal/og_menu",
-            "version": "dev-8.x-1.x",
+            "version": "dev-og-permissions",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og_menu.git",
-                "reference": "8b3cdc10cfa72767a08789828d5583604e68bc53"
+                "reference": "96a0ab623329a3ba8850244dc03628d63b20d5e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/8b3cdc10cfa72767a08789828d5583604e68bc53",
-                "reference": "8b3cdc10cfa72767a08789828d5583604e68bc53",
+                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/96a0ab623329a3ba8850244dc03628d63b20d5e2",
+                "reference": "96a0ab623329a3ba8850244dc03628d63b20d5e2",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1659,7 +1670,7 @@
                 "issues": "https://drupal.org/project/issues/og_menu",
                 "source": "https://cgit.drupalcode.org/og_menu"
             },
-            "time": "2016-06-08 21:08:50"
+            "time": "2016-09-01 16:25:01"
         },
         {
             "name": "drupal/phing-drush-task",
@@ -1718,7 +1729,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha17.zip",
-                "reference": "dde5cecfbde386ae55b0aa799d1e146b509b3ffa",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -1775,7 +1786,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha6.zip",
-                "reference": "1b949c59477031ce5880c13537eb73a5f3cb4096",
+                "reference": null,
                 "shasum": null
             },
             "require": {

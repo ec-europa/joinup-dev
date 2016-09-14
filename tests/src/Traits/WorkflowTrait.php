@@ -18,20 +18,15 @@ trait WorkflowTrait {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The entity with the states.
-   * @param mixed $user
-   *    The account interface object. Can be left empty.
    * @param array $available_states
    *    The states to check for availability.
+   * @param object|null $user
+   *    The account interface object. Can be left empty.
    *
    * @throws \Exception
    *    Thrown when the entity has no state fields.
    */
-  private function assertAvailableStates(EntityInterface $entity, $user, array $available_states) {
-    $field_definition = $this->getEntityStateFieldDefinition($entity);
-    if ($field_definition == NULL) {
-      throw new \Exception("No state fields were found in the entity.");
-    }
-
+  private function assertAvailableStates(EntityInterface $entity, array $available_states, $user = NULL) {
     if ($user == NULL) {
       $user = \Drupal::currentUser();
     }
@@ -39,7 +34,8 @@ trait WorkflowTrait {
     // Set the user to the workflow user provider so that states available are
     // retrieved for the specific account.
     \Drupal::service('joinup_core.workflow.user_provider')->setUser($user);
-    $field = $entity->{$field_definition->getName()}->first();
+
+    $field = $this->getEntityStateField($entity);
     $allowed_transitions = $field->getTransitions();
 
     $allowed_states = array_map(function (WorkflowTransition $transition) {
@@ -83,6 +79,30 @@ trait WorkflowTrait {
     }
 
     return NULL;
+  }
+
+  /**
+   * Returns the StateItem field for a given entity.
+   *
+   * In the current project every entity with a state has only one state field
+   * so this method returns the first available field definitions of the
+   * entity's field definitions.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity for which to return the state field.
+   *
+   * @return \Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface
+   *   The state field.
+   *
+   * @throws \Exception
+   *   Thrown when the entity doesn't have a state field.
+   */
+  protected function getEntityStateField(EntityInterface $entity) {
+    $field_definition = $this->getEntityStateFieldDefinition($entity);
+    if ($field_definition == NULL) {
+      throw new \Exception("No state fields were found in the entity.");
+    }
+    return $entity->{$field_definition->getName()}->first();
   }
 
 }

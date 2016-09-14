@@ -1,0 +1,6 @@
+services:
+  custom_page.route_subscriber:
+    class: Drupal\custom_page\Routing\RouteSubscriber
+    arguments: ['@entity.manager']
+    tags:
+     - { name: event_subscriber }
