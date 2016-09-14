@@ -54,15 +54,6 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
-  field_ad_file_size:
-    type: file_size_calculator_widget
-    weight: 0
-    settings:
-      file_fields:
-        - field_ad_file
-        - field_test
-      size_type: '1048576'
-    third_party_settings: {  }
   field_ad_format:
     weight: 6
     settings:
@@ -106,5 +97,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
+  field_ad_file_size: true
   field_status: true
   og_audience: true

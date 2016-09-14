@@ -57,12 +57,12 @@ class JoinupNewsFulfillmentGuard implements GuardInterface {
         $parent->field_ar_moderation->first()->value :
         $parent->field_is_moderation->first()->value;
     }
-    $allowed_conditions = \Drupal::config('joinup_news.settings')->get('transitions');
+    $allowed_transitions = \Drupal::config('joinup_news.settings')->get('transitions');
 
     // Some transitions are not allowed per parent's moderation.
     // Check for the transitions allowed.
     // @see: joinup_news.settings.yml
-    if (!isset($allowed_conditions[$is_moderated][$to_state][$from_state])) {
+    if (!isset($allowed_transitions[$is_moderated][$to_state][$from_state])) {
       return FALSE;
     }
 
@@ -75,7 +75,7 @@ class JoinupNewsFulfillmentGuard implements GuardInterface {
     }
 
     // Check if the user has one of the allowed system roles.
-    $authorized_roles = $allowed_conditions[$is_moderated][$to_state][$from_state];
+    $authorized_roles = $allowed_transitions[$is_moderated][$to_state][$from_state];
     $user = \Drupal::currentUser();
     if (array_intersect($authorized_roles, $user->getRoles())) {
       return TRUE;

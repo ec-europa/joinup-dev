@@ -11,7 +11,7 @@ group_id: null
 permissions:
   - 'view own unpublished content'
   - 'accept facilitator invitation'
-  - unsubscribe
+  - 'unsubscribe'
   - 'edit own custom_page content'
   - 'delete own custom_page content'
   - 'create document content'
