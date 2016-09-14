@@ -45,6 +45,7 @@ dependencies:
     - ds
     - image
     - joinup_core
+    - og
 third_party_settings:
   ds:
     layout:
@@ -169,6 +170,12 @@ content:
             fi-def-at: false
   licence:
     weight: 3
+    settings: {  }
+    third_party_settings: {  }
+  og_group:
+    weight: 0
+    type: og_group_subscribe
+    label: above
     settings: {  }
     third_party_settings: {  }
   releases_overview:

@@ -41,6 +41,7 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - ds
+    - og
     - text
 third_party_settings:
   ds:
@@ -149,6 +150,12 @@ content:
             fis: false
             fis-def-at: false
             fi-def-at: false
+  og_group:
+    weight: 0
+    type: og_group_subscribe
+    label: above
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_is_actor: true
   field_is_affiliations_requests: true
