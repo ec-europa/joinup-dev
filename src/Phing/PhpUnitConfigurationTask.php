@@ -125,6 +125,7 @@ class PhpUnitConfigurationTask extends \Task {
       }
     }
   }
+
   /**
    * Checks if all properties required for generating the config are present.
    *

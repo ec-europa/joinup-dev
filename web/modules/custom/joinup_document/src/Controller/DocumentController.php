@@ -87,7 +87,7 @@ class DocumentController extends ControllerBase {
     }
     // Grant access depending on whether the user has permission to create a
     // document node entity according to their OG role.
-    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createDocumentEntity($rdf_entity), $user);
+    return $this->ogAccess->userAccessGroupContentEntityOperation('create', $rdf_entity, $this->createDocumentEntity($rdf_entity), $user);
   }
 
   /**
