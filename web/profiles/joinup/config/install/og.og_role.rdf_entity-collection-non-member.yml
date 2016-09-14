@@ -10,5 +10,5 @@ group_bundle: collection
 group_id: null
 permissions:
   - 'accept facilitator invitation'
-  - subscribe
+  - 'subscribe'
 role_type: required

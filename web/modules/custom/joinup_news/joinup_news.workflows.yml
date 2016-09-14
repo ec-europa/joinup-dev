@@ -29,7 +29,7 @@ news_workflow:
   transitions:
     draft:
       label: Create
-      from: [__new__]
+      from: [__new__, draft]
       to: draft
     propose:
       label: Propose
@@ -41,7 +41,7 @@ news_workflow:
       to: validated
     report:
       label: Report
-      from: [validated]
+      from: [proposed]
       to: in_assessment
     request_deletion:
       label: Request deletion

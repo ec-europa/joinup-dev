@@ -71,12 +71,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Then I should see the following collection menu items in the specified order:
    */
   public function assertRepeatedElementContainsText(TableNode $table) {
-    $parent = $this->getSession()->getPage()->findAll('css', '.block-ogmenu-blocknavigation .sidebar-menu__container .sidebar-menu__item');
+    $parent = $this->getSession()->getPage()->findAll('css', '.block-collection-menu-blocknavigation > ul.menu > li.menu-item');
     $i = 0;
     foreach ($table->getHash() as $repeatedElement) {
       $child = $parent[$i];
       \PHPUnit_Framework_Assert::assertEquals(
-        $child->find('css', '.sidebar-menu__item')->getText(),
+        $child->find('css', '.menu-item')->getText(),
         $repeatedElement['text']
       );
       $i++;
@@ -399,7 +399,15 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       // Convert role names to role IDs.
       $roles = [];
       if (!empty($values['roles'])) {
-        $roles = $this->getOgRoles(explode(', ', $values['roles']), $group);
+        $role_names = explode(', ', $values['roles']);
+        // Every owner is also a facilitator. In Joinup the facilitator role is
+        // assigned to the owner when they create the collection. Since in this
+        // step the collections are already created, mimick this behaviour by
+        // making sure every owner also has the 'facilitator' role.
+        if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
+          $role_names[] = 'facilitator';
+        }
+        $roles = $this->getOgRoles($role_names, $group);
       }
 
       $this->subscribeUserToGroup($member, $group, $roles);

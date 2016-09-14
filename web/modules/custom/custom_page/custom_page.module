@@ -91,3 +91,22 @@ function custom_page_entity_insert(EntityInterface $entity) {
   ]);
   $menu_link_content->save();
 }
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ */
+function custom_page_menu_local_actions_alter(&$local_actions) {
+  // Remove the 'Add link' local action from the custom page navigation menu
+  // edit form. In default Drupal this is intended for webmasters, but we expose
+  // this form to end users which do not interact directly with menu links.
+  // Instead of this our users have an 'Add page' local action which leads to a
+  // node add form. The menu link itself is created behind the scenes.
+  foreach ($local_actions as &$local_action) {
+    if ($local_action['route_name'] === 'entity.ogmenu_instance.add_link') {
+      if (($key = array_search('entity.ogmenu_instance.edit_form', $local_action['appears_on'])) !== FALSE) {
+        unset($local_action['appears_on'][$key]);
+      }
+      break;
+    }
+  }
+}

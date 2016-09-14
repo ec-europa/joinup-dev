@@ -507,7 +507,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       // Convert states to an array.
       $states = empty($values['states']) ? [] : explode(', ', $values['states']);
 
-      $this->assertAvailableStates($solution, $user, $states);
+      $this->assertAvailableStates($solution, $states, $user);
     }
   }
 

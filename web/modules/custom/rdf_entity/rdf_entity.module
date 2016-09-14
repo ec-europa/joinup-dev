@@ -217,7 +217,7 @@ function template_preprocess_rdf_entity(&$variables) {
   $variables['url'] = $rdf_entity->url('canonical', array(
     'language' => $rdf_entity->language(),
   ));
-  $variables['label'] = $variables['elements']['label'];
+  $variables['label'] = !empty($variables['elements']['label']) ? $variables['elements']['label'] : ['#markup' => $rdf_entity->label()];
   unset($variables['elements']['label']);
   // The view mode is 'full' and we are on the 'rdf_entity.view' route.
   $variables['page'] = ($variables['view_mode'] == 'full' && (rdf_entity_is_page($rdf_entity)));

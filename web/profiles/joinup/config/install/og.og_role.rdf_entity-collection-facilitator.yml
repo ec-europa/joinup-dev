@@ -9,7 +9,6 @@ group_type: rdf_entity
 group_bundle: collection
 group_id: null
 permissions:
-  - 'add new links to og menu instance entities'
   - 'add user'
   - 'approve and deny subscription'
   - 'create asset_distribution rdf_entity'
