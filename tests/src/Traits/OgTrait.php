@@ -63,6 +63,9 @@ trait OgTrait {
   protected function convertOgRoleNamesToIds(array $roles, EntityInterface $group) {
     $role_prefix = $group->getEntityTypeId() . '-' . $group->bundle() . '-';
     foreach ($roles as $key => $role) {
+      // What is called a "collection owner" or a "solution owner" in Joinup, is
+      // known as an "administrator" in OG.
+      $role = $role === 'owner' ? 'administrator' : $role;
       $roles[$key] = $role_prefix . $role;
     }
 
@@ -114,6 +117,48 @@ trait OgTrait {
   }
 
   /**
+   * Checks that the given group has the expected number of group content items.
+   *
+   * @param int $count
+   *   The number of group content items that are expected to be associated with
+   *   the group.
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *   The group to check.
+   * @param string $group_content_entity_type_id
+   *   The entity type ID of the group content items.
+   * @param string $group_content_bundle_id
+   *   The bundle ID of the group content items.
+   *
+   * @throws \Exception
+   *   Thrown when the actual number of group content items does not match the
+   *   expectation.
+   */
+  protected function assertGroupContentCount($count, EntityInterface $group, $group_content_entity_type_id, $group_content_bundle_id) {
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $ids = $membership_manager->getGroupContentIds($group, [
+      $group_content_entity_type_id,
+    ])[$group_content_entity_type_id];
+
+    $result = [];
+    if (!empty($ids)) {
+      $entity_type_manager = \Drupal::entityTypeManager();
+      $entity_type = $entity_type_manager->getDefinition($group_content_entity_type_id);
+      $result = $entity_type_manager
+        ->getStorage($group_content_entity_type_id)
+        ->getQuery()
+        ->condition($entity_type->getKey('bundle'), $group_content_bundle_id)
+        ->condition($entity_type->getKey('id'), $ids, 'IN')
+        ->execute();
+    }
+    $actual = count($result);
+
+    if ($actual != $count) {
+      throw new \Exception("Wrong number of $group_content_bundle_id group content. Expected number: $count, actual number: $actual.");
+    }
+  }
+
+  /**
    * Checks if the given content belongs to the given parent rdf entity.
    *
    * If there are multiple entities or parents with the same title, then
@@ -144,7 +189,8 @@ trait OgTrait {
       throw new \Exception("The $content_bundle titled '$content' was not found.");
     }
 
-    $group_ids = Og::getGroupIds($content, $parent->getEntityTypeId(), $parent_bundle);
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $group_ids = $membership_manager->getGroupIds($content, $parent->getEntityTypeId(), $parent_bundle);
     if (!empty($group_ids) && in_array($parent->id(), $group_ids[$parent->getENtityTypeId()])) {
       // Test passes.
       return;
