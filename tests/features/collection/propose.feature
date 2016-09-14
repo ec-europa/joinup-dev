@@ -139,6 +139,12 @@ Feature: Proposing a collection
   @javascript
   Scenario: Propose collection form fields should be organized in groups.
     Given I am logged in as an "authenticated user"
+    # The browser windows has to be wider than 640px, which is the default
+    # minimum size for Drupal vertical tabs component to be rendered.
+    # The resizing has to happen before loading the page as the javascript
+    # won't check for window resize events and it will stay disabled.
+    # @see web/core/misc/vertical-tabs.js:35
+    And I maximize the browser window
     When I go to the propose collection form
     Then the following fields should be visible "Title, Description,  Closed collection, eLibrary creation, Moderated"
     And the following fields should not be visible "Abstract, Affiliates, Policy domain, Spatial coverage"
