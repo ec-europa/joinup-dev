@@ -247,6 +247,24 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function uuid() {
+    return $this->id();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createDuplicate() {
+    $duplicate = parent::createDuplicate();
+    // As the ID is NULL, reset also the UUID.
+    $uuid_key = $this->getEntityType()->getKey('uuid');
+    $duplicate->set($uuid_key, NULL);
+    return $duplicate;
+  }
+
+  /**
    * Get the bundle from the entity.
    */
   public function getType() {
