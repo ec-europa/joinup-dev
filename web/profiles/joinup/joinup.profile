@@ -5,9 +5,12 @@
  * Enables modules and site configuration for the Joinup profile.
  */
 
-use \Drupal\Core\Form\FormStateInterface;
-use \Drupal\Core\Database\Database;
-use \Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Implements hook_form_FORMID_alter().
@@ -131,6 +134,24 @@ function joinup_og_user_access_alter(&$permissions, &$cacheable_metadata, $conte
 
   if ($is_moderator && $is_collection && $operation_allowed) {
     $permissions[] = $operation;
+  }
+}
+
+/**
+ * Implements hook_entity_access().
+ */
+function joinup_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  // Moderators have the 'administer group' permission so they can manage all
+  // group content across all groups. However since the OG Menu entities are
+  // also group content moderators are also granted access to the OG Menu
+  // administration pages. Let's specifically deny access to these, since we are
+  // handling the menu items transparently whenever custom pages are created or
+  // deleted. Moderators and collection facilitators should only have access to
+  // the edit form of an OG Menu instance so they can rearrange the custom
+  // pages, but not to the entity forms of the menu items themselves.
+  // In fact, nobody should have access to these pages except UID 1.
+  if ($entity->getEntityTypeId() === 'ogmenu_instance' && $operation !== 'update') {
+    return AccessResult::forbidden();
   }
 }
 

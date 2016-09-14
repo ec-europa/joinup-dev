@@ -4,13 +4,13 @@ namespace Drupal\collection\Plugin\Block;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\og\MembershipManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\og\Og;
 
 /**
  * Provides a block that shows all content within the collection.
@@ -44,11 +44,18 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
   protected $user;
 
   /**
-   * The entity manager, needed to load entities.
+   * The entity type manager, needed to load entities.
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityManager;
+  protected $entityTypeManager;
+
+  /**
+   * The OG membership manager.
+   *
+   * @var \Drupal\og\MembershipManagerInterface
+   */
+  protected $membershipManager;
 
   /**
    * {@inheritdoc}
@@ -60,7 +67,8 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
       $plugin_definition,
       $container->get('current_route_match'),
       $container->get('entity.manager'),
-      $container->get('collection.collection_route_context')
+      $container->get('collection.collection_route_context'),
+      $container->get('og.membership_manager')
     );
   }
 
@@ -75,17 +83,19 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
    *   The plugin implementation definition.
    * @param \Drupal\Core\Routing\RouteMatchInterface $current_route_match
    *   The current route match service.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
-   *   The entity manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $collection_context
    *   The collection context.
+   * @param \Drupal\og\MembershipManagerInterface $membership_manager
+   *   The OG membership manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityManagerInterface $entityManager, ContextProviderInterface $collection_context) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $current_route_match, EntityTypeManagerInterface $entity_type_manager, ContextProviderInterface $collection_context, MembershipManagerInterface $membership_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
     $this->collection = $collection_context->getRuntimeContexts(['og'])['og']->getContextValue();
-
-    $this->entityManager = $entityManager;
+    $this->entityTypeManager = $entity_type_manager;
+    $this->membershipManager = $membership_manager;
   }
 
   /**
@@ -95,10 +105,10 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
     if (empty($this->collection)) {
       throw new \Exception('The "Collection content" block can only be shown on collection pages.');
     }
-    $content_ids = Og::getGroupContentIds($this->collection);
+    $content_ids = $this->membershipManager->getGroupContentIds($this->collection);
     $list = array();
     foreach ($content_ids as $entity_type => $ids) {
-      $storage = $this->entityManager->getStorage($entity_type);
+      $storage = $this->entityTypeManager->getStorage($entity_type);
       $entities = $storage->loadMultiple($ids);
       $children = [];
       foreach ($entities as $entity) {

@@ -86,7 +86,7 @@ class DiscussionController extends ControllerBase {
     }
     // Grant access depending on whether the user has permission to create a
     // discussion node entity according to their OG role.
-    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createDiscussionEntity($rdf_entity), $user);
+    return $this->ogAccess->userAccessGroupContentEntityOperation('create', $rdf_entity, $this->createDiscussionEntity($rdf_entity), $user);
   }
 
   /**
