@@ -112,60 +112,60 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $item = $items[$delta];
     $facets = $this->getFacets();
 
-    $element += array(
+    $element += [
       '#extra' => array_keys($facets),
-    );
+    ];
 
-    $table = array(
+    $table = [
       '#type' => 'field_ui_table',
       '#header' => $this->getTableHeader(),
       '#regions' => $this->getRegions(),
-      '#attributes' => array(
-        'class' => array('field-ui-overview'),
+      '#attributes' => [
+        'class' => ['field-ui-overview'],
         'id' => 'field-display-overview',
-      ),
-      '#tabledrag' => array(
-        array(
+      ],
+      '#tabledrag' => [
+        [
           'action' => 'order',
           'relationship' => 'sibling',
           'group' => 'field-weight',
-        ),
-        array(
+        ],
+        [
           'action' => 'match',
           'relationship' => 'parent',
           'group' => 'field-parent',
           'subgroup' => 'field-parent',
           'source' => 'field-name',
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
 
     $form['#attached']['library'][] = 'search_api_field/drupal.search_api_field';
     foreach ($facets as $facet_id => $facet) {
       $table[$facet_id] = $this->buildFacetRow($facet, $item);
     }
     $element['fields'] = $table;
-    $element['refresh_rows'] = array('#type' => 'hidden');
-    $element['refresh'] = array(
+    $element['refresh_rows'] = ['#type' => 'hidden'];
+    $element['refresh'] = [
       '#type' => 'submit',
       '#value' => $this->t('Refresh'),
       '#op' => 'refresh_table',
-      '#submit' => array('::multistepSubmit'),
-      '#ajax' => array(
+      '#submit' => ['::multistepSubmit'],
+      '#ajax' => [
         'callback' => '::multistepAjax',
         'wrapper' => 'field-display-overview-wrapper',
         'effect' => 'fade',
         // The button stays hidden, so we hide the Ajax spinner too. Ad-hoc
         // spinners will be added manually by the client-side script.
         'progress' => 'none',
-      ),
-      '#attributes' => array(
-        'class' => array(
+      ],
+      '#attributes' => [
+        'class' => [
           'visually-hidden',
           'row-refresher',
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
 
     $default_values = $item->get('value')->getValue();
     $element['query_presets'] = [
