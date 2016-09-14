@@ -377,21 +377,23 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       return $values;
     }
 
-    $ordered_values = [];
+    // Clean the values, skipping submitted button values and placing everything
+    // under a 'value' array element which will be serialized.
+    $cleaned_values = [];
     foreach ($values as $delta => $value) {
       if (!empty($value['fields'])) {
         foreach ($value['fields'] as $fn => $field) {
-          $ordered_values[$delta]['value']['fields'][$fn] = [
+          $cleaned_values[$delta]['value']['fields'][$fn] = [
             'weight' => $field['weight'],
             'region' => $field['plugin']['type'],
           ];
         }
       }
 
-      $ordered_values[$delta]['value']['query_presets'] = $values[$delta]['query_presets'];
-      $ordered_values[$delta]['value']['limit'] = $values[$delta]['limit'];
+      $cleaned_values[$delta]['value']['query_presets'] = $values[$delta]['query_presets'];
+      $cleaned_values[$delta]['value']['limit'] = $values[$delta]['limit'];
     }
-    return $ordered_values;
+    return $cleaned_values;
   }
 
 }
