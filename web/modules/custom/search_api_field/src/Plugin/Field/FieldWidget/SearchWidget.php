@@ -110,7 +110,15 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     /** @var \Drupal\link\LinkItemInterface $item */
     $item = $items[$delta];
+    $default_values = $item->get('value')->getValue();
     $facets = $this->getFacets();
+
+    $element['enabled'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable the search field'),
+      '#description' => $this->t('Uncheck to disable completely the functionality'),
+      '#default_value' => isset($default_values['enabled']) ? $default_values['enabled'] : 1,
+    ];
 
     $element += [
       '#extra' => array_keys($facets),
@@ -167,7 +175,6 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       ],
     ];
 
-    $default_values = $item->get('value')->getValue();
     $element['query_presets'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Query presets'),
@@ -390,6 +397,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
         }
       }
 
+      $cleaned_values[$delta]['value']['enabled'] = $values[$delta]['enabled'];
       $cleaned_values[$delta]['value']['query_presets'] = $values[$delta]['query_presets'];
       $cleaned_values[$delta]['value']['limit'] = $values[$delta]['limit'];
     }

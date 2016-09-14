@@ -127,6 +127,14 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       return [];
     }
 
+    // At the moment, this formatter supports only single-value fields.
+    $settings = $items->first()->value;
+
+    // Bail out if the field is disabled.
+    if (empty($settings['enabled'])) {
+      return [];
+    }
+
     $index_id = $field_definition->getSetting('index');
     /* @var $search_api_index \Drupal\search_api\IndexInterface */
     $search_api_index = Index::load($index_id);
@@ -134,9 +142,6 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     if (empty($search_api_index)) {
       throw new SearchApiException("Could not load index with ID '$index_id'.");
     }
-
-    // At the moment, this formatter supports only single-value fields.
-    $settings = $items->first()->value;
 
     $limit = !empty($settings['limit']) ? $settings['limit'] : 10;
 
