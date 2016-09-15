@@ -21,6 +21,7 @@ default_value:
         field_cp_search_content_type:
           weight: '0'
           region: top
+      enabled: 0
       query_presets: ''
       limit: '12'
 default_value_callback: ''
