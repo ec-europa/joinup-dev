@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5120e8454d44e7c7bbf8251a1269237a",
-    "content-hash": "60460a505bb95b61027f58b70d691580",
+    "hash": "c6a517dca8c4ebcb226b37fac49c52bf",
+    "content-hash": "14822da0a1376543b48c696d68836487",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -519,12 +519,12 @@
             "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/consolidation-org/annotated-command.git",
+                "url": "https://github.com/consolidation/annotated-command.git",
                 "reference": "ed279df30b9386fd8e523003dc679421a87c52e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation-org/annotated-command/zipball/ed279df30b9386fd8e523003dc679421a87c52e0",
+                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/ed279df30b9386fd8e523003dc679421a87c52e0",
                 "reference": "ed279df30b9386fd8e523003dc679421a87c52e0",
                 "shasum": ""
             },
@@ -570,12 +570,12 @@
             "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/consolidation-org/output-formatters.git",
+                "url": "https://github.com/consolidation/output-formatters.git",
                 "reference": "6428d8fb30c9ed3b96314580808b3e4415b46dd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation-org/output-formatters/zipball/6428d8fb30c9ed3b96314580808b3e4415b46dd9",
+                "url": "https://api.github.com/repos/consolidation/output-formatters/zipball/6428d8fb30c9ed3b96314580808b3e4415b46dd9",
                 "reference": "6428d8fb30c9ed3b96314580808b3e4415b46dd9",
                 "shasum": ""
             },
@@ -1529,7 +1529,7 @@
                 "drupal/rest_facets": "self.version"
             },
             "suggest": {
-                "drupal/core": "Required by drupal/core_search_facets, drupal/rest_facets",
+                "drupal/core": "Required by drupal/core_search_facets",
                 "drupal/search": "Required by drupal/core_search_facets"
             },
             "type": "drupal-module",
@@ -1636,43 +1636,54 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-check-group-content-crud-access",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/amitaibu/og.git",
-                "reference": "7a301837d638c30cb419f49f55617ed0ee43aaee"
+                "url": "https://git.drupal.org/project/og",
+                "reference": "b396002028b31415bc712091a7bf3f2532c285db"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/7a301837d638c30cb419f49f55617ed0ee43aaee",
-                "reference": "7a301837d638c30cb419f49f55617ed0ee43aaee",
-                "shasum": ""
+            "require": {
+                "drupal/core": "8.*",
+                "drupal/field": "8.*",
+                "drupal/options": "8.*",
+                "drupal/text": "8.*",
+                "drupal/user": "8.*"
+            },
+            "replace": {
+                "drupal/og_ui": "self.version"
+            },
+            "require-dev": {
+                "drupal/coder": "^8.2"
+            },
+            "suggest": {
+                "drupal/core": "Required by drupal/og_ui"
             },
             "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
-            "support": {
-                "issues": "https://drupal.org/project/issues/og",
-                "irc": "irc://irc.freenode.org/drupal-og",
-                "source": "https://cgit.drupalcode.org/og"
-            },
-            "time": "2016-08-03 09:15:44"
+            "time": "2016-09-14 17:44:07"
         },
         {
             "name": "drupal/og_menu",
-            "version": "dev-8.x-1.x",
+            "version": "dev-og-permissions",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og_menu.git",
-                "reference": "8b3cdc10cfa72767a08789828d5583604e68bc53"
+                "reference": "96a0ab623329a3ba8850244dc03628d63b20d5e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/8b3cdc10cfa72767a08789828d5583604e68bc53",
-                "reference": "8b3cdc10cfa72767a08789828d5583604e68bc53",
+                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/96a0ab623329a3ba8850244dc03628d63b20d5e2",
+                "reference": "96a0ab623329a3ba8850244dc03628d63b20d5e2",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -1685,7 +1696,7 @@
                 "issues": "https://drupal.org/project/issues/og_menu",
                 "source": "https://cgit.drupalcode.org/og_menu"
             },
-            "time": "2016-06-08 21:08:50"
+            "time": "2016-09-01 16:25:01"
         },
         {
             "name": "drupal/phing-drush-task",
@@ -2769,7 +2780,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2824,7 +2835,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }

@@ -14,6 +14,7 @@ use Drupal\file\Entity\File;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\search_api\Entity\Server;
@@ -27,6 +28,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use WorkflowTrait;
 
   /**
    * Test files.
@@ -511,6 +513,24 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks that the given node has the expected workflow state.
+   *
+   * @param string $title
+   *   The title of the node to check.
+   * @param string $type
+   *   The node type.
+   * @param string $state
+   *   The expected state.
+   *
+   * @Then the :title :type content should have the :state state
+   */
+  public function assertNodeWorkflowState($title, $type, $state) {
+    $node = $this->getNodeByTitle($title, $type);
+    $actual = $this->getEntityStateField($node)->get('value')->getString();
+    \PHPUnit_Framework_Assert::assertEquals($state, $actual, "The $title $type content has the expected state '$state' (actual: '$actual')");
+  }
+
+  /**
    * Checks if the given content belongs to the given parent rdf entity.
    *
    * If there are multiple entities or parents with the same title, then
@@ -525,7 +545,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $content
    *   The title of the content.
    *
-   * @Then the :parent :parent_type has a :content_type titled :content
+   * @Then the :parent :parent_bundle has a :content_bundle titled :content
    */
   public function assertContentOgMembership($parent, $parent_bundle, $content_bundle, $content) {
     $this->assertOgMembership($parent, $parent_bundle, $content, $content_bundle);

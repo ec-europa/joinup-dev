@@ -29,19 +29,19 @@ Feature: Solution moderation
       | The Guardian of the Stream | The Guardian of the Stream | logo.png | banner.jpg | Angelos Agathe | Placide             | in_assessment    |
       | Flames in the Swords       | Flames in the Swords       | logo.png | banner.jpg | Angelos Agathe | Placide             | blacklisted      |
     And the following solution user memberships:
-      | solution                   | user            | roles         |
-      | Azure Ship                 | Franklin Walker | administrator |
-      | The Last Illusion          | Franklin Walker | administrator |
-      | Rose of Doors              | Franklin Walker | administrator |
-      | The Ice's Secrets          | Franklin Walker | administrator |
-      | The Guardian of the Stream | Franklin Walker | administrator |
-      | Flames in the Swords       | Franklin Walker | administrator |
-      | Azure Ship                 | William Curtis  | facilitator   |
-      | The Last Illusion          | William Curtis  | facilitator   |
-      | Rose of Doors              | William Curtis  | facilitator   |
-      | The Ice's Secrets          | William Curtis  | facilitator   |
-      | The Guardian of the Stream | William Curtis  | facilitator   |
-      | Flames in the Swords       | William Curtis  | facilitator   |
+      | solution                   | user            | roles       |
+      | Azure Ship                 | Franklin Walker | owner       |
+      | The Last Illusion          | Franklin Walker | owner       |
+      | Rose of Doors              | Franklin Walker | owner       |
+      | The Ice's Secrets          | Franklin Walker | owner       |
+      | The Guardian of the Stream | Franklin Walker | owner       |
+      | Flames in the Swords       | Franklin Walker | owner       |
+      | Azure Ship                 | William Curtis  | facilitator |
+      | The Last Illusion          | William Curtis  | facilitator |
+      | Rose of Doors              | William Curtis  | facilitator |
+      | The Ice's Secrets          | William Curtis  | facilitator |
+      | The Guardian of the Stream | William Curtis  | facilitator |
+      | Flames in the Swords       | William Curtis  | facilitator |
 
     # The following table tests the allowed transitions in a solution.
     # For each entry, the following steps must be performed:
