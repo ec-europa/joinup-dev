@@ -80,7 +80,7 @@ function rdf_draft_entity_create(EntityInterface $entity) {
   if ($storage instanceof RdfEntitySparqlStorage) {
     $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_' . $entity_type);
     $default_save_graph = \Drupal::config('rdf_draft.settings')->get('default_save_graph_' . $entity_type);
-    if (!empty($enabled_bundles[$entity_type])) {
+    if (!empty($enabled_bundles[$entity->bundle()])) {
       // Create new entities in the default save graph.
       $entity->graph = $storage->getGraph($entity->bundle(), $default_save_graph);
     }
