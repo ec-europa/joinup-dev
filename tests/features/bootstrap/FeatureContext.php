@@ -47,9 +47,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldsPresent($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $page = $this->getSession()->getPage();
     $not_found = [];
     foreach ($fields as $field) {
-      $is_found = $this->getSession()->getPage()->find('named', ['field', $field]);
+      $is_found = $page->findField($field);
       if (!$is_found) {
         $not_found[] = $field;
       }
@@ -72,8 +73,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldsNotPresent($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $page = $this->getSession()->getPage();
     foreach ($fields as $field) {
-      $is_found = $this->getSession()->getPage()->find('named', ['field', $field]);
+      $is_found = $page->findField($field);
       if ($is_found) {
         throw new \Exception("Field should not be found, but is present: " . $field);
       }
@@ -93,10 +95,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldsVisible($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $page = $this->getSession()->getPage();
     $not_found = [];
     $not_visible = [];
     foreach ($fields as $field) {
-      $element = $this->getSession()->getPage()->find('named', ['field', $field]);
+      $element = $page->findField($field);
       if (!$element) {
         $not_found[] = $field;
         continue;
@@ -134,10 +137,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldsNotVisible($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $page = $this->getSession()->getPage();
     $not_found = [];
     $visible = [];
     foreach ($fields as $field) {
-      $element = $this->getSession()->getPage()->find('named', ['field', $field]);
+      $element = $page->findField($field);
       if (!$element) {
         $not_found[] = $field;
         continue;
@@ -175,9 +179,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldsetsPresent($fieldsets) {
     $fieldsets = $this->explodeCommaSeparatedStepArgument($fieldsets);
+    $page = $this->getSession()->getPage();
     $not_found = [];
     foreach ($fieldsets as $fieldset) {
-      $is_found = $this->getSession()->getPage()->find('named', ['fieldset', $fieldset]);
+      $is_found = $page->find('named', ['fieldset', $fieldset]);
       if (!$is_found) {
         $not_found[] = $fieldset;
       }
@@ -201,10 +206,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldsetsVisible($fieldsets) {
     $fieldsets = $this->explodeCommaSeparatedStepArgument($fieldsets);
+    $page = $this->getSession()->getPage();
     $not_found = [];
     $not_visible = [];
     foreach ($fieldsets as $fieldset) {
-      $is_found = $this->getSession()->getPage()->find('named', ['fieldset', $fieldset]);
+      $is_found = $page->find('named', ['fieldset', $fieldset]);
       if (!$is_found) {
         $not_found[] = $fieldset;
       }
@@ -236,10 +242,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldsetsNotVisible($fieldsets) {
     $fieldsets = $this->explodeCommaSeparatedStepArgument($fieldsets);
+    $page = $this->getSession()->getPage();
     $not_found = [];
     $visible = [];
     foreach ($fieldsets as $fieldset) {
-      $is_found = $this->getSession()->getPage()->find('named', ['fieldset', $fieldset]);
+      $is_found = $page->find('named', ['fieldset', $fieldset]);
       if (!$is_found) {
         $not_found[] = $fieldset;
       }
