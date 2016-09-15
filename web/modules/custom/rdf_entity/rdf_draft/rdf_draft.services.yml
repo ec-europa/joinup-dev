@@ -12,5 +12,6 @@ services:
   rdf_draft.access_checker:
       class: Drupal\rdf_draft\RdfGraphAccessCheck
       arguments: ['@entity_type.manager']
+#      arguments: ['@entity_type.manager', 'module_handler']
       tags:
         - { name: access_check, applies_to: _access_rdf_graph }
