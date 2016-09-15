@@ -12,6 +12,7 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\OgGroupAudienceHelper;
+use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -109,4 +110,21 @@ function custom_page_menu_local_actions_alter(&$local_actions) {
       break;
     }
   }
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ */
+function custom_page_search_api_query_search_api_field_field_cp_search_alter(QueryInterface &$query) {
+  /** @var EntityInterface $entity */
+  $entity = $query->getOption('search_api_field entity');
+  /** @var EntityInterface $group */
+  $group = $entity->get(OgGroupAudienceHelper::DEFAULT_FIELD)->first()->entity;
+  if (!$group) {
+    return;
+  }
+
+  // Show only content belonging to the same group.
+  $query->addCondition('aggregated_field_1', [$group->id()], 'IN');
+
 }
