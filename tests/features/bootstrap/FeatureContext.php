@@ -451,9 +451,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$findName) {
       throw new \Exception($element . " could not be found");
     }
-    else {
-      $findName->click();
-    }
+    $findName->click();
   }
 
   /**
