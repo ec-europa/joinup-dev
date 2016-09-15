@@ -90,15 +90,31 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
   /**
    * Set the graph type to use when interacting with entities.
+   *
+   * @param array $graph_types
+   *    An array of graph machine names.
+   *
+   * @throws \Exception
+   *    Thrown if there is an invalid graph in the argument array or if the
+   *    final array is empty as there must be at least one active graph.
    */
-  public function setActiveGraphType($graph_types) {
+  public function setActiveGraphType(array $graph_types) {
     $definitions = $this->getGraphsDefinition();
+    $graphs_array = [];
     foreach ($graph_types as $graph_type) {
       if (!isset($definitions[$graph_type])) {
         throw new \Exception('Unknown graph type ' . $graph_type);
       }
-      $this->activeGraph[] = $graph_type;
+      $graphs_array[] = $graph_type;
     }
+
+    // @todo: Should we have the default one set if the result set is empty?
+    if (empty($graphs_array)) {
+      throw new \Exception("There must be at least one active graph.");
+    }
+
+    // Remove duplicates as there might be occurances after the loop above.
+    $this->activeGraph = array_unique($graphs_array);
   }
 
   /**
@@ -279,7 +295,7 @@ QUERY;
           $lang = $lang_temp;
         }
       }
-      $res[$entity_id][(string) $result->predicate][$lang][] = (string) $result->field_value;
+      $res[$entity_graphs[$entity_id]][$entity_id][(string) $result->predicate][$lang][] = (string) $result->field_value;
     }
     $values = [];
     foreach ($res as $entity_id => $entity_values) {
