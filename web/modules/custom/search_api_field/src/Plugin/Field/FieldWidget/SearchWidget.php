@@ -116,7 +116,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $element['enabled'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable the search field'),
-      '#description' => $this->t('Uncheck to disable completely the functionality'),
+      '#description' => $this->t('Uncheck to disable completely the functionality.'),
       '#default_value' => isset($default_values['enabled']) ? $default_values['enabled'] : 1,
     ];
 
