@@ -200,10 +200,10 @@ function solution_rdf_entity_presave(EntityInterface $entity) {
 
   $state = $entity->field_is_state->value;
   if (in_array($state, ['draft', 'proposed', 'in_assessment', 'blacklisted'])) {
-    $entity->graph = $draft;
+     $entity->graph = $draft;
   }
   elseif (in_array($state, ['validated', 'deletion_request'])) {
-    $entity->graph = $published;
+     $entity->graph = $published;
   }
   elseif (empty($state)) {
     throw new \Exception("State field not found while trying to get the appropriate graph.");
@@ -234,4 +234,37 @@ function solution_get_latest_release(RdfInterface $solution) {
     ->range(0, 1)
     ->execute();
   return $ids ? reset($ids) : NULL;
+}
+
+/**
+ * Implements hook_entity_graph_access.
+ *
+ * The same procedure as the global access check is followed here. The purpose
+ * is to override the results of the global access check if the user has the
+ * appropriate OG permissions.
+ *
+ * @todo: hook api definition is needed.
+ */
+function solution_entity_graph_access(EntityInterface $entity, $operation, AccountInterface $account, $graph_name) {
+  if (!$entity || $entity->bundle() != 'solution' || $operation != 'view' || $graph_name == 'default') {
+    return AccessResult::neutral();
+  }
+
+  $membership = Og::getMembership($entity, $account);
+  if (empty($membership)) {
+    return AccessResult::neutral();
+  }
+
+  // Following the same logic as the global access check.
+  $map = ['view' => 'view all graphs'];
+  $entity_type_id = $entity->getEntityTypeId();
+  $type_map = ['view' => "view $entity_type_id $graph_name graph"];
+
+  // If the operation is not supported, do not allow access.
+  if (!isset($map[$operation]) || !isset($type_map[$operation])) {
+    return FALSE;
+  }
+
+  $has_permission = $membership->hasPermission($map[$operation]) || $account->hasPermission($type_map[$operation]);
+  return $has_permission ? AccessResult::allowed() : AccessResult::neutral();
 }
