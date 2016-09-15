@@ -149,12 +149,22 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       'limit' => $limit,
       'offset' => !is_null($this->request->get('page')) ? $this->request->get('page') * $limit : 0,
       'search id' => 'search_api_field:' . $field_definition->getTargetEntityTypeId() . '.' . $field_definition->getName(),
+      'search_api_field entity' => $entity,
+      'search_api_field item' => $items->first(),
     ];
     $query = $search_api_index->query($options);
     $query->setParseMode($this->parseModeManager->createInstance('direct'));
 
     if (!empty($settings['query_presets'])) {
       $this->applyPresets($query, $settings['query_presets']);
+    }
+
+    $hooks = [
+      'search_api_field_',
+      'search_api_field_' . $field_definition->getName(),
+    ];
+    foreach ($hooks as $hook) {
+      $query->addTag($hook);
     }
 
     $result = $query->execute();
