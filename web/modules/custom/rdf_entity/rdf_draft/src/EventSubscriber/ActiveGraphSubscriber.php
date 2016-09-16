@@ -41,12 +41,12 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
         $entity_type_id = substr($event->getDefinition()['type'], strlen('entity:'));
         /** @var RdfEntitySparqlStorage $storage */
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
-        $storage->setActiveGraphType([$this->defaultSaveGraph($entity_type_id)]);
+        $storage->setActiveGraphType(['draft']);
         // Draft version already exists.
         $entity = $storage->load($event->getValue());
         if ($entity) {
           if ($this->draftEnabled($entity_type_id, $entity->bundle())) {
-            $event->setGraph($this->defaultSaveGraph($entity_type_id));
+            $event->setGraph('draft');
           }
         }
         // Use published version to create draft.
