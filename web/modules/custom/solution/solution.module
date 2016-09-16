@@ -261,6 +261,6 @@ function solution_entity_graph_access(EntityInterface $entity, $operation, Accou
     return FALSE;
   }
 
-  $has_permission = $membership->hasPermission($map[$operation]) || $account->hasPermission($type_map[$operation]);
+  $has_permission = $membership->hasPermission($map[$operation]) || $membership->hasPermission($type_map[$operation]);
   return $has_permission ? AccessResult::allowed() : AccessResult::neutral();
 }
