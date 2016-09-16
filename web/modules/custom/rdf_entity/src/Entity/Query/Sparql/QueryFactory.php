@@ -3,6 +3,7 @@
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Entity\Query\QueryBase;
 use Drupal\Core\Entity\Query\QueryFactoryInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
@@ -20,11 +21,24 @@ class QueryFactory implements QueryFactoryInterface {
   protected $namespaces;
 
   /**
-   * Constructs a QueryFactory object.
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
    */
-  public function __construct(Connection $connection) {
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a QueryFactory object.
+   *
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection
+   *    The connection object
+   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   *    The entity type manager.
+   */
+  public function __construct(Connection $connection, EntityTypeManager $entity_type_manager) {
     $this->connection = $connection;
     $this->namespaces = QueryBase::getNamespaces($this);
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -32,9 +46,7 @@ class QueryFactory implements QueryFactoryInterface {
    */
   public function get(EntityTypeInterface $entity_type, $conjunction) {
     $class = QueryBase::getClass($this->namespaces, 'Query');
-    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces);
-
-    // Return new SparqlQuery($entity_type, $conjunction, $this->namespaces);.
+    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager);
   }
 
   /**
@@ -42,8 +54,7 @@ class QueryFactory implements QueryFactoryInterface {
    */
   public function getAggregate(EntityTypeInterface $entity_type, $conjunction) {
     $class = QueryBase::getClass($this->namespaces, 'Query');
-    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces);
-    // Return new SparqlQuery($entity_type, $conjunction, $this->namespaces);.
+    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager);
   }
 
 }

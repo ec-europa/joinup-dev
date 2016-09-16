@@ -1,7 +1,7 @@
 services:
   entity.query.sparql:
     class: \Drupal\rdf_entity\Entity\Query\Sparql\QueryFactory
-    arguments: ['@sparql_endpoint']
+    arguments: ['@sparql_endpoint', '@entity_type.manager']
     tags:
       - { name: backend_overridable }
   sparql_endpoint:
