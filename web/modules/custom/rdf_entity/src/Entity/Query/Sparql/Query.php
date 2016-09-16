@@ -26,8 +26,20 @@ class Query extends QueryBase implements QueryInterface {
    */
   protected $filter;
 
+  /**
+   * An array of graphs.
+   *
+   * @todo: This needs explanation.
+   *
+   * @var array
+   */
   protected $graphs = NULL;
 
+  /**
+   * An array that is meant to hold the results.
+   *
+   * @var array
+   */
   protected $results = NULL;
 
   /**

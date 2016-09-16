@@ -14,6 +14,11 @@ use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 class QueryFactory implements QueryFactoryInterface {
 
   /**
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   */
+  protected $connection;
+
+  /**
    * The namespace of this class, the parent class etc.
    *
    * @var array
