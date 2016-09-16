@@ -277,75 +277,122 @@ WHERE{
   }
 }
 QUERY;
+
     /** @var \EasyRdf_Sparql_Result $entity_values */
     $entity_values = $this->sparql->query($query);
+    $values = $this->processGraphResults($entity_values);
+    return $values;
+  }
 
+  /**
+   * Processes results from the load query and returns a list of values.
+   *
+   * When an entity is loaded, the values might derive from multiple graph.
+   * This function will process the results and attempt to load a published
+   * version of the entity.
+   * If there is no published version available, then it will fallback to the
+   * rest of the graphs.
+   *
+   * If the graph parameter can be used to restrict the available graphs to load
+   * from.
+   *
+   * The results array is an array of loaded entity values from different
+   * graphs.
+   * @code
+   *    $results = [
+   *      'http://example.com/entity_id/published' => [
+   *        'http://entity_id.uri' => [
+   *          'http://field.mapping.uri' => [
+   *            'x-default' => [
+   *              0 => 'actual value'
+   *            ]
+   *          ]
+   *        ]
+   *      ];
+   * @code
+   *
+   * @param array $results
+   *    A set of query results indexed per graph and entity id.
+   * @param array $entity_graphs
+   *    Optionally filters loading graphs available. This can be used to force
+   *    it to check only e.g. for the draft version of the entity and return
+   *    an empty set of values if it is not found.
+   *
+   * @return array
+   *    The entity values indexed by the field mapping id.
+   */
+  protected function processGraphResults($results, $entity_graphs = []) {
     $mapping = $this->predicateMapping();
+    // If no graphs are passed, fetch all available graphs derived from the
+    // results.
+    $values_per_graph = [];
+    if (empty($entity_graphs)) {
+      foreach ($results as $result) {
+        $entity_id = (string) $result->entity_id;
+        $entity_graphs[$entity_id] = (string) $result->graph;
 
-    $res = [];
-    $entity_graphs = [];
-    foreach ($entity_values as $result) {
-      $entity_id = (string) $result->entity_id;
-      $entity_graphs[$entity_id] = (string) $result->graph;
-
-      $lang = LanguageInterface::LANGCODE_DEFAULT;
-      if ($result->field_value instanceof \EasyRdf_Literal) {
-        $lang_temp = $result->field_value->getLang();
-        if ($lang_temp) {
-          $lang = $lang_temp;
+        $lang = LanguageInterface::LANGCODE_DEFAULT;
+        if ($result->field_value instanceof \EasyRdf_Literal) {
+          $lang_temp = $result->field_value->getLang();
+          if ($lang_temp) {
+            $lang = $lang_temp;
+          }
         }
+        $values_per_graph[(string) $result->graph][$entity_id][(string) $result->predicate][$lang][] = (string) $result->field_value;
       }
-      $res[$entity_graphs[$entity_id]][$entity_id][(string) $result->predicate][$lang][] = (string) $result->field_value;
     }
-    $values = [];
-    foreach ($res as $entity_id => $entity_values) {
-      // First determine the bundle of the returned entity.
-      $bundle_predicates = $this->bundlePredicate;
-      $pred_set = FALSE;
-      foreach ($bundle_predicates as $bundle_predicate) {
-        if (isset($entity_values[$bundle_predicate])) {
-          $pred_set = TRUE;
+
+    $return = [];
+    foreach ($values_per_graph as $graph => $entity_per_graph) {
+      foreach ($entity_per_graph as $entity_id => $entity_values) {
+        // First determine the bundle of the returned entity.
+        $bundle_predicates = $this->bundlePredicate;
+        $pred_set = FALSE;
+        foreach ($bundle_predicates as $bundle_predicate) {
+          if (isset($entity_values[$bundle_predicate])) {
+            $pred_set = TRUE;
+          }
         }
-      }
-      if (!$pred_set) {
-        continue;
-      }
-
-      /** @var \Drupal\rdf_entity\Entity\RdfEntityType $bundle */
-      $bundle = $this->getActiveBundle($entity_values);
-      if (!$bundle) {
-        continue;
-      }
-      // Map bundle and entity id.
-      $values[$entity_id][$this->bundleKey][LanguageInterface::LANGCODE_DEFAULT] = $bundle->id();
-      $values[$entity_id][$this->idKey][LanguageInterface::LANGCODE_DEFAULT] = $entity_id;
-      $values[$entity_id]['graph'][LanguageInterface::LANGCODE_DEFAULT] = $entity_graphs[$entity_id];
-
-      $rdf_type = NULL;
-      foreach ($entity_values as $predicate => $field) {
-        // If not mapped, ignore.
-        if (!isset($mapping[$bundle->id()][$predicate])) {
+        if (!$pred_set) {
           continue;
         }
-        $field_name = $mapping[$bundle->id()][$predicate]['field_name'];
-        $column = $mapping[$bundle->id()][$predicate]['column'];
-        foreach ($field as $lang => $items) {
-          foreach ($items as $item) {
-            if (!isset($values[$entity_id][$field_name]) || !is_string($values[$entity_id][$field_name][$lang])) {
-              $values[$entity_id][$field_name][$lang][][$column] = $item;
-            }
-            if (!isset($values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT])) {
-              $values[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT][][$column] = $item;
-            }
+
+        /** @var \Drupal\rdf_entity\Entity\RdfEntityType $bundle */
+        $bundle = $this->getActiveBundle($entity_values);
+        if (!$bundle) {
+          continue;
+        }
+        // Map bundle and entity id.
+        $return[$entity_id][$this->bundleKey][LanguageInterface::LANGCODE_DEFAULT] = $bundle->id();
+        $return[$entity_id][$this->idKey][LanguageInterface::LANGCODE_DEFAULT] = $entity_id;
+        $return[$entity_id]['graph'][LanguageInterface::LANGCODE_DEFAULT] = $entity_graphs[$entity_id];
+
+        $rdf_type = NULL;
+        foreach ($entity_values as $predicate => $field) {
+          // If not mapped, ignore.
+          if (!isset($mapping[$bundle->id()][$predicate])) {
+            continue;
           }
-          if (isset($mapping[$bundle->id()][$predicate]['storage_definition'])) {
-            $storage_definition = $mapping[$bundle->id()][$predicate]['storage_definition'];
-            $this->applyFieldDefaults($storage_definition, $values[$entity_id][$storage_definition->getName()][$lang]);
+          $field_name = $mapping[$bundle->id()][$predicate]['field_name'];
+          $column = $mapping[$bundle->id()][$predicate]['column'];
+          foreach ($field as $lang => $items) {
+            foreach ($items as $item) {
+              if (!isset($return[$entity_id][$field_name]) || !is_string($return[$entity_id][$field_name][$lang])) {
+                $return[$entity_id][$field_name][$lang][][$column] = $item;
+              }
+              if (!isset($return[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT])) {
+                $return[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT][][$column] = $item;
+              }
+            }
+            if (isset($mapping[$bundle->id()][$predicate]['storage_definition'])) {
+              $storage_definition = $mapping[$bundle->id()][$predicate]['storage_definition'];
+              $this->applyFieldDefaults($storage_definition, $return[$entity_id][$storage_definition->getName()][$lang]);
+            }
           }
         }
       }
     }
-    return $values;
+    return $return;
   }
 
   /**
