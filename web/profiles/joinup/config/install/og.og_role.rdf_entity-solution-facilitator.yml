@@ -26,6 +26,6 @@ permissions:
   - 'update own asset_release rdf_entity'
   - 'view any unpublished content'
   - 'view any unpublished news content'
-  - 'view draft graph'
+  - 'view rdf_entity draft graph'
   - 'view unpublished rdf entity'
 role_type: standard
