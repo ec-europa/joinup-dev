@@ -32,14 +32,10 @@ function solution_entity_access(EntityInterface $entity, $operation, AccountInte
   if (empty($membership)) {
     return AccessResult::neutral();
   }
-  $roleIds = $membership->getRolesIds();
-  if ($membership->hasPermission('view unpublished rdf_entity')) {
+  if (!$entity->isPublished() && $membership->hasPermission('view unpublished rdf entity')) {
     return AccessResult::allowed();
   }
-  elseif (in_array('rdf_entity-solution-administrator', $roleIds)) {
-    return AccessResult::allowed();
-  }
-  elseif (in_array('rdf_entity-solution-facilitator', $roleIds)) {
+  if ($entity->isPublished() && $membership->hasPermission('view rdf entity')) {
     return AccessResult::allowed();
   }
 
