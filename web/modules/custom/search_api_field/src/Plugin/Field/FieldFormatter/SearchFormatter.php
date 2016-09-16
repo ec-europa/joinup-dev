@@ -216,8 +216,11 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
         $view_mode = 'default';
       }
 
-      $results[] = $this->entityTypeManager->getViewBuilder($entity_type)
-        ->view($entity, $view_mode);
+      $results[] = [
+        '#theme' => 'search_api_field_result',
+        '#item' => $this->entityTypeManager->getViewBuilder($entity_type)->view($entity, $view_mode),
+        '#entity' => $entity,
+      ];
     }
 
     $build = [
