@@ -11,13 +11,23 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class ActiveGraphSubscriber implements EventSubscriberInterface {
 
   /**
-   * Sets the active graph to 'draft'.
+   * Set the appropriate graph as an active graph for the entity.
    *
-   * When editing an entity or when viewing it on the draft tab,
-   * the graph type is changed to 'draft'.
+   * Currently, the following cases exist:
+   *  - In the canonical view of the entity, load the entity from all graphs. If
+   *  a published one exists, then it uses the default behaviour. If a published
+   *  one does not exist, then returns the draft version and continues with
+   *  proper access check.
+   *  - In the edit view, the draft version has priority over the published. If
+   *  a draft version exists, then this is the one edited. If a draft version
+   *  does not exist, then the published one is cloned into the draft graph.
+   *  - The delete view is the same as the canonical view. The published one has
+   *  priority over the draft version.
+   *  - In any other case, like a 'view draft' tab view, the corresponding graph
+   *  is loaded with no fallbacks.
    *
    * @param \Drupal\rdf_entity\ActiveGraphEvent $event
-   *   The Event to process.
+   *   The event object to process.
    *
    * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
    *   Thrown when the access is denied and redirects to user login page.
