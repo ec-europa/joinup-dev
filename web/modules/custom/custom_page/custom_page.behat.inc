@@ -5,6 +5,7 @@
  * Contains \CustomPageSubContext.
  */
 
+use Behat\Gherkin\Node\TableNode;
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
@@ -169,6 +170,38 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
         throw new \Exception("The current user has access to '$uri' in the OG Menu administration for the $menu menu of the $title $type.");
       }
     }
+  }
+
+  /**
+   * Creates a custom_page node configured to show discussion nodes.
+   *
+   * We cannot use the default Behat step to create nodes because we want to
+   * have the default values of the search field to be set, like the facets
+   * configuration. If we would specify the field values in there, we need to
+   * put the whole field configuration which is too complex, due to the widget
+   * type.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The node data.
+   *
+   * @Given the( following) discussions page:
+   */
+  public function assertDiscussionsPage(TableNode $table) {
+    $node_stub = (object) $table->getRowsHash();
+    $node_stub->type = 'custom_page';
+    $this->nodeCreate($node_stub);
+
+    // Reload the full populated node.
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($node_stub->nid);
+
+    // Get the search fields with its defaults.
+    $search_field = $node->get('field_cp_search')->first()->getValue();
+    // Enable the search and prefilter it to show only discussion nodes.
+    $search_field['value']['enabled'] = TRUE;
+    $search_field['value']['query_presets'] = 'aggregated_field|discussion';
+    // Now we can update the field.
+    $node->set('field_cp_search', $search_field);
+    $node->save();
   }
 
 }
