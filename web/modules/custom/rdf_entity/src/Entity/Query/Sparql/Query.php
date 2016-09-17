@@ -73,14 +73,14 @@ class Query extends QueryBase implements QueryInterface {
    *
    * @var \Drupal\rdf_entity\RdfGraphHandler
    */
-  protected $graphHandler = NULL;
+  protected $graphHandler;
 
   /**
    * The rdf mapping handler service object.
    *
    * @var \Drupal\rdf_entity\RdfMappingHandler
    */
-  protected $mappingHandler = NULL;
+  protected $mappingHandler;
 
   /**
    * Constructs a query object.
