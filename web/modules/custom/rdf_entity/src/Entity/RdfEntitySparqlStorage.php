@@ -535,28 +535,6 @@ QUERY;
   }
 
   /**
-   * Returns an rdf object for each bundle.
-   *
-   * Returns the rdf object that is specific for this bundle.
-   */
-  public function getRdfBundleList($bundles = []) {
-    $bundle_mapping = $this->mappingHelper->getRdfBundleMappedUri($this->entityType->getBundleEntityType());
-    if (empty($bundle_mapping)) {
-      return;
-    }
-    if (!$bundles) {
-      $bundles = array_keys($bundle_mapping);
-    }
-    $rdf_bundles = [];
-    foreach ($bundles as $bundle) {
-      if (isset($bundle_mapping[$bundle])) {
-        $rdf_bundles[] = $bundle_mapping[$bundle];
-      }
-    }
-    return "(<" . implode(">, <", $rdf_bundles) . ">)";
-  }
-
-  /**
    * Determine the bundle types for a list of entities.
    *
    * // @todo: This needs refactor a bit.

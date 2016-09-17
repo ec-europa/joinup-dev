@@ -215,7 +215,7 @@ class Query extends QueryBase implements QueryInterface {
     switch ($key) {
       // @todo Limit the graphs here to the set bundles.
       case  $bundle . '-IN':
-        $rdf_bundles = $this->entityStorage->getRdfBundleList($value);
+        $rdf_bundles = $this->mappingHelper->getBundleUriList($this->entityTypeId, $value);
         if ($rdf_bundles) {
           $this->condition->condition('?entity', '?bundlepredicate', '?type');
           $this->filterAdded = TRUE;

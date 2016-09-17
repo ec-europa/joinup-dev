@@ -76,24 +76,38 @@ class RdfMappingHelper {
   }
 
   /**
-   * Returns an rdf object for each bundle.
+   * Returns a list of bundle uris ready to be passed to a query as an array.
    *
-   * Returns the rdf object that is specific for this bundle.
+   * @todo: This should return a simple array. A query helper method can convert
+   *    it later on.
+   *
+   * @param string $entity_type
+   *    The entity type of the bundles e.g. 'node_type'.
+   * @param array $bundles
+   *    Optionally filter and return only a subset of bundles.
+   *
+   * @return string
+   *    A string including the converted array of bundle uris to a string value
+   *    of a sparql array filter.
    */
-  public function getRdfBundleList($entity_type, $bundles = []) {
-    $bundle_mapping = $this->getRdfBundleMappedUri($this->entityType->id());
+  public function getBundleUriList($entity_type, $bundles = []) {
+    $bundle_mapping = $this->getRdfBundleMappedUri($entity_type);
     if (empty($bundle_mapping)) {
       return;
     }
-    if (!$bundles) {
-      $bundles = array_keys($bundle_mapping);
-    }
+
     $rdf_bundles = [];
-    foreach ($bundles as $bundle) {
-      if (isset($bundle_mapping[$bundle])) {
-        $rdf_bundles[] = $bundle_mapping[$bundle];
+    if (empty($bundles)) {
+      $rdf_bundles = array_unique(array_values($bundle_mapping));
+    }
+    else {
+      foreach ($bundles as $bundle) {
+        if (isset($bundle_mapping[$bundle])) {
+          $rdf_bundles[] = $bundle_mapping[$bundle];
+        }
       }
     }
+
     return "(<" . implode(">, <", $rdf_bundles) . ">)";
   }
 
