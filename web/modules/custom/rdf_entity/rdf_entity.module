@@ -102,7 +102,7 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
     '#weight' => 99,
     '#open' => TRUE,
   );
-  foreach ($storage->getGraphsDefinition() as $definedGraphName => $definedGraph) {
+  foreach ($storage->getGraphDefinitions() as $definedGraphName => $definedGraph) {
     $default_value = $entity->getThirdPartySetting('rdf_entity', 'graph_' . $definedGraphName, FALSE);
     $form['rdf_graph']['graph_' . $definedGraphName] = array(
       '#type' => 'url',

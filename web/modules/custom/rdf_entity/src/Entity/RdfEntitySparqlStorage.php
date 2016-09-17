@@ -136,17 +136,16 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
   /**
    * Get the defined graph types for this entity type.
+   *
+   * This is here for convenience.
+   * @see \Drupal\rdf_entity\RdfGraphHandler::getGraphDefinitions.
+   *
+   * @return array
+   *    A structured array of graph definitions containing a title and a
+   *    description. The array keys are the machine names of the graphs.
    */
-  public function getGraphsDefinition() {
-    $graphs_definition = [];
-    $graphs_definition['default'] = [
-      'title' => $this->t('Default'),
-      'description' => $this->t('The default graph used to store entities of this type.'),
-    ];
-    // @todo Consider turning this into an event.
-
-    $this->moduleHandler->alter('rdf_graph_definition', $this->entityTypeId, $graphs_definition);
-    return $graphs_definition;
+  public function getGraphDefinitions() {
+    return $this->graphHandler->getGraphDefinitions($this->entityTypeId);
   }
 
   /**
@@ -160,7 +159,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *    final array is empty as there must be at least one active graph.
    */
   public function setActiveGraphType(array $graph_types) {
-    $definitions = $this->getGraphsDefinition();
+    $definitions = $this->getGraphDefinitions();
     $graphs_array = [];
     foreach ($graph_types as $graph_type) {
       if (!isset($definitions[$graph_type])) {

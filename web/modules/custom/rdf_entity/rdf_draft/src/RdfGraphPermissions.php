@@ -24,7 +24,7 @@ class RdfGraphPermissions {
     foreach (\Drupal::entityTypeManager()->getDefinitions() as $entity_type_id => $entity_type) {
       $storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
       if ($storage instanceof RdfEntitySparqlStorage) {
-        $definitions = $storage->getGraphsDefinition();
+        $definitions = $storage->getGraphDefinitions();
         unset($definitions['default']);
         foreach ($definitions as $name => $definition) {
           $perms += $this->buildPermissions($entity_type, $name);

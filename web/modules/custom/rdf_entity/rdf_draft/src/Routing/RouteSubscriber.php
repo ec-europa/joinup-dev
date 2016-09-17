@@ -39,7 +39,7 @@ class RouteSubscriber extends RouteSubscriberBase {
     foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {
       $storage = \Drupal::entityManager()->getStorage($entity_type_id);
       if ($storage instanceof RdfEntitySparqlStorage) {
-        $definitions = $storage->getGraphsDefinition();
+        $definitions = $storage->getGraphDefinitions();
         unset($definitions['default']);
         foreach ($definitions as $name => $definition) {
           $definition['name'] = $name;

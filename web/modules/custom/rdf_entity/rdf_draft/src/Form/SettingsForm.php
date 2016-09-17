@@ -54,7 +54,7 @@ class SettingsForm extends ConfigFormBase {
         }
         $graphs = [];
         /** @var ContentEntityType $def */
-        foreach ($storage->getGraphsDefinition() as $key => $def) {
+        foreach ($storage->getGraphDefinitions() as $key => $def) {
           $graphs[$key] = $def['title'];
         }
         $default_save_graph = $this->config('rdf_draft.settings')->get('default_save_graph_' . $name);

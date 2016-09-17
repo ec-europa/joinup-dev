@@ -39,7 +39,7 @@ function rdf_draft_entity_type_alter(array &$entity_types) {
       $storage = \Drupal::service('entity.manager')->getStorage($entity_type_id);
       $recurse = FALSE;
       if ($storage  instanceof RdfEntitySparqlStorage) {
-        $definitions = $storage->getGraphsDefinition();
+        $definitions = $storage->getGraphDefinitions();
         unset($definitions['default']);
         // Set the link templates for each graph type.
         foreach ($definitions as $name => $definition) {
@@ -57,7 +57,7 @@ function rdf_draft_entity_operation(EntityInterface $entity) {
   $operations = array();
   $storage = \Drupal::service('entity.manager')->getStorage($entity->getEntityTypeId());
   if ($storage  instanceof RdfEntitySparqlStorage) {
-    $definitions = $storage->getGraphsDefinition();
+    $definitions = $storage->getGraphDefinitions();
     foreach ($definitions as $name => $definition) {
       if ($entity->hasLinkTemplate('rdf-draft-' . $name)) {
         $operations[$name] = array(

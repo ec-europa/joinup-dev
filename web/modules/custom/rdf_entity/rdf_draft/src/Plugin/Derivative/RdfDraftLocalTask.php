@@ -57,7 +57,7 @@ class RdfDraftLocalTask extends DeriverBase implements ContainerDeriverInterface
       if (!$storage instanceof RdfEntitySparqlStorage) {
         continue;
       }
-      $definitions = $storage->getGraphsDefinition();
+      $definitions = $storage->getGraphDefinitions();
       unset($definitions['default']);
       foreach ($definitions as $name => $definition) {
         $has_export_path = $entity_type->hasLinkTemplate('rdf-draft-' . $name);

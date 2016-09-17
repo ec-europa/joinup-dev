@@ -24,7 +24,7 @@ class RdfListBuilder extends EntityListBuilder {
       ->condition('rid', NULL, 'IN');
     // If a graph type is set in the url, validate it, and use it in the query.
     if (!empty($_GET['graph'])) {
-      $def = $rdf_storage->getGraphsDefinition();
+      $def = $rdf_storage->getGraphDefinitions();
       if (is_string($_GET['graph']) && isset($def[$_GET['graph']])) {
         // Use the graph to build the list.
         $query->setGraphType([$_GET['graph']]);
