@@ -38,27 +38,32 @@ class RdfMappingHelper {
   /**
    * Returns all bundle key mappings of the passed rdf entity type.
    *
+   * These mappings are the actual type of the bundle represented by an rdf
+   * URI. This is not the predicate but the object.
+   *
    * @param string $entity_type
    *    The machine name of the entity type.
+   * @param string $bundle
+   *    Optionally filter the mappings by bundle.
    *
    * @return array
    *    A list of bundle key mappings from all bundles of the passed entity
-   *    type. The returned array is indexed by entity type id and by bundle
-   *    entity id.
+   *    type. The returned array is indexed by the bundle key.
    *
    * @throws \Exception
    *    Thrown when the rdf entity bundle has no mapped type uri.
    */
-  public function getRdfBundleMapping($entity_type) {
+  public function getRdfBundleMappedUri($entity_type, $bundle = NULL) {
     $bundle_rdf_bundle_mapping = [];
     $storage = $this->getRdfStorage($entity_type);
-    foreach ($storage->loadMultiple() as $bundle_entity) {
+    $bundle_entities = empty($bundle) ? $storage->loadMultiple() : $storage->load($bundle);
+    foreach ($bundle_entities as $bundle_entity) {
       $settings = $bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $this->bundleKey, FALSE);
       if (!is_array($settings)) {
         throw new \Exception('No rdf:type mapping set for bundle ' . $bundle_entity->label());
       }
       $type = array_pop($settings);
-      $bundle_rdf_bundle_mapping[$bundle_entity->getEntityTypeId()][$bundle_entity->id()] = $type;
+      $bundle_rdf_bundle_mapping[$bundle_entity->id()] = $type;
     }
 
     // Allow modules to interact and tamper with the passed list.
@@ -88,11 +93,11 @@ class RdfMappingHelper {
   }
 
   /**
-   * Returns the module hanler service object.
+   * Returns the module handler service object.
    *
    * @todo: Check how we can inject this.
    */
-  protected function getModuleHanlderService() {
+  protected function getModuleHandlerService() {
     return \Drupal::moduleHandler();
   }
 }
