@@ -65,14 +65,14 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *
    * @var \Drupal\rdf_entity\RdfGraphHandler
    */
-  protected $graphHandler = NULL;
+  protected $graphHandler;
 
   /**
    * The rdf mapping helper service object.
    *
    * @var \Drupal\rdf_entity\RdfMappingHandler
    */
-  protected $mappingHandler = NULL;
+  protected $mappingHandler;
 
   /**
    * Initialize the storage backend.
