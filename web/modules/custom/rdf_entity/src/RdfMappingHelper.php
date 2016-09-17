@@ -1,8 +1,9 @@
 <?php
 
 namespace Drupal\rdf_entity;
-use Drupal\Core\Entity\EntityTypeManager;
-use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+
+use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Contains helper methods that help with the uri mappings of Drupal elements.
@@ -15,23 +16,23 @@ class RdfMappingHelper {
    *
    * @var \Drupal\Core\Entity\EntityTypeManager
    */
-  protected $entityTypeManager;
+  protected $entityManager;
 
   /**
    * The entity type manager service.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $moduleHandler;
 
   /**
    * Constructs a QueryFactory object.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *    The entity type manager.
    */
-  public function __construct(EntityTypeManager $entity_type_manager) {
-    $this->entityTypeManager = $entity_type_manager;
+  public function __construct(EntityManagerInterface $entity_manager) {
+    $this->entityManager = $entity_manager;
     $this->moduleHandler = $this->getModuleHandlerService();
   }
 
@@ -55,7 +56,7 @@ class RdfMappingHelper {
    */
   public function getRdfBundleMappedUri($entity_type, $bundle = NULL) {
     $bundle_rdf_bundle_mapping = [];
-    $storage = $this->entityTypeManager->getStorage($entity_type);
+    $storage = $this->entityManager->getStorage($entity_type);
 
     $bundle_entities = empty($bundle) ? $storage->loadMultiple() : $storage->load($bundle);
     foreach ($bundle_entities as $bundle_entity) {
@@ -109,6 +110,77 @@ class RdfMappingHelper {
     }
 
     return "(<" . implode(">, <", $rdf_bundles) . ">)";
+  }
+
+  /**
+   * Get the mapping between drupal properties and rdf predicates.
+   *
+   * @todo: We should have a better more generic way of generating these
+   *    mappings. E.g., when nothing is set, we can generate automatically for
+   *    all properties of the entity and the fields in the following format:
+   *    - Entity keys: <base url>/<entity_type_id>/<entity_key>
+   *    - Entity field: <base url>/<entity_type_id>/<field_machine_name>
+   * /<property>
+   *
+   * @param string $entity_type_id
+   *    The entity type for which the mappings are retrieved.
+   *
+   * @return array
+   *    An array of mappings indexed by bundle.
+   */
+  public function getEntityPredicates($entity_type_id) {
+    $mapping = &drupal_static(__FUNCTION__);
+    $storage = $this->entityManager->getStorage($entity_type_id);
+    $bundle_key = $storage->getEntityType()->getBundleEntityType();
+    if (empty($mapping[$entity_type_id])) {
+      // Collect entities ids, bundles and languages.
+      $rdf_bundle_entities = $this->entityManager->getStorage($bundle_key)->loadMultiple();
+
+      // Collect impacted fields.
+      // @todo: remove the entity type id index. Not needed.
+      $mapping[$entity_type_id] = [];
+      foreach ($rdf_bundle_entities as $rdf_bundle_entity) {
+        $base_field_definitions = $this->entityManager->getBaseFieldDefinitions($entity_type_id);
+        $field_definitions = $this->entityManager->getFieldDefinitions($entity_type_id, $rdf_bundle_entity->id());
+        if (!$base_field_definitions) {
+          continue;
+        }
+        foreach ($base_field_definitions as $id => $base_field_definition) {
+          $field_data = $rdf_bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $id, FALSE);
+          if (!$field_data) {
+            continue;
+          }
+          foreach ($field_data as $column => $predicate) {
+            if (empty($predicate)) {
+              continue;
+            }
+            $mapping[$entity_type_id][$rdf_bundle_entity->id()][$predicate] = array(
+              'field_name' => $id,
+              'column' => $column,
+            );
+          }
+        }
+        foreach ($field_definitions as $field_name => $field_definition) {
+          $storage_definition = $field_definition->getFieldStorageDefinition();
+          if (!$storage_definition instanceof FieldStorageConfig) {
+            continue;
+          }
+          foreach ($storage_definition->getColumns() as $column => $column_info) {
+            if ($predicate = $storage_definition->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE)) {
+              if (empty($predicate)) {
+                continue;
+              }
+              $mapping[$entity_type_id][$rdf_bundle_entity->id()][$predicate] = array(
+                'column' => $column,
+                'field_name' => $field_name,
+                'storage_definition' => $storage_definition,
+              );
+            }
+          }
+        }
+      }
+    }
+    return $mapping[$entity_type_id];
   }
 
   /**

@@ -29,4 +29,4 @@ services:
     arguments: ['@entity_type.manager']
   sparql.mapping_helper:
     class: \Drupal\rdf_entity\RdfMappingHelper
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity.manager']

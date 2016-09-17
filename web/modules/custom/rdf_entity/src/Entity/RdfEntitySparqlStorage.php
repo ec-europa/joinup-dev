@@ -368,7 +368,7 @@ QUERY;
    *    The entity values indexed by the field mapping id.
    */
   protected function processGraphResults($results, $entity_graphs = []) {
-    $mapping = $this->predicateMapping();
+    $mapping = $this->mappingHelper->getEntityPredicates($this->entityTypeId);
     // If no graphs are passed, fetch all available graphs derived from the
     // results.
     $values_per_graph = [];
@@ -468,62 +468,6 @@ QUERY;
     }
     $this->moduleHandler->alter('rdf_load_bundle', $entity_values, $bundle);
     return $bundle;
-  }
-
-  /**
-   * Get the mapping between drupal properties and rdf predicates.
-   */
-  protected function predicateMapping() {
-    $mapping = &drupal_static(__FUNCTION__);
-    if (empty($mapping[$this->entityTypeId])) {
-      // Collect entities ids, bundles and languages.
-      $rdf_bundle_entities = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->loadMultiple();
-
-      // Collect impacted fields.
-      $mapping[$this->entityTypeId] = [];
-      foreach ($rdf_bundle_entities as $rdf_bundle_entity) {
-        $base_field_definitions = $this->entityManager->getBaseFieldDefinitions($this->entityTypeId);
-        $field_definitions = $this->entityManager->getFieldDefinitions($this->entityTypeId, $rdf_bundle_entity->id());
-        if (!$base_field_definitions) {
-          continue;
-        }
-        foreach ($base_field_definitions as $id => $base_field_definition) {
-          $field_data = $rdf_bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $id, FALSE);
-          if (!$field_data) {
-            continue;
-          }
-          foreach ($field_data as $column => $predicate) {
-            if (empty($predicate)) {
-              continue;
-            }
-            $mapping[$this->entityTypeId][$rdf_bundle_entity->id()][$predicate] = array(
-              'field_name' => $id,
-              'column' => $column,
-            );
-          }
-        }
-        foreach ($field_definitions as $field_name => $field_definition) {
-          /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
-          $storage_definition = $field_definition->getFieldStorageDefinition();
-          if (!$storage_definition instanceof FieldStorageConfig) {
-            continue;
-          }
-          foreach ($storage_definition->getColumns() as $column => $column_info) {
-            if ($predicate = $storage_definition->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE)) {
-              if (empty($predicate)) {
-                continue;
-              }
-              $mapping[$this->entityTypeId][$rdf_bundle_entity->id()][$predicate] = array(
-                'column' => $column,
-                'field_name' => $field_name,
-                'storage_definition' => $storage_definition,
-              );
-            }
-          }
-        }
-      }
-    }
-    return $mapping[$this->entityTypeId];
   }
 
   /**
