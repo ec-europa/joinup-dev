@@ -2,6 +2,7 @@
 
 namespace Drupal\rdf_entity;
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 
@@ -214,6 +215,55 @@ class RdfMappingHelper {
       }
     }
     return $mapping[$entity_type_id];
+  }
+
+  /**
+   * Returns a list of mapped properties for the passed content entity.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   A content entity.
+   *
+   * @return array
+   *    An array of mappings between predicates and field properties. All
+   *    fields, and properties of the entity and the fields, that are available
+   *    will be returned.
+   */
+  public function getEntityTypeMappedProperties(ContentEntityInterface $entity) {
+    $bundle = $entity->bundle();
+    $properties = [];
+    // Collect impacted fields.
+    $definitions = $this->entityManager->getFieldDefinitions($entity->getEntityTypeId(), $bundle);
+    $base_field_definitions = $this->entityManager->getBaseFieldDefinitions($entity->getEntityTypeId());
+    $rdf_bundle_entity = $this->entityManager->getStorage($entity->getEntityType()->getBundleEntityType())->load($bundle);
+    /** @var \Drupal\Core\Field\BaseFieldDefinition $field_definition */
+    foreach ($definitions as $field_name => $field_definition) {
+      /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
+      $storage_definition = $field_definition->getFieldStorageDefinition();
+      if (!$storage_definition instanceof FieldStorageConfig) {
+        continue;
+      }
+      foreach ($storage_definition->getColumns() as $column => $column_info) {
+        if ($property = $storage_definition->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE)) {
+          $properties['by_field'][$field_name][$column] = $property;
+          $properties['flat'][$property] = $property;
+        }
+      }
+    }
+    foreach ($base_field_definitions as $field_name => $base_field_definition) {
+      $field_data = $rdf_bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $field_name, FALSE);
+      if (!$field_data) {
+        continue;
+      }
+      foreach ($field_data as $column => $predicate) {
+        if (empty($predicate)) {
+          continue;
+        }
+        $properties['by_field'][$field_name][$column] = $predicate;
+        $properties['flat'][$predicate] = $predicate;
+      }
+
+    }
+    return $properties;
   }
 
   /**

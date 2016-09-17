@@ -535,54 +535,6 @@ QUERY;
   }
 
   /**
-   * Get the Drupal field <-> rdf field mapping.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   Entity.
-   *
-   * @return array
-   *    An array of mappings between predicates and field properties.
-   */
-  protected function getMappedProperties(ContentEntityInterface $entity) {
-    $bundle = $entity->bundle();
-    $properties = [];
-    $entity_manager = \Drupal::getContainer()->get('entity.manager');
-    // Collect impacted fields.
-    $definitions = $entity_manager->getFieldDefinitions($entity->getEntityTypeId(), $bundle);
-    $base_field_definitions = $this->entityManager->getBaseFieldDefinitions($this->entityTypeId);
-    $rdf_bundle_entity = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->load($bundle);
-    /** @var \Drupal\Core\Field\BaseFieldDefinition $field_definition */
-    foreach ($definitions as $field_name => $field_definition) {
-      /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
-      $storage_definition = $field_definition->getFieldStorageDefinition();
-      if (!$storage_definition instanceof FieldStorageConfig) {
-        continue;
-      }
-      foreach ($storage_definition->getColumns() as $column => $column_info) {
-        if ($property = $storage_definition->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE)) {
-          $properties['by_field'][$field_name][$column] = $property;
-          $properties['flat'][$property] = $property;
-        }
-      }
-    }
-    foreach ($base_field_definitions as $field_name => $base_field_definition) {
-      $field_data = $rdf_bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $field_name, FALSE);
-      if (!$field_data) {
-        continue;
-      }
-      foreach ($field_data as $column => $predicate) {
-        if (empty($predicate)) {
-          continue;
-        }
-        $properties['by_field'][$field_name][$column] = $predicate;
-        $properties['flat'][$predicate] = $predicate;
-      }
-
-    }
-    return $properties;
-  }
-
-  /**
    * {@inheritdoc}
    */
   protected function getQueryServiceName() {
@@ -607,7 +559,6 @@ QUERY;
      * If so, the 'draft' graph will hold the unpublished versions, 'default'
      * graph contains the published entities.
      */
-
     if (in_array('Drupal\Core\Entity\EntityPublishedInterface', class_implements($this->entityClass))) {
       if (\Drupal::moduleHandler()->moduleExists('rdf_draft')) {
         $query->setGraphType(['draft', 'default']);
@@ -700,7 +651,7 @@ QUERY;
       }
     }
     $insert = '';
-    $properties = $this->getMappedProperties($entity);
+    $properties = $this->mappingHelper->getEntityTypeMappedProperties($entity);
     $subj = '<' . (string) $id . '>';
     $properties_list = "<" . implode(">, <", $properties['flat']) . ">";
     foreach ($entity->toArray() as $field_name => $field) {
