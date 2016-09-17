@@ -1,7 +1,7 @@
 services:
   entity.query.sparql:
     class: \Drupal\rdf_entity\Entity\Query\Sparql\QueryFactory
-    arguments: ['@sparql_endpoint', '@entity_type.manager', '@sparql.graph_helper', '@sparql.mapping_helper']
+    arguments: ['@sparql_endpoint', '@entity_type.manager', '@sparql.graph_handler', '@sparql.mapping_handler']
     tags:
       - { name: backend_overridable }
   sparql_endpoint:
@@ -24,9 +24,9 @@ services:
     arguments: ['@current_route_match']
     tags:
         - { name: route_processor_outbound, priority: 200 }
-  sparql.graph_helper:
-    class: \Drupal\rdf_entity\RdfGraphHelper
+  sparql.graph_handler:
+    class: \Drupal\rdf_entity\RdfGraphHandler
     arguments: ['@entity_type.manager']
-  sparql.mapping_helper:
-    class: \Drupal\rdf_entity\RdfMappingHelper
+  sparql.mapping_handler:
+    class: \Drupal\rdf_entity\RdfMappingHandler
     arguments: ['@entity.manager']

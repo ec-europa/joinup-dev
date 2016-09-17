@@ -17,8 +17,8 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
-use Drupal\rdf_entity\RdfGraphHelper;
-use Drupal\rdf_entity\RdfMappingHelper;
+use Drupal\rdf_entity\RdfGraphHandler;
+use Drupal\rdf_entity\RdfMappingHandler;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -63,16 +63,16 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * The rdf graph helper service object.
    *
-   * @var \Drupal\rdf_entity\RdfGraphHelper
+   * @var \Drupal\rdf_entity\RdfGraphHandler
    */
-  protected $graphHelper = NULL;
+  protected $graphHandler = NULL;
 
   /**
    * The rdf mapping helper service object.
    *
-   * @var \Drupal\rdf_entity\RdfMappingHelper
+   * @var \Drupal\rdf_entity\RdfMappingHandler
    */
-  protected $mappingHelper = NULL;
+  protected $mappingHandler = NULL;
 
   /**
    * Initialize the storage backend.
@@ -91,12 +91,12 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *    The language manager service.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *    The module handler service.
-   * @param \Drupal\rdf_entity\RdfGraphHelper $rdf_graph_helper
+   * @param \Drupal\rdf_entity\RdfGraphHandler $rdf_graph_handler
    *    The rdf graph helper service.
-   * @param \Drupal\rdf_entity\RdfMappingHelper $rdf_mapping_helper
+   * @param \Drupal\rdf_entity\RdfMappingHandler $rdf_mapping_handler
    *    The rdf mapping helper service.
    */
-  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler, RdfGraphHelper $rdf_graph_helper, RdfMappingHelper $rdf_mapping_helper) {
+  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
     parent::__construct($entity_type, $entity_manager, $cache);
     $this->sparql = $sparql;
     $this->languageManager = $language_manager;
@@ -106,8 +106,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $graph = $this->activeGraph;
     $this->moduleHandler->alter('rdf_default_active_graph', $entity_type, $graph);
     $this->activeGraph = $graph;
-    $this->graphHelper = $rdf_graph_helper;
-    $this->mappingHelper = $rdf_mapping_helper;
+    $this->graphHandler = $rdf_graph_handler;
+    $this->mappingHandler = $rdf_mapping_handler;
   }
 
   /**
@@ -122,8 +122,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $container->get('cache.entity'),
       $container->get('language_manager'),
       $container->get('module_handler'),
-      $container->get('sparql.graph_helper'),
-      $container->get('sparql.mapping_helper')
+      $container->get('sparql.graph_handler'),
+      $container->get('sparql.mapping_handler')
     );
   }
 
@@ -368,7 +368,7 @@ QUERY;
    *    The entity values indexed by the field mapping id.
    */
   protected function processGraphResults($results, $entity_graphs = []) {
-    $mapping = $this->mappingHelper->getEntityPredicates($this->entityTypeId);
+    $mapping = $this->mappingHandler->getEntityPredicates($this->entityTypeId);
     // If no graphs are passed, fetch all available graphs derived from the
     // results.
     $values_per_graph = [];
@@ -651,7 +651,7 @@ QUERY;
       }
     }
     $insert = '';
-    $properties = $this->mappingHelper->getEntityTypeMappedProperties($entity);
+    $properties = $this->mappingHandler->getEntityTypeMappedProperties($entity);
     $subj = '<' . (string) $id . '>';
     $properties_list = "<" . implode(">, <", $properties['flat']) . ">";
     foreach ($entity->toArray() as $field_name => $field) {
@@ -673,7 +673,7 @@ QUERY;
       }
     }
     // Save the bundle.
-    $rdf_bundle = $this->mappingHelper->getRdfBundleMappedUri($entity->getEntityTypeId(), $entity->bundle());
+    $rdf_bundle = $this->mappingHandler->getRdfBundleMappedUri($entity->getEntityTypeId(), $entity->bundle());
     $insert .= $subj . ' ' . $this->rdf_bundle_predicate . ' <' . $rdf_bundle . '>  .' . "\n";
 
     $query = <<<QUERY

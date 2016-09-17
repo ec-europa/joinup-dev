@@ -11,7 +11,7 @@ use Drupal\field\Entity\FieldStorageConfig;
  *
  * @package Drupal\rdf_entity
  */
-class RdfMappingHelper {
+class RdfMappingHandler {
   /**
    * The entity type manager service.
    *

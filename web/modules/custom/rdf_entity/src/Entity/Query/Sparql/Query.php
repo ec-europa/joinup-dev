@@ -10,8 +10,8 @@ use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Entity\Query\Sql\ConditionAggregate;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
-use Drupal\rdf_entity\RdfGraphHelper;
-use Drupal\rdf_entity\RdfMappingHelper;
+use Drupal\rdf_entity\RdfGraphHandler;
+use Drupal\rdf_entity\RdfMappingHandler;
 
 /**
  * The base entity query class for Rdf entities.
@@ -69,18 +69,18 @@ class Query extends QueryBase implements QueryInterface {
   protected $entityTypeManager;
 
   /**
-   * The rdf graph helper service object.
+   * The rdf graph handler service object.
    *
-   * @var \Drupal\rdf_entity\RdfGraphHelper
+   * @var \Drupal\rdf_entity\RdfGraphHandler
    */
-  protected $graphHelper = NULL;
+  protected $graphHandler = NULL;
 
   /**
-   * The rdf mapping helper service object.
+   * The rdf mapping handler service object.
    *
-   * @var \Drupal\rdf_entity\RdfMappingHelper
+   * @var \Drupal\rdf_entity\RdfMappingHandler
    */
-  protected $mappingHelper = NULL;
+  protected $mappingHandler = NULL;
 
   /**
    * Constructs a query object.
@@ -96,23 +96,23 @@ class Query extends QueryBase implements QueryInterface {
    *   List of potential namespaces of the classes belonging to this query.
    * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
    *   The entity type manager service object.
-   * @param \Drupal\rdf_entity\RdfGraphHelper $rdf_graph_helper
-   *    The rdf graph helper service.
-   * @param \Drupal\rdf_entity\RdfMappingHelper $rdf_mapping_helper
-   *    The rdf mapping helper service.
+   * @param \Drupal\rdf_entity\RdfGraphHandler $rdf_graph_handler
+   *    The rdf graph handler service.
+   * @param \Drupal\rdf_entity\RdfMappingHandler $rdf_mapping_handler
+   *    The rdf mapping handler service.
    *
    * @throws \Exception
    *   Thrown when the storage passed is not an RdfEntitySparqlStorage.
    * @todo: Is this exception check needed?
    */
-  public function __construct(EntityTypeInterface $entity_type, $conjunction, Connection $connection, array $namespaces, EntityTypeManager $entity_type_manager, RdfGraphHelper $rdf_graph_helper, RdfMappingHelper $rdf_mapping_helper) {
+  public function __construct(EntityTypeInterface $entity_type, $conjunction, Connection $connection, array $namespaces, EntityTypeManager $entity_type_manager, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
     parent::__construct($entity_type, $conjunction, $namespaces);
     $this->filter = new SparqlFilter();
     $this->connection = $connection;
     $this->entityTypeManager = $entity_type_manager;
     $this->entityStorage = $this->entityTypeManager->getStorage($this->entityTypeId);
-    $this->graphHelper = $rdf_graph_helper;
-    $this->mappingHelper = $rdf_mapping_helper;
+    $this->graphHandler = $rdf_graph_handler;
+    $this->mappingHandler = $rdf_mapping_handler;
 
     if (!$this->entityStorage instanceof RdfEntitySparqlStorage) {
       throw new \Exception('Sparql storage is required for this query.');
@@ -215,7 +215,7 @@ class Query extends QueryBase implements QueryInterface {
     switch ($key) {
       // @todo Limit the graphs here to the set bundles.
       case  $bundle . '-IN':
-        $rdf_bundles = $this->mappingHelper->getBundleUriList($this->entityType->getBundleEntityType(), $value);
+        $rdf_bundles = $this->mappingHandler->getBundleUriList($this->entityType->getBundleEntityType(), $value);
         if ($rdf_bundles) {
           $this->condition->condition('?entity', '?bundlepredicate', '?type');
           $this->filterAdded = TRUE;
@@ -226,7 +226,7 @@ class Query extends QueryBase implements QueryInterface {
         return $this;
 
       case $bundle . '-=':
-        $mapping = $this->mappingHelper->getRdfBundleMappedUri($this->entityType->id());
+        $mapping = $this->mappingHandler->getRdfBundleMappedUri($this->entityType->id());
         $bundle = $mapping[$value];
         if ($bundle) {
           $this->condition->condition('?entity', '?bundlepredicate', SparqlArg::uri($bundle));
@@ -296,7 +296,7 @@ class Query extends QueryBase implements QueryInterface {
             $this->filter->filter('?entity IN ' . $ids);
           }
           else {
-            $mapping = $this->mappingHelper->getEntityTypeLabelPredicates($this->entityTypeId);
+            $mapping = $this->mappingHandler->getEntityTypeLabelPredicates($this->entityTypeId);
             $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping))) . ">)";
             $this->condition->condition('?entity', '?label_type', '?label');
             $this->filter->filter('?label_type IN ' . $label_list);
@@ -307,7 +307,7 @@ class Query extends QueryBase implements QueryInterface {
         return $this;
 
       case $label . '-CONTAINS':
-        $mapping = $this->mappingHelper->getEntityTypeLabelPredicates($this->entityTypeId);
+        $mapping = $this->mappingHandler->getEntityTypeLabelPredicates($this->entityTypeId);
         $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping))) . ">)";
         $this->condition->condition('?entity', '?label_type', '?label');
         $this->filter->filter('?label_type IN ' . $label_list);

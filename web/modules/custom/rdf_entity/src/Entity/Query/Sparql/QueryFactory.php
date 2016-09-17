@@ -7,8 +7,8 @@ use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Entity\Query\QueryBase;
 use Drupal\Core\Entity\Query\QueryFactoryInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
-use Drupal\rdf_entity\RdfGraphHelper;
-use Drupal\rdf_entity\RdfMappingHelper;
+use Drupal\rdf_entity\RdfGraphHandler;
+use Drupal\rdf_entity\RdfMappingHandler;
 
 /**
  * Provides a factory for creating entity query objects for the null backend.
@@ -37,16 +37,16 @@ class QueryFactory implements QueryFactoryInterface {
   /**
    * The rdf graph helper service object.
    *
-   * @var \Drupal\rdf_entity\RdfGraphHelper
+   * @var \Drupal\rdf_entity\RdfGraphHandler
    */
-  protected $graphHelper;
+  protected $graphHandler;
 
   /**
    * The rdf mapping helper service object.
    *
-   * @var \Drupal\rdf_entity\RdfMappingHelper
+   * @var \Drupal\rdf_entity\RdfMappingHandler
    */
-  protected $mappingHelper;
+  protected $mappingHandler;
 
   /**
    * Constructs a QueryFactory object.
@@ -55,17 +55,17 @@ class QueryFactory implements QueryFactoryInterface {
    *    The connection object
    * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
    *    The entity type manager.
-   * @param \Drupal\rdf_entity\RdfGraphHelper $rdf_graph_helper
+   * @param \Drupal\rdf_entity\RdfGraphHandler $rdf_graph_handler
    *    The rdf graph helper service.
-   * @param \Drupal\rdf_entity\RdfMappingHelper $rdf_mapping_helper
+   * @param \Drupal\rdf_entity\RdfMappingHandler $rdf_mapping_handler
    *    The rdf mapping helper service.
    */
-  public function __construct(Connection $connection, EntityTypeManager $entity_type_manager, RdfGraphHelper $rdf_graph_helper, RdfMappingHelper $rdf_mapping_helper) {
+  public function __construct(Connection $connection, EntityTypeManager $entity_type_manager, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
     $this->connection = $connection;
     $this->namespaces = QueryBase::getNamespaces($this);
     $this->entityTypeManager = $entity_type_manager;
-    $this->graphHelper = $rdf_graph_helper;
-    $this->mappingHelper = $rdf_mapping_helper;
+    $this->graphHandler = $rdf_graph_handler;
+    $this->mappingHandler = $rdf_mapping_handler;
   }
 
   /**
@@ -73,7 +73,7 @@ class QueryFactory implements QueryFactoryInterface {
    */
   public function get(EntityTypeInterface $entity_type, $conjunction) {
     $class = QueryBase::getClass($this->namespaces, 'Query');
-    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager, $this->graphHelper, $this->mappingHelper, $this->graphHelper, $this->mappingHelper);
+    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager, $this->graphHandler, $this->mappingHandler, $this->graphHandler, $this->mappingHandler);
   }
 
   /**
@@ -81,7 +81,7 @@ class QueryFactory implements QueryFactoryInterface {
    */
   public function getAggregate(EntityTypeInterface $entity_type, $conjunction) {
     $class = QueryBase::getClass($this->namespaces, 'Query');
-    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager, $this->graphHelper, $this->mappingHelper);
+    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager, $this->graphHandler, $this->mappingHandler);
   }
 
 }
