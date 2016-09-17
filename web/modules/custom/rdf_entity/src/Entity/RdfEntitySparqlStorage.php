@@ -17,6 +17,8 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\RdfGraphHelper;
+use Drupal\rdf_entity\RdfMappingHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -52,9 +54,42 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   protected $saveGraph = NULL;
 
   /**
-   * Initialize the storage backend.
+   * The rdf graph helper service object.
+   *
+   * @var \Drupal\rdf_entity\RdfGraphHelper
    */
-  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler) {
+  protected $graphHelper = NULL;
+
+  /**
+   * The rdf mapping helper service object.
+   *
+   * @var \Drupal\rdf_entity\RdfMappingHelper
+   */
+  protected $mappingHelper = NULL;
+
+  /**
+   * Initialize the storage backend.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
+   *    The entity type this storage is about.
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   *    The connection object.
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   *    The entity manager service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *    The entity type manager service.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
+   *    The cache backend service.
+   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
+   *    The language manager service.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *    The module handler service.
+   * @param \Drupal\rdf_entity\RdfGraphHelper $rdf_graph_helper
+   *    The rdf graph helper service.
+   * @param \Drupal\rdf_entity\RdfMappingHelper $rdf_mapping_helper
+   *    The rdf mapping helper service.
+   */
+  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler, RdfGraphHelper $rdf_graph_helper, RdfMappingHelper $rdf_mapping_helper) {
     parent::__construct($entity_type, $entity_manager, $cache);
     $this->sparql = $sparql;
     $this->languageManager = $language_manager;
@@ -64,6 +99,25 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $graph = $this->activeGraph;
     $this->moduleHandler->alter('rdf_default_active_graph', $entity_type, $graph);
     $this->activeGraph = $graph;
+    $this->graphHelper = $rdf_graph_helper;
+    $this->mappingHelper = $rdf_mapping_helper;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
+    return new static(
+      $entity_type,
+      $container->get('sparql_endpoint'),
+      $container->get('entity.manager'),
+      $container->get('entity_type.manager'),
+      $container->get('cache.entity'),
+      $container->get('language_manager'),
+      $container->get('module_handler'),
+      $container->get('sparql.graph_helper'),
+      $container->get('sparql.mapping_helper')
+    );
   }
 
   /**
@@ -174,21 +228,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       }
     }
     return $graphs;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
-    return new static(
-      $entity_type,
-      $container->get('sparql_endpoint'),
-      $container->get('entity.manager'),
-      $container->get('entity_type.manager'),
-      $container->get('cache.entity'),
-      $container->get('language_manager'),
-      $container->get('module_handler')
-    );
   }
 
   /**
