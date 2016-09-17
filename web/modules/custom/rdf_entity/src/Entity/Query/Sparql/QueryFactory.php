@@ -7,6 +7,8 @@ use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Entity\Query\QueryBase;
 use Drupal\Core\Entity\Query\QueryFactoryInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\RdfGraphHelper;
+use Drupal\rdf_entity\RdfMappingHelper;
 
 /**
  * Provides a factory for creating entity query objects for the null backend.
@@ -33,17 +35,37 @@ class QueryFactory implements QueryFactoryInterface {
   protected $entityTypeManager;
 
   /**
+   * The rdf graph helper service object.
+   *
+   * @var \Drupal\rdf_entity\RdfGraphHelper
+   */
+  protected $graphHelper;
+
+  /**
+   * The rdf mapping helper service object.
+   *
+   * @var \Drupal\rdf_entity\RdfMappingHelper
+   */
+  protected $mappingHelper;
+
+  /**
    * Constructs a QueryFactory object.
    *
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection
    *    The connection object
    * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
    *    The entity type manager.
+   * @param \Drupal\rdf_entity\RdfGraphHelper $rdf_graph_helper
+   *    The rdf graph helper service.
+   * @param \Drupal\rdf_entity\RdfMappingHelper $rdf_mapping_helper
+   *    The rdf mapping helper service.
    */
-  public function __construct(Connection $connection, EntityTypeManager $entity_type_manager) {
+  public function __construct(Connection $connection, EntityTypeManager $entity_type_manager, RdfGraphHelper $rdf_graph_helper, RdfMappingHelper $rdf_mapping_helper) {
     $this->connection = $connection;
     $this->namespaces = QueryBase::getNamespaces($this);
     $this->entityTypeManager = $entity_type_manager;
+    $this->graphHelper = $rdf_graph_helper;
+    $this->mappingHelper = $rdf_mapping_helper;
   }
 
   /**
@@ -51,7 +73,7 @@ class QueryFactory implements QueryFactoryInterface {
    */
   public function get(EntityTypeInterface $entity_type, $conjunction) {
     $class = QueryBase::getClass($this->namespaces, 'Query');
-    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager);
+    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager, $this->graphHelper, $this->mappingHelper, $this->graphHelper, $this->mappingHelper);
   }
 
   /**
@@ -59,7 +81,7 @@ class QueryFactory implements QueryFactoryInterface {
    */
   public function getAggregate(EntityTypeInterface $entity_type, $conjunction) {
     $class = QueryBase::getClass($this->namespaces, 'Query');
-    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager);
+    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager, $this->graphHelper, $this->mappingHelper);
   }
 
 }

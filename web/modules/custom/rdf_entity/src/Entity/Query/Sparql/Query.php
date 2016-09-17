@@ -10,6 +10,8 @@ use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Entity\Query\Sql\ConditionAggregate;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+use Drupal\rdf_entity\RdfGraphHelper;
+use Drupal\rdf_entity\RdfMappingHelper;
 
 /**
  * The base entity query class for Rdf entities.
@@ -67,6 +69,20 @@ class Query extends QueryBase implements QueryInterface {
   protected $entityTypeManager;
 
   /**
+   * The rdf graph helper service object.
+   *
+   * @var \Drupal\rdf_entity\RdfGraphHelper
+   */
+  protected $graphHelper = NULL;
+
+  /**
+   * The rdf mapping helper service object.
+   *
+   * @var \Drupal\rdf_entity\RdfMappingHelper
+   */
+  protected $mappingHelper = NULL;
+
+  /**
    * Constructs a query object.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
@@ -80,17 +96,23 @@ class Query extends QueryBase implements QueryInterface {
    *   List of potential namespaces of the classes belonging to this query.
    * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
    *   The entity type manager service object.
+   * @param \Drupal\rdf_entity\RdfGraphHelper $rdf_graph_helper
+   *    The rdf graph helper service.
+   * @param \Drupal\rdf_entity\RdfMappingHelper $rdf_mapping_helper
+   *    The rdf mapping helper service.
    *
    * @throws \Exception
    *   Thrown when the storage passed is not an RdfEntitySparqlStorage.
    * @todo: Is this exception check needed?
    */
-  public function __construct(EntityTypeInterface $entity_type, $conjunction, Connection $connection, array $namespaces, EntityTypeManager $entity_type_manager) {
+  public function __construct(EntityTypeInterface $entity_type, $conjunction, Connection $connection, array $namespaces, EntityTypeManager $entity_type_manager, RdfGraphHelper $rdf_graph_helper, RdfMappingHelper $rdf_mapping_helper) {
     parent::__construct($entity_type, $conjunction, $namespaces);
     $this->filter = new SparqlFilter();
     $this->connection = $connection;
     $this->entityTypeManager = $entity_type_manager;
     $this->entityStorage = $this->entityTypeManager->getStorage($this->entityTypeId);
+    $this->graphHelper = $rdf_graph_helper;
+    $this->mappingHelper = $rdf_mapping_helper;
 
     if (!$this->entityStorage instanceof RdfEntitySparqlStorage) {
       throw new \Exception('Sparql storage is required for this query.');
