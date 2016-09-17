@@ -540,7 +540,7 @@ QUERY;
    * Returns the rdf object that is specific for this bundle.
    */
   public function getRdfBundleList($bundles = []) {
-    $bundle_mapping = $this->mappingHelper->getRdfBundleMappedUri($this->entityType->id());
+    $bundle_mapping = $this->mappingHelper->getRdfBundleMappedUri($this->entityType->getBundleEntityType());
     if (empty($bundle_mapping)) {
       return;
     }

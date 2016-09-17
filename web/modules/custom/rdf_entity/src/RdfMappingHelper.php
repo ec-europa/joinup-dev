@@ -55,10 +55,14 @@ class RdfMappingHelper {
    */
   public function getRdfBundleMappedUri($entity_type, $bundle = NULL) {
     $bundle_rdf_bundle_mapping = [];
-    $storage = $this->getRdfStorage($entity_type);
+    $storage = $this->entityTypeManager->getStorage($entity_type);
+
     $bundle_entities = empty($bundle) ? $storage->loadMultiple() : $storage->load($bundle);
     foreach ($bundle_entities as $bundle_entity) {
-      $settings = $bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $this->bundleKey, FALSE);
+      // The id of the entity type is 'rdf_type' but the key ('id') is the
+      // bundle key.
+      $bundle_key = $bundle_entity->getEntityType()->getKey('id');
+      $settings = $bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $bundle_key, FALSE);
       if (!is_array($settings)) {
         throw new \Exception('No rdf:type mapping set for bundle ' . $bundle_entity->label());
       }
@@ -72,24 +76,25 @@ class RdfMappingHelper {
   }
 
   /**
-   * Returns the storage of the passed entity type.
+   * Returns an rdf object for each bundle.
    *
-   * @param string $entity_type
-   *    The entity type machine name.
-   * @return \Drupal\Core\Entity\EntityStorageInterface
-   *    The storage of the rdf entity type passed.
-   *
-   * @throws \Exception
-   *    As this class is meant to be used for rdf entities, loading a different
-   *    storage, will cause issues, so an exception is thrown in that case.
+   * Returns the rdf object that is specific for this bundle.
    */
-  protected function getRdfStorage($entity_type) {
-    $storage = $this->entityTypeManager->getStorage($entity_type);
-    if (!($storage instanceof RdfEntitySparqlStorage)) {
-      throw new \Exception('Storage must be an instance of RdfEntitySparqlStorage.');
+  public function getRdfBundleList($entity_type, $bundles = []) {
+    $bundle_mapping = $this->getRdfBundleMappedUri($this->entityType->id());
+    if (empty($bundle_mapping)) {
+      return;
     }
-
-    return $storage;
+    if (!$bundles) {
+      $bundles = array_keys($bundle_mapping);
+    }
+    $rdf_bundles = [];
+    foreach ($bundles as $bundle) {
+      if (isset($bundle_mapping[$bundle])) {
+        $rdf_bundles[] = $bundle_mapping[$bundle];
+      }
+    }
+    return "(<" . implode(">, <", $rdf_bundles) . ">)";
   }
 
   /**
