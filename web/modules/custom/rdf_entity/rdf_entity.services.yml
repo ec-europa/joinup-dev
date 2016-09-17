@@ -8,20 +8,25 @@ services:
     class: Drupal\rdf_entity\Database\Driver\sparql\Connection
     factory: Drupal\Core\Database\Database::getConnection
     arguments: [sparql, sparql_default]
-
   webprofiler.sparql:
     class: \Drupal\rdf_entity\DataCollector\SparqlDataCollector
     arguments: ['@sparql_endpoint', '@config.factory']
     tags:
       - { name: data_collector, template:'@rdf_entity/Collector/sparql.html.twig', id:'sparql', title:'Sparql', priority: 60 }
   paramconverter.rdf_entity:
-      class: \Drupal\rdf_entity\ParamConverter\RdfEntityConverter
-      tags:
-      # Use a higher priority than EntityConverter.
-        - { name: paramconverter, priority: 6 }
-      arguments: ['@entity.manager']
+    class: \Drupal\rdf_entity\ParamConverter\RdfEntityConverter
+    tags:
+    # Use a higher priority than EntityConverter.
+      - { name: paramconverter, priority: 6 }
+    arguments: ['@entity.manager']
   route_processor_rdf:
-      class: Drupal\rdf_entity\RouteProcessor\RouteProcessorRdf
-      arguments: ['@current_route_match']
-      tags:
+    class: Drupal\rdf_entity\RouteProcessor\RouteProcessorRdf
+    arguments: ['@current_route_match']
+    tags:
         - { name: route_processor_outbound, priority: 200 }
+  sparql.graph_helper:
+    class: \Drupal\rdf_entity\RdfGraphHelper
+    arguments: ['@entity_type.manager']
+  sparql.mapping_helper:
+    class: \Drupal\rdf_entity\RdfMappingHelper
+    arguments: ['@entity_type.manager']
