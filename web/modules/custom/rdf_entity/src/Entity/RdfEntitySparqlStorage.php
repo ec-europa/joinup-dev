@@ -54,6 +54,13 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   protected $saveGraph = NULL;
 
   /**
+   * The default rdf predicate for the bundle field.
+   *
+   * @var string
+   */
+  protected $rdf_bundle_predicate = 'rdf:type';
+
+  /**
    * The rdf graph helper service object.
    *
    * @var \Drupal\rdf_entity\RdfGraphHelper
@@ -528,39 +535,19 @@ QUERY;
   }
 
   /**
-   * Get the mapping between bundle names and their rdf objects.
-   */
-  public function getRdfBundleMapping() {
-    $bundle_rdf_bundle_mapping = [];
-    $bundle_type = $this->entityType->getBundleEntityType();
-    $entities = $this->entityTypeManager->getStorage($bundle_type)->loadMultiple();
-    foreach ($entities as $entity) {
-      $settings = $entity->getThirdPartySetting('rdf_entity', 'mapping_' . $this->bundleKey, FALSE);
-      if (!is_array($settings)) {
-        throw new \Exception('No rdf:type mapping set for bundle ' . $entity->label());
-      }
-      $type = array_pop($settings);
-      $bundle_rdf_bundle_mapping[$this->entityTypeId][$entity->id()] = $type;
-    }
-    \Drupal::moduleHandler()->alter('bundle_mapping', $bundle_rdf_bundle_mapping);
-    return $bundle_rdf_bundle_mapping;
-  }
-
-  /**
    * Returns an rdf object for each bundle.
    *
    * Returns the rdf object that is specific for this bundle.
    */
   public function getRdfBundleList($bundles = []) {
-    $bundle_mapping = $this->getRdfBundleMapping();
+    $bundle_mapping = $this->mappingHelper->getRdfBundleMappedUri($this->entityType->id());
     if (empty($bundle_mapping)) {
       return;
     }
     if (!$bundles) {
-      $bundles = array_keys($bundle_mapping[$this->entityTypeId]);
+      $bundles = array_keys($bundle_mapping);
     }
     $rdf_bundles = [];
-    $bundle_mapping = $bundle_mapping[$this->entityTypeId];
     foreach ($bundles as $bundle) {
       if (isset($bundle_mapping[$bundle])) {
         $rdf_bundles[] = $bundle_mapping[$bundle];
@@ -571,10 +558,12 @@ QUERY;
 
   /**
    * Determine the bundle types for a list of entities.
+   *
+   * // @todo: This needs refactor a bit.
    */
   protected function getBundlesByIds($ids) {
     $ids_rdf_mapping = array();
-    $bundle_mapping = $this->getRdfBundleMapping();
+    $bundle_mapping = $this->mappingHelper->getRdfBundleMappedUri($this->entityType->id());
     // @todo Get query through $this->getQuery, and use this wrapper...
     $ids_string = "<" . implode(">, <", $ids) . ">";
     $query = <<<QUERY
@@ -588,18 +577,18 @@ QUERY;
     $results = $this->sparql->query($query);
     foreach ($results as $result) {
       $uri = (string) $result->uri;
-      $bundle = (string) $result->bundle;
+      $bundle_uri = (string) $result->bundle;
       // @todo Why do we get multiple types for a uri?
       if (array_search($uri, $ids_rdf_mapping)) {
         continue;
       }
-      if ($id = array_search($bundle, $bundle_mapping)) {
-        $ids_rdf_mapping[$uri] = $id;
+      if ($bundle_machine_name = array_search($bundle_uri, $bundle_mapping)) {
+        $ids_rdf_mapping[$uri] = $bundle_machine_name;
       }
       else {
         drupal_set_message(t('Unmapped bundle :bundle for uri :uri.',
           array(
-            ':bundle' => $bundle,
+            ':bundle' => $bundle_uri,
             ':uri' => $uri,
           )));
       }
@@ -874,10 +863,8 @@ QUERY;
       }
     }
     // Save the bundle.
-    $rdf_mapping = $this->getRdfBundleMapping();
-    $rdf_field = $rdf_mapping[$entity->getEntityTypeId()][$bundle];
-    $pred = 'rdf:type';
-    $insert .= $subj . ' ' . $pred . ' <' . $rdf_field . '>  .' . "\n";
+    $rdf_bundle = $this->mappingHelper->getRdfBundleMappedUri($entity->getEntityTypeId(), $entity->bundle());
+    $insert .= $subj . ' ' . $this->rdf_bundle_predicate . ' <' . $rdf_bundle . '>  .' . "\n";
 
     $query = <<<QUERY
 DELETE {

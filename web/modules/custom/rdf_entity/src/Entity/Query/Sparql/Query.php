@@ -226,8 +226,7 @@ class Query extends QueryBase implements QueryInterface {
         return $this;
 
       case $bundle . '-=':
-        $mapping = $this->entityStorage->getRdfBundleMapping();
-        $mapping = $mapping['rdf_entity'];
+        $mapping = $this->mappingHelper->getRdfBundleMappedUri($this->entityType->id());
         $bundle = $mapping[$value];
         if ($bundle) {
           $this->condition->condition('?entity', '?bundlepredicate', SparqlArg::uri($bundle));
