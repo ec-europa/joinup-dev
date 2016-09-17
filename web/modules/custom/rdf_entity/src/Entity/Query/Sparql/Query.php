@@ -296,8 +296,8 @@ class Query extends QueryBase implements QueryInterface {
             $this->filter->filter('?entity IN ' . $ids);
           }
           else {
-            $mapping = $this->entityStorage->getLabelMapping();
-            $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping[$this->entityTypeId]))) . ">)";
+            $mapping = $this->mappingHelper->getEntityTypeLabelPredicates($this->entityTypeId);
+            $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping))) . ">)";
             $this->condition->condition('?entity', '?label_type', '?label');
             $this->filter->filter('?label_type IN ' . $label_list);
             $this->filter->filter('str(?label) = "' . $value . '"');
@@ -307,8 +307,8 @@ class Query extends QueryBase implements QueryInterface {
         return $this;
 
       case $label . '-CONTAINS':
-        $mapping = $this->entityStorage->getLabelMapping();
-        $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping[$this->entityTypeId]))) . ">)";
+        $mapping = $this->mappingHelper->getEntityTypeLabelPredicates($this->entityTypeId);
+        $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping))) . ">)";
         $this->condition->condition('?entity', '?label_type', '?label');
         $this->filter->filter('?label_type IN ' . $label_list);
         if ($value) {

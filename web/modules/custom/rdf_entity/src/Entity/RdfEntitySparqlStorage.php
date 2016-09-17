@@ -479,69 +479,6 @@ QUERY;
   }
 
   /**
-   * Determine the bundle types for a list of entities.
-   *
-   * // @todo: This needs refactor a bit.
-   */
-  protected function getBundlesByIds($ids) {
-    $ids_rdf_mapping = array();
-    $bundle_mapping = $this->mappingHelper->getRdfBundleMappedUri($this->entityType->id());
-    // @todo Get query through $this->getQuery, and use this wrapper...
-    $ids_string = "<" . implode(">, <", $ids) . ">";
-    $query = <<<QUERY
-SELECT ?uri, ?bundle
-WHERE {
-  ?uri rdf:type ?bundle.
-  FILTER (?uri IN (  $ids_string ))
-}
-GROUP BY ?uri
-QUERY;
-    $results = $this->sparql->query($query);
-    foreach ($results as $result) {
-      $uri = (string) $result->uri;
-      $bundle_uri = (string) $result->bundle;
-      // @todo Why do we get multiple types for a uri?
-      if (array_search($uri, $ids_rdf_mapping)) {
-        continue;
-      }
-      if ($bundle_machine_name = array_search($bundle_uri, $bundle_mapping)) {
-        $ids_rdf_mapping[$uri] = $bundle_machine_name;
-      }
-      else {
-        drupal_set_message(t('Unmapped bundle :bundle for uri :uri.',
-          array(
-            ':bundle' => $bundle_uri,
-            ':uri' => $uri,
-          )));
-      }
-
-    }
-    return $ids_rdf_mapping;
-  }
-
-  /**
-   * Bundle - label mapping.
-   *
-   * Get a list of label predicates by bundle.
-   */
-  public function getLabelMapping() {
-    $bundle_label_mapping = array();
-    $bundle_type = $this->entityType->getBundleEntityType();
-    $entities = $this->entityTypeManager->getStorage($bundle_type)->loadMultiple();
-    foreach ($entities as $entity) {
-      $label = $this->entityType->getKey('label');
-      $settings = $entity->getThirdPartySetting('rdf_entity', 'mapping_' . $label, FALSE);
-      if (!is_array($settings)) {
-        throw new \Exception('No rdf:type mapping set for bundle ' . $entity->label());
-      }
-      $type = array_pop($settings);
-      $bundle_label_mapping[$this->entityTypeId][$type] = $entity->id();
-    }
-    \Drupal::moduleHandler()->alter('label_mapping', $bundle_label_mapping);
-    return $bundle_label_mapping;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function loadRevision($revision_id) {

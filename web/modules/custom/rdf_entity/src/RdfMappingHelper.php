@@ -37,12 +37,44 @@ class RdfMappingHelper {
   }
 
   /**
+   * Returns a list of label predicates of the passed entity type.
+   *
+   * @param string $entity_type_id
+   *    The entity type machine name.
+   *
+   * @return array
+   *    An array of label predicates indexed by their respective entity bundles.
+   *
+   * @throws \Exception
+   *    Thrown when an rdf mapping has not been set for a label in one of the
+   *    entity bundles.
+   * @todo: Especially for properties like label, we can generate it if missing.
+   */
+  public function getEntityTypeLabelPredicates($entity_type_id) {
+    $entity_type = $this->entityManager->getStorage($entity_type_id)->getEntityType();
+    $bundle_type = $entity_type->getBundleEntityType();
+    $label = $entity_type->getKey('label');
+    $bundle_label_mapping = [];
+    $bundle_entities = $this->entityManager->getStorage($bundle_type)->loadMultiple();
+    foreach ($bundle_entities as $bundle_entity) {
+      $settings = $bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $label, FALSE);
+      if (!is_array($settings)) {
+        throw new \Exception('No label predicate mapping set for bundle ' . $bundle_entity->label());
+      }
+      $type = array_pop($settings);
+      $bundle_label_mapping[$type] = $bundle_entity->id();
+    }
+    \Drupal::moduleHandler()->alter('label_mapping', $bundle_label_mapping);
+    return $bundle_label_mapping;
+  }
+
+  /**
    * Returns all bundle key mappings of the passed rdf entity type.
    *
    * These mappings are the actual type of the bundle represented by an rdf
    * URI. This is not the predicate but the object.
    *
-   * @param string $entity_type
+   * @param string $entity_type_id
    *    The machine name of the entity type.
    * @param string $bundle
    *    Optionally filter the mappings by bundle.
@@ -54,16 +86,16 @@ class RdfMappingHelper {
    * @throws \Exception
    *    Thrown when the rdf entity bundle has no mapped type uri.
    */
-  public function getRdfBundleMappedUri($entity_type, $bundle = NULL) {
+  public function getRdfBundleMappedUri($entity_type_id, $bundle = NULL) {
     $bundle_rdf_bundle_mapping = [];
-    $storage = $this->entityManager->getStorage($entity_type);
+    $storage = $this->entityManager->getStorage($entity_type_id);
 
     $bundle_entities = empty($bundle) ? $storage->loadMultiple() : $storage->load($bundle);
     foreach ($bundle_entities as $bundle_entity) {
       // The id of the entity type is 'rdf_type' but the key ('id') is the
       // bundle key.
-      $bundle_key = $bundle_entity->getEntityType()->getKey('id');
-      $settings = $bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $bundle_key, FALSE);
+      $bundle_type = $bundle_entity->getEntityType()->getKey('id');
+      $settings = $bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $bundle_type, FALSE);
       if (!is_array($settings)) {
         throw new \Exception('No rdf:type mapping set for bundle ' . $bundle_entity->label());
       }
@@ -82,7 +114,7 @@ class RdfMappingHelper {
    * @todo: This should return a simple array. A query helper method can convert
    *    it later on.
    *
-   * @param string $entity_type
+   * @param string $entity_type_id
    *    The entity type of the bundles e.g. 'node_type'.
    * @param array $bundles
    *    Optionally filter and return only a subset of bundles.
@@ -91,8 +123,8 @@ class RdfMappingHelper {
    *    A string including the converted array of bundle uris to a string value
    *    of a sparql array filter.
    */
-  public function getBundleUriList($entity_type, $bundles = []) {
-    $bundle_mapping = $this->getRdfBundleMappedUri($entity_type);
+  public function getBundleUriList($entity_type_id, $bundles = []) {
+    $bundle_mapping = $this->getRdfBundleMappedUri($entity_type_id);
     if (empty($bundle_mapping)) {
       return;
     }
@@ -131,10 +163,11 @@ class RdfMappingHelper {
   public function getEntityPredicates($entity_type_id) {
     $mapping = &drupal_static(__FUNCTION__);
     $storage = $this->entityManager->getStorage($entity_type_id);
-    $bundle_key = $storage->getEntityType()->getBundleEntityType();
+    $bundle_type = $storage->getEntityType()->getBundleEntityType();
+    // @todo: We can probably get rid of the $entity_type_id index here.
     if (empty($mapping[$entity_type_id])) {
       // Collect entities ids, bundles and languages.
-      $rdf_bundle_entities = $this->entityManager->getStorage($bundle_key)->loadMultiple();
+      $rdf_bundle_entities = $this->entityManager->getStorage($bundle_type)->loadMultiple();
 
       // Collect impacted fields.
       // @todo: remove the entity type id index. Not needed.
