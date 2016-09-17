@@ -19,10 +19,7 @@ class RdfListBuilder extends EntityListBuilder {
   public function load() {
     /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage */
     $rdf_storage = $this->getStorage();
-    $mapping = $rdf_storage->getRdfBundleList();
-    if (!$mapping) {
-      return [];
-    }
+
     $query = $rdf_storage->getQuery()
       ->condition('rid', NULL, 'IN');
     // If a graph type is set in the url, validate it, and use it in the query.
