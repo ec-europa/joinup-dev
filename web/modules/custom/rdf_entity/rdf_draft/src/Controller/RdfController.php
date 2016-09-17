@@ -42,7 +42,7 @@ class RdfController extends ControllerBase {
   }
 
   /**
-   * {@inheritdoc}gitq
+   * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
