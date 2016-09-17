@@ -32,7 +32,7 @@ class RdfMappingHelper {
    */
   public function __construct(EntityTypeManager $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
-    $this->moduleHandler = $this->getModuleHanlderService();
+    $this->moduleHandler = $this->getModuleHandlerService();
   }
 
   /**
