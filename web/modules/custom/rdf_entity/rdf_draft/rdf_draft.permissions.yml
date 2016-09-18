@@ -4,4 +4,4 @@ view all graphs:
   title: 'View all revisions'
 
 permission_callbacks:
-  - \Drupal\rdf_draft\RdfGraphPermissions::rdfGraphPermissions
+  - \Drupal\rdf_draft\RdfGraphPermissions::getRdfGraphPermissions

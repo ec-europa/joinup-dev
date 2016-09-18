@@ -17,9 +17,10 @@ class RdfGraphPermissions {
    *
    * @return array
    *   The rdf graph view permissions.
+   *
    * @see \Drupal\user\PermissionHandlerInterface::getPermissions()
    */
-  public function rdfGraphPermissions() {
+  public function getRdfGraphPermissions() {
     $perms = array();
     foreach (\Drupal::entityTypeManager()->getDefinitions() as $entity_type_id => $entity_type) {
       $storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
