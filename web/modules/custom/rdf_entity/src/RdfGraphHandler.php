@@ -3,6 +3,7 @@
 namespace Drupal\rdf_entity;
 
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
@@ -150,10 +151,25 @@ class RdfGraphHandler {
     foreach ($bundle_entities as $bundle_entity) {
       foreach ($graph_names as $graph_name) {
         $graph = $this->getBundleGraphUriFromSettings($entity_type_bundle_key, $bundle_entity->id(), $graph_name);
-        $graphs[$graph][] = $bundle_entity->id();
+        $graphs[$bundle_entity->id()][$graph_name] = $graph;
       }
     }
     return $graphs;
+  }
+
+  public function getEntityTypeGraphUrisList($entityTypeBundleKey, $graph_names = []) {
+    if (empty($graph_names)) {
+      $graph_names = $this->getEntityTypeEnabledGraphs();
+    }
+    $graph_list = [];
+    $entity_graphs = $this->getEntityTypeGraphUris($entityTypeBundleKey, $graph_names);
+    foreach ($entity_graphs as $bundle_id => $bundle_graphs) {
+      foreach ($graph_names as $graph_name) {
+        $graph_list[] = $entity_graphs[$bundle_id][$graph_name];
+      }
+    }
+
+    return $graph_list;
   }
 
   /**
@@ -163,6 +179,9 @@ class RdfGraphHandler {
    *    The request graphs.
    */
   public function getRequestGraphs() {
+    if (empty($this->requestGraphs)) {
+      return $this->getEntityTypeEnabledGraphs();
+    }
     return $this->requestGraphs;
   }
 
@@ -223,6 +242,57 @@ class RdfGraphHandler {
    */
   public function setTargetGraph($target_graph) {
     $this->targetGraph = $target_graph;
+  }
+
+  /**
+   * Returns the save graph for the entity.
+   *
+   * The priority of the graphs is:
+   *  - If there is a target graph set, this is used. This allows other modules
+   * to interact with the graphs.
+   *  - The graph from where the entity is loaded.
+   *  - The default graph from the enabled.
+   *  - The first available graph.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @return mixed|string
+   */
+  public function getTargetGraphFromEntity(EntityInterface $entity) {
+    if (!empty($this->getTargetGraph())) {
+      return $this->getTargetGraph();
+    }
+    else if (!empty($entity->get('graph')->first()->getValue()['value'])) {
+      return $entity->get('graph')->first()->getValue()['value'];
+    }
+    else {
+      $enabled_graphs = $this->getEntityTypeEnabledGraphs();
+      if (in_array('default', $enabled_graphs)) {
+        return 'default';
+      }
+      else {
+        return reset($enabled_graphs);
+      }
+    }
+  }
+
+  /**
+   * Returns the graph machine name, given the graph uri.
+   *
+   * This is basically a reverse search to get the id of the graph.
+   *
+   * @param $entity_type_bundle_key
+   *    The entity type bundle key e.g. 'node_type'.
+   * @param $bundle_id
+   *    The for which we are searching a graph. This is mandatory as multiple
+   * bundles can use the same graph.
+   * @param $graph_uri
+   *    The uri of the graph.
+   *
+   * @return string
+   *    The id of the graph.
+   */
+  public function getBundleGraphId($entity_type_bundle_key, $bundle_id, $graph_uri) {
+    $graphs = $this->getEntityTypeGraphUris($entity_type_bundle_key);
+    return array_search($graph_uri, $graphs[$bundle_id]);
   }
 
   /**
