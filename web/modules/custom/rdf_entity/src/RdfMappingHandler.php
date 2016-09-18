@@ -75,7 +75,7 @@ class RdfMappingHandler {
    * These mappings are the actual type of the bundle represented by an rdf
    * URI. This is not the predicate but the object.
    *
-   * @param string $entity_type_id
+   * @param string $entity_type_bundle_key
    *    The machine name of the entity type.
    * @param string $bundle
    *    Optionally filter the mappings by bundle.
@@ -87,11 +87,11 @@ class RdfMappingHandler {
    * @throws \Exception
    *    Thrown when the rdf entity bundle has no mapped type uri.
    */
-  public function getRdfBundleMappedUri($entity_type_id, $bundle = NULL) {
+  public function getRdfBundleMappedUri($entity_type_bundle_key, $bundle = NULL) {
     $bundle_rdf_bundle_mapping = [];
-    $storage = $this->entityManager->getStorage($entity_type_id);
+    $storage = $this->entityManager->getStorage($entity_type_bundle_key);
 
-    $bundle_entities = empty($bundle) ? $storage->loadMultiple() : $storage->load($bundle);
+    $bundle_entities = empty($bundle) ? $storage->loadMultiple() : [$storage->load($bundle)];
     foreach ($bundle_entities as $bundle_entity) {
       // The id of the entity type is 'rdf_type' but the key ('id') is the
       // bundle key.
