@@ -161,7 +161,9 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * @param array $graph_types
    *    An array of graph machine names.
    *
-   * @see \Drupal\rdf_entity\RdfGraphHandler::setActiveGraphType
+   * @todo: This needs to be changed to setRequestGraphs.
+   *
+   * @see \Drupal\rdf_entity\RdfGraphHandler::setRequestGraphs
    */
   public function setActiveGraphType(array $graph_types) {
     $this->getGraphHandler()->setRequestGraphs($this->entityTypeId, $graph_types);
@@ -170,7 +172,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * Returns the active graphs.
    *
-   * @see \Drupal\rdf_entity\RdfGraphHandler::getEntityTypeEnabledGraphs
+   * @see \Drupal\rdf_entity\RdfGraphHandler::getRequestGraphs
    */
   public function getActiveGraphType() {
     return $this->getGraphHandler()->getRequestGraphs();
