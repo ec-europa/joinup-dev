@@ -161,7 +161,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * @see \Drupal\rdf_entity\RdfGraphHandler::setActiveGraphType.
    */
   public function setActiveGraphType(array $graph_types) {
-    $this->getGraphHandler()->setTargetGraph($this->entityTypeId, $graph_types);
+    $this->getGraphHandler()->setRequestGraphs($this->entityTypeId, $graph_types);
   }
 
   /**
@@ -170,7 +170,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * @see \Drupal\rdf_entity\RdfGraphHandler::getEntityTypeEnabledGraphs.
    */
   public function getActiveGraphType() {
-    return $this->getGraphHandler()->getEntityTypeEnabledGraphs();
+    return $this->getGraphHandler()->getRequestGraphs();
   }
 
   /**
@@ -203,7 +203,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *
    * @see \Drupal\rdf_entity\GraphHandler::getEntityTypeGraphUris.
    */
-  public function getGraphs($graph_types = NULL) {
+  public function getEntityTypeGraphUris($graph_types = NULL) {
     return $this->getGraphHandler()->getEntityTypeGraphUris($this->entityType->getBundleEntityType(), $graph_types);
   }
 
@@ -273,9 +273,9 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       return [];
     }
     $ids_string = "<" . implode(">, <", $ids) . ">";
-    $graphs = $this->getGraphs();
+    $graphs = $this->getGraphHandler()->getEntityTypeGraphUrisList($this->getEntityType()->getBundleEntityType());
     $named_graph = '';
-    foreach (array_keys($graphs) as $graph) {
+    foreach ($graphs as $graph) {
       $named_graph .= 'FROM NAMED <' . $graph . '>' . "\n";
     }
 
@@ -381,7 +381,8 @@ QUERY;
         // Map bundle and entity id.
         $return[$entity_id][$this->bundleKey][LanguageInterface::LANGCODE_DEFAULT] = $bundle->id();
         $return[$entity_id][$this->idKey][LanguageInterface::LANGCODE_DEFAULT] = $entity_id;
-        $return[$entity_id]['graph'][LanguageInterface::LANGCODE_DEFAULT] = $entity_graphs[$entity_id];
+        $graph_id = $this->getGraphHandler()->getBundleGraphId($this->entityType->getBundleEntityType(), $bundle->id(), $entity_graphs[$entity_id]);
+        $return[$entity_id]['graph'][LanguageInterface::LANGCODE_DEFAULT] = $graph_id;
 
         $rdf_type = NULL;
         foreach ($entity_values as $predicate => $field) {
@@ -522,6 +523,7 @@ QUERY;
 
     /*
      * Hold on tight this ain't easy...
+     * @todo: Get
      *
      * When the storage class supports the notion of a 'published state'
      * by implementing the published interface, we then have to determine
@@ -603,7 +605,7 @@ QUERY;
 
     // If the target graph is set, it has priority over the one the entity is
     // loaded from. If no target graph is set, use the previous one.
-    $target_graph = empty($this->getGraphHandler()->getTargetGraph()) ? $entity->get('graph')->first()->getValue()['value'] : $this->getGraphHandler()->getTargetGraph();
+    $target_graph = $this->getGraphHandler()->getTargetGraphFromEntity($entity);
     $graph_uri = $this->getBundleGraphUri($bundle, $target_graph);
 
     $insert = '';
@@ -629,7 +631,8 @@ QUERY;
       }
     }
     // Save the bundle.
-    $rdf_bundle = $this->mappingHandler->getRdfBundleMappedUri($entity->getEntityTypeId(), $entity->bundle());
+    $rdf_bundle_mapping = $this->mappingHandler->getRdfBundleMappedUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle());
+    $rdf_bundle = $rdf_bundle_mapping[$entity->bundle()];
     $insert .= $subj . ' ' . $this->rdf_bundle_predicate . ' <' . $rdf_bundle . '>  .' . "\n";
 
     $query = <<<QUERY
