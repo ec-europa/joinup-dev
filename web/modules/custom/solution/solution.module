@@ -210,6 +210,25 @@ function solution_rdf_entity_presave(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * When the entity is saved into the default graph, the draft must be deleted.
+ */
+function solution_rdf_entity_update(EntityInterface $entity) {
+  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
+  if (empty($enabled_bundles) || $entity->bundle() != 'solution' || !in_array($entity->bundle(), $enabled_bundles)) {
+    return;
+  }
+
+  $state = $entity->field_is_state->value;
+  if (in_array($state, ['validated', 'deletion_request'])) {
+    $draft_entity = clone $entity;
+    $draft_entity->set('graph', 'draft');
+    $draft_entity->delete();
+  }
+}
+
+/**
  * Gets the latest release of a solution.
  *
  * @param \Drupal\rdf_entity\RdfInterface $solution
