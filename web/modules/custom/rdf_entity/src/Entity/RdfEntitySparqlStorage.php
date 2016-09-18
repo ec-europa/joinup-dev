@@ -161,7 +161,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * @see \Drupal\rdf_entity\RdfGraphHandler::setActiveGraphType.
    */
   public function setActiveGraphType(array $graph_types) {
-    $this->getGraphHandler()->setTargetGraphs($this->entityTypeId, $graph_types);
+    $this->getGraphHandler()->setTargetGraph($this->entityTypeId, $graph_types);
   }
 
   /**
@@ -176,7 +176,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * Get the (active) graph URI for a given bundle.
    */
-  public function getGraph($bundle, $graph_type) {
+  public function getBundleGraphUri($bundle, $graph_type) {
     return $this->getGraphHandler()->getBundleGraphUri($this->entityType->getBundleEntityType(), $bundle, $graph_type);
   }
 
@@ -187,7 +187,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *    The graph to use.
    */
   public function setSaveGraph($graph) {
-    $this->getGraphHandler()->setTargetGraphs($graph);
+    $this->getGraphHandler()->setTargetGraph($graph);
   }
 
   /**
@@ -479,7 +479,7 @@ QUERY;
     /** @var ContentEntityInterface $entity */
     foreach ($entities as $id => $entity) {
       if (!$entity->get('graph')->first()->getValue()) {
-        $entity->set('graph', $this->getGraph($entity->bundle(), 'default'));
+        $entity->set('graph', $this->getBundleGraphUri($entity->bundle(), 'default'));
       }
       $graph = $entity->get('graph')->first()->getValue()['value'];
       $entities_by_graph[$graph][$id] = $entity;

@@ -48,7 +48,7 @@ class RdfGraphHandler {
    *
    * @var string|null
    */
-  protected $targetGraphs = NULL;
+  protected $targetGraph = NULL;
 
   /**
    * Constructs a QueryFactory object.
@@ -209,8 +209,8 @@ class RdfGraphHandler {
    * @return string
    *    The target graph to save to.
    */
-  public function getTargetGraphs() {
-    return $this->targetGraphs;
+  public function getTargetGraph() {
+    return $this->targetGraph;
   }
 
   /**
@@ -218,11 +218,11 @@ class RdfGraphHandler {
    *
    * The target graph is the graph that the entity is going to be saved in.
    *
-   * @param string $target_graphs
+   * @param string $target_graph
    *    The target graph machine name.
    */
-  public function setTargetGraphs($target_graphs) {
-    $this->targetGraphs = $target_graphs;
+  public function setTargetGraph($target_graph) {
+    $this->targetGraph = $target_graph;
   }
 
   /**
