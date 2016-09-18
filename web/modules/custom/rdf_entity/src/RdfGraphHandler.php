@@ -177,7 +177,7 @@ class RdfGraphHandler {
    */
   public function getEntityTypeGraphUrisList($entityTypeBundleKey, $graph_names = []) {
     if (empty($graph_names)) {
-      $graph_names = $this->getEntityTypeEnabledGraphs();
+      $graph_names = $this->getRequestGraphs();
     }
     $graph_list = [];
     $entity_graphs = $this->getEntityTypeGraphUris($entityTypeBundleKey, $graph_names);
@@ -201,6 +201,25 @@ class RdfGraphHandler {
       return $this->getEntityTypeEnabledGraphs();
     }
     return $this->requestGraphs;
+  }
+
+  /**
+   * Resets the request graphs on the fly.
+   *
+   * This method resets the request graphs back to NULL. Since GraphHandler
+   * class is a service, the request graphs persist along the complete request.
+   * That means that if more entities with the same entity type are being loaded
+   * at the same request, the request graphs will be inherited. Cases like this,
+   * is when the entity has entity reference fields or there is a block in the
+   * page showing entities like the one requested.
+   *
+   * @todo: Is there a better way for this? It is called after the loading of
+   * the entity but maybe it would be better to initialize it with the query
+   * factory. That way, it will be able to get overridden but will reset for
+   * every new entity.
+   */
+  public function resetRequestGraphs() {
+    $this->requestGraphs = NULL;
   }
 
   /**
