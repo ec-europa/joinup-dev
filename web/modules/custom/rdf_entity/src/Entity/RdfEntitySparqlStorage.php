@@ -223,7 +223,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $entities_from_storage = $this->getFromStorage($ids);
 
     return $entities_from_cache + $entities_from_storage;
-
   }
 
   /**
@@ -267,6 +266,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
         $this->setPersistentCache($entities);
       }
     }
+
+    $this->getGraphHandler()->resetRequestGraphs();
     return $entities;
   }
 
@@ -301,8 +302,7 @@ QUERY;
 
     /** @var \EasyRdf_Sparql_Result $entity_values */
     $entity_values = $this->sparql->query($query);
-    $values = $this->processGraphResults($entity_values);
-    return $values;
+    return $this->processGraphResults($entity_values);
   }
 
   /**
@@ -485,10 +485,11 @@ QUERY;
     /** @var ContentEntityInterface $entity */
     foreach ($entities as $id => $entity) {
       if (!$entity->get('graph')->first()->getValue()) {
-        $entity->set('graph', $this->getBundleGraphUri($entity->bundle(), 'default'));
+        $entity->set('graph', 'default');
       }
-      $graph = $entity->get('graph')->first()->getValue()['value'];
-      $entities_by_graph[$graph][$id] = $entity;
+      $graph_id = $entity->get('graph')->first()->getValue()['value'];
+      $graph_uri = $this->getGraphHandler()->getBundleGraphUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle(), $graph_id);
+      $entities_by_graph[$graph_uri][$id] = $entity;
     }
     foreach ($entities_by_graph as $graph => $entities_to_delete) {
       $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
