@@ -63,7 +63,7 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
         /** @var RdfEntitySparqlStorage $storage */
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
         $found = FALSE;
-        foreach ($storage->getGraphsDefinition() as $name => $definition) {
+        foreach ($storage->getGraphDefinitions() as $name => $definition) {
           if ($found) {
             continue;
           }

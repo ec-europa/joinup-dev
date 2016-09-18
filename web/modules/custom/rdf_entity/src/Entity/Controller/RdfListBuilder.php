@@ -61,7 +61,7 @@ class RdfListBuilder extends EntityListBuilder {
   public function render() {
     /** @var RdfEntitySparqlStorage $storage */
     $storage = $this->storage;
-    $definitions = $storage->getGraphsDefinition();
+    $definitions = $storage->getGraphDefinitions();
     if (count($definitions)) {
       $options = [];
       foreach ($definitions as $name => $definition) {

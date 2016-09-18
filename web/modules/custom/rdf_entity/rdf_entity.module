@@ -168,7 +168,7 @@ function rdf_entity_bundle_config($entity_type, ConfigEntityInterface $entity, a
     }
     $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $id, $settings);
   }
-  foreach ($storage->getGraphsDefinition() as $definedGraphName => $definedGraph) {
+  foreach ($storage->getGraphDefinitions() as $definedGraphName => $definedGraph) {
     $graph_uri = $form_state->getValue('graph_' . $definedGraphName);
     $entity->setThirdPartySetting('rdf_entity', 'graph_' . $definedGraphName, $graph_uri);
   }

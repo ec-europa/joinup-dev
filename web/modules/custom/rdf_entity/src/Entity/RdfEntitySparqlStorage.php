@@ -142,10 +142,10 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *
    * @return array
    *    A structured array of graph definitions containing a title and a
-   *    description. The array keys are the machine names of the graphs.
+   * description. The array keys are the machine names of the graphs.
    */
   public function getGraphDefinitions() {
-    return $this->graphHandler->getGraphDefinitions($this->entityTypeId);
+    return $this->getGraphHandler()->getGraphDefinitions($this->entityTypeId);
   }
 
   /**
