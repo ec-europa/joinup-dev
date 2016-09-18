@@ -218,9 +218,15 @@ function solution_rdf_entity_update(EntityInterface $entity) {
 
   $state = $entity->field_is_state->value;
   if (in_array($state, ['validated', 'deletion_request'])) {
-    $draft_entity = clone $entity;
-    $draft_entity->set('graph', 'draft');
-    $draft_entity->delete();
+    /** @var \Drupal\rdf_entity\Entity\Query\Sparql\Query $query */
+    $query = \Drupal::entityManager()->getStorage('rdf_entity')->getQuery()
+      ->condition($entity->getEntityType()->getKey('id'), [$entity->id()], 'IN');
+    $query->setGraphType(['draft']);
+    $results = $query->execute();
+    if (!empty($results)) {
+      $draft_entity = Rdf::load(reset($results));
+      $draft_entity->delete();
+    }
   }
 }
 
