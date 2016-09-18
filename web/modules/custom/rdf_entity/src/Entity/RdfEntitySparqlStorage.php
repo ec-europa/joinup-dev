@@ -600,26 +600,12 @@ QUERY;
       $id = $this->generateId();
       $entity->{$this->idKey} = (string) $id;
     }
-    // Force the graph.
-    $loaded_from_graph = $entity->get('graph')->first()->getValue();
-    if ($this->saveGraph) {
-      $graph = $this->getGraph($bundle, $this->saveGraph);
-    }
-    elseif (!empty($loaded_from_graph)) {
-      $graph = $loaded_from_graph['value'];
-    }
-    // Fallback.
-    else {
-      $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_' . $entity->getEntityTypeId());
-      $default_save_graph = \Drupal::config('rdf_draft.settings')->get('default_save_graph_' . $entity->getEntityTypeId());
-      if (!empty($enabled_bundles[$bundle])) {
-        // Create new entities in the default save graph.
-        $graph = $this->getGraph($bundle, $default_save_graph);
-      }
-      else {
-        $graph = $this->getGraph($bundle, 'default');
-      }
-    }
+
+    // If the target graph is set, it has priority over the one the entity is
+    // loaded from. If no target graph is set, use the previous one.
+    $target_graph = empty($this->getGraphHandler()->getTargetGraph()) ? $entity->get('graph')->first()->getValue()['value'] : $this->getGraphHandler()->getTargetGraph();
+    $graph_uri = $this->getBundleGraphUri($bundle, $target_graph);
+
     $insert = '';
     $properties = $this->mappingHandler->getEntityTypeMappedProperties($entity);
     $subj = '<' . (string) $id . '>';
@@ -648,12 +634,12 @@ QUERY;
 
     $query = <<<QUERY
 DELETE {
-  GRAPH <$graph> {
+  GRAPH <$graph_uri> {
     <$id> ?field ?value
   }
 }
 WHERE {
-  GRAPH <$graph> { 
+  GRAPH <$graph_uri> {
     <$id> ?field ?value .
     FILTER (?field IN ($properties_list))
   }
@@ -664,7 +650,7 @@ QUERY;
       $this->sparql->query($query);
     }
     // @todo Do in one transaction... If possible.
-    $query = "INSERT DATA INTO <$graph> {\n" .
+    $query = "INSERT DATA INTO <$graph_uri> {\n" .
       $insert . "\n" .
       '}';
     $this->sparql->query($query);
