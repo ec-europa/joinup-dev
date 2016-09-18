@@ -29,9 +29,10 @@ class Query extends QueryBase implements QueryInterface {
   protected $filter;
 
   /**
-   * An array of graphs.
+   * The graphs from where the query is going to try and load entities from.
    *
-   * @todo: This needs explanation.
+   * The variable holds a plain array of graph uris.
+   * @todo: Needs change to query graphs.
    *
    * @var array
    */
@@ -144,7 +145,7 @@ class Query extends QueryBase implements QueryInterface {
    * Set the graph type.
    */
   public function setGraphType($graph_types = ['default']) {
-    $this->graphs = $this->entityStorage->getGraphs($graph_types);
+    $this->graphs = $this->entityStorage->getGraphHandler()->getEntityTypeGraphUrisList($this->entityType->getBundleEntityType(), $graph_types);
   }
 
   /**
@@ -168,7 +169,7 @@ class Query extends QueryBase implements QueryInterface {
     $this->query .= "\n";
 
     if ($this->graphs) {
-      foreach (array_keys($this->graphs) as $graph) {
+      foreach ($this->graphs as $graph) {
         $this->query .= 'FROM <' . $graph . '>' . "\n";
       }
     }
@@ -226,7 +227,7 @@ class Query extends QueryBase implements QueryInterface {
         return $this;
 
       case $bundle . '-=':
-        $mapping = $this->mappingHandler->getRdfBundleMappedUri($this->entityType->id());
+        $mapping = $this->mappingHandler->getRdfBundleMappedUri($this->entityType->getBundleEntityType(), $value);
         $bundle = $mapping[$value];
         if ($bundle) {
           $this->condition->condition('?entity', '?bundlepredicate', SparqlArg::uri($bundle));
