@@ -47,11 +47,12 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   protected $entityTypeManager;
 
+  /**
+   * The default bundle predicate.
+   *
+   * @var array
+   */
   protected $bundlePredicate = ['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'];
-
-  protected $activeGraph = ['default'];
-
-  protected $saveGraph = NULL;
 
   /**
    * The default rdf predicate for the bundle field.
@@ -102,10 +103,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $this->languageManager = $language_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->moduleHandler = $module_handler;
-    // Allow altering the default active graph.
-    $graph = $this->activeGraph;
-    $this->moduleHandler->alter('rdf_default_active_graph', $entity_type, $graph);
-    $this->activeGraph = $graph;
     $this->graphHandler = $rdf_graph_handler;
     $this->mappingHandler = $rdf_mapping_handler;
   }
@@ -135,6 +132,13 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   }
 
   /**
+   * Returns the graph handler object.
+   */
+  public function getGraphHandler() {
+    return $this->graphHandler;
+  }
+
+  /**
    * Get the defined graph types for this entity type.
    *
    * This is here for convenience.
@@ -154,52 +158,26 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * @param array $graph_types
    *    An array of graph machine names.
    *
-   * @throws \Exception
-   *    Thrown if there is an invalid graph in the argument array or if the
-   *    final array is empty as there must be at least one active graph.
+   * @see \Drupal\rdf_entity\RdfGraphHandler::setActiveGraphType.
    */
   public function setActiveGraphType(array $graph_types) {
-    $definitions = $this->getGraphDefinitions();
-    $graphs_array = [];
-    foreach ($graph_types as $graph_type) {
-      if (!isset($definitions[$graph_type])) {
-        throw new \Exception('Unknown graph type ' . $graph_type);
-      }
-      $graphs_array[] = $graph_type;
-    }
-
-    // @todo: Should we have the default one set if the result set is empty?
-    if (empty($graphs_array)) {
-      throw new \Exception("There must be at least one active graph.");
-    }
-
-    // Remove duplicates as there might be occurances after the loop above.
-    $this->activeGraph = array_unique($graphs_array);
+    $this->getGraphHandler()->setTargetGraphs($this->entityTypeId, $graph_types);
   }
 
   /**
-   * Get the graph type in use.
+   * Returns the active graphs.
+   *
+   * @see \Drupal\rdf_entity\RdfGraphHandler::getEntityTypeEnabledGraphs.
    */
   public function getActiveGraphType() {
-    return $this->activeGraph;
+    return $this->getGraphHandler()->getEntityTypeEnabledGraphs();
   }
 
   /**
    * Get the (active) graph URI for a given bundle.
    */
-  public function getGraph($bundle, $graph_type = NULL) {
-    if (!$graph_type) {
-      $graph_type = $this->getActiveGraphType();
-    }
-    $bundle = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->load($bundle);
-    $graph = $bundle->getThirdPartySetting('rdf_entity', 'graph_' . $graph_type, FALSE);
-    if (!$graph) {
-      throw new \Exception(format_string('Unable to determine graph %graph for bundle %bundle', [
-        '%graph' => $graph_type,
-        '%bundle' => $bundle->id(),
-      ]));
-    }
-    return $graph;
+  public function getGraph($bundle, $graph_type) {
+    return $this->getGraphHandler()->getBundleGraphUri($this->entityType->getBundleEntityType(), $bundle, $graph_type);
   }
 
   /**
@@ -209,31 +187,24 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *    The graph to use.
    */
   public function setSaveGraph($graph) {
-    $this->saveGraph = $graph;
+    $this->getGraphHandler()->setTargetGraphs($graph);
   }
 
   /**
    * Get the graph URIs for each bundle.
+   *
+   * @param array $graph_types
+   *    Optionally filter the retrieved graphs. If empty, all available graphs
+   * will be loaded.
+   *
+   * @return array
+   *    An array with the graph uris as keys and the corresponding bundles as
+   * values.
+   *
+   * @see \Drupal\rdf_entity\GraphHandler::getEntityTypeGraphUris.
    */
   public function getGraphs($graph_types = NULL) {
-    if (!$graph_types) {
-      $graph_types = $this->getActiveGraphType();
-    }
-    $bundles = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->loadMultiple();
-    $graphs = [];
-    foreach ($bundles as $bundle) {
-      foreach ($graph_types as $graph_type) {
-        $graph = $bundle->getThirdPartySetting('rdf_entity', 'graph_' . $graph_type, FALSE);
-        if (!$graph) {
-          throw new \Exception(format_string('Unable to determine graph "@graph" for bundle "@bundle"', [
-            '@graph' => $this->getActiveGraphType(),
-            '@bundle' => $bundle->id(),
-          ]));
-        }
-        $graphs[$graph][] = $bundle->id();
-      }
-    }
-    return $graphs;
+    return $this->getGraphHandler()->getEntityTypeGraphUris($this->entityType->getBundleEntityType(), $graph_types);
   }
 
   /**
@@ -255,7 +226,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    */
   protected function buildCacheId($id) {
     // @todo This isn't optimal...
-    $graph_id = implode('-', $this->activeGraph);
+    $graph_id = implode('-', $this->getActiveGraphType());
     return "values:{$this->entityTypeId}:$id:{$graph_id}";
   }
 
@@ -759,7 +730,7 @@ QUERY;
     // Consider the graph when statically caching entities.
     if ($ids) {
       $cids = array();
-      $key = implode('-', $this->activeGraph);
+      $key = implode('-', $this->getActiveGraphType());
       foreach ($ids as $id) {
         unset($this->entities[$key][$id]);
         $cids[] = $this->buildCacheId($id);
@@ -780,7 +751,7 @@ QUERY;
    * {@inheritdoc}
    */
   protected function getFromStaticCache(array $ids) {
-    $key = implode('-', $this->activeGraph);
+    $key = implode('-', $this->getActiveGraphType());
     // Consider the graph when statically caching entities.
     $entities = array();
     // Load any available entities from the internal cache.
@@ -795,7 +766,7 @@ QUERY;
    */
   protected function setStaticCache(array $entities) {
     // Consider the graph when statically caching entities.
-    $key = implode('-', $this->activeGraph);
+    $key = implode('-', $this->getActiveGraphType());
     if ($this->entityType->isStaticallyCacheable()) {
       if (empty($this->entities[$key])) {
         $this->entities[$key] = [];
