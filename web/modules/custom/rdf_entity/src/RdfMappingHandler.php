@@ -2,7 +2,7 @@
 
 namespace Drupal\rdf_entity;
 
-use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 
@@ -220,7 +220,7 @@ class RdfMappingHandler {
   /**
    * Returns a list of mapped properties for the passed content entity.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   A content entity.
    *
    * @return array
@@ -228,7 +228,7 @@ class RdfMappingHandler {
    *    fields, and properties of the entity and the fields, that are available
    *    will be returned.
    */
-  public function getEntityTypeMappedProperties(ContentEntityInterface $entity) {
+  public function getEntityTypeMappedProperties(EntityInterface $entity) {
     $bundle = $entity->bundle();
     $properties = [];
     // Collect impacted fields.
