@@ -248,7 +248,7 @@ function solution_get_latest_release(RdfInterface $solution) {
 }
 
 /**
- * Implements hook_entity_graph_access.
+ * Implements hook_entity_graph_access().
  *
  * The same procedure as the global access check is followed here. The purpose
  * is to override the results of the global access check if the user has the

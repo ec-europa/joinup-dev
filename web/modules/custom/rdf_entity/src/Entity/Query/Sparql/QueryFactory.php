@@ -16,6 +16,8 @@ use Drupal\rdf_entity\RdfMappingHandler;
 class QueryFactory implements QueryFactoryInterface {
 
   /**
+   * The connection object.
+   *
    * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
    */
   protected $connection;
@@ -52,7 +54,7 @@ class QueryFactory implements QueryFactoryInterface {
    * Constructs a QueryFactory object.
    *
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection
-   *    The connection object
+   *    The connection object.
    * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
    *    The entity type manager.
    * @param \Drupal\rdf_entity\RdfGraphHandler $rdf_graph_handler

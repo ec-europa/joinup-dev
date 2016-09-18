@@ -58,8 +58,10 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * The default rdf predicate for the bundle field.
    *
    * @var string
+   *
+   * @todo: We should be able to get rid of this and use $bundlePredicate.
    */
-  protected $rdf_bundle_predicate = 'rdf:type';
+  protected $rdfBundlePredicate = 'rdf:type';
 
   /**
    * The rdf graph helper service object.
@@ -142,11 +144,12 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * Get the defined graph types for this entity type.
    *
    * This is here for convenience.
-   * @see \Drupal\rdf_entity\RdfGraphHandler::getGraphDefinitions.
+   *
+   * @see \Drupal\rdf_entity\RdfGraphHandler::getGraphDefinitions
    *
    * @return array
    *    A structured array of graph definitions containing a title and a
-   * description. The array keys are the machine names of the graphs.
+   *   description. The array keys are the machine names of the graphs.
    */
   public function getGraphDefinitions() {
     return $this->getGraphHandler()->getGraphDefinitions($this->entityTypeId);
@@ -158,7 +161,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * @param array $graph_types
    *    An array of graph machine names.
    *
-   * @see \Drupal\rdf_entity\RdfGraphHandler::setActiveGraphType.
+   * @see \Drupal\rdf_entity\RdfGraphHandler::setActiveGraphType
    */
   public function setActiveGraphType(array $graph_types) {
     $this->getGraphHandler()->setRequestGraphs($this->entityTypeId, $graph_types);
@@ -167,7 +170,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * Returns the active graphs.
    *
-   * @see \Drupal\rdf_entity\RdfGraphHandler::getEntityTypeEnabledGraphs.
+   * @see \Drupal\rdf_entity\RdfGraphHandler::getEntityTypeEnabledGraphs
    */
   public function getActiveGraphType() {
     return $this->getGraphHandler()->getRequestGraphs();
@@ -195,13 +198,13 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *
    * @param array $graph_types
    *    Optionally filter the retrieved graphs. If empty, all available graphs
-   * will be loaded.
+   *   will be loaded.
    *
    * @return array
    *    An array with the graph uris as keys and the corresponding bundles as
-   * values.
+   *   values.
    *
-   * @see \Drupal\rdf_entity\GraphHandler::getEntityTypeGraphUris.
+   * @see \Drupal\rdf_entity\GraphHandler::getEntityTypeGraphUris
    */
   public function getEntityTypeGraphUris($graph_types = NULL) {
     return $this->getGraphHandler()->getEntityTypeGraphUris($this->entityType->getBundleEntityType(), $graph_types);
@@ -633,7 +636,7 @@ QUERY;
     // Save the bundle.
     $rdf_bundle_mapping = $this->mappingHandler->getRdfBundleMappedUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle());
     $rdf_bundle = $rdf_bundle_mapping[$entity->bundle()];
-    $insert .= $subj . ' ' . $this->rdf_bundle_predicate . ' <' . $rdf_bundle . '>  .' . "\n";
+    $insert .= $subj . ' ' . $this->rdfBundlePredicate . ' <' . $rdf_bundle . '>  .' . "\n";
 
     $query = <<<QUERY
 DELETE {

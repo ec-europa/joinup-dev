@@ -32,9 +32,10 @@ class Query extends QueryBase implements QueryInterface {
    * The graphs from where the query is going to try and load entities from.
    *
    * The variable holds a plain array of graph uris.
-   * @todo: Needs change to query graphs.
    *
    * @var array
+   *
+   * @todo: Needs change to query graphs.
    */
   protected $graphs = NULL;
 
@@ -104,6 +105,7 @@ class Query extends QueryBase implements QueryInterface {
    *
    * @throws \Exception
    *   Thrown when the storage passed is not an RdfEntitySparqlStorage.
+   *
    * @todo: Is this exception check needed?
    */
   public function __construct(EntityTypeInterface $entity_type, $conjunction, Connection $connection, array $namespaces, EntityTypeManager $entity_type_manager, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {

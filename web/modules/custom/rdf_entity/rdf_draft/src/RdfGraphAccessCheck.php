@@ -6,7 +6,6 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandler;
-use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 use Drupal\rdf_entity\RdfInterface;
@@ -15,7 +14,7 @@ use Symfony\Component\Routing\Route;
 /**
  * Checks access for displaying configuration translation page.
  */
-class RdfGraphAccessCheck implements RdfGraphAccessCheckInterface  {
+class RdfGraphAccessCheck implements RdfGraphAccessCheckInterface {
   /**
    * The entity manager.
    *
@@ -43,22 +42,7 @@ class RdfGraphAccessCheck implements RdfGraphAccessCheckInterface  {
   }
 
   /**
-   * A custom access check.
-   *
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *    Run access checks for this account.
-   * @param \Symfony\Component\Routing\Route $route
-   *    The current route.
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *    The entity object.
-   * @param string $operation
-   *    The operation to check.
-   *
-   * @return \Drupal\Core\Access\AccessResultInterface
-   *    The result of the access check.
-   *
-   * @throws \Exception
-   *    Thrown when the storage does not support graphs.
+   * {@inheritdoc}
    */
   public function access(Route $route, AccountInterface $account, RdfInterface $rdf_entity, $operation = 'view') {
     $graph = $route->getOption('graph_name');
@@ -85,11 +69,14 @@ class RdfGraphAccessCheck implements RdfGraphAccessCheckInterface  {
     $storage->setActiveGraphType($active_graph_type);
 
     // @todo: When the requested graph is the only one and it is not the
-    //    default, it is loaded in the default view, so maybe there is no need
-    //    to also show a separate tab.
+    // default, it is loaded in the default view, so maybe there is no need
+    // to also show a separate tab.
     return AccessResult::allowedIf($entity && $this->checkAccess($rdf_entity, $route, $account, $operation, $graph))->cachePerPermissions()->addCacheableDependency($rdf_entity);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function checkAccess(EntityInterface $entity, Route $route, AccountInterface $account, $operation, $graph_name) {
     if (!$entity) {
       return FALSE;
@@ -112,11 +99,11 @@ class RdfGraphAccessCheck implements RdfGraphAccessCheckInterface  {
     // @see: \Drupal\Core\Entity\EntityAccessControlHandler::access().
     $has_permission = $account->hasPermission($map[$operation]) || $account->hasPermission($type_map[$operation]);
     $access = $has_permission ? AccessResult::allowed() : AccessResult::neutral();
-
+    $arguments = [$entity, $operation, $account, $graph_name];
     $access_array = array_merge(
       [$access],
-      $this->moduleHandler->invokeAll('entity_graph_access', [$entity, $operation, $account, $graph_name]),
-      $this->moduleHandler->invokeAll($entity_type_id . '_graph_access', [$entity, $operation, $account, $graph_name])
+      $this->moduleHandler->invokeAll('entity_graph_access', $arguments),
+      $this->moduleHandler->invokeAll($entity_type_id . '_graph_access', $arguments)
     );
 
     $return = $this->processAccessHookResults($access_array);
@@ -124,6 +111,8 @@ class RdfGraphAccessCheck implements RdfGraphAccessCheckInterface  {
   }
 
   /**
+   * Processes access results.
+   *
    * We grant access to the entity if both of these conditions are met:
    * - No modules say to deny access.
    * - At least one module says to grant access.

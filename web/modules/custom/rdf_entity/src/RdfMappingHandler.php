@@ -49,6 +49,7 @@ class RdfMappingHandler {
    * @throws \Exception
    *    Thrown when an rdf mapping has not been set for a label in one of the
    *    entity bundles.
+   *
    * @todo: Especially for properties like label, we can generate it if missing.
    */
   public function getEntityTypeLabelPredicates($entity_type_id) {
@@ -112,13 +113,13 @@ class RdfMappingHandler {
   /**
    * Returns a list of bundle uris ready to be passed to a query as an array.
    *
-   * @todo: This should return a simple array. A query helper method can convert
-   *    it later on.
-   *
    * @param string $entity_type_id
    *    The entity type of the bundles e.g. 'node_type'.
    * @param array $bundles
    *    Optionally filter and return only a subset of bundles.
+   *
+   * @todo: This should return a simple array. A query helper method can convert
+   * it later on.
    *
    * @return string
    *    A string including the converted array of bundle uris to a string value
@@ -127,7 +128,7 @@ class RdfMappingHandler {
   public function getBundleUriList($entity_type_id, $bundles = []) {
     $bundle_mapping = $this->getRdfBundleMappedUri($entity_type_id);
     if (empty($bundle_mapping)) {
-      return;
+      return NULL;
     }
 
     $rdf_bundles = [];
@@ -148,15 +149,15 @@ class RdfMappingHandler {
   /**
    * Get the mapping between drupal properties and rdf predicates.
    *
+   * @param string $entity_type_id
+   *    The entity type for which the mappings are retrieved.
+   *
    * @todo: We should have a better more generic way of generating these
    *    mappings. E.g., when nothing is set, we can generate automatically for
    *    all properties of the entity and the fields in the following format:
    *    - Entity keys: <base url>/<entity_type_id>/<entity_key>
    *    - Entity field: <base url>/<entity_type_id>/<field_machine_name>
    * /<property>
-   *
-   * @param string $entity_type_id
-   *    The entity type for which the mappings are retrieved.
    *
    * @return array
    *    An array of mappings indexed by bundle.
@@ -274,4 +275,5 @@ class RdfMappingHandler {
   protected function getModuleHandlerService() {
     return \Drupal::moduleHandler();
   }
+
 }

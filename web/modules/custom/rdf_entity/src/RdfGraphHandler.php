@@ -2,11 +2,15 @@
 
 namespace Drupal\rdf_entity;
 
-
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
+/**
+ * Contains helper methods for managing the Rdf graphs.
+ *
+ * @package Drupal\rdf_entity
+ */
 class RdfGraphHandler {
   use StringTranslationTrait;
 
@@ -78,6 +82,7 @@ class RdfGraphHandler {
    *
    * @param string $entity_type_id
    *    The entity type machine name.
+   *
    * @return array
    *    A structured array of graph definitions containing a title and a
    *    description. The array keys are the machine names of the graphs.
@@ -112,10 +117,10 @@ class RdfGraphHandler {
    *
    * @param string $entity_type_bundle_key
    *    The bundle entity id of an entity type e.g. 'node_type'.
-   * @param $bundle
+   * @param string $bundle
    *    The bundle machine name.
    * @param string $graph_name
-   *    The graph type. Defaults to 'default'
+   *    The graph type. Defaults to 'default'.
    *
    * @return string
    *    The uri of the requesteg graph.
@@ -133,11 +138,11 @@ class RdfGraphHandler {
    * @param string $entity_type_bundle_key
    *    The bundle entity id of an entity type e.g. 'node_type'.
    * @param array $graph_names
-   *    The graph type. Defaults to 'default'
+   *    The graph type. Defaults to 'default'.
    *
    * @return array
    *    An array of graphs uris with the graph uris as keys and the bundles as
-   * values.
+   *   values.
    *
    * @throws \Exception
    *    Thrown when the passed graph cannot be determined.
@@ -157,6 +162,19 @@ class RdfGraphHandler {
     return $graphs;
   }
 
+  /**
+   * Returns a plain list of graphs related to the passed entity type.
+   *
+   * @param string $entityTypeBundleKey
+   *    The entity type bundle key e.g. 'node_type'.
+   * @param array $graph_names
+   *    Optionally filter the graphs to be returned.
+   *
+   * @todo: Need to pass only the entity type id here.
+   *
+   * @return array
+   *    A plain list of graph uris.
+   */
   public function getEntityTypeGraphUrisList($entityTypeBundleKey, $graph_names = []) {
     if (empty($graph_names)) {
       $graph_names = $this->getEntityTypeEnabledGraphs();
@@ -188,16 +206,17 @@ class RdfGraphHandler {
   /**
    * Set the graph type to use when interacting with entities.
    *
+   * @param string $entity_type_id
+   *    The entity type machine name.
+   * @param array $graph_names
+   *    An array of graph machine names.
+   *
+   * @todo: This occurs in almost every method. Can we inject the entity type?
+   *
    * @todo: Need to check whether a new instance is created when multiple types
    * are being loaded e.g. when an entity with entity references are loaded.
    * In this case, each entity might have a different graph definition from
    * where it needs to be loaded.
-   *
-   * @param array $graph_names
-   *    An array of graph machine names.
-   * @param string $entity_type_id
-   *    The entity type machine name.
-   * @todo: This occurs in almost every method. Can we inject the entity type?
    *
    * @throws \Exception
    *    Thrown if there is an invalid graph in the argument array or if the
@@ -253,14 +272,18 @@ class RdfGraphHandler {
    *  - The graph from where the entity is loaded.
    *  - The default graph from the enabled.
    *  - The first available graph.
+   *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   * @return mixed|string
+   *    The entity to determine the save graph for.
+   *
+   * @return string
+   *    The graph id.
    */
   public function getTargetGraphFromEntity(EntityInterface $entity) {
     if (!empty($this->getTargetGraph())) {
       return $this->getTargetGraph();
     }
-    else if (!empty($entity->get('graph')->first()->getValue()['value'])) {
+    elseif (!empty($entity->get('graph')->first()->getValue()['value'])) {
       return $entity->get('graph')->first()->getValue()['value'];
     }
     else {
@@ -279,12 +302,12 @@ class RdfGraphHandler {
    *
    * This is basically a reverse search to get the id of the graph.
    *
-   * @param $entity_type_bundle_key
+   * @param string $entity_type_bundle_key
    *    The entity type bundle key e.g. 'node_type'.
-   * @param $bundle_id
+   * @param string $bundle_id
    *    The for which we are searching a graph. This is mandatory as multiple
-   * bundles can use the same graph.
-   * @param $graph_uri
+   *   bundles can use the same graph.
+   * @param string $graph_uri
    *    The uri of the graph.
    *
    * @return string
@@ -298,11 +321,11 @@ class RdfGraphHandler {
   /**
    * Retrieves the uri of a bundle's graph from the settings.
    *
-   * @param $bundle_type_key
+   * @param string $bundle_type_key
    *    The bundle type key. E.g. 'node_type'.
-   * @param $bundle_id
+   * @param string $bundle_id
    *    The bundle machine name.
-   * @param $graph_name
+   * @param string $graph_name
    *    The graph name.
    *
    * @return string
@@ -331,4 +354,5 @@ class RdfGraphHandler {
   protected function getModuleHandlerService() {
     return \Drupal::moduleHandler();
   }
+
 }
