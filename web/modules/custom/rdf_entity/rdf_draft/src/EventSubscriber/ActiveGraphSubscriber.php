@@ -53,7 +53,6 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
         else {
           // Keep track that the entity needs to be stored in the draft graph.
           // @todo Check if drafting is enabled for this bundle here!!!
-          $storage->setSaveGraph($this->defaultSaveGraph($entity_type_id));
           $event->setGraph('default');
         }
       }
