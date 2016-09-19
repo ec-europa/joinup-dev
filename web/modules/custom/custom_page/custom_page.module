@@ -12,7 +12,6 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\OgGroupAudienceHelper;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
 
