@@ -27,18 +27,10 @@ class RdfListBuilder extends EntityListBuilder {
       if (is_string($_GET['graph']) && isset($def[$_GET['graph']])) {
         // Use the graph to build the list.
         $query->setGraphType([$_GET['graph']]);
-//        // Use the graph to do the 'load multiple'.
-//        $this->storage->setActiveGraphType([$_GET['graph']]);
       }
     }
     else {
       $query->setGraphType($rdf_storage->getGraphHandler()->getEntityTypeEnabledGraphs());
-//      if (\Drupal::moduleHandler()->moduleExists('rdf_draft')) {
-//        $this->storage->setActiveGraphType(['default', 'draft']);
-//      }
-//      else {
-//        $this->storage->setActiveGraphType(['default']);
-//      }
     }
 
     // Only add the pager if a limit is specified.

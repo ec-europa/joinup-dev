@@ -14,7 +14,7 @@ use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 function rdf_draft_rdf_graph_definition_alter($entity_type_id, &$definitions) {
   // @todo Replace this hard-coded setting with a settings form
   // where you can enable entity types.
-  if (!(\Drupal::entityManager()->getStorage($entity_type_id) instanceof RdfEntitySparqlStorage)){
+  if (!(\Drupal::entityManager()->getStorage($entity_type_id) instanceof RdfEntitySparqlStorage)) {
     return;
   }
 

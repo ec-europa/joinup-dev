@@ -45,9 +45,9 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
         // Draft version already exists.
         $entity = $storage->load($event->getValue());
         if ($entity) {
-//          if ($this->draftEnabled($entity_type_id, $entity->bundle())) {
-            $event->setGraph('draft');
-//          }
+          // If ($this->draftEnabled($entity_type_id, $entity->bundle())) {.
+          $event->setGraph('draft');
+          // }.
         }
         // Use published version to create draft.
         else {

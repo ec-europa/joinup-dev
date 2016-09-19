@@ -44,6 +44,8 @@ class RdfGraphHandler {
    * available graphs of the entity type, while the request graphs only hold the
    * graphs for the storage operations.
    *
+   * @var array
+   *
    * @code
    * $requestGraphs = [
    *    $entity_id => [
@@ -56,8 +58,6 @@ class RdfGraphHandler {
    *    ]
    *  ]
    * @code
-   *
-   * @var array
    */
   protected $requestGraphs;
 
@@ -133,7 +133,7 @@ class RdfGraphHandler {
    *    The graph type. Defaults to 'default'.
    *
    * @return string
-   *    The uri of the requesteg graph.
+   *    The uri of the requested graph.
    *
    * @throws \Exception
    *    Thrown when the passed graph cannot be determined.
@@ -185,7 +185,7 @@ class RdfGraphHandler {
    * @return array
    *    A plain list of graph uris.
    */
-  public function getEntityTypeGraphUrisList($entity_type_bundle_key, $ids = []) {
+  public function getEntityTypeGraphUrisList($entity_type_bundle_key, $graph_names = []) {
     if (empty($graph_names)) {
       $graph_names = $this->getEntityTypeEnabledGraphs();
     }

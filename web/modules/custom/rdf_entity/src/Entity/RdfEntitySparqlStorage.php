@@ -380,10 +380,10 @@ QUERY;
         }
 
         // Check if the graph checked is in the request graphs.
-        // If there are multiple graphs set, probably the default is requested with
-        // the rest as fallback or it is a neutral call.
-        // If the default is requested, it is going to be first in line so in any
-        // case, use the first one.
+        // If there are multiple graphs set, probably the default is requested
+        // with the rest as fallback or it is a neutral call.
+        // If the default is requested, it is going to be first in line so in
+        // any case, use the first one.
         $request_graphs = $this->getRequestGraphs($entity_id);
         $graph_id = $this->getGraphHandler()->getBundleGraphId($this->entityType->getBundleEntityType(), $bundle->id(), $graph_uri);
         if (!in_array($graph_id, $request_graphs)) {
@@ -767,16 +767,7 @@ QUERY;
   }
 
   /**
-   * @todo: Set to inheritdoc.
-   *
-   * Gets entities from the persistent cache backend.
-   *
-   * @param array|null &$ids
-   *   If not empty, return entities that match these IDs. IDs that were found
-   *   will be removed from the list.
-   *
-   * @return \Drupal\Core\Entity\ContentEntityInterface[]
-   *   Array of entities from the persistent cache.
+   * {@inheritdoc}
    */
   protected function getFromPersistentCache(array &$ids = NULL) {
     if (!$this->entityType->isPersistentlyCacheable() || empty($ids)) {
@@ -805,11 +796,7 @@ QUERY;
   }
 
   /**
-   * @todo: Set to inheritdoc.
-   * Stores entities in the persistent cache backend.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface[] $entities
-   *   Entities to store in the cache.
+   * {@inheritdoc}
    */
   protected function setPersistentCache($entities) {
     if (!$this->entityType->isPersistentlyCacheable()) {

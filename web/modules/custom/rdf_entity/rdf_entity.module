@@ -21,7 +21,7 @@ use \Drupal\rdf_entity\RdfInterface;
  * Implements hook_entity_base_field_info_alter().
  */
 function rdf_entity_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
-  if (!(\Drupal::entityManager()->getStorage($entity_type->id()) instanceof RdfEntitySparqlStorage)){
+  if (!(\Drupal::entityManager()->getStorage($entity_type->id()) instanceof RdfEntitySparqlStorage)) {
     return;
   }
 
