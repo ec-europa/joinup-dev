@@ -12,6 +12,7 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\OgGroupAudienceHelper;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
 
@@ -109,21 +110,6 @@ function custom_page_menu_local_actions_alter(&$local_actions) {
       }
       break;
     }
-  }
-}
-
-/**
- * Implements hook_module_implements_alter().
- */
-function custom_page_module_implements_alter(&$implementations, $hook) {
-  if ($hook === 'entity_insert') {
-    // Make sure that custom_page_entity_insert() runs after
-    // collection_entity_insert(). The latter creates an Og menu related to a
-    // collection. The former creates a custom page to list the collection
-    // discussions and it inserts that into said menu.
-    $group = $implementations['custom_page'];
-    unset($implementations['custom_page']);
-    $implementations['custom_page'] = $group;
   }
 }
 
