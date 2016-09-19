@@ -59,56 +59,38 @@ function custom_page_og_membership_insert(OgMembership $og_membership) {
  * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2369
  */
 function custom_page_entity_insert(EntityInterface $entity) {
-  if ($entity instanceof Node) {
-    /** @var \Drupal\node\Entity\Node $node */
-    $node = $entity;
-    if ($node->getType() != 'custom_page') {
-      return;
-    }
-    /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-    $group = $node->get(OgGroupAudienceHelper::DEFAULT_FIELD)->first();
-    if (!$group) {
-      return;
-    }
-    $value = $group->getValue();
-    // Fetch the menu.
-    $values = [
-      'type' => 'navigation',
-      OgGroupAudienceHelper::DEFAULT_FIELD => $value['target_id'],
-    ];
-    $storage = \Drupal::entityManager()->getStorage('ogmenu_instance');
-    $instances = $storage->loadByProperties($values);
-    if (!$instances) {
-      return;
-    }
-    /** @var \Drupal\og_menu\Entity\OgMenuInstance $instance */
-    $instance = array_pop($instances);
-    $menu_link_content = MenuLinkContent::create([
-      'title' => $node->getTitle(),
-      'menu_name' => 'ogmenu-' . $instance->id(),
-      'link' => ['uri' => 'internal:/node/' . $node->id()],
-    ]);
-    $menu_link_content->save();
+  if (!$entity instanceof Node) {
+    return;
   }
-
-  if ($entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'collection') {
-    // Automatically create a page listing all the discussions. The filtering
-    // by group will be done for all pages in the query alter function.
-    // @see custom_page_search_api_query_search_api_field_field_cp_search_alter()
-    $node = Node::create([
-      'type' => 'custom_page',
-      'title' => t('Discussions'),
-      OgGroupAudienceHelper::DEFAULT_FIELD => [$entity->id()],
-    ]);
-    // Get the search fields with its defaults.
-    $search_field = $node->get('field_cp_search')->first()->getValue();
-    // Enable the search and prefilter it to show only discussion nodes.
-    $search_field['value']['enabled'] = TRUE;
-    $search_field['value']['query_presets'] = 'aggregated_field|discussion';
-    // Now we can update the field.
-    $node->set('field_cp_search', $search_field);
-    $node->save();
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $entity;
+  if ($node->getType() != 'custom_page') {
+    return;
   }
+  /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
+  $group = $node->get(OgGroupAudienceHelper::DEFAULT_FIELD)->first();
+  if (!$group) {
+    return;
+  }
+  $value = $group->getValue();
+  // Fetch the menu.
+  $values = [
+    'type' => 'navigation',
+    OgGroupAudienceHelper::DEFAULT_FIELD => $value['target_id'],
+  ];
+  $storage = \Drupal::entityManager()->getStorage('ogmenu_instance');
+  $instances = $storage->loadByProperties($values);
+  if (!$instances) {
+    return;
+  }
+  /** @var \Drupal\og_menu\Entity\OgMenuInstance $instance */
+  $instance = array_pop($instances);
+  $menu_link_content = MenuLinkContent::create([
+    'title' => $node->getTitle(),
+    'menu_name' => 'ogmenu-' . $instance->id(),
+    'link' => ['uri' => 'internal:/node/' . $node->id()],
+  ]);
+  $menu_link_content->save();
 }
 
 /**
