@@ -158,24 +158,30 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * Set the graph type to use when interacting with entities.
    *
+   * @param string $entity_id
+   *    The entity id associated with the requested graphs.
    * @param array $graph_types
    *    An array of graph machine names.
    *
-   * @todo: This needs to be changed to setRequestGraphs.
-   *
    * @see \Drupal\rdf_entity\RdfGraphHandler::setRequestGraphs
    */
-  public function setActiveGraphType(array $graph_types) {
-    $this->getGraphHandler()->setRequestGraphs($this->entityTypeId, $graph_types);
+  public function setRequestGraphs($entity_id, array $graph_types) {
+    $this->getGraphHandler()->setRequestGraphs($entity_id, $this->entityTypeId, $graph_types);
   }
 
   /**
    * Returns the active graphs.
    *
+   * @param string $entity_id
+   *    The entity id associated with the requested graphs.
+   *
+   * @return array
+   *    An array of graph ids related to the passed entity id.
+   *
    * @see \Drupal\rdf_entity\RdfGraphHandler::getRequestGraphs
    */
-  public function getActiveGraphType() {
-    return $this->getGraphHandler()->getRequestGraphs();
+  public function getRequestGraphs($entity_id) {
+    return $this->getGraphHandler()->getRequestGraphs($entity_id);
   }
 
   /**
@@ -226,15 +232,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  protected function buildCacheId($id) {
-    // @todo This isn't optimal...
-    $graph_id = implode('-', $this->getActiveGraphType());
-    return "values:{$this->entityTypeId}:$id:{$graph_id}";
-  }
-
-  /**
    * Gets entities from the storage.
    *
    * @param array|null $ids
@@ -278,6 +275,9 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     if (empty($ids)) {
       return [];
     }
+
+    // @todo: We should filter per entity per graph and not load the whole
+    // database only to filter later on.
     $ids_string = "<" . implode(">, <", $ids) . ">";
     $graphs = $this->getGraphHandler()->getEntityTypeGraphUrisList($this->getEntityType()->getBundleEntityType());
     $named_graph = '';
@@ -300,7 +300,6 @@ WHERE{
 }
 QUERY;
 
-    /** @var \EasyRdf_Sparql_Result $entity_values */
     $entity_values = $this->sparql->query($query);
     return $this->processGraphResults($entity_values);
   }
@@ -321,12 +320,10 @@ QUERY;
    * graphs.
    * @code
    *    $results = [
-   *      'http://example.com/entity_id/published' => [
-   *        'http://entity_id.uri' => [
-   *          'http://field.mapping.uri' => [
-   *            'x-default' => [
-   *              0 => 'actual value'
-   *            ]
+   *      'http://entity_id.uri' => [
+   *        'http://field.mapping.uri' => [
+   *          'x-default' => [
+   *            0 => 'actual value'
    *          ]
    *        ]
    *      ];
@@ -334,91 +331,101 @@ QUERY;
    *
    * @param array $results
    *    A set of query results indexed per graph and entity id.
-   * @param array $entity_graphs
-   *    Optionally filters loading graphs available. This can be used to force
-   *    it to check only e.g. for the draft version of the entity and return
-   *    an empty set of values if it is not found.
    *
    * @return array
    *    The entity values indexed by the field mapping id.
+   *
+   * @throws \Exception
+   *    Thrown when the entity graph is empty.
    */
-  protected function processGraphResults($results, $entity_graphs = []) {
+  protected function processGraphResults($results) {
     $mapping = $this->mappingHandler->getEntityPredicates($this->entityTypeId);
     // If no graphs are passed, fetch all available graphs derived from the
     // results.
     $values_per_graph = [];
-    if (empty($entity_graphs)) {
-      foreach ($results as $result) {
-        $entity_id = (string) $result->entity_id;
-        $entity_graphs[$entity_id] = (string) $result->graph;
+    foreach ($results as $result) {
+      $entity_id = (string) $result->entity_id;
+      $entity_graphs[$entity_id] = (string) $result->graph;
 
-        $lang = LanguageInterface::LANGCODE_DEFAULT;
-        if ($result->field_value instanceof \EasyRdf_Literal) {
-          $lang_temp = $result->field_value->getLang();
-          if ($lang_temp) {
-            $lang = $lang_temp;
-          }
+      $lang = LanguageInterface::LANGCODE_DEFAULT;
+      if ($result->field_value instanceof \EasyRdf_Literal) {
+        $lang_temp = $result->field_value->getLang();
+        if ($lang_temp) {
+          $lang = $lang_temp;
         }
-        $values_per_graph[(string) $result->graph][$entity_id][(string) $result->predicate][$lang][] = (string) $result->field_value;
       }
+      $values_per_graph[(string) $result->graph][$entity_id][(string) $result->predicate][$lang][] = (string) $result->field_value;
     }
     if (empty($values_per_graph)) {
       return NULL;
     }
 
     $return = [];
-    // If there are multiple graphs set, probably the default is requested with
-    // the rest as fallback or it is a neutral call. In these cases, the first
-    // available will be loaded.
-    $entity_per_graph = reset($values_per_graph);
-    foreach ($entity_per_graph as $entity_id => $entity_values) {
-      // First determine the bundle of the returned entity.
-      $bundle_predicates = $this->bundlePredicate;
-      $pred_set = FALSE;
-      foreach ($bundle_predicates as $bundle_predicate) {
-        if (isset($entity_values[$bundle_predicate])) {
-          $pred_set = TRUE;
+    foreach ($values_per_graph as $graph_uri => $entity_per_graph) {
+      foreach ($entity_per_graph as $entity_id => $entity_values) {
+        // First determine the bundle of the returned entity.
+        $bundle_predicates = $this->bundlePredicate;
+        $pred_set = FALSE;
+        foreach ($bundle_predicates as $bundle_predicate) {
+          if (isset($entity_values[$bundle_predicate])) {
+            $pred_set = TRUE;
+          }
         }
-      }
-      if (!$pred_set) {
-        continue;
-      }
-
-      /** @var \Drupal\rdf_entity\Entity\RdfEntityType $bundle */
-      $bundle = $this->getActiveBundle($entity_values);
-      if (!$bundle) {
-        continue;
-      }
-      // Map bundle and entity id.
-      $return[$entity_id][$this->bundleKey][LanguageInterface::LANGCODE_DEFAULT] = $bundle->id();
-      $return[$entity_id][$this->idKey][LanguageInterface::LANGCODE_DEFAULT] = $entity_id;
-      $graph_id = $this->getGraphHandler()
-        ->getBundleGraphId($this->entityType->getBundleEntityType(), $bundle->id(), $entity_graphs[$entity_id]);
-      $return[$entity_id]['graph'][LanguageInterface::LANGCODE_DEFAULT] = $graph_id;
-
-      $rdf_type = NULL;
-      foreach ($entity_values as $predicate => $field) {
-        // If not mapped, ignore.
-        if (!isset($mapping[$bundle->id()][$predicate])) {
+        if (!$pred_set) {
           continue;
         }
-        $field_name = $mapping[$bundle->id()][$predicate]['field_name'];
-        $column = $mapping[$bundle->id()][$predicate]['column'];
-        foreach ($field as $lang => $items) {
-          foreach ($items as $item) {
-            if (!isset($return[$entity_id][$field_name]) || !is_string($return[$entity_id][$field_name][$lang])) {
-              $return[$entity_id][$field_name][$lang][][$column] = $item;
-            }
-            if (!isset($return[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT])) {
-              $return[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT][][$column] = $item;
-            }
+
+        /** @var \Drupal\rdf_entity\Entity\RdfEntityType $bundle */
+        $bundle = $this->getActiveBundle($entity_values);
+        if (!$bundle) {
+          continue;
+        }
+
+        // Check if the graph checked is in the request graphs.
+        // If there are multiple graphs set, probably the default is requested with
+        // the rest as fallback or it is a neutral call.
+        // If the default is requested, it is going to be first in line so in any
+        // case, use the first one.
+        $request_graphs = $this->getRequestGraphs($entity_id);
+        $graph_id = $this->getGraphHandler()->getBundleGraphId($this->entityType->getBundleEntityType(), $bundle->id(), $graph_uri);
+        if (!in_array($graph_id, $request_graphs)) {
+          continue;
+        }
+        if (empty($graph_id)) {
+          throw new \Exception("Fatal error. The graph ID whould never be empty here.");
+        }
+
+        // Map bundle and entity id.
+        $return[$entity_id][$this->bundleKey][LanguageInterface::LANGCODE_DEFAULT] = $bundle->id();
+        $return[$entity_id][$this->idKey][LanguageInterface::LANGCODE_DEFAULT] = $entity_id;
+        $return[$entity_id]['graph'][LanguageInterface::LANGCODE_DEFAULT] = $graph_id;
+
+        $rdf_type = NULL;
+        foreach ($entity_values as $predicate => $field) {
+          // If not mapped, ignore.
+          if (!isset($mapping[$bundle->id()][$predicate])) {
+            continue;
           }
-          if (isset($mapping[$bundle->id()][$predicate]['storage_definition'])) {
-            $storage_definition = $mapping[$bundle->id()][$predicate]['storage_definition'];
-            $this->applyFieldDefaults($storage_definition, $return[$entity_id][$storage_definition->getName()][$lang]);
+          $field_name = $mapping[$bundle->id()][$predicate]['field_name'];
+          $column = $mapping[$bundle->id()][$predicate]['column'];
+          foreach ($field as $lang => $items) {
+            foreach ($items as $item) {
+              if (!isset($return[$entity_id][$field_name]) || !is_string($return[$entity_id][$field_name][$lang])) {
+                $return[$entity_id][$field_name][$lang][][$column] = $item;
+              }
+              if (!isset($return[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT])) {
+                $return[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT][][$column] = $item;
+              }
+            }
+            if (isset($mapping[$bundle->id()][$predicate]['storage_definition'])) {
+              $storage_definition = $mapping[$bundle->id()][$predicate]['storage_definition'];
+              $this->applyFieldDefaults($storage_definition, $return[$entity_id][$storage_definition->getName()][$lang]);
+            }
           }
         }
       }
+      // If we are here, it means a valid entity is already loaded.
+      return $return;
     }
     return $return;
   }
@@ -726,38 +733,21 @@ QUERY;
 
   /**
    * {@inheritdoc}
-   */
-  public function resetCache(array $ids = NULL) {
-    // Consider the graph when statically caching entities.
-    if ($ids) {
-      $cids = array();
-      $key = implode('-', $this->getActiveGraphType());
-      foreach ($ids as $id) {
-        unset($this->entities[$key][$id]);
-        $cids[] = $this->buildCacheId($id);
-      }
-      if ($this->entityType->isPersistentlyCacheable()) {
-        $this->cacheBackend->deleteMultiple($cids);
-      }
-    }
-    else {
-      $this->entities = array();
-      if ($this->entityType->isPersistentlyCacheable()) {
-        Cache::invalidateTags(array($this->entityTypeId . '_values'));
-      }
-    }
-  }
-
-  /**
-   * {@inheritdoc}
+   *
+   * If there are more than one graphs in the request, return the first
+   * available with an entity in it.
    */
   protected function getFromStaticCache(array $ids) {
-    $key = implode('-', $this->getActiveGraphType());
-    // Consider the graph when statically caching entities.
-    $entities = array();
-    // Load any available entities from the internal cache.
-    if ($this->entityType->isStaticallyCacheable() && !empty($this->entities[$key])) {
-      $entities += array_intersect_key($this->entities[$key], array_flip($ids));
+    $entities = [];
+    foreach ($ids as $id) {
+      $request_graphs = $this->getRequestGraphs($id);
+      foreach ($request_graphs as $request_graph) {
+        if (isset($this->entities[$id][$request_graph])) {
+          if (!isset($entities[$id])) {
+            $entities[$id] = $this->entities[$id][$request_graph];
+          }
+        }
+      }
     }
     return $entities;
   }
@@ -766,14 +756,110 @@ QUERY;
    * {@inheritdoc}
    */
   protected function setStaticCache(array $entities) {
-    // Consider the graph when statically caching entities.
-    $key = implode('-', $this->getActiveGraphType());
-    if ($this->entityType->isStaticallyCacheable()) {
-      if (empty($this->entities[$key])) {
-        $this->entities[$key] = [];
+    foreach ($entities as $id => $entity) {
+      // The target graph should be empty since it's a load so the one from the
+      // entity should be loaded here.
+      $graph = $this->getGraphHandler()->getTargetGraphFromEntity($entity);
+      if ($this->entityType->isStaticallyCacheable()) {
+        $this->entities[$id][$graph] = $entity;
       }
-      $this->entities[$key] += $entities;
     }
+  }
+
+  /**
+   * @todo: Set to inheritdoc.
+   *
+   * Gets entities from the persistent cache backend.
+   *
+   * @param array|null &$ids
+   *   If not empty, return entities that match these IDs. IDs that were found
+   *   will be removed from the list.
+   *
+   * @return \Drupal\Core\Entity\ContentEntityInterface[]
+   *   Array of entities from the persistent cache.
+   */
+  protected function getFromPersistentCache(array &$ids = NULL) {
+    if (!$this->entityType->isPersistentlyCacheable() || empty($ids)) {
+      return array();
+    }
+    $entities = array();
+    // Build the list of cache entries to retrieve.
+    $cid_map = array();
+    foreach ($ids as $id) {
+      $request_graphs = $this->getGraphHandler()->getRequestGraphs($id);
+      $graph = reset($request_graphs);
+      $cid_map[$id] = "{$this->buildCacheId($id)}:{$graph}";
+    }
+    $cids = array_values($cid_map);
+    if ($cache = $this->cacheBackend->getMultiple($cids)) {
+      // Get the entities that were found in the cache.
+      foreach ($ids as $index => $id) {
+        $cid = $cid_map[$id];
+        if (isset($cache[$cid]) && !isset($entities[$id])) {
+          $entities[$id] = $cache[$cid]->data;
+          unset($ids[$index]);
+        }
+      }
+    }
+    return $entities;
+  }
+
+  /**
+   * @todo: Set to inheritdoc.
+   * Stores entities in the persistent cache backend.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface[] $entities
+   *   Entities to store in the cache.
+   */
+  protected function setPersistentCache($entities) {
+    if (!$this->entityType->isPersistentlyCacheable()) {
+      return;
+    }
+
+    $cache_tags = array(
+      $this->entityTypeId . '_values',
+      'entity_field_info',
+    );
+    foreach ($entities as $id => $entity) {
+      $graph = $this->getGraphHandler()->getTargetGraphFromEntity($entity);
+      $cid = "{$this->buildCacheId($id)}:{$graph}";
+      $this->cacheBackend->set($cid, $entity, CacheBackendInterface::CACHE_PERMANENT, $cache_tags);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * Since the notion of graphs exist in the sparql storage, the cache reset
+   * should remove entities from all graphs.
+   */
+  public function resetCache(array $ids = NULL) {
+    $graphs = $this->getGraphHandler()->getEntityTypeEnabledGraphs();
+    if ($ids) {
+      $cids = array();
+      foreach ($ids as $id) {
+        foreach ($graphs as $graph) {
+          unset($this->entities[$id][$graph]);
+          $cids[] = "{$this->buildCacheId($id)}:{$graph}";
+        }
+      }
+      if ($this->entityType->isPersistentlyCacheable()) {
+        $this->cacheBackend->deleteMultiple($cids);
+      }
+    }
+    else {
+      $this->entities = [];
+      if ($this->entityType->isPersistentlyCacheable()) {
+        Cache::invalidateTags([$this->entityTypeId . '_values']);
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function buildCacheId($id) {
+    return "values:{$this->entityTypeId}:$id";
   }
 
 }
