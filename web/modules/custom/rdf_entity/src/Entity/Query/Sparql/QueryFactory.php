@@ -75,7 +75,7 @@ class QueryFactory implements QueryFactoryInterface {
    */
   public function get(EntityTypeInterface $entity_type, $conjunction) {
     $class = QueryBase::getClass($this->namespaces, 'Query');
-    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager, $this->graphHandler, $this->mappingHandler, $this->graphHandler, $this->mappingHandler);
+    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager, $this->graphHandler, $this->mappingHandler);
   }
 
   /**
