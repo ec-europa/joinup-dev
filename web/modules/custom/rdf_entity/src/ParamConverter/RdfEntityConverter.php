@@ -54,7 +54,7 @@ class RdfEntityConverter extends EntityConverter {
       // Determine the graph by emitting an event.
       $graph = $dispatcher->dispatch('rdf_graph.entity_convert', $event);
       if ($graph_type = $graph->getGraph()) {
-        $storage->setActiveGraphType([$graph_type]);
+        $storage->setRequestGraphs($value, [$graph_type]);
       }
 
       $entity = $storage->load($value);

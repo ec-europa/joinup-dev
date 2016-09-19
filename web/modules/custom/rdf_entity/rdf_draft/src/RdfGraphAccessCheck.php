@@ -61,12 +61,12 @@ class RdfGraphAccessCheck implements RdfGraphAccessCheckInterface {
       return AccessResult::neutral();
     }
 
-    $active_graph_type = $storage->getActiveGraphType();
+    $active_graph_type = $storage->getRequestGraphs($rdf_entity->id());
     // Check if there is an entity saved in the passed graph.
-    $storage->setActiveGraphType([$graph]);
-    $entity = $storage->loadUnchanged($rdf_entity->id());
+    $storage->setRequestGraphs($rdf_entity->id(), [$graph]);
+    $entity = $storage->load($rdf_entity->id());
     // Restore active graph.
-    $storage->setActiveGraphType($active_graph_type);
+    $storage->setRequestGraphs($rdf_entity->id(), $active_graph_type);
 
     // @todo: When the requested graph is the only one and it is not the
     // default, it is loaded in the default view, so maybe there is no need

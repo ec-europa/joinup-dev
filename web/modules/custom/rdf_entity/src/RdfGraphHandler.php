@@ -44,6 +44,19 @@ class RdfGraphHandler {
    * available graphs of the entity type, while the request graphs only hold the
    * graphs for the storage operations.
    *
+   * @code
+   * $requestGraphs = [
+   *    $entity_id => [
+   *      graph1,
+   *      graph2
+   *    ]
+   *    $entity_id2 => [
+   *      graph1,
+   *      graph2,
+   *    ]
+   *  ]
+   * @code
+   *
    * @var array
    */
   protected $requestGraphs;
@@ -69,9 +82,6 @@ class RdfGraphHandler {
     $graph = $this->enabledGraphs;
     $this->moduleHandler->alter('rdf_default_active_graph', $entity_type, $graph);
     $this->enabledGraphs = $graph;
-
-    // By default, all graphs are available.
-    $this->requestGraphs = $this->enabledGraphs;
   }
 
   /**
@@ -101,9 +111,6 @@ class RdfGraphHandler {
 
   /**
    * Returns the active graphs as an array.
-   *
-   * @todo: Rename this to getRequestGraphs as they refer to the graphs
-   *    that will interact with the database for the specific request.
    *
    * @return array
    *    An array of graph machine names.
@@ -165,7 +172,7 @@ class RdfGraphHandler {
   /**
    * Returns a plain list of graphs related to the passed entity type.
    *
-   * @param string $entityTypeBundleKey
+   * @param string $entity_type_bundle_key
    *    The entity type bundle key e.g. 'node_type'.
    * @param array $graph_names
    *    Optionally filter the graphs to be returned.
@@ -175,12 +182,12 @@ class RdfGraphHandler {
    * @return array
    *    A plain list of graph uris.
    */
-  public function getEntityTypeGraphUrisList($entityTypeBundleKey, $graph_names = []) {
+  public function getEntityTypeGraphUrisList($entity_type_bundle_key, $graph_names = []) {
     if (empty($graph_names)) {
-      $graph_names = $this->getRequestGraphs();
+      $graph_names = $this->getEntityTypeEnabledGraphs();
     }
     $graph_list = [];
-    $entity_graphs = $this->getEntityTypeGraphUris($entityTypeBundleKey, $graph_names);
+    $entity_graphs = $this->getEntityTypeGraphUris($entity_type_bundle_key, $graph_names);
     foreach ($entity_graphs as $bundle_id => $bundle_graphs) {
       foreach ($graph_names as $graph_name) {
         $graph_list[] = $entity_graphs[$bundle_id][$graph_name];
@@ -188,19 +195,6 @@ class RdfGraphHandler {
     }
 
     return $graph_list;
-  }
-
-  /**
-   * Returns the request graphs stored in the service.
-   *
-   * @return array
-   *    The request graphs.
-   */
-  public function getRequestGraphs() {
-    if (empty($this->requestGraphs)) {
-      return $this->getEntityTypeEnabledGraphs();
-    }
-    return $this->requestGraphs;
   }
 
   /**
@@ -223,8 +217,26 @@ class RdfGraphHandler {
   }
 
   /**
+   * Returns the request graphs stored in the service.
+   *
+   * @param string $entity_id
+   *    The entity id associated with the requested graphs.
+   *
+   * @return array
+   *    The request graphs.
+   */
+  public function getRequestGraphs($entity_id) {
+    if (!isset($this->requestGraphs[$entity_id])) {
+      $this->requestGraphs[$entity_id] = $this->getEntityTypeEnabledGraphs();
+    }
+    return $this->requestGraphs[$entity_id];
+  }
+
+  /**
    * Set the graph type to use when interacting with entities.
    *
+   * @param string $entity_id
+   *    The entity id associated with the requested graphs.
    * @param string $entity_type_id
    *    The entity type machine name.
    * @param array $graph_names
@@ -241,7 +253,7 @@ class RdfGraphHandler {
    *    Thrown if there is an invalid graph in the argument array or if the
    *    final array is empty as there must be at least one active graph.
    */
-  public function setRequestGraphs($entity_type_id, array $graph_names) {
+  public function setRequestGraphs($entity_id, $entity_type_id, array $graph_names) {
     $definitions = $this->getGraphDefinitions($entity_type_id);
     $graphs_array = [];
     foreach ($graph_names as $graph_name) {
@@ -257,7 +269,7 @@ class RdfGraphHandler {
     }
 
     // Remove duplicates as there might be occurrences after the loop above.
-    $this->requestGraphs = array_unique($graphs_array);
+    $this->requestGraphs[$entity_id] = array_unique($graphs_array);
   }
 
   /**
@@ -286,6 +298,8 @@ class RdfGraphHandler {
    * Returns the save graph for the entity.
    *
    * The priority of the graphs is:
+   *  - If there is only one graph enabled for the requested entity type, return
+   * this graph.
    *  - If there is a target graph set, this is used. This allows other modules
    * to interact with the graphs.
    *  - The graph from where the entity is loaded.
@@ -302,8 +316,8 @@ class RdfGraphHandler {
     if (!empty($this->getTargetGraph())) {
       return $this->getTargetGraph();
     }
-    elseif (!empty($entity->get('graph')->first()->getValue()['value'])) {
-      return $entity->get('graph')->first()->getValue()['value'];
+    elseif ($entity->graph && !empty($entity->graph->first()->getValue()['value'])) {
+      return $entity->graph->first()->getValue()['value'];
     }
     else {
       $enabled_graphs = $this->getEntityTypeEnabledGraphs();

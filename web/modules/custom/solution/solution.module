@@ -191,11 +191,10 @@ function solution_rdf_entity_presave(EntityInterface $entity) {
 
   $state = $entity->field_is_state->value;
   if (in_array($state, ['draft', 'proposed', 'in_assessment', 'blacklisted'])) {
-    $entity->graph = 'draft';
+    \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraph('draft');
   }
   elseif (in_array($state, ['validated', 'deletion_request'])) {
-    // The published graph is the default.
-    $entity->graph = 'default';
+    \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraph('default');
   }
   elseif (empty($state)) {
     throw new \Exception("State field not found while trying to get the appropriate graph.");
@@ -218,10 +217,10 @@ function solution_rdf_entity_update(EntityInterface $entity) {
 
   $state = $entity->field_is_state->value;
   if (in_array($state, ['validated', 'deletion_request'])) {
-    /** @var \Drupal\rdf_entity\Entity\Query\Sparql\Query $query */
-    $query = \Drupal::entityManager()->getStorage('rdf_entity')->getQuery()
-      ->condition($entity->getEntityType()->getKey('id'), [$entity->id()], 'IN');
-    $query->setGraphType(['draft']);
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $query = $storage->getQuery()->condition($entity->getEntityType()->getKey('id'), [$entity->id()], 'IN');
+    $query->setGraphType($entity->id(), ['draft']);
     $results = $query->execute();
     if (!empty($results)) {
       $draft_entity = Rdf::load(reset($results));

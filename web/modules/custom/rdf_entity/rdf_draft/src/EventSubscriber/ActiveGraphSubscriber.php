@@ -41,7 +41,7 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
         $entity_type_id = substr($event->getDefinition()['type'], strlen('entity:'));
         /** @var RdfEntitySparqlStorage $storage */
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
-        $storage->setActiveGraphType(['draft']);
+        $storage->setRequestGraphs($event->getValue(), ['draft']);
         // Draft version already exists.
         $entity = $storage->load($event->getValue());
         if ($entity) {
@@ -66,7 +66,7 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
           if ($found) {
             continue;
           }
-          $storage->setActiveGraphType($name);
+          $storage->setActiveGraphType($event->getValue(), $name);
           if ($storage->load($event->getValue())) {
             $event->setGraph($name);
             $found = TRUE;

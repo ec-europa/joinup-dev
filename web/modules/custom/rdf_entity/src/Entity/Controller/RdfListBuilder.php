@@ -20,25 +20,25 @@ class RdfListBuilder extends EntityListBuilder {
     /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage */
     $rdf_storage = $this->getStorage();
 
-    $query = $rdf_storage->getQuery()
-      ->condition('rid', NULL, 'IN');
+    $query = $rdf_storage->getQuery()->condition('rid', NULL, 'IN');
     // If a graph type is set in the url, validate it, and use it in the query.
     if (!empty($_GET['graph'])) {
       $def = $rdf_storage->getGraphDefinitions();
       if (is_string($_GET['graph']) && isset($def[$_GET['graph']])) {
         // Use the graph to build the list.
         $query->setGraphType([$_GET['graph']]);
-        // Use the graph to do the 'load multiple'.
-        $this->storage->setActiveGraphType([$_GET['graph']]);
+//        // Use the graph to do the 'load multiple'.
+//        $this->storage->setActiveGraphType([$_GET['graph']]);
       }
     }
     else {
-      if (\Drupal::moduleHandler()->moduleExists('rdf_draft')) {
-        $this->storage->setActiveGraphType(['default', 'draft']);
-      }
-      else {
-        $this->storage->setActiveGraphType(['default']);
-      }
+      $query->setGraphType($rdf_storage->getGraphHandler()->getEntityTypeEnabledGraphs());
+//      if (\Drupal::moduleHandler()->moduleExists('rdf_draft')) {
+//        $this->storage->setActiveGraphType(['default', 'draft']);
+//      }
+//      else {
+//        $this->storage->setActiveGraphType(['default']);
+//      }
     }
 
     // Only add the pager if a limit is specified.
