@@ -63,22 +63,18 @@ class RdfController extends ControllerBase {
    *   Thrown when the entity is not found in the given graph.
    */
   public function view(RouteMatchInterface $route_match) {
-    $parameter_name = $route_match->getRouteObject()
-      ->getOption('entity_type_id');
+    $parameter_name = $route_match->getRouteObject()->getOption('entity_type_id');
     /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = $route_match->getParameter($parameter_name);
     $storage = $this->entityManager->getStorage($entity->getEntityTypeId());
-    $original = $storage->getActiveGraphType($entity->id());
     $graph_name = $route_match->getRouteObject()->getOption('graph_name');
-    $storage->setActiveGraphType($entity->id(), [$graph_name]);
+    $storage->setRequestGraphs($entity->id(), [$graph_name]);
     $draft_entity = $storage->load($entity->id());
     if (!$draft_entity) {
       // Should not occur: RdfGraphAccessCheck validates that the entity exists.
       throw new \Exception('Entity not loaded from graph');
     }
-    $storage->setActiveGraphType($entity->id(), $original);
     $page = $this->entityManager->getViewBuilder($entity->getEntityTypeId())->view($draft_entity, 'full');
-
     $page['#pre_render'][] = [$this, 'buildTitle'];
     $page['#entity_type'] = $entity->getEntityTypeId();
     $page['#' . $page['#entity_type']] = $draft_entity;

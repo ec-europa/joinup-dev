@@ -82,6 +82,9 @@ class RdfGraphHandler {
     $graph = $this->enabledGraphs;
     $this->moduleHandler->alter('rdf_default_active_graph', $entity_type, $graph);
     $this->enabledGraphs = $graph;
+
+    // By default, all graphs are available.
+    $this->requestGraphs['default'] = $this->enabledGraphs;
   }
 
   /**
@@ -182,7 +185,7 @@ class RdfGraphHandler {
    * @return array
    *    A plain list of graph uris.
    */
-  public function getEntityTypeGraphUrisList($entity_type_bundle_key, $graph_names = []) {
+  public function getEntityTypeGraphUrisList($entity_type_bundle_key, $ids = []) {
     if (empty($graph_names)) {
       $graph_names = $this->getEntityTypeEnabledGraphs();
     }
@@ -198,25 +201,6 @@ class RdfGraphHandler {
   }
 
   /**
-   * Resets the request graphs on the fly.
-   *
-   * This method resets the request graphs back to NULL. Since GraphHandler
-   * class is a service, the request graphs persist along the complete request.
-   * That means that if more entities with the same entity type are being loaded
-   * at the same request, the request graphs will be inherited. Cases like this,
-   * is when the entity has entity reference fields or there is a block in the
-   * page showing entities like the one requested.
-   *
-   * @todo: Is there a better way for this? It is called after the loading of
-   * the entity but maybe it would be better to initialize it with the query
-   * factory. That way, it will be able to get overridden but will reset for
-   * every new entity.
-   */
-  public function resetRequestGraphs() {
-    $this->requestGraphs = NULL;
-  }
-
-  /**
    * Returns the request graphs stored in the service.
    *
    * @param string $entity_id
@@ -226,6 +210,9 @@ class RdfGraphHandler {
    *    The request graphs.
    */
   public function getRequestGraphs($entity_id) {
+    if (empty($entity_id)) {
+      return $this->requestGraphs['default'];
+    }
     if (!isset($this->requestGraphs[$entity_id])) {
       $this->requestGraphs[$entity_id] = $this->getEntityTypeEnabledGraphs();
     }

@@ -263,8 +263,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
         $this->setPersistentCache($entities);
       }
     }
-
-    $this->getGraphHandler()->resetRequestGraphs();
     return $entities;
   }
 
@@ -424,8 +422,10 @@ QUERY;
           }
         }
       }
-      // If we are here, it means a valid entity is already loaded.
-      return $return;
+      if (!empty($return)) {
+        // If we are here, it means a valid entity is already loaded.
+        return $return;
+      }
     }
     return $return;
   }

@@ -45,32 +45,15 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
         // Draft version already exists.
         $entity = $storage->load($event->getValue());
         if ($entity) {
-          if ($this->draftEnabled($entity_type_id, $entity->bundle())) {
+//          if ($this->draftEnabled($entity_type_id, $entity->bundle())) {
             $event->setGraph('draft');
-          }
+//          }
         }
         // Use published version to create draft.
         else {
           // Keep track that the entity needs to be stored in the draft graph.
           // @todo Check if drafting is enabled for this bundle here!!!
           $event->setGraph('default');
-        }
-      }
-      // On the delete form, select the first available graph.
-      elseif (array_search('delete_form', $route_parts)) {
-        $entity_type_id = substr($event->getDefinition()['type'], strlen('entity:'));
-        /** @var RdfEntitySparqlStorage $storage */
-        $storage = \Drupal::entityManager()->getStorage($entity_type_id);
-        $found = FALSE;
-        foreach ($storage->getGraphDefinitions() as $name => $definition) {
-          if ($found) {
-            continue;
-          }
-          $storage->setActiveGraphType($event->getValue(), $name);
-          if ($storage->load($event->getValue())) {
-            $event->setGraph($name);
-            $found = TRUE;
-          }
         }
       }
       // Viewing the entity on a graph specific tab.
