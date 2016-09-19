@@ -13,13 +13,8 @@ Feature:
       | title               | collection | content                                     |
       | 20 year anniversary | Nintendo64 | The console was released in September 1996. |
       | NEC VR4300 CPU      | Emulators  | Designed by MTI for embedded applications.  |
-    # @todo to be removed depending on ISAICP-2797
-    And the discussions page:
-      | title      | Discussions |
-      | collection | Nintendo64  |
-      | body       | Sample text |
 
-    Scenario: Create an overview of discussions in a collection
+    Scenario: Every collection has a discussion overview
       Given I am an anonymous user
       When I go to the homepage of the "Nintendo64" collection
       And I click "Discussions" in the "Left sidebar" region
