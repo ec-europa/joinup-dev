@@ -64,7 +64,7 @@ class RdfGraphAccessCheck implements RdfGraphAccessCheckInterface {
     $active_graph_type = $storage->getActiveGraphType();
     // Check if there is an entity saved in the passed graph.
     $storage->setActiveGraphType([$graph]);
-    $entity = $storage->load($rdf_entity->id());
+    $entity = $storage->loadUnchanged($rdf_entity->id());
     // Restore active graph.
     $storage->setActiveGraphType($active_graph_type);
 
