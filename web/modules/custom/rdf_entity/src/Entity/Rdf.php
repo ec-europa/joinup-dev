@@ -224,10 +224,6 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['graph'] = BaseFieldDefinition::create('uri')
-      ->setLabel(t('The graph where the entity is stored.'))
-      ->setComputed(TRUE);
-
     return $fields;
   }
 
