@@ -150,8 +150,8 @@ class Query extends QueryBase implements QueryInterface {
    * to filter the results:
    * - Set the graph types in this method.
    * - Set the request graphs in the storage level.
-   * The query graph filter set below is filtering the graphs that the query
-   * will run on, so this makes this filter a runtime filter.
+   * The query graph filter that is set below is filtering the graphs
+   * that the query will run on, so this makes this filter a runtime filter.
    * After the results are retrieved, the storage will further filter the
    * results based on the request graphs set for the entities.
    *
