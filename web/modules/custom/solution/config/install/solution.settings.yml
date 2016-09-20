@@ -34,7 +34,6 @@ transitions:
     __new__:
       - authenticated
       - moderator
-      - rdf_entity-collection-facilitator
     draft:
       - moderator
       - rdf_entity-solution-facilitator
@@ -50,12 +49,16 @@ transitions:
     blacklisted:
       - moderator
       - rdf_entity-solution-facilitator
+    deletion_request:
+      - moderator
   proposed:
     __new__:
       - authenticated
       - moderator
-      - rdf_entity-collection-facilitator
     draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    proposed:
       - moderator
       - rdf_entity-solution-facilitator
     validated:
@@ -67,6 +70,8 @@ transitions:
     blacklisted:
       - moderator
       - rdf_entity-solution-facilitator
+    deletion_request:
+      - moderator
   validated:
     __new__:
       - moderator
