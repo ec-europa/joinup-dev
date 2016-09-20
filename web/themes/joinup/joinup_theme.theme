@@ -152,6 +152,9 @@ function joinup_theme_preprocess_container(&$variables) {
  * Implements hook_preprocess_HOOK() for field-multiple-value-form.html.twig.
  */
 function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
+  // Provide a 'for' property for field labels in multi-value fields
+  // using id of the first element so that it is semantically clear
+  // to which form element this label belongs.
   if ($variables['multiple']) {
     // Set new variable label, which contains title.
     $label = $variables['element']['#title'];
