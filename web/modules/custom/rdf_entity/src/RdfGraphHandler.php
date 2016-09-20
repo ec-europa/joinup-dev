@@ -343,7 +343,7 @@ class RdfGraphHandler {
    *
    * @return string
    *    The graph id. If no graph is found in the entity, the default graph uri
-   * is returned.
+   *   is returned.
    */
   public function getGraphUriFromEntity(EntityInterface $entity) {
     if ($graph_id = $this->getGraphIdFromEntity($entity)) {

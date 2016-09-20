@@ -8,6 +8,7 @@
 use \Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 use \Drupal\Core\Config\Entity\ConfigEntityInterface;
 use \Drupal\Core\Entity\BundleEntityFormBase;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use \Drupal\Core\Form\FormStateInterface;
@@ -83,6 +84,18 @@ function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity,
   foreach ($schema['columns'] as $column => $column_desc) {
     $value = $form_state->getValue($column);
     $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $column, $value);
+  }
+}
+
+/**
+ * Implements hook_entity_create().
+ */
+function rdf_entity_entity_create(EntityInterface $entity) {
+  $entity_type = $entity->getEntityTypeId();
+  $storage = \Drupal::entityManager()->getStorage($entity_type);
+  if ($storage instanceof RdfEntitySparqlStorage) {
+    // The target graph should be the graph of the entity when it's created.
+    $entity->set('graph', $storage->getGraphHandler()->getTargetGraphFromEntity($entity));
   }
 }
 
