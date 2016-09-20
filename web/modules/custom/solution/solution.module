@@ -208,6 +208,8 @@ function solution_rdf_entity_presave(EntityInterface $entity) {
  * Implements hook_ENTITY_TYPE_update().
  *
  * When the entity is saved into the default graph, the draft must be deleted.
+ * Also, when the entity is blacklisted, the published version is removed
+ * (the entity becomes unpublished).
  */
 function solution_rdf_entity_update(EntityInterface $entity) {
   $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
@@ -223,6 +225,15 @@ function solution_rdf_entity_update(EntityInterface $entity) {
     $draft_entity = $storage->loadUnchanged($entity->id());
     if (!empty($draft_entity)) {
       $draft_entity->delete();
+    }
+  }
+  if ($state == 'blacklisted') {
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage->setRequestGraphs($entity->id(), ['default']);
+    $published_entity = $storage->loadUnchanged($entity->id());
+    if (!empty($published_entity)) {
+      $published_entity->delete();
     }
   }
 }
