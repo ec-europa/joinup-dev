@@ -31,6 +31,7 @@ default:
         message_selector: '.alert'
         error_message_selector: '.alert.alert--error'
         success_message_selector: '.alert.alert--status'
+        login_form_selector: '#user-login-form'
       subcontexts:
         paths:
           - '${behat.subcontexts.path}'

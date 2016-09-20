@@ -23,10 +23,10 @@ Feature: June 2016 demo
       | Nick Fury | ihaveasecret         | nick.fury@example.com   |           |
       | Wolverine | smellslikemetalclaws | logan.x.men@example.com |           |
     And collection user memberships:
-      | collection   | user      | roles                              |
-      | S.H.I.E.L.D. | Nick Fury | administrator, facilitator, member |
-      | x-Men        | Wolverine | facilitator, member                |
-      | Avengers     | Wolverine | member                             |
+      | collection   | user      | roles                      |
+      | S.H.I.E.L.D. | Nick Fury | owner, facilitator, member |
+      | x-Men        | Wolverine | facilitator, member        |
+      | Avengers     | Wolverine | member                     |
 
     And news content:
       | title                       | kicker                                    | body                                                                                                                                |
