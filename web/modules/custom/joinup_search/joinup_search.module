@@ -13,7 +13,7 @@ use Drupal\Core\Session\AccountInterface;
 /**
  * Implements hook_entity_field_access().
  *
- * Grand access to fields of type search only to moderators.
+ * Grant access to fields of type search only to moderators.
  */
 function joinup_search_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
   if ($operation === 'edit' && $field_definition->getType() === 'search' && !$account->hasPermission('administer search fields')) {
