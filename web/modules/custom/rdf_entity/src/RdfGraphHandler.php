@@ -303,8 +303,8 @@ class RdfGraphHandler {
     if (!empty($this->getTargetGraph())) {
       return $this->getTargetGraph();
     }
-    elseif ($entity->graph && !empty($entity->graph->first()->getValue()['value'])) {
-      return $entity->graph->first()->getValue()['value'];
+    elseif ($graph = $this->getGraphIdFromEntity($entity)) {
+      return $graph;
     }
     else {
       $enabled_graphs = $this->getEntityTypeEnabledGraphs();
@@ -315,6 +315,42 @@ class RdfGraphHandler {
         return reset($enabled_graphs);
       }
     }
+  }
+
+  /**
+   * Returns the graph id from the graph entity field.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The entity object.
+   *
+   * @return string|null
+   *    Returns the graph id or null if none is found.
+   *
+   * @todo: Maybe an exception should be thrown if no graph is found here.
+   */
+  public function getGraphIdFromEntity(EntityInterface $entity) {
+    if ($entity->get('graph') && !empty($entity->get('graph')->first()->getValue())) {
+      return $entity->get('graph')->first()->getValue()['value'];
+    }
+    return NULL;
+  }
+
+  /**
+   * Returns the graph uri according to the graph id in the graph entity field.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The entity object.
+   *
+   * @return string
+   *    The graph id. If no graph is found in the entity, the default graph uri
+   * is returned.
+   */
+  public function getGraphUriFromEntity(EntityInterface $entity) {
+    if ($graph_id = $this->getGraphIdFromEntity($entity)) {
+      return $this->getBundleGraphUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle(), $graph_id);
+    }
+
+    return $this->getBundleGraphUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle(), $graph_id);
   }
 
   /**
