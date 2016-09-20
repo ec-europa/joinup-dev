@@ -497,11 +497,7 @@ QUERY;
     /** @var string $id */
     /** @var ContentEntityInterface $entity */
     foreach ($entities as $id => $entity) {
-      if (!$entity->get('graph')->first()->getValue()) {
-        $entity->set('graph', 'default');
-      }
-      $graph_id = $entity->get('graph')->first()->getValue()['value'];
-      $graph_uri = $this->getGraphHandler()->getBundleGraphUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle(), $graph_id);
+      $graph_uri = $this->getGraphHandler()->getGraphUriFromEntity($entity);
       $entities_by_graph[$graph_uri][$id] = $entity;
     }
     foreach ($entities_by_graph as $graph => $entities_to_delete) {
