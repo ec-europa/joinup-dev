@@ -1,0 +1,31 @@
+// Ornament
+//
+// Colorful singleline decoration for headers.
+//
+// Markup: html/ornament.html
+//
+// default          - Default style
+// .ornament--azure - You can do modifiers for specific colors
+//
+// Styleguide 4.16
+
+// Component
+// --------------------------------------------------
+.ornament
+  &:before
+    content: ''
+    display: block
+    width: 30px
+    height: 4px
+    margin-bottom: 30px
+    background: $ornament-default
+
+// Modifiers
+// --------------------------------------------------
+.ornament--azure:before
+  background-color: $azure
+
+// Dependencies
+// --------------------------------------------------
+.ornament.page-title
+  margin-top: 0

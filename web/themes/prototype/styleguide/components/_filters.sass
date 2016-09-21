@@ -1,0 +1,83 @@
+// Component
+// --------------------------------------------------
+.filter
+  margin-bottom: 15px
+  +breakpoint(mobile)
+    display: inline-block
+    margin-right: 8px
+    vertical-align: top
+    &:last-of-type
+      margin-right: 0
+
+.filters
+  padding: 0 15px
+  +breakpoint(sm-mobile, mobile)
+    text-align: left
+
+// Elements
+// --------------------------------------------------
+.filter__label,
+.filter__term,
+.filter__icon
+  display: inline-block
+  vertical-align: middle
+
+.filter__term
+  color: $color-orange
+
+.filter__icon
+  position: relative
+  top: 1px
+  +icon-size(20px)
+
+.filter__dropdown-toggle
+  font-size: 14px
+  position: relative
+  border: none
+  outline: none
+  background: none
+  .filter__label
+    color: $color-orange
+
+.filter__dropdown
+  display: none
+  margin-top: 15px
+  padding: 30px
+  background-color: #fff
+  .filters
+    margin-bottom: 0
+
+// Modifiers
+// --------------------------------------------------
+.filters--solutions
+  margin-top: 30px
+  margin-bottom: 10px
+
+// Dependiencies
+// --------------------------------------------------
+.listing__header
+  .filter
+    font-size: $font-size-base
+    display: inline
+    margin-bottom: 0
+
+// States
+// --------------------------------------------------
+.filter__dropdown-toggle
+  &.is-active
+    &:before
+      position: absolute
+      bottom: -30px
+      left: 50%
+      display: block
+      width: 0
+      height: 0
+      content: ''
+      transform: translateX(-50%)
+      border-right: 12px solid transparent
+      border-bottom: 12px solid #fff
+      border-left: 12px solid transparent
+
+.filter__dropdown
+  &.is-active
+    display: block

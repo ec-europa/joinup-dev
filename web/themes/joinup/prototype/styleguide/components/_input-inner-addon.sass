@@ -1,0 +1,38 @@
+// Input inner addon
+//
+// Icon or any another content to place inside the form input. It works similiar
+// like Bootstrap Input groups, but appears inside the input, not next to it.
+//
+// Markup: html/input-inner-addon.html
+//
+// Styleguide 4.9
+
+// Component
+// --------------------------------------------------
+.input-inner-addon
+  position: absolute
+  top: 0
+  right: 0
+  width: $input-height-base
+  height: $input-height-base
+  line-height: $input-height-base
+  text-align: center
+
+.input-lg + .input-inner-addon
+  line-height: $input-height-large
+
+.input-sm + .input-inner-addon
+  line-height: $input-height-small
+
+// Elements
+// --------------------------------------------------
+.input-inner-addon__wrapper
+  position: relative
+  color: $brand-primary
+  input
+    padding-right: 30px
+
+// Dependencies
+// --------------------------------------------------
+.input-inner-addon .icon
+  font-size: $font-size-base * 2

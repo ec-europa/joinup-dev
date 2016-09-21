@@ -1,0 +1,50 @@
+// Component
+// --------------------------------------------------
+.header-menu
+  display: none
+  +breakpoint(tablet)
+    display: -webkit-flex
+    display: -ms-flexbox
+    display: flex
+
+// Elements
+// --------------------------------------------------
+.header-menu__link
+  line-height: 60px !important
+  position: relative
+  display: block
+  width: 170px
+  padding: 0 12px 0 0 !important
+  text-align: center
+  text-decoration: none
+  text-transform: uppercase
+  border-top: 2px solid transparent
+  border-bottom: 2px solid transparent
+
+.header-menu__wrapper
+  text-align: center
+
+.header-menu__icon
+  display: inline-block
+  vertical-align: middle
+  +icon-size(50px)
+
+.header-menu__text
+  font-weight: $font-weight-medium
+  display: inline-block
+  text-align: left
+  vertical-align: middle
+
+// Modifiers
+// --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+
+// States
+// --------------------------------------------------
+.header-menu__link.active-trail, .header-menu__link.is-active
+  color: $color-blue-default
+  background: #fff
+  border-top: 2px solid $color-orange
+  opacity: 1

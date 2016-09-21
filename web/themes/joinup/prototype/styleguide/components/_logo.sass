@@ -1,0 +1,24 @@
+// Logo
+//
+// Placeholder for logo.
+//
+// Markup: html/logo.html
+//
+// Styleguide 4.11
+
+$logo-width-mobile: 172px
+$logo-width-desktop: 172px
+$logo-height-mobile: 118px
+$logo-height-desktop: 118px
+
+// Component
+// --------------------------------------------------
+.logo
+  display: block
+  width: $logo-width-mobile
+  height: $logo-height-mobile
+  background: url("../images/logo.png") no-repeat
+  background-size: 100%
+  +breakpoint(tablet)
+    width: $logo-width-desktop
+    height: $logo-height-desktop

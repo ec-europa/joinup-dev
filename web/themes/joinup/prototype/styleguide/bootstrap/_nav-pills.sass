@@ -1,0 +1,51 @@
+// Pills
+//
+// Override of Bootstrap's pills
+// @see http://getbootstrap.com/components/#nav-pills
+//
+// Markup: html/nav-pills.html
+//
+// .nav-pills--large - Header sized tabs
+// .nav-pills--arrows - Active tab indicated by arrow instead of background
+//
+// Styleguide 2.6
+
+// Component
+// --------------------------------------------------
+.nav-pills
+  // Fix for centering pills with text-center class in parent element.
+  display: inline-block
+  > li
+    & > a
+      color: $gray-light
+      &:hover
+        background-color: transparent
+        color: $text-color
+    // Active state
+    &.active > a
+      &,
+      &:hover,
+      &:focus
+        color: $nav-pills-active-link-hover-color
+        background-color: $nav-pills-active-link-hover-bg
+
+// Modifiers
+// --------------------------------------------------
+.nav-pills--large
+  > li > a
+    font-family: $headings-font-family
+    font-size: $font-size-h2
+
+.nav-pills--arrows
+  &:after
+    border-bottom: 1px solid $gray-light
+    width: 100%
+  > li
+    margin-bottom: -1px
+    &.active > a
+      &,
+      &:hover,
+      &:focus
+        +arrow($gray-light, white, "bottom", "in", 10px, 25px)
+        background: transparent
+        color: $nav-pills-active-link-hover-bg

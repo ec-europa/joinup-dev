@@ -1,0 +1,71 @@
+// Sidebar menu
+//
+// Sidebar menu component
+
+// Component
+// --------------------------------------------------
+.sidebar-menu
+  width: 100%
+  .mdl-menu__container,
+  .mdl-menu__outline,
+  .mdl-menu
+    width: 100% !important
+  .mdl-menu
+    padding: 0
+  .mdl-menu__outline
+    background-color: transparent
+    box-shadow: none
+
+// Elements
+// --------------------------------------------------
+.sidebar-menu__button
+  width: 60px
+  height: 60px
+  border-radius: 0
+
+.sidebar-menu__item
+  padding: 0
+
+.sidebar-menu__link
+  display: block
+  padding: 15px 15px 15px 20px
+  color: $color-base
+  border-left: 4px solid transparent
+  text-decoration: none
+  &:hover,
+  &:active,
+  &:focus
+    background-color: #fff
+    border-left-color: $color-orange
+    font-weight: $font-weight-medium
+
+.sidebar-menu
+  .icon
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    +icon-size(60px)
+
+// Modifiers
+// --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.section--sidebar-left
+  .sidebar-menu
+    margin-top: 100px
+    +breakpoint(sm-mobile, tablet)
+      display: none
+    .mdl-menu__container,
+    .mdl-menu
+      z-index: 999
+      visibility: visible
+    .mdl-menu
+      position: relative
+      opacity: 1
+      clip: rect(0px 181.328px 144px 0px)
+    .mdl-menu__item
+      opacity: 1
+    .sidebar-menu__button
+      display: none

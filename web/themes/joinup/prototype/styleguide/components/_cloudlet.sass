@@ -1,0 +1,62 @@
+// Cloudlet
+//
+// Grey cloud for additional content
+//
+// Markup: html/cloudlet.html
+//
+// default              - Default style
+// .cloudlet--fullwidth - Becomes 100% width
+//
+// Styleguide 4.27
+
+
+// Component
+// --------------------------------------------------
+.cloudlet
+  background-color: $gray-lightest
+  position: relative
+  margin: 0 20px 20px 0
+  +middle-align
+  &:before
+    content: ''
+    display: block
+    position: absolute
+    width: 0
+    height: 0
+    top: 0
+    right: -20px + 1
+    border-bottom: 20px solid transparent
+    border-left: 20px solid $gray-lightest
+
+
+// Elements
+// --------------------------------------------------
+.cloudlet__col
+  padding: 15px 25px
+  &:not(:last-of-type)
+    border-right: 1px #fff solid
+  h3
+    margin: 0
+
+
+// Dependencies
+// --------------------------------------------------
+.cloudlet .icon
+  margin-left: -15px
+  margin-right: -20px
+  color: $brand-primary-light
+  +icon-size($font-size-base * 4)
+
+
+// States
+// --------------------------------------------------
+.cloudlet--is-active
+  border-left: 5px solid $brand-primary
+  margin-left: -5px
+
+
+// Modifiers
+// --------------------------------------------------
+.cloudlet--fullwidth
+  width: 100%
+  box-sizing: content-box

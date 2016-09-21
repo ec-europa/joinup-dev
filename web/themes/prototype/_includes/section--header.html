@@ -1,0 +1,61 @@
+<header class="section section--header mdl-layout__header">
+  <div class="container-fluid">
+    <div class="mdl-layout__header-row">
+      <a href="/" class="header-logo mdl-layout-title" title="Home">
+        <img src="../images/logo.png">
+      </a>
+      <div class="mdl-layout-spacer"></div>
+      <!-- Header menu displayed from 840px -->
+      <nav class="header-menu mdl-navigation">
+        <a class="header-menu__link mdl-navigation__link" href="/solutions">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--solution"></span>
+            <span class="header-menu__text">Solutions</span>            
+          </span>
+        </a>
+        <a class="header-menu__link mdl-navigation__link" href="/collections">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--collection"></span>
+            <span class="header-menu__text">Collections</span>
+          </span>
+        </a>
+        <a class="header-menu__link mdl-navigation__link" href="#">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--event"></span>
+            <span class="header-menu__text">Events</span>
+          </span>
+        </a>
+      </nav>
+      <div class="mdl-layout-spacer"></div>
+      <div class="search-bar search-bar--header mdl-textfield mdl-js-textfield mdl-textfield--expandable
+      mdl-textfield--floating-label mdl-textfield--align-right">
+        <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon"
+        for="search-bar__input">
+          <span class="search-bar__icon icon icon--search"></span>
+        </label>
+        <div class="search-bar__input-container mdl-textfield__expandable-holder">
+          <input class="search-bar__input mdl-textfield__input" type="text" name="search"
+          id="search-bar__input">
+        </div>
+      </div>
+      <div class="login-menu">
+        <div id="login-menu__button" class="login-menu__button mdl-button mdl-js-button">
+          <img src="../images/login-icon.png">
+        </div>
+        <ul class="login-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="login-menu__button">
+          <li class="mdl-menu__item"><a class="login-menu__link" href="#">My profile</a></li>
+          <li class="mdl-menu__item"><a class="login-menu__link" href="#">My page</a></li>
+          <li class="mdl-menu__item"><a class="login-menu__link" href="#">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- Header menu displayed to 839px -->
+<div class="mdl-layout__drawer">
+  <nav class="mdl-navigation">
+    <a class="mdl-navigation__link" href="/solutions">Solutions</a>
+    <a class="mdl-navigation__link" href="/collections">Collections</a>
+    <a class="mdl-navigation__link" href="">Events</a>
+  </nav>
+</div>

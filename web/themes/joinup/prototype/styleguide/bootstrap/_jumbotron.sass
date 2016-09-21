@@ -1,0 +1,41 @@
+// Jumbotron
+//
+// Override of Bootstrap's Jumbotron
+// @see http://getbootstrap.com/components/#jumbotron
+//
+// Markup: html/jumbotron.html
+//
+// Styleguide jumbotron
+
+// Component
+// --------------------------------------------------
+.jumbotron
+  height: 100vh
+  margin: 0
+  background: transparent
+  position: relative
+  color: #fff
+  text-align: center
+
+// Elements
+// --------------------------------------------------
+.jumbotron__scroller
+  position: absolute
+  width: 160px
+  bottom: 0
+  left: 50%
+  margin: 0 -80px
+  color: #fff
+
+// Dependencies
+// --------------------------------------------------
+.jumbotron__scroller .icon
+  +icon-size(160px)
+  display: block
+  margin: -30px auto 0
+
+// States
+// --------------------------------------------------
+.jumbotron__scroller:hover
+  text-decoration: none
+  color: $almost-white

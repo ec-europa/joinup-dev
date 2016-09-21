@@ -1,0 +1,43 @@
+// Vertical navigation
+//
+// Standard navigation good for the content sidebars.
+//
+// Markup: html/nav-vertical.html
+//
+// Styleguide 4.13.5
+
+// Component
+// --------------------------------------------------
+.nav-vertical
+  list-style-type: none
+  padding: 0
+  +breakpoint(tablet)
+    margin-left: -15px
+
+// Elements
+// --------------------------------------------------
+.nav-vertical .nav-vertical__item
+  border-bottom: 1px solid $gray-lighter
+  .nav-vertical
+    border-top: 1px solid $gray-lighter
+    .nav-vertical__link
+      margin-left: 20px
+      &:before
+        content: "- "
+
+.nav-vertical .nav-vertical__link
+  padding: 10px 0 10px 15px
+  color: $gray-base
+  display: block
+
+// States
+// --------------------------------------------------
+
+.nav-vertical__item.active-trail > .nav-vertical__link,
+.nav-vertical__item > .active,
+.nav-vertical__link:hover
+  padding-left: 10px
+  border-left: 5px solid $brand-primary
+  background-color: #fff
+  text-decoration: none
+  font-weight: $font-weight-medium

@@ -1,0 +1,151 @@
+// Box
+//
+// Gray box for more important, contextual content with option to set up an icon
+// as a background. Special styling prepared for <em>big</em> and <em>strong</em>
+// html text formatting tags, and also for media image and "contact" component.
+// Content might be positioned using "Middle align" component markup. Use case
+// in examples below.
+//
+// Markup: html/box.html
+//
+// default                  - Default style
+// .box--half-icon          - Only half of the background icon visible
+// .box--icon-to-right      - Icon floated to right instead of left (default)
+// .box--small              - Smaller version of the box with less paddings and smaller text
+// .box--show-more__wrapper - "Show more" functionality wrapper
+// .box--brand-primary      - Colour box with the brand-primary color
+// .box--light              - Light background
+//
+// Styleguide 4.3
+
+// Component
+// --------------------------------------------------
+.box
+  position: relative
+  padding: 20px
+  margin-bottom: 30px
+  background-color: $gray-lighter
+  font-size: $font-size-h4
+  overflow: hidden
+  & > *
+    z-index: 2
+    position: relative
+  .btn .icon
+    color: $brand-primary
+  .btn-default
+    background-color: $gray-lighter
+  a
+    &:hover,
+    &:active,
+    &:focus
+      color: $gray-base
+      text-decoration: none
+  strong
+    color: $brand-primary
+  select
+    background-color: #fff
+  p:last-child
+    margin-bottom: 0
+
+// Elements
+// --------------------------------------------------
+.box__bg
+  position: absolute
+  left: 10px
+  top: 50%
+  margin: -85px 0
+  color: $gray-lighter
+  z-index: 1
+  font-weight: 600
+  +icon-size(170px)
+
+.box__media
+  margin: 0 -20px -20px
+  img
+    width: 100%
+
+// Modifiers
+// --------------------------------------------------
+.box--icon-to-right
+  .box__bg
+    left: auto
+    right: -50px
+
+.box--half-icon
+  &:not(.box--icon-to-right) .box__bg
+    left: -50px
+  &.box--icon-to-right .box__bg
+    right: -105px
+
+.box--small
+  padding-top: 10px
+  padding-bottom: 10px
+  margin-bottom: 10px
+  font-size: $font-size-base
+  strong
+    color: $gray-base
+
+.box--show-more__wrapper
+  overflow: hidden
+  position: relative
+
+.box--brand-primary
+  background-color: $brand-primary
+  color: #fff
+  .box__bg
+    color: $brand-primary-dark
+
+.box--arrow-bottom
+  +arrow($brand-primary, $brand-primary, "bottom", "out", 15px, 110px)
+  overflow: visible
+
+// Dependencies
+// --------------------------------------------------
+.box
+  .middle-align
+    width: 100%
+  .middle-align__col
+    text-align: left
+  .listing__header
+    margin: -20px -20px 20px
+    padding: 0 20px
+    background-color: $gray-lighter
+    .listing__header-title
+      margin: 10px 0 5px
+      border: none
+  h1, h2, h3, h4, h5, h6
+    margin-top: 0
+
+.box--brand-primary
+  .btn .icon
+    color: #fff
+  .btn-default
+    background-color: $gray-base
+    border-color: $gray-base
+    color: #fff
+  // Dependency on .contact component
+  .contact__icon
+    color: $brand-primary-lighter
+    border-color: $brand-primary-lighter
+  .contact__row
+    padding-bottom: $line-height-computed / 2
+  &.contact--listing
+    padding: 15px 15px 0
+    margin: 0
+    border: none
+    .contact
+      padding: 0
+      border: none
+  // Dependency on .listung component
+  .listing__header
+    background-color: $brand-primary-dark
+    border-bottom: 1px solid $brand-primary-light
+    .listing__header-title
+      color: #fff
+  a
+    color: #fff
+  strong
+    color: #fff
+
+.box--light
+  background-color: $almost-white

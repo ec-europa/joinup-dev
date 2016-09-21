@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Form</title>
+  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' type='text/css'>
+  <link rel="stylesheet" href="../material-design-lite/material.min.css">
+  <link rel="stylesheet" href="../css/style.min.css">
+  <link rel="canonical" href="http://yourdomain.com/form/">
+  <link rel="alternate" type="application/rss+xml" title="Joinup" href="http://yourdomain.com/feed.xml" />
+</head>
+
+
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+      <header class="section section--header mdl-layout__header">
+  <div class="container-fluid">
+    <div class="mdl-layout__header-row">
+      <a href="/" class="header-logo mdl-layout-title" title="Home">
+        <img src="../images/logo.png">
+      </a>
+      <div class="mdl-layout-spacer"></div>
+      <!-- Header menu displayed from 840px -->
+      <nav class="header-menu mdl-navigation">
+        <a class="header-menu__link mdl-navigation__link" href="/solutions">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--solution"></span>
+            <span class="header-menu__text">Solutions</span>            
+          </span>
+        </a>
+        <a class="header-menu__link mdl-navigation__link" href="/collections">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--collection"></span>
+            <span class="header-menu__text">Collections</span>
+          </span>
+        </a>
+        <a class="header-menu__link mdl-navigation__link" href="#">
+          <span class="header-menu__wrapper">
+            <span class="header-menu__icon icon icon--event"></span>
+            <span class="header-menu__text">Events</span>
+          </span>
+        </a>
+      </nav>
+      <div class="mdl-layout-spacer"></div>
+      <div class="search-bar search-bar--header mdl-textfield mdl-js-textfield mdl-textfield--expandable
+      mdl-textfield--floating-label mdl-textfield--align-right">
+        <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon"
+        for="search-bar__input">
+          <span class="search-bar__icon icon icon--search"></span>
+        </label>
+        <div class="search-bar__input-container mdl-textfield__expandable-holder">
+          <input class="search-bar__input mdl-textfield__input" type="text" name="search"
+          id="search-bar__input">
+        </div>
+      </div>
+      <div class="login-menu">
+        <div id="login-menu__button" class="login-menu__button mdl-button mdl-js-button">
+          <img src="../images/login-icon.png">
+        </div>
+        <ul class="login-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="login-menu__button">
+          <li class="mdl-menu__item"><a class="login-menu__link" href="#">My profile</a></li>
+          <li class="mdl-menu__item"><a class="login-menu__link" href="#">My page</a></li>
+          <li class="mdl-menu__item"><a class="login-menu__link" href="#">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- Header menu displayed to 839px -->
+<div class="mdl-layout__drawer">
+  <nav class="mdl-navigation">
+    <a class="mdl-navigation__link" href="/solutions">Solutions</a>
+    <a class="mdl-navigation__link" href="/collections">Collections</a>
+    <a class="mdl-navigation__link" href="">Events</a>
+  </nav>
+</div>
+
+
+      <div class="bg--blue">
+        <div class="main-container mdl-grid">
+          <div class="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">
+            <h1 class="page__title">
+              <span class="icon icon--plus"></span>
+              Form
+            </h1>
+          </div>
+        </div>
+      </div>
+      <div class="main-container mdl-grid">
+        <div class="mdl-cell mdl-cell--2-col">
+          
+        <div class="sidebar-tabs">
+  <a class="sidebar-tab is-active">
+    <div class="sidebar-tab__title">Tab #1</div>
+    <div class="sidebar-tab__helptext">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+  </a>
+  <a class="sidebar-tab">
+    <div class="sidebar-tab__title">Tab #2</div>
+    <div class="sidebar-tab__helptext">Donec tincidunt, eros at sollicitudin ullamcorper.</div>
+  </a>
+</div>
+
+        </div>
+        <div class="section section--content mdl-cell mdl-cell--8-col">
+          <div class="page__content">
+
+            <h1 style="margin-top: 0">Inputs</h1>
+
+            <!-- Textfield with Floating Label -->
+<form>
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input class="mdl-textfield__input" type="text">
+    <label class="mdl-textfield__label">Text</label>
+  </div>
+</form>
+
+<!-- Numeric Textfield with Floating Label -->
+<form>
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+    <label class="mdl-textfield__label">Number</label>
+    <span class="mdl-textfield__error">Input is not a number!</span>
+  </div>
+</form>
+
+            <h1>Checkboxes</h1>
+
+            <!-- Checkbox on -->
+<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-1">
+  <input type="checkbox" id="checkbox-1" class="mdl-checkbox__input" checked>
+  <span class="mdl-checkbox__label">Checkbox on</span>
+</label>
+
+<!-- Checkbox off -->
+<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-2">
+  <input type="checkbox" id="checkbox-2" class="mdl-checkbox__input">
+  <span class="mdl-checkbox__label">Checkbox off</span>
+</label>
+
+            <h1>Radios</h1>
+
+            <!-- Radio on -->
+<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+  <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="1" checked>
+  <span class="mdl-radio__label">Radio on</span>
+</label>
+
+<!-- Radio off -->
+<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+  <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="2">
+  <span class="mdl-radio__label">Radio off</span>
+</label>
+
+            <h1>Upload</h1>
+
+            <!-- File upload -->
+<div class="file-upload form-item">
+  <div class="file-upload__label form__label">Label of the exemplary file upload</div>
+  <div class="file-upload__wrapper">
+    <h2 class="file-upload__heading">Drop file here to attach or</h2>
+    <button class="file-upload__button button--default button--blue mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Select file</button>
+    <div class="file-upload__description">8 MB limit. Allowed types: doc docx ppt pptx xls xlsx.</div>
+  </div>
+</div>
+
+            <h1>Draggable</h1>
+
+            <!-- Draggable -->
+<table class="form-table">
+  <thead>
+    <tr>
+      <th colspan="2" class="form-table__header">
+        <label class="form__label">Label of the draggable field</label>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="draggable form-table__row">
+      <td class="form-table__cell form-table__cell--icon-container">
+        <a href="#" class="draggable__icon icon icon--draggable"></a>
+      </td>
+      <td class="form-table__cell">
+        <div class="textfield--full-width mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield--helptext-container is-upgraded">
+          <div class="mdl-textfield__label">Label</div>
+          <input class="mdl-textfield__input">
+          <div class="textfield__helptext">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+        </div>
+      </td>
+      <td class="form-table__cell form-table__cell--icon-container">
+        <a href="#" class="draggable__icon icon icon--close"></a>
+      </td>
+    </tr>
+    <tr class="draggable form-table__row">
+      <td class="form-table__cell form-table__cell--icon-container">
+        <a href="#" class="draggable__icon icon icon--draggable"></a>
+      </td>
+      <td class="form-table__cell">
+        <div class="textfield--full-width mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield--helptext-container is-upgraded">
+          <div class="mdl-textfield__label">Label</div>
+          <input class="mdl-textfield__input">
+          <div class="textfield__helptext">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+        </div>
+      </td>
+      <td class="form-table__cell form-table__cell--icon-container">
+        <a href="#" class="draggable__icon icon icon--close"></a>
+      </td>
+    </tr>
+    <tr class="draggable form-table__row">
+      <td class="form-table__cell form-table__cell--icon-container">
+        <a href="#" class="draggable__icon icon icon--draggable"></a>
+      </td>
+      <td class="form-table__cell">
+        <div class="textfield--full-width mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield--helptext-container is-upgraded">
+          <div class="mdl-textfield__label">Label</div>
+          <input class="mdl-textfield__input">
+          <div class="textfield__helptext">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+        </div>
+      </td>
+      <td class="form-table__cell form-table__cell--icon-container">
+        <a href="#" class="draggable__icon icon icon--close"></a>
+      </td>
+    </tr>
+    <tr class="draggable form-table__row">
+      <td class="form-table__cell form-table__cell--icon-container">
+        <a href="#" class="draggable__icon icon icon--draggable"></a>
+      </td>
+      <td class="form-table__cell">
+        <div class="textfield--full-width mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield--helptext-container is-upgraded">
+          <div class="mdl-textfield__label">Label</div>
+          <input class="mdl-textfield__input">
+          <div class="textfield__helptext">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+        </div>
+      </td>
+      <td class="form-table__cell form-table__cell--icon-container">
+        <a href="#" class="draggable__icon icon icon--close"></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+          </div>
+          <div class="form__actions">
+            <button class="button--default button--transparent mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Cancel</button>
+            <button class="button--default button--transparent mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save as draft</button>
+            <button class="button--default button--blue mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent pull-right">Publish</button>
+          </div>
+        </div>
+      </div>
+
+      <footer class="section--footer">
+  <div class="container-fluid">
+    <div class="region region--footer">
+    </div>
+  </div>
+</footer>
+
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script defer src="../material-design-lite/material.min.js"></script>
+<script defer src="../js/script.js"></script>
+<script>
+$(document).ready(function(){
+  $('[data-toggle="popover"]').popover();
+});
+</script>
+<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+
+
+    </div>
+  </body>
+</html>

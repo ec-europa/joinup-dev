@@ -1,0 +1,77 @@
+// Info box
+//
+// .
+//
+// Markup: html/infobox.html
+//
+// default          - Default style
+// .infobox--yellow - Yellow color instead of brand primary.
+//
+// Styleguide 4.24
+
+
+// Component
+// --------------------------------------------------
+.infobox
+  position: relative
+  padding: 0
+  border: none
+  text-transform: none
+  text-align: inherit
+  font-size: inherit
+
+
+// Elements
+// --------------------------------------------------
+.infobox__icon
+  position: absolute
+  top: 0
+  left: 0
+  width: 50px
+  height: 50px
+  padding: 5px
+  background-color: $brand-primary
+  color: #fff
+
+.infobox__inner
+  padding: 30px 45px
+  margin-left: 50px
+  background-color: #fff
+  border-left: 5px solid $brand-primary
+  &:before
+    content: ''
+    display: block
+    position: absolute
+    width: 0
+    height: 0
+    top: 0
+    left: 50px
+    border-bottom: 15px solid transparent
+    border-left: 15px solid $brand-primary
+  h3
+    margin-top: 0
+  p
+    margin: 0
+
+
+// Dependencies
+// --------------------------------------------------
+.infobox
+  .infobox__icon .icon
+    +icon-size(40px)
+  .block__title
+    font-size: $font-size-h3 + 2
+    padding-bottom: 10px
+    text-transform: none
+  .listing
+    margin: 0
+
+
+// Modifiers
+// --------------------------------------------------
+.infobox--yellow
+  .infobox__icon
+    background-color: $yellow
+  .infobox__inner,
+  .infobox__inner:before
+    border-left-color: $yellow

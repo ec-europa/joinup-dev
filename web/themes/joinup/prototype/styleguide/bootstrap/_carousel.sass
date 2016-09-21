@@ -1,0 +1,56 @@
+// Carousel
+//
+// Override of Bootstrap's carousel
+// @see http://getbootstrap.com/javascript/#carousel
+//
+// Markup: html/carousel.html
+//
+// Styleguide carousel
+
+// Component
+// --------------------------------------------------
+.carousel
+  margin-bottom: 60px
+
+// Elements
+// --------------------------------------------------
+.carousel .carousel-control
+  background-image: none
+  text-shadow: none
+  color: $carousel-controls-color
+  bottom: -50px
+
+.carousel .carousel-indicators
+  bottom: -50px
+  margin-bottom: $line-height-computed / 3
+  color: $carousel-controls-color
+  li
+    border-color: $carousel-controls-color
+    &.active
+      background-color: $carousel-controls-color
+
+.carousel .carousel-caption
+  left: 0
+  right: 0
+  bottom: 0
+  width: 100%
+  padding: 15px 20px
+  background-color: transparentize($carousel-caption-bg, 0.33)
+  font-weight: $headings-font-weight
+  font-family: $font-family-serif
+  font-size: $font-size-large
+  text-shadow: none
+  text-align: left
+
+// Dependencies
+// --------------------------------------------------
+.carousel .carousel-control
+  .icon
+    position: absolute
+    top: auto
+    bottom: 0
+    +circle(transparent, 1px)
+  &.left .icon
+    left: 0
+  &.right .icon
+    right: 0

@@ -1,0 +1,36 @@
+// Block
+//
+// Block component used for wrapping block content.
+//
+// Markup: html/block.html
+//
+// default                 - Default style
+// .block--title-md-inline - Title inline with content on tablets
+//
+// Styleguide 4.1
+
+
+// Elements
+// --------------------------------------------------
+.block__title
+  position: relative
+  padding-bottom: 40px
+  margin: 0
+
+.block__content
+  +clearfix()
+
+
+
+// Modifiers
+// --------------------------------------------------
+.block--title-md-inline
+  +breakpoint(tablet)
+    display: table
+    width: 100%
+    .block__title
+      display: table-cell
+      white-space: nowrap
+      padding-right: 40px
+    .block__content
+      display: table-cell

@@ -1,0 +1,28 @@
+// Header
+//
+// Header component
+
+// Component
+// --------------------------------------------------
+.section--header
+  background-color: $color-blue-default
+
+// Elements
+// --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.section--header
+  .mdl-layout__header-row
+    +breakpoint(tablet)
+      padding: 0 20px
+  .mdl-layout__drawer-button
+    top: 4px
+    .material-icons
+      font-size: 40px
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+    +breakpoint(tablet)
+      display: none

@@ -1,0 +1,115 @@
+// EC Header
+//
+// European Comission header from NextEuropa platform
+//
+// Markup: html/ec-header.html
+//
+// Styleguide 4.28
+
+// Component
+// --------------------------------------------------
+.section--header
+  background-color: #0d66a0
+  font-family: Verdana, Arial, Helvetica, sans-serif
+  overflow: visible
+
+// Elements
+// --------------------------------------------------
+.section--header__top
+  background-color: #fff
+  padding-top: 5px
+  height: 50px
+  #boxes-box-header_top_text
+    color: #0065a2
+    margin-top: 20px
+    text-transform: uppercase
+    font-size: 18px
+    font-weight: 400
+
+.section--header__bottom
+  #boxes-box-header_bottom_text
+    color: #fff
+    font-size: 13px
+    font-weight: 400
+    margin: 5px 0
+
+.section--header__breadcrumb
+    background-color: #074A8B
+    padding: 3px 0 2px
+
+.section--header__logo
+    display: block
+    width: 90px
+    height: 62px
+    background: url("../images/svg/ec-logo.svg") no-repeat
+    margin: 0 10px 0 0
+    position: relative
+    z-index: 1
+
++breakpoint(desktop)
+  .section--header__top
+    height: auto
+    #boxes-box-header_top_text
+      margin-top: 60px
+      font-size: 24px
+  .section--header__logo
+    width: 172px
+    height: 118px
+    margin: 10px 35px -35px 0
+  .section--header__bottom #boxes-box-header_bottom_text
+    margin: 5px 0 20px 208px
+    font-size: 16px
+
+// Dependencies
+// --------------------------------------------------
+.section--header
+  .nav-horizontal
+    margin: 0 0 -30px
+    .nav-horizontal__item
+      font-size: 11px
+      font-weight: normal
+      border-right: 1px #4677a8 solid
+      line-height: 1em
+      padding: 0 3px 0 0 !important
+      margin: 0 !important
+      &:last-of-type
+        padding: 0
+        margin: 0
+        border-right: 0
+
+    .nav-horizontal__link
+      &,
+      &:hover,
+      &:focus
+        color: #396ea2
+
+.section--header__breadcrumb
+  .breadcrumb
+    background-color: transparent
+    color: #fff
+    border-radius: 0
+    font-size: 0 // display-inline margins fix
+    font-weight: normal
+    margin: 0
+    padding: 0
+  .breadcrumb ol
+
+  .breadcrumb li
+    font-size: 11px
+    margin: 0
+
+  .breadcrumb li > a
+    color: #fff
+    &:hover,
+    &:focus
+      color: #fff
+
+  .breadcrumb > li + li:before
+    @extend .glyphicon
+    @extend .glyphicon-menu-right:before
+    font-size: 8px
+    padding: 0 3px 0 1px
+    color: #fff
+
+  .breadcrumb > .active
+    color: #fff

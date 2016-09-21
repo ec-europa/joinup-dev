@@ -1,0 +1,52 @@
+// Tables
+//
+// Override of Bootstrap's tables
+// @see http://getbootstrap.com/css/#tables
+//
+//
+// Markup: html/table.html
+//
+// .table-bordered - Bordered
+// .table-striped  - Striped
+//
+// Styleguide 2.10
+
+// Component
+// --------------------------------------------------
+
+.table,
+table
+  font-size: $font-size-small
+  & > thead > tr > th,
+  & > thead > tr > td,
+  & > tbody > tr > th,
+  & > tbody > tr > td,
+  & > tfoot > tr > th,
+  & > tfoot > tr > td
+    text-align: center
+    vertical-align: middle
+  & > thead > tr > th
+    text-transform: uppercase
+    font-weight: $font-weight
+    background-color: $table-bg-header
+    font-size: $font-size-small - 3
+    line-height: $line-height-computed / 2
+    padding-top: 4px
+    padding-bottom: 4px
+    text-align: left
+
+// Modifiers
+// --------------------------------------------------
+.table-bordered
+  border-left: none
+  border-right: none
+  > thead > tr
+    > th,
+    > td
+      border-bottom: none
+
+.table-striped
+  > tbody > tr:nth-child(odd)
+    background-color: transparent
+  > tbody > tr:nth-child(even)
+    background-color: $table-bg-accent

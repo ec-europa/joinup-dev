@@ -1,0 +1,61 @@
+// Middle align
+//
+// Set of rows where content of all colums is vertically centered, no matter is it a text or media.
+//
+// Markup: html/middle-align.html
+//
+// default                             - Default style
+// .middle-align--mobile-single-column - Single column layout on mobile
+// .middle-align--more-paddings        - More spacing around the element
+// .middle-align--no-paddings          - No upper and bottom paddings
+// .middle-align--condensed            - Condensed space between columns
+//
+// Styleguide 4.12
+
+// Component
+// --------------------------------------------------
+.middle-align
+  +middle-align
+
+// Elements
+// --------------------------------------------------
+.middle-align__row
+  // Row settings inherit from mixin
+
+.middle-align__col
+  // Col settings inherit from mixin
+
+// Modifiers
+// --------------------------------------------------
+.middle-align--mobile-single-column
+  .middle-align__col
+    display: block
+    text-align: center
+    padding-right: 0
+    .middle-align__media
+      width: 100%
+
+  +breakpoint(desktop)
+    .middle-align__col
+      display: table-cell
+      text-align: inherit
+      &:not(:last-child)
+        padding-right: 30px
+      .middle-align__media
+        width: auto
+
+.middle-align--more-paddings
+  padding: 25px 0
+
+  +breakpoint(tablet)
+    padding: 30px 0
+
+  +breakpoint(desktop)
+    padding: 40px 0
+
+.middle-align--no-paddings
+  padding: 0
+
+.middle-align--condensed
+  .middle-align__col:not(:last-child)
+    padding-right: 5px
