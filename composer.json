@@ -14,6 +14,7 @@
         "drupal/ds": "^8.2",
         "drupal/facets" : "dev-8.x-1.x#d5c0117eb59ab2593f6430e3f3035d60bc084653",
         "drupal/inline_entity_form": "8.1.x-dev",
+        "drupal/migrate_drush": "^8.1",
         "drupal/og": "dev-8.x-1.x",
         "drupal/og_menu": "dev-og-permissions",
         "drupal/phing-drush-task": "1.0",
