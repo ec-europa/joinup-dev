@@ -27,6 +27,9 @@ Feature: Change this
     # Since it's only in draft, the normal view is the draft view
     # and the "View draft should not be shown.
     And I should not see the link "View Draft"
+    # @todo: Fix the visibility issue.
+    But I should see the link "View"
+    And I should see the link "Edit"
 
     # I should not be able to view draft solutions I'm not a facilitator of.
     When I go to the homepage of the "The Falling Swords" solution
@@ -35,13 +38,32 @@ Feature: Change this
     When I am logged in as a "facilitator" of the "Flight of Night" solution
     And I go to the homepage of the "Flight of Night" solution
     Then I should see the heading "Flight of Night"
-    # Since it's only in draft, the normal view is the draft view
-    # and the "View draft should not be shown.
-    And I should not see the link "View Draft"
+    # Since it's validated, the normal view is the published view and the
+    # "View draft" should not be shown.
+    And I should see the link "View Draft"
 
     # Edit as facilitator and save as draft.
     When I click "Edit"
     And I fill in "Title" with "Flight of Day"
     And I select "Draft" from "State"
     And I press "Save"
-    And I should see the heading "Flight of Day"
+
+    # The page redirects to the canonical view after editing.
+    Then I should see the heading "Flight of Night"
+    And I should not see the heading "Flight of Day"
+    And I should see the link "View Draft"
+    When I click "View Draft"
+    # The header still shows the published title but the draft title is included
+    # in the page.
+    Then I should see the heading "Flight of Day"
+
+    # Publish draft version of the solution.
+    When I am logged in as a moderator
+    And I go to the homepage of the "Flight of Day" solution
+    And I click "Edit"
+    And I select "Validated" from "State"
+    And I press "Save"
+    Then I should see the heading "Flight of Day"
+    And I should not see the link "View Draft"
+    # @todo: Fix the visibility issue.
+    But I should see the link "View"

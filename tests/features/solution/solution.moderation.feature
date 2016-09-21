@@ -4,6 +4,30 @@ Feature: Solution moderation
   As a user of the website
   I need to be able to transit the solutions from one state to another.
 
+  # Access checks are not being made here. They are run in the solution add feature.
+  Scenario: 'Draft' and 'Propose' states are available but moderators should also see 'Validated' state.
+    Given the following collection:
+      | title | Collection propose state test |
+      | logo  | logo.png                      |
+
+    When I am logged in as an "authenticated user"
+    And I go to the homepage
+    And I click "Propose solution"
+    Then the "State" field has the "Draft, Proposed" options
+    And the "State" field does not have the "Validated, In assessment, Blacklisted, Request deletion" options
+
+    When I am logged in as a user with the "moderator" role
+    And I go to the homepage
+    And I click "Propose solution"
+    Then the "State" field has the "Draft, Proposed, Validated" options
+    And the "State" field does not have the "In assessment, Blacklisted, Request deletion" options
+
+    When I am logged in as a "facilitator" of the "Collection propose state test" collection
+    And I go to the homepage of the "Collection propose state test" collection
+    And I click "Add solution"
+    Then the "State" field has the "Draft, Proposed" options
+    And the "State" field does not have the "Validated, In assessment, Blacklisted, Request deletion" options
+
   Scenario: Test the moderation workflow available states.
     Given the following organisation:
       | name | Angelos Agathe |
@@ -54,12 +78,20 @@ Feature: Solution moderation
     # Then the state field should have only the given states available.
     Then for the following solution, the corresponding user should have the corresponding available options:
       | solution                   | user             | states                                                 |
+
+      # The following solutions are tested as an owner. This is for debug
+      # purposed. In reality, the owner is also a facilitator so the only
+      # UATable part of the owner is that he has the ability to request deletion
+      # when the solution is validated.
       | Azure Ship                 | Franklin Walker  |                                                        |
       | The Last Illusion          | Franklin Walker  |                                                        |
       | Rose of Doors              | Franklin Walker  | Request deletion                                       |
       | The Ice's Secrets          | Franklin Walker  |                                                        |
       | The Guardian of the Stream | Franklin Walker  |                                                        |
       | Flames in the Swords       | Franklin Walker  |                                                        |
+
+      # The following solutions do not follow the rule above and should be
+      # testes as shown.
       | Azure Ship                 | William Curtis   | Draft, Proposed                                        |
       | The Last Illusion          | William Curtis   | Draft, Proposed                                        |
       | Rose of Doors              | William Curtis   | Draft, Proposed                                        |
@@ -92,7 +124,11 @@ Feature: Solution moderation
 
     # Expected access denied.
     When I go to the "The Last Illusion" solution
-    Then I should not see the link "Edit"
+    Then I should see the link "Edit"
+    When I click "Edit"
+    Then I should not see the heading "Access denied"
+    And the "State" field has the "Draft, Proposed" options
+    And the "State" field does not have the "Validated, In assessment, Blacklisted, Request deletion" options
 
     # One check for the moderator.
     Given I am logged in as "Tyrone Underwood"
@@ -101,28 +137,4 @@ Feature: Solution moderation
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
-    And the "State" field has the "Validate" options
-
-  # Access checks are not being made here. They are run in the solution add feature.
-  Scenario: 'Draft' and 'Propose' states are available but moderators should also see 'Validated' state.
-    Given the following collection:
-      | title | Collection propose state test |
-      | logo  | logo.png                      |
-
-    When I am logged in as an "authenticated user"
-    And I go to the homepage
-    And I click "Propose solution"
-    Then the "State" field has the "Draft, Proposed" options
-    And the "State" field does not have the "Validated, In assessment, Blacklisted, Request deletion" options
-
-    When I am logged in as a user with the "moderator" role
-    And I go to the homepage
-    And I click "Propose solution"
-    Then the "State" field has the "Draft, Proposed, Validated" options
-    And the "State" field does not have the "In assessment, Blacklisted, Request deletion" options
-
-    When I am logged in as a "facilitator" of the "Collection propose state test" collection
-    And I go to the homepage of the "Collection propose state test" collection
-    And I click "Add solution"
-    Then the "State" field has the "Draft, Proposed" options
-    And the "State" field does not have the "Validated, In assessment, Blacklisted, Request deletion" options
+    And the "State" field has the "Draft, Proposed, Validate" options
