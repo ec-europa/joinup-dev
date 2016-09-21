@@ -10,8 +10,11 @@ global-components:
   css:
     theme:
       css/style.min.css: {}
+
+form-components:
+  Version: 1.x
   js:
-    js/script.js: {}
+    js/form.js: {}
   dependencies:
     - core/jquery
     - core/jquery.once
