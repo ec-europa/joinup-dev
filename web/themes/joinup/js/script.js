@@ -3,7 +3,7 @@
  * Joinup theme scripts.
  */
 
-(function ($) {
+(function ($, Drupal) {
   Drupal.behaviors.deleteButton = {
     attach: function (context, settings) {
       $(context).find('#edit-delete').once('deleteButton').each(function () {
@@ -49,4 +49,4 @@
       });
     }
   }
-})(jQuery);
+})(jQuery, Drupal);
