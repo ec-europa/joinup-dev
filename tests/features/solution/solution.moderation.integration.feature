@@ -1,7 +1,9 @@
 @api
-Feature: Change this
+Feature: As a user of the website
+  I want to be able to perform available transitions
+  according to the state of the entity and the graph they are stored in.
 
-  Scenario: All the tests are here?
+  Scenario: Check availability of actions depending on the state and the graph.
     Given users:
       | name            | pass            | roles     |
       | Hulk            | big_green_puppy |           |
@@ -29,7 +31,7 @@ Feature: Change this
     And I should not see the link "View Draft"
     # @todo: Fix the visibility issue.
     But I should see the link "View"
-    And I should see the link "Edit"
+    And I should see the link "Edit" in the "Entity actions" region
 
     # I should not be able to view draft solutions I'm not a facilitator of.
     When I go to the homepage of the "The Falling Swords" solution
@@ -40,7 +42,7 @@ Feature: Change this
     Then I should see the heading "Flight of Night"
     # Since it's validated, the normal view is the published view and the
     # "View draft" should not be shown.
-    And I should see the link "View Draft"
+    And I should not see the link "View Draft"
 
     # Edit as facilitator and save as draft.
     When I click "Edit"
