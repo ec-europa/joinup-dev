@@ -87,6 +87,7 @@ Feature: Solution editing.
         | banner              | banner.jpg    |
         | contact information | Seward Shawn  |
         | owner               | Acme inc.     |
+        | state               | validated     |
       When I am logged in as a facilitator of the "Solution B" solution
       And I go to the homepage of the "Solution B" solution
       Then I should see the link "Edit"

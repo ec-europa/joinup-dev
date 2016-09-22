@@ -17,6 +17,7 @@ Feature: "Edit" visibility options.
       | documentation       | text.pdf                |
       | owner               | Awesome person          |
       | contact information | Awesome contact         |
+      | state               | validated               |
     And the following release:
       | title               | My awesome solution abc v1 |
       | description         | A sample release           |
