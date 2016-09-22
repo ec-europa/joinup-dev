@@ -84,7 +84,14 @@ class RdfGraphHandler {
     $this->enabledGraphs = $graph;
 
     // By default, all graphs are available.
-    $this->requestGraphs['default'] = $this->enabledGraphs;
+    $this->resetRequestGraphs();
+  }
+
+  /**
+   * Reset the mapping of entity - graphs.
+   */
+  public function resetRequestGraphs() {
+    $this->requestGraphs = ['default' => $this->enabledGraphs];
   }
 
   /**

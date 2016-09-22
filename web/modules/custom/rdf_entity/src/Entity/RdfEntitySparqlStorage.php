@@ -390,7 +390,7 @@ QUERY;
           continue;
         }
         if (empty($graph_id)) {
-          throw new \Exception("Fatal error. The graph ID whould never be empty here.");
+          throw new \Exception("Fatal error. The graph ID should never be empty here.");
         }
 
         // Map bundle and entity id.
