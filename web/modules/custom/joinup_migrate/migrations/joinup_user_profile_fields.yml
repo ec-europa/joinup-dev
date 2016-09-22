@@ -1,0 +1,34 @@
+id: joinup_user_profile_fields
+label: User profile fields
+migration_tags:
+  - Drupal 6
+source:
+  plugin: d6_node
+  node_type: profile
+process:
+  uid:
+    -
+      plugin: migration
+      migration: joinup_user
+      source: node_uid
+      # Avoid creating a new entity when the matching user is not found.
+      no_stub: no_stub
+    -
+      # Skip if no matching user has been found.
+      plugin: skip_on_empty
+      method: row
+  field_user_first_name: field_firstname
+  field_user_family_name: field_lastname
+  field_user_organisation: field_user_organisation
+  #field_user_subscription_events: field_user_subscription_events
+  #field_user_group_types: field_user_group_types
+  #field_user_frequency: field_user_frequency
+  #field_user_professional_profile: field_user_professional_profile
+  #field_user_professional_domain: field_user_professional_domain
+  #field_user_photo: field_user_photo
+  #field_user_nationality: field_user_nationality
+destination:
+  plugin: entity:user
+migration_dependencies:
+  required:
+    - joinup_user
