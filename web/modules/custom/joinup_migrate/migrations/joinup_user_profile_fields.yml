@@ -8,6 +8,13 @@ source:
 process:
   uid:
     -
+      # Avoid processing rows with empty uid values, or the migration
+      # plugin will skip processing of the single value by throwing a
+      # MigrateSkipProcessException, but the row will still be processed
+      # and an attempt to create a new user will occur.
+      plugin: skip_on_empty
+      method: row
+    -
       plugin: migration
       migration: joinup_user
       source: node_uid
