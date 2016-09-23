@@ -5,13 +5,17 @@ migration_tags:
 source:
   plugin: d6_user
 process:
+  # Process status first, and avoid to import any blocked user.
+  status:
+    plugin: skip_on_empty
+    method: row
+    source: status
   name: name
   pass: pass
   mail: mail
   created: created
   access: access
   login: login
-  status: status
   timezone:
     plugin: user_update_7002
     source: timezone
