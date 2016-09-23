@@ -41,29 +41,31 @@
     </div>
     {{ ds_content.4 }}
     {% elseif is_collection %}
-    {{ ds_content.1 }}
-    {{ ds_content.2 }}
-    <div class="featured__stats">
-      <div class="stats__column stats__column--border stats__column--wide">
-        <div class="stats__wrapper stats__wrapper--centered">
-          <span class="stats__text">Activity</span>
+    <a class="featured__link-wrapper" href="{{ path('entity.rdf_entity.canonical',{'rdf_entity': content['#rdf_entity'].id()}) }}">
+      {{ ds_content.1 }}
+      {{ ds_content.2 }}
+      <div class="featured__stats">
+        <div class="stats__column stats__column--border stats__column--wide">
+          <div class="stats__wrapper stats__wrapper--centered">
+            <span class="stats__text">Activity</span>
+          </div>
+          <div class="stats__wrapper stats__wrapper--centered">
+            <span class="stats__text bold">Medium</span>
+          </div>
         </div>
-        <div class="stats__wrapper stats__wrapper--centered">
-          <span class="stats__text bold">Medium</span>
+        <div class="stats__column stats__column--wide stats__column--icons">
+          <div class="stats__wrapper">
+            <span class="stats__icon icon icon--user"></span>
+            <span class="stats__text">13 Members</span>
+          </div>
+          <div class="stats__wrapper">
+            <span class="stats__icon icon icon--solutions"></span>
+            <span class="stats__text">124 Solutions</span>
+          </div>
         </div>
       </div>
-      <div class="stats__column stats__column--wide stats__column--icons">
-        <div class="stats__wrapper">
-          <span class="stats__icon icon icon--user"></span>
-          <span class="stats__text">13 Members</span>
-        </div>
-        <div class="stats__wrapper">
-          <span class="stats__icon icon icon--solutions"></span>
-          <span class="stats__text">124 Solutions</span>
-        </div>
-      </div>
-    </div>
-    {{ ds_content.3 }}
+      {{ ds_content.3 }}
+    </a>
     {% endif %}
 
   </div>
