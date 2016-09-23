@@ -29,13 +29,11 @@
 {% macro menu_links(items, attributes, menu_level) %}
   {% import _self as menus %}
   {% if items %}
-      <nav class="header-menu mdl-navigation">
+      <nav class="mdl-navigation">
         {% for item in items %}
           {%
           set classes = [
-            'header-menu__link',
             'mdl-navigation__link',
-            'sidebar-header-menu__link mdl-navigation__link',
             item.is_expanded ? 'menu-item--expanded',
             item.is_collapsed ? 'menu-item--collapsed',
             item.in_active_trail ? 'active-trail',

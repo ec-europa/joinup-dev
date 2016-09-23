@@ -89,7 +89,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   The RDF entity type to which the custom pages belong. Can be either
    *   'collection' or 'solution'.
    *
-   * @Then the :name :type should have :number custom page(s)
+   * @Then the :name :type should have :count custom page(s)
    */
   public function assertContactInformationCount($count, $name, $type) {
     $group = $this->getRdfEntityByLabel($name, $type);

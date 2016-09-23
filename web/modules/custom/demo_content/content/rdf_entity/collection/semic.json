@@ -1,0 +1,108 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C11c81d8f-1527-4044-a694-b847d66362e1?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_banner": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/2016-09\/generateImage_5SYNlZ.png"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_logo": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_fTQthC.png"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/11c81d8f-1527-4044-a694-b847d66362e1"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "collection"
+        }
+    ],
+    "label": [
+        {
+            "value": "Semantic Interoperability Community - SEMIC",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/11c81d8f-1527-4044-a694-b847d66362e1"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_banner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/2016-09\/generateImage_5SYNlZ.png"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "ac95d40f-49d5-4aac-b1e4-b858b4f9b1c9"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/2016-09\/generateImage_5SYNlZ.png"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_logo": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_fTQthC.png"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "f5a4f695-e239-41af-bab1-f0cf171a74b5"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_fTQthC.png"
+                    }
+                ]
+            }
+        ]
+    },
+    "field_ar_closed": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_ar_description": [
+        {
+            "value": "<h3>About SEMIC<\/h3>\n        <p>The&nbsp;<strong>Semantic Interoperability Community (SEMIC)<\/strong>&nbsp;is a European Commission initiative aiming to improve the semantic interoperability of interconnected e-Government systems. It is funded under&nbsp;<a href=\"http:\/\/ec.europa.eu\/isa\/actions\/01-trusted-information-exchange\/1-1action_en.htm\">Action 1.1<\/a>&nbsp;(<em>Improving semantic interoperability in European e-Government systems<\/em>) of the&nbsp;<a href=\"http:\/\/ec.europa.eu\/isa\/index_en.htm\">Interoperability Solutions for European Public Administrations (ISA) Programme<\/a>.<\/p>\n        <p><strong>Semantic interoperability<\/strong>&nbsp;refers to the preservation of meaning in the exchange of electronic information (see also&nbsp;<a href=\"http:\/\/ec.europa.eu\/isa\/documents\/isa_annex_ii_eif_en.pdf\">European Interoperability Framework<\/a>). It means that, in the context of an information exchange, the receiver and the sender of information can understand and interpret it the same way. The lack of semantic interoperability between European e-Government systems is one of the major obstacles in the provision of cross-border and cross-sector digital public services.&nbsp;<\/p>\n        <p>Dr. Vassilios Peristeras, Programme officer of ISA&nbsp;<a href=\"http:\/\/ec.europa.eu\/isa\/actions\/01-trusted-information-exchange\/1-1action_en.htm\">Action 1.1<\/a>&nbsp;explains the action\u2019s vision for semantic interoperability, which boils down to the establishment of common agreements on the meaning of different entities, e.g. basic data about persons, businesses or addresses, exchanged in the context of cross-border and\/or cross-sector information exchanges.<\/p>\n        <h3>SEMIC activities<\/h3>\n        <p>SEMIC focuses on the following activities:<\/p>\n        <h4>Development and promotion of Core Vocabularies<\/h4>\n        <p>The&nbsp;<a href=\"https:\/\/joinup.ec.europa.eu\/node\/102288\">e-Government Core Vocabularies<\/a>&nbsp;are simplified, re-usable and extensible data models that capture the fundamental characteristics of an entity, such as a person, a business, a location or a public service, in a context-neutral way. They can be used by public administrations to attain a minimum level of semantic interoperability for e-Government systems.<\/p>\n        <p>Read more about the e-Government Core Vocabularies&nbsp;<a href=\"https:\/\/joinup.ec.europa.eu\/node\/145983\">here<\/a>.<\/p>\n        <h4>Development and promotion of the DCAT-AP<\/h4>\n        <p><br \/>\n        SEMIC fosters the interoperability of open data portals by building consensus on and promoting the DCAT Application profile for data portals in Europe (<a href=\"https:\/\/joinup.ec.europa.eu\/node\/69559\">DCAT-AP<\/a>). DCAT-AP provides a common specification for describing public sector datasets and enables the exchange of descriptions of datasets among data portals.<br \/>\n        Read more about DCAT-AP <a href=\"https:\/\/joinup.ec.europa.eu\/node\/145996\">here<\/a>.<\/p>\n        <h4><br \/>\n        Management of data standards<\/h4>\n        <p><br \/>\n        The European Interoperability Reference Architecture (<a href=\"https:\/\/joinup.ec.europa.eu\/node\/99464\">EIRA<\/a>) defines a data standard as \u201ca structural metadata specification that describes or defines other data. Structural metadata indicates how compound objects are put together. It can consist of among others data models, reference data, and identifier schemas\u201d.<br \/>\n        SEMIC has established an international Community of Practice which is working on specifications, good practices and lessons learned for setting up proper governance and management of data standards, and for selecting the right support tools. Such activities will greatly enhance the potential for coordination and interoperability between public administrations in the context of cross-border and\/or cross-sector information exchanges.<br \/>\n        Read more about the Community of Practice on data standards <a href=\"https:\/\/joinup.ec.europa.eu\/node\/109954\/\">here<\/a>.<\/p>\n        <h4><br \/>\n        Exploring Linked Open Government Data (LOGD)<\/h4>\n        <p><br \/>\n        Linked Data enables the provision of \u201cdata as a service\u201d and conceives the Web as an open ecosystem where data owners, data publishers, and data consumers can interconnect and integrate disparate datasets. SEMIC explores the potential of linked open government data, from a business and a technical point of view, as an enabler to the flexible integration of data coming from different e-Government systems.<br \/>\n        Read more about LOGD <a href=\"https:\/\/joinup.ec.europa.eu\/node\/145998\">here<\/a>.<\/p>\n        <h4><br \/>\n        SEMIC Conference<\/h4>\n        <p><br \/>The SEMIC conference is an annual international event which brings together policy makers, ICT solution developers, industry and researchers with a common interest in topics related to information exchange and management for public administration.<br \/>\n        Read more about the SEMIC conference <a href=\"https:\/\/joinup.ec.europa.eu\/node\/145999\">here<\/a>.<\/p>",
+            "format": "content_editor"
+        }
+    ],
+    "field_ar_elibrary_creation": [
+        {
+            "value": "1"
+        }
+    ],
+    "field_ar_moderation": [
+        {
+            "value": "0"
+        }
+    ]
+}

@@ -62,6 +62,9 @@ transitions:
         - moderator
         - rdf_entity-collection-facilitator
     in_assessment:
+      # @todo: The in_assessment state should also be accessible by moderators
+      #   when the entity is validated (e.g. inform the user that the entity
+      #   needs update after reports).
       proposed:
         - moderator
         - rdf_entity-collection-member
@@ -109,6 +112,9 @@ transitions:
         - moderator
         - rdf_entity-collection-facilitator
     in_assessment:
+      # @todo: The in_assessment state should also be accessible by moderators
+      #   when the entity is validated (e.g. inform the user that the entity
+      #   needs update after reports).
       proposed:
         - moderator
         - rdf_entity-collection-member

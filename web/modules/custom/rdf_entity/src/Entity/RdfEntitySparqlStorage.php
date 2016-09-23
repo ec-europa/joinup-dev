@@ -310,6 +310,20 @@ QUERY;
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function loadMultiple(array $ids = NULL) {
+    $entities = parent::loadMultiple($ids);
+    $uuid_key = $this->entityType->getKey('uuid');
+    array_walk($entities, function (ContentEntityInterface $rdf_entity) use ($uuid_key) {
+      // The ID of 'rdf_entity' is universally unique because it's a URI. As
+      // the backend schema has no UUID, ID is reused as UUID.
+      $rdf_entity->set($uuid_key, $rdf_entity->id());
+    });
+    return $entities;
+  }
+
+  /**
    * Get the mapping between bundle names and their rdf objects.
    */
   public function getRdfBundleMapping() {
@@ -428,8 +442,15 @@ QUERY;
   /**
    * {@inheritdoc}
    */
-  public function loadByProperties(array $values = array()) {
-    return array();
+  public function loadByProperties(array $values = []) {
+    // If UUID is queried, just swap it with the ID. They are the same but UUID
+    // is not stored, while on ID we can rely.
+    $uuid_key = $this->entityType->getKey('uuid');
+    if (isset($values[$uuid_key]) && !isset($values['id'])) {
+      $values['id'] = $values[$uuid_key];
+      unset($values[$uuid_key]);
+    }
+    return parent::loadByProperties($values);
   }
 
   /**
@@ -509,17 +530,6 @@ QUERY;
    */
   protected function getQueryServiceName() {
     return 'entity.query.sparql';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getQuery($conjunction = 'AND') {
-    // Access the service directly rather than entity.query factory so the
-    // storage's current entity type is used.
-    $query = \Drupal::service($this->getQueryServiceName())
-      ->get($this->entityType, $conjunction);
-    return $query;
   }
 
   /**
