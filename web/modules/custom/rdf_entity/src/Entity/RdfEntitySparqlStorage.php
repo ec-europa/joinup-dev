@@ -470,6 +470,20 @@ QUERY;
   /**
    * {@inheritdoc}
    */
+  public function loadMultiple(array $ids = NULL) {
+    $entities = parent::loadMultiple($ids);
+    $uuid_key = $this->entityType->getKey('uuid');
+    array_walk($entities, function (ContentEntityInterface $rdf_entity) use ($uuid_key) {
+      // The ID of 'rdf_entity' is universally unique because it's a URI. As
+      // the backend schema has no UUID, ID is reused as UUID.
+      $rdf_entity->set($uuid_key, $rdf_entity->id());
+    });
+    return $entities;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function loadRevision($revision_id) {
     list($entity_id, $graph) = explode('||', $revision_id);
 
@@ -485,8 +499,15 @@ QUERY;
   /**
    * {@inheritdoc}
    */
-  public function loadByProperties(array $values = array()) {
-    return array();
+  public function loadByProperties(array $values = []) {
+    // If UUID is queried, just swap it with the ID. They are the same but UUID
+    // is not stored, while on ID we can rely.
+    $uuid_key = $this->entityType->getKey('uuid');
+    if (isset($values[$uuid_key]) && !isset($values['id'])) {
+      $values['id'] = $values[$uuid_key];
+      unset($values[$uuid_key]);
+    }
+    return parent::loadByProperties($values);
   }
 
   /**

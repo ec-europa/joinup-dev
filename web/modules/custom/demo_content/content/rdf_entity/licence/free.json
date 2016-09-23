@@ -1,0 +1,61 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C8c3e0162-ec2a-4de6-abf7-d014034d0350?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/licence"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/licence\/field_licence_type": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpurl.org%5Cadms%5Clicencetype%5CAttribution?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/8c3e0162-ec2a-4de6-abf7-d014034d0350"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "licence"
+        }
+    ],
+    "label": [
+        {
+            "value": "Free",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/8c3e0162-ec2a-4de6-abf7-d014034d0350"
+        }
+    ],
+    "field_licence_description": [
+        {
+            "value": "<p>This is for free.<\/p>\r\n",
+            "format": "content_editor"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/licence\/field_licence_type": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpurl.org%5Cadms%5Clicencetype%5CAttribution?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/licence_type"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/purl.org\/adms\/licencetype\/Attribution"
+                    }
+                ]
+            }
+        ]
+    }
+}
