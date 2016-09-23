@@ -21,9 +21,9 @@ use Drupal\migrate\MigrateSkipRowException;
  *
  *   plugin: skip_on_values
  *   values:
- *     394
- *     5819
- *     84501
+ *     - 394
+ *     - 5819
+ *     - 84501
  * @codingStandardsIgnoreEnd
  *
  * @MigrateProcessPlugin(
