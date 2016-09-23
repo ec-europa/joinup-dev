@@ -28,6 +28,7 @@ Feature: Solution editing.
       | banner              | banner.jpg        |
       | contact information | Seward Shawn      |
       | owner               | Acme inc.         |
+      | state               | validated         |
 
     Scenario: A solution owner can edit only its own solutions.
       When I am logged in as "Yancy Burton"
