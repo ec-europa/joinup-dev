@@ -1,3 +1,4 @@
+<header class="section section--header mdl-layout__header" role="banner">
 <div class="container-fluid">
   <div class="region region--header mdl-layout__header-row">
     <a href="{{ base_path }}" class="header-logo mdl-layout-title" title="Home">
@@ -5,7 +6,7 @@
     </a>
     <div class="mdl-layout-spacer"></div>
 
-    {{ page.header_central_menu }}
+    {{ page.header_central_menu.joinup_theme_main_menu }}
 
     <div class="mdl-layout-spacer"></div>
     <div class="search-bar search-bar--header mdl-textfield mdl-js-textfield mdl-textfield--expandable
@@ -21,14 +22,12 @@
       </form>
     </div>
 
-      {{ page.header_profile_menu }}
+    {{ page.header_profile_menu }}
 
   </div>
+  {{ page.header }}
 </div>
+</header>
 <div class="mdl-layout__drawer">
-  <nav class="mdl-navigation">
-    <a class="mdl-navigation__link" href="">Solutions</a>
-    <a class="mdl-navigation__link" href="/collections">Collections</a>
-    <a class="mdl-navigation__link" href="">Events</a>
-  </nav>
+  {{ page.header_central_menu.joinup_theme_main_menu_mobile }}
 </div>

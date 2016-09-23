@@ -111,6 +111,13 @@ function joinup_theme_preprocess_block(&$variables) {
       $variables['is_view'] = TRUE;
     }
   }
+
+  // Get the ID of the block and add this to the main menu theme attributes,
+  // so it is possible to retrieve block ID in suggestions function.
+  // @see joinup_theme_theme_suggestions_menu_alter().
+  if (isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main') {
+    $variables['content']['#attributes']['block'] = $variables['attributes']['id'];
+  }
 }
 
 /**
@@ -123,6 +130,20 @@ function joinup_theme_preprocess_fieldset(&$variables) {
   $variables['legend']['attributes'] = new Attribute([
     'for' => $variables['element']['#id'],
   ]);
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
+  // Remove the block and replace dashes with underscores in the block ID to
+  // use for the hook name.
+  // Block ID is provided in the preprocess function.
+  // @see joinup_theme_preprocess_block().
+  if (isset($variables['attributes']['block'])) {
+    $hook = str_replace(array('block-', '-'), array('', '_'), $variables['attributes']['block']);
+    $suggestions[] = $variables['theme_hook_original'] . '__' . $hook;
+  }
 }
 
 /**
