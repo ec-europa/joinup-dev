@@ -42,6 +42,16 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
         /** @var RdfEntitySparqlStorage $storage */
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
         $storage->setRequestGraphs($event->getValue(), ['draft', 'default']);
+        $entity = $storage->load($event->getValue());
+        // When drafting is enabled for this entity type, try to load the draft
+        // version on the edit form.
+        if ($this->draftEnabled($entity_type_id, $entity->bundle())) {
+          $storage->setRequestGraphs($event->getValue(), ['draft', 'default']);
+        }
+        else {
+          $storage->setRequestGraphs($event->getValue(), ['default']);
+        }
+        $storage->setRequestGraphs($event->getValue(), ['draft', 'default']);
       }
       // Viewing the entity on a graph specific tab.
       elseif (isset($route_parts[2]) && (strpos($route_parts[2], 'rdf_draft_') === 0)) {
