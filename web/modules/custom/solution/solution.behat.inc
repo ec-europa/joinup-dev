@@ -182,6 +182,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @Given (the following ):bundle content belong to the corresponding solutions:
    */
   public function givenContentMemberships($bundle, TableNode $membership_table) {
+    // As each given step is executed in the same request
+    // we need to reset the mapping.
+    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage->getGraphHandler()->resetRequestGraphs();
     foreach ($membership_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */

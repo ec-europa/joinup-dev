@@ -41,26 +41,20 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
         $entity_type_id = substr($event->getDefinition()['type'], strlen('entity:'));
         /** @var RdfEntitySparqlStorage $storage */
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
-        $storage->setRequestGraphs($event->getValue(), ['draft']);
-        // Draft version already exists.
-        $entity = $storage->load($event->getValue());
-        if ($entity) {
-          // If ($this->draftEnabled($entity_type_id, $entity->bundle())) {.
-          $event->setGraph('draft');
-          // }.
-        }
-        // Use published version to create draft.
-        else {
-          // Keep track that the entity needs to be stored in the draft graph.
-          // @todo Check if drafting is enabled for this bundle here!!!
-          $event->setGraph('default');
-        }
+        $storage->setRequestGraphs($event->getValue(), ['draft', 'default']);
       }
       // Viewing the entity on a graph specific tab.
       elseif (isset($route_parts[2]) && (strpos($route_parts[2], 'rdf_draft_') === 0)) {
         // Retrieve the graph name from the route.
         $graph_name = str_replace('rdf_draft_', '', $route_parts[2]);
         $event->setGraph($graph_name);
+      }
+      // On the canonical route, the default entity is preferred.
+      elseif (isset($route_parts[2]) && $route_parts[2] === 'canonical') {
+        $entity_type_id = substr($event->getDefinition()['type'], strlen('entity:'));
+        /** @var RdfEntitySparqlStorage $storage */
+        $storage = \Drupal::entityManager()->getStorage($entity_type_id);
+        $storage->setRequestGraphs($event->getValue(), ['default', 'draft']);
       }
     }
   }
