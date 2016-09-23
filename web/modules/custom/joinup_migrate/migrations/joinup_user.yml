@@ -4,12 +4,26 @@ migration_tags:
   - Drupal 6
 source:
   plugin: d6_user
+  constants:
+    empty: null
 process:
   # Process status first, and avoid to import any blocked user.
   status:
     plugin: skip_on_empty
     method: row
     source: status
+  uid:
+    -
+      plugin: skip_on_values
+      values: 1
+      source: uid
+    -
+      # We actually don't want to import the uid, so we set the source to
+      # empty and use the skip_on_empty plugin process method to avoid
+      # setting the uid at all.
+      plugin: skip_on_empty
+      method: process
+      source: 'constants/empty'
   name: name
   pass: pass
   mail: mail
