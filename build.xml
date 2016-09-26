@@ -492,6 +492,18 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
  'driver' => 'mysql',${line.separator}];${line.separator}" />
     </target>
 
+    <!-- Enable migration modules. -->
+    <target name="enable-migration-modules">
+        <drush
+            command="pm-enable"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <param>${migration.modules}</param>
+        </drush>
+    </target>
+
     <!-- Remove all packages that are patched with cweagans/composer-patches. -->
     <target name="remove-patched-packages">
         <removepatchedpackages

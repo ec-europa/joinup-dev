@@ -269,3 +269,6 @@ migration.db.password = db_pass
 migration.db.prefix =
 migration.db.host = 127.0.0.1
 migration.db.port = 3306
+
+# Modules to enable.
+migration.modules = joinup_migrate
