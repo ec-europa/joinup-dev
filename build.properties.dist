@@ -258,3 +258,14 @@ sass.output.dir =
 
 # The filename of the compiled CSS file.
 sass.output.file = stylesheet.min.css
+
+# Migration configuration
+# -----------------------
+
+# Database settings.
+migration.db.name = db_name
+migration.db.user = db_user
+migration.db.password = db_pass
+migration.db.prefix =
+migration.db.host = 127.0.0.1
+migration.db.port = 3306

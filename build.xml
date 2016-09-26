@@ -478,6 +478,20 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
               passthru="true" />
     </target>
 
+    <!-- Add migration database connection to Drupal settings file. -->
+    <target name="setup-migration" depends="writable-settings-php">
+        <echo message="Setup migration" />
+        <append destFile="${website.settings.php}" text="${line.separator}$databases['migrate']['default'] = [${line.separator}
+ 'database' => '${migration.db.name}',${line.separator}
+ 'username' => '${migration.db.user}',${line.separator}
+ 'password' => '${migration.db.password}',${line.separator}
+ 'prefix' => '${migration.db.prefix}',${line.separator}
+ 'host' => '${migration.db.host}',${line.separator}
+ 'port' => '${migration.db.port}',${line.separator}
+ 'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',${line.separator}
+ 'driver' => 'mysql',${line.separator}];${line.separator}" />
+    </target>
+
     <!-- Remove all packages that are patched with cweagans/composer-patches. -->
     <target name="remove-patched-packages">
         <removepatchedpackages
