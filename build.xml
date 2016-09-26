@@ -504,6 +504,19 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
         </drush>
     </target>
 
+    <!-- Run the migration ids specified in the configuration. -->
+    <target name="run-migration">
+        <echo message="Run migration" />
+        <drush
+            command="migrate_drush_run"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <param>${migration.ids}</param>
+        </drush>
+    </target>
+
     <!-- Remove all packages that are patched with cweagans/composer-patches. -->
     <target name="remove-patched-packages">
         <removepatchedpackages
