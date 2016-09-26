@@ -5,6 +5,7 @@
  * Functions to support theming in the Joinup theme.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
@@ -266,4 +267,11 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
     }
   }
   return $suggestions;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#attached']['library'][] = 'joinup_theme/form-components';
 }
