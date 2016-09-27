@@ -35,6 +35,18 @@ function joinup_theme_preprocess_page(&$variables) {
     'user.register',
   );
 
+  // Check if page is collection propose form.
+  // It is needed for proper display of vertical tabs.
+  if ($route_name = 'rdf_entity.propose_form') {
+    $rdf_type = $route_match->getParameter('rdf_type');
+    if (method_exists($rdf_type, 'get')) {
+      $rdf_type = $rdf_type->get('rid');
+      if ($rdf_type == 'collection') {
+        $variables['is_propose_collection'] = TRUE;
+      }
+    }
+  }
+
   if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
     $variables['is_blue_header'] = TRUE;
 
@@ -173,7 +185,7 @@ function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array 
  * Implements hook_theme_suggestions_HOOK_alter() for container.html.twig.
  */
 function joinup_theme_theme_suggestions_container_alter(array &$suggestions, array $variables) {
-  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-field-ar-owner-actions') {
+  if (isset($variables['element']['#id'])) {
     $suggestions[] = 'container__' . str_replace('-', '_', $variables['element']['#id']);
   }
 }

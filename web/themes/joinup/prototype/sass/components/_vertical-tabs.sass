@@ -1,0 +1,60 @@
+// vertical tabs
+//
+// vertical tabs component
+
+// Component
+// --------------------------------------------------
+.vertical-tabs
+  padding-bottom: 0
+  margin-bottom: 40px
+
+// Elements
+// --------------------------------------------------
+.vertical-tabs__panes
+  padding: 20px
+  background-color: #fff
+  margin: 0
+  +breakpoint(tablet)
+    padding: 40px 30px
+  +breakpoint(desktop)
+    padding: 40px 60px
+
+.vertical-tabs__pane > summary
+  display: none
+
+.vertical-tabs__menu
+  margin: 0
+
+.vertical-tabs__menu-item
+  display: block
+  border-bottom: 1px solid $color-grey-light
+  background-color: $color-grey-ligher
+  a
+    display: block
+    padding: 20px 30px
+    text-decoration: none
+
+.vertical-tabs__menu-item-title
+  color: $color-base
+
+.vertical-tabs__menu-item-summary
+  font-size: $font-size-small - 1px
+  font-weight: $font-weight-thin
+  margin-top: 4px
+  color: $color-grey-medium
+
+.vertical-tabs__sidebar
+    margin-left: 40px
+
+.vertical-tabs__actions
+  padding: 0 5px
+
+// Modifiers
+// --------------------------------------------------
+
+// States
+// --------------------------------------------------
+.vertical-tabs__menu-item.is-selected
+  background-color: #fff
+  .vertical-tabs__menu-item-title
+    font-weight: $font-weight-medium

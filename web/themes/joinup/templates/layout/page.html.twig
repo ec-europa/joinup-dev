@@ -41,7 +41,6 @@
  */
 #}
 <div class="layout-container mdl-layout mdl-js-layout mdl-layout--fixed-header">
-
   {# @todo The small header, which contains collections link, should be removed for anonymous users on the homepage - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639. #}
   <header class="section section--header" role="banner">
     <div class="container-fluid">
@@ -49,6 +48,7 @@
       {{ page.header }}
     </div>
   </header>
+  {{ content_container_classes }}
 
   {% if is_front and not logged_in %}
     {% include directory ~ '/templates/parts/featured--anonymous.html.twig' %}
@@ -67,7 +67,7 @@
   <main class="main-container mdl-grid" role="main">
     <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
-    {% if page.sidebar_left %}
+    {% if page.sidebar_left and not is_propose_collection %}
       <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col" role="complementary">
         <div class="container-fluid">
           {{ page.sidebar_left }}
@@ -75,7 +75,7 @@
       </aside>
     {% endif %}
 
-    <div class="content-container mdl-cell--8-col">
+    <div class="{{ is_propose_collection ? 'mdl-cell--12-col content-container--form' : 'mdl-cell--8-col content-container' }}">
       {% if page.content_top %}
         <div class="section section--content-top">
           <div class="container-fluid">

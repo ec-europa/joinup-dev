@@ -49,4 +49,14 @@
       });
     }
   }
+
+  Drupal.behaviors.verticalTabsGrid = {
+    attach: function (context, settings) {
+      $(context).find('.vertical-tabs').once('verticalTabsGrid').each(function () {
+        $(this).find('.vertical-tabs__menu').addClass('mdl-cell--2-col');
+        $(this).find('.vertical-tabs__panes').addClass('mdl-cell--8-col');
+        $(this).addClass('mdl-grid');
+      });
+    }
+  }
 })(jQuery);

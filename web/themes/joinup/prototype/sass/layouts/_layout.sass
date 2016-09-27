@@ -16,3 +16,14 @@ div
 .content-container
   max-width: 784px
   width: 100%
+
+.content-container--form
+  max-width: $container-desktop
+  width: 100%
+  .page__content
+    padding: 0
+    background-color: transparent
+    +breakpoint(tablet)
+      padding: 0
+    +breakpoint(desktop)
+      padding: 0
