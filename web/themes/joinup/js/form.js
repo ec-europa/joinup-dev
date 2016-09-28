@@ -50,12 +50,23 @@
     }
   }
 
+  // Fix vertical tabs on the form pages.
   Drupal.behaviors.verticalTabsGrid = {
     attach: function (context, settings) {
       $(context).find('.vertical-tabs').once('verticalTabsGrid').each(function () {
+        // Add mdl grid classes.
         $(this).find('.vertical-tabs__menu').addClass('mdl-cell--2-col');
         $(this).find('.vertical-tabs__panes').addClass('mdl-cell--8-col');
         $(this).addClass('mdl-grid');
+
+        // Move description from pane to tab.
+        $(this).find('.vertical-tabs__pane').each(
+          function () {
+            var summary = $(this).find('.vertical-tabs__details-summary').text();
+            var summaryIndex = $(this).index();
+            var $menuItem = $(this).closest('.vertical-tabs').find('.vertical-tabs__menu-item').get(summaryIndex - 1);
+            $($menuItem).find('.vertical-tabs__menu-item-summary').text(summary);
+          });
       });
     }
   }
