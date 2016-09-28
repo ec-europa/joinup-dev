@@ -23,9 +23,10 @@
   set classes = [
     has_parent ? 'js-form-wrapper',
     has_parent ? 'form-wrapper',
-    'mdl-cell--8-col',
+    'mdl-grid',
     'vertical-tabs__actions',
   ]
 %}
-<div class="vertical-tabs__sidebar mdl-cell--2-col"></div>
-<div{{ attributes.addClass(classes) }}>{{ children }}</div>
+<div{{ attributes.addClass(classes) }}>
+  <div class="mdl-cell--8-col-desktop mdl-cell--2-offset-desktop mdl-cell--6-col-tablet mdl-cell--2-offset-tablet">{{ children }}</div>
+</div>

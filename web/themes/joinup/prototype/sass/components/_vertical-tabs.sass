@@ -5,11 +5,14 @@
 // Component
 // --------------------------------------------------
 .vertical-tabs
-  padding-bottom: 0
+  padding: 0
   margin-bottom: 40px
 
 // Elements
 // --------------------------------------------------
+.vertical-tabs__wrapper
+  width: 100%
+
 .vertical-tabs__panes
   padding: 20px
   background-color: #fff
@@ -26,7 +29,11 @@
   display: none
 
 .vertical-tabs__menu
-  margin: 0
+  margin: 5px 0 0 0
+  padding-left: 0
+  +breakpoint(mobile)
+    margin: 0
+
 
 .vertical-tabs__menu-item
   display: block
@@ -50,9 +57,6 @@
 
 .vertical-tabs__sidebar
     margin-left: 40px
-
-.vertical-tabs__actions
-  padding: 0 5px
 
 // Modifiers
 // --------------------------------------------------

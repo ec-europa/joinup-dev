@@ -19,52 +19,56 @@
         </div>
       </div>
       <div class="main-container main-container--form mdl-grid">
-        <div class="content-container content-container--form mdl-cell mdl-cell--12-col">
+        <div class="content-container content-container--form mdl-cell">
           <div class="section section--content">
             <div class="page__content--form">
               <form>
-                <div class="vertical-tabs mdl-grid">
-                  <ul class="vertical-tabs__menu mdl-cell mdl-cell--2-col">
-                    <li class="vertical-tabs__menu-item is-selected">
-                      <a>
-                        <span class="vertical-tabs__menu-item-title">Tab #1</span>
-                        <span class="vertical-tabs__menu-item-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-                      </a>
-                    </li>
-                    <li class="vertical-tabs__menu-item">
-                      <a>
-                        <span class="vertical-tabs__menu-item-title">Tab #2</span>
-                        <span class="vertical-tabs__menu-item-summary">Donec tincidunt, eros at sollicitudin ullamcorper.</span>
-                      </a>
-                    </li>
-                  </ul>
-                  <div class="vertical-tabs__panes mdl-cell mdl-cell--8-col">
-                    <h1>Inputs</h1>
-                    {% include input.html %}
+                <div class="vertical-tabs__wrapper">
+                  <div class="vertical-tabs mdl-grid">
+                    <ul class="vertical-tabs__menu mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-cell--order-2-phone">
+                      <li class="vertical-tabs__menu-item is-selected">
+                        <a>
+                          <span class="vertical-tabs__menu-item-title">Tab #1</span>
+                          <span class="vertical-tabs__menu-item-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
+                        </a>
+                      </li>
+                      <li class="vertical-tabs__menu-item">
+                        <a>
+                          <span class="vertical-tabs__menu-item-title">Tab #2</span>
+                          <span class="vertical-tabs__menu-item-summary">Donec tincidunt, eros at sollicitudin ullamcorper.</span>
+                        </a>
+                      </li>
+                    </ul>
+                    <div class="vertical-tabs__panes mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phones mdl-cell--order-1-phone">
+                      <h1>Inputs</h1>
+                      {% include input.html %}
 
-                    <h1>Checkboxes</h1>
+                      <h1>Checkboxes</h1>
 
-                    {% include checkbox.html %}
+                      {% include checkbox.html %}
 
-                    <h1>Radios</h1>
+                      <h1>Radios</h1>
 
-                    {% include radio.html %}
+                      {% include radio.html %}
 
-                    <h1>Upload</h1>
+                      <h1>Upload</h1>
 
-                    {% include file-upload.html %}
+                      {% include file-upload.html %}
 
-                    <h1>Draggable</h1>
+                      <h1>Draggable</h1>
 
-                    {% include draggable.html %}
+                      {% include draggable.html %}
+                    </div>
+                  </div>
+                </div>
+                <div class="form__actions vertical-tabs__actions mdl-grid">
+                  <div class="mdl-cell--8-col-desktop mdl-cell--2-offset-desktop mdl-cell--6-col-tablet mdl-cell--2-offset-tablet">
+                    <button class="button--default button--transparent mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Cancel</button>
+                    <button class="button--default button--transparent mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save as draft</button>
+                    <button class="button--default button--blue mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent pull-right">Publish</button>
                   </div>
                 </div>
               </form>
-            </div>
-            <div class="form__actions">
-              <button class="button--default button--transparent mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Cancel</button>
-              <button class="button--default button--transparent mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save as draft</button>
-              <button class="button--default button--blue mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent pull-right">Publish</button>
             </div>
           </div>
         </div>
