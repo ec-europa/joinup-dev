@@ -24,9 +24,10 @@
     has_parent ? 'js-form-wrapper',
     has_parent ? 'form-wrapper',
     'mdl-grid',
+    'mdl-grid--no-spacing',
     'vertical-tabs__actions',
   ]
 %}
 <div{{ attributes.addClass(classes) }}>
-  <div class="mdl-cell--8-col-desktop mdl-cell--2-offset-desktop mdl-cell--6-col-tablet mdl-cell--2-offset-tablet">{{ children }}</div>
+  <div class="mdl-cell mdl-cell--8-col-desktop mdl-cell--2-offset-desktop mdl-cell--6-col-tablet mdl-cell--2-offset-tablet">{{ children }}</div>
 </div>

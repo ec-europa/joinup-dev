@@ -55,9 +55,9 @@
     attach: function (context, settings) {
       $(context).find('.vertical-tabs').once('verticalTabsGrid').each(function () {
         // Add mdl grid classes.
-        $(this).find('.vertical-tabs__menu').addClass('mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-cell--order-2-phone');
-        $(this).find('.vertical-tabs__panes').addClass('mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phones mdl-cell--order-1-phone');
-        $(this).addClass('mdl-grid');
+        $(this).find('.vertical-tabs__menu').addClass('mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-cell--order-2-phone');
+        $(this).find('.vertical-tabs__panes').addClass('mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phones mdl-cell--order-1-phone');
+        $(this).addClass('mdl-grid mdl-grid--no-spacing');
 
         // Move description from pane to tab.
         $(this).find('.vertical-tabs__pane').each(
