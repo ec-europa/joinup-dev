@@ -63,7 +63,9 @@ gulp.task('styleguide:generate', function() {
   return gulp.src(paths.sassStyleguide)
     .pipe(styleguide.generate({
         extraHead: [
-          '<script src="/js/script.js"></script>'
+          '<script src="/js/material.min.js"></script>',
+          '<script src="/js/jquery.min.js"></script>',
+          '<script src="/js/styleguide.js"></script>',
         ],
         disableEncapsulation: true,
         title: 'Joinup styleguide',
@@ -91,10 +93,9 @@ gulp.task('images', function() {
 });
 // Define copying javascript for styleguide task
 gulp.task('js', function() {
-  gulp.src(['../js/**'])
+  gulp.src(['js/**', '../vendor/material-design-lite/material.min.js', '../../../../web/core/assets/vendor/jquery/jquery.min.js'])
     .pipe(gulp.dest(paths.styleguide + '/js'));
 });
-
 
 // Listen folders for changes and apply defined tasks
 gulp.task('default', ['styleguide', 'sass', 'images', 'js', 'mustache'], function() {
