@@ -81,6 +81,10 @@
             "drupal/inline_entity_form": {
                 "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"
             },
+            "drupal/og": {
+                "Fix type hints in RouteSubscriber": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/193.patch",
+                "Class and file names should match.": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/194.patch"
+            },
             "drupal/r4032login": {
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
             },

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ddd1fde091a92a6bbb9de50e546f43fa",
-    "content-hash": "bdeb8ada65f9ddf778b684b27e290a3b",
+    "hash": "09208a1bb1f09f8da361191a2632f16e",
+    "content-hash": "7eda8edf8faf6e22d753fbdb1f4e9698",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1503,7 +1503,7 @@
                 "drupal/rest_facets": "self.version"
             },
             "suggest": {
-                "drupal/core": "Required by drupal/core_search_facets",
+                "drupal/core": "Required by drupal/core_search_facets, drupal/rest_facets",
                 "drupal/search": "Required by drupal/core_search_facets"
             },
             "type": "drupal-module",
@@ -1614,7 +1614,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/og",
-                "reference": "b396002028b31415bc712091a7bf3f2532c285db"
+                "reference": "27749983cc238bcbf4965e1f667fbb480e70f1e9"
             },
             "require": {
                 "drupal/core": "8.*",
@@ -1636,6 +1636,10 @@
             "extra": {
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
+                },
+                "patches_applied": {
+                    "Fix type hints in RouteSubscriber": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/193.patch",
+                    "Class and file names should match.": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/194.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
@@ -1644,7 +1648,7 @@
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
-            "time": "2016-09-14 17:44:07"
+            "time": "2016-09-20 04:48:05"
         },
         {
             "name": "drupal/og_menu",
@@ -2754,7 +2758,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2809,7 +2813,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
