@@ -29,6 +29,7 @@ function joinup_theme_preprocess_page(&$variables) {
     'entity.rdf_entity.edit_form',
     'node.add',
     'node.add_page',
+    'rdf_entity.propose_form',
     'rdf_entity.rdf_add',
     'rdf_entity.rdf_add_page',
     'user.login',
@@ -38,7 +39,7 @@ function joinup_theme_preprocess_page(&$variables) {
 
   // Check if page is collection propose form.
   // It is needed for proper display of vertical tabs.
-  if ($route_name = 'rdf_entity.propose_form') {
+  if ($route_name == 'rdf_entity.propose_form') {
     $rdf_type = $route_match->getParameter('rdf_type');
     if (method_exists($rdf_type, 'get')) {
       $rdf_type = $rdf_type->get('rid');
@@ -50,7 +51,6 @@ function joinup_theme_preprocess_page(&$variables) {
 
   if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
     $variables['is_blue_header'] = TRUE;
-
     // Move the title from the content region to featured region.
     $title = $variables['page']['content']['pagetitle'];
     unset($variables['page']['content']['pagetitle']);
@@ -70,6 +70,7 @@ function joinup_theme_preprocess_page_title(&$variables) {
   $create_content_routes = array(
     'node.add',
     'node.add_page',
+    'rdf_entity.propose_form',
     'rdf_entity.rdf_add',
     'rdf_entity.rdf_add_page',
     'collection.propose_form',
@@ -167,6 +168,7 @@ function joinup_theme_preprocess_container(&$variables) {
   $route_name = $route_match->getRouteName();
   $form_routes = array(
     'node.add',
+    'rdf_entity.propose_form',
     'rdf_entity.rdf_add',
     'entity.node.edit_form',
     'collection.propose_form',
