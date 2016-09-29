@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "09208a1bb1f09f8da361191a2632f16e",
-    "content-hash": "7eda8edf8faf6e22d753fbdb1f4e9698",
+    "hash": "000e65a87033dbad5d190c6e8971c0b7",
+    "content-hash": "9c7307de28b37052b01c2ceb8e273356",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -6291,7 +6291,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/default_content-8.x-1.0-alpha3.zip",
-                "reference": null,
+                "reference": "10c07ee3eb29c3a4112209dfe842c048160efb46",
                 "shasum": null
             },
             "require": {
@@ -6314,17 +6314,11 @@
         },
         {
             "name": "drupal/devel",
-            "version": "8.1.0-alpha1",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "930b7b89c2fa2047ebbb0fb3ba53f45a67409242"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-alpha1.zip",
-                "reference": "930b7b89c2fa2047ebbb0fb3ba53f45a67409242",
-                "shasum": null
+                "reference": "623a3b480a202a9d281c60f76ac806f3da0d4555"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -6337,7 +6331,8 @@
             },
             "suggest": {
                 "drupal/core": "Required by drupal/devel_generate, drupal/devel_node_access, drupal/kint, drupal/webprofiler",
-                "drupal/menu_ui": "Required by drupal/devel_node_access"
+                "drupal/menu_ui": "Required by drupal/devel_node_access",
+                "symfony/var-dumper": "Pretty print complex values better with var-dumper available"
             },
             "type": "drupal-module",
             "extra": {
@@ -6359,7 +6354,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2016-06-23 14:14:07"
+            "time": "2016-09-17 11:35:02"
         },
         {
             "name": "drupal/drupal-driver",
@@ -7847,6 +7842,7 @@
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
+        "drupal/devel": 20,
         "drupal/drupal-extension": 20,
         "jcalderonzumba/gastonjs": 20
     },
