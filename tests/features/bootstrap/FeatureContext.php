@@ -560,8 +560,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function assertVerticalTabLink($tab) {
     $page = $this->getSession()->getPage();
 
-    $xpath = "//li[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item ')]";
-    $xpath .= "//a[./@href][normalize-space(string(.)) = '$tab']";
+    $xpath = "//li[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item ')]"
+      . "//a[./@href]/strong[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item-title ')]"
+      . "[normalize-space(string(.)) = '$tab']";
     $tab = $page->find('xpath', $xpath);
 
     if ($tab === NULL) {
