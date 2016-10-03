@@ -57,17 +57,18 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
       return;
     }
     $message_template = MessageTemplate::load('workflow_transition');
-
-    $storage = \Drupal::entityManager()->getStorage('og_membership');
+    $storage = $this->entityTypeManager->getStorage('og_membership');
 
     // Sent a message to all solution administrators.
-    $membership_query = $storage->getQuery();
-    $membership_query
+    $membership_query = $storage->getQuery()
       ->condition('state', 'active')
-      ->condition('entity_id', $entity->id())
-      ->condition('roles', 'rdf_entity-solution-administrator');
+      ->condition('entity_id', $entity->id());
     $memberships_ids = $membership_query->execute();
     $memberships = OgMembership::loadMultiple($memberships_ids);
+    $memberships = array_filter($memberships, function($membership) {
+      return $membership->hasPermission('message notification on validate');
+    });
+
     /** @var OgMembership $membership */
     foreach ($memberships as $membership) {
       $uid = $membership->get('uid')->first()->getValue()['target_id'];
