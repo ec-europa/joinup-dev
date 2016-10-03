@@ -2,6 +2,7 @@
 
 namespace Drupal\solution\EventSubscriber;
 
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\message\Entity\Message;
 use Drupal\message\Entity\MessageTemplate;
 use Drupal\message_notify\MessageNotifier;
@@ -14,7 +15,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
 
-
   /**
    * The message notifier service.
    *
@@ -23,10 +23,23 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   protected $messageNotifier;
 
   /**
-   * Constructs an WorkflowTransitionEventSubscriber object.
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
    */
-  public function __construct(MessageNotifier $messageNotifier) {
-    $this->messageNotifier = $messageNotifier;
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a subscriber object. Passes services to the class.
+   *
+   * @param \Drupal\message_notify\MessageNotifier $message_notifier
+   *    The message notifier service.
+   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   *    The entity type manager service.
+   */
+  public function __construct(MessageNotifier $message_notifier, EntityTypeManager $entity_type_manager) {
+    $this->messageNotifier = $message_notifier;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
