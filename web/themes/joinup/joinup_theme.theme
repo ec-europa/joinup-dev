@@ -41,11 +41,8 @@ function joinup_theme_preprocess_page(&$variables) {
   // It is needed for proper display of vertical tabs.
   if ($route_name == 'rdf_entity.propose_form') {
     $rdf_type = $route_match->getParameter('rdf_type');
-    if (method_exists($rdf_type, 'get')) {
-      $rdf_type = $rdf_type->get('rid');
-      if ($rdf_type == 'collection') {
-        $variables['is_propose_collection'] = TRUE;
-      }
+    if ($rdf_type->id() === 'collection') {
+      $variables['is_propose_collection'] = TRUE;
     }
   }
 
