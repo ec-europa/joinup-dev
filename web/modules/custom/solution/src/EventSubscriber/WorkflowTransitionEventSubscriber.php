@@ -65,7 +65,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
       ->condition('entity_id', $entity->id());
     $memberships_ids = $membership_query->execute();
     $memberships = OgMembership::loadMultiple($memberships_ids);
-    $memberships = array_filter($memberships, function($membership) {
+    $memberships = array_filter($memberships, function ($membership) {
       return $membership->hasPermission('message notification on validate');
     });
 
