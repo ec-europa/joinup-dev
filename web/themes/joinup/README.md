@@ -42,6 +42,7 @@ $ bundle install
 ```
 
 ## Available tools
+
 `gulp` command will be available to compile scripts/sass/styleguide files.
 Just run `gulp` without any parameters to compile and start the "watch" mode to compile files on change.
 A list of all the tasks is available with `gulp --tasks`.
