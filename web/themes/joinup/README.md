@@ -22,7 +22,7 @@ $ which bundle # Note: without "r" for the executable
 ```
 If it's not available, run the following commands:
 ```Shell
-$ gem install bundler #For generic systems
+$ gem install bundler # For generic systems
 $ rvm @global do gem install bundler # When using RVM (https://rvm.io/)
 ```
 
