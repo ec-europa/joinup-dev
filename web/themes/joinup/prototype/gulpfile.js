@@ -13,9 +13,9 @@ var gulp = require('gulp'),
 var paths = {
   sass: ['sass/**/*.+(scss|sass)'],
   sassStyleguide: [
+    '../vendor/material-design-lite/material.css',
     'sass/**/*.+(scss|sass)',
-    '!sass/_*.+(scss|sass)',
-    '../vendor/material-design-lite/material.css'
+    '!sass/_*.+(scss|sass)'
   ],
   html: ['sass/**/*.html'],
   mustache: [
@@ -44,6 +44,7 @@ gulp.task('sass', function () {
       {outputStyle: 'compressed'}
     ).on('error', sass.logError))
     .pipe(rename('style.min.css'))
+    .pipe(gulp.dest('../css'))
     .pipe(gulp.dest('css'))
     .pipe(livereload());
 });
@@ -99,6 +100,6 @@ gulp.task('js', function() {
 
 // Listen folders for changes and apply defined tasks
 gulp.task('default', ['styleguide', 'sass', 'images', 'js', 'mustache'], function() {
-  livereload.listen();
+  livereload.listen(45729);
   gulp.watch([paths.sass, paths.html, paths.mustache], ['styleguide', 'sass', 'images', 'js', 'mustache']);
 });

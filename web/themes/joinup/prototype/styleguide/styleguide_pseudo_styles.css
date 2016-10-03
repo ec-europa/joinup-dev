@@ -1,40 +1,4 @@
-.login-menu__button.pseudo-class-hover {
-  background: none;
-}
-
-.sidebar-menu__link.pseudo-class-hover,
-.sidebar-menu__link.pseudo-class-active,
-.sidebar-menu__link.pseudo-class-focus {
-  background-color: #fff;
-  border-left-color: #ee8917;
-  font-weight: 600;
-}
-
-.listing__fields--bottom-aligned .listing__field.pseudo-class-last-of-type {
-  margin-bottom: 0;
-}
-
-.tab a.pseudo-class-hover,
-.tab a.pseudo-class-focus,
-.tab a.pseudo-class-active {
-  color: #ee8917;
-}
-
-.draggable__icon.pseudo-class-hover,
-.draggable__icon.pseudo-class-active,
-.draggable__icon.pseudo-class-focus {
-  color: #211b38;
-}
-
-.details__element.pseudo-class-last-of-type {
-  margin-right: 0;
-  padding-right: 0;
-  border-right: none;
-}
-
-.action-link.pseudo-class-last-of-type {
-  margin-right: 0;
-}.visuallyhidden.focusable.pseudo-class-active,
+.visuallyhidden.focusable.pseudo-class-active,
 .visuallyhidden.focusable.pseudo-class-focus {
   clip: auto;
   height: auto;
@@ -322,4 +286,48 @@
 
 .mdl-slider.is-upgraded.is-lowest-value.pseudo-class-disabled.pseudo-class-active::-ms-fill-upper {
   margin-left: 6px;
+}.radio--inline.pseudo-class-last-of-type {
+  margin-right: 0;
+}
+
+.checkbox--inline.pseudo-class-last-of-type {
+  margin-right: 0;
+}
+
+.login-menu__button.pseudo-class-hover {
+  background: none;
+}
+
+.sidebar-menu__link.pseudo-class-hover,
+.sidebar-menu__link.pseudo-class-active,
+.sidebar-menu__link.pseudo-class-focus {
+  background-color: #fff;
+  border-left-color: #ee8917;
+  font-weight: 600;
+}
+
+.listing__fields--bottom-aligned .listing__field.pseudo-class-last-of-type {
+  margin-bottom: 0;
+}
+
+.tab a.pseudo-class-hover,
+.tab a.pseudo-class-focus,
+.tab a.pseudo-class-active {
+  color: #ee8917;
+}
+
+.draggable__icon.pseudo-class-hover,
+.draggable__icon.pseudo-class-active,
+.draggable__icon.pseudo-class-focus {
+  color: #211b38;
+}
+
+.details__element.pseudo-class-last-of-type {
+  margin-right: 0;
+  padding-right: 0;
+  border-right: none;
+}
+
+.action-link.pseudo-class-last-of-type {
+  margin-right: 0;
 }

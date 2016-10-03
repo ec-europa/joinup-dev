@@ -2,92 +2,335 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>HTML prototype</title>
-    <meta name="description" content="Bootsmacss page's HTML prototype">
-
-    <link rel="stylesheet" href="../css/style.css">
-
+    <title>Joinup</title>
+    <meta name="description" content="Joinup homepage">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' type='text/css'>
+    <link rel="stylesheet" href="../../vendor/material-design-lite/material.min.css">
+    <link rel="stylesheet" href="../css/style.min.css">
   </head>
-
   <body>
-<nav class="navbar navbar-default">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="/" class="logo" title="Home"></a>
+  
+  <div class="mdl-layout mdl-js-layout">
+    
+<header class="section section--header">
+  <div class="mdl-layout__header-row">
+    <a href="../html-prototype/index.html" class="header-logo mdl-layout-title" title="Home">
+      <img src="../../images/logo.png">
+    </a>
+    <div class="mdl-layout-spacer"></div>
+    <!-- Header menu displayed from 840px -->
+    <nav class="header-menu mdl-navigation">
+      <a class="header-menu__link mdl-navigation__link" href="../html-prototype/solutions.html">
+        <span class="header-menu__wrapper">
+          <span class="header-menu__icon icon icon--solution"></span>
+          <span class="header-menu__text">Solutions</span>            
+        </span>
+      </a>
+      <a class="header-menu__link mdl-navigation__link" href="../html-prototype/collections.html">
+        <span class="header-menu__wrapper">
+          <span class="header-menu__icon icon icon--collection"></span>
+          <span class="header-menu__text">Collections</span>
+        </span>
+      </a>
+      <a class="header-menu__link mdl-navigation__link" href="#">
+        <span class="header-menu__wrapper">
+          <span class="header-menu__icon icon icon--event"></span>
+          <span class="header-menu__text">Events</span>
+        </span>
+      </a>
+    </nav>
+    <div class="mdl-layout-spacer"></div>
+    <div class="search-bar search-bar--header mdl-textfield mdl-js-textfield mdl-textfield--expandable
+    mdl-textfield--floating-label mdl-textfield--align-right">
+      <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon"
+      for="search-bar__input">
+        <span class="search-bar__icon icon icon--search"></span>
+      </label>
+      <div class="search-bar__input-container mdl-textfield__expandable-holder">
+        <input class="search-bar__input mdl-textfield__input" type="text" name="search"
+        id="search-bar__input">
+      </div>
     </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li class="dropdown-header">Nav header</li>
-            <li><a href="#">Separated link</a></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
+    <div class="login-menu">
+      <div id="login-menu__button" class="login-menu__button mdl-button mdl-js-button">
+        <img src="../../images/login-icon.png">
+      </div>
+      <ul class="login-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="login-menu__button">
+        <li class="mdl-menu__item"><a class="login-menu__link" href="#">My profile</a></li>
+        <li class="mdl-menu__item"><a class="login-menu__link" href="#">My page</a></li>
+        <li class="mdl-menu__item"><a class="login-menu__link" href="#">Logout</a></li>
       </ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container-fluid -->
-</nav>
+    </div>
+  </div>
+</header>
+<!-- Header menu displayed to 839px -->
+<div class="mdl-layout__drawer">
+  <nav class="mdl-navigation">
+    <a class="mdl-navigation__link" href="../html-prototype/solutions.html">Solutions</a>
+    <a class="mdl-navigation__link" href="../html-prototype/collections.html">Collections</a>
+    <a class="mdl-navigation__link" href="">Events</a>
+  </nav>
+</div>
+    <div class="section section--featured-lg">
 
-<main class="container">
-  <div class="row middle-sm">
-    <div class="col-sm-6 col-sm-offset-2">
-      <div class="box">
-        <section class="section--content">
-          <h1>Hello world!</h1>
-          <p>This is starter frontpage prototype.</p>
-        </section>
+<div class="featured-lg">
+  <div class="featured-lg__wrapper">
+    <div class="featured-lg__logo">
+      <img src="../../images/logo.png">
+    </div>
+    <h1 class="featured-lg__text">Share and reuse interoperatibility solutions for public administrations</h1>
+    <div class="featured-lg__search-bar search-bar--section search-bar--white mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--align-right">
+      <label class="search-bar__label icon icon--search mdl-button mdl-js-button"
+      for="search-bar__input">
+      </label>
+      <input class="search-bar__input mdl-textfield__input" placeholder="Start typing to search..." type="text" name="search"
+        id="search-bar__input">
+    </div>
+    <div class="featured-lg__stats">
+      <div class="stats__wrapper">
+        <div class="stats__icon icon icon--solution"></div>
+        <div class="stats__text">
+          <div class="stats__text--upper">4007</div>
+          <div class="stats__text--lower">Solutions</div>
+        </div>
+        <div class="stats__description">Interoperatibility solution ready to use</div>
+      </div>
+      <div class="stats__wrapper">
+        <div class="stats__icon icon icon--collection"></div>
+        <div class="stats__text">
+          <div class="stats__text--upper">61</div>
+          <div class="stats__text--lower">Collections</div>
+        </div>
+        <div class="stats__description">Collaborate around thematics</div>
+      </div>
+      <div class="stats__wrapper">
+        <div class="stats__icon icon icon--event"></div>
+        <div class="stats__text">
+          <div class="stats__text--upper">22</div>
+          <div class="stats__text--lower">Content</div>
+        </div>
+        <div class="stats__description">Events, cases and news</div>
       </div>
     </div>
-    <div class="col-sm-4 first-sm">
-      <div class="box">
-        <aside class="section--sidebar">
-          <div class="well">
-            Example sidebar
+  </div>
+  <div class="featured-lg__overlay"></div>
+</div>
+
+    </div>
+    <div class="section section--content">
+      <div class="main-container mdl-grid">
+        <div class="mdl-cell mdl-cell--1-col"></div>
+        <div class="mdl-cell mdl-cell--10-col">  
+          <div class="listing listing--grid mdl-grid">
+
+<div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+  <div class="listing__card listing__card--stats-container mdl-card">
+    <div class="listing__image">
+      <img src="../../images/tile-image.png">
+    </div>
+    <div class="listing__metadata">
+    <div class="listing__field">
+      <img class="listing__avatar" src="../../images/login-icon.png">
+    </div>
+    <div class="listing__field">
+      <h2 class="listing__title">Optimy</h2>
+    </div>
+    <div class="listing__field">
+      <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Aenan convallis.</p>
+    </div>
+    <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">154</span>
+        <span class="listing__icon icon icon--download"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">13</span>
+        <span class="listing__icon icon icon--user"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">22</span>
+        <span class="listing__icon icon icon--like"></span>
+      </div>
+    </div>        
+    </div>
+  </div>
+</div>
+<div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+  <div class="listing__card listing__card--stats-container mdl-card">
+    <div class="listing__image">
+      <img src="../../images/tile-image.png">
+    </div>
+    <div class="listing__metadata">
+    <div class="listing__field">
+      <img class="listing__avatar" src="../../images/login-icon.png">
+    </div>
+    <div class="listing__field">
+      <h2 class="listing__title">Optimy</h2>
+    </div>
+    <div class="listing__field">
+      <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Aenan convallis.</p>
+    </div>
+    <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">154</span>
+        <span class="listing__icon icon icon--download"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">13</span>
+        <span class="listing__icon icon icon--user"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">22</span>
+        <span class="listing__icon icon icon--like"></span>
+      </div>
+    </div>        
+    </div>
+  </div>
+</div>
+<div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+  <div class="listing__card listing__card--stats-container mdl-card">
+    <div class="listing__image">
+      <img src="../../images/tile-image.png">
+    </div>
+    <div class="listing__metadata">
+    <div class="listing__field">
+      <img class="listing__avatar" src="../../images/login-icon.png">
+    </div>
+    <div class="listing__field">
+      <h2 class="listing__title">Optimy</h2>
+    </div>
+    <div class="listing__field">
+      <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Aenan convallis.</p>
+    </div>
+    <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">154</span>
+        <span class="listing__icon icon icon--download"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">13</span>
+        <span class="listing__icon icon icon--user"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">22</span>
+        <span class="listing__icon icon icon--like"></span>
+      </div>
+    </div>        
+    </div>
+  </div>
+</div>
+<div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+  <div class="listing__card listing__card--stats-container mdl-card">
+    <div class="listing__image">
+      <img src="../../images/tile-image.png">
+    </div>
+    <div class="listing__metadata">
+    <div class="listing__field">
+      <img class="listing__avatar" src="../../images/login-icon.png">
+    </div>
+    <div class="listing__field">
+      <h2 class="listing__title">Optimy</h2>
+    </div>
+    <div class="listing__field">
+      <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Aenan convallis.</p>
+    </div>
+    <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">154</span>
+        <span class="listing__icon icon icon--download"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">13</span>
+        <span class="listing__icon icon icon--user"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">22</span>
+        <span class="listing__icon icon icon--like"></span>
+      </div>
+    </div>        
+    </div>
+  </div>
+</div>
+<div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+  <div class="listing__card listing__card--stats-container mdl-card">
+    <div class="listing__image">
+      <img src="../../images/tile-image.png">
+    </div>
+    <div class="listing__metadata">
+    <div class="listing__field">
+      <img class="listing__avatar" src="../../images/login-icon.png">
+    </div>
+    <div class="listing__field">
+      <h2 class="listing__title">Optimy</h2>
+    </div>
+    <div class="listing__field">
+      <p class="listing__teaser">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Aenan convallis.</p>
+    </div>
+    <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">154</span>
+        <span class="listing__icon icon icon--download"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">13</span>
+        <span class="listing__icon icon icon--user"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">22</span>
+        <span class="listing__icon icon icon--like"></span>
+      </div>
+    </div>        
+    </div>
+  </div>
+</div>
+<div class="listing__item listing__item--tile listing__item--newsletter mdl-cell mdl-cell--4-col">
+  <div class="listing__card mdl-card">
+    <div class="listing__wrapper">
+      <div class="listing__field">
+        <h3>Newsletter</h3>
+        <p>Keep in touch with Joinup</p>
+      </div>
+      <div class="listing__fields--bottom-aligned">
+        <div class="listing__field">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text">
+            <label class="mdl-textfield__label">Email address</label>
           </div>
-        </aside>
-      </div>
+        </div>
+        <div class="listing__field">
+          <button class="button button--full-width button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Subscribe</button>
+        </div>
+      </div>      
     </div>
   </div>
-</main>
+</div>
 
-<footer class="section--footer">
-  <div class="container">
-    <ul class="nav-horizontal text-center">
-      <li class="nav-horizontal__item">
-        <a href="#" class="nav-horizontal__link">Sitemap</a>
-      </li>
-      <li class="nav-horizontal__item">
-        <a href="#" class="nav-horizontal__link">Terms of use</a>
-      </li>
-      <li class="nav-horizontal__item">
-        <a href="#" class="nav-horizontal__link">About</a>
-      </li>
-    </ul>
-  </div>
+          </div>
+        </div>
+        <div class="mdl-cell mdl-cell--1-col"></div>
+      </div>
+    </div>
+
+<footer class="section section--footer">
 </footer>
+    
+  </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="../bootstrap-sass/javascripts/bootstrap.min.js"></script>
+    <script defer src="../../vendor/material-design-lite/material.min.js"</script>
+    <script defer src="../../js/script.js"</script>
     <script>
-      $(document).ready(function(){
-          $('[data-toggle="popover"]').popover();
-      });
+    $(document).ready(function(){
+      $('[data-toggle="popover"]').popover();
+    });
     </script>
     <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
   </body>

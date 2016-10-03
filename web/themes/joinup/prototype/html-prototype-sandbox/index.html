@@ -1,27 +1,35 @@
 {{> partials/head }}
-{{> partials/header }}
+  
+  <div class="mdl-layout mdl-js-layout">
+    
+    {{> partials/header }}
 
-<main class="container">
-  <div class="row middle-sm">
-    <div class="col-sm-6 col-sm-offset-2">
-      <div class="box">
-        <section class="section--content">
-          <h1>Hello world!</h1>
-          <p>This is starter frontpage prototype.</p>
-        </section>
-      </div>
+    <div class="section section--featured-lg">
+
+    {{> partials/featured--large }}
+
     </div>
-    <div class="col-sm-4 first-sm">
-      <div class="box">
-        <aside class="section--sidebar">
-          <div class="well">
-            Example sidebar
+    <div class="section section--content">
+      <div class="main-container mdl-grid">
+        <div class="mdl-cell mdl-cell--1-col"></div>
+        <div class="mdl-cell mdl-cell--10-col">  
+          <div class="listing listing--grid mdl-grid">
+
+            {{> partials/listing-item--default }}
+            {{> partials/listing-item--default }}
+            {{> partials/listing-item--default }}
+            {{> partials/listing-item--default }}
+            {{> partials/listing-item--default }}
+            {{> partials/listing-item--newsletter }}
+
           </div>
-        </aside>
+        </div>
+        <div class="mdl-cell mdl-cell--1-col"></div>
       </div>
     </div>
-  </div>
-</main>
 
-{{> partials/footer }}
+    {{> partials/footer }}
+    
+  </div>
+
 {{> partials/scripts }}

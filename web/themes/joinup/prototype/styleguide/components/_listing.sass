@@ -1,8 +1,9 @@
 // Listing
 //
-// Markup: html/listing.html
+// Listing may contains various types of tiles presented below.
+// Size of the tile can be modified thanks to mdl-cell--X-col class, where X specifies the column size for the cell.
 //
-// Styleguide 2.8
+// Styleguide 2.9
 
 // Component
 // --------------------------------------------------
@@ -10,11 +11,12 @@
 
 // Elements
 // --------------------------------------------------
-.listing__card
-  height: 100%
-
 .listing__item
+  position: relative
   background: #fff
+
+.listing__card
+  position: static
 
 .listing__image
   position: relative
@@ -145,6 +147,76 @@
     top: 7px
     +icon-size(32px)
 
+.listing__card--detail-container
+  .listing__title
+    font-size: $font-size-small
+    text-decoration: underline
+    color: $color-orange
+  .label,
+  .value
+    font-size: $font-size-xsmall
+    display: inline-block
+    vertical-align: middle
+  .label
+    width: 60px
+    margin-right: 10px
+    text-align: right
+
+// Listing
+//
+// Tile: default
+//
+// Markup: html/listing-item--default.html
+// 
+// Styleguide 2.9.1
+
+// Component
+// --------------------------------------------------
+
+// Tile: distribution
+//
+// Markup: html/listing-item--distribution.html
+//
+// Styleguide 2.9.2
+
+// Component
+// --------------------------------------------------
+
+// Tile: documentation
+//
+// Markup: html/listing-item--documentation.html
+//
+// Styleguide 2.9.3
+
+// Component
+// --------------------------------------------------
+
+// Tile: event (1/3 width)
+//
+// Markup: html/listing-item--event-col-4.html
+//
+// Styleguide 2.9.4
+
+// Component
+// --------------------------------------------------
+
+// Tile: event (full width)
+//
+// Markup: html/listing-item--event-col-12.html
+//
+// Styleguide 2.9.5
+
+// Component
+// --------------------------------------------------
+
+// Tile: newsletter
+//
+// Markup: html/listing-item--newsletter.html
+//
+// Styleguide 2.9.6
+
+// Component
+// --------------------------------------------------
 .listing__item--newsletter
   color: #fff
   background-color: $color-blue-medium
@@ -167,21 +239,16 @@
   .mdl-textfield__label:after
     background-color: #fff !important
 
-.listing__card--detail-container
-  .listing__title
-    font-size: $font-size-small
-    text-decoration: underline
-    color: $color-orange
-  .label,
-  .value
-    font-size: $font-size-xsmall
-    display: inline-block
-    vertical-align: middle
-  .label
-    width: 60px
-    margin-right: 10px
-    text-align: right
+// Listing
+//
+// Tile: load more
+//
+// Markup: html/listing-item--load-more.html
+//
+// Styleguide 2.9.7
 
+// Component
+// --------------------------------------------------
 .listing__item--load-more
   position: relative
   border: 5px solid #fff
@@ -190,7 +257,6 @@
   .load-more
     display: block
     width: 100%
-    height: 100%
     text-align: center
     text-decoration: none
   .load-more__wrapper
@@ -206,4 +272,3 @@
     font-size: $font-size-base
     font-weight: $font-weight-medium
     color: $color-base
-
