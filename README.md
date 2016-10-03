@@ -163,3 +163,8 @@ Also run the PHPUnit tests, from the web root.
 $ cd web
 $ ../vendor/bin/phpunit
 ```
+
+
+### Frontend development
+
+See the [readme](web/themes/joinup/README.md) in the theme folder.
