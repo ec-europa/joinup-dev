@@ -19,7 +19,7 @@ function rdf_entity_drush_command() {
     'description' => 'Delete the whole index at the Sparql endpoint.',
     'examples' => array(
       'drush rdf-entity-purge' => dt('Purge the triple store.'),
-      'drush repl' => dt('Alias to purge the triple store.'),
+      'drush rep' => dt('Alias to purge the triple store.'),
     ),
     'aliases' => array('rep'),
   );
