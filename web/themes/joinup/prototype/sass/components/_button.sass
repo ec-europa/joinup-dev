@@ -16,22 +16,21 @@
   display: inline-block
   cursor: pointer
   vertical-align: middle
-  height: 20px
+  height: 22px
   .icon
-    color: $color-blue-medium
-    +icon-size(18px)
-    border: 2px solid $color-blue-medium
-    border-radius: 18px
+    vertical-align: middle
+    display: inline-block
 
 .button__no-bg
   font-weight: $font-weight-bold
   letter-spacing: 2px
   background: none
   border: none
-  color: $color-blue-medium
   text-transform: uppercase
   cursor: pointer
-  padding: 0 0 0 10px
+  padding: 0 0 0 5px
+  vertical-align: middle
+  display: inline-block
 
 // Modifiers
 // --------------------------------------------------
@@ -56,6 +55,24 @@
   color: $color-grey-medium !important
   border-color: $color-grey-medium
   background-color: transparent !important
+
+.button__no-bg-wrapper--circle
+  .icon
+    color: $color-blue-medium
+    +icon-size(18px)
+    border: 2px solid $color-blue-medium
+    border-radius: 18px
+
+.button__no-bg-wrapper--grey
+  .icon
+    color: $color-grey-medium
+    +icon-size(18px)
+
+.button__no-bg--blue
+  color: $color-blue-medium
+
+.button__no-bg--grey
+  color: $color-grey-medium
 
 // Dependiencies
 // --------------------------------------------------

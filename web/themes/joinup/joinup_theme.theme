@@ -196,9 +196,34 @@ function joinup_theme_preprocess_form_element(&$variables) {
  * Implements hook_theme_suggestions_HOOK_alter() for input.html.twig.
  */
 function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $variables) {
-  // Check if input element is add more button inside inline entity form.
-  if ($variables['element']['#type'] == 'submit' && in_array('inline_entity_form', $variables['element']['#parents']) && in_array('add_more', $variables['element']['#parents'])) {
-    $suggestions[] = 'input__inline_entity_form_add_another';
+  // Get input untranslated input value.
+  $input_value = '';
+  if (isset($variables['element']['#value']) && method_exists($variables['element']['#value'], 'getUntranslatedString')) {
+    $input_value = $variables['element']['#value']->getUntranslatedString();
+  }
+
+  // Buttons which have "add element" behaviour.
+  $plus_buttons = array(
+    'Add another item',
+    'Add existing',
+    'Add existing @type_singular',
+    'Add new',
+    'Add new @type_singular',
+  );
+
+  if (in_array($input_value, $plus_buttons)) {
+    $suggestions[] = 'input__ief_add_another';
+  }
+
+  // Remove and edit button in inline entity form table.
+  if (in_array('inline_entity_form', $variables['element']['#parents'])) {
+    if ($input_value == 'Edit') {
+      $suggestions[] = 'input__ief_edit';
+    }
+
+    if ($input_value == 'Remove') {
+      $suggestions[] = 'input__ief_remove';
+    }
   }
 }
 
