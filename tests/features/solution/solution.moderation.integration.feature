@@ -15,20 +15,18 @@ Feature: As a user of the website
       | name | Mr Crab |
 
     And the following solutions:
-      | title                    | description                | logo     | banner     | owner   | contact information | state            | policy domain |
-      | Professional Dreams      | Azure ship                 | logo.png | banner.jpg | Mr Crab | Crusty crab         | draft            | Health        |
-      | The Falling Swords       | The Falling Swords         | logo.png | banner.jpg | Mr Crab | Crusty crab         | proposed         | Health        |
-      | Flight of Night          | Rose of Doors              | logo.png | banner.jpg | Mr Crab | Crusty crab         | validated        | Health        |
-      | The Streams of the Lover | The Ice's Secrets          | logo.png | banner.jpg | Mr Crab | Crusty crab         | deletion_request | Health        |
-      | Teacher in the Twins     | The Guardian of the Stream | logo.png | banner.jpg | Mr Crab | Crusty crab         | in_assessment    | Health        |
-      | Missing Fire             | Flames in the Swords       | logo.png | banner.jpg | Mr Crab | Crusty crab         | blacklisted      | Health        |
+      | title                    | description                | logo     | banner     | owner   | contact information | solution type     | state            | policy domain |
+      | Professional Dreams      | Azure ship                 | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | draft            | Health        |
+      | The Falling Swords       | The Falling Swords         | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | proposed         | Health        |
+      | Flight of Night          | Rose of Doors              | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | validated        | Health        |
+      | The Streams of the Lover | The Ice's Secrets          | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | deletion_request | Health        |
+      | Teacher in the Twins     | The Guardian of the Stream | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | in_assessment    | Health        |
+      | Missing Fire             | Flames in the Swords       | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | blacklisted      | Health        |
 
     When I am logged in as a "facilitator" of the "Professional Dreams" solution
     And I go to the homepage of the "Professional Dreams" solution
     Then I should see the heading "Professional Dreams"
-    # Since it's only in draft, the normal view is the draft view
-    # and the "View draft should not be shown.
-    And I should not see the link "View Draft"
+    And I should see the link "View draft"
     # @todo: Fix the visibility issue.
     But I should see the link "View"
     And I should see the link "Edit" in the "Entity actions" region
@@ -53,8 +51,8 @@ Feature: As a user of the website
     # The page redirects to the canonical view after editing.
     Then I should see the heading "Flight of Night"
     And I should not see the heading "Flight of Day"
-    And I should see the link "View Draft"
-    When I click "View Draft"
+    And I should see the link "View draft"
+    When I click "View draft"
     # The header still shows the published title but the draft title is included
     # in the page.
     Then I should see the heading "Flight of Day"
@@ -66,6 +64,6 @@ Feature: As a user of the website
     And I select "Validated" from "State"
     And I press "Save"
     Then I should see the heading "Flight of Day"
-    And I should not see the link "View Draft"
+    And I should not see the link "View draft"
     # @todo: Fix the visibility issue.
     But I should see the link "View"
