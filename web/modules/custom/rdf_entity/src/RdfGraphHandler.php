@@ -158,8 +158,7 @@ class RdfGraphHandler {
    *    The graph type. Defaults to 'default'.
    *
    * @return array
-   *    An array of graphs uris with the graph uris as keys and the bundles as
-   *   values.
+   *    An array of graphs uris mapped by bundle id and graph id.
    *
    * @throws \Exception
    *    Thrown when the passed graph cannot be determined.
