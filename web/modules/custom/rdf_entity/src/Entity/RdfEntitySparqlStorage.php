@@ -365,7 +365,7 @@ QUERY;
       $entity_graph_uris = $this->getGraphHandler()->getEntityTypeGraphUris($this->getEntityType()->getBundleEntityType());
       foreach ($request_graphs as $priority_graph) {
         foreach ($values_per_graph as $graph_uri => $entity_values) {
-          if (array_search($graph_uri, array_column($entity_graph_uris, $priority_graph)) === FALSE) {
+          if (isset($return[$entity_id]) || array_search($graph_uri, array_column($entity_graph_uris, $priority_graph)) === FALSE) {
             continue;
           }
           // First determine the bundle of the returned entity.
@@ -421,10 +421,6 @@ QUERY;
               }
             }
           }
-        }
-        if (!empty($return)) {
-          // If we are here, it means a valid entity is already loaded.
-          return $return;
         }
       }
     }
