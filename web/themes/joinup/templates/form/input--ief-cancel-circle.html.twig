@@ -13,7 +13,11 @@
 {%
   set classes = [
     'button__no-bg',
-    'button__no-bg--grey',
+    'button__no-bg--blue',
   ]
 %}
-<div class="button__no-bg-wrapper button__no-bg-wrapper--grey"><span class="icon icon--remove"></span><input{{ attributes.addClass(classes) }} />{{ children }}</div>
+<div class="button__no-bg-wrapper button__no-bg-wrapper--circle">
+  <span class="icon icon--cancel"></span>
+  <input{{ attributes.addClass(classes) }} />
+  {{ children }}
+</div>

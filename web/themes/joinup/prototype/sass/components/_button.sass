@@ -28,7 +28,6 @@
   border: none
   text-transform: uppercase
   cursor: pointer
-  padding: 0 0 0 5px
   vertical-align: middle
   display: inline-block
 
@@ -62,17 +61,23 @@
     +icon-size(18px)
     border: 2px solid $color-blue-medium
     border-radius: 18px
+  .button__no-bg
+    color: $color-blue-medium
+    padding: 0 0 0 5px
+  &:hover
+    .icon
+      color: $color-blue-lighter
+      border-color: $color-blue-lighter
+    .button__no-bg
+      color: $color-blue-lighter
 
 .button__no-bg-wrapper--grey
   .icon
-    color: $color-grey-medium
-    +icon-size(18px)
-
-.button__no-bg--blue
-  color: $color-blue-medium
+    color: $color-grey-input
+    +icon-size(22px)
 
 .button__no-bg--grey
-  color: $color-grey-medium
+  color: $color-grey-input
 
 // Dependiencies
 // --------------------------------------------------

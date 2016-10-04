@@ -159,13 +159,20 @@ function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
     // Set new variable label, which contains title.
     $label = $variables['element']['#title'];
     $variables['label']['content'] = $label;
-
     // Lists of element types.
     $elements = array(
       'target_id',
       'value',
       'uri',
     );
+
+    // Fixes link form element title,.
+    // @see joinup_theme_preprocess_form_element().
+    if (isset($variables['element']['0']['uri'])) {
+      foreach ($variables['table']['#rows'] as &$value_row) {
+        $value_row['data'][1]['data']['uri']['#title'] = $label;
+      }
+    }
 
     // Set first input 'id' as 'for' attribute for table label.
     foreach ($elements as $value_element) {
@@ -189,6 +196,9 @@ function joinup_theme_preprocess_form_element(&$variables) {
     if (!empty($arguments['@title'])) {
       $variables['label'] = $arguments['@title'];
     }
+    elseif (!empty($arguments['@label'])) {
+      $variables['label'] = $arguments['@label'];
+    }
   }
 }
 
@@ -209,21 +219,26 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
     'Add existing @type_singular',
     'Add new',
     'Add new @type_singular',
+    'Add @type_singular',
   );
 
   if (in_array($input_value, $plus_buttons)) {
     $suggestions[] = 'input__ief_add_another';
   }
 
-  // Remove and edit button in inline entity form table.
-  if (in_array('inline_entity_form', $variables['element']['#parents'])) {
-    if ($input_value == 'Edit') {
-      $suggestions[] = 'input__ief_edit';
-    }
-
-    if ($input_value == 'Remove') {
-      $suggestions[] = 'input__ief_remove';
-    }
+  // Remove, edit, update and cancel buttons in inline entity form.
+  if ($input_value == 'Edit' && in_array('ief_entity_edit', $variables['element']['#parents'])
+    || $input_value == 'Update @type_singular' && in_array('ief_entity_edit_save', $variables['element']['#parents'])) {
+    $suggestions[] = 'input__ief_edit';
+  }
+  elseif ($input_value == 'Remove' && in_array('ief_entity_remove', $variables['element']['#parents'])) {
+    $suggestions[] = 'input__ief_remove';
+  }
+  elseif ($input_value == 'Cancel' && in_array('ief_entity_cancel', $variables['element']['#parents'])) {
+    $suggestions[] = 'input__ief_cancel';
+  }
+  elseif ($input_value == 'Cancel' && in_array('ief_reference_cancel', $variables['element']['#parents'])) {
+    $suggestions[] = 'input__ief_cancel_circle';
   }
 }
 
