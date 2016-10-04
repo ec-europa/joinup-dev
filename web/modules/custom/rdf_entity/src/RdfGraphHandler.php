@@ -331,9 +331,6 @@ class RdfGraphHandler {
    *    The entity to determine the save graph for.
    * @param string $graph
    *    The graph id.
-   *
-   * @return string
-   *    The graph id.
    */
   public function setTargetGraphToEntity(EntityInterface $entity, $graph) {
     $entity->set('graph', $graph);
