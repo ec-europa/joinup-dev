@@ -394,9 +394,14 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @AfterScenario
    */
   public function cleanSolutions() {
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    $storage = \Drupal::service('entity_type.manager')->getStorage('rdf_entity');
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
-      $solution->delete();
+      foreach($storage->getGraphHandler()->getEntityTypeEnabledGraphs() as $graph) {
+        $storage->getGraphHandler()->setTargetGraphToEntity($solution, $graph);
+        $solution->delete();
+      }
     }
   }
 
