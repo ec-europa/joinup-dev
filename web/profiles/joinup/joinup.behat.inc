@@ -16,7 +16,7 @@ use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
 
@@ -416,9 +416,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // actual URI. Note that this fails if a URI is supplied for a collection or
     // solution in a Behat test. This is by design, the URIs are not exposed to
     // end users of the site so they should not be used in BDD scenarios.
-    if (!empty($node->{OgGroupAudienceHelper::DEFAULT_FIELD})) {
-      $entity = $this->getRdfEntityByLabel($node->{OgGroupAudienceHelper::DEFAULT_FIELD});
-      $node->{OgGroupAudienceHelper::DEFAULT_FIELD} = $entity->id();
+    if (!empty($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD})) {
+      $entity = $this->getRdfEntityByLabel($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD});
+      $node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD} = $entity->id();
     }
   }
 
@@ -447,8 +447,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'state' => 'field_news_state',
       ],
       'shared' => [
-        'collection' => OgGroupAudienceHelper::DEFAULT_FIELD,
-        'solution' => OgGroupAudienceHelper::DEFAULT_FIELD,
+        'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+        'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
       ],
     ];
 

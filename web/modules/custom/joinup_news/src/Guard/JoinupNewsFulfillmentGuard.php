@@ -5,7 +5,7 @@ namespace Drupal\joinup_news\Guard;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -139,9 +139,9 @@ class JoinupNewsFulfillmentGuard implements GuardInterface {
    */
   public static function getParent(EntityInterface $entity) {
     $parent = NULL;
-    if (!empty($entity->{OgGroupAudienceHelper::DEFAULT_FIELD}->first()->target_id)) {
+    if (!empty($entity->{OgGroupAudienceHelperInterface::DEFAULT_FIELD}->first()->target_id)) {
       /** @var \Drupal\rdf_entity\RdfInterface $parent */
-      $parent = Rdf::load($entity->{OgGroupAudienceHelper::DEFAULT_FIELD}->first()->target_id);
+      $parent = Rdf::load($entity->{OgGroupAudienceHelperInterface::DEFAULT_FIELD}->first()->target_id);
     }
     return $parent;
   }
