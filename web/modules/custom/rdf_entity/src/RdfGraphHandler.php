@@ -325,6 +325,21 @@ class RdfGraphHandler {
   }
 
   /**
+   * Sets the target graph to the entity's graph field.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The entity to determine the save graph for.
+   * @param string $graph
+   *    The graph id.
+   *
+   * @return string
+   *    The graph id.
+   */
+  public function setTargetGraphToEntity(EntityInterface $entity, $graph) {
+    $entity->set('graph', $graph);
+  }
+
+  /**
    * Returns the graph id from the graph entity field.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
