@@ -82,29 +82,19 @@ Feature: Solution editing.
 
   Scenario: A solution facilitator can edit only the solutions he's associated with.
     Given the following solution:
-      | title               | Solution B    |
-      | description         | Second letter |
-      | logo                | logo.png      |
-      | banner              | banner.jpg    |
-      | contact information | Seward Shawn  |
-      | owner               | Acme inc.     |
-      | state               | validated     |
+      | title               | Solution B     |
+      | description         | Second letter  |
+      | logo                | logo.png       |
+      | banner              | banner.jpg     |
+      | contact information | Seward Shawn   |
+      | owner               | Acme inc.      |
+      | state               | validated      |
+      | solution type       | [ABB8] Citizen |
     When I am logged in as a facilitator of the "Solution B" solution
     And I go to the homepage of the "Solution B" solution
     Then I should see the link "Edit"
     When I go to the "Solution B" solution edit form
     Then I should see the heading "Edit Solution Solution B"
-    And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
-    And I fill in "Policy Domain" with "Health"
-    And I select "[ABB8] Citizen" from "Solution type"
-    And the following fields should be present "Title, Description, Documentation, Related Solutions, Moderated, Landing page, Metrics page"
-    And the following fields should not be present "Issue tracker, Wiki"
-    And the following field widgets should be present "Contact information, Owner, eLibrary creation"
-    And I should see the text "Logo"
-    And I should see the text "Banner"
-    When I fill in "Title" with "Solution B revised"
-    And I press "Save"
-    Then I should see the heading "Solution B revised"
 
     When I go to the homepage of the "Another solution" solution
     Then I should not see the link "Edit"
