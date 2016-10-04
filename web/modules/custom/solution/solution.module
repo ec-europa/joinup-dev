@@ -16,7 +16,6 @@ use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -109,15 +108,29 @@ function solution_form_rdf_entity_solution_form_alter(array &$form, FormStateInt
  * created, the collection should be passed to the form_state object.
  */
 function solution_add_form_parent_submit(array &$form, FormStateInterface $form_state) {
-  $collection = Rdf::load($form_state->getStorage()['collection']);
-  if (empty($collection) || $collection->bundle() !== 'collection') {
-    throw new \Exception('Only collections can be referenced in affiliation requests.');
+  $collection_id = $form_state->getStorage()['collection'];
+
+  /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+  $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+
+  // Add the reference field both to the published and the draft collection.
+  foreach (['default', 'draft'] as $graph) {
+    $storage->setRequestGraphs($collection_id, [$graph]);
+    $collection = $storage->load($collection_id);
+    if (empty($collection)) {
+      continue;
+    }
+    if ($collection->bundle() !== 'collection') {
+      throw new \Exception('Only collections can be referenced in affiliation requests.');
+    }
+    $storage->setSaveGraph($graph);
+
+    $entity_id = $form_state->getFormObject()->getEntity()->id();
+    $values = $collection->get('field_ar_affiliates')->getValue();
+    $values[] = ['target_id' => $entity_id];
+    $collection->set('field_ar_affiliates', $values);
+    $collection->save();
   }
-  $entity_id = $form_state->getFormObject()->getEntity()->id();
-  $values = $collection->get('field_ar_affiliates')->getValue();
-  $values[] = ['target_id' => $entity_id];
-  $collection->set('field_ar_affiliates', $values);
-  $collection->save();
 }
 
 /**
