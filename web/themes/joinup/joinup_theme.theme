@@ -285,4 +285,5 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
  */
 function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'joinup_theme/form-components';
+  $form['#attached']['drupalSettings']['widthBreakpoint'] = 100;
 }

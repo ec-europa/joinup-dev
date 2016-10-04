@@ -82,7 +82,7 @@ third_party_settings:
         id: ''
         classes: ''
         formatter: closed
-        description: 'Lorem ipsum dolor sit amet.'
+        description: 'Describe the collection.'
         required_fields: true
     group_categorisation:
       children:
@@ -97,7 +97,7 @@ third_party_settings:
         id: ''
         classes: ''
         formatter: closed
-        description: 'Quisque quam urna, sagittis non efficitur.'
+        description: 'Categorise the collection.'
         required_fields: true
 id: rdf_entity.collection.propose
 targetEntityType: rdf_entity

@@ -70,4 +70,22 @@
       });
     }
   }
+
+  // Behaviors for tab validation.
+  Drupal.behaviors.fieldGroupTabsValidation = {
+    attach: function (context, settings) {
+      $('.field-group-tabs-wrapper input', context).each(function (i) {
+        this.addEventListener('invalid', function (e) {
+          // Open any hidden parents first.
+          $(e.target).parents('details').each(function () {
+            var $fieldGroup = $(this);
+            if ($fieldGroup.data('verticalTab')) {
+              $fieldGroup.data('verticalTab').tabShow();
+            }
+          });
+        }, false);
+      });
+    }
+  };
+
 })(jQuery, Drupal);

@@ -31,7 +31,7 @@
     ]
   %}
   <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
-    <span class="alert__icon icon {{ 'icon--' ~ type }}"></span>
+
     <span class="alert__message">
       {% if status_headings[type] %}
         <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
@@ -39,11 +39,19 @@
       {% if messages|length > 1 %}
         <ul class="alert__list">
           {% for message in messages %}
-            <li class="alert__item">{{ message }}</li>
+            <li class="alert__item">
+              <span class="alert__icon icon {{ 'icon--' ~ type }}"></span>
+              <span>{{ message }}</span>
+            </li>
           {% endfor %}
         </ul>
       {% else %}
-        {{ messages|first }}
+        <ul class="alert__list">
+            <li class="alert__item">
+              <span class="alert__icon icon {{ 'icon--' ~ type }}"></span>
+              <span>{{ messages|first }}</span>
+            </li>
+        </ul>
       {% endif %}
     </span>
   </div>
