@@ -63,27 +63,28 @@ Feature: "Add solution" visibility options.
 
   Scenario: Add solution as a collection facilitator.
     Given the following collection:
-      | title | Collection solution test 2 |
+      | title | Belgian barista's |
       | logo  | logo.png                   |
     And the following contact:
       | email | foo@bar.com                 |
       | name  | Contact information example |
     And the following organisation:
       | name | Organisation example |
-    And I am logged in as a facilitator of the "Collection solution test 2" collection
+    And I am logged in as a facilitator of the "Belgian barista's" collection
 
-    When I go to the homepage of the "Collection solution test 2" collection
+    When I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
     And the following fields should not be present "Groups audience, Other groups"
     When I fill in the following:
-      | Title            | Collection solution add solution                                       |
+      | Title            | Espresso is the solution                                               |
       | Description      | This is a test text                                                    |
       | Documentation    | text.pdf                                                               |
       | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)        |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
+      | State            | proposed                                                               |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I attach the file "text.pdf" to "Documentation"
     And I attach the file "logo.png" to "Logo"
@@ -97,23 +98,28 @@ Feature: "Add solution" visibility options.
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
     And I press "Save"
+    When I am logged in as a moderator
+    When I go to the "Espresso is the solution" solution edit form
+    And I fill in "State" with "validated"
+    And I press "Save"
     # The name of the solution should exist in the block of the relative content in a collection.
-    Then I should see the heading "Collection solution add solution"
+    Then I should see the heading "Espresso is the solution"
     And I should see the text "This is a test text"
-    And I should see the link "Collection solution test 2"
+    And I should see the link "Belgian barista's"
     And I should see the link "Environment (WIP!)"
     And I should see the link "Belgium"
     And I should see the link "Flemish"
-    When I click "Collection solution test 2"
-    Then I should see the heading "Collection solution test 2"
-    Then I should see the link "Collection solution add solution"
+    When I click "Belgian barista's"
+    Then I should see the heading "Belgian barista's"
 
+    Then I should see the link "Espresso is the solution"
 
+    When I am logged in as a facilitator of the "Belgian barista's" collection
     # Make sure that when another solution is added, both are affiliated.
-    When I go to the homepage of the "Collection solution test 2" collection
+    When I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
     When I fill in the following:
-      | Title            | Salaries awaiting                                                      |
+      | Title            | V60 filter coffee solution                                                      |
       | Description      | This is a test text                                                    |
       | Documentation    | text.pdf                                                               |
       | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)        |
@@ -133,12 +139,14 @@ Feature: "Add solution" visibility options.
     And I press "Add owner"
     And I press "Save"
     # The name of the solution should exist in the block of the relative content in a collection.
-    Then I should see the heading "Salaries awaiting"
-    When I click "Collection solution test 2"
-    Then I should see the heading "Collection solution test 2"
-    Then I should see the link "Collection solution add solution"
-    Then I should see the link "Salaries awaiting"
+    Then I should see the heading "V60 filter coffee solution"
+    When I click "Belgian barista's"
+    Then I should see the heading "Belgian barista's"
+    Then I should see the link "Espresso is the solution"
+    Then I should see the link "V60 filter coffee solution"
 
     # Clean up the solution that was created through the UI.
-    Then I delete the "Collection solution add solution" solution
-    Then I delete the "Salaries awaiting" solution
+    Then I delete the "V60 filter coffee solution" solution
+    Then I delete the "Espresso is the solution" solution
+    # Delete twice to delete the draft.
+    Then I delete the "Espresso is the solution" solution
