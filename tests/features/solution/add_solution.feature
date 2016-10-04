@@ -148,3 +148,5 @@ Feature: "Add solution" visibility options.
     # Clean up the solution that was created through the UI.
     Then I delete the "V60 filter coffee solution" solution
     Then I delete the "Espresso is the solution" solution
+    # Delete twice to delete the draft.
+    Then I delete the "Espresso is the solution" solution
