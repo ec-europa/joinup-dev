@@ -220,6 +220,7 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
     'Add new',
     'Add new @type_singular',
     'Add @type_singular',
+    'Create @type_singular',
   );
 
   if (in_array($input_value, $plus_buttons)) {
@@ -237,7 +238,9 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
   elseif ($input_value == 'Cancel' && in_array('ief_entity_cancel', $variables['element']['#parents'])) {
     $suggestions[] = 'input__ief_cancel';
   }
-  elseif ($input_value == 'Cancel' && in_array('ief_reference_cancel', $variables['element']['#parents'])) {
+  elseif ($input_value == 'Cancel'
+  && (in_array('ief_reference_cancel', $variables['element']['#parents'])
+  || (in_array('ief_add_cancel', $variables['element']['#parents'])))) {
     $suggestions[] = 'input__ief_cancel_circle';
   }
 }
