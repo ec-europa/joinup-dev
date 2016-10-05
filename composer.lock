@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ddd1fde091a92a6bbb9de50e546f43fa",
-    "content-hash": "bdeb8ada65f9ddf778b684b27e290a3b",
+    "hash": "48a4488ef8ac10d43c558c7dbc2bf315",
+    "content-hash": "794ed0b9e16788ef98b74f8116a7cc3b",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1490,11 +1490,17 @@
         },
         {
             "name": "drupal/facets",
-            "version": "dev-8.x-1.x",
+            "version": "8.1.0-alpha5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/facets.git",
-                "reference": "d5c0117eb59ab2593f6430e3f3035d60bc084653"
+                "reference": "84f61a7c145ac3fee7b32ab5056c0e73086164a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha5.zip",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "drupal/core": "8.*"
@@ -1504,7 +1510,7 @@
                 "drupal/rest_facets": "self.version"
             },
             "suggest": {
-                "drupal/core": "Required by drupal/core_search_facets",
+                "drupal/core": "Required by drupal/core_search_facets, drupal/rest_facets",
                 "drupal/search": "Required by drupal/core_search_facets"
             },
             "type": "drupal-module",
@@ -1525,7 +1531,7 @@
             ],
             "description": "Faceted search interfaces that can be used on Search API searchers.",
             "homepage": "https://www.drupal.org/project/facets",
-            "time": "2016-08-24 17:38:22"
+            "time": "2016-09-29 12:35:51"
         },
         {
             "name": "drupal/inline_entity_form",
@@ -1615,7 +1621,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/og",
-                "reference": "b396002028b31415bc712091a7bf3f2532c285db"
+                "reference": "27749983cc238bcbf4965e1f667fbb480e70f1e9"
             },
             "require": {
                 "drupal/core": "8.*",
@@ -1637,6 +1643,10 @@
             "extra": {
                 "branch-alias": {
                     "dev-8.x-1.x": "8.1.x-dev"
+                },
+                "patches_applied": {
+                    "Fix type hints in RouteSubscriber": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/193.patch",
+                    "Class and file names should match.": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/194.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
@@ -1645,7 +1655,7 @@
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
-            "time": "2016-09-14 17:44:07"
+            "time": "2016-09-20 04:48:05"
         },
         {
             "name": "drupal/og_menu",
@@ -1721,16 +1731,16 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "8.1.0-alpha17",
+            "version": "8.1.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "dde5cecfbde386ae55b0aa799d1e146b509b3ffa"
+                "reference": "bb7f8865c1d7cc1d768648696d2f5ef27c2a7eae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha17.zip",
-                "reference": "dde5cecfbde386ae55b0aa799d1e146b509b3ffa",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-beta2.zip",
+                "reference": "bb7f8865c1d7cc1d768648696d2f5ef27c2a7eae",
                 "shasum": null
             },
             "require": {
@@ -1751,7 +1761,7 @@
                     "dev-8.x-1.x": "8.1.x-dev"
                 },
                 "patches_applied": {
-                    "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
+                    "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
@@ -1774,7 +1784,7 @@
             ],
             "description": "Provides a generic framework for modules offering search capabilities.",
             "homepage": "https://www.drupal.org/project/search_api",
-            "time": "2016-08-25 08:47:35"
+            "time": "2016-09-28 10:30:20"
         },
         {
             "name": "drupal/search_api_solr",
@@ -2755,7 +2765,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2810,7 +2820,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -6288,7 +6298,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/default_content-8.x-1.0-alpha3.zip",
-                "reference": null,
+                "reference": "10c07ee3eb29c3a4112209dfe842c048160efb46",
                 "shasum": null
             },
             "require": {
@@ -6311,17 +6321,11 @@
         },
         {
             "name": "drupal/devel",
-            "version": "8.1.0-alpha1",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "930b7b89c2fa2047ebbb0fb3ba53f45a67409242"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-alpha1.zip",
-                "reference": "930b7b89c2fa2047ebbb0fb3ba53f45a67409242",
-                "shasum": null
+                "reference": "623a3b480a202a9d281c60f76ac806f3da0d4555"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -6334,7 +6338,8 @@
             },
             "suggest": {
                 "drupal/core": "Required by drupal/devel_generate, drupal/devel_node_access, drupal/kint, drupal/webprofiler",
-                "drupal/menu_ui": "Required by drupal/devel_node_access"
+                "drupal/menu_ui": "Required by drupal/devel_node_access",
+                "symfony/var-dumper": "Pretty print complex values better with var-dumper available"
             },
             "type": "drupal-module",
             "extra": {
@@ -6356,7 +6361,7 @@
             ],
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "http://drupal.org/project/devel",
-            "time": "2016-06-23 14:14:07"
+            "time": "2016-09-17 11:35:02"
         },
         {
             "name": "drupal/drupal-driver",
@@ -7832,7 +7837,6 @@
     "stability-flags": {
         "composer/composer": 15,
         "drupal/digital_size_formatter": 20,
-        "drupal/facets": 20,
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,
         "drupal/og_menu": 20,
@@ -7844,6 +7848,7 @@
         "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
+        "drupal/devel": 20,
         "drupal/drupal-extension": 20,
         "jcalderonzumba/gastonjs": 20
     },
