@@ -6,9 +6,9 @@ Feature: "Add discussion" visibility options.
 
   Scenario: "Add discussion" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following solutions:
-      | title              | logo     | banner     |
-      | Eager Sliver       | logo.png | banner.jpg |
-      | The Silent Bridges | logo.png | banner.jpg |
+      | title              | logo     | banner     | state     |
+      | Eager Sliver       | logo.png | banner.jpg | validated |
+      | The Silent Bridges | logo.png | banner.jpg | validated |
     And the following collection:
       | title      | Collective Eager Sliver          |
       | logo       | logo.png                         |
@@ -36,8 +36,8 @@ Feature: "Add discussion" visibility options.
 
   Scenario: Add discussion as a facilitator.
     Given solutions:
-      | title               | logo     | banner     |
-      | Emerald in the Luck | logo.png | banner.jpg |
+      | title               | logo     | banner     | state     |
+      | Emerald in the Luck | logo.png | banner.jpg | validated |
     And the following collection:
       | title      | Collective Emerald in the Luck |
       | logo       | logo.png                       |

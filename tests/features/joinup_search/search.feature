@@ -4,9 +4,9 @@ Feature: Global search
 
   Scenario: Anonymous user can find items
     Given the following solutions:
-      | title          | description                                                                                                                        |
-      | Spherification | Spherification is the culinary process of shaping a liquid into spheres                                                            |
-      | Foam           | The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams |
+      | title          | description                                                                                                                        | state     |
+      | Spherification | Spherification is the culinary process of shaping a liquid into spheres                                                            | validated |
+      | Foam           | The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams | validated |
       # Taxonomies are not yet implemented, so uncomment this after #ISAICP-2545 is done
       # | spatial coverage | http://publications.europa.eu/resource/authority/country/EUR            |
     And the following collection:

@@ -14,10 +14,32 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
+use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
+
+/**
+ * Implements hook_entity_access().
+ */
+function solution_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->getEntityTypeId() != 'rdf_entity' || $entity->bundle() != 'solution' || $account->isAnonymous() || $operation != 'view') {
+    return AccessResult::neutral();
+  }
+
+  $membership = Og::getMembership($entity, $account);
+  if (empty($membership)) {
+    return AccessResult::neutral();
+  }
+  if (!$entity->isPublished() && $membership->hasPermission('view unpublished rdf entity')) {
+    return AccessResult::allowed();
+  }
+  if ($entity->isPublished() && $membership->hasPermission('view rdf entity')) {
+    return AccessResult::allowed();
+  }
+
+  return AccessResult::neutral();
+}
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -86,15 +108,29 @@ function solution_form_rdf_entity_solution_form_alter(array &$form, FormStateInt
  * created, the collection should be passed to the form_state object.
  */
 function solution_add_form_parent_submit(array &$form, FormStateInterface $form_state) {
-  $collection = Rdf::load($form_state->getStorage()['collection']);
-  if (empty($collection) || $collection->bundle() !== 'collection') {
-    throw new \Exception('Only collections can be referenced in affiliation requests.');
+  $collection_id = $form_state->getStorage()['collection'];
+
+  /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+  $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+
+  // Add the reference field both to the published and the draft collection.
+  foreach (['default', 'draft'] as $graph) {
+    $storage->setRequestGraphs($collection_id, [$graph]);
+    $collection = $storage->load($collection_id);
+    if (empty($collection)) {
+      continue;
+    }
+    if ($collection->bundle() !== 'collection') {
+      throw new \Exception('Only collections can be referenced in affiliation requests.');
+    }
+    $storage->setSaveGraph($graph);
+
+    $entity_id = $form_state->getFormObject()->getEntity()->id();
+    $values = $collection->get('field_ar_affiliates')->getValue();
+    $values[] = ['target_id' => $entity_id];
+    $collection->set('field_ar_affiliates', $values);
+    $collection->save();
   }
-  $entity_id = $form_state->getFormObject()->getEntity()->id();
-  $values = $collection->get('field_ar_affiliates')->getValue();
-  $values[] = ['target_id' => $entity_id];
-  $collection->set('field_ar_affiliates', $values);
-  $collection->save();
 }
 
 /**
@@ -110,7 +146,7 @@ function solution_rdf_entity_access(EntityInterface $entity, $operation, Account
   }
 
   if ($operation == 'edit') {
-    $allowed_transitions = $entity->get('field_is_state')->first()->getTransitions();
+    $allowed_transitions = $entity->field_is_state->first()->getTransitions();
     if (empty($allowed_transitions)) {
       return AccessResult::forbidden();
     }
@@ -156,6 +192,66 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Default graph is published. Draft graph is draft.
+ */
+function solution_rdf_entity_presave(EntityInterface $entity) {
+  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
+  if (empty($enabled_bundles) || $entity->bundle() != 'solution' || !in_array($entity->bundle(), $enabled_bundles)) {
+    return;
+  }
+
+  $state = $entity->field_is_state->value;
+  if (in_array($state, ['draft', 'proposed', 'in_assessment', 'blacklisted'])) {
+    \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
+  }
+  elseif (in_array($state, ['validated', 'deletion_request'])) {
+    \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
+  }
+  elseif (empty($state)) {
+    throw new \Exception("State field not found while trying to get the appropriate graph.");
+  }
+  else {
+    throw new \Exception("State field value is invalid. Current value found: " . $state);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * When the entity is saved into the default graph, the draft must be deleted.
+ * Also, when the entity is blacklisted, the published version is removed
+ * (the entity becomes unpublished).
+ */
+function solution_rdf_entity_update(EntityInterface $entity) {
+  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
+  if (empty($enabled_bundles) || $entity->bundle() != 'solution' || !in_array($entity->bundle(), $enabled_bundles)) {
+    return;
+  }
+
+  $state = $entity->field_is_state->value;
+  if (in_array($state, ['validated', 'deletion_request'])) {
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage->setRequestGraphs($entity->id(), ['draft']);
+    $draft_entity = $storage->loadUnchanged($entity->id());
+    if (!empty($draft_entity)) {
+      $draft_entity->delete();
+    }
+  }
+  if ($state == 'blacklisted') {
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage->setRequestGraphs($entity->id(), ['default']);
+    $published_entity = $storage->loadUnchanged($entity->id());
+    if (!empty($published_entity)) {
+      $published_entity->delete();
+    }
+  }
+}
+
+/**
  * Gets the latest release of a solution.
  *
  * @param \Drupal\rdf_entity\RdfInterface $solution
@@ -176,4 +272,37 @@ function solution_get_latest_release(RdfInterface $solution) {
     ->range(0, 1)
     ->execute();
   return $ids ? reset($ids) : NULL;
+}
+
+/**
+ * Implements hook_entity_graph_access().
+ *
+ * The same procedure as the global access check is followed here. The purpose
+ * is to override the results of the global access check if the user has the
+ * appropriate OG permissions.
+ *
+ * @todo: hook api definition is needed.
+ */
+function solution_entity_graph_access(EntityInterface $entity, $operation, AccountInterface $account, $graph_name) {
+  if (!$entity || $entity->bundle() != 'solution' || $operation != 'view' || $graph_name == 'default') {
+    return AccessResult::neutral();
+  }
+
+  $membership = Og::getMembership($entity, $account);
+  if (empty($membership)) {
+    return AccessResult::neutral();
+  }
+
+  // Following the same logic as the global access check.
+  $map = ['view' => 'view all graphs'];
+  $entity_type_id = $entity->getEntityTypeId();
+  $type_map = ['view' => "view $entity_type_id $graph_name graph"];
+
+  // If the operation is not supported, do not allow access.
+  if (!isset($map[$operation]) || !isset($type_map[$operation])) {
+    return FALSE;
+  }
+
+  $has_permission = $membership->hasPermission($map[$operation]) || $membership->hasPermission($type_map[$operation]);
+  return $has_permission ? AccessResult::allowed() : AccessResult::neutral();
 }

@@ -60,10 +60,6 @@ class LicenceOverviewController extends ControllerBase {
    *   Return Hello string.
    */
   public function overview() {
-    $mapping = $this->entityStorage->getRdfBundleList();
-    if (!$mapping) {
-      return [];
-    }
     $query = $this->entityStorage->getQuery()
       ->condition('rid', 'licence');
 
