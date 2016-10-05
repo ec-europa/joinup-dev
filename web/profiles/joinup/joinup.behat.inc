@@ -90,6 +90,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertAuthenticatedByOgRole($role, $rdf_entity, $rdf_entity_bunlde) {
     $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bunlde);
+    if (!$entity) {
+      throw new \Exception("No entity found with label $rdf_entity");
+    }
     $roles = explode(',', $role);
     $roles = array_map('trim', $roles);
     $roles = $this->getOgRoles($roles, $entity);
@@ -229,6 +232,19 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         $user->delete();
       }
     }
+  }
+
+  /**
+   * Reset the request graphs of rdf entity before every step.
+   *
+   * The request graphs are tied to an individual request.
+   *
+   * @BeforeStep
+   */
+  public function resetRequestGraphs($event) {
+    /** @var RdfEntitySparqlStorage $storage */
+    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage->getGraphHandler()->resetRequestGraphs();
   }
 
   /**

@@ -25,6 +25,8 @@ third_party_settings:
     mapping_default_langcode:
       value: ''
     mapping_path: {  }
+    graph_default: 'http://adms-sw-v1.00'
+    graph_draft: 'http://adms-sw-v1.00'
 name: 'Licence type'
 vid: licence_type
 description: ''

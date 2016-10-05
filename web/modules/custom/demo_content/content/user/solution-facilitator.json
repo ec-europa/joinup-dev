@@ -23,7 +23,17 @@
             "lang": "en"
         }
     ],
+    "status": [
+        {
+            "value": "1"
+        }
+    ],
     "name": [
+        {
+            "value": "solution_facilitator"
+        }
+    ],
+    "pass": [
         {
             "value": "solution_facilitator"
         }

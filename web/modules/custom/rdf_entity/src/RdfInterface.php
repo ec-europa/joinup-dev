@@ -3,6 +3,7 @@
 namespace Drupal\rdf_entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityPublishedInterface;
 
 /**
  * Provides an interface defining a Rdf entity.
@@ -11,7 +12,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
  *
  * @ingroup rdf_entity
  */
-interface RdfInterface extends ContentEntityInterface {
+interface RdfInterface extends ContentEntityInterface, EntityPublishedInterface {
 
   /**
    * Gets the name of the rdf entity.
