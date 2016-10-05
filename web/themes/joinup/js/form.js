@@ -74,16 +74,26 @@
   // Behaviors for tab validation.
   Drupal.behaviors.fieldGroupTabsValidation = {
     attach: function (context, settings) {
+      var invalidFieldId = 0;
       $('.field-group-tabs-wrapper input', context).each(function (i) {
         this.addEventListener('invalid', function (e) {
           // Open any hidden parents first.
           $(e.target).parents('details').each(function () {
             var $fieldGroup = $(this);
             if ($fieldGroup.data('verticalTab')) {
-              $fieldGroup.data('verticalTab').tabShow();
+              if (invalidFieldId == 0) {
+                $fieldGroup.data('verticalTab').tabShow();
+                invalidFieldId = i;
+              }
             }
           });
         }, false);
+      });
+
+      $('.field-group-tabs-wrapper', context).each(function () {
+        $(this).siblings('.form-actions').find('.form-submit').on('click', function () {
+          invalidFieldId = 0;
+        });
       });
     }
   };
