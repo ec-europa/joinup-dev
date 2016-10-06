@@ -25,6 +25,8 @@ third_party_settings:
     mapping_default_langcode:
       value: ''
     mapping_path: {  }
+    graph_default: 'http://policy_domain'
+    graph_draft: 'http://policy_domain'
 name: 'Policy domain'
 vid: policy_domain
 description: ''

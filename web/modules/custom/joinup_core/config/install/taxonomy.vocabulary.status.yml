@@ -25,6 +25,8 @@ third_party_settings:
     mapping_default_langcode:
       value: ''
     mapping_path: {  }
+    graph_default: 'http://adms_skos_v1.00'
+    graph_draft: 'http://adms_skos_v1.00'
 name: Status
 vid: status
 description: ''

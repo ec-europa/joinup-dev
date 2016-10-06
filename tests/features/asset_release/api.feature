@@ -13,6 +13,7 @@ Feature: Release API
       | webdav creation   | no                                   |
       | webdav url        | http://joinup.eu/solution/foo/webdav |
       | wiki              | http://example.wiki/foobar/wiki      |
+      | state             | validated                            |
     And the following collection:
       | title             | Solution API foo  |
       | logo              | logo.png          |
@@ -33,6 +34,7 @@ Feature: Release API
       | title             | My first solution mandatory |
       | description       | Another sample solution     |
       | elibrary creation | members                     |
+      | state             | validated                   |
     And the following collection:
       | title             | Solution API bar            |
       | logo              | logo.png                    |

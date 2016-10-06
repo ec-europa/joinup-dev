@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "31551bc98a5dd057dcbe2c08cdd5d3ec",
-    "content-hash": "230811e2051005f5cf0260d263c84612",
+    "hash": "ddd1fde091a92a6bbb9de50e546f43fa",
+    "content-hash": "bdeb8ada65f9ddf778b684b27e290a3b",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -519,12 +519,12 @@
             "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/consolidation-org/annotated-command.git",
+                "url": "https://github.com/consolidation/annotated-command.git",
                 "reference": "ed279df30b9386fd8e523003dc679421a87c52e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation-org/annotated-command/zipball/ed279df30b9386fd8e523003dc679421a87c52e0",
+                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/ed279df30b9386fd8e523003dc679421a87c52e0",
                 "reference": "ed279df30b9386fd8e523003dc679421a87c52e0",
                 "shasum": ""
             },
@@ -570,12 +570,12 @@
             "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/consolidation-org/output-formatters.git",
+                "url": "https://github.com/consolidation/output-formatters.git",
                 "reference": "6428d8fb30c9ed3b96314580808b3e4415b46dd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation-org/output-formatters/zipball/6428d8fb30c9ed3b96314580808b3e4415b46dd9",
+                "url": "https://api.github.com/repos/consolidation/output-formatters/zipball/6428d8fb30c9ed3b96314580808b3e4415b46dd9",
                 "reference": "6428d8fb30c9ed3b96314580808b3e4415b46dd9",
                 "shasum": ""
             },
@@ -1363,7 +1363,8 @@
             "extra": {
                 "patches_applied": {
                     "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
-                    "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch"
+                    "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
+                    "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface.patch"
                 }
             },
             "autoload": {
@@ -1503,7 +1504,7 @@
                 "drupal/rest_facets": "self.version"
             },
             "suggest": {
-                "drupal/core": "Required by drupal/core_search_facets, drupal/rest_facets",
+                "drupal/core": "Required by drupal/core_search_facets",
                 "drupal/search": "Required by drupal/core_search_facets"
             },
             "type": "drupal-module",
@@ -1614,7 +1615,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/og",
-                "reference": "fd0e98e8e51740045d7beef988164cd0e7d972d0"
+                "reference": "b396002028b31415bc712091a7bf3f2532c285db"
             },
             "require": {
                 "drupal/core": "8.*",
@@ -1644,7 +1645,7 @@
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
-            "time": "2016-09-11 17:08:09"
+            "time": "2016-09-14 17:44:07"
         },
         {
             "name": "drupal/og_menu",
@@ -1729,7 +1730,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-alpha17.zip",
-                "reference": null,
+                "reference": "dde5cecfbde386ae55b0aa799d1e146b509b3ffa",
                 "shasum": null
             },
             "require": {
@@ -1786,7 +1787,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha6.zip",
-                "reference": null,
+                "reference": "1b949c59477031ce5880c13537eb73a5f3cb4096",
                 "shasum": null
             },
             "require": {
@@ -2754,7 +2755,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -2809,7 +2810,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -6275,6 +6276,38 @@
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "time": "2016-08-31 19:41:53"
+        },
+        {
+            "name": "drupal/default_content",
+            "version": "8.1.0-alpha3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/default_content.git",
+                "reference": "10c07ee3eb29c3a4112209dfe842c048160efb46"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/default_content-8.x-1.0-alpha3.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "drupal/core": "8.*",
+                "drupal/hal": "8.*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Imports default content when a module is enabled",
+            "homepage": "https://www.drupal.org/project/default_content",
+            "time": "2016-09-15 21:41:18"
         },
         {
             "name": "drupal/devel",

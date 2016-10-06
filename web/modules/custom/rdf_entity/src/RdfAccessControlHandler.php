@@ -19,9 +19,15 @@ class RdfAccessControlHandler extends EntityAccessControlHandler {
    * $operation as defined in the routing.yml file.
    */
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
+    if (!$entity instanceof RdfInterface) {
+      throw new \Exception('Can only handle access of Rdf entity instances.');
+    }
     $entity_bundle = $entity->bundle();
     switch ($operation) {
       case 'view':
+        if (!$entity->isPublished()) {
+          return AccessResult::allowedIfHasPermission($account, 'view unpublished rdf entity');
+        }
         return AccessResult::allowedIfHasPermission($account, 'view rdf entity');
 
       case 'edit':
@@ -30,7 +36,7 @@ class RdfAccessControlHandler extends EntityAccessControlHandler {
       case 'delete':
         return AccessResult::allowedIfHasPermission($account, 'delete ' . $entity_bundle . ' rdf entity');
     }
-    return AccessResult::allowed();
+    return AccessResult::neutral();
   }
 
   /**
