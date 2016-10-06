@@ -83,23 +83,22 @@ Feature: News moderation.
     Then I should see the link "Add news"
     When I click "Add news"
     Then I should see the heading "Add news"
-    And I should see the text "State"
-    And the "State" field has the "<options available>" options
-    And the "State" field does not have the "<options unavailable>" options
+    And the following buttons should be present "<buttons available>"
+    And the following buttons should not be present "<buttons unavailable>"
     Examples:
-      | user          | title          | options available          | options unavailable                       |
+      | user          | title          | buttons available                | buttons unavailable                |
       # Post-moderated collection, member
-      | Eagle         | Justice League | Draft, Validated           | Proposed, In assessment, Request deletion |
+      | Eagle         | Justice League | Save as draft, Validate          | Propose, Report, Request deletion  |
       # Post-moderated collection, facilitator
-      | Hawkgirl      | Justice League | Draft, Validated           | Proposed, In assessment, Request deletion |
+      | Hawkgirl      | Justice League | Save as draft, Validate          | Propose, Report, Request deletion  |
       # Post-moderated collection, owner
-      | Superman      | Justice League | Draft, Validated           | Proposed, In assessment, Request deletion |
+      | Superman      | Justice League | Save as draft, Validate          | Propose, Report, Request deletion  |
       # Pre-moderated collection, member
-      | Mirror Master | Legion of Doom | Draft, Proposed            | Validate, In assessment, Request deletion |
+      | Mirror Master | Legion of Doom | Save as draft, Propose           | Validate, Report, Request deletion |
       # Pre-moderated collection, facilitator
-      | Metallo       | Legion of Doom | Draft, Validated, Proposed | In assessment, Request deletion           |
+      | Metallo       | Legion of Doom | Save as draft, Validate, Propose | Report, Request deletion           |
       # Pre-moderated collection, owner
-      | Vandal Savage | Legion of Doom | Draft, Validated, Proposed | In assessment, Request deletion           |
+      | Vandal Savage | Legion of Doom | Save as draft, Validate, Propose | Report, Request deletion           |
 
   Scenario: Anonymous users and non-members cannot see the 'Add news' button.
     # Check visibility for anonymous users.
@@ -154,16 +153,15 @@ Feature: News moderation.
     And I go to the homepage of the "Justice League" collection
     And I click "Add news"
     Then I should see the heading "Add news"
-    And the following fields should be present "Headline, Kicker, Content, State"
+    And the following fields should be present "Headline, Kicker, Content"
     And the following fields should not be present "Groups audience"
-    And the "field_news_state" field has the "Draft, Validated" options
-    And the "field_news_state" field does not have the "Proposed, In assessment, Request deletion" options
+    And the following buttons should be present "Save as draft, Validate"
+    And the following buttons should not be present "Propose, Report, Request deletion"
     When I fill in the following:
       | Headline | Eagle joins the JL                   |
       | Kicker   | Eagle from WWII                      |
       | Content  | Specialized in close combat training |
-    And I select "Draft" from "State"
-    And I press "Save"
+    And I press "Save as draft"
     # Check reference to news page.
     Then I should see the success message "News Eagle joins the JL has been created."
     And the "Eagle joins the JL" news content should not be published
@@ -172,10 +170,9 @@ Feature: News moderation.
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
-    And the "State" field has the "Validated" options
-    And the "State" field does not have the "Proposed, In assessment, Request deletion" options
-    When I select "Validated" from "State"
-    And I press "Save"
+    And the following buttons should be present "Save as draft, Validate"
+    And the following buttons should not be present "Propose, Report, Request deletion"
+    And I press "Validate"
     Then I should see the text "Validated"
     Then I should see the success message "News Eagle joins the JL has been updated."
     And the "Eagle joins the JL" news content should be published
@@ -187,16 +184,15 @@ Feature: News moderation.
     When I am logged in as "Cheetah"
     And I go to the homepage of the "Legion of Doom" collection
     And I click "Add news"
-    And the "State" field has the "Draft, Proposed" options
-    And the "State" field does not have the "Validated, In assessment, Request deletion" options
+    And the following buttons should be present "Save as draft, Propose"
+    And the following buttons should not be present "Validate, Report, Request deletion"
     When I fill in the following:
       | Headline | Cheetah kills WonderWoman                             |
       | Kicker   | Scarch of poison                                      |
       | Content  | A specific poison could expose Wonder-womans weakness |
-    And I select "Proposed" from "State"
-    And I press "Save"
+    And I press "Propose"
     # Check reference to news page.
- # Todo: Why should we not see a success message after creating a news article? See ISAICP-2761
+    # Todo: Why should we not see a success message after creating a news article? See ISAICP-2761
     Then I should not see the success message "News <em>Cheetah kills WonderWoman</em> has been created."
     Then I should see the heading "Cheetah kills WonderWoman"
     And the "Cheetah kills WonderWoman" news content should not be published
@@ -210,10 +206,9 @@ Feature: News moderation.
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
-    And the "State" field has the "Proposed, In assessment, Validated" options
-    And the "State" field does not have the "Draft, Request deletion" options
-    When I select "Validated" from "State"
-    And I press "Save"
+    And the following buttons should be present "Propose, Report, Validate"
+    And the following buttons should not be present "Save as draft, Request deletion"
+    And I press "Validate"
     Then I should see the text "Validated"
     And the "Cheetah kills WonderWoman" news content should be published
     When I click "Legion of Doom"
@@ -226,14 +221,14 @@ Feature: News moderation.
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
-    And the "State" field has the "<options available>" options
-    And the "State" field does not have the "<options unavailable>" options
+    And the following buttons should be present "<buttons available>"
+    And the following buttons should not be present "<buttons unavailable>"
     Examples:
-      | user          | title                   | options available | options unavailable                       |
+      | user          | title                   | buttons available       | buttons unavailable                |
       # State: draft, owned by Eagle
-      | Eagle         | Creating Justice League | Draft, Validated  | Proposed, In assessment                   |
+      | Eagle         | Creating Justice League | Save as draft, Validate | Propose, Report                    |
       # State: draft, can propose
-      | Mirror Master | Creating Legion of Doom | Draft, Proposed   | Validate, In assessment, Request deletion |
+      | Mirror Master | Creating Legion of Doom | Save as draft, Propose  | Validate, Report, Request deletion |
 
   Scenario Outline: Members cannot edit news they own for specific states.
     Given I am logged in as "<user>"
@@ -268,25 +263,25 @@ Feature: News moderation.
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
-    And the "State" field has the "<options available>" options
-    And the "State" field does not have the "<options unavailable>" options
+    And the following buttons should be present "<buttons available>"
+    And the following buttons should not be present "<buttons unavailable>"
     Examples:
-      | user     | title                         | options available                  | options unavailable                               |
+      | user     | title                         | buttons available                | buttons unavailable                               |
       # Post moderated
-      | Hawkgirl | Hawkgirl is a spy             | Proposed, Validated, In assessment | Draft, Request deletion                           |
+      | Hawkgirl | Hawkgirl is a spy             | Propose, Validate, Report        | Save as draft, Request deletion                   |
       # Members can move to 'in assessment' state.
-      | Hawkgirl | Hawkgirl helped Green Lantern | Validated, Proposed                | Draft, In assessment, Request deletion            |
-      | Hawkgirl | Space cannon fired            | Proposed                           | Draft, Validated, In assessment, Request deletion |
+      | Hawkgirl | Hawkgirl helped Green Lantern | Validate, Propose                | Save as draft, Report, Request deletion           |
+      | Hawkgirl | Space cannon fired            | Propose                          | Save as draft, Validate, Report, Request deletion |
       # Pre moderated
       # Facilitators have access to create news and directly put it to validate. For created and proposed, member role should be used.
-      | Metallo  | Creating Legion of Doom       | Draft, Proposed, Validated         | In assessment, Request deletion                   |
+      | Metallo  | Creating Legion of Doom       | Save as draft, Propose, Validate | Report, Request deletion                          |
       # Validated content can be moved back to 'Proposed' state by a facilitator.Scenario:
       # @Todo: it should also be possible to move to 'Draft'. See ISAICP-2761
-      | Metallo  | Stealing from Batman          | Proposed, Validated                | Draft, In assessment, Request deletion            |
+      | Metallo  | Stealing from Batman          | Propose, Validate                | Save as draft, Report, Request deletion           |
       # Members can move to 'in assessment' state.
-      | Metallo  | Learn batman's secret         | Proposed, In assessment, Validated | Draft,  Request deletion                          |
-      | Metallo  | Stealing complete             | Proposed                           | Draft, Request deletion                           |
-      | Metallo  | Kill the sun                  | Validated                          | Draft, Proposed, In assessment, Request deletion  |
+      | Metallo  | Learn batman's secret         | Propose, Report, Validate        | Save as draft,  Request deletion                  |
+      | Metallo  | Stealing complete             | Propose                          | Save as draft, Request deletion                   |
+      | Metallo  | Kill the sun                  | Validate                         | Save as draft, Propose, Report, Request deletion  |
 
   Scenario Outline: Facilitators cannot view unpublished content of another collection.
     Given I am logged in as "<user>"
@@ -326,13 +321,11 @@ Feature: News moderation.
     And I go to the "Hawkgirl is a spy" news page
     Then I should see the link "Edit"
     When I click "Edit"
-    And I select "Validated" from "State"
-    And I press "Save"
+    And I press "Validate"
     Then I should see the success message "News Hawkgirl is a spy has been updated."
     Then the "Hawkgirl is a spy" "news" content should be published
     And I should see the link "Edit"
     When I click "Edit"
-    And I select "Proposed" from "State"
-    And I press "Save"
+    And I press "Propose"
     Then I should see the success message "News Hawkgirl is a spy has been updated."
     Then the "Hawkgirl is a spy" "news" content should not be published
