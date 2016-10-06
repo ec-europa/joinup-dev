@@ -8,7 +8,6 @@ use Drupal\message\Entity\MessageTemplate;
 use Drupal\message_notify\MessageNotifier;
 use Drupal\og\Entity\OgMembership;
 use Drupal\state_machine\Event\StateChangeEvent;
-use Drupal\user\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -73,7 +72,6 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     /** @var OgMembership $membership */
     foreach ($memberships as $membership) {
       $uid = $membership->get('uid')->first()->getValue()['target_id'];
-      $user = User::load($uid);
       // Create the actual message and save it to the db.
       $message = Message::create([
         'template' => $message_template->id(),
@@ -82,7 +80,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
       ]);
       $message->save();
       // Send the saved message as an e-mail.
-      $this->messageNotifier->send($message, ['to' => $user->getEmail()], 'email');
+      $this->messageNotifier->send($message, [], 'email');
     }
 
   }
