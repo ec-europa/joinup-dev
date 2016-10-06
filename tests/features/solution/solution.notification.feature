@@ -1,4 +1,4 @@
-@api
+@api @email
 Feature: Solution notification system
   In order to manage solutions
   As a user of the website
@@ -11,15 +11,16 @@ Feature: Solution notification system
       | name  | Jody Buchanan            |
       | email | JodyBuchanan@example.com |
     And users:
-      | name             | roles     |
-      | Benjamin Stevens |           |
-      | Cecelia Kim      | moderator |
+      | name             | mail                        | roles     |
+      | Benjamin Stevens | BenjaminStevens@example.com |           |
+      | Cecelia Kim      | CeceliaKim@example.com      | moderator |
     And the following solutions:
       | title                 | description           | logo     | banner     | owner          | contact information | state    |
       | The Time of the Child | The Time of the Child | logo.png | banner.jpg | The Red Search | Jody Buchanan       | proposed |
     And the following solution user memberships:
-      | solution                   | user             | roles |
-      | The Time of the Child      | Benjamin Stevens | owner |
+      | solution              | user             | roles |
+      | The Time of the Child | Benjamin Stevens | owner |
 
-    When "Cecelia Kim" changes the state of the solution "The Time of the Chile" to "Validated"
-    Then "Benjamin Stevens" should receive an email
+    # Test validation email.
+    When the user "Cecelia Kim" changes the state of the "The Time of the Child" solution to "Validated"
+    Then an email should be sent to "Benjamin Stevens"

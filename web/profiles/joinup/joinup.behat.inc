@@ -5,6 +5,8 @@
  * Contains \UserSubContext.
  */
 
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
@@ -43,6 +45,20 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @var \Drupal\user\Entity\User[]
    */
   protected $registeredUsers = [];
+
+  /**
+   * The mail system storage settings.
+   *
+   * @var \Drupal\Core\Config\StorableConfigBase
+   */
+  protected $mail_config;
+
+  /**
+   * Holds the default settings for the mail server so a revert is possible.
+   *
+   * @var array
+   */
+  protected $saved_mail_defaults;
 
   /**
    * Creates a user with data provided in a table.
@@ -565,6 +581,62 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertContentOgMembership($parent, $parent_bundle, $content_bundle, $content) {
     $this->assertOgMembership($parent, $parent_bundle, $content, $content_bundle);
+  }
+
+  /**
+   * Asserts
+   *
+   * @param $recipient
+   *    The username of the recipient of the email.
+   *
+   * @Then an email should be sent to :recipient
+   *
+   * @throws \Exception
+   *    Throws an exception when a user is not found or his email is empty.
+   * Throws an exception also when the mail is not sent or the recipient is not
+   * the expected one.
+   */
+  public function anEmailShouldBeSentTo($recipient)
+  {
+    // Reset state cache.
+    \Drupal::state()->resetCache();
+    $user = user_load_by_name($recipient);
+    if (empty($user)) {
+      throw new \Exception("User {$recipient} was not found.");
+    }
+    if (empty($user->getEmail())) {
+      throw new \Exception("User {$recipient} does not have an email.");
+    }
+
+    $mails = \Drupal::state()->get('system.test_mail_collector') ?: array();
+    $last_mail = end($mails);
+    if(!$last_mail) {
+      throw new Exception('No mail was sent.');
+    }
+    if ($last_mail['to'] != $user->mail) {
+      throw new \Exception("Unexpected recpient: " . $last_mail['to']);
+    }
+    $this->lastMail = $last_mail;
+  }
+
+  /**
+   *  @BeforeScenario @email
+   */
+  public function beforeEmailScenario(BeforeScenarioScope $scope)
+  {
+    $this->mail_config = \Drupal::configFactory()->getEditable('mailsystem.settings');
+    $this->saved_mail_defaults = $this->mail_config->get('defaults');
+    $this->mail_config->set('defaults.sender', 'test_mail_collector')->save();
+    \Drupal::state()->set('system.test_mail_collector', array());
+  }
+
+  /**
+   *  @AfterScenario @email
+   */
+  public function afterEmailScenario(AfterScenarioScope $scope)
+  {
+    // revert mail system after scenarios agged with @email
+    $this->mail_config->set('defaults.sender', $this->saved_mail_defaults['sender'])->save();
   }
 
 }
