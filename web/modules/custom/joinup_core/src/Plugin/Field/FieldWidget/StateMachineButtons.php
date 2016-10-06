@@ -50,7 +50,7 @@ class StateMachineButtons extends OptionsSelectWidget {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = array();
+    $summary = [];
 
     $use_transition_label = $this->getSetting('use_transition_label');
     if ($use_transition_label) {
@@ -139,12 +139,12 @@ class StateMachineButtons extends OptionsSelectWidget {
   /**
    * Replaces the state labels with the labels of the related transition.
    *
-   * @param [] $options
+   * @param array $options
    *   The current list of options.
    * @param \Drupal\Core\Field\FieldItemListInterface $items
    *   Array of default values for this field.
    *
-   * @return []
+   * @return array
    *   The update options array.
    *
    * @todo function name kinda sucks.
