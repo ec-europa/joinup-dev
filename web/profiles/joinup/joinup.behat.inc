@@ -567,4 +567,62 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $this->assertOgMembership($parent, $parent_bundle, $content, $content_bundle);
   }
 
+  /**
+   * Assert that certain buttons are present on the page.
+   *
+   * @param string $buttons
+   *    A comma separated list of button labels.
+   *
+   * @throws \Exception
+   *   Thrown when an expected button is not present.
+   *
+   * @Then (the following )buttons should be present :buttons
+   */
+  public function assertButtonsVisible($buttons) {
+    $buttons = explode(',', $buttons);
+    $buttons = array_map('trim', $buttons);
+    $buttons = array_filter($buttons);
+
+    $page = $this->getSession()->getPage();
+    $not_found = [];
+    foreach ($buttons as $button) {
+      if (!$page->findButton($button)) {
+        $not_found[] = $button;
+      }
+    }
+
+    if (!empty($not_found)) {
+      throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $not_found));
+    }
+  }
+
+  /**
+   * Assert that certain buttons are not present on the page.
+   *
+   * @param string $buttons
+   *    A comma separated list of button labels.
+   *
+   * @throws \Exception
+   *   Thrown when an unexpected button is present.
+   *
+   * @Then (the following )buttons should not be present :buttons
+   */
+  public function assertButtonsNotVisible($buttons) {
+    $buttons = explode(',', $buttons);
+    $buttons = array_map('trim', $buttons);
+    $buttons = array_filter($buttons);
+
+    $page = $this->getSession()->getPage();
+    $found = [];
+    foreach ($buttons as $button) {
+      if ($page->findButton($button)) {
+        $found[] = $button;
+      }
+    }
+
+    if (!empty($found)) {
+      throw new \Exception('Button(s) should not be present, but were found: ' . implode(', ', $found));
+    }
+  }
+
 }
