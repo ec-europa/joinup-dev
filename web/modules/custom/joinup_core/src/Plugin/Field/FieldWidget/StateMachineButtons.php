@@ -160,19 +160,27 @@ class StateMachineButtons extends OptionsSelectWidget {
     $workflow = $state_item->getWorkflow();
     $transitions = $workflow->getAllowedTransitions($current_value, $entity);
 
+    // The current state is always allowed by state_machine, but a transition
+    // to that state might not be available. When looping the transitions keep
+    // track if a transition is available.
+    $loopback_transition = FALSE;
     // Replace "to state" labels with the label associated to that transition.
     foreach ($transitions as $transition) {
       $state = $transition->getToState();
       $state_id = $state->getId();
-      if (!empty($options[$state_id])) {
-        $options[$state_id] = $transition->getLabel();
+      $options[$state_id] = $transition->getLabel();
+
+      if ($state_id === $current_value) {
+        // A transition that allows to keep the same state is available.
+        $loopback_transition = TRUE;
       }
     }
 
-    // The current state is always allowed by state_machine, but a transition
-    // to that state is not required. We provide a "fallback" label for that.
-    // Note that actually in Joinup that option will be removed anyway.
-    $options[$current_value] = $this->t('Save as @transition', ['@transition' => $options[$current_value]]);
+    // If a transition to the current state is not available, prefix the state
+    // label for better readability.
+    if (!$loopback_transition) {
+      $options[$current_value] = $this->t('Save as @transition', ['@transition' => $options[$current_value]]);
+    }
 
     // Sanitize again the labels.
     // @see \Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase::getOptions()
