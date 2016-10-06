@@ -8,6 +8,7 @@ Feature: Add distribution through the UI
     Given the following solution:
       | title       | Solution random x name           |
       | description | Some reusable random description |
+      | state       | validated                        |
     And the following collection:
       | title      | Asset Distribution Test |
       | logo       | logo.png                |

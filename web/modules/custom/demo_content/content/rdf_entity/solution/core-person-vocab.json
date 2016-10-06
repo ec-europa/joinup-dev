@@ -289,7 +289,7 @@
     ],
     "field_is_state": [
         {
-            "value": "__new__"
+            "value": "validated"
         }
     ],
     "field_is_webdav_creation": [
