@@ -182,6 +182,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @Given (the following ):bundle content belong to the corresponding solutions:
    */
   public function givenContentMemberships($bundle, TableNode $membership_table) {
+    // As each given step is executed in the same request
+    // we need to reset the mapping.
+    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage->getGraphHandler()->resetRequestGraphs();
     foreach ($membership_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
@@ -390,9 +394,14 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @AfterScenario
    */
   public function cleanSolutions() {
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    $storage = \Drupal::service('entity_type.manager')->getStorage('rdf_entity');
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
-      $solution->delete();
+      foreach ($storage->getGraphHandler()->getEntityTypeEnabledGraphs() as $graph) {
+        $storage->getGraphHandler()->setTargetGraphToEntity($solution, $graph);
+        $solution->delete();
+      }
     }
   }
 
@@ -423,6 +432,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'moderation' => 'field_is_moderation',
       'modification date' => 'field_is_modification_date',
       'owner' => 'field_is_owner',
+      'policy domain' => 'field_policy_domain',
       'related solutions' => 'field_is_related_solutions',
       'solution type' => 'field_is_solution_type',
       'source code repository' => 'field_is_source_code_repository',

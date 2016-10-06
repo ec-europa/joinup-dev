@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * @file
+ * Procedural lumps of code for the rdf_draft module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+
+/**
+ * Implements hook_rdf_graph_definition_alter().
+ */
+function rdf_draft_rdf_graph_definition_alter($entity_type_id, &$definitions) {
+  // @todo Replace this hard-coded setting with a settings form
+  // where you can enable entity types.
+  if (!(\Drupal::entityManager()->getStorage($entity_type_id) instanceof RdfEntitySparqlStorage)) {
+    return;
+  }
+
+  $definitions['default']['title'] = t('Published');
+  $definitions['draft'] = [
+    'title' => t('Draft'),
+    'description' => t('The draft graph used to store entities of this type.'),
+  ];
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function rdf_draft_entity_type_alter(array &$entity_types) {
+  // Guard condition against infinite recursion.
+  static $recurse = FALSE;
+  if ($recurse) {
+    return;
+  }
+  foreach ($entity_types as $entity_type_id => $entity_type) {
+    if ($entity_type->hasViewBuilderClass() && $entity_type->hasLinkTemplate('canonical')) {
+      $recurse = TRUE;
+      $storage = \Drupal::entityManager()->getStorage($entity_type_id);
+      $recurse = FALSE;
+      if ($storage  instanceof RdfEntitySparqlStorage) {
+        $definitions = $storage->getGraphDefinitions();
+        unset($definitions['default']);
+        // Set the link templates for each graph type.
+        foreach ($definitions as $name => $definition) {
+          $entity_type->setLinkTemplate('rdf-draft-' . $name, "/$entity_type_id/{{$entity_type_id}}/graph/$name");
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function rdf_draft_entity_operation(EntityInterface $entity) {
+  $operations = array();
+  $storage = \Drupal::service('entity.manager')->getStorage($entity->getEntityTypeId());
+  if ($storage  instanceof RdfEntitySparqlStorage) {
+    $definitions = $storage->getGraphDefinitions();
+    foreach ($definitions as $name => $definition) {
+      if ($entity->hasLinkTemplate('rdf-draft-' . $name)) {
+        $operations[$name] = array(
+          'title' => t('View @graph', ['@graph' => $name]),
+          'weight' => 100,
+          'url' => $entity->toUrl('rdf-draft-' . $name),
+        );
+      }
+    }
+  }
+  return $operations;
+}
+
+/**
+ * Implements hook_rdf_default_active_graph_alter().
+ */
+function rdf_draft_rdf_default_active_graph_alter($entity_type, &$graph) {
+  $graph[] = 'draft';
+}

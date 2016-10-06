@@ -9,6 +9,7 @@ Feature: "Add release" visibility options.
       | title         | Release solution test |
       | description   | My awesome solution   |
       | documentation | text.pdf              |
+      | state         | validated             |
 
     When I am logged in as a "facilitator" of the "Release solution test" solution
     And I go to the homepage of the "Release solution test" solution
@@ -28,9 +29,9 @@ Feature: "Add release" visibility options.
     Given the following organisation:
      | name | Organisation example |
     And the following solutions:
-      | title          | description        | documentation | owner                |
-      | Release Test 1 | test description 1 | text.pdf      | Organisation example |
-      | Release Test 2 | test description 2 | text.pdf      | Organisation example |
+      | title          | description        | documentation | owner                | state     |
+      | Release Test 1 | test description 1 | text.pdf      | Organisation example | validated |
+      | Release Test 2 | test description 2 | text.pdf      | Organisation example | validated |
     # Check that the release cannot take the title of another solution.
     When I am logged in as a "facilitator" of the "Release Test 1" solution
     When I go to the homepage of the "Release Test 1" solution
