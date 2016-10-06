@@ -5,8 +5,6 @@
  * Contains \UserSubContext.
  */
 
-use Behat\Behat\Hook\Scope\AfterScenarioScope;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
@@ -51,14 +49,14 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @var \Drupal\Core\Config\StorableConfigBase
    */
-  protected $mail_config;
+  protected $mailConfig;
 
   /**
    * Holds the default settings for the mail server so a revert is possible.
    *
    * @var array
    */
-  protected $saved_mail_defaults;
+  protected $savedMailDefaults;
 
   /**
    * Creates a user with data provided in a table.
@@ -584,20 +582,19 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Asserts
+   * Asserts that an email is sent to the given user.
    *
-   * @param $recipient
+   * @param string $recipient
    *    The username of the recipient of the email.
    *
    * @Then an email should be sent to :recipient
    *
    * @throws \Exception
    *    Throws an exception when a user is not found or his email is empty.
-   * Throws an exception also when the mail is not sent or the recipient is not
-   * the expected one.
+   *    Throws an exception also when the mail is not sent or the recipient is
+   *    not the expected one.
    */
-  public function anEmailShouldBeSentTo($recipient)
-  {
+  public function anEmailShouldBeSentTo($recipient) {
     // Reset state cache.
     \Drupal::state()->resetCache();
     $user = user_load_by_name($recipient);
@@ -610,7 +607,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     $mails = \Drupal::state()->get('system.test_mail_collector') ?: array();
     $last_mail = end($mails);
-    if(!$last_mail) {
+    if (!$last_mail) {
       throw new Exception('No mail was sent.');
     }
     if ($last_mail['to'] != $user->mail) {
@@ -620,23 +617,24 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   *  @BeforeScenario @email
+   * Swaps the mailing system settings with a test one.
+   *
+   * @BeforeScenario @email
    */
-  public function beforeEmailScenario(BeforeScenarioScope $scope)
-  {
-    $this->mail_config = \Drupal::configFactory()->getEditable('mailsystem.settings');
-    $this->saved_mail_defaults = $this->mail_config->get('defaults');
-    $this->mail_config->set('defaults.sender', 'test_mail_collector')->save();
+  public function beforeEmailScenario() {
+    $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
+    $this->savedMailDefaults = $this->mailConfig->get('defaults');
+    $this->mailConfig->set('defaults.sender', 'test_mail_collector')->save();
     \Drupal::state()->set('system.test_mail_collector', array());
   }
 
   /**
-   *  @AfterScenario @email
+   * Restores the mailing system settings with the default one.
+   *
+   * @AfterScenario @email
    */
-  public function afterEmailScenario(AfterScenarioScope $scope)
-  {
-    // revert mail system after scenarios agged with @email
-    $this->mail_config->set('defaults.sender', $this->saved_mail_defaults['sender'])->save();
+  public function afterEmailScenario() {
+    $this->mailConfig->set('defaults.sender', $this->savedMailDefaults['sender'])->save();
   }
 
 }

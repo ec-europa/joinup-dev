@@ -22,7 +22,7 @@ trait WorkflowTrait {
    *
    * @throws \Exception
    *    Thrown when the expected states array does not exactly match the
-   * array of available options.
+   *    array of available options.
    */
   private function assertAvailableStates(EntityInterface $entity, array $available_states, $user = NULL) {
     $allowed_states = $this->getAvailableStates($entity, $user);
