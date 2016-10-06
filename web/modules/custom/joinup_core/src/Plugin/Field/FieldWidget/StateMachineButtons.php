@@ -24,8 +24,54 @@ class StateMachineButtons extends OptionsSelectWidget {
   /**
    * {@inheritdoc}
    */
+  public static function defaultSettings() {
+    return [
+      'use_transition_label' => FALSE,
+    ] + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $element = [];
+
+    $element['use_transition_label'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Use transition labels'),
+      '#description' => $this->t('Leave unchecked to use <em>Save as</em> followed by the state label.'),
+      '#default_value' => $this->getSetting('use_transition_label'),
+    ];
+
+    return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = array();
+
+    $use_transition_label = $this->getSetting('use_transition_label');
+    if ($use_transition_label) {
+      $summary[] = t('Use transition labels');
+    }
+
+    return $summary;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
+
+    if ($this->getSetting('use_transition_label')) {
+      $element['#options'] = $this->replaceStateLabelsWithTransitionLabels($element['#options'], $items);
+    }
+
+    // Pass the label settings to the process callback.
+    $element['#use_transition_label'] = $this->getSetting('use_transition_label');
 
     // Leave the field in place for validation purposes.
     $element['#access'] = FALSE;
@@ -53,11 +99,15 @@ class StateMachineButtons extends OptionsSelectWidget {
     $options = $element['#options'];
     foreach ($options as $state_id => $label) {
       $button = [
-        '#value' => t('Save as @transition', ['@transition' => $label]),
         '#state_id' => $state_id,
         '#state_field' => $element['#field_name'],
         '#weight' => -10,
       ];
+
+      // When transition labels are used, we don't need any change.
+      $button['#value'] = $element['#use_transition_label']
+        ? $label
+        : t('Save as @transition', ['@transition' => $label]);
 
       $form['actions']['state_machine_' . $state_id] = $button + $default_button;
     }
@@ -84,6 +134,51 @@ class StateMachineButtons extends OptionsSelectWidget {
     if (isset($element['#state_field']) && isset($element['#state_id'])) {
       $entity->set($element['#state_field'], $element['#state_id']);
     }
+  }
+
+  /**
+   * Replaces the state labels with the labels of the related transition.
+   *
+   * @param [] $options
+   *   The current list of options.
+   * @param \Drupal\Core\Field\FieldItemListInterface $items
+   *   Array of default values for this field.
+   *
+   * @return []
+   *   The update options array.
+   *
+   * @todo function name kinda sucks.
+   */
+  protected function replaceStateLabelsWithTransitionLabels($options, FieldItemListInterface $items) {
+    $entity = $items->getEntity();
+    $current_value = $items->value;
+
+    // We need to get the field type class to fetch easily the related
+    // workflow. Getting the option provider seems the only way.
+    /** @var \Drupal\state_machine\Plugin\Field\FieldType\StateItem $state_item */
+    $state_item = $this->fieldDefinition->getFieldStorageDefinition()->getOptionsProvider($this->column, $entity);
+    $workflow = $state_item->getWorkflow();
+    $transitions = $workflow->getAllowedTransitions($current_value, $entity);
+
+    // Replace "to state" labels with the label associated to that transition.
+    foreach ($transitions as $transition) {
+      $state = $transition->getToState();
+      $state_id = $state->getId();
+      if (!empty($options[$state_id])) {
+        $options[$state_id] = $transition->getLabel();
+      }
+    }
+
+    // The current state is always allowed by state_machine, but a transition
+    // to that state is not required. We provide a "fallback" label for that.
+    // Note that actually in Joinup that option will be removed anyway.
+    $options[$current_value] = $this->t('Save as @transition', ['@transition' => $options[$current_value]]);
+
+    // Sanitize again the labels.
+    // @see \Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase::getOptions()
+    array_walk_recursive($options, array($this, 'sanitizeLabel'));
+
+    return $options;
   }
 
 }
