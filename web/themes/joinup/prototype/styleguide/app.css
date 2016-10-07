@@ -742,7 +742,8 @@ hr {
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: .6; }
+  opacity: .6;
+  background-color: #27456b; }
 
 .featured__text {
   position: relative;
@@ -963,13 +964,13 @@ hr {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-.icon--solution:before {
+.icon--solutions:before {
   content: '\e7c4'; }
 
-.icon--collection:before {
+.icon--collections:before {
   content: '\e7a4'; }
 
-.icon--event:before {
+.icon--events:before {
   content: '\e61b'; }
 
 .icon--news:before {
