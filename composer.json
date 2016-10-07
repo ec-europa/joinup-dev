@@ -15,7 +15,7 @@
         "drupal/facets" : "dev-8.x-1.x#d5c0117eb59ab2593f6430e3f3035d60bc084653",
         "drupal/inline_entity_form": "8.1.x-dev",
         "drupal/og": "dev-242-simplified",
-        "drupal/og_menu": "dev-update-constants",
+        "drupal/og_menu": "dev-remove-context-provider",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
         "drupal/search_api": "8.1.0-alpha17",
