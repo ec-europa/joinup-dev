@@ -23,7 +23,17 @@
             "lang": "en"
         }
     ],
+    "status": [
+        {
+            "value": "1"
+        }
+    ],
     "name": [
+        {
+            "value": "collection_facilitator"
+        }
+    ],
+    "pass": [
         {
             "value": "collection_facilitator"
         }

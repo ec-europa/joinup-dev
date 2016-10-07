@@ -19,12 +19,19 @@ class RdfListBuilder extends EntityListBuilder {
   public function load() {
     /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage */
     $rdf_storage = $this->getStorage();
-    $mapping = $rdf_storage->getRdfBundleList();
-    if (!$mapping) {
-      return [];
+
+    $query = $rdf_storage->getQuery()->condition('rid', NULL, 'IN');
+    // If a graph type is set in the url, validate it, and use it in the query.
+    if (!empty($_GET['graph'])) {
+      $def = $rdf_storage->getGraphDefinitions();
+      if (is_string($_GET['graph']) && isset($def[$_GET['graph']])) {
+        // Use the graph to build the list.
+        $query->setGraphType([$_GET['graph']]);
+      }
     }
-    $query = $rdf_storage->getQuery()
-      ->condition('rid', NULL, 'IN');
+    else {
+      $query->setGraphType($rdf_storage->getGraphHandler()->getEntityTypeEnabledGraphs());
+    }
 
     // Only add the pager if a limit is specified.
     if ($this->limit) {
@@ -44,9 +51,20 @@ class RdfListBuilder extends EntityListBuilder {
    * buildHeader() and buildRow() implementations.
    */
   public function render() {
-    $build['description'] = array(
-      '#markup' => $this->t('The Rdf entities are stored in a triple store.'),
-    );
+    /** @var RdfEntitySparqlStorage $storage */
+    $storage = $this->storage;
+    $definitions = $storage->getGraphDefinitions();
+    if (count($definitions)) {
+      $options = [];
+      foreach ($definitions as $name => $definition) {
+        $options[$name] = $definition['title'];
+      }
+      // Embed the graph selection form.
+      $form = \Drupal::formBuilder()->getForm('Drupal\rdf_entity\Form\GraphSelectForm', $options);
+      if ($form) {
+        $build['graph_form'] = $form;
+      }
+    }
     $build['table'] = parent::render();
     return $build;
   }
@@ -71,6 +89,11 @@ class RdfListBuilder extends EntityListBuilder {
         'field' => 'rid',
         'specifier' => 'rid',
       ),
+      'status' => array(
+        'data' => $this->t('Status'),
+        'field' => 'status',
+        'specifier' => 'status',
+      ),
     );
     return $header + parent::buildHeader();
   }
@@ -82,6 +105,7 @@ class RdfListBuilder extends EntityListBuilder {
     /* @var $entity \Drupal\rdf_entity\Entity\Rdf */
     $row['id'] = $entity->link();
     $row['rid'] = $entity->bundle();
+    $row['status'] = $entity->isPublished() ? $this->t('Published') : $this->t('Unpublished');
     return $row + parent::buildRow($entity);
   }
 

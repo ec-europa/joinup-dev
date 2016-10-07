@@ -7,6 +7,7 @@ package: Custom
 dependencies:
   - image
   - og
+  - rdf_draft
   - rdf_entity
   - rdf_taxonomy
 
@@ -21,11 +22,12 @@ config_devel:
   - field.storage.rdf_entity.field_topic
   - field.storage.rdf_entity.og_audience
   - image.style.banner
+  - rdf_draft.settings
   - taxonomy.vocabulary.eira
   - taxonomy.vocabulary.eurovoc
+  - taxonomy.vocabulary.language
   - taxonomy.vocabulary.licence_type
   - taxonomy.vocabulary.policy_domain
   - taxonomy.vocabulary.spatial
   - taxonomy.vocabulary.status
   - taxonomy.vocabulary.themes
-  - taxonomy.vocabulary.language
