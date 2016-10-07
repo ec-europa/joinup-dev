@@ -16,6 +16,7 @@ dependencies:
   - rdf_entity
   - state_machine
   - text
+  - token
 
 config_devel:
   - core.entity_form_display.rdf_entity.solution.default
@@ -86,3 +87,10 @@ config_devel:
   - field.storage.rdf_entity.field_is_webdav_url
   - field.storage.rdf_entity.field_is_wiki
   - rdf_entity.rdfentity.solution
+  - message.template.workflow_transition
+  - core.entity_form_display.message.workflow_transition.default
+  - core.entity_view_display.message.workflow_transition.default
+  - core.entity_view_display.message.workflow_transition.mail_body
+  - core.entity_view_display.message.workflow_transition.mail_subject
+  - field.field.message.workflow_transition.field_message_content
+  - field.storage.message.field_message_content

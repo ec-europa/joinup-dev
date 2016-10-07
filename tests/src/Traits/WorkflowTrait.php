@@ -13,9 +13,6 @@ trait WorkflowTrait {
   /**
    * Asserts available states of an entity for a user.
    *
-   * If no user is passed, the logged in user is checked. If no user is logged
-   * in, an anonymous account is passed.
-   *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The entity with the states.
    * @param array $available_states
@@ -24,9 +21,37 @@ trait WorkflowTrait {
    *    The account interface object. Can be left empty.
    *
    * @throws \Exception
-   *    Thrown when the entity has no state fields.
+   *    Thrown when the expected states array does not exactly match the
+   *    array of available options.
    */
   private function assertAvailableStates(EntityInterface $entity, array $available_states, $user = NULL) {
+    $allowed_states = $this->getAvailableStates($entity, $user);
+    $allowed_states = array_values($allowed_states);
+    sort($allowed_states);
+    sort($available_states);
+    if ($allowed_states != $available_states) {
+      $message = "States found were different that states passed.\n";
+      $message .= "Allowed states: " . implode(', ', $allowed_states) . "\n";
+      $message .= "Available/Expected states: " . implode(', ', $available_states) . "\n";
+      throw new \Exception($message);
+    }
+  }
+
+  /**
+   * Returns the available transition states of an entity for the given user.
+   *
+   * If no user is passed, the logged in user is checked. If no user is logged
+   * in, an anonymous account is passed.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The entity with the states.
+   * @param object|null $user
+   *    The account interface object. Can be left empty.
+   *
+   * @return array
+   *    An array of transition labels.
+   */
+  protected function getAvailableStates(EntityInterface $entity, $user) {
     if ($user == NULL) {
       $user = \Drupal::currentUser();
     }
@@ -41,18 +66,8 @@ trait WorkflowTrait {
     $allowed_states = array_map(function (WorkflowTransition $transition) {
       return (string) $transition->getToState()->getLabel();
     }, $allowed_transitions);
-    $allowed_states = array_values($allowed_states);
-    sort($allowed_states);
-    sort($available_states);
-    if ($allowed_states != $available_states) {
-      $message = "States found were different that states passed.\n";
-      $message .= "User: {$user->getAccountName()}\n";
-      $message .= "Solution: {$entity->label()}\n";
-      $message .= "Solution's state: {$field->value}\n";
-      $message .= "Allowed states: " . implode(', ', $allowed_states) . "\n";
-      $message .= "Available/Expected states: " . implode(', ', $available_states) . "\n";
-      throw new \Exception($message);
-    }
+
+    return $allowed_states;
   }
 
   /**
@@ -95,7 +110,7 @@ trait WorkflowTrait {
    *   The state field.
    *
    * @throws \Exception
-   *   Thrown when the entity doesn't have a state field.
+   *   Thrown when the entity does not have a state field.
    */
   protected function getEntityStateField(EntityInterface $entity) {
     $field_definition = $this->getEntityStateFieldDefinition($entity);

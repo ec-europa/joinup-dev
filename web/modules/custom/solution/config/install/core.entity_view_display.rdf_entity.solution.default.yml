@@ -37,12 +37,12 @@ dependencies:
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
-    - image.style.thumbnail
     - rdf_entity.rdfentity.solution
   module:
     - datetime
     - file
     - link
+    - og
     - options
     - text
 id: rdf_entity.solution.default
@@ -325,6 +325,13 @@ content:
     weight: 35
     settings: {  }
     third_party_settings: {  }
+  og_group:
+    weight: 0
+    type: og_group_subscribe
+    label: above
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_is_banner: true
   field_is_logo: true
+  releases_overview: true
