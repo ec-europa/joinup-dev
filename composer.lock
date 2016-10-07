@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aaa94adccab2ea30e30da788c44f5056",
-    "content-hash": "30711465201f527fb71376c575ecdbd9",
+    "hash": "683e969450037901c646b1d478116d17",
+    "content-hash": "ec4e736b9fbdc9d218ddce3e4947dfee",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.12",
+            "version": "3.19.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "5d5697c7bc9ab22ce718afb51e5496d0c5cb8778"
+                "reference": "57b0efed8fcf5d8c854bc1c26cf4a685af9108d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5d5697c7bc9ab22ce718afb51e5496d0c5cb8778",
-                "reference": "5d5697c7bc9ab22ce718afb51e5496d0c5cb8778",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/57b0efed8fcf5d8c854bc1c26cf4a685af9108d9",
+                "reference": "57b0efed8fcf5d8c854bc1c26cf4a685af9108d9",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-09-29 21:07:49"
+            "time": "2016-10-06 21:17:44"
         },
         {
             "name": "composer/ca-bundle",
@@ -1621,7 +1621,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-alpha1.zip",
-                "reference": "22e2a0fb93565459117c23a307ca457f0aa2a3b3",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -1650,11 +1650,17 @@
         },
         {
             "name": "drupal/message_notify",
-            "version": "dev-8.x-1.x",
+            "version": "8.1.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/message_notify",
-                "reference": "31eb9e2fbbe75d4244f3fa74eb7b5e05ed4edc08"
+                "reference": "975f2867ea887496b43015706240f1b7d353678b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/message_notify-8.x-1.0-alpha1.zip",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "drupal/core": "8.*",
@@ -1672,7 +1678,7 @@
             ],
             "description": "Message notify.",
             "homepage": "https://drupal.org/project/message_notify",
-            "time": "2016-08-28 18:09:51"
+            "time": "2016-09-22 17:20:56"
         },
         {
             "name": "drupal/og",
@@ -1680,12 +1686,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "154a090670d5c37b21aab78e290ca68e3251333c"
+                "reference": "2cc4844f8e8b31932a505e282fa27aa5f8f663c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/154a090670d5c37b21aab78e290ca68e3251333c",
-                "reference": "154a090670d5c37b21aab78e290ca68e3251333c",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/2cc4844f8e8b31932a505e282fa27aa5f8f663c4",
+                "reference": "2cc4844f8e8b31932a505e282fa27aa5f8f663c4",
                 "shasum": ""
             },
             "require-dev": {
@@ -1702,7 +1708,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-10-05 16:21:31"
+            "time": "2016-10-07 09:07:32"
         },
         {
             "name": "drupal/og_menu",
@@ -1908,16 +1914,16 @@
         },
         {
             "name": "drupal/token",
-            "version": "8.1.0-beta1",
+            "version": "8.1.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/token",
-                "reference": "1c68e82525fda1bd12021502da81b929b9ae5c02"
+                "reference": "724ccaa7a60f1aa7e8883e82de737115b0f73a3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/token-8.x-1.0-beta1.zip",
-                "reference": "1c68e82525fda1bd12021502da81b929b9ae5c02",
+                "url": "https://ftp.drupal.org/files/projects/token-8.x-1.0-beta2.zip",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -1935,7 +1941,7 @@
             ],
             "description": "Provides a user interface for the Token API and some missing core tokens.",
             "homepage": "https://www.drupal.org/project/token",
-            "time": "2016-08-09 07:03:16"
+            "time": "2016-09-20 10:19:14"
         },
         {
             "name": "drupal/view_unpublished",
