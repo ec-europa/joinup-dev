@@ -164,6 +164,7 @@ $ cd web
 $ ../vendor/bin/phpunit
 ```
 
+
 ### RDF graphs
 
 In order to handle draft versions of the entities, the rdf SPARQL storage supports multiple graphs.
@@ -219,6 +220,7 @@ priority. This is because if we want to edit the entity, we probably care for th
 When an entity is moved from draft graph to published, the draft version is deleted.
 No revision history is kept at the moment.
 
+
 ##### Usage: Query
 
 To query an entity in SPARQL, you need to use the default drupal query as follows:
@@ -239,6 +241,7 @@ be affected by the priority provided in the setGraphType. If you want to set the
 given that you have the id of this entity, you can do it by setting the priority to the GraphHandler service itself
 through the storage class.
 
+
 ##### Usage: Storage
 
 To load the entity from the storage you will first need to get the storage class. A good way is the default
@@ -256,6 +259,7 @@ means that all loaded entities are affected by it.
 For entities that do not have a specific set of graphs in the query, the normal priority is being used (first from the
 'default' graph and then from the 'draft' graph).
 
+
 ##### Usage: Save/update entity
 
 The default way of determining where the entity will be saved, is by setting the `graph` field to the entity.
@@ -271,6 +275,7 @@ To force an override, use
 \Drupal::service('entity_type.manager')->getStorage('rdf_entity')->setSaveGraph($graph);
 ```
 This is a shortcut to the Graph handler service.
+
 
 ##### Usage: Delete entity
 
@@ -288,3 +293,8 @@ foreach ($this->solutions as $solution) {
   }
 }
 ```
+
+
+### Frontend development
+
+See the [readme](web/themes/joinup/README.md) in the theme folder.
