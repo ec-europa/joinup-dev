@@ -69,22 +69,23 @@
           });
       });
     }
-  }
+  };
 
   // Behaviors for tab validation.
   Drupal.behaviors.fieldGroupTabsValidation = {
     attach: function (context, settings) {
-      var invalidFieldId = 0;
-      $('.field-group-tabs-wrapper input', context).each(function (i) {
+      // Keep a flag to focus only the first one in case of multiple tabs with
+      // validation errors.
+      var alreadyTriggered = false;
+
+      $('.field-group-tabs-wrapper input', context).once('tabValidation').each(function () {
         this.addEventListener('invalid', function (e) {
           // Open any hidden parents first.
           $(e.target).parents('details').each(function () {
             var $fieldGroup = $(this);
-            if ($fieldGroup.data('verticalTab')) {
-              if (invalidFieldId == 0) {
-                $fieldGroup.data('verticalTab').tabShow();
-                invalidFieldId = i;
-              }
+            if (!alreadyTriggered && $fieldGroup.data('verticalTab')) {
+              $fieldGroup.data('verticalTab').tabShow();
+              alreadyTriggered = true;
             }
           });
         }, false);
@@ -92,7 +93,7 @@
 
       $('.field-group-tabs-wrapper', context).each(function () {
         $(this).siblings('.form-actions').find('.form-submit').on('click', function () {
-          invalidFieldId = 0;
+          alreadyTriggered = false;
         });
       });
     }
