@@ -40,18 +40,6 @@
               <form class="featured__form-button">
                 <input class="button--default button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Join this collection"></input>
               </form>
-
-              <!-- Menu visible on tablet and mobile -->
-              <div class="featured__menu">
-                <div id="featured__menu-button" class="featured__menu-button mdl-button mdl-js-button">
-                  <span class="icon icon--menu"></span>
-                </div>
-                <ul class="featured__menu-dropdown mdl-menu mdl-menu--bottom-left mdl-js-menu" for="featured__menu-button">
-                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/login">Login</a></li>
-                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/about">About</a></li>
-                  <li class="featured__menu-item mdl-menu__item"><a class="featured__menu-link" href="/alerts">Alerts</a></li>
-                </ul>
-              </div>
             </div>
           </div>
           <div class="featured__menu-wrapper">
@@ -60,8 +48,21 @@
           </div>
         </div>
       <div class="main-container mdl-grid">
+        <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
+          <div class="sidebar-menu">
+            <button id="sidebar-menu__button" class="sidebar-menu__button mdl-button mdl-js-button">
+              <span class="icon icon--menu"></span>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu" for="sidebar-menu__button">
+              <li class="sidebar-menu__item mdl-menu__item"><a class="sidebar-menu__link" href="/login">Login</a></li>
+              <li class="sidebar-menu__item mdl-menu__item"><a class="sidebar-menu__link" href="/about">About</a></li>
+              <li class="sidebar-menu__item mdl-menu__item"><a class="sidebar-menu__link" href="/alerts">Alerts</a></li>
+              <li class="sidebar-menu__item mdl-menu__item"><a class="sidebar-menu__link" href="/form">Form elements</a></li>
+            </ul>
+          </div>
 
-        {% include section--sidebar-left.html %}
+
+        </div>
 
         <div class="section section--content mdl-cell mdl-cell--8-col">
           <div class="container-fluid">
