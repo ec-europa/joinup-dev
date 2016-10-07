@@ -5,7 +5,7 @@ id: field_cp_search_content_type
 name: 'Content type'
 url_alias: field_cp_search_content_type
 weight: 0
-show_only_one_result: false
+show_only_one_result: true
 field_identifier: aggregated_field
 query_type_name: null
 facet_source_id: 'search_api_field:node.field_cp_search'
@@ -24,6 +24,13 @@ processor_configs:
       sort: -10
     settings:
       sort: ASC
+  count_limit:
+    processor_id: count_limit
+    weights:
+      build: -10
+    settings:
+      minimum_items: 1
+      maximum_items: null
   count_widget_order:
     processor_id: count_widget_order
     weights:
@@ -36,11 +43,6 @@ processor_configs:
       sort: -10
     settings:
       sort: ASC
-  hide_non_narrowing_result_processor:
-    processor_id: hide_non_narrowing_result_processor
-    weights:
-      build: -10
-    settings: {  }
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
