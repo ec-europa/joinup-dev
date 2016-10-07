@@ -31,7 +31,10 @@
         "php": ">=5.5.9",
         "solarium/solarium": "~3.6.0",
         "symfony/dependency-injection": "2.8.2",
-        "typhonius/behattask": "1.0"
+        "typhonius/behattask": "1.0",
+        "drupal/message": "8.*",
+        "drupal/message_notify": "8.*",
+        "drupal/token": "8.*"
     },
     "require-dev": {
         "behat/mink": "~1.6",
@@ -87,7 +90,10 @@
             },
             "drupal/search_api": {
                 "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
-            }
+            },
+	    "drupal/state_machine": {
+		"Add a transition event.": "https://www.drupal.org/files/issues/state_machine_should-2794537-3.patch"
+	    }
         }
     },
     "repositories": [
