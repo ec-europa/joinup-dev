@@ -240,6 +240,22 @@
         </drush>
     </target>
 
+    <target name="create-d6-db">
+        <pdosqlexec url="mysql:host=${drupal.db.host}" userid="${drupal.db.user}" password="${drupal.db.password}">
+            DROP DATABASE IF EXISTS ${legacy.database};
+        </pdosqlexec>
+        <pdosqlexec url="mysql:host=${drupal.db.host}" userid="${drupal.db.user}" password="${drupal.db.password}">
+            CREATE DATABASE ${legacy.database};
+        </pdosqlexec>
+    </target>
+    <target name="import-legacy-db">
+        <pdosqlexec url="mysql:host=localhost;dbname=${legacy.database}"
+                    userid="${drupal.db.user}"
+                    password="${drupal.db.password}">
+            <transaction src="${legacy.filepath}"/>
+        </pdosqlexec>
+    </target>
+
     <target name="download-apache-solr">
         <if>
             <available file="${solr.dir}" type="dir" property="solr.dir.available" />
