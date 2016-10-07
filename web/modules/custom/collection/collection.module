@@ -13,7 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\Entity\RdfEntityType;
@@ -52,7 +52,7 @@ function collection_entity_insert(EntityInterface $entity) {
   if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && $entity->bundle() === 'collection') {
     $values = [
       'type' => 'navigation',
-      OgGroupAudienceHelper::DEFAULT_FIELD => $entity->id(),
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $entity->id(),
     ];
     $og_menu_instance = OgMenuInstance::create($values);
     $og_menu_instance->save();

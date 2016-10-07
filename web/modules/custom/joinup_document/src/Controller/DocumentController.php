@@ -5,7 +5,7 @@ namespace Drupal\joinup_document\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\OgAccessInterface;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -102,7 +102,7 @@ class DocumentController extends ControllerBase {
   protected function createDocumentEntity(RdfInterface $rdf_entity) {
     return $this->entityTypeManager()->getStorage('node')->create([
       'type' => 'document',
-      OgGroupAudienceHelper::DEFAULT_FIELD => $rdf_entity->id(),
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $rdf_entity->id(),
     ]);
   }
 
