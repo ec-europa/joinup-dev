@@ -1,0 +1,19 @@
+joinup_notification.settings:
+  type: config_object
+  label: 'Notification settings'
+  mapping:
+    notifications:
+      type: sequence
+      label: 'Entity type'
+      sequence:
+        type: sequence
+        label: 'Workflow group'
+        sequence:
+          type: sequence
+          label: 'Transition'
+          sequence:
+            type: sequence
+            label: 'Roles'
+            sequence:
+              type: string
+              label: 'Message ID'
