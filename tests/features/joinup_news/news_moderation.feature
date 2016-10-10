@@ -83,10 +83,10 @@ Feature: News moderation.
     Then I should see the link "Add news"
     When I click "Add news"
     Then I should see the heading "Add news"
-    And the following buttons should be present "<buttons available>"
-    And the following buttons should not be present "<buttons unavailable>"
+    And the following buttons should be present "<available buttons>"
+    And the following buttons should not be present "<unavailable buttons>"
     Examples:
-      | user          | title          | buttons available                | buttons unavailable                |
+      | user          | title          | available buttons                | unavailable buttons                |
       # Post-moderated collection, member
       | Eagle         | Justice League | Save as draft, Validate          | Propose, Report, Request deletion  |
       # Post-moderated collection, facilitator
@@ -221,10 +221,10 @@ Feature: News moderation.
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
-    And the following buttons should be present "<buttons available>"
-    And the following buttons should not be present "<buttons unavailable>"
+    And the following buttons should be present "<available buttons>"
+    And the following buttons should not be present "<unavailable buttons>"
     Examples:
-      | user          | title                   | buttons available       | buttons unavailable                |
+      | user          | title                   | available buttons       | unavailable buttons                |
       # State: draft, owned by Eagle
       | Eagle         | Creating Justice League | Save as draft, Validate | Propose, Report                    |
       # State: draft, can propose
@@ -263,10 +263,10 @@ Feature: News moderation.
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
-    And the following buttons should be present "<buttons available>"
-    And the following buttons should not be present "<buttons unavailable>"
+    And the following buttons should be present "<available buttons>"
+    And the following buttons should not be present "<unavailable buttons>"
     Examples:
-      | user     | title                         | buttons available                | buttons unavailable                               |
+      | user     | title                         | available buttons                | unavailable buttons                               |
       # Post moderated
       | Hawkgirl | Hawkgirl is a spy             | Propose, Validate, Report        | Save as draft, Request deletion                   |
       # Members can move to 'in assessment' state.
