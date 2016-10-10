@@ -32,26 +32,46 @@
 transitions:
   draft:
     __new__:
-      - moderator
       - authenticated
-      - rdf_entity-collection-facilitator
+      - moderator
     draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    proposed:
+      - moderator
       - rdf_entity-solution-facilitator
     validated:
+      - moderator
       - rdf_entity-solution-facilitator
     in_assessment:
+      - moderator
       - rdf_entity-solution-facilitator
+    blacklisted:
+      - moderator
+      - rdf_entity-solution-facilitator
+    deletion_request:
+      - moderator
   proposed:
     __new__:
-      - moderator
       - authenticated
-      - rdf_entity-collection-facilitator
+      - moderator
     draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    proposed:
+      - moderator
       - rdf_entity-solution-facilitator
     validated:
+      - moderator
       - rdf_entity-solution-facilitator
     in_assessment:
+      - moderator
       - rdf_entity-solution-facilitator
+    blacklisted:
+      - moderator
+      - rdf_entity-solution-facilitator
+    deletion_request:
+      - moderator
   validated:
     __new__:
       - moderator

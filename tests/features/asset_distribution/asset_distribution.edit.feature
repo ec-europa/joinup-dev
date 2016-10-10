@@ -6,9 +6,10 @@ Feature: Asset distribution editing.
 
   Background:
     Given the following solutions:
-      | title      | description        |
-      | Solution A | Sample description |
-      | Solution B | Sample description |
+      | title      | description        | state     |
+      | Solution A | Sample description | validated |
+      | Solution B | Sample description | validated |
+
     And the following collection:
       | title      | Collection example     |
       | affiliates | Solution A, Solution B |

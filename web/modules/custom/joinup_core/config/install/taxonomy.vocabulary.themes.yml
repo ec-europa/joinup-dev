@@ -25,6 +25,8 @@ third_party_settings:
     mapping_default_langcode:
       value: ''
     mapping_path: {  }
+    graph_default: 'http://data-theme-skos'
+    graph_draft: 'http://data-theme-skos'
 name: Themes
 vid: themes
 description: ''

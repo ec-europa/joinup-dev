@@ -14,6 +14,7 @@ Feature: Distribution API
       | webdav creation   | no                                   |
       | webdav url        | http://joinup.eu/solution/foo/webdav |
       | wiki              | http://example.wiki/foobar/wiki      |
+      | state             | validated                            |
     And the following collection:
       | title             | Asset distribution collection API foo |
       | logo              | logo.png                              |
@@ -42,6 +43,7 @@ Feature: Distribution API
       | title             | AD first solution mandatory short |
       | description       | Another sample solution           |
       | elibrary creation | members                           |
+      | state             | validated                         |
     And the following collection:
       | title             | Asset distribution short API bar  |
       | logo              | logo.png                          |

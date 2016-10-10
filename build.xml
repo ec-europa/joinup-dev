@@ -412,6 +412,16 @@
         </drush>
     </target>
 
+    <target name="purge-rdf-content">
+        <drush
+            command="rdf-entity-purge"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+        </drush>
+    </target>
+
     <target name="setup-continuousphp"
             depends="check-continuousphp">
         <echo message="Put the odbc configuration file in the home folder where CPHP can find it" />
@@ -517,11 +527,11 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, import-rdf-fixtures" />
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, import-rdf-fixtures, install, setup-dev, create-demo-users" />
+        depends="setup-virtuoso-permissions, install, purge-rdf-content, import-rdf-fixtures, setup-dev, create-demo-users" />
 
 </project>

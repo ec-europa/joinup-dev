@@ -39,6 +39,7 @@ dependencies:
   - page_cache
   - path
   - r4032login
+  - rdf_draft
   - rdf_entity
   - rdf_export
   - rdf_taxonomy

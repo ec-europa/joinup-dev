@@ -43,17 +43,7 @@
 <div class="mdl-layout mdl-js-layout">
 
   {# @todo The small header, which contains collections link, should be removed for anonymous users on the homepage - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639. #}
-  <header class="section section--header" role="banner">
-    {% include directory ~ '/templates/parts/header.html.twig' %}
-    {{ page.header }}
-  </header>
-  <div class="mdl-layout__drawer">
-    <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" href="">Solutions</a>
-      <a class="mdl-navigation__link" href="/collections">Collections</a>
-      <a class="mdl-navigation__link" href="">Events</a>
-    </nav>
-  </div>
+  {% include directory ~ '/templates/parts/header.html.twig' %}
 
   {% if is_front and not logged_in %}
     {% include directory ~ '/templates/parts/featured--anonymous.html.twig' %}
