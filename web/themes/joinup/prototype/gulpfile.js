@@ -98,6 +98,12 @@ gulp.task('js', function() {
     .pipe(gulp.dest(paths.styleguide + '/js'));
 });
 
+// Define copying images for prototype folder
+gulp.task('images', function() {
+  gulp.src(['../images/**'])
+    .pipe(gulp.dest('images'));
+});
+
 // Listen folders for changes and apply defined tasks
 gulp.task('default', ['styleguide', 'sass', 'images', 'js', 'mustache'], function() {
   livereload.listen(45729);

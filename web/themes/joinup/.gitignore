@@ -2,7 +2,5 @@
 prototype/Gemfile.lock
 prototype/material-design-lite
 prototype/node_modules
-prototype/_prototypes
-!prototype/_prototypes/css
-!prototype/_prototypes/js
-!prototype/_prototypes/images
+prototype/styleguide
+prototype/images
