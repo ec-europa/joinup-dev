@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6da255b2c152ebc9d20b190813e962cf",
-    "content-hash": "da88148690070841fd6d018e5cfdd7c1",
+    "hash": "90d81995a0ddba56c885d560a1d71c94",
+    "content-hash": "aa4cf5d459d56ff24a8ed309867650ce",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -6540,6 +6540,47 @@
             "time": "2015-06-14 21:17:01"
         },
         {
+            "name": "drupal-composer/drupal-scaffold",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupal-composer/drupal-scaffold.git",
+                "reference": "617fa3a2466795b148e3255651591682f2325ede"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-scaffold/zipball/617fa3a2466795b148e3255651591682f2325ede",
+                "reference": "617fa3a2466795b148e3255651591682f2325ede",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0.0",
+                "php": ">=5.4.5"
+            },
+            "require-dev": {
+                "composer/composer": "dev-master",
+                "phpunit/phpunit": "^4.4.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "DrupalComposer\\DrupalScaffold\\Plugin",
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DrupalComposer\\DrupalScaffold\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Composer Plugin for updating the Drupal scaffold files when using drupal/core",
+            "time": "2016-08-29 16:56:02"
+        },
+        {
             "name": "drupal/coder",
             "version": "dev-8.x-2.x",
             "source": {
@@ -8191,6 +8232,7 @@
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
         "drupal/drupal-extension": 20,
+        "drupal-composer/drupal-scaffold": 20,
         "jcalderonzumba/gastonjs": 20
     },
     "prefer-stable": true,

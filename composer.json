@@ -44,6 +44,7 @@
         "drupal/config_update": "dev-8.x-1.x#ac1526df5836a611f04bb421945beddb6306b7f2",
         "drupal/devel": "~8.1.0-alpha1",
         "drupal/drupal-extension": "dev-306-poc",
+        "drupal-composer/drupal-scaffold": "dev-master",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
         "mikey179/vfsStream": "~1.2",
@@ -65,7 +66,8 @@
         }
     },
     "scripts": {
-        "post-install-cmd": "sh ./scripts/composer/post-install.sh"
+        "post-install-cmd": "sh ./scripts/composer/post-install.sh",
+        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
     },
     "extra": {
         "installer-paths": {
