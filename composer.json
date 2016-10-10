@@ -91,9 +91,9 @@
             "drupal/search_api": {
                 "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
             },
-	    "drupal/state_machine": {
-		"Add a transition event.": "https://www.drupal.org/files/issues/state_machine_should-2794537-3.patch"
-	    }
+            "drupal/state_machine": {
+                "State machine should fire events when a transition is applied.": "https://www.drupal.org/files/issues/state_machine-transition_events-2794537-15.patch"
+            }
         }
     },
     "repositories": [
