@@ -147,7 +147,7 @@ class StateMachineButtons extends OptionsSelectWidget {
    * @return array
    *   The update options array.
    */
-  protected function replaceStateLabelsWithTransitionLabels($options, FieldItemListInterface $items) {
+  protected function replaceStateLabelsWithTransitionLabels(array $options, FieldItemListInterface $items) {
     $entity = $items->getEntity();
     $current_value = $items->value;
 
