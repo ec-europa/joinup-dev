@@ -146,8 +146,6 @@ class StateMachineButtons extends OptionsSelectWidget {
    *
    * @return array
    *   The update options array.
-   *
-   * @todo function name kinda sucks.
    */
   protected function replaceStateLabelsWithTransitionLabels($options, FieldItemListInterface $items) {
     $entity = $items->getEntity();
