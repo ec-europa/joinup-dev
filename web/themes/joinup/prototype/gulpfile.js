@@ -99,7 +99,7 @@ gulp.task('js', function() {
 });
 
 // Define copying images for prototype folder
-gulp.task('images', function() {
+gulp.task('images_prototype', function() {
   gulp.src(['../images/**'])
     .pipe(gulp.dest('images'));
 });
