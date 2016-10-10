@@ -190,14 +190,26 @@ function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
  * Implements hook_preprocess_HOOK() for form-element.html.twig.
  */
 function joinup_theme_preprocess_form_element(&$variables) {
-  // Pass element title to label.
   if (isset($variables['label']['#title']) && method_exists($variables['label']['#title'], 'getArguments')) {
     $arguments = $variables['element']['#title']->getArguments();
-    if (!empty($arguments['@title'])) {
-      $variables['label'] = $arguments['@title'];
-    }
-    elseif (!empty($arguments['@label'])) {
-      $variables['label'] = $arguments['@label'];
+
+    // Array contains form elements, which are displayed with floating label.
+    $floating_label_types = [
+      'email',
+      'entity_autocomplete',
+      'password',
+      'textfield',
+      'url',
+    ];
+
+    if (in_array($variables['type'], $floating_label_types)) {
+      // Make label visible, so it can be displayed inside floating field.
+      $variables['label']['#title_display'] = 'visible';
+
+      // Pass element title to label.
+      if (!empty($arguments['@title'])) {
+        $variables['label']['#title'] = $arguments['@title'];
+      }
     }
   }
 }
@@ -212,7 +224,7 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
     $input_value = $variables['element']['#value']->getUntranslatedString();
   }
 
-  // Buttons which have "add element" behaviour.
+  // Buttons which have "add element" function.
   $plus_buttons = array(
     'Add another item',
     'Add existing',
@@ -221,26 +233,53 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
     'Add new @type_singular',
     'Add @type_singular',
     'Create @type_singular',
+    'Update @type_singular',
   );
 
+  // Buttons' parents,
+  // which have cancel function in inline entity form.
+  $cancel_buttons_parents = array(
+    'ief_add_cancel',
+    'ief_edit_cancel',
+    'ief_reference_cancel',
+  );
+
+  // Buttons' parents,
+  // which have remove function in inline entity form.
+  $remove_buttons_parents = array(
+    'ief_entity_remove',
+    'ief_remove_confirm',
+  );
+
+  // Buttons' parents,
+  // which have cancel function in a confirm table in inline entity form.
+  $cancel_buttons_parents_table = array(
+    'ief_entity_cancel',
+    'ief_remove_cancel',
+  );
+
+  // Buttons' parents,
+  // which have edit function in a confirm table in inline entity form.
+  $edit_buttons_parents_table = array(
+    'ief_entity_edit',
+    'ief_entity_edit_save',
+  );
+
+  // Add suggestion for all "Add" buttons.
   if (in_array($input_value, $plus_buttons)) {
     $suggestions[] = 'input__ief_add_another';
   }
-
   // Remove, edit, update and cancel buttons in inline entity form.
-  if ($input_value == 'Edit' && in_array('ief_entity_edit', $variables['element']['#parents'])
-    || $input_value == 'Update @type_singular' && in_array('ief_entity_edit_save', $variables['element']['#parents'])) {
+  elseif (!empty(array_intersect($edit_buttons_parents_table, $variables['element']['#parents']))) {
     $suggestions[] = 'input__ief_edit';
   }
-  elseif ($input_value == 'Remove' && in_array('ief_entity_remove', $variables['element']['#parents'])) {
+  elseif (!empty(array_intersect($remove_buttons_parents, $variables['element']['#parents']))) {
     $suggestions[] = 'input__ief_remove';
   }
-  elseif ($input_value == 'Cancel' && in_array('ief_entity_cancel', $variables['element']['#parents'])) {
+  elseif (!empty(array_intersect($cancel_buttons_parents_table, $variables['element']['#parents']))) {
     $suggestions[] = 'input__ief_cancel';
   }
-  elseif ($input_value == 'Cancel'
-  && (in_array('ief_reference_cancel', $variables['element']['#parents'])
-  || (in_array('ief_add_cancel', $variables['element']['#parents'])))) {
+  elseif (!empty(array_intersect($cancel_buttons_parents, $variables['element']['#parents']))) {
     $suggestions[] = 'input__ief_cancel_circle';
   }
 }
