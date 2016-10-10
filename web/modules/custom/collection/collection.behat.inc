@@ -15,7 +15,7 @@ use Drupal\joinup\Traits\OgMenuTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -439,7 +439,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
       /** @var \Drupal\node\NodeInterface $content */
       $content = $this->getNodeByTitle($values['content'], $bundle);
-      $content->get(OgGroupAudienceHelper::DEFAULT_FIELD)->set(0, $group->id());
+      $content->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->set(0, $group->id());
       $content->save();
     }
   }
