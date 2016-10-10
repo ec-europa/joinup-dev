@@ -182,7 +182,7 @@ class StateMachineButtons extends OptionsSelectWidget {
 
     // Sanitize again the labels.
     // @see \Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase::getOptions()
-    array_walk_recursive($options, array($this, 'sanitizeLabel'));
+    array_walk_recursive($options, [$this, 'sanitizeLabel']);
 
     return $options;
   }
