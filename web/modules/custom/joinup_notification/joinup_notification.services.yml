@@ -1,0 +1,7 @@
+services:
+  joinup_notification.workflow_notification:
+    class: Drupal\joinup_notification\EventSubscriber\WorkflowTransitionEventSubscriber
+    arguments: ["@message_notify.sender", "@entity_type.manager", "@og.role_manager"]
+    tags:
+      - { name: event_subscriber }
+
