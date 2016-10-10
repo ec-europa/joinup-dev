@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * @file
+ * Contains install, update, uninstall functionality for Joinup Migrate module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function joinup_migrate_schema() {
+  return [
+    'joinup_migrate_mapping' => [
+      'description' => 'Keeps migration mapping data',
+      'fields' => [
+        'id' => [
+          'description' => 'The primary identifier for a mapping entry',
+          'type' => 'serial',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ],
+        'type' => [
+          'description' => 'Source node-type',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => '',
+        ],
+        'nid' => [
+          'description' => 'The node ID from of the source item',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'size' => 'big',
+        ],
+        'collection' => [
+          'description' => 'Collection',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'policy' => [
+          'description' => 'Policy domain',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'new_collection' => [
+          'description' => 'New collection',
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => TRUE,
+          'default' => '',
+        ],
+        'del' => [
+          'description' => 'Delete',
+          'type' => 'varchar',
+          'length' => 10,
+          'not null' => TRUE,
+          'default' => '',
+        ],
+        'abstract' => [
+          'description' => 'Abstract',
+          'type' => 'text',
+        ],
+      ],
+      'primary key' => ['id'],
+      'unique keys' => [
+        'nid' => ['nid'],
+      ],
+    ],
+  ];
+}

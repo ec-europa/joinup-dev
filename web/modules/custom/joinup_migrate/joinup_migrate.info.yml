@@ -1,9 +1,8 @@
 name: Joinup migrate
 type: module
 description: Handles migration from the previous version of the Joinup platform
-core: 8.x
+core: '8.x'
 package: Custom
 dependencies:
   - migrate
-  - migrate_drupal
   - migrate_drush
