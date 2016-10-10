@@ -49,3 +49,32 @@ Feature:
       And I should not see the text "20 year anniversary"
       # I should not see the discussions of another collection.
       But I should not see the text "NEC VR4300 CPU"
+
+    Scenario: Content type tabs should be mutually exclusive and show only items with results.
+      Given I am logged in as a moderator
+      When I go to the homepage of the "Nintendo64" collection
+      And I click "Add custom page"
+      Then I should see the heading "Add custom page"
+      When I fill in the following:
+        | Title | Collection content                        |
+        | Body  | Shows all the content for this collection |
+      And I check "Enable the search field"
+      And I press "Save"
+      Then I should see the heading "Collection content"
+      # Verify that unwanted facets are not shown in the page.
+      # Assertion of the existing ones will be done through clicks in the
+      # interface.
+      And I should not see the following facet items "asset distribution, asset release, collection, contact information, custom page, licence, organisation, person, solution"
+      And I should see the "Rare Nintendo64 disk drive discovered" tile
+      # Events tile template is not yet in place. See #ISAICP-2723.
+      And I should see the heading "20 year anniversary"
+      # Filter on news.
+      When I click the news content tab
+      Then I should see the "Rare Nintendo64 disk drive discovered" tile
+      And I should not see the heading "20 year anniversary"
+      # Some unwanted facets were showing after selecting one of the tabs.
+      And I should not see the following facet items "asset distribution, asset release, collection, contact information, custom page, licence, organisation, person, solution"
+      # Filter on events.
+      When I click the event content tab
+      Then I should see the heading "20 year anniversary"
+      Then I should not see the heading "Rare Nintendo64 disk drive discovered"
