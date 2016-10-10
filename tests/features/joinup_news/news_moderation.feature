@@ -154,7 +154,7 @@ Feature: News moderation.
     And I click "Add news"
     Then I should see the heading "Add news"
     And the following fields should be present "Headline, Kicker, Content"
-    And the following fields should not be present "Groups audience"
+    And the following fields should not be present "Groups audience, State"
     And the following buttons should be present "Save as draft, Validate"
     And the following buttons should not be present "Propose, Report, Request deletion"
     When I fill in the following:
