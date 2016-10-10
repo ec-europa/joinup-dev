@@ -39,7 +39,8 @@ function demo_content_entity_randomize_field(EntityInterface $entity, array $key
   // Skip fields handled by core except label.
   $entity_keys = $entity->getEntityType()->getKeys();
   unset($entity_keys['label']);
-  $keys_to_skip = array_merge($keys_to_skip, $entity->getEntityType()->getKeys());
+  $keys_to_skip = array_merge($keys_to_skip, $entity->getEntityType()
+    ->getKeys());
 
   $field_definitions = $entity->getFieldDefinitions();
   foreach ($field_definitions as $id => $field_definition) {

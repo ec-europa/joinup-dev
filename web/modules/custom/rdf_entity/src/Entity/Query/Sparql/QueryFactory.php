@@ -3,14 +3,24 @@
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Entity\Query\QueryBase;
 use Drupal\Core\Entity\Query\QueryFactoryInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\RdfGraphHandler;
+use Drupal\rdf_entity\RdfMappingHandler;
 
 /**
  * Provides a factory for creating entity query objects for the null backend.
  */
 class QueryFactory implements QueryFactoryInterface {
+
+  /**
+   * The connection object.
+   *
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   */
+  protected $connection;
 
   /**
    * The namespace of this class, the parent class etc.
@@ -20,11 +30,44 @@ class QueryFactory implements QueryFactoryInterface {
   protected $namespaces;
 
   /**
-   * Constructs a QueryFactory object.
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
    */
-  public function __construct(Connection $connection) {
+  protected $entityTypeManager;
+
+  /**
+   * The rdf graph helper service object.
+   *
+   * @var \Drupal\rdf_entity\RdfGraphHandler
+   */
+  protected $graphHandler;
+
+  /**
+   * The rdf mapping helper service object.
+   *
+   * @var \Drupal\rdf_entity\RdfMappingHandler
+   */
+  protected $mappingHandler;
+
+  /**
+   * Constructs a QueryFactory object.
+   *
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection
+   *    The connection object.
+   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   *    The entity type manager.
+   * @param \Drupal\rdf_entity\RdfGraphHandler $rdf_graph_handler
+   *    The rdf graph helper service.
+   * @param \Drupal\rdf_entity\RdfMappingHandler $rdf_mapping_handler
+   *    The rdf mapping helper service.
+   */
+  public function __construct(Connection $connection, EntityTypeManager $entity_type_manager, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
     $this->connection = $connection;
     $this->namespaces = QueryBase::getNamespaces($this);
+    $this->entityTypeManager = $entity_type_manager;
+    $this->graphHandler = $rdf_graph_handler;
+    $this->mappingHandler = $rdf_mapping_handler;
   }
 
   /**
@@ -32,9 +75,7 @@ class QueryFactory implements QueryFactoryInterface {
    */
   public function get(EntityTypeInterface $entity_type, $conjunction) {
     $class = QueryBase::getClass($this->namespaces, 'Query');
-    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces);
-
-    // Return new SparqlQuery($entity_type, $conjunction, $this->namespaces);.
+    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager, $this->graphHandler, $this->mappingHandler);
   }
 
   /**
@@ -42,8 +83,7 @@ class QueryFactory implements QueryFactoryInterface {
    */
   public function getAggregate(EntityTypeInterface $entity_type, $conjunction) {
     $class = QueryBase::getClass($this->namespaces, 'Query');
-    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces);
-    // Return new SparqlQuery($entity_type, $conjunction, $this->namespaces);.
+    return new $class($entity_type, $conjunction, $this->connection, $this->namespaces, $this->entityTypeManager, $this->graphHandler, $this->mappingHandler);
   }
 
 }
