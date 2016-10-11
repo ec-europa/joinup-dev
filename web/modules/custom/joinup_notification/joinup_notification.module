@@ -12,7 +12,7 @@ use Drupal\og\Entity\OgMembership;
 use Drupal\user\Entity\Role;
 
 /**
- * Implements hook_entity_delete().
+ * Implements hook_entity_predelete().
  *
  * Handles the notifications for the entity types rdf_entity and node the same
  * way as the WorkflowTransitionEventSubscriber does but since we do not have a
@@ -21,7 +21,7 @@ use Drupal\user\Entity\Role;
  *
  * @see \Drupal\joinup_notification\config\schema\joinup_notification.schema.yml
  */
-function joinup_notification_entity_delete(EntityInterface $entity) {
+function joinup_notification_entity_predelete(EntityInterface $entity) {
   $entity_type = $entity->getEntityTypeId();
   $bundle = $entity->bundle();
   if (!($entity instanceof ContentEntityInterface) || !in_array($entity->getEntityTypeId(), ['rdf_entity', 'node'])) {
@@ -38,7 +38,7 @@ function joinup_notification_entity_delete(EntityInterface $entity) {
 
   $field_definition = array_pop($field_definitions);
   $state_field = $entity->{$field_definition->getName()}->first();
-  if (empty($state_field->getValue()['target_id']) || $state_field->getValue()['target_id'] != 'deletion_request') {
+  if (empty($state_field->value) || $state_field->value != 'deletion_request') {
     return;
   }
 
