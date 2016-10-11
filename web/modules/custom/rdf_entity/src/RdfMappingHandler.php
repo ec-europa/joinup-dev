@@ -115,7 +115,7 @@ class RdfMappingHandler {
    *
    * @param string $entity_type_id
    *    The entity type of the bundles e.g. 'node_type'.
-   * @param array $bundles
+   * @param array|null $bundles
    *    Optionally filter and return only a subset of bundles.
    *
    * @todo: This should return a simple array. A query helper method can convert
@@ -125,7 +125,7 @@ class RdfMappingHandler {
    *    A string including the converted array of bundle uris to a string value
    *    of a sparql array filter.
    */
-  public function getBundleUriList($entity_type_id, array $bundles = []) {
+  public function getBundleUriList($entity_type_id, $bundles = []) {
     $bundle_mapping = $this->getRdfBundleMappedUri($entity_type_id);
     if (empty($bundle_mapping)) {
       return NULL;
