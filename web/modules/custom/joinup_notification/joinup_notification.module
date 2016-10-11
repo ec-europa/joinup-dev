@@ -2,23 +2,59 @@
 
 /**
  * @file
- * Contains joinup_notification.module..
+ * Module handling notifications in joinup.
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
+use \Drupal\Core\Entity\EntityInterface;
+use Drupal\message\Entity\Message;
+use Drupal\og\Entity\OgMembership;
+use Drupal\user\Entity\Role;
 
 /**
- * Implements hook_help().
+ * Implements hook_entity_delete().
  */
-function joinup_notification_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the joinup_notification module.
-    case 'help.page.joinup_notification':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Handles notifications for joinup project.') . '</p>';
-      return $output;
+function joinup_notification_entity_delete(EntityInterface $entity) {
+  $configuration = \Drupal::config('joinup_notification.settings')->get('delete_notifications');
+  $entity_type = $entity->getEntityTypeId();
+  $bundle = $entity->bundle();
 
-    default:
+  foreach ($configuration[$entity_type][$bundle] as $role_id => $messages) {
+    $role = Role::load($role_id);
+    if (!empty($role)) {
+      $user_ids = $this->entityManager->getStorage('user')->getQuery()
+        ->condition('user_role', $role_id)
+        ->execute();
+      $recipients = $user_ids;
+    }
+    else {
+      $membership_query = $this->entityManager->getStorage('og_membership')->getQuery()
+        ->condition('state', 'active')
+        ->condition('entity_id', $entity->id());
+      $memberships_ids = $membership_query->execute();
+      $memberships = OgMembership::loadMultiple($memberships_ids);
+      $memberships = array_filter($memberships, function ($membership) use ($role_id) {
+        $roles = $membership->getRoles();
+        $role_ids = array_keys($roles);
+        return in_array($role_id, $role_ids);
+      });
+      $recipients = array_map(function ($membership) {
+        return $membership->getUser()->id();
+      }, $memberships);
+    }
+
+    /** @var OgMembership $membership */
+    foreach ($recipients as $user_id) {
+      foreach ($messages as $message_id) {
+        // Create the actual message and save it to the db.
+        $message = Message::create([
+          'template' => $message_id,
+          'uid' => $user_id,
+          'field_message_content' => $entity->id(),
+        ]);
+        $message->save();
+        // Send the saved message as an e-mail.
+        $this->messageNotifySender->send($message, [], 'email');
+      }
+    }
   }
 }
