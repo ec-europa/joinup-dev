@@ -49,7 +49,7 @@
         "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
         "mikey179/vfsStream": "~1.2",
         "pear/http_request2": "~2.3",
-        "pfrenssen/phpcs-pre-push": "1.0",
+        "pfrenssen/phpcs-pre-push": "1.1",
         "phpunit/phpunit": "~4.8",
         "symfony/css-selector": "~2.8.0",
         "drupal/default_content": "8.*"
@@ -135,12 +135,12 @@
             "type": "package",
             "package": {
                 "name": "pfrenssen/phpcs-pre-push",
-                "version": "1.0",
+                "version": "1.1",
                 "type": "git-hook",
                 "source": {
-                    "url": "https://gist.github.com/498fc52fea3f965f6640.git",
+                    "url": "https://gist.github.com/1ec87c25930861654cc94251da69f14b.git",
                     "type": "git",
-                    "reference": "master"
+                    "reference": "1.0"
                 }
             }
         },
