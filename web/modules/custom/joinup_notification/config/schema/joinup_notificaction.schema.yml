@@ -4,16 +4,13 @@ joinup_notification.settings:
   mapping:
     notifications:
       type: sequence
-      label: 'Entity type'
+      label: 'Workflow group'
       sequence:
         type: sequence
-        label: 'Workflow group'
+        label: 'Transition'
         sequence:
           type: sequence
-          label: 'Transition'
+          label: 'Roles'
           sequence:
-            type: sequence
-            label: 'Roles'
-            sequence:
-              type: string
-              label: 'Message ID'
+            type: string
+            label: 'Message ID'

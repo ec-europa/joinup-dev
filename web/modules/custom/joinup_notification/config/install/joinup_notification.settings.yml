@@ -1,6 +1,5 @@
 notifications:
-  rdf_entity:
-    solution:
+  solution:
       validate:
         rdf_entity-solution-administrator:
           - rdf_entity_solution_validate
