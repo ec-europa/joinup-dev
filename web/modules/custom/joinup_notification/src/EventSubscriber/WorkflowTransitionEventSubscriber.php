@@ -2,11 +2,14 @@
 
 namespace Drupal\joinup_notification\EventSubscriber;
 
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\message\Entity\Message;
+use Drupal\og\Entity\OgMembership;
 use Drupal\state_machine\Event\WorkflowTransitionEvent;
+use Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface;
+use Drupal\user\Entity\Role;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\message_notify\MessageNotifier;
-use Drupal\Core\Entity\EntityTypeManager;
-use Drupal\og\OgRoleManager;
 
 /**
  * Class WorkflowTransitionEventSubscriber.
@@ -23,26 +26,18 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   protected $messageNotifySender;
 
   /**
-   * Drupal\Core\Entity\EntityTypeManager definition.
+   * Drupal\Core\Entity\EntityManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityManager
    */
-  protected $entityTypeManager;
-
-  /**
-   * Drupal\og\OgRoleManager definition.
-   *
-   * @var \Drupal\og\OgRoleManager
-   */
-  protected $ogRoleManager;
+  protected $entityManager;
 
   /**
    * Constructor.
    */
-  public function __construct(MessageNotifier $message_notify_sender, EntityTypeManager $entity_type_manager, OgRoleManager $og_role_manager) {
+  public function __construct(MessageNotifier $message_notify_sender, EntityManager $entity_manager) {
     $this->messageNotifySender = $message_notify_sender;
-    $this->entityTypeManager = $entity_type_manager;
-    $this->ogRoleManager = $og_role_manager;
+    $this->entityManager = $entity_manager;
   }
 
   /**
