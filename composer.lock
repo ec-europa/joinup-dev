@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bda0d7ccebc1e2aef659f740cb68b55a",
-    "content-hash": "e7ccbb6d99133052d1cf21e8ca749178",
+    "hash": "d278a7b8057c5e102903a3df9fcc4299",
+    "content-hash": "b5a5b1323d3d1c55513932e46b7a4561",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1257,16 +1257,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.2.0",
+            "version": "8.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "2fde0cab6c55bf613ca2eb94bb9038bb0ee44b25"
+                "reference": "a5549f2a541c0fbb0565e1576a63b917813fadba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/2fde0cab6c55bf613ca2eb94bb9038bb0ee44b25",
-                "reference": "2fde0cab6c55bf613ca2eb94bb9038bb0ee44b25",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/a5549f2a541c0fbb0565e1576a63b917813fadba",
+                "reference": "a5549f2a541c0fbb0565e1576a63b917813fadba",
                 "shasum": ""
             },
             "require": {
@@ -1437,15 +1437,21 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-10-05 09:36:15"
+            "time": "2016-10-11 10:18:49"
         },
         {
             "name": "drupal/digital_size_formatter",
-            "version": "dev-8.x-1.x",
+            "version": "8.1.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/digital_size_formatter.git",
                 "reference": "56ce85f21ea989e04ac06638f9355af12c44bd15"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/digital_size_formatter-8.x-1.0-alpha1.zip",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "drupal/core": "8.*"
@@ -1539,11 +1545,17 @@
         },
         {
             "name": "drupal/facets",
-            "version": "dev-8.x-1.x",
+            "version": "8.1.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/facets.git",
-                "reference": "d5c0117eb59ab2593f6430e3f3035d60bc084653"
+                "reference": "ca8ceb7e8393da80c37266e9665265d37f53b671"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha6.zip",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "drupal/core": "8.*"
@@ -1574,7 +1586,7 @@
             ],
             "description": "Faceted search interfaces that can be used on Search API searchers.",
             "homepage": "https://www.drupal.org/project/facets",
-            "time": "2016-08-24 17:38:22"
+            "time": "2016-10-06 16:46:15"
         },
         {
             "name": "drupal/inline_entity_form",
@@ -6545,12 +6557,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-scaffold.git",
-                "reference": "617fa3a2466795b148e3255651591682f2325ede"
+                "reference": "32333c6e394b5a7b06e0ea1a19c55a3b4bd7efc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-scaffold/zipball/617fa3a2466795b148e3255651591682f2325ede",
-                "reference": "617fa3a2466795b148e3255651591682f2325ede",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-scaffold/zipball/32333c6e394b5a7b06e0ea1a19c55a3b4bd7efc8",
+                "reference": "32333c6e394b5a7b06e0ea1a19c55a3b4bd7efc8",
                 "shasum": ""
             },
             "require": {
@@ -6578,20 +6590,26 @@
                 "GPL-2.0+"
             ],
             "description": "Composer Plugin for updating the Drupal scaffold files when using drupal/core",
-            "time": "2016-08-29 16:56:02"
+            "time": "2016-10-11 09:18:55"
         },
         {
             "name": "drupal/coder",
-            "version": "dev-8.x-2.x",
+            "version": "8.2.9",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder",
-                "reference": "315a3a0958550fc36e188549ded8a0a1f84bda15"
+                "reference": "b08682bd939cf7d3ac7034bee792aa17f80e19d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/coder-8.x-2.9.zip",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=5.4.0",
-                "squizlabs/php_codesniffer": ">=2.7.0 <3.0",
+                "squizlabs/php_codesniffer": ">=2.7.0",
                 "symfony/yaml": ">=2.0.0"
             },
             "require-dev": {
@@ -6609,7 +6627,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-10-10 14:13:45"
+            "time": "2016-09-17 16:49:15"
         },
         {
             "name": "drupal/config_devel",
@@ -8218,8 +8236,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "composer/composer": 15,
-        "drupal/digital_size_formatter": 20,
-        "drupal/facets": 20,
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,
         "drupal/og_menu": 20,
@@ -8228,7 +8244,6 @@
         "easyrdf/easyrdf": 20,
         "google/material-design-lite": 20,
         "phing/phing": 20,
-        "drupal/coder": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
         "drupal/drupal-extension": 20,
