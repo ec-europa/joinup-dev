@@ -50,6 +50,60 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
    */
   public function messageSender(WorkflowTransitionEvent $event) {
     $configuration = \Drupal::config('joinup_notification.settings')->get('notifications');
+    $entity = $event->getEntity();
+    $entity_type = $entity->getEntityTypeId();
+    $bundle = $entity->bundle();
+    $field_definitions = array_filter($this->entityManager->getFieldDefinitions($entity_type, $bundle), function($field_definition) {
+      return $field_definition->getType() == 'state';
+    });
+
+    /** @var FieldDefinitionInterface $field_definition */
+    $field_definition = array_pop($field_definitions);
+    /** @var StateItemInterface $state_field */
+    $state_field = $entity->{$field_definition->getName()}->first();
+    $workflow = $state_field->getWorkflow();
+    $transition = $workflow->findTransition($event->getFromState(), $event->getToState());
+
+
+    foreach ($configuration[$workflow->getGroup()][$transition->getId()] as $role_id => $messages) {
+      $role = Role::load($role_id);
+      if (!empty($role)) {
+        $user_ids = $this->entityManager->getStorage('user')->getQuery()
+          ->condition('user_role', $role_id)
+          ->execute();
+        $recipients = $user_ids;
+      }
+      else {
+        $membership_query = $this->entityManager->getStorage('og_membership')->getQuery()
+          ->condition('state', 'active')
+          ->condition('entity_id', $entity->id());
+        $memberships_ids = $membership_query->execute();
+        $memberships = OgMembership::loadMultiple($memberships_ids);
+        $memberships = array_filter($memberships, function ($membership) use ($role_id) {
+          $roles = $membership->getRoles();
+          $role_ids = array_keys($roles);
+          return in_array($role_id, $role_ids);
+        });
+        $recipients = array_map(function($membership) {
+          return $membership->getUser()->id();
+        }, $memberships);
+      }
+
+      /** @var OgMembership $membership */
+      foreach ($recipients as $user_id) {
+        foreach ($messages as $message_id){
+          // Create the actual message and save it to the db.
+          $message = Message::create([
+            'template' => $message_id,
+            'uid' => $user_id,
+            'field_message_content' => $entity->id(),
+          ]);
+          $message->save();
+          // Send the saved message as an e-mail.
+          $this->messageNotifier->send($message, [], 'email');
+        }
+      }
+    }
   }
 
   /**
@@ -58,12 +112,10 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     $configuration = \Drupal::config('joinup_notification.settings')->get('notifications');
     $events = [];
-    foreach ($configuration as $entity_type => $workflow_groups) {
-      foreach ($workflow_groups as $workflow_group => $transitions) {
-        foreach ($transitions as $transition => $roles) {
-          $event_name = $workflow_group . '.' . $transition . '.post_transition';
-          $events[$event_name][] = ['messageSender'];
-        }
+    foreach ($configuration as $workflow_group => $transitions) {
+      foreach ($transitions as $transition => $roles) {
+        $event_name = $workflow_group . '.' . $transition . '.post_transition';
+        $events[$event_name][] = ['messageSender'];
       }
     }
 
