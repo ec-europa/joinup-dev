@@ -163,7 +163,7 @@ class RdfGraphHandler {
    * @throws \Exception
    *    Thrown when the passed graph cannot be determined.
    */
-  public function getEntityTypeGraphUris($entity_type_bundle_key, $graph_names = []) {
+  public function getEntityTypeGraphUris($entity_type_bundle_key, array $graph_names = []) {
     if (empty($graph_names)) {
       $graph_names = $this->getEntityTypeEnabledGraphs();
     }
@@ -191,7 +191,7 @@ class RdfGraphHandler {
    * @return array
    *    A plain list of graph uris.
    */
-  public function getEntityTypeGraphUrisList($entity_type_bundle_key, $graph_names = []) {
+  public function getEntityTypeGraphUrisList($entity_type_bundle_key, array $graph_names = []) {
     if (empty($graph_names)) {
       $graph_names = $this->getEntityTypeEnabledGraphs();
     }

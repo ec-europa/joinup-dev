@@ -214,7 +214,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *
    * @see \Drupal\rdf_entity\GraphHandler::getEntityTypeGraphUris
    */
-  public function getEntityTypeGraphUris($graph_types = NULL) {
+  public function getEntityTypeGraphUris(array $graph_types = NULL) {
     return $this->getGraphHandler()->getEntityTypeGraphUris($this->entityType->getBundleEntityType(), $graph_types);
   }
 
@@ -336,7 +336,7 @@ QUERY;
    * @throws \Exception
    *    Thrown when the entity graph is empty.
    */
-  protected function processGraphResults($results) {
+  protected function processGraphResults(array $results) {
     $mapping = $this->mappingHandler->getEntityPredicates($this->entityTypeId);
     // If no graphs are passed, fetch all available graphs derived from the
     // results.
@@ -721,7 +721,7 @@ QUERY;
    * @param array $values
    *   The field values.
    */
-  private function applyFieldDefaults(FieldStorageConfig $storage, &$values) {
+  private function applyFieldDefaults(FieldStorageConfig $storage, array &$values) {
     if (empty($values)) {
       return;
     }

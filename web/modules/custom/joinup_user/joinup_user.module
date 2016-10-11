@@ -103,7 +103,7 @@ function joinup_user_mail($key, &$message, $params) {
  *
  * @see user_mail_tokens()
  */
-function joinup_user_mail_tokens(&$replacements, $data, $options) {
+function joinup_user_mail_tokens(array &$replacements, array $data, array $options) {
   user_mail_tokens($replacements, $data, $options);
   if (isset($data['user']) && isset($data['original'])) {
     $changes = joinup_user_account_changes($data['original'], $data['user']);

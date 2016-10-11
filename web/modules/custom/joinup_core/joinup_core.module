@@ -29,7 +29,7 @@ function joinup_core_theme($existing, $type, $theme, $path) {
  *   - view: The view object.
  *   - rows: An array of row items. Each row is an array of content.
  */
-function template_preprocess_joinup_tiles(&$variables) {
+function template_preprocess_joinup_tiles(array &$variables) {
   template_preprocess_views_view_unformatted($variables);
 }
 

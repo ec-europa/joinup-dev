@@ -125,7 +125,7 @@ class RdfMappingHandler {
    *    A string including the converted array of bundle uris to a string value
    *    of a sparql array filter.
    */
-  public function getBundleUriList($entity_type_id, $bundles = []) {
+  public function getBundleUriList($entity_type_id, array $bundles = []) {
     $bundle_mapping = $this->getRdfBundleMappedUri($entity_type_id);
     if (empty($bundle_mapping)) {
       return NULL;
