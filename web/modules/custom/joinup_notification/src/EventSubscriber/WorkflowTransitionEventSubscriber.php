@@ -3,11 +3,9 @@
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityManager;
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\message\Entity\Message;
 use Drupal\og\Entity\OgMembership;
 use Drupal\state_machine\Event\WorkflowTransitionEvent;
-use Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface;
 use Drupal\user\Entity\Role;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\message_notify\MessageNotifier;
@@ -54,7 +52,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     $entity = $event->getEntity();
     $entity_type = $entity->getEntityTypeId();
     $bundle = $entity->bundle();
-    $field_definitions = array_filter($this->entityManager->getFieldDefinitions($entity_type, $bundle), function($field_definition) {
+    $field_definitions = array_filter($this->entityManager->getFieldDefinitions($entity_type, $bundle), function ($field_definition) {
       return $field_definition->getType() == 'state';
     });
 
@@ -84,14 +82,14 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
           $role_ids = array_keys($roles);
           return in_array($role_id, $role_ids);
         });
-        $recipients = array_map(function($membership) {
+        $recipients = array_map(function ($membership) {
           return $membership->getUser()->id();
         }, $memberships);
       }
 
       /** @var OgMembership $membership */
       foreach ($recipients as $user_id) {
-        foreach ($messages as $message_id){
+        foreach ($messages as $message_id) {
           // Create the actual message and save it to the db.
           $message = Message::create([
             'template' => $message_id,
@@ -112,7 +110,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     $events = [];
     $keys = [
-      'solution.validate.post_transition'
+      'solution.validate.post_transition',
     ];
 
     foreach ($keys as $key) {
