@@ -9,7 +9,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -107,7 +107,7 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
     // Get news referencing to this solution.
     // @todo EntityManager is deprecated. Use EntityTypeManager instead.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2669
-    $entities = $this->entityManager->getStorage('node')->loadByProperties([OgGroupAudienceHelper::DEFAULT_FIELD => $this->solution->id()]);
+    $entities = $this->entityManager->getStorage('node')->loadByProperties([OgGroupAudienceHelperInterface::DEFAULT_FIELD => $this->solution->id()]);
     $items = [];
     foreach ($entities as $entity) {
       $items[] = ['#markup' => $entity->link()];

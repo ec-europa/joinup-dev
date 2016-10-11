@@ -28,7 +28,7 @@ news_workflow:
       label: In assessment
   transitions:
     draft:
-      label: Create
+      label: Save as draft
       from: [__new__, draft]
       to: draft
     propose:
