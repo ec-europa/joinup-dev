@@ -12,6 +12,8 @@ dependencies:
   - view_unpublished
 
 config_devel:
+  - field.field.node.news.field_news_comments
+  - field.storage.node.field_news_comments
   - core.entity_form_display.node.news.default
   - core.entity_view_display.node.news.default
   - core.entity_view_display.node.news.view_mode_tile

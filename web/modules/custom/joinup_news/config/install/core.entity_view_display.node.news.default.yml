@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.news.body
+    - field.field.node.news.field_news_comments
     - field.field.node.news.field_news_kicker
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_state
@@ -11,6 +12,7 @@ dependencies:
     - field.field.node.news.og_audience
     - node.type.news
   module:
+    - comment
     - link
     - options
     - text
@@ -26,6 +28,13 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
+  field_news_comments:
+    weight: 107
+    label: above
+    settings:
+      pager_id: 0
+    third_party_settings: {  }
+    type: comment_default
   field_news_kicker:
     weight: 2
     label: above
