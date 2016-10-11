@@ -5,18 +5,18 @@
  * Main functions and hook implementations of the RDF Entity module.
  */
 
-use \Drupal\Core\Config\Entity\ConfigEntityBundleBase;
-use \Drupal\Core\Config\Entity\ConfigEntityInterface;
-use \Drupal\Core\Entity\BundleEntityFormBase;
+use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Entity\BundleEntityFormBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use \Drupal\Core\Form\FormStateInterface;
-use \Drupal\Core\Render\Element;
-use \Drupal\Core\Url;
-use \Drupal\field\Entity\FieldStorageConfig;
-use \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
-use \Drupal\rdf_entity\RdfInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Implements hook_entity_base_field_info_alter().
