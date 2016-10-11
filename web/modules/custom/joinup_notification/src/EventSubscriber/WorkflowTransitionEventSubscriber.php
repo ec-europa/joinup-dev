@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_notification\EventSubscriber;
 
+use Drupal\Core\Entity\EntityManager;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\message\Entity\Message;
 use Drupal\og\Entity\OgMembership;
