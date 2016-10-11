@@ -5,6 +5,7 @@
  * Module handling notifications in joinup.
  */
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use \Drupal\Core\Entity\EntityInterface;
 use Drupal\message\Entity\Message;
 use Drupal\og\Entity\OgMembership;
@@ -14,6 +15,10 @@ use Drupal\user\Entity\Role;
  * Implements hook_entity_delete().
  */
 function joinup_notification_entity_delete(EntityInterface $entity) {
+  if (!($entity instanceof ContentEntityInterface) || !in_array($entity->getEntityTypeId(), ['rdf_entity', 'node'])) {
+    return;
+  }
+
   $configuration = \Drupal::config('joinup_notification.settings')->get('delete_notifications');
   $entity_type = $entity->getEntityTypeId();
   $bundle = $entity->bundle();
@@ -21,13 +26,13 @@ function joinup_notification_entity_delete(EntityInterface $entity) {
   foreach ($configuration[$entity_type][$bundle] as $role_id => $messages) {
     $role = Role::load($role_id);
     if (!empty($role)) {
-      $user_ids = $this->entityManager->getStorage('user')->getQuery()
+      $user_ids = \Drupal::service('entity.manager')->getStorage('user')->getQuery()
         ->condition('user_role', $role_id)
         ->execute();
       $recipients = $user_ids;
     }
     else {
-      $membership_query = $this->entityManager->getStorage('og_membership')->getQuery()
+      $membership_query = \Drupal::service('entity.manager')->getStorage('og_membership')->getQuery()
         ->condition('state', 'active')
         ->condition('entity_id', $entity->id());
       $memberships_ids = $membership_query->execute();
@@ -53,7 +58,7 @@ function joinup_notification_entity_delete(EntityInterface $entity) {
         ]);
         $message->save();
         // Send the saved message as an e-mail.
-        $this->messageNotifySender->send($message, [], 'email');
+        \Drupal::service('message_notify.sender')->send($message, [], 'email');
       }
     }
   }
