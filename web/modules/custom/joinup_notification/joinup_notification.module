@@ -22,14 +22,27 @@ use Drupal\user\Entity\Role;
  * @see \Drupal\joinup_notification\config\schema\joinup_notification.schema.yml
  */
 function joinup_notification_entity_delete(EntityInterface $entity) {
+  $entity_type = $entity->getEntityTypeId();
+  $bundle = $entity->bundle();
   if (!($entity instanceof ContentEntityInterface) || !in_array($entity->getEntityTypeId(), ['rdf_entity', 'node'])) {
     return;
   }
 
-  $configuration = \Drupal::config('joinup_notification.settings')->get('delete_notifications');
-  $entity_type = $entity->getEntityTypeId();
-  $bundle = $entity->bundle();
+  $field_definitions = array_filter(\Drupal::entityManager()->getFieldDefinitions($entity_type, $bundle), function ($field_definition) {
+    return $field_definition->getType() == 'state';
+  });
 
+  if (empty($field_definitions)) {
+    return;
+  }
+
+  $field_definition = array_pop($field_definitions);
+  $state_field = $entity->{$field_definition->getName()}->first();
+  if (empty($state_field->getValue()['target_id']) || $state_field->getValue()['target_id'] != 'deletion_request') {
+    return;
+  }
+
+  $configuration = \Drupal::config('joinup_notification.settings')->get('delete_notifications');
   foreach ($configuration[$entity_type][$bundle] as $role_id => $messages) {
     $role = Role::load($role_id);
     if (!empty($role)) {
