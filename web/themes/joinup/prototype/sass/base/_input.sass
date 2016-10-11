@@ -37,6 +37,15 @@
 
 // States
 // --------------------------------------------------
+.mdl-textfield--floating-label.is-invalid, .mdl-textfield--floating-label
+  .mdl-textfield__input
+    border-color: #a0a1a2
+  .mdl-textfield__label
+    font-size: $font-size-medium
+    color: #a0a1a2
+    &:after
+      background-color: #a0a1a2
+
 .mdl-textfield--floating-label.is-focused,
 .mdl-textfield--floating-label.is-dirty
   .mdl-textfield__label
@@ -45,12 +54,3 @@
     &:after
       background-color: $color-blue-medium
       top: 57px !important
-
-.mdl-textfield--floating-label.is-invalid
-  .mdl-textfield__input
-    border-color: #a0a1a2
-  .mdl-textfield__label
-    font-size: $font-size-small
-    color: #a0a1a2
-    &:after
-      background-color: #a0a1a2
