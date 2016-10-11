@@ -3,7 +3,6 @@
 /**
  * @file
  * Local development override configuration feature.
- *
  * To activate this feature, copy and rename it such that its path plus
  * filename is 'sites/default/settings.local.php'. Then, go to the bottom of
  * 'sites/default/settings.php' and uncomment the commented lines that mention
