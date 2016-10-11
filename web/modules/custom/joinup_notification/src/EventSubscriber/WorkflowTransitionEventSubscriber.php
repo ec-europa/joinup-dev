@@ -63,8 +63,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     /** @var StateItemInterface $state_field */
     $state_field = $entity->{$field_definition->getName()}->first();
     $workflow = $state_field->getWorkflow();
-    $transition = $workflow->findTransition($event->getFromState(), $event->getToState());
-
+    $transition = $workflow->findTransition($event->getFromState()->getId(), $event->getToState()->getId());
 
     foreach ($configuration[$workflow->getGroup()][$transition->getId()] as $role_id => $messages) {
       $role = Role::load($role_id);
@@ -101,7 +100,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
           ]);
           $message->save();
           // Send the saved message as an e-mail.
-          $this->messageNotifier->send($message, [], 'email');
+          $this->messageNotifySender->send($message, [], 'email');
         }
       }
     }
