@@ -12,7 +12,7 @@
         "drupal/core": "~8.2.1",
         "drupal/digital_size_formatter": "~8.1.0-alpha1",
         "drupal/ds": "^8.2",
-        "drupal/facets" : "~8.1.0-alpha6",
+        "drupal/facets": "dev-8.x-1.x#d5c0117eb59ab2593f6430e3f3035d60bc084653",
         "drupal/inline_entity_form": "8.1.x-dev",
         "drupal/og": "dev-242-simplified",
         "drupal/og_menu": "dev-remove-context-provider",
@@ -140,7 +140,7 @@
                 "source": {
                     "url": "https://gist.github.com/1ec87c25930861654cc94251da69f14b.git",
                     "type": "git",
-                    "reference": "1.0"
+                    "reference": "master"
                 }
             }
         },

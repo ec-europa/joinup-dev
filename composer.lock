@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8946e6bc3e14348d34cc9b17811d0fc1",
-    "content-hash": "7b7c9d87e7ee45c1bf057a109621e7fe",
+    "hash": "9360c9c75253713f77f3b7a76869e159",
+    "content-hash": "0e95546d39f9c7801f79354634537f8a",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1545,17 +1545,11 @@
         },
         {
             "name": "drupal/facets",
-            "version": "8.1.0-alpha6",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/facets.git",
-                "reference": "ca8ceb7e8393da80c37266e9665265d37f53b671"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha6.zip",
-                "reference": null,
-                "shasum": null
+                "reference": "d5c0117eb59ab2593f6430e3f3035d60bc084653"
             },
             "require": {
                 "drupal/core": "8.*"
@@ -1586,7 +1580,7 @@
             ],
             "description": "Faceted search interfaces that can be used on Search API searchers.",
             "homepage": "https://www.drupal.org/project/facets",
-            "time": "2016-10-06 16:46:15"
+            "time": "2016-08-24 17:38:22"
         },
         {
             "name": "drupal/inline_entity_form",
@@ -8236,6 +8230,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "composer/composer": 15,
+        "drupal/facets": 20,
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,
         "drupal/og_menu": 20,
