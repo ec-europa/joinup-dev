@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0ad382954d955f8ecfb49971dc506046",
-    "content-hash": "d67584e22a38745d666a6a25971eae38",
+    "hash": "00f44655e26fb599cab68efc01673d3d",
+    "content-hash": "54031c02f6ec7e8fec837efcad0a8c9d",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1901,7 +1901,7 @@
                     "dev-8.x-1.x": "8.1.x-dev"
                 },
                 "patches_applied": {
-                    "State machine should fire events when a transition is applied.": "https://www.drupal.org/files/issues/state_machine_should-2794537-19_0.patch"
+                    "State machine should fire events when a transition is applied.": "https://www.drupal.org/files/issues/state_machine_should-2794537-22.patch"
                 }
             },
             "notification-url": "https://packagist.drupal-composer.org/downloads/",
