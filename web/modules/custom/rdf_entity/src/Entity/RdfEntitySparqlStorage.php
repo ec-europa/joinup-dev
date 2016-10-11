@@ -327,7 +327,7 @@ QUERY;
    *      ];
    * @code
    *
-   * @param array $results
+   * @param \EasyRdf\Sparql\Result|\EasyRdf\Graph $results
    *    A set of query results indexed per graph and entity id.
    *
    * @return array
@@ -336,7 +336,7 @@ QUERY;
    * @throws \Exception
    *    Thrown when the entity graph is empty.
    */
-  protected function processGraphResults(array $results) {
+  protected function processGraphResults($results) {
     $mapping = $this->mappingHandler->getEntityPredicates($this->entityTypeId);
     // If no graphs are passed, fetch all available graphs derived from the
     // results.
