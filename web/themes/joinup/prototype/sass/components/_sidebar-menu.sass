@@ -26,7 +26,6 @@
   z-index: 999
   margin-top: -110px
   +breakpoint(desktop)
-    display: none
     margin-top: 0
 
 .sidebar-menu__item
@@ -53,6 +52,8 @@
     transform: translate(-50%, -50%)
     color: #fff
     +icon-size(60px)
+    +breakpoint(desktop)
+      color: $color-base
 
 // Modifiers
 // --------------------------------------------------
@@ -68,8 +69,7 @@
         clip: rect(0px 181.328px 144px 0px)
       .mdl-menu__item
         opacity: 1
-      .mdl-menu__container,
-      .mdl-menu
+      .mdl-menu__container
         z-index: 999
         visibility: visible
         background: transparent
