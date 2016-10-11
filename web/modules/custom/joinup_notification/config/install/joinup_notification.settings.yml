@@ -1,5 +1,10 @@
-notifications:
+transition_notifications:
   solution:
-      validate:
-        rdf_entity-solution-administrator:
-          - rdf_entity_solution_validate
+    validate:
+      rdf_entity-solution-administrator:
+        - rdf_entity_solution_validate
+delete_notifications:
+  rdf_entity:
+    solution:
+      rdf_entity-solution-administrator:
+        - rdf_entity_solution_delete

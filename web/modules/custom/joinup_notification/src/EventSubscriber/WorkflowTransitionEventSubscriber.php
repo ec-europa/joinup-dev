@@ -48,7 +48,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
    * @throws \Drupal\message_notify\Exception\MessageNotifyException
    */
   public function messageSender(WorkflowTransitionEvent $event) {
-    $configuration = \Drupal::config('joinup_notification.settings')->get('notifications');
+    $configuration = \Drupal::config('joinup_notification.settings')->get('transition_notifications');
     $entity = $event->getEntity();
     $entity_type = $entity->getEntityTypeId();
     $bundle = $entity->bundle();
@@ -56,9 +56,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
       return $field_definition->getType() == 'state';
     });
 
-    /** @var FieldDefinitionInterface $field_definition */
     $field_definition = array_pop($field_definitions);
-    /** @var StateItemInterface $state_field */
     $state_field = $entity->{$field_definition->getName()}->first();
     $workflow = $state_field->getWorkflow();
     $transition = $workflow->findTransition($event->getFromState()->getId(), $event->getToState()->getId());
