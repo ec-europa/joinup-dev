@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\message_notify\MessageNotifier;
 
 /**
- * Class WorkflowTransitionEventSubscriber.
+ * The event subscriber that handles the message notifications in joinup.
  *
  * @package Drupal\joinup_notification
  */
@@ -32,7 +32,12 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   protected $entityManager;
 
   /**
-   * Constructor.
+   * Constructs the event object.
+   *
+   * @param \Drupal\message_notify\MessageNotifier $message_notify_sender
+   *    The message notify sender service.
+   * @param \Drupal\Core\Entity\EntityManager $entity_manager
+   *    The entity manager service.
    */
   public function __construct(MessageNotifier $message_notify_sender, EntityManager $entity_manager) {
     $this->messageNotifySender = $message_notify_sender;
@@ -40,12 +45,19 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * On workflow transition.
+   * Handler method for the message notifications.
+   *
+   * All notifications are stored in the configuration files of the module.
+   * This method only handles the transition notifications. These notifications
+   * include the create and update operations on the entity. All notifications
+   * are sent in the post transition event.
    *
    * @param \Drupal\state_machine\Event\WorkflowTransitionEvent $event
    *   The state change event.
    *
    * @throws \Drupal\message_notify\Exception\MessageNotifyException
+   *
+   * @see \Drupal\joinup_notification\config\schema\joinup_notification.schema.yml
    */
   public function messageSender(WorkflowTransitionEvent $event) {
     $configuration = \Drupal::config('joinup_notification.settings')->get('transition_notifications');
@@ -62,8 +74,9 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     $transition = $workflow->findTransition($event->getFromState()->getId(), $event->getToState()->getId());
 
     foreach ($configuration[$workflow->getGroup()][$transition->getId()] as $role_id => $messages) {
-      $role = Role::load($role_id);
-      if (!empty($role)) {
+      // The notifications might be sent to users having site wide roles or
+      // users having og roles.
+      if ($role = Role::load($role_id)) {
         $user_ids = $this->entityManager->getStorage('user')->getQuery()
           ->condition('user_role', $role_id)
           ->execute();
@@ -85,7 +98,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
         }, $memberships);
       }
 
-      /** @var OgMembership $membership */
+      // Send all the appropriate messages to their corresponding recipients.
       foreach ($recipients as $user_id) {
         foreach ($messages as $message_id) {
           // Create the actual message and save it to the db.

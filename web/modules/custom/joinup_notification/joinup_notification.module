@@ -13,6 +13,13 @@ use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_entity_delete().
+ *
+ * Handles the notifications for the entity types rdf_entity and node the same
+ * way as the WorkflowTransitionEventSubscriber does but since we do not have a
+ * transition when an entity is deleted, there is no event fired.
+ * Thus, this is handled separately.
+ *
+ * @see \Drupal\joinup_notification\config\schema\joinup_notification.schema.yml
  */
 function joinup_notification_entity_delete(EntityInterface $entity) {
   if (!($entity instanceof ContentEntityInterface) || !in_array($entity->getEntityTypeId(), ['rdf_entity', 'node'])) {

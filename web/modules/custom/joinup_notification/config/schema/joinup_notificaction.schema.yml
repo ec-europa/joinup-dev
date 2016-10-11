@@ -1,3 +1,35 @@
+# Config schema for the notification settings.
+#
+# There are two arrays in the config settings of joinup notification, the
+# transition_notifications and the delete_notifications.
+#
+# The transition notifications are message ids indexed by the role, transition
+# and workflow group as shown below.
+# @code
+# $config = [
+#   solution => [
+#     request_deletion => [
+#       moderator => [
+#         message_id
+#       ]
+#     ]
+#   ]
+# ]
+# There can be multiple message ids and the roles are either site-wide or og.
+#
+# The delete_notifications array is not depending on states so it is has the
+# same approach but uses the entity type id instead of the workflow group and
+# the bundle instead of the transition.
+# @code
+# $config = [
+#   rdf_entity => [
+#     collection => [
+#       moderator => [
+#         message_id
+#       ]
+#     ]
+#   ]
+# ]
 joinup_notification.settings:
   type: config_object
   label: 'Notification settings'
