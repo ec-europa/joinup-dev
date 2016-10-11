@@ -110,13 +110,13 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    $configuration = \Drupal::config('joinup_notification.settings')->get('notifications');
     $events = [];
-    foreach ($configuration as $workflow_group => $transitions) {
-      foreach ($transitions as $transition => $roles) {
-        $event_name = $workflow_group . '.' . $transition . '.post_transition';
-        $events[$event_name][] = ['messageSender'];
-      }
+    $keys = [
+      'solution.validate.post_transition'
+    ];
+
+    foreach ($keys as $key) {
+      $events[$key][] = ['messageSender'];
     }
 
     return $events;
