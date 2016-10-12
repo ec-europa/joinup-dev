@@ -314,4 +314,13 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     // TODO: Implement setPublished() method.
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function deleteFromGraph($graph) {
+    if (!$this->isNew()) {
+      $this->entityManager()->getStorage($this->entityTypeId)->delete($this->id(), $graph);
+    }
+  }
+
 }

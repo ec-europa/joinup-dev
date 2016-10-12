@@ -496,6 +496,18 @@ QUERY;
   /**
    * {@inheritdoc}
    */
+  public function deleteFromGraph($entity_id, $graph) {
+    $this->getGraphHandler()->setRequestGraphs($entity_id, $this->entityTypeId, [$graph]);
+    $entity = $this->load($entity_id);
+    if (!empty($entity)){
+      $this->doDelete([$entity_id => $entity]);
+      $this->resetCache([$entity_id]);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function loadByProperties(array $values = []) {
     // If UUID is queried, just swap it with the ID. They are the same but UUID
     // is not stored, while on ID we can rely.
