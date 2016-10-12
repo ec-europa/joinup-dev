@@ -17,9 +17,13 @@
   cursor: pointer
   vertical-align: middle
   height: 22px
+  position: relative
   .icon
-    vertical-align: middle
-    display: inline-block
+    position: absolute
+    top: 50%
+    left: 0
+    transform: translateY(-50%)
+    z-index: 1
 
 .button__no-bg
   font-weight: $font-weight-bold
@@ -30,6 +34,8 @@
   cursor: pointer
   vertical-align: middle
   display: inline-block
+  z-index: 10
+  position: relative
 
 // Modifiers
 // --------------------------------------------------
@@ -63,7 +69,7 @@
     border-radius: 18px
   .button__no-bg
     color: $color-blue-medium
-    padding: 0 0 0 5px
+    padding: 0 0 0 30px
   &:hover
     .icon
       color: $color-blue-lighter
@@ -76,7 +82,7 @@
     color: $color-grey-input
     +icon-size(22px)
   .button__no-bg
-    padding: 0
+    padding: 0 0 0 20px
     color: $color-grey-input
 
 
