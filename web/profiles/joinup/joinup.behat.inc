@@ -374,6 +374,24 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Navigates to the canonical page display of a node page.
+   *
+   * This step is only to be used in scenario outlines.
+   * If possible, use a specific page selector.
+   *
+   * @param string $title
+   *   The name of the news page.
+   *
+   * @When (I )go to the content page of the type :type with the title :title
+   * @When (I )visit the content page of the type :type with the title :title
+   */
+  public function visitNodePage($type, $title) {
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = $this->getNodeByTitle($title, $type);
+    $this->visitPath($node->url());
+  }
+
+  /**
    * Checks if a content entity is published.
    *
    * @param string $bundle
