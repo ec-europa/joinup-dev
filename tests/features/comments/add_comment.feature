@@ -30,6 +30,7 @@ Feature: Add comments
       | content type | title               |
       | news         | Scandalous news     |
       | event        | Celebrity gathering |
+      | discussion   | Is gossip bad?      |
 
   Scenario Outline: Make an authenticated comment, skips moderation.
     Given <content type> content:
@@ -41,10 +42,11 @@ Feature: Add comments
     And I fill in "Comment" with "Mr scandal was doing something weird the other day."
     Then I press "Save"
     Then I should not see the following success messages:
-      | Your comment has been queued for review by site administrators and will be published after approval.|
+      | Your comment has been queued for review by site administrators and will be published after approval. |
     And I should see text matching "Mr scandal was doing something weird the other day."
 
     Examples:
-      | content type | title           |
-      | news         | Scandalous news |
+      | content type | title               |
+      | news         | Scandalous news     |
       | event        | Celebrity gathering |
+      | discussion   | Is gossip bad?      |
