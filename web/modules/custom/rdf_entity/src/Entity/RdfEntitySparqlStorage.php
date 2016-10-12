@@ -499,7 +499,7 @@ QUERY;
   public function deleteFromGraph($entity_id, $graph) {
     $this->getGraphHandler()->setRequestGraphs($entity_id, $this->entityTypeId, [$graph]);
     $entity = $this->load($entity_id);
-    if (!empty($entity)){
+    if (!empty($entity)) {
       $this->doDelete([$entity_id => $entity]);
       $this->resetCache([$entity_id]);
     }
