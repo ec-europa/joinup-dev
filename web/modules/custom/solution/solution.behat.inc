@@ -15,7 +15,7 @@ use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -190,7 +190,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
       $content = $this->getNodeByTitle($values['content'], $bundle);
-      $content->get(OgGroupAudienceHelper::DEFAULT_FIELD)->set(0, $group->id());
+      $content->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->set(0, $group->id());
       $content->save();
     }
   }
@@ -444,7 +444,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
       'state' => 'field_is_state',
-      'collection' => OgGroupAudienceHelper::DEFAULT_FIELD,
+      'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
     ];
   }
 
@@ -518,6 +518,37 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
       $this->assertAvailableStates($solution, $states, $user);
     }
+  }
+
+  /**
+   * Applies a transition to a solution.
+   *
+   * @param string $username
+   *    The username applying the transition.
+   * @param string $entity_name
+   *    The title of the solution.
+   * @param string $to_state
+   *    The state that the solution transits to.
+   *
+   * @throws \Exception
+   *    An exception is thrown if the user is not found or the transition is not
+   *    allowed for this user.
+   *
+   * @Given the user :username changes the state of the :entity_name solution to :to_state
+   */
+  public function applySolutionWorkflowTransition($username, $entity_name, $to_state) {
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      throw new \Exception("User {$username} was not found.");
+    }
+    $solution = $this->getSolutionByName($entity_name);
+    $available_states = $this->getAvailableStates($solution, $user);
+    if (($transition_id = array_search($to_state, $available_states)) === FALSE) {
+      throw new \Exception("The given user does not have permission to apply the specific transition.");
+    }
+    $transition = $solution->get('field_is_state')->first()->getWorkflow()->getTransition($transition_id);
+    $solution->get('field_is_state')->first()->applyTransition($transition);
+    $solution->save();
   }
 
 }

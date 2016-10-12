@@ -14,8 +14,8 @@
         "drupal/ds": "^8.2",
         "drupal/facets" : "dev-8.x-1.x#d5c0117eb59ab2593f6430e3f3035d60bc084653",
         "drupal/inline_entity_form": "8.1.x-dev",
-        "drupal/og": "dev-8.x-1.x",
-        "drupal/og_menu": "dev-og-permissions",
+        "drupal/og": "dev-242-simplified",
+        "drupal/og_menu": "dev-remove-context-provider",
         "drupal/phing-drush-task": "1.0",
         "drupal/r4032login": "dev-8.x-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
         "drupal/search_api": "8.1.0-alpha17",
@@ -31,7 +31,10 @@
         "php": ">=5.5.9",
         "solarium/solarium": "~3.6.0",
         "symfony/dependency-injection": "2.8.2",
-        "typhonius/behattask": "1.0"
+        "typhonius/behattask": "1.0",
+        "drupal/message": "8.*",
+        "drupal/message_notify": "8.*",
+        "drupal/token": "8.*"
     },
     "require-dev": {
         "behat/mink": "~1.6",
@@ -87,7 +90,10 @@
             },
             "drupal/search_api": {
                 "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
-            }
+            },
+	    "drupal/state_machine": {
+		"Add a transition event.": "https://www.drupal.org/files/issues/state_machine_should-2794537-3.patch"
+	    }
         }
     },
     "repositories": [
@@ -135,6 +141,11 @@
                     "reference": "master"
                 }
             }
+        },
+        {
+            "_comment": "This is the development repository of the D8 port of Organic Groups. Remove this when an official alpha release is made.",
+            "type": "vcs",
+            "url": "git@github.com:amitaibu/og"
         },
         {
             "type": "vcs",

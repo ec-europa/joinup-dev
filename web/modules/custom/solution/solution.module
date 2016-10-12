@@ -141,6 +141,9 @@ function solution_add_form_parent_submit(array &$form, FormStateInterface $form_
  * node.
  */
 function solution_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if (\Drupal::currentUser()->hasPermission('bypass node access')) {
+    return AccessResult::neutral();
+  }
   if ($entity->bundle() != 'solution') {
     return AccessResult::neutral();
   }
@@ -162,12 +165,13 @@ function solution_entity_extra_field_info() {
   $fields = [];
 
   $solution = RdfEntityType::load('solution');
-  $fields['rdf_entity'][$solution->id()]['display']['releases_overview'] = [
-    'label' => t('Releases overview'),
-    'description' => t('A link to the releases overview page'),
-    'visible' => FALSE,
-  ];
-
+  if ($solution) {
+    $fields['rdf_entity'][$solution->id()]['display']['releases_overview'] = [
+      'label' => t('Releases overview'),
+      'description' => t('A link to the releases overview page'),
+      'visible' => FALSE,
+    ];
+  }
   return $fields;
 }
 

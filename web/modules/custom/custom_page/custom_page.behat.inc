@@ -12,7 +12,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 
 /**
  * Behat step definitions for testing custom pages.
@@ -53,7 +53,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
 
     /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-    foreach ($custom_page->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
+    foreach ($custom_page->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD) as $group) {
       if ($group->getValue()['target_id'] == $collection->id()) {
         // Test passes.
         return;
@@ -123,7 +123,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     $group = $this->getRdfEntityByLabel($title, $type);
     $values = [
       'type' => $menu,
-      OgGroupAudienceHelper::DEFAULT_FIELD => $group->id(),
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $group->id(),
     ];
     $instances = \Drupal::entityTypeManager()->getStorage('ogmenu_instance')->loadByProperties($values);
     if (empty($instances)) {
