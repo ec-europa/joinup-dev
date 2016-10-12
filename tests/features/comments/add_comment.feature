@@ -16,7 +16,7 @@ Feature: Add comments
       | title   | body                                                 | collection        |
       | <title> | How could this ever happen? Moral panic on it's way! | Gossip collection |
     Given I am an anonymous user
-    When I go to the "<title>" news page
+    When I go to the content page of the type "<content type>" with the title "<title>"
     Then I should see text matching "Add new comment"
     And I fill in "Your name" with "Mr Scandal"
     And I fill in "Email" with "mrscandal@example.com"
@@ -31,7 +31,6 @@ Feature: Add comments
       | news         | Scandalous news     |
       | event        | Celebrity gathering |
 
-    @javascript
   Scenario Outline: Make an authenticated comment, skips moderation.
     Given <content type> content:
       | title   | body                                                 | collection        |
@@ -43,7 +42,6 @@ Feature: Add comments
     Then I press "Save"
     Then I should not see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval.|
-      Then I break
     And I should see text matching "Mr scandal was doing something weird the other day."
 
     Examples:
