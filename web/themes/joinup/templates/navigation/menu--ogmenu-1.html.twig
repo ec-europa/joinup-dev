@@ -25,7 +25,11 @@
   @see http://twig.sensiolabs.org/doc/tags/macro.html
 #}
 <div class="sidebar-menu">
-  <button id="sidebar-menu__button" class="sidebar-menu__button mdl-button mdl-js-button mdl-button--icon">
+  <button id="sidebar-menu__button" class="sidebar-menu__button sidebar-menu__button--mobile mdl-button mdl-js-button mdl-button--icon">
+    <span class="icon icon--menu"></span>
+  </button>
+
+  <button id="sidebar-menu__button-desktop" class="sidebar-menu__button sidebar-menu__button--desktop mdl-button mdl-js-button mdl-button--icon">
     <span class="icon icon--menu"></span>
   </button>
   {{ menus.menu_links(items, attributes, 0) }}
