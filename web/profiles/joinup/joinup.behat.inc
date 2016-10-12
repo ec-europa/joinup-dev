@@ -357,17 +357,17 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Navigates to the canonical page display of a node entity.
+   * Navigates to the edit page display of a node entity.
    *
    * @param string $bundle
-   *   The type of the node page.
+   *   The type of the node entity.
    * @param string $title
    *   The title of the node.
    *
    * @When (I )go to the :bundle (content ) :title edit screen
    * @When (I )visit the :bundle (content ) :title edit screen
    */
-  public function visitCollection($bundle, $title) {
+  public function visitNodeEditForm($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     $this->visitPath($node->url('edit-form'));
@@ -379,6 +379,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * This step is only to be used in scenario outlines.
    * If possible, use a specific page selector.
    *
+   * @param string $type
+   *   The type of the node entity.
    * @param string $title
    *   The name of the news page.
    *
