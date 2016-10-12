@@ -241,18 +241,18 @@
     </target>
 
     <target name="create-d6-db">
-        <pdosqlexec url="mysql:host=${drupal.db.host}" userid="${drupal.db.user}" password="${drupal.db.password}">
-            DROP DATABASE IF EXISTS ${legacy.database};
+        <pdosqlexec url="mysql:host=${migration.db.host}" userid="${migration.db.user}" password="${migration.db.password}">
+            DROP DATABASE IF EXISTS ${migration.db.name};
         </pdosqlexec>
-        <pdosqlexec url="mysql:host=${drupal.db.host}" userid="${drupal.db.user}" password="${drupal.db.password}">
-            CREATE DATABASE ${legacy.database};
+        <pdosqlexec url="mysql:host=${migration.db.host}" userid="${migration.db.user}" password="${migration.db.password}">
+            CREATE DATABASE ${migration.db.name};
         </pdosqlexec>
     </target>
     <target name="import-legacy-db">
-        <pdosqlexec url="mysql:host=localhost;dbname=${legacy.database}"
-                    userid="${drupal.db.user}"
-                    password="${drupal.db.password}">
-            <transaction src="${legacy.filepath}"/>
+        <pdosqlexec url="mysql:host=localhost;dbname=${migration.db.name}"
+                    userid="${migration.db.user}"
+                    password="${migration.db.password}">
+            <transaction src="${migration.db.import_path}"/>
         </pdosqlexec>
     </target>
 
