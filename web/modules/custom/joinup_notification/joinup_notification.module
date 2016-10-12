@@ -70,9 +70,13 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
         $role_ids = array_keys($roles);
         return in_array($role_id, $role_ids);
       });
-      $recipients = array_map(function ($membership) {
-        return $membership->getUser()->id();
+      // We need to handle possible broken relationships or memberships that
+      // are not removed yet.
+      $user_ids = array_map(function ($membership) {
+        $user = $membership->getUser();
+        return empty($user) ? NULL : $user->id();
       }, $memberships);
+      $recipients = array_filter($user_ids);
     }
 
     /** @var OgMembership $membership */
