@@ -31,6 +31,7 @@ Feature: Add comments
       | news         | Scandalous news     |
       | event        | Celebrity gathering |
       | discussion   | Is gossip bad?      |
+      | document     | Wikileaks           |
 
   Scenario Outline: Make an authenticated comment, skips moderation.
     Given <content type> content:
@@ -50,3 +51,4 @@ Feature: Add comments
       | news         | Scandalous news     |
       | event        | Celebrity gathering |
       | discussion   | Is gossip bad?      |
+      | document     | Wikileaks           |
