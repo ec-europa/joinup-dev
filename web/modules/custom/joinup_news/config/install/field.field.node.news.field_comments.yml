@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_news_comments
+    - field.storage.node.field_comments
     - node.type.news
   module:
     - comment
-id: node.news.field_news_comments
-field_name: field_news_comments
+id: node.news.field_comments
+field_name: field_comments
 entity_type: node
 bundle: news
 label: Comments
