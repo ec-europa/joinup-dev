@@ -2,12 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.discussion.field_comments
     - field.field.node.discussion.field_discussion_active
     - field.field.node.discussion.field_discussion_content
     - field.field.node.discussion.field_topic
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
+    - comment
     - path
     - text
 id: node.discussion.default
@@ -20,6 +22,11 @@ content:
     weight: 5
     settings: {  }
     third_party_settings: {  }
+  field_comments:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: comment_default
   field_discussion_active:
     type: options_buttons
     weight: 2
