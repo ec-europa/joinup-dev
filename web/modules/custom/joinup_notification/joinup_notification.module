@@ -19,6 +19,11 @@ use Drupal\user\Entity\Role;
  * transition when an entity is deleted, there is no event fired.
  * Thus, this is handled separately.
  *
+ * This notification functionality is currently applying if the two following
+ * criteria are met:
+ *  - The entity has a state field and the state is 'deletion_request'.
+ *  - There is configuration set for the entity type and the bundle.
+ *
  * @see \Drupal\joinup_notification\config\schema\joinup_notification.schema.yml
  */
 function joinup_notification_entity_predelete(EntityInterface $entity) {
@@ -43,6 +48,9 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
   }
 
   $configuration = \Drupal::config('joinup_notification.settings')->get('delete_notifications');
+  if (empty($configuration[$entity_type][$bundle])) {
+    return;
+  }
   foreach ($configuration[$entity_type][$bundle] as $role_id => $messages) {
     $role = Role::load($role_id);
     if (!empty($role)) {
