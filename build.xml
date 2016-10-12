@@ -278,15 +278,15 @@
         <if>
             <available file="${solr.bin}" type="file" property="file.exists" />
             <then>
-                <echo message="Symlink to Solr binary already exists in ${solr.bin}. Skipping creation of symlink." />
+                <echo message="Symlink to Solr binary already exists in ${solr.bin}. Deleting symlink." />
+                <delete file="${solr.bin}" failonerror="false" />
             </then>
-            <else>
-                <symlink
-                    target="${solr.dir}/bin/solr"
-                    link="${solr.bin}"
-                />
-            </else>
         </if>
+        <echo message="Creating symlink to Solr binary." />
+        <symlink
+            target="${solr.dir}/bin/solr"
+            link="${solr.bin}"
+        />
     </target>
 
     <target
