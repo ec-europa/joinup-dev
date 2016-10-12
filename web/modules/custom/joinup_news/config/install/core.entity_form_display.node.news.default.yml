@@ -13,6 +13,7 @@ dependencies:
     - node.type.news
   module:
     - comment
+    - joinup_core
     - link
     - text
 id: node.news.default
@@ -48,12 +49,13 @@ content:
     third_party_settings: {  }
     type: link_default
   field_news_state:
-    weight: 26
-    settings: {  }
+    weight: 6
+    settings:
+      use_transition_label: '1'
     third_party_settings: {  }
-    type: options_select
+    type: state_machine_buttons
   field_spatial_coverage:
-    weight: 27
+    weight: 4
     settings:
       match_operator: CONTAINS
       size: 60
@@ -61,7 +63,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_topic:
-    weight: 28
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: 60

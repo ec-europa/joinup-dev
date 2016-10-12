@@ -11,7 +11,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgMembership;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -67,7 +67,7 @@ function custom_page_entity_insert(EntityInterface $entity) {
     return;
   }
   /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-  $group = $node->get(OgGroupAudienceHelper::DEFAULT_FIELD)->first();
+  $group = $node->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->first();
   if (!$group) {
     return;
   }
@@ -75,7 +75,7 @@ function custom_page_entity_insert(EntityInterface $entity) {
   // Fetch the menu.
   $values = [
     'type' => 'navigation',
-    OgGroupAudienceHelper::DEFAULT_FIELD => $value['target_id'],
+    OgGroupAudienceHelperInterface::DEFAULT_FIELD => $value['target_id'],
   ];
   $storage = \Drupal::entityManager()->getStorage('ogmenu_instance');
   $instances = $storage->loadByProperties($values);

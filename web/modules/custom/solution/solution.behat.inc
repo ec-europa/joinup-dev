@@ -15,7 +15,7 @@ use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -190,7 +190,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
       $content = $this->getNodeByTitle($values['content'], $bundle);
-      $content->get(OgGroupAudienceHelper::DEFAULT_FIELD)->set(0, $group->id());
+      $content->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->set(0, $group->id());
       $content->save();
     }
   }
@@ -444,7 +444,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
       'state' => 'field_is_state',
-      'collection' => OgGroupAudienceHelper::DEFAULT_FIELD,
+      'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
     ];
   }
 
