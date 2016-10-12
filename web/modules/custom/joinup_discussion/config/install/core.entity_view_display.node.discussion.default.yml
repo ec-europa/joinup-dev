@@ -19,12 +19,12 @@ bundle: discussion
 mode: default
 content:
   field_comments:
+    type: comment_default
     weight: 5
     label: above
     settings:
       pager_id: 0
     third_party_settings: {  }
-    type: comment_default
   field_discussion_active:
     weight: 3
     label: above
