@@ -10,6 +10,7 @@ config_devel:
   - core.entity_form_display.node.discussion.default
   - core.entity_view_display.node.discussion.default
   - core.entity_view_display.node.discussion.default
+  - field.field.node.discussion.field_comments
   - field.field.node.discussion.field_discussion_active
   - field.field.node.discussion.field_discussion_content
   - field.field.node.discussion.field_topic
