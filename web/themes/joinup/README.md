@@ -43,13 +43,6 @@ $ bundle install
 
 ## Available tools
 
-`gulp` command will be available to compile scripts/sass/styleguide files.
+`gulp` command will be available to compile scripts/sass/styleguide/prototype files.
 Just run `gulp` without any parameters to compile and start the "watch" mode to compile files on change.
-A list of all the tasks is available with `gulp --tasks`.
-
-Jekyll is needed in order to serve the prototypes. It can be started with:
-```Shell
-$ jekyll serve -d _prototypes
-```
-Jekyll will start by default in "watch" mode, in order to recompile whenever a file changes.
-This behaviour can be turned off by adding `--no-watch`.
+A list of all the tasks is available with `gulp --tasks`. The styleguide is available on your localhost - http://localhost:3000/. The prototypes are available in folder web/themes/joinup/prototype/html-prototype.
