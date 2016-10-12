@@ -32,4 +32,15 @@ interface RdfInterface extends ContentEntityInterface, EntityPublishedInterface 
    */
   public function setName($name);
 
+  /**
+   * Removes an entity from the passed graph.
+   *
+   * This method does not delete the entity entirely so it skips the delete
+   * hooks.
+   *
+   * @param string $graph
+   *    The graph machine name.
+   */
+  public function deleteFromGraph($graph);
+
 }
