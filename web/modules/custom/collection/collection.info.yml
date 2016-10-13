@@ -36,8 +36,9 @@ config_devel:
   - field.field.rdf_entity.collection.field_ar_moderation
   - field.field.rdf_entity.collection.field_ar_modification_date
   - field.field.rdf_entity.collection.field_ar_owner
-  - field.field.rdf_entity.collection.field_policy_domain
   - field.field.rdf_entity.collection.field_ar_shared_content
+  - field.field.rdf_entity.collection.field_ar_state
+  - field.field.rdf_entity.collection.field_policy_domain
   - field.field.rdf_entity.collection.field_spatial_coverage
   - field.storage.rdf_entity.field_ar_abstract
   - field.storage.rdf_entity.field_ar_access_url
@@ -53,4 +54,5 @@ config_devel:
   - field.storage.rdf_entity.field_ar_modification_date
   - field.storage.rdf_entity.field_ar_owner
   - field.storage.rdf_entity.field_ar_shared_content
+  - field.storage.rdf_entity.field_ar_state
   - rdf_entity.rdfentity.collection
