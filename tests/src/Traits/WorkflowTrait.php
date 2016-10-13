@@ -58,6 +58,8 @@ trait WorkflowTrait {
     sort($available_transitions);
     if ($allowed_transitions != $available_transitions) {
       $message = "States found were different that states passed.\n";
+      $message .= "Entity: " . $entity->label() . "\n";
+      $message .= "User: " . $user->label() . "\n";
       $message .= "Allowed states: " . implode(', ', $allowed_transitions) . "\n";
       $message .= "Available/Expected states: " . implode(', ', $available_transitions) . "\n";
       throw new \Exception($message);
@@ -123,7 +125,7 @@ trait WorkflowTrait {
     $field = $this->getEntityStateField($entity);
 
     return array_map(function (WorkflowTransition $transition) {
-      return (string) $transition->getToState()->getLabel();
+      return (string) $transition->getLabel();
     }, $field->getTransitions());
   }
 

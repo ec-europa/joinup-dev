@@ -18,12 +18,6 @@ Feature: Collection moderation
     Then the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Request deletion, Archive"
 
-    When I am logged in as a "facilitator" of the "Collection propose state test" collection
-    And I go to the homepage of the "Collection propose state test" collection
-    And I click "Add collection"
-    Then the following buttons should be present "Save as draft, Propose"
-    And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
-
   Scenario: Test the moderation workflow available states.
     Given the following organisation:
       | name | Simon Sandoval |
@@ -73,39 +67,39 @@ Feature: Collection moderation
     # When I click the "Edit" link
     # Then the state field should have only the given states available.
     Then for the following collection, the corresponding user should have the corresponding available state buttons:
-      | collection              | user            | states                             |
+      | collection              | user            | states                                                     |
 
       # The following collections are tested as an owner. This is for debug
       # purposed. In reality, the owner is also a facilitator so the only
       # UATable part of the owner is that he has the ability to request deletion
       # when the collection is validated.
-      | Deep Past               | Erika Reid      |                                    |
-      | The Licking Silence     | Erika Reid      |                                    |
-      | Person of Wizards       | Erika Reid      | Request archival, Request deletion |
-      | The Shard's Hunter      | Erika Reid      |                                    |
-      | The Dreams of the Mists | Erika Reid      |                                    |
-      | Luck in the Abyss       | Erika Reid      |                                    |
+      | Deep Past               | Erika Reid      | Save as draft, Propose                                     |
+      | The Licking Silence     | Erika Reid      | Save as draft, Propose                                     |
+      | Person of Wizards       | Erika Reid      | Save as draft, Propose, Request archival, Request deletion |
+      | The Shard's Hunter      | Erika Reid      |                                                            |
+      | The Dreams of the Mists | Erika Reid      |                                                            |
+      | Luck in the Abyss       | Erika Reid      |                                                            |
 
       # The following collections do not follow the rule above and should be
       # testes as shown.
-      | Deep Past               | Carole James    | Draft, Proposed                    |
-      | The Licking Silence     | Carole James    | Draft, Proposed                    |
-      | Person of Wizards       | Carole James    | Draft, Proposed                    |
-      | The Shard's Hunter      | Carole James    |                                    |
-      | The Dreams of the Mists | Carole James    |                                    |
-      | Luck in the Abyss       | Carole James    |                                    |
-      | Deep Past               | Velma Smith     |                                    |
-      | The Licking Silence     | Velma Smith     |                                    |
-      | Person of Wizards       | Velma Smith     |                                    |
-      | The Shard's Hunter      | Velma Smith     |                                    |
-      | The Dreams of the Mists | Velma Smith     |                                    |
-      | Luck in the Abyss       | Velma Smith     |                                    |
-      | Deep Past               | Lena Richardson | Draft, Proposed, Validated         |
-      | The Licking Silence     | Lena Richardson | Draft, Proposed, Validated         |
-      | Person of Wizards       | Lena Richardson | Draft, Proposed, Validated         |
-      | The Shard's Hunter      | Lena Richardson | Validated                          |
-      | The Dreams of the Mists | Lena Richardson | Validated                          |
-      | Luck in the Abyss       | Lena Richardson |                                    |
+      | Deep Past               | Carole James    | Save as draft, Propose                                     |
+      | The Licking Silence     | Carole James    | Save as draft, Propose                                     |
+      | Person of Wizards       | Carole James    | Save as draft, Propose                                     |
+      | The Shard's Hunter      | Carole James    |                                                            |
+      | The Dreams of the Mists | Carole James    |                                                            |
+      | Luck in the Abyss       | Carole James    |                                                            |
+      | Deep Past               | Velma Smith     |                                                            |
+      | The Licking Silence     | Velma Smith     |                                                            |
+      | Person of Wizards       | Velma Smith     |                                                            |
+      | The Shard's Hunter      | Velma Smith     |                                                            |
+      | The Dreams of the Mists | Velma Smith     |                                                            |
+      | Luck in the Abyss       | Velma Smith     |                                                            |
+      | Deep Past               | Lena Richardson | Save as draft, Propose, Publish                            |
+      | The Licking Silence     | Lena Richardson | Save as draft, Propose, Publish                            |
+      | Person of Wizards       | Lena Richardson | Save as draft, Propose, Publish                            |
+      | The Shard's Hunter      | Lena Richardson | Publish, Archive                                           |
+      | The Dreams of the Mists | Lena Richardson | Publish                                                    |
+      | Luck in the Abyss       | Lena Richardson |                                                            |
 
     # Authentication sample checks.
     Given I am logged in as "Carole James"
