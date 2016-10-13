@@ -4,6 +4,9 @@ dependencies:
   module:
     - rdf_entity
     - state_machine
+third_party_settings:
+  rdf_entity:
+    mapping_value: 'http://joinup.eu/ar/workflow_status'
 id: rdf_entity.field_ar_state
 field_name: field_ar_state
 entity_type: rdf_entity
@@ -16,6 +19,3 @@ translatable: true
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false
-third_party_settings:
-  rdf_entity:
-    mapping_value: 'http://joinup.eu/ar/workflow_status'
