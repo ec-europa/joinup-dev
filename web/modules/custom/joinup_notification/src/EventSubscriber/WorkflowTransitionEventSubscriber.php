@@ -3,12 +3,9 @@
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityManager;
-use Drupal\message\Entity\Message;
-use Drupal\og\Entity\OgMembership;
+use Drupal\joinup_notification\NotificationSenderService;
 use Drupal\state_machine\Event\WorkflowTransitionEvent;
-use Drupal\user\Entity\Role;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\message_notify\MessageNotifier;
 
 /**
  * The event subscriber that handles the message notifications in joinup.
@@ -18,13 +15,6 @@ use Drupal\message_notify\MessageNotifier;
 class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
 
   /**
-   * The message notify sender service.
-   *
-   * @var \Drupal\message_notify\MessageNotifier
-   */
-  protected $messageNotifySender;
-
-  /**
    * The entity manager service.
    *
    * @var \Drupal\Core\Entity\EntityManager
@@ -32,16 +22,23 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   protected $entityManager;
 
   /**
+   * The notification sender service.
+   *
+   * @var \Drupal\joinup_notification\NotificationSenderService
+   */
+  protected $notificationSender;
+
+  /**
    * Constructs the event object.
    *
-   * @param \Drupal\message_notify\MessageNotifier $message_notify_sender
-   *    The message notify sender service.
    * @param \Drupal\Core\Entity\EntityManager $entity_manager
    *    The entity manager service.
+   * @param \Drupal\joinup_notification\NotificationSenderService $notification_sender
+   *    The message notify sender service.
    */
-  public function __construct(MessageNotifier $message_notify_sender, EntityManager $entity_manager) {
-    $this->messageNotifySender = $message_notify_sender;
+  public function __construct(EntityManager $entity_manager, NotificationSenderService $notification_sender) {
     $this->entityManager = $entity_manager;
+    $this->notificationSender = $notification_sender;
   }
 
   /**
@@ -57,7 +54,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
    *
    * @throws \Drupal\message_notify\Exception\MessageNotifyException
    *
-   * @see \Drupal\joinup_notification\config\schema\joinup_notification.schema.yml
+   * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
    */
   public function messageSender(WorkflowTransitionEvent $event) {
     $configuration = \Drupal::config('joinup_notification.settings')->get('transition_notifications');
@@ -74,44 +71,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     $transition = $workflow->findTransition($event->getFromState()->getId(), $event->getToState()->getId());
 
     foreach ($configuration[$workflow->getGroup()][$transition->getId()] as $role_id => $messages) {
-      // The notifications might be sent to users having site wide roles or
-      // users having og roles.
-      if ($role = Role::load($role_id)) {
-        $user_ids = $this->entityManager->getStorage('user')->getQuery()
-          ->condition('user_role', $role_id)
-          ->execute();
-        $recipients = $user_ids;
-      }
-      else {
-        $membership_query = $this->entityManager->getStorage('og_membership')->getQuery()
-          ->condition('state', 'active')
-          ->condition('entity_id', $entity->id());
-        $memberships_ids = $membership_query->execute();
-        $memberships = OgMembership::loadMultiple($memberships_ids);
-        $memberships = array_filter($memberships, function ($membership) use ($role_id) {
-          $roles = $membership->getRoles();
-          $role_ids = array_keys($roles);
-          return in_array($role_id, $role_ids);
-        });
-        $recipients = array_map(function ($membership) {
-          return $membership->getUser()->id();
-        }, $memberships);
-      }
-
-      // Send all the appropriate messages to their corresponding recipients.
-      foreach ($recipients as $user_id) {
-        foreach ($messages as $message_id) {
-          // Create the actual message and save it to the db.
-          $message = Message::create([
-            'template' => $message_id,
-            'uid' => $user_id,
-            'field_message_content' => $entity->id(),
-          ]);
-          $message->save();
-          // Send the saved message as an e-mail.
-          $this->messageNotifySender->send($message, [], 'email');
-        }
-      }
+      $this->notificationSender->send($entity, $role_id, $messages);
     }
   }
 
