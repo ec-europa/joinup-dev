@@ -240,69 +240,47 @@ function joinup_theme_preprocess_form_element(&$variables) {
  * Implements hook_theme_suggestions_HOOK_alter() for input.html.twig.
  */
 function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $variables) {
-  // Get input untranslated input value.
-  $input_value = '';
-  if (isset($variables['element']['#value']) && method_exists($variables['element']['#value'], 'getUntranslatedString')) {
-    $input_value = $variables['element']['#value']->getUntranslatedString();
+  if (empty($variables['element']['#is_button'])) {
+    return;
   }
+  // We need to have different styling on some buttons. The key of this
+  // multi-dimension array represents the suggestion name, while its values
+  // are the build array key of the button being rendered.
+  $input_suggestions = [
+    'input__ief_add_another' => [
+      // Generic "Add more" button for multi-value widgets.
+      'add_more',
+      'ief_add_existing',
+      'ief_add',
+      'ief_reference_save',
+      'ief_add_save',
+      'ief_edit_save',
+    ],
+    'input__ief_edit' => [
+      'ief_entity_edit',
+      'ief_entity_edit_save',
+    ],
+    'input__ief_remove' => [
+      'ief_entity_remove',
+      'ief_remove_confirm',
+    ],
+    'input__ief_cancel' => [
+      'ief_entity_cancel',
+      'ief_remove_cancel',
+    ],
+    'input__ief_cancel_circle' => [
+      'ief_add_cancel',
+      'ief_edit_cancel',
+      'ief_reference_cancel',
+    ],
+  ];
 
-  // Buttons which have "add element" function.
-  $plus_buttons = array(
-    'Add another item',
-    'Add existing',
-    'Add existing @type_singular',
-    'Add new',
-    'Add new @type_singular',
-    'Add @type_singular',
-    'Create @type_singular',
-    'Update @type_singular',
-  );
-
-  // Buttons' parents,
-  // which have cancel function in inline entity form.
-  $cancel_buttons_parents = array(
-    'ief_add_cancel',
-    'ief_edit_cancel',
-    'ief_reference_cancel',
-  );
-
-  // Buttons' parents,
-  // which have remove function in inline entity form.
-  $remove_buttons_parents = array(
-    'ief_entity_remove',
-    'ief_remove_confirm',
-  );
-
-  // Buttons' parents,
-  // which have cancel function in a confirm table in inline entity form.
-  $cancel_buttons_parents_table = array(
-    'ief_entity_cancel',
-    'ief_remove_cancel',
-  );
-
-  // Buttons' parents,
-  // which have edit function in a confirm table in inline entity form.
-  $edit_buttons_parents_table = array(
-    'ief_entity_edit',
-    'ief_entity_edit_save',
-  );
-
-  // Add suggestion for all "Add" buttons.
-  if (in_array($input_value, $plus_buttons)) {
-    $suggestions[] = 'input__ief_add_another';
-  }
-  // Remove, edit, update and cancel buttons in inline entity form.
-  elseif (!empty(array_intersect($edit_buttons_parents_table, $variables['element']['#parents']))) {
-    $suggestions[] = 'input__ief_edit';
-  }
-  elseif (!empty(array_intersect($remove_buttons_parents, $variables['element']['#parents']))) {
-    $suggestions[] = 'input__ief_remove';
-  }
-  elseif (!empty(array_intersect($cancel_buttons_parents_table, $variables['element']['#parents']))) {
-    $suggestions[] = 'input__ief_cancel';
-  }
-  elseif (!empty(array_intersect($cancel_buttons_parents, $variables['element']['#parents']))) {
-    $suggestions[] = 'input__ief_cancel_circle';
+  // The last key of #array_parents is the build array key used in the code.
+  $element_key = end($variables['element']['#array_parents']);
+  foreach ($input_suggestions as $suggestion => $names) {
+    if (in_array($element_key, $names)) {
+      $suggestions[] = $suggestion;
+    }
   }
 }
 
