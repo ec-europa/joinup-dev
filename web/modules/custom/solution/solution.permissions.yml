@@ -1,0 +1,2 @@
+message notification on validate:
+  title: 'Receive notification that a solution has been moved to "Validated" state.'

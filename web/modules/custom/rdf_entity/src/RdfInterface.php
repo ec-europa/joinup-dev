@@ -3,6 +3,7 @@
 namespace Drupal\rdf_entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityPublishedInterface;
 
 /**
  * Provides an interface defining a Rdf entity.
@@ -11,7 +12,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
  *
  * @ingroup rdf_entity
  */
-interface RdfInterface extends ContentEntityInterface {
+interface RdfInterface extends ContentEntityInterface, EntityPublishedInterface {
 
   /**
    * Gets the name of the rdf entity.
@@ -30,5 +31,16 @@ interface RdfInterface extends ContentEntityInterface {
    * @return $this
    */
   public function setName($name);
+
+  /**
+   * Removes an entity from the passed graph.
+   *
+   * This method does not delete the entity entirely so it skips the delete
+   * hooks.
+   *
+   * @param string $graph
+   *    The graph machine name.
+   */
+  public function deleteFromGraph($graph);
 
 }

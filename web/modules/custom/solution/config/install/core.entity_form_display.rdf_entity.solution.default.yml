@@ -139,14 +139,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-  field_is_state:
-    type: options_select
-    weight: 12
-    settings: {  }
-    third_party_settings: {  }
   field_is_solution_type:
     type: options_select
     weight: 10
+    settings: {  }
+    third_party_settings: {  }
+  field_is_state:
+    type: options_select
+    weight: 12
     settings: {  }
     third_party_settings: {  }
   field_policy_domain:

@@ -6,9 +6,9 @@ Feature: "Add document" visibility options.
 
   Scenario: "Add document" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following solutions:
-      | title               | logo     | banner     |
-      | Seventh Name        | logo.png | banner.jpg |
-      | The Obsessed Stream | logo.png | banner.jpg |
+      | title               | logo     | banner     | state     |
+      | Seventh Name        | logo.png | banner.jpg | validated |
+      | The Obsessed Stream | logo.png | banner.jpg | validated |
     And the following collection:
       | title      | Collective Seventh Name           |
       | logo       | logo.png                          |
@@ -36,8 +36,8 @@ Feature: "Add document" visibility options.
 
   Scenario: Add document as a facilitator.
     Given solutions:
-      | title               | logo     | banner     |
-      | Winter of Beginning | logo.png | banner.jpg |
+      | title               | logo     | banner     | state     |
+      | Winter of Beginning | logo.png | banner.jpg | validated |
     And the following collection:
       | title      | Collective Winter of Beginning |
       | logo       | logo.png                       |

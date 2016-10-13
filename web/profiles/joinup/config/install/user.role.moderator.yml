@@ -33,3 +33,7 @@ permissions:
   - 'view any unpublished news content'
   - 'view licence overview page'
   - 'view rdf entity overview'
+  - 'view rdf_entity draft graph'
+  - 'view unpublished rdf entity'
+  - 'administer comments'
+  - 'skip comment approval'

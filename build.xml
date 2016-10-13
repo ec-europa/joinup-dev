@@ -17,7 +17,7 @@
     <includepath classpath="src/Phing" />
 
     <echo msg="Loading Drush task." />
-    <taskdef name="drush" classname="DrushTask" />
+    <taskdef name="drush" classname="\Drush\Task" />
 
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
@@ -294,15 +294,15 @@
         <if>
             <available file="${solr.bin}" type="file" property="file.exists" />
             <then>
-                <echo message="Symlink to Solr binary already exists in ${solr.bin}. Skipping creation of symlink." />
+                <echo message="Symlink to Solr binary already exists in ${solr.bin}. Deleting symlink." />
+                <delete file="${solr.bin}" failonerror="false" />
             </then>
-            <else>
-                <symlink
-                    target="${solr.dir}/bin/solr"
-                    link="${solr.bin}"
-                />
-            </else>
         </if>
+        <echo message="Creating symlink to Solr binary." />
+        <symlink
+            target="${solr.dir}/bin/solr"
+            link="${solr.bin}"
+        />
     </target>
 
     <target
@@ -404,13 +404,18 @@
 
     <!-- Enable development modules. -->
     <target name="enable-dev-modules">
+        <foreach list="${drupal.modules.dev}" param="module" target="enable-module" delimiter=" " />
+    </target>
+
+    <!-- Enable a module. -->
+    <target name="enable-module">
         <drush
             command="pm-enable"
             assume="yes"
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
-            <param>${drupal.modules.dev}</param>
+            <param>${module}</param>
         </drush>
     </target>
 
