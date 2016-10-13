@@ -168,7 +168,9 @@ $ ../vendor/bin/phpunit
 
 See the [readme](web/themes/joinup/README.md) in the theme folder.
 
-### Technical Details
+### Technical details
 
-* [Rdf draft module](web/modules/custom/rdf_entity/rdf_draft/README.md)
-* [Joinup notification module](web/modules/custom/joinup_notification/README.md)
+* In [Rdf draft module](web/modules/custom/rdf_entity/rdf_draft/README.md)
+there are information on handling draft in CRUD operations for rdf entities.
+* In [Joinup notification module](web/modules/custom/joinup_notification/README.md)
+there are information on how to handle notifications in Joinup.
