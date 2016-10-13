@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -144,7 +143,12 @@ function collection_rdf_entity_presave(EntityInterface $entity) {
   if (in_array($state, ['draft', 'proposed'])) {
     \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
   }
-  elseif (in_array($state, ['validated', 'archival_request', 'deletion_request', 'archived'])) {
+  elseif (in_array($state, [
+    'validated',
+    'archival_request',
+    'deletion_request',
+    'archived',
+  ])) {
     \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
   }
   elseif (empty($state)) {
