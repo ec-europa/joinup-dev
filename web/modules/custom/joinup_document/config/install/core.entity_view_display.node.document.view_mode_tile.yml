@@ -1,0 +1,66 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_tile
+    - field.field.node.document.body
+    - field.field.node.document.field_comments
+    - field.field.node.document.field_document_file
+    - field.field.node.document.field_document_publication_date
+    - field.field.node.document.field_document_short_title
+    - field.field.node.document.field_document_source_url
+    - field.field.node.document.og_audience
+    - node.type.document
+  module:
+    - datetime
+    - file
+    - link
+    - text
+    - user
+id: node.document.view_mode_tile
+targetEntityType: node
+bundle: document
+mode: view_mode_tile
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+  field_document_file:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_default
+  field_document_publication_date:
+    weight: 2
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  field_document_short_title:
+    weight: 0
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  field_document_source_url:
+    weight: 4
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+hidden:
+  field_comments: true
+  links: true
+  og_audience: true

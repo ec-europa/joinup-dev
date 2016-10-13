@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.view_mode_tile
     - field.field.node.discussion.field_comments
     - field.field.node.discussion.field_discussion_active
     - field.field.node.discussion.field_discussion_content
@@ -9,22 +10,14 @@ dependencies:
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
-    - comment
     - options
     - text
     - user
-id: node.discussion.default
+id: node.discussion.view_mode_tile
 targetEntityType: node
 bundle: discussion
-mode: default
+mode: view_mode_tile
 content:
-  field_comments:
-    type: comment_default
-    weight: 5
-    label: above
-    settings:
-      pager_id: 0
-    third_party_settings: {  }
   field_discussion_active:
     weight: 3
     label: above
@@ -44,10 +37,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  links:
-    weight: 4
-    settings: {  }
-    third_party_settings: {  }
   og_audience:
     label: above
     type: entity_reference_label
@@ -55,4 +44,6 @@ content:
       link: true
     weight: 2
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_comments: true
+  links: true
