@@ -1,0 +1,19 @@
+collection.settings:
+  type: config_object
+  label: 'Collection workflow permission settings'
+  mapping:
+    transitions:
+      type: sequence
+      label: 'Allowed transitions'
+      sequence:
+        type: sequence
+        label: 'Target state'
+        sequence:
+          type: sequence
+          label: 'Source state'
+          sequence:
+            type: sequence
+            label: 'Roles'
+            sequence:
+              type: string
+              label: 'Role'
