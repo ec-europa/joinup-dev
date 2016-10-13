@@ -45,7 +45,8 @@ process:
       # Mark all other roles to "authenticated user".
       default_value: 0
     -
-      # Remove users with role 0 "authenticated user" from import.
+      # Do not import "authenticated user" role or any other role
+      # that is not statically mapped.
       plugin: skip_on_empty
       method: process
 destination:
