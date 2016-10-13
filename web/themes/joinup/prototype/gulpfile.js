@@ -90,18 +90,13 @@ gulp.task('styleguide', ['styleguide:generate', 'styleguide:applystyles']);
 // Define copying images for styleguide task
 gulp.task('images', function() {
   gulp.src(['../images/**'])
-    .pipe(gulp.dest(paths.styleguide + '/images'));
+    .pipe(gulp.dest(paths.styleguide + '/images'))
+    .pipe(gulp.dest('images'));
 });
 // Define copying javascript for styleguide task
 gulp.task('js', function() {
   gulp.src(['js/**', '../vendor/material-design-lite/material.min.js', '../../../../web/core/assets/vendor/jquery/jquery.min.js'])
     .pipe(gulp.dest(paths.styleguide + '/js'));
-});
-
-// Define copying images for prototype folder
-gulp.task('images_prototype', function() {
-  gulp.src(['../images/**'])
-    .pipe(gulp.dest('images'));
 });
 
 // Listen folders for changes and apply defined tasks
