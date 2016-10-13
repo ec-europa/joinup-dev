@@ -500,7 +500,7 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
     </target>
 
     <!-- Add migration database connection to Drupal settings file. -->
-    <target name="setup-migration" depends="writable-settings-php">
+    <target name="setup-migration" depends="writable-settings-php, create-d6-db">
         <echo message="Setup migration" />
         <append destFile="${website.settings.php}" text="${line.separator}$databases['migrate']['default'] = [${line.separator}
  'database' => '${migration.db.name}',${line.separator}
