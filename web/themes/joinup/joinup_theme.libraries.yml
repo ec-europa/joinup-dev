@@ -12,12 +12,6 @@ global-components:
       css/style.min.css: {}
   js:
     js/script.js: {}
-  dependencies:
-    - core/jquery
-    - core/jquery.once
-    - core/jquery.ui.slider
-    - core/drupal
-    - core/drupalSettings
 
 form-components:
   Version: 1.x
