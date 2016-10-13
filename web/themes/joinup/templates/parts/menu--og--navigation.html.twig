@@ -30,20 +30,25 @@
   {% import _self as menus %}
   {% if items %}
   <div class="sidebar-menu">
-    <button id="sidebar-menu" class="sidebar-menu__button mdl-button mdl-js-button mdl-button--icon">
-      <i class="material-icons">menu</i>
+    <button id="sidebar-menu__button" class="sidebar-menu__button sidebar-menu__button--mobile mdl-button mdl-js-button mdl-button--icon">
+      <span class="icon icon--menu"></span>
     </button>
-    <nav class="sidebar-menu__container" for="sidebar-menu">
+
+    <button id="sidebar-menu__button-desktop" class="sidebar-menu__button sidebar-menu__button--desktop mdl-button mdl-js-button mdl-button--icon">
+      <span class="icon icon--menu"></span>
+    </button>
+    <nav class="mdl-menu mdl-menu--bottom-left mdl-js-menu" for="sidebar-menu__button">
       {% for item in items %}
         {%
           set classes = [
             'sidebar-menu__item',
+            'mdl-menu__item',
             item.is_expanded ? 'menu-item--expanded',
             item.is_collapsed ? 'menu-item--collapsed',
             item.in_active_trail ? 'menu-item--active-trail',
           ]
         %}
-        {{ link(item.title, item.url, { 'class':['sidebar-menu__item']} ) }}
+        {{ link(item.title, item.url, { 'class':['sidebar-menu__link']} ) }}
       {% endfor %}
     </nav>
   </div>
