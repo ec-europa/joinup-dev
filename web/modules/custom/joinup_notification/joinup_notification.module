@@ -24,15 +24,15 @@ use Drupal\user\Entity\Role;
  *  - The entity has a state field and the state is 'deletion_request'.
  *  - There is configuration set for the entity type and the bundle.
  *
- * @see \Drupal\joinup_notification\config\schema\joinup_notification.schema.yml
+ * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
  */
 function joinup_notification_entity_predelete(EntityInterface $entity) {
-  $entity_type = $entity->getEntityTypeId();
-  $bundle = $entity->bundle();
   if (!($entity instanceof ContentEntityInterface) || !in_array($entity->getEntityTypeId(), ['rdf_entity', 'node'])) {
     return;
   }
 
+  $entity_type = $entity->getEntityTypeId();
+  $bundle = $entity->bundle();
   $field_definitions = array_filter(\Drupal::entityManager()->getFieldDefinitions($entity_type, $bundle), function ($field_definition) {
     return $field_definition->getType() == 'state';
   });
@@ -66,9 +66,7 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
       $memberships_ids = $membership_query->execute();
       $memberships = OgMembership::loadMultiple($memberships_ids);
       $memberships = array_filter($memberships, function ($membership) use ($role_id) {
-        $roles = $membership->getRoles();
-        $role_ids = array_keys($roles);
-        return in_array($role_id, $role_ids);
+        return array_key_exists($role_id, $membership->getRoles());
       });
       // We need to handle possible broken relationships or memberships that
       // are not removed yet.

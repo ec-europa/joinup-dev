@@ -18,14 +18,14 @@ use Drupal\message_notify\MessageNotifier;
 class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
 
   /**
-   * Drupal\message_notify\MessageNotifier definition.
+   * The message notify sender service.
    *
    * @var \Drupal\message_notify\MessageNotifier
    */
   protected $messageNotifySender;
 
   /**
-   * Drupal\Core\Entity\EntityManager definition.
+   * The entity manager service.
    *
    * @var \Drupal\Core\Entity\EntityManager
    */
