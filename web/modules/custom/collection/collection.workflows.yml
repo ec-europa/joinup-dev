@@ -38,11 +38,11 @@ collection_workflow:
       from: [__new__, draft, proposed, validated]
       to: proposed
     validate:
-      label: Validate
+      label: Publish
       from: [__new__, draft, proposed, validated, archival_request, deletion_request]
       to: validated
     request_archival:
-      label: Request to be archived
+      label: Request archival
       from: [validated]
       to: archival_request
     request_deletion:
