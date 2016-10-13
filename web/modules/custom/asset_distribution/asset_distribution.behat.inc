@@ -290,7 +290,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @return array
    *    The array with the values converted.
    */
-  protected function convertValueAliases($fields) {
+  protected function convertValueAliases(array $fields) {
     if (isset($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD])) {
       $solution = $this->getRdfEntityByLabel($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD], 'solution');
       $fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD] = $solution->id();
