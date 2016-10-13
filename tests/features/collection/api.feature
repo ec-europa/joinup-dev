@@ -13,6 +13,7 @@ Feature: Collection API
       | closed            | no                   |
       | elibrary creation | facilitators         |
       | policy domain     | Health               |
+      | state             | validated            |
     Then I should have 1 collection
 
   Scenario: Programmatically create a collection using only the name
@@ -41,7 +42,7 @@ Feature: Collection API
     And I press "Add owner"
     And I check "Closed collection"
     And I check "Moderated"
-    And I press "Save"
+    And I press "Propose"
     Then I should see the heading "Collection API example"
     And the user "Lizardwolf" should be the owner of the "Collection API example" collection
 

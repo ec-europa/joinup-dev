@@ -13,6 +13,7 @@ Feature: News API
       | logo              | logo.png        |
       | moderation        | yes             |
       | elibrary creation | facilitators    |
+      | state             | validated       |
     And news content:
       | title      | body                                     | collection      |
       | Dummy News | This is some dummy content like foo:bar. | Le Foie Heureux |

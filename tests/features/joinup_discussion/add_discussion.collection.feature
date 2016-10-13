@@ -6,9 +6,9 @@ Feature: "Add discussion" visibility options.
 
   Scenario: "Add discussion" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following collections:
-      | title              | logo     | banner     |
-      | The Fallen History | logo.png | banner.jpg |
-      | White Sons         | logo.png | banner.jpg |
+      | title              | logo     | banner     | state     |
+      | The Fallen History | logo.png | banner.jpg | validated |
+      | White Sons         | logo.png | banner.jpg | validated |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "The Fallen History" collection
@@ -35,8 +35,8 @@ Feature: "Add discussion" visibility options.
 
   Scenario: Add discussion as a facilitator.
     Given collections:
-      | title                  | logo     | banner     |
-      | The World of the Waves | logo.png | banner.jpg |
+      | title                  | logo     | banner     | state     |
+      | The World of the Waves | logo.png | banner.jpg | validated |
     And I am logged in as a facilitator of the "The World of the Waves" collection
 
     When I go to the homepage of the "The World of the Waves" collection

@@ -10,10 +10,10 @@ Feature: "Add discussion" visibility options.
       | Eager Sliver       | logo.png | banner.jpg | validated |
       | The Silent Bridges | logo.png | banner.jpg | validated |
     And the following collection:
-      | title      | Collective Eager Sliver          |
-      | logo       | logo.png                         |
-      | banner     | banner.jpg                       |
-      | affiliates | Eager Sliver, The Silent Bridges |
+      | title      | Collective Eager Sliver          | state     |
+      | logo       | logo.png                         | validated |
+      | banner     | banner.jpg                       | validated |
+      | affiliates | Eager Sliver, The Silent Bridges | validated |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Eager Sliver" solution
@@ -39,10 +39,10 @@ Feature: "Add discussion" visibility options.
       | title               | logo     | banner     | state     |
       | Emerald in the Luck | logo.png | banner.jpg | validated |
     And the following collection:
-      | title      | Collective Emerald in the Luck |
-      | logo       | logo.png                       |
-      | banner     | banner.jpg                     |
-      | affiliates | Emerald in the Luck            |
+      | title      | Collective Emerald in the Luck | state     |
+      | logo       | logo.png                       | validated |
+      | banner     | banner.jpg                     | validated |
+      | affiliates | Emerald in the Luck            | validated |
     And I am logged in as a facilitator of the "Emerald in the Luck" solution
 
     When I go to the homepage of the "Emerald in the Luck" solution

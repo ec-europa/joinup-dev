@@ -22,6 +22,7 @@ Feature: Collections Overview
       | eHealth           | Supports health-related fields |
       | Open Data         | Facilitate access to data sets |
       | Connecting Europe | Reusable tools and services    |
+      | state             | validated                      |
     Given organisation:
       | name | Organisation example |
     Then I commit the solr index
@@ -67,7 +68,7 @@ Feature: Collections Overview
     And I press "Add existing owner"
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
-    And I press "Save"
+    And I press "Save as draft"
     Then I visit the "Colonies in space" collection
     Then I should see the text "Colonies in space"
     # Non UATable step.

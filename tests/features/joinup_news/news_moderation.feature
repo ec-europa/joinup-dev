@@ -30,9 +30,9 @@ Feature: News moderation.
       | Mirror Master | hideinmirrors    | mirrormirroronthewall@example.com |           |
       | Metallo       | checkMyHeart     | kryptoniteEverywhere@example.com  |           |
     Given collections:
-      | title          | moderation |
-      | Justice League | no         |
-      | Legion of Doom | yes        |
+      | title          | moderation | state     |
+      | Justice League | no         | validated |
+      | Legion of Doom | yes        | validated |
     And the following collection user memberships:
       | collection     | user          | roles       |
       | Justice League | Superman      | owner       |
