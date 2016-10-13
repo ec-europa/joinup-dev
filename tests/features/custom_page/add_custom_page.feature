@@ -62,10 +62,10 @@ Feature: "Add custom page" visibility options.
       | name    | roles     |
       | Falstad | moderator |
     And collections:
-      | title           | logo      |
-      | Open Collective | logo.png  |
-      | Code Camp       | logo.png  |
-      | state           | validated |
+      | title           | logo      | state     |
+      | Open Collective | logo.png  | validated |
+      | Code Camp       | logo.png  | validated |
+      | state           | validated | validated |
     And collection user memberships:
       | collection      | user    | roles  |
       | Open Collective | Falstad | member |
