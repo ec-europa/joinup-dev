@@ -214,7 +214,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *
    * @see \Drupal\rdf_entity\GraphHandler::getEntityTypeGraphUris
    */
-  public function getEntityTypeGraphUris($graph_types = NULL) {
+  public function getEntityTypeGraphUris(array $graph_types = NULL) {
     return $this->getGraphHandler()->getEntityTypeGraphUris($this->entityType->getBundleEntityType(), $graph_types);
   }
 
@@ -327,7 +327,7 @@ QUERY;
    *      ];
    * @code
    *
-   * @param array $results
+   * @param \EasyRdf\Sparql\Result|\EasyRdf\Graph $results
    *    A set of query results indexed per graph and entity id.
    *
    * @return array
@@ -491,6 +491,18 @@ QUERY;
    * {@inheritdoc}
    */
   public function deleteRevision($revision_id) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function deleteFromGraph($entity_id, $graph) {
+    $this->getGraphHandler()->setRequestGraphs($entity_id, $this->entityTypeId, [$graph]);
+    $entity = $this->load($entity_id);
+    if (!empty($entity)) {
+      $this->doDelete([$entity_id => $entity]);
+      $this->resetCache([$entity_id]);
+    }
   }
 
   /**
@@ -721,7 +733,7 @@ QUERY;
    * @param array $values
    *   The field values.
    */
-  private function applyFieldDefaults(FieldStorageConfig $storage, &$values) {
+  private function applyFieldDefaults(FieldStorageConfig $storage, array &$values) {
     if (empty($values)) {
       return;
     }

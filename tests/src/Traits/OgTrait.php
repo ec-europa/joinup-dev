@@ -88,7 +88,7 @@ trait OgTrait {
    * @throws \Exception
    *    Throws exception when the user is not a member or is not an owner.
    */
-  protected function assertOgGroupOwnership(AccountInterface $user, RdfInterface $group, $roles) {
+  protected function assertOgGroupOwnership(AccountInterface $user, RdfInterface $group, array $roles) {
     $membership = Og::getMembership($group, $user);
     if (empty($membership)) {
       throw new \Exception("User {$user->getAccountName()} is not a member of the {$group->label()} group.");

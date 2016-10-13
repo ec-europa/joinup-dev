@@ -73,7 +73,8 @@ display:
           view_modes:
             'entity:node':
               custom_page: view_mode_tile
-              document: default
+              discussion: view_mode_tile
+              document: view_mode_tile
               event: view_mode_tile
               news: view_mode_tile
             'entity:rdf_entity':

@@ -10,3 +10,5 @@ permissions:
   - 'use text format restricted_html'
   - 'view rdf entity'
   - 'export rdf metadata'
+  - 'post comments'
+  - 'access comments'
