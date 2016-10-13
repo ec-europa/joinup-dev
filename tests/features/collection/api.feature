@@ -19,6 +19,7 @@ Feature: Collection API
   Scenario: Programmatically create a collection using only the name
     Given the following collection:
       | title | EU Interoperability Support Group |
+      | state | validated                         |
     Then I should have 1 collection
 
   Scenario: Assign ownership when a collection is created through UI.

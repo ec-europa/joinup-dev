@@ -24,10 +24,9 @@ Feature: "Add custom page" visibility options.
 
   Scenario: Add custom page as a facilitator.
     Given collections:
-      | title           | logo      |
-      | Open Collective | logo.png  |
-      | Code Camp       | logo.png  |
-      | state           | validated |
+      | title           | logo      | state     |
+      | Open Collective | logo.png  | validated |
+      | Code Camp       | logo.png  | validated |
     And I am logged in as a facilitator of the "Open Collective" collection
 
     # Initially there are no custom pages. A help text should inform the user
