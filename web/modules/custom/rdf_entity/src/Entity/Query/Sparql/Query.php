@@ -164,7 +164,7 @@ class Query extends QueryBase implements QueryInterface {
    * @see \Drupal\rdf_entity\RdfGraphHandler::setRequestGraphs()
    * @see \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage::processGraphResults()
    */
-  public function setGraphType($graph_types = ['default']) {
+  public function setGraphType(array $graph_types = ['default']) {
     $this->graphs = $this->entityStorage->getGraphHandler()->getEntityTypeGraphUrisList($this->entityType->getBundleEntityType(), $graph_types);
   }
 
@@ -392,7 +392,7 @@ class Query extends QueryBase implements QueryInterface {
    * @throws \Exception
    *   Thrown when the field has not a valid rdf property name.
    */
-  public function getFieldRdfPropertyName($field_name, $field_storage_definitions) {
+  public function getFieldRdfPropertyName($field_name, array $field_storage_definitions) {
     if (empty($field_storage_definitions[$field_name])) {
       throw new \Exception('Unknown field ' . $field_name);
     }

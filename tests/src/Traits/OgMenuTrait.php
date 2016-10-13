@@ -3,7 +3,7 @@
 namespace Drupal\joinup\Traits;
 
 use Drupal\menu_link_content\Entity\MenuLinkContent;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 
 /**
@@ -41,7 +41,7 @@ trait OgMenuTrait {
   public function getOgMenuInstance($group_id) {
     $values = [
       'type' => self::$ogMenuInstanceType,
-      OgGroupAudienceHelper::DEFAULT_FIELD => $group_id,
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $group_id,
     ];
 
     $instances = \Drupal::entityTypeManager()->getStorage('ogmenu_instance')->loadByProperties($values);
@@ -64,7 +64,7 @@ trait OgMenuTrait {
   public function createOgMenuInstance($group_id) {
     $values = [
       'type' => self::$ogMenuInstanceType,
-      OgGroupAudienceHelper::DEFAULT_FIELD => $group_id,
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $group_id,
     ];
 
     $og_menu_instance = OgMenuInstance::create($values);
@@ -101,7 +101,7 @@ trait OgMenuTrait {
    *
    * @see \Drupal\menu_link_content\Entity\MenuLinkContent::create()
    */
-  public function createOgMenuItem($item_data) {
+  public function createOgMenuItem(array $item_data) {
     $menu_link = MenuLinkContent::create($item_data);
     $menu_link->save();
   }

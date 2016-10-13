@@ -7,6 +7,7 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -191,4 +192,15 @@ function joinup_field_widget_inline_entity_form_complex_form_alter(&$element, Fo
 function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form_state) {
   // Avoid showing two labels one after each other.
   $reference_form['entity_id']['#title_display'] = 'invisible';
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function joinup_comment_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  // Add contextual links to comments.
+  $build['#contextual_links']['comment'] = [
+    'route_parameters' => ['comment' => $entity->id()],
+    'metadata' => ['changed' => $entity->getChangedTime()],
+  ];
 }
