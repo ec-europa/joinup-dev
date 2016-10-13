@@ -30,7 +30,7 @@ collection_workflow:
       label: Archived
   transitions:
     draft:
-      label: Create
+      label: Save as draft
       from: [__new__, draft, proposed, validated]
       to: draft
     propose:
