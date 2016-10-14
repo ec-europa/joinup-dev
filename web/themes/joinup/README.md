@@ -32,4 +32,6 @@ $ npm install
 Just run `gulp` without any parameters to compile and start the "watch" mode to compile files on change.
 A list of all the tasks is available with `gulp --tasks`.
 * The styleguide is available on your localhost - http://localhost:3000/.
-* The prototypes are available in the folder web/themes/joinup/prototype/html-prototype. Just open any html file. The prototypes can be changed in the folder web/themes/joinup/prototype/html-prototype-sandbox, it is place to create html prototypes using mustache templating language.
+* The prototypes are available in the folder web/themes/joinup/prototype/html-prototype. Just open any html file.
+The prototypes can be changed in the folder web/themes/joinup/prototype/html-prototype-sandbox.
+It is also the place to create html prototypes using mustache templating language.
