@@ -437,7 +437,7 @@
         <echo message="Allow importing of RDF data from all directories" />
         <exec dir="${project.basedir}"
               command="sudo sed -i 's/DirsAllowed              = ., \/usr\/share\/virtuoso-opensource-6.1\/vad/DirsAllowed = \//g' /etc/virtuoso-opensource-6.1/virtuoso.ini;
-sudo /etc/init.d/virtuoso-opensource-6.1 restart"
+sudo supervisorctl restart virtuoso"
               checkreturn="true"
               passthru="true" />
         <echo message="Create Solr index" />
