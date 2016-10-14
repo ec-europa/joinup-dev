@@ -69,10 +69,9 @@ Feature: Collection moderation
     Then for the following collection, the corresponding user should have the corresponding available state buttons:
       | collection              | user            | states                                                     |
 
-      # The following collections are tested as an owner. This is for debug
-      # purposed. In reality, the owner is also a facilitator so the only
+      # The owner is also a facilitator so the only
       # UATable part of the owner is that he has the ability to request deletion
-      # when the collection is validated.
+      # or archival when the collection is validated.
       | Deep Past               | Erika Reid      | Save as draft, Propose                                     |
       | The Licking Silence     | Erika Reid      | Save as draft, Propose                                     |
       | Person of Wizards       | Erika Reid      | Save as draft, Propose, Request archival, Request deletion |
