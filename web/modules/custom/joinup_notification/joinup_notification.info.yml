@@ -1,0 +1,8 @@
+name: Joinup notification
+type: module
+description: Handles notifications for joinup project.
+core: 8.x
+package: Joinup
+dependencies:
+  - message
+  - message_notify

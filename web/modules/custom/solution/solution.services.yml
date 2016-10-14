@@ -14,8 +14,3 @@ services:
     arguments: ['@joinup_core.workflow.user_provider']
     tags:
       - { name: state_machine.guard, group: solution }
-  solution.event_subscriber:
-      class: Drupal\solution\EventSubscriber\WorkflowTransitionEventSubscriber
-      arguments: ['@message_notify.sender', '@entity_type.manager']
-      tags:
-        - { name: 'event_subscriber' }

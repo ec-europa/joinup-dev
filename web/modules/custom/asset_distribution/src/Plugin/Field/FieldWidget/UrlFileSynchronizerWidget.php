@@ -48,7 +48,7 @@ class UrlFileSynchronizerWidget extends LinkWidget implements ContainerFactoryPl
   /**
    * Constructs a UrlFileSynchronizerWidget.
    *
-   * @param array $plugin_id
+   * @param string $plugin_id
    *   The plugin_id for the widget.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.

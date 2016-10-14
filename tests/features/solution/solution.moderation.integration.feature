@@ -13,7 +13,6 @@ Feature: As a user of the website
       | name  | Crusty crab           |
     And the following organisation:
       | name | Mr Crab |
-
     And the following solutions:
       | title                    | description                | logo     | banner     | owner   | contact information | solution type     | state            | policy domain |
       | Professional Dreams      | Azure ship                 | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | draft            | Health        |
@@ -22,7 +21,9 @@ Feature: As a user of the website
       | The Streams of the Lover | The Ice's Secrets          | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | deletion_request | Health        |
       | Teacher in the Twins     | The Guardian of the Stream | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | in_assessment    | Health        |
       | Missing Fire             | Flames in the Swords       | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | blacklisted      | Health        |
-
+    And the following solution user memberships:
+      | solution        | user | roles              |
+      | Flight of Night | Hulk | owner, facilitator |
     When I am logged in as a "facilitator" of the "Professional Dreams" solution
     And I go to the homepage of the "Professional Dreams" solution
     Then I should see the heading "Professional Dreams"
@@ -65,5 +66,10 @@ Feature: As a user of the website
     And I press "Save"
     Then I should see the heading "Flight of Day"
     And I should not see the link "View draft"
-    # @todo: Fix the visibility issue.
     But I should see the link "View"
+
+    # Ensure that the users do not lose their membership.
+    When I am logged in as "Hulk"
+    And I go to the homepage of the "Flight of Day" solution
+    Then I should not see the link "View Draft"
+    But I should see the link "Edit" in the "Entity actions" region

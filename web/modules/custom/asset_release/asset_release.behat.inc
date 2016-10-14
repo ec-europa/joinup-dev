@@ -266,7 +266,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
-  protected function convertValueAliases($fields) {
+  protected function convertValueAliases(array $fields) {
     // Convert any entity reference field label value with the entity id.
     $fields = $this->convertEntityReferencesValues('rdf_entity', 'asset_release', $fields);
 
