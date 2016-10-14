@@ -8,8 +8,38 @@ a.tabledrag-handle
 .tabledrag-toggle-weight-wrapper
   display: none
 
+.field-multiple-drag
+  padding: 0 !important
+
+.draggable.form-table__row .form-table__cell
+  padding-left: 0
+
 #edit-field-ar-owner-actions.container-inline
   width: 100%
   display: block
   div
     display: inline-block
+
+// Inline entity from styles.
+.ief-entity-table
+  margin-bottom: 20px
+  .form-table__cell
+    height: 70px
+  .ief-entity-operations
+    margin-bottom: 0
+
+.field--widget-inline-entity-form-complex
+  .form-type-select
+    display: inline-block
+    vertical-align: middle
+    margin-right: 30px
+    select
+      height: 25px
+      width: auto
+      font-size: 14px
+      color: $color-grey-medium
+  .button__no-bg-wrapper
+    margin-right: 30px
+
+.ief-entity-table>.form-table__body>.form-table__row>.form-table__cell
+  padding-top: 15px
