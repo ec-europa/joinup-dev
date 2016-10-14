@@ -1866,7 +1866,8 @@
                 "drupal/core": "~8.0"
             },
             "suggest": {
-                "drupal/core": "Required by drupal/facets",
+                "drupal/core": "Required by drupal/core_search_facets",
+                "drupal/search": "Required by drupal/core_search_facets",
                 "drupal/search_api": "Required by drupal/facets"
             },
             "type": "drupal-module",
@@ -2586,7 +2587,7 @@
                     "datestamp": "1457387742"
                 },
                 "patches_applied": {
-                    "Add a transition event.": "https://www.drupal.org/files/issues/state_machine_should-2794537-3.patch"
+                    "State machine should fire events when a transition is applied.": "https://www.drupal.org/files/issues/state_machine_should-2794537-22.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
