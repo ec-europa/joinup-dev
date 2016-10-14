@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1b8de3edb96b31715500a8ecc3d0f023",
-    "content-hash": "3ae2a098ce158f9207279ec5db359e0f",
+    "hash": "ca5c3a3e1d383d208acf85733cb7f3c2",
+    "content-hash": "fc0f7d1b1ecb3ebfba71d1529cc21202",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -114,16 +114,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.14",
+            "version": "3.19.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2d0c88883dac2f8dd21825b51ef1f04e04073f8f"
+                "reference": "83e9522a0a1abce0b1a0c2971428a5bd975a212d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2d0c88883dac2f8dd21825b51ef1f04e04073f8f",
-                "reference": "2d0c88883dac2f8dd21825b51ef1f04e04073f8f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/83e9522a0a1abce0b1a0c2971428a5bd975a212d",
+                "reference": "83e9522a0a1abce0b1a0c2971428a5bd975a212d",
                 "shasum": ""
             },
             "require": {
@@ -190,7 +190,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-10-12 21:32:40"
+            "time": "2016-10-13 18:56:16"
         },
         {
             "name": "composer/ca-bundle",
@@ -2105,17 +2105,17 @@
         },
         {
             "name": "drupal/message_notify",
-            "version": "1.0.0-alpha1",
+            "version": "1.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/message_notify",
-                "reference": "8.x-1.0-alpha1"
+                "reference": "8.x-1.0-alpha2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/message_notify-8.x-1.0-alpha1.zip",
+                "url": "https://ftp.drupal.org/files/projects/message_notify-8.x-1.0-alpha2.zip",
                 "reference": null,
-                "shasum": "dfdf69b3ffd0c4e4afea4088a5b54be56ccc884c"
+                "shasum": "7e1210b4ab97d3774684f6ade500c5f8c4d7fd15"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -2127,8 +2127,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1",
-                    "datestamp": "1474565339"
+                    "version": "8.x-1.0-alpha2",
+                    "datestamp": "1476397739"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2158,17 +2158,115 @@
             }
         },
         {
+            "name": "drupal/migrate_drush",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/migrate_drush",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/migrate_drush-8.x-1.1.zip",
+                "reference": null,
+                "shasum": "c409d7ad65900edf3d2c55f7ef9f5613897635ca"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1471331939"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "chx",
+                    "homepage": "https://www.drupal.org/user/9446"
+                }
+            ],
+            "description": "Simple migrate drush commands: run, generate.",
+            "homepage": "https://www.drupal.org/project/migrate_drush",
+            "support": {
+                "source": "http://cgit.drupalcode.org/migrate_drush"
+            }
+        },
+        {
+            "name": "drupal/migrate_spreadsheet",
+            "version": "1.0.0-alpha3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/migrate_spreadsheet",
+                "reference": "8.x-1.0-alpha3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/migrate_spreadsheet-8.x-1.0-alpha3.zip",
+                "reference": null,
+                "shasum": "36bd2ef811dc800d6cb812e382d14af6ce732fa6"
+            },
+            "require": {
+                "drupal/core": "*",
+                "phpoffice/phpspreadsheet": "~0.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha3",
+                    "datestamp": "1476437339"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpOffice\\PhpSpreadsheet\\": "vendor/phpoffice/phpspreadsheet/src/PhpSpreadsheet"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                }
+            ],
+            "description": "Provides a migrate source plugin for importing data from spreadsheet files",
+            "homepage": "https://www.drupal.org/project/migrate_spreadsheet",
+            "keywords": [
+                "Drupal",
+                "Excel",
+                "Spreadsheet"
+            ],
+            "support": {
+                "source": "https://www.drupal.org/project/migrate_spreadsheet",
+                "issues": "https://www.drupal.org/project/issues/migrate_spreadsheet"
+            }
+        },
+        {
             "name": "drupal/og",
             "version": "dev-242-simplified",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "6d0b4e34ddcc64ac8ac6341ae14c65778ae3ccd6"
+                "reference": "107749519ff8b61469aeb21bf7811b8aada433af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/6d0b4e34ddcc64ac8ac6341ae14c65778ae3ccd6",
-                "reference": "6d0b4e34ddcc64ac8ac6341ae14c65778ae3ccd6",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/107749519ff8b61469aeb21bf7811b8aada433af",
+                "reference": "107749519ff8b61469aeb21bf7811b8aada433af",
                 "shasum": ""
             },
             "require-dev": {
@@ -2185,7 +2283,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-10-13 09:04:43"
+            "time": "2016-10-14 07:23:54"
         },
         {
             "name": "drupal/og_menu",
@@ -4110,6 +4208,17 @@
                 }
             ],
             "time": "2016-06-10 07:14:17"
+        },
+        {
+            "name": "phpoffice/phpspreadsheet",
+            "version": "0.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/PHPOffice/PhpSpreadsheet/archive/develop.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library"
         },
         {
             "name": "phpseclib/phpseclib",
