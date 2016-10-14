@@ -77,7 +77,9 @@ class CollectionMenuBlock extends OgMenuBlock {
         ],
       ];
     }
-    if ($menu_instance) {
+
+    // Improve the template suggestion.
+    if ($tree && $menu_instance) {
       $menu_name = $menu_instance->getType();
       $build['#theme'] = 'menu__og__' . strtr($menu_name, '-', '_');
     }
