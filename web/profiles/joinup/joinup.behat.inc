@@ -357,20 +357,40 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Navigates to the canonical page display of a node entity.
+   * Navigates to the edit page display of a node entity.
    *
    * @param string $bundle
-   *   The type of the node page.
+   *   The type of the node entity.
    * @param string $title
    *   The title of the node.
    *
    * @When (I )go to the :bundle (content ) :title edit screen
    * @When (I )visit the :bundle (content ) :title edit screen
    */
-  public function visitCollection($bundle, $title) {
+  public function visitNodeEditForm($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     $this->visitPath($node->url('edit-form'));
+  }
+
+  /**
+   * Navigates to the canonical page display of a node page.
+   *
+   * This step is only to be used in scenario outlines.
+   * If possible, use a specific page selector.
+   *
+   * @param string $type
+   *   The type of the node entity.
+   * @param string $title
+   *   The name of the news page.
+   *
+   * @When (I )go to the content page of the type :type with the title :title
+   * @When (I )visit the content page of the type :type with the title :title
+   */
+  public function visitNodePage($type, $title) {
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = $this->getNodeByTitle($title, $type);
+    $this->visitPath($node->url());
   }
 
   /**
@@ -654,7 +674,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function anEmailShouldBeSentTo($recipient) {
     // @todo: Maybe this is not needed.
-    \Drupal::state()->resetCache();
     $user = user_load_by_name($recipient);
     if (empty($user)) {
       throw new \Exception("User {$recipient} was not found.");
@@ -672,7 +691,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if ($last_mail['to'] != $user->getEmail()) {
       throw new \Exception("Unexpected recpient: " . $last_mail['to']);
     }
-    $this->lastMail = $last_mail;
+
+    // Reset the email storage.
+    \Drupal::state()->set('system.test_mail_collector', array());
+    \Drupal::state()->resetCache();
   }
 
   /**

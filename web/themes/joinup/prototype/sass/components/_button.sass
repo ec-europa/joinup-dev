@@ -1,7 +1,7 @@
 // Button
 //
 // Markup: html/button.html
-// 
+//
 // .button                  - #32afff
 // .button--blue            - #2875cf
 // .button--transparent     - Transparent
@@ -26,6 +26,30 @@
 
 // Elements
 // --------------------------------------------------
+.button__no-bg-wrapper
+  display: inline-block
+  cursor: pointer
+  vertical-align: middle
+  height: 22px
+  position: relative
+  .icon
+    position: absolute
+    top: 50%
+    left: 0
+    transform: translateY(-50%)
+    z-index: 1
+
+.button__no-bg
+  font-weight: $font-weight-bold
+  letter-spacing: 2px
+  background-color: transparent !important
+  border: none
+  text-transform: uppercase
+  cursor: pointer
+  vertical-align: middle
+  display: inline-block
+  z-index: 10
+  position: relative
 
 // Modifiers
 // --------------------------------------------------
@@ -41,6 +65,30 @@
 
 .button--full-width
   width: 100%
+
+.button__no-bg-wrapper--circle
+  .icon
+    color: $color-blue-medium
+    +icon-size(18px)
+    border: 2px solid $color-blue-medium
+    border-radius: 18px
+  .button__no-bg
+    color: $color-blue-medium
+    padding: 0 0 0 30px
+  &:hover
+    .icon
+      color: $color-blue-lighter
+      border-color: $color-blue-lighter
+    .button__no-bg
+      color: $color-blue-lighter
+
+.button__no-bg-wrapper--grey
+  .icon
+    color: $color-grey-input
+    +icon-size(22px)
+  .button__no-bg
+    padding: 0 0 0 20px
+    color: $color-grey-input
 
 // Dependiencies
 // --------------------------------------------------

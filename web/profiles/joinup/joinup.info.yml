@@ -22,11 +22,13 @@ dependencies:
   - help
   - image
   - inline_entity_form
+  - joinup_core
   - joinup_discussion
   - joinup_document
   - joinup_event
   - joinup_licence
   - joinup_news
+  - joinup_notification
   - joinup_search
   - joinup_subscription
   - joinup_user
