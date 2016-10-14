@@ -141,6 +141,9 @@ function solution_add_form_parent_submit(array &$form, FormStateInterface $form_
  * node.
  */
 function solution_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if (\Drupal::currentUser()->hasPermission('bypass node access')) {
+    return AccessResult::neutral();
+  }
   if ($entity->bundle() != 'solution') {
     return AccessResult::neutral();
   }
@@ -162,12 +165,13 @@ function solution_entity_extra_field_info() {
   $fields = [];
 
   $solution = RdfEntityType::load('solution');
-  $fields['rdf_entity'][$solution->id()]['display']['releases_overview'] = [
-    'label' => t('Releases overview'),
-    'description' => t('A link to the releases overview page'),
-    'visible' => FALSE,
-  ];
-
+  if ($solution) {
+    $fields['rdf_entity'][$solution->id()]['display']['releases_overview'] = [
+      'label' => t('Releases overview'),
+      'description' => t('A link to the releases overview page'),
+      'visible' => FALSE,
+    ];
+  }
   return $fields;
 }
 
@@ -232,22 +236,11 @@ function solution_rdf_entity_update(EntityInterface $entity) {
 
   $state = $entity->field_is_state->value;
   if (in_array($state, ['validated', 'deletion_request'])) {
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
-    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
-    $storage->setRequestGraphs($entity->id(), ['draft']);
-    $draft_entity = $storage->loadUnchanged($entity->id());
-    if (!empty($draft_entity)) {
-      $draft_entity->delete();
-    }
+    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
   }
   if ($state == 'blacklisted') {
     /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
-    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
-    $storage->setRequestGraphs($entity->id(), ['default']);
-    $published_entity = $storage->loadUnchanged($entity->id());
-    if (!empty($published_entity)) {
-      $published_entity->delete();
-    }
+    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'default');
   }
 }
 

@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.workflow_transition.field_message_content
+    - message.template.workflow_transition
+id: message.workflow_transition.default
+targetEntityType: message
+bundle: workflow_transition
+mode: default
+content:
+  field_message_content:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  partial_0:
+    weight: 0
+  partial_1:
+    weight: 0
+hidden: {  }

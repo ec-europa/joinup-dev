@@ -115,7 +115,7 @@ class RdfMappingHandler {
    *
    * @param string $entity_type_id
    *    The entity type of the bundles e.g. 'node_type'.
-   * @param array $bundles
+   * @param array|null $bundles
    *    Optionally filter and return only a subset of bundles.
    *
    * @todo: This should return a simple array. A query helper method can convert
