@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ca5c3a3e1d383d208acf85733cb7f3c2",
-    "content-hash": "fc0f7d1b1ecb3ebfba71d1529cc21202",
+    "hash": "6227bd6efe2eccea06d771c663d1ab40",
+    "content-hash": "00e78de15c5c92243dbcec5241c52156",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1866,8 +1866,7 @@
                 "drupal/core": "~8.0"
             },
             "suggest": {
-                "drupal/core": "Required by drupal/core_search_facets",
-                "drupal/search": "Required by drupal/core_search_facets",
+                "drupal/core": "Required by drupal/facets",
                 "drupal/search_api": "Required by drupal/facets"
             },
             "type": "drupal-module",
