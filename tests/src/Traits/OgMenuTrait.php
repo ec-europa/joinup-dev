@@ -101,7 +101,7 @@ trait OgMenuTrait {
    *
    * @see \Drupal\menu_link_content\Entity\MenuLinkContent::create()
    */
-  public function createOgMenuItem($item_data) {
+  public function createOgMenuItem(array $item_data) {
     $menu_link = MenuLinkContent::create($item_data);
     $menu_link->save();
   }

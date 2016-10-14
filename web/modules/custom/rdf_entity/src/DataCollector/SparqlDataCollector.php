@@ -244,7 +244,7 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
    * @return int
    *   Sort for usort.
    */
-  private function orderQueryByTime($a, $b) {
+  private function orderQueryByTime(array $a, array $b) {
     $at = $a['time'];
     $bt = $b['time'];
 
