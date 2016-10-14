@@ -59,7 +59,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     }
 
     if ($last_mail['to'] != $user->getEmail()) {
-      throw new \Exception("Unexpected recpient: " . $last_mail['to']);
+      throw new \Exception("Unexpected recipient: " . $last_mail['to']);
     }
 
     $message_template = MessageTemplate::load($last_mail['key']);
