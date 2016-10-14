@@ -7,6 +7,7 @@
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\message\Entity\MessageTemplate;
 
 /**
  * Behat step definitions for testing notifications.
@@ -32,15 +33,17 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    *
    * @param string $recipient
    *    The username of the recipient of the email.
+   * @param string $description
+   *    The description of the message entity.
    *
-   * @Then an email should be sent to :recipient
+   * @Then an email should be sent to :recipient described as :description
    *
    * @throws \Exception
    *    Throws an exception when a user is not found or his email is empty.
    *    Throws an exception also when the mail is not sent or the recipient is
    *    not the expected one.
    */
-  public function anEmailShouldBeSentTo($recipient) {
+  public function anEmailShouldBeSentTo($recipient, $description) {
     $user = user_load_by_name($recipient);
     if (empty($user)) {
       throw new \Exception("User {$recipient} was not found.");
@@ -58,6 +61,11 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     if ($last_mail['to'] != $user->getEmail()) {
       throw new \Exception("Unexpected recpient: " . $last_mail['to']);
     }
+
+    $message_template = MessageTemplate::load($last_mail['key']);
+    if ($description !== $message_template->getDescription()) {
+      throw new \Exception("Unexpected template description.\nFound value: {$message_template->getDescription()}\nExpected value: {$description}");
+    };
 
     // Reset the email storage.
     \Drupal::state()->set('system.test_mail_collector', array());
