@@ -674,7 +674,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function anEmailShouldBeSentTo($recipient) {
     // @todo: Maybe this is not needed.
-    \Drupal::state()->resetCache();
     $user = user_load_by_name($recipient);
     if (empty($user)) {
       throw new \Exception("User {$recipient} was not found.");
@@ -692,7 +691,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if ($last_mail['to'] != $user->getEmail()) {
       throw new \Exception("Unexpected recpient: " . $last_mail['to']);
     }
-    $this->lastMail = $last_mail;
+
+    // Reset the email storage.
+    \Drupal::state()->set('system.test_mail_collector', array());
+    \Drupal::state()->resetCache();
   }
 
   /**
