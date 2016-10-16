@@ -15,7 +15,7 @@ use Drupal\migrate\Row;
  *   id = "mapping_table_nid"
  * )
  */
-class MappingTableNid extends ProcessPluginBase  {
+class MappingTableNid extends ProcessPluginBase {
 
   /**
    * {@inheritdoc}
