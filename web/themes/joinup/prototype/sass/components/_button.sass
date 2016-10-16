@@ -1,13 +1,27 @@
+// Button
+//
+// Markup: html/button.html
+//
+// .button                  - #32afff
+// .button--blue            - #2875cf
+// .button--transparent     - Transparent
+// .button--full-width      - Full-width
+//
+// Styleguide 2.2
+
 // Component
 // --------------------------------------------------
-.button--default
+.button
   font-weight: $font-weight-medium
   line-height: initial
   height: auto
   padding: 15px 30px
   letter-spacing: 2px
+  color: #fff
   border-width: 3px
   border-style: solid
+  border-color: $color-blue-lighter
+  background-color: $color-blue-lighter !important
   +border-radius(4px)
 
 // Elements
@@ -28,7 +42,7 @@
 .button__no-bg
   font-weight: $font-weight-bold
   letter-spacing: 2px
-  background: none
+  background-color: transparent !important
   border: none
   text-transform: uppercase
   cursor: pointer
@@ -44,22 +58,13 @@
   border-color: $color-blue-medium
   background-color: $color-blue-medium !important
 
-.button--blue-light
-  color: #fff
-  border-color: $color-blue-lighter
-  background-color: $color-blue-lighter !important
-  min-width: 200px
-
-.button--full-width
-  width: 100%
-
-.button--margin
-  margin-top: 15px
-
 .button--transparent
   color: $color-grey-medium !important
   border-color: $color-grey-medium
   background-color: transparent !important
+
+.button--full-width
+  width: 100%
 
 .button__no-bg-wrapper--circle
   .icon
@@ -84,7 +89,6 @@
   .button__no-bg
     padding: 0 0 0 20px
     color: $color-grey-input
-
 
 // Dependiencies
 // --------------------------------------------------

@@ -1,3 +1,9 @@
+// Timeline
+//
+// Markup: html/timeline.html
+//
+// Styleguide 2.12
+
 // Component
 // --------------------------------------------------
 .timeline
@@ -9,12 +15,12 @@
 .timeline__release
   padding: 0
   +breakpoint(sm-mobile, mobile)
-    margin-bottom: 30px
+    padding-bottom: 30px
     &:last-of-type
-      margin-bottom: 0
+      padding-bottom: 0
   +breakpoint(tablet)
     &:last-of-type
-      margin-bottom: 100px
+      padding-bottom: 160px
 .timeline__release-progression
   position: relative
   margin: 0
@@ -140,4 +146,5 @@
       background-color: $color-blue-slider
       &:before
         top: -1px
+        border-color: $color-grey-bg
         background-color: $color-blue-slider
