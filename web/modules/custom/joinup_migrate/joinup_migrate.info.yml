@@ -4,4 +4,4 @@ description: Handles migration from the previous version of the Joinup platform
 core: '8.x'
 package: Custom
 dependencies:
-  - migrate
+  - migrate_spreadsheet

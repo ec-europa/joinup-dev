@@ -2,9 +2,11 @@ id: mapping_table
 label: 'Migration mapping table'
 source:
   plugin: spreadsheet
+  track_changes: true
   file: '../resources/migrate/D05.04 Joinup Migration Plan_Content Item Mapping Small_v0.1.xlsx'
   worksheet: 'Collection'
-  header_row: 1
+  origin: A3
+  header_row: 2
   columns:
     - 'Type of content item'
     - Collection_Name
@@ -18,13 +20,17 @@ source:
     - 'Administration User'
     - 'Elibrary Creation'
     - 'Pre Moderation'
+  row_index_column: row_index
   keys:
-    - Nid
+    row_index:
+      type: integer
+    Nid:
+      type: integer
 process:
+  row_index: row_index
   nid:
-    plugin: callback
+    plugin: mapping_table_nid
     source: Nid
-    callable: intval
   type:
     plugin: static_map
     source: 'Type of content item'

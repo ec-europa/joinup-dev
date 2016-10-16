@@ -4,6 +4,7 @@ namespace Drupal\joinup_migrate\Plugin\migrate\destination;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\migrate\destination\DestinationBase;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
@@ -62,9 +63,8 @@ class MappingTable extends DestinationBase implements ContainerFactoryPluginInte
    */
   public function getIds() {
     return [
-      'id' => [
-        'type' => 'integer',
-      ],
+      'row_index' => ['type' => 'integer'],
+      'nid' => ['type' => 'integer'],
     ];
   }
 
@@ -73,13 +73,20 @@ class MappingTable extends DestinationBase implements ContainerFactoryPluginInte
    */
   public function fields(MigrationInterface $migration = NULL) {
     return [
-      'id' => $this->t('ID'),
-      'type' => $this->t('Source node-type'),
+      'row_index' => $this->t('Excel row index'),
       'nid' => $this->t('Source node ID'),
+      'type' => $this->t('Source node-type'),
       'collection' => $this->t('Collection'),
       'policy' => $this->t('Policy domain'),
       'new_collection' => $this->t('Is new collection?'),
       'del' => $this->t('Delete?'),
+      'abstract' => $this->t('Abstract'),
+      'logo' => $this->t('Logo'),
+      'banner' => $this->t('Banner'),
+      'owner' => $this->t('Owner'),
+      'admin_user' => $this->t('Administration User'),
+      'elibrary' => $this->t('Elibrary Creation'),
+      'pre_moderation' => $this->t('Pre Moderation'),
     ];
   }
 
@@ -87,16 +94,33 @@ class MappingTable extends DestinationBase implements ContainerFactoryPluginInte
    * {@inheritdoc}
    */
   public function import(Row $row, array $old_destination_id_values = []) {
-    $fields = $this->fields();
-    unset($fields['id']);
-    $fields = array_keys($fields);
+    if (!$row->changed()) {
+      return $old_destination_id_values;
+    }
 
-    $id = $this->database->insert('joinup_migrate_mapping')
-      ->fields($fields)
-      ->values($row->getDestination())
-      ->execute();
-
-    return [$id];
+    $values = $row->getDestination();
+    $row_index = $values['row_index'];
+    $nid = $values['nid'];
+    try {
+      if (empty($old_destination_id_values)) {
+        $this->database->insert('joinup_migrate_mapping')
+          ->fields(array_keys($this->fields()))
+          ->values($values)
+          ->execute();
+      }
+      else {
+        unset($values['row_index'], $values['nid']);
+        $this->database->update('joinup_migrate_mapping')
+          ->fields($values)
+          ->condition('row_index', $row_index)
+          ->condition('nid', $nid)
+          ->execute();
+      }
+      return [$row_index, $nid];
+    }
+    catch (MigrateException $exception) {
+      throw new MigrateException($exception->getMessage());
+    }
   }
 
   /**
@@ -105,7 +129,8 @@ class MappingTable extends DestinationBase implements ContainerFactoryPluginInte
   public function rollback(array $destination_identifier) {
     parent::rollback($destination_identifier);
     $this->database->delete('joinup_migrate_mapping')
-      ->condition('id', $destination_identifier['id'])
+      ->condition('row_index', $destination_identifier['row_index'])
+      ->condition('nid', $destination_identifier['nid'])
       ->execute();
   }
 

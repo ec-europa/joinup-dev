@@ -13,9 +13,9 @@ function joinup_migrate_schema() {
     'joinup_migrate_mapping' => [
       'description' => 'Keeps migration mapping data',
       'fields' => [
-        'id' => [
-          'description' => 'The primary identifier for a mapping entry',
-          'type' => 'serial',
+        'row_index' => [
+          'description' => 'The Excel row position',
+          'type' => 'int',
           'unsigned' => TRUE,
           'not null' => TRUE,
         ],
@@ -31,7 +31,6 @@ function joinup_migrate_schema() {
           'type' => 'int',
           'unsigned' => TRUE,
           'not null' => TRUE,
-          'size' => 'big',
         ],
         'collection' => [
           'description' => 'Collection',
@@ -100,10 +99,7 @@ function joinup_migrate_schema() {
           'not null' => FALSE,
         ],
       ],
-      'primary key' => ['id'],
-      'unique keys' => [
-        'nid' => ['nid'],
-      ],
+      'primary key' => ['row_index', 'nid'],
       'indexes' => [
         'new_collection' => ['new_collection'],
       ],
