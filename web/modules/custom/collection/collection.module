@@ -21,28 +21,6 @@ use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\views\Views;
 
 /**
- * Implements hook_entity_access().
- */
-function collection_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($entity->getEntityTypeId() != 'rdf_entity' || $entity->bundle() != 'collection' || $account->isAnonymous() || $operation != 'view') {
-    return AccessResult::neutral();
-  }
-
-  $membership = Og::getMembership($entity, $account);
-  if (empty($membership)) {
-    return AccessResult::neutral();
-  }
-  if (!$entity->isPublished() && $membership->hasPermission('view unpublished rdf entity')) {
-    return AccessResult::allowed();
-  }
-  if ($entity->isPublished() && $membership->hasPermission('view rdf entity')) {
-    return AccessResult::allowed();
-  }
-
-  return AccessResult::neutral();
-}
-
-/**
  * Implements hook_form_FORM_ID_alter().
  */
 function collection_form_block_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -111,7 +89,7 @@ function collection_entity_insert(EntityInterface $entity) {
  * node.
  */
 function collection_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($entity->bundle() != 'collection' || $operation != 'view') {
+  if ($entity->bundle() != 'collection' || $account->isAnonymous() || \Drupal::currentUser()->hasPermission('administer rdf entity')) {
     return AccessResult::neutral();
   }
 
@@ -130,9 +108,6 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
       break;
 
     case 'edit':
-      if (\Drupal::currentUser()->hasPermission('administer rdf entity')) {
-        return AccessResult::neutral();
-      }
       $allowed_transitions = $entity->field_ar_state->first()->getTransitions();
       return AccessResult::forbiddenIf(empty($allowed_transitions));
 
