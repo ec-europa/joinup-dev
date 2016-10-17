@@ -3,9 +3,9 @@
 namespace Drupal\joinup_notification;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityManager;
 use Drupal\message\Entity\Message;
 use Drupal\message_notify\MessageNotifier;
-use Drupal\Core\Entity\EntityManager;
 use Drupal\og\Entity\OgMembership;
 use Drupal\user\Entity\Role;
 
@@ -61,7 +61,8 @@ class NotificationSenderService {
     $role = Role::load($role_id);
     if (!empty($role)) {
       $user_ids = \Drupal::service('entity.manager')->getStorage('user')->getQuery()
-        ->condition('user_role', $role_id)
+        ->condition('status', 1)
+        ->condition('roles', $role_id)
         ->execute();
       $recipients = $user_ids;
     }
@@ -109,6 +110,7 @@ class NotificationSenderService {
     $events = [];
     $keys = [
       'solution.validate.post_transition',
+      'solution.request_deletion.post_transition',
     ];
 
     foreach ($keys as $key) {
