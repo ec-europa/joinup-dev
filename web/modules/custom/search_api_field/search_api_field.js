@@ -196,11 +196,10 @@
      * Reacts to a row being changed regions.
      *
      * This function is called when the row is moved to a different region, as
-     * a
-     * result of either :
-     * - a drag-and-drop action (the row's form elements then probably need to
-     * be updated accordingly)
-     * - user input in one of the form elements watched by the
+     * a result of either :
+     * - A drag-and-drop action (the row's form elements then probably need to
+     *   be updated accordingly).
+     * - User input in one of the form elements watched by the
      *   {@link Drupal.fieldUIOverview.onChange} change listener.
      *
      * @param {string} region

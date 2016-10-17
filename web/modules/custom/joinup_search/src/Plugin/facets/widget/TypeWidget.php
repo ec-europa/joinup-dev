@@ -52,7 +52,7 @@ class TypeWidget extends WidgetPluginBase {
     $this->facet = $facet;
     $config = $this->getConfiguration();
 
-    /** @var ResultInterface[] $results */
+    /** @var \Drupal\facets\Result\ResultInterface[] $results */
     $results = array_values($facet->getResults());
     $big_icons = [];
     foreach (array_splice($results, 0, $config['tabs']) as $result) {
