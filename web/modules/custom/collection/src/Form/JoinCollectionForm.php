@@ -64,7 +64,6 @@ class JoinCollectionForm extends FormBase {
             'use-ajax',
             'button',
             'button--small',
-            'button--default',
             'button--blue-light',
             'mdl-button',
             'mdl-js-button',
@@ -84,7 +83,7 @@ class JoinCollectionForm extends FormBase {
       $form['join'] = [
         '#attributes' => [
           'class' => [
-            'button--default',
+            'button',
             'button--blue-light',
             'mdl-button',
             'mdl-js-button',
