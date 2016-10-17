@@ -276,10 +276,12 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
   ];
 
   // The last key of #array_parents is the build array key used in the code.
-  $element_key = end($variables['element']['#array_parents']);
-  foreach ($input_suggestions as $suggestion => $names) {
-    if (in_array($element_key, $names)) {
-      $suggestions[] = $suggestion;
+  if (isset($variables['element']['#array_parents'])) {
+    $element_key = end($variables['element']['#array_parents']);
+    foreach ($input_suggestions as $suggestion => $names) {
+      if (in_array($element_key, $names)) {
+        $suggestions[] = $suggestion;
+      }
     }
   }
 }
