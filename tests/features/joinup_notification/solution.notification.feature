@@ -20,12 +20,17 @@ Feature: Solution notification system
       | Some Scent            | Some Scent            | logo.png | banner.jpg | The Red Search | Jody Buchanan       | deletion_request |
     And the following solution user memberships:
       | solution              | user             | roles |
-      | The Time of the Child | Benjamin Stevens | owner |
-      | Some Scent            | Benjamin Stevens | owner |
+      | The Time of the Child | Benjamin Stevens | owner, facilitator |
+      | Some Scent            | Benjamin Stevens | owner, facilitator |
 
     # Test validation email.
     When the user "Cecelia Kim" changes the state of the "The Time of the Child" solution to "Validated"
     Then an email following the template "Message to the owner when a solution transits to 'Validated' state" should have been sent to "Benjamin Stevens"
+
+    # Test deletion request email.
+    When the user "Benjamin Stevens" changes the state of the "The Time of the Child" solution to "Request deletion"
+    Then an email following the template "Message to the moderator when a request for deletion is made on a solution" should have been sent to "Cecelia Kim"
+
     # Test deletion email.
     When I am logged in as "Cecelia Kim"
     And I go to the homepage of the "Some Scent" solution
