@@ -6,7 +6,7 @@ drupal.search_api_field:
     theme:
       css/field_ui.admin.css: {}
   dependencies:
-    - core/jquery
     - core/drupal
     - core/drupalSettings
+    - core/jquery
     - core/jquery.once
