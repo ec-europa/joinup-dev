@@ -16,6 +16,8 @@
         "drupal/inline_entity_form": "dev-1.x#9747e0eff3f99612ce708403313c3a051f7a9f01",
         "drupal/message": "~1.0",
         "drupal/message_notify": "~1.0",
+        "drupal/migrate_drush": "~1.1",
+        "drupal/migrate_spreadsheet": "1.x-dev",
         "drupal/og": "dev-242-simplified",
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phingdrushtask": "dev-7.x-2.x#13428ee7a229da3b7e6be4687587048150b1fd25",
@@ -34,7 +36,8 @@
         "php": ">=5.5.9",
         "solarium/solarium": "~3.6.0",
         "symfony/dependency-injection": "2.8.2",
-        "typhonius/behattask": "1.0"
+        "typhonius/behattask": "1.0",
+        "phpoffice/phpspreadsheet": "~0.0"
     },
     "require-dev": {
         "behat/mink": "~1.7",
@@ -62,7 +65,8 @@
     "autoload": {
         "psr-4": {
             "Drupal\\joinup\\": "tests/src",
-            "DrupalProject\\": "src"
+            "DrupalProject\\": "src",
+            "PhpOffice\\PhpSpreadsheet\\": "vendor/phpoffice/phpspreadsheet/src/PhpSpreadsheet"
         },
         "classmap": [
             "scripts/composer/ScriptHandler.php"
@@ -97,7 +101,8 @@
             "drupal/core": {
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                 "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
-                "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch"
+                "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
+                "Combined #2818799 and #2818871. Conflicting when patched separately": "resources/patches/combined-2818799-and-2818871.patch"
             },
             "drupal/inline_entity_form": {
                 "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"
@@ -162,6 +167,17 @@
         {
             "type": "vcs",
             "url": "git@github.com:ec-europa/drupalextension"
+        },
+        {
+        "type": "package",
+            "package": {
+                "name": "phpoffice/phpspreadsheet",
+                "version": "0.0",
+                "dist": {
+                    "url": "https://github.com/PHPOffice/PhpSpreadsheet/archive/develop.zip",
+                    "type": "zip"
+                }
+            }
         },
         {
             "type": "package",
