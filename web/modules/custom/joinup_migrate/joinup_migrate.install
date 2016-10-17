@@ -13,12 +13,6 @@ function joinup_migrate_schema() {
     'joinup_migrate_mapping' => [
       'description' => 'Keeps migration mapping data',
       'fields' => [
-        'row_index' => [
-          'description' => 'The Excel row position',
-          'type' => 'int',
-          'unsigned' => TRUE,
-          'not null' => TRUE,
-        ],
         'type' => [
           'description' => 'Source node-type',
           'type' => 'varchar',
@@ -98,10 +92,23 @@ function joinup_migrate_schema() {
           'length' => 255,
           'not null' => FALSE,
         ],
+        'status' => [
+          'description' => 'Status',
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => FALSE,
+        ],
+        'row_index' => [
+          'description' => 'The Excel row position on last import',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ],
       ],
-      'primary key' => ['row_index', 'nid'],
+      'primary key' => ['nid'],
       'indexes' => [
         'new_collection' => ['new_collection'],
+        'collection' => ['collection'],
       ],
     ],
   ];

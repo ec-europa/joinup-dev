@@ -1,0 +1,16 @@
+id: collection
+label: 'Collection migration'
+source:
+  plugin: collection
+  track_changes: true
+process:
+  label: collection
+  rid:
+    plugin: default_value
+    default_value: collection
+destination:
+  plugin: entity:rdf_entity
+  bundle: collection
+#migration_dependencies:
+#  required:
+#    - mapping_table

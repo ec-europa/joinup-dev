@@ -102,7 +102,9 @@
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                 "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
                 "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
-                "Combined #2818799 and #2818871. Conflicting when patched separately": "resources/patches/combined-2818799-and-2818871.patch"
+                "MigrateSkipRowException $save_to_map being TRUE, does not skip silently as should @see https://www.drupal.org/node/2818799": "https://www.drupal.org/files/issues/2818799-4.patch",
+                "Allow logging skip row exception messages @see https://www.drupal.org/node/2818871": "https://www.drupal.org/files/issues/2818871-13.patch",
+                "Entity destination ID schema should match entity ID definition @see https://www.drupal.org/node/2783715": "https://www.drupal.org/files/issues/2783715-16.patch"
             },
             "drupal/inline_entity_form": {
                 "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"

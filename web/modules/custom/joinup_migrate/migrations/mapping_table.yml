@@ -20,14 +20,12 @@ source:
     - 'Administration User'
     - 'Elibrary Creation'
     - 'Pre Moderation'
+    - 'Status of the collection'
   row_index_column: row_index
   keys:
-    row_index:
-      type: integer
     Nid:
       type: integer
 process:
-  row_index: row_index
   nid:
     plugin: mapping_table_nid
     source: Nid
@@ -94,5 +92,7 @@ process:
   admin_user: 'Administration User'
   elibrary: 'Elibrary Creation'
   pre_moderation: 'Pre Moderation'
+  status: 'Status of the collection'
+  row_index: row_index
 destination:
   plugin: mapping_table
