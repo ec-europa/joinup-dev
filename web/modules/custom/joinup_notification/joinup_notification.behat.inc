@@ -36,7 +36,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @param string $description
    *    The description of the message entity.
    *
-   * @Then an email should be sent to :recipient described as :description
+   * @Then an email following the template :description should have been sent to :recipient
    *
    * @throws \Exception
    *    Throws an exception when a user is not found or his email is empty.

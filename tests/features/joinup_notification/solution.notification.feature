@@ -25,11 +25,11 @@ Feature: Solution notification system
 
     # Test validation email.
     When the user "Cecelia Kim" changes the state of the "The Time of the Child" solution to "Validated"
-    Then an email should be sent to "Benjamin Stevens" described as "Message to the owner when a solution transits to 'Validated' state"
+    Then an email following the template "Message to the owner when a solution transits to 'Validated' state" should have been sent to "Benjamin Stevens"
     # Test deletion email.
     When I am logged in as "Cecelia Kim"
     And I go to the homepage of the "Some Scent" solution
     And I click Edit
     And I click "Delete"
     And I press "Delete"
-    Then an email should be sent to "Benjamin Stevens" described as "Message to the owner when a solution is deleted"
+    Then an email following the template "Message to the owner when a solution is deleted" should have been sent to "Benjamin Stevens"
