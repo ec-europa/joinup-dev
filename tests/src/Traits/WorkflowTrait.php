@@ -24,7 +24,7 @@ trait WorkflowTrait {
    *    Thrown when the expected states array does not exactly match the
    *    array of available options.
    */
-  private function assertAvailableStates(EntityInterface $entity, array $available_states, $user = NULL) {
+  protected function assertAvailableStates(EntityInterface $entity, array $available_states, $user = NULL) {
     $allowed_states = $this->getAvailableStates($entity, $user);
     $allowed_states = array_values($allowed_states);
     sort($allowed_states);
@@ -51,7 +51,7 @@ trait WorkflowTrait {
    *    Thrown when the expected transitions array does not exactly match the
    *    array of available options.
    */
-  private function assertAvailableTransitions(EntityInterface $entity, array $available_transitions, $user = NULL) {
+  protected function assertAvailableTransitions(EntityInterface $entity, array $available_transitions, $user = NULL) {
     $allowed_transitions = $this->getAvailableTransitions($entity, $user);
     $allowed_transitions = array_values($allowed_transitions);
     sort($allowed_transitions);
@@ -143,7 +143,7 @@ trait WorkflowTrait {
    *    Returns the state field definition of the entity or NULL if none is
    *    found.
    */
-  private function getEntityStateFieldDefinition(EntityInterface $entity) {
+  protected function getEntityStateFieldDefinition(EntityInterface $entity) {
     /** @var FieldDefinitionInterface[] $field_definitions */
     $field_definitions = $entity->getFieldDefinitions();
     foreach ($field_definitions as $field_definition) {

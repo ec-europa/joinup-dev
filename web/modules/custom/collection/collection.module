@@ -111,18 +111,34 @@ function collection_entity_insert(EntityInterface $entity) {
  * node.
  */
 function collection_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if (\Drupal::currentUser()->hasPermission('bypass node access')) {
-    return AccessResult::neutral();
-  }
-  if ($entity->bundle() != 'collection') {
+  if ($entity->bundle() != 'collection' || $operation != 'view') {
     return AccessResult::neutral();
   }
 
-  if ($operation == 'edit') {
-    $allowed_transitions = $entity->field_ar_state->first()->getTransitions();
-    if (empty($allowed_transitions)) {
-      return AccessResult::forbidden();
-    }
+  switch ($operation) {
+    case 'view':
+      $membership = Og::getMembership($entity, $account);
+      if (empty($membership)) {
+        return AccessResult::neutral();
+      }
+      if (!$entity->isPublished() && $membership->hasPermission('view unpublished rdf entity')) {
+        return AccessResult::allowed();
+      }
+      if ($entity->isPublished() && $membership->hasPermission('view rdf entity')) {
+        return AccessResult::allowed();
+      }
+      break;
+
+    case 'edit':
+      if (\Drupal::currentUser()->hasPermission('administer rdf entity')) {
+        return AccessResult::neutral();
+      }
+      $allowed_transitions = $entity->field_ar_state->first()->getTransitions();
+      return AccessResult::forbiddenIf(empty($allowed_transitions));
+
+    default:
+      break;
+
   }
 
   return AccessResult::neutral();
@@ -141,7 +157,7 @@ function collection_rdf_entity_presave(EntityInterface $entity) {
 
   $state = $entity->field_ar_state->value;
   if (in_array($state, ['draft', 'proposed'])) {
-    \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
+    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
   }
   elseif (in_array($state, [
     'validated',
@@ -149,7 +165,7 @@ function collection_rdf_entity_presave(EntityInterface $entity) {
     'deletion_request',
     'archived',
   ])) {
-    \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
+    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
   }
   elseif (empty($state)) {
     throw new \Exception("State field not found while trying to get the appropriate graph.");
@@ -170,9 +186,8 @@ function collection_entity_update(EntityInterface $entity) {
     return;
   }
 
-  $state = $entity->field_ar_state->value;
-  if (in_array($state, ['validated'])) {
-    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
+  if ($entity->field_ar_state->value === 'validated') {
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
   }
 }
 

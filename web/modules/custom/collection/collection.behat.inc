@@ -402,7 +402,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       // Convert role names to role IDs.
       $roles = [];
       if (!empty($values['roles'])) {
-        $role_names = explode(', ', $values['roles']);
+        $role_names = explode(',', $values['roles']);
+        $role_names = array_map('trim', $role_names);
         // Every owner is also a facilitator. In Joinup the facilitator role is
         // assigned to the owner when they create the collection. Since in this
         // step the collections are already created, mimick this behaviour by
@@ -549,6 +550,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *    Thrown when the user does not exist.
    *
+   * @todo: Maybe there is a better definition available here like 'The
+   * following state buttons should be available for the user on the
+   * collection'.
+   *
    * @Given for the following collection, the corresponding user should have the corresponding (available )state buttons:
    */
   public function verifyWorkflowTransitions(TableNode $check_table) {
@@ -563,7 +568,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
 
       // Convert states to an array.
-      $states = empty($values['states']) ? [] : explode(', ', $values['states']);
+      $states = empty($values['states']) ? [] : explode(',', $values['states']);
+      $states = array_map('trim', $states);
 
       $this->assertAvailableTransitions($collection, $states, $user);
     }
