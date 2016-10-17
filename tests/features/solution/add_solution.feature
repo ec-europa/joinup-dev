@@ -8,6 +8,7 @@ Feature: "Add solution" visibility options.
     Given the following collection:
       | title | Collection solution test |
       | logo  | logo.png                 |
+      | state | validated                |
 
     When I am logged in as a "facilitator" of the "Collection solution test" collection
     And I go to the homepage of the "Collection solution test" collection
@@ -25,6 +26,7 @@ Feature: "Add solution" visibility options.
     Given the following collection:
       | title | Collection propose solution test |
       | logo  | logo.png                         |
+      | state | validated                        |
 
     When I am an anonymous user
     And I go to the homepage
@@ -64,7 +66,8 @@ Feature: "Add solution" visibility options.
   Scenario: Add solution as a collection facilitator.
     Given the following collection:
       | title | Belgian barista's |
-      | logo  | logo.png                   |
+      | logo  | logo.png          |
+      | state | validated         |
     And the following contact:
       | email | foo@bar.com                 |
       | name  | Contact information example |
@@ -119,7 +122,7 @@ Feature: "Add solution" visibility options.
     When I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
     When I fill in the following:
-      | Title            | V60 filter coffee solution                                                      |
+      | Title            | V60 filter coffee solution                                             |
       | Description      | This is a test text                                                    |
       | Documentation    | text.pdf                                                               |
       | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)        |

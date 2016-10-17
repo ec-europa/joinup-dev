@@ -15,6 +15,7 @@ Feature: Solution editing.
       | Yancy Burton | yancy.burton@example.com |
     And collection:
       | title | Collection example |
+      | state | validated          |
     # Assign facilitator role in order to allow creation of a solution.
     # In UAT this can be done by creating the collection through the UI
     # with the related user.
