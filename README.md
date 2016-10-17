@@ -113,7 +113,7 @@ composer.bin = /usr/bin/composer
 isql.bin = /usr/bin/virtuoso-isql
 # The location of the Virtuoso console (Arch Linux).
 isql.bin = /usr/bin/virtuoso-isql
-# The location of the Virtuoso console (Redhat / Fedora).
+# The location of the Virtuoso console (Redhat / Fedora / OSX with Homebrew).
 isql.bin = /usr/local/bin/isql
 
 # SQL database settings.
@@ -122,6 +122,7 @@ drupal.db.user = root
 drupal.db.password = hunter2
 
 # SPARQL database settings.
+sparql.dsn = localhost
 sparql.user = my_username
 sparql.password = qwerty123
 
