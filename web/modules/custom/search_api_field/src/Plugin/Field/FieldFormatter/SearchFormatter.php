@@ -107,7 +107,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     $field_definition = $this->fieldDefinition;
 
     // Avoid infinite recursion when a search node is shown as a result.
-    if ($entity->do_not_recurse) {
+    if ($entity->search_api_field_do_not_recurse) {
       return [];
     }
 
@@ -186,7 +186,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       }
 
       // Avoid recursions when an entity contains another search field.
-      $entity->do_not_recurse = TRUE;
+      $entity->search_api_field_do_not_recurse = TRUE;
 
       // Use the view mode configured in the field type settings or fallback
       // to default view mode.
