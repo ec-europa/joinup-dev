@@ -21,7 +21,7 @@ use Drupal\search_api\Query\ResultSetInterface;
 class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetSourceInterface {
 
   /**
-   * The entity manager.
+   * The entity type manager.
    *
    * @var \Drupal\Core\Entity\EntityTypeManager|null
    */

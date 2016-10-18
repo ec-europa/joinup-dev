@@ -13,7 +13,7 @@ use Drupal\field\Entity\FieldStorageConfig;
  * deriver class we're actually getting all possible pages and creating plugins
  * for each of them.
  *
- * @see \Drupal\search_api_page\Plugin\facets\facet_source\SearchApiPage
+ * @see \Drupal\search_api_field\Plugin\facets\facet_source\SearchApiField
  */
 class SearchApiFieldDeriver extends FacetSourceDeriverBase {
 
