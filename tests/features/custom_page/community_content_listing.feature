@@ -2,7 +2,7 @@
 Feature:
   In order to make it easy to browse to specific content
   As a moderator
-  I need to be able to configure search options in a custom page
+  I need to be able to configure community content listing
 
   Background:
     Given the following collections:
