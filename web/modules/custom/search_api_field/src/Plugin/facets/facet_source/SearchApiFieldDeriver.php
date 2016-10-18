@@ -25,7 +25,7 @@ class SearchApiFieldDeriver extends FacetSourceDeriverBase {
 
     if (!isset($this->derivatives[$base_plugin_id])) {
 
-      $map = \Drupal::entityManager()->getFieldMapByFieldType('search');
+      $map = \Drupal::entityManager()->getFieldMapByFieldType('search_api_field');
       $ids = [];
       foreach ($map as $type => $info) {
         foreach ($info as $name => $data) {
