@@ -72,13 +72,13 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   protected function getTableHeader() {
-    return array(
+    return [
       $this->t('Field'),
       $this->t('Weight'),
       $this->t('Parent'),
       $this->t('Label'),
-      array('data' => $this->t('Format'), 'colspan' => 3),
-    );
+      ['data' => $this->t('Format'), 'colspan' => 3],
+    ];
   }
 
   /**
@@ -98,7 +98,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       ];
     }
     $regions['hidden'] = [
-      'title' => $this->t('Disabled', array(), array('context' => 'Plural')),
+      'title' => $this->t('Disabled', [], ['context' => 'Plural']),
       'message' => $this->t('No field is hidden.'),
     ];
     return $regions;
@@ -202,7 +202,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
    * @return string|null
    *   The region name this row belongs to.
    */
-  public function getRowRegion($row) {
+  public static function getRowRegion($row) {
     return $row['plugin']['type']['#value'];
   }
 
@@ -222,7 +222,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
 
       case 'update':
         // Set the field back to 'non edit' mode, and update $this->entity with
-        // the new settings fro the next rebuild.
+        // the new settings from the next rebuild.
         $field_name = $trigger['#field_name'];
         $form_state->set('plugin_settings_edit', NULL);
         $form_state->set('plugin_settings_update', $field_name);
@@ -258,19 +258,19 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $updated_rows = $updated_columns = [];
     switch ($op) {
       case 'edit':
-        $updated_rows = array($trigger['#field_name']);
-        $updated_columns = array('plugin');
+        $updated_rows = [$trigger['#field_name']];
+        $updated_columns = ['plugin'];
         break;
 
       case 'update':
       case 'cancel':
-        $updated_rows = array($trigger['#field_name']);
-        $updated_columns = array('plugin', 'settings_summary', 'settings_edit');
+        $updated_rows = [$trigger['#field_name']];
+        $updated_columns = ['plugin', 'settings_summary', 'settings_edit'];
         break;
 
       case 'refresh_table':
         $updated_rows = array_values(explode(' ', $form_state->getValue('refresh_rows')));
-        $updated_columns = array('settings_summary', 'settings_edit');
+        $updated_columns = ['settings_summary', 'settings_edit'];
         break;
     }
 
@@ -310,55 +310,55 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     }
     $display_options = NULL;
     $regions = array_keys($this->getRegions());
-    $extra_field_row = array(
-      '#attributes' => array('class' => array('draggable', 'tabledrag-leaf')),
+    $extra_field_row = [
+      '#attributes' => ['class' => ['draggable', 'tabledrag-leaf']],
       '#row_type' => 'extra_field',
-      '#region_callback' => array($this, 'getRowRegion'),
-      '#js_settings' => array('rowHandler' => 'field'),
-      'human_name' => array(
+      '#region_callback' => [$this, 'getRowRegion'],
+      '#js_settings' => ['rowHandler' => 'field'],
+      'human_name' => [
         '#markup' => $facet->getName(),
-      ),
-      'weight' => array(
+      ],
+      'weight' => [
         '#type' => 'textfield',
-        '#title' => $this->t('Weight for @title', array('@title' => $facet->getName())),
+        '#title' => $this->t('Weight for @title', ['@title' => $facet->getName()]),
         '#title_display' => 'invisible',
         '#default_value' => $display_options ? $display_options['weight'] : 0,
         '#size' => 3,
-        '#attributes' => array('class' => array('field-weight')),
-      ),
-      'parent_wrapper' => array(
-        'parent' => array(
+        '#attributes' => ['class' => ['field-weight']],
+      ],
+      'parent_wrapper' => [
+        'parent' => [
           '#type' => 'select',
-          '#title' => $this->t('Parents for @title', array('@title' => $facet->getName())),
+          '#title' => $this->t('Parents for @title', ['@title' => $facet->getName()]),
           '#title_display' => 'invisible',
           '#options' => array_combine($regions, $regions),
           '#empty_value' => '',
-          '#attributes' => array(
-            'class' => array(
+          '#attributes' => [
+            'class' => [
               'js-field-parent',
               'field-parent',
-            ),
-          ),
-        ),
-        'hidden_name' => array(
+            ],
+          ],
+        ],
+        'hidden_name' => [
           '#type' => 'hidden',
           '#default_value' => $facet->id(),
-          '#attributes' => array('class' => array('field-name')),
-        ),
-      ),
-      'plugin' => array(
-        'type' => array(
+          '#attributes' => ['class' => ['field-name']],
+        ],
+      ],
+      'plugin' => [
+        'type' => [
           '#type' => 'select',
-          '#title' => $this->t('Visibility for @title', array('@title' => $facet->getName())),
+          '#title' => $this->t('Visibility for @title', ['@title' => $facet->getName()]),
           '#title_display' => 'invisible',
           '#options' => array_combine($regions, $regions),
           '#default_value' => !empty($facet_config) ? $facet_config['region'] : 'hidden',
-          '#attributes' => array('class' => array('field-plugin-type')),
-        ),
-      ),
-      'settings_summary' => array(),
-      'settings_edit' => array(),
-    );
+          '#attributes' => ['class' => ['field-plugin-type']],
+        ],
+      ],
+      'settings_summary' => [],
+      'settings_edit' => [],
+    ];
 
     return $extra_field_row;
   }
