@@ -132,18 +132,30 @@ class AssetReleaseController extends ControllerBase {
     $ids = $this->queryFactory->get('rdf_entity', 'AND')
       ->condition('rid', 'asset_release')
       ->condition('field_isr_is_version_of', $rdf_entity->id())
-      ->sort('field_isr_creation_date', 'DESC')
+      // @todo: This is a temporary fix. We need to implement the sort in the
+      // rdf entity module in order to be able to handle paging.
+      // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
+      // ->sort('field_isr_creation_date', 'DESC')
       ->execute();
 
-    $releases = [];
+    $releases = Rdf::loadMultiple($ids);
+    usort($releases, function($release1, $release2) {
+      $ct1 = $release1->field_isr_creation_date->value;
+      $ct2 = $release2->field_isr_creation_date->value;
+      if (empty($ct1) || empty($ct2) || ($ct1 == $ct2)) {
+        return 0;
+      }
+      return ($ct1 < $ct2) ? 1 : -1;
+    });
+    $build_array = [];
     /** @var \Drupal\rdf_entity\RdfInterface $release */
-    foreach (Rdf::loadMultiple($ids) as $release) {
-      $releases[] = $view_builder->view($release, 'compact');
+    foreach ($releases as $release) {
+      $build_array[] = $view_builder->view($release, 'compact');
     }
 
     return [
       '#theme' => 'asset_release_releases_download',
-      '#releases' => $releases,
+      '#releases' => $build_array,
     ];
   }
 
