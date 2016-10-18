@@ -14,6 +14,7 @@ Feature: "Add document" visibility options.
       | logo       | logo.png                          |
       | banner     | banner.jpg                        |
       | affiliates | Seventh Name, The Obsessed Stream |
+      | state      | validated                         |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Seventh Name" solution
@@ -43,6 +44,7 @@ Feature: "Add document" visibility options.
       | logo       | logo.png                       |
       | banner     | banner.jpg                     |
       | affiliates | Winter of Beginning            |
+      | state      | validated                      |
     And I am logged in as a facilitator of the "Winter of Beginning" solution
 
     When I go to the homepage of the "Winter of Beginning" solution

@@ -20,6 +20,7 @@ Feature: Release API
       | moderation        | yes               |
       | elibrary creation | facilitators      |
       | affiliates        | My first solution |
+      | state             | validated         |
     And the following release:
       | title          | My first release  |
       | description    | A sample release  |
@@ -41,6 +42,7 @@ Feature: Release API
       | moderation        | yes                         |
       | elibrary creation | facilitators                |
       | affiliates        | My first solution mandatory |
+      | state             | validated                   |
     And the following release:
       | title          | My first mandatory release  |
       | description    | A sample release            |
