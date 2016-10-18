@@ -502,7 +502,7 @@ QUERY;
     if (!empty($entity)) {
       $this->doDelete([$entity_id => $entity]);
       $this->resetCache([$entity_id]);
-      $this->getGraphHandler()->resetRequestGraphs();
+      $this->getGraphHandler()->resetRequestGraphs([$entity_id]);
     }
   }
 
