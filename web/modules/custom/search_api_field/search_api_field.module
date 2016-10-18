@@ -50,42 +50,44 @@ function search_api_field_entity_extra_field_info() {
 
 /**
  * Implements hook_entity_view().
+ *
+ * Render the facets for each pseudo field enabled.
  */
 function search_api_field_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if (!$entity instanceof FieldableEntityInterface) {
     return;
   }
 
+  $facet_manager = \Drupal::getContainer()->get('facets.manager');
   /** @var \Drupal\Core\Entity\EntityStorageInterface $facet_storage */
   $facet_storage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('facets_facet');
-  /** @var Drupal\field\FieldConfigInterface $definition */
   foreach ($entity->getFieldDefinitions() as $field_name => $definition) {
+    /** @var Drupal\field\FieldConfigInterface $definition */
     if ($definition->getType() != 'search') {
       continue;
     }
+
+    // Load all the facets associated to this field that is acting as facet
+    // source.
     $id = $definition->getTargetEntityTypeId() . '.' . $field_name;
-    /** @var \Drupal\facets\FacetInterface $facet */
     $facets = $facet_storage->loadByProperties(['facet_source_id' => 'search_api_field:' . $id]);
-    /** @var Drupal\search_api_field\Plugin\Field\FieldType\SearchItem $field_data */
-    foreach ($entity->get($field_name) as $field_data) {
-      /** @var Drupal\Core\TypedData\Plugin\DataType\Any $value */
-      $value = $field_data->get('value');
-      $settings = $value->getValue();
 
-      // Do not render facets if the field is disabled.
-      if (empty($settings['enabled'])) {
-        return;
+    // At the moment we support only single-value fields.
+    $settings = $entity->get($field_name)->first()->value;
+
+    // Do not render facets if the field is disabled.
+    if (empty($settings['enabled'])) {
+      return;
+    }
+
+    foreach ($settings['fields'] as $facet_name => $facet_data) {
+      if (!isset($facets[$facet_name])) {
+        continue;
       }
-
-      foreach ($settings['fields'] as $facet_name => $facet_data) {
-        if (!isset($facets[$facet_name])) {
-          continue;
-        }
-        $name = str_replace('.', '_', $id . '.' . $facet_data['region']);
-        if ($display->getComponent($name)) {
-          // Let the facet_manager build the facets.
-          $build[$name][] = $facet_manager->build($facets[$facet_name]);
-        }
+      $name = str_replace('.', '_', $id . '.' . $facet_data['region']);
+      if ($display->getComponent($name)) {
+        // Let the facet_manager build the facets.
+        $build[$name][] = $facet_manager->build($facets[$facet_name]);
       }
     }
   }
