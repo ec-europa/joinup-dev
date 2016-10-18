@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 
 /**
@@ -51,7 +52,9 @@ function search_api_field_entity_extra_field_info() {
  * Implements hook_entity_view().
  */
 function search_api_field_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  $facet_manager = \Drupal::getContainer()->get('facets.manager');
+  if (!$entity instanceof FieldableEntityInterface) {
+    return;
+  }
 
   /** @var \Drupal\Core\Entity\EntityStorageInterface $facet_storage */
   $facet_storage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('facets_facet');
