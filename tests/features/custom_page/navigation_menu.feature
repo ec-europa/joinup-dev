@@ -18,6 +18,11 @@ Feature: Navigation menu for custom pages
     # the scenes. The end user should not interact with these.
     And I should not see the link "Add link"
 
+    # We should see a link to add a new custom page.
+    But I should see the link "Add page"
+    When I click "Add page"
+    Then I should see the heading "Add custom page"
+
     # The form to add a new menu link should not be accessible by anyone. This
     # is functionality provided by Drupal which is intended for webmasters. We
     # are showing the menu overview to collection facilitators so they can

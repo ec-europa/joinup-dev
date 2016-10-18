@@ -23,7 +23,8 @@ class CustomPageAdd extends LocalActionDefault {
     // can retrieve the collection or solution from the menu instance.
     if (empty($parameters['rdf_entity'])) {
       /** @var \Drupal\og_menu\Entity\OgMenuInstance $instance */
-      if (($instance = $route_match->getParameter('ogmenu_instance')) && ($group = $instance->getGroup()) && $group->getEntityTypeId === 'rdf_entity') {
+      /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
+      if (($instance = $route_match->getParameter('ogmenu_instance')) && ($group = $instance->getGroup()) && $group->getEntityTypeId() === 'rdf_entity') {
         $parameters[$group->getEntityTypeId()] = $group->id();
       }
       else {
