@@ -139,7 +139,7 @@ class AssetReleaseController extends ControllerBase {
       ->execute();
 
     $releases = Rdf::loadMultiple($ids);
-    usort($releases, function($release1, $release2) {
+    usort($releases, function ($release1, $release2) {
       $ct1 = $release1->field_isr_creation_date->value;
       $ct2 = $release2->field_isr_creation_date->value;
       if (empty($ct1) || empty($ct2) || ($ct1 == $ct2)) {
