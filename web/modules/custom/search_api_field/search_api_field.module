@@ -112,17 +112,18 @@ function search_api_field_theme() {
       'type' => NULL,
     ],
   ];
-  return array(
-    'facets_type_wrapper' => array(
-      'variables' => array(
-        'items' => array(),
-        'attributes' => array(),
-      ),
-    ),
+
+  return [
+    'facets_type_wrapper' => [
+      'variables' => [
+        'items' => [],
+        'attributes' => [],
+      ],
+    ],
     'facets_type_result_item' => $result_item_variables,
     'facets_type_result_item_active' => $result_item_variables,
-    'search_api_field' => array(
-      'variables' => array(
+    'search_api_field' => [
+      'variables' => [
         'form' => NULL,
         'search_title' => NULL,
         'no_of_results' => NULL,
@@ -130,13 +131,13 @@ function search_api_field_theme() {
         'search_help' => NULL,
         'results' => NULL,
         'pager' => NULL,
-      ),
-    ),
-    'search_api_field_result' => array(
-      'variables' => array(
+      ],
+    ],
+    'search_api_field_result' => [
+      'variables' => [
         'item' => NULL,
         'entity' => NULL,
-      ),
-    ),
-  );
+      ],
+    ],
+  ];
 }
