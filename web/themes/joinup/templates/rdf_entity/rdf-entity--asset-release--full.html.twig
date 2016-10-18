@@ -5,14 +5,6 @@
  */
 #}
 <article{{ attributes }}>
-  {{ title_prefix }}
-  {% if not page %}
-    <h2{{ title_attributes }}>
-      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-    </h2>
-  {% endif %}
-  {{ title_suffix }}
-
   <div class="page__title-wrapper">
     <h1 class="page__title">{{ full_label }}</h1>
     {% if is_latest_release %}
@@ -37,6 +29,7 @@
       </a>
     </div>
   </div>
+
 {% if content.field_isr_distribution|render %}
   <div class="listing listing--grid">
     <div class="row">

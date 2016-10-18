@@ -324,6 +324,19 @@ function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $v
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter() for field.html.twig.
+ */
+function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  $entities = array(
+    'asset_release',
+    'asset_distribution',
+  );
+  if (in_array($variables['element']['#bundle'], $entities)) {
+    $suggestions[] = 'field__no_wrappers';
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_alter().
  */
 function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
