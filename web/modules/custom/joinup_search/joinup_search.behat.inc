@@ -24,7 +24,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @When I click the :type content tab
    */
-  public function assertContentTypeFacetClick($type) {
+  public function clickContentTypeFacet($type) {
     // Find the div that contains the content type text and than traverse back
     // to the link wrapping it.
     $xpath = "//div[@class='tabs--content-type']//div[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
@@ -42,19 +42,19 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Asserts that certain content type facet items are not shown on the page.
    *
-   * @param string $items
-   *   The facet items labels.
+   * @param string $labels
+   *   A comma-separated list of facet item labels.
    *
    * @throws \Exception
    *   Thrown when an unwanted facet item is shown in the page.
    *
    * @When I should not see the following facet items :items
    */
-  public function assertContentTypeFacetItemsNotPresent($items) {
+  public function assertContentTypeFacetItemsNotPresent($labels) {
     // @todo Replace with trait function when ISAICP-2755 is in.
-    $items = explode(',', $items);
-    $items = array_map('trim', $items);
-    $items = array_filter($items);
+    $labels = explode(',', $labels);
+    $labels = array_map('trim', $labels);
+    $labels = array_filter($labels);
 
     $facet = $this->getSession()->getPage()->find('xpath', "//div[@data-drupal-facet-id='field_cp_content_listing_content_type']");
     $present = [];
@@ -75,7 +75,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $present = array_map('trim', $present);
-    $found = array_intersect($items, $present);
+    $found = array_intersect($labels, $present);
 
     if ($found) {
       throw new \Exception('Facet item(s) found, but should not be present: ' . implode(', ', $found));
