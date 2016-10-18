@@ -23,7 +23,7 @@ trait EntityReferenceTrait {
    * @throws \Exception
    *   Thrown when no entity with the given label has been found.
    */
-  public function convertEntityReferencesValues($entity_type, $entity_bundle, $values) {
+  public function convertEntityReferencesValues($entity_type, $entity_bundle, array $values) {
     $definitions = \Drupal::entityManager()->getFieldDefinitions($entity_type, $entity_bundle);
     foreach ($definitions as $name => $definition) {
       if ($definition->getType() != 'entity_reference' || !array_key_exists($name, $values) || !strlen($values[$name])) {
@@ -66,7 +66,7 @@ trait EntityReferenceTrait {
    * @return false|mixed
    *   The id of the found entity, false otherwise.
    */
-  protected function getEntityIdByLabel($label, $entity_type, $entity_bundle = []) {
+  protected function getEntityIdByLabel($label, $entity_type, array $entity_bundle = []) {
     $label_key = \Drupal::entityTypeManager()->getDefinition($entity_type)->getKey('label');
 
     $query = \Drupal::entityQuery($entity_type)

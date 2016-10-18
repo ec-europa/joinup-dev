@@ -230,7 +230,7 @@ function rdf_entity_theme() {
  *   - rdf_entity: The rdf_entity object.
  *   - view_mode: View mode; e.g., 'full', 'teaser', etc.
  */
-function template_preprocess_rdf_entity(&$variables) {
+function template_preprocess_rdf_entity(array &$variables) {
   $variables['view_mode'] = $variables['elements']['#view_mode'];
   // Provide a distinct $teaser boolean.
   $variables['teaser'] = $variables['view_mode'] == 'teaser';
@@ -269,7 +269,7 @@ function template_preprocess_rdf_entity(&$variables) {
  *   An associative array containing:
  *   - content: An array of rdf bundles.
  */
-function template_preprocess_rdf_add_list(&$variables) {
+function template_preprocess_rdf_add_list(array &$variables) {
   $variables['types'] = array();
   if (!empty($variables['content'])) {
     foreach ($variables['content'] as $type) {

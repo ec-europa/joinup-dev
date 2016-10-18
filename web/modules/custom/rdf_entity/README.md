@@ -7,12 +7,23 @@ Virtuoso is one of the more robust triple store solutions available, but any sol
     @todo Create an example module that uses [http://dbpedia.org/sparql](http://dbpedia.org/sparql)
 
 ## Setting up Virtuoso
-On a debian based system:
+### On a Debian based system
  apt-get install virtuoso-opensource
  service virtuoso-opensource-6.1 start
  (Set the password during installation)
 
-On an Arch Linux based system:
+### On Mac OS X system
+- Install Homebrew (see http://brew.sh)
+- `$ brew install virtuoso`
+- Start Virtuoso
+  ```
+  # The version might be differnet than 7.2.4.2.
+  $ cd /usr/local/Cellar/virtuoso/7.2.4.2/var/lib/virtuoso/db
+  $ virtuoso-t -f &
+  ```
+- Administer at [http://localhost:8890/conductor/](http://localhost:8890/conductor/). Login with dba/dba.
+
+### On an Arch Linux based system
 - Install the [Virtuoso AUR package](https://aur.archlinux.org/packages/virtuoso/).
 - `# systemctl start virtuoso`
 

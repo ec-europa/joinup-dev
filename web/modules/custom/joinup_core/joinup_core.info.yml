@@ -5,14 +5,24 @@ core: 8.x
 package: Custom
 
 dependencies:
+  - comment
+  - ds
   - image
   - og
   - rdf_draft
   - rdf_entity
   - rdf_taxonomy
+  - message
+  - message_notify
 
 config_devel:
+  - comment.type.comment
+  - core.entity_form_display.comment.comment.default
+  - core.entity_view_display.comment.comment.default
+  - field.field.comment.comment.field_body
+  - field.storage.comment.field_body
   - core.entity_view_mode.rdf_entity.group_header
+  - field.storage.node.field_comments
   - field.storage.node.field_spatial_coverage
   - field.storage.node.field_topic
   - field.storage.rdf_entity.field_keywords

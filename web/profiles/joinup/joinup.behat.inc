@@ -16,7 +16,7 @@ use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
 
@@ -343,20 +343,40 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Navigates to the canonical page display of a node entity.
+   * Navigates to the edit page display of a node entity.
    *
    * @param string $bundle
-   *   The type of the node page.
+   *   The type of the node entity.
    * @param string $title
    *   The title of the node.
    *
    * @When (I )go to the :bundle (content ) :title edit screen
    * @When (I )visit the :bundle (content ) :title edit screen
    */
-  public function visitCollection($bundle, $title) {
+  public function visitNodeEditForm($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     $this->visitPath($node->url('edit-form'));
+  }
+
+  /**
+   * Navigates to the canonical page display of a node page.
+   *
+   * This step is only to be used in scenario outlines.
+   * If possible, use a specific page selector.
+   *
+   * @param string $type
+   *   The type of the node entity.
+   * @param string $title
+   *   The name of the news page.
+   *
+   * @When (I )go to the content page of the type :type with the title :title
+   * @When (I )visit the content page of the type :type with the title :title
+   */
+  public function visitNodePage($type, $title) {
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = $this->getNodeByTitle($title, $type);
+    $this->visitPath($node->url());
   }
 
   /**
@@ -432,9 +452,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // actual URI. Note that this fails if a URI is supplied for a collection or
     // solution in a Behat test. This is by design, the URIs are not exposed to
     // end users of the site so they should not be used in BDD scenarios.
-    if (!empty($node->{OgGroupAudienceHelper::DEFAULT_FIELD})) {
-      $entity = $this->getRdfEntityByLabel($node->{OgGroupAudienceHelper::DEFAULT_FIELD});
-      $node->{OgGroupAudienceHelper::DEFAULT_FIELD} = $entity->id();
+    if (!empty($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD})) {
+      $entity = $this->getRdfEntityByLabel($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD});
+      $node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD} = $entity->id();
     }
   }
 
@@ -463,8 +483,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'state' => 'field_news_state',
       ],
       'shared' => [
-        'collection' => OgGroupAudienceHelper::DEFAULT_FIELD,
-        'solution' => OgGroupAudienceHelper::DEFAULT_FIELD,
+        'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+        'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
       ],
     ];
 
@@ -565,6 +585,64 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertContentOgMembership($parent, $parent_bundle, $content_bundle, $content) {
     $this->assertOgMembership($parent, $parent_bundle, $content, $content_bundle);
+  }
+
+  /**
+   * Assert that certain buttons are present on the page.
+   *
+   * @param string $buttons
+   *    A comma separated list of button labels.
+   *
+   * @throws \Exception
+   *   Thrown when an expected button is not present.
+   *
+   * @Then (the following )buttons should be present :buttons
+   */
+  public function assertButtonsVisible($buttons) {
+    $buttons = explode(',', $buttons);
+    $buttons = array_map('trim', $buttons);
+    $buttons = array_filter($buttons);
+
+    $page = $this->getSession()->getPage();
+    $not_found = [];
+    foreach ($buttons as $button) {
+      if (!$page->findButton($button)) {
+        $not_found[] = $button;
+      }
+    }
+
+    if (!empty($not_found)) {
+      throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $not_found));
+    }
+  }
+
+  /**
+   * Assert that certain buttons are not present on the page.
+   *
+   * @param string $buttons
+   *    A comma separated list of button labels.
+   *
+   * @throws \Exception
+   *   Thrown when an unexpected button is present.
+   *
+   * @Then (the following )buttons should not be present :buttons
+   */
+  public function assertButtonsNotVisible($buttons) {
+    $buttons = explode(',', $buttons);
+    $buttons = array_map('trim', $buttons);
+    $buttons = array_filter($buttons);
+
+    $page = $this->getSession()->getPage();
+    $found = [];
+    foreach ($buttons as $button) {
+      if ($page->findButton($button)) {
+        $found[] = $button;
+      }
+    }
+
+    if (!empty($found)) {
+      throw new \Exception('Button(s) should not be present, but were found: ' . implode(', ', $found));
+    }
   }
 
 }

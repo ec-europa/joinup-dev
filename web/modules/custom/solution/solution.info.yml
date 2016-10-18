@@ -16,12 +16,18 @@ dependencies:
   - rdf_entity
   - state_machine
   - text
+  - token
 
 config_devel:
+  - core.entity_form_display.message.workflow_transition.default
   - core.entity_form_display.rdf_entity.solution.default
+  - core.entity_view_display.message.workflow_transition.default
+  - core.entity_view_display.message.workflow_transition.mail_body
+  - core.entity_view_display.message.workflow_transition.mail_subject
   - core.entity_view_display.rdf_entity.solution.default
   - core.entity_view_display.rdf_entity.solution.group_header
   - core.entity_view_display.rdf_entity.solution.view_mode_tile
+  - field.field.message.workflow_transition.field_message_content
   - field.field.rdf_entity.solution.field_is_actor
   - field.field.rdf_entity.solution.field_is_affiliations_requests
   - field.field.rdf_entity.solution.field_is_banner
@@ -34,7 +40,6 @@ config_devel:
   - field.field.rdf_entity.solution.field_is_has_version
   - field.field.rdf_entity.solution.field_is_included_asset
   - field.field.rdf_entity.solution.field_is_issue_tracker
-  - field.field.rdf_entity.solution.field_keywords
   - field.field.rdf_entity.solution.field_is_landing_page
   - field.field.rdf_entity.solution.field_is_language
   - field.field.rdf_entity.solution.field_is_logo
@@ -42,19 +47,22 @@ config_devel:
   - field.field.rdf_entity.solution.field_is_moderation
   - field.field.rdf_entity.solution.field_is_modification_date
   - field.field.rdf_entity.solution.field_is_owner
-  - field.field.rdf_entity.solution.field_policy_domain
   - field.field.rdf_entity.solution.field_is_product_type
   - field.field.rdf_entity.solution.field_is_related_solutions
   - field.field.rdf_entity.solution.field_is_solution_type
   - field.field.rdf_entity.solution.field_is_source_code_repository
-  - field.field.rdf_entity.solution.field_spatial_coverage
-  - field.field.rdf_entity.solution.field_status
   - field.field.rdf_entity.solution.field_is_standardization_level
+  - field.field.rdf_entity.solution.field_is_state
   - field.field.rdf_entity.solution.field_is_test_resource_type
   - field.field.rdf_entity.solution.field_is_translation
   - field.field.rdf_entity.solution.field_is_webdav_creation
   - field.field.rdf_entity.solution.field_is_webdav_url
   - field.field.rdf_entity.solution.field_is_wiki
+  - field.field.rdf_entity.solution.field_keywords
+  - field.field.rdf_entity.solution.field_policy_domain
+  - field.field.rdf_entity.solution.field_spatial_coverage
+  - field.field.rdf_entity.solution.field_status
+  - field.storage.message.field_message_content
   - field.storage.rdf_entity.field_is_actor
   - field.storage.rdf_entity.field_is_affiliations_requests
   - field.storage.rdf_entity.field_is_banner
@@ -80,9 +88,11 @@ config_devel:
   - field.storage.rdf_entity.field_is_solution_type
   - field.storage.rdf_entity.field_is_source_code_repository
   - field.storage.rdf_entity.field_is_standardization_level
+  - field.storage.rdf_entity.field_is_state
   - field.storage.rdf_entity.field_is_test_resource_type
   - field.storage.rdf_entity.field_is_translation
   - field.storage.rdf_entity.field_is_webdav_creation
   - field.storage.rdf_entity.field_is_webdav_url
   - field.storage.rdf_entity.field_is_wiki
+  - message.template.workflow_transition
   - rdf_entity.rdfentity.solution
