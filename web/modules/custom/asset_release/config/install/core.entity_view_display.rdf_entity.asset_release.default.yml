@@ -24,13 +24,12 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_policy_domain
     - field.field.rdf_entity.asset_release.field_spatial_coverage
     - field.field.rdf_entity.asset_release.field_status
-    - image.style.thumbnail
     - rdf_entity.rdfentity.asset_release
   module:
     - datetime
     - ds
     - file
-    - image
+    - joinup_core
     - text
 id: rdf_entity.asset_release.default
 targetEntityType: rdf_entity
@@ -59,11 +58,19 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   field_isr_banner:
-    weight: 24
+    type: image_url_formatter
+    weight: 10
     label: above
     settings:
-      image_style: banner
-      image_link: ''
+      image_style: ''
+    third_party_settings: {  }
+  field_isr_creation_date:
+    weight: 14
+    label: hidden
+    settings:
+      future_format: '@interval hence'
+      past_format: '@interval ago'
+      granularity: 1
     third_party_settings:
       ds:
         ft:
@@ -72,37 +79,31 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
-    type: image
-  field_isr_contact_information:
-    weight: 5
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_isr_creation_date:
-    weight: 3
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
+    type: datetime_time_ago
   field_isr_description:
-    weight: 1
+    weight: 12
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_isr_distribution:
-    weight: 16
-    label: above
+    weight: 17
+    label: hidden
     settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
+      view_mode: view_mode_tile
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: entity_reference_entity_view
   field_isr_documentation:
-    weight: 2
+    weight: 13
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -114,21 +115,22 @@ content:
     third_party_settings: {  }
     type: list_default
   field_isr_has_version:
-    weight: 17
+    weight: 18
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_isr_included_asset:
-    weight: 7
+    type: entity_reference_entity_view
+    weight: 11
     label: above
     settings:
-      link: true
+      view_mode: default
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
   field_isr_is_version_of:
-    weight: 15
+    weight: 16
     label: above
     settings:
       link: true
@@ -156,28 +158,6 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
-  field_isr_language:
-    weight: 13
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_isr_logo:
-    weight: 23
-    label: above
-    settings:
-      image_style: thumbnail
-      image_link: ''
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: image
   field_isr_metrics_page:
     weight: 18
     label: above
@@ -198,21 +178,6 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
-  field_isr_modification_date:
-    weight: 4
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
-  field_isr_owner:
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
   field_isr_related_asset_releases:
     weight: 2
     label: above
@@ -221,28 +186,25 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   field_isr_related_solutions:
-    type: entity_reference_entity_id
-    weight: 19
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-  field_isr_release_notes:
-    type: text_default
+    type: entity_reference_entity_view
     weight: 21
     label: above
-    settings: {  }
-    third_party_settings: {  }
-  field_isr_release_number:
-    weight: 18
-    label: above
     settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  field_isr_solution_type:
-    type: entity_reference_entity_id
-    weight: 20
-    label: above
+      view_mode: view_mode_tile
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+  field_isr_release_notes:
+    type: text_default
+    weight: 19
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_isr_source_code_repository:
@@ -256,13 +218,6 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
-  field_isr_translation:
-    weight: 8
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
   field_isr_webdav_creation:
     weight: 15
     label: above
@@ -294,40 +249,24 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
-  field_keywords:
-    weight: 11
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_policy_domain:
-    weight: 14
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_spatial_coverage:
-    weight: 9
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_status:
-    weight: 12
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
   label:
     label: hidden
     type: string
-    weight: 0
+    weight: 2
     settings:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  field_isr_contact_information: true
+  field_isr_language: true
+  field_isr_logo: true
+  field_isr_modification_date: true
+  field_isr_owner: true
+  field_isr_release_number: true
+  field_isr_solution_type: true
+  field_isr_translation: true
+  field_keywords: true
+  field_policy_domain: true
+  field_spatial_coverage: true
+  field_status: true
   og_audience: true
