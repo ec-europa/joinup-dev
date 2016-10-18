@@ -4,10 +4,10 @@ dependencies:
   module:
     - node
     - search_api_field
-id: node.field_cp_search
-field_name: field_cp_search
+id: node.field_cp_content_listing
+field_name: field_cp_content_listing
 entity_type: node
-type: search
+type: search_api_field
 settings:
   index: collections
   facet_regions:

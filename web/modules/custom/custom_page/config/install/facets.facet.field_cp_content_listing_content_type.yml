@@ -1,14 +1,14 @@
 langcode: en
 status: true
 dependencies: {  }
-id: field_cp_search_content_type
+id: field_cp_content_listing_content_type
 name: 'Content type'
-url_alias: field_cp_search_content_type
+url_alias: field_cp_content_listing_content_type
 weight: 0
 show_only_one_result: true
 field_identifier: aggregated_field
 query_type_name: null
-facet_source_id: 'search_api_field:node.field_cp_search'
+facet_source_id: 'search_api_field:node.field_cp_content_listing'
 widget:
   type: type
   config:

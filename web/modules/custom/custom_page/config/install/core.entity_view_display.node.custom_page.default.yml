@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.custom_page.body
-    - field.field.node.custom_page.field_cp_search
+    - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
@@ -21,21 +21,21 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
-  field_cp_search:
+  field_cp_content_listing:
     weight: 4
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: search
+    type: search_api_field
   links:
     weight: 0
     settings: {  }
     third_party_settings: {  }
-  node_field_cp_search_bottom:
+  node_field_cp_content_listing_bottom:
     weight: 5
     settings: {  }
     third_party_settings: {  }
-  node_field_cp_search_top:
+  node_field_cp_content_listing_top:
     weight: 3
     settings: {  }
     third_party_settings: {  }

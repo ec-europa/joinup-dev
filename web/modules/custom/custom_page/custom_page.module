@@ -115,7 +115,7 @@ function custom_page_menu_local_actions_alter(&$local_actions) {
 /**
  * Implements hook_search_api_query_TAG_alter().
  */
-function custom_page_search_api_query_search_api_field_field_cp_search_alter(QueryInterface &$query) {
+function custom_page_search_api_query_search_api_field_field_cp_content_listing_alter(QueryInterface &$query) {
   /** @var EntityInterface $entity */
   $entity = $query->getOption('search_api_field entity');
   /** @var EntityInterface $group */
