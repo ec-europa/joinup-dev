@@ -16,7 +16,7 @@ use Drupal\search_api\Entity\Index as SearchApiIndex;
  *   id = "search_api_field",
  *   label = @Translation("Search API field"),
  *   description = @Translation("Stores the search settings related to this field."),
- *   default_widget = "search_default",
+ *   default_widget = "search_api_field_default",
  *   default_formatter = "search",
  * )
  */

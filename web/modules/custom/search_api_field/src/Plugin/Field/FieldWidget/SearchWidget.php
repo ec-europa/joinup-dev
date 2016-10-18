@@ -13,13 +13,13 @@ use Drupal\search_api_field\Plugin\Field\FieldType\SearchItem;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Plugin implementation of the 'link' widget.
+ * Plugin implementation of the 'search_api_field_default' widget.
  *
  * @FieldWidget(
- *   id = "search_default",
+ *   id = "search_api_field_default",
  *   label = @Translation("Search widget"),
  *   field_types = {
- *     "search"
+ *     "search_api_field"
  *   }
  * )
  */
