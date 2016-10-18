@@ -63,7 +63,7 @@ function search_api_field_entity_view(array &$build, EntityInterface $entity, En
   $facet_storage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('facets_facet');
   foreach ($entity->getFieldDefinitions() as $field_name => $definition) {
     /** @var Drupal\field\FieldConfigInterface $definition */
-    if ($definition->getType() != 'search') {
+    if ($definition->getType() != 'search_api_field') {
       continue;
     }
 
