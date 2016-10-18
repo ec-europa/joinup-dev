@@ -503,6 +503,9 @@ QUERY;
       $this->doDelete([$entity_id => $entity]);
       $this->resetCache([$entity_id]);
     }
+
+    // Reset the request graphs for the deleted entities.
+    $this->getGraphHandler()->resetRequestGraphs([$entity_id]);
   }
 
   /**
@@ -548,9 +551,6 @@ WHERE
 QUERY;
       $this->sparql->query($query);
     }
-
-    // Reset the request graphs for the deleted entities.
-    $this->getGraphHandler()->resetRequestGraphs(array_keys($entities));
   }
 
   /**
