@@ -17,13 +17,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Plugin implementation of the 'link' formatter.
+ * Plugin implementation of the 'search_api_field' formatter.
  *
  * @FieldFormatter(
- *   id = "search",
+ *   id = "search_api_field",
  *   label = @Translation("Search"),
  *   field_types = {
- *     "search"
+ *     "search_api_field"
  *   }
  * )
  */
