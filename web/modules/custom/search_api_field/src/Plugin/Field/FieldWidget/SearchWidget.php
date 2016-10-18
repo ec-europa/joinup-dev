@@ -120,6 +120,20 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       '#default_value' => isset($default_values['enabled']) ? $default_values['enabled'] : 1,
     ];
 
+    // Construct a string that represents the name of the enabled field.
+    $field_name = $this->fieldDefinition->getName();
+    $enabled_field_path = "{$field_name}[{$delta}][enabled]";
+    // Wrap all the remaining elements so they can be hidden when the above
+    // checkbox is unchecked.
+    $element['wrapper'] = [
+      '#type' => 'container',
+      '#states' => [
+        'visible' => [
+          ':input[name="' . $enabled_field_path . '"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
     $element += [
       '#extra' => array_keys($facets),
     ];
@@ -152,9 +166,9 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     foreach ($facets as $facet_id => $facet) {
       $table[$facet_id] = $this->buildFacetRow($facet, $item);
     }
-    $element['fields'] = $table;
-    $element['refresh_rows'] = ['#type' => 'hidden'];
-    $element['refresh'] = [
+    $element['wrapper']['fields'] = $table;
+    $element['wrapper']['refresh_rows'] = ['#type' => 'hidden'];
+    $element['wrapper']['refresh'] = [
       '#type' => 'submit',
       '#value' => $this->t('Refresh'),
       '#op' => 'refresh_table',
@@ -175,14 +189,14 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       ],
     ];
 
-    $element['query_presets'] = [
+    $element['wrapper']['query_presets'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Query presets'),
       '#description' => $this->t('Presets to apply to the query when it is executed. Must be entered in LUCENE syntax.'),
       '#default_value' => isset($default_values['query_presets']) ? $default_values['query_presets'] : '',
     ];
 
-    $element['limit'] = [
+    $element['wrapper']['limit'] = [
       '#type' => 'number',
       '#title' => $this->t('Limit'),
       '#description' => $this->t('The number of results to show per page.'),
@@ -276,7 +290,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
 
     foreach ($updated_rows as $name) {
       foreach ($updated_columns as $key) {
-        $element = &$form['fields'][$name][$key];
+        $element = &$form['wrapper']['fields'][$name][$key];
         $element['#prefix'] = '<div class="ajax-new-content">' . (isset($element['#prefix']) ? $element['#prefix'] : '');
         $element['#suffix'] = (isset($element['#suffix']) ? $element['#suffix'] : '') . '</div>';
       }
@@ -388,8 +402,8 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     // under a 'value' array element which will be serialized.
     $cleaned_values = [];
     foreach ($values as $delta => $value) {
-      if (!empty($value['fields'])) {
-        foreach ($value['fields'] as $fn => $field) {
+      if (!empty($value['wrapper']['fields'])) {
+        foreach ($value['wrapper']['fields'] as $fn => $field) {
           $cleaned_values[$delta]['value']['fields'][$fn] = [
             'weight' => $field['weight'],
             'region' => $field['plugin']['type'],
@@ -398,8 +412,8 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       }
 
       $cleaned_values[$delta]['value']['enabled'] = $values[$delta]['enabled'];
-      $cleaned_values[$delta]['value']['query_presets'] = $values[$delta]['query_presets'];
-      $cleaned_values[$delta]['value']['limit'] = $values[$delta]['limit'];
+      $cleaned_values[$delta]['value']['query_presets'] = $values[$delta]['wrapper']['query_presets'];
+      $cleaned_values[$delta]['value']['limit'] = $values[$delta]['wrapper']['limit'];
     }
     return $cleaned_values;
   }
