@@ -10,11 +10,11 @@ use Drupal\Core\TypedData\DataDefinition;
 use Drupal\search_api\Entity\Index as SearchApiIndex;
 
 /**
- * Plugin implementation of the 'link' field type.
+ * Plugin implementation of the 'search_api_field' field type.
  *
  * @FieldType(
- *   id = "search",
- *   label = @Translation("Search"),
+ *   id = "search_api_field",
+ *   label = @Translation("Search API field"),
  *   description = @Translation("Stores the search settings related to this field."),
  *   default_widget = "search_default",
  *   default_formatter = "search",
@@ -67,16 +67,9 @@ class SearchItem extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data) {
     $search_api_indexes = \Drupal::entityTypeManager()->getStorage('search_api_index')->loadMultiple();
-    $index_options = array();
+    $index_options = [];
     /* @var  $search_api_index \Drupal\search_api\IndexInterface */
     foreach ($search_api_indexes as $search_api_index) {
       $index_options[$search_api_index->id()] = $search_api_index->label();
@@ -99,7 +92,7 @@ class SearchItem extends FieldItemBase {
 
     $element['facet_regions'] = [
       '#type' => 'textarea',
-      '#title' => t('Facet regions'),
+      '#title' => $this->t('Facet regions'),
       '#description' => $this->allowedValuesDescription(),
       '#default_value' => $this->allowedValuesString($facet_regions),
       '#rows' => 10,
@@ -114,8 +107,8 @@ class SearchItem extends FieldItemBase {
 
     $element['facet_regions_function'] = [
       '#type' => 'item',
-      '#title' => t('Allowed values list'),
-      '#markup' => t('The value of this field is being determined by the %function function and may not be changed.', ['%function' => $facet_regions_function]),
+      '#title' => $this->t('Allowed values list'),
+      '#markup' => $this->t('The value of this field is being determined by the %function function and may not be changed.', ['%function' => $facet_regions_function]),
       '#access' => !empty($facet_regions_function),
       '#value' => $facet_regions_function,
     ];
