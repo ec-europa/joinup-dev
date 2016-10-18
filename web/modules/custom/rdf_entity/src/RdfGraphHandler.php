@@ -89,9 +89,20 @@ class RdfGraphHandler {
 
   /**
    * Reset the mapping of entity - graphs.
+   *
+   * @param array $entity_ids
+   *    An array of entity ids that the request graphs are going to be reset
+   * for. If an empty array is passed, all graphs will be reset.
    */
-  public function resetRequestGraphs() {
-    $this->requestGraphs = ['default' => $this->enabledGraphs];
+  public function resetRequestGraphs(array $entity_ids = []) {
+    if (empty($entity_ids)) {
+      $this->requestGraphs = ['default' => $this->enabledGraphs];
+    }
+    else {
+      foreach ($entity_ids as $entity_id) {
+        unset ($this->requestGraphs[$entity_id]);
+      }
+    }
   }
 
   /**
