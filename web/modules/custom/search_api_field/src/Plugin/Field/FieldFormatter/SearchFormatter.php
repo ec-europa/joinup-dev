@@ -260,11 +260,18 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
 
     foreach ($list as $line) {
       $matches = [];
+      // The format of each line can be:
+      // - property|value
+      // - property|value|operator
+      // Property is the name of the Solr field we want to use to filter.
+      // Operator is optional.
       if (preg_match('/([^\|]*)\|([^\|]*)(?:\|(.*))?/', $line, $matches)) {
         $field = trim($matches[1]);
         $value = trim($matches[2]);
         $operator = !empty($matches[3]) ? trim($matches[3]) : '=';
 
+        // Handle the IN operator: in this case the value can be a
+        // comma-separated list.
         if ($operator === 'IN') {
           $value = explode(',', $value);
           $value = array_map('trim', $value);
