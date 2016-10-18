@@ -6,9 +6,9 @@ Feature:
 
   Background:
     Given the following collections:
-      | title      | logo     | banner     |
-      | Nintendo64 | logo.png | banner.jpg |
-      | Emulators  | logo.png | banner.jpg |
+      | title      | logo     | banner     | state |
+      | Nintendo64 | logo.png | banner.jpg | draft |
+      | Emulators  | logo.png | banner.jpg | draft |
     And news content:
       | title                                 | collection | content                          |
       | Rare Nintendo64 disk drive discovered | Nintendo64 | Magnetic drive called 64DD.      |
@@ -19,18 +19,18 @@ Feature:
     # Non UATable step.
     And I commit the solr index
 
-    Scenario: Search field widget should be shown only to moderators
+    Scenario: Community content listing widget should be shown only to moderators
       Given I am logged in as a facilitator of the "Nintendo64" collection
       When I go to the homepage of the "Nintendo64" collection
       And I click "Add custom page"
       Then I should see the heading "Add custom page"
-      And the following fields should not be present "Enable the search field, Query presets, Limit"
+      And the following fields should not be present "Display a community content listing, Query presets, Limit"
 
       Given I am logged in as a moderator
       When I go to the homepage of the "Nintendo64" collection
       And I click "Add custom page"
       Then I should see the heading "Add custom page"
-      And the following fields should be present "Enable the search field, Query presets, Limit"
+      And the following fields should be present "Display a community content listing, Query presets, Limit"
 
     Scenario: Configure a custom page to show only news of its collection
       Given I am logged in as a moderator
@@ -40,7 +40,7 @@ Feature:
       When I fill in the following:
         | Title | Latest news                        |
         | Body  | Shows all news for this collection |
-      And I check "Enable the search field"
+      And I check "Display a community content listing"
       And I fill in "Query presets" with "aggregated_field|news"
       And I press "Save"
       Then I should see the heading "Latest news"
@@ -58,7 +58,7 @@ Feature:
       When I fill in the following:
         | Title | Collection content                        |
         | Body  | Shows all the content for this collection |
-      And I check "Enable the search field"
+      And I check "Display a community content listing"
       And I press "Save"
       Then I should see the heading "Collection content"
       # Verify that unwanted facets are not shown in the page.

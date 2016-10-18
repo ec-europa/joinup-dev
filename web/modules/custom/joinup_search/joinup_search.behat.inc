@@ -56,7 +56,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $items = array_map('trim', $items);
     $items = array_filter($items);
 
-    $facet = $this->getSession()->getPage()->find('xpath', "//div[@data-drupal-facet-id='field_cp_search_content_type']");
+    $facet = $this->getSession()->getPage()->find('xpath', "//div[@data-drupal-facet-id='field_cp_content_listing_content_type']");
     $present = [];
 
     // Find all the items shown as tab.
