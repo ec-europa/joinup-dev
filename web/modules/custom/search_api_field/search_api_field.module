@@ -15,8 +15,8 @@ use Drupal\field\Entity\FieldStorageConfig;
  * Create a pseudo field for each facet region.
  */
 function search_api_field_entity_extra_field_info() {
-  $extra = array();
-  $map = \Drupal::entityManager()->getFieldMapByFieldType('search');
+  $map = \Drupal::service('entity_field.manager')->getFieldMapByFieldType('search_api_field');
+  $extra = [];
   $ids = [];
   $bundles_lookup = [];
   foreach ($map as $type => $info) {
@@ -35,11 +35,11 @@ function search_api_field_entity_extra_field_info() {
     foreach ($facet_regions as $region_id => $region_label) {
       foreach ($bundles_lookup[$id] as $bundle) {
         $name = str_replace('.', '_', "$id.$region_id");
-        $extra[$field_config->getTargetEntityTypeId()][$bundle]['display'][$name] = array(
+        $extra[$field_config->getTargetEntityTypeId()][$bundle]['display'][$name] = [
           'label' => t('Facet region: @region', ['@region' => $region_label]),
           'weight' => 0,
           'visible' => FALSE,
-        );
+        ];
       }
     }
   }
