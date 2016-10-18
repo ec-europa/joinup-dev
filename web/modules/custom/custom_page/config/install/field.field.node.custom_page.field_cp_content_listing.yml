@@ -10,7 +10,7 @@ id: node.custom_page.field_cp_content_listing
 field_name: field_cp_content_listing
 entity_type: node
 bundle: custom_page
-label: Community content listing
+label: 'Enable community content listing'
 description: ''
 required: false
 translatable: false

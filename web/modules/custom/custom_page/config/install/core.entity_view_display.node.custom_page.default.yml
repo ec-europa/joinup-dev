@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
+    - ds
     - search_api_field
     - text
     - user
@@ -25,14 +26,17 @@ content:
     weight: 4
     label: hidden
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
     type: search_api_field
   links:
     weight: 0
-    settings: {  }
-    third_party_settings: {  }
-  node_field_cp_content_listing_bottom:
-    weight: 5
     settings: {  }
     third_party_settings: {  }
   node_field_cp_content_listing_top:

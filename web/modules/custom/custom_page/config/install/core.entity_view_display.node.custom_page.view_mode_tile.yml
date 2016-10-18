@@ -113,18 +113,8 @@ content:
             fis: false
             fis-def-at: false
             fi-def-at: false
-  links:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-  og_audience:
-    type: entity_reference_label
-    weight: 9
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
 hidden:
   field_cp_content_listing: true
-  node_field_cp_content_listing_bottom: true
+  links: true
   node_field_cp_content_listing_top: true
+  og_audience: true
