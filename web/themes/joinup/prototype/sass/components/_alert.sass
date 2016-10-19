@@ -14,20 +14,13 @@
 // Component
 // --------------------------------------------------
 .alert
-
-// Elements
-// --------------------------------------------------
-.alert__list
-  padding: 0
-  margin: 0
-  list-style: none
-
-.alert__item
+  position: relative
   padding: 20px 60px
   margin-bottom: 40px
   +border-radius(4px)
-  position: relative
 
+// Elements
+// --------------------------------------------------
 .alert__icon
   position: absolute
   top: 50%
@@ -50,17 +43,13 @@
 // Modifiers
 // --------------------------------------------------
 .alert--error
-  .alert__item
-    background-color: $color-error
+  background-color: $color-error
 
 .alert--warning
-  .alert__item
-    background-color: $color-warning
+  background-color: $color-warning
 
 .alert--info
-  .alert__item
-    background-color: $color-info
+  background-color: $color-info
 
 .alert--success, .alert--status
-  .alert__item
-    background-color: $color-success
+  background-color: $color-success
