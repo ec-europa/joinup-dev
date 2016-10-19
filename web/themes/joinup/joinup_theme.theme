@@ -165,7 +165,8 @@ function joinup_theme_preprocess_container(&$variables) {
   if (!empty($route_name) && in_array($route_name, $form_routes)
     && isset($variables['element']['#parents'])
     && count($variables['element']['#parents']) == 1
-    && $variables['element']['#id'] != 'edit-actions') {
+    && $variables['element']['#id'] != 'edit-actions'
+  ) {
     $variables['is_form_wrapper'] = TRUE;
   }
 }
@@ -276,10 +277,15 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
   ];
 
   // The last key of #array_parents is the build array key used in the code.
-  $element_key = end($variables['element']['#array_parents']);
-  foreach ($input_suggestions as $suggestion => $names) {
-    if (in_array($element_key, $names)) {
-      $suggestions[] = $suggestion;
+  // In some cases, like dropbuttons, the element is rendered in a different
+  // way and thus no array parents property is present.
+  // @see \Drupal\Core\Render\Element\Actions::preRenderActionsDropbutton()
+  if (!empty($variables['element']['#array_parents']) && is_array($variables['element']['#array_parents'])) {
+    $element_key = end($variables['element']['#array_parents']);
+    foreach ($input_suggestions as $suggestion => $names) {
+      if (in_array($element_key, $names)) {
+        $suggestions[] = $suggestion;
+      }
     }
   }
 }
