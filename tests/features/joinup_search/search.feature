@@ -14,6 +14,7 @@ Feature: Global search
       | logo       | logo.png                     |
       | moderation | no                           |
       | affiliates | Spherification, Foam         |
+      | state      | validated                    |
     And news content:
       | title                 | body             | collection                   |
       | El Celler de Can Roca | The best in town | Molecular cooking collection |

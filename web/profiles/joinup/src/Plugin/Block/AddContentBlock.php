@@ -108,7 +108,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           '#type' => 'link',
           '#title' => $this->t('Add custom page'),
           '#url' => $page_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
+          '#attributes' => ['class' => ['circle-menu__link']],
         ];
       }
 
@@ -120,7 +120,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           '#type' => 'link',
           '#title' => $this->t('Add solution'),
           '#url' => $solution_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
+          '#attributes' => ['class' => ['circle-menu__link']],
         ];
       }
 
@@ -133,7 +133,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           '#type' => 'link',
           '#title' => $this->t('Add discussion'),
           '#url' => $discussion_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
+          '#attributes' => ['class' => ['circle-menu__link']],
         ];
       }
     }
@@ -150,7 +150,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           '#type' => 'link',
           '#title' => $this->t('Add release'),
           '#url' => $release_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
+          '#attributes' => ['class' => ['circle-menu__link']],
         ];
       }
     }
@@ -175,7 +175,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
             '#type' => 'link',
             '#title' => $this->t('Add news'),
             '#url' => $news_url,
-            '#attributes' => ['class' => ['button', 'button--small']],
+            '#attributes' => ['class' => ['circle-menu__link']],
           ];
         }
 
@@ -188,7 +188,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
             '#type' => 'link',
             '#title' => $this->t('Add discussion'),
             '#url' => $discussion_url,
-            '#attributes' => ['class' => ['button', 'button--small']],
+            '#attributes' => ['class' => ['circle-menu__link']],
           ];
         }
 
@@ -201,7 +201,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
             '#type' => 'link',
             '#title' => $this->t('Add document'),
             '#url' => $document_url,
-            '#attributes' => ['class' => ['button', 'button--small']],
+            '#attributes' => ['class' => ['circle-menu__link']],
           ];
         }
 
@@ -214,7 +214,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
             '#type' => 'link',
             '#title' => $this->t('Add event'),
             '#url' => $event_url,
-            '#attributes' => ['class' => ['button', 'button--small']],
+            '#attributes' => ['class' => ['circle-menu__link']],
           ];
         }
       }
@@ -232,7 +232,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
             '#type' => 'link',
             '#title' => $this->t('Add distribution'),
             '#url' => $distribution_url,
-            '#attributes' => ['class' => ['button', 'button--small']],
+            '#attributes' => ['class' => ['circle-menu__link']],
           ];
         }
       }
@@ -255,7 +255,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     foreach ($links as $key => $link) {
       $link += [
         '#type' => 'link',
-        '#attributes' => ['class' => ['button', 'button--small']],
+        '#attributes' => ['class' => ['circle-menu__link']],
       ];
       $build['#items'][$key] = $link;
     }

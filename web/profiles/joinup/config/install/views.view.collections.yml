@@ -5,7 +5,7 @@ dependencies:
     - field.storage.rdf_entity.field_ar_description
     - search_api.index.collections
   module:
-    - joinup
+    - joinup_core
     - search_api
     - text
 id: collections
