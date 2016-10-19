@@ -18,7 +18,7 @@ use Drupal\og\Entity\OgRole;
  * This function will assign the appropriate user as a facilitator to the entity
  * passed.
  */
-function demo_content_rdf_entity_insert(EntityInterface $entity) {
+function demo_users_rdf_entity_insert(EntityInterface $entity) {
   if (!in_array($entity->bundle(), ['collection', 'solution'])) {
     return;
   }
