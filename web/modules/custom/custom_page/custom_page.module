@@ -148,7 +148,7 @@ function custom_page_field_widget_search_api_field_default_form_alter(&$element,
 
     // There is no need to allow customizing the facets. For now.
     foreach (['fields', 'refresh_rows', 'refresh'] as $key) {
-      $element[$key]['#access'] = FALSE;
+      $element['wrapper'][$key]['#access'] = FALSE;
     }
   }
 }
