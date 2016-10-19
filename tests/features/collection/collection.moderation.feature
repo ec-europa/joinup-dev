@@ -129,7 +129,8 @@ Feature: Collection moderation
     And the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Request deletion, Archive"
 
-  Scenario: Regression test for ticket ISAICP-2889.
+  Scenario: Published collections should be shown in the collections overview page.
+    # Regression test for ticket ISAICP-2889.
     Given the following organisation:
       | name | Carpet Sandation |
     And the following contact:
