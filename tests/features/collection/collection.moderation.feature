@@ -128,3 +128,39 @@ Feature: Collection moderation
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Request deletion, Archive"
+
+  Scenario: Published collections should be shown in the collections overview page.
+    # Regression test for ticket ISAICP-2889.
+    Given the following organisation:
+      | name | Carpet Sandation |
+    And the following contact:
+      | name  | Partyanimal             |
+      | email | partyanmial@example.com |
+    And collection:
+      | title               | Some berry pie     |
+      | description         | Berries are tasty. |
+      | logo                | logo.png           |
+      | banner              | banner.jpg         |
+      | owner               | Carpet Sandation   |
+      | contact information | Partyanimal        |
+      | policy domain       | Health             |
+      | state               | proposed           |
+    When I am on the homepage
+    And I click "Collections"
+    Then I should not see the heading "Some berry pie"
+    When I am logged in as a moderator
+    And I am on the homepage
+    And I click "Collections"
+    # Tile view modes in the "Collections" page are not using heading markup
+    # for titles.
+    Then I should see the text "Some berry pie"
+    When I go to the homepage of the "Some berry pie" collection
+    And I click "Edit"
+    And I fill in "Title" with "No berry pie"
+    And I press "Publish"
+    Then I should see the heading "No berry pie"
+
+    When I am on the homepage
+    And I click "Collections"
+    Then I should see the text "No berry pie"
+    And I should not see the text "Some berry pie"
