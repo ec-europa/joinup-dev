@@ -14,11 +14,30 @@
 #}
 {{ title_prefix }}
 {% if title %}
-  <h1 class="page__title">
-    {% if is_create_page %}
-      <span class="icon icon--plus"></span>
-    {% endif %}
-    {{ title }}
-  </h1>
+  <div class="page__title-wrapper">
+      {% if is_create_page %}
+        <h1 class="page__title">
+          <span class="icon icon--plus"></span>
+          {{ title }}
+        </h1>
+      {% elseif additional_content %}
+      <h1 class="page__title">{{ additional_content.full_label }}</h1>
+      {% if additional_content.is_latest_release %}
+        <div class="etiquette etiquette--blue">{{ 'Latest release'|t }}</div>
+      {% endif %}
+      <div class="details details--solution">
+        <div class="details__element">
+          <div class="value gray underline">dc9ee36</div>
+        </div>
+        <div class="details__element">
+          <div class="value gray">{{ additional_content.field_isr_creation_date }}</div>
+        </div>
+      </div>
+      {% else %}
+        <h1 class="page__title">
+          {{ title }}
+        </h1>
+      {% endif %}
+  </div>
 {% endif %}
 {{ title_suffix }}

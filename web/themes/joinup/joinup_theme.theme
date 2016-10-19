@@ -107,10 +107,13 @@ function joinup_theme_preprocess_block(&$variables) {
       $entity_type = $entity->getType();
     }
 
+    $entities = array(
+      'collection',
+      'asset_release',
+    );
     // Check if page is a listing and should not have a white background.
     if ($route_name == 'view.collections.page_1'
-    || (isset($entity_type) && ($entity_type == 'collection' || $entity_type == 'asset_release')
-     && $route_name == 'entity.rdf_entity.canonical')) {
+    || (isset($entity_type) && in_array($entity_type, $entities) && $route_name == 'entity.rdf_entity.canonical')) {
       $variables['is_view'] = TRUE;
     }
   }
@@ -327,9 +330,9 @@ function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $v
  * Implements hook_theme_suggestions_HOOK_alter() for field.html.twig.
  */
 function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  // Create field template for entities, which use custom templates.
   $entities = array(
     'asset_release',
-    'asset_distribution',
   );
   if (in_array($variables['element']['#bundle'], $entities)) {
     $suggestions[] = 'field__no_wrappers';

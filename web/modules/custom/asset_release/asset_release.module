@@ -61,6 +61,34 @@ function asset_release_preprocess_rdf_entity(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function asset_release_preprocess_page_title(&$variables) {
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
+  $route_match = \Drupal::routeMatch();
+  // Get entity type.
+  $rdf_entity = $route_match->getParameter('rdf_entity');
+  if (!empty($rdf_entity)) {
+
+    if ($rdf_entity->getType() !== 'asset_release') {
+      return;
+    }
+    $variables['additional_content']['full_label'] = new TranslatableMarkup('@label @ver', ['@label' => $rdf_entity->label(), '@ver' => $rdf_entity->field_isr_release_number->value]);
+
+    $is_latest_release = FALSE;
+    $field_solution = $rdf_entity->get('field_isr_is_version_of');
+    if (!empty($field_solution) && ($solution = $field_solution->entity)) {
+      if ($rdf_entity->id() === solution_get_latest_release($solution)) {
+        $is_latest_release = TRUE;
+      }
+    }
+    $variables['additional_content']['is_latest_release'] = $is_latest_release;
+    $variables['additional_content']['field_isr_creation_date'] = $rdf_entity->field_isr_creation_date->value;
+    $variables['additional_content']['entity_type'] = $rdf_entity->getType();
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function asset_release_theme($existing, $type, $theme, $path) {
