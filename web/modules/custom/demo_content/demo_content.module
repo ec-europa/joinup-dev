@@ -4,7 +4,3 @@
  * @file
  * Contains demo_content.module.
  */
-
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\og\Entity\OgMembership;
-use Drupal\og\Entity\OgRole;

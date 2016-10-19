@@ -4,6 +4,7 @@
  * @file
  * Contains functionality regarding the demo users of the joinup project.
  */
+
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
