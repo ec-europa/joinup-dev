@@ -7,6 +7,8 @@ use Drupal\facets\Plugin\facets\facet_source\SearchApiBaseFacetSource;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Query\ResultSetInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Represents a facet source which represents search_api_page pages.
@@ -21,11 +23,25 @@ use Drupal\search_api\Query\ResultSetInterface;
 class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetSourceInterface {
 
   /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface|null
+   */
+  protected $configFactory;
+
+  /**
    * The entity type manager.
    *
    * @var \Drupal\Core\Entity\EntityTypeManager|null
    */
   protected $entityTypeManager;
+
+  /**
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
 
   /**
    * The typed data manager.
@@ -35,17 +51,12 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
   protected $typedDataManager;
 
   /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface|null
-   */
-  protected $configFactory;
-
-  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, $query_type_plugin_manager, $search_results_cache) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, $query_type_plugin_manager, $search_results_cache, RequestStack $request_stack) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $query_type_plugin_manager, $search_results_cache);
+
+    $this->requestStack = $request_stack;
 
     // Load facet plugin definition and depending on those settings; load the
     // corresponding search api page and load its index.
@@ -54,6 +65,20 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
     $field = FieldStorageConfig::load($field_id);
     $index = $field->getSetting('index');
     $this->index = Index::load($index);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('plugin.manager.facets.query_type'),
+      $container->get('search_api.query_helper'),
+      $container->get('request_stack')
+    );
   }
 
   /**
@@ -81,7 +106,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
       $query = $search_api_index->query($options);
 
       // Keys.
-      $keys = \Drupal::request()->get('keys');
+      $keys = $this->requestStack->getCurrentRequest()->get('keys');
       if (!empty($keys)) {
         $query->keys($keys);
       }
