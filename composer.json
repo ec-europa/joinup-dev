@@ -9,7 +9,7 @@
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~1.0",
-        "drupal/core": "~8.2.1",
+        "drupal/core": "8.2.x-dev#30579c03b67069d8a037c29bb5c78b5e74ef872f",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^2.0",
         "drupal/facets": "dev-1.x#d5c0117eb59ab2593f6430e3f3035d60bc084653",
@@ -34,10 +34,10 @@
         "pear/console_table": "~1.3.0",
         "phing/phing": "^2.15.0",
         "php": ">=5.5.9",
+        "phpoffice/phpspreadsheet": "~0.0",
         "solarium/solarium": "~3.6.0",
         "symfony/dependency-injection": "2.8.2",
-        "typhonius/behattask": "1.0",
-        "phpoffice/phpspreadsheet": "~0.0"
+        "typhonius/behattask": "1.0"
     },
     "require-dev": {
         "behat/mink": "~1.7",
@@ -101,8 +101,7 @@
             "drupal/core": {
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                 "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
-                "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
-                "Combined #2818799 and #2818871. Conflicting when patched separately": "resources/patches/combined-2818799-and-2818871.patch"
+                "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch"
             },
             "drupal/inline_entity_form": {
                 "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"
