@@ -4,6 +4,8 @@ namespace Drupal\og_comment;
 
 use Drupal\comment\CommentAccessControlHandler;
 use Drupal\comment\CommentInterface;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultAllowed;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Og;
@@ -20,7 +22,52 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler {
    * {@inheritdoc}
    */
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
+    /** @var \Drupal\comment\CommentInterface|\Drupal\user\EntityOwnerInterface $entity */
     $access = parent::checkAccess($entity, $operation, $account);
+    if ($access instanceof AccessResultAllowed) {
+      return $access;
+    }
+
+    $comment_admin = $this->hasPermission($entity, $account, 'administer comments');
+    if ($operation == 'approve') {
+      return AccessResult::allowedIf($comment_admin && !$entity->isPublished())
+        ->cachePerPermissions()
+        ->addCacheableDependency($entity);
+    }
+
+    if ($comment_admin) {
+      $access = AccessResult::allowed()->cachePerPermissions();
+      $temp = $entity->getCommentedEntity()->access($operation, $account, TRUE);
+      return ($operation != 'view') ? $access : $access->andIf($temp);
+    }
+
+    switch ($operation) {
+      case 'view':
+        $host_entity_access = $entity->getCommentedEntity()->access($operation, $account, TRUE);
+        return AccessResult::allowedIf($this->hasPermission($entity, $account, 'access comments') && $entity->isPublished())->cachePerPermissions()->addCacheableDependency($entity)
+          ->andIf($host_entity_access);
+
+      case 'update':
+        return AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission($entity, $account, 'edit own comments'))->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
+
+      default:
+        // No opinion.
+        return AccessResult::neutral()->cachePerPermissions();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
+    // @Todo Test create...
+    return parent::checkCreateAccess($account, $context, $entity_bundle);
+  }
+
+  /**
+   * Check if user has either global or group permission.
+   */
+  protected function hasPermission($entity, $account, $permission) {
     if (!$entity instanceof CommentInterface) {
       throw new \Exception('Only comments can be handled.');
     }
@@ -28,16 +75,16 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler {
     $host_entity = $entity->getCommentedEntity();
     // Is group content?
     if (!Og::isGroupContent($host_entity->getEntityTypeId(), $host_entity->bundle())) {
-      return $access;
+      return AccessResult::neutral();
     }
     // Get group.
     $group_id = $host_entity->{OgGroupAudienceHelperInterface::DEFAULT_FIELD}->first()->target_id;
     if (!$group_id) {
-      return $access;
+      return AccessResult::neutral();
     }
-    /** @var FieldConfig $field_config */
+    /** @var \Drupal\field\Entity\FieldConfig $field_config */
     $field_config = $host_entity->{OgGroupAudienceHelperInterface::DEFAULT_FIELD}->first()->getFieldDefinition();
-    /** @var FieldStorageConfig $storage_definition */
+    /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
     $storage_definition = $field_config->getFieldStorageDefinition();
     $entity_type = $storage_definition->getSetting('target_type');
 
@@ -46,15 +93,7 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler {
 
     /** @var \Drupal\og\OgAccessInterface $og_access */
     $og_access = \Drupal::getContainer()->get('og.access');
-    $access = $og_access->userAccess($group, 'moderate comments', $account);
-    return $access;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
-    return parent::checkCreateAccess($account, $context, $entity_bundle);
+    return $og_access->userAccess($group, $permission, $account);
   }
 
 }

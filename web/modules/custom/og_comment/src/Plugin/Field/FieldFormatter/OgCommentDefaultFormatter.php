@@ -87,8 +87,7 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
       // $entity->get($field_name)->comment_count, but unpublished comments
       // should display if the user is an administrator.
       $elements['#cache']['contexts'][] = 'user.permissions';
-      $elements['#cache']['contexts'][] = 'og_membership_state';
-      $elements['#cache']['contexts'][] = 'user.roles';
+      $elements['#cache']['max-age'] = 0;
       if ($this->hasPermission('access comments', $items) || $this->hasPermission('administer comments', $items)) {
         $output['comments'] = [];
 
@@ -158,9 +157,9 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
     if (!$group_id) {
       return $access;
     }
-    /** @var FieldConfig $field_config */
+    /** @var \Drupal\field\Entity\FieldConfig $field_config */
     $field_config = $host_entity->{OgGroupAudienceHelperInterface::DEFAULT_FIELD}->first()->getFieldDefinition();
-    /** @var FieldStorageConfig $storage_definition */
+    /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
     $storage_definition = $field_config->getFieldStorageDefinition();
     $entity_type = $storage_definition->getSetting('target_type');
 
