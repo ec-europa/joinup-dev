@@ -93,6 +93,17 @@ function custom_page_entity_insert(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_entity_type_alter().
+ *
+ * Replaces the standard OG Menu Instance form with a customized one that is
+ * suitable for use in the front end.
+ */
+function custom_page_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+  $entity_types['ogmenu_instance']->setFormClass('edit', 'Drupal\custom_page\Form\OgMenuInstanceForm');
+}
+
+/**
  * Implements hook_menu_local_actions_alter().
  */
 function custom_page_menu_local_actions_alter(&$local_actions) {
