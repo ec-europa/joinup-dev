@@ -64,7 +64,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )asset releases:
+   * @Given (the following )releases:
    */
   public function givenAssetReleases(TableNode $asset_release_table) {
     $aliases = self::assetReleaseFieldAliases();
@@ -274,11 +274,44 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     // This is handled separatelly as it is not an entity reference but an
     // og_standard_reference.
     if (isset($fields['field_isr_is_version_of'])) {
-      $collection = $this->getRdfEntityByLabel($fields['field_isr_is_version_of'], 'solution');
-      $fields['field_isr_is_version_of'] = $collection->id();
+      $solution = $this->getRdfEntityByLabel($fields['field_isr_is_version_of'], 'solution');
+      $fields['field_isr_is_version_of'] = $solution->id();
     }
 
     return $fields;
+  }
+
+  /**
+   * Asserts that releases are shown in the page in the exact order.
+   *
+   * This step is meant for the releases overview page within a solution.
+   *
+   * @param TableNode $asset_release_table
+   *    The asset release titles.
+   *
+   * @throws \Exception
+   *    Thrown when a wrong number of releases is found or the releases are not
+   *    ordered properly.
+   *
+   * @Given I should see the (following )releases in the exact order:
+   */
+  public function assertReleasesAndOrder(TableNode $asset_release_table) {
+    $releases = [];
+    // Replace the column aliases with the actual field names.
+    foreach ($asset_release_table->getColumnsHash() as $title) {
+      $releases[] = $title['release'];
+    };
+
+    $release_titles = $this->getSession()->getPage()->findAll('css', '.timeline__release > .timeline__release-content > .timeline__meta > h2.timeline__release-title');
+    if (count($release_titles) != count($releases)) {
+      throw new \Exception("Wrong number of releases found.");
+    }
+
+    foreach ($releases as $index => $title) {
+      if ($release_titles[$index]->getText() !== $title) {
+        throw new \Exception("Title {$releases[$index]} is not in the correct order.");
+      }
+    }
   }
 
 }
