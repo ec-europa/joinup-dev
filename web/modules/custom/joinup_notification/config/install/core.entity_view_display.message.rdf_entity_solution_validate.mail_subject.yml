@@ -3,10 +3,11 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_subject
-    - message.template.workflow_transition
-id: message.workflow_transition.mail_subject
+    - field.field.message.rdf_entity_solution_validate.field_message_content
+    - message.template.rdf_entity_solution_validate
+id: message.rdf_entity_solution_validate.mail_subject
 targetEntityType: message
-bundle: workflow_transition
+bundle: rdf_entity_solution_validate
 mode: mail_subject
 content:
   partial_0:
@@ -14,4 +15,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_message_content: true
   partial_1: true

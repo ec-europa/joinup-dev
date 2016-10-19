@@ -14,6 +14,7 @@ Feature: "Add event" visibility options.
       | logo       | logo.png                      |
       | banner     | banner.jpg                    |
       | affiliates | Ragged Tower, Prince of Magic |
+      | state      | validated                     |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Ragged Tower" solution
@@ -43,6 +44,7 @@ Feature: "Add event" visibility options.
       | logo       | logo.png                        |
       | banner     | banner.jpg                      |
       | affiliates | The Luscious Bridges            |
+      | state      | validated                       |
     And I am logged in as a facilitator of the "The Luscious Bridges" solution
     When I go to the homepage of the "The Luscious Bridges" solution
     And I click "Add event"
