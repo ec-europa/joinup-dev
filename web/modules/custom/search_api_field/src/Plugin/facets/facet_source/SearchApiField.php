@@ -2,6 +2,7 @@
 
 namespace Drupal\search_api_field\Plugin\facets\facet_source;
 
+use Drupal\Core\Path\CurrentPathStack;
 use Drupal\facets\FacetSource\SearchApiFacetSourceInterface;
 use Drupal\facets\Plugin\facets\facet_source\SearchApiBaseFacetSource;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -30,6 +31,13 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
   protected $configFactory;
 
   /**
+   * The current path stack.
+   *
+   * @var \Drupal\Core\Path\CurrentPathStack
+   */
+  protected $currentPathStack;
+
+  /**
    * The entity type manager.
    *
    * @var \Drupal\Core\Entity\EntityTypeManager|null
@@ -53,9 +61,10 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, $query_type_plugin_manager, $search_results_cache, RequestStack $request_stack) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, $query_type_plugin_manager, $search_results_cache, RequestStack $request_stack, CurrentPathStack $current_path_stack) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $query_type_plugin_manager, $search_results_cache);
 
+    $this->currentPathStack = $current_path_stack;
     $this->requestStack = $request_stack;
 
     // Load facet plugin definition and depending on those settings; load the
@@ -77,7 +86,8 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
       $plugin_definition,
       $container->get('plugin.manager.facets.query_type'),
       $container->get('search_api.query_helper'),
-      $container->get('request_stack')
+      $container->get('request_stack'),
+      $container->get('path.current')
     );
   }
 
@@ -149,7 +159,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    */
   public function getPath() {
     // @todo Is this always right?
-    $path = \Drupal::service('path.current')->getPath();
+    $path = $this->currentPathStack->getPath();
     return $path . '/?keys=' . \Drupal::request()->get('keys');
   }
 
