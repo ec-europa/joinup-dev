@@ -6,9 +6,9 @@ Feature: "Add document" visibility options.
 
   Scenario: "Add document" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following collections:
-      | title                   | logo     | banner     |
-      | Ring of Truth           | logo.png | banner.jpg |
-      | The Storms of the Waves | logo.png | banner.jpg |
+      | title                   | logo     | banner     | state     |
+      | Ring of Truth           | logo.png | banner.jpg | validated |
+      | The Storms of the Waves | logo.png | banner.jpg | validated |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Ring of Truth" collection
@@ -35,8 +35,8 @@ Feature: "Add document" visibility options.
 
   Scenario: Add document as a facilitator.
     Given collections:
-      | title                | logo     | banner     |
-      | Hunter in the Swords | logo.png | banner.jpg |
+      | title                | logo     | banner     | state     |
+      | Hunter in the Swords | logo.png | banner.jpg | validated |
     And I am logged in as a facilitator of the "Hunter in the Swords" collection
 
     When I go to the homepage of the "Hunter in the Swords" collection

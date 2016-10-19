@@ -46,7 +46,7 @@ Feature: Proposing a collection
     And I press "Add existing owner"
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
-    And I press "Save"
+    And I press "Save as draft"
     Then I should see the heading "Ancient and Classical Mythology"
     And I should see the text "Environment (WIP!)"
     And I should see the text "Belgium"
@@ -70,6 +70,7 @@ Feature: Proposing a collection
   Scenario: Propose a collection with a duplicate name
     Given the following collection:
       | title | The Ratcatcher's Guild |
+      | state | validated              |
     Given I am logged in as a user with the "authenticated" role
     When I am on the homepage
     And I click "Propose collection"
@@ -77,7 +78,7 @@ Feature: Proposing a collection
       | Title       | The Ratcatcher's Guild                                            |
       | Description | A guild of serious men with sacks in which things are struggling. |
     And I attach the file "logo.png" to "Logo"
-    And I press "Save"
+    And I press "Save as draft"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
 
   @javascript

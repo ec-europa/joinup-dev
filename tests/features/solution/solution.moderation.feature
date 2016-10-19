@@ -9,6 +9,7 @@ Feature: Solution moderation
     Given the following collection:
       | title | Collection propose state test |
       | logo  | logo.png                      |
+      | state | validated                     |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage
