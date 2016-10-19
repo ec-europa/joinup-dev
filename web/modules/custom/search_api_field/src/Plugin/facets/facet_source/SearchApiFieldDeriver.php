@@ -2,9 +2,13 @@
 
 namespace Drupal\search_api_field\Plugin\facets\facet_source;
 
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\PluginBase;
+use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\facets\FacetSource\FacetSourceDeriverBase;
 use Drupal\field\Entity\FieldStorageConfig;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Derives a facet source plugin definition for every search api page.
@@ -18,6 +22,40 @@ use Drupal\field\Entity\FieldStorageConfig;
 class SearchApiFieldDeriver extends FacetSourceDeriverBase {
 
   /**
+   * The entity field manager.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+  /**
+   * Constructs a new SearchApiFieldDeriver.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager.
+   * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
+   *   The string translation manager.
+   */
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, TranslationInterface $string_translation) {
+    $this->entityFieldManager = $entity_field_manager;
+    $this->entityTypeManager = $entity_type_manager;
+    $this->stringTranslation = $string_translation;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, $base_plugin_id) {
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('entity_field.manager'),
+      $container->get('string_translation')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
@@ -25,7 +63,7 @@ class SearchApiFieldDeriver extends FacetSourceDeriverBase {
 
     if (!isset($this->derivatives[$base_plugin_id])) {
 
-      $map = \Drupal::entityManager()->getFieldMapByFieldType('search_api_field');
+      $map = $this->entityFieldManager->getFieldMapByFieldType('search_api_field');
       $ids = [];
       foreach ($map as $type => $info) {
         foreach ($info as $name => $data) {
