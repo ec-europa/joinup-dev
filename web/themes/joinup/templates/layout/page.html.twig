@@ -69,14 +69,14 @@
         </aside>
       {% endif %}
 
-      <div class="section section--main mdl-cell {{ is_propose_collection ? 'mdl-cell--12-col content-container--form' : 'mdl-cell--8-col content-container' }}">
+      <div class="section section--main mdl-cell {{ is_propose_collection ? 'mdl-cell--12-col mdl-grid--no-spacing content-container--form' : 'mdl-cell--8-col content-container' }}">
         {% if page.content_top %}
-          <div class="section section--content-top">
+          <div class="section section--content-top {{ is_propose_collection ? 'mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop form__cell'}}">
             {{ page.content_top }}
           </div>
         {% endif %}
 
-        <div class="section section--content">
+        <div class="section section--content-middle {{ is_propose_collection ? 'mdl-cell mdl-cell--12-col form__cell' }}">
           {{ page.content }}
         </div>
 
