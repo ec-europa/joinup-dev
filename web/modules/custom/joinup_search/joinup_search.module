@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Provides functionality for the Joinup search module.
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Session\AccountInterface;
+
+/**
+ * Implements hook_entity_field_access().
+ *
+ * Grant access to fields of type search only to moderators.
+ */
+function joinup_search_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
+  if ($operation === 'edit' && $field_definition->getType() === 'search_api_field' && !$account->hasPermission('administer search fields')) {
+    return AccessResult::forbidden()->addCacheContexts(['user.permissions']);
+  }
+
+  return AccessResult::neutral();
+}
