@@ -270,5 +270,10 @@
         {
             "value": "2016-10-07T11:03:15"
         }
+    ],
+    "field_ar_state": [
+        {
+            "value": "validated"
+        }
     ]
 }
