@@ -4,13 +4,18 @@ source:
   plugin: collection
   track_changes: true
 process:
+  id: uri
   label: collection
-  rid:
+  field_policy_domain:
+    plugin: term_reference
+    source: policy
+  # @todo Put here real value from source.
+  field_ar_state:
     plugin: default_value
-    default_value: collection
+    default_value: validated
 destination:
   plugin: entity:rdf_entity
-  bundle: collection
+  default_bundle: collection
 #migration_dependencies:
 #  required:
 #    - mapping_table

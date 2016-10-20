@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies: {  }
 template: rdf_entity_solution_delete
-label: 'Solution rdf entity deletion'
-description: 'Message to the solution owner, when the solution is deleted.'
+label: 'Rdf entity - solution - delete'
+description: 'Message to the owner when a solution is deleted'
 text:
   - "<p>Joinup - Content has been deleted</p>\r\n"
   - "<p>The content \"[message:field_message_content:entity:label]\" has been deleted from [site:name].</p>\r\n"

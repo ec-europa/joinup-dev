@@ -101,12 +101,9 @@
   +breakpoint(desktop)
     display: none
   .icon
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
     color: #fff
     +icon-size(60px)
+    +centered
 
 .featured__menu-link
   text-decoration: none
@@ -155,7 +152,4 @@
     +breakpoint(lg-desktop)
       right: 0
   .circle-menu__button
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
+    +centered

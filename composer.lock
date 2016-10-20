@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e1561d6fe8dfb395a9d9b217adae0171",
-    "content-hash": "b7f909992ce84c833ab2f963de9759d2",
+    "hash": "97fb783aee1d11dde2b3161aa43a8d68",
+    "content-hash": "ef4de692ba84c9b518860d40b347c80d",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1551,16 +1551,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.2.1",
+            "version": "8.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "a5549f2a541c0fbb0565e1576a63b917813fadba"
+                "reference": "30579c03b67069d8a037c29bb5c78b5e74ef872f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/a5549f2a541c0fbb0565e1576a63b917813fadba",
-                "reference": "a5549f2a541c0fbb0565e1576a63b917813fadba",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/30579c03b67069d8a037c29bb5c78b5e74ef872f",
+                "reference": "30579c03b67069d8a037c29bb5c78b5e74ef872f",
                 "shasum": ""
             },
             "require": {
@@ -1706,11 +1706,7 @@
             "extra": {
                 "patches_applied": {
                     "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
-                    "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
-                    "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
-                    "MigrateSkipRowException $save_to_map being TRUE, does not skip silently as should @see https://www.drupal.org/node/2818799": "https://www.drupal.org/files/issues/2818799-4.patch",
-                    "Allow logging skip row exception messages @see https://www.drupal.org/node/2818871": "https://www.drupal.org/files/issues/2818871-13.patch",
-                    "Entity destination ID schema should match entity ID definition @see https://www.drupal.org/node/2783715": "https://www.drupal.org/files/issues/2783715-16.patch"
+                    "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch"
                 }
             },
             "autoload": {
@@ -1734,7 +1730,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-10-11 10:18:49"
+            "time": "2016-10-19 08:16:08"
         },
         {
             "name": "drupal/digital_size_formatter",
@@ -7199,7 +7195,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/klausi/coder/zipball/b08682bd939cf7d3ac7034bee792aa17f80e19d7",
                 "reference": "b08682bd939cf7d3ac7034bee792aa17f80e19d7",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "ext-mbstring": "*",
@@ -7211,7 +7207,7 @@
                 "phpunit/phpunit": ">=3.7"
             },
             "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
@@ -8953,6 +8949,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "drupal/core": 20,
         "drupal/facets": 20,
         "drupal/inline_entity_form": 20,
         "drupal/migrate_spreadsheet": 20,

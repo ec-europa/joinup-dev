@@ -2,7 +2,7 @@ name: Joinup core
 type: module
 description: Contains field storage configuration.
 core: 8.x
-package: Custom
+package: Joinup
 
 dependencies:
   - comment
