@@ -30,7 +30,7 @@ solution_workflow:
       label: Blacklisted
   transitions:
     draft:
-      label: Create
+      label: Save as draft
       from: [__new__, draft, proposed, validated, in_assessment, blacklisted, deletion_request]
       to: draft
     propose:
@@ -38,11 +38,11 @@ solution_workflow:
       from: [__new__, draft, proposed, validated, in_assessment, blacklisted, deletion_request]
       to: proposed
     validate:
-      label: Validate
+      label: Publish
       from: [__new__, draft, proposed, validated, in_assessment, blacklisted, deletion_request]
       to: validated
     in_assessment:
-      label: Report
+      label: Request changes
       from: [proposed, validated]
       to: in_assessment
     request_deletion:

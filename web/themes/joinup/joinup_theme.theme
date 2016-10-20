@@ -170,7 +170,8 @@ function joinup_theme_preprocess_container(&$variables) {
   if (!empty($route_name) && in_array($route_name, $form_routes)
     && isset($variables['element']['#parents'])
     && count($variables['element']['#parents']) == 1
-    && $variables['element']['#id'] != 'edit-actions') {
+    && $variables['element']['#id'] != 'edit-actions'
+  ) {
     $variables['is_form_wrapper'] = TRUE;
   }
 }
@@ -243,11 +244,22 @@ function joinup_theme_preprocess_form_element(&$variables) {
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter() for input.html.twig.
+ *
+ * Add theme suggestions so we can provide different styling on some form
+ * buttons.
  */
 function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $variables) {
   if (empty($variables['element']['#is_button'])) {
     return;
   }
+
+  // Skip dropbuttons since we have no custom styling for them. These can be
+  // recognized by not having an '#array_parents' property .
+  // @see \Drupal\Core\Render\Element\Actions::preRenderActionsDropbutton()
+  if (empty($variables['element']['#array_parents']) || !is_array($variables['element']['#array_parents'])) {
+    return;
+  }
+
   // We need to have different styling on some buttons. The key of this
   // multi-dimension array represents the suggestion name, while its values
   // are the build array key of the button being rendered.

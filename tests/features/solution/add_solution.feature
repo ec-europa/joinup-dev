@@ -8,6 +8,7 @@ Feature: "Add solution" visibility options.
     Given the following collection:
       | title | Collection solution test |
       | logo  | logo.png                 |
+      | state | validated                |
 
     When I am logged in as a "facilitator" of the "Collection solution test" collection
     And I go to the homepage of the "Collection solution test" collection
@@ -25,6 +26,7 @@ Feature: "Add solution" visibility options.
     Given the following collection:
       | title | Collection propose solution test |
       | logo  | logo.png                         |
+      | state | validated                        |
 
     When I am an anonymous user
     And I go to the homepage
@@ -64,7 +66,8 @@ Feature: "Add solution" visibility options.
   Scenario: Add solution as a collection facilitator.
     Given the following collection:
       | title | Belgian barista's |
-      | logo  | logo.png                   |
+      | logo  | logo.png          |
+      | state | validated         |
     And the following contact:
       | email | foo@bar.com                 |
       | name  | Contact information example |
@@ -84,7 +87,6 @@ Feature: "Add solution" visibility options.
       | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)        |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
-      | State            | proposed                                                               |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I attach the file "text.pdf" to "Documentation"
     And I attach the file "logo.png" to "Logo"
@@ -97,11 +99,10 @@ Feature: "Add solution" visibility options.
     And I press "Add existing owner" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
-    And I press "Save"
+    And I press "Propose"
     When I am logged in as a moderator
     When I go to the "Espresso is the solution" solution edit form
-    And I fill in "State" with "validated"
-    And I press "Save"
+    And I press "Publish"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "Espresso is the solution"
     And I should see the text "This is a test text"
@@ -119,7 +120,7 @@ Feature: "Add solution" visibility options.
     When I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
     When I fill in the following:
-      | Title            | V60 filter coffee solution                                                      |
+      | Title            | V60 filter coffee solution                                             |
       | Description      | This is a test text                                                    |
       | Documentation    | text.pdf                                                               |
       | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)        |
@@ -137,7 +138,7 @@ Feature: "Add solution" visibility options.
     And I press "Add existing owner" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
-    And I press "Save"
+    And I press "Propose"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "V60 filter coffee solution"
     When I click "Belgian barista's"

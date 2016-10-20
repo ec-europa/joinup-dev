@@ -23,6 +23,7 @@ Feature: Solution API
       | moderation        | yes               |
       | elibrary creation | facilitators      |
       | affiliates        | My first solution |
+      | state             | validated         |
     Then I should have 1 solution
 
   Scenario: Programmatically create a solution using only the mandatory fields
@@ -37,6 +38,7 @@ Feature: Solution API
       | moderation        | yes                         |
       | elibrary creation | facilitators                |
       | affiliates        | My first solution mandatory |
+      | state             | validated                   |
     Then I should have 1 solution
 
   Scenario: Assign ownership during creation of solutions through UI
@@ -55,6 +57,7 @@ Feature: Solution API
       | moderation        | no                       |
       | closed            | no                       |
       | elibrary creation | facilitators             |
+      | state             | validated                |
     And the following collection user memberships:
       | user              | collection               | roles       |
       | Solution API user | This is a klm collection | facilitator |
