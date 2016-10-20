@@ -45,14 +45,14 @@ function joinup_migrate_schema() {
           'not null' => FALSE,
         ],
         'new_collection' => [
-          'description' => 'New collection',
+          'description' => 'If "Yes" a new collection will be created using the data from the Excel sheet. If "No" then the collection will be created using migrated data.',
           'type' => 'varchar',
           'length' => 32,
           'not null' => TRUE,
           'default' => '',
         ],
         'del' => [
-          'description' => 'Delete',
+          'description' => 'If "Yes" then this content should not be migrated.',
           'type' => 'varchar',
           'length' => 10,
           'not null' => TRUE,
