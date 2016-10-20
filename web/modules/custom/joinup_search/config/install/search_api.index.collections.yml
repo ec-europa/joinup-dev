@@ -136,6 +136,11 @@ field_settings:
       fields:
         - 'entity:node/og_audience'
         - 'entity:rdf_entity/og_audience'
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
 processor_settings:
   add_url:
     plugin_id: add_url

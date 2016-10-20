@@ -13,6 +13,7 @@ Feature: Event API
       | logo              | logo.png         |
       | moderation        | yes              |
       | elibrary creation | facilitators     |
+      | state             | validated        |
     And event content:
       | title       | short title | body                                     | collection       | start date          |
       | Dummy Event | Short       | This is some dummy content like foo:bar. | Le Event Heureux | 2016-03-15T11:12:12 |

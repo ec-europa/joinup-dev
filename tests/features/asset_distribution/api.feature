@@ -21,6 +21,7 @@ Feature: Distribution API
       | moderation        | yes                                   |
       | elibrary creation | facilitators                          |
       | affiliates        | Asset distribution solution           |
+      | state             | validated                             |
     And the following distribution:
       | title       | Asset distribution entity foo         |
       | description | Asset distribution sample description |
@@ -50,6 +51,7 @@ Feature: Distribution API
       | moderation        | yes                               |
       | elibrary creation | facilitators                      |
       | affiliates        | AD first solution mandatory short |
+      | state             | validated                         |
     And the following distribution:
       | title       | Asset distribution entity foo short   |
       | description | Asset distribution sample description |

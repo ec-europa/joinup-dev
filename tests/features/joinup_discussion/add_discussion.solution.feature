@@ -14,6 +14,7 @@ Feature: "Add discussion" visibility options.
       | logo       | logo.png                         |
       | banner     | banner.jpg                       |
       | affiliates | Eager Sliver, The Silent Bridges |
+      | state      | validated                        |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Eager Sliver" solution
@@ -43,6 +44,7 @@ Feature: "Add discussion" visibility options.
       | logo       | logo.png                       |
       | banner     | banner.jpg                     |
       | affiliates | Emerald in the Luck            |
+      | state      | validated                      |
     And I am logged in as a facilitator of the "Emerald in the Luck" solution
 
     When I go to the homepage of the "Emerald in the Luck" solution

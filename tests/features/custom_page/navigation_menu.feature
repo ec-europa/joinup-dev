@@ -6,8 +6,9 @@ Feature: Navigation menu for custom pages
 
   Scenario: Access the navigation menu through the contextual link
     Given the following collection:
-      | title  | Rainbow tables |
-      | logo   | logo.png       |
+      | title | Rainbow tables |
+      | logo  | logo.png       |
+      | state | validated      |
 
     When I am logged in as a facilitator of the "Rainbow tables" collection
     And I go to the homepage of the "Rainbow tables" collection
