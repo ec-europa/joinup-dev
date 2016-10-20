@@ -53,7 +53,7 @@ Feature: Solution editing.
     And I press "Add existing owner" at the "Owner" field
     And I fill in "Owner" with "Acme inc."
     And I press "Add owner"
-    And I press "Save"
+    And I press "Propose"
     Then I should see the heading "Solution A"
 
     And I should see the link "Edit"
@@ -69,7 +69,7 @@ Feature: Solution editing.
     And I should see the text "Logo"
     And I should see the text "Banner"
     When I fill in "Title" with "Solution A revised"
-    And I press "Save"
+    And I press "Propose"
     Then I should see the heading "Solution A revised"
 
     # This user is an owner only of Solution A.
