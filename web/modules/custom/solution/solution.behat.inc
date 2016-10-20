@@ -500,7 +500,11 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \Exception
    *    Thrown when the user does not exist.
    *
-   * @Given for the following solution, the corresponding user should have the corresponding (available )options:
+   * @todo: Maybe there is a better definition available here like 'The
+   * following state buttons should be available for the user on the
+   * collection'.
+   *
+   * @Given for the following solution, the corresponding user should have the corresponding (available )state buttons:
    */
   public function verifyWorkflowStates(TableNode $check_table) {
     foreach ($check_table->getColumnsHash() as $values) {
@@ -514,9 +518,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
 
       // Convert states to an array.
-      $states = empty($values['states']) ? [] : explode(', ', $values['states']);
+      $states = empty($values['states']) ? [] : explode(',', $values['states']);
+      $states = array_map('trim', $states);
 
-      $this->assertAvailableStates($solution, $states, $user);
+      $this->assertAvailableTransitions($solution, $states, $user);
     }
   }
 
