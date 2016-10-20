@@ -334,6 +334,24 @@ function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $v
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter() for field.html.twig.
+ */
+function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  // Create field template for entities, which use custom templates.
+  $entities = array(
+    'discussion',
+    'event',
+  );
+
+  if (in_array($variables['element']['#bundle'], $entities) && $variables['element']['#view_mode'] == 'view_mode_tile') {
+    $suggestions[] = 'field__no_wrappers';
+    if ($variables['element']['#field_type'] == 'entity_reference') {
+      $suggestions[] = 'field__tags_wrapper';
+    }
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_alter().
  */
 function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
