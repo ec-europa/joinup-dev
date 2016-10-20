@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "97fb783aee1d11dde2b3161aa43a8d68",
-    "content-hash": "ef4de692ba84c9b518860d40b347c80d",
+    "hash": "fb2e12cc2d4d401a85749876b61ea5d4",
+    "content-hash": "53c849b8ee9dceb192169ee7f265a819",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1706,7 +1706,9 @@
             "extra": {
                 "patches_applied": {
                     "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
-                    "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch"
+                    "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
+                    "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
+                    "Entity destination ID schema should match entity ID definition @see https://www.drupal.org/node/2783715": "https://www.drupal.org/files/issues/entity_destination_id-2783715-24.patch"
                 }
             },
             "autoload": {
@@ -2209,7 +2211,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/migrate_spreadsheet",
-                "reference": "2c2d43fa5739c90beaf4e2cb8ff53ae804c87008"
+                "reference": "a582857cd61269079b7acb5bec43ea6144bfffc4"
             },
             "require": {
                 "drupal/core": "*",
@@ -2221,8 +2223,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+7-dev",
-                    "datestamp": "1476646739"
+                    "version": "8.x-1.0-alpha4+2-dev",
+                    "datestamp": "1476892139"
                 }
             },
             "autoload": {
@@ -2251,7 +2253,7 @@
                 "source": "https://www.drupal.org/project/migrate_spreadsheet",
                 "issues": "https://www.drupal.org/project/issues/migrate_spreadsheet"
             },
-            "time": "2016-10-16 19:35:48"
+            "time": "2016-10-19 15:50:45"
         },
         {
             "name": "drupal/og",
@@ -7195,7 +7197,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/klausi/coder/zipball/b08682bd939cf7d3ac7034bee792aa17f80e19d7",
                 "reference": "b08682bd939cf7d3ac7034bee792aa17f80e19d7",
-                "shasum": null
+                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
@@ -7207,7 +7209,7 @@
                 "phpunit/phpunit": ">=3.7"
             },
             "type": "library",
-            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
