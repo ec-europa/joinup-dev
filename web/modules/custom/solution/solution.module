@@ -234,6 +234,8 @@ function solution_rdf_entity_update(EntityInterface $entity) {
     return;
   }
 
+  // @todo: Maybe we can avoid the attempt to delete from graph if there is no
+  // transition made. This should move to an event subscriber.
   $state = $entity->field_is_state->value;
   if (in_array($state, ['validated', 'deletion_request'])) {
     \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');

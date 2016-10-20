@@ -73,17 +73,15 @@
 .filter__dropdown-toggle
   &.is-active
     &:before
-      position: absolute
       bottom: -30px
-      left: 50%
       display: block
       width: 0
       height: 0
       content: ''
-      transform: translateX(-50%)
       border-right: 12px solid transparent
       border-bottom: 12px solid #fff
       border-left: 12px solid transparent
+      +centered($horizontal: true, $vertical: false)
 
 .filter__dropdown
   &.is-active

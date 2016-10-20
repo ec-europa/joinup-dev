@@ -1,0 +1,7 @@
+name: 'Search API field'
+type: module
+description: 'Adds a search field to entities.'
+package: Search
+dependencies:
+  - search_api
+core: '8.x'
