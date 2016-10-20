@@ -68,19 +68,22 @@
  */
 #}
 <div class="listing__card listing__card--stats-container mdl-card">
+  <div class="listing__image">{{ content.field_event_logo }}</div>
   <div class="listing__metadata">
     <div class="listing__field">
-      <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
-      <h5 class="listing__author">{{ author_name|striptags }}</h5>
+      <h2 class="listing__title">{{ content.field_event_short_title }}<span class="icon icon--out"></span></h2>
     </div>
     <div class="listing__field">
-      <p class="listing__teaser">{{ content.field_discussion_content }}</p>
+      <p class="listing__teaser">{{ content.body }}</p>
     </div>
-    <div class="listing__field listing__tags">{{ content.field_topic }}</div>
     <div class="listing__field listing__stats mdl-card__actions">
       <div class="listing__stat">
-        <span class="listing__text">22</span>
-        <span class="listing__icon icon icon--like"></span>
+        <span class="listing__text">{{ content.field_event_start_date }}</span>
+        <span class="listing__icon icon icon--events"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">BE</span>
+        <span class="listing__icon icon icon--location"></span>
       </div>
     </div>
   </div>

@@ -21,9 +21,17 @@ content:
   field_discussion_content:
     weight: 1
     label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
+    settings:
+      trim_length: 200
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: text_trimmed
   field_topic:
     weight: 0
     label: hidden
