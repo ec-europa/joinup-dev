@@ -50,17 +50,15 @@
     height: 110%
     background-color: $color-grey-light
     &:before
-      position: absolute
       top: 38px
-      left: 50%
       display: block
       width: 18px
       height: 18px
       content: ''
-      transform: translateX(-50%)
       border: 4px solid $color-grey-bg
       background-color: $color-grey-light
       +border-radius(50%)
+      +centered($horizontal: true, $vertical: false)
 
 .timeline__release-content
   position: relative
