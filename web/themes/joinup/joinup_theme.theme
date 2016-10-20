@@ -344,7 +344,12 @@ function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $
     'news',
   );
 
-  if (in_array($variables['element']['#bundle'], $entities) && $variables['element']['#view_mode'] == 'view_mode_tile') {
+  $view_modes = array(
+    'view_mode_tile',
+    'view_mode_featured',
+  );
+
+  if (in_array($variables['element']['#bundle'], $entities) && in_array($variables['element']['#view_mode'], $view_modes)) {
     $suggestions[] = 'field__no_wrappers';
     if ($variables['element']['#field_type'] == 'entity_reference') {
       $suggestions[] = 'field__tags_wrapper';
