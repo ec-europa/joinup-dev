@@ -209,6 +209,13 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
         $form['links'][$id]['parent'] = $element['parent'];
       }
     }
+
+    $form['description'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $this->t('Drag pages to change their order. Disable pages to hide them from the menu.'),
+      '#attributes' => ['class' => ['description']],
+    ];
     return $form;
   }
 
