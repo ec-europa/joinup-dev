@@ -91,7 +91,7 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    * @param string $bundle
    *   Optional bundle to check. If omitted, the entity can be of any bundle.
    *
-   * @return \Drupal\Core\Entity\Entity
+   * @return \Drupal\Core\Entity\EntityInterface
    *   The requested entity.
    *
    * @throws \Exception
