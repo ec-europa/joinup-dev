@@ -15,7 +15,7 @@ dependencies:
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
     - field.field.node.event.og_audience
-    - image.style.tile_image
+    - image.style.image_style_event_logo
     - node.type.event
   module:
     - datetime
@@ -46,7 +46,7 @@ content:
     weight: 1
     label: hidden
     settings:
-      image_style: tile_image
+      image_style: image_style_event_logo
       image_link: content
     third_party_settings:
       ds:
