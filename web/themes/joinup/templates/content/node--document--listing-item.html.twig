@@ -67,15 +67,25 @@
  *
  */
 #}
-<div class="listing__card listing__card--inline-containers mdl-card">
+{%
+  set classes = [
+    'listing__card',
+    'mdl-card',
+    'listing__card--stats-container',
+    view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
+  ]
+%}
+<div class="{{ classes|join(' ') }}">
   <div class="listing__metadata">
     <div class="listing__field">
-      <h2 class="listing__title">{{ label }}</h2>
-      <h5 class="listing__author">{{ author_name|striptags }}</h5>
+      <h2 class="listing__title">{{ content.field_document_short_title }}</h2>
     </div>
     <div class="listing__field">
       <p class="listing__teaser">{{ content.body }}</p>
     </div>
-    <div class="listing__field listing__tags">{{ content.field_topic }}</div>
+    <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">
+      <a href="{{ url }}" class="listing__action-link action-link">{{ 'Details'|t }}</a>
+      <a href="{{ content.field_document_file|render|striptags|trim }}" class="listing__action-link action-link">{{ 'Download'|t }}</a>
+    </div>
   </div>
 </div>

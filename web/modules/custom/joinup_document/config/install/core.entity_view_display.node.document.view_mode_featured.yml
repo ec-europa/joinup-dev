@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.view_mode_tile
+    - core.entity_view_mode.node.view_mode_featured
     - field.field.node.document.body
     - field.field.node.document.field_comments
     - field.field.node.document.field_document_file
@@ -16,10 +16,10 @@ dependencies:
     - file
     - text
     - user
-id: node.document.view_mode_tile
+id: node.document.view_mode_featured
 targetEntityType: node
 bundle: document
-mode: view_mode_tile
+mode: view_mode_featured
 content:
   body:
     label: hidden

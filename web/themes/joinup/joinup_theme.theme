@@ -342,6 +342,7 @@ function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $
     'discussion',
     'event',
     'news',
+    'document',
   );
 
   $view_modes = array(
@@ -354,6 +355,23 @@ function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $
     if ($variables['element']['#field_type'] == 'entity_reference') {
       $suggestions[] = 'field__tags_wrapper';
     }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for node.html.twig.
+ */
+function joinup_theme_theme_suggestions_node_alter(array &$suggestions, array $variables) {
+  // Create the same template suggestion for tile and featured view modes.
+  $view_mode = $variables['elements']['#view_mode'];
+  $bundle = $variables['elements']['#node']->bundle();
+  $listing_modes = array(
+    'view_mode_tile',
+    'view_mode_featured',
+  );
+
+  if (in_array($view_mode, $listing_modes)) {
+    $suggestions[] = 'node__' . str_replace('-', '_', $bundle) . '__listing_item';
   }
 }
 
