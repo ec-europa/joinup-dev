@@ -180,6 +180,11 @@ function joinup_theme_preprocess_container(&$variables) {
   ) {
     $variables['is_form_wrapper'] = TRUE;
   }
+
+  // Check if action buttons are on collection propose form.
+  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-actions' && $route_name == 'rdf_entity.propose_form') {
+    $variables['is_collection'] = TRUE;
+  }
 }
 
 /**
