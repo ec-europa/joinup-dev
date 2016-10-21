@@ -38,43 +38,19 @@ dependencies:
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
+    - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.solution
   module:
     - ds
-    - og
+    - image
     - text
-third_party_settings:
-  ds:
-    layout:
-      id: ds_1col_wrapper
-      path: modules/contrib/ds
-      library: ''
-      disable_css: false
-      entity_classes: all_classes
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class:
-            listing__card: listing__card
-            mdl-card: mdl-card
-          ds_content:
-            listing__metadata: listing__metadata
-    regions:
-      ds_content:
-        - label
-        - field_is_description
 id: rdf_entity.solution.view_mode_tile
 targetEntityType: rdf_entity
 bundle: solution
 mode: view_mode_tile
 content:
   field_is_description:
-    weight: 1
+    weight: 26
     label: hidden
     settings:
       trim_length: 200
@@ -108,6 +84,21 @@ content:
             fis-def-at: false
             fi-def-at: false
     type: text_trimmed
+  field_is_logo:
+    type: image
+    weight: 25
+    label: hidden
+    settings:
+      image_style: image_style_collection_logo
+      image_link: content
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
   field_is_solution_category:
     weight: 3
     label: above
@@ -116,46 +107,19 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   label:
-    label: hidden
     type: string
-    weight: 0
+    weight: 24
+    label: hidden
     settings:
       link_to_entity: true
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: div
-            fi-cl: listing__title
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
-  og_group:
-    weight: 0
-    type: og_group_subscribe
-    label: above
-    settings: {  }
-    third_party_settings: {  }
+            classes: {  }
 hidden:
   field_is_actor: true
   field_is_affiliations_requests: true
@@ -171,7 +135,6 @@ hidden:
   field_is_issue_tracker: true
   field_is_landing_page: true
   field_is_language: true
-  field_is_logo: true
   field_is_metrics_page: true
   field_is_moderation: true
   field_is_modification_date: true
@@ -193,4 +156,5 @@ hidden:
   field_spatial_coverage: true
   field_status: true
   licence: true
+  og_group: true
   releases_overview: true

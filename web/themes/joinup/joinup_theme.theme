@@ -334,6 +334,47 @@ function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $v
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter() for field.html.twig.
+ */
+function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  // Create field template for entities, which use custom templates.
+  $entities = array(
+    'collection',
+    'solution',
+    'asset_distribution',
+  );
+
+  $view_modes = array(
+    'view_mode_tile',
+    'view_mode_featured',
+  );
+
+  if (in_array($variables['element']['#bundle'], $entities) && in_array($variables['element']['#view_mode'], $view_modes)) {
+    $suggestions[] = 'field__no_wrappers';
+    if ($variables['element']['#field_type'] == 'entity_reference') {
+      $suggestions[] = 'field__tags_wrapper';
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for rdf-entity.html.twig.
+ */
+function joinup_theme_theme_suggestions_rdf_entity_alter(array &$suggestions, array $variables) {
+  // Create the same template suggestion for tile and featured view modes.
+  $view_mode = $variables['elements']['#view_mode'];
+  $bundle = $variables['elements']['#rdf_entity']->bundle();
+  $listing_modes = array(
+    'view_mode_tile',
+    'view_mode_featured',
+  );
+
+  if (in_array($view_mode, $listing_modes)) {
+    $suggestions[] = 'rdf_entity__' . str_replace('-', '_', $bundle) . '__listing_item';
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_alter().
  */
 function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
