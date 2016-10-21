@@ -190,7 +190,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
         'rdf_entity' => $entity->id(),
       ]),
-      '#attributes' => array('class' => 'button--default button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'),
+      '#attributes' => array('class' => 'button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'),
     ];
   }
 }
