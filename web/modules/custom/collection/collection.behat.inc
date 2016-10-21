@@ -11,7 +11,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
-use Drupal\joinup\Traits\OgMenuTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -19,6 +18,7 @@ use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
+use Drupal\og_menu\Tests\Traits\OgMenuTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -472,16 +472,16 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     foreach ($menu_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
       $content = $this->getNodeByTitle($values['page'], $bundle);
-      $og_menu_instance = $this->getOgMenuInstance($group->id());
+      $og_menu_instance = $this->getOgMenuInstance($group->id(), 'navigation');
       if (empty($og_menu_instance)) {
-        $og_menu_instance = $this->createOgMenuInstance($group->id());
+        $og_menu_instance = $this->createOgMenuInstance($group->id(), 'navigation');
       }
 
       // Prepare the array to pass to MenuLinkContent::create method.
       $menu_item_data = [
         'title' => $values['label'],
         'link' => ['uri' => 'internal:/node/' . $content->id()],
-        'menu_name' => self::$ogMenuEntityTypeId . '-' . $og_menu_instance->id(),
+        'menu_name' => 'ogmenu-' . $og_menu_instance->id(),
         'weight' => $values['weight'],
         'expanded' => TRUE,
       ];
