@@ -89,29 +89,6 @@
   .stats__icon
     +icon-size(30px)
 
-
-.featured__menu-button
-  width: 60px
-  height: 60px
-
-.featured__menu
-  position: absolute
-  bottom: 10px
-  left: 10px
-  +breakpoint(desktop)
-    display: none
-  .icon
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
-    color: #fff
-    +icon-size(60px)
-
-.featured__menu-link
-  text-decoration: none
-  color: $color-base
-
 .featured__action
   display: inline-block
   vertical-align: middle
@@ -155,7 +132,4 @@
     +breakpoint(lg-desktop)
       right: 0
   .circle-menu__button
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
+    +centered
