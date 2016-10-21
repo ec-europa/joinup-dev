@@ -11,33 +11,6 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 trait WorkflowTrait {
 
   /**
-   * Asserts available states of an entity for a user.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The entity with the states.
-   * @param array $available_states
-   *    The states to check for availability.
-   * @param object|null $user
-   *    The account interface object. Can be left empty.
-   *
-   * @throws \Exception
-   *    Thrown when the expected states array does not exactly match the
-   *    array of available options.
-   */
-  protected function assertAvailableStates(EntityInterface $entity, array $available_states, $user = NULL) {
-    $allowed_states = $this->getAvailableStates($entity, $user);
-    $allowed_states = array_values($allowed_states);
-    sort($allowed_states);
-    sort($available_states);
-    if ($allowed_states != $available_states) {
-      $message = "States found were different that states passed.\n";
-      $message .= "Allowed states: " . implode(', ', $allowed_states) . "\n";
-      $message .= "Available/Expected states: " . implode(', ', $available_states) . "\n";
-      throw new \Exception($message);
-    }
-  }
-
-  /**
    * Asserts available transitions of an entity for a user.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
