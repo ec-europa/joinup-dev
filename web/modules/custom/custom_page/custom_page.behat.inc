@@ -259,14 +259,15 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Resolves the given group and returns the OG Menu tree for it.
    *
-   * @param $menu_name
+   * @param string $menu_name
    *   The name of the OG Menu instance that contains the menu item.
-   * @param $group_label
+   * @param string $group_label
    *   The group label.
-   * @param $group_type
+   * @param string $group_type
    *   The group type, either 'collection' or 'solution'.
    *
    * @return \Drupal\Core\Menu\MenuLinkTreeElement[]
+   *   The menu tree.
    */
   protected function getOgMenuTreeByNameLabelAndType($menu_name, $group_label, $group_type) {
     $group = $this->getRdfEntityByLabel($group_label, $group_type);
