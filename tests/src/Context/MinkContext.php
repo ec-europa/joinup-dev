@@ -19,7 +19,7 @@ class MinkContext extends DrupalExtensionMinkContext {
           }
       }
 
-      if (!$this->getSession()->getDriver() instanceof Behat\Mink\Driver\GoutteDriver) {
+      if (!$this->getSession()->getDriver() instanceof \Behat\Mink\Driver\GoutteDriver) {
           $tempZip = tempnam('', 'WebDriverZip');
           $zip = new \ZipArchive();
           $zip->open($tempZip, \ZipArchive::CREATE);
