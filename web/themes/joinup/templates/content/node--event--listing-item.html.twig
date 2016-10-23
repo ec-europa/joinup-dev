@@ -76,10 +76,12 @@
   ]
 %}
 <div class="{{ classes|join(' ') }}">
-  <div class="listing__image">{{ content.field_event_logo }}</div>
+  {% if content.field_event_logo|render %}
+    <div class="listing__image">{{ content.field_event_logo }}</div>
+  {% endif %}
   <div class="listing__metadata">
     <div class="listing__field">
-      <h2 class="listing__title">{{ content.field_event_short_title }}<span class="icon icon--out"></span></h2>
+      <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a><span class="icon icon--out"></span></h2>
     </div>
     <div class="listing__field">
       <p class="listing__teaser">{{ content.body }}</p>
