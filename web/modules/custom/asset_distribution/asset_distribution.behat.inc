@@ -299,4 +299,45 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     return $fields;
   }
 
+  /**
+   * Checks if a distribution in compact view contains download links.
+   *
+   * @param string $distribution
+   *    The name of the distribution.
+   *
+   * @Then I should see the download link in the :distribution( asset) distribution
+   *
+   * @throws \Exception
+   *   If region or link within it cannot be found.
+   */
+  public function assertLinkDistribution($distribution) {
+    $distribution = $this->getAssetDistributionByName($distribution);
+    if (empty($distribution->field_ad_access_url->first())) {
+      throw new \Exception(sprintf('Asset distribution "%s" does not contain any download links.', $distribution->label()));
+    }
+    $promoted_link = $distribution->field_ad_access_url->first()->uri;
+    $result = $this->getSession()->getPage()->find('xpath', "//a[@href='{$promoted_link}']");
+    if (empty($result)) {
+      throw new \Exception(sprintf('No link was found in the "%s" distribution on the page %s', $distribution->label(), $this->getSession()->getCurrentUrl()));
+    }
+  }
+
+  /**
+   * Checks that a distribution in compact view does not contain download links.
+   *
+   * @param string $distribution
+   *    The name of the distribution.
+   *
+   * @Then the :distribution( asset) distribution should not have any download urls
+   *
+   * @throws \Exception
+   *   If region or link within it cannot be found.
+   */
+  public function assertNotLinkDistribution($distribution) {
+    $distribution = $this->getAssetDistributionByName($distribution);
+    $promoted_link = $distribution->field_ad_access_url->first();
+    if (!empty($promoted_link)) {
+      throw new \Exception(sprintf('Asset distribution "%s" contains download link(s).', $distribution));
+    }
+  }
 }
