@@ -93,7 +93,8 @@
                 IsqlPath="${isql.bin}"
                 DataSourceName="${sparql.dsn}"
                 Username="${sparql.user}"
-                Password="${sparql.password}" />
+                Password="${sparql.password}"
+                SharedDirectory="${sparql.shareddirectory}" />
     </target>
 
     <!-- Set up PHP CodeSniffer. -->
