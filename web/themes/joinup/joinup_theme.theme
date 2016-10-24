@@ -41,7 +41,7 @@ function joinup_theme_preprocess_page(&$variables) {
   // It is needed for proper display of vertical tabs.
   $tabs_routes = array(
     'rdf_entity.propose_form',
-    //'entity.rdf_entity.edit_form',
+    'entity.rdf_entity.edit_form',
   );
 
   if (!empty($route_name) && in_array($route_name, $tabs_routes)) {
@@ -49,7 +49,8 @@ function joinup_theme_preprocess_page(&$variables) {
     $entity = $route_match->getParameter('rdf_entity');
     if (!empty($entity)) {
       $rdf_type = $entity->getType();
-    } else {
+    }
+    else {
       // Get entity type on create form.
       $rdf_type = $route_match->getParameter('rdf_type');
       $rdf_type = $rdf_type->id();
@@ -195,13 +196,12 @@ function joinup_theme_preprocess_container(&$variables) {
     $variables['is_form_wrapper'] = TRUE;
   }
 
-
   // Check if page is collection propose form.
   // It is needed for proper display buttons
-  //on forms with vertical tabs.
+  // on forms with vertical tabs.
   $tabs_routes = array(
     'rdf_entity.propose_form',
-    //'entity.rdf_entity.edit_form',
+    'entity.rdf_entity.edit_form',
   );
 
   $rdf_type = '';
@@ -210,7 +210,8 @@ function joinup_theme_preprocess_container(&$variables) {
     $entity = $route_match->getParameter('rdf_entity');
     if (!empty($entity)) {
       $rdf_type = $entity->getType();
-    } else {
+    }
+    else {
       // Get entity type on create form.
       $rdf_type = $route_match->getParameter('rdf_type');
       $rdf_type = $rdf_type->id();
