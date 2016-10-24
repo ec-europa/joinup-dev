@@ -271,6 +271,10 @@ function solution_get_latest_release(RdfInterface $solution) {
     return NULL;
   }
 
+  // @todo: Sorting is not yet working in SPARQL, we're fetching all results and
+  // doing the sorting in PHP right now. Once sorting is working we should limit
+  // the result set to 1 item.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
   $releases = Rdf::loadMultiple($ids);
   usort($releases, function ($release1, $release2) {
     $ct1 = $release1->field_isr_creation_date->value;
