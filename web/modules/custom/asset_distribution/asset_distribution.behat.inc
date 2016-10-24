@@ -316,7 +316,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       throw new \Exception(sprintf('Asset distribution "%s" does not contain any download links.', $distribution->label()));
     }
     $promoted_link = $distribution->field_ad_access_url->first()->uri;
-    $result = $this->getSession()->getPage()->find('xpath', "//a[@href='{$promoted_link}']");
+    $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$promoted_link}']");
     if (empty($result)) {
       throw new \Exception(sprintf('No link was found in the "%s" distribution on the page %s', $distribution->label(), $this->getSession()->getCurrentUrl()));
     }
@@ -334,9 +334,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *   If region or link within it cannot be found.
    */
   public function assertNotLinkDistribution($distribution) {
-    $distribution = $this->getAssetDistributionByName($distribution);
-    $promoted_link = $distribution->field_ad_access_url->first();
-    if (!empty($promoted_link)) {
+    $link = $this->getSession()->getPage()->find('xpath', "//a[contains(text(), '$distribution')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//span[contains(concat(' ', @class, ' '), ' file ')]/a");
+    if (!empty($link)) {
       throw new \Exception(sprintf('Asset distribution "%s" contains download link(s).', $distribution));
     }
   }
