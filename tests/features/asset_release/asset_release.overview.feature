@@ -25,13 +25,13 @@ Feature: Asset distribution overview on solution.
     When I am logged in as a "facilitator" of the "Lovely Butterfly" solution
     When I go to the homepage of the "Thief in the Angels" release
     And I click "Add distribution"
-    When I fill in "Title" with "Only linux"
+    When I fill in "Title" with "Linux"
     And I attach the file "test.zip" to "Add a new file"
     And I press "Save"
     And I go to the homepage of the "The Child of the Past" release
     # Create a distribution with no file attached.
     And I click "Add distribution"
-    And I fill in "Title" with "Only windows"
+    And I fill in "Title" with "Windows"
     And I press "Save"
 
     And I go to the homepage of the "Lovely Butterfly" solution
@@ -43,10 +43,10 @@ Feature: Asset distribution overview on solution.
       | The Child of the Past 1 |
       | Thief in the Angels 2   |
 
-    And I should see the download link in the "Only linux" asset distribution
-    And the "Only windows" asset distribution should not have any download urls
+    And I should see the download link in the "Linux" asset distribution
+    And the "Windows" asset distribution should not have any download urls
 
     # Clean up the asset distribution that was created through the UI.
-    Then I delete the "Only linux" asset distribution
+    Then I delete the "Linux" asset distribution
     # Clean up the asset distribution that was created through the UI.
-    Then I delete the "Only windows" asset distribution
+    Then I delete the "Windows" asset distribution
