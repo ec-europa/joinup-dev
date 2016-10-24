@@ -69,7 +69,7 @@ content:
     label: hidden
     settings:
       timezone_override: ''
-      format_type: tile_date
+      format_type: date_only
     third_party_settings:
       ds:
         ft:
