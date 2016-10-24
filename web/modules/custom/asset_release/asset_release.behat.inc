@@ -314,4 +314,32 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     }
   }
 
+  /**
+   * Checks that a release is marked as the latest one.
+   *
+   * This step is meant for the releases overview page within a solution.
+   *
+   * @param string $release
+   *    The name of the release.
+   *
+   * @Then the :release release should be marked as latest
+   *
+   * @throws \Exception
+   *    Thrown if the release is not marked as latest in the page or not found.
+   */
+  public function assertLinkDistribution($release) {
+    $release = $this->getAssetReleaseByName($release);
+
+    $latest_release = $this->getSession()->getPage()->find('css', '.is-latest');
+    if (empty($latest_release)) {
+      throw new \Exception("No release marked as latest was found in the page.");
+    }
+    $release_version = $release->field_isr_release_number->value;
+    $name_with_version = $release->label() . " " . $release_version;
+
+    if ($latest_release->find('css', '.timeline__release-title')->getText() !== $name_with_version) {
+      throw new \Exception("{$release->label()} is not the release marked as latest.");
+    }
+  }
+
 }
