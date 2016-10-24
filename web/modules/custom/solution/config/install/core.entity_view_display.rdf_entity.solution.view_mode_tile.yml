@@ -38,7 +38,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
-    - image.style.image_style_collection_logo
+    - image.style.horizontal_medium_image
     - rdf_entity.rdfentity.solution
   module:
     - ds
@@ -68,7 +68,7 @@ content:
     weight: 25
     label: hidden
     settings:
-      image_style: image_style_collection_logo
+      image_style: horizontal_medium_image
       image_link: content
     third_party_settings:
       ds:

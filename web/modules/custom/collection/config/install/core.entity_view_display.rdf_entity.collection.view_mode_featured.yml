@@ -20,7 +20,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
-    - image.style.image_style_collection_logo
+    - image.style.vertical_medium_image
     - rdf_entity.rdfentity.collection
   module:
     - ds
@@ -49,7 +49,7 @@ content:
     weight: 0
     label: hidden
     settings:
-      image_style: image_style_collection_logo
+      image_style: vertical_medium_image
       image_link: content
     third_party_settings:
       ds:
