@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\asset_release\asset_release.behat.inc.
+ * Contains \AssetReleaseSubContext.
  */
 
 use Behat\Gherkin\Node\TableNode;
