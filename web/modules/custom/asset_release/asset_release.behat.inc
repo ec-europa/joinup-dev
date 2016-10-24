@@ -322,10 +322,10 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @param string $release
    *    The name of the release.
    *
-   * @Then the :release release should be marked as latest
-   *
    * @throws \Exception
    *    Thrown if the release is not marked as latest in the page or not found.
+   *
+   * @Then the :release release should be marked as the latest release
    */
   public function assertLinkDistribution($release) {
     $release = $this->getAssetReleaseByName($release);
@@ -338,7 +338,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     $name_with_version = $release->label() . " " . $release_version;
 
     if ($latest_release->find('css', '.timeline__release-title')->getText() !== $name_with_version) {
-      throw new \Exception("{$release->label()} is not the release marked as latest.");
+      throw new \Exception("{$release->label()} is not marked as the latest release.");
     }
   }
 
