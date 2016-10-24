@@ -48,13 +48,13 @@ Feature: News moderation.
       | Creating Justice League       | 6 Members to start with                     | TBD                                                                     | draft            | Eagle         |
       | Hawkgirl is a spy             | Her race lies in another part of the galaxy | Hawkgirl has been giving information about Earth to Thanagarians.       | proposed         | Eagle         |
       | Hawkgirl helped Green Lantern | Hawkgirl went against Thanagarians?         | It was all of a sudden when Hawkgirl turned her back to her own people. | validated        | Eagle         |
-      | Space cannon fired            | Justice League fired at army facilities     | Justice league is now the enemy                                         | in_assessment    | Eagle         |
+      | Space cannon fired            | Justice League fired at army facilities     | Justice league is now the enemy                                         | needs_update     | Eagle         |
       | Eagle to join in season 4     | Will not start before S04E05                | The offer came when I helped defeating Iphestus armor.                  | proposed         | Eagle         |
       | Question joined JL            | Justice league took in Question             | The famous detective is now part of JL.                                 | draft            | Question      |
       | Creating Legion of Doom       | 7 Members to start with                     | We need equal number of members with the JL.                            | draft            | Mirror Master |
       | Stealing from Batman          | Hide in his car's mirror                    | I need to steal from Batman.                                            | validated        | Mirror Master |
       | Learn batman's secret         | Can I find batman's secret identity         | I have the opportunity to find out his identity.                        | proposed         | Mirror Master |
-      | Stealing complete             | All data were copied                        | Now someone has to decrypt the data.                                    | in_assessment    | Mirror Master |
+      | Stealing complete             | All data were copied                        | Now someone has to decrypt the data.                                    | needs_update     | Mirror Master |
       | Kill the sun                  | Savages plan                                | As it turns out Savage's plan is to cause a solar storm.                | deletion_request | Mirror Master |
     And "news" content belong to the corresponding collections:
       | content                       | collection     |
@@ -236,7 +236,7 @@ Feature: News moderation.
     Then I should not see the link "Edit"
     Examples:
       | user          | title                         |
-      # State: in assessment
+      # State: needs update
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
       | Eagle         | Space cannon fired            |
       # State: validated
@@ -247,7 +247,7 @@ Feature: News moderation.
       | Eagle         | Question joined JL            |
       # State: draft, not owned
       | Cheetah       | Creating Legion of Doom       |
-      # State: in assessment
+      # State: needs update
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
       | Mirror Master | Stealing complete             |
       # State: validated
@@ -269,7 +269,7 @@ Feature: News moderation.
       | user     | title                         | available buttons                | unavailable buttons                               |
       # Post moderated
       | Hawkgirl | Hawkgirl is a spy             | Propose, Validate, Report        | Save as draft, Request deletion                   |
-      # Members can move to 'in assessment' state.
+      # Members can move to 'needs update' state.
       | Hawkgirl | Hawkgirl helped Green Lantern | Validate, Propose                | Save as draft, Report, Request deletion           |
       | Hawkgirl | Space cannon fired            | Propose                          | Save as draft, Validate, Report, Request deletion |
       # Pre moderated
@@ -278,7 +278,7 @@ Feature: News moderation.
       # Validated content can be moved back to 'Proposed' state by a facilitator.Scenario:
       # @Todo: it should also be possible to move to 'Draft'. See ISAICP-2761
       | Metallo  | Stealing from Batman          | Propose, Validate                | Save as draft, Report, Request deletion           |
-      # Members can move to 'in assessment' state.
+      # Members can move to 'needs update' state.
       | Metallo  | Learn batman's secret         | Propose, Report, Validate        | Save as draft,  Request deletion                  |
       | Metallo  | Stealing complete             | Propose                          | Save as draft, Request deletion                   |
       | Metallo  | Kill the sun                  | Validate                         | Save as draft, Propose, Report, Request deletion  |
@@ -315,7 +315,7 @@ Feature: News moderation.
 
   Scenario: An entity should be automatically published/un published according to state
     # Regardless of moderation, the entity is published for the states
-    # Validated, In assessment, Request deletion
+    # Validated, Needs update, Request deletion
     # and unpublished for Draft and Proposed.
     When I am logged in as "Hawkgirl"
     And I go to the "Hawkgirl is a spy" news page

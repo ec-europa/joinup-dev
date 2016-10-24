@@ -43,7 +43,7 @@ transitions:
       validated:
         - moderator
         - rdf_entity-collection-facilitator
-      in_assessment:
+      needs_update:
         - moderator
         - rdf_entity-collection-facilitator
     validated:
@@ -61,8 +61,8 @@ transitions:
       validated:
         - moderator
         - rdf_entity-collection-facilitator
-    in_assessment:
-      # @todo: The in_assessment state should also be accessible by moderators
+    needs_update:
+      # @todo: The needs_update state should also be accessible by moderators
       #   when the entity is validated (e.g. inform the user that the entity
       #   needs update after reports).
       proposed:
@@ -92,7 +92,7 @@ transitions:
       validated:
         - moderator
         - rdf_entity-collection-facilitator
-      in_assessment:
+      needs_update:
         - moderator
         - rdf_entity-collection-facilitator
     validated:
@@ -111,8 +111,8 @@ transitions:
       deletion_request:
         - moderator
         - rdf_entity-collection-facilitator
-    in_assessment:
-      # @todo: The in_assessment state should also be accessible by moderators
+    needs_update:
+      # @todo: The needs_update state should also be accessible by moderators
       #   when the entity is validated (e.g. inform the user that the entity
       #   needs update after reports).
       proposed:

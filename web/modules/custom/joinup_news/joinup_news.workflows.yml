@@ -24,8 +24,8 @@ news_workflow:
       label: Validated
     deletion_request:
       label: Request deletion
-    in_assessment:
-      label: In assessment
+    needs_update:
+      label: Needs update
   transitions:
     draft:
       label: Save as draft
@@ -33,7 +33,7 @@ news_workflow:
       to: draft
     propose:
       label: Propose
-      from: [__new__, draft, validated, in_assessment, proposed]
+      from: [__new__, draft, validated, needs_update, proposed]
       to: proposed
     validate:
       label: Validate
@@ -42,7 +42,7 @@ news_workflow:
     report:
       label: Report
       from: [proposed]
-      to: in_assessment
+      to: needs_update
     request_deletion:
       label: Request deletion
       from: [validated]

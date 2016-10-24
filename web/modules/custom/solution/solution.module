@@ -207,7 +207,7 @@ function solution_rdf_entity_presave(EntityInterface $entity) {
   }
 
   $state = $entity->field_is_state->value;
-  if (in_array($state, ['draft', 'proposed', 'in_assessment', 'blacklisted'])) {
+  if (in_array($state, ['draft', 'proposed', 'needs_update', 'blacklisted'])) {
     \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
   }
   elseif (in_array($state, ['validated', 'deletion_request'])) {
