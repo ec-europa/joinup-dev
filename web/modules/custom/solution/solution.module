@@ -254,7 +254,7 @@ function solution_rdf_entity_update(EntityInterface $entity) {
  *   The 'solution' RDF entity.
  *
  * @return string|null
- *   The latest release entity ID or NULL id there are no releases.
+ *   The latest release entity ID or NULL if there are no releases.
  */
 function solution_get_latest_release(RdfInterface $solution) {
   if ($solution->bundle() !== 'solution') {
