@@ -340,4 +340,5 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       throw new \Exception(sprintf('Asset distribution "%s" contains download link(s).', $distribution));
     }
   }
+
 }

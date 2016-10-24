@@ -147,7 +147,9 @@ function asset_distribution_rdf_entity_presave(RdfInterface $distribution) {
   if ($distribution->isNew() || ($distribution->get('field_ad_file') != $distribution->original->get('field_ad_file'))) {
     $size = 0;
     foreach ($distribution->get('field_ad_file') as $file_field_item) {
-      $size += $file_field_item->entity->getSize();
+      if (!empty($file_field_item->entity)) {
+        $size += $file_field_item->entity->getSize();
+      }
     }
     $distribution->field_ad_file_size->value = $size;
   }
