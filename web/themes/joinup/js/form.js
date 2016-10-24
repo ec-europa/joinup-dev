@@ -7,7 +7,7 @@
   Drupal.behaviors.deleteButton = {
     attach: function (context, settings) {
       $(context).find('#edit-delete').once('deleteButton').each(function () {
-        $(this).addClass('button--default button--blue mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent');
+        $(this).addClass('button--blue mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent');
       });
     }
   };

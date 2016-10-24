@@ -73,12 +73,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Then I should see the following collection menu items in the specified order:
    */
   public function assertRepeatedElementContainsText(TableNode $table) {
-    $parent = $this->getSession()->getPage()->findAll('css', '.block-collection-menu-blocknavigation > ul.menu > li.menu-item');
+    $parent = $this->getSession()->getPage()->findAll('css', '.block-collection-menu-blocknavigation li.sidebar-menu__item');
     $i = 0;
     foreach ($table->getHash() as $repeatedElement) {
       $child = $parent[$i];
       \PHPUnit_Framework_Assert::assertEquals(
-        $child->find('css', '.menu-item')->getText(),
+        $child->find('css', '.sidebar-menu__link')->getText(),
         $repeatedElement['text']
       );
       $i++;
