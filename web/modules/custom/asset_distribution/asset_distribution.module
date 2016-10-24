@@ -172,8 +172,8 @@ function asset_distribution_preprocess_rdf_entity(&$variables) {
   // For the 'Release download page, there is only one available download link
   // so we set the one available here.
   if ($variables['view_mode'] === 'compact') {
-    if (!empty($rdf_entity->field_ad_file->first()->entity)) {
-      $variables['content']['promoted_download'] = $rdf_entity->field_ad_file->first()->entity->url();
+    if (!empty($rdf_entity->field_ad_access_url->first()->uri)) {
+      $variables['content']['promoted_download'] = $rdf_entity->field_ad_access_url->first()->uri;
     }
   }
 }
