@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Theme implementation of an active facet result item for the facet type widget.
+ *
+ * Available variables:
+ * - value: The item value.
+ * - show_count: If this facet provides count.
+ * - count: The amount of results.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="tab__icon icon icon--{{ type }}"></div>
+<div class="tab__text">
+    {% if show_count %}<div class="tab__text--upper">{{ count }}</div>{% endif %}
+    <div class="tab__text--lower">{{ value }}</div>
+</div>

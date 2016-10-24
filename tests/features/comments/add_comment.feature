@@ -6,6 +6,7 @@ Feature: Add comments
     Given the following collection:
       | title | Gossip collection |
       | logo  | logo.png          |
+      | state | validated         |
 
     And users:
       | name            | mail                   |

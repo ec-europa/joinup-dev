@@ -46,8 +46,7 @@ Feature: As a user of the website
     # Edit as facilitator and save as draft.
     When I click "Edit"
     And I fill in "Title" with "Flight of Day"
-    And I select "Draft" from "State"
-    And I press "Save"
+    And I press "Save as draft"
 
     # The page redirects to the canonical view after editing.
     Then I should see the heading "Flight of Night"
@@ -62,8 +61,7 @@ Feature: As a user of the website
     When I am logged in as a moderator
     And I go to the homepage of the "Flight of Day" solution
     And I click "Edit"
-    And I select "Validated" from "State"
-    And I press "Save"
+    And I press "Publish"
     Then I should see the heading "Flight of Day"
     And I should not see the link "View draft"
     But I should see the link "View"

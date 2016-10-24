@@ -13,6 +13,7 @@ Feature: Custom page API
       | logo              | logo.png        |
       | moderation        | yes             |
       | elibrary creation | facilitators    |
+      | state             | validated       |
     And custom_page content:
       | title      | body                                     | collection      |
       | Dummy page | This is some dummy content like foo:bar. | Le Foie Heureux |

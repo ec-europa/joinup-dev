@@ -15,6 +15,7 @@ use Drupal\joinup\Traits\OgMenuTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
@@ -32,6 +33,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use OgTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
+  use WorkflowTrait;
 
   /**
    * Test collections.
@@ -71,12 +73,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Then I should see the following collection menu items in the specified order:
    */
   public function assertRepeatedElementContainsText(TableNode $table) {
-    $parent = $this->getSession()->getPage()->findAll('css', '.block-collection-menu-blocknavigation > ul.menu > li.menu-item');
+    $parent = $this->getSession()->getPage()->findAll('css', '.block-collection-menu-blocknavigation li.sidebar-menu__item');
     $i = 0;
     foreach ($table->getHash() as $repeatedElement) {
       $child = $parent[$i];
       \PHPUnit_Framework_Assert::assertEquals(
-        $child->find('css', '.menu-item')->getText(),
+        $child->find('css', '.sidebar-menu__link')->getText(),
         $repeatedElement['text']
       );
       $i++;
@@ -196,6 +198,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'owner' => 'field_ar_owner',
       'policy domain' => 'field_policy_domain',
       'spatial coverage' => 'field_spatial_coverage',
+      'state' => 'field_ar_state',
     ];
   }
 
@@ -399,7 +402,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       // Convert role names to role IDs.
       $roles = [];
       if (!empty($values['roles'])) {
-        $role_names = explode(', ', $values['roles']);
+        $role_names = explode(',', $values['roles']);
+        $role_names = array_map('trim', $role_names);
         // Every owner is also a facilitator. In Joinup the facilitator role is
         // assigned to the owner when they create the collection. Since in this
         // step the collections are already created, mimick this behaviour by
@@ -528,6 +532,78 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     foreach ($this->collections as $collection) {
       $collection->delete();
     }
+  }
+
+  /**
+   * Checks that a user has the available state options for the collection.
+   *
+   * The method also checks that these options are the only options available.
+   *
+   * Table format:
+   * | collection   | user | options          |
+   * | Collection A | John | Status1          |
+   * | Collection B | Jack | Status1, Status2 |
+   *
+   * @param TableNode $check_table
+   *   The table with the triplets collection-user-options.
+   *
+   * @throws \Exception
+   *    Thrown when the user does not exist.
+   *
+   * @todo: Maybe there is a better definition available here like 'The
+   * following state buttons should be available for the user on the
+   * collection'.
+   *
+   * @Given for the following collection, the corresponding user should have the corresponding (available )state buttons:
+   */
+  public function verifyWorkflowTransitions(TableNode $check_table) {
+    foreach ($check_table->getColumnsHash() as $values) {
+      // Load entity.
+      $collection = $this->getCollectionByName($values['collection']);
+
+      // Load user.
+      $user = user_load_by_name($values['user']);
+      if (empty($user)) {
+        throw new \Exception('User ' . $values['user'] . ' not found.');
+      }
+
+      // Convert states to an array.
+      $states = empty($values['states']) ? [] : explode(',', $values['states']);
+      $states = array_map('trim', $states);
+
+      $this->assertAvailableTransitions($collection, $states, $user);
+    }
+  }
+
+  /**
+   * Applies a transition to a collection.
+   *
+   * @param string $username
+   *    The username applying the transition.
+   * @param string $entity_name
+   *    The title of the collection.
+   * @param string $to_state
+   *    The state that the collection transits to.
+   *
+   * @throws \Exception
+   *    An exception is thrown if the user is not found or the transition is not
+   *    allowed for this user.
+   *
+   * @Given the user :username changes the state of the :entity_name collection to :to_state
+   */
+  public function applyCollectionWorkflowTransition($username, $entity_name, $to_state) {
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      throw new \Exception("User {$username} was not found.");
+    }
+    $collection = $this->getCollectionByName($entity_name);
+    $available_states = $this->getAvailableStates($collection, $user);
+    if (($transition_id = array_search($to_state, $available_states)) === FALSE) {
+      throw new \Exception("The given user does not have permission to apply the specific transition.");
+    }
+    $transition = $collection->get('field_ar_state')->first()->getWorkflow()->getTransition($transition_id);
+    $collection->get('field_ar_state')->first()->applyTransition($transition);
+    $collection->save();
   }
 
 }
