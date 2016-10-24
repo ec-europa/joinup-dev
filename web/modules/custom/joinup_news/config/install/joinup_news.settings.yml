@@ -115,6 +115,7 @@ transitions:
       # @todo: The needs_update state should also be accessible by moderators
       #   when the entity is validated (e.g. inform the user that the entity
       #   needs update after reports).
+      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2761
       proposed:
         - moderator
         - rdf_entity-collection-member

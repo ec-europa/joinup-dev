@@ -92,6 +92,13 @@ function joinup_news_node_presave(EntityInterface $entity) {
   if (in_array($state, ['draft', 'proposed'])) {
     $entity->setPublished(FALSE);
   }
+  // @todo When a news article is in "Needs update" state its publication state
+  //   should not change. Otherwise a newly proposed news article that is
+  //   moved to "needs_update" by a moderator will suddenly become published.
+  //   This is absolutely not the intention that unpublished news articles
+  //   become published on rejection. This also needs a dedicated test to make
+  //   sure it does not regress.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2761
   elseif (in_array($state, ['validated', 'needs_update', 'deletion_request'])) {
     $entity->setPublished(TRUE);
   }

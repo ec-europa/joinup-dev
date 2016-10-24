@@ -41,6 +41,10 @@ news_workflow:
       to: validated
     report:
       label: Report
+      # @todo It should be possible to move a published (validated) news article
+      #   into "needs_update" state if the article needs an update, without
+      #   unpublishing the current revision of the article.
+      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2761
       from: [proposed]
       to: needs_update
     request_deletion:
