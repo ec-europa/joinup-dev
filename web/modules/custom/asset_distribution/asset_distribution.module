@@ -161,7 +161,7 @@ function asset_distribution_rdf_entity_presave(RdfInterface $distribution) {
  * Provides a promoted link for each distribution on the release overview page
  * because there is only one 'Download' button displayed.
  *
- * @todo: The behavior of the mutli value file field is recorded and will be
+ * @todo: The behavior of the multi value file field is recorded and will be
  * implemented in https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2925.
  */
 function asset_distribution_preprocess_rdf_entity(&$variables) {
@@ -171,7 +171,7 @@ function asset_distribution_preprocess_rdf_entity(&$variables) {
     return;
   }
 
-  // For the 'Release download page, there is only one available download link
+  // For the Release download page, there is only one available download link
   // so we set the one available here.
   if ($variables['view_mode'] === 'compact') {
     if (!empty($rdf_entity->field_ad_access_url->first()->uri)) {
