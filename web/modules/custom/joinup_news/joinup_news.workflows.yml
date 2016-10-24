@@ -39,8 +39,8 @@ news_workflow:
       label: Validate
       from: [__new__, draft, validated, proposed, deletion_request]
       to: validated
-    report:
-      label: Report
+    needs_update:
+      label: Needs update
       # @todo It should be possible to move a published (validated) news article
       #   into "needs_update" state if the article needs an update, without
       #   unpublishing the current revision of the article.
