@@ -37,6 +37,10 @@ news_workflow:
       to: proposed
     validate:
       label: Validate
+      # @todo Moderators should have the ability to move a news article that is
+      #   in "needs_update" state immediately to "validated" without having to
+      #   pass through "proposed" first.
+      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2761
       from: [__new__, draft, validated, proposed, deletion_request]
       to: validated
     needs_update:
