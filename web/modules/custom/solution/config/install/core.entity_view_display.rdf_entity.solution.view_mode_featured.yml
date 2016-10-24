@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.rdf_entity.view_mode_tile
+    - core.entity_view_mode.rdf_entity.view_mode_featured
     - field.field.rdf_entity.solution.field_is_actor
     - field.field.rdf_entity.solution.field_is_affiliations_requests
     - field.field.rdf_entity.solution.field_is_banner
@@ -44,10 +44,10 @@ dependencies:
     - ds
     - image
     - text
-id: rdf_entity.solution.view_mode_tile
+id: rdf_entity.solution.view_mode_featured
 targetEntityType: rdf_entity
 bundle: solution
-mode: view_mode_tile
+mode: view_mode_featured
 content:
   field_is_description:
     weight: 26

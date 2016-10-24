@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.rdf_entity.view_mode_tile
+    - core.entity_view_mode.rdf_entity.view_mode_featured
     - field.field.rdf_entity.collection.field_ar_abstract
     - field.field.rdf_entity.collection.field_ar_access_url
     - field.field.rdf_entity.collection.field_ar_affiliates
@@ -26,10 +26,10 @@ dependencies:
     - ds
     - image
     - text
-id: rdf_entity.collection.view_mode_tile
+id: rdf_entity.collection.view_mode_featured
 targetEntityType: rdf_entity
 bundle: collection
-mode: view_mode_tile
+mode: view_mode_featured
 content:
   field_ar_description:
     weight: 2
