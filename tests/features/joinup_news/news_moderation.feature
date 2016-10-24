@@ -86,19 +86,19 @@ Feature: News moderation.
     And the following buttons should be present "<available buttons>"
     And the following buttons should not be present "<unavailable buttons>"
     Examples:
-      | user          | title          | available buttons                | unavailable buttons                      |
+      | user          | title          | available buttons                | unavailable buttons                         |
       # Post-moderated collection, member
-      | Eagle         | Justice League | Save as draft, Validate          | Propose, Needs update, Request deletion  |
+      | Eagle         | Justice League | Save as draft, Validate          | Propose, Request changes, Request deletion  |
       # Post-moderated collection, facilitator
-      | Hawkgirl      | Justice League | Save as draft, Validate          | Propose, Needs update, Request deletion  |
+      | Hawkgirl      | Justice League | Save as draft, Validate          | Propose, Request changes, Request deletion  |
       # Post-moderated collection, owner
-      | Superman      | Justice League | Save as draft, Validate          | Propose, Needs update, Request deletion  |
+      | Superman      | Justice League | Save as draft, Validate          | Propose, Request changes, Request deletion  |
       # Pre-moderated collection, member
-      | Mirror Master | Legion of Doom | Save as draft, Propose           | Validate, Needs update, Request deletion |
+      | Mirror Master | Legion of Doom | Save as draft, Propose           | Validate, Request changes, Request deletion |
       # Pre-moderated collection, facilitator
-      | Metallo       | Legion of Doom | Save as draft, Validate, Propose | Needs update, Request deletion           |
+      | Metallo       | Legion of Doom | Save as draft, Validate, Propose | Request changes, Request deletion           |
       # Pre-moderated collection, owner
-      | Vandal Savage | Legion of Doom | Save as draft, Validate, Propose | Needs update, Request deletion           |
+      | Vandal Savage | Legion of Doom | Save as draft, Validate, Propose | Request changes, Request deletion           |
 
   Scenario: Anonymous users and non-members cannot see the 'Add news' button.
     # Check visibility for anonymous users.
@@ -156,7 +156,7 @@ Feature: News moderation.
     And the following fields should be present "Headline, Kicker, Content"
     And the following fields should not be present "Groups audience, State"
     And the following buttons should be present "Save as draft, Validate"
-    And the following buttons should not be present "Propose, Needs update, Request deletion"
+    And the following buttons should not be present "Propose, Request changes, Request deletion"
     When I fill in the following:
       | Headline | Eagle joins the JL                   |
       | Kicker   | Eagle from WWII                      |
@@ -171,7 +171,7 @@ Feature: News moderation.
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Validate"
-    And the following buttons should not be present "Propose, Needs update, Request deletion"
+    And the following buttons should not be present "Propose, Request changes, Request deletion"
     And I press "Validate"
     Then I should see the text "Validated"
     Then I should see the success message "News Eagle joins the JL has been updated."
@@ -185,7 +185,7 @@ Feature: News moderation.
     And I go to the homepage of the "Legion of Doom" collection
     And I click "Add news"
     And the following buttons should be present "Save as draft, Propose"
-    And the following buttons should not be present "Validate, Needs update, Request deletion"
+    And the following buttons should not be present "Validate, Request changes, Request deletion"
     When I fill in the following:
       | Headline | Cheetah kills WonderWoman                             |
       | Kicker   | Scarch of poison                                      |
@@ -206,7 +206,7 @@ Feature: News moderation.
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
-    And the following buttons should be present "Propose, Needs update, Validate"
+    And the following buttons should be present "Update, Request changes, Validate"
     And the following buttons should not be present "Save as draft, Request deletion"
     And I press "Validate"
     Then I should see the text "Validated"
@@ -224,11 +224,11 @@ Feature: News moderation.
     And the following buttons should be present "<available buttons>"
     And the following buttons should not be present "<unavailable buttons>"
     Examples:
-      | user          | title                   | available buttons       | unavailable buttons                      |
+      | user          | title                   | available buttons       | unavailable buttons                         |
       # State: draft, owned by Eagle
-      | Eagle         | Creating Justice League | Save as draft, Validate | Propose, Needs update                    |
+      | Eagle         | Creating Justice League | Save as draft, Validate | Propose, Request changes                    |
       # State: draft, can propose
-      | Mirror Master | Creating Legion of Doom | Save as draft, Propose  | Validate, Needs update, Request deletion |
+      | Mirror Master | Creating Legion of Doom | Save as draft, Propose  | Validate, Request changes, Request deletion |
 
   Scenario Outline: Members cannot edit news they own for specific states.
     Given I am logged in as "<user>"
@@ -266,22 +266,23 @@ Feature: News moderation.
     And the following buttons should be present "<available buttons>"
     And the following buttons should not be present "<unavailable buttons>"
     Examples:
-      | user     | title                         | available buttons                | unavailable buttons                                     |
+      | user     | title                         | available buttons                  | unavailable buttons                                        |
       # Post moderated
-      | Hawkgirl | Hawkgirl is a spy             | Propose, Validate, Needs update  | Save as draft, Request deletion                         |
+      # News article in 'proposed' state.
+      | Hawkgirl | Hawkgirl is a spy             | Update, Validate, Request changes  | Save as draft, Request deletion                            |
       # Members can move to 'needs update' state.
-      | Hawkgirl | Hawkgirl helped Green Lantern | Validate, Propose                | Save as draft, Needs update, Request deletion           |
-      | Hawkgirl | Space cannon fired            | Propose                          | Save as draft, Validate, Needs update, Request deletion |
+      | Hawkgirl | Hawkgirl helped Green Lantern | Update, Propose                    | Save as draft, Request changes, Request deletion           |
+      | Hawkgirl | Space cannon fired            | Propose                            | Save as draft, Validate, Request changes, Request deletion |
       # Pre moderated
       # Facilitators have access to create news and directly put it to validate. For created and proposed, member role should be used.
-      | Metallo  | Creating Legion of Doom       | Save as draft, Propose, Validate | Needs update, Request deletion                          |
+      | Metallo  | Creating Legion of Doom       | Save as draft, Propose, Validate   | Request changes, Request deletion                          |
       # Validated content can be moved back to 'Proposed' state by a facilitator.Scenario:
       # @Todo: it should also be possible to move to 'Draft'. See ISAICP-2761
-      | Metallo  | Stealing from Batman          | Propose, Validate                | Save as draft, Needs update, Request deletion           |
+      | Metallo  | Stealing from Batman          | Propose, Update                    | Save as draft, Request changes, Request deletion           |
       # Members can move to 'needs update' state.
-      | Metallo  | Learn batman's secret         | Propose, Needs update, Validate  | Save as draft,  Request deletion                        |
-      | Metallo  | Stealing complete             | Propose                          | Save as draft, Request deletion                         |
-      | Metallo  | Kill the sun                  | Validate                         | Save as draft, Propose, Needs update, Request deletion  |
+      | Metallo  | Learn batman's secret         | Update, Request changes, Validate  | Save as draft, Request deletion                            |
+      | Metallo  | Stealing complete             | Propose                            | Save as draft, Request deletion                            |
+      | Metallo  | Kill the sun                  | Validate                           | Save as draft, Propose, Request changes, Request deletion  |
 
   Scenario Outline: Facilitators cannot view unpublished content of another collection.
     Given I am logged in as "<user>"
