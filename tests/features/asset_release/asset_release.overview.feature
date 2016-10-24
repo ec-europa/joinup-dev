@@ -29,3 +29,4 @@ Feature: Asset distribution overview on solution.
       | release                 |
       | The Child of the Past 1 |
       | Thief in the Angels 2   |
+    And the "The Child of the Past" release should be marked as the latest release
