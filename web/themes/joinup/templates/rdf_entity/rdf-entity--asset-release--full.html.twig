@@ -9,6 +9,7 @@
     {{ content.field_isr_release_notes}}
     <div class="version-wrapper">{{ content.field_isr_is_version_of }}</div>
     <div class="action-link__wrapper right">
+      {# todo: It is only placeholder #}
       <a href="/" class="action-link">
         <span class="action-link__icon icon icon--share"></span>
         <span class="action-link__link">{{ 'Share'|t }}</a>
@@ -16,6 +17,7 @@
     </div>
   </div>
 
+{# todo: Distribution tiles need to be implemented - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2722 #}
 {% if content.field_isr_distribution|render %}
   <div class="listing listing--grid">
     <div class="row">
