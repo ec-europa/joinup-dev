@@ -46,6 +46,8 @@ Feature: Asset distribution overview on solution.
     And I should see the download link in the "Linux" asset distribution
     And the "Windows" asset distribution should not have any download urls
 
+    And the "The Child of the Past" release should be marked as the latest release
+
     # Clean up the asset distribution that was created through the UI.
     Then I delete the "Linux" asset distribution
     # Clean up the asset distribution that was created through the UI.
