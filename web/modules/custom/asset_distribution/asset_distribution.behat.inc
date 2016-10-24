@@ -302,13 +302,16 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   /**
    * Checks if a distribution in compact view contains download links.
    *
+   * The compact view is used for example in the "Downloads" page.
+   * This currently only checks the first download link.
+   *
    * @param string $distribution
    *    The name of the distribution.
    *
-   * @Then I should see the download link in the :distribution( asset) distribution
-   *
    * @throws \Exception
-   *   If region or link within it cannot be found.
+   *   Thrown if the download link cannot be found.
+   *
+   * @Then I should see the download link in the :distribution( asset) distribution
    */
   public function assertLinkDistribution($distribution) {
     $distribution = $this->getAssetDistributionByName($distribution);
@@ -325,13 +328,15 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   /**
    * Checks that a distribution in compact view does not contain download links.
    *
+   * The compact view is used for example in the "Downloads" page.
+   *
    * @param string $distribution
    *    The name of the distribution.
    *
-   * @Then the :distribution( asset) distribution should not have any download urls
-   *
    * @throws \Exception
-   *   If region or link within it cannot be found.
+   *   Thrown if the link was found.
+   *
+   * @Then the :distribution( asset) distribution should not have any download urls
    */
   public function assertNotLinkDistribution($distribution) {
     $link = $this->getSession()->getPage()->find('xpath', "//a[contains(text(), '$distribution')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//span[contains(concat(' ', @class, ' '), ' file ')]/a");
