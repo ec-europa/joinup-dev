@@ -3,11 +3,8 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\process;
 
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\MigrateSkipRowException;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
-use Drupal\taxonomy\Entity\Term;
-use Drupal\taxonomy\TermStorage;
 
 /**
  * Provides a processor for Joinup Rdf term references.

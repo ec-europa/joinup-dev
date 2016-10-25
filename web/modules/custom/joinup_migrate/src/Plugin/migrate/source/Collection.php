@@ -72,6 +72,7 @@ class Collection extends SqlBase {
    * Gets the migration connection database name.
    *
    * @return string
+   *   The name of the source database.
    */
   protected function getSourceDatabaseName() {
     return $this->getDatabase()->getConnectionOptions()['database'];
