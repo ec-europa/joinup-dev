@@ -8,6 +8,7 @@ dependencies:
   - contact_information
   - datetime
   - ds
+  - field_group
   - image
   - joinup_core
   - link
