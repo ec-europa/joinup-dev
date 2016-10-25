@@ -19,9 +19,12 @@ config_devel:
   - comment.type.comment
   - core.entity_form_display.comment.comment.default
   - core.entity_view_display.comment.comment.default
+  - core.entity_view_mode.node.view_mode_tile
+  - core.entity_view_mode.rdf_entity.group_header
+  - core.entity_view_mode.rdf_entity.view_mode_featured
+  - core.entity_view_mode.rdf_entity.view_mode_tile
   - field.field.comment.comment.field_body
   - field.storage.comment.field_body
-  - core.entity_view_mode.rdf_entity.group_header
   - field.storage.node.field_comments
   - field.storage.node.field_spatial_coverage
   - field.storage.node.field_topic
