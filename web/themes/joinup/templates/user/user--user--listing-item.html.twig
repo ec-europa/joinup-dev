@@ -1,0 +1,33 @@
+{#
+/**
+ * @file
+ * Theme override to present all user data.
+ *
+ * This template is used when viewing a registered user's page,
+ * e.g., example.com/user/123. 123 being the user's ID.
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ *   print a subset such as 'content.field_example'. Fields attached to a user
+ *   such as 'user_picture' are available as 'content.user_picture'.
+ * - attributes: HTML attributes for the container element.
+ * - user: A Drupal User entity.
+ *
+ * @see template_preprocess_user()
+ */
+#}
+{%
+  set classes = [
+    'listing__card',
+    'mdl-card',
+    'listing__card--stats-container',
+    view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
+  ]
+%}
+<div class="{{ classes|join(' ') }}">
+  <div class="listing__metadata">
+    <div class="listing__field">
+      <h2 class="listing__title"><a href="{{ url }}">{{ content.field_user_first_name }} {{ content.field_user_family_name }}</a></h2>
+    </div>
+  </div>
+</div>

@@ -422,6 +422,9 @@ function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $
         'solution',
         'asset_distribution',
       ],
+      'user' => [
+        'user',
+      ],
     ];
 
     if (isset($bundles[$entity_type]) && in_array($bundle, $bundles[$entity_type])) {
@@ -430,40 +433,6 @@ function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $
         $suggestions[] = 'field__tags_wrapper';
       }
     }
-  }
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter() for rdf-entity.html.twig.
- */
-function joinup_theme_theme_suggestions_rdf_entity_alter(array &$suggestions, array $variables) {
-  // Create the same template suggestion for tile and featured view modes.
-  $view_mode = $variables['elements']['#view_mode'];
-  $bundle = $variables['elements']['#rdf_entity']->bundle();
-  $listing_modes = [
-    'view_mode_tile',
-    'view_mode_featured',
-  ];
-
-  if (in_array($view_mode, $listing_modes)) {
-    $suggestions[] = 'rdf_entity__' . str_replace('-', '_', $bundle) . '__listing_item';
-  }
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter() for node.html.twig.
- */
-function joinup_theme_theme_suggestions_node_alter(array &$suggestions, array $variables) {
-  // Create the same template suggestion for tile and featured view modes.
-  $view_mode = $variables['elements']['#view_mode'];
-  $bundle = $variables['elements']['#node']->bundle();
-  $listing_modes = [
-    'view_mode_tile',
-    'view_mode_featured',
-  ];
-
-  if (in_array($view_mode, $listing_modes)) {
-    $suggestions[] = 'node__' . str_replace('-', '_', $bundle) . '__listing_item';
   }
 }
 
@@ -495,6 +464,28 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
       $suggestions[] = $original_theme_hook . '__licence';
     }
   }
+
+  // Create the same template suggestion for tile and featured view modes.
+  if (isset($variables['elements']['#view_mode'])) {
+    $view_mode = $variables['elements']['#view_mode'];
+    $listing_modes = [
+      'view_mode_tile',
+      'view_mode_featured',
+    ];
+
+    if (in_array($view_mode, $listing_modes)) {
+      $entity_type = $variables['elements']['#entity_type'];
+      $bundle = $variables['elements']['#' . $entity_type]->bundle();
+      $listing_entities = [
+        'node',
+        'rdf_entity',
+        'user',
+      ];
+
+      $suggestions[] = $entity_type . '__' . str_replace('-', '_', $bundle) . '__listing_item';
+    }
+  }
+
   return $suggestions;
 }
 
