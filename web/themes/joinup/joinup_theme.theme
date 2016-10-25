@@ -335,24 +335,46 @@ function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $v
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter() for field.html.twig.
+ *
+ * Add theme suggestions for tile and featured view modes.
  */
 function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $variables) {
-  // Create field template for entities, which use custom templates.
-  $entities = array(
-    'collection',
-    'solution',
-    'asset_distribution',
-  );
-
-  $view_modes = array(
+  $element = $variables['element'];
+  $view_modes = [
     'view_mode_tile',
     'view_mode_featured',
-  );
+  ];
 
-  if (in_array($variables['element']['#bundle'], $entities) && in_array($variables['element']['#view_mode'], $view_modes)) {
-    $suggestions[] = 'field__no_wrappers';
-    if ($variables['element']['#field_type'] == 'entity_reference') {
-      $suggestions[] = 'field__tags_wrapper';
+  // Bail out early based on view mode.
+  if (!in_array($variables['element']['#view_mode'], $view_modes)) {
+    return;
+  }
+
+  if (!empty($element['#entity_type']) && !empty($element['#bundle'])) {
+    $entity_type = $element['#entity_type'];
+    $bundle = $element['#bundle'];
+
+    // Keep a list of bundles where we want to add the suggestions, keyed by
+    // their entity type.
+    $bundles = [
+      'node' => [
+        'discussion',
+        'event',
+        'news',
+        'document',
+      ],
+      'rdf_entity' => [
+        'collection',
+        'solution',
+        'asset_distribution',
+      ],
+    ];
+
+    if (isset($bundles[$entity_type]) && in_array($bundle, $bundles[$entity_type])) {
+      $suggestions[] = 'field__no_wrappers';
+      if ($variables['element']['#field_type'] == 'entity_reference') {
+        $suggestions[] = 'field__tags_wrapper';
+      }
     }
   }
 }
@@ -364,13 +386,30 @@ function joinup_theme_theme_suggestions_rdf_entity_alter(array &$suggestions, ar
   // Create the same template suggestion for tile and featured view modes.
   $view_mode = $variables['elements']['#view_mode'];
   $bundle = $variables['elements']['#rdf_entity']->bundle();
-  $listing_modes = array(
+  $listing_modes = [
     'view_mode_tile',
     'view_mode_featured',
-  );
+  ];
 
   if (in_array($view_mode, $listing_modes)) {
     $suggestions[] = 'rdf_entity__' . str_replace('-', '_', $bundle) . '__listing_item';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for node.html.twig.
+ */
+function joinup_theme_theme_suggestions_node_alter(array &$suggestions, array $variables) {
+  // Create the same template suggestion for tile and featured view modes.
+  $view_mode = $variables['elements']['#view_mode'];
+  $bundle = $variables['elements']['#node']->bundle();
+  $listing_modes = [
+    'view_mode_tile',
+    'view_mode_featured',
+  ];
+
+  if (in_array($view_mode, $listing_modes)) {
+    $suggestions[] = 'node__' . str_replace('-', '_', $bundle) . '__listing_item';
   }
 }
 
