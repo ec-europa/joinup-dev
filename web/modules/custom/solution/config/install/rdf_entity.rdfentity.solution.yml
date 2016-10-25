@@ -9,6 +9,6 @@ third_party_settings:
       value: 'http://purl.org/dc/terms/title'
     graph_default: 'http://joinup.eu/solution/published'
     graph_draft: 'http://joinup.eu/solution/draft'
-name: Solution
+name: 'Solution'
 rid: solution
 description: ''
