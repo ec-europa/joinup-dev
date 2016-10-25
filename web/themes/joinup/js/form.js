@@ -49,4 +49,54 @@
       });
     }
   }
+
+  // Fix vertical tabs on the form pages.
+  Drupal.behaviors.verticalTabsGrid = {
+    attach: function (context, settings) {
+      $(context).find('.vertical-tabs').once('verticalTabsGrid').each(function () {
+        // Add mdl grid classes.
+        $(this).find('.vertical-tabs__menu').addClass('mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-cell--order-2-phone');
+        $(this).find('.vertical-tabs__panes').addClass('mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phones mdl-cell--order-1-phone');
+        $(this).addClass('mdl-grid mdl-grid--no-spacing');
+
+        // Move description from pane to tab.
+        $(this).find('.vertical-tabs__pane').each(
+          function () {
+            var summary = $(this).find('.vertical-tabs__details-summary').text();
+            var summaryIndex = $(this).index();
+            var $menuItem = $(this).closest('.vertical-tabs').find('.vertical-tabs__menu-item').get(summaryIndex - 1);
+            $($menuItem).find('.vertical-tabs__menu-item-summary').text(summary);
+          });
+      });
+    }
+  };
+
+  // Behaviors for tab validation.
+  Drupal.behaviors.fieldGroupTabsValidation = {
+    attach: function (context, settings) {
+      // Keep a flag to focus only the first one in case of multiple tabs with
+      // validation errors.
+      var alreadyTriggered = false;
+
+      $('.field-group-tabs-wrapper input', context).once('tabValidation').each(function () {
+        this.addEventListener('invalid', function (e) {
+          // Open any hidden parents first.
+          $(e.target).parents('details').each(function () {
+            var $fieldGroup = $(this);
+            if (!alreadyTriggered && $fieldGroup.data('verticalTab')) {
+              $fieldGroup.data('verticalTab').tabShow();
+              alreadyTriggered = true;
+            }
+          });
+        }, false);
+      });
+
+      $('.field-group-tabs-wrapper', context).each(function () {
+        $(this).siblings('.form-actions').find('.form-submit').on('click', function () {
+          alreadyTriggered = false;
+        });
+      });
+    }
+  };
+
 })(jQuery, Drupal);
