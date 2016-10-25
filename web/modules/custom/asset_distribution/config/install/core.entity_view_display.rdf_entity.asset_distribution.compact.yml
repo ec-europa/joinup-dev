@@ -18,6 +18,7 @@ dependencies:
     - rdf_entity.rdfentity.asset_distribution
   module:
     - digital_size_formatter
+    - ds
     - file
 id: rdf_entity.asset_distribution.compact
 targetEntityType: rdf_entity
@@ -25,24 +26,38 @@ bundle: asset_distribution
 mode: compact
 content:
   field_ad_file:
-    weight: 0
+    weight: 1
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: file_default
   field_ad_file_size:
     type: digital_size
-    weight: 1
+    weight: 2
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_ad_licence:
     type: entity_reference_label
-    weight: 2
+    weight: 3
     label: hidden
     settings:
       link: true
-    third_party_settings: { }
+    third_party_settings: {  }
+  label:
+    type: string
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: true
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
 hidden:
   field_ad_access_url: true
   field_ad_creation_date: true
@@ -52,5 +67,4 @@ hidden:
   field_ad_modification_date: true
   field_ad_repr_technique: true
   field_status: true
-  label: true
   og_audience: true
