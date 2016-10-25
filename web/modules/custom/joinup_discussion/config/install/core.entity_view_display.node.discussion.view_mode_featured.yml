@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.view_mode_tile
+    - core.entity_view_mode.node.view_mode_featured
     - field.field.node.discussion.field_comments
     - field.field.node.discussion.field_discussion_active
     - field.field.node.discussion.field_discussion_content
@@ -13,10 +13,10 @@ dependencies:
     - ds
     - text
     - user
-id: node.discussion.view_mode_tile
+id: node.discussion.view_mode_featured
 targetEntityType: node
 bundle: discussion
-mode: view_mode_tile
+mode: view_mode_featured
 content:
   field_discussion_content:
     weight: 1
