@@ -358,10 +358,11 @@ function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $
     // their entity type.
     $bundles = [
       'node' => [
+        'custom_page',
         'discussion',
+        'document',
         'event',
         'news',
-        'document',
       ],
     ];
 
