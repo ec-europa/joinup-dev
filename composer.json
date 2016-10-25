@@ -13,6 +13,7 @@
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^2.0",
         "drupal/facets": "dev-1.x#d5c0117eb59ab2593f6430e3f3035d60bc084653",
+        "drupal/field_group": "dev-1.x",
         "drupal/inline_entity_form": "dev-1.x#9747e0eff3f99612ce708403313c3a051f7a9f01",
         "drupal/message": "~1.0",
         "drupal/message_notify": "~1.0",

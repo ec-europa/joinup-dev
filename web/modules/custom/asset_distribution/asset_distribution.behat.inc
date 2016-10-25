@@ -299,4 +299,50 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     return $fields;
   }
 
+  /**
+   * Checks if a distribution in compact view contains download links.
+   *
+   * The compact view is used for example in the "Downloads" page.
+   * This currently only checks the first download link.
+   *
+   * @param string $distribution
+   *    The name of the distribution.
+   *
+   * @throws \Exception
+   *   Thrown if the download link cannot be found.
+   *
+   * @Then I should see the download link in the :distribution( asset) distribution
+   */
+  public function assertLinkDistribution($distribution) {
+    $distribution = $this->getAssetDistributionByName($distribution);
+    if (empty($distribution->field_ad_access_url->first())) {
+      throw new \Exception(sprintf('Asset distribution "%s" does not contain any download links.', $distribution->label()));
+    }
+    $promoted_link = $distribution->field_ad_access_url->first()->uri;
+    $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$promoted_link}']");
+    if (empty($result)) {
+      throw new \Exception(sprintf('No link was found in the "%s" distribution on the page %s', $distribution->label(), $this->getSession()->getCurrentUrl()));
+    }
+  }
+
+  /**
+   * Checks that a distribution in compact view does not contain download links.
+   *
+   * The compact view is used for example in the "Downloads" page.
+   *
+   * @param string $distribution
+   *    The name of the distribution.
+   *
+   * @throws \Exception
+   *   Thrown if the link was found.
+   *
+   * @Then the :distribution( asset) distribution should not have any download urls
+   */
+  public function assertNotLinkDistribution($distribution) {
+    $link = $this->getSession()->getPage()->find('xpath', "//a[contains(text(), '$distribution')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//span[contains(concat(' ', @class, ' '), ' file ')]/a");
+    if (!empty($link)) {
+      throw new \Exception(sprintf('Asset distribution "%s" contains download link(s).', $distribution));
+    }
+  }
+
 }
