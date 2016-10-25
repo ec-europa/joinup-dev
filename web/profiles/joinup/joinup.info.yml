@@ -96,6 +96,7 @@ config_devel:
   - core.date_format.html_week
   - core.date_format.html_year
   - core.date_format.html_yearless_date
+  - core.date_format.date_only
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
