@@ -81,7 +81,8 @@ Feature: Proposing a collection
     And I press "Save as draft"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
 
-  @javascript
+  # @todo: Disabled until supported. WIP in ISAICP-2923.
+  @javascript @wip
   # This is a regression test for a bug in which the label texts of the options
   # vanished after performing an AJAX request in a different element on the
   # page.
@@ -95,7 +96,8 @@ Feature: Proposing a collection
     And I should see the text "Only members can create new content."
     And I should see the text "Any registered user can create new content."
 
-  @javascript
+  # @todo: Disabled until supported. WIP in ISAICP-2923.
+  @javascript @wip
   Scenario: eLibrary creation options should adapt to the state of the 'closed collection' option
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
@@ -137,7 +139,8 @@ Feature: Proposing a collection
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected
 
-  @javascript
+  # @todo: Disabled until supported. WIP in ISAICP-2923.
+  @javascript @wip
   Scenario: Propose collection form fields should be organized in groups.
     Given I am logged in as an "authenticated user"
     When I go to the propose collection form
