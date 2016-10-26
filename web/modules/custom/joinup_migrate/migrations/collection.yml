@@ -9,10 +9,8 @@ process:
   field_policy_domain:
     plugin: term_reference
     source: policy
-  field_ar_abstract:
-    -
-      plugin: get
-      source: abstract
+#  field_ar_abstract: abstract
+#  field_ar_access_url: access_url
   field_ar_state:
     -
       plugin: get

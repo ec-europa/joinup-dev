@@ -6,10 +6,13 @@ process:
   uid:
     plugin: default_value
     default_value: 1
+  source_path_encoded:
+    plugin: urlencode
+    source: source_path
   uri:
     plugin: file_copy
     source:
-      - source_path
+      - '@source_path_encoded'
       - destination_uri
   status:
     plugin: default_value
