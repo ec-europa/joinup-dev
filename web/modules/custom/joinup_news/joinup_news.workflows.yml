@@ -30,6 +30,10 @@ news_workflow:
       label: Save as draft
       from: [__new__, draft]
       to: draft
+    new_draft:
+      label: Create new draft
+      from: [validated]
+      to: draft
     propose:
       label: Propose
       from: [__new__, draft, validated, needs_update]

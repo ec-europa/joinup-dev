@@ -38,6 +38,10 @@ transitions:
         - moderator
         - rdf_entity-collection-member
         - rdf_entity-collection-facilitator
+      validated:
+        - moderator
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
     proposed:
       proposed:
         - moderator
@@ -79,6 +83,10 @@ transitions:
         - moderator
         - rdf_entity-collection-member
       draft:
+        - moderator
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
+      validated:
         - moderator
         - rdf_entity-collection-member
         - rdf_entity-collection-facilitator
