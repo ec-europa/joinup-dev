@@ -12,9 +12,8 @@ dependencies:
     - field.field.node.document.og_audience
     - node.type.document
   module:
-    - datetime
+    - ds
     - file
-    - link
     - text
     - user
 id: node.document.view_mode_tile
@@ -24,43 +23,48 @@ mode: view_mode_tile
 content:
   body:
     label: hidden
-    type: text_default
+    type: text_trimmed
     weight: 1
-    settings: {  }
-    third_party_settings: {  }
+    settings:
+      trim_length: 200
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
   field_document_file:
     weight: 3
-    label: above
+    label: hidden
     settings: {  }
-    third_party_settings: {  }
-    type: file_default
-  field_document_publication_date:
-    weight: 2
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: file_url_plain
   field_document_short_title:
     weight: 0
-    label: above
+    label: hidden
     settings:
-      link_to_entity: false
-    third_party_settings: {  }
+      link_to_entity: true
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
     type: string
-  field_document_source_url:
-    weight: 4
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
 hidden:
   field_comments: true
+  field_document_publication_date: true
+  field_document_source_url: true
   links: true
   og_audience: true
