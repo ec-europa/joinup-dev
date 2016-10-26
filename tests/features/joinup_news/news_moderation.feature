@@ -224,11 +224,14 @@ Feature: News moderation.
     And the following buttons should be present "<available buttons>"
     And the following buttons should not be present "<unavailable buttons>"
     Examples:
-      | user          | title                   | available buttons       | unavailable buttons                         |
+      | user          | title                         | available buttons       | unavailable buttons                         |
       # State: draft, owned by Eagle
-      | Eagle         | Creating Justice League | Save as draft, Validate | Propose, Request changes                    |
+      | Eagle         | Creating Justice League       | Save as draft, Validate | Propose, Request changes                    |
       # State: draft, can propose
-      | Mirror Master | Creating Legion of Doom | Save as draft, Propose  | Validate, Request changes, Request deletion |
+      | Mirror Master | Creating Legion of Doom       | Save as draft, Propose  | Validate, Request changes, Request deletion |
+      # State: validated, owned by Eagle who is a normal member. Should only be able to create a new draft.
+      | Eagle         | Hawkgirl helped Green Lantern | Save new draft          | Update, Propose, Validate, Request changes  |
+      | Mirror Master | Stealing from Batman          | Save new draft          | Update, Propose, Validate, Request changes  |
 
   Scenario Outline: Members cannot edit news they own for specific states.
     Given I am logged in as "<user>"
@@ -239,10 +242,6 @@ Feature: News moderation.
       # State: needs update
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
       | Eagle         | Space cannon fired            |
-      # State: validated
-      # Todo: validated content should still be editable, for as long as it can
-      # does not stay in 'validated' state. See ISAICP-2761.
-      | Eagle         | Hawkgirl helped Green Lantern |
       # State: draft, not owned
       | Eagle         | Question joined JL            |
       # State: draft, not owned
@@ -250,10 +249,6 @@ Feature: News moderation.
       # State: needs update
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
       | Mirror Master | Stealing complete             |
-      # State: validated
-      # Todo: validated content should still be editable, for as long as it can
-      # does not stay in 'validated' state. See ISAICP-2761.
-      | Mirror Master | Stealing from Batman          |
       # State: deletion request
       | Mirror Master | Kill the sun                  |
 
@@ -266,23 +261,24 @@ Feature: News moderation.
     And the following buttons should be present "<available buttons>"
     And the following buttons should not be present "<unavailable buttons>"
     Examples:
-      | user     | title                         | available buttons                  | unavailable buttons                                        |
+      | user     | title                         | available buttons                 | unavailable buttons                                        |
       # Post moderated
       # News article in 'proposed' state.
-      | Hawkgirl | Hawkgirl is a spy             | Update, Validate, Request changes  | Save as draft, Request deletion                            |
+      | Hawkgirl | Hawkgirl is a spy             | Update, Validate, Request changes | Save as draft, Request deletion                            |
+      # Validated content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
+      | Hawkgirl | Hawkgirl helped Green Lantern | Save new draft, Propose, Update   | Validate, Request changes, Request deletion                |
       # Members can move to 'needs update' state.
-      | Hawkgirl | Hawkgirl helped Green Lantern | Update, Propose                    | Save as draft, Request changes, Request deletion           |
-      | Hawkgirl | Space cannon fired            | Propose                            | Save as draft, Validate, Request changes, Request deletion |
+      | Hawkgirl | Hawkgirl helped Green Lantern | Update, Propose                   | Save as draft, Request changes, Request deletion           |
+      | Hawkgirl | Space cannon fired            | Propose                           | Save as draft, Validate, Request changes, Request deletion |
       # Pre moderated
       # Facilitators have access to create news and directly put it to validate. For created and proposed, member role should be used.
-      | Metallo  | Creating Legion of Doom       | Save as draft, Propose, Validate   | Request changes, Request deletion                          |
-      # Validated content can be moved back to 'Proposed' state by a facilitator.Scenario:
-      # @Todo: it should also be possible to move to 'Draft'. See ISAICP-2761
-      | Metallo  | Stealing from Batman          | Propose, Update                    | Save as draft, Request changes, Request deletion           |
+      | Metallo  | Creating Legion of Doom       | Save as draft, Propose, Validate  | Request changes, Request deletion                          |
+      # Validated content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
+      | Metallo  | Stealing from Batman          | Save new draft, Propose, Update   | Request changes, Request deletion                          |
       # Members can move to 'needs update' state.
-      | Metallo  | Learn batman's secret         | Update, Request changes, Validate  | Save as draft, Request deletion                            |
-      | Metallo  | Stealing complete             | Propose                            | Save as draft, Request deletion                            |
-      | Metallo  | Kill the sun                  | Validate                           | Save as draft, Propose, Request changes, Request deletion  |
+      | Metallo  | Learn batman's secret         | Update, Request changes, Validate | Save as draft, Request deletion                            |
+      | Metallo  | Stealing complete             | Propose                           | Save as draft, Request deletion                            |
+      | Metallo  | Kill the sun                  | Validate                          | Save as draft, Propose, Request changes, Request deletion  |
 
   Scenario Outline: Facilitators cannot view unpublished content of another collection.
     Given I am logged in as "<user>"
