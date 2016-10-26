@@ -1,0 +1,6 @@
+custom_page.custom_page.add_link:
+  route_name: 'custom_page.collection_custom_page.add'
+  title: 'Add page'
+  class: \Drupal\custom_page\Plugin\Menu\LocalAction\CustomPageAdd
+  appears_on:
+   - entity.ogmenu_instance.edit_form

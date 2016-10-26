@@ -13,6 +13,7 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og_menu\Tests\Traits\OgMenuTrait;
 
 /**
  * Behat step definitions for testing custom pages.
@@ -20,6 +21,7 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use NodeTrait;
+  use OgMenuTrait;
   use OgTrait;
   use RdfEntityTrait;
 
@@ -169,6 +171,108 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
         throw new \Exception("The current user has access to '$uri' in the OG Menu administration for the $menu menu of the $title $type.");
       }
     }
+  }
+
+  /**
+   * Checks the number of visible items in the given OG Menu.
+   *
+   * @param string $menu
+   *   The name of the OG Menu instance to check.
+   * @param string $label
+   *   The group label.
+   * @param string $type
+   *   The group type, either 'collection' or 'solution'.
+   * @param int $count
+   *   The expected number of visible menu items.
+   *
+   * @Then the :menu menu of the :label :type should have :count visible item(s)
+   */
+  public function assertVisibleItemsInMenu($menu, $label, $type, $count) {
+    /** @var \Drupal\Core\Menu\MenuLinkTreeInterface $link_tree_service */
+    $link_tree_service = \Drupal::service('menu.link_tree');
+
+    $tree = $this->getOgMenuTreeByNameLabelAndType($menu, $label, $type);
+
+    // Build a render array of the tree to easily get a list of enabled
+    // (visible) items.
+    $build = $link_tree_service->build($tree);
+    $actual = !empty($build['#items']) ? count($build['#items']) : 0;
+
+    PHPUnit_Framework_Assert::assertEquals($count, $actual);
+  }
+
+  /**
+   * Checks the number of menu items in the given OG Menu instance.
+   *
+   * @param string $menu
+   *   The name of the OG Menu instance to check.
+   * @param string $label
+   *   The group label.
+   * @param string $type
+   *   The group type, either 'collection' or 'solution'.
+   * @param int $count
+   *   The expected number of items in the menu.
+   *
+   * @Then the :menu menu of the :label :type should have :count item(s)
+   */
+  public function assertItemsInMenuForm($menu, $label, $type, $count) {
+    $tree = $this->getOgMenuTreeByNameLabelAndType($menu, $label, $type);
+    PHPUnit_Framework_Assert::assertEquals($count, count($tree));
+  }
+
+  /**
+   * Enables or disables the given menu item in the given OG Menu.
+   *
+   * @param string $operation
+   *   The operation to perform, either 'enable' or 'disable'.
+   * @param string $title
+   *   The title of the menu item to perform the action on.
+   * @param string $menu
+   *   The name of the OG Menu instance that contains the menu item.
+   * @param string $label
+   *   The group label.
+   * @param string $type
+   *   The group type, either 'collection' or 'solution'.
+   *
+   * @When I :operation :title in the :menu menu of the :label :type
+   */
+  public function switchItemInMenu($operation, $title, $menu, $label, $type) {
+    /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager_service */
+    $menu_link_manager_service = \Drupal::service('plugin.manager.menu.link');
+
+    $tree = $this->getOgMenuTreeByNameLabelAndType($menu, $label, $type);
+
+    foreach ($tree as $item) {
+      $link = $item->link;
+      $definition = $link->getPluginDefinition();
+      if ($definition['title'] === $title) {
+        $menu_link_manager_service->updateDefinition($link->getPluginId(), [
+          'enabled' => (string) ($operation === 'enable'),
+        ]);
+        return;
+      }
+    }
+
+    throw new \InvalidArgumentException("No menu link with title $title exists in the $menu menu for the $label $type.");
+  }
+
+  /**
+   * Resolves the given group and returns the OG Menu tree for it.
+   *
+   * @param string $menu_name
+   *   The name of the OG Menu instance that contains the menu item.
+   * @param string $group_label
+   *   The group label.
+   * @param string $group_type
+   *   The group type, either 'collection' or 'solution'.
+   *
+   * @return \Drupal\Core\Menu\MenuLinkTreeElement[]
+   *   The menu tree.
+   */
+  protected function getOgMenuTreeByNameLabelAndType($menu_name, $group_label, $group_type) {
+    $group = $this->getRdfEntityByLabel($group_label, $group_type);
+    $menu_instance = $this->getOgMenuInstance($group->id(), $menu_name);
+    return $this->getOgMenuTree($menu_instance);
   }
 
 }
