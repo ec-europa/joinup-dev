@@ -328,6 +328,7 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
     'input__ief_remove' => [
       'ief_entity_remove',
       'ief_remove_confirm',
+      'remove_button',
     ],
     'input__ief_cancel' => [
       'ief_entity_cancel',
