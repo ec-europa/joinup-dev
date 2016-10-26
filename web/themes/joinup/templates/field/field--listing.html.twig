@@ -36,20 +36,15 @@
  * @see template_preprocess_field()
  */
 #}
-
-{% if label_hidden %}
-  {% if multiple %}
-      {% for item in items %}
-        <span class="tag">{{ item.content }}</span>
-      {% endfor %}
-  {% else %}
-    {% for item in items %}
-      <span class="tag">{{ item.content }}</span>
-    {% endfor %}
-  {% endif %}
-{% else %}
-    <div{{ title_attributes }}>{{ label }}</div>
-    {% for item in items %}
-      <span class="tag">{{ item.content }}</span>
-    {% endfor %}
-{% endif %}
+{% for item in items %}
+  {%
+    set field_classes = [
+      'listing__item',
+      'listing__item--tile',
+      'mdl-cell',
+      item.content['#view_mode'] == 'view_mode_tile' ? 'mdl-cell--4-col',
+      item.content['#view_mode'] == 'view_mode_featured' ? 'mdl-cell--12-col',
+    ]
+  %}
+  <div class="{{ field_classes|join(' ') }}">{{ item.content }}</div>
+{% endfor %}

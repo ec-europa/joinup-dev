@@ -452,18 +452,24 @@ function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $v
  * Add theme suggestions for tile and featured view modes.
  */
 function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $variables) {
-  // Create field template for entities, which use custom templates.
-  $entities = array(
-    'asset_release',
-  );
-  if (in_array($variables['element']['#bundle'], $entities)) {
-    $suggestions[] = 'field__no_wrappers';
-  }
   $element = $variables['element'];
   $view_modes = [
     'view_mode_tile',
     'view_mode_featured',
   ];
+
+  // Create field template for entities, which use custom templates.
+  $entities = array(
+    'asset_release',
+  );
+
+  if (in_array($element['#bundle'], $entities)) {
+    $suggestions[] = 'field__no_wrappers';
+    // Check if field is displayed as tile or featured.
+    if (isset($element['0']['#view_mode']) && in_array($element['0']['#view_mode'], $view_modes)) {
+      $suggestions[] = 'field__listing';
+    }
+  }
 
   // Bail out early based on view mode.
   if (!in_array($variables['element']['#view_mode'], $view_modes)) {

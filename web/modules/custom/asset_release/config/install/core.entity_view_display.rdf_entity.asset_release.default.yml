@@ -28,8 +28,6 @@ dependencies:
   module:
     - datetime
     - ds
-    - file
-    - joinup_core
     - text
 id: rdf_entity.asset_release.default
 targetEntityType: rdf_entity
@@ -57,13 +55,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_isr_banner:
-    type: image_url_formatter
-    weight: 10
-    label: above
-    settings:
-      image_style: ''
-    third_party_settings: {  }
   field_isr_creation_date:
     weight: 14
     label: hidden
@@ -80,17 +71,11 @@ content:
             lb-col: false
             classes: {  }
     type: datetime_time_ago
-  field_isr_description:
-    weight: 12
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   field_isr_distribution:
     weight: 17
     label: hidden
     settings:
-      view_mode: default
+      view_mode: view_mode_tile
       link: false
     third_party_settings:
       ds:
@@ -102,33 +87,12 @@ content:
             lb-col: false
             classes: {  }
     type: entity_reference_entity_view
-  field_isr_documentation:
-    weight: 13
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: file_default
   field_isr_elibrary_creation:
     weight: 13
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
-  field_isr_has_version:
-    weight: 18
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_isr_included_asset:
-    type: entity_reference_entity_view
-    weight: 11
-    label: above
-    settings:
-      view_mode: default
-      link: false
-    third_party_settings: {  }
   field_isr_is_version_of:
     weight: 16
     label: above
@@ -185,22 +149,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_isr_related_solutions:
-    type: entity_reference_entity_view
-    weight: 21
-    label: above
-    settings:
-      view_mode: view_mode_tile
-      link: false
-    third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
   field_isr_release_notes:
     type: text_default
     weight: 19
@@ -257,11 +205,17 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  field_isr_banner: true
   field_isr_contact_information: true
+  field_isr_description: true
+  field_isr_documentation: true
+  field_isr_has_version: true
+  field_isr_included_asset: true
   field_isr_language: true
   field_isr_logo: true
   field_isr_modification_date: true
   field_isr_owner: true
+  field_isr_related_solutions: true
   field_isr_release_number: true
   field_isr_solution_type: true
   field_isr_translation: true
