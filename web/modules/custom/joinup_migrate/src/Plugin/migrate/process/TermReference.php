@@ -21,7 +21,10 @@ class TermReference extends ProcessPluginBase {
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
     $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-    return array_shift(array_keys($storage->loadByProperties(['name' => $value])));
+    if (!$terms = $storage->loadByProperties(['name' => $value])) {
+      $migrate_executable->saveMessage("Term '$value' does not exits in destination.");
+    }
+    return array_shift(array_keys($terms));
   }
 
 }

@@ -3,7 +3,7 @@ label: 'Migration mapping table'
 source:
   plugin: spreadsheet
   track_changes: true
-  file: '../resources/migrate/D05.04 Joinup Migration Plan_Content Item Mapping Small_v0.1.xlsx'
+  file: '../resources/migrate/D05.0x Joinup Migration Plan_Content Item Mapping Small v0.2.xlsx'
   worksheet: 'Collection'
   origin: A3
   header_row: 2
@@ -20,6 +20,7 @@ source:
     - 'Administration User'
     - 'Elibrary Creation'
     - 'Pre Moderation'
+    - 'Collection State'
     - 'Status of the collection'
   row_index_column: row_index
   keys:
@@ -92,6 +93,7 @@ process:
   admin_user: 'Administration User'
   elibrary: 'Elibrary Creation'
   pre_moderation: 'Pre Moderation'
+  collection_state: 'Collection State'
   status: 'Status of the collection'
   row_index: row_index
 destination:

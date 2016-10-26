@@ -92,6 +92,12 @@ function joinup_migrate_schema() {
           'length' => 255,
           'not null' => FALSE,
         ],
+        'collection_state' => [
+          'description' => 'Collection state',
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => FALSE,
+        ],
         'status' => [
           'description' => 'Status',
           'type' => 'varchar',
