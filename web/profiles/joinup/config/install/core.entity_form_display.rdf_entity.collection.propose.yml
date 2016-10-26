@@ -23,12 +23,84 @@ dependencies:
     - image.style.thumbnail
     - rdf_entity.rdfentity.collection
   module:
+    - field_group
     - image
     - inline_entity_form
     - joinup_core
     - link
     - rdf_entity
     - text
+third_party_settings:
+  field_group:
+    group_general:
+      children:
+        - group_main
+        - group_description
+        - group_categorisation
+      parent_name: ''
+      weight: 0
+      label: General
+      format_type: tabs
+      format_settings:
+        label: General
+        id: ''
+        classes: ''
+        direction: vertical
+    group_main:
+      children:
+        - label
+        - field_ar_description
+        - field_ar_logo
+        - field_ar_banner
+        - field_ar_closed
+        - field_ar_elibrary_creation
+        - field_ar_moderation
+      parent_name: group_general
+      weight: 5
+      label: Main
+      format_type: tab
+      format_settings:
+        label: Main
+        id: ''
+        classes: ''
+        formatter: open
+        description: ''
+        required_fields: true
+    group_description:
+      children:
+        - field_ar_abstract
+        - field_ar_access_url
+        - field_ar_creation_date
+        - field_ar_modification_date
+        - field_ar_contact_information
+        - field_ar_owner
+        - field_ar_affiliates
+      parent_name: group_general
+      weight: 6
+      label: Description
+      format_type: tab
+      format_settings:
+        label: Description
+        id: ''
+        classes: ''
+        formatter: closed
+        description: 'Describe the collection.'
+        required_fields: true
+    group_categorisation:
+      children:
+        - field_policy_domain
+        - field_spatial_coverage
+      parent_name: group_general
+      weight: 7
+      label: Categorisation
+      format_type: tab
+      format_settings:
+        label: Categorisation
+        id: ''
+        classes: ''
+        formatter: closed
+        description: 'Categorise the collection.'
+        required_fields: true
 id: rdf_entity.collection.propose
 targetEntityType: rdf_entity
 bundle: collection

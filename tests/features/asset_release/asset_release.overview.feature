@@ -21,7 +21,20 @@ Feature: Asset distribution overview on solution.
       | affiliates | Lovely Butterfly |
       | state      | validated        |
 
-    When I go to the homepage of the "Lovely Butterfly" solution
+    # Create distributions.
+    When I am logged in as a "facilitator" of the "Lovely Butterfly" solution
+    When I go to the homepage of the "Thief in the Angels" release
+    And I click "Add distribution"
+    When I fill in "Title" with "Linux"
+    And I attach the file "test.zip" to "Add a new file"
+    And I press "Save"
+    And I go to the homepage of the "The Child of the Past" release
+    # Create a distribution with no file attached.
+    And I click "Add distribution"
+    And I fill in "Title" with "Windows"
+    And I press "Save"
+
+    And I go to the homepage of the "Lovely Butterfly" solution
     And I click "Download"
     Then I should see the heading "Releases for Lovely Butterfly solution"
     # The release titles include the version as a suffix.
@@ -29,3 +42,13 @@ Feature: Asset distribution overview on solution.
       | release                 |
       | The Child of the Past 1 |
       | Thief in the Angels 2   |
+
+    And I should see the download link in the "Linux" asset distribution
+    And the "Windows" asset distribution should not have any download urls
+
+    And the "The Child of the Past" release should be marked as the latest release
+
+    # Clean up the asset distribution that was created through the UI.
+    Then I delete the "Linux" asset distribution
+    # Clean up the asset distribution that was created through the UI.
+    Then I delete the "Windows" asset distribution

@@ -11,6 +11,9 @@
 
 // Elements
 // --------------------------------------------------
+.listing--grid
+  padding: 0
+
 .listing__item
   position: relative
   background: #fff
@@ -59,9 +62,10 @@
   margin: 0
   text-decoration: none
   color: $color-blue-dark
+  word-wrap: break-word
 
 .listing__author
-  margin: 5px 0 0 0  
+  margin: 5px 0 0 0
 
 .listing__teaser
   font-size: 14px
@@ -133,6 +137,9 @@
     color: #fff
     +icon-size(30px)
 
+.listing__action-link__wrapper
+  padding: 0 20px
+
 // Modifiers
 // --------------------------------------------------
 .listing--separated
@@ -171,6 +178,16 @@
   .listing__field:last-of-type
     margin-bottom: 0
 
+.listing__title--link a
+  color: $color-orange
+
+.listing__field--normal a
+  color: $color-blue-dark
+  font-weight: bold
+
+.listing--grid
+  padding: 0
+
 // Dependiencies
 // --------------------------------------------------
 .listing__title
@@ -199,7 +216,7 @@
 // Tile: default (1/2 width) pinned
 //
 // Markup: html/listing-item--default-col-6.html
-// 
+//
 // Styleguide 2.9.1
 
 // Component
@@ -208,7 +225,7 @@
 // Tile: default (full width)
 //
 // Markup: html/listing-item--default-col-12.html
-// 
+//
 // Styleguide 2.9.2
 
 // Component
@@ -217,7 +234,7 @@
 // Tile: news (1/2 width)
 //
 // Markup: html/listing-item--news-col-6.html
-// 
+//
 // Styleguide 2.9.3
 
 // Component
@@ -226,7 +243,7 @@
 // Tile: news (full width)
 //
 // Markup: html/listing-item--news-col-12.html
-// 
+//
 // Styleguide 2.9.4
 
 // Component
@@ -336,5 +353,3 @@
     font-size: $font-size-base
     font-weight: $font-weight-medium
     color: $color-base
-
-    

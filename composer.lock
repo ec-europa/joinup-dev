@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b74512a41a9f6b5629a96c88c2e30d2d",
-    "content-hash": "40c3c04781e33ae5ea965057867e48bf",
+    "hash": "f778d7929345178c1de757af452359a6",
+    "content-hash": "55d844479a5b688a0052678685f44d29",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1928,6 +1928,60 @@
                 "irc": "irc://irc.freenode.org/drupal-search-api"
             },
             "time": "2016-08-24 17:38:22"
+        },
+        {
+            "name": "drupal/field_group",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/field_group",
+                "reference": "68020f6f4b185c5989b70272ac32177d4c42b882"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-rc4+47-dev",
+                    "datestamp": "1476311939"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Hydra",
+                    "homepage": "https://www.drupal.org/user/647364"
+                },
+                {
+                    "name": "Stalski",
+                    "homepage": "https://www.drupal.org/user/322618"
+                },
+                {
+                    "name": "jyve",
+                    "homepage": "https://www.drupal.org/user/591438"
+                },
+                {
+                    "name": "swentel",
+                    "homepage": "https://www.drupal.org/user/107403"
+                },
+                {
+                    "name": "zuuperman",
+                    "homepage": "https://www.drupal.org/user/361625"
+                }
+            ],
+            "description": "Provides the field_group module.",
+            "homepage": "https://www.drupal.org/project/field_group",
+            "support": {
+                "source": "http://cgit.drupalcode.org/field_group"
+            },
+            "time": "2016-10-12 22:34:00"
         },
         {
             "name": "drupal/inline_entity_form",
@@ -7278,7 +7332,8 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            }
+            },
+            "time": "2016-06-21 08:20:33"
         },
         {
             "name": "drupal/config_update",
@@ -7322,7 +7377,8 @@
             "homepage": "https://www.drupal.org/project/config_update",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_update"
-            }
+            },
+            "time": "2016-10-08 17:52:19"
         },
         {
             "name": "drupal/default_content",
@@ -8952,6 +9008,7 @@
     "stability-flags": {
         "drupal/core": 20,
         "drupal/facets": 20,
+        "drupal/field_group": 20,
         "drupal/inline_entity_form": 20,
         "drupal/migrate_spreadsheet": 20,
         "drupal/og": 20,

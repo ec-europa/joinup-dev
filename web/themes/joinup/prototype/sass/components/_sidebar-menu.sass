@@ -5,23 +5,29 @@
 // Component
 // --------------------------------------------------
 .sidebar-menu
-  width: 100%
-  .mdl-menu__container,
-  .mdl-menu__outline,
-  .mdl-menu
-    width: 100% !important
-  .mdl-menu
-    padding: 0
-  .mdl-menu__outline
-    background-color: transparent
-    box-shadow: none
+  +breakpoint(desktop)
+    width: 100%
+    .mdl-menu__container,
+    .mdl-menu__outline,
+    .mdl-menu
+      width: 100% !important
+    .mdl-menu
+      padding: 0
+    .mdl-menu__outline
+      background-color: transparent
+      box-shadow: none
 
 // Elements
 // --------------------------------------------------
+.sidebar-menu ul
+  padding-left: 0
+  margin: 0
+
 .sidebar-menu__button
   width: 60px
   height: 60px
   border-radius: 0
+  z-index: 999
 
 .sidebar-menu__item
   padding: 0
@@ -41,28 +47,42 @@
 
 .sidebar-menu
   .icon
+    color: #fff
     +icon-size(60px)
     +centered
 
 // Modifiers
 // --------------------------------------------------
+.sidebar-menu__button--mobile
+  margin-top: -110px
+  .icon
+    color: #fff
+  +breakpoint(desktop)
+    display: none
+
+.sidebar-menu__button--desktop
+  display: none
+  margin: 10px 0 10px 6px
+  .icon
+    color: $color-base
+  +breakpoint(desktop)
+    display: block
 
 // Dependiencies
 // --------------------------------------------------
 .section--sidebar-left
   .sidebar-menu
-    margin-top: 100px
-    +breakpoint(sm-mobile, tablet)
-      display: none
-    .mdl-menu__container,
-    .mdl-menu
-      z-index: 999
-      visibility: visible
-    .mdl-menu
-      position: relative
-      opacity: 1
-      clip: rect(0px 181.328px 144px 0px)
-    .mdl-menu__item
-      opacity: 1
-    .sidebar-menu__button
-      display: none
+    +breakpoint(desktop)
+      .mdl-menu
+        position: relative
+        opacity: 1
+        clip: rect(0px 181.328px 144px 0px)
+      .mdl-menu__item
+        opacity: 1
+      .mdl-menu__container
+        z-index: 999
+        visibility: visible
+        background: transparent
+        position: relative
+        &.desktop-hidden
+          visibility: hidden
