@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6f0b7c940804ae68032a3690edc8c11d",
-    "content-hash": "b4bfedd984358070b01e4ed928a96444",
+    "hash": "0bc8fd72bb4922c6834f322ad09280df",
+    "content-hash": "1ccca0aa17ecf8b8ad4473b0481f58ea",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1709,7 +1709,8 @@
                     "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
                     "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
                     "Entity destination ID schema should match entity ID definition @see https://www.drupal.org/node/2783715": "https://www.drupal.org/files/issues/entity_destination_id-2783715-24.patch",
-                    "Migrate download plugin @see https://www.drupal.org/node/2783075": "https://www.drupal.org/files/issues/2783075-36.patch"
+                    "Migrate download plugin @see https://www.drupal.org/node/2783075": "https://www.drupal.org/files/issues/2783075-36.patch",
+                    "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch"
                 }
             },
             "autoload": {
