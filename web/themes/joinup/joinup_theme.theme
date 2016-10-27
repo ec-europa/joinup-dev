@@ -325,11 +325,6 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
       'ief_entity_edit',
       'ief_entity_edit_save',
     ],
-    'input__ief_remove' => [
-      'ief_entity_remove',
-      'ief_remove_confirm',
-      'remove_button',
-    ],
     'input__ief_cancel' => [
       'ief_entity_cancel',
       'ief_remove_cancel',
@@ -338,6 +333,11 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
       'ief_add_cancel',
       'ief_edit_cancel',
       'ief_reference_cancel',
+    ],
+    'input__remove_button' => [
+      'ief_entity_remove',
+      'ief_remove_confirm',
+      'remove_button',
     ],
   ];
 
