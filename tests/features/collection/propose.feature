@@ -24,6 +24,7 @@ Feature: Proposing a collection
       | Password | claps         |
     And I press "Log in"
     Then I should see the heading "Propose collection"
+
   Scenario: Propose a collection
     Given the following organisation:
       | name | Organisation example |
