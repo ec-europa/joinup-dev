@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "07742bb901fe86ddd2b839b71fcb18bb",
-    "content-hash": "50a4b1cff6c5eb987ab833f8c79c2164",
+    "hash": "27a51c07122b5a3cca57b260793584c6",
+    "content-hash": "8950a10c5dfdbb67bdb5e7425c773237",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2544,17 +2544,17 @@
         },
         {
             "name": "drupal/search_api_solr",
-            "version": "1.0.0-beta1",
+            "version": "1.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "8.x-1.0-beta1"
+                "reference": "8.x-1.0-alpha6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-beta1.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha6.zip",
                 "reference": null,
-                "shasum": "2b8c127d5da0124f61aab80979b3313ae22d9b82"
+                "shasum": "656b036674f0d0cae963190ec6e29523601a569e"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -2570,7 +2570,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
+                    "version": "8.x-1.0-alpha6",
                     "datestamp": "1477470239"
                 }
             },
