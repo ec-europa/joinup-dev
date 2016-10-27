@@ -468,6 +468,16 @@ function joinup_theme_theme_suggestions_node_alter(array &$suggestions, array $v
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter() for details.html.twig.
+ */
+function joinup_theme_theme_suggestions_details_alter(array &$suggestions, array $variables) {
+  // Add template suggestion for multiple files widget.
+  if (isset($variables['element']['#theme']) && $variables['element']['#theme'] == 'file_widget_multiple') {
+    $suggestions[] = 'details__file_widget_multiple';
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_alter().
  */
 function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
