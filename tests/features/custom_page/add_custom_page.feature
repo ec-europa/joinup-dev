@@ -6,8 +6,9 @@ Feature: "Add custom page" visibility options.
 
   Scenario: "Add custom page" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following collection:
-      | title  | Code Camp |
-      | logo   | logo.png  |
+      | title | Code Camp |
+      | logo  | logo.png  |
+      | state | validated |
 
     When I am logged in as a member of the "Code Camp" collection
     And I go to the homepage of the "Code Camp" collection
@@ -23,9 +24,9 @@ Feature: "Add custom page" visibility options.
 
   Scenario: Add custom page as a facilitator.
     Given collections:
-      | title           | logo     |
-      | Open Collective | logo.png |
-      | Code Camp       | logo.png |
+      | title           | logo      | state     |
+      | Open Collective | logo.png  | validated |
+      | Code Camp       | logo.png  | validated |
     And I am logged in as a facilitator of the "Open Collective" collection
 
     # Initially there are no custom pages. A help text should inform the user
@@ -61,9 +62,9 @@ Feature: "Add custom page" visibility options.
       | name    | roles     |
       | Falstad | moderator |
     And collections:
-      | title           | logo     |
-      | Open Collective | logo.png |
-      | Code Camp       | logo.png |
+      | title           | logo      | state     |
+      | Open Collective | logo.png  | validated |
+      | Code Camp       | logo.png  | validated |
     And collection user memberships:
       | collection      | user    | roles  |
       | Open Collective | Falstad | member |

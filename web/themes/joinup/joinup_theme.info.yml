@@ -11,6 +11,9 @@ libraries:
   - joinup_theme/material-design-lite
   - joinup_theme/global-components
 
+stylesheets-remove:
+  - core/themes/stable/css/core/vertical-tabs.css
+
 regions:
   header: Header
   header_central_menu: Main menu (header)

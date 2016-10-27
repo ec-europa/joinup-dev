@@ -5,15 +5,31 @@
  * Main functions and hook implementations of the RDF Entity module.
  */
 
-use \Drupal\Core\Config\Entity\ConfigEntityBundleBase;
-use \Drupal\Core\Config\Entity\ConfigEntityInterface;
-use \Drupal\Core\Entity\BundleEntityFormBase;
-use \Drupal\Core\Form\FormStateInterface;
-use \Drupal\Core\Render\Element;
-use \Drupal\Core\Url;
-use \Drupal\field\Entity\FieldStorageConfig;
-use \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
-use \Drupal\rdf_entity\RdfInterface;
+use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Entity\BundleEntityFormBase;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+use Drupal\rdf_entity\RdfInterface;
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function rdf_entity_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if (!(\Drupal::entityManager()->getStorage($entity_type->id()) instanceof RdfEntitySparqlStorage)) {
+    return;
+  }
+
+  $fields['graph'] = BaseFieldDefinition::create('uri')
+    ->setLabel(t('The graph where the entity is stored.'))
+    ->setComputed(TRUE);
+}
 
 /**
  * Implements hook_form_alter().
@@ -72,6 +88,18 @@ function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity,
 }
 
 /**
+ * Implements hook_entity_create().
+ */
+function rdf_entity_entity_create(EntityInterface $entity) {
+  $entity_type = $entity->getEntityTypeId();
+  $storage = \Drupal::entityManager()->getStorage($entity_type);
+  if ($storage instanceof RdfEntitySparqlStorage) {
+    // The target graph should be the graph of the entity when it's created.
+    $entity->set('graph', $storage->getGraphHandler()->getTargetGraphFromEntity($entity));
+  }
+}
+
+/**
  * Configure RDF mappings for the entities base fields.
  *
  * Implements hook_form_alter().
@@ -94,11 +122,31 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
   }
   $base_fields = \Drupal::entityManager()->getBaseFieldDefinitions($entity_name);
   $idKey = $storage->getEntityType()->getKey('id');
+
+  $form['rdf_graph'] = array(
+    '#type' => 'details',
+    '#title' => t('Rdf graphs'),
+    '#description' => t('Graph URI mapping'),
+    '#weight' => 99,
+    '#open' => TRUE,
+  );
+  foreach ($storage->getGraphDefinitions() as $definedGraphName => $definedGraph) {
+    $default_value = $entity->getThirdPartySetting('rdf_entity', 'graph_' . $definedGraphName, FALSE);
+    $form['rdf_graph']['graph_' . $definedGraphName] = array(
+      '#type' => 'url',
+      '#title' => $definedGraph['title'],
+      '#description' => $definedGraph['description'],
+      '#default_value' => $default_value,
+      '#required' => TRUE,
+
+    );
+  }
   $form['rdf_mapping'] = array(
     '#type' => 'details',
     '#title' => t('Rdf field mapping'),
     '#description' => t('This field uses a Sparql backend. Please map the fields to their corresponding rdf properties.'),
     '#weight' => 99,
+    '#open' => TRUE,
   );
 
   /** @var \Drupal\Core\Field\BaseFieldDefinition $base_field */
@@ -116,7 +164,7 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
         $title .= ' (' . $column_name . ')';
       }
       $form['rdf_mapping']['mapping_' . $id . '_' . $column_name] = array(
-        '#type' => 'textfield',
+        '#type' => 'url',
         '#title' => $title,
         '#description' => $base_field->getDescription(),
         '#weight' => 150,
@@ -148,6 +196,10 @@ function rdf_entity_bundle_config($entity_type, ConfigEntityInterface $entity, a
     }
     $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $id, $settings);
   }
+  foreach ($storage->getGraphDefinitions() as $definedGraphName => $definedGraph) {
+    $graph_uri = $form_state->getValue('graph_' . $definedGraphName);
+    $entity->setThirdPartySetting('rdf_entity', 'graph_' . $definedGraphName, $graph_uri);
+  }
 }
 
 /**
@@ -178,7 +230,7 @@ function rdf_entity_theme() {
  *   - rdf_entity: The rdf_entity object.
  *   - view_mode: View mode; e.g., 'full', 'teaser', etc.
  */
-function template_preprocess_rdf_entity(&$variables) {
+function template_preprocess_rdf_entity(array &$variables) {
   $variables['view_mode'] = $variables['elements']['#view_mode'];
   // Provide a distinct $teaser boolean.
   $variables['teaser'] = $variables['view_mode'] == 'teaser';
@@ -217,7 +269,7 @@ function template_preprocess_rdf_entity(&$variables) {
  *   An associative array containing:
  *   - content: An array of rdf bundles.
  */
-function template_preprocess_rdf_add_list(&$variables) {
+function template_preprocess_rdf_add_list(array &$variables) {
   $variables['types'] = array();
   if (!empty($variables['content'])) {
     foreach ($variables['content'] as $type) {

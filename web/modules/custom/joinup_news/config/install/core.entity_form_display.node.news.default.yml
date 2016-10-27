@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.news.body
+    - field.field.node.news.field_comments
     - field.field.node.news.field_news_kicker
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_state
@@ -11,6 +12,8 @@ dependencies:
     - field.field.node.news.og_audience
     - node.type.news
   module:
+    - comment
+    - joinup_core
     - link
     - text
 id: node.news.default
@@ -26,6 +29,11 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
+  field_comments:
+    weight: 29
+    settings: {  }
+    third_party_settings: {  }
+    type: comment_default
   field_news_kicker:
     weight: 1
     settings:
@@ -41,12 +49,13 @@ content:
     third_party_settings: {  }
     type: link_default
   field_news_state:
-    weight: 26
-    settings: {  }
+    weight: 6
+    settings:
+      use_transition_label: '1'
     third_party_settings: {  }
-    type: options_select
+    type: state_machine_buttons
   field_spatial_coverage:
-    weight: 27
+    weight: 4
     settings:
       match_operator: CONTAINS
       size: 60
@@ -54,7 +63,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_topic:
-    weight: 28
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: 60

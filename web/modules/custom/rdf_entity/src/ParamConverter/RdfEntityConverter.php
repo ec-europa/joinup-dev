@@ -2,6 +2,7 @@
 
 namespace Drupal\rdf_entity\ParamConverter;
 
+use Drupal\rdf_entity\ActiveGraphEvent;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\ParamConverter\EntityConverter;
 use Drupal\Core\TypedData\TranslatableInterface;
@@ -47,6 +48,15 @@ class RdfEntityConverter extends EntityConverter {
     $value = str_replace('\\', '/', $value);
     $entity_type_id = $this->getEntityTypeFromDefaults($definition, $name, $defaults);
     if ($storage = $this->entityManager->getStorage($entity_type_id)) {
+      /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher */
+      $dispatcher = \Drupal::getContainer()->get('event_dispatcher');
+      $event = new ActiveGraphEvent($value, $definition, $name, $defaults);
+      // Determine the graph by emitting an event.
+      $graph = $dispatcher->dispatch('rdf_graph.entity_convert', $event);
+      if ($graph_type = $graph->getGraph()) {
+        $storage->setRequestGraphs($value, [$graph_type]);
+      }
+
       $entity = $storage->load($value);
       // If the entity type is translatable, ensure we return the proper
       // translation object for the current context.

@@ -13,12 +13,14 @@ Feature: Release API
       | webdav creation   | no                                   |
       | webdav url        | http://joinup.eu/solution/foo/webdav |
       | wiki              | http://example.wiki/foobar/wiki      |
+      | state             | validated                            |
     And the following collection:
       | title             | Solution API foo  |
       | logo              | logo.png          |
       | moderation        | yes               |
       | elibrary creation | facilitators      |
       | affiliates        | My first solution |
+      | state             | validated         |
     And the following release:
       | title          | My first release  |
       | description    | A sample release  |
@@ -33,12 +35,14 @@ Feature: Release API
       | title             | My first solution mandatory |
       | description       | Another sample solution     |
       | elibrary creation | members                     |
+      | state             | validated                   |
     And the following collection:
       | title             | Solution API bar            |
       | logo              | logo.png                    |
       | moderation        | yes                         |
       | elibrary creation | facilitators                |
       | affiliates        | My first solution mandatory |
+      | state             | validated                   |
     And the following release:
       | title          | My first mandatory release  |
       | description    | A sample release            |

@@ -24,27 +24,27 @@ solution_workflow:
       label: Validated
     deletion_request:
       label: Request deletion
-    in_assessment:
-      label: In assessment
+    needs_update:
+      label: Needs update
     blacklisted:
       label: Blacklisted
   transitions:
     draft:
-      label: Create
-      from: [__new__, draft, validated, in_assessment]
+      label: Save as draft
+      from: [__new__, draft, proposed, validated, needs_update, blacklisted, deletion_request]
       to: draft
     propose:
       label: Propose
-      from: [__new__, draft, validated, in_assessment, blacklisted]
+      from: [__new__, draft, proposed, validated, needs_update, blacklisted, deletion_request]
       to: proposed
     validate:
-      label: Validate
-      from: [__new__, draft, proposed, validated, in_assessment, blacklisted, deletion_request]
+      label: Publish
+      from: [__new__, draft, proposed, validated, needs_update, blacklisted, deletion_request]
       to: validated
-    in_assessment:
-      label: Report
+    needs_update:
+      label: Request changes
       from: [proposed, validated]
-      to: in_assessment
+      to: needs_update
     request_deletion:
       label: Request deletion
       from: [validated]

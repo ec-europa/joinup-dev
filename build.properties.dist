@@ -28,7 +28,7 @@ sparql.port = 8890
 sparql.dsn = localhost
 sparql.user = dba
 sparql.password = dba
-
+sparql.shareddirectory =
 # Admin user.
 drupal.admin.username = admin
 drupal.admin.password = admin
@@ -95,7 +95,7 @@ behat.yml.path = ${behat.dir}/behat.yml
 # The base URL to use in Behat tests.
 behat.base_url = ${drupal.base_url}
 
-# The URL of the webdriver host (PhantomJS or Selenium):
+# The URL of the webdriver host (e.g. Selenium or PhantomJS):
 behat.webdriver_url = http://localhost:4444/wd/hub
 
 # The location to search for Behat subcontexts.
@@ -218,7 +218,7 @@ solr.core.dir = ${solr.dir}/server/solr/${solr.core}
 drupal.modules.dev = config_update field_ui menu_ui views_ui
 
 # Modules to enable for doing user acceptance testing.
-drupal.modules.uat = demo_content
+drupal.modules.uat = demo_users demo_content
 
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = no

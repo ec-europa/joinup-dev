@@ -16,12 +16,14 @@ Feature: Solution API
       | webdav creation   | no                                   |
       | webdav url        | http://joinup.eu/solution/foo/webdav |
       | wiki              | http://example.wiki/foobar/wiki      |
+      | state             | validated                            |
     And the following collection:
       | title             | Solution API foo  |
       | logo              | logo.png          |
       | moderation        | yes               |
       | elibrary creation | facilitators      |
       | affiliates        | My first solution |
+      | state             | validated         |
     Then I should have 1 solution
 
   Scenario: Programmatically create a solution using only the mandatory fields
@@ -29,12 +31,14 @@ Feature: Solution API
       | title             | My first solution mandatory |
       | description       | Another sample solution     |
       | elibrary creation | members                     |
+      | state             | validated                   |
     And the following collection:
       | title             | Solution API bar            |
       | logo              | logo.png                    |
       | moderation        | yes                         |
       | elibrary creation | facilitators                |
       | affiliates        | My first solution mandatory |
+      | state             | validated                   |
     Then I should have 1 solution
 
   Scenario: Assign ownership during creation of solutions through UI
@@ -53,6 +57,7 @@ Feature: Solution API
       | moderation        | no                       |
       | closed            | no                       |
       | elibrary creation | facilitators             |
+      | state             | validated                |
     And the following collection user memberships:
       | user              | collection               | roles       |
       | Solution API user | This is a klm collection | facilitator |

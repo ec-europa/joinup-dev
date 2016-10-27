@@ -20,32 +20,46 @@
 #}
 {% import _self as menus %}
 
-{#
-  We call a macro which calls itself to render the full tree.
-  @see http://twig.sensiolabs.org/doc/tags/macro.html
-#}
-{{ menus.menu_links(items, attributes, 0) }}
+{% if items %}
+  <div class="sidebar-menu">
+    <button id="sidebar-menu__button" class="sidebar-menu__button sidebar-menu__button--mobile mdl-button mdl-js-button mdl-button--icon">
+      <span class="icon icon--menu"></span>
+    </button>
+
+    <button id="sidebar-menu__button-desktop" class="sidebar-menu__button sidebar-menu__button--desktop mdl-button mdl-js-button mdl-button--icon">
+      <span class="icon icon--menu"></span>
+    </button>
+    <nav class="mdl-menu mdl-menu--bottom-left mdl-js-menu sidebar-menu__container" for="sidebar-menu__button">
+      {{ menus.menu_links(items, attributes, 0) }}
+    </nav>
+  </div>
+{% endif %}
 
 {% macro menu_links(items, attributes, menu_level) %}
   {% import _self as menus %}
   {% if items %}
-  <div class="sidebar-menu">
-    <button id="sidebar-menu" class="sidebar-menu__button mdl-button mdl-js-button mdl-button--icon">
-      <i class="material-icons">menu</i>
-    </button>
-    <nav class="sidebar-menu__container" for="sidebar-menu">
-      {% for item in items %}
-        {%
-          set classes = [
-            'sidebar-menu__item',
-            item.is_expanded ? 'menu-item--expanded',
-            item.is_collapsed ? 'menu-item--collapsed',
-            item.in_active_trail ? 'menu-item--active-trail',
-          ]
-        %}
-        {{ link(item.title, item.url, { 'class':['sidebar-menu__item']} ) }}
-      {% endfor %}
-    </nav>
-  </div>
+    {% if menu_level == 0 %}
+      <ul{{ attributes.addClass('menu') }}>
+    {% else %}
+      <ul class="menu">
+    {% endif %}
+    {% for item in items %}
+      {%
+        set classes = [
+          'sidebar-menu__item',
+          'mdl-menu__item',
+          item.is_expanded ? 'menu-item--expanded',
+          item.is_collapsed ? 'menu-item--collapsed',
+          item.in_active_trail ? 'menu-item--active-trail',
+        ]
+      %}
+      <li{{ item.attributes.addClass(classes) }}>
+        {{ link(item.title, item.url, { 'class':['sidebar-menu__link']} ) }}
+        {% if item.below %}
+          {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
   {% endif %}
 {% endmacro %}

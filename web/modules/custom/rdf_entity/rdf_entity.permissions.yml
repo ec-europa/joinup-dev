@@ -1,5 +1,7 @@
 'view rdf entity':
   title: View Rdf entity
+'view unpublished rdf entity':
+  title: View unpublished rdf entities
 'view rdf entity overview':
   title: View Rdf entity overview
 'administer rdf entity':

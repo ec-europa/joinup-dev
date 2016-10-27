@@ -6,17 +6,46 @@ Feature: Navigation menu for custom pages
 
   Scenario: Access the navigation menu through the contextual link
     Given the following collection:
-      | title  | Rainbow tables |
-      | logo   | logo.png       |
+      | title | Rainbow tables |
+      | logo  | logo.png       |
+      | state | validated      |
 
+    # Initially there are no items in the navigation menu, instead we see a help
+    # text inviting the user to add a page to the menu.
     When I am logged in as a facilitator of the "Rainbow tables" collection
     And I go to the homepage of the "Rainbow tables" collection
-    And I click the contextual link "Edit menu" in the "Left sidebar" region
+    Then the navigation menu of the "Rainbow tables" collection should have 0 visible items
+    And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
+    And I should see the link "Add a new page"
+
+    # Check that the menu form is initially empty and shows a help text.
+    When I click the contextual link "Edit menu" in the "Left sidebar" region
     Then I should see the heading "Edit navigation menu of the Rainbow tables collection"
+    And the navigation menu of the "Rainbow tables" collection should have 0 items
+    And I should see the text "There are no custom pages yet."
     # The 'Add link' local action that is present in the default implementation
     # of OG Menu should not be visible. We are managing the menu links behind
-    # the scenes. The end user should not interact with these.
-    And I should not see the link "Add link"
+    # the scenes. The end user should not be able to interact with these.
+    But I should not see the link "Add link"
+
+    # When we create a custom page it should automatically show up in the menu.
+    When I click "Add page"
+    Then I should see the heading "Add custom page"
+    When I fill in the following:
+      | Title | About us              |
+      | Body  | A short introduction. |
+    And I press "Save"
+    Then I should see the success message "Custom page About us has been created."
+    And the navigation menu of the "Rainbow tables" collection should have 1 visible item
+    And I should not see the text "There are no custom pages yet."
+
+    When I click the contextual link "Edit menu" in the "Left sidebar" region
+    Then the navigation menu of the "Rainbow tables" collection should have 1 item
+    But I should not see the text "There are no custom pages yet."
+
+    # It should be possible to hide an item from the menu by disabling it.
+    When I disable "About us" in the navigation menu of the "Rainbow tables" collection
+    Then the navigation menu of the "Rainbow tables" collection should have 0 visible items
 
     # The form to add a new menu link should not be accessible by anyone. This
     # is functionality provided by Drupal which is intended for webmasters. We

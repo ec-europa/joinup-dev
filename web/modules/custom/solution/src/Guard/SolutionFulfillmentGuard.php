@@ -60,6 +60,10 @@ class SolutionFulfillmentGuard implements GuardInterface {
     // @see: solution.settings.yml
     $allowed_conditions = \Drupal::config('solution.settings')->get('transitions');
 
+    if (\Drupal::currentUser()->hasPermission('bypass node access')) {
+      return TRUE;
+    }
+
     // Check if the user has one of the allowed system roles.
     $authorized_roles = isset($allowed_conditions[$to_state][$from_state]) ? $allowed_conditions[$to_state][$from_state] : [];
     $user = $this->workflowUserProvider->getUser();

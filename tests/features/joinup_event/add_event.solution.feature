@@ -6,14 +6,15 @@ Feature: "Add event" visibility options.
 
   Scenario: "Add event" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following solutions:
-      | title           | logo     | banner     |
-      | Ragged Tower    | logo.png | banner.jpg |
-      | Prince of Magic | logo.png | banner.jpg |
+      | title           | logo     | banner     | state     |
+      | Ragged Tower    | logo.png | banner.jpg | validated |
+      | Prince of Magic | logo.png | banner.jpg | validated |
     And the following collection:
       | title      | Collective Ragged tower       |
       | logo       | logo.png                      |
       | banner     | banner.jpg                    |
       | affiliates | Ragged Tower, Prince of Magic |
+      | state      | validated                     |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Ragged Tower" solution
@@ -36,13 +37,14 @@ Feature: "Add event" visibility options.
 
   Scenario: Add event as a facilitator.
     Given solutions:
-      | title                | logo     | banner     |
-      | The Luscious Bridges | logo.png | banner.jpg |
+      | title                | logo     | banner     | state     |
+      | The Luscious Bridges | logo.png | banner.jpg | validated |
     And the following collection:
       | title      | Collective The Luscious Bridges |
       | logo       | logo.png                        |
       | banner     | banner.jpg                      |
       | affiliates | The Luscious Bridges            |
+      | state      | validated                       |
     And I am logged in as a facilitator of the "The Luscious Bridges" solution
     When I go to the homepage of the "The Luscious Bridges" solution
     And I click "Add event"
