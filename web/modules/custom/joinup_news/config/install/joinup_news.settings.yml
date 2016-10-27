@@ -15,16 +15,18 @@
 # ]
 # @endcode
 #
-# The array is a four dimensions array. The first level contains the
-# moderation value of the parent entity. The second level is the
-# target state the entity transits to. Each target
-# state is an array of allowed source states which in every check, is the
-# current state of the entity. Finally, the source states are arrays
-# of roles that are allowed to perform this action.
+# The array is a four dimensional array:
+# 1. The first level contains the moderation value of the parent entity:
+#    - 0: post-moderated.
+#    - 1: pre-moderated.
+# 2. The second level is the target state the entity transitions to.
+# 3. Each target state is an array of allowed source states which in every check
+#    is the current state of the entity.
+# 4. Finally, the source states are arrays of roles that are allowed to perform
+#    this action.
 #
-# The reverse indexing here (source states
-# keyed by the target state) is to follow the state_machines module logic
-# of indexing states.
+# The reverse indexing here (source states keyed by the target state) matches
+# the state_machines module logic of indexing states.
 transitions:
 #moderation: 0|post-moderated.
   0:
@@ -36,6 +38,10 @@ transitions:
         - moderator
         - rdf_entity-collection-member
         - rdf_entity-collection-facilitator
+      validated:
+        - moderator
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
     proposed:
       proposed:
         - moderator
@@ -43,7 +49,7 @@ transitions:
       validated:
         - moderator
         - rdf_entity-collection-facilitator
-      in_assessment:
+      needs_update:
         - moderator
         - rdf_entity-collection-facilitator
     validated:
@@ -61,10 +67,11 @@ transitions:
       validated:
         - moderator
         - rdf_entity-collection-facilitator
-    in_assessment:
-      # @todo: The in_assessment state should also be accessible by moderators
+    needs_update:
+      # @todo: The needs_update state should also be accessible by moderators
       #   when the entity is validated (e.g. inform the user that the entity
-      #   needs update after reports).
+      #   needs an update after it has been flagged with the 'Report' button).
+      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2761
       proposed:
         - moderator
         - rdf_entity-collection-member
@@ -76,6 +83,10 @@ transitions:
         - moderator
         - rdf_entity-collection-member
       draft:
+        - moderator
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
+      validated:
         - moderator
         - rdf_entity-collection-member
         - rdf_entity-collection-facilitator
@@ -92,7 +103,7 @@ transitions:
       validated:
         - moderator
         - rdf_entity-collection-facilitator
-      in_assessment:
+      needs_update:
         - moderator
         - rdf_entity-collection-facilitator
     validated:
@@ -111,10 +122,11 @@ transitions:
       deletion_request:
         - moderator
         - rdf_entity-collection-facilitator
-    in_assessment:
-      # @todo: The in_assessment state should also be accessible by moderators
+    needs_update:
+      # @todo: The needs_update state should also be accessible by moderators
       #   when the entity is validated (e.g. inform the user that the entity
-      #   needs update after reports).
+      #   needs an update after it has been flagged with the 'Report' button).
+      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2761
       proposed:
         - moderator
         - rdf_entity-collection-member
