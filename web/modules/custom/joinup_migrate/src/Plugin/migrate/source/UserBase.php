@@ -10,6 +10,13 @@ use Drupal\migrate\Plugin\migrate\source\SqlBase;
 abstract class UserBase extends SqlBase {
 
   /**
+   * Table aliases.
+   *
+   * @var string[]
+   */
+  protected $alias = [];
+
+  /**
    * {@inheritdoc}
    */
   public function getIds() {
