@@ -28,7 +28,7 @@ sparql.port = 8890
 sparql.dsn = localhost
 sparql.user = dba
 sparql.password = dba
-
+sparql.shareddirectory =
 # Admin user.
 drupal.admin.username = admin
 drupal.admin.password = admin
