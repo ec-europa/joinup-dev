@@ -93,7 +93,8 @@
                 IsqlPath="${isql.bin}"
                 DataSourceName="${sparql.dsn}"
                 Username="${sparql.user}"
-                Password="${sparql.password}" />
+                Password="${sparql.password}"
+                SharedDirectory="${sparql.shareddirectory}" />
     </target>
 
     <!-- Set up PHP CodeSniffer. -->
@@ -407,6 +408,14 @@
         <foreach list="${drupal.modules.dev}" param="module" target="enable-module" delimiter=" " />
     </target>
 
+    <!-- Enable modules for user acceptance testing. These are different from the
+      ones in enable-dev-modules as it can contain modules not needed for development
+      like demo content modules. -->
+    <!-- Enable development modules. -->
+    <target name="enable-uat-modules">
+        <foreach list="${drupal.modules.uat}" param="module" target="enable-module" delimiter=" " />
+    </target>
+
     <!-- Enable a module. -->
     <target name="enable-module">
         <drush
@@ -416,20 +425,6 @@
             bin="${drush.bin}"
             verbose="${drush.verbose}">
             <param>${module}</param>
-        </drush>
-    </target>
-
-    <!-- Enable modules for user acceptance testing. These are different from the
-      ones in enable-dev-modules as it can contain modules not needed for development
-      like demo content modules. -->
-    <target name="enable-uat-modules">
-        <drush
-            command="pm-enable"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
-            <param>${drupal.modules.uat}</param>
         </drush>
     </target>
 
@@ -453,7 +448,7 @@
         <echo message="Allow importing of RDF data from all directories" />
         <exec dir="${project.basedir}"
               command="sudo sed -i 's/DirsAllowed              = ., \/usr\/share\/virtuoso-opensource-6.1\/vad/DirsAllowed = \//g' /etc/virtuoso-opensource-6.1/virtuoso.ini;
-sudo /etc/init.d/virtuoso-opensource-6.1 restart"
+sudo supervisorctl restart virtuoso"
               checkreturn="true"
               passthru="true" />
         <echo message="Create Solr index" />

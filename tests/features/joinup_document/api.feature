@@ -13,6 +13,7 @@ Feature: Document API
       | logo              | logo.png             |
       | moderation        | yes                  |
       | elibrary creation | facilitators         |
+      | state             | validated            |
     And document content:
       | title    | short title | body               | collection           |
       | JD title | Short       | Dummy description. | Joinup document name |

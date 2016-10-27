@@ -15,6 +15,7 @@ config_devel:
   - field.field.node.news.field_comments
   - core.entity_form_display.node.news.default
   - core.entity_view_display.node.news.default
+  - core.entity_view_display.node.news.view_mode_featured
   - core.entity_view_display.node.news.view_mode_tile
   - field.field.node.news.body
   - field.field.node.news.field_news_kicker

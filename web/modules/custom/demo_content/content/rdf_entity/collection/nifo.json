@@ -104,5 +104,10 @@
         {
             "value": "0"
         }
+    ],
+    "field_ar_state": [
+        {
+            "value": "validated"
+        }
     ]
 }

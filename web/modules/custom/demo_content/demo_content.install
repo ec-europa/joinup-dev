@@ -8,22 +8,6 @@
 use Drupal\Core\Entity\EntityInterface;
 
 /**
- * Implements hook_uninstall().
- */
-function demo_content_uninstall() {
-  // Deletes demo users.
-  $path = drupal_get_path('module', 'demo_content') . '/content/user';
-  foreach (array_keys(file_scan_directory($path, '|\.json$|')) as $uri) {
-    $content = file_get_contents($uri);
-    $decoded = \Drupal::service('serializer')->decode($content, 'hal_json');
-    $name = $decoded['name'][0]['value'];
-    if ($user = user_load_by_name($name)) {
-      user_delete($user->id());
-    }
-  }
-}
-
-/**
  * Fills all mandatory fields of an entity not yet filled with random data.
  *
  * This method skips all entity keys except from the label.

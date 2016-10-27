@@ -47,7 +47,7 @@ class CollectionMenuBlock extends OgMenuBlock {
     );
     $tree = $this->menuTree->transform($tree, $manipulators);
     $build = $this->menuTree->build($tree);
-    if (!$tree) {
+    if (empty($build['#items'])) {
       $create_url = Url::fromRoute('custom_page.collection_custom_page.add', [
         'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
       ]);
@@ -76,6 +76,12 @@ class CollectionMenuBlock extends OgMenuBlock {
           'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
         ],
       ];
+    }
+
+    // Improve the template suggestion.
+    if ($tree && $menu_instance) {
+      $menu_name = $menu_instance->getType();
+      $build['#theme'] = 'menu__og__' . strtr($menu_name, '-', '_');
     }
     return $build;
   }
