@@ -62,6 +62,7 @@
   margin: 0
   text-decoration: none
   color: $color-blue-dark
+  word-wrap: break-word
 
 .listing__author
   margin: 5px 0 0 0
@@ -136,6 +137,9 @@
     color: #fff
     +icon-size(30px)
 
+.listing__action-link__wrapper
+  padding: 0 20px
+
 // Modifiers
 // --------------------------------------------------
 .listing--separated
@@ -173,6 +177,16 @@
     left: 20px
   .listing__field:last-of-type
     margin-bottom: 0
+
+.listing__title--link a
+  color: $color-orange
+
+.listing__field--normal a
+  color: $color-blue-dark
+  font-weight: bold
+
+.listing--grid
+  padding: 0
 
 // Dependiencies
 // --------------------------------------------------
