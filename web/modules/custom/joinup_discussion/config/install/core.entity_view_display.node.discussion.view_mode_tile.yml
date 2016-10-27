@@ -10,7 +10,7 @@ dependencies:
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
-    - options
+    - ds
     - text
     - user
 id: node.discussion.view_mode_tile
@@ -18,32 +18,37 @@ targetEntityType: node
 bundle: discussion
 mode: view_mode_tile
 content:
-  field_discussion_active:
-    weight: 3
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
   field_discussion_content:
     weight: 1
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
+    label: hidden
+    settings:
+      trim_length: 200
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: text_trimmed
   field_topic:
     weight: 0
-    label: above
+    label: hidden
     settings:
-      link: true
-    third_party_settings: {  }
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
     type: entity_reference_label
-  og_audience:
-    label: above
-    type: entity_reference_label
-    settings:
-      link: true
-    weight: 2
-    third_party_settings: {  }
 hidden:
   field_comments: true
+  field_discussion_active: true
   links: true
+  og_audience: true
