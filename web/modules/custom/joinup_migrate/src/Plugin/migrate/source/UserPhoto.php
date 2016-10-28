@@ -32,7 +32,7 @@ class UserPhoto extends UserBase {
   public function query() {
     $query = parent::query();
 
-    $this->alias['node'] = $query->leftJoin('node', 'node', 'u.uid = %alias.uid');
+    $this->alias['node'] = $query->leftJoin('node', 'node', "u.uid = %alias.uid AND %alias.type = 'profile'");
     $this->alias['profile'] = $query->leftJoin('content_type_profile', 'profile', "{$this->alias['node']}.vid = %alias.vid");
     $this->alias['files'] = $query->leftJoin('files', 'files', "{$this->alias['profile']}.field_photo_fid = %alias.fid AND %alias.filepath <> ''");
     $query->addExpression("{$this->alias['files']}.filepath", 'source_path');
