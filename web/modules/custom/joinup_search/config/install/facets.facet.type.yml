@@ -10,7 +10,7 @@ weight: 0
 show_only_one_result: false
 field_identifier: aggregated_field
 query_type_name: null
-facet_source_id: 'search_api_views:search:page_1'
+facet_source_id: 'views_page:search__page_1'
 widget:
   type: links
   config:
