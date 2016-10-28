@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "27a51c07122b5a3cca57b260793584c6",
-    "content-hash": "8950a10c5dfdbb67bdb5e7425c773237",
+    "hash": "a5ad70a9acd49bb416cbd68461e44f4d",
+    "content-hash": "6d956a5ac6c56482b369bb1b2e5432b9",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1708,7 +1708,8 @@
                     "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                     "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
                     "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
-                    "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch"
+                    "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
+                    "Migrate download plugin @see https://www.drupal.org/node/2783075": "https://www.drupal.org/files/issues/2783075-36.patch"
                 }
             },
             "autoload": {
