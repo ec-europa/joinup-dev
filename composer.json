@@ -9,7 +9,7 @@
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "~1.0",
         "drupal/console": "~1.0",
-        "drupal/core": "8.2.x-dev#30579c03b67069d8a037c29bb5c78b5e74ef872f",
+        "drupal/core": "8.2.x-dev#d53730504a6d21bbe50cc3b8b4b5449129e7eb49",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^2.0",
         "drupal/facets": "dev-1.x#d5c0117eb59ab2593f6430e3f3035d60bc084653",
@@ -103,8 +103,6 @@
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                 "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
                 "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
-                "Entity destination ID schema should match entity ID definition @see https://www.drupal.org/node/2783715": "https://www.drupal.org/files/issues/entity_destination_id-2783715-24.patch",
-                "Migrate download plugin @see https://www.drupal.org/node/2783075": "https://www.drupal.org/files/issues/2783075-36.patch",
                 "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch"
             },
             "drupal/inline_entity_form": {
