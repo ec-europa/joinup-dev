@@ -1,5 +1,5 @@
 id: user_photo
-label: 'Users photo'
+label: 'Users photos'
 source:
   plugin: user_photo
 process:
@@ -26,3 +26,6 @@ process:
   created: created
 destination:
   plugin: entity:file
+#migration_dependencies:
+#  required:
+#    - user
