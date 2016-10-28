@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.user.field_user_professional_domain
+    - taxonomy.vocabulary.policy_domain
   module:
     - user
 id: user.user.field_user_professional_domain
@@ -16,6 +17,12 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:rdf_entity'
-  handler_settings: {  }
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      policy_domain: policy_domain
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference
