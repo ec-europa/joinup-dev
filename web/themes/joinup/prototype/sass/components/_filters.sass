@@ -10,6 +10,9 @@
 // --------------------------------------------------
 .filter
   margin-bottom: 15px
+  padding-left: 0
+  &:before
+    display: none
   +breakpoint(mobile)
     display: inline-block
     margin-right: 8px
@@ -18,6 +21,7 @@
       margin-right: 0
 
 .filters
+  padding-left: 0
   +breakpoint(sm-mobile, mobile)
     text-align: left
 
@@ -85,4 +89,10 @@
 
 .filter__dropdown
   &.is-active
+    display: block
+
+.filters--more
+  margin-top: 0
+  display: none
+  &.is-visible
     display: block

@@ -67,6 +67,12 @@ class TypeWidget extends WidgetPluginBase {
       $items[] = $this->buildSingleResult($result);
     }
 
+    // Check if there is more facets.
+    $is_more = FALSE;
+    if (!empty($items)) {
+      $is_more = TRUE;
+    }
+
     $build = [
       '#type' => 'container',
       '#attributes' => [
@@ -79,11 +85,11 @@ class TypeWidget extends WidgetPluginBase {
         ],
       ],
       'big_icons' => [
-        '#theme' => 'facets_type_wrapper',
+        '#theme' => $is_more ? 'facets_type_wrapper__more' : 'facets_type_wrapper',
         '#items' => $big_icons,
       ],
       'others' => [
-        '#theme' => 'item_list',
+        '#theme' => 'item_list__facets',
         '#items' => $items,
       ],
     ];
