@@ -41,6 +41,7 @@ process:
   field_policy_domain:
     plugin: term_reference
     source: policy
+    vocabulary: policy_domain
   # Blocked by: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2950
   # field_spatial_coverage:
   #   TBD...

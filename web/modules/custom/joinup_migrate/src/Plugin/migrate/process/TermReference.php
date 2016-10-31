@@ -16,15 +16,29 @@ use Drupal\migrate\Row;
 class TermReference extends ProcessPluginBase {
 
   /**
+   * Statically cache the results.
+   *
+   * @var string[]
+   */
+  protected $cache = [];
+
+  /**
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
-    $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-    if (!$terms = $storage->loadByProperties(['name' => $value])) {
-      $migrate_executable->saveMessage("Term '$value' does not exits in destination.");
+    if (!isset($this->cache[$value])) {
+      /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+      $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+      if (!$terms = $storage->loadByProperties([
+        'name' => $value,
+        'vid' => $this->configuration['vocabulary'],
+      ])
+      ) {
+        $migrate_executable->saveMessage("Term '$value' does not exits in destination.");
+      }
+      $this->cache[$value] = array_shift(array_keys($terms));
     }
-    return array_shift(array_keys($terms));
+    return $this->cache[$value];
   }
 
 }
