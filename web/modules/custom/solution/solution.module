@@ -187,11 +187,11 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
   if ($display->getComponent('releases_overview')) {
     $build['releases_overview'] = [
       '#type' => 'link',
-      '#title' => t('Download'),
+      '#title' => t('Download releases'),
       '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
         'rdf_entity' => $entity->id(),
       ]),
-      '#attributes' => array('class' => 'button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'),
+      '#attributes' => array('class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'),
     ];
   }
 }
@@ -208,7 +208,7 @@ function solution_rdf_entity_presave(EntityInterface $entity) {
   }
 
   $state = $entity->field_is_state->value;
-  if (in_array($state, ['draft', 'proposed', 'in_assessment', 'blacklisted'])) {
+  if (in_array($state, ['draft', 'proposed', 'needs_update', 'blacklisted'])) {
     \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
   }
   elseif (in_array($state, ['validated', 'deletion_request'])) {
