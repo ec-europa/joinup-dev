@@ -2,15 +2,16 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.rdfentity.person
-id: rdf_entity.person.label
-field_name: label
+    - field.storage.rdf_entity.field_owner_name
+    - rdf_entity.rdfentity.owner
+id: rdf_entity.owner.field_owner_name
+field_name: field_owner_name
 entity_type: rdf_entity
-bundle: person
+bundle: owner
 label: Name
 description: ''
 required: true
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }

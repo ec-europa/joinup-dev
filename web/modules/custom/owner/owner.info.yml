@@ -8,11 +8,20 @@ dependencies:
   - joinup_core
 
 config_devel:
-  - core.entity_form_display.rdf_entity.person.default
+  - core.base_field_override.rdf_entity.organisation.label
+  - core.base_field_override.rdf_entity.owner.label
+  - core.base_field_override.rdf_entity.person.label
   - core.entity_form_display.rdf_entity.organisation.default
-  - rdf_entity.rdfentity.person
+  - core.entity_form_display.rdf_entity.owner.default
+  - core.entity_form_display.rdf_entity.person.default
   - rdf_entity.rdfentity.organisation
+  - rdf_entity.rdfentity.owner
+  - rdf_entity.rdfentity.person
   - field.field.rdf_entity.organisation.field_oo_name
+  - field.field.rdf_entity.owner.field_owner_name
+  - field.field.rdf_entity.owner.field_owner_type
   - field.field.rdf_entity.person.field_op_name
   - field.storage.rdf_entity.field_oo_name
   - field.storage.rdf_entity.field_op_name
+  - field.storage.rdf_entity.field_owner_type
+  - field.storage.rdf_entity.field_owner_name
