@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY schema "http://schema.org/" >
+    <!ENTITY dcterms "http://purl.org/dc/terms/" >
+    <!ENTITY foaf "http://xmlns.com/foaf/0.1/" >
+    <!ENTITY vann "http://purl.org/vocab/vann/" >
+    <!ENTITY cc "http://creativecommons.org/ns#" >
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY wdrs "http://www.w3.org/2007/05/powder-s#" >
+    <!ENTITY xhv "http://www.w3.org/1999/xhtml/vocab#" >
+    <!ENTITY skos "http://www.w3.org/2004/02/skos/core#" >
+    <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.semanticweb.org/owl/owlapi/turtle#"
+     xml:base="http://www.semanticweb.org/owl/owlapi/turtle"
+     xmlns:wdrs="http://www.w3.org/2007/05/powder-s#"
+     xmlns:foaf="http://xmlns.com/foaf/0.1/"
+     xmlns:vann="http://purl.org/vocab/vann/"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:dcterms="http://purl.org/dc/terms/"
+     xmlns:schema="http://schema.org/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xhv="http://www.w3.org/1999/xhtml/vocab#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:cc="http://creativecommons.org/ns#">
+
+    <owl:NamedIndividual rdf:about="http://purl.org/adms/publishertype/1.0">
+        <rdf:type rdf:resource="&skos;ConceptScheme"/>
+        <rdfs:label xml:lang="en">Publisher Type</rdfs:label>
+        <skos:hasTopConcept rdf:resource="http://purl.org/adms/publishertype/Academia-ScientificOrganisation"/>
+        <skos:hasTopConcept rdf:resource="http://purl.org/adms/publishertype/Company"/>
+        <skos:hasTopConcept rdf:resource="http://purl.org/adms/publishertype/IndustryConsortium"/>
+        <skos:hasTopConcept rdf:resource="http://purl.org/adms/publishertype/LocalAuthority"/>
+        <skos:hasTopConcept rdf:resource="http://purl.org/adms/publishertype/NationalAuthority"/>
+        <skos:hasTopConcept rdf:resource="http://purl.org/adms/publishertype/NonGovernmentalOrganisation"/>
+        <skos:hasTopConcept rdf:resource="http://purl.org/adms/publishertype/NonProfitOrganisation"/>
+        <skos:hasTopConcept rdf:resource="http://purl.org/adms/publishertype/PrivateIndividual(s)"/>
+        <skos:hasTopConcept rdf:resource="http://purl.org/adms/publishertype/RegionalAuthority"/>
+        <skos:hasTopConcept rdf:resource="http://purl.org/adms/publishertype/StandardisationBody"/>
+        <skos:hasTopConcept rdf:resource="http://purl.org/adms/publishertype/SupraNationalAuthority"/>
+    </owl:NamedIndividual>
+
+    <!-- http://purl.org/adms/publishertype/Academia-ScientificOrganisation -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/adms/publishertype/Academia-ScientificOrganisation">
+        <rdf:type rdf:resource="&skos;Concept"/>
+        <skos:notation>Academia-ScientificOrganisation</skos:notation>
+        <skos:prefLabel xml:lang="en">Academia/Scientific organisation</skos:prefLabel>
+        <skos:inScheme rdf:resource="http://purl.org/adms/publishertype/1.0"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/adms/publishertype/Company -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/adms/publishertype/Company">
+        <rdf:type rdf:resource="&skos;Concept"/>
+        <skos:notation>Company</skos:notation>
+        <skos:prefLabel xml:lang="en">Company</skos:prefLabel>
+        <skos:inScheme rdf:resource="http://purl.org/adms/publishertype/1.0"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/adms/publishertype/IndustryConsortium -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/adms/publishertype/IndustryConsortium">
+        <rdf:type rdf:resource="&skos;Concept"/>
+        <skos:prefLabel xml:lang="en">Industry consortium</skos:prefLabel>
+        <skos:notation>IndustryConsortium</skos:notation>
+        <skos:inScheme rdf:resource="http://purl.org/adms/publishertype/1.0"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/adms/publishertype/LocalAuthority -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/adms/publishertype/LocalAuthority">
+        <rdf:type rdf:resource="&skos;Concept"/>
+        <skos:notation>LocalAuthority</skos:notation>
+        <skos:prefLabel xml:lang="en">Local Authority</skos:prefLabel>
+        <skos:inScheme rdf:resource="http://purl.org/adms/publishertype/1.0"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/adms/publishertype/NationalAuthority -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/adms/publishertype/NationalAuthority">
+        <rdf:type rdf:resource="&skos;Concept"/>
+        <skos:prefLabel xml:lang="en">National authority</skos:prefLabel>
+        <skos:notation>NationalAuthority</skos:notation>
+        <skos:inScheme rdf:resource="http://purl.org/adms/publishertype/1.0"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/adms/publishertype/NonGovernmentalOrganisation -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/adms/publishertype/NonGovernmentalOrganisation">
+        <rdf:type rdf:resource="&skos;Concept"/>
+        <skos:prefLabel xml:lang="en">Non-Governmental Organisation</skos:prefLabel>
+        <skos:notation>NonGovernmentalOrganisation</skos:notation>
+        <skos:inScheme rdf:resource="http://purl.org/adms/publishertype/1.0"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/adms/publishertype/NonProfitOrganisation -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/adms/publishertype/NonProfitOrganisation">
+        <rdf:type rdf:resource="&skos;Concept"/>
+        <skos:prefLabel xml:lang="en">Non-Profit Organisation</skos:prefLabel>
+        <skos:notation>NonProfitOrganisation</skos:notation>
+        <skos:inScheme rdf:resource="http://purl.org/adms/publishertype/1.0"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/adms/publishertype/PrivateIndividual(s) -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/adms/publishertype/PrivateIndividual(s)">
+        <rdf:type rdf:resource="&skos;Concept"/>
+        <skos:prefLabel xml:lang="en">Private Individual(s)</skos:prefLabel>
+        <skos:notation>PrivateIndividual(s)</skos:notation>
+        <skos:inScheme rdf:resource="http://purl.org/adms/publishertype/1.0"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/adms/publishertype/RegionalAuthority -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/adms/publishertype/RegionalAuthority">
+        <rdf:type rdf:resource="&skos;Concept"/>
+        <skos:notation>RegionalAuthority</skos:notation>
+        <skos:prefLabel xml:lang="en">Regional authority</skos:prefLabel>
+        <skos:inScheme rdf:resource="http://purl.org/adms/publishertype/1.0"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/adms/publishertype/StandardisationBody -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/adms/publishertype/StandardisationBody">
+        <rdf:type rdf:resource="&skos;Concept"/>
+        <skos:prefLabel xml:lang="en">Standardisation body</skos:prefLabel>
+        <skos:notation>StandardisationBody</skos:notation>
+        <skos:inScheme rdf:resource="http://purl.org/adms/publishertype/1.0"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/adms/publishertype/SupraNationalAuthority -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/adms/publishertype/SupraNationalAuthority">
+        <rdf:type rdf:resource="&skos;Concept"/>
+        <skos:prefLabel xml:lang="en">Supra-national authority</skos:prefLabel>
+        <skos:notation>SupraNationalAuthority</skos:notation>
+        <skos:inScheme rdf:resource="http://purl.org/adms/publishertype/1.0"/>
+    </owl:NamedIndividual>
+    
+
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.2.5.1912) http://owlapi.sourceforge.net -->
+
