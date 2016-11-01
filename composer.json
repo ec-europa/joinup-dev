@@ -25,7 +25,7 @@
         "drupal/r4032login": "dev-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
         "drupal/search_api": "1.0-alpha17",
         "drupal/search_api_solr": "~1.0-alpha5",
-        "drupal/state_machine": "~1.0-beta2",
+        "drupal/state_machine": "~1.0-beta3",
         "drupal/token": "~1.0",
         "drupal/view_unpublished": "dev-1.x#869c5b6b80f6badc0b39dff07ba852c9c967b9c7",
         "drush/drush": "~8.0",
@@ -113,9 +113,6 @@
             },
             "drupal/search_api": {
                 "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
-            },
-            "drupal/state_machine": {
-                "State machine should fire events when a transition is applied.": "https://www.drupal.org/files/issues/state_machine_should-2794537-22.patch"
             }
         }
     },
