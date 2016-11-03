@@ -22,8 +22,9 @@ Feature: Collections Overview
       | eHealth           | Supports health-related fields | validated |
       | Open Data         | Facilitate access to data sets | validated |
       | Connecting Europe | Reusable tools and services    | validated |
-    Given organisation:
-      | name | Organisation example |
+    Given the following owner:
+      | name                 | type                    |
+      | Organisation example | Non-Profit Organisation |
     Then I commit the solr index
     # Check that visiting as an anonymous does not create cache for all users.
     When I am an anonymous user
@@ -64,7 +65,7 @@ Feature: Collections Overview
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.
-    And I press "Add existing owner"
+    And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
     And I press "Publish"

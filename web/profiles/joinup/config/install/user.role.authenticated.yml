@@ -25,3 +25,4 @@ permissions:
   - 'post comments'
   - 'access comments'
   - 'skip comment approval'
+  - 'create owner rdf entity'

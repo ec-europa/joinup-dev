@@ -304,6 +304,20 @@ class Query extends QueryBase implements QueryInterface {
         $this->filter->filter('?entity IN ' . SparqlArg::literal($id));
         break;
 
+      case "$label-IN":
+        $labels = is_array($value) ? $value : [$value];
+        $mapping = $this->mappingHandler->getEntityTypeLabelPredicates($this->entityTypeId);
+
+        $label_types = "(<" . implode(">, <", array_unique(array_keys($mapping))) . ">)";
+        $this->condition->condition('?entity', '?label_type', '?label');
+        $this->filter->filter('?label_type IN ' . $label_types);
+        $labels = array_map(function ($label) {
+          return 'str(?label) = "' . $label . '"';
+        }, $labels);
+        $this->filter->filter(implode(' || ', $labels));
+
+        return $this;
+
       case $label . '-=':
         preg_match('/\((.*?)\)/', $value, $matches);
         $matching = array_pop($matches);

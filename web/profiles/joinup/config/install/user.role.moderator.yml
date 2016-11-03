@@ -38,3 +38,5 @@ permissions:
   - 'view unpublished rdf entity'
   - 'administer comments'
   - 'skip comment approval'
+  - 'delete owner rdf entity'
+  - 'edit owner rdf entity'
