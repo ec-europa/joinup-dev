@@ -7,7 +7,7 @@
         "composer/composer": "~1.0",
         "composer/installers": "^1.0.20",
         "continuousphp/aws-sdk-phing": "~0.1",
-        "cweagans/composer-patches": "~1.0",
+        "cweagans/composer-patches": "dev-master",
         "drupal/console": "~1.0",
         "drupal/core": "8.2.x-dev#30579c03b67069d8a037c29bb5c78b5e74ef872f",
         "drupal/digital_size_formatter": "~1.0-alpha1",
@@ -112,7 +112,8 @@
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
             },
             "drupal/search_api": {
-                "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch"
+                "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch",
+                "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-2_0-on_2753667-8.patch"
             },
             "drupal/state_machine": {
                 "State machine should fire events when a transition is applied.": "https://www.drupal.org/files/issues/state_machine_should-2794537-22.patch"
