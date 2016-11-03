@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f037f6c1ebdf3734054aeaca73edea0e",
-    "content-hash": "a567ce5c6c750367548956ee660db6d6",
+    "hash": "d495300aa9ba746debcbdda93c8ba24b",
+    "content-hash": "3a71c31f0dc000111f1e4ad998c280ec",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -114,16 +114,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.21",
+            "version": "3.19.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1ded8fb7f959e2c76d3488639f61f8e62d45cf87"
+                "reference": "04d2a027cac94674b52dfb4d68667bfe225b0fb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1ded8fb7f959e2c76d3488639f61f8e62d45cf87",
-                "reference": "1ded8fb7f959e2c76d3488639f61f8e62d45cf87",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/04d2a027cac94674b52dfb4d68667bfe225b0fb5",
+                "reference": "04d2a027cac94674b52dfb4d68667bfe225b0fb5",
                 "shasum": ""
             },
             "require": {
@@ -190,20 +190,20 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-11-01 22:16:39"
+            "time": "2016-11-02 22:24:48"
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.0.4",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "ec21a59414b99501e723b63fd664aa8ead9c5680"
+                "reference": "a795611394b3c05164fd0eb291b492b39339cba4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/ec21a59414b99501e723b63fd664aa8ead9c5680",
-                "reference": "ec21a59414b99501e723b63fd664aa8ead9c5680",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/a795611394b3c05164fd0eb291b492b39339cba4",
+                "reference": "a795611394b3c05164fd0eb291b492b39339cba4",
                 "shasum": ""
             },
             "require": {
@@ -248,7 +248,7 @@
                 "ssl",
                 "tls"
             ],
-            "time": "2016-09-04 19:00:06"
+            "time": "2016-11-02 18:11:27"
         },
         {
             "name": "composer/composer",
@@ -1339,16 +1339,16 @@
         },
         {
             "name": "drupal/console",
-            "version": "1.0.0-rc6",
+            "version": "1.0.0-rc7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "cda7f34a07a5b2d7cf51d0cf3b3f5ad628ac85f3"
+                "reference": "0cd6028fb9274c580dc14fc97dd9c1d72c3f4f8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/cda7f34a07a5b2d7cf51d0cf3b3f5ad628ac85f3",
-                "reference": "cda7f34a07a5b2d7cf51d0cf3b3f5ad628ac85f3",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/0cd6028fb9274c580dc14fc97dd9c1d72c3f4f8e",
+                "reference": "0cd6028fb9274c580dc14fc97dd9c1d72c3f4f8e",
                 "shasum": ""
             },
             "require": {
@@ -1414,20 +1414,20 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2016-10-17 18:38:59"
+            "time": "2016-11-02 19:32:18"
         },
         {
             "name": "drupal/console-core",
-            "version": "1.0.0-rc6",
+            "version": "1.0.0-rc7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console-core.git",
-                "reference": "105bf5845f17b336c9a62fbd3e576eaea0eb91d5"
+                "reference": "b2bdf84ba1e93a31f7228a22c1a20ef458a76b40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-core/zipball/105bf5845f17b336c9a62fbd3e576eaea0eb91d5",
-                "reference": "105bf5845f17b336c9a62fbd3e576eaea0eb91d5",
+                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-core/zipball/b2bdf84ba1e93a31f7228a22c1a20ef458a76b40",
+                "reference": "b2bdf84ba1e93a31f7228a22c1a20ef458a76b40",
                 "shasum": ""
             },
             "require": {
@@ -1493,20 +1493,20 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2016-10-17 16:55:41"
+            "time": "2016-11-02 19:26:55"
         },
         {
             "name": "drupal/console-en",
-            "version": "1.0.0-rc2",
+            "version": "1.0.0-rc4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console-en.git",
-                "reference": "d95f7673ce0d3253efb7ce054a2bf13e6cf9c773"
+                "reference": "475e19d40a498d40f5a9183e05341c8ec7d8d96d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-en/zipball/d95f7673ce0d3253efb7ce054a2bf13e6cf9c773",
-                "reference": "d95f7673ce0d3253efb7ce054a2bf13e6cf9c773",
+                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-en/zipball/475e19d40a498d40f5a9183e05341c8ec7d8d96d",
+                "reference": "475e19d40a498d40f5a9183e05341c8ec7d8d96d",
                 "shasum": ""
             },
             "type": "drupal-console-language",
@@ -1547,7 +1547,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2016-10-17 16:30:14"
+            "time": "2016-11-02 19:18:53"
         },
         {
             "name": "drupal/core",
@@ -2108,7 +2108,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-alpha4.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha4",
                 "shasum": "bee9bb864406df855af5077e727a0c1c0ed93b18"
             },
             "require": {
@@ -2173,7 +2173,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/message_notify-8.x-1.0-alpha3.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha3",
                 "shasum": "c5b9569a5beb68a66152d1b4920bb36fc5711b10"
             },
             "require": {
@@ -2315,16 +2315,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "1f72be2d0b1337d546ae47b56aa990c714fdba64"
+                "reference": "b79ce838bf209af7c2508b4c74e623ecb7e25b5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/1f72be2d0b1337d546ae47b56aa990c714fdba64",
-                "reference": "1f72be2d0b1337d546ae47b56aa990c714fdba64",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/b79ce838bf209af7c2508b4c74e623ecb7e25b5a",
+                "reference": "b79ce838bf209af7c2508b4c74e623ecb7e25b5a",
                 "shasum": ""
             },
             "require-dev": {
-                "drupal/coder": "^8.2"
+                "drupal/coder": "~8.2"
             },
             "type": "drupal-module",
             "license": [
@@ -2337,7 +2337,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-10-17 07:19:18"
+            "time": "2016-11-03 10:28:06"
         },
         {
             "name": "drupal/og_menu",
@@ -2545,17 +2545,17 @@
         },
         {
             "name": "drupal/search_api_solr",
-            "version": "1.0.0-beta1",
+            "version": "1.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "8.x-1.0-beta1"
+                "reference": "8.x-1.0-alpha6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-beta1.zip",
-                "reference": null,
-                "shasum": "2b8c127d5da0124f61aab80979b3313ae22d9b82"
+                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha6.zip",
+                "reference": "8.x-1.0-alpha6",
+                "shasum": "656b036674f0d0cae963190ec6e29523601a569e"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -2571,7 +2571,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
+                    "version": "8.x-1.0-alpha6",
                     "datestamp": "1477470239"
                 }
             },
@@ -2638,8 +2638,7 @@
                 "drupal": {
                     "version": "8.x-1.0-beta3",
                     "datestamp": "1477868939"
-                },
-                "patches_applied": []
+                }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
@@ -7248,7 +7247,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/admin_toolbar-8.x-1.17.zip",
-                "reference": null,
+                "reference": "8.x-1.17",
                 "shasum": "030dbb0cf65ae74e8a9c54d0fb2257112c2b16a5"
             },
             "require": {
