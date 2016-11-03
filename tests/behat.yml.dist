@@ -6,7 +6,7 @@ default:
         - Drupal\joinup\Context\DrupalContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
-        - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\joinup\Context\MinkContext
       filters:
         # @todo Enable JavaScript testing again when ISAICP-2923 is fixed.
         tags: '~@javascript&&~@wip'
@@ -16,6 +16,7 @@ default:
       files_path: '${behat.files.path}'
       goutte: ~
       javascript_session: 'selenium2'
+      browser_name: chrome
       selenium2:
         wd_host: '${behat.webdriver_url}'
     Drupal\DrupalExtension:
