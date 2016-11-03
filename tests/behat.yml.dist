@@ -8,8 +8,7 @@ default:
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\DrupalExtension\Context\MinkContext
       filters:
-        # @todo Enable JavaScript testing again when ISAICP-2923 is fixed.
-        tags: '~@javascript&&~@wip'
+        tags: '~@wip'
   extensions:
     Behat\MinkExtension:
       base-url: '${behat.base_url}'
