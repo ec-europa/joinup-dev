@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "82b4b4727dbbecafa0c59586e36131c2",
-    "content-hash": "00cec5ab70589b6bcb36d67ee712273c",
+    "hash": "75410a3091681a16ce3399e9315992b6",
+    "content-hash": "72f7ff827228487787fa1677578dea9a",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -7048,16 +7048,16 @@
         },
         {
             "name": "behat/mink-selenium2-driver",
-            "version": "v1.3.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/minkphp/MinkSelenium2Driver.git",
-                "reference": "473a9f3ebe0c134ee1e623ce8a9c852832020288"
+                "reference": "721cbbaf37f71434f6acb604dc3a17a6a9be0c4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/473a9f3ebe0c134ee1e623ce8a9c852832020288",
-                "reference": "473a9f3ebe0c134ee1e623ce8a9c852832020288",
+                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/721cbbaf37f71434f6acb604dc3a17a6a9be0c4c",
+                "reference": "721cbbaf37f71434f6acb604dc3a17a6a9be0c4c",
                 "shasum": ""
             },
             "require": {
@@ -7066,7 +7066,7 @@
                 "php": ">=5.3.1"
             },
             "require-dev": {
-                "symfony/phpunit-bridge": "~2.7"
+                "mink/driver-testsuite": "dev-master"
             },
             "type": "mink-driver",
             "extra": {
@@ -7105,7 +7105,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2016-03-05 09:10:18"
+            "time": "2016-10-29 21:31:07"
         },
         {
             "name": "behat/transliterator",
@@ -7379,7 +7379,8 @@
             "homepage": "https://www.drupal.org/project/config_update",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_update"
-            }
+            },
+            "time": "2016-11-01 14:45:50"
         },
         {
             "name": "drupal/default_content",
@@ -9019,6 +9020,7 @@
         "drupal/view_unpublished": 20,
         "easyrdf/easyrdf": 20,
         "google/material-design-lite": 20,
+        "behat/mink-selenium2-driver": 20,
         "drupal/config_devel": 20,
         "drupal/config_update": 20,
         "drupal/drupal-extension": 20,
