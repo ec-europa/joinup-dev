@@ -6,7 +6,8 @@ Feature: Event API
 
   Scenario: Programmatically create an Event entity
     Given the following owner:
-      | name | Event Owner |
+      | name        | type    |
+      | Event Owner | Company |
     And the following collection:
       | title             | Le Event Heureux |
       | owner             | Event Owner      |

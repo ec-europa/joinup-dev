@@ -51,7 +51,7 @@ Feature: Solution editing.
     And I fill in "Contact information" with "Seward Shawn"
     And I press "Add contact information"
     # Click the button to select an existing owner.
-    And I press "Add existing owner" at the "Owner" field
+    And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Acme inc."
     And I press "Add owner"
     And I press "Propose"
