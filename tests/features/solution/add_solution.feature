@@ -71,8 +71,9 @@ Feature: "Add solution" visibility options.
     And the following contact:
       | email | foo@bar.com                 |
       | name  | Contact information example |
-    And the following organisation:
-      | name | Organisation example |
+    And the following owner:
+      | name                 | type    |
+      | Organisation example | Company |
     And I am logged in as a facilitator of the "Belgian barista's" collection
 
     When I go to the homepage of the "Belgian barista's" collection

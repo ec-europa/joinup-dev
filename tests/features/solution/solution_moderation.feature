@@ -30,8 +30,9 @@ Feature: Solution moderation
     And the following buttons should not be present "Publish, Request changes, Blacklist, Request deletion"
 
   Scenario: Test the moderation workflow available states.
-    Given the following organisation:
-      | name | Angelos Agathe |
+    Given the following owner:
+      | name           | type                  |
+      | Angelos Agathe | Private Individual(s) |
     And the following contact:
       | name  | Placide             |
       | email | Placide@example.com |

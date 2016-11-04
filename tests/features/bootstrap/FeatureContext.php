@@ -19,7 +19,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use EntityTrait;
   use UtilityTrait;
   // Uncomment to enable screen-shots during development.
-  // use \Drupal\joinup\Traits\ScreenShotTrait;
+  use \Drupal\joinup\Traits\ScreenShotTrait;
 
   /**
    * Define ASCII values for key presses.
