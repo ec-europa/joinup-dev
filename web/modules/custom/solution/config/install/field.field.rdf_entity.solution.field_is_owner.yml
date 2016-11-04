@@ -23,5 +23,5 @@ settings:
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: organisation
+    auto_create_bundle: null
 field_type: entity_reference

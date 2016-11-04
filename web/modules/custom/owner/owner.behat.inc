@@ -92,7 +92,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @When I delete the :owner owner
    */
   public function deleteOwner($name) {
-    $this->getRdfEntityByLabel($name, 'person')->delete();
+    $this->getRdfEntityByLabel($name, 'owner')->delete();
   }
 
   /**

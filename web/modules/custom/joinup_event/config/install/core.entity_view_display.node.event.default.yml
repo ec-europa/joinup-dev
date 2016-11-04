@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_display.comment.comment.default
     - field.field.node.event.body
     - field.field.node.event.field_comments
     - field.field.node.event.field_event_adtl_address_info

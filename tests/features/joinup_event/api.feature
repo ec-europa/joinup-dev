@@ -5,7 +5,7 @@ Feature: Event API
   I need to be able to use the Node API to handle the "Event" bundle
 
   Scenario: Programmatically create an Event entity
-    Given the following person:
+    Given the following owner:
       | name | Event Owner |
     And the following collection:
       | title             | Le Event Heureux |

@@ -64,8 +64,6 @@ function owner_inline_entity_form_entity_builder($entity_type, EntityInterface $
  */
 function owner_entity_auto_label(EntityInterface $entity) {
   $fields = [
-    'organisation' => 'field_oo_name',
-    'person' => 'field_op_name',
     'owner' => 'field_owner_name',
   ];
 
