@@ -4,7 +4,7 @@ namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Query\QueryBase;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Entity\Query\Sql\ConditionAggregate;
@@ -96,7 +96,7 @@ class Query extends QueryBase implements QueryInterface {
    *   The database connection to run the query against.
    * @param array $namespaces
    *   List of potential namespaces of the classes belonging to this query.
-   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service object.
    * @param \Drupal\rdf_entity\RdfGraphHandler $rdf_graph_handler
    *    The rdf graph handler service.
@@ -108,7 +108,7 @@ class Query extends QueryBase implements QueryInterface {
    *
    * @todo: Is this exception check needed?
    */
-  public function __construct(EntityTypeInterface $entity_type, $conjunction, Connection $connection, array $namespaces, EntityTypeManager $entity_type_manager, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
+  public function __construct(EntityTypeInterface $entity_type, $conjunction, Connection $connection, array $namespaces, EntityTypeManagerInterface $entity_type_manager, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
     parent::__construct($entity_type, $conjunction, $namespaces);
     $this->filter = new SparqlFilter();
     $this->connection = $connection;

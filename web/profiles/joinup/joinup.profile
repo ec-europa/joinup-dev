@@ -52,7 +52,7 @@ function joinup_form_install_settings_form_save($form, FormStateInterface $form_
   $port = $form_state->getValue(['sparql', 'port']);
   // @see rdf_entity.services.yml
   $key = 'sparql_default';
-  $target = 'sparql';
+  $target = 'default';
   $database = array(
     'prefix' => '',
     'host' => $host,
