@@ -2,7 +2,7 @@
 
 namespace Drupal\rdf_entity\Database\Driver\sparql;
 
-use Drupal\Core\Database\Log;
+use Drupal\Core\Database\Log as DatabaseLog;
 use EasyRdf\Sparql\Client;
 
 /**
@@ -102,7 +102,7 @@ class Connection {
    * @param \Drupal\Core\Database\Log $logger
    *   The logging object we want to use.
    */
-  public function setLogger(Log $logger) {
+  public function setLogger(DatabaseLog $logger) {
     // Because we're incompatible with the PDO logger,
     // we ignore this, and create our own object.
     // @todo Avoid doing this. It's not ok...
