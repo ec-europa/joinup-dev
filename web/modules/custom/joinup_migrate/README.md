@@ -3,6 +3,7 @@
 This module is intended for a one-time migration of the content from the
 original Drupal 6 site to the new Drupal 8 site.
 
+
 ## Data used during the migration
 
 The migration will use these resources:
@@ -16,6 +17,7 @@ The migration will use these resources:
   The file can be found in the `./resources/migrate` folder.
 * The original files from the D6 version of Joinup. These are not currently
   available but will be made available in the future.
+
 
 ## Initial setup
 
@@ -45,7 +47,14 @@ In order to start a migration we will need to do some preparation:
     $ ./vendor/bin/phing setup-migration
     ```
 
-## Run the full migration
+4. Import the D6 database.
+
+    ```
+    $ ./vendor/bin/phing import-legacy-db
+    ```
+
+
+## Running the full migration
 
 Once the setup is complete you can run a full migration with the following
 command:
@@ -56,6 +65,7 @@ command:
 
 You are now free to go for a walk or cook some fresh pasta, since this will
 take some time.
+
 
 ## Running an individual migration
 
