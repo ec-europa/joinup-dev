@@ -78,5 +78,5 @@ To get a list of all available migrations, check the respective YAML files that
 describe each individual migration:
 
     ```
-    $ ls web/modules/joinup_migrate/migrations
+    $ ls web/modules/custom/joinup_migrate/migrations
     ```
