@@ -672,6 +672,7 @@ QUERY;
           }
           else {
             // @todo This is most probably prone to Sparql injection..!
+            $value = str_replace('\\', '\\\\', $value);
             $obj = '"""' . $value . '"""';
           }
           $insert .= $subj . ' ' . $pred . ' ' . $obj . '  .' . "\n";
