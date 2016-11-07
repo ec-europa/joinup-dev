@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.custom_page.body
+    - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
@@ -112,15 +113,8 @@ content:
             fis: false
             fis-def-at: false
             fi-def-at: false
-  links:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-  og_audience:
-    type: entity_reference_label
-    weight: 9
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_cp_content_listing: true
+  links: true
+  node_field_cp_content_listing_top: true
+  og_audience: true

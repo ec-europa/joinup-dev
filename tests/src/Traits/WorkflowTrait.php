@@ -11,22 +11,49 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 trait WorkflowTrait {
 
   /**
-   * Asserts available states of an entity for a user.
+   * Asserts available transitions of an entity for a user.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The entity with the states.
+   * @param array $available_transitions
+   *    The transitions to check for availability.
+   * @param object|null $user
+   *    The account interface object. Can be left empty.
+   *
+   * @throws \Exception
+   *    Thrown when the expected transitions array does not exactly match the
+   *    array of available options.
+   */
+  protected function assertAvailableTransitions(EntityInterface $entity, array $available_transitions, $user = NULL) {
+    $allowed_transitions = $this->getAvailableTransitions($entity, $user);
+    $allowed_transitions = array_values($allowed_transitions);
+    sort($allowed_transitions);
+    sort($available_transitions);
+    if ($allowed_transitions != $available_transitions) {
+      $message = "States found were different that states passed.\n";
+      $message .= "Entity: " . $entity->label() . "\n";
+      $message .= "User: " . $user->label() . "\n";
+      $message .= "Allowed states: " . implode(', ', $allowed_transitions) . "\n";
+      $message .= "Available/Expected states: " . implode(', ', $available_transitions) . "\n";
+      throw new \Exception($message);
+    }
+  }
+
+  /**
+   * Returns the available transition states of an entity for the given user.
    *
    * If no user is passed, the logged in user is checked. If no user is logged
    * in, an anonymous account is passed.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The entity with the states.
-   * @param array $available_states
-   *    The states to check for availability.
    * @param object|null $user
    *    The account interface object. Can be left empty.
    *
-   * @throws \Exception
-   *    Thrown when the entity has no state fields.
+   * @return array
+   *    An array of transition state labels.
    */
-  private function assertAvailableStates(EntityInterface $entity, array $available_states, $user = NULL) {
+  protected function getAvailableStates(EntityInterface $entity, $user) {
     if ($user == NULL) {
       $user = \Drupal::currentUser();
     }
@@ -41,18 +68,38 @@ trait WorkflowTrait {
     $allowed_states = array_map(function (WorkflowTransition $transition) {
       return (string) $transition->getToState()->getLabel();
     }, $allowed_transitions);
-    $allowed_states = array_values($allowed_states);
-    sort($allowed_states);
-    sort($available_states);
-    if ($allowed_states != $available_states) {
-      $message = "States found were different that states passed.\n";
-      $message .= "User: {$user->getAccountName()}\n";
-      $message .= "Solution: {$entity->label()}\n";
-      $message .= "Solution's state: {$field->value}\n";
-      $message .= "Allowed states: " . implode(', ', $allowed_states) . "\n";
-      $message .= "Available/Expected states: " . implode(', ', $available_states) . "\n";
-      throw new \Exception($message);
+
+    return $allowed_states;
+  }
+
+  /**
+   * Returns the available transitions of an entity for the given user.
+   *
+   * If no user is passed, the logged in user is checked. If no user is logged
+   * in, an anonymous account is passed.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The entity with the states.
+   * @param object|null $user
+   *    The account interface object. Can be left empty.
+   *
+   * @return array
+   *    An array of transition labels.
+   */
+  protected function getAvailableTransitions(EntityInterface $entity, $user) {
+    if ($user == NULL) {
+      $user = \Drupal::currentUser();
     }
+
+    // Set the user to the workflow user provider so that states available are
+    // retrieved for the specific account.
+    \Drupal::service('joinup_core.workflow.user_provider')->setUser($user);
+
+    $field = $this->getEntityStateField($entity);
+
+    return array_map(function (WorkflowTransition $transition) {
+      return (string) $transition->getLabel();
+    }, $field->getTransitions());
   }
 
   /**
@@ -69,7 +116,7 @@ trait WorkflowTrait {
    *    Returns the state field definition of the entity or NULL if none is
    *    found.
    */
-  private function getEntityStateFieldDefinition(EntityInterface $entity) {
+  protected function getEntityStateFieldDefinition(EntityInterface $entity) {
     /** @var FieldDefinitionInterface[] $field_definitions */
     $field_definitions = $entity->getFieldDefinitions();
     foreach ($field_definitions as $field_definition) {
@@ -95,7 +142,7 @@ trait WorkflowTrait {
    *   The state field.
    *
    * @throws \Exception
-   *   Thrown when the entity doesn't have a state field.
+   *   Thrown when the entity does not have a state field.
    */
   protected function getEntityStateField(EntityInterface $entity) {
     $field_definition = $this->getEntityStateFieldDefinition($entity);

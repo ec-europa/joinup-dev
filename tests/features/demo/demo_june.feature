@@ -5,17 +5,17 @@ Feature: June 2016 demo
 
   Scenario: Manage collection and view collection scenarios.
     Given solutions:
-      | title                     | description                                | documentation | moderation |
-      | Avengers initiative       | Gather the strongest into a group.         | text.pdf      | no         |
-      | Project Tahiti            | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        |
-      | Hellicarrier              | Provide a flying fortress as headquarters. | text.pdf      | no         |
-      | Project 'Captain America' | Bring 'Captain america' back into action.  | text.pdf      | yes        |
+      | title                     | description                                | documentation | moderation | state     |
+      | Avengers initiative       | Gather the strongest into a group.         | text.pdf      | no         | validated |
+      | Project Tahiti            | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        | validated |
+      | Hellicarrier              | Provide a flying fortress as headquarters. | text.pdf      | no         | validated |
+      | Project 'Captain America' | Bring 'Captain america' back into action.  | text.pdf      | yes        | validated |
     And collections:
-      | title          | description                          | logo     | moderation | affiliates                                                                   |
-      | S.H.I.E.L.D.   | Well, they are mostly flying around. | logo.png | yes        | Avengers initiative, Project Tahiti, Hellicarrier, Project 'Captain America' |
-      | x-Men          | Based on Professor Xavier's mansion. | logo.png | no         |                                                                              |
-      | Avengers       | Based on Tony stark's tower.         | logo.png | yes        |                                                                              |
-      | Fantastic four | Based on Reed Richard's tower.       | logo.png | yes        |                                                                              |
+      | title          | description                          | logo     | moderation | affiliates                                                                   | state     |
+      | S.H.I.E.L.D.   | Well, they are mostly flying around. | logo.png | yes        | Avengers initiative, Project Tahiti, Hellicarrier, Project 'Captain America' | validated |
+      | x-Men          | Based on Professor Xavier's mansion. | logo.png | no         |                                                                              | validated |
+      | Avengers       | Based on Tony stark's tower.         | logo.png | yes        |                                                                              | validated |
+      | Fantastic four | Based on Reed Richard's tower.       | logo.png | yes        |                                                                              | validated |
 
     And users:
       | name      | pass                 | mail                    | roles     |

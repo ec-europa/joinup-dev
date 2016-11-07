@@ -18,15 +18,18 @@ dependencies:
   - ds
   - dynamic_page_cache
   - editor
+  - field_group
   - file
   - help
   - image
   - inline_entity_form
+  - joinup_core
   - joinup_discussion
   - joinup_document
   - joinup_event
   - joinup_licence
   - joinup_news
+  - joinup_notification
   - joinup_search
   - joinup_subscription
   - joinup_user
@@ -39,6 +42,7 @@ dependencies:
   - page_cache
   - path
   - r4032login
+  - rdf_draft
   - rdf_entity
   - rdf_export
   - rdf_taxonomy
@@ -93,6 +97,7 @@ config_devel:
   - core.date_format.html_week
   - core.date_format.html_year
   - core.date_format.html_yearless_date
+  - core.date_format.date_only
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short

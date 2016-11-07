@@ -2,7 +2,12 @@
 
 <project name="Joinup" default="help">
 
+    <!-- Import local Phing targets. -->
     <import file="${project.basedir}/build.common.xml" optional="true" />
+
+    <!-- Import project specific Phing targets. -->
+    <import file="${project.basedir}/build.project.xml" optional="true" />
+
     <property file="build.properties.local" />
     <property file="build.properties" />
     <property file="build.properties.dist" />
@@ -17,7 +22,7 @@
     <includepath classpath="src/Phing" />
 
     <echo msg="Loading Drush task." />
-    <taskdef name="drush" classname="DrushTask" />
+    <taskdef name="drush" classname="\Drush\Task" />
 
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
@@ -93,7 +98,8 @@
                 IsqlPath="${isql.bin}"
                 DataSourceName="${sparql.dsn}"
                 Username="${sparql.user}"
-                Password="${sparql.password}" />
+                Password="${sparql.password}"
+                SharedDirectory="${sparql.shareddirectory}" />
     </target>
 
     <!-- Set up PHP CodeSniffer. -->
@@ -112,6 +118,7 @@
                 <delete file="${phpcs.global.config}" failonerror="false" />
             </then>
         </if>
+        <echo message="Generating PHP Codesniffer configuration files." />
         <phpcodesnifferconfiguration
             configFile="${phpcs.config}"
             extensions="${phpcs.extensions}"
@@ -191,14 +198,12 @@
                 testsuiteName="${phpunit.testsuite.name}"
                 baseUrl="${phpunit.base_url}"
                 dbUrl="${phpunit.db_url}"
+                browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
+                browsertestOutputFile="${phpunit.browsertest_output_file}"
         />
-    </target>
-
-    <!-- Link the site root to the document root of the webserver. -->
-    <target
-        name="link-docroot"
-        description="Create a symlink from the site root to the webserver document root.">
-        <symlink link="${server.docroot}" target="${website.drupal.dir}" overwrite="true" />
+        <!-- Create the directory and file for browsertest output. -->
+        <mkdir dir="${phpunit.browsertest_output_dir}" />
+        <touch file="${phpunit.browsertest_output_file}" />
     </target>
 
     <!-- Create demo users. -->
@@ -278,15 +283,15 @@
         <if>
             <available file="${solr.bin}" type="file" property="file.exists" />
             <then>
-                <echo message="Symlink to Solr binary already exists in ${solr.bin}. Skipping creation of symlink." />
+                <echo message="Symlink to Solr binary already exists in ${solr.bin}. Deleting symlink." />
+                <delete file="${solr.bin}" failonerror="false" />
             </then>
-            <else>
-                <symlink
-                    target="${solr.dir}/bin/solr"
-                    link="${solr.bin}"
-                />
-            </else>
         </if>
+        <echo message="Creating symlink to Solr binary." />
+        <symlink
+            target="${solr.dir}/bin/solr"
+            link="${solr.bin}"
+        />
     </target>
 
     <target
@@ -388,27 +393,26 @@
 
     <!-- Enable development modules. -->
     <target name="enable-dev-modules">
-        <drush
-            command="pm-enable"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
-            <param>${drupal.modules.dev}</param>
-        </drush>
+        <foreach list="${drupal.modules.dev}" param="module" target="enable-module" delimiter=" " />
     </target>
 
     <!-- Enable modules for user acceptance testing. These are different from the
       ones in enable-dev-modules as it can contain modules not needed for development
       like demo content modules. -->
+    <!-- Enable development modules. -->
     <target name="enable-uat-modules">
+        <foreach list="${drupal.modules.uat}" param="module" target="enable-module" delimiter=" " />
+    </target>
+
+    <!-- Enable a module. -->
+    <target name="enable-module">
         <drush
             command="pm-enable"
             assume="yes"
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
-            <param>${drupal.modules.uat}</param>
+            <param>${module}</param>
         </drush>
     </target>
 
@@ -432,7 +436,7 @@
         <echo message="Allow importing of RDF data from all directories" />
         <exec dir="${project.basedir}"
               command="sudo sed -i 's/DirsAllowed              = ., \/usr\/share\/virtuoso-opensource-6.1\/vad/DirsAllowed = \//g' /etc/virtuoso-opensource-6.1/virtuoso.ini;
-sudo /etc/init.d/virtuoso-opensource-6.1 restart"
+sudo supervisorctl restart virtuoso"
               checkreturn="true"
               passthru="true" />
         <echo message="Create Solr index" />

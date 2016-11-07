@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\asset_release\asset_release.behat.inc.
+ * Contains \AssetReleaseSubContext.
  */
 
 use Behat\Gherkin\Node\TableNode;
@@ -64,7 +64,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )asset releases:
+   * @Given (the following )releases:
    */
   public function givenAssetReleases(TableNode $asset_release_table) {
     $aliases = self::assetReleaseFieldAliases();
@@ -266,7 +266,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
-  protected function convertValueAliases($fields) {
+  protected function convertValueAliases(array $fields) {
     // Convert any entity reference field label value with the entity id.
     $fields = $this->convertEntityReferencesValues('rdf_entity', 'asset_release', $fields);
 
@@ -274,11 +274,72 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     // This is handled separatelly as it is not an entity reference but an
     // og_standard_reference.
     if (isset($fields['field_isr_is_version_of'])) {
-      $collection = $this->getRdfEntityByLabel($fields['field_isr_is_version_of'], 'solution');
-      $fields['field_isr_is_version_of'] = $collection->id();
+      $solution = $this->getRdfEntityByLabel($fields['field_isr_is_version_of'], 'solution');
+      $fields['field_isr_is_version_of'] = $solution->id();
     }
 
     return $fields;
+  }
+
+  /**
+   * Asserts that releases are shown in the page in the exact order.
+   *
+   * This step is meant for the releases overview page within a solution.
+   *
+   * @param TableNode $asset_release_table
+   *    The asset release titles.
+   *
+   * @throws \Exception
+   *    Thrown when a wrong number of releases is found or the releases are not
+   *    ordered properly.
+   *
+   * @Given I should see the (following )releases in the exact order:
+   */
+  public function assertReleasesAndOrder(TableNode $asset_release_table) {
+    $releases = [];
+    // Replace the column aliases with the actual field names.
+    foreach ($asset_release_table->getColumnsHash() as $title) {
+      $releases[] = $title['release'];
+    };
+
+    $release_titles = $this->getSession()->getPage()->findAll('css', '.timeline__release > .timeline__release-content > .timeline__meta > h2.timeline__release-title');
+    if (count($release_titles) != count($releases)) {
+      throw new \Exception("Wrong number of releases found.");
+    }
+
+    foreach ($releases as $index => $title) {
+      if ($release_titles[$index]->getText() !== $title) {
+        throw new \Exception("Title {$releases[$index]} is not in the correct order.");
+      }
+    }
+  }
+
+  /**
+   * Checks that a release is marked as the latest one.
+   *
+   * This step is meant for the releases overview page within a solution.
+   *
+   * @param string $release
+   *    The name of the release.
+   *
+   * @throws \Exception
+   *    Thrown if the release is not marked as latest in the page or not found.
+   *
+   * @Then the :release release should be marked as the latest release
+   */
+  public function assertLinkDistribution($release) {
+    $release = $this->getAssetReleaseByName($release);
+
+    $latest_release = $this->getSession()->getPage()->find('css', '.is-latest');
+    if (empty($latest_release)) {
+      throw new \Exception("No release marked as latest was found in the page.");
+    }
+    $release_version = $release->field_isr_release_number->value;
+    $name_with_version = $release->label() . " " . $release_version;
+
+    if ($latest_release->find('css', '.timeline__release-title')->getText() !== $name_with_version) {
+      throw new \Exception("{$release->label()} is not marked as the latest release.");
+    }
   }
 
 }

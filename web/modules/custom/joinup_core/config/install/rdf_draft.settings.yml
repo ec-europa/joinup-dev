@@ -1,0 +1,20 @@
+revision_bundle_rdf_entity:
+  collection: 0
+  solution: solution
+  asset_distribution: 0
+  asset_release: 0
+  contact_information: 0
+  licence: 0
+  organisation: 0
+  person: 0
+default_save_graph_rdf_entity: default
+revision_bundle_taxonomy_term:
+  eira: 0
+  eurovoc: 0
+  language: 0
+  licence_type: 0
+  policy_domain: 0
+  spatial: 0
+  status: 0
+  themes: 0
+default_save_graph_taxonomy_term: default

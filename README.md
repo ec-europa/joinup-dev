@@ -81,6 +81,15 @@ run the Behat test, please refer directly to the documention of
     $ gem install sass
     ```
 
+* Install [Selenium](https://github.com/SeleniumHQ/docker-selenium/blob/master/README.md).
+  The simplest way of doing this is using Docker to install and run it with a
+  single command. This will download all necessary files and start the browser
+  in the background in headless mode:
+
+    ```
+    $ docker run -d -p 4444:4444 --network=host selenium/standalone-chrome
+    ```
+
 * Point the document root of your webserver to the 'web/' directory.
 
 ### Create a local build properties file
@@ -113,7 +122,7 @@ composer.bin = /usr/bin/composer
 isql.bin = /usr/bin/virtuoso-isql
 # The location of the Virtuoso console (Arch Linux).
 isql.bin = /usr/bin/virtuoso-isql
-# The location of the Virtuoso console (Redhat / Fedora).
+# The location of the Virtuoso console (Redhat / Fedora / OSX with Homebrew).
 isql.bin = /usr/local/bin/isql
 
 # SQL database settings.
@@ -122,6 +131,7 @@ drupal.db.user = root
 drupal.db.password = hunter2
 
 # SPARQL database settings.
+sparql.dsn = localhost
 sparql.user = my_username
 sparql.password = qwerty123
 
@@ -163,3 +173,16 @@ Also run the PHPUnit tests, from the web root.
 $ cd web
 $ ../vendor/bin/phpunit
 ```
+
+
+### Frontend development
+
+See the [readme](web/themes/joinup/README.md) in the theme folder.
+
+
+### Technical details
+
+* In [Rdf draft module](web/modules/custom/rdf_entity/rdf_draft/README.md)
+there are information on handling draft in CRUD operations for rdf entities.
+* In [Joinup notification module](web/modules/custom/joinup_notification/README.md)
+there are information on how to handle notifications in Joinup.

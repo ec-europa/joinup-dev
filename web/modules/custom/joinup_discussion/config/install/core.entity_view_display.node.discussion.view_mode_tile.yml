@@ -1,0 +1,54 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_tile
+    - field.field.node.discussion.field_comments
+    - field.field.node.discussion.field_discussion_active
+    - field.field.node.discussion.field_discussion_content
+    - field.field.node.discussion.field_topic
+    - field.field.node.discussion.og_audience
+    - node.type.discussion
+  module:
+    - ds
+    - text
+    - user
+id: node.discussion.view_mode_tile
+targetEntityType: node
+bundle: discussion
+mode: view_mode_tile
+content:
+  field_discussion_content:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: 200
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: text_trimmed
+  field_topic:
+    weight: 0
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: entity_reference_label
+hidden:
+  field_comments: true
+  field_discussion_active: true
+  links: true
+  og_audience: true

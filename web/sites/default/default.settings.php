@@ -64,20 +64,36 @@
  * to multiple databases, including multiple types of databases,
  * during the same request.
  *
- * Each database connection is specified as an array of settings,
- * similar to the following:
+ * One example of the simplest connection array is shown below. To use the
+ * sample settings, copy and uncomment the code below between the @code and
+ * @endcode lines and paste it after the $databases declaration. You will need
+ * to replace the database username and password and possibly the host and port
+ * with the appropriate credentials for your database system.
+ *
+ * The next section describes how to customize the $databases array for more
+ * specific needs.
+ *
  * @code
- * array(
- *   'driver' => 'mysql',
+ * $databases['default']['default'] = array (
  *   'database' => 'databasename',
- *   'username' => 'username',
- *   'password' => 'password',
+ *   'username' => 'sqlusername',
+ *   'password' => 'sqlpassword',
  *   'host' => 'localhost',
- *   'port' => 3306,
- *   'prefix' => 'myprefix_',
+ *   'port' => '3306',
+ *   'driver' => 'mysql',
+ *   'prefix' => '',
  *   'collation' => 'utf8mb4_general_ci',
  * );
  * @endcode
+ */
+ $databases = array();
+
+/**
+ * Customizing database settings.
+ *
+ * Many of the values of the $databases array can be customized for your
+ * particular database system. Refer to the sample in the section above as a
+ * starting point.
  *
  * The "driver" property indicates what Drupal database driver the
  * connection should use.  This is usually the same as the name of the
@@ -117,19 +133,6 @@
  * of potential replica databases.  Drupal will select one at random for a given
  * request as needed.  The fourth line creates a new database with a name of
  * "extra".
- *
- * For a single database configuration, the following is sufficient:
- * @code
- * $databases['default']['default'] = array(
- *   'driver' => 'mysql',
- *   'database' => 'databasename',
- *   'username' => 'username',
- *   'password' => 'password',
- *   'host' => 'localhost',
- *   'prefix' => 'main_',
- *   'collation' => 'utf8mb4_general_ci',
- * );
- * @endcode
  *
  * You can optionally set prefixes for some or all database table names
  * by using the 'prefix' setting. If a prefix is specified, the table
@@ -174,7 +177,6 @@
  * connecting to the database server, as well as PDO connection settings. For
  * example, to enable MySQL SELECT queries to exceed the max_join_size system
  * variable, and to reduce the database connection timeout to 5 seconds:
- *
  * @code
  * $databases['default']['default'] = array(
  *   'init_commands' => array(
@@ -186,38 +188,36 @@
  * );
  * @endcode
  *
- * WARNING: These defaults are designed for database portability. Changing them
- * may cause unexpected behavior, including potential data loss.
+ * WARNING: The above defaults are designed for database portability. Changing
+ * them may cause unexpected behavior, including potential data loss. See
+ * https://www.drupal.org/developing/api/database/configuration for more
+ * information on these defaults and the potential issues.
  *
- * @see DatabaseConnection_mysql::__construct
- * @see DatabaseConnection_pgsql::__construct
- * @see DatabaseConnection_sqlite::__construct
+ * More details can be found in the constructor methods for each driver:
+ * - \Drupal\Core\Database\Driver\mysql\Connection::__construct()
+ * - \Drupal\Core\Database\Driver\pgsql\Connection::__construct()
+ * - \Drupal\Core\Database\Driver\sqlite\Connection::__construct()
  *
- * Database configuration format:
+ * Sample Database configuration format for PostgreSQL (pgsql):
  * @code
- *   $databases['default']['default'] = array(
- *     'driver' => 'mysql',
- *     'database' => 'databasename',
- *     'username' => 'username',
- *     'password' => 'password',
- *     'host' => 'localhost',
- *     'prefix' => '',
- *   );
  *   $databases['default']['default'] = array(
  *     'driver' => 'pgsql',
  *     'database' => 'databasename',
- *     'username' => 'username',
- *     'password' => 'password',
+ *     'username' => 'sqlusername',
+ *     'password' => 'sqlpassword',
  *     'host' => 'localhost',
  *     'prefix' => '',
  *   );
+ * @endcode
+ *
+ * Sample Database configuration format for SQLite (sqlite):
+ * @code
  *   $databases['default']['default'] = array(
  *     'driver' => 'sqlite',
  *     'database' => '/path/to/databasefilename',
  *   );
  * @endcode
  */
-$databases = array();
 
 /**
  * Location of the site configuration files.
@@ -313,20 +313,22 @@ $settings['update_free_access'] = FALSE;
 /**
  * External access proxy settings:
  *
- * If your site must access the Internet via a web proxy then you can enter
- * the proxy settings here. Currently only basic authentication is supported
- * by using the username and password variables. The proxy_user_agent variable
- * can be set to NULL for proxies that require no User-Agent header or to a
- * non-empty string for proxies that limit requests to a specific agent. The
- * proxy_exceptions variable is an array of host names to be accessed directly,
- * not via proxy.
+ * If your site must access the Internet via a web proxy then you can enter the
+ * proxy settings here. Set the full URL of the proxy, including the port, in
+ * variables:
+ * - $settings['http_client_config']['proxy']['http']: The proxy URL for HTTP
+ *   requests.
+ * - $settings['http_client_config']['proxy']['https']: The proxy URL for HTTPS
+ *   requests.
+ * You can pass in the user name and password for basic authentication in the
+ * URLs in these settings.
+ *
+ * You can also define an array of host names that can be accessed directly,
+ * bypassing the proxy, in $settings['http_client_config']['proxy']['no'].
  */
-# $settings['proxy_server'] = '';
-# $settings['proxy_port'] = 8080;
-# $settings['proxy_username'] = '';
-# $settings['proxy_password'] = '';
-# $settings['proxy_user_agent'] = '';
-# $settings['proxy_exceptions'] = array('127.0.0.1', 'localhost');
+# $settings['http_client_config']['proxy']['http'] = 'http://proxy_user:proxy_pass@example.com:8080';
+# $settings['http_client_config']['proxy']['https'] = 'http://proxy_user:proxy_pass@example.com:8080';
+# $settings['http_client_config']['proxy']['no'] = ['127.0.0.1', 'localhost'];
 
 /**
  * Reverse Proxy Configuration:
@@ -414,6 +416,20 @@ $settings['update_free_access'] = FALSE;
  * getting cached pages from the proxy.
  */
 # $settings['omit_vary_cookie'] = TRUE;
+
+
+/**
+ * Cache TTL for client error (4xx) responses.
+ *
+ * Items cached per-URL tend to result in a large number of cache items, and
+ * this can be problematic on 404 pages which by their nature are unbounded. A
+ * fixed TTL can be set for these items, defaulting to one hour, so that cache
+ * backends which do not support LRU can purge older entries. To disable caching
+ * of client error responses set the value to 0. Currently applies only to
+ * page_cache module.
+ */
+# $settings['cache_ttl_4xx'] = 3600;
+
 
 /**
  * Class Loader.
@@ -663,6 +679,15 @@ $settings['container_yamls'][] = __DIR__ . '/services.yml';
 # $settings['container_base_class'] = '\Drupal\Core\DependencyInjection\Container';
 
 /**
+ * Override the default yaml parser class.
+ *
+ * Provide a fully qualified class name here if you would like to provide an
+ * alternate implementation YAML parser. The class must implement the
+ * \Drupal\Component\Serialization\SerializationInterface interface.
+ */
+# $settings['yaml_parser_class'] = NULL;
+
+/**
  * Trusted host configuration.
  *
  * Drupal core can use the Symfony trusted host mechanism to prevent HTTP Host
@@ -698,6 +723,21 @@ $settings['container_yamls'][] = __DIR__ . '/services.yml';
  * will allow the site to run off of all variants of example.com and
  * example.org, with all subdomains included.
  */
+
+/**
+ * The default list of directories that will be ignored by Drupal's file API.
+ *
+ * By default ignore node_modules and bower_components folders to avoid issues
+ * with common frontend tools and recursive scanning of directories looking for
+ * extensions.
+ *
+ * @see file_scan_directory()
+ * @see \Drupal\Core\Extension\ExtensionDiscovery::scanDirectory()
+ */
+$settings['file_scan_ignore_directories'] = [
+  'node_modules',
+  'bower_components',
+];
 
 /**
  * Load local development override configuration, if available.

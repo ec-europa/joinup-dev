@@ -57,11 +57,11 @@
   {% endfor %}
 
   {% if header %}
-    <thead>
+    <thead class="form-table__header">
       <tr>
         {% for cell in header %}
           <{{ cell.tag }}{{ cell.attributes.addClass('form-table__header') }}>
-            <label class="form__label">{{- cell.content.title -}}</label>
+            <label class="form-table__label">{{- cell.content -}}</label>
           </{{ cell.tag }}>
         {% endfor %}
       </tr>
@@ -69,7 +69,7 @@
   {% endif %}
 
   {% if rows %}
-    <tbody>
+    <tbody class="form-table__body">
       {% for row in rows %}
         <tr{{ row.attributes.addClass('form-table__row') }}>
           {% for cell in row.cells %}
