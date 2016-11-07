@@ -2,7 +2,12 @@
 
 <project name="Joinup" default="help">
 
+    <!-- Import local Phing targets. -->
     <import file="${project.basedir}/build.common.xml" optional="true" />
+
+    <!-- Import project specific Phing targets. -->
+    <import file="${project.basedir}/build.project.xml" optional="true" />
+
     <property file="build.properties.local" />
     <property file="build.properties" />
     <property file="build.properties.dist" />
@@ -93,7 +98,8 @@
                 IsqlPath="${isql.bin}"
                 DataSourceName="${sparql.dsn}"
                 Username="${sparql.user}"
-                Password="${sparql.password}" />
+                Password="${sparql.password}"
+                SharedDirectory="${sparql.shareddirectory}" />
     </target>
 
     <!-- Set up PHP CodeSniffer. -->
@@ -112,6 +118,7 @@
                 <delete file="${phpcs.global.config}" failonerror="false" />
             </then>
         </if>
+        <echo message="Generating PHP Codesniffer configuration files." />
         <phpcodesnifferconfiguration
             configFile="${phpcs.config}"
             extensions="${phpcs.extensions}"
@@ -191,14 +198,12 @@
                 testsuiteName="${phpunit.testsuite.name}"
                 baseUrl="${phpunit.base_url}"
                 dbUrl="${phpunit.db_url}"
+                browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
+                browsertestOutputFile="${phpunit.browsertest_output_file}"
         />
-    </target>
-
-    <!-- Link the site root to the document root of the webserver. -->
-    <target
-        name="link-docroot"
-        description="Create a symlink from the site root to the webserver document root.">
-        <symlink link="${server.docroot}" target="${website.drupal.dir}" overwrite="true" />
+        <!-- Create the directory and file for browsertest output. -->
+        <mkdir dir="${phpunit.browsertest_output_dir}" />
+        <touch file="${phpunit.browsertest_output_file}" />
     </target>
 
     <!-- Create demo users. -->
