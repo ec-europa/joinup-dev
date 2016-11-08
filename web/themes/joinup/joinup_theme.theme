@@ -351,10 +351,6 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
       'ief_entity_edit',
       'ief_entity_edit_save',
     ],
-    'input__ief_remove' => [
-      'ief_entity_remove',
-      'ief_remove_confirm',
-    ],
     'input__ief_cancel' => [
       'ief_entity_cancel',
       'ief_remove_cancel',
@@ -363,6 +359,11 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
       'ief_add_cancel',
       'ief_edit_cancel',
       'ief_reference_cancel',
+    ],
+    'input__remove_button' => [
+      'ief_entity_remove',
+      'ief_remove_confirm',
+      'remove_button',
     ],
   ];
 
@@ -489,6 +490,16 @@ function joinup_theme_theme_suggestions_node_alter(array &$suggestions, array $v
 
   if (in_array($view_mode, $listing_modes)) {
     $suggestions[] = 'node__' . str_replace('-', '_', $bundle) . '__listing_item';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for details.html.twig.
+ */
+function joinup_theme_theme_suggestions_details_alter(array &$suggestions, array $variables) {
+  // Add template suggestion for multiple files widget.
+  if (isset($variables['element']['#theme']) && $variables['element']['#theme'] == 'file_widget_multiple') {
+    $suggestions[] = 'details__file_widget_multiple';
   }
 }
 
