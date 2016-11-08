@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="Joinup" default="help">
+
+    <!-- Import Phing targets related to the D6 migration. -->
+    <import file="${project.basedir}/build.migration.xml" optional="true" />
+
+</project>
