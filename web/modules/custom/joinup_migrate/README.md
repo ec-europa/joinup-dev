@@ -1,6 +1,7 @@
 # Migration instructions
 
-This module is intended for a one-time migration of the content from the original Drupal 6 site to the new Drupal 8 site.
+This module is intended for a one-time migration of the content from the
+original Drupal 6 site to the new Drupal 8 site.
 
 
 ## Data used during the migration
