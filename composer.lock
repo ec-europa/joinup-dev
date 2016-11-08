@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "75410a3091681a16ce3399e9315992b6",
-    "content-hash": "72f7ff827228487787fa1677578dea9a",
+    "hash": "fe4f367cbcedbbe34de8c62398483cbf",
+    "content-hash": "0b3a6e48cb19377f8a46724bf4b26c13",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1940,7 +1940,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/field_group",
-                "reference": "fb8357b41de1f76c4be9b7f5b4bb954b9e92ee3f"
+                "reference": "68020f6f4b185c5989b70272ac32177d4c42b882"
             },
             "require": {
                 "drupal/core": "*"
@@ -1986,7 +1986,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/field_group"
             },
-            "time": "2016-11-06 10:30:04"
+            "time": "2016-10-12 22:34:00"
         },
         {
             "name": "drupal/inline_entity_form",
@@ -7299,7 +7299,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/klausi/coder/zipball/b08682bd939cf7d3ac7034bee792aa17f80e19d7",
                 "reference": "b08682bd939cf7d3ac7034bee792aa17f80e19d7",
-                "shasum": null
+                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
@@ -7311,7 +7311,7 @@
                 "phpunit/phpunit": ">=3.7"
             },
             "type": "library",
-            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
