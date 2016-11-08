@@ -62,6 +62,12 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       throw new \Exception("Unexpected recipient: " . $last_mail['to']);
     }
 
+    foreach (['subject', 'body'] as $key) {
+      if (empty($last_mail[$key])) {
+        throw new \Exception("The mail has an empty $key.");
+      }
+    }
+
     $message_template = MessageTemplate::load($last_mail['key']);
     if ($description !== $message_template->getDescription()) {
       throw new \Exception("Unexpected template description.\nFound value: {$message_template->getDescription()}\nExpected value: {$description}");
