@@ -40,6 +40,7 @@ config_devel:
   - taxonomy.vocabulary.eurovoc
   - taxonomy.vocabulary.language
   - taxonomy.vocabulary.licence_type
+  - taxonomy.vocabulary.owner_type
   - taxonomy.vocabulary.policy_domain
   - taxonomy.vocabulary.spatial
   - taxonomy.vocabulary.status
