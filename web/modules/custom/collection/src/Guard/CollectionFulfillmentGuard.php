@@ -3,7 +3,7 @@
 namespace Drupal\collection\Guard;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_core\WorkflowUserProvider;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
@@ -43,12 +43,12 @@ class CollectionFulfillmentGuard implements GuardInterface {
   /**
    * Instantiates a CollectionFulfillmentGuard service.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *    The WorkflowUserProvider service.
    * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
    *    The WorkflowUserProvider service.
    */
-  public function __construct(EntityTypeManager $entity_type_manager, WorkflowUserProvider $workflow_user_provider) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider) {
     $this->entityTypeManager = $entity_type_manager;
     $this->workflowUserProvider = $workflow_user_provider;
   }

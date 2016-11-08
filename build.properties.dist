@@ -201,7 +201,7 @@ phpunit.browsertest_output_file = ${phpunit.browsertest_output_dir}/outputfile.t
 # -------------------------
 
 # Apache Solr version to use.
-solr.version = 6.1.0
+solr.version = 6.2.1
 
 # Filename of the download.
 solr.tarball.filename = solr-${solr.version}.tgz
