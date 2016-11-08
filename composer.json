@@ -14,7 +14,7 @@
         "drupal/ds": "^2.0",
         "drupal/facets": "1.0.0-alpha6",
         "drupal/field_group": "dev-1.x#68020f6f4b185c5989b70272ac32177d4c42b882",
-        "drupal/inline_entity_form": "dev-1.x#9747e0eff3f99612ce708403313c3a051f7a9f01",
+        "drupal/inline_entity_form": "dev-1.x#44c5cfcedd11ed90d473734bd77d9b069c4021fa",
         "drupal/message": "~1.0",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
@@ -45,6 +45,7 @@
         "behat/mink-goutte-driver": "~1.2",
         "behat/mink-selenium2-driver": "dev-master#721cbbaf37f71434f6acb604dc3a17a6a9be0c4c",
         "drupal-composer/drupal-scaffold": "^2.0.1",
+        "drupal/admin_toolbar": "~1.17",
         "drupal/coder": "~8.2.9",
         "drupal/config_devel": "dev-1.x#92f735cae8e9fb328edca285340a5bfbf72028cc",
         "drupal/config_update": "dev-1.x#4ed2a8790097723e2dcdc522684ababecac1de70",
@@ -105,9 +106,6 @@
                 "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
                 "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
                 "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch"
-            },
-            "drupal/inline_entity_form": {
-                "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"
             },
             "drupal/r4032login": {
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"

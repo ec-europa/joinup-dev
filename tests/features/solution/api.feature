@@ -42,8 +42,9 @@ Feature: Solution API
     Then I should have 1 solution
 
   Scenario: Assign ownership during creation of solutions through UI
-    Given the following organisation:
-      | name | Leechidna |
+    Given the following owner:
+      | name      | type            |
+      | Leechidna | Local Authority |
     And the following contact:
       | name  | Gopheadow               |
       | email | solutionAPI@example.com |
@@ -75,7 +76,7 @@ Feature: Solution API
     # Then I wait for AJAX to finish
     And I fill in "Contact information" with "Gopheadow"
     And I press "Add contact information"
-    And I press "Add existing owner" at the "Owner" field
+    And I press "Add existing" at the "Owner" field
     # Then I wait for AJAX to finish
     And I fill in "Owner" with "Leechidna"
     And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"

@@ -5,8 +5,9 @@ Feature: Solution notification system
   I need to be able to receive notification on changes.
 
   Scenario: Test the email notification sent for solution workflow transitions.
-    Given the following organisation:
-      | name | The Red Search |
+    Given the following owner:
+      | name           | type                          |
+      | The Red Search | Non-Governmental Organisation |
     And the following contact:
       | name  | Jody Buchanan            |
       | email | JodyBuchanan@example.com |
