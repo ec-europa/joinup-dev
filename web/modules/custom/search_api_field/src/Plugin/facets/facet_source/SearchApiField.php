@@ -111,9 +111,9 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
         // @Todo Fix limit, get it from field settings.
         'limit' => 10,
         'offset' => isset($_GET['page']) ? $_GET['page'] : 0,
-        'search id' => $this->pluginId,
       ];
       $query = $search_api_index->query($options);
+      $query->setSearchId($this->pluginId);
 
       // Keys.
       $keys = $this->requestStack->getCurrentRequest()->get('keys');

@@ -16,12 +16,14 @@ Feature: User profile
     Then the following fields should not be present "Time zone"
     And I fill in "First name" with "Leoke"
     And I fill in "Family name" with "di ser Piero da Vinci"
+    And I fill in "Professional domain" with "Health"
     And I fill in "Nationality" with "Italy"
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
     Then I click 'View'
     And I should see the text "Leoke"
     And I should see the text "di ser Piero da Vinci"
+    And I should see the link "Health"
     And I should see the link "Italy"
 
   Scenario: A moderator can navigate to any users profile and edit it.
@@ -43,6 +45,7 @@ Feature: User profile
     Then the following fields should not be present "Time zone"
     And I fill in "First name" with "Leo"
     And I fill in "Family name" with "di ser Piero da Vinci"
+    And I fill in "Professional domain" with "Health"
     And I fill in "Nationality" with "Italy"
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
