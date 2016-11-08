@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "89b84ee43021f6bcdfd913c750f89353",
-    "content-hash": "6ecd41a4ff64451b7e1bc612ca9c76c0",
+    "hash": "5222d949c73e9038d1c62f0de7704c13",
+    "content-hash": "5f055a054de9af58619d35627e6b7c63",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1708,6 +1708,7 @@
                 "patches_applied": {
                     "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                     "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
+                    "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch"
                 }
             },
@@ -1939,7 +1940,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/field_group",
-                "reference": "fb8357b41de1f76c4be9b7f5b4bb954b9e92ee3f"
+                "reference": "68020f6f4b185c5989b70272ac32177d4c42b882"
             },
             "require": {
                 "drupal/core": "*"
@@ -1985,7 +1986,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/field_group"
             },
-            "time": "2016-11-06 10:30:04"
+            "time": "2016-10-12 22:34:00"
         },
         {
             "name": "drupal/inline_entity_form",
