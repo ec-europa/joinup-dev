@@ -7,12 +7,12 @@
         "composer/composer": "~1.0",
         "composer/installers": "^1.0.20",
         "continuousphp/aws-sdk-phing": "~0.1",
-        "cweagans/composer-patches": "~1.0",
+        "cweagans/composer-patches": "dev-master",
         "drupal/console": "~1.0",
         "drupal/core": "8.2.x-dev#d53730504a6d21bbe50cc3b8b4b5449129e7eb49",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^2.0",
-        "drupal/facets": "dev-1.x#d5c0117eb59ab2593f6430e3f3035d60bc084653",
+        "drupal/facets": "1.0.0-alpha6",
         "drupal/field_group": "dev-1.x",
         "drupal/inline_entity_form": "dev-1.x#9747e0eff3f99612ce708403313c3a051f7a9f01",
         "drupal/message": "~1.0",
@@ -23,9 +23,9 @@
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phingdrushtask": "dev-7.x-2.x#13428ee7a229da3b7e6be4687587048150b1fd25",
         "drupal/r4032login": "dev-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
-        "drupal/search_api": "1.0-alpha17",
-        "drupal/search_api_solr": "1.0-alpha6",
-        "drupal/state_machine": "~1.0-beta2",
+        "drupal/search_api": "1.0.0-beta3",
+        "drupal/search_api_solr": "1.0.0-beta1",
+        "drupal/state_machine": "~1.0-beta3",
         "drupal/token": "~1.0",
         "drupal/view_unpublished": "dev-1.x#869c5b6b80f6badc0b39dff07ba852c9c967b9c7",
         "drush/drush": "~8.0",
@@ -43,6 +43,7 @@
     "require-dev": {
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
+        "behat/mink-selenium2-driver": "dev-master#721cbbaf37f71434f6acb604dc3a17a6a9be0c4c",
         "drupal-composer/drupal-scaffold": "^2.0.1",
         "drupal/coder": "~8.2.9",
         "drupal/config_devel": "dev-1.x#92f735cae8e9fb328edca285340a5bfbf72028cc",
@@ -112,10 +113,8 @@
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
             },
             "drupal/search_api": {
-                "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-1.patch"
-            },
-            "drupal/state_machine": {
-                "State machine should fire events when a transition is applied.": "https://www.drupal.org/files/issues/state_machine_should-2794537-22.patch"
+                "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch",
+                "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-2_0-on_2753667-8.patch"
             }
         }
     },

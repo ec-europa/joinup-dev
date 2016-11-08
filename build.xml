@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="Joinup" default="help">
+<project name="My Drupal Project" default="help">
 
+    <!-- Import local Phing targets. -->
     <import file="${project.basedir}/build.common.xml" optional="true" />
+
+    <!-- Import project specific Phing targets. -->
+    <import file="${project.basedir}/build.project.xml" optional="true" />
+
     <property file="build.properties.local" />
     <property file="build.properties" />
     <property file="build.properties.dist" />
@@ -113,6 +118,7 @@
                 <delete file="${phpcs.global.config}" failonerror="false" />
             </then>
         </if>
+        <echo message="Generating PHP Codesniffer configuration files." />
         <phpcodesnifferconfiguration
             configFile="${phpcs.config}"
             extensions="${phpcs.extensions}"
@@ -192,14 +198,12 @@
                 testsuiteName="${phpunit.testsuite.name}"
                 baseUrl="${phpunit.base_url}"
                 dbUrl="${phpunit.db_url}"
+                browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
+                browsertestOutputFile="${phpunit.browsertest_output_file}"
         />
-    </target>
-
-    <!-- Link the site root to the document root of the webserver. -->
-    <target
-        name="link-docroot"
-        description="Create a symlink from the site root to the webserver document root.">
-        <symlink link="${server.docroot}" target="${website.drupal.dir}" overwrite="true" />
+        <!-- Create the directory and file for browsertest output. -->
+        <mkdir dir="${phpunit.browsertest_output_dir}" />
+        <touch file="${phpunit.browsertest_output_file}" />
     </target>
 
     <!-- Create demo users. -->
@@ -239,22 +243,6 @@
             <option name="name" value="${drupal.demo.user}" />
             <param>${drupal.demo.user}</param>
         </drush>
-    </target>
-
-    <target name="create-d6-db">
-        <pdosqlexec url="mysql:host=${migration.db.host}" userid="${migration.db.user}" password="${migration.db.password}">
-            DROP DATABASE IF EXISTS ${migration.db.name};
-        </pdosqlexec>
-        <pdosqlexec url="mysql:host=${migration.db.host}" userid="${migration.db.user}" password="${migration.db.password}">
-            CREATE DATABASE ${migration.db.name};
-        </pdosqlexec>
-    </target>
-    <target name="import-legacy-db">
-        <pdosqlexec url="mysql:host=localhost;dbname=${migration.db.name}"
-                    userid="${migration.db.user}"
-                    password="${migration.db.password}">
-            <transaction src="${migration.db.import_path}"/>
-        </pdosqlexec>
     </target>
 
     <target name="download-apache-solr">
@@ -492,45 +480,6 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
               command="gem install sass"
               checkreturn="true"
               passthru="true" />
-    </target>
-
-    <!-- Add migration database connection to Drupal settings file. -->
-    <target name="setup-migration" depends="writable-settings-php, create-d6-db">
-        <echo message="Setup migration" />
-        <append destFile="${website.settings.php}" text="${line.separator}$databases['migrate']['default'] = [${line.separator}
- 'database' => '${migration.db.name}',${line.separator}
- 'username' => '${migration.db.user}',${line.separator}
- 'password' => '${migration.db.password}',${line.separator}
- 'prefix' => '${migration.db.prefix}',${line.separator}
- 'host' => '${migration.db.host}',${line.separator}
- 'port' => '${migration.db.port}',${line.separator}
- 'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',${line.separator}
- 'driver' => 'mysql',${line.separator}];${line.separator}" />
-    </target>
-
-    <!-- Enable migration modules. -->
-    <target name="enable-migration-modules">
-        <drush
-            command="pm-enable"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
-            <param>${migration.modules}</param>
-        </drush>
-    </target>
-
-    <!-- Run the migration ids specified in the configuration. -->
-    <target name="run-migration">
-        <echo message="Run migration" />
-        <drush
-            command="migrate_drush_run"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
-            <param>${migration.ids}</param>
-        </drush>
     </target>
 
     <!-- Remove all packages that are patched with cweagans/composer-patches. -->
