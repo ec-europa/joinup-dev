@@ -5,8 +5,12 @@ template: rdf_entity_solution_request_del
 label: 'Rdf entity - solution - request deletion'
 description: 'Message to the moderator when a request for deletion is made on a solution'
 text:
-  - "<p>Joinup - A request for deletion has been made</p>\r\n"
-  - "<p>The owner of the \"[message:field_message_content:entity:label]\" solution has requested that the solution should be deleted.\r\nYou can review this request at [message:field_message_content:url:absolute]</p>\r\n"
+  -
+    value: "<p>Joinup - A request for deletion has been made</p>\r\n"
+    format: content_editor
+  -
+    value: "<p>The owner of the \"[message:field_message_content:entity:label]\" solution has requested that the solution should be deleted.<br />\r\nYou can review this request at [message:field_message_content:url:absolute]</p>\r\n"
+    format: content_editor
 settings:
   'token options':
     clear: false
