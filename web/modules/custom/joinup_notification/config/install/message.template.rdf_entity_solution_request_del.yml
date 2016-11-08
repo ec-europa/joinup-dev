@@ -9,7 +9,7 @@ text:
     value: "<p>Joinup - A request for deletion has been made</p>\r\n"
     format: content_editor
   -
-    value: "<p>The owner of the \"[message:field_message_content:entity:label]\" solution has requested that the solution should be deleted.<br />\r\nYou can review this request at [message:field_message_content:url:absolute]</p>\r\n"
+    value: "<p>The owner of the \"[message:field_message_content:entity:label]\" solution has requested that the solution should be deleted.<br />\r\nYou can review this request at [message:field_message_content:entity:url:absolute]</p>\r\n"
     format: content_editor
 settings:
   'token options':

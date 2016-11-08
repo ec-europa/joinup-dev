@@ -9,7 +9,7 @@ text:
     value: "<p>Joinup - Content has been updated</p>\r\n"
     format: content_editor
   -
-    value: "<p>The content \"[message:field_message_content:entity:label]\" has been moved to the \"[message:field_message_content:entity:field_is_state]\" state.</p>\r\n\r\n<p>You can find the content at [message:field_message_content:url:absolute]</p>\r\n"
+    value: "<p>The content \"[message:field_message_content:entity:label]\" has been moved to the \"[message:field_message_content:entity:field_is_state]\" state.</p>\r\n\r\n<p>You can find the content at [message:field_message_content:entity:url:absolute]</p>\r\n"
     format: content_editor
 settings:
   'token options':
