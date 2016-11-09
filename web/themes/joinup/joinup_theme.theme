@@ -453,12 +453,13 @@ function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $v
  * Add theme suggestions for tile and featured view modes.
  */
 function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $variables) {
-  // Bail out early if field has custom template from view mode.
-  if (in_array('field__custom_template', $suggestions)) {
+  // Bail out early if field has a Joinup template suggestion added in the view
+  // mode.
+  $element = $variables['element'];
+  if (!empty($element['joinup_template_suggestion'])) {
     return;
   }
 
-  $element = $variables['element'];
   $view_modes = [
     'view_mode_tile',
     'view_mode_featured',

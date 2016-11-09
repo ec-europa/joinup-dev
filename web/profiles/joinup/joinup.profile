@@ -255,12 +255,15 @@ function joinup_theme_suggestions_field_alter(array &$suggestions, array $variab
       $component = $display->getComponent($field_name);
       if (!empty($component['third_party_settings']['joinup']['template_suggestion'])) {
         $suggestion = 'field__' . $component['third_party_settings']['joinup']['template_suggestion'];
-        $suggestions[] = 'field__custom_template';
         $suggestions[] = $suggestion;
         $suggestions[] = $suggestion . '__' . $entity_type;
         $suggestions[] = $suggestion . '__' . $entity_type . '__' . $bundle;
         $suggestions[] = $suggestion . '__' . $entity_type . '__' . $bundle . '__' . $field_name;
         $suggestions[] = $suggestion . '__' . $entity_type . '__' . $bundle . '__' . $field_name . '__' . $view_mode;
+
+        // Add the custom template suggestion back in the element to allow other
+        // modules to have this information.
+        $variables['element']['#joinup_template_suggestion'] = $suggestion;
       }
     }
   }
