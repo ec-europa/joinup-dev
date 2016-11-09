@@ -82,6 +82,7 @@ class RdfEncodingTest extends EntityKernelTestBase {
 
     $label = $rdf->get('label')->first()->getValue();
     $this->assertEquals($label['value'], 'jaa', 'Labels are equal');
+    $rdf->delete();
   }
 
 }
