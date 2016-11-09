@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "75410a3091681a16ce3399e9315992b6",
-    "content-hash": "72f7ff827228487787fa1677578dea9a",
+    "hash": "5222d949c73e9038d1c62f0de7704c13",
+    "content-hash": "5f055a054de9af58619d35627e6b7c63",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1556,12 +1556,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "30579c03b67069d8a037c29bb5c78b5e74ef872f"
+                "reference": "d53730504a6d21bbe50cc3b8b4b5449129e7eb49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/30579c03b67069d8a037c29bb5c78b5e74ef872f",
-                "reference": "30579c03b67069d8a037c29bb5c78b5e74ef872f",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/d53730504a6d21bbe50cc3b8b4b5449129e7eb49",
+                "reference": "d53730504a6d21bbe50cc3b8b4b5449129e7eb49",
                 "shasum": ""
             },
             "require": {
@@ -1733,7 +1733,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-10-19 08:16:08"
+            "time": "2016-10-28 11:37:52"
         },
         {
             "name": "drupal/digital_size_formatter",
@@ -1940,7 +1940,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/field_group",
-                "reference": "fb8357b41de1f76c4be9b7f5b4bb954b9e92ee3f"
+                "reference": "68020f6f4b185c5989b70272ac32177d4c42b882"
             },
             "require": {
                 "drupal/core": "*"
@@ -1986,7 +1986,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/field_group"
             },
-            "time": "2016-11-06 10:30:04"
+            "time": "2016-10-12 22:34:00"
         },
         {
             "name": "drupal/inline_entity_form",
