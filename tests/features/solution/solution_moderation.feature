@@ -84,12 +84,12 @@ Feature: Solution moderation
       # purposed. In reality, the owner is also a facilitator so the only
       # UATable part of the owner is that he has the ability to request deletion
       # when the solution is validated.
-      | Azure Ship                 | Franklin Walker  |                                                             |
-      | The Last Illusion          | Franklin Walker  |                                                             |
-      | Rose of Doors              | Franklin Walker  | Request deletion                                            |
+      | Azure Ship                 | Franklin Walker  | Save as draft, Propose                                      |
+      | The Last Illusion          | Franklin Walker  | Save as draft, Propose                                      |
+      | Rose of Doors              | Franklin Walker  | Save as draft, Propose, Request deletion                    |
       | The Ice's Secrets          | Franklin Walker  |                                                             |
-      | The Guardian of the Stream | Franklin Walker  |                                                             |
-      | Flames in the Swords       | Franklin Walker  |                                                             |
+      | The Guardian of the Stream | Franklin Walker  | Save as draft, Propose                                      |
+      | Flames in the Swords       | Franklin Walker  | Save as draft, Propose                                      |
 
       # The following solutions do not follow the rule above and should be
       # testes as shown.

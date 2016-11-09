@@ -20,8 +20,8 @@ Feature: Solution notification system
       | Some Scent            | Some Scent            | logo.png | banner.jpg | The Red Search | Jody Buchanan       | deletion_request |
     And the following solution user memberships:
       | solution              | user             | roles |
-      | The Time of the Child | Benjamin Stevens | owner, facilitator |
-      | Some Scent            | Benjamin Stevens | owner, facilitator |
+      | The Time of the Child | Benjamin Stevens | owner |
+      | Some Scent            | Benjamin Stevens | owner |
 
     # Test validation email.
     When the user "Cecelia Kim" changes the state of the "The Time of the Child" solution to "Validated"

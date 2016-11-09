@@ -22,8 +22,8 @@ Feature: As a user of the website
       | Teacher in the Twins     | The Guardian of the Stream | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | needs_update     | Health        |
       | Missing Fire             | Flames in the Swords       | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | blacklisted      | Health        |
     And the following solution user memberships:
-      | solution        | user | roles              |
-      | Flight of Night | Hulk | owner, facilitator |
+      | solution        | user | roles |
+      | Flight of Night | Hulk | owner |
     When I am logged in as a "facilitator" of the "Professional Dreams" solution
     And I go to the homepage of the "Professional Dreams" solution
     Then I should see the heading "Professional Dreams"
