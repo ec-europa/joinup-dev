@@ -453,56 +453,20 @@ function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $v
  * Add theme suggestions for tile and featured view modes.
  */
 function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  // Bail out early if field has custom template from view mode.
+  if (in_array('field__custom_template', $suggestions)) {
+    return;
+  }
+
   $element = $variables['element'];
   $view_modes = [
     'view_mode_tile',
     'view_mode_featured',
   ];
 
-  // Create field template for entities, which use custom templates.
-  $entities = array(
-    'asset_release',
-  );
-
-  if (in_array($element['#bundle'], $entities)) {
+  // Set suggestion based on view mode.
+  if (in_array($variables['element']['#view_mode'], $view_modes)) {
     $suggestions[] = 'field__no_wrappers';
-    // Check if field is displayed as tile or featured.
-    if (isset($element['0']['#view_mode']) && in_array($element['0']['#view_mode'], $view_modes)) {
-      $suggestions[] = 'field__listing';
-    }
-  }
-
-  // Bail out early based on view mode.
-  if (!in_array($variables['element']['#view_mode'], $view_modes)) {
-    return;
-  }
-
-  if (!empty($element['#entity_type']) && !empty($element['#bundle'])) {
-    $entity_type = $element['#entity_type'];
-    $bundle = $element['#bundle'];
-
-    // Keep a list of bundles where we want to add the suggestions, keyed by
-    // their entity type.
-    $bundles = [
-      'node' => [
-        'discussion',
-        'event',
-        'news',
-        'document',
-      ],
-      'rdf_entity' => [
-        'collection',
-        'solution',
-        'asset_distribution',
-      ],
-    ];
-
-    if (isset($bundles[$entity_type]) && in_array($bundle, $bundles[$entity_type])) {
-      $suggestions[] = 'field__no_wrappers';
-      if ($variables['element']['#field_type'] == 'entity_reference') {
-        $suggestions[] = 'field__tags_wrapper';
-      }
-    }
   }
 }
 

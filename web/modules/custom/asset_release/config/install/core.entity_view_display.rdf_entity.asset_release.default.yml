@@ -70,6 +70,8 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: datetime_time_ago
   field_isr_distribution:
     weight: 17
@@ -86,6 +88,8 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+      joinup:
+        template_suggestion: entity_reference__listing_tile
     type: entity_reference_entity_view
   field_isr_elibrary_creation:
     weight: 13
@@ -98,7 +102,16 @@ content:
     label: above
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: entity_reference_label
   field_isr_issue_tracker:
     weight: 19
@@ -154,7 +167,16 @@ content:
     weight: 19
     label: hidden
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
   field_isr_source_code_repository:
     weight: 21
     label: above
@@ -203,7 +225,16 @@ content:
     weight: 2
     settings:
       link_to_entity: false
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
 hidden:
   field_isr_banner: true
   field_isr_contact_information: true
