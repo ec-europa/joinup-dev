@@ -69,7 +69,7 @@ function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateI
       '#title' => $column,
       '#description' => $description,
       '#weight' => 150,
-      '#default_value' => $entity->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE),
+      '#default_value' => rdf_entity_get_third_party_property($entity, 'mapping', $column, FALSE),
     );
   }
 
@@ -77,14 +77,27 @@ function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateI
 }
 
 /**
+ * Retrieve nested third party settings from object.
+ */
+function rdf_entity_get_third_party_property(ConfigEntityInterface $object, $property, $column, $default = NULL) {
+  $property_value = $object->getThirdPartySetting('rdf_entity', $property, FALSE);
+  if (!is_array($property_value) || !isset($property_value[$column])) {
+    return $default;
+  }
+  return $property_value[$column];
+}
+
+/**
  * Entity builder callback: Save rdf field mapping.
  */
 function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity, array &$form, FormStateInterface $form_state) {
   $schema = $entity->getSchema();
+  $data = [];
   foreach ($schema['columns'] as $column => $column_desc) {
-    $value = $form_state->getValue($column);
-    $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $column, $value);
+    $data[$column] = $form_state->getValue($column);
+
   }
+  $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $column, $value);
 }
 
 /**
@@ -131,7 +144,7 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
     '#open' => TRUE,
   );
   foreach ($storage->getGraphDefinitions() as $definedGraphName => $definedGraph) {
-    $default_value = $entity->getThirdPartySetting('rdf_entity', 'graph_' . $definedGraphName, FALSE);
+    $default_value = rdf_entity_get_third_party_property($entity, 'graph', $definedGraphName, FALSE);
     $form['rdf_graph']['graph_' . $definedGraphName] = array(
       '#type' => 'url',
       '#title' => $definedGraph['title'],
@@ -158,7 +171,7 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
       continue;
     }
     foreach ($columns as $column_name => $column) {
-      $settings = $entity->getThirdPartySetting('rdf_entity', 'mapping_' . $id, FALSE);
+      $settings = rdf_entity_get_third_party_property($entity, 'mapping', $id, FALSE);
       $title = $base_field->getLabel();
       if (count($columns) > 1) {
         $title .= ' (' . $column_name . ')';
@@ -184,22 +197,24 @@ function rdf_entity_bundle_config($entity_type, ConfigEntityInterface $entity, a
   $base_fields = \Drupal::entityManager()->getBaseFieldDefinitions($entity_name);
   $storage = \Drupal::entityManager()->getStorage($entity_name);
   $idKey = $storage->getEntityType()->getKey('id');
+  $third_party_settings = [];
   /** @var \Drupal\Core\Field\BaseFieldDefinition $base_field */
   foreach ($base_fields as $id => $base_field) {
     if ($id == $idKey) {
       continue;
     }
     $columns = $base_field->getColumns();
-    $settings = [];
     foreach ($columns as $column_name => $column) {
-      $settings[$column_name] = $form_state->getValue('mapping_' . $id . '_' . $column_name);
+      $third_party_settings[$id][$column_name] = $form_state->getValue('mapping_' . $id . '_' . $column_name);
     }
-    $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $id, $settings);
   }
+  $entity->setThirdPartySetting('rdf_entity', 'mapping', $third_party_settings);
+  $third_party_settings = [];
   foreach ($storage->getGraphDefinitions() as $definedGraphName => $definedGraph) {
     $graph_uri = $form_state->getValue('graph_' . $definedGraphName);
-    $entity->setThirdPartySetting('rdf_entity', 'graph_' . $definedGraphName, $graph_uri);
+    $third_party_settings[$definedGraphName] = $graph_uri;
   }
+  $entity->setThirdPartySetting('rdf_entity', 'graph', $third_party_settings);
 }
 
 /**

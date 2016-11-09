@@ -436,8 +436,9 @@ QUERY;
     if (!isset($rdf_bundles[$this->entityType->getBundleEntityType()])) {
       $rdf_bundles[$this->entityType->getBundleEntityType()] = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->loadMultiple();
     }
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $rdf_bundle */
     foreach ($rdf_bundles[$this->entityType->getBundleEntityType()] as $rdf_bundle) {
-      $settings = $rdf_bundle->getThirdPartySetting('rdf_entity', 'mapping_' . $this->bundleKey, FALSE);
+      $settings = rdf_entity_get_third_party_property($rdf_bundle, 'mapping', $this->bundleKey, FALSE);
       $type = array_pop($settings);
       foreach ($this->bundlePredicate as $bundlePredicate) {
         if (!isset($entity_values[$bundlePredicate])) {

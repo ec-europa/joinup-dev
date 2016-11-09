@@ -401,7 +401,7 @@ class Query extends QueryBase implements QueryInterface {
     if (empty($column)) {
       $column = $field_storage->getMainPropertyName();
     }
-    $field_rdf_name = $field_storage->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE);
+    $field_rdf_name = rdf_entity_get_third_party_property($field_storage, 'mapping', $column, FALSE);
     if (empty($field_rdf_name)) {
       throw new \Exception('No 3rd party field settings for ' . $field_name);
     }

@@ -1,0 +1,35 @@
+# Schema for the configuration files of the rdf_entity module.
+
+rdf_entity.rdfentity.*:
+  type: config_entity
+  label: 'Rdf type'
+  mapping:
+    name:
+      type: label
+      label: 'Name'
+    rid:
+      type: string
+      label: 'Bundle type'
+    description:
+      type: text
+      label: 'Description'
+    help:
+      type: text
+      label: 'Explanation or submission guidelines'
+
+rdf_entity.rdfentity.*.third_party.rdf_entity:
+  type: mapping
+  label: 'Third party settings'
+  mapping:
+    graph:
+      type: sequence
+      sequence:
+        type: string
+        label: 'The mapping of a graph definition to a graph uri.'
+    mapping:
+      type: sequence
+      sequence:
+        type: sequence
+        sequence:
+          type: string
+          label: 'Mapping of field properies to their rdf counterpart.'

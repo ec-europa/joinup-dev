@@ -3,14 +3,15 @@
 namespace Drupal\Tests\rdf_entity\Kernel;
 
 use Drupal\Core\Database\Database;
-use Drupal\KernelTests\KernelTestBase;
+use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Tests the support of saving various encoded stings in the triple store.
  *
  * @group rdf_entity
  */
-class RdfEncodingTest extends KernelTestBase {
+class RdfEncodingTest extends EntityKernelTestBase {
 
   /**
    * Modules to enable for this test.
@@ -19,7 +20,12 @@ class RdfEncodingTest extends KernelTestBase {
    */
   public static $modules = array(
     'rdf_entity',
-    'rdf_entity_test'
+    'rdf_entity_test',
+    'field',
+    'node',
+    'system',
+    'options',
+    'entity_reference',
   );
 
   /**
@@ -28,36 +34,34 @@ class RdfEncodingTest extends KernelTestBase {
   public function setUp() {
     parent::setUp();
 
-    if (!$this->detectSparqlAvailability()) {
+    if (!$this->setUpSparql()) {
       $this->markTestSkipped('No Sparql connection available.');
-      print "Connected\n";
     }
-    print "Setup\n";
 
-    $this->installConfig(['rdf_entity', 'rdf_entity_test']);
-    print "Installed\n";
+    $this->installConfig(['rdf_entity']);
     $this->installEntitySchema('rdf_entity');
-    print "schema\n";
+
+    $this->installConfig(['rdf_entity_test']);
 
     // $this->detectSolrAvailability();
   }
 
-  protected function detectSparqlAvailability() {
-    // If the test is run with argument dburl then use it.
+  /**
+   * Setup the db connection to the triple store.
+   */
+  protected function setUpSparql() {
+    // If the test is run with argument db url then use it.
+    // export SIMPLETEST_SPARQL_DB='sparql://127.0.0.1:8890/'.
     $db_url = getenv('SIMPLETEST_SPARQL_DB');
-    var_dump($db_url);
-    if (!empty($db_url)) {
-      $database = Database::convertDbUrlToConnectionInfo($db_url, DRUPAL_ROOT);
-      $database['namespace'] = 'Drupal\\rdf_entity\\Database\\Driver\\sparql';
-      Database::addConnectionInfo('sparql_default', 'default', $database);
-      var_dump($database);
+    if (empty($db_url)) {
+      return FALSE;
     }
-    
+    $database = Database::convertDbUrlToConnectionInfo($db_url, DRUPAL_ROOT);
+    $database['namespace'] = 'Drupal\\rdf_entity\\Database\\Driver\\sparql';
+    Database::addConnectionInfo('sparql_default', 'default', $database);
+
     return TRUE;
   }
-
-
-
 
   /**
    * Clear the index after every test.
@@ -66,7 +70,18 @@ class RdfEncodingTest extends KernelTestBase {
     parent::tearDown();
   }
 
-  function testEncoding() {
-    $this->assertEquals(TRUE, TRUE, 'jej');
+  /**
+   * Test that naughty strings can safely be saved to the database.
+   */
+  public function testEncoding() {
+    $rdf = Rdf::create([
+      'rid' => 'dummy',
+      'label' => 'jaa',
+    ]);
+    $rdf->save();
+
+    $label = $rdf->get('label')->first()->getValue();
+    $this->assertEquals($label['value'], 'jaa', 'Labels are equal');
   }
+
 }
