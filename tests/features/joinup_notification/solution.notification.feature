@@ -25,11 +25,19 @@ Feature: Solution notification system
 
     # Test validation email.
     When the user "Cecelia Kim" changes the state of the "The Time of the Child" solution to "Validated"
-    Then an email following the template "Message to the owner when a solution transits to 'Validated' state" should have been sent to "Benjamin Stevens"
+    Then the following email should have been sent:
+      | template  | Message to the owner when a solution transits to 'Validated' state           |
+      | recipient | Benjamin Stevens                                                             |
+      | subject   | Joinup - Content has been updated                                            |
+      | body      | The content "The Time of the Child" has been moved to the "Validated" state. |
 
     # Test deletion request email.
     When the user "Benjamin Stevens" changes the state of the "The Time of the Child" solution to "Request deletion"
-    Then an email following the template "Message to the moderator when a request for deletion is made on a solution" should have been sent to "Cecelia Kim"
+    Then the following email should have been sent:
+      | template  | Message to the moderator when a request for deletion is made on a solution                           |
+      | recipient | Cecelia Kim                                                                                          |
+      | subject   | Joinup - A request for deletion has been made                                                        |
+      | body      | The owner of the "The Time of the Child" solution has requested that the solution should be deleted. |
 
     # Test deletion email.
     When I am logged in as "Cecelia Kim"
@@ -37,4 +45,8 @@ Feature: Solution notification system
     And I click Edit
     And I click "Delete"
     And I press "Delete"
-    Then an email following the template "Message to the owner when a solution is deleted" should have been sent to "Benjamin Stevens"
+    Then the following email should have been sent:
+      | template  | Message to the owner when a solution is deleted        |
+      | recipient | Benjamin Stevens                                       |
+      | subject   | Joinup - Content has been deleted                      |
+      | body      | The content "Some Scent" has been deleted from Joinup. |
