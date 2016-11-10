@@ -313,17 +313,14 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_release(&$variabl
     $is_latest_release = FALSE;
     $field_solution = $entity->get('field_isr_is_version_of');
     if (!empty($field_solution) && ($solution = $field_solution->entity)) {
-      if ($entity->id() === solution_get_latest_release($solution)) {
+      $latest_release = solution_get_latest_release($solution);
+      if ($latest_release && $latest_release->id() === $entity->id()) {
         $is_latest_release = TRUE;
-      }
-      else {
-        // @todo: Latest release link is only placeholder.
-        $latest_release = '';
       }
     }
     $variables['additional_content']['is_latest_release'] = $is_latest_release;
-    if (!$is_latest_release) {
-      $variables['additional_content']['latest_release'] = $latest_release;
+    if (!$is_latest_release && $latest_release) {
+      $variables['additional_content']['latest_release'] = $latest_release->toUrl()->toString();
     }
 
     // Get the view builder service from the entity type manager.
