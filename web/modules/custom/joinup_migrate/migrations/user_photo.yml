@@ -1,5 +1,5 @@
 id: user_photo
-label: 'Users photo'
+label: 'Users photos'
 source:
   plugin: user_photo
 process:
