@@ -130,17 +130,20 @@ function joinup_theme_preprocess_block(&$variables) {
     // Get entity type.
     $entity = $route_match->getParameter('rdf_entity');
     if (!empty($entity)) {
-      $entity_type = $entity->getType();
+      $bundle = $entity->getType();
     }
 
-    $entities = array(
+    $entities = [
       'collection',
       'asset_release',
       'asset_distribution',
-    );
+    ];
+
     // Check if page is a listing and should not have a white background.
-    if ($route_name == 'view.collections.page_1'
-    || (isset($entity_type) && in_array($entity_type, $entities) && $route_name == 'entity.rdf_entity.canonical')) {
+    if (
+      $route_name == 'view.collections.page_1' ||
+      (isset($bundle) && in_array($bundle, $entities) && $route_name == 'entity.rdf_entity.canonical')
+    ) {
       $variables['is_view'] = TRUE;
     }
   }
@@ -314,17 +317,14 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_release(&$variabl
     $is_latest_release = FALSE;
     $field_solution = $entity->get('field_isr_is_version_of');
     if (!empty($field_solution) && ($solution = $field_solution->entity)) {
-      if ($entity->id() === solution_get_latest_release($solution)) {
+      $latest_release = solution_get_latest_release($solution);
+      if ($latest_release && $latest_release->id() === $entity->id()) {
         $is_latest_release = TRUE;
-      }
-      else {
-        // @todo: Latest release link is only placeholder.
-        $latest_release = '';
       }
     }
     $variables['additional_content']['is_latest_release'] = $is_latest_release;
-    if (!$is_latest_release) {
-      $variables['additional_content']['latest_release'] = $latest_release;
+    if (!$is_latest_release && $latest_release) {
+      $variables['additional_content']['latest_release'] = $latest_release->toUrl()->toString();
     }
 
     // Get the view builder service from the entity type manager.
@@ -436,9 +436,9 @@ function joinup_theme_theme_suggestions_form_element_alter(array &$suggestions, 
  */
 function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array $variables) {
   // Array contains all select elements ids, which are displayed as slider.
-  $slider_ids = array(
+  $slider_ids = [
     'edit-field-ar-elibrary-creation',
-  );
+  ];
 
   if (in_array($variables['element']['#id'], $slider_ids)) {
     $suggestions[] = 'select__slider';
@@ -481,56 +481,21 @@ function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $v
  * Add theme suggestions for tile and featured view modes.
  */
 function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  // Bail out early if field has a Joinup template suggestion added in the view
+  // mode.
   $element = $variables['element'];
+  if (!empty($element['joinup_template_suggestion'])) {
+    return;
+  }
+
   $view_modes = [
     'view_mode_tile',
     'view_mode_featured',
   ];
 
-  // Create field template for entities, which use custom templates.
-  $entities = array(
-    'asset_release',
-  );
-
-  if (in_array($element['#bundle'], $entities)) {
+  // Set suggestion based on view mode.
+  if (in_array($variables['element']['#view_mode'], $view_modes)) {
     $suggestions[] = 'field__no_wrappers';
-    // Check if field is displayed as tile or featured.
-    if (isset($element['0']['#view_mode']) && in_array($element['0']['#view_mode'], $view_modes)) {
-      $suggestions[] = 'field__listing';
-    }
-  }
-
-  // Bail out early based on view mode.
-  if (!in_array($variables['element']['#view_mode'], $view_modes)) {
-    return;
-  }
-
-  if (!empty($element['#entity_type']) && !empty($element['#bundle'])) {
-    $entity_type = $element['#entity_type'];
-    $bundle = $element['#bundle'];
-
-    // Keep a list of bundles where we want to add the suggestions, keyed by
-    // their entity type.
-    $bundles = [
-      'node' => [
-        'discussion',
-        'event',
-        'news',
-        'document',
-      ],
-      'rdf_entity' => [
-        'collection',
-        'solution',
-        'asset_distribution',
-      ],
-    ];
-
-    if (isset($bundles[$entity_type]) && in_array($bundle, $bundles[$entity_type])) {
-      $suggestions[] = 'field__no_wrappers';
-      if ($variables['element']['#field_type'] == 'entity_reference') {
-        $suggestions[] = 'field__tags_wrapper';
-      }
-    }
   }
 }
 
