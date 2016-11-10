@@ -16,7 +16,7 @@ trait SourceTrait {
    *   The database name.
    */
   public function getSourceDbName() {
-    return $this->getDatabase()->getConnectionOptions()['database'];
+    return Database::getConnection('default', 'migrate')->getConnectionOptions()['database'];
   }
 
   /**
