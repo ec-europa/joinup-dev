@@ -74,15 +74,64 @@ class RdfEncodingTest extends EntityKernelTestBase {
    * Test that naughty strings can safely be saved to the database.
    */
   public function testEncoding() {
-    $rdf = Rdf::create([
-      'rid' => 'dummy',
-      'label' => 'jaa',
-    ]);
-    $rdf->save();
+    $path = DRUPAL_ROOT . "/../vendor/minimaxir/big-list-of-naughty-strings/blns.json";
+    if (!file_exists($path)) {
+      $this->markTestSkipped('Library minimaxir/big-list-of-naughty-strings is required.');
+      return;
+    }
+    $json = file_get_contents($path);
+    $naughty_strings = json_decode($json);
+    foreach ($naughty_strings as $naughty_string) {
+      if (in_array($naughty_string, [
+        "",
+        "\"",
+        "\"\"",
+        "\"''''\"'\"",
+        "\"'\"'\"''''\"",
+        "\";alert(123);t=\"",
+        "\"><script>alert(123);</script x=\"",
+        "<IMG \"\"\"><SCRIPT>alert(\"XSS\")</SCRIPT>\">",
+        "<IMG SRC=\"javascript:alert('XSS')\"",
+      ])) {
+        continue;
+      }
+      $rdf = Rdf::create([
+        'rid' => 'dummy',
+        'label' => 'naughty object',
+        'field_text' => $naughty_string,
+      ]);
+      try {
+        $rdf->save();
+      }
+      catch (\Exception $e) {
+        $msg = sprintf("Entity saved for naughty string '%s'.", $naughty_string);
+        $this->assertTrue(FALSE, $msg);
+      }
 
-    $label = $rdf->get('label')->first()->getValue();
-    $this->assertEquals($label['value'], 'jaa', 'Labels are equal');
-    $rdf->delete();
+      $query = \Drupal::entityQuery('rdf_entity')
+        ->condition('label', 'naughty object')
+        ->condition('rid', 'dummy')
+        ->range(0, 1);
+
+      $result = $query->execute();
+
+      $this->assertFalse(empty($result), 'Loaded naughty object');
+
+      $loaded_rdf = Rdf::load(reset($result));
+
+      $field = $loaded_rdf->get('field_text');
+      $msg = sprintf("Field was empty for naughty string '%s'.", $naughty_string);
+      $this->assertTrue($field, $msg);
+      $first = $field->first();
+      $msg = sprintf("First value set for naughty string '%s'.", $naughty_string);
+      $this->assertTrue($first, $msg);
+      $text = $first->getValue();
+
+      $msg = sprintf("Naught string '%s' was correctly read back.", $naughty_string);
+      $this->assertEquals($text['value'], $naughty_string, $msg);
+      $rdf->delete();
+    }
+
   }
 
 }

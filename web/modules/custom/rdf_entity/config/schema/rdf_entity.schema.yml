@@ -33,3 +33,12 @@ rdf_entity.rdfentity.*.third_party.rdf_entity:
         sequence:
           type: string
           label: 'Mapping of field properies to their rdf counterpart.'
+
+field.storage.*.*.third_party.rdf_entity:
+  type: mapping
+  mapping:
+    mapping:
+      type: sequence
+      sequence:
+        type: string
+        label: 'Mapping of field properies to their rdf counterpart.'
