@@ -89,6 +89,8 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+      joinup:
+        template_suggestion: entity_reference__listing_tag
 hidden:
   field_comments: true
   field_news_kicker: true
