@@ -88,7 +88,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     }
 
     // Reset the email storage.
-    \Drupal::state()->set('system.test_mail_collector', array());
+    \Drupal::state()->set('system.test_mail_collector', []);
     \Drupal::state()->resetCache();
   }
 
