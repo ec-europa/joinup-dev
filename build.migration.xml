@@ -65,5 +65,16 @@
         </pdosqlexec>
     </target>
 
+    <target name="acceptance-migration"
+            description="Wrapper around execute-migration that gets executed only when the related property is set."
+            if="migration.acceptance">
+        <phingcall target="execute-migration" />
+    </target>
+
+    <target
+        name="execute-migration"
+        description="Configure and import the migration database, run the migration tasks."
+        depends="setup-migration, import-legacy-db, run-migration" />
+
 </project>
 
