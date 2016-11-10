@@ -130,16 +130,18 @@ function joinup_theme_preprocess_block(&$variables) {
     // Get entity type.
     $entity = $route_match->getParameter('rdf_entity');
     if (!empty($entity)) {
-      $entity_type = $entity->getType();
+      $bundle = $entity->getType();
     }
 
-    $entities = array(
+    $entities = [
       'collection',
       'asset_release',
-    );
+    ];
     // Check if page is a listing and should not have a white background.
-    if ($route_name == 'view.collections.page_1'
-    || (isset($entity_type) && in_array($entity_type, $entities) && $route_name == 'entity.rdf_entity.canonical')) {
+    if (
+      $route_name == 'view.collections.page_1' ||
+      (isset($bundle) && in_array($bundle, $entities) && $route_name == 'entity.rdf_entity.canonical')
+    ) {
       $variables['is_view'] = TRUE;
     }
   }
