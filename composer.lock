@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "acba9d3c37017d1c773b8ed0812389ef",
-    "content-hash": "1c164d7335ca266d81754f558dc7c3a5",
+    "hash": "37930831336d387b8fe98216ebf2eaf3",
+    "content-hash": "c988e62fce78d37b5d71f3512dd45d5c",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1990,17 +1990,11 @@
         },
         {
             "name": "drupal/inline_entity_form",
-            "version": "1.0.0-beta1",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/inline_entity_form",
-                "reference": "8.x-1.0-beta1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/inline_entity_form-8.x-1.0-beta1.zip",
-                "reference": null,
-                "shasum": "185ffc28a7b68d19cce057855d1c111f1741a3ea"
+                "reference": "44c5cfcedd11ed90d473734bd77d9b069c4021fa"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2014,11 +2008,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1477868343"
-                },
-                "patches_applied": {
-                    "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"
+                    "version": "8.x-1.0-beta1+1-dev",
+                    "datestamp": "1478302143"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2051,7 +2042,8 @@
             "homepage": "https://www.drupal.org/project/inline_entity_form",
             "support": {
                 "source": "http://cgit.drupalcode.org/inline_entity_form"
-            }
+            },
+            "time": "2016-11-04 20:57:04"
         },
         {
             "name": "drupal/layout_plugin",
@@ -9105,7 +9097,7 @@
     "stability-flags": {
         "cweagans/composer-patches": 20,
         "drupal/field_group": 20,
-        "drupal/inline_entity_form": 10,
+        "drupal/inline_entity_form": 20,
         "drupal/migrate_spreadsheet": 20,
         "drupal/og": 20,
         "drupal/og_menu": 20,

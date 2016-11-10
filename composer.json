@@ -14,7 +14,7 @@
         "drupal/ds": "^2.0",
         "drupal/facets": "1.0.0-alpha6",
         "drupal/field_group": "dev-1.x#0f289425f4f1b156737fe27ae29dde2c55bbec27",
-        "drupal/inline_entity_form": "~1.0@beta",
+        "drupal/inline_entity_form": "dev-1.x#44c5cfcedd11ed90d473734bd77d9b069c4021fa",
         "drupal/message": "~1.0",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
@@ -104,9 +104,6 @@
                 "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
                 "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
                 "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch"
-            },
-            "drupal/inline_entity_form": {
-                "Capitalize only first letter for the existing entity autocomplete label": "https://www.drupal.org/files/issues/capitalize_only_first-2764007-3.patch"
             },
             "drupal/r4032login": {
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
