@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d243856cc1e8f6f40d36ade3b709ee39",
-    "content-hash": "b82ccb120e33d8a081fde37458881834",
+    "hash": "5bdde76373578c676f8e5dbde5267224",
+    "content-hash": "b40fea6e80371a9507ed83a21bd4dca0",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1556,12 +1556,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "30579c03b67069d8a037c29bb5c78b5e74ef872f"
+                "reference": "d53730504a6d21bbe50cc3b8b4b5449129e7eb49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/30579c03b67069d8a037c29bb5c78b5e74ef872f",
-                "reference": "30579c03b67069d8a037c29bb5c78b5e74ef872f",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/d53730504a6d21bbe50cc3b8b4b5449129e7eb49",
+                "reference": "d53730504a6d21bbe50cc3b8b4b5449129e7eb49",
                 "shasum": ""
             },
             "require": {
@@ -1733,7 +1733,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-10-19 08:16:08"
+            "time": "2016-10-28 11:37:52"
         },
         {
             "name": "drupal/digital_size_formatter",
@@ -1746,7 +1746,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/digital_size_formatter-8.x-1.0-alpha1.zip",
-                "reference": "8.x-1.0-alpha1",
+                "reference": null,
                 "shasum": "e2a3e6c961eb2e5891bf04bd623a617e8e6851d9"
             },
             "require": {
@@ -1798,7 +1798,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/ds-8.x-2.6.zip",
-                "reference": "8.x-2.6",
+                "reference": null,
                 "shasum": "6cec63a526b31f90b57d8958348280fb05ff8bec"
             },
             "require": {
@@ -1951,8 +1951,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc4+49-dev",
-                    "datestamp": "1478428439"
+                    "version": "8.x-1.0-rc4+52-dev",
+                    "datestamp": "1478729640"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2056,7 +2056,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/layout_plugin-8.x-1.0-alpha23.zip",
-                "reference": "8.x-1.0-alpha23",
+                "reference": null,
                 "shasum": "c79992e2f52ac6a7c8dc0706512f2c70fc9f5e11"
             },
             "require": {
@@ -2230,7 +2230,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/migrate_drush-8.x-1.1.zip",
-                "reference": "8.x-1.1",
+                "reference": null,
                 "shasum": "c409d7ad65900edf3d2c55f7ef9f5613897635ca"
             },
             "require": {
@@ -2314,33 +2314,74 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-242-simplified",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/amitaibu/og.git",
-                "reference": "1dc75d8a3c4ea60dc80226f2264b5368dda699ae"
+                "url": "https://git.drupal.org/project/og",
+                "reference": "dbffd5d9123b2b5b0f0bc91efb3bc9d45da3f073"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/1dc75d8a3c4ea60dc80226f2264b5368dda699ae",
-                "reference": "1dc75d8a3c4ea60dc80226f2264b5368dda699ae",
-                "shasum": ""
+            "require": {
+                "drupal/core": "*"
             },
             "require-dev": {
-                "drupal/coder": "~8.2"
+                "drupal/coder": "~2.0"
             },
             "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1478628847"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Dries",
+                    "homepage": "https://www.drupal.org/user/1"
+                },
+                {
+                    "name": "Grayside",
+                    "homepage": "https://www.drupal.org/user/346868"
+                },
+                {
+                    "name": "Zen",
+                    "homepage": "https://www.drupal.org/user/21209"
+                },
+                {
+                    "name": "amitaibu",
+                    "homepage": "https://www.drupal.org/user/57511"
+                },
+                {
+                    "name": "dww",
+                    "homepage": "https://www.drupal.org/user/46549"
+                },
+                {
+                    "name": "merlinofchaos",
+                    "homepage": "https://www.drupal.org/user/26979"
+                },
+                {
+                    "name": "moshe weitzman",
+                    "homepage": "https://www.drupal.org/user/23"
+                },
+                {
+                    "name": "sethcohn",
+                    "homepage": "https://www.drupal.org/user/14944"
+                }
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
             "support": {
+                "source": "https://cgit.drupalcode.org/og",
                 "issues": "https://drupal.org/project/issues/og",
-                "irc": "irc://irc.freenode.org/drupal-og",
-                "source": "https://cgit.drupalcode.org/og"
+                "irc": "irc://irc.freenode.org/drupal-og"
             },
-            "time": "2016-11-05 12:12:05"
+            "time": "2016-11-08 18:11:28"
         },
         {
             "name": "drupal/og_menu",
@@ -2719,7 +2760,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/token-8.x-1.0-beta2.zip",
-                "reference": "8.x-1.0-beta2",
+                "reference": null,
                 "shasum": "b838318eddf46e4f382489de5516ab916257c393"
             },
             "require": {
@@ -7494,7 +7535,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/default_content-8.x-1.0-alpha3.zip",
-                "reference": "8.x-1.0-alpha3",
+                "reference": null,
                 "shasum": "6834ce4134fd20df56e7294e9aad033f1500d7dd"
             },
             "require": {
@@ -7565,7 +7606,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-alpha1.zip",
-                "reference": "8.x-1.0-alpha1",
+                "reference": null,
                 "shasum": "f05e874d4ae2515e0a86df3017a081d4cce31fef"
             },
             "require": {

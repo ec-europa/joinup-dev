@@ -2,8 +2,7 @@ id: user
 label: 'User accounts'
 source:
   plugin: user
-#  constants:
-#    empty: null
+  track_changes: true
 process:
   status:
     plugin: default_value
