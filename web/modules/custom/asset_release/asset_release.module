@@ -73,7 +73,8 @@ function asset_release_preprocess_rdf_entity(&$variables) {
   $is_latest_release = FALSE;
   $field_solution = $rdf_entity->get('field_isr_is_version_of');
   if (!empty($field_solution) && ($solution = $field_solution->entity)) {
-    if ($rdf_entity->id() === solution_get_latest_release($solution)) {
+    $latest_release = solution_get_latest_release($solution);
+    if ($latest_release && $latest_release->id() === $rdf_entity->id()) {
       $is_latest_release = TRUE;
     }
   }
