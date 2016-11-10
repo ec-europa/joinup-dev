@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5222d949c73e9038d1c62f0de7704c13",
-    "content-hash": "5f055a054de9af58619d35627e6b7c63",
+    "hash": "346559ab90cf0162453ac6591c96b4cd",
+    "content-hash": "7cce9e2a6e057c41b6eb01bcb9385109",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1951,8 +1951,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc4+50-dev",
-                    "datestamp": "1478644089"
+                    "version": "8.x-1.0-rc4+52-dev",
+                    "datestamp": "1478729640"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2317,33 +2317,74 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-242-simplified",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/amitaibu/og.git",
-                "reference": "1dc75d8a3c4ea60dc80226f2264b5368dda699ae"
+                "url": "https://git.drupal.org/project/og",
+                "reference": "dbffd5d9123b2b5b0f0bc91efb3bc9d45da3f073"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/1dc75d8a3c4ea60dc80226f2264b5368dda699ae",
-                "reference": "1dc75d8a3c4ea60dc80226f2264b5368dda699ae",
-                "shasum": ""
+            "require": {
+                "drupal/core": "*"
             },
             "require-dev": {
-                "drupal/coder": "~8.2"
+                "drupal/coder": "~2.0"
             },
             "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1478628847"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Dries",
+                    "homepage": "https://www.drupal.org/user/1"
+                },
+                {
+                    "name": "Grayside",
+                    "homepage": "https://www.drupal.org/user/346868"
+                },
+                {
+                    "name": "Zen",
+                    "homepage": "https://www.drupal.org/user/21209"
+                },
+                {
+                    "name": "amitaibu",
+                    "homepage": "https://www.drupal.org/user/57511"
+                },
+                {
+                    "name": "dww",
+                    "homepage": "https://www.drupal.org/user/46549"
+                },
+                {
+                    "name": "merlinofchaos",
+                    "homepage": "https://www.drupal.org/user/26979"
+                },
+                {
+                    "name": "moshe weitzman",
+                    "homepage": "https://www.drupal.org/user/23"
+                },
+                {
+                    "name": "sethcohn",
+                    "homepage": "https://www.drupal.org/user/14944"
+                }
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
             "support": {
+                "source": "https://cgit.drupalcode.org/og",
                 "issues": "https://drupal.org/project/issues/og",
-                "irc": "irc://irc.freenode.org/drupal-og",
-                "source": "https://cgit.drupalcode.org/og"
+                "irc": "irc://irc.freenode.org/drupal-og"
             },
-            "time": "2016-11-05 12:12:05"
+            "time": "2016-11-08 18:11:28"
         },
         {
             "name": "drupal/og_menu",
@@ -7424,7 +7465,8 @@
             "homepage": "https://www.drupal.org/project/config_update",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_update"
-            }
+            },
+            "time": "2016-11-06 14:53:40"
         },
         {
             "name": "drupal/default_content",
