@@ -117,7 +117,13 @@ class RdfEncodingTest extends EntityKernelTestBase {
 
       $this->assertFalse(empty($result), 'Loaded naughty object');
 
-      $loaded_rdf = Rdf::load(reset($result));
+      try {
+        $loaded_rdf = Rdf::load(reset($result));
+      }
+      catch (\Exception $e) {
+        $msg = sprintf("Entity loaded for naughty string '%s'.", $naughty_string);
+        $this->assertTrue(FALSE, $msg);
+      }
 
       $field = $loaded_rdf->get('field_text');
       $msg = sprintf("Field was empty for naughty string '%s'.", $naughty_string);
