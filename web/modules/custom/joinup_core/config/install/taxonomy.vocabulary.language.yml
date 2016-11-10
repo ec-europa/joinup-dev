@@ -9,7 +9,7 @@ third_party_settings:
       uuid:
         value: ''
       vid:
-      target_id: 'http://publications.europa.eu/resource/authority/language'
+        target_id: 'http://publications.europa.eu/resource/authority/language'
       langcode:
         value: ''
       name:
