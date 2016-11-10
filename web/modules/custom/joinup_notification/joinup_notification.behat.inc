@@ -32,7 +32,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
   /**
    * Asserts that an email has been sent.
    *
-   * @param TableNode $table
+   * @param \Behat\Gherkin\Node\TableNode $table
    *   The mail data table.
    *
    * @Then the following email should have been sent:
