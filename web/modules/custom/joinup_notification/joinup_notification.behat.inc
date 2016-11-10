@@ -40,7 +40,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @throws \Exception
    *   Throws an exception when a parameter is not the expected one.
    */
-  public function anEmailShouldBeSentTo(TableNode $table) {
+  public function assertEmailSent(TableNode $table) {
     $values = $table->getRowsHash();
     $recipient = $values['recipient'];
     $message_template_id = $values['template'];
