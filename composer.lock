@@ -1951,8 +1951,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc4+49-dev",
-                    "datestamp": "1478428439"
+                    "version": "8.x-1.0-rc4+50-dev",
+                    "datestamp": "1478644089"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
