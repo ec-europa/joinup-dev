@@ -9,7 +9,7 @@ third_party_settings:
       uuid:
         value: ''
       vid:
-      target_id: 'http://purl.org/adms/licencetype/1.1'
+        target_id: 'http://purl.org/adms/licencetype/1.1'
       langcode:
         value: ''
       name:

@@ -9,7 +9,7 @@ third_party_settings:
       uuid:
         value: ''
       vid:
-      target_id: 'http://joinup.eu/policy-domain'
+        target_id: 'http://joinup.eu/policy-domain'
       langcode:
         value: ''
       name:
