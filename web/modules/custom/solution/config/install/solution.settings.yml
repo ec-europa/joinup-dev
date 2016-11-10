@@ -43,7 +43,7 @@ transitions:
     validated:
       - moderator
       - rdf_entity-solution-facilitator
-    in_assessment:
+    needs_update:
       - moderator
       - rdf_entity-solution-facilitator
     blacklisted:
@@ -64,7 +64,7 @@ transitions:
     validated:
       - moderator
       - rdf_entity-solution-facilitator
-    in_assessment:
+    needs_update:
       - moderator
       - rdf_entity-solution-facilitator
     blacklisted:
@@ -83,14 +83,14 @@ transitions:
       - moderator
     blacklisted:
       - moderator
-    in_assessment:
+    needs_update:
       - moderator
     deletion_request:
       - moderator
   deletion_request:
     validated:
       - rdf_entity-solution-administrator
-  in_assessment:
+  needs_update:
     validated:
       - moderator
     proposed:

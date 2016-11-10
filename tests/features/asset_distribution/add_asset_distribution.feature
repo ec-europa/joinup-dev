@@ -52,6 +52,7 @@ Feature: Add distribution through the UI
       When I fill in "Title" with "Custom title of asset distribution"
       And I attach the file "test.zip" to "Add a new file"
       And I fill in "License" with "WTFPL"
+      And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
       And I press "Save"
       Then I should have 1 distribution
       # Check if the asset distribution is accessible as an anonymous user
@@ -61,6 +62,7 @@ Feature: Add distribution through the UI
       When I click "Custom title of asset distribution"
       Then I should see the heading "Custom title of asset distribution"
       And I should see the link "WTFPL"
+      And I should see the link "Web Ontology Language Full/DL/Lite"
 
       # The licence label should be shown also in the solution UI.
       When I go to the homepage of the "Solution random x name" solution

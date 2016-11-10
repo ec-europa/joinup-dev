@@ -55,6 +55,8 @@
   letter-spacing: 2px
   text-transform: uppercase
   color: #fff
+  +breakpoint(mobile)
+    margin-bottom: 20px
   &:after
     position: absolute
     right: 0
@@ -69,14 +71,14 @@
 
 .featured__stats
   display: inline-block
-  margin-bottom: 20px
+  margin-bottom: 10px
   text-align: left
   vertical-align: middle
   background-color: #fff
   padding: 0 15px
   +border-radius(3px)
-  +breakpoint(tablet)
-    margin: 0 20px 0 0
+  +breakpoint(mobile)
+    margin: 0 10px
   .stats__column
     float: left
     padding: 15px
@@ -95,6 +97,7 @@
 
 .featured__form-button
   display: inline-block
+  margin: 10px
 
 // Modifiers
 // --------------------------------------------------

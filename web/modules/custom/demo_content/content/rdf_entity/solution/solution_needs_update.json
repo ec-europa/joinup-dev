@@ -54,7 +54,7 @@
     ],
     "label": [
         {
-            "value": "Solution in In assessment state",
+            "value": "Solution in Needs Update state",
             "lang": "und"
         }
     ],
@@ -217,7 +217,7 @@
     ],
     "field_is_state": [
         {
-            "value": "validated"
+            "value": "needs_update"
         }
     ],
     "field_is_webdav_creation": [

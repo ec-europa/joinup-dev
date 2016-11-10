@@ -81,6 +81,15 @@ run the Behat test, please refer directly to the documention of
     $ gem install sass
     ```
 
+* Install [Selenium](https://github.com/SeleniumHQ/docker-selenium/blob/master/README.md).
+  The simplest way of doing this is using Docker to install and run it with a
+  single command. This will download all necessary files and start the browser
+  in the background in headless mode:
+
+    ```
+    $ docker run -d -p 4444:4444 --network=host selenium/standalone-chrome
+    ```
+
 * Point the document root of your webserver to the 'web/' directory.
 
 ### Create a local build properties file
@@ -165,9 +174,11 @@ $ cd web
 $ ../vendor/bin/phpunit
 ```
 
+
 ### Frontend development
 
 See the [readme](web/themes/joinup/README.md) in the theme folder.
+
 
 ### Technical details
 
