@@ -7,8 +7,9 @@ third_party_settings:
       target_id: 'http://xmlns.com/foaf/spec/#term_Agent'
     mapping_label:
       value: 'http://purl.org/dc/terms/title'
-    graph_default: 'http://joinup.eu/owner/published'
-    graph_draft: 'http://joinup.eu/owner/draft'
+    graph:
+      default: 'http://joinup.eu/owner/published'
+      draft: 'http://joinup.eu/owner/draft'
 name: Owner
 rid: owner
 description: ''
