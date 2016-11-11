@@ -53,6 +53,7 @@ Feature: Creation of owners through UI
     # Because the cardinality is 1, we need to delete first the created owner in
     # order to test more cases.
     When I press "Remove" at the "Owner" field
+    # Press 'Remove' also on confirmation dialog.
     And I press "Remove" at the "Owner" field
     Then I should not see "John Doe"
     And I should not see the link "Private Individual(s)"

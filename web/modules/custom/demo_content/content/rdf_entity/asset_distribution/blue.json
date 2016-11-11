@@ -23,7 +23,7 @@
         ],
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_repr_technique": [
             {
-                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Cef3ef74d-28f3-4a1b-9ce8-15c03555b328?_format=hal_json"
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpurl.org%5Cadms%5Crepresentationtechnique%5CSWRL?_format=hal_json"
             }
         ],
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/og_audience": [
@@ -135,23 +135,6 @@
                 ]
             }
         ],
-        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_repr_technique": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Cef3ef74d-28f3-4a1b-9ce8-15c03555b328?_format=hal_json"
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "http:\/\/placeHolder\/ef3ef74d-28f3-4a1b-9ce8-15c03555b328"
-                    }
-                ]
-            }
-        ],
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/og_audience": [
             {
                 "_links": {
@@ -184,6 +167,11 @@
     "field_ad_modification_date": [
         {
             "value": "2016-09-13T16:50:04"
+        }
+    ],
+    "field_ad_repr_technique": [
+        {
+            "target_id": "http:\/\/purl.org\/adms\/representationtechnique\/SWRL"
         }
     ]
 }

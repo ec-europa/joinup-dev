@@ -29,7 +29,7 @@ trait ScreenShotTrait {
   }
 
   /**
-   * Saves a screen-shot under a generated name.
+   * Saves a screen-shot under a predefined name.
    *
    * @Then (I )take a screenshot
    */
