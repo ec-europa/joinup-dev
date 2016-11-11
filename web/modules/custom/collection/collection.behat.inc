@@ -523,6 +523,26 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Asserts that the current user is an owner of the given collection.
+   *
+   * @param string $rdf_entity
+   *    The label of the group entity.
+   *
+   * @throws \Exception
+   *    Throws an exception when the user is not found.
+   *
+   * @see assertCollectionOwnership()
+   *
+   * @Given I should own the :rdf_entity collection
+   */
+  public function assertCollectionOwnershipCurrentUser($rdf_entity) {
+    if (!$current_user = $this->userManager->getCurrentUser()) {
+      throw new \Exception("No current user.");
+    }
+    $this->assertCollectionOwnership($current_user->name, $rdf_entity);
+  }
+
+  /**
    * Removes any created collections.
    *
    * @AfterScenario

@@ -167,6 +167,19 @@ $ cd tests
 $ ./behat
 ```
 
+During development you can enable Behat test screen-shots by uncomment this line in `tests/features/bootstrap/FeatureContext.php`:
+
+```php
+  // use \Drupal\joinup\Traits\ScreenShotTrait;
+```
+
+and use the `pretty` formatter instead of `progress`, in `tests/behat.yml`:
+
+```yaml
+  formatters:
+    pretty: ~
+```
+
 Also run the PHPUnit tests, from the web root.
 
 ```

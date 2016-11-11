@@ -26,9 +26,10 @@ Feature: Proposing a collection
     Then I should see the heading "Propose collection"
 
   Scenario: Propose a collection
-    Given the following organisation:
-      | name | Organisation example |
-    And I am logged in as a user with the "authenticated" role
+    Given owner:
+      | name                 | type    |
+      | Organisation example | Company |
+    And I am logged in as an "authenticated user"
     When I am on the homepage
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
@@ -44,7 +45,7 @@ Feature: Proposing a collection
     And I select "Only members can create new content." from "eLibrary creation"
     And I check "Moderated"
     # Click the button to select an existing owner.
-    And I press "Add existing owner"
+    And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
     And I press "Save as draft"
