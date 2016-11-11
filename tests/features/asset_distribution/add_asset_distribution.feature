@@ -62,7 +62,6 @@ Feature: Add distribution through the UI
       When I click "Custom title of asset distribution"
       Then I should see the heading "Custom title of asset distribution"
       And I should see the link "WTFPL"
-      And I should see the link "Web Ontology Language Full/DL/Lite"
 
       # The licence label should be shown also in the solution UI.
       When I go to the homepage of the "Solution random x name" solution
