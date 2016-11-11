@@ -11,8 +11,9 @@ Feature: As a user of the website
     And the following contact:
       | email | crabbypatties@bar.com |
       | name  | Crusty crab           |
-    And the following organisation:
-      | name | Mr Crab |
+    And the following owner:
+      | name    | type                  |
+      | Mr Crab | Private Individual(s) |
     And the following solutions:
       | title                    | description                | logo     | banner     | owner   | contact information | solution type     | state            | policy domain |
       | Professional Dreams      | Azure ship                 | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | draft            | Health        |

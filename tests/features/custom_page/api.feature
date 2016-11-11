@@ -5,8 +5,9 @@ Feature: Custom page API
   I need to be able to use the Node API to handle the "Custom page" bundle
 
   Scenario: Programmatically create a Custom page
-    Given the following person:
-      | name | Rufus Drumknott |
+    Given the following owner:
+      | name            |
+      | Rufus Drumknott |
     And the following collection:
       | title             | Le Foie Heureux |
       | owner             | Rufus Drumknott |

@@ -28,7 +28,10 @@
         ],
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_owner": [
             {
-                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C17a5bedd-bf53-436b-8d61-391195b971c9?_format=hal_json"
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Cef3ef74d-28f3-4a1b-9ce8-15c03555b328?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C234b585f-e065-4678-9195-48f1ba78e1d5?_format=hal_json"
             }
         ],
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_solution_type": [
@@ -151,15 +154,30 @@
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C17a5bedd-bf53-436b-8d61-391195b971c9?_format=hal_json"
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Cef3ef74d-28f3-4a1b-9ce8-15c03555b328?_format=hal_json"
                     },
                     "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/person"
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
                     }
                 },
                 "uuid": [
                     {
-                        "value": "http:\/\/placeHolder\/17a5bedd-bf53-436b-8d61-391195b971c9"
+                        "value": "http:\/\/placeHolder\/ef3ef74d-28f3-4a1b-9ce8-15c03555b328"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C234b585f-e065-4678-9195-48f1ba78e1d5?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/234b585f-e065-4678-9195-48f1ba78e1d5"
                     }
                 ]
             }
