@@ -25,8 +25,7 @@ settings:
       collection: view_mode_tile
       contact_information: default
       licence: default
-      organisation: ''
-      person: ''
+      owner: ''
       solution: view_mode_tile
 module: search_api_field
 locked: false

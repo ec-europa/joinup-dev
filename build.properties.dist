@@ -229,7 +229,7 @@ solr.core.dir = ${solr.dir}/server/solr/${solr.core}
 # -------------------
 
 # Development modules to enable.
-drupal.modules.dev = config_update field_ui menu_ui views_ui
+drupal.modules.dev = admin_toolbar config_update field_ui menu_ui views_ui
 
 # Modules to enable for doing user acceptance testing.
 drupal.modules.uat = demo_users demo_content

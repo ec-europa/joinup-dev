@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="Joinup" default="help">
+<project name="My Drupal Project" default="help">
 
     <!-- Import local Phing targets. -->
     <import file="${project.basedir}/build.common.xml" optional="true" />

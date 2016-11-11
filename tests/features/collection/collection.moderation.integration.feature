@@ -11,8 +11,9 @@ Feature: As a user of the website
     And the following contact:
       | email | martykelley@bar.com |
       | name  | Marty Kelley        |
-    And the following organisation:
-      | name | Martin Gonzalez |
+    And the following owner:
+      | name            |
+      | Martin Gonzalez |
     And the following collections:
       | title                      | description                | logo     | banner     | owner           | contact information | state            | policy domain |
       | Willing Fairy              | Willing Fairy              | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | draft            | Health        |

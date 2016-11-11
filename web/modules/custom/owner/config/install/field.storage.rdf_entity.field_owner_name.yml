@@ -7,8 +7,8 @@ third_party_settings:
   rdf_entity:
     mapping:
       value: 'http://xmlns.com/foaf/0.1/name'
-id: rdf_entity.field_op_name
-field_name: field_op_name
+id: rdf_entity.field_owner_name
+field_name: field_owner_name
 entity_type: rdf_entity
 type: string
 settings:
@@ -17,7 +17,7 @@ settings:
   case_sensitive: false
 module: core
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false
