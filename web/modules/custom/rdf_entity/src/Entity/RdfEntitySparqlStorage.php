@@ -19,6 +19,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\RdfGraphHandler;
 use Drupal\rdf_entity\RdfMappingHandler;
+use EasyRdf\Graph;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -657,9 +658,9 @@ QUERY;
     $target_graph = $this->getGraphHandler()->getTargetGraphFromEntity($entity);
     $graph_uri = $this->getBundleGraphUri($bundle, $target_graph);
 
-    $insert = '';
+    $graph = new Graph($graph_uri);
+
     $properties = $this->mappingHandler->getEntityTypeMappedProperties($entity);
-    $subj = '<' . (string) $id . '>';
     $properties_list = "<" . implode(">, <", $properties['flat']) . ">";
     foreach ($entity->toArray() as $field_name => $field) {
       foreach ($field as $field_item) {
@@ -667,25 +668,30 @@ QUERY;
           if (!isset($properties['by_field'][$field_name][$column])) {
             continue;
           }
-          $pred = '<' . (string) $properties['by_field'][$field_name][$column] . '>';
-          if (!filter_var($value, FILTER_VALIDATE_URL) === FALSE) {
-            $obj = '<' . $value . '>';
+          // Skip the bundle as it is handled separately later.
+          if ($field_name == 'rid') {
+            continue;
           }
+          // When the field is a entity reference, store it as a resource.
+          $definition = $entity->getFieldDefinition($field_name);
+          if ($definition->getType() == 'entity_reference') {
+            $graph->addResource((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
+          }
+          // All other fields get stored as a literal.
           else {
-            // @todo This is most probably prone to Sparql injection..!
-            $value = str_replace('\\', '\\\\', $value);
-            $obj = '"""' . $value . '"""';
+            // @todo Set language and field data type.
+            $graph->addLiteral((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
           }
-          $insert .= $subj . ' ' . $pred . ' ' . $obj . '  .' . "\n";
         }
       }
     }
-    // Save the bundle.
+    // Save the bundle as rdf:type.
     $rdf_bundle_mapping = $this->mappingHandler->getRdfBundleMappedUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle());
     $rdf_bundle = $rdf_bundle_mapping[$entity->bundle()];
-    $insert .= $subj . ' ' . $this->rdfBundlePredicate . ' <' . $rdf_bundle . '>  .' . "\n";
+    $graph->addResource((string) $id, $this->rdfBundlePredicate, $rdf_bundle);
 
-    $query = <<<QUERY
+    if (!$entity->isNew()) {
+      $query = <<<QUERY
 DELETE {
   GRAPH <$graph_uri> {
     <$id> ?field ?value
@@ -698,15 +704,35 @@ WHERE {
   }
 }
 QUERY;
-
-    if (!$entity->isNew()) {
       $this->sparql->query($query);
     }
     // @todo Do in one transaction... If possible.
-    $query = "INSERT DATA INTO <$graph_uri> {\n" .
-      $insert . "\n" .
-      '}';
-    $this->sparql->query($query);
+    $this->insert($graph, $graph_uri);
+
+  }
+
+  /**
+   * Insert a graph of triples.
+   *
+   * @param \EasyRdf\Graph $graph
+   *   The graph to insert.
+   * @param string $graphUri
+   *   Graph to save to.
+   *
+   * @return \EasyRdf\Graph|\EasyRdf\Sparql\Result
+   *   Response.
+   */
+  private function insert(Graph $graph, $graphUri = NULL) {
+    $query = 'INSERT DATA {';
+    if ($graphUri) {
+      $query .= "GRAPH <$graphUri> {";
+    }
+    $query .= $graph->serialise('ntriples');
+    if ($graphUri) {
+      $query .= "}";
+    }
+    $query .= '}';
+    return $this->sparql->query($query);
   }
 
   /**

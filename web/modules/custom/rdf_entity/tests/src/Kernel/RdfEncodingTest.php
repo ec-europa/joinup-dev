@@ -82,17 +82,8 @@ class RdfEncodingTest extends EntityKernelTestBase {
     $json = file_get_contents($path);
     $naughty_strings = json_decode($json);
     foreach ($naughty_strings as $naughty_string) {
-      if (in_array($naughty_string, [
-        "",
-        "\"",
-        "\"\"",
-        "\"''''\"'\"",
-        "\"'\"'\"''''\"",
-        "\";alert(123);t=\"",
-        "\"><script>alert(123);</script x=\"",
-        "<IMG \"\"\"><SCRIPT>alert(\"XSS\")</SCRIPT>\">",
-        "<IMG SRC=\"javascript:alert('XSS')\"",
-      ])) {
+      // Ignore the empty string test, as the field won't be set.
+      if ($naughty_string === "") {
         continue;
       }
       $rdf = Rdf::create([
@@ -114,8 +105,8 @@ class RdfEncodingTest extends EntityKernelTestBase {
         ->range(0, 1);
 
       $result = $query->execute();
-
-      $this->assertFalse(empty($result), 'Loaded naughty object');
+      $msg = sprintf("Loaded naughty object '%s'.", $naughty_string);
+      $this->assertFalse(empty($result), $msg);
 
       try {
         $loaded_rdf = Rdf::load(reset($result));
@@ -133,7 +124,7 @@ class RdfEncodingTest extends EntityKernelTestBase {
       $this->assertTrue($first, $msg);
       $text = $first->getValue();
 
-      $msg = sprintf("Naught string '%s' was correctly read back.", $naughty_string);
+      $msg = sprintf("Naughty string '%s' was correctly read back.", $naughty_string);
       $this->assertEquals($text['value'], $naughty_string, $msg);
       $rdf->delete();
     }
