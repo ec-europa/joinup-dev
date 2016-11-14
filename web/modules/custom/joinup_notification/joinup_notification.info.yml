@@ -11,10 +11,14 @@ dependencies:
 config_devel:
   - core.entity_view_display.message.rdf_entity_solution_delete.mail_body
   - core.entity_view_display.message.rdf_entity_solution_delete.mail_subject
+  - core.entity_view_display.message.rdf_entity_solution_request_del.mail_subject
+  - core.entity_view_display.message.rdf_entity_solution_request_del.mail_subject
   - core.entity_view_display.message.rdf_entity_solution_validate.mail_body
   - core.entity_view_display.message.rdf_entity_solution_validate.mail_subject
-  - field.field.message.rdf_entity_solution_validate.field_message_content
   - field.field.message.rdf_entity_solution_delete.field_message_content
+  - field.field.message.rdf_entity_solution_request_del.field_message_content
+  - field.field.message.rdf_entity_solution_validate.field_message_content
   - field.storage.message.field_message_content
   - message.template.rdf_entity_solution_delete
+  - message.template.rdf_entity_solution_request_del
   - message.template.rdf_entity_solution_validate
