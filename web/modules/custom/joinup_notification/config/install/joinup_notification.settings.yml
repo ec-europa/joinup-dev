@@ -3,6 +3,9 @@ transition_notifications:
     validate:
       rdf_entity-solution-administrator:
         - rdf_entity_solution_validate
+    request_deletion:
+      moderator:
+        - rdf_entity_solution_request_del
 delete_notifications:
   rdf_entity:
     solution:
