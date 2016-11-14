@@ -58,9 +58,9 @@ In order to start a migration we will need to do some preparation:
 Once the setup is complete you can run a full migration with the following
 command:
 
-    ```
-    $ ./vendor/bin/phing run-migration
-    ```
+```
+$ ./vendor/bin/phing run-migration
+```
 
 You are now free to go for a walk or cook some fresh pasta, since this will
 take some time.
@@ -71,21 +71,21 @@ take some time.
 Individual parts of the migration can be run using drush. For this to work we
 first need to enable the `joinup_migrate` module:
 
-    ```
-    $ cd web/
-    $ ../vendor/bin/drush en joinup_migrate -y
-    ```
+```
+$ cd web/
+$ ../vendor/bin/drush en joinup_migrate -y
+```
 
 Then we can run a single migration using `drush migrate_drush_run`:
 
-    ```
-    $ cd web/
-    $ ../vendor/bin/drush migrate_drush_run mapping_table
-    ```
+```
+$ cd web/
+$ ../vendor/bin/drush migrate_drush_run mapping_table
+```
 
 To get a list of all available migrations, check the respective YAML files that
 describe each individual migration:
 
-    ```
-    $ ls web/modules/custom/joinup_migrate/migrations
-    ```
+```
+$ ls web/modules/custom/joinup_migrate/migrations
+```
