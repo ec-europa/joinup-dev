@@ -14,6 +14,7 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
@@ -31,6 +32,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use RandomGeneratorTrait;
   use RdfEntityTrait;
   use WorkflowTrait;
+  use UtilityTrait;
 
   /**
    * Test solutions.
@@ -381,7 +383,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       // Convert role names to role IDs.
       $roles = [];
       if (!empty($values['roles'])) {
-        $roles = $this->getOgRoles(explode(', ', $values['roles']), $group);
+        $role_names = $this->explodeCommaSeparatedStepArgument($values['roles']);
+        // Every owner is also a facilitator. In Joinup the facilitator role is
+        // assigned to the owner when they create the solution. Since in this
+        // step the solutions are already created, mimick this behaviour by
+        // making sure every owner also has the 'facilitator' role.
+        if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
+          $role_names[] = 'facilitator';
+        }
+        $roles = $this->getOgRoles($role_names, $group);
       }
 
       $this->subscribeUserToGroup($member, $group, $roles);

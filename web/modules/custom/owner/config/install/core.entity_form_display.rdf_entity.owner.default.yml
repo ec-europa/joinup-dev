@@ -2,20 +2,26 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.rdf_entity.organisation.field_oo_name
-    - rdf_entity.rdfentity.organisation
-id: rdf_entity.organisation.default
+    - field.field.rdf_entity.owner.field_owner_name
+    - field.field.rdf_entity.owner.field_owner_type
+    - rdf_entity.rdfentity.owner
+id: rdf_entity.owner.default
 targetEntityType: rdf_entity
-bundle: organisation
+bundle: owner
 mode: default
 content:
-  field_oo_name:
-    weight: -9
+  field_owner_name:
+    weight: 1
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+  field_owner_type:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
   id:
     type: auto_uri
     weight: -10

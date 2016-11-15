@@ -40,6 +40,26 @@ function asset_release_rdf_entity_insert(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function asset_release_rdf_entity_update(EntityInterface $entity) {
+  if ($entity->bundle() !== 'solution') {
+    return;
+  }
+
+  /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $has_version */
+  $has_version = $entity->get('field_is_has_version');
+  foreach ($has_version->referencedEntities() as $release) {
+    if ($release->get('field_isr_owner')->getValue() !== $entity->get('field_is_owner')->getValue()) {
+      // Release owners are in sync with solution owners.
+      $release
+        ->set('field_isr_owner', $entity->get('field_is_owner')->getValue())
+        ->save();
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function asset_release_preprocess_rdf_entity(&$variables) {
