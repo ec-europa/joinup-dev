@@ -722,15 +722,9 @@ QUERY;
    * @return \EasyRdf\Graph|\EasyRdf\Sparql\Result
    *   Response.
    */
-  private function insert(Graph $graph, $graphUri = NULL) {
-    $query = 'INSERT DATA {';
-    if ($graphUri) {
-      $query .= "GRAPH <$graphUri> {";
-    }
-    $query .= $graph->serialise('ntriples');
-    if ($graphUri) {
-      $query .= "}";
-    }
+  private function insert(Graph $graph, $graphUri) {
+    $query = "INSERT DATA INTO <$graphUri> {\n";
+    $query .= $graph->serialise('ntriples') . "\n";
     $query .= '}';
     return $this->sparql->query($query);
   }

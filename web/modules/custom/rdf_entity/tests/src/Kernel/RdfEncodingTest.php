@@ -95,6 +95,8 @@ class RdfEncodingTest extends EntityKernelTestBase {
         $rdf->save();
       }
       catch (\Exception $e) {
+        fwrite(STDOUT, $e->getMessage() . "\n");
+        fwrite(STDOUT, $e->getTraceAsString() . "\n");
         $msg = sprintf("Entity saved for naughty string '%s'.", $naughty_string);
         $this->assertTrue(FALSE, $msg);
       }
@@ -108,10 +110,13 @@ class RdfEncodingTest extends EntityKernelTestBase {
       $msg = sprintf("Loaded naughty object '%s'.", $naughty_string);
       $this->assertFalse(empty($result), $msg);
 
+      $loaded_rdf = NULL;
       try {
         $loaded_rdf = Rdf::load(reset($result));
       }
       catch (\Exception $e) {
+        fwrite(STDOUT, $e->getMessage() . "\n");
+        fwrite(STDOUT, $e->getTraceAsString() . "\n");
         $msg = sprintf("Entity loaded for naughty string '%s'.", $naughty_string);
         $this->assertTrue(FALSE, $msg);
       }
