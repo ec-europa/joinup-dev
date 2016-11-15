@@ -7,7 +7,7 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'dct:issued'
+      value: 'http://purl.org/dc/terms/issued'
 id: rdf_entity.field_ar_creation_date
 field_name: field_ar_creation_date
 entity_type: rdf_entity

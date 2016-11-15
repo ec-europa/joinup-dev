@@ -7,7 +7,7 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'dct:description'
+      value: 'http://purl.org/dc/terms/description'
       format: ''
 id: rdf_entity.field_licence_description
 field_name: field_licence_description

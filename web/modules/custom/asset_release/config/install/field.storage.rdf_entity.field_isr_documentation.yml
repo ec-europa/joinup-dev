@@ -7,7 +7,7 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'foaf:page'
+      target_id: 'http://xmlns.com/foaf/spec/#term_page'
       display: ''
       description: ''
 id: rdf_entity.field_isr_documentation

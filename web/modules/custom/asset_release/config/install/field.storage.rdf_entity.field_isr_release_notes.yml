@@ -7,7 +7,7 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'adms:versionNotes'
+      value: 'https://www.w3.org/TR/vocab-adms/#adms-versionnotes'
       format: ''
 id: rdf_entity.field_isr_release_notes
 field_name: field_isr_release_notes

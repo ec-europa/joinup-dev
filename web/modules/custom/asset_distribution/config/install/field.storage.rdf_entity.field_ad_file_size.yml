@@ -6,7 +6,7 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'schema:fileSize'
+      value: 'https://schema.org/fileSize'
 id: rdf_entity.field_ad_file_size
 field_name: field_ad_file_size
 entity_type: rdf_entity

@@ -6,7 +6,7 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'adms:representationTechnique'
+      target_id: 'https://www.w3.org/TR/vocab-adms/#adms_representationTechnique'
 id: rdf_entity.field_ad_repr_technique
 field_name: field_ad_repr_technique
 entity_type: rdf_entity

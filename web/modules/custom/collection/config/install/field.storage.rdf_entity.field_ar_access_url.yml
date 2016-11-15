@@ -7,7 +7,7 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      uri: 'foaf:homepage'
+      uri: 'http://xmlns.com/foaf/spec/#term_homepage'
       title: ''
       options: ''
 id: rdf_entity.field_ar_access_url

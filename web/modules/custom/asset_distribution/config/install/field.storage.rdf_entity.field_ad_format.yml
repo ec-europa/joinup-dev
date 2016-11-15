@@ -6,7 +6,7 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'dct:format'
+      target_id: 'http://purl.org/dc/terms/format'
 id: rdf_entity.field_ad_format
 field_name: field_ad_format
 entity_type: rdf_entity

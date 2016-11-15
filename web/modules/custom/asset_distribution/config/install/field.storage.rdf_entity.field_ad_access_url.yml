@@ -7,7 +7,7 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      uri: 'dcat:accessURL'
+      uri: 'http://www.w3.org/ns/dcat#accessURL'
       title: ''
       options: ''
 id: rdf_entity.field_ad_access_url
