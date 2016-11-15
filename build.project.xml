@@ -38,6 +38,12 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
               checkreturn="true"
               passthru="true"
               spawn="true" />
+        <echo message="Copy CPHP pipeline variables to local properties file" />
+        <echoproperties prefix="cphp." destfile="build.properties.local" />
+        <exec dir="${project.basedir}"
+              command="sed -i 's/^cphp\.//' build.properties.local"
+              checkreturn="true"
+              passthru="true" />
     </target>
 
     <target name="check-continuousphp">
