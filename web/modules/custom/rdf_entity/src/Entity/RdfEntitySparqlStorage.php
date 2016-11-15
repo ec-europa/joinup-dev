@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -672,9 +673,29 @@ QUERY;
           if ($field_name == 'rid') {
             continue;
           }
-          // When the field is a entity reference, store it as a resource.
-          $definition = $entity->getFieldDefinition($field_name);
-          if ($definition->getType() == 'entity_reference') {
+
+          $item = $entity->get($field_name)->first();
+          if (empty($item)) {
+            continue;
+          }
+          $reference = FALSE;
+          // When the field is a entity reference, and it's target implements
+          // RdfEntitySparqlStorage (it's an RDF based entity),
+          // then store it as a resource.
+          if ($item instanceof EntityReferenceItem) {
+            /** @var \Drupal\Core\Entity\Plugin\DataType\EntityReference $entity_property */
+            $entity_property = $item->get('entity');
+            $target = $entity_property->getTarget();
+            /** @var EntityInterface $target_entity */
+            $target_entity = $target->getValue();
+            $target_entity_type = $target_entity->getEntityType();
+            $target_entity_storage_class = $target_entity_type->getStorageClass();
+            if ($target_entity_storage_class == '\Drupal\rdf_entity\Entity\RdfEntitySparqlStorage') {
+              $reference = TRUE;
+            }
+          }
+          // Entity reference to another rdf entity.
+          if ($reference) {
             $graph->addResource((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
           }
           // All other fields get stored as a literal.
