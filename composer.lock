@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f0a8ddd4a8e6872c93607072a39ecf33",
-    "content-hash": "818e502a8162f4e8851aa24745b9e1f0",
+    "hash": "8ec77b21cbe7e3b5c0f4aa337c640497",
+    "content-hash": "2637135176de0a60a000c6aecc31ecaa",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1552,16 +1552,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.2.2",
+            "version": "8.3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "399b52eee9e80492ce6928d6784a8399e0da961c"
+                "reference": "20757a1af0de4a834a624177dd973306a04bdbfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/399b52eee9e80492ce6928d6784a8399e0da961c",
-                "reference": "399b52eee9e80492ce6928d6784a8399e0da961c",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/20757a1af0de4a834a624177dd973306a04bdbfc",
+                "reference": "20757a1af0de4a834a624177dd973306a04bdbfc",
                 "shasum": ""
             },
             "require": {
@@ -1573,13 +1573,14 @@
                 "egulias/email-validator": "1.2.*",
                 "guzzlehttp/guzzle": "^6.2.1",
                 "masterminds/html5": "~2.1",
-                "paragonie/random_compat": "~1.0",
+                "paragonie/random_compat": "^1.0|^2.0",
                 "php": ">=5.5.9",
                 "stack/builder": "1.0.*",
                 "symfony-cmf/routing": "~1.4",
                 "symfony/class-loader": "~2.8",
                 "symfony/console": "~2.8",
                 "symfony/dependency-injection": "~2.8",
+                "symfony/dom-crawler": ">=2.8.13 <3.0",
                 "symfony/event-dispatcher": "~2.8",
                 "symfony/http-foundation": "~2.8",
                 "symfony/http-kernel": "~2.8",
@@ -1695,7 +1696,7 @@
                 "drupal/views_ui": "self.version"
             },
             "require-dev": {
-                "behat/mink": "~1.7",
+                "behat/mink": "1.7.x-dev",
                 "behat/mink-goutte-driver": "~1.2",
                 "jcalderonzumba/gastonjs": "~1.0.2",
                 "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
@@ -1733,7 +1734,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-11-02 17:43:45"
+            "time": "2016-11-15 20:57:38"
         },
         {
             "name": "drupal/digital_size_formatter",
@@ -3669,16 +3670,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.4.1",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "c7e26a21ba357863de030f0b9e701c7d04593774"
+                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/c7e26a21ba357863de030f0b9e701c7d04593774",
-                "reference": "c7e26a21ba357863de030f0b9e701c7d04593774",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
+                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
                 "shasum": ""
             },
             "require": {
@@ -3713,7 +3714,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-03-18 20:34:03"
+            "time": "2016-11-07 23:38:38"
         },
         {
             "name": "pear/archive_tar",
@@ -9152,6 +9153,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "cweagans/composer-patches": 20,
+        "drupal/core": 20,
         "drupal/field_group": 20,
         "drupal/inline_entity_form": 20,
         "drupal/migrate_spreadsheet": 20,
