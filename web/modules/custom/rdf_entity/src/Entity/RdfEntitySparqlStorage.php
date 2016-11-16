@@ -674,7 +674,7 @@ QUERY;
             continue;
           }
           // Don't add empty values.
-          if (empty($value)) {
+          if ($value === "") {
             continue;
           }
 
