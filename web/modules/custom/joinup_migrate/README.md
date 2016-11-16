@@ -26,47 +26,48 @@ In order to start a migration we will need to do some preparation:
    previous paragraph.
 2. Put your local configuration into `build.properties.local`:
 
-```
-# Migration configuration
-# -----------------------
+    ```
+    # Migration configuration
+    # -----------------------
 
-# Database settings.
-migration.db.name = my_db_name
-migration.db.import_path = /my/path/to/d6-joinup.sql
-```
+    # Database settings.
+    migration.db.name = my_db_name
+    migration.db.import_path = /my/path/to/d6-joinup.sql
+    ```
 
-Note that `migration.db.host`, `migration.db.port`, `migration.db.user` and
-`migration.db.password` are defaulting to the main database (D8) values as the
-migration is performing select queries that are joining tables across the two
-databases. For this reason both, source database and the destination database,
-should live on the same server and should be accessible by the same use. The
-MySQL user used to connect to the Drupal 8 site should be granted with read-only
-permissions against the D6 database, so he can read source data.
+    Note that `migration.db.host`, `migration.db.port`, `migration.db.user` and
+    `migration.db.password` are defaulting to the main database (D8) values as
+    the migration is performing select queries that are joining tables across
+    the two databases. For this reason both, source database and the destination
+    database, should live on the same server and should be accessible by the
+    same use. The MySQL user used to connect to the Drupal 8 site should be
+    granted with read-only permissions against the D6 database, so he can read
+    source data.
 
 3. Run the migration setup. Note that this should normally only be run once
    since it will write the migration database credentials to `settings.php`.
    Running this again will cause these credentials to be appended a second
    time which is useless.
 
-```
-$ ./vendor/bin/phing setup-migration
-```
+    ```
+    $ ./vendor/bin/phing setup-migration
+    ```
 
 4. Import the D6 database.
 
-The source database (D6) should be imported *on the same server* as the
-destination database (D8) as the migration is performing select queries
-that are joining tables across the two databases. For this reason both, source
-database and the destination database, should live on the same server and should
-be accessible by the same use. The MySQL user used to connect to the Drupal 8
-site should be granted with read-only permissions against the D6 database, so he
-can read source data. The MySQL user used to connect to the Drupal 8 site shouldț
-be granted with read-only permissions against the D6 database, so he can read
-source data.
+    The source database (D6) should be imported *on the same server* as the
+    destination database (D8) as the migration is performing select queries
+    that are joining tables across the two databases. For this reason both,
+    source database and the destination database, should live on the same server
+    and should be accessible by the same use. The MySQL user used to connect to
+    the Drupal 8 site should be granted with read-only permissions against the
+    D6 database, so he can read source data. The MySQL user used to connect to
+    the Drupal 8 site should be granted with read-only permissions against the
+    D6 database, so he can read source data.
 
-```
-$ ./vendor/bin/phing import-legacy-db
-```
+    ```
+    $ ./vendor/bin/phing import-legacy-db
+    ```
 
 
 ## Running the full migration
