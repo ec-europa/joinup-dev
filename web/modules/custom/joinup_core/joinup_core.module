@@ -108,3 +108,12 @@ function joinup_core_entity_graph_access(EntityInterface $entity, $operation, Ac
   $has_permission = $membership->hasPermission($map[$operation]) || $membership->hasPermission($type_map[$operation]);
   return $has_permission ? AccessResult::allowed() : AccessResult::neutral();
 }
+
+/**
+ * Implements hook_field_widget_datetime_default_form_alter().
+ *
+ * Disable seconds in the datetime default widget.
+ */
+function joinup_core_field_widget_datetime_default_form_alter(&$element, FormStateInterface $form_state, $context) {
+  $element['value']['#date_increment'] = 60;
+}
