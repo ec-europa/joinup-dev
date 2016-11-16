@@ -673,6 +673,10 @@ QUERY;
           if ($field_name == 'rid') {
             continue;
           }
+          // Don't add empty values.
+          if (empty($value)) {
+            continue;
+          }
 
           $item = $entity->get($field_name)->first();
           if (empty($item)) {
