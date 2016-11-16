@@ -136,14 +136,6 @@ class CollectionContentBlock extends BlockBase implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function getCacheMaxAge() {
-    // Disable caching.
-    return 0;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function blockAccess(AccountInterface $account) {
     return ($this->currentRouteMatch->getRouteName() == 'entity.rdf_entity.canonical') ? AccessResult::allowed() : AccessResult::forbidden();
   }
