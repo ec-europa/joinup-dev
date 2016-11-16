@@ -46,6 +46,8 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+      joinup:
+        template_suggestion: entity_reference__listing_tag
     type: entity_reference_label
 hidden:
   field_comments: true
