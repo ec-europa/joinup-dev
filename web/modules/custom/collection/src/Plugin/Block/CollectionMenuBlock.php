@@ -77,7 +77,7 @@ class CollectionMenuBlock extends OgMenuBlock {
       $build['disabled'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t('All the pages have been disabled for this collection. Click the pencil to edit the configuration or add a new page.'),
+        '#value' => $this->t('All the pages have been disabled for this collection. You can edit the menu configuration or add a new page.'),
         '#access' => $create_url->access(),
       ];
     }
