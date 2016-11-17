@@ -25,7 +25,7 @@ Feature: Navigation menu for custom pages
     And I should not see the contextual link "Add link" in the "Left sidebar" region
 
     # When we create a custom page it should automatically show up in the menu.
-    When I click "Add page"
+    When I click "Add a new page"
     Then I should see the heading "Add custom page"
     When I fill in the following:
       | Title | About us              |
