@@ -22,7 +22,7 @@ Feature: Navigation menu for custom pages
     # The 'Add link' local action that is present in the default implementation
     # of OG Menu should not be visible. We are managing the menu links behind
     # the scenes. The end user should not be able to interact with these.
-    But I should not see the link "Add link"
+    And I should not see the contextual link "Add link" in the "Left sidebar" region
 
     # When we create a custom page it should automatically show up in the menu.
     When I click "Add page"
