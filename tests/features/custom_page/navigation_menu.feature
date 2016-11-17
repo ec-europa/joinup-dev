@@ -49,6 +49,10 @@ Feature: Navigation menu for custom pages
     Then I should see the text "All the pages have been disabled for this collection. You can edit the menu configuration or add a new page."
     And I should see the contextual link "Edit menu" in the "Left sidebar" region
 
+    # The contextual menu can be used to navigate to the menu edit page.
+    When I click the contextual link "Edit menu" in the "Left sidebar" region
+    Then I should see the heading "Edit navigation menu of the Rainbow tables collection"
+
     # The form to add a new menu link should not be accessible by anyone. This
     # is functionality provided by Drupal which is intended for webmasters. We
     # are showing the menu overview to collection facilitators so they can
