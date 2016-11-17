@@ -5,8 +5,12 @@ template: rdf_entity_solution_validate
 label: 'Rdf entity - solution - publish'
 description: 'Message to the owner when a solution transits to ''Validated'' state'
 text:
-  - "<p>Joinup - Content has been updated</p>\r\n"
-  - "<p>The content \"[message:field_message_content:entity:label]\" has been moved to the \"[message:field_message_content:entity:field_is_state]\" state.</p>\r\n\r\n<p>You can find the content at [message:field_message_content:url:absolute]</p>\r\n"
+  -
+    value: "<p>Joinup - Content has been updated</p>\r\n"
+    format: content_editor
+  -
+    value: "<p>The content \"[message:field_message_content:entity:label]\" has been moved to the \"[message:field_message_content:entity:field_is_state]\" state.</p>\r\n\r\n<p>You can find the content at [message:field_message_content:entity:url:absolute]</p>\r\n"
+    format: content_editor
 settings:
   'token options':
     clear: false

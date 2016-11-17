@@ -38,7 +38,7 @@
         ],
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_owner": [
             {
-                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C17a5bedd-bf53-436b-8d61-391195b971c9?_format=hal_json"
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3e9231e3-14d9-430c-91f0-626d1e3381e0?_format=hal_json"
             }
         ],
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_policy_domain": [
@@ -214,37 +214,25 @@
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C17a5bedd-bf53-436b-8d61-391195b971c9?_format=hal_json"
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3e9231e3-14d9-430c-91f0-626d1e3381e0?_format=hal_json"
                     },
                     "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/person"
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
                     }
                 },
                 "uuid": [
                     {
-                        "value": "http:\/\/placeHolder\/17a5bedd-bf53-436b-8d61-391195b971c9"
-                    }
-                ]
-            }
-        ],
-        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_policy_domain": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Cpolicy-domain%5Chome-affairs?_format=hal_json"
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "http:\/\/joinup.eu\/policy-domain\/home-affairs"
+                        "value": "http:\/\/placeHolder\/3e9231e3-14d9-430c-91f0-626d1e3381e0"
                     }
                 ]
             }
         ]
     },
+    "field_policy_domain": [
+        {
+            "target_id": "http:\/\/joinup.eu/policy-domain/home-affairs"
+        }
+    ],
     "field_ar_closed": [
         {
             "value": "0"

@@ -2,16 +2,16 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.rdfentity.organisation
-id: rdf_entity.organisation.label
+    - rdf_entity.rdfentity.owner
+id: rdf_entity.owner.label
 field_name: label
 entity_type: rdf_entity
-bundle: organisation
-label: 'Name'
+bundle: owner
+label: Name
 description: ''
 required: true
 translatable: true
-default_value: { }
+default_value: {  }
 default_value_callback: ''
-settings: { }
+settings: {  }
 field_type: string

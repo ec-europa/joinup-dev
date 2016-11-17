@@ -3,7 +3,7 @@
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Query\QueryBase;
 use Drupal\Core\Entity\Query\QueryFactoryInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
@@ -55,14 +55,14 @@ class QueryFactory implements QueryFactoryInterface {
    *
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection
    *    The connection object.
-   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *    The entity type manager.
    * @param \Drupal\rdf_entity\RdfGraphHandler $rdf_graph_handler
    *    The rdf graph helper service.
    * @param \Drupal\rdf_entity\RdfMappingHandler $rdf_mapping_handler
    *    The rdf mapping helper service.
    */
-  public function __construct(Connection $connection, EntityTypeManager $entity_type_manager, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
+  public function __construct(Connection $connection, EntityTypeManagerInterface $entity_type_manager, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
     $this->connection = $connection;
     $this->namespaces = QueryBase::getNamespaces($this);
     $this->entityTypeManager = $entity_type_manager;

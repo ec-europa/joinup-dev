@@ -1,0 +1,51 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C234b585f-e065-4678-9195-48f1ba78e1d5?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/owner\/field_owner_type": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpurl.org%5Cadms%5Cpublishertype%5CPrivateIndividual%28s%29?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/234b585f-e065-4678-9195-48f1ba78e1d5"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "owner"
+        }
+    ],
+    "label": [
+        {
+            "value": "John Doe",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/234b585f-e065-4678-9195-48f1ba78e1d5"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ],
+    "field_owner_name": [
+        {
+            "value": "John Doe"
+        }
+    ],
+    "field_owner_type": [
+        {
+            "target_id": "http:\/\/purl.org\/adms\/publishertype\/PrivateIndividual(s)"
+        }
+    ]
+}
