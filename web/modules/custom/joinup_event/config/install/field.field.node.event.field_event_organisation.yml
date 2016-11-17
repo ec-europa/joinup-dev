@@ -4,8 +4,7 @@ dependencies:
   config:
     - field.storage.node.field_event_organisation
     - node.type.event
-    - rdf_entity.rdfentity.organisation
-    - rdf_entity.rdfentity.person
+    - rdf_entity.rdfentity.owner
 id: node.event.field_event_organisation
 field_name: field_event_organisation
 entity_type: node
@@ -20,8 +19,7 @@ settings:
   handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
-      organisation: organisation
-      person: person
+      owner: owner
     sort:
       field: _none
     auto_create: false

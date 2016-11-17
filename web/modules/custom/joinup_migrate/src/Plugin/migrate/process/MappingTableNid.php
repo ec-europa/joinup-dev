@@ -4,7 +4,6 @@ namespace Drupal\joinup_migrate\Plugin\migrate\process;
 
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\MigrateSkipRowException;
-use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
 
@@ -23,7 +22,7 @@ class MappingTableNid extends ProcessPluginBase {
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     if (!is_numeric($value)) {
       $row_number = $row->getSourceProperty('row_index');
-      throw new MigrateSkipRowException("Row #$row_number: Invalid Nid '$value'.", FALSE, MigrationInterface::MESSAGE_WARNING);
+      throw new MigrateSkipRowException("Row #$row_number: Invalid Nid '$value'.", FALSE);
     }
     return $value;
   }
