@@ -17,12 +17,8 @@ Feature: Navigation menu for custom pages
     Then the navigation menu of the "Rainbow tables" collection should have 0 visible items
     And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
     And I should see the link "Add a new page"
-
-    # Check that the menu form is initially empty and shows a help text.
-    When I click the contextual link "Edit menu" in the "Left sidebar" region
-    Then I should see the heading "Edit navigation menu of the Rainbow tables collection"
-    And the navigation menu of the "Rainbow tables" collection should have 0 items
-    And I should see the text "There are no custom pages yet."
+    # Check that the 'Edit menu' local action is not present.
+    But I should not see the contextual link "Edit menu" in the "Left sidebar" region
     # The 'Add link' local action that is present in the default implementation
     # of OG Menu should not be visible. We are managing the menu links behind
     # the scenes. The end user should not be able to interact with these.
