@@ -253,8 +253,8 @@ function solution_rdf_entity_update(EntityInterface $entity) {
  * @param \Drupal\rdf_entity\RdfInterface $solution
  *   The 'solution' RDF entity.
  *
- * @return string|null
- *   The latest release entity ID or NULL if there are no releases.
+ * @return \Drupal\rdf_entity\RdfInterface|null
+ *   The latest release entity or NULL if there are no releases.
  */
 function solution_get_latest_release(RdfInterface $solution) {
   if ($solution->bundle() !== 'solution') {
@@ -286,5 +286,5 @@ function solution_get_latest_release(RdfInterface $solution) {
   });
 
   $latest_release = reset($releases);
-  return $latest_release->id();
+  return $latest_release;
 }

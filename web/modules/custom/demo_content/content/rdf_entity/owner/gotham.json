@@ -1,0 +1,51 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Ced27d607-aa54-4533-b53f-6fb4ab73e5be?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/owner\/field_owner_type": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpurl.org%5Cadms%5Cpublishertype%5CLocalAuthority?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/ed27d607-aa54-4533-b53f-6fb4ab73e5be"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "owner"
+        }
+    ],
+    "label": [
+        {
+            "value": "Gotham Cityhall",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/ed27d607-aa54-4533-b53f-6fb4ab73e5be"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ],
+    "field_owner_name": [
+        {
+            "value": "Gotham Cityhall"
+        }
+    ],
+    "field_owner_type": [
+        {
+            "target_id": "http:\/\/purl.org\/adms\/publishertype\/LocalAuthority"
+        }
+    ]
+}

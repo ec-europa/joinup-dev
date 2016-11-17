@@ -333,12 +333,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       }
       /** @var \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend $backend */
       $backend = $search_server->getBackend();
-
-      /** @var \Solarium\Client $solarium_client */
-      $solarium_client = $backend->getSolrConnection();
-      $update = $solarium_client->createUpdate();
+      /** @var \Drupal\search_api_solr\SolrConnectorInterface $connector */
+      $connector = $backend->getSolrConnector();
+      $update = $connector->getUpdateQuery();
       $update->addCommit(TRUE, TRUE);
-      $solarium_client->update($update);
+      $connector->update($update);
     }
   }
 

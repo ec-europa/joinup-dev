@@ -201,7 +201,7 @@ phpunit.browsertest_output_file = ${phpunit.browsertest_output_dir}/outputfile.t
 # -------------------------
 
 # Apache Solr version to use.
-solr.version = 6.1.0
+solr.version = 6.2.1
 
 # Filename of the download.
 solr.tarball.filename = solr-${solr.version}.tgz
@@ -227,7 +227,7 @@ solr.core.dir = ${solr.dir}/server/solr/${solr.core}
 # -------------------
 
 # Development modules to enable.
-drupal.modules.dev = config_update field_ui menu_ui views_ui
+drupal.modules.dev = admin_toolbar config_update field_ui menu_ui views_ui
 
 # Modules to enable for doing user acceptance testing.
 drupal.modules.uat = demo_users demo_content

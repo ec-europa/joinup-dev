@@ -52,5 +52,3 @@ Feature: User profile
     # This message is typical shown when the mail server is not responding. This is just a smoke test
     # to see that all is fine and dandy, and mails are being delivered.
     Then I should not see the error message "Unable to send email. Contact the site administrator if the problem persists."
-
-

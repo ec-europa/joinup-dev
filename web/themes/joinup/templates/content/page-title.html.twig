@@ -14,11 +14,17 @@
 #}
 {{ title_prefix }}
 {% if title %}
-  <h1 class="page__title">
-    {% if is_create_page %}
-      <span class="icon icon--plus"></span>
-    {% endif %}
-    {{ title }}
-  </h1>
+  <div class="page__title-wrapper">
+      {% if is_create_page %}
+        <h1 class="page__title">
+          <span class="icon icon--plus"></span>
+          {{ title }}
+        </h1>
+      {% else %}
+        <h1 class="page__title">
+          {{ title }}
+        </h1>
+      {% endif %}
+  </div>
 {% endif %}
 {{ title_suffix }}

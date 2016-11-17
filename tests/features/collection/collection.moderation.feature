@@ -19,8 +19,9 @@ Feature: Collection moderation
     And the following buttons should not be present "Request archival, Request deletion, Archive"
 
   Scenario: Test the moderation workflow available states.
-    Given the following organisation:
-      | name | Simon Sandoval |
+    Given the following owner:
+      | name           |
+      | Simon Sandoval |
     And the following contact:
       | name  | Francis             |
       | email | Francis@example.com |
@@ -131,8 +132,9 @@ Feature: Collection moderation
 
   Scenario: Published collections should be shown in the collections overview page.
     # Regression test for ticket ISAICP-2889.
-    Given the following organisation:
-      | name | Carpet Sandation |
+    Given the following owner:
+      | name             | type    |
+      | Carpet Sandation | Company |
     And the following contact:
       | name  | Partyanimal             |
       | email | partyanmial@example.com |
