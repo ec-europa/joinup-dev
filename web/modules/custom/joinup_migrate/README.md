@@ -57,6 +57,9 @@ In order to start a migration we will need to do some preparation:
    * Test the mount. Legacy D6 files should be under `joinupv2.0/` directory:
      ```bash
      $ ls /path/to/mount/point/joinupv2.0
+     sites
+     $ ls /path/to/mount/point/joinupv2.0/default
+     sites/default
      ```
      This should contain the `sites/` directory.
      You can use a dedicated directory for cache in `-o use_cache=`.
