@@ -481,6 +481,48 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Asserts that a certain contextual link is present in a region.
+   *
+   * @param string $text
+   *   The text of the link.
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when the contextual link is not found in the region.
+   *
+   * @Then I (should )see the contextual link :text in the :region region
+   */
+  public function assertContextualLinkInRegionPresent($text, $region) {
+    $links = $this->findContextualLinksInRegion($region);
+
+    if (!isset($links[$text])) {
+      throw new \Exception(t('Contextual link %link expected but not found in the region %region', ['%link' => $text, '%region' => $region]));
+    }
+  }
+
+  /**
+   * Asserts that a certain contextual link is not present in a region.
+   *
+   * @param string $text
+   *   The text of the link.
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when the contextual link is found in the region.
+   *
+   * @Then I (should )not see the contextual link :text in the :region region
+   */
+  public function assertContextualLinkInRegionNotPresent($text, $region) {
+    $links = $this->findContextualLinksInRegion($region);
+
+    if (isset($links[$text])) {
+      throw new \Exception(t('Unexpected contextual link %link found in the region %region', ['%link' => $text, '%region' => $region]));
+    }
+  }
+
+  /**
    * Find all the contextual links in a region, without the need for javascript.
    *
    * @param string $region
