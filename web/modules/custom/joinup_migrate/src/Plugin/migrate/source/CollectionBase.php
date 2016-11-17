@@ -13,12 +13,7 @@ use Drupal\migrate\Plugin\MigrationInterface;
  */
 abstract class CollectionBase extends SqlBase {
 
-  /**
-   * Source database name.
-   *
-   * @var string
-   */
-  protected $dbName;
+  use SourceTrait;
 
   /**
    * Collect here table aliases.
@@ -32,7 +27,6 @@ abstract class CollectionBase extends SqlBase {
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state);
-    $this->dbName = $this->getDatabase()->getConnectionOptions()['database'];
   }
 
   /**
@@ -59,10 +53,10 @@ abstract class CollectionBase extends SqlBase {
   public function query() {
     $query = Database::getConnection()->select('joinup_migrate_mapping', 'j', ['fetch' => \PDO::FETCH_ASSOC]);
 
-    $this->alias['node'] = $query->leftJoin("{$this->dbName}.node", 'n', "j.nid = %alias.nid AND j.new_collection = 'No' AND %alias.type IN ('community', 'repository')");
-    $this->alias['uri'] = $query->leftJoin("{$this->dbName}.content_field_id_uri", 'uri', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['community'] = $query->leftJoin("{$this->dbName}.content_type_community", 'comm', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['repository'] = $query->leftJoin("{$this->dbName}.content_type_repository", 'repo', "{$this->alias['node']}.vid = %alias.vid");
+    $this->alias['node'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'n', "j.nid = %alias.nid AND j.new_collection = 'No' AND %alias.type IN ('community', 'repository')");
+    $this->alias['uri'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_id_uri", 'uri', "{$this->alias['node']}.vid = %alias.vid");
+    $this->alias['community'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_community", 'comm', "{$this->alias['node']}.vid = %alias.vid");
+    $this->alias['repository'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_repository", 'repo', "{$this->alias['node']}.vid = %alias.vid");
 
     $or = (new Condition('OR'))
       ->condition((new Condition('AND'))
