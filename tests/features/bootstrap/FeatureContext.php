@@ -457,7 +457,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Resolves contextual links directly, without the need for javascript.
+   * Clicks a contextual link directly, without the need for javascript.
    *
    * @param string $text
    *   The text of the link.
@@ -470,8 +470,31 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I click the contextual link :text in the :region region
    */
   public function iClickTheContextualLinkInTheRegion($text, $region) {
+    $links = $this->findContextualLinksInRegion($region);
+
+    if (!isset($links[$text])) {
+      throw new \Exception(t('Could not find a contextual link %link in the region %region', ['%link' => $text, '%region' => $region]));
+    }
+
+    $this->getSession()->visit($this->locatePath($links[$text]));
+  }
+
+  /**
+   * Find all the contextual links in a region, without the need for javascript.
+   *
+   * @param string $region
+   *   The name of the region.
+   *
+   * @return array
+   *   An array of links found keyed by title.
+   *
+   * @throws \Exception
+   *   When the region is not found in the page.
+   */
+  protected function findContextualLinksInRegion($region) {
     $account = user_load($this->getUserManager()->getCurrentUser()->uid);
-    $links = array();
+    $links = [];
+
     /** @var \Drupal\Core\Menu\ContextualLinkManager $contextual_links_manager */
     $contextual_links_manager = \Drupal::service('plugin.manager.menu.contextual_link');
     $session = $this->getSession();
@@ -479,6 +502,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$regionObj) {
       throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
     }
+
     /** @var \Behat\Mink\Element\NodeElement $item */
     foreach ($regionObj->findAll('xpath', '//*[@data-contextual-id]') as $item) {
       $contextual_id = $item->getAttribute('data-contextual-id');
@@ -498,11 +522,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
         }
       }
     }
-    if (isset($links[$text])) {
-      $session->visit($this->locatePath($links[$text]));
-      return;
-    }
-    throw new \Exception(t('Could not find a contextual link %link in the region %region', ['%link' => $text, '%region' => $region]));
+
+    return $links;
   }
 
   /**
