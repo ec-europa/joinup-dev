@@ -47,10 +47,16 @@ class CollectionMenuBlock extends OgMenuBlock {
     );
     $tree = $this->menuTree->transform($tree, $manipulators);
     $build = $this->menuTree->build($tree);
-    if (empty($build['#items'])) {
-      $create_url = Url::fromRoute('custom_page.collection_custom_page.add', [
-        'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
-      ]);
+
+    // The create custom page route will serve as test to see if the user has
+    // enough privileges to configure the menu.
+    $create_url = Url::fromRoute('custom_page.collection_custom_page.add', [
+      'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
+    ]);
+
+    // When the tree is empty, no pages have been added yet to it. Show an help
+    // text to point the user to take some action.
+    if (empty($tree)) {
       $build['create']['info'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
@@ -64,13 +70,28 @@ class CollectionMenuBlock extends OgMenuBlock {
         '#access' => $create_url->access(),
       ];
     }
+    elseif (empty($build['#items'])) {
+      // If there are entries in the tree but none of those is in the build
+      // array, it means that all the available pages have been disabled inside
+      // the menu configuration.
+      $build['disabled'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t('All the pages have been disabled for this collection. Click the pencil to edit the configuration or add a new page.'),
+        '#access' => $create_url->access(),
+      ];
+    }
+
     $menu_instance = $this->getOgMenuInstance();
     if ($menu_instance instanceof OgMenuInstanceInterface) {
-      $build['#contextual_links']['ogmenu'] = [
-        'route_parameters' => [
-          'ogmenu_instance' => $menu_instance->id(),
-        ],
-      ];
+      // Show the "Edit menu" link only when at least one element is available.
+      if ($tree) {
+        $build['#contextual_links']['ogmenu'] = [
+          'route_parameters' => [
+            'ogmenu_instance' => $menu_instance->id(),
+          ],
+        ];
+      }
       $build['#contextual_links']['collection_menu_block'] = [
         'route_parameters' => [
           'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
@@ -79,7 +100,7 @@ class CollectionMenuBlock extends OgMenuBlock {
     }
 
     // Improve the template suggestion.
-    if ($tree && $menu_instance) {
+    if (!empty($build['#items']) && $menu_instance) {
       $menu_name = $menu_instance->getType();
       $build['#theme'] = 'menu__og__' . strtr($menu_name, '-', '_');
     }
