@@ -105,7 +105,8 @@
                 "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
                 "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
                 "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
-                "Don't let the whole migration crash on a download failure @see https://www.drupal.org/node/2826200": "https://www.drupal.org/files/issues/2826200-10.patch"
+                "Don't let the whole migration crash on a download failure @see https://www.drupal.org/node/2826200": "https://www.drupal.org/files/issues/2826200-10.patch",
+                "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch"
             },
             "drupal/r4032login": {
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
