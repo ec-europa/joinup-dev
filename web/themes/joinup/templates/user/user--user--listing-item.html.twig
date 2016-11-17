@@ -20,7 +20,7 @@
   set classes = [
     'listing__card',
     'mdl-card',
-    view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
+    elements['#view_mode'] == 'view_mode_featured' ? 'listing__card--inline-containers',
   ]
 %}
 <div class="{{ classes|join(' ') }}">
@@ -29,7 +29,7 @@
   {% endif %}
   <div class="listing__metadata">
     <div class="listing__field">
-      <h2 class="listing__title"><a href="{{ url }}">{{ content.field_user_family_name }} {{ content.field_user_first_name }}</a></h2>
+      <h2 class="listing__title"><a href="{{ path('entity.user.canonical', {'user': user.id}) }}">{{ content.field_user_family_name }} {{ content.field_user_first_name }}</a></h2>
     </div>
     {% if (content.field_user_professional_profile|render) %}
       <div class="listing__field">
