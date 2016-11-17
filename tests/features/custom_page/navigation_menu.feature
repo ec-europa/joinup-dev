@@ -43,6 +43,12 @@ Feature: Navigation menu for custom pages
     When I disable "About us" in the navigation menu of the "Rainbow tables" collection
     Then the navigation menu of the "Rainbow tables" collection should have 0 visible items
 
+    # When all the pages are disabled in the navigation menu, a message should
+    # be shown to the user.
+    When I go to the homepage of the "Rainbow tables" collection
+    Then I should see the text "All the pages have been disabled for this collection. You can edit the menu configuration or add a new page."
+    And I should see the contextual link "Edit menu" in the "Left sidebar" region
+
     # The form to add a new menu link should not be accessible by anyone. This
     # is functionality provided by Drupal which is intended for webmasters. We
     # are showing the menu overview to collection facilitators so they can
