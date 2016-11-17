@@ -10,6 +10,7 @@ use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\UtilityTrait;
+use Drupal\user\Entity\User;
 
 /**
  * Defines generic step definitions.
@@ -492,7 +493,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   When the region is not found in the page.
    */
   protected function findContextualLinksInRegion($region) {
-    $account = user_load($this->getUserManager()->getCurrentUser()->uid);
+    $account = User::load($this->getUserManager()->getCurrentUser()->uid);
     $links = [];
 
     /** @var \Drupal\Core\Menu\ContextualLinkManager $contextual_links_manager */
