@@ -40,16 +40,13 @@ class DistributionFile extends DistributionBase {
     $query->addExpression("{$this->alias['files']}.timestamp", 'created');
     $query->addExpression("{$this->alias['files']}.uid", 'file_uid');
 
-    return $query
-      // @todo  Remove this condition. It's only a limitation to test over HTTP.
-      ->condition("{$this->alias['files']}.filesize", 37000, '<');
+    return $query;
   }
 
   /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-
     if (!$source_path = $row->getSourceProperty('source_path')) {
       // Skip this row if there's no file.
       return FALSE;
