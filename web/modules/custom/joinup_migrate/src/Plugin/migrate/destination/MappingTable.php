@@ -63,7 +63,6 @@ class MappingTable extends DestinationBase implements ContainerFactoryPluginInte
    */
   public function getIds() {
     return [
-      'row_index' => ['type' => 'integer'],
       'nid' => ['type' => 'integer'],
     ];
   }
@@ -73,7 +72,6 @@ class MappingTable extends DestinationBase implements ContainerFactoryPluginInte
    */
   public function fields(MigrationInterface $migration = NULL) {
     return [
-      'row_index' => $this->t('Excel row index'),
       'nid' => $this->t('Source node ID'),
       'type' => $this->t('Source node-type'),
       'collection' => $this->t('Collection'),
@@ -87,6 +85,9 @@ class MappingTable extends DestinationBase implements ContainerFactoryPluginInte
       'admin_user' => $this->t('Administration User'),
       'elibrary' => $this->t('Elibrary Creation'),
       'pre_moderation' => $this->t('Pre Moderation'),
+      'collection_state' => $this->t('Collection State'),
+      'status' => $this->t('Status of the collection'),
+      'row_index' => $this->t('Excel row index'),
     ];
   }
 
@@ -99,7 +100,6 @@ class MappingTable extends DestinationBase implements ContainerFactoryPluginInte
     }
 
     $values = $row->getDestination();
-    $row_index = $values['row_index'];
     $nid = $values['nid'];
     try {
       if (empty($old_destination_id_values)) {
@@ -109,14 +109,13 @@ class MappingTable extends DestinationBase implements ContainerFactoryPluginInte
           ->execute();
       }
       else {
-        unset($values['row_index'], $values['nid']);
+        unset($values['nid']);
         $this->database->update('joinup_migrate_mapping')
           ->fields($values)
-          ->condition('row_index', $row_index)
           ->condition('nid', $nid)
           ->execute();
       }
-      return [$row_index, $nid];
+      return [$nid];
     }
     catch (MigrateException $exception) {
       throw new MigrateException($exception->getMessage());
@@ -129,7 +128,6 @@ class MappingTable extends DestinationBase implements ContainerFactoryPluginInte
   public function rollback(array $destination_identifier) {
     parent::rollback($destination_identifier);
     $this->database->delete('joinup_migrate_mapping')
-      ->condition('row_index', $destination_identifier['row_index'])
       ->condition('nid', $destination_identifier['nid'])
       ->execute();
   }
