@@ -7,6 +7,7 @@ use Drupal\Core\Database\Query\Condition;
 /**
  * Base class for collection migrations.
  */
+
 abstract class CollectionBase extends GroupBase {
 
   /**
