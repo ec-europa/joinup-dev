@@ -232,7 +232,7 @@ function joinup_field_formatter_third_party_settings_form(FormatterInterface $pl
  *
  * Add template suggestions based on the configuration added in the formatter.
  */
-function joinup_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+function joinup_theme_suggestions_field_alter(array &$suggestions, array &$variables) {
   $element = $variables['element'];
 
   if (!empty($element['#entity_type']) && !empty($element['#bundle']) && !empty($element['#field_name'])) {
