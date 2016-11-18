@@ -538,8 +538,14 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
     }
   }
 
-  // Create the same template suggestion for tile and featured view modes.
-  if (isset($variables['elements']['#view_mode'])) {
+  // Some entities share the same template when rendered using tile and featured
+  // view modes.
+  $listing_entities = [
+    'node',
+    'rdf_entity',
+    'user',
+  ];
+  if (in_array($hook, $listing_entities) && !empty($variables['elements']['#view_mode'])) {
     $view_mode = $variables['elements']['#view_mode'];
     $listing_modes = [
       'view_mode_tile',
@@ -549,12 +555,6 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
     if (in_array($view_mode, $listing_modes)) {
       $entity_type = $variables['elements']['#entity_type'];
       $bundle = $variables['elements']['#' . $entity_type]->bundle();
-      $listing_entities = [
-        'node',
-        'rdf_entity',
-        'user',
-      ];
-
       $suggestions[] = $entity_type . '__' . str_replace('-', '_', $bundle) . '__listing_item';
     }
   }
