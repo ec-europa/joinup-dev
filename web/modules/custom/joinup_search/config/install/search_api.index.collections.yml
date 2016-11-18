@@ -118,7 +118,6 @@ field_settings:
         - field.storage.rdf_entity.field_isr_description
   aggregated_field:
     label: 'Aggregated field'
-    datasource_id: null
     property_path: aggregated_field
     type: string
     configuration:
@@ -128,7 +127,6 @@ field_settings:
         - 'entity:rdf_entity/rid'
   aggregated_field_1:
     label: 'Aggregated field'
-    datasource_id: null
     property_path: aggregated_field
     type: string
     configuration:
@@ -136,17 +134,22 @@ field_settings:
       fields:
         - 'entity:node/og_audience'
         - 'entity:rdf_entity/og_audience'
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
 processor_settings:
   add_url:
     plugin_id: add_url
     settings:
       weights:
         preprocess_index: -30
-  rendered_item:
-    plugin_id: rendered_item
-    settings: {  }
   aggregated_field:
     plugin_id: aggregated_field
+    settings: {  }
+  rendered_item:
+    plugin_id: rendered_item
     settings: {  }
 options:
   index_directly: true

@@ -33,11 +33,9 @@
   height: 22px
   position: relative
   .icon
-    position: absolute
-    top: 50%
     left: 0
-    transform: translateY(-50%)
     z-index: 1
+    +centered($horizontal: false, $vertical: true)
 
 .button__no-bg
   font-weight: $font-weight-bold
@@ -57,6 +55,10 @@
   color: #fff
   border-color: $color-blue-medium
   background-color: $color-blue-medium !important
+
+.button--blue-light
+  border-color: $color-blue-lighter
+  background-color: $color-blue-lighter !important
 
 .button--transparent
   color: $color-grey-medium !important

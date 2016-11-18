@@ -14,6 +14,7 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
@@ -31,6 +32,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use RandomGeneratorTrait;
   use RdfEntityTrait;
   use WorkflowTrait;
+  use UtilityTrait;
 
   /**
    * Test solutions.
@@ -381,7 +383,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       // Convert role names to role IDs.
       $roles = [];
       if (!empty($values['roles'])) {
-        $roles = $this->getOgRoles(explode(', ', $values['roles']), $group);
+        $role_names = $this->explodeCommaSeparatedStepArgument($values['roles']);
+        // Every owner is also a facilitator. In Joinup the facilitator role is
+        // assigned to the owner when they create the solution. Since in this
+        // step the solutions are already created, mimick this behaviour by
+        // making sure every owner also has the 'facilitator' role.
+        if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
+          $role_names[] = 'facilitator';
+        }
+        $roles = $this->getOgRoles($role_names, $group);
       }
 
       $this->subscribeUserToGroup($member, $group, $roles);
@@ -500,7 +510,11 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \Exception
    *    Thrown when the user does not exist.
    *
-   * @Given for the following solution, the corresponding user should have the corresponding (available )options:
+   * @todo: Maybe there is a better definition available here like 'The
+   * following state buttons should be available for the user on the
+   * collection'.
+   *
+   * @Given for the following solution, the corresponding user should have the corresponding (available )state buttons:
    */
   public function verifyWorkflowStates(TableNode $check_table) {
     foreach ($check_table->getColumnsHash() as $values) {
@@ -514,9 +528,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
 
       // Convert states to an array.
-      $states = empty($values['states']) ? [] : explode(', ', $values['states']);
+      $states = empty($values['states']) ? [] : explode(',', $values['states']);
+      $states = array_map('trim', $states);
 
-      $this->assertAvailableStates($solution, $states, $user);
+      $this->assertAvailableTransitions($solution, $states, $user);
     }
   }
 

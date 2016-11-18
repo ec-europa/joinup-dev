@@ -5,8 +5,7 @@ revision_bundle_rdf_entity:
   asset_release: 0
   contact_information: 0
   licence: 0
-  organisation: 0
-  person: 0
+  owner: 0
 default_save_graph_rdf_entity: default
 revision_bundle_taxonomy_term:
   eira: 0

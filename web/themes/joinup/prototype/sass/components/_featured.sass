@@ -55,6 +55,8 @@
   letter-spacing: 2px
   text-transform: uppercase
   color: #fff
+  +breakpoint(mobile)
+    margin-bottom: 20px
   &:after
     position: absolute
     right: 0
@@ -69,14 +71,14 @@
 
 .featured__stats
   display: inline-block
-  margin-bottom: 20px
+  margin-bottom: 10px
   text-align: left
   vertical-align: middle
   background-color: #fff
   padding: 0 15px
   +border-radius(3px)
-  +breakpoint(tablet)
-    margin: 0 20px 0 0
+  +breakpoint(mobile)
+    margin: 0 10px
   .stats__column
     float: left
     padding: 15px
@@ -89,35 +91,13 @@
   .stats__icon
     +icon-size(30px)
 
-
-.featured__menu-button
-  width: 60px
-  height: 60px
-
-.featured__menu
-  position: absolute
-  bottom: 10px
-  left: 10px
-  +breakpoint(desktop)
-    display: none
-  .icon
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
-    color: #fff
-    +icon-size(60px)
-
-.featured__menu-link
-  text-decoration: none
-  color: $color-base
-
 .featured__action
   display: inline-block
   vertical-align: middle
 
 .featured__form-button
   display: inline-block
+  margin: 10px
 
 // Modifiers
 // --------------------------------------------------
@@ -155,7 +135,4 @@
     +breakpoint(lg-desktop)
       right: 0
   .circle-menu__button
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
+    +centered

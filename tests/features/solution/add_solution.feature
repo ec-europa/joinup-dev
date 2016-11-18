@@ -71,8 +71,9 @@ Feature: "Add solution" visibility options.
     And the following contact:
       | email | foo@bar.com                 |
       | name  | Contact information example |
-    And the following organisation:
-      | name | Organisation example |
+    And the following owner:
+      | name                 | type    |
+      | Organisation example | Company |
     And I am logged in as a facilitator of the "Belgian barista's" collection
 
     When I go to the homepage of the "Belgian barista's" collection
@@ -87,7 +88,6 @@ Feature: "Add solution" visibility options.
       | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)        |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
-      | State            | proposed                                                               |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I attach the file "text.pdf" to "Documentation"
     And I attach the file "logo.png" to "Logo"
@@ -97,14 +97,13 @@ Feature: "Add solution" visibility options.
     And I fill in "Contact information" with "Contact information example"
     And I press "Add contact information"
     # Click the button to select an existing owner.
-    And I press "Add existing owner" at the "Owner" field
+    And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
-    And I press "Save"
+    And I press "Propose"
     When I am logged in as a moderator
     When I go to the "Espresso is the solution" solution edit form
-    And I fill in "State" with "validated"
-    And I press "Save"
+    And I press "Publish"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "Espresso is the solution"
     And I should see the text "This is a test text"
@@ -137,10 +136,10 @@ Feature: "Add solution" visibility options.
     And I fill in "Contact information" with "Contact information example"
     And I press "Add contact information"
     # Click the button to select an existing owner.
-    And I press "Add existing owner" at the "Owner" field
+    And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
-    And I press "Save"
+    And I press "Propose"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "V60 filter coffee solution"
     When I click "Belgian barista's"

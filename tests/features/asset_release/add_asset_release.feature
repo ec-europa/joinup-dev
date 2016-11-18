@@ -26,8 +26,9 @@ Feature: "Add release" visibility options.
     Then I should not see the link "Add release"
 
   Scenario: Add release as a solution facilitator.
-    Given the following organisation:
-     | name | Organisation example |
+    Given the following owner:
+      | name                 | type    |
+      | Organisation example | Company |
     And the following solutions:
       | title          | description        | documentation | owner                | state     |
       | Release Test 1 | test description 1 | text.pdf      | Organisation example | validated |
@@ -38,7 +39,7 @@ Feature: "Add release" visibility options.
     And I click "Add release"
     Then I should see the heading "Add Release"
     And the following fields should be present "Name, Release number, Release notes, Documentation, Spatial coverage, Keyword, Status, Language"
-    And the following field widgets should be present "Contact information, Owner"
+    And the following field widgets should be present "Contact information"
     When I fill in "Name" with "Release Test 2"
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."

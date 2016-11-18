@@ -6,12 +6,20 @@
  */
 
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 
 /**
  * Defines generic step definitions.
  */
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
+
+  use EntityTrait;
+  use UtilityTrait;
+  // Uncomment to enable screen-shots during development.
+  // use \Drupal\joinup\Traits\ScreenShotTrait;
 
   /**
    * Define ASCII values for key presses.
@@ -26,6 +34,236 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertAccessDenied() {
     $this->assertSession()->statusCodeEquals(403);
+  }
+
+  /**
+   * Assert that certain fields are present on the page.
+   *
+   * @param string $fields
+   *    Fields.
+   *
+   * @throws \Exception
+   *   Thrown when an expected field is not present.
+   *
+   * @Then (the following )fields should be present :fields
+   */
+  public function assertFieldsPresent($fields) {
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $page = $this->getSession()->getPage();
+    $not_found = [];
+    foreach ($fields as $field) {
+      $is_found = $page->findField($field);
+      if (!$is_found) {
+        $not_found[] = $field;
+      }
+    }
+    if ($not_found) {
+      throw new \Exception("Field(s) expected, but not found: " . implode(', ', $not_found));
+    }
+  }
+
+  /**
+   * Assert that certain fields are not present on the page.
+   *
+   * @param string $fields
+   *    Fields.
+   *
+   * @throws \Exception
+   *   Thrown when a column name is incorrect.
+   *
+   * @Then (the following )fields should not be present :fields
+   */
+  public function assertFieldsNotPresent($fields) {
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $page = $this->getSession()->getPage();
+    foreach ($fields as $field) {
+      $is_found = $page->findField($field);
+      if ($is_found) {
+        throw new \Exception("Field should not be found, but is present: " . $field);
+      }
+    }
+  }
+
+  /**
+   * Assert that certain fields are present and visible on the page.
+   *
+   * @param string $fields
+   *    Fields.
+   *
+   * @throws \Exception
+   *   Thrown when an expected field is not present or is not visible.
+   *
+   * @Then (the following )fields should be visible :fields
+   */
+  public function assertFieldsVisible($fields) {
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $page = $this->getSession()->getPage();
+    $not_found = [];
+    $not_visible = [];
+    foreach ($fields as $field) {
+      $element = $page->findField($field);
+      if (!$element) {
+        $not_found[] = $field;
+        continue;
+      }
+      elseif (!$element->isVisible()) {
+        // Retrieve the first standard form item wrapper around our field.
+        // Some fields, like text areas or checkboxes, are actually hidden but
+        // their label and container are not.
+        $wrapper = $element->find('xpath', "ancestor-or-self::div[@class and contains(concat(' ', normalize-space(@class), ' '), ' form-item ')][1]");
+
+        if (!$wrapper->isVisible()) {
+          $not_visible[] = $field;
+        }
+      }
+    }
+
+    if ($not_found) {
+      throw new \Exception("Field(s) expected, but not found: " . implode(', ', $not_found));
+    }
+    if ($not_visible) {
+      throw new \Exception("Field(s) expected, but not visible: " . implode(', ', $not_visible));
+    }
+  }
+
+  /**
+   * Assert that certain fields are present but not visible on the page.
+   *
+   * @param string $fields
+   *    Fields.
+   *
+   * @throws \Exception
+   *   Thrown when a field is not present or is visible.
+   *
+   * @Then (the following )fields should not be visible :fields
+   */
+  public function assertFieldsNotVisible($fields) {
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $page = $this->getSession()->getPage();
+    $not_found = [];
+    $visible = [];
+    foreach ($fields as $field) {
+      $element = $page->findField($field);
+      if (!$element) {
+        $not_found[] = $field;
+        continue;
+      }
+
+      // Retrieve the first standard form item wrapper around our field.
+      // Some fields, like text areas or checkboxes, are actually hidden but
+      // their label and container are not.
+      $wrapper = $element->find('xpath', "ancestor-or-self::div[@class and contains(concat(' ', normalize-space(@class), ' '), ' form-item ')][1]");
+      // Neither the field or its wrapper should be visible at all.
+      if ($element->isVisible() || $wrapper->isVisible()) {
+        $visible[] = $field;
+      }
+    }
+
+    if ($not_found) {
+      throw new \Exception("Field(s) expected, but not found: " . implode(', ', $not_found));
+    }
+    if ($visible) {
+      throw new \Exception("Field(s) should not be visible: " . implode(', ', $visible));
+    }
+  }
+
+  /**
+   * Assert that certain fieldsets are present on the page.
+   *
+   * @param string $fieldsets
+   *    The fieldset names to search for, separated by comma.
+   *
+   * @throws \Exception
+   *   Thrown when a fieldset is not found.
+   *
+   * @Then (the following )field widgets should be present :fieldsets
+   * @Then (the following )fieldsets should be present :fieldsets
+   */
+  public function assertFieldsetsPresent($fieldsets) {
+    $fieldsets = $this->explodeCommaSeparatedStepArgument($fieldsets);
+    $page = $this->getSession()->getPage();
+    $not_found = [];
+    foreach ($fieldsets as $fieldset) {
+      $is_found = $page->find('named', ['fieldset', $fieldset]);
+      if (!$is_found) {
+        $not_found[] = $fieldset;
+      }
+    }
+    if ($not_found) {
+      throw new \Exception("Fieldset(s) expected, but not found: " . implode(', ', $not_found));
+    }
+  }
+
+  /**
+   * Assert that certain fieldsets are present and visible on the page.
+   *
+   * @param string $fieldsets
+   *    The fieldset names to search for, separated by comma.
+   *
+   * @throws \Exception
+   *   Thrown when a fieldset is not found or is not visible.
+   *
+   * @Then (the following )field widgets should be visible :fieldsets
+   * @Then (the following )fieldsets should be visible :fieldsets
+   */
+  public function assertFieldsetsVisible($fieldsets) {
+    $fieldsets = $this->explodeCommaSeparatedStepArgument($fieldsets);
+    $page = $this->getSession()->getPage();
+    $not_found = [];
+    $not_visible = [];
+    foreach ($fieldsets as $fieldset) {
+      $is_found = $page->find('named', ['fieldset', $fieldset]);
+      if (!$is_found) {
+        $not_found[] = $fieldset;
+      }
+
+      if (!$is_found->isVisible()) {
+        $not_visible[] = $fieldset;
+      }
+    }
+
+    if ($not_found) {
+      throw new \Exception("Fieldset(s) expected, but not found: " . implode(', ', $not_found));
+    }
+    if ($not_visible) {
+      throw new \Exception("Fieldset(s) expected, but not visible: " . implode(', ', $not_visible));
+    }
+  }
+
+  /**
+   * Assert that certain fieldsets are present and visible on the page.
+   *
+   * @param string $fieldsets
+   *    The fieldset names to search for, separated by comma.
+   *
+   * @throws \Exception
+   *   Thrown when a fieldset is not found or is visible.
+   *
+   * @Then (the following )field widgets should not be visible :fieldsets
+   * @Then (the following )fieldsets should not be visible :fieldsets
+   */
+  public function assertFieldsetsNotVisible($fieldsets) {
+    $fieldsets = $this->explodeCommaSeparatedStepArgument($fieldsets);
+    $page = $this->getSession()->getPage();
+    $not_found = [];
+    $visible = [];
+    foreach ($fieldsets as $fieldset) {
+      $is_found = $page->find('named', ['fieldset', $fieldset]);
+      if (!$is_found) {
+        $not_found[] = $fieldset;
+      }
+
+      if ($is_found->isVisible()) {
+        $visible[] = $fieldset;
+      }
+    }
+
+    if ($not_found) {
+      throw new \Exception("Fieldset(s) expected, but not found: " . implode(', ', $not_found));
+    }
+    if ($visible) {
+      throw new \Exception("Fieldset(s) should not be visible: " . implode(', ', $visible));
+    }
   }
 
   /**
@@ -170,6 +408,104 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Checks if a node of a certain type with a given title exists.
+   *
+   * @param string $type
+   *   The node type.
+   * @param string $title
+   *   The title of the node.
+   *
+   * @Then I should have a :type (content )page titled :title
+   */
+  public function assertContentPageByTitle($type, $title) {
+    $type = $this->getEntityByLabel('node_type', $type);
+    // If the node doesn't exist, the exception will be thrown here.
+    $this->getEntityByLabel('node', $title, $type->id());
+  }
+
+  /**
+   * Checks the users existence.
+   *
+   * @param string $username
+   *   The username of the user.
+   *
+   * @throws \Exception
+   *   Thrown when the user is not found.
+   *
+   * @Then I should have a :username user
+   */
+  public function assertUserExistence($username) {
+    $user = user_load_by_name($username);
+
+    if (empty($user)) {
+      throw new \Exception("Unable to load expected user " . $username);
+    }
+  }
+
+  /**
+   * Click on an element by css class.
+   *
+   * @Then /^I click on element "([^"]*)"$/
+   */
+  public function iClickOn($element) {
+    $page = $this->getSession()->getPage();
+    $findName = $page->find('css', $element);
+    if (!$findName) {
+      throw new \Exception($element . " could not be found");
+    }
+    $findName->click();
+  }
+
+  /**
+   * Resolves contextual links directly, without the need for javascript.
+   *
+   * @param string $text
+   *   The text of the link.
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   When either the region or the link are not found.
+   *
+   * @Then I click the contextual link :text in the :region region
+   */
+  public function iClickTheContextualLinkInTheRegion($text, $region) {
+    $account = user_load($this->getUserManager()->getCurrentUser()->uid);
+    $links = array();
+    /** @var \Drupal\Core\Menu\ContextualLinkManager $contextual_links_manager */
+    $contextual_links_manager = \Drupal::service('plugin.manager.menu.contextual_link');
+    $session = $this->getSession();
+    $regionObj = $session->getPage()->find('region', $region);
+    if (!$regionObj) {
+      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+    }
+    /** @var \Behat\Mink\Element\NodeElement $item */
+    foreach ($regionObj->findAll('xpath', '//*[@data-contextual-id]') as $item) {
+      $contextual_id = $item->getAttribute('data-contextual-id');
+      foreach (_contextual_id_to_links($contextual_id) as $group_name => $link) {
+        $route_parameters = $link['route_parameters'];
+        foreach ($contextual_links_manager->getContextualLinkPluginsByGroup($group_name) as $plugin_id => $plugin_definition) {
+          /** @var \Drupal\Core\Menu\ContextualLinkInterface $plugin */
+          $plugin = $contextual_links_manager->createInstance($plugin_id);
+          $route_name = $plugin->getRouteName();
+          // Check access.
+          if (!\Drupal::accessManager()->checkNamedRoute($route_name, $route_parameters, $account)) {
+            continue;
+          }
+          /** @var \Drupal\Core\Url $url */
+          $url = Url::fromRoute($route_name, $route_parameters, $plugin->getOptions())->toRenderArray();
+          $links[$plugin->getTitle()] = $url['#url']->toString();
+        }
+      }
+    }
+    if (isset($links[$text])) {
+      $session->visit($this->locatePath($links[$text]));
+      return;
+    }
+    throw new \Exception(t('Could not find a contextual link %link in the region %region', ['%link' => $text, '%region' => $region]));
+  }
+
+  /**
    * Moves a slider to the next or previous option.
    *
    * @param string $label
@@ -210,6 +546,32 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $slider->focus();
     $slider->keyDown($key);
     $slider->keyUp($key);
+  }
+
+  /**
+   * Finds a vertical tab given its text and clicks it.
+   *
+   * @param string $tab
+   *   The tab text.
+   *
+   * @throws \Exception
+   *   When the tab is not found on the page.
+   *
+   * @When I click :tab tab
+   */
+  public function assertVerticalTabLink($tab) {
+    $page = $this->getSession()->getPage();
+
+    $xpath = "//li[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item ')]"
+      . "//a[./@href]/strong[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item-title ')]"
+      . "[normalize-space(string(.)) = '$tab']";
+    $tab = $page->find('xpath', $xpath);
+
+    if ($tab === NULL) {
+      throw new \Exception('Tab not found: ' . $tab);
+    }
+
+    $tab->click();
   }
 
 }

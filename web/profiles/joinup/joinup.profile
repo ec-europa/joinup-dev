@@ -7,7 +7,10 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -51,7 +54,7 @@ function joinup_form_install_settings_form_save($form, FormStateInterface $form_
   $port = $form_state->getValue(['sparql', 'port']);
   // @see rdf_entity.services.yml
   $key = 'sparql_default';
-  $target = 'sparql';
+  $target = 'default';
   $database = array(
     'prefix' => '',
     'host' => $host,
@@ -191,4 +194,65 @@ function joinup_field_widget_inline_entity_form_complex_form_alter(&$element, Fo
 function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form_state) {
   // Avoid showing two labels one after each other.
   $reference_form['entity_id']['#title_display'] = 'invisible';
+}
+
+/**
+ * Implements hook_field_formatter_third_party_settings_form().
+ *
+ * Allow adding template suggestions for each field.
+ */
+function joinup_field_formatter_third_party_settings_form(FormatterInterface $plugin, FieldDefinitionInterface $field_definition, $view_mode, $form, FormStateInterface $form_state) {
+  $element = [];
+
+  $element['template_suggestion'] = [
+    '#type' => 'textfield',
+    '#title' => t('Template suggestion'),
+    '#size' => 64,
+    '#field_prefix' => 'field__',
+    '#default_value' => $plugin->getThirdPartySetting('joinup', 'template_suggestion'),
+  ];
+
+  return $element;
+}
+
+/**
+ * Implements hook_theme_suggestions_field_alter().
+ *
+ * Add template suggestions based on the configuration added in the formatter.
+ */
+function joinup_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  $element = $variables['element'];
+
+  if (!empty($element['#entity_type']) && !empty($element['#bundle']) && !empty($element['#field_name'])) {
+    $entity_type = $element['#entity_type'];
+    $bundle = $element['#bundle'];
+    $field_name = $element['#field_name'];
+    // View mode is not strictly required for the functionality.
+    $view_mode = !empty($element['#view_mode']) ? $element['#view_mode'] : 'default';
+
+    // Load the related display. If not found, try to load the default as
+    // fallback. This is needed because displays like the "full" one might not
+    // be enabled but still used for rendering.
+    // @see \Drupal\Core\Entity\Entity\EntityViewDisplay::collectRenderDisplays()
+    $display = EntityViewDisplay::load($entity_type . '.' . $bundle . '.' . $view_mode);
+    if (empty($display) && $view_mode !== 'default') {
+      $display = EntityViewDisplay::load($entity_type . '.' . $bundle . '.default');
+    }
+
+    if (!empty($display)) {
+      $component = $display->getComponent($field_name);
+      if (!empty($component['third_party_settings']['joinup']['template_suggestion'])) {
+        $suggestion = 'field__' . $component['third_party_settings']['joinup']['template_suggestion'];
+        $suggestions[] = $suggestion;
+        $suggestions[] = $suggestion . '__' . $entity_type;
+        $suggestions[] = $suggestion . '__' . $entity_type . '__' . $bundle;
+        $suggestions[] = $suggestion . '__' . $entity_type . '__' . $bundle . '__' . $field_name;
+        $suggestions[] = $suggestion . '__' . $entity_type . '__' . $bundle . '__' . $field_name . '__' . $view_mode;
+
+        // Add the custom template suggestion back in the element to allow other
+        // modules to have this information.
+        $variables['element']['#joinup_template_suggestion'] = $suggestion;
+      }
+    }
+  }
 }

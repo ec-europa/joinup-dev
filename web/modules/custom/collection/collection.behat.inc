@@ -11,7 +11,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
-use Drupal\joinup\Traits\OgMenuTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -19,6 +18,7 @@ use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
+use Drupal\og_menu\Tests\Traits\OgMenuTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -73,12 +73,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Then I should see the following collection menu items in the specified order:
    */
   public function assertRepeatedElementContainsText(TableNode $table) {
-    $parent = $this->getSession()->getPage()->findAll('css', '.block-collection-menu-blocknavigation > ul.menu > li.menu-item');
+    $parent = $this->getSession()->getPage()->findAll('css', '.block-collection-menu-blocknavigation li.sidebar-menu__item');
     $i = 0;
     foreach ($table->getHash() as $repeatedElement) {
       $child = $parent[$i];
       \PHPUnit_Framework_Assert::assertEquals(
-        $child->find('css', '.menu-item')->getText(),
+        $child->find('css', '.sidebar-menu__link')->getText(),
         $repeatedElement['text']
       );
       $i++;
@@ -472,16 +472,16 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     foreach ($menu_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
       $content = $this->getNodeByTitle($values['page'], $bundle);
-      $og_menu_instance = $this->getOgMenuInstance($group->id());
+      $og_menu_instance = $this->getOgMenuInstance($group->id(), 'navigation');
       if (empty($og_menu_instance)) {
-        $og_menu_instance = $this->createOgMenuInstance($group->id());
+        $og_menu_instance = $this->createOgMenuInstance($group->id(), 'navigation');
       }
 
       // Prepare the array to pass to MenuLinkContent::create method.
       $menu_item_data = [
         'title' => $values['label'],
         'link' => ['uri' => 'internal:/node/' . $content->id()],
-        'menu_name' => self::$ogMenuEntityTypeId . '-' . $og_menu_instance->id(),
+        'menu_name' => 'ogmenu-' . $og_menu_instance->id(),
         'weight' => $values['weight'],
         'expanded' => TRUE,
       ];
@@ -520,6 +520,26 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     ];
 
     $this->assertOgGroupOwnership($user, $collection, $owner_roles);
+  }
+
+  /**
+   * Asserts that the current user is an owner of the given collection.
+   *
+   * @param string $rdf_entity
+   *    The label of the group entity.
+   *
+   * @throws \Exception
+   *    Throws an exception when the user is not found.
+   *
+   * @see assertCollectionOwnership()
+   *
+   * @Given I should own the :rdf_entity collection
+   */
+  public function assertCollectionOwnershipCurrentUser($rdf_entity) {
+    if (!$current_user = $this->userManager->getCurrentUser()) {
+      throw new \Exception("No current user.");
+    }
+    $this->assertCollectionOwnership($current_user->name, $rdf_entity);
   }
 
   /**

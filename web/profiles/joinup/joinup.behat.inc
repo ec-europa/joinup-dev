@@ -333,12 +333,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       }
       /** @var \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend $backend */
       $backend = $search_server->getBackend();
-
-      /** @var \Solarium\Client $solarium_client */
-      $solarium_client = $backend->getSolrConnection();
-      $update = $solarium_client->createUpdate();
+      /** @var \Drupal\search_api_solr\SolrConnectorInterface $connector */
+      $connector = $backend->getSolrConnector();
+      $update = $connector->getUpdateQuery();
       $update->addCommit(TRUE, TRUE);
-      $solarium_client->update($update);
+      $connector->update($update);
     }
   }
 
@@ -585,6 +584,50 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertContentOgMembership($parent, $parent_bundle, $content_bundle, $content) {
     $this->assertOgMembership($parent, $parent_bundle, $content, $content_bundle);
+  }
+
+  /**
+   * Asserts the presence of a tile element with a certain heading.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the expected tile is not found.
+   *
+   * @Given I (should )see the :heading tile
+   */
+  public function assertTilePresent($heading) {
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
+    foreach ($results as $result) {
+      /** @var \Behat\Mink\Element\Element $result */
+      if ($result->getText() === $heading) {
+        return;
+      }
+    }
+
+    throw new \Exception("The tile '$heading' was not found on the page");
+  }
+
+  /**
+   * Asserts that there are no tile elements with a certain heading.
+   *
+   * @param string $heading
+   *   The heading to search.
+   *
+   * @throws \Exception
+   *   Thrown when a tile with the unwanted heading is found.
+   *
+   * @Given I (should )not see the :heading tile
+   */
+  public function assertTileNotPresent($heading) {
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2');
+    foreach ($results as $result) {
+      /** @var \Behat\Mink\Element\Element $result */
+      if ($result->getText() === $heading) {
+        throw new \Exception("The tile '$heading' was not found on the page");
+      }
+    }
   }
 
   /**

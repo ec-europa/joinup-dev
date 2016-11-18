@@ -1,0 +1,78 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/user\/16?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+        }
+    },
+    "uid": [
+        {
+            "value": "16"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "69f14560-10a4-4bb3-9bc0-2421f392221b"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "status": [
+        {
+            "value": "1"
+        }
+    ],
+    "name": [
+        {
+            "value": "collection_facilitator"
+        }
+    ],
+    "pass": [
+        {
+            "value": "collection_facilitator"
+        }
+    ],
+    "created": [
+        {
+            "value": "1473770036"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1473770036",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ],
+    "field_user_family_name": [
+        {
+            "value": "Facilitator"
+        }
+    ],
+    "field_user_first_name": [
+        {
+            "value": "Collection"
+        }
+    ],
+    "field_user_frequency": [
+        {
+            "value": "next_cron"
+        }
+    ],
+    "field_user_subscription_events": [
+        {
+            "value": "1"
+        }
+    ]
+}
