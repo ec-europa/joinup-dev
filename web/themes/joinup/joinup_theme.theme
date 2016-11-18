@@ -484,7 +484,7 @@ function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $
   // Bail out early if field has a Joinup template suggestion added in the view
   // mode.
   $element = $variables['element'];
-  if (!empty($element['joinup_template_suggestion'])) {
+  if (!empty($element['#joinup_template_suggestion'])) {
     return;
   }
 
