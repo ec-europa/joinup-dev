@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.view_mode_tile
+    - core.entity_view_mode.node.view_mode_featured
     - field.field.node.custom_page.body
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.og_audience
@@ -50,10 +50,10 @@ third_party_settings:
             fis: false
             fis-def-at: false
             fi-def-at: false
-id: node.custom_page.view_mode_tile
+id: node.custom_page.view_mode_featured
 targetEntityType: node
 bundle: custom_page
-mode: view_mode_tile
+mode: view_mode_featured
 content:
   body:
     label: hidden
