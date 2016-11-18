@@ -1,16 +1,17 @@
-id: mapping_table
-label: 'Migration mapping table'
+id: mapping
+label: 'Mapping table migration'
 source:
   plugin: spreadsheet
   track_changes: true
-  file: '../resources/migrate/D05.0x Joinup Migration Plan_Content Item Mapping Small v0.2.xlsx'
-  worksheet: 'Collection'
+  file: '../resources/migrate/D05.0x Joinup Migration Plan_Content Item Mapping Small v0.3.xlsx'
+  worksheet: '1. Content items'
   origin: A3
   header_row: 2
   columns:
     - 'Type of content item'
     - Collection_Name
-    - 'Policy domain'
+    - 'Policy domain 1'
+    - 'Policy domain 2'
     - 'New collection'
     - Delete
     - Abstract
@@ -28,7 +29,7 @@ source:
       type: integer
 process:
   nid:
-    plugin: mapping_table_nid
+    plugin: mapping_nid
     source: Nid
   type:
     plugin: static_map
@@ -83,7 +84,8 @@ process:
       'Video': video
       'Wiki': wiki
   collection: Collection_Name
-  policy: 'Policy domain'
+  policy: 'Policy domain 1'
+  policy2: 'Policy domain 2'
   new_collection: 'New collection'
   del: Delete
   abstract: Abstract
@@ -97,4 +99,4 @@ process:
   status: 'Status of the collection'
   row_index: row_index
 destination:
-  plugin: mapping_table
+  plugin: mapping

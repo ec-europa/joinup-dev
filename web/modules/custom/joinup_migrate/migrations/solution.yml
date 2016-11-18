@@ -1,0 +1,18 @@
+id: solution
+label: 'Solutions migration'
+source:
+  plugin: solution
+  track_changes: true
+process:
+#  id: uri
+  label: title
+  # This should be reworked when
+  field_is_state:
+    plugin: default_value
+    default_value: validated
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: solution
+# migration_dependencies:
+#   required:
+#     - collection
