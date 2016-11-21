@@ -35,7 +35,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
   /**
    * Constructs a SearchWidget object.
    *
-   * @param array $plugin_id
+   * @param string $plugin_id
    *   The plugin_id for the widget.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
@@ -216,7 +216,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
    * @return string|null
    *   The region name this row belongs to.
    */
-  public static function getRowRegion($row) {
+  public static function getRowRegion(array $row) {
     return $row['plugin']['type']['#value'];
   }
 
