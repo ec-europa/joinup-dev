@@ -1,5 +1,7 @@
 id: mapping
 label: 'Mapping table migration'
+migration_tags:
+  - excel
 source:
   plugin: spreadsheet
   track_changes: true

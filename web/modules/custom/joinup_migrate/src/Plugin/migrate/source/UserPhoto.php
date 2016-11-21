@@ -40,17 +40,14 @@ class UserPhoto extends UserBase {
     $query->addExpression("{$this->alias['files']}.timestamp", 'created');
     $query->addExpression("{$this->alias['files']}.uid", 'file_uid');
 
-    return $query;
+    return $query->isNotNull("{$this->alias['files']}.filepath");
   }
 
   /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    if (!$source_path = $row->getSourceProperty('source_path')) {
-      // Skip this row if there's no file.
-      return FALSE;
-    }
+    $source_path = $row->getSourceProperty('source_path');
 
     // Assure a full-qualified path.
     $root = Settings::get('joinup_migrate.source.root');

@@ -101,6 +101,14 @@ class Mapping extends DestinationBase implements ContainerFactoryPluginInterface
     }
 
     $values = $row->getDestination();
+
+    // Assure sane defaults for $values.
+    foreach ($this->fields() as $key => $value) {
+      if (!array_key_exists($key, $values)) {
+        $values[$key] = NULL;
+      }
+    }
+
     $nid = $values['nid'];
     try {
       if (empty($old_destination_id_values)) {

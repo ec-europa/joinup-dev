@@ -7,7 +7,6 @@ use Drupal\Core\Database\Query\Condition;
 /**
  * Base class for collection migrations.
  */
-
 abstract class CollectionBase extends GroupBase {
 
   /**
@@ -16,15 +15,6 @@ abstract class CollectionBase extends GroupBase {
   public function getIds() {
     return [
       'collection' => ['type' => 'string'],
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function fields() {
-    return [
-      'collection' => $this->t('Collection name'),
     ];
   }
 

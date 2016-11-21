@@ -1,18 +1,24 @@
 id: solution
 label: 'Solutions migration'
+migration_tags:
+  - solution
+  - og
 source:
   plugin: solution
   track_changes: true
 process:
-#  id: uri
+  id: uri
   label: title
-  # This should be reworked when
+  field_is_banner:
+    plugin: migration
+    source: nid
+    migration: solution_banner
+    no_stub: true
+  # @todo This should be revisited and fixed after ISAICP-3002.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3002
   field_is_state:
     plugin: default_value
     default_value: validated
 destination:
   plugin: entity:rdf_entity
   default_bundle: solution
-# migration_dependencies:
-#   required:
-#     - collection

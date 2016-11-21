@@ -1,5 +1,7 @@
 id: user_profile
 label: 'User profiles'
+migration_tags:
+  - user
 source:
   plugin: user_profile
 process:
@@ -28,7 +30,7 @@ process:
 
 destination:
   plugin: entity:user
-#migration_dependencies:
-#  required:
-#    - user
-#    - user_photo
+migration_dependencies:
+  required:
+    - user_photo
+    - user

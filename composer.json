@@ -18,6 +18,7 @@
         "drupal/message": "~1.0",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
+        "drupal/migrate_run": "~1.0-alpha1",
         "drupal/migrate_spreadsheet": "1.x-dev",
         "drupal/og": "dev-1.x#dbffd5d9123b2b5b0f0bc91efb3bc9d45da3f073",
         "drupal/og_menu": "dev-8.x-1.x",

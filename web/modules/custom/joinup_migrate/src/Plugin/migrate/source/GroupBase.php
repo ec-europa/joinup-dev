@@ -12,6 +12,15 @@ abstract class GroupBase extends JoinupSqlBase {
   /**
    * {@inheritdoc}
    */
+  public function fields() {
+    return [
+      'collection' => $this->t('Collection name'),
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function query() {
     $query = Database::getConnection()->select('joinup_migrate_mapping', 'j', ['fetch' => \PDO::FETCH_ASSOC]);
 

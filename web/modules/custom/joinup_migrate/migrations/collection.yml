@@ -1,5 +1,8 @@
 id: collection
 label: 'Collection migration'
+migration_tags:
+  - og
+  - collection
 source:
   plugin: collection
   track_changes: true
@@ -8,6 +11,11 @@ process:
   label: collection
   field_ar_abstract: abstract
   field_ar_access_url: access_url
+  field_ar_affiliates:
+    plugin: migration
+    source: affiliates
+    migration: solution
+    no_stub: true
   field_ar_banner:
     plugin: migration
     source: collection
@@ -56,7 +64,8 @@ process:
 destination:
   plugin: entity:rdf_entity
   default_bundle: collection
-# migration_dependencies:
-#   required:
-#     - collection_logo
-#     - collection_banner
+migration_dependencies:
+ required:
+   - collection_logo
+   - collection_banner
+   - solution
