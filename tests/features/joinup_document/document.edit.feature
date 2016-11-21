@@ -23,6 +23,10 @@ Feature: "Document page" editing.
     When I am logged in as "<user>"
     And I go to the "<document>" document
     Then I should see the link "Edit" in the "Entity actions" region
+    # A moderator should always be able to edit the content.
+    When I am logged in as a moderator
+    And I go to the "<document>" discussion
+    Then I should see the link "Edit" in the "Entity actions" region
     Examples:
       | user           | collection      | document               | role        |
       | Billie Stanley | Seventh Shores  | Fire of Female         | member      |
@@ -43,4 +47,8 @@ Feature: "Document page" editing.
       | Prized Cloud | Peter Floyd | Predator in the Future |
     When I am logged in as "Peter Floyd"
     And I go to the "Prized Cloud" document
+    Then I should see the link "Edit" in the "Entity actions" region
+    # A moderator should always be able to edit the content.
+    When I am logged in as a moderator
+    And I go to the "Prized Cloud" discussion
     Then I should see the link "Edit" in the "Entity actions" region

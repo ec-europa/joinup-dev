@@ -23,6 +23,10 @@ Feature: "Discussion page" editing.
     When I am logged in as "<user>"
     And I go to the "<discussion>" discussion
     Then I should see the link "Edit" in the "Entity actions" region
+    # A moderator should always be able to edit the content.
+    When I am logged in as a moderator
+    And I go to the "<discussion>" discussion
+    Then I should see the link "Edit" in the "Entity actions" region
     Examples:
       | user           | collection      | discussion             | role        |
       | Bennie Sherman | Missing Lover   | The Seventh Planet     | member      |
@@ -42,5 +46,9 @@ Feature: "Discussion page" editing.
       | title         | author        | solution             |
       | Fallen Flames | Toni Holloway | Lights in the Shards |
     When I am logged in as "Toni Holloway"
+    And I go to the "Fallen Flames" discussion
+    Then I should see the link "Edit" in the "Entity actions" region
+    # A moderator should always be able to edit the content.
+    When I am logged in as a moderator
     And I go to the "Fallen Flames" discussion
     Then I should see the link "Edit" in the "Entity actions" region

@@ -23,6 +23,10 @@ Feature: "Event page" editing.
     When I am logged in as "<user>"
     And I go to the "<event>" event
     Then I should see the link "Edit" in the "Entity actions" region
+    # A moderator should always be able to edit the content.
+    When I am logged in as a moderator
+    And I go to the "<event>" discussion
+    Then I should see the link "Edit" in the "Entity actions" region
     Examples:
       | user          | collection        | event                    | role        |
       | Irvin West    | Bare Past         | Name of Consort          | member      |
@@ -43,4 +47,8 @@ Feature: "Event page" editing.
       | Silver Snow | Krista Garrett | Dreamer in the Snake |
     When I am logged in as "Krista Garrett"
     And I go to the "Silver Snow" event
+    Then I should see the link "Edit" in the "Entity actions" region
+    # A moderator should always be able to edit the content.
+    When I am logged in as a moderator
+    And I go to the "Silver Snow" discussion
     Then I should see the link "Edit" in the "Entity actions" region
