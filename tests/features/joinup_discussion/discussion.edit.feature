@@ -28,7 +28,6 @@ Feature: "Discussion page" editing.
       | Bennie Sherman | Missing Lover   | The Seventh Planet     | member      |
       | Kristy Cortez  | Witch of Secret | The Waves of the Flame | facilitator |
 
-
   Scenario: A solution facilitator can edit his content.
     Given users:
       | name          |

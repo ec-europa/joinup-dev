@@ -28,7 +28,6 @@ Feature: "Document page" editing.
       | Billie Stanley | Seventh Shores  | Fire of Female         | member      |
       | Tamara Kelley  | The Bold Stones | The Tales of the Twins | facilitator |
 
-
   Scenario: A solution facilitator can edit his content.
     Given users:
       | name        |

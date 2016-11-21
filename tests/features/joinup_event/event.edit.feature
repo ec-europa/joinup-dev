@@ -28,7 +28,6 @@ Feature: "Event page" editing.
       | Irvin West    | Bare Past         | Name of Consort          | member      |
       | Emilio Garcia | The Final Bridges | The Dreaming of the Game | facilitator |
 
-
   Scenario: A solution facilitator can edit his content.
     Given users:
       | name        |
