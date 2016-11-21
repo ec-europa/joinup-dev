@@ -219,7 +219,7 @@ class SearchItem extends FieldItemBase {
    * @see \Drupal\options\Plugin\Field\FieldType\ListItemBase::validateAllowedValues()
    * @see \Drupal\Core\Render\Element\FormElement::processPattern()
    */
-  public static function validateAllowedValues($element, FormStateInterface $form_state) {
+  public static function validateAllowedValues(array $element, FormStateInterface $form_state) {
     $values = static::extractAllowedValues($element['#value'], $element['#field_has_data']);
 
     if (!is_array($values)) {
@@ -329,7 +329,7 @@ class SearchItem extends FieldItemBase {
    *
    * @see \Drupal\options\Plugin\Field\FieldType\ListItemBase::allowedValuesString()
    */
-  protected function allowedValuesString($values) {
+  protected function allowedValuesString(array $values) {
     $lines = array();
     foreach ($values as $key => $value) {
       $lines[] = "$key|$value";
