@@ -9,10 +9,10 @@
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "dev-master#5456199acdcc16b243814aa45259f4c56272a634",
         "drupal/console": "~1.0",
-        "drupal/core": "^8.2.2",
+        "drupal/core": "^8.2.3",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^2.0",
-        "drupal/facets": "1.0.0-alpha6",
+        "drupal/facets": "~1.0@alpha",
         "drupal/field_group": "dev-1.x#0f289425f4f1b156737fe27ae29dde2c55bbec27",
         "drupal/inline_entity_form": "dev-1.x#44c5cfcedd11ed90d473734bd77d9b069c4021fa",
         "drupal/message": "~1.0",
@@ -23,8 +23,8 @@
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phingdrushtask": "dev-7.x-2.x#13428ee7a229da3b7e6be4687587048150b1fd25",
         "drupal/r4032login": "dev-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
-        "drupal/search_api": "1.0.0-beta3",
-        "drupal/search_api_solr": "1.0.0-beta1",
+        "drupal/search_api": "~1.0@beta",
+        "drupal/search_api_solr": "~1.0@beta",
         "drupal/state_machine": "~1.0-beta3",
         "drupal/token": "~1.0",
         "drupal/view_unpublished": "dev-1.x#869c5b6b80f6badc0b39dff07ba852c9c967b9c7",
@@ -105,7 +105,9 @@
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                 "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
                 "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
-                "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch"
+                "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
+                "Don't let the whole migration crash on a download failure @see https://www.drupal.org/node/2826200": "https://www.drupal.org/files/issues/2826200-10.patch",
+                "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch"
             },
             "drupal/r4032login": {
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
