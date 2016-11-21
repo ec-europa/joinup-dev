@@ -20,7 +20,7 @@
     <target name="import-legacy-db"
             description="Import the legacy D6 database."
             depends="create-d6-db">
-        <pdosqlexec url="mysql:host=localhost;dbname=${migration.db.name}"
+        <pdosqlexec url="${migration.db.type}:host=localhost;dbname=${migration.db.name}"
                     userid="${migration.db.user}"
                     password="${migration.db.password}">
             <transaction src="${migration.db.import_path}"/>
@@ -39,8 +39,8 @@
  'prefix' => '${migration.db.prefix}',${line.separator}
  'host' => '${migration.db.host}',${line.separator}
  'port' => '${migration.db.port}',${line.separator}
- 'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',${line.separator}
- 'driver' => 'mysql',${line.separator}];${line.separator}" />
+ 'namespace' => 'Drupal\\Core\\Database\\Driver\\${migration.db.type}',${line.separator}
+ 'driver' => '${migration.db.type}',${line.separator}];${line.separator}" />
         <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.source.root'] = '${migration.source.root}';${line.separator}" />
     </target>
 
@@ -57,10 +57,10 @@
     </target>
 
     <target name="create-d6-db">
-        <pdosqlexec url="mysql:host=${migration.db.host}" userid="${migration.db.user}" password="${migration.db.password}">
+        <pdosqlexec url="${migration.db.type}:host=${migration.db.host}" userid="${migration.db.user}" password="${migration.db.password}">
             DROP DATABASE IF EXISTS ${migration.db.name};
         </pdosqlexec>
-        <pdosqlexec url="mysql:host=${migration.db.host}" userid="${migration.db.user}" password="${migration.db.password}">
+        <pdosqlexec url="${migration.db.type}:host=${migration.db.host}" userid="${migration.db.user}" password="${migration.db.password}">
             CREATE DATABASE ${migration.db.name};
         </pdosqlexec>
     </target>
