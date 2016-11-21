@@ -48,10 +48,15 @@ class CollectionMenuBlock extends OgMenuBlock {
     $tree = $this->menuTree->transform($tree, $manipulators);
     $build = $this->menuTree->build($tree);
 
-    // The create custom page route will serve as test to see if the user has
-    // enough privileges to configure the menu.
-    $create_url = Url::fromRoute('custom_page.collection_custom_page.add', [
+
+    // Define URLs that are used in help texts.
+    $create_custom_page_url = Url::fromRoute('custom_page.collection_custom_page.add', [
       'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
+    ]);
+
+    $menu_instance = $this->getOgMenuInstance();
+    $edit_navigation_menu_url = Url::fromRoute('entity.ogmenu_instance.edit_form', [
+      'ogmenu_instance' => $menu_instance->id(),
     ]);
 
     // When the tree is empty, no pages have been added yet to it. Show an help
@@ -61,13 +66,13 @@ class CollectionMenuBlock extends OgMenuBlock {
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => $this->t("There are no pages yet. Why don't you start by creating an <em>About</em> page?"),
-        '#access' => $create_url->access(),
+        '#access' => $create_custom_page_url->access(),
       ];
       $build['create']['link'] = [
         '#type' => 'link',
         '#title' => $this->t('Add a new page'),
-        '#url' => $create_url,
-        '#access' => $create_url->access(),
+        '#url' => $create_custom_page_url,
+        '#access' => $create_custom_page_url->access(),
       ];
     }
     elseif (empty($build['#items'])) {
@@ -77,12 +82,15 @@ class CollectionMenuBlock extends OgMenuBlock {
       $build['disabled'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t('All the pages have been disabled for this collection. You can edit the menu configuration or add a new page.'),
-        '#access' => $create_url->access(),
+        '#value' => $this->t('All the pages have been disabled for this collection. You can <a href=":edit_menu_url">edit the menu configuration</a> or <a href=":add_page_url">add a new page</a>.',
+          [
+            ':edit_menu_url' => $edit_navigation_menu_url->toString(),
+            ':add_page_url' => $create_custom_page_url->toString(),
+          ]),
+        '#access' => $create_custom_page_url->access(),
       ];
     }
 
-    $menu_instance = $this->getOgMenuInstance();
     if ($menu_instance instanceof OgMenuInstanceInterface) {
       // Show the "Edit menu" link only when at least one element is available.
       if ($tree) {
