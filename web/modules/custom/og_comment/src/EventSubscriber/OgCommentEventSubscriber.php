@@ -93,6 +93,10 @@ class OgCommentEventSubscriber implements EventSubscriberInterface {
         'name' => 'edit own comments',
         'title' => t('Edit own comments'),
       ]),
+      new GroupPermission([
+        'name' => 'delete own comments',
+        'title' => t('Delete own comments'),
+      ]),
     ]);
   }
 

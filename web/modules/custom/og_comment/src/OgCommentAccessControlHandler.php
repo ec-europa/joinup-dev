@@ -35,7 +35,7 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler {
         ->addCacheableDependency($entity);
     }
 
-    if ($comment_admin) {
+    if ($comment_admin instanceof AccessResultAllowed) {
       $access = AccessResult::allowed()->cachePerPermissions();
       $temp = $entity->getCommentedEntity()->access($operation, $account, TRUE);
       return ($operation != 'view') ? $access : $access->andIf($temp);
@@ -49,6 +49,9 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler {
 
       case 'update':
         return AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission($entity, $account, 'edit own comments'))->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
+
+      case 'delete':
+        return AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission($entity, $account, 'delete own comments'))->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
 
       default:
         // No opinion.
