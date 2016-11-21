@@ -92,6 +92,11 @@ class CollectionMenuBlock extends OgMenuBlock {
     }
 
     if ($menu_instance instanceof OgMenuInstanceInterface) {
+      // Make sure the cache tag from the OG menu are associated with this
+      // block, so that it will always be invalidated whenever the menu changes.
+      // @see \Drupal\Core\Menu\MenuTreeStorage::save()
+      $build['#cache']['tags'][] = 'config:system.menu.ogmenu-' . $menu_instance->id();
+
       // Show the "Edit menu" link only when at least one element is available.
       if ($tree) {
         $build['#contextual_links']['ogmenu'] = [
