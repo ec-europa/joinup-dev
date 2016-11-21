@@ -48,7 +48,6 @@ class CollectionMenuBlock extends OgMenuBlock {
     $tree = $this->menuTree->transform($tree, $manipulators);
     $build = $this->menuTree->build($tree);
 
-
     // Define URLs that are used in help texts.
     $create_custom_page_url = Url::fromRoute('custom_page.collection_custom_page.add', [
       'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
