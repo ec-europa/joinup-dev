@@ -26,6 +26,7 @@ default:
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'
         Entity actions: '.block-local-tasks-block'
+        Comment: '.comment'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:
