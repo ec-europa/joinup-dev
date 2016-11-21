@@ -110,8 +110,12 @@ config_devel:
   - core.entity_form_mode.user.register
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.default
+  - core.entity_view_display.user.user.view_mode_featured
+  - core.entity_view_display.user.user.view_mode_tile
   - core.entity_view_mode.node.full
   - core.entity_view_mode.user.full
+  - core.entity_view_mode.user.view_mode_featured
+  - core.entity_view_mode.user.view_mode_tile
   - ds.settings
   - editor.editor.content_editor
   - field.field.ogmenu_instance.navigation.og_audience

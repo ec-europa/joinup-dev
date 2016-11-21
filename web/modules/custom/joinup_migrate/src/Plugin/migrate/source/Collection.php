@@ -41,9 +41,9 @@ class Collection extends CollectionBase {
   public function query() {
     $query = parent::query();
 
-    $this->alias['og'] = $query->leftJoin("{$this->dbName}.og", 'og', "{$this->alias['node']}.nid = %alias.nid");
-    $this->alias['repository_url'] = $query->leftJoin("{$this->dbName}.content_field_repository_url", 'repository_url', "{$this->alias['repository']}.vid = %alias.vid");
-    $this->alias['node_revision'] = $query->leftJoin("{$this->dbName}.node_revisions", 'node_revision', "{$this->alias['node']}.vid = %alias.vid");
+    $this->alias['og'] = $query->leftJoin("{$this->getSourceDbName()}.og", 'og', "{$this->alias['node']}.nid = %alias.nid");
+    $this->alias['repository_url'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_repository_url", 'repository_url', "{$this->alias['repository']}.vid = %alias.vid");
+    $this->alias['node_revision'] = $query->leftJoin("{$this->getSourceDbName()}.node_revisions", 'node_revision', "{$this->alias['node']}.vid = %alias.vid");
 
     $query
       ->fields('j', [
