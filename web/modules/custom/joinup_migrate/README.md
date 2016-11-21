@@ -14,8 +14,13 @@ The migration will use these resources:
   and filename are configurable in the build properties (see below).
 * An Excel sheet that contains mappings of the content on the Drupal 6 site.
   The file can be found in the `./resources/migrate` folder.
-* The original files from the D6 version of Joinup. These are not currently
-  available but will be made available in the future.
+* The original files from the D6 version of Joinup. The files are located on our
+  S3 Bucket. You should mount the `joinup2` S3 Bucket on your local file system
+  or on the machine where the migration will take place. Get the S3 Bucket
+  connection credentials from the team. Relevant info:
+  * Bucket name: `joinup2`
+  * Access Key ID
+  * Secret Access Key
 
 
 ## Initial setup
@@ -24,7 +29,46 @@ In order to start a migration we will need to do some preparation:
 
 1. Make sure you have the different resources available as outlined in the
    previous paragraph.
-2. Put your local configuration into `build.properties.local`:
+
+1. Mount the `joinup2` S3 Bucket on your local filesystem:
+
+   Use the appropriate software. The most used is
+   [FUSE-based file system backed by Amazon S3](https://github.com/s3fs-fuse/s3fs-fuse),
+   which is supported on most ***nix** systems. Install the software following
+   the [README.md](https://github.com/s3fs-fuse/s3fs-fuse/blob/master/README.md).
+
+   Steps to mount files with
+   [FUSE-based file system backed by Amazon S3](https://github.com/s3fs-fuse/s3fs-fuse):
+
+   * Create a password file and secure it (the file name and location should be
+     adapted on according to your preferences):
+     ```bash
+     $ echo MY_ACCESS_KEY_ID:SECRET_ACCESS_KEY > ~/.passwd-s3fs
+     $ chmod 600 ~/.passwd-s3fs
+     ```
+   * Create a mount point directory:
+     ```bash
+     $ mkdir -p /path/to/mount/point
+     ```
+   * Mount the S3 Bucket files:
+     ```bash
+     $ s3fs joinup2 /path/to/mount/point -o passwd_file=~/.passwd-s3fs -o use_cache=/tmp -o allow_other -o umask=0002
+     ```
+     You can use a dedicated directory for cache in `-o use_cache=`.
+   * Test the mount. Legacy D6 files should be under `joinupv2.0/` directory:
+     ```bash
+     $ ls /path/to/mount/point/joinupv2.0
+     sites
+     $ ls /path/to/mount/point/joinupv2.0/sites/default
+     files
+     ```
+     This should contain the `sites/default/files` directory.
+   * Unmount the S3 Bucket:
+     ```bash
+     $ umount -f /path/to/mount/point
+     ```
+
+1. Put your local configuration into `build.properties.local`:
 
     ```
     # Migration configuration
@@ -33,6 +77,9 @@ In order to start a migration we will need to do some preparation:
     # Database settings.
     migration.db.name = my_db_name
     migration.db.import_path = /my/path/to/d6-joinup.sql
+
+    # Files path. Point to the webroot of legacy site.
+    migration.source.root = /path/to/mount/point/joinupv2.0
     ```
 
     Note that `migration.db.host`, `migration.db.port`, `migration.db.user` and
@@ -44,7 +91,7 @@ In order to start a migration we will need to do some preparation:
     granted with read-only permissions against the D6 database, so he can read
     source data.
 
-3. Run the migration setup. Note that this should normally only be run once
+1. Run the migration setup. Note that this should normally only be run once
    since it will write the migration database credentials to `settings.php`.
    Running this again will cause these credentials to be appended a second
    time which is useless.
@@ -53,7 +100,7 @@ In order to start a migration we will need to do some preparation:
     $ ./vendor/bin/phing setup-migration
     ```
 
-4. Import the D6 database.
+1. Import the D6 database.
 
     The source database (D6) should be imported *on the same server* as the
     destination database (D8) as the migration is performing select queries

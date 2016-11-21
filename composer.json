@@ -9,7 +9,7 @@
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "dev-master#5456199acdcc16b243814aa45259f4c56272a634",
         "drupal/console": "~1.0",
-        "drupal/core": "^8.2.2",
+        "drupal/core": "8.2.2",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^2.0",
         "drupal/facets": "1.0.0-alpha6",
@@ -19,7 +19,7 @@
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_spreadsheet": "1.x-dev",
-        "drupal/og": "dev-1.x#dbffd5d9123b2b5b0f0bc91efb3bc9d45da3f073",
+        "drupal/og": "dev-8.x-1.x#dbffd5d9123b2b5b0f0bc91efb3bc9d45da3f073",
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phingdrushtask": "dev-7.x-2.x#13428ee7a229da3b7e6be4687587048150b1fd25",
         "drupal/r4032login": "dev-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
@@ -104,7 +104,9 @@
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                 "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
                 "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
-                "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch"
+                "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
+                "Don't let the whole migration crash on a download failure @see https://www.drupal.org/node/2826200": "https://www.drupal.org/files/issues/2826200-10.patch",
+                "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch"
             },
             "drupal/r4032login": {
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
@@ -151,6 +153,11 @@
                     "reference": "master"
                 }
             }
+        },
+        {
+            "_comment": "This is the development repository of the D8 port of Organic Groups. Remove this when an official alpha release is made.",
+            "type": "vcs",
+            "url": "git@github.com:amitaibu/og"
         },
         {
             "type": "vcs",
