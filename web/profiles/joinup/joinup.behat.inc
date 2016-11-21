@@ -691,6 +691,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Create a comment.
+   *
    * @Given comments:
    */
   public function comments(TableNode $table) {
@@ -728,8 +730,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'entity_id' => $id,
       ];
       $comment_values += $values;
+      // Ignore due to conflicting Comment class in Phing.
+      // @codingStandardsIgnoreStart
       $comment = Entity\Comment::create($comment_values);
+      // @codingStandardsIgnoreEnd
       $comment->save();
     }
   }
+
 }
