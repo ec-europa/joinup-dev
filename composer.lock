@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "96f850f9bb298d907ebfd82f73da281a",
-    "content-hash": "ba9907e323bd9f4ed61dda35646b1da5",
+    "hash": "763b9be80e833e0be650ac01d52e3de8",
+    "content-hash": "7e039be504081033f872db98c2c9bea6",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -114,16 +114,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.30",
+            "version": "3.19.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1be75a77fb58eb0b0bdf8ff87495466934afb736"
+                "reference": "3b7777e4091f4bf4de1dee19cfdad87249facb0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1be75a77fb58eb0b0bdf8ff87495466934afb736",
-                "reference": "1be75a77fb58eb0b0bdf8ff87495466934afb736",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3b7777e4091f4bf4de1dee19cfdad87249facb0e",
+                "reference": "3b7777e4091f4bf4de1dee19cfdad87249facb0e",
                 "shasum": ""
             },
             "require": {
@@ -190,7 +190,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-11-18 23:27:25"
+            "time": "2016-11-21 23:17:16"
         },
         {
             "name": "composer/ca-bundle",
@@ -2607,7 +2607,8 @@
                 },
                 "patches_applied": {
                     "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch",
-                    "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-2_0-on_2753667-8.patch"
+                    "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-2_0-on_2753667-8.patch",
+                    "item_id column is too short @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/2829696-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

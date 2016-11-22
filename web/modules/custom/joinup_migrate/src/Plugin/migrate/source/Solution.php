@@ -23,6 +23,7 @@ class Solution extends SolutionBase {
       'created' => $this->t('Creation date'),
       'body' => $this->t('Description'),
       'changed' => $this->t('Last changed date'),
+      'keywords' => $this->t('Keywords'),
     ] + parent::fields();
   }
 
@@ -39,7 +40,7 @@ class Solution extends SolutionBase {
     $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed');
 
     return $query
-      ->fields($this->alias['node'], ['title', 'created', 'changed'])
+      ->fields($this->alias['node'], ['title', 'created', 'changed', 'vid'])
       ->fields($this->alias['node_revision'], ['body']);
   }
 
@@ -57,6 +58,20 @@ class Solution extends SolutionBase {
       $row->setSourceProperty('changed', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
 
+    // Prepare keywords.
+    $query = $this->select('term_node', 'tn');
+    $query->join('term_data', 'td', 'tn.tid = td.tid');
+    $keywords = $query
+      ->fields('td', ['name'])
+      ->condition('tn.nid', $row->getSourceProperty('nid'))
+      ->condition('tn.vid', $row->getSourceProperty('vid'))
+      // The keywords vocabulary vid is 28.
+      ->condition('td.vid', 28)
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('keywords', $keywords);
+drush_print_r( $row->getSourceProperty('nid'));
+    drush_print_r($keywords);
     return parent::prepareRow($row);
   }
 

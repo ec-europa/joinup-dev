@@ -27,6 +27,7 @@ process:
   # Blocked by ISAICP-3007.
   # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
   # field_is_documentation:
+  field_keywords: keywords
   field_is_state:
     plugin: default_value
     default_value: validated
