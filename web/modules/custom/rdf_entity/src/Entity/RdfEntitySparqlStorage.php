@@ -932,7 +932,7 @@ QUERY;
     /** @var \Drupal\Core\Entity\Plugin\DataType\EntityReference $entity_property */
     $entity_property = $item->get('entity');
     $target = $entity_property->getTarget();
-    if ($target->isEmpty()) {
+    if (empty($target) || $target->isEmpty()) {
       return FALSE;
     }
     /** @var EntityInterface $target_entity */
