@@ -100,11 +100,11 @@ class Collection extends CollectionBase {
 
     // Assure a created date.
     if (!$row->getSourceProperty('created')) {
-      $row->setSourceProperty('created', REQUEST_TIME);
+      $row->setSourceProperty('created', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
     // Assure a changed date.
     if (!$row->getSourceProperty('changed')) {
-      $row->setSourceProperty('changed', REQUEST_TIME);
+      $row->setSourceProperty('changed', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
 
     // Get affiliates.

@@ -35,6 +35,7 @@ abstract class SolutionBase extends GroupBase {
     $query = parent::query();
 
     $this->alias['node'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'n', "j.nid = %alias.nid");
+    $this->alias['node_revision'] = $query->leftJoin("{$this->getSourceDbName()}.node_revisions", 'node_revision', "{$this->alias['node']}.vid = %alias.vid");
 
     return $query
       ->fields($this->alias['node'], ['nid'])

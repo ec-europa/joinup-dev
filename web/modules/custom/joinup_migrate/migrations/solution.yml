@@ -14,11 +14,23 @@ process:
     source: nid
     migration: solution_banner
     no_stub: true
+  # Blocked by ISAICP-3006.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3006
+  # field_is_contact_information:
+  field_ar_creation_date: created
   # @todo This should be revisited and fixed after ISAICP-3002.
   # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3002
+  field_is_description/value: body
+  field_is_description/format:
+    plugin: default_value
+    default_value: content_editor
+  # Blocked by ISAICP-3007.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
+  # field_is_documentation:
   field_is_state:
     plugin: default_value
     default_value: validated
+
 destination:
   plugin: entity:rdf_entity
   default_bundle: solution
