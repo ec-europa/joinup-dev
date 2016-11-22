@@ -165,7 +165,10 @@ Feature: June 2016 demo
       | Kicker   | S.H.I.E.L.D. to nuke New York?                                                           |
       | Content  | In a desperate attempt to stop the nuke, Nick fury shot down an airplane of S.H.I.E.L.D. |
     And I press "Save"
-    And I should see the heading "New York under attack"
+    # @todo Remove this line when caching Search API results is fixed.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2574
+    And I commit the solr index
+    Then I should see the heading "New York under attack"
     And I should see the text "S.H.I.E.L.D. to nuke New York?"
 
     # Scenario B: A non member registered user, browses the website.
