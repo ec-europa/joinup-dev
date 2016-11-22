@@ -932,14 +932,17 @@ QUERY;
     /** @var \Drupal\Core\Entity\Plugin\DataType\EntityReference $entity_property */
     $entity_property = $item->get('entity');
     $target = $entity_property->getTarget();
+    if ($target->isEmpty()) {
+      return FALSE;
+    }
     /** @var EntityInterface $target_entity */
     $target_entity = $target->getValue();
     $target_entity_type = $target_entity->getEntityType();
     $target_entity_storage_class = $target_entity_type->getStorageClass();
-    if ($target_entity_storage_class == '\Drupal\rdf_entity\Entity\RdfEntitySparqlStorage') {
-      return TRUE;
+    if ($target_entity_storage_class !== '\Drupal\rdf_entity\Entity\RdfEntitySparqlStorage') {
+      return FALSE;
     }
-    return FALSE;
+    return TRUE;
   }
 
   /**
