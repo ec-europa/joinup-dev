@@ -68,7 +68,7 @@ class PhpUnitConfigurationTask extends \Task {
    *
    * @var string
    */
-  private $sparqlUrl = 'sparql://127.0.0.1:8890/';
+  private $sparqlUrl = 'sparql://localhost:8890/';
 
   /**
    * The path to the directory where HTML output from browsertests is stored.

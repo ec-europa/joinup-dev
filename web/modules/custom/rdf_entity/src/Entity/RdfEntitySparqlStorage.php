@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -126,6 +127,20 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $container->get('sparql.graph_handler'),
       $container->get('sparql.mapping_handler')
     );
+  }
+
+  /**
+   * Build a new graph (list of triples).
+   *
+   * @param string $graph_uri
+   *   The uri of the graph.
+   *
+   * @return \EasyRdf\Graph
+   *   The EasyRdf graph object.
+   */
+  protected static function getGraph($graph_uri) {
+    $graph = new Graph($graph_uri);
+    return $graph;
   }
 
   /**
@@ -306,6 +321,8 @@ QUERY;
 
   /**
    * Processes results from the load query and returns a list of values.
+   *
+   * @todo Reduce the cyclomatic complexity of this function.
    *
    * When an entity is loaded, the values might derive from multiple graph.
    * This function will process the results and attempt to load a published
@@ -659,13 +676,14 @@ QUERY;
     $target_graph = $this->getGraphHandler()->getTargetGraphFromEntity($entity);
     $graph_uri = $this->getBundleGraphUri($bundle, $target_graph);
 
-    $graph = new Graph($graph_uri);
+    $graph = self::getGraph($graph_uri);
 
     $properties = $this->mappingHandler->getEntityTypeMappedProperties($entity);
     $properties_list = "<" . implode(">, <", $properties['flat']) . ">";
     foreach ($entity->toArray() as $field_name => $field) {
       foreach ($field as $field_item) {
         foreach ($field_item as $column => $value) {
+          // No mapping for this column set.
           if (!isset($properties['by_field'][$field_name][$column])) {
             continue;
           }
@@ -673,31 +691,17 @@ QUERY;
           if ($field_name == 'rid') {
             continue;
           }
+          /** @var \Drupal\Core\Field\FieldItemList $field_item_list */
+          $field_item_list = $entity->get($field_name);
           // Don't add empty values.
-          if ($value === "") {
+          if ($field_item_list->isEmpty()) {
             continue;
           }
-
           $item = $entity->get($field_name)->first();
-          if (empty($item)) {
-            continue;
-          }
-          $reference = FALSE;
           // When the field is a entity reference, and it's target implements
           // RdfEntitySparqlStorage (it's an RDF based entity),
           // then store it as a resource.
-          if ($item instanceof EntityReferenceItem) {
-            /** @var \Drupal\Core\Entity\Plugin\DataType\EntityReference $entity_property */
-            $entity_property = $item->get('entity');
-            $target = $entity_property->getTarget();
-            /** @var EntityInterface $target_entity */
-            $target_entity = $target->getValue();
-            $target_entity_type = $target_entity->getEntityType();
-            $target_entity_storage_class = $target_entity_type->getStorageClass();
-            if ($target_entity_storage_class == '\Drupal\rdf_entity\Entity\RdfEntitySparqlStorage') {
-              $reference = TRUE;
-            }
-          }
+          $reference = $this->fieldIsReference($item);
           // Entity reference to another rdf entity.
           if ($reference) {
             $graph->addResource((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
@@ -716,20 +720,7 @@ QUERY;
     $graph->addResource((string) $id, $this->rdfBundlePredicate, $rdf_bundle);
 
     if (!$entity->isNew()) {
-      $query = <<<QUERY
-DELETE {
-  GRAPH <$graph_uri> {
-    <$id> ?field ?value
-  }
-}
-WHERE {
-  GRAPH <$graph_uri> {
-    <$id> ?field ?value .
-    FILTER (?field IN ($properties_list))
-  }
-}
-QUERY;
-      $this->sparql->query($query);
+      $this->deleteBeforeInsert($id, $graph_uri, $properties_list);
     }
     // @todo Do in one transaction... If possible.
     $this->insert($graph, $graph_uri);
@@ -923,6 +914,52 @@ QUERY;
    */
   protected function buildCacheId($id) {
     return "values:{$this->entityTypeId}:$id";
+  }
+
+  /**
+   * Determines if a field is an entity reference.
+   *
+   * @param FieldItemInterface $item
+   *   The field.
+   *
+   * @return bool
+   *   Is a reference
+   */
+  protected function fieldIsReference(FieldItemInterface $item) {
+    if (!$item instanceof EntityReferenceItem) {
+      return FALSE;
+    }
+    /** @var \Drupal\Core\Entity\Plugin\DataType\EntityReference $entity_property */
+    $entity_property = $item->get('entity');
+    $target = $entity_property->getTarget();
+    /** @var EntityInterface $target_entity */
+    $target_entity = $target->getValue();
+    $target_entity_type = $target_entity->getEntityType();
+    $target_entity_storage_class = $target_entity_type->getStorageClass();
+    if ($target_entity_storage_class == '\Drupal\rdf_entity\Entity\RdfEntitySparqlStorage') {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Delete an entity before it gets saved.
+   */
+  protected function deleteBeforeInsert($id, $graph_uri, $properties_list) {
+    $query = <<<QUERY
+DELETE {
+  GRAPH <$graph_uri> {
+    <$id> ?field ?value
+  }
+}
+WHERE {
+  GRAPH <$graph_uri> {
+    <$id> ?field ?value .
+    FILTER (?field IN ($properties_list))
+  }
+}
+QUERY;
+    $this->sparql->query($query);
   }
 
 }

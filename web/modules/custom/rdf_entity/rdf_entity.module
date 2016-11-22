@@ -97,7 +97,7 @@ function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity,
     $data[$column] = $form_state->getValue($column);
 
   }
-  $entity->setThirdPartySetting('rdf_entity', 'mapping_' . $column, $value);
+  $entity->setThirdPartySetting('rdf_entity', 'mapping', $data);
 }
 
 /**
