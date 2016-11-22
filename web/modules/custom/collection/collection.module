@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -153,9 +154,16 @@ function collection_rdf_entity_presave(EntityInterface $entity) {
 /**
  * Implements hook_entity_update().
  *
- * When the entity is saved into the default graph, the draft must be deleted.
+ * Performs the following actions:
+ * - Invalidates group content cache tags for the entity that is being changed.
+ * - When the entity is saved into the default graph, the draft must be deleted.
  */
 function collection_entity_update(EntityInterface $entity) {
+  // If group content is created or updated, invalidate the group content cache
+  // tags for each of the groups this group content belongs to. This allows
+  // group listings to be cached effectively.
+  collection_invalidate_group_content_cache_tags($entity);
+
   $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
   if (empty($enabled_bundles) || $entity->bundle() != 'collection' || !in_array($entity->bundle(), $enabled_bundles)) {
     return;
@@ -164,6 +172,19 @@ function collection_entity_update(EntityInterface $entity) {
   if ($entity->field_ar_state->value === 'validated') {
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
   }
+}
+
+/**
+ * Implements hook_entity_delete().
+ *
+ * Performs the following actions:
+ * - Invalidates group content cache tags for the entity that is being deleted.
+ */
+function collection_entity_delete(EntityInterface $entity) {
+  // If group content is deleted, invalidate the group content cache tags for
+  // each of the groups this group content belongs to. This allows group
+  // listings to be cached effectively.
+  collection_invalidate_group_content_cache_tags($entity);
 }
 
 /**
@@ -229,6 +250,9 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
           $entity->id(),
         ],
       ];
+      // Tag the view with the group content cache tag, so that it gets
+      // invalidated whenever the group content changes.
+      $build['#cache']['tags'][] = 'og-group-content:rdf_entity:' . $entity->id();
     }
   }
 
@@ -246,5 +270,31 @@ function collection_field_widget_form_alter(&$element, FormStateInterface $form_
   $field_name = $context['items']->getFieldDefinition()->getName();
   if ($field_name == 'field_ar_closed') {
     $element['#attached']['library'][] = 'collection/collection_form';
+  }
+}
+
+/**
+ * Invalidates group content cache tags for the groups this entity belongs to.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The group content entity that is being created, changed or deleted and is
+ *   the direct cause for the need to invalidate cached group content.
+ */
+function collection_invalidate_group_content_cache_tags(EntityInterface $entity) {
+  // If group content is created or updated, invalidate the group content cache
+  // tags for each of the groups this group content belongs to. This allows
+  // group listings to be cached effectively. The cache tag format is
+  // 'og-group-content:{group entity type}:{group entity id}'.
+  // @todo This has been proposed as an addition to OG upstream. Remove this in
+  //   case it is accepted.
+  // @see https://github.com/Gizra/og/issues/216
+  if (Og::isGroupContent($entity->getEntityTypeId(), $entity->bundle())) {
+    $tags = [];
+    foreach (\Drupal::service('og.membership_manager')->getGroupIds($entity) as $entity_type => $ids) {
+      foreach ($ids as $id) {
+        $tags[] = "$entity_type:$id";
+      }
+    }
+    Cache::invalidateTags(Cache::buildTags('og-group-content', $tags));
   }
 }
