@@ -5,6 +5,7 @@ namespace Drupal\Tests\rdf_entity\Kernel;
 use Drupal\Core\Database\Database;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
+use EasyRdf\Http;
 
 /**
  * Tests the support of saving various encoded stings in the triple store.
@@ -14,7 +15,9 @@ use Drupal\rdf_entity\Entity\Rdf;
 class RdfEncodingTest extends EntityKernelTestBase {
 
   /**
-   * @var array The SPARQL database connection.
+   * The SPARQL database connection.
+   *
+   * @var array
    */
   protected $database;
 
@@ -57,8 +60,8 @@ class RdfEncodingTest extends EntityKernelTestBase {
    * Checks if the triple store is an Virtuoso 6 instance.
    */
   protected function detectVirtuoso6() {
-    $client = \EasyRdf\Http::getDefaultHttpClient();
-    $client->resetParameters(true);
+    $client = Http::getDefaultHttpClient();
+    $client->resetParameters(TRUE);
     $client->setUri("http://{$this->database['host']}:{$this->database['port']}/");
     $client->setMethod('GET');
     $response = $client->request();
