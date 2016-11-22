@@ -14,7 +14,7 @@
         "drupal/ds": "^2.0",
         "drupal/facets": "~1.0@alpha",
         "drupal/field_group": "dev-1.x#0f289425f4f1b156737fe27ae29dde2c55bbec27",
-        "drupal/inline_entity_form": "dev-1.x#44c5cfcedd11ed90d473734bd77d9b069c4021fa",
+        "drupal/inline_entity_form": "dev-1.x",
         "drupal/message": "~1.0",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
