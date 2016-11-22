@@ -4,6 +4,7 @@ default:
       contexts:
         - FeatureContext
         - Drupal\joinup\Context\DrupalContext
+        - Drupal\joinup\Context\ScreenshotContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\DrupalExtension\Context\MinkContext
@@ -32,6 +33,7 @@ default:
         message_selector: '.alert'
         error_message_selector: '.alert.alert--error'
         success_message_selector: '.alert.alert--status'
+        warning_message_selector: '.alert.alert--warning'
         login_form_selector: '#user-login-form'
       subcontexts:
         paths:
