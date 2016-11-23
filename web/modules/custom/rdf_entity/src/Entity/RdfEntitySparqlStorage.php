@@ -701,9 +701,7 @@ QUERY;
           // When the field is a entity reference, and it's target implements
           // RdfEntitySparqlStorage (it's an RDF based entity),
           // then store it as a resource.
-          $reference = $this->fieldIsReference($item);
-          // Entity reference to another rdf entity.
-          if ($reference) {
+          if ($this->fieldIsReference($item)) {
             $graph->addResource((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
           }
           // All other fields get stored as a literal.
@@ -939,14 +937,24 @@ QUERY;
     $target_entity = $target->getValue();
     $target_entity_type = $target_entity->getEntityType();
     $target_entity_storage_class = $target_entity_type->getStorageClass();
-    if ($target_entity_storage_class !== '\Drupal\rdf_entity\Entity\RdfEntitySparqlStorage') {
-      return FALSE;
-    }
-    return TRUE;
+    return $target_entity_storage_class !== self::class;
   }
 
   /**
    * Delete an entity before it gets saved.
+   *
+   * The difference between deleteBeforeInsert and delete method is the
+   * properties_list variable. Filtering the fields to be deleted using this
+   * variable, ensures that additional data that might be imported through an
+   * external repository are not lost during an entity update.
+   *
+   * @param string $id
+   *    The entity uri.
+   * @param string $graph_uri
+   *    The graph uri.
+   * @param string $properties_list
+   *    A string resulting after a conversion of an array to the SPARQL uri
+   *    array format.
    */
   protected function deleteBeforeInsert($id, $graph_uri, $properties_list) {
     $query = <<<QUERY
