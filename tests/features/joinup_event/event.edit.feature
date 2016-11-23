@@ -25,7 +25,7 @@ Feature: "Event page" editing.
     Then I should see the link "Edit" in the "Entity actions" region
     # A moderator should always be able to edit the content.
     When I am logged in as a moderator
-    And I go to the "<event>" discussion
+    And I go to the "<event>" event
     Then I should see the link "Edit" in the "Entity actions" region
     Examples:
       | user          | collection        | event                    | role        |
@@ -50,5 +50,5 @@ Feature: "Event page" editing.
     Then I should see the link "Edit" in the "Entity actions" region
     # A moderator should always be able to edit the content.
     When I am logged in as a moderator
-    And I go to the "Silver Snow" discussion
+    And I go to the "Silver Snow" event
     Then I should see the link "Edit" in the "Entity actions" region

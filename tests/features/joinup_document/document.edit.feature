@@ -25,7 +25,7 @@ Feature: "Document page" editing.
     Then I should see the link "Edit" in the "Entity actions" region
     # A moderator should always be able to edit the content.
     When I am logged in as a moderator
-    And I go to the "<document>" discussion
+    And I go to the "<document>" document
     Then I should see the link "Edit" in the "Entity actions" region
     Examples:
       | user           | collection      | document               | role        |
@@ -50,5 +50,5 @@ Feature: "Document page" editing.
     Then I should see the link "Edit" in the "Entity actions" region
     # A moderator should always be able to edit the content.
     When I am logged in as a moderator
-    And I go to the "Prized Cloud" discussion
+    And I go to the "Prized Cloud" document
     Then I should see the link "Edit" in the "Entity actions" region
