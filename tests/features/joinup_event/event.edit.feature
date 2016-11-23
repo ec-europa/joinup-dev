@@ -7,7 +7,7 @@ Feature: "Event page" editing.
   # This is a smokescreen test as the full behaviour should be tested in workflows.
   # @todo: To be removed after ISAICP-2268 is implemented.
   # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2268
-  Scenario Outline:
+  Scenario Outline: Owners and moderators should be able to view the Edit link.
     Given users:
       | name   |
       | <user> |
@@ -34,16 +34,16 @@ Feature: "Event page" editing.
 
   Scenario: A solution facilitator can edit his content.
     Given users:
-      | name        |
+      | name           |
       | Krista Garrett |
     And the following solutions:
       | title                | description        | state     |
       | Dreamer in the Snake | Sample description | validated |
     And the following solution user memberships:
-      | solution             | user        | roles       |
+      | solution             | user           | roles       |
       | Dreamer in the Snake | Krista Garrett | facilitator |
     And "event" content:
-      | title       | author      | solution             |
+      | title       | author         | solution             |
       | Silver Snow | Krista Garrett | Dreamer in the Snake |
     When I am logged in as "Krista Garrett"
     And I go to the "Silver Snow" event

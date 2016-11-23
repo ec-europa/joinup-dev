@@ -7,7 +7,7 @@ Feature: "Document page" editing.
   # This is a smokescreen test as the full behaviour should be tested in workflows.
   # @todo: To be removed after ISAICP-2266 is implemented.
   # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2266
-  Scenario Outline:
+  Scenario Outline: Owners and moderators should be able to view the Edit link.
     Given users:
       | name   |
       | <user> |
