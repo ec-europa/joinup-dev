@@ -19,7 +19,7 @@
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_spreadsheet": "1.x-dev",
-        "drupal/og": "dev-8.x-1.x#dbffd5d9123b2b5b0f0bc91efb3bc9d45da3f073",
+        "drupal/og": "dev-1.x#dbffd5d9123b2b5b0f0bc91efb3bc9d45da3f073",
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phingdrushtask": "dev-7.x-2.x#13428ee7a229da3b7e6be4687587048150b1fd25",
         "drupal/r4032login": "dev-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
@@ -153,11 +153,6 @@
                     "reference": "master"
                 }
             }
-        },
-        {
-            "_comment": "This is the development repository of the D8 port of Organic Groups. Remove this when an official alpha release is made.",
-            "type": "vcs",
-            "url": "git@github.com:amitaibu/og"
         },
         {
             "type": "vcs",
