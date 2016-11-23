@@ -200,6 +200,13 @@ class Connection {
     return $this->connectionOptions;
   }
 
+  /**
+   * Destroys the db connection.
+   */
+  public function destroy() {
+
+  }
+
 }
 
 /**
