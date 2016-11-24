@@ -259,9 +259,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
     }
 
-    // @todo Remove this after the widget in ISAICP-2301 is build.
     $values['rid'] = 'collection';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $collection = Rdf::create($values);
     $collection->save();
     $this->collections[$collection->id()] = $collection;
