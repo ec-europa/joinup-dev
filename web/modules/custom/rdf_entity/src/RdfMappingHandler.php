@@ -57,10 +57,12 @@ class RdfMappingHandler {
     $bundle_type = $entity_type->getBundleEntityType();
     $label = $entity_type->getKey('label');
     $bundle_label_mapping = [];
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface[] $bundle_entities */
     $bundle_entities = $this->entityManager->getStorage($bundle_type)->loadMultiple();
     foreach ($bundle_entities as $bundle_entity) {
-      $settings = $bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $label, FALSE);
+      $settings = rdf_entity_get_third_party_property($bundle_entity, 'mapping', $label, FALSE);
       if (!is_array($settings)) {
+        $settings = rdf_entity_get_third_party_property($bundle_entity, 'mapping', $label, FALSE);
         throw new \Exception('No label predicate mapping set for bundle ' . $bundle_entity->label());
       }
       $type = array_pop($settings);
@@ -97,7 +99,7 @@ class RdfMappingHandler {
       // The id of the entity type is 'rdf_type' but the key ('id') is the
       // bundle key.
       $bundle_type = $bundle_entity->getEntityType()->getKey('id');
-      $settings = $bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $bundle_type, FALSE);
+      $settings = rdf_entity_get_third_party_property($bundle_entity, 'mapping', $bundle_type, FALSE);
       if (!is_array($settings)) {
         throw new \Exception('No rdf:type mapping set for bundle ' . $bundle_entity->label());
       }
@@ -181,7 +183,7 @@ class RdfMappingHandler {
           continue;
         }
         foreach ($base_field_definitions as $id => $base_field_definition) {
-          $field_data = $rdf_bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $id, FALSE);
+          $field_data = rdf_entity_get_third_party_property($rdf_bundle_entity, 'mapping', $id, FALSE);
           if (!$field_data) {
             continue;
           }
@@ -201,7 +203,7 @@ class RdfMappingHandler {
             continue;
           }
           foreach ($storage_definition->getColumns() as $column => $column_info) {
-            if ($predicate = $storage_definition->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE)) {
+            if ($predicate = rdf_entity_get_third_party_property($storage_definition, 'mapping', $column, FALSE)) {
               if (empty($predicate)) {
                 continue;
               }
@@ -235,6 +237,7 @@ class RdfMappingHandler {
     // Collect impacted fields.
     $definitions = $this->entityManager->getFieldDefinitions($entity->getEntityTypeId(), $bundle);
     $base_field_definitions = $this->entityManager->getBaseFieldDefinitions($entity->getEntityTypeId());
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $rdf_bundle_entity */
     $rdf_bundle_entity = $this->entityManager->getStorage($entity->getEntityType()->getBundleEntityType())->load($bundle);
     /** @var \Drupal\Core\Field\BaseFieldDefinition $field_definition */
     foreach ($definitions as $field_name => $field_definition) {
@@ -244,14 +247,14 @@ class RdfMappingHandler {
         continue;
       }
       foreach ($storage_definition->getColumns() as $column => $column_info) {
-        if ($property = $storage_definition->getThirdPartySetting('rdf_entity', 'mapping_' . $column, FALSE)) {
+        if ($property = rdf_entity_get_third_party_property($storage_definition, 'mapping', $column, FALSE)) {
           $properties['by_field'][$field_name][$column] = $property;
           $properties['flat'][$property] = $property;
         }
       }
     }
     foreach ($base_field_definitions as $field_name => $base_field_definition) {
-      $field_data = $rdf_bundle_entity->getThirdPartySetting('rdf_entity', 'mapping_' . $field_name, FALSE);
+      $field_data = rdf_entity_get_third_party_property($rdf_bundle_entity, 'mapping', $field_name, FALSE);
       if (!$field_data) {
         continue;
       }
