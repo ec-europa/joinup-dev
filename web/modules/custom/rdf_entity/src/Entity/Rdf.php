@@ -32,6 +32,7 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *
  * The class also uses the EntityChangedTrait trait which allows it to record
  * timestamps of save operations.
+ *
  * @ingroup rdf_entity
  *
  * @ContentEntityType(

@@ -41,7 +41,6 @@ class RdfEntityTest extends JoinupKernelTestBase {
     // Check that values were retrieved after loading from triple store.
     $rdf = Rdf::load($rdf->id());
 
-//print_r($rdf->toArray());
     $this->assertEquals('http://example.com', $rdf->getUri());
     $this->assertEquals('http://example.com', $rdf->uuid());
     $this->assertEquals(Crypt::hashBase64('http://example.com'), $rdf->id());
@@ -50,20 +49,20 @@ class RdfEntityTest extends JoinupKernelTestBase {
     $this->assertEquals('Bar', $rdf->field_text->value);
 
     // Create a rdf_entity with no initial URI.
-//    $rdf = Rdf::create([
-//      'rid' => 'dummy',
-//      'label' => 'Baz',
-//      'field_text' => 'Qux',
-//    ]);
-//    $rdf->save();
-//
-//    // Check that values were retrieved after loading from triple store.
-//    $rdf = Rdf::load($rdf->id());
-//    $this->assertEquals($rdf->getUri(), $rdf->uuid());
-//    $this->assertEquals(Crypt::hashBase64($rdf->getUri()), $rdf->id());
-//    $this->assertEquals('dummy', $rdf->bundle());
-//    $this->assertEquals('Baz', $rdf->label());
-//    $this->assertEquals('Qux', $rdf->field_text->value);
+    $rdf = Rdf::create([
+      'rid' => 'dummy',
+      'label' => 'Baz',
+      'field_text' => 'Qux',
+    ]);
+    $rdf->save();
+
+    // Check that values were retrieved after loading from triple store.
+    $rdf = Rdf::load($rdf->id());
+    $this->assertEquals($rdf->getUri(), $rdf->uuid());
+    $this->assertEquals(Crypt::hashBase64($rdf->getUri()), $rdf->id());
+    $this->assertEquals('dummy', $rdf->bundle());
+    $this->assertEquals('Baz', $rdf->label());
+    $this->assertEquals('Qux', $rdf->field_text->value);
   }
 
 }

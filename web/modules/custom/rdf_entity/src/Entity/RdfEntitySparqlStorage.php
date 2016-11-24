@@ -317,7 +317,6 @@ WHERE{
 QUERY;
 
     $entity_values = $this->sparql->query($query);
-print_r($entity_values);
     return $this->processGraphResults($entity_values);
   }
 
