@@ -6,7 +6,8 @@ dependencies:
     - taxonomy
 third_party_settings:
   rdf_entity:
-    mapping_target_id: 'http://purl.org/dc/terms/DCMIType'
+    mapping:
+      target_id: 'http://purl.org/dc/terms/DCMIType'
 id: rdf_entity.field_is_solution_type
 field_name: field_is_solution_type
 entity_type: rdf_entity

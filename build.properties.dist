@@ -190,6 +190,8 @@ phpunit.base_url = ${drupal.base_url}
 # The database URL to use in kernel tests and functional tests.
 phpunit.db_url = ${drupal.db.url}
 
+phpunit.sparql_url = sparql://${sparql.host}:${sparql.port}/
+
 # The path to the directory where HTML output from browsertests is stored.
 phpunit.browsertest_output_dir = ${website.sites.dir}/simpletest/browser_output
 
