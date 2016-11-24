@@ -43,4 +43,36 @@ interface RdfInterface extends ContentEntityInterface, EntityPublishedInterface 
    */
   public function deleteFromGraph($graph);
 
+  /**
+   * Provides a setter for the 'uri' base field.
+   *
+   * @param string $uri
+   *   The URI to be set.
+   *
+   * @return $this
+   *
+   * @throws \InvalidArgumentException
+   *   If the URI is already set and different.
+   */
+  public function setUri($uri);
+
+  /**
+   * Gets the URI of th entity.
+   *
+   * @return string
+   *   The URI of th entity.
+   */
+  public function getUri();
+
+  /**
+   * Gets a hash from the URI.
+   *
+   * @return string
+   *   The hashed URI.
+   *
+   * @throws \RuntimeException
+   *   If the URI is not yet set.
+   */
+  public function getUriHash();
+
 }

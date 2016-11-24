@@ -81,7 +81,15 @@ function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateI
  */
 function rdf_entity_get_third_party_property(ConfigEntityInterface $object, $property, $column, $default = NULL) {
   $property_value = $object->getThirdPartySetting('rdf_entity', $property, FALSE);
-  if (!is_array($property_value) || !isset($property_value[$column])) {
+
+  if (!is_array($property_value)) {
+    $property_value = [];
+  }
+
+  // The entity 'uri' is a special kind of fish.
+  $property_value += ['id' => ['value' => 'http://purl.org/dc/terms/identifier']];
+
+  if (!isset($property_value[$column])) {
     return $default;
   }
   return $property_value[$column];
@@ -165,9 +173,9 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
   /** @var \Drupal\Core\Field\BaseFieldDefinition $base_field */
   foreach ($base_fields as $id => $base_field) {
     $columns = $base_field->getColumns();
-    // The entity id doesn't need a mapping,
-    // as this is the subject of the triple.
-    if ($id == $idKey) {
+    // Entity 'id' and 'url' fields doesn't need a mapping, as they are subject
+    // of the triple.
+    if (in_array($id, [$idKey, 'uri'])) {
       continue;
     }
     foreach ($columns as $column_name => $column) {
