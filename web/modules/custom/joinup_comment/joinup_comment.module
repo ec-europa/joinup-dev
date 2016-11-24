@@ -29,7 +29,7 @@ function joinup_comment_entity_delete(EntityInterface $entity) {
     return;
   }
 
-  $view_builder = \Drupal::entityManager()->getViewBuilder($entity->getEntityTypeId());
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId());
   $build = $view_builder->view($entity, 'full');
   $html = \Drupal::service('renderer')->renderRoot($build);
   // Keep a log record of all comment deletions.

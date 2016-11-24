@@ -15,7 +15,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -23,12 +22,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Overrides the default comment formatter.
  */
 class OgCommentDefaultFormatter extends CommentDefaultFormatter {
+
   /**
    * Active database connection.
    *
    * @var \Drupal\Core\Database\Connection
    */
   protected $database;
+
+  /**
+   * Helper for dealing with group audience fields.
+   *
+   * @var \Drupal\og\OgGroupAudienceHelperInterface
+   */
+  protected $ogGroupAudienceHelper;
 
   /**
    * {@inheritdoc}
@@ -46,24 +53,26 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
       $container->get('entity.manager'),
       $container->get('entity.form_builder'),
       $container->get('current_route_match'),
-      $container->get('database')
+      $container->get('database'),
+      $container->get('og.group_audience_helper')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, EntityManagerInterface $entity_manager, EntityFormBuilderInterface $entity_form_builder, RouteMatchInterface $route_match, Connection $database) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, EntityManagerInterface $entity_manager, EntityFormBuilderInterface $entity_form_builder, RouteMatchInterface $route_match, Connection $database, OgGroupAudienceHelperInterface $og_group_audience_helper) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $entity_manager, $entity_form_builder, $route_match);
     $this->database = $database;
+    $this->ogGroupAudienceHelper = $og_group_audience_helper;
   }
 
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = array();
-    $output = array();
+    $elements = [];
+    $output = [];
 
     $field_name = $this->fieldDefinition->getName();
     $entity = $items->getEntity();
@@ -71,7 +80,7 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
     $status = $items->status;
 
     // If not Og content, fall back to normal comment rendering.
-    if (!Og::isGroupContent($entity->getEntityTypeId(), $entity->bundle())) {
+    if (!$this->ogGroupAudienceHelper->hasGroupAudienceField($entity->getEntityTypeId(), $entity->bundle())) {
       return parent::viewElements($items, $langcode);
     }
 
@@ -164,7 +173,7 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
     $storage_definition = $field_config->getFieldStorageDefinition();
     $entity_type = $storage_definition->getSetting('target_type');
 
-    $entity_storage = \Drupal::entityManager()->getStorage($entity_type);
+    $entity_storage = \Drupal::entityTypeManager()->getStorage($entity_type);
     $group = $entity_storage->load($group_id);
 
     /** @var \Drupal\og\OgAccessInterface $og_access */

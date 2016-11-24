@@ -75,27 +75,27 @@ class OgCommentEventSubscriber implements EventSubscriberInterface {
     $event->setPermissions([
       new GroupPermission([
         'name' => 'administer comments',
-        'title' => t('Administer comments and comment settings'),
+        'title' => $this->t('Administer comments and comment settings'),
       ]),
       new GroupPermission([
         'name' => 'access comments',
-        'title' => t('View comments'),
+        'title' => $this->t('View comments'),
       ]),
       new GroupPermission([
         'name' => 'post comments',
-        'title' => t('Post comments'),
+        'title' => $this->t('Post comments'),
       ]),
       new GroupPermission([
         'name' => 'skip comment approval',
-        'title' => t('Skip comment approval'),
+        'title' => $this->t('Skip comment approval'),
       ]),
       new GroupPermission([
         'name' => 'edit own comments',
-        'title' => t('Edit own comments'),
+        'title' => $this->t('Edit own comments'),
       ]),
       new GroupPermission([
         'name' => 'delete own comments',
-        'title' => t('Delete own comments'),
+        'title' => $this->t('Delete own comments'),
       ]),
     ]);
   }

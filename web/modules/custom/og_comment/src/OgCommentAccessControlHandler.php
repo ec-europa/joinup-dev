@@ -69,8 +69,18 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler {
 
   /**
    * Check if user has either global or group permission.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to check access for.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   User account to check access with.
+   * @param string $permission
+   *   The permission to check.
+   *
+   * @return \Drupal\Core\Access\AccessResult
+   *   Access object.
    */
-  protected function hasPermission($entity, $account, $permission) {
+  protected function hasPermission(EntityInterface $entity, AccountInterface $account, $permission) {
     if (!$entity instanceof CommentInterface) {
       throw new \Exception('Only comments can be handled.');
     }
@@ -91,7 +101,7 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler {
     $storage_definition = $field_config->getFieldStorageDefinition();
     $entity_type = $storage_definition->getSetting('target_type');
 
-    $entity_storage = \Drupal::entityManager()->getStorage($entity_type);
+    $entity_storage = \Drupal::entityTypeManager()->getStorage($entity_type);
     $group = $entity_storage->load($group_id);
 
     /** @var \Drupal\og\OgAccessInterface $og_access */

@@ -8,10 +8,6 @@
 /**
  * Implements hook_entity_type_alter().
  */
-
-/**
- * Implements hook_entity_type_alter().
- */
 function og_comment_entity_type_alter(array &$entity_types) {
   /** @var Drupal\Core\Entity\ContentEntityType $comment */
   $comment = $entity_types['comment'];
