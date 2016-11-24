@@ -28,10 +28,15 @@ process:
   # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
   # field_is_documentation:
   field_keywords: keywords
+  field_is_landing_page: landing_page
   field_is_state:
     plugin: default_value
     default_value: validated
-
 destination:
   plugin: entity:rdf_entity
   default_bundle: solution
+migration_dependencies:
+  required:
+    - solution_banner
+    - solution_logo
+

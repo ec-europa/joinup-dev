@@ -3,6 +3,8 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Site\Settings;
+use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
 
 /**
@@ -38,7 +40,7 @@ abstract class JoinupSqlBase extends SqlBase {
    * @return string
    *   The database name.
    */
-  public function getSourceDbName() {
+  protected function getSourceDbName() {
     if (!isset($this->sourceDbName)) {
       $this->sourceDbName = Database::getConnection('default', 'migrate')
         ->getConnectionOptions()['database'];
@@ -52,12 +54,31 @@ abstract class JoinupSqlBase extends SqlBase {
    * @return string
    *   The database name.
    */
-  public function getDestinationDbName() {
+  protected function getDestinationDbName() {
     if (!isset($this->destinationDbName)) {
       $this->destinationDbName = Database::getConnection()
         ->getConnectionOptions()['database'];
     }
     return $this->destinationDbName;
+  }
+
+  /**
+   * Gets the legacy site webroot directory.
+   *
+   * @return string
+   *   The legacy site webroot directory
+   *
+   * @throws \Drupal\migrate\MigrateException
+   *   The the webroot was not configured.
+   */
+  protected function getLegacySiteWebRoot() {
+    $webroot = Settings::get('joinup_migrate.source.root');
+
+    if (empty($webroot)) {
+      throw new MigrateException('The web root of the D6 site is not configured. Please run `phing setup-migration`.');
+    }
+
+    return rtrim($webroot, '/');
   }
 
 }

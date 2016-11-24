@@ -2,8 +2,6 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Core\Site\Settings;
-use Drupal\migrate\MigrateException;
 use Drupal\migrate\Row;
 
 /**
@@ -50,11 +48,7 @@ class UserPhoto extends UserBase {
     $source_path = $row->getSourceProperty('source_path');
 
     // Assure a full-qualified path.
-    $root = Settings::get('joinup_migrate.source.root');
-    if (empty($root)) {
-      throw new MigrateException('The web root of the D6 site is not configured. Please run `phing setup-migration`.');
-    }
-    $row->setSourceProperty('source_path', $root . '/' . $source_path);
+    $row->setSourceProperty('source_path', "{$this->getLegacySiteWebRoot()}/$source_path");
 
     // Build the destination URI.
     $created = $row->getSourceProperty('created') ?: REQUEST_TIME;
