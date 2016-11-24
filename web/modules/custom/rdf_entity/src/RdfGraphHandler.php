@@ -420,8 +420,9 @@ class RdfGraphHandler {
    *    Thrown if the graph is not found.
    */
   protected function getBundleGraphUriFromSettings($bundle_type_key, $bundle_id, $graph_name) {
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $bundle */
     $bundle = $this->entityManager->getStorage($bundle_type_key)->load($bundle_id);
-    $graph = $bundle->getThirdPartySetting('rdf_entity', 'graph_' . $graph_name, FALSE);
+    $graph = rdf_entity_get_third_party_property($bundle, 'graph', $graph_name, FALSE);
     if (!$graph) {
       throw new \Exception(format_string('Unable to determine graph %graph for bundle %bundle', [
         '%graph' => $graph_name,
