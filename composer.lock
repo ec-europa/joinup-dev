@@ -2320,12 +2320,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "872781e96802889a3087f1a4fe0c97a568baa272"
+                "reference": "bda5952b74f42a8f6752977ec21d78a35d50e4ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/872781e96802889a3087f1a4fe0c97a568baa272",
-                "reference": "872781e96802889a3087f1a4fe0c97a568baa272",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/bda5952b74f42a8f6752977ec21d78a35d50e4ce",
+                "reference": "bda5952b74f42a8f6752977ec21d78a35d50e4ce",
                 "shasum": ""
             },
             "require-dev": {
@@ -2342,7 +2342,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-11-24 19:08:10"
+            "time": "2016-11-25 08:46:19"
         },
         {
             "name": "drupal/og_menu",
