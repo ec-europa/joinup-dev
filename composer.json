@@ -14,7 +14,7 @@
         "drupal/ds": "^2.0",
         "drupal/facets": "~1.0@alpha",
         "drupal/field_group": "dev-1.x#0f289425f4f1b156737fe27ae29dde2c55bbec27",
-        "drupal/inline_entity_form": "dev-1.x#44c5cfcedd11ed90d473734bd77d9b069c4021fa",
+        "drupal/inline_entity_form": "dev-1.x",
         "drupal/message": "~1.0",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
@@ -115,6 +115,9 @@
             "drupal/search_api": {
                 "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch",
                 "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-2_0-on_2753667-8.patch"
+            },
+            "drupal/inline_entity_form": {
+                "Required IEF forms for existing entities don't work": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
             }
         }
     },
