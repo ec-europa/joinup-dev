@@ -26,4 +26,5 @@ permissions:
   - 'create news content'
   - 'edit own news content'
   - 'delete own news content'
+  - 'delete own comments'
 role_type: required

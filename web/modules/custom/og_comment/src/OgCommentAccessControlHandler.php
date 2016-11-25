@@ -63,7 +63,9 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler {
    * {@inheritdoc}
    */
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
-    // @Todo Test create...
+    // @todo ISAICP-3013 Implement create access...
+    // For now this module only works when users have global create comments
+    // permissions.
     return parent::checkCreateAccess($account, $context, $entity_bundle);
   }
 
