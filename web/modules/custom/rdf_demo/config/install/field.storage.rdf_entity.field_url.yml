@@ -7,9 +7,10 @@ dependencies:
 third_party_settings:
   rdf_entity:
     rdf_mapping: 'http://www.w3.org/ns/dcat#accessURL'
-    mapping_uri: 'http://www.w3.org/ns/dcat#accessURL'
-    mapping_title: 'http://purl.org/dc/terms/title'
-    mapping_options: ''
+    mapping:
+      uri: 'http://www.w3.org/ns/dcat#accessURL'
+      title: 'http://purl.org/dc/terms/title'
+      options: ''
 id: rdf_entity.field_url
 field_name: field_url
 entity_type: rdf_entity

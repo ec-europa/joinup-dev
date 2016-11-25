@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings:
+  rdf_entity:
+    mapping:
+      rid:
+        target_id: 'http://example.com/dummy'
+      label:
+        value: 'http://example.com/dummy_label'
+    graph:
+      default: 'http://example.com/dummy/published'
+      draft: 'http://example.com/dummy/draft'
+name: Dummy
+rid: dummy
+description: ''
