@@ -120,11 +120,9 @@ Feature: June 2016 demo
     When I click "List of members"
     Then I should see the heading "List of members"
     And I should see the text "Here is a list of members known to the public:"
-    # Also do a sample check for the visibility of the collection actions.
-    And I should see the link "Add custom page"
 
     # Add new custom page.
-    When I click "Add custom page"
+    When I click "Add custom page" in the plus button menu
     And I fill in the following:
       | Title | How to apply                                                                                                                        |
       | Body  | You want to become a S.H.I.E.L.D. agent? <br />If you were worthy, S.H.I.E.L.D. <b>would have found you already</b>. <br />GET OUT. |

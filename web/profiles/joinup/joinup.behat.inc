@@ -11,6 +11,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -25,6 +26,7 @@ use Drupal\User\Entity\User;
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use BrowserCapabilityDetectionTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
@@ -686,6 +688,33 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if (!empty($found)) {
       throw new \Exception('Button(s) should not be present, but were found: ' . implode(', ', $found));
     }
+  }
+
+  /**
+   * Click the given link in the plus button menu.
+   *
+   * This will open the plus button first on JavaScript enabled browsers.
+   *
+   * @param string $link
+   *   The link text of the link to click.
+   *
+   * @When I click :link in the plus button menu
+   */
+  public function clickLinkInPlusButtonMenu($link) {
+    // Check if we are running in an environment that supports JavaScript like
+    // Selenium or PhantomJS. If this is the case the plus button menu will be
+    // closed by default and needs to be opened first.
+    if ($this->browserSupportsJavascript()) {
+      $driver = $this->getSession()->getDriver();
+      $this->getSession()->getDriver()->click('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//button');
+
+      // Wait for the menu opening animation to end before clicking the link.
+      $end = microtime(TRUE) + 5;
+      do {
+        usleep(100000);
+      } while (microtime(TRUE) < $end && !$driver->isVisible('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[contains(., "' . $link . '")]'));
+    }
+    $this->getSession()->getPage()->clickLink($link);
   }
 
 }
