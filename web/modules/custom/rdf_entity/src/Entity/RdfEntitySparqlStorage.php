@@ -318,7 +318,6 @@ WHERE{
 }
 QUERY;
 
-
     // Collect URIs.
     $values = $this->sparql->query($query);
     $uris = [];
@@ -474,7 +473,7 @@ QUERY;
         }
       }
       $return[$entity_id]['uri'][LanguageInterface::LANGCODE_DEFAULT] = [
-        ['x-default' => array_flip($ids)[$entity_id]]
+        ['x-default' => array_flip($ids)[$entity_id]],
       ];
     }
 
