@@ -140,8 +140,6 @@ Feature: June 2016 demo
     And I should see the text "List of members"
     When I click "List of members"
     Then I should see the heading "List of members"
-    # This step is unnecessary.
-    And I should see the text "Edit"
 
     # Edit page.
     When I click "Edit"
@@ -151,8 +149,6 @@ Feature: June 2016 demo
     And I press "Save"
     Then I should see the heading "List of members"
     And I should see the text "Want to apply? Check the other page for this."
-    # Also check for the visibility of the collection action 'Add news'.
-    And I should see the link "Add news"
 
     # Add news.
     When I click "Add news" in the plus button menu
