@@ -162,7 +162,7 @@ Feature: June 2016 demo
     And I should see the text "S.H.I.E.L.D. to nuke New York?"
     # Content is saved as draft but should be viewable by the content owner on
     # the collection overview.
-    When I click "S.H.I.E.L.D"
+    When I go to the homepage of the "S.H.I.E.L.D." collection
     Then I should see the link "New York under attack"
 
     # Scenario B: A non member registered user, browses the website.
