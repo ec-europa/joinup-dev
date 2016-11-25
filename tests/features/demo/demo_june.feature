@@ -123,9 +123,8 @@ Feature: June 2016 demo
 
     # Add new custom page.
     When I click "Add custom page" in the plus button menu
-    And I fill in the following:
-      | Title | How to apply                                                                                                                        |
-      | Body  | You want to become a S.H.I.E.L.D. agent? <br />If you were worthy, S.H.I.E.L.D. <b>would have found you already</b>. <br />GET OUT. |
+    And I enter "How to apply" for "Title"
+    And I enter "You want to become a S.H.I.E.L.D. agent? <br />If you were worthy, S.H.I.E.L.D. <b>would have found you already</b>. <br />GET OUT." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the heading "How to apply"
     And I should see the text "You want to become a S.H.I.E.L.D. agent?"
@@ -148,7 +147,7 @@ Feature: June 2016 demo
     When I click "Edit"
     Then I should see the heading "Edit Custom page List of members"
     # @todo: We have to set the link to the other page.
-    When I fill in "Body" with "Here is a list of members known to the public: <br><ul><li>Nick Fury</li></ul><br />Want to apply? Check the other page for this."
+    When I enter "Here is a list of members known to the public: <br><ul><li>Nick Fury</li></ul><br />Want to apply? Check the other page for this." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the heading "List of members"
     And I should see the text "Want to apply? Check the other page for this."
@@ -156,12 +155,12 @@ Feature: June 2016 demo
     And I should see the link "Add news"
 
     # Add news.
-    When I click "Add news"
+    When I click "Add news" in the plus button menu
     Then I should see the heading "Add news"
     And I fill in the following:
       | Headline | New York under attack                                                                    |
       | Kicker   | S.H.I.E.L.D. to nuke New York?                                                           |
-      | Content  | In a desperate attempt to stop the nuke, Nick fury shot down an airplane of S.H.I.E.L.D. |
+    And I enter "In a desperate attempt to stop the nuke, Nick fury shot down an airplane of S.H.I.E.L.D." in the "Content" wysiwyg editor
     And I press "Save as draft"
     Then I should see the heading "New York under attack"
     And I should see the text "S.H.I.E.L.D. to nuke New York?"
