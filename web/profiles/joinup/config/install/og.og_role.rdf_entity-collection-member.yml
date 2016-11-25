@@ -9,22 +9,23 @@ group_type: rdf_entity
 group_bundle: collection
 group_id: null
 permissions:
-  - 'view own unpublished content'
   - 'accept facilitator invitation'
-  - unsubscribe
-  - 'edit own custom_page content'
-  - 'delete own custom_page content'
-  - 'create document content'
-  - 'edit own document content'
-  - 'delete own document content'
-  - 'create event content'
-  - 'edit own event content'
-  - 'delete own event content'
   - 'create discussion content'
-  - 'edit own discussion content'
-  - 'delete own discussion content'
+  - 'create document content'
+  - 'create event content'
   - 'create news content'
+  - 'delete own custom_page content'
+  - 'delete own discussion content'
+  - 'delete own document content'
+  - 'delete own event content'
+  - 'delete own news content'
+  - 'edit own custom_page content'
+  - 'edit own discussion content'
+  - 'edit own document content'
+  - 'edit own event content'
   - 'edit own news content'
   - 'delete own news content'
   - 'delete own comments'
+  - 'view own unpublished content'
+  - unsubscribe
 role_type: required

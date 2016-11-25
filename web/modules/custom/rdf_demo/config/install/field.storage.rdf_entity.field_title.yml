@@ -6,7 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     rdf_mapping: 'http://purl.org/dc/terms/title'
-    mapping_value: 'http://purl.org/dc/terms/title'
+    mapping:
+      value: 'http://purl.org/dc/terms/title'
 id: rdf_entity.field_title
 field_name: field_title
 entity_type: rdf_entity

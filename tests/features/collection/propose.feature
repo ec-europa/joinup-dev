@@ -47,7 +47,6 @@ Feature: Proposing a collection
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
-    And I press "Add owner"
     And I press "Save as draft"
     Then I should see the heading "Ancient and Classical Mythology"
     And I should see the text "Environment (WIP!)"
