@@ -14,11 +14,19 @@ use EasyRdf\Http;
 abstract class JoinupKernelTestBase extends KernelTestBase {
 
   /**
-   * The SPARQL database connection.
+   * The SPARQL database info.
    *
    * @var array
    */
   protected $sparqlDatabase;
+
+  /**
+   * The SPARQL database connection.
+   *
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   */
+  protected $sparql;
+
 
   /**
    * {@inheritdoc}
@@ -45,7 +53,32 @@ abstract class JoinupKernelTestBase extends KernelTestBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function tearDown() {
+    // Delete all data produced by testing module.
+    $query = <<<EndOfQuery
+DELETE {
+  GRAPH <http://example.com/dummy/published> {
+    ?entity ?field ?value
+  }
+}
+WHERE {
+  GRAPH <http://example.com/dummy/published> {
+    ?entity ?field ?value
+  }
+}
+EndOfQuery;
+
+    $this->sparql->query($query);
+    parent::tearDown();
+  }
+
+  /**
    * Checks if the triple store is an Virtuoso 6 instance.
+   *
+   * @return bool
+   *   TRUE if it's a Virtuoso 6 server.
    */
   protected function detectVirtuoso6() {
     $client = Http::getDefaultHttpClient();
@@ -73,6 +106,8 @@ abstract class JoinupKernelTestBase extends KernelTestBase {
     $this->sparqlDatabase = Database::convertDbUrlToConnectionInfo($db_url, DRUPAL_ROOT);
     $this->sparqlDatabase['namespace'] = 'Drupal\\rdf_entity\\Database\\Driver\\sparql';
     Database::addConnectionInfo('sparql_default', 'default', $this->sparqlDatabase);
+
+    $this->sparql = Database::getConnection('default', 'sparql_default');
 
     return TRUE;
   }

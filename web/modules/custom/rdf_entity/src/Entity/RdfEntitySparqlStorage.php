@@ -293,7 +293,10 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
     // @todo: We should filter per entity per graph and not load the whole
     // database only to filter later on.
-    $ids_string = "<" . implode(">, <", $ids) . ">";
+    $filter = array_map(function ($id) {
+      return 'str(?field_value) = "' . $id . '"';
+    }, $ids);
+    $filter = implode(' || ', $filter);
     $graphs = $this->getGraphHandler()->getEntityTypeGraphUrisList($this->getEntityType()->getBundleEntityType());
     $named_graph = '';
     foreach ($graphs as $graph) {
@@ -309,8 +312,28 @@ $named_graph
 WHERE{
   GRAPH ?graph {
     ?entity_id ?predicate ?field_value
-    FILTER (?predicate = <http://purl.org/dc/terms/identifier>)
-    FILTER (?field_value IN ( $ids_string ) )
+    FILTER ( $filter )
+    FILTER(!isLiteral(?field_value) || (lang(?field_value) = "" || langMatches(lang(?field_value), "EN")))
+  }
+}
+QUERY;
+
+
+    // Collect URIs.
+    $values = $this->sparql->query($query);
+    $uris = [];
+    foreach ($values as $value) {
+      $uris[] = '<' . (string) $value->entity_id . '>';
+    }
+    $uris = implode(', ', $uris);
+
+    $query = <<<QUERY
+SELECT ?graph ?entity_id ?predicate ?field_value
+$named_graph
+WHERE{
+  GRAPH ?graph {
+    ?entity_id ?predicate ?field_value
+    FILTER (?entity_id IN ( $uris ) )
     FILTER(!isLiteral(?field_value) || (lang(?field_value) = "" || langMatches(lang(?field_value), "EN")))
   }
 }
@@ -358,11 +381,19 @@ QUERY;
    */
   protected function processGraphResults($results) {
     $mapping = $this->mappingHandler->getEntityPredicates($this->entityTypeId);
+
     // If no graphs are passed, fetch all available graphs derived from the
     // results.
-    $values_per_entity = [];
+    $values_per_entity = $ids = $return = [];
     foreach ($results as $result) {
-      $entity_id = (string) $result->entity_id;
+      if ((string) $result->predicate === 'http://purl.org/dc/terms/identifier') {
+        $id = (string) $result->field_value;
+        $ids[(string) $result->entity_id] = $id;
+      }
+    }
+
+    foreach ($results as $delta => $result) {
+      $entity_id = $ids[(string) $result->entity_id];
       $entity_graphs[$entity_id] = (string) $result->graph;
 
       $lang = LanguageInterface::LANGCODE_DEFAULT;
@@ -379,7 +410,6 @@ QUERY;
       return NULL;
     }
 
-    $return = [];
     foreach ($values_per_entity as $entity_id => $values_per_graph) {
       $request_graphs = $this->getGraphHandler()->getRequestGraphs($entity_id);
       $entity_graph_uris = $this->getGraphHandler()->getEntityTypeGraphUris($this->getEntityType()->getBundleEntityType());
@@ -443,7 +473,11 @@ QUERY;
           }
         }
       }
+      $return[$entity_id]['uri'][LanguageInterface::LANGCODE_DEFAULT] = [
+        ['x-default' => array_flip($ids)[$entity_id]]
+      ];
     }
+
     return $return;
   }
 
