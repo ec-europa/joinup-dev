@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "724937104da668e3655237c0591b7070",
-    "content-hash": "1f09deb2928f6b066f621cfb568d18a1",
+    "hash": "2f2005d40e9b12276dc205e000273c12",
+    "content-hash": "e6f8088b6ecb439ec30c6ee68c8edef7",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1996,7 +1996,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/inline_entity_form",
-                "reference": "44c5cfcedd11ed90d473734bd77d9b069c4021fa"
+                "reference": "dbfc93fc961b3e6c84497390c62ec36d02c1c4d7"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2012,6 +2012,9 @@
                 "drupal": {
                     "version": "8.x-1.0-beta1+2-dev",
                     "datestamp": "1479155639"
+                },
+                "patches_applied": {
+                    "Required IEF forms for existing entities don't work": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2045,7 +2048,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/inline_entity_form"
             },
-            "time": "2016-11-04 20:57:04"
+            "time": "2016-11-14 20:32:26"
         },
         {
             "name": "drupal/layout_plugin",
@@ -2320,12 +2323,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "bda5952b74f42a8f6752977ec21d78a35d50e4ce"
+                "reference": "8b99aad0d5154163f44b923cd243a50faafd055d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/bda5952b74f42a8f6752977ec21d78a35d50e4ce",
-                "reference": "bda5952b74f42a8f6752977ec21d78a35d50e4ce",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/8b99aad0d5154163f44b923cd243a50faafd055d",
+                "reference": "8b99aad0d5154163f44b923cd243a50faafd055d",
                 "shasum": ""
             },
             "require-dev": {
@@ -2342,7 +2345,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-11-25 08:46:19"
+            "time": "2016-11-25 16:30:33"
         },
         {
             "name": "drupal/og_menu",
