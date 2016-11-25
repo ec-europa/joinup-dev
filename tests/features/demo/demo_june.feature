@@ -167,6 +167,10 @@ Feature: June 2016 demo
     And I press "Save as draft"
     Then I should see the heading "New York under attack"
     And I should see the text "S.H.I.E.L.D. to nuke New York?"
+    # Content is saved as draft but should be viewable by the content owner on
+    # the collection overview.
+    When I click "S.H.I.E.L.D"
+    Then I should see the link "New York under attack"
 
     # Scenario B: A non member registered user, browses the website.
     When I am logged in as "Wolverine"
@@ -192,10 +196,8 @@ Feature: June 2016 demo
     # News belonging to the solution.
     And I should see the text "Phil Coulson is down"
     And I should see the text "S.H.I.E.L.D. is infiltrated"
-    # @todo This news article should NOT be shown to the non-member since it has
-    # been saved as a draft version!
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3010
-    And I should see the text "New York under attack"
+    # The draft news article should not be visible to a non-member.
+    And I should not see the text "New York under attack"
     # News from solutions.
     And I should not see the text "Captain America not dead?"
     And I should not see the text "Hellicarrier under attack"
