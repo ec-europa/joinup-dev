@@ -198,6 +198,7 @@
                 testsuiteName="${phpunit.testsuite.name}"
                 baseUrl="${phpunit.base_url}"
                 dbUrl="${phpunit.db_url}"
+                sparqlUrl="${phpunit.sparql_url}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
                 browsertestOutputFile="${phpunit.browsertest_output_file}"
         />

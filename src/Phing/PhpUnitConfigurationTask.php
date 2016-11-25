@@ -64,6 +64,13 @@ class PhpUnitConfigurationTask extends \Task {
   private $dbUrl = 'mysql://root@localhost/db';
 
   /**
+   * The database URL to use in kernel tests and functional tests.
+   *
+   * @var string
+   */
+  private $sparqlUrl = 'sparql://localhost:8890/';
+
+  /**
    * The path to the directory where HTML output from browsertests is stored.
    *
    * @var string
@@ -95,6 +102,9 @@ class PhpUnitConfigurationTask extends \Task {
 
     // Set the database URL.
     $this->setEnvironmentVariable('SIMPLETEST_DB', $this->dbUrl, $document);
+
+    // Set the database URL.
+    $this->setEnvironmentVariable('SIMPLETEST_SPARQL_DB', $this->sparqlUrl, $document);
 
     // Set the path to the browsertest output directory.
     $this->setEnvironmentVariable('BROWSERTEST_OUTPUT_DIRECTORY', $this->browsertestOutputDirectory, $document);
@@ -241,6 +251,16 @@ class PhpUnitConfigurationTask extends \Task {
    */
   public function setDbUrl($dbUrl) {
     $this->dbUrl = $dbUrl;
+  }
+
+  /**
+   * Sets the Sparql URL.
+   *
+   * @param string $dbUrl
+   *   The database URL.
+   */
+  public function setSparqlUrl($dbUrl) {
+    $this->sparqlUrl = $dbUrl;
   }
 
   /**

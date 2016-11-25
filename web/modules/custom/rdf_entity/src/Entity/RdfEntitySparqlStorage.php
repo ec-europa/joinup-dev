@@ -13,12 +13,15 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemInterface;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\RdfGraphHandler;
 use Drupal\rdf_entity\RdfMappingHandler;
+use EasyRdf\Graph;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -124,6 +127,20 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $container->get('sparql.graph_handler'),
       $container->get('sparql.mapping_handler')
     );
+  }
+
+  /**
+   * Build a new graph (list of triples).
+   *
+   * @param string $graph_uri
+   *   The uri of the graph.
+   *
+   * @return \EasyRdf\Graph
+   *   The EasyRdf graph object.
+   */
+  protected static function getGraph($graph_uri) {
+    $graph = new Graph($graph_uri);
+    return $graph;
   }
 
   /**
@@ -305,6 +322,8 @@ QUERY;
   /**
    * Processes results from the load query and returns a list of values.
    *
+   * @todo Reduce the cyclomatic complexity of this function.
+   *
    * When an entity is loaded, the values might derive from multiple graph.
    * This function will process the results and attempt to load a published
    * version of the entity.
@@ -436,8 +455,9 @@ QUERY;
     if (!isset($rdf_bundles[$this->entityType->getBundleEntityType()])) {
       $rdf_bundles[$this->entityType->getBundleEntityType()] = $this->entityTypeManager->getStorage($this->entityType->getBundleEntityType())->loadMultiple();
     }
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $rdf_bundle */
     foreach ($rdf_bundles[$this->entityType->getBundleEntityType()] as $rdf_bundle) {
-      $settings = $rdf_bundle->getThirdPartySetting('rdf_entity', 'mapping_' . $this->bundleKey, FALSE);
+      $settings = rdf_entity_get_third_party_property($rdf_bundle, 'mapping', $this->bundleKey, FALSE);
       $type = array_pop($settings);
       foreach ($this->bundlePredicate as $bundlePredicate) {
         if (!isset($entity_values[$bundlePredicate])) {
@@ -656,55 +676,71 @@ QUERY;
     $target_graph = $this->getGraphHandler()->getTargetGraphFromEntity($entity);
     $graph_uri = $this->getBundleGraphUri($bundle, $target_graph);
 
-    $insert = '';
+    $graph = self::getGraph($graph_uri);
+
     $properties = $this->mappingHandler->getEntityTypeMappedProperties($entity);
-    $subj = '<' . (string) $id . '>';
     $properties_list = "<" . implode(">, <", $properties['flat']) . ">";
     foreach ($entity->toArray() as $field_name => $field) {
       foreach ($field as $field_item) {
         foreach ($field_item as $column => $value) {
+          // No mapping for this column set.
           if (!isset($properties['by_field'][$field_name][$column])) {
             continue;
           }
-          $pred = '<' . (string) $properties['by_field'][$field_name][$column] . '>';
-          if (!filter_var($value, FILTER_VALIDATE_URL) === FALSE) {
-            $obj = '<' . $value . '>';
+          // Skip the bundle as it is handled separately later.
+          if ($field_name == 'rid') {
+            continue;
           }
+          /** @var \Drupal\Core\Field\FieldItemList $field_item_list */
+          $field_item_list = $entity->get($field_name);
+          // Don't add empty values.
+          if ($field_item_list->isEmpty()) {
+            continue;
+          }
+          $item = $entity->get($field_name)->first();
+          // When the field is a entity reference, and it's target implements
+          // RdfEntitySparqlStorage (it's an RDF based entity),
+          // then store it as a resource.
+          if ($this->fieldIsReference($item)) {
+            $graph->addResource((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
+          }
+          // All other fields get stored as a literal.
           else {
-            // @todo This is most probably prone to Sparql injection..!
-            $obj = '"""' . $value . '"""';
+            // @todo Set language and field data type.
+            $graph->addLiteral((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
           }
-          $insert .= $subj . ' ' . $pred . ' ' . $obj . '  .' . "\n";
         }
       }
     }
-    // Save the bundle.
+    // Save the bundle as rdf:type.
     $rdf_bundle_mapping = $this->mappingHandler->getRdfBundleMappedUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle());
     $rdf_bundle = $rdf_bundle_mapping[$entity->bundle()];
-    $insert .= $subj . ' ' . $this->rdfBundlePredicate . ' <' . $rdf_bundle . '>  .' . "\n";
-
-    $query = <<<QUERY
-DELETE {
-  GRAPH <$graph_uri> {
-    <$id> ?field ?value
-  }
-}
-WHERE {
-  GRAPH <$graph_uri> {
-    <$id> ?field ?value .
-    FILTER (?field IN ($properties_list))
-  }
-}
-QUERY;
+    $graph->addResource((string) $id, $this->rdfBundlePredicate, $rdf_bundle);
 
     if (!$entity->isNew()) {
-      $this->sparql->query($query);
+      $this->deleteBeforeInsert($id, $graph_uri, $properties_list);
     }
     // @todo Do in one transaction... If possible.
-    $query = "INSERT DATA INTO <$graph_uri> {\n" .
-      $insert . "\n" .
-      '}';
-    $this->sparql->query($query);
+    $this->insert($graph, $graph_uri);
+
+  }
+
+  /**
+   * Insert a graph of triples.
+   *
+   * @param \EasyRdf\Graph $graph
+   *   The graph to insert.
+   * @param string $graphUri
+   *   Graph to save to.
+   *
+   * @return \EasyRdf\Graph|\EasyRdf\Sparql\Result
+   *   Response.
+   */
+  private function insert(Graph $graph, $graphUri) {
+    $query = "INSERT DATA INTO <$graphUri> {\n";
+    $query .= $graph->serialise('ntriples') . "\n";
+    $query .= '}';
+    return $this->sparql->query($query);
   }
 
   /**
@@ -876,6 +912,65 @@ QUERY;
    */
   protected function buildCacheId($id) {
     return "values:{$this->entityTypeId}:$id";
+  }
+
+  /**
+   * Determines if a field is an entity reference.
+   *
+   * @param FieldItemInterface $item
+   *   The field.
+   *
+   * @return bool
+   *   Is a reference
+   */
+  protected function fieldIsReference(FieldItemInterface $item) {
+    if (!$item instanceof EntityReferenceItem) {
+      return FALSE;
+    }
+    /** @var \Drupal\Core\Entity\Plugin\DataType\EntityReference $entity_property */
+    $entity_property = $item->get('entity');
+    $target = $entity_property->getTarget();
+    if (empty($target) || $target->isEmpty()) {
+      return FALSE;
+    }
+    /** @var EntityInterface $target_entity */
+    $target_entity = $target->getValue();
+    $target_entity_type = $target_entity->getEntityType();
+    $target_entity_storage_class = trim($target_entity_type->getStorageClass(), "\\");
+    return $target_entity_storage_class === RdfEntitySparqlStorage::class;
+  }
+
+  /**
+   * Delete an entity before it gets saved.
+   *
+   * The difference between deleteBeforeInsert and delete method is the
+   * properties_list variable. Filtering the fields to be deleted using this
+   * variable, ensures that additional data that might be imported through an
+   * external repository are not lost during an entity update.
+   *
+   * @param string $id
+   *    The entity uri.
+   * @param string $graph_uri
+   *    The graph uri.
+   * @param string $properties_list
+   *    A string resulting after a conversion of an array to the SPARQL uri
+   *    array format.
+   */
+  protected function deleteBeforeInsert($id, $graph_uri, $properties_list) {
+    $query = <<<QUERY
+DELETE {
+  GRAPH <$graph_uri> {
+    <$id> ?field ?value
+  }
+}
+WHERE {
+  GRAPH <$graph_uri> {
+    <$id> ?field ?value .
+    FILTER (?field IN ($properties_list))
+  }
+}
+QUERY;
+    $this->sparql->query($query);
   }
 
 }

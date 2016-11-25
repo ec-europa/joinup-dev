@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a77a7d9e35c7284295a5a5ed8ad56e55",
-    "content-hash": "ac349b69f126a6394440f89f0865de40",
+    "hash": "724937104da668e3655237c0591b7070",
+    "content-hash": "1f09deb2928f6b066f621cfb568d18a1",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3562,6 +3562,17 @@
                 "xml"
             ],
             "time": "2016-09-22 11:01:11"
+        },
+        {
+            "name": "minimaxir/big-list-of-naughty-strings",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:minimaxir/big-list-of-naughty-strings.git",
+                "reference": "master"
+            },
+            "type": "library",
+            "time": "2016-04-20 05:45:29"
         },
         {
             "name": "mtdowling/jmespath.php",
@@ -9167,6 +9178,7 @@
         "drupal/search_api_solr": 10,
         "drupal/view_unpublished": 20,
         "google/material-design-lite": 20,
+        "minimaxir/big-list-of-naughty-strings": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_devel": 20,
         "drupal/devel": 15,
