@@ -3,17 +3,22 @@
 <project name="Joinup migration" default="help">
 
     <!-- Run the migration IDs specified in the configuration. -->
-    <target name="run-migration"
-            description="Run the migration."
+    <target name="run-migrations"
+            description="Run the migrations."
             depends="enable-migration-modules">
-        <echo message="Run migration" />
+        <echo message="Running migration IDs" />
+        <foreach list="${migration.ids}" param="migration" target="run-single-migration" />
+    </target>
+
+    <!-- Run a single migration given its ID. -->
+    <target name="run-single-migration">
         <drush
             command="migrate_drush_run"
             assume="yes"
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
-            <param>${migration.ids}</param>
+            <param>${migration}</param>
         </drush>
     </target>
 
@@ -74,7 +79,7 @@
     <target
         name="execute-migration"
         description="Configure and import the migration database, run the migration tasks."
-        depends="setup-migration, import-legacy-db, run-migration" />
+        depends="setup-migration, import-legacy-db, run-migrations" />
 
 </project>
 
