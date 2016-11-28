@@ -51,7 +51,7 @@ Feature: Add distribution through the UI
       And I should see the link "contacting us"
       When I fill in "Title" with "Custom title of asset distribution"
       And I attach the file "test.zip" to "Add a new file"
-      And I fill in "License" with "WTFPL"
+      And I select "WTFPL" from "License"
       And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
       And I press "Save"
       Then I should have 1 distribution
