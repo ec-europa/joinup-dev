@@ -47,7 +47,7 @@ Feature: Add distribution through the UI
       # forced to check for the widget heading.
       # @todo to be handled in ISAICP-2655
       And I should see the text "Access URL"
-      And I should see the text "Distribution file"
+      And I should see the text "Distribution files"
       And I should see the link "contacting us"
       When I fill in "Title" with "Custom title of asset distribution"
       And I attach the file "test.zip" to "Add a new file"
