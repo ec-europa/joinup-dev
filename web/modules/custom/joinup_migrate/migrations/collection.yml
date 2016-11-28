@@ -43,12 +43,13 @@ process:
       strict: true
   field_ar_modification_date: changed
   # Blocked by:
-  # - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2882
   # - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2881
   # field_ar_owner:
   #  plugin: migration
   #  migration: owner
   #  no_stub: true
+  # @todo Revisit and fix this after ISAICP-2993 lands.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2993
   field_policy_domain:
     plugin: term_reference
     source: policy

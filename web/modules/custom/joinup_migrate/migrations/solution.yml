@@ -18,8 +18,6 @@ process:
   # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3006
   # field_is_contact_information:
   field_ar_creation_date: created
-  # @todo This should be revisited and fixed after ISAICP-3002.
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3002
   field_is_description/value: body
   field_is_description/format:
     plugin: default_value
@@ -29,6 +27,37 @@ process:
   # field_is_documentation:
   field_keywords: keywords
   field_is_landing_page: landing_page
+  field_is_logo:
+    plugin: migration
+    source: nid
+    migration: solution_logo
+    no_stub: true
+  field_is_metrics_page: metrics_page
+  field_is_modification_date: changed
+  # Blocked by:
+  # - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2881
+  # field_ar_owner:
+  #  plugin: migration
+  #  migration: owner
+  #  no_stub: true
+  # @todo Revisit and fix this after ISAICP-3000 lands.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3000
+  field_policy_domain:
+    plugin: term_reference
+    source: policy
+    vocabulary: policy_domain
+  # @todo Fix this in ISAICP-3019
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
+  # field_is_related_solutions:
+  # @todo Fix after ISAICP-3020
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3020
+  # field_is_solution_type:
+  field_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
+  # @todo Revisit and fix after ISAICP-3002.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3002
   field_is_state:
     plugin: default_value
     default_value: validated

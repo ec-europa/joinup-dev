@@ -2,7 +2,6 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\migrate\Row;
 
 /**
@@ -13,6 +12,9 @@ use Drupal\migrate\Row;
  * )
  */
 class Solution extends SolutionBase {
+
+  use CountryTrait;
+  use UriTrait;
 
   /**
    * {@inheritdoc}
@@ -27,6 +29,9 @@ class Solution extends SolutionBase {
       'keywords' => $this->t('Keywords'),
       'landing_page' => $this->t('Landing page'),
       'logo' => $this->t('Logo'),
+      'metrics_page' => $this->t('Metrics page'),
+      'policy' => $this->t('Policy domain'),
+      'related' => $this->t('Related solutions'),
     ] + parent::fields();
   }
 
@@ -41,12 +46,18 @@ class Solution extends SolutionBase {
     $this->alias['node_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_documentation", 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_homepage_doc_nid = %alias.nid");
     $this->alias['content_type_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_documentation", 'content_type_documentation', "{$this->alias['node_documentation']}.vid = %alias.vid");
 
-    $query->addExpression("{$this->alias['uri']}.field_id_uri_value", 'uri');
-    $query->addExpression("{$this->alias['content_type_documentation']}.field_documentation_access_url1_url", 'landing_page');
+    $this->alias['content_field_asset_sw_metrics'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_asset_sw_metrics", 'content_field_asset_sw_metrics', "{$this->alias['node']}.vid = %alias.vid");
+    $this->alias['node_metrics'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'node_metrics', "{$this->alias['content_field_asset_sw_metrics']}.field_asset_sw_metrics_nid = %alias.nid");
+    $this->alias['data_set_uri'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_id_uri", 'data_set_uri', "{$this->alias['node_metrics']}.vid = %alias.vid");
+
+    $query->addExpression("TRIM({$this->alias['uri']}.field_id_uri_value)", 'uri');
+    $query->addExpression("TRIM({$this->alias['content_type_documentation']}.field_documentation_access_url1_url)", 'landing_page');
     $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created');
     $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed');
+    $query->addExpression("TRIM({$this->alias['data_set_uri']}.field_id_uri_value)", 'metrics_page');
 
     return $query
+      ->fields('j', ['policy'])
       ->fields($this->alias['node'], ['title', 'created', 'changed', 'vid'])
       ->fields($this->alias['node_revision'], ['body']);
   }
@@ -78,22 +89,15 @@ class Solution extends SolutionBase {
       ->fetchCol();
     $row->setSourceProperty('keywords', array_unique($keywords));
 
-    // Filter and fix landing page.
-    if ($landing_page = $row->getSourceProperty('landing_page')) {
-      // Don't import malformed URLs.
-      if (!UrlHelper::isValid($landing_page)) {
-        $landing_page = NULL;
-      }
-      $url = parse_url($landing_page);
-      if (empty($url['scheme'])) {
-        // Needs a full-qualified URL.
-        $landing_page = "http://$landing_page";
-      }
-      // Don't allow internal landing pages.
-      if ($url['host'] !== 'joinup.ec.europa.eu') {
-        $row->setSourceProperty('landing_page', $landing_page);
+    // Filter and fix landing and metrics pages.
+    foreach (['landing', 'metrics'] as $name) {
+      if ($page = $row->getSourceProperty($name . '_page')) {
+        $this->normalizeUri($name, $row, FALSE);
       }
     }
+
+    // Country.
+    $row->setSourceProperty('country', $this->getCountries($row->getSourceProperty('vid')));
 
     return parent::prepareRow($row);
   }

@@ -64,7 +64,7 @@ class Collection extends CollectionBase {
       ->fields($this->alias['repository_url'], ['field_repository_url_url'])
       ->fields($this->alias['node_revision'], ['body']);
 
-    $query->addExpression("{$this->alias['uri']}.field_id_uri_value", 'uri');
+    $query->addExpression("TRIM({$this->alias['uri']}.field_id_uri_value)", 'uri');
     $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created');
     $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed');
 

@@ -2,7 +2,6 @@
 
 namespace Drupal\rdf_entity\Entity;
 
-use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
@@ -327,32 +326,11 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
-    return $this->rewriteCacheTags(parent::getCacheTags());
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getCacheTagsToInvalidate() {
-    return $this->rewriteCacheTags(parent::getCacheTagsToInvalidate());
-  }
-
-  /**
-   * Rewrites cache tags by replacing the entity ID with its hash.
-   *
-   * @param array $tags
-   *   Tags to be transformed.
-   *
-   * @return array
-   *   Rewritten cache tags.
-   */
-  protected function rewriteCacheTags(array $tags) {
-    $entity_type_id = $this->getEntityTypeId();
-    $entity_id = $this->id();
-    return array_map(function ($tag) use ($entity_type_id, $entity_id) {
-      return $tag === "$entity_type_id:$entity_id" ? $entity_type_id . ':' . Crypt::hashBase64($entity_id) : $tag;
-    }, $tags);
+    if ($this->isNew()) {
+      return [];
+    }
+    return [$this->entityTypeId . ':' . md5($this->id())];
   }
 
 }
