@@ -55,6 +55,10 @@ Feature: Add distribution through the UI
       And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
       And I press "Save"
       Then I should have 1 distribution
+
+      # Debug step since the default view of the distribution, does not have the access URL shown.
+      And the "Custom title of asset distribution" distribution should have the link of the "test.zip" in the access URL field
+
       # Check if the asset distribution is accessible as an anonymous user
       When I go to the homepage of the "Asset release random name" release
       Then I should see the text "Distribution"
