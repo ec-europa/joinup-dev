@@ -3,3 +3,6 @@ services:
     class: Drupal\state_machine_revisions\EventSubscriber\WorkflowTransitionEventSubscriber
     tags:
       - { name: event_subscriber }
+  state_machine_revisions.revision_manager:
+    class: Drupal\state_machine_revisions\RevisionManager
+    arguments: ['@entity.manager']
