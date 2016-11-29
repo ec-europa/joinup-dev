@@ -32,6 +32,8 @@ class Solution extends SolutionBase {
       'metrics_page' => $this->t('Metrics page'),
       'policy' => $this->t('Policy domain'),
       'related' => $this->t('Related solutions'),
+      'country' => $this->t('Country'),
+      'status' => $this->t('Status'),
     ] + parent::fields();
   }
 
@@ -66,6 +68,25 @@ class Solution extends SolutionBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    $nid = $row->getSourceProperty('nid');
+
+    // Destroy self lookup URIs.
+    $uri = $row->getSourceProperty('uri');
+    if ($uri == "https://joinup.ec.europa.eu/node/$nid") {
+      $row->setSourceProperty('uri', NULL);
+    }
+    else {
+      $alias = $this->select('url_alias', 'a')
+        ->fields('a', ['dst'])
+        ->condition('a.src', "node/$nid")
+        ->orderBy('a.pid', 'DESC')
+        ->range(0, 1)
+        ->execute()
+        ->fetchField();
+      if ($alias && ($uri === $alias)) {
+        $row->setSourceProperty('uri', NULL);
+      }
+    }
 
     // Assure a created date.
     if (!$row->getSourceProperty('created')) {
@@ -81,7 +102,7 @@ class Solution extends SolutionBase {
     $query->join('term_data', 'td', 'tn.tid = td.tid');
     $keywords = $query
       ->fields('td', ['name'])
-      ->condition('tn.nid', $row->getSourceProperty('nid'))
+      ->condition('tn.nid', $nid)
       ->condition('tn.vid', $row->getSourceProperty('vid'))
       // The keywords vocabulary vid is 28.
       ->condition('td.vid', 28)
@@ -98,6 +119,21 @@ class Solution extends SolutionBase {
 
     // Country.
     $row->setSourceProperty('country', $this->getCountries($row->getSourceProperty('vid')));
+
+    // Status.
+    $query = $this->select('term_node', 'tn');
+    $query->join('term_data', 'td', 'tn.tid = td.tid');
+    $status = $query
+      ->fields('tn', ['tid'])
+      ->condition('tn.nid', $nid)
+      ->condition('tn.vid', $row->getSourceProperty('vid'))
+      // The status vocabulary vid is 69.
+      ->condition('td.vid', 69)
+      ->orderBy('tn.tid', 'DESC')
+      ->range(0, 1)
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('status', $status);
 
     return parent::prepareRow($row);
   }
