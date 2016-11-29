@@ -7,7 +7,7 @@
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\comment\CommentInterface;
-use Drupal\comment\Entity;
+use \Drupal\comment\Entity\Comment;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -731,9 +731,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       ];
       $comment_values += $values;
       // Ignore due to conflicting Comment class in Phing.
-      // @codingStandardsIgnoreStart
-      $comment = Entity\Comment::create($comment_values);
-      // @codingStandardsIgnoreEnd
+      $comment = Comment::create($comment_values);
       $comment->save();
     }
   }

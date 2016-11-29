@@ -190,7 +190,24 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
    * The difference is in the calls to hasPermission(), which needs to
    * be checked against the og permissions.
    *
-   * @see \Drupal\comment\CommentStorage::loadThread
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity whose comment(s) needs rendering.
+   * @param string $field_name
+   *   The field_name whose comment(s) needs rendering.
+   * @param int $mode
+   *   The comment display mode: CommentManagerInterface::COMMENT_MODE_FLAT or
+   *   CommentManagerInterface::COMMENT_MODE_THREADED.
+   * @param int $comments_per_page
+   *   (optional) The amount of comments to display per page.
+   *   Defaults to 0, which means show all comments.
+   * @param int $pager_id
+   *   (optional) Pager id to use in case of multiple pagers on the one page.
+   *   Defaults to 0; is only used when $comments_per_page is greater than zero.
+   *
+   * @see \Drupal\comment\CommentStorage::loadThread()
+   *
+   * @return array
+   *   Ordered array of comment objects, keyed by comment id.
    */
   public function loadThread(FieldItemListInterface $items, EntityInterface $entity, $field_name, $mode, $comments_per_page = 0, $pager_id = 0) {
     $query = $this->database->select('comment_field_data', 'c');
