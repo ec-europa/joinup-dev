@@ -18,7 +18,7 @@ interface RevisionManagerInterface {
    * @param string $entityID
    *   The entity ID.
    *
-   * @return string|NULL
+   * @return string|null
    *   The revision ID of the latest revision for the specified entity, or
    *   NULL if there is no such entity.
    */
