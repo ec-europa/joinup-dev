@@ -345,4 +345,36 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     }
   }
 
+  /**
+   * Asserts that a file link is appears to the access url field.
+   *
+   * @param string $distribution
+   *    The distribution title.
+   * @param string $file_name
+   *    The file name.
+   *
+   * @throws \Exception
+   *    Thrown when the file or the link is not found.
+   *
+   * @Then the :distribution distribution should have the link of the :file_name in the access URL field
+   */
+  public function assertLinkSynchronized($distribution, $file_name) {
+    $distribution = $this->getAssetDistributionByName($distribution);
+    foreach ($distribution->field_ad_file as $file) {
+      $file = $file->entity;
+      if ($file->getFilename() === $file_name) {
+        $uri = file_create_url($file->getFileUri());
+        $access_url = $distribution->field_ad_access_url->getValue();
+        if (!in_array($uri, array_column($access_url, 'uri'))) {
+          throw new \Exception("The link of the file {$file_name} was not found in the page.");
+        }
+
+        // The link exists in the access URL field.
+        return;
+      }
+    }
+
+    throw new \Exception("The file {$file_name} was not found in the '{$distribution}' entity'");
+  }
+
 }
