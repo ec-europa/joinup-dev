@@ -1,0 +1,5 @@
+services:
+  state_machine_revisions.workflow_transition:
+    class: Drupal\state_machine_revisions\EventSubscriber\WorkflowTransitionEventSubscriber
+    tags:
+      - { name: event_subscriber }
