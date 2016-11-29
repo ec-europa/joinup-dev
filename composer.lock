@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "96346039b696542576b107fc85797d10",
-    "content-hash": "a728a16de1b06b4f8be5bde0089b7e28",
+    "hash": "4d384fe8fc9ce4b415f09c4daf179417",
+    "content-hash": "d61779f393cefbc8c7bb4f05a9211dbf",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1953,8 +1953,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc4+54-dev",
-                    "datestamp": "1479073440"
+                    "version": "8.x-1.0-rc6+0-dev",
+                    "datestamp": "1480365484"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2323,12 +2323,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "bda5952b74f42a8f6752977ec21d78a35d50e4ce"
+                "reference": "7e43c7521bd759bd9333059c28e05a5bcc6d13b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/bda5952b74f42a8f6752977ec21d78a35d50e4ce",
-                "reference": "bda5952b74f42a8f6752977ec21d78a35d50e4ce",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/7e43c7521bd759bd9333059c28e05a5bcc6d13b4",
+                "reference": "7e43c7521bd759bd9333059c28e05a5bcc6d13b4",
                 "shasum": ""
             },
             "require-dev": {
@@ -2345,7 +2345,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-11-25 08:46:19"
+            "time": "2016-11-28 16:52:41"
         },
         {
             "name": "drupal/og_menu",
@@ -6442,16 +6442,16 @@
         },
         {
             "name": "webflo/drupal-finder",
-            "version": "0.2.0",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webflo/drupal-finder.git",
-                "reference": "c5bf606cc0087eb197d4741b2e56b74abe00757e"
+                "reference": "4bd98f7e7b1d30e284e55f51d5d0c8712f676348"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webflo/drupal-finder/zipball/c5bf606cc0087eb197d4741b2e56b74abe00757e",
-                "reference": "c5bf606cc0087eb197d4741b2e56b74abe00757e",
+                "url": "https://api.github.com/repos/webflo/drupal-finder/zipball/4bd98f7e7b1d30e284e55f51d5d0c8712f676348",
+                "reference": "4bd98f7e7b1d30e284e55f51d5d0c8712f676348",
                 "shasum": ""
             },
             "require-dev": {
@@ -6475,7 +6475,7 @@
                 }
             ],
             "description": "Helper class to locate a Drupal installation from a given path.",
-            "time": "2016-11-24 19:58:26"
+            "time": "2016-11-28 18:50:45"
         },
         {
             "name": "webmozart/assert",
@@ -7410,7 +7410,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/klausi/coder/zipball/b08682bd939cf7d3ac7034bee792aa17f80e19d7",
                 "reference": "b08682bd939cf7d3ac7034bee792aa17f80e19d7",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "ext-mbstring": "*",
@@ -7422,7 +7422,7 @@
                 "phpunit/phpunit": ">=3.7"
             },
             "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
@@ -7763,12 +7763,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/drupalextension.git",
-                "reference": "203929d9d71bc0f30ff2c73a8053727b014451e1"
+                "reference": "4d072006873a15a704764985c22dfb591c129c7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/203929d9d71bc0f30ff2c73a8053727b014451e1",
-                "reference": "203929d9d71bc0f30ff2c73a8053727b014451e1",
+                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/4d072006873a15a704764985c22dfb591c129c7e",
+                "reference": "4d072006873a15a704764985c22dfb591c129c7e",
                 "shasum": ""
             },
             "require": {
@@ -7816,7 +7816,7 @@
                 "test",
                 "web"
             ],
-            "time": "2016-08-26 21:41:11"
+            "time": "2016-11-28 19:15:57"
         },
         {
             "name": "fabpot/goutte",
@@ -8343,16 +8343,16 @@
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "6150bf2c35d3fc379e50c7602b75caceaa39dbf0"
+                "reference": "3cc8f69b3028d0f96a9078e6295d86e9bf019be5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/6150bf2c35d3fc379e50c7602b75caceaa39dbf0",
-                "reference": "6150bf2c35d3fc379e50c7602b75caceaa39dbf0",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/3cc8f69b3028d0f96a9078e6295d86e9bf019be5",
+                "reference": "3cc8f69b3028d0f96a9078e6295d86e9bf019be5",
                 "shasum": ""
             },
             "require": {
@@ -8386,7 +8386,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2015-06-21 13:08:43"
+            "time": "2016-10-03 07:40:28"
         },
         {
             "name": "phpunit/php-text-template",
