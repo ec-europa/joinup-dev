@@ -46,6 +46,18 @@ interface RevisionManagerInterface {
   public function isLatestRevision(ContentEntityInterface $entity);
 
   /**
+   * Loads the revision marked as default for the given entity.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity itself.
+   *
+   * @return \Drupal\Core\Entity\ContentEntityInterface|null
+   *   The default entity revision or NULL if the entity type / entity doesn't
+   *   exist.
+   */
+  public function loadDefaultRevision(ContentEntityInterface $entity);
+
+  /**
    * Loads the latest revision of the given entity.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity

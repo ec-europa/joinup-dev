@@ -5,6 +5,7 @@ namespace Drupal\state_machine_revisions;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\TypedData\TranslatableInterface;
 
 /**
  * Manages stuff.
@@ -61,6 +62,30 @@ class RevisionManager implements RevisionManagerInterface {
    */
   public function isLatestRevision(ContentEntityInterface $entity) {
     return $entity->getRevisionId() == $this->getLatestRevisionId($entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function loadDefaultRevision(ContentEntityInterface $entity) {
+    $default_revision = NULL;
+
+    if ($storage = $this->entityTypeManager->getStorage($entity->getEntityTypeId())) {
+      $default_revision = $storage->load($entity->id());
+
+      // Ensure we are comparing the same translation as the current entity.
+      // @see \Drupal\content_moderation\EntityOperations::isDefaultRevisionPublished()
+      if ($default_revision instanceof TranslatableInterface && $default_revision->isTranslatable()) {
+        // If there is no translation, then there is no default revision.
+        if (!$default_revision->hasTranslation($entity->language()->getId())) {
+          return NULL;
+        }
+
+        $default_revision = $default_revision->getTranslation($entity->language()->getId());
+      }
+    }
+
+    return $default_revision;
   }
 
   /**
