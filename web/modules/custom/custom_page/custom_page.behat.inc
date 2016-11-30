@@ -298,7 +298,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *   Thrown when the link is present.
    *
-   * @see \Drupal\DrupalExtension\Context\MinkContext::assertLinkVisible()
+   * @see \Drupal\DrupalExtension\Context\MinkContext::assertNotLinkVisible()
    *
    * @Then I should not see the link :label in the navigation menu
    */
