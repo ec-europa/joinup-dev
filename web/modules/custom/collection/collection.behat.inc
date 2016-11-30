@@ -451,7 +451,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * This function uses only the navigation menu for the items.
    * If the collection passed does not have a menu yet, one is created.
-   * Nodes are loaded by title.
+   * Nodes are loaded by title. If the node doesn't exist yet, it is created.
    *
    * Table format:
    * | collection   | label             | page         | weight |
@@ -469,7 +469,20 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function givenCollectionMenuItems($bundle, TableNode $menu_table) {
     foreach ($menu_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
-      $content = $this->getNodeByTitle($values['page'], $bundle);
+      // Try to retrieve a previously created node. If it doesn't exist, create
+      // one.
+      try {
+        $content = $this->getNodeByTitle($values['page'], $bundle);
+      }
+      catch (\InvalidArgumentException $e) {
+        $node = (object) [
+          'title' => $values['page'],
+          'type' => $bundle,
+          'body' => $this->getRandom()->name(255),
+        ];
+        $this->nodeCreate($node);
+        $content = \Drupal::entityTypeManager()->getStorage('node')->loadUnchanged($node->nid);
+      }
       $og_menu_instance = $this->getOgMenuInstance($group->id(), 'navigation');
       if (empty($og_menu_instance)) {
         $og_menu_instance = $this->createOgMenuInstance($group->id(), 'navigation');
