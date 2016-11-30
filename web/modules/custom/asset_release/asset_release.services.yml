@@ -14,4 +14,3 @@ services:
     arguments: ['@entity_type.manager', '@joinup_core.workflow.user_provider']
     tags:
       - { name: state_machine.guard, group: asset_release }
-
