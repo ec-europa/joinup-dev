@@ -1,8 +1,8 @@
 revision_bundle_rdf_entity:
-  collection: 0
+  collection: collection
   solution: solution
   asset_distribution: 0
-  asset_release: 0
+  asset_release: asset_release
   contact_information: 0
   licence: 0
   owner: 0
