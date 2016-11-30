@@ -6,7 +6,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\ParamConverter\EntityConverter;
 use Drupal\Core\TypedData\TranslatableInterface;
-use Drupal\state_machine_revisions\RevisionManager;
+use Drupal\state_machine_revisions\RevisionManagerInterface;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -17,7 +17,7 @@ class EntityRevisionConverter extends EntityConverter {
   /**
    * The revision manager.
    *
-   * @var \Drupal\state_machine_revisions\RevisionManager
+   * @var \Drupal\state_machine_revisions\RevisionManagerInterface
    */
   protected $revisionManager;
 
@@ -26,10 +26,10 @@ class EntityRevisionConverter extends EntityConverter {
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
-   * @param \Drupal\state_machine_revisions\RevisionManager $revision_manager
+   * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager.
    */
-  public function __construct(EntityManagerInterface $entity_manager, RevisionManager $revision_manager) {
+  public function __construct(EntityManagerInterface $entity_manager, RevisionManagerInterface $revision_manager) {
     parent::__construct($entity_manager);
 
     $this->revisionManager = $revision_manager;
