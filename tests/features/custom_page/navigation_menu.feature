@@ -64,12 +64,12 @@ Feature: Navigation menu for custom pages
     # is visible for all users.
     When I enable "About us" in the navigation menu of the "Rainbow tables" collection
 
-    # Create a custom page in the second collection so we can check if the right
-    # menu shows up in each collection.
-    Given the following custom_page content menu items for the corresponding collections:
-    | collection       | label           | page            | weight |
-    | Cripple Mr Onion | Eights are wild | Eights are wild | 0      |
-    | Cripple Mr Onion | Eights are null | Eights are null | 0      |
+    # Create a few custom pages in the second collection so we can check if the
+    # right menu shows up in each collection.
+    Given custom_page content:
+      | title           | body                                                                                                                                  | collection       |
+      | Eights are wild | You cannot Cripple Mr Onion if your running flush contains more wild eights than the Lesser or Great Onion you are trying to cripple. | Cripple Mr Onion |
+      | Eights are null | They can be included in an existing Onion in order to improve its size by one card.                                                   | Cripple Mr Onion |
 
     # Test as a normal member of the collection.
     Given I am logged in as a member of the "Rainbow tables" collection
