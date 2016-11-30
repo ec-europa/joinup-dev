@@ -39,7 +39,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *   Thrown when a custom page with the given title doesn't exist.
    *
-   * @Then the :collection collection has a custom page titled :title
+   * @Then the :collection collection should have a custom page titled :title
    */
   public function assertOgMembership($title, $collection) {
     $collection = $this->getRdfEntityByLabel($collection, 'collection');
