@@ -13,16 +13,14 @@ interface RevisionManagerInterface {
   /**
    * Returns the revision ID of the latest revision of the given entity.
    *
-   * @param string $entityTypeID
-   *   The entity type ID.
-   * @param string $entityID
-   *   The entity ID.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity itself.
    *
    * @return string|null
    *   The revision ID of the latest revision for the specified entity, or
    *   NULL if there is no such entity.
    */
-  public function getLatestRevisionId($entityTypeID, $entityID);
+  public function getLatestRevisionId(ContentEntityInterface $entity);
 
   /**
    * Determines if an entity has support for revisions.
@@ -50,15 +48,13 @@ interface RevisionManagerInterface {
   /**
    * Loads the latest revision of the given entity.
    *
-   * @param string $entityTypeID
-   *   The entity type ID.
-   * @param string $entityID
-   *   The entity ID.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity itself.
    *
    * @return \Drupal\Core\Entity\ContentEntityInterface|null
-   *   The latest entity revision or NULL, if the entity type / entity doesn't
+   *   The latest entity revision or NULL if the entity type / entity doesn't
    *   exist.
    */
-  public function loadLatestRevision($entityTypeID, $entityID);
+  public function loadLatestRevision(ContentEntityInterface $entity);
 
 }

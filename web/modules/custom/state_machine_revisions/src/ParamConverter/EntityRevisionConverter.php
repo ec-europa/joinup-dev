@@ -73,7 +73,7 @@ class EntityRevisionConverter extends EntityConverter {
     $entity = parent::convert($value, $definition, $name, $defaults);
 
     if ($entity && $entity->getEntityType()->isRevisionable() && !$this->revisionManager->isLatestRevision($entity)) {
-      $latest_revision = $this->revisionManager->loadLatestRevision($entity->getEntityTypeId(), $value);
+      $latest_revision = $this->revisionManager->loadLatestRevision($entity);
 
       // If the entity type is translatable, ensure we return the proper
       // translation object for the current context.

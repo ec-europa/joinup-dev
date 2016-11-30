@@ -31,12 +31,14 @@ class RevisionManager implements RevisionManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getLatestRevisionId($entityTypeID, $entityID) {
-    if ($storage = $this->entityTypeManager->getStorage($entityTypeID)) {
+  public function getLatestRevisionId(ContentEntityInterface $entity) {
+    $entity_type = $entity->getEntityTypeId();
+
+    if ($storage = $this->entityTypeManager->getStorage($entity_type)) {
       $revision_ids = $storage->getQuery()
         ->allRevisions()
-        ->condition($this->entityTypeManager->getDefinition($entityTypeID)->getKey('id'), $entityID)
-        ->sort($this->entityTypeManager->getDefinition($entityTypeID)->getKey('revision'), 'DESC')
+        ->condition($this->entityTypeManager->getDefinition($entity_type)->getKey('id'), $entity->id())
+        ->sort($this->entityTypeManager->getDefinition($entity_type)->getKey('revision'), 'DESC')
         ->range(0, 1)
         ->execute();
       if ($revision_ids) {
@@ -58,15 +60,15 @@ class RevisionManager implements RevisionManagerInterface {
    * {@inheritdoc}
    */
   public function isLatestRevision(ContentEntityInterface $entity) {
-    return $entity->getRevisionId() == $this->getLatestRevisionId($entity->getEntityTypeId(), $entity->id());
+    return $entity->getRevisionId() == $this->getLatestRevisionId($entity);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function loadLatestRevision($entityTypeID, $entityID) {
-    if ($latest_revision_id = $this->getLatestRevisionId($entityTypeID, $entityID)) {
-      return $this->entityTypeManager->getStorage($entityTypeID)->loadRevision($latest_revision_id);
+  public function loadLatestRevision(ContentEntityInterface $entity) {
+    if ($latest_revision_id = $this->getLatestRevisionId($entity)) {
+      return $this->entityTypeManager->getStorage($entity->getEntityTypeId())->loadRevision($latest_revision_id);
     }
 
     return NULL;
