@@ -5,10 +5,10 @@ Feature: Navigation menu for custom pages
   I need to be able to manage the navigation menu
 
   Scenario: Access the navigation menu through the contextual link
-    Given the following collection:
-      | title | Rainbow tables |
-      | logo  | logo.png       |
-      | state | validated      |
+    Given the following collections:
+      | title            | logo     | state     |
+      | Rainbow tables   | logo.png | validated |
+      | Cripple Mr Onion | logo.png | validated |
 
     # Initially there are no items in the navigation menu, instead we see a help
     # text inviting the user to add a page to the menu.
@@ -60,15 +60,63 @@ Feature: Navigation menu for custom pages
     # related menu administration screens.
     And I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
 
-    # Members of the collection should not have access to the administration
-    # pages either.
+    # Enable the menu entry for the 'About us' page again so we can check if it
+    # is visible for all users.
+    When I enable "About us" in the navigation menu of the "Rainbow tables" collection
+
+    # Create a custom page in the second collection so we can check if the right
+    # menu shows up in each collection.
+    Given the following custom_page content menu items for the corresponding collections:
+    | collection       | label           | page            | weight |
+    | Cripple Mr Onion | Eights are wild | Eights are wild | 0      |
+    | Cripple Mr Onion | Eights are null | Eights are null | 0      |
+
+    # Test as a normal member of the collection.
     Given I am logged in as a member of the "Rainbow tables" collection
+    When I go to the homepage of the "Rainbow tables" collection
+    # Members of the collection should not have access to the administration
+    # pages.
     Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
+    # The navigation link from the current collection should be visible, but not
+    # the link from the second collection.
+    And I should see the link "About us" in the navigation menu
+    But I should not see the link "Eights are wild" in the navigation menu
+    And I should not see the link "Eights are null" in the navigation menu
+    # Test the navigation link of the second collection.
+    When I go to the homepage of the "Cripple Mr Onion" collection
+    Then I should see the link "Eights are wild" in the navigation menu
+    And I should see the link "Eights are null" in the navigation menu
+    But I should not see the link "About us" in the navigation menu
 
-    # Even moderators should not have access to the administration pages.
+    # Test as a moderator.
     Given I am logged in as a moderator
+    When I go to the homepage of the "Rainbow tables" collection
+    # Even moderators should not have access to the administration pages.
     Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
+    # The navigation link from the current collection should be visible, but not
+    # the link from the second collection.
+    And I should see the link "About us" in the navigation menu
+    But I should not see the link "Eights are wild" in the navigation menu
+    And I should not see the link "Eights are null" in the navigation menu
+    # Test the navigation link of the second collection.
+    When I go to the homepage of the "Cripple Mr Onion" collection
+    Then I should see the link "Eights are wild" in the navigation menu
+    And I should see the link "Eights are null" in the navigation menu
+    But I should not see the link "About us" in the navigation menu
 
-    # Anonymous users should definitely not have access.
+    # Test as an anonymous user.
     Given I am an anonymous user
+    When I go to the homepage of the "Rainbow tables" collection
+    # Anonymous users should definitely not have access to the administration
+    # pages.
     Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
+    # The navigation link from the current collection should be visible, but not
+    # the link from the second collection.
+    And I should see the link "About us" in the navigation menu
+    But I should not see the link "Eights are wild" in the navigation menu
+    And I should not see the link "Eights are null" in the navigation menu
+    # Test the navigation link of the second collection.
+    When I go to the homepage of the "Cripple Mr Onion" collection
+    Then I should see the link "Eights are wild" in the navigation menu
+    And I should see the link "Eights are null" in the navigation menu
+    But I should not see the link "About us" in the navigation menu

@@ -5,6 +5,7 @@
  * Contains \CustomPageSubContext.
  */
 
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
@@ -187,7 +188,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Then the :menu menu of the :label :type should have :count visible item(s)
    */
-  public function assertVisibleItemsInMenu($menu, $label, $type, $count) {
+  public function assertVisibleItemsInMenuCount($menu, $label, $type, $count) {
     /** @var \Drupal\Core\Menu\MenuLinkTreeInterface $link_tree_service */
     $link_tree_service = \Drupal::service('menu.link_tree');
 
@@ -254,6 +255,80 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
 
     throw new \InvalidArgumentException("No menu link with title $title exists in the $menu menu for the $label $type.");
+  }
+
+  /**
+   * Checks if the given link is present in the navigation menu.
+   *
+   * @param string $link
+   *   The link text.
+   *
+   * @throws \Exception
+   *   Thrown when the link is not present.
+   *
+   * @see \Drupal\DrupalExtension\Context\MinkContext::assertLinkVisible()
+   *
+   * @Then I should see the link :label in the navigation menu
+   */
+  public function assertLinkInNavigationMenu($link) {
+    $element = $this->getNavigationMenu()->findLink($link);
+
+    try {
+      if ($element && !$element->isVisible()) {
+        throw new \Exception(sprintf("No link to '%s' in the navigation menu on the page %s", $link, $this->getSession()->getCurrentUrl()));
+      }
+    }
+    catch (UnsupportedDriverActionException $e) {
+      // We catch the UnsupportedDriverActionException exception in case
+      // this step is not being performed by a driver that supports JavaScript.
+      // All other exceptions are valid.
+    }
+
+    if (empty($element)) {
+      throw new \Exception(sprintf("No link to '%s' in the navigation menu on the page %s", $link, $this->getSession()->getCurrentUrl()));
+    }
+  }
+
+  /**
+   * Checks if the given link is not present in the navigation menu.
+   *
+   * @param string $link
+   *   The link text.
+   *
+   * @throws \Exception
+   *   Thrown when the link is present.
+   *
+   * @see \Drupal\DrupalExtension\Context\MinkContext::assertLinkVisible()
+   *
+   * @Then I should not see the link :label in the navigation menu
+   */
+  public function assertNoLinkInNavigationMenu($link) {
+    $element = $this->getNavigationMenu()->findLink($link);
+
+    try {
+      if ($element && $element->isVisible()) {
+        throw new \Exception(sprintf("The link '%s' was present in the navigation menu on the page %s and was not supposed to be", $link, $this->getSession()->getCurrentUrl()));
+      }
+    }
+    catch (UnsupportedDriverActionException $e) {
+      // We catch the UnsupportedDriverActionException exception in case
+      // this step is not being performed by a driver that supports javascript.
+      // All other exceptions are valid.
+    }
+
+    if ($element) {
+      throw new \Exception(sprintf("The link '%s' was present in the navigation menu on the page %s and was not supposed to be", $link, $this->getSession()->getCurrentUrl()));
+    }
+  }
+
+  /**
+   * Returns the DOM element containing the navigation menu.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The DOM element containing the navigation menu.
+   */
+  protected function getNavigationMenu() {
+    return $this->getSession()->getPage()->find('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " navigation-menu ")]//ul');
   }
 
   /**
