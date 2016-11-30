@@ -102,7 +102,7 @@ function asset_release_theme($existing, $type, $theme, $path) {
  * granted if there are no transitions allowed for the current state of the
  * node.
  */
-function collection_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+function asset_release_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
   if ($entity->bundle() != 'asset_release' || $account->isAnonymous() || \Drupal::currentUser()->hasPermission('administer rdf entity')) {
     return AccessResult::neutral();
   }
@@ -134,7 +134,7 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
  *
  * Default graph is published. Draft graph is draft.
  */
-function collection_rdf_entity_presave(EntityInterface $entity) {
+function asset_release_rdf_entity_presave(EntityInterface $entity) {
   $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
   if (empty($enabled_bundles) || $entity->bundle() != 'asset_release' || !in_array($entity->bundle(), $enabled_bundles)) {
     return;
@@ -161,7 +161,7 @@ function collection_rdf_entity_presave(EntityInterface $entity) {
  * Performs the following actions:
  * - When the entity is saved into the default graph, the draft must be deleted.
  */
-function collection_entity_update(EntityInterface $entity) {
+function asset_release_entity_update(EntityInterface $entity) {
   $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
   if (empty($enabled_bundles) || $entity->bundle() != 'asset_release' || !in_array($entity->bundle(), $enabled_bundles)) {
     return;
