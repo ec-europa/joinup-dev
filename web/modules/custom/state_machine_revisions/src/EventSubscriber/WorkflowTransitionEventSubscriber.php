@@ -5,12 +5,30 @@ namespace Drupal\state_machine_revisions\EventSubscriber;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\state_machine\Event\WorkflowTransitionEvent;
+use Drupal\state_machine_revisions\RevisionManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Event subscriber to handle revisions on workflow-enabled entities.
  */
 class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
+
+  /**
+   * The revision manager.
+   *
+   * @var \Drupal\state_machine_revisions\RevisionManagerInterface
+   */
+  protected $revisionManager;
+
+  /**
+   * Constructs a new EntityRevisionConverter object.
+   *
+   * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revisionManager
+   *   The revision manager.
+   */
+  public function __construct(RevisionManagerInterface $revisionManager) {
+    $this->revisionManager = $revisionManager;
+  }
 
   /**
    * {@inheritdoc}
