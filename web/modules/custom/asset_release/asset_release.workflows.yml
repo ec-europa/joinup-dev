@@ -1,0 +1,29 @@
+# The workflow of the release entity.
+release_workflow:
+  id: release_workflow
+  label: "Default"
+  group: release
+  states:
+    draft:
+      label: Draft
+    in_assessment:
+      label: In assessment
+    validated:
+      label: Validated
+  transitions:
+    draft:
+      label: Save as draft
+      from: [draft, in_assessment, validated]
+      to: draft
+    validate:
+      label: Publish
+      from: [draft, in_assessment, validated]
+      to: validated
+    request_changes:
+      label: Request changes
+      from: [validated]
+      to: in_assessment
+    update_changes:
+      label: Update
+      from: [in_assessment]
+      to: in_assessment
