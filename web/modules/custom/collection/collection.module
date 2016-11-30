@@ -153,7 +153,9 @@ function collection_rdf_entity_presave(EntityInterface $entity) {
 /**
  * Implements hook_entity_update().
  *
- * When the entity is saved into the default graph, the draft must be deleted.
+ * Performs the following actions:
+ * - Invalidates group content cache tags for the entity that is being changed.
+ * - When the entity is saved into the default graph, the draft must be deleted.
  */
 function collection_entity_update(EntityInterface $entity) {
   $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
@@ -207,6 +209,8 @@ function collection_entity_extra_field_info() {
 
 /**
  * Implements hook_ENTITY_TYPE_view().
+ *
+ * Populates the two extra fields 'collection_content' and 'join_collection'.
  */
 function collection_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if ($entity->bundle() != 'collection') {
@@ -227,6 +231,9 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
           $entity->id(),
         ],
       ];
+      // Tag the view with the group content cache tag, so that it gets
+      // invalidated whenever the group content changes.
+      $build['#cache']['tags'][] = 'og-group-content:rdf_entity:' . $entity->id();
     }
   }
 

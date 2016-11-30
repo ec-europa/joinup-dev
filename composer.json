@@ -20,7 +20,7 @@
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "~1.0-alpha1",
         "drupal/migrate_spreadsheet": "1.x-dev",
-        "drupal/og": "dev-1.x#dbffd5d9123b2b5b0f0bc91efb3bc9d45da3f073",
+        "drupal/og": "dev-recent-group-content-block",
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phingdrushtask": "dev-7.x-2.x#13428ee7a229da3b7e6be4687587048150b1fd25",
         "drupal/r4032login": "dev-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
@@ -52,7 +52,7 @@
         "drupal/config_update": "~1.2",
         "drupal/default_content": "~1.0",
         "drupal/devel": "~1.0@alpha",
-        "drupal/drupal-extension": "dev-master#203929d9d71bc0f30ff2c73a8053727b014451e1",
+        "drupal/drupal-extension": "dev-master#4d072006873a15a704764985c22dfb591c129c7e",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
         "mikey179/vfsStream": "~1.2",
@@ -159,6 +159,11 @@
                     "reference": "master"
                 }
             }
+        },
+        {
+            "_comment": "This is the development repository of the D8 port of Organic Groups. Remove this when an official alpha release is made.",
+            "type": "vcs",
+            "url": "git@github.com:amitaibu/og"
         },
         {
             "type": "vcs",

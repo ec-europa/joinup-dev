@@ -120,14 +120,11 @@ Feature: June 2016 demo
     When I click "List of members"
     Then I should see the heading "List of members"
     And I should see the text "Here is a list of members known to the public:"
-    # Also do a sample check for the visibility of the collection actions.
-    And I should see the link "Add custom page"
 
     # Add new custom page.
-    When I click "Add custom page"
-    And I fill in the following:
-      | Title | How to apply                                                                                                                        |
-      | Body  | You want to become a S.H.I.E.L.D. agent? <br />If you were worthy, S.H.I.E.L.D. <b>would have found you already</b>. <br />GET OUT. |
+    When I click "Add custom page" in the plus button menu
+    And I enter "How to apply" for "Title"
+    And I enter "You want to become a S.H.I.E.L.D. agent? <br />If you were worthy, S.H.I.E.L.D. <b>would have found you already</b>. <br />GET OUT." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the heading "How to apply"
     And I should see the text "You want to become a S.H.I.E.L.D. agent?"
@@ -143,36 +140,42 @@ Feature: June 2016 demo
     And I should see the text "List of members"
     When I click "List of members"
     Then I should see the heading "List of members"
-    # This step is unnecessary.
-    And I should see the text "Edit"
 
     # Edit page.
     When I click "Edit"
     Then I should see the heading "Edit Custom page List of members"
     # @todo: We have to set the link to the other page.
-    When I fill in "Body" with "Here is a list of members known to the public: <br><ul><li>Nick Fury</li></ul><br />Want to apply? Check the other page for this."
+    When I enter "Here is a list of members known to the public: <br><ul><li>Nick Fury</li></ul><br />Want to apply? Check the other page for this." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the heading "List of members"
     And I should see the text "Want to apply? Check the other page for this."
-    # Also check for the visibility of the collection action 'Add news'.
-    And I should see the link "Add news"
 
     # Add news.
-    When I click "Add news"
+    When I click "Add news" in the plus button menu
     Then I should see the heading "Add news"
     And I fill in the following:
       | Headline | New York under attack                                                                    |
       | Kicker   | S.H.I.E.L.D. to nuke New York?                                                           |
-      | Content  | In a desperate attempt to stop the nuke, Nick fury shot down an airplane of S.H.I.E.L.D. |
-    And I press "Save"
-    And I should see the heading "New York under attack"
+    And I enter "In a desperate attempt to stop the nuke, Nick fury shot down an airplane of S.H.I.E.L.D." in the "Content" wysiwyg editor
+    And I press "Save as draft"
+    # @todo Remove this line when caching Search API results is fixed.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2574
+    And I commit the solr index
+    Then I should see the heading "New York under attack"
     And I should see the text "S.H.I.E.L.D. to nuke New York?"
+    # Content is saved as draft but should be viewable by the content owner on
+    # the collection overview.
+    When I go to the homepage of the "S.H.I.E.L.D." collection
+    Then I should see the link "New York under attack"
 
     # Scenario B: A non member registered user, browses the website.
     When I am logged in as "Wolverine"
     Then I should see the link "Collections"
 
     # Collections overview.
+    # @todo Remove this line when caching Search API results is fixed.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2574
+    When the cache has been cleared
     When I click "Collections"
     Then I should see the text "S.H.I.E.L.D."
     And I should see the text "x-Men"
@@ -189,7 +192,8 @@ Feature: June 2016 demo
     # News belonging to the solution.
     And I should see the text "Phil Coulson is down"
     And I should see the text "S.H.I.E.L.D. is infiltrated"
-    And I should see the text "New York under attack"
+    # The draft news article should not be visible to a non-member.
+    And I should not see the text "New York under attack"
     # News from solutions.
     And I should not see the text "Captain America not dead?"
     And I should not see the text "Hellicarrier under attack"

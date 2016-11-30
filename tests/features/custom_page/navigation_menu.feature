@@ -17,19 +17,15 @@ Feature: Navigation menu for custom pages
     Then the navigation menu of the "Rainbow tables" collection should have 0 visible items
     And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
     And I should see the link "Add a new page"
-
-    # Check that the menu form is initially empty and shows a help text.
-    When I click the contextual link "Edit menu" in the "Left sidebar" region
-    Then I should see the heading "Edit navigation menu of the Rainbow tables collection"
-    And the navigation menu of the "Rainbow tables" collection should have 0 items
-    And I should see the text "There are no custom pages yet."
+    # Check that the 'Edit menu' local action is not present.
+    But I should not see the contextual link "Edit menu" in the "Left sidebar" region
     # The 'Add link' local action that is present in the default implementation
     # of OG Menu should not be visible. We are managing the menu links behind
     # the scenes. The end user should not be able to interact with these.
-    But I should not see the link "Add link"
+    And I should not see the contextual link "Add link" in the "Left sidebar" region
 
     # When we create a custom page it should automatically show up in the menu.
-    When I click "Add page"
+    When I click "Add a new page"
     Then I should see the heading "Add custom page"
     When I fill in the following:
       | Title | About us              |
@@ -46,6 +42,16 @@ Feature: Navigation menu for custom pages
     # It should be possible to hide an item from the menu by disabling it.
     When I disable "About us" in the navigation menu of the "Rainbow tables" collection
     Then the navigation menu of the "Rainbow tables" collection should have 0 visible items
+
+    # When all the pages are disabled in the navigation menu, a message should
+    # be shown to the user.
+    When I go to the homepage of the "Rainbow tables" collection
+    Then I should see the text "All the pages have been disabled for this collection. You can edit the menu configuration or add a new page."
+    And I should see the contextual link "Edit menu" in the "Left sidebar" region
+
+    # The contextual menu can be used to navigate to the menu edit page.
+    When I click the contextual link "Edit menu" in the "Left sidebar" region
+    Then I should see the heading "Edit navigation menu of the Rainbow tables collection"
 
     # The form to add a new menu link should not be accessible by anyone. This
     # is functionality provided by Drupal which is intended for webmasters. We
