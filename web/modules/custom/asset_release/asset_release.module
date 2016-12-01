@@ -143,10 +143,10 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
   }
 
   $state = $entity->field_isr_state->value;
-  if (in_array($state, ['draft'])) {
+  if (in_array($state, ['draft', 'in_assessment'])) {
     \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
   }
-  elseif (in_array($state, ['in_assessment', 'validated'])) {
+  elseif (in_array($state, ['validated'])) {
     \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
   }
   elseif (empty($state)) {
