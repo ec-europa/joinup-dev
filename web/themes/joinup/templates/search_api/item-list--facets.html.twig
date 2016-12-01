@@ -28,11 +28,11 @@
   {%- endif -%}
 
   {%- if items -%}
-    <{{ list_type }}{{ attributes.addClass('filters filters--more') }}>
+    <ul class='filters filters--more mdl-menu mdl-menu--bottom-right mdl-js-menu' for="filters__dropdown-button">
       {%- for item in items -%}
-        <li{{ item.attributes.addClass('filter') }}>{{ item.value }}</li>
+        <li{{ item.attributes.addClass('filter circle-menu__item mdl-menu__item') }}>{{ item.value }}</li>
       {%- endfor -%}
-    </{{ list_type }}>
+    </ul>
   {%- else -%}
     {{- empty -}}
   {%- endif -%}

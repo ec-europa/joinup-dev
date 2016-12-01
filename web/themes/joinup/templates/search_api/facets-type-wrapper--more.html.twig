@@ -12,13 +12,13 @@
  * @ingroup themeable
  */
 #}
-{% if items  %}
+{% if items %}
 <div class="tabs--content-type">
     {%- for item in items -%}
         {{ item }}
     {%- endfor -%}
 
-    <a class="tab--more">
+    <a href="#" id="filters__dropdown-button" class="filters__dropdown-button tab--more">
       <div class="tab__text">{{ 'More'|t }}</div>
       <div class="tab__icon icon icon--arrow-down"></div>
     </a>
