@@ -84,7 +84,6 @@ content:
       joinup:
         template_suggestion: ''
 hidden:
-  collection_content: true
   field_ar_abstract: true
   field_ar_access_url: true
   field_ar_affiliates: true

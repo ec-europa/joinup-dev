@@ -32,10 +32,6 @@ targetEntityType: rdf_entity
 bundle: collection
 mode: default
 content:
-  collection_content:
-    weight: 3
-    settings: {  }
-    third_party_settings: {  }
   field_ar_abstract:
     weight: 13
     label: above
