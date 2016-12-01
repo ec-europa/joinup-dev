@@ -17,7 +17,11 @@ asset_release_workflow:
       to: draft
     validate:
       label: Publish
-      from: [draft, in_assessment, validated]
+      from: [draft, in_assessment]
+      to: validated
+    update_published:
+      label: Update
+      from: [validated]
       to: validated
     request_changes:
       label: Request changes

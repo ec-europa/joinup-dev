@@ -36,12 +36,13 @@ transitions:
   update_changes:
     in_assessment:
       - rdf_entity-solution-facilitator
-  validated:
+  validate:
     draft:
       - moderator
       - rdf_entity-solution-facilitator
     in_assessment:
       - moderator
+  update_published:
     validated:
       - moderator
       - rdf_entity-solution-facilitator
