@@ -6,9 +6,12 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
@@ -46,7 +49,18 @@ function solution_entity_access(EntityInterface $entity, $operation, AccountInte
  * Implements hook_entity_bundle_field_info_alter().
  */
 function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
-  if ($entity_type->id() == 'rdf_entity' && $bundle == 'solution' && !empty($fields['label'])) {
+  if ($entity_type->id() != 'rdf_entity' || $bundle != 'solution') {
+    return;
+  }
+  // Add a computed field, that represents the collections a solutions is
+  // part of.
+  // @see solution_rdf_entity_load().
+  $fields['collection'] = BaseFieldDefinition::create('entity_reference')
+    ->setLabel(t('Collection'))
+    ->setDescription(t('The collections this solution belongs to.'))
+    ->setReadOnly(TRUE)
+    ->setSetting('target_type', 'rdf_type');
+  if (!empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueSolutionTitle', []);
   }
 }
@@ -91,7 +105,44 @@ function solution_form_rdf_entity_solution_form_alter(array &$form, FormStateInt
   $entity = $form_state->getFormObject()->getEntity();
   if (!empty($form_state->getStorage()['collection']) && $entity->bundle() == 'solution' && $entity->isNew()) {
     $form['actions']['submit']['#submit'][] = 'solution_add_form_parent_submit';
+    $form['#entity_builders'][] = 'solution_add_form_set_collection';
   }
+}
+
+/**
+ * Keep a reference to the collection being saved.
+ *
+ * @param string $entity_type_id
+ *   The entity type identifier.
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity updated with the submitted values.
+ * @param array $form
+ *   The complete form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ */
+function solution_add_form_set_collection($entity_type, EntityInterface $entity, &$form, FormStateInterface $form_state) {
+  $collection_id = $form_state->getStorage()['collection'];
+  solution_relate_collection_id($collection_id);
+}
+
+/**
+ * Keep track of the collection the solution is related to.
+ *
+ * This works around a race condition in the indexing process to Solr.
+ *
+ * @param string|null $collection_id
+ *   The collection the solution is being related to.
+ *
+ * @return string|null
+ *   The collection the solution is being related to.
+ */
+function solution_relate_collection_id($collection_id = NULL) {
+  static $id;
+  if ($collection_id) {
+    $id = $collection_id;
+  }
+  return $id;
 }
 
 /**
@@ -174,6 +225,34 @@ function solution_entity_extra_field_info() {
     ];
   }
   return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_load().
+ */
+function solution_rdf_entity_load($entities) {
+  /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+  foreach ($entities as $entity) {
+    if ($entity->bundle() != 'solution') {
+      return;
+    }
+    // In ADMS-AP collections point to solutions.
+    // The reverse relation would have been more logical,
+    // and this is quite inconvenient, especially for the search index.
+    // To work around this, we add a computed field here.
+    $ids = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'collection')
+      ->condition('field_ar_affiliates', $entity->id())
+      ->execute();
+    // This will only be set when submitting a new solution form.
+    $pending_collection_id = solution_relate_collection_id();
+    if ($pending_collection_id) {
+      $ids[$pending_collection_id] = $pending_collection_id;
+    }
+    if ($ids) {
+      $entity->set('collection', array_keys($ids));
+    }
+  }
 }
 
 /**

@@ -19,6 +19,8 @@ dependencies:
   - rdf_entity
   - state_machine
   - text
+  - facets
+  - search_api_field
 
 config_devel:
   - core.entity_form_display.rdf_entity.collection.default
@@ -59,3 +61,8 @@ config_devel:
   - field.storage.rdf_entity.field_ar_shared_content
   - field.storage.rdf_entity.field_ar_state
   - rdf_entity.rdfentity.collection
+  - field.field.rdf_entity.collection.field_collection_content
+  - field.storage.rdf_entity.field_collection_content
+  - facets.facet.collection_policy_domain
+  - facets.facet.collection_type
+  - facets.facet_source.search_api_field__rdf_entity.field_collection_content

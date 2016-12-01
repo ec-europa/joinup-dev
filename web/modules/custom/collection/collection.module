@@ -18,6 +18,7 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\search_api\Query\QueryInterface;
 use Drupal\views\Views;
 
 /**
@@ -245,4 +246,18 @@ function collection_field_widget_form_alter(&$element, FormStateInterface $form_
   if ($field_name == 'field_ar_closed') {
     $element['#attached']['library'][] = 'collection/collection_form';
   }
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ */
+function collection_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
+  /** @var EntityInterface $entity */
+  $entity = $query->getOption('search_api_field entity');
+
+  // Show only content that is related to this collection.
+  $query->addCondition('aggregated_field_1', [$entity->id()], 'IN');
+
+  // Remove the page itself from the results.
+  $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
 }

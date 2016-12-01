@@ -112,8 +112,11 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     }
 
     // At the moment, this formatter supports only single-value fields.
-    $settings = $items->first()->value;
-
+    $settings_item = $items->first();
+    if (empty($settings_item)) {
+      return [];
+    }
+    $settings = $settings_item->value;
     // Bail out if the field is disabled.
     if (empty($settings['enabled'])) {
       return [];
