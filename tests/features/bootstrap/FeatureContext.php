@@ -6,8 +6,8 @@
  */
 
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 
@@ -16,10 +16,9 @@ use Drupal\joinup\Traits\UtilityTrait;
  */
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
+  use ContextualLinksTrait;
   use EntityTrait;
   use UtilityTrait;
-  // Uncomment to enable screen-shots during development.
-  // use \Drupal\joinup\Traits\ScreenShotTrait;
 
   /**
    * Define ASCII values for key presses.
@@ -457,7 +456,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Resolves contextual links directly, without the need for javascript.
+   * Clicks a contextual link directly, without the need for javascript.
    *
    * @param string $text
    *   The text of the link.
@@ -470,39 +469,55 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I click the contextual link :text in the :region region
    */
   public function iClickTheContextualLinkInTheRegion($text, $region) {
-    $account = user_load($this->getUserManager()->getCurrentUser()->uid);
-    $links = array();
-    /** @var \Drupal\Core\Menu\ContextualLinkManager $contextual_links_manager */
-    $contextual_links_manager = \Drupal::service('plugin.manager.menu.contextual_link');
-    $session = $this->getSession();
-    $regionObj = $session->getPage()->find('region', $region);
-    if (!$regionObj) {
-      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+    $links = $this->findContextualLinksInRegion($region);
+
+    if (!isset($links[$text])) {
+      throw new \Exception(t('Could not find a contextual link %link in the region %region', ['%link' => $text, '%region' => $region]));
     }
-    /** @var \Behat\Mink\Element\NodeElement $item */
-    foreach ($regionObj->findAll('xpath', '//*[@data-contextual-id]') as $item) {
-      $contextual_id = $item->getAttribute('data-contextual-id');
-      foreach (_contextual_id_to_links($contextual_id) as $group_name => $link) {
-        $route_parameters = $link['route_parameters'];
-        foreach ($contextual_links_manager->getContextualLinkPluginsByGroup($group_name) as $plugin_id => $plugin_definition) {
-          /** @var \Drupal\Core\Menu\ContextualLinkInterface $plugin */
-          $plugin = $contextual_links_manager->createInstance($plugin_id);
-          $route_name = $plugin->getRouteName();
-          // Check access.
-          if (!\Drupal::accessManager()->checkNamedRoute($route_name, $route_parameters, $account)) {
-            continue;
-          }
-          /** @var \Drupal\Core\Url $url */
-          $url = Url::fromRoute($route_name, $route_parameters, $plugin->getOptions())->toRenderArray();
-          $links[$plugin->getTitle()] = $url['#url']->toString();
-        }
-      }
+
+    $this->getSession()->visit($this->locatePath($links[$text]));
+  }
+
+  /**
+   * Asserts that a certain contextual link is present in a region.
+   *
+   * @param string $text
+   *   The text of the link.
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when the contextual link is not found in the region.
+   *
+   * @Then I (should )see the contextual link :text in the :region region
+   */
+  public function assertContextualLinkInRegionPresent($text, $region) {
+    $links = $this->findContextualLinksInRegion($region);
+
+    if (!isset($links[$text])) {
+      throw new \Exception(t('Contextual link %link expected but not found in the region %region', ['%link' => $text, '%region' => $region]));
     }
+  }
+
+  /**
+   * Asserts that a certain contextual link is not present in a region.
+   *
+   * @param string $text
+   *   The text of the link.
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when the contextual link is found in the region.
+   *
+   * @Then I (should )not see the contextual link :text in the :region region
+   */
+  public function assertContextualLinkInRegionNotPresent($text, $region) {
+    $links = $this->findContextualLinksInRegion($region);
+
     if (isset($links[$text])) {
-      $session->visit($this->locatePath($links[$text]));
-      return;
+      throw new \Exception(t('Unexpected contextual link %link found in the region %region', ['%link' => $text, '%region' => $region]));
     }
-    throw new \Exception(t('Could not find a contextual link %link in the region %region', ['%link' => $text, '%region' => $region]));
   }
 
   /**
