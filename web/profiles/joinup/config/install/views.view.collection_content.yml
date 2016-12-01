@@ -192,6 +192,7 @@ display:
           not: false
           plugin_id: search_api
       display_extenders: {  }
+      display_comment: 'The collection content as displayed on the collection overview. This is displayed as an extra field on the Collection entity. See collection_entity_extra_field_info() and collection_rdf_entity_view().'
     cache_metadata:
       max-age: 0
       contexts:
