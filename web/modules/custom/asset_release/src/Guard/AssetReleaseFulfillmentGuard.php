@@ -2,6 +2,7 @@
 
 namespace Drupal\asset_release\Guard;
 
+use Drupal\asset_release\AssetReleaseRelations;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_core\WorkflowUserProvider;
@@ -36,16 +37,26 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
   private $workflowUserProvider;
 
   /**
+   * The asset release relation manager.
+   *
+   * @var \Drupal\asset_release\AssetReleaseRelations
+   */
+  private $assetReleaseRelationManager;
+
+  /**
    * Instantiates a AssetReleaseFulfillmentGuard service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *    The WorkflowUserProvider service.
    * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
    *    The WorkflowUserProvider service.
+   * @param \Drupal\asset_release\AssetReleaseRelations
+   *    The Asset release relation service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider, AssetReleaseRelations $asset_release_relations) {
     $this->entityTypeManager = $entity_type_manager;
     $this->workflowUserProvider = $workflow_user_provider;
+    $this->assetReleaseRelationManager = $asset_release_relations;
   }
 
   /**
@@ -71,7 +82,8 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
     }
 
     // Check if the user has one of the allowed group roles.
-    $membership = Og::getMembership($entity, $user);
+    $parent = $this->assetReleaseRelationManager->getReleaseSolution($entity);
+    $membership = Og::getMembership($parent, $user);
     return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
   }
 

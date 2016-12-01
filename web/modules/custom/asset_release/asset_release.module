@@ -107,9 +107,11 @@ function asset_release_rdf_entity_access(EntityInterface $entity, $operation, Ac
     return AccessResult::neutral();
   }
 
+  $parent = \Drupal::service('asset_release.relations')->getReleaseSolution($entity);
+
   switch ($operation) {
     case 'view':
-      $membership = Og::getMembership($entity, $account);
+      $membership = Og::getMembership($parent, $account);
       if (empty($membership)) {
         return AccessResult::neutral();
       }
