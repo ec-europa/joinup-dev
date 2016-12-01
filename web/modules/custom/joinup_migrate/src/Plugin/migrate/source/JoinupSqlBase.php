@@ -69,7 +69,7 @@ abstract class JoinupSqlBase extends SqlBase {
    *   The legacy site webroot directory
    *
    * @throws \Drupal\migrate\MigrateException
-   *   The the webroot was not configured.
+   *   When the webroot was not configured.
    */
   protected function getLegacySiteWebRoot() {
     $webroot = Settings::get('joinup_migrate.source.root');
