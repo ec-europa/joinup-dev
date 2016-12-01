@@ -1,18 +1,21 @@
 <?php
 
-namespace Drupal\joinup\Traits;
+namespace Drupal\joinup\Context;
 
-use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Behat\Context\Environment\InitializedContextEnvironment;
 use Behat\Behat\Hook\Scope\AfterStepScope;
+use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\DriverException;
 
 /**
- * Trait ScreenShot forked from https://github.com/nuvoleweb/drupal-behat.
+ * Provides step definitions for taking screenshots.
+ *
+ * Inspired on ScreenShotTrait from https://github.com/nuvoleweb/drupal-behat.
  *
  * @see https://github.com/nuvoleweb/drupal-behat
  */
-trait ScreenShotTrait {
+class ScreenshotContext extends RawMinkContext {
 
   /**
    * Saves a screen-shot under a given name.
@@ -63,17 +66,12 @@ trait ScreenShotTrait {
           catch (\Exception $e) {
             // Use the step test in the filename.
             $step = $event->getStep();
-            if (function_exists('transliteration_clean_filename')) {
-              $file_name = transliteration_clean_filename($step->getKeyword() . '_' . $step->getText());
-            }
-            else {
-              $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());
-              $file_name = preg_replace('![^0-9A-Za-z_.-]!', '', $file_name);
-            }
+            $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());
+            $file_name = preg_replace('![^0-9A-Za-z_.-]!', '', $file_name);
             $file_name = substr($file_name, 0, 30);
             $file_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat-notice__' . $file_name;
 
-            $message = "Screenshot for behat notice in step created in @file_name";
+            $message = "PHP notice detected, screenshot taken: @file_name";
             $this->createScreenshot($file_name, $message);
             // We don't throw $e any more because we don't fail on the notice.
           }
@@ -99,13 +97,8 @@ trait ScreenShotTrait {
       return;
     }
     $step = $event->getStep();
-    if (function_exists('transliteration_clean_filename')) {
-      $file_name = transliteration_clean_filename($step->getKeyword() . '_' . $step->getText());
-    }
-    else {
-      $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());
-      $file_name = preg_replace('![^0-9A-Za-z_.-]!', '', $file_name);
-    }
+    $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());
+    $file_name = preg_replace('![^0-9A-Za-z_.-]!', '', $file_name);
     $file_name = substr($file_name, 0, 30);
     $file_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat-failed__' . $file_name;
     $message = "Screenshot for failed step created in @file_name";

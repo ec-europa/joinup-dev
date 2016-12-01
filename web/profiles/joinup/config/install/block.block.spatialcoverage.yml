@@ -5,6 +5,7 @@ dependencies:
     - facets.facet.spatial_coverage
   module:
     - facets
+    - system
   theme:
     - joinup_theme
 id: spatialcoverage
@@ -23,5 +24,10 @@ visibility:
     id: other_facet
     facets: ''
     facet_value: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: /search
     negate: false
     context_mapping: {  }
