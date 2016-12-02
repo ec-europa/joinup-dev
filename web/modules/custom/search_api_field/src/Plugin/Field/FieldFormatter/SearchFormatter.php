@@ -170,7 +170,10 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       $list_tags = $entity_type->getListCacheTags();
       $tags = Cache::mergeTags($tags, $list_tags);
     }
-    $render['#cache']['tags'] = $tags;
+    $render['#cache'] = [
+      'tags' => $tags,
+      'contexts' => ['url.path'],
+    ];
     return $render;
   }
 
@@ -201,6 +204,9 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       // Search results might be stale, so we check if the entity has been
       // found in the system.
       if (!$entity) {
+        continue;
+      }
+      if (!$entity->access('view')) {
         continue;
       }
 
