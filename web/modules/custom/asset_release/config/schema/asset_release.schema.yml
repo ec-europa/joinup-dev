@@ -12,8 +12,5 @@ asset_release.settings:
           type: sequence
           label: 'Source state'
           sequence:
-            type: sequence
+            type: string
             label: 'Roles'
-            sequence:
-              type: string
-              label: 'Role'
