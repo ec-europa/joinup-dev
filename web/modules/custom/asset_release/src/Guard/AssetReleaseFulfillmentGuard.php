@@ -5,7 +5,7 @@ namespace Drupal\asset_release\Guard;
 use Drupal\asset_release\AssetReleaseRelations;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\joinup_core\WorkflowUserProvider;
+use Drupal\joinup_user\WorkflowUserProvider;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
@@ -32,7 +32,7 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
    * This will almost always return the logged in users but in case a check is
    * needed to be done on a different account, it should be possible.
    *
-   * @var \Drupal\joinup_core\WorkflowUserProvider
+   * @var \Drupal\joinup_user\WorkflowUserProvider
    */
   private $workflowUserProvider;
 
@@ -48,7 +48,7 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *    The WorkflowUserProvider service.
-   * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
+   * @param \Drupal\joinup_user\WorkflowUserProvider $workflow_user_provider
    *    The WorkflowUserProvider service.
    * @param \Drupal\asset_release\AssetReleaseRelations
    *    The Asset release relation service.
