@@ -14,9 +14,7 @@ label: State
 description: ''
 required: true
 translatable: false
-default_value:
-  -
-    value: draft
+default_value: {  }
 default_value_callback: ''
 settings:
   workflow: asset_release_workflow
