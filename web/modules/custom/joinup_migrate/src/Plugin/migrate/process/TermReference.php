@@ -33,7 +33,7 @@ class TermReference extends ProcessPluginBase {
       /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
       $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
       if (!$terms = $storage->loadByProperties([
-        'name' => $value,
+        'name' => (array) $value,
         'vid' => $this->configuration['vocabulary'],
       ])
       ) {

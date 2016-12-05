@@ -26,6 +26,7 @@ class Solution extends SolutionBase {
       'created' => $this->t('Creation date'),
       'body' => $this->t('Description'),
       'changed' => $this->t('Last changed date'),
+      'owner' => $this->t('Owners'),
       'keywords' => $this->t('Keywords'),
       'landing_page' => $this->t('Landing page'),
       'logo' => $this->t('Logo'),
@@ -43,7 +44,6 @@ class Solution extends SolutionBase {
   public function query() {
     $query = parent::query();
 
-    $this->alias['uri'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_id_uri", 'uri', "{$this->alias['node']}.vid = %alias.vid");
     $this->alias['content_type_asset_release'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_asset_release", 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
     $this->alias['node_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_documentation", 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_homepage_doc_nid = %alias.nid");
     $this->alias['content_type_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_documentation", 'content_type_documentation', "{$this->alias['node_documentation']}.vid = %alias.vid");
@@ -53,7 +53,6 @@ class Solution extends SolutionBase {
     $this->alias['node_metrics'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'node_metrics', "{$this->alias['content_field_asset_sw_metrics']}.field_asset_sw_metrics_nid = %alias.nid");
     $this->alias['data_set_uri'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_id_uri", 'data_set_uri', "{$this->alias['node_metrics']}.vid = %alias.vid");
 
-    $query->addExpression("TRIM({$this->alias['uri']}.field_id_uri_value)", 'uri');
     $query->addExpression("TRIM({$this->alias['content_type_documentation']}.field_documentation_access_url1_url)", 'landing_page');
     $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created');
     $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed');
@@ -63,7 +62,9 @@ class Solution extends SolutionBase {
       ->fields('j', ['policy'])
       ->fields($this->alias['node'], ['title', 'created', 'changed', 'vid'])
       ->fields($this->alias['node_revision'], ['body'])
-      ->fields($this->alias['state'], ['sid']);
+      ->fields($this->alias['state'], ['sid'])
+      // Assure the URI field.
+      ->addTag('uri');
   }
 
   /**
@@ -71,6 +72,7 @@ class Solution extends SolutionBase {
    */
   public function prepareRow(Row $row) {
     $nid = $row->getSourceProperty('nid');
+    $vid = $row->getSourceProperty('vid');
 
     // Destroy self lookup URIs.
     $uri = $row->getSourceProperty('uri');
@@ -105,7 +107,7 @@ class Solution extends SolutionBase {
     $keywords = $query
       ->fields('td', ['name'])
       ->condition('tn.nid', $nid)
-      ->condition('tn.vid', $row->getSourceProperty('vid'))
+      ->condition('tn.vid', $vid)
       // The keywords vocabulary vid is 28.
       ->condition('td.vid', 28)
       ->execute()
@@ -128,7 +130,7 @@ class Solution extends SolutionBase {
     $status = $query
       ->fields('tn', ['tid'])
       ->condition('tn.nid', $nid)
-      ->condition('tn.vid', $row->getSourceProperty('vid'))
+      ->condition('tn.vid', $vid)
       // The status vocabulary vid is 69.
       ->condition('td.vid', 69)
       ->orderBy('tn.tid', 'DESC')
@@ -136,6 +138,16 @@ class Solution extends SolutionBase {
       ->execute()
       ->fetchCol();
     $row->setSourceProperty('status', $status);
+
+    // Owners.
+    $query = $this->select('content_field_asset_publisher', 'p');
+    $query->join('node', 'n', 'p.field_asset_publisher_nid = n.nid');
+    $owner = $query->fields('n', ['nid'])
+      ->condition('p.vid', $vid)
+      ->condition('n.status', 1)
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('owner', $owner ?: NULL);
 
     return parent::prepareRow($row);
   }

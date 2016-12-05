@@ -34,12 +34,11 @@ process:
     no_stub: true
   field_is_metrics_page: metrics_page
   field_is_modification_date: changed
-  # Blocked by:
-  # - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2881
-  # field_ar_owner:
-  #  plugin: migration
-  #  migration: owner
-  #  no_stub: true
+  field_is_owner:
+    plugin: migration
+    source: owner
+    migration: owner
+    no_stub: true
   # @todo Revisit and fix this after ISAICP-3000 lands.
   # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3000
   field_policy_domain:
@@ -87,3 +86,4 @@ migration_dependencies:
   required:
     - solution_banner
     - solution_logo
+    - owner

@@ -20,6 +20,7 @@ class Collection extends CollectionBase {
    */
   public function fields() {
     return parent::fields() + [
+      'uri' => $this->t('URI'),
       'new_collection' => $this->t('New collection?'),
       'policy' => $this->t('Policy domain'),
       'abstract' => $this->t('Abstract'),
@@ -64,11 +65,12 @@ class Collection extends CollectionBase {
       ->fields($this->alias['repository_url'], ['field_repository_url_url'])
       ->fields($this->alias['node_revision'], ['body']);
 
-    $query->addExpression("TRIM({$this->alias['uri']}.field_id_uri_value)", 'uri');
     $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created');
     $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed');
 
-    return $query;
+    return $query
+      // Assure the URI field.
+      ->addTag('uri');
   }
 
   /**

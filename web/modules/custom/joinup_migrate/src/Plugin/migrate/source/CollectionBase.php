@@ -25,7 +25,6 @@ abstract class CollectionBase extends GroupBase {
     $query = parent::query();
 
     $this->alias['node'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'n', "j.nid = %alias.nid AND j.new_collection = 'No' AND %alias.type IN ('community', 'repository')");
-    $this->alias['uri'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_id_uri", 'uri', "{$this->alias['node']}.vid = %alias.vid");
     $this->alias['community'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_community", 'comm', "{$this->alias['node']}.vid = %alias.vid");
     $this->alias['repository'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_repository", 'repo', "{$this->alias['node']}.vid = %alias.vid");
 

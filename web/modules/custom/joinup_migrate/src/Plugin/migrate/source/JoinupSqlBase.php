@@ -24,7 +24,7 @@ abstract class JoinupSqlBase extends SqlBase {
    *
    * @var string
    */
-  protected $sourceDbName;
+  protected static $sourceDbName;
 
   /**
    * Destination database name.
@@ -32,7 +32,17 @@ abstract class JoinupSqlBase extends SqlBase {
    * @var string
    */
 
-  protected $destinationDbName;
+  protected static $destinationDbName;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function prepareQuery() {
+    $this->query = parent::prepareQuery();
+    // Save the alias list.
+    $this->query->addMetaData('alias', $this->alias);
+    return $this->query;
+  }
 
   /**
    * Gets source database name.
@@ -40,12 +50,12 @@ abstract class JoinupSqlBase extends SqlBase {
    * @return string
    *   The database name.
    */
-  protected function getSourceDbName() {
-    if (!isset($this->sourceDbName)) {
-      $this->sourceDbName = Database::getConnection('default', 'migrate')
+  public static function getSourceDbName() {
+    if (!isset(static::$sourceDbName)) {
+      static::$sourceDbName = Database::getConnection('default', 'migrate')
         ->getConnectionOptions()['database'];
     }
-    return $this->sourceDbName;
+    return static::$sourceDbName;
   }
 
   /**
@@ -54,12 +64,12 @@ abstract class JoinupSqlBase extends SqlBase {
    * @return string
    *   The database name.
    */
-  protected function getDestinationDbName() {
-    if (!isset($this->destinationDbName)) {
-      $this->destinationDbName = Database::getConnection()
+  public static function getDestinationDbName() {
+    if (!isset(static::$destinationDbName)) {
+      static::$destinationDbName = Database::getConnection()
         ->getConnectionOptions()['database'];
     }
-    return $this->destinationDbName;
+    return static::$destinationDbName;
   }
 
   /**
