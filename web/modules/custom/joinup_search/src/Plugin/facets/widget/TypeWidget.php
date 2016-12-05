@@ -122,7 +122,7 @@ class TypeWidget extends WidgetPluginBase {
     $count = $result->getCount();
     $theme = isset($result->asTab) ? 'facets_type_result_item' : 'facets_result_item';
     if ($result->isActive()) {
-      $theme .= '_active';
+      $theme .= '__active';
     }
 
     return [
