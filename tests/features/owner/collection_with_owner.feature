@@ -15,7 +15,7 @@ Feature: Creation of owners through UI
     When I fill in the following:
       | Title         | Classical and Ancient Mythology                                                                      |
       | Description   | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
-      | Policy domain | Environment (WIP!) (http://joinup.eu/policy-domain/environment)                                      |
+      | Policy domain | European Policies                                                                                    |
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
 

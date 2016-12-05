@@ -37,7 +37,7 @@ Feature: Proposing a collection
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
-      | Policy domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)                                      |
+      | Policy domain    | Human resources (http://joinup.eu/ontology/policy-domain#human-resources)                            |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)                               |
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
@@ -49,7 +49,8 @@ Feature: Proposing a collection
     And I fill in "Owner" with "Organisation example"
     And I press "Save as draft"
     Then I should see the heading "Ancient and Classical Mythology"
-    And I should see the text "Environment (WIP!)"
+    # Check that the policy domain is shown.
+    And I should see the text "Human resources"
     And I should see the text "Belgium"
 
     # The user that proposed the collection should be auto-subscribed.
