@@ -4,3 +4,10 @@ field.formatter.third_party.joinup:
   mapping:
     template_suggestion:
       type: string
+
+field.widget.settings.state_machine_buttons:
+  type: mapping
+  label: 'Theme settings for joinup project.'
+  mapping:
+    use_transition_label:
+      type: integer
