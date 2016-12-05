@@ -56,11 +56,19 @@ process:
     plugin: term_reference
     source: country
     vocabulary: spatial
-  # @todo Revisit and fix after ISAICP-3002.
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3002
   field_is_state:
-    plugin: default_value
-    default_value: validated
+    plugin: static_map
+    source: sid
+    map:
+      36: draft
+      37: proposed
+      38: needs_update
+      39: validated
+      40: needs_update
+      41: proposed
+      50: deletion_request
+      52: blacklisted
+    default_value: draft
   field_status:
     plugin: static_map
     source: status
