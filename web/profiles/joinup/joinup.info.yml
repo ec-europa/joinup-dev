@@ -52,6 +52,7 @@ dependencies:
   - state_machine
   - text
   - toolbar
+  - user
   - view_unpublished
   - views
 
@@ -141,7 +142,13 @@ config_devel:
   - filter.format.restricted_html
   - image.style.profile_icon
   - og_menu.ogmenu.navigation
+  - og.settings
   - system.theme
   - views.view.collection_content
   - views.view.collections
   - views.view.user_admin_people
+  - user.flood
+  - user.mail
+  - user.role.anonymous
+  - user.role.authenticated
+  - user.settings
