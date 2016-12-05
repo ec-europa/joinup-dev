@@ -147,6 +147,8 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      collapsible: false
+      collapsed: false
     third_party_settings: {  }
     type: inline_entity_form_complex
   field_ar_creation_date:
@@ -196,6 +198,8 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      collapsible: false
+      collapsed: false
     third_party_settings: {  }
     type: inline_entity_form_complex
   field_ar_state:
@@ -206,12 +210,9 @@ content:
     third_party_settings: {  }
   field_policy_domain:
     weight: 15
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_select
   field_spatial_coverage:
     weight: 16
     settings:

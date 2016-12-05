@@ -18,6 +18,7 @@ dependencies:
   - owner
   - rdf_entity
   - state_machine
+  - taxonomy_container
   - text
 
 config_devel:
