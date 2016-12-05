@@ -59,8 +59,15 @@
     </div>
   {% endif %}
 
+  {%
+  set main_classes = [
+    'main-container',
+    'mdl-grid',
+    not page.sidebar_left ? 'main-container--center',
+  ]
+  %}
   <div class="section section--content">
-    <main class="main-container mdl-grid" role="main">
+    <main class="{{ main_classes|join(' ') }}" role="main">
       <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
       {% if page.sidebar_left and not is_propose_collection %}
