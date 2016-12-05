@@ -42,3 +42,26 @@ field.storage.*.*.third_party.rdf_entity:
       sequence:
         type: string
         label: 'Mapping of field properies to their rdf counterpart.'
+
+field.widget.settings.auto_uri:
+  type: mapping
+  label: 'Settings regarding the uri field.'
+  mapping:
+    prefix:
+      type: string
+      label: 'Behaviour'
+
+field.widget.settings.datetime_create_update:
+  type: mapping
+  label: 'Behaviour of the field'
+  mapping:
+    behaviour:
+      type: string
+      label: 'Behaviour'
+
+field.formatter.third_party.joinup:
+  type: mapping
+  label: 'Theme settings for joinup project.'
+  mapping:
+    template_suggestion:
+      type: string
