@@ -1,0 +1,6 @@
+field.formatter.third_party.joinup:
+  type: mapping
+  label: 'Theme settings for joinup project.'
+  mapping:
+    template_suggestion:
+      type: string
