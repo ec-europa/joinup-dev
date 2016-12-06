@@ -79,14 +79,14 @@ Feature: Navigation menu for custom pages
     Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
     # The navigation link from the current collection should be visible, but not
     # the link from the second collection.
-    And I should see the link "About us" in the navigation menu
-    But I should not see the link "Eights are wild" in the navigation menu
-    And I should not see the link "Eights are null" in the navigation menu
+    And I should see the link "About us" in the "Navigation menu"
+    But I should not see the link "Eights are wild" in the "Navigation menu"
+    And I should not see the link "Eights are null" in the "Navigation menu"
     # Test the navigation link of the second collection.
     When I go to the homepage of the "Cripple Mr Onion" collection
-    Then I should see the link "Eights are wild" in the navigation menu
-    And I should see the link "Eights are null" in the navigation menu
-    But I should not see the link "About us" in the navigation menu
+    Then I should see the link "Eights are wild" in the "Navigation menu"
+    And I should see the link "Eights are null" in the "Navigation menu"
+    But I should not see the link "About us" in the "Navigation menu"
 
     # Test as a moderator.
     Given I am logged in as a moderator
@@ -95,14 +95,14 @@ Feature: Navigation menu for custom pages
     Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
     # The navigation link from the current collection should be visible, but not
     # the link from the second collection.
-    And I should see the link "About us" in the navigation menu
-    But I should not see the link "Eights are wild" in the navigation menu
-    And I should not see the link "Eights are null" in the navigation menu
+    And I should see the link "About us" in the "Navigation menu"
+    But I should not see the link "Eights are wild" in the "Navigation menu"
+    And I should not see the link "Eights are null" in the "Navigation menu"
     # Test the navigation link of the second collection.
     When I go to the homepage of the "Cripple Mr Onion" collection
-    Then I should see the link "Eights are wild" in the navigation menu
-    And I should see the link "Eights are null" in the navigation menu
-    But I should not see the link "About us" in the navigation menu
+    Then I should see the link "Eights are wild" in the "Navigation menu"
+    And I should see the link "Eights are null" in the "Navigation menu"
+    But I should not see the link "About us" in the "Navigation menu"
 
     # Test as an anonymous user.
     Given I am an anonymous user
@@ -112,11 +112,11 @@ Feature: Navigation menu for custom pages
     Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
     # The navigation link from the current collection should be visible, but not
     # the link from the second collection.
-    And I should see the link "About us" in the navigation menu
-    But I should not see the link "Eights are wild" in the navigation menu
-    And I should not see the link "Eights are null" in the navigation menu
+    And I should see the link "About us" in the "Navigation menu"
+    But I should not see the link "Eights are wild" in the "Navigation menu"
+    And I should not see the link "Eights are null" in the "Navigation menu"
     # Test the navigation link of the second collection.
     When I go to the homepage of the "Cripple Mr Onion" collection
-    Then I should see the link "Eights are wild" in the navigation menu
-    And I should see the link "Eights are null" in the navigation menu
-    But I should not see the link "About us" in the navigation menu
+    Then I should see the link "Eights are wild" in the "Navigation menu"
+    And I should see the link "Eights are null" in the "Navigation menu"
+    But I should not see the link "About us" in the "Navigation menu"
