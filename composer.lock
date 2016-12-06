@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2f2005d40e9b12276dc205e000273c12",
-    "content-hash": "e6f8088b6ecb439ec30c6ee68c8edef7",
+    "hash": "4d384fe8fc9ce4b415f09c4daf179417",
+    "content-hash": "d61779f393cefbc8c7bb4f05a9211dbf",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -114,16 +114,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.32",
+            "version": "3.19.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4c3093e320c4a34e30327043d24099787b702665"
+                "reference": "8073e8ce3f5d1836ab5a27ce600b82dd12d68dd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4c3093e320c4a34e30327043d24099787b702665",
-                "reference": "4c3093e320c4a34e30327043d24099787b702665",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8073e8ce3f5d1836ab5a27ce600b82dd12d68dd1",
+                "reference": "8073e8ce3f5d1836ab5a27ce600b82dd12d68dd1",
                 "shasum": ""
             },
             "require": {
@@ -190,7 +190,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-11-22 23:10:38"
+            "time": "2016-11-29 19:33:30"
         },
         {
             "name": "composer/ca-bundle",
@@ -2323,12 +2323,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amitaibu/og.git",
-                "reference": "7e43c7521bd759bd9333059c28e05a5bcc6d13b4"
+                "reference": "fe3492dd499885d074c3a6d32a68722c5ce1112b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amitaibu/og/zipball/7e43c7521bd759bd9333059c28e05a5bcc6d13b4",
-                "reference": "7e43c7521bd759bd9333059c28e05a5bcc6d13b4",
+                "url": "https://api.github.com/repos/amitaibu/og/zipball/fe3492dd499885d074c3a6d32a68722c5ce1112b",
+                "reference": "fe3492dd499885d074c3a6d32a68722c5ce1112b",
                 "shasum": ""
             },
             "require-dev": {
@@ -2345,7 +2345,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2016-11-28 16:52:41"
+            "time": "2016-11-30 08:09:58"
         },
         {
             "name": "drupal/og_menu",
@@ -2353,12 +2353,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og_menu.git",
-                "reference": "755797deff3e989597ed3ebf0e32995482fa2f75"
+                "reference": "b86877e87279db8e476e0b2bbbcfab9a3d98bf72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/755797deff3e989597ed3ebf0e32995482fa2f75",
-                "reference": "755797deff3e989597ed3ebf0e32995482fa2f75",
+                "url": "https://api.github.com/repos/ec-europa/og_menu/zipball/b86877e87279db8e476e0b2bbbcfab9a3d98bf72",
+                "reference": "b86877e87279db8e476e0b2bbbcfab9a3d98bf72",
                 "shasum": ""
             },
             "type": "drupal-module",
@@ -2371,7 +2371,7 @@
                 "issues": "https://drupal.org/project/issues/og_menu",
                 "source": "https://cgit.drupalcode.org/og_menu"
             },
-            "time": "2016-10-26 13:59:36"
+            "time": "2016-11-30 08:15:41"
         },
         {
             "name": "drupal/phingdrushtask",
@@ -2829,16 +2829,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "8.1.7",
+            "version": "8.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "0a79c9c5c1c368afc36c583612ec882eec3be285"
+                "reference": "838c36d80bea7f78f1ae3e7f7479d60b7361c0fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/0a79c9c5c1c368afc36c583612ec882eec3be285",
-                "reference": "0a79c9c5c1c368afc36c583612ec882eec3be285",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/838c36d80bea7f78f1ae3e7f7479d60b7361c0fd",
+                "reference": "838c36d80bea7f78f1ae3e7f7479d60b7361c0fd",
                 "shasum": ""
             },
             "require": {
@@ -2930,7 +2930,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2016-10-24 21:42:22"
+            "time": "2016-11-30 07:01:02"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -9024,16 +9024,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "571e27b6348e5b3a637b2abc82ac0d01e6d7bbed"
+                "reference": "9b324f3a1132459a7274a0ace2e1b766ba80930f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/571e27b6348e5b3a637b2abc82ac0d01e6d7bbed",
-                "reference": "571e27b6348e5b3a637b2abc82ac0d01e6d7bbed",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/9b324f3a1132459a7274a0ace2e1b766ba80930f",
+                "reference": "9b324f3a1132459a7274a0ace2e1b766ba80930f",
                 "shasum": ""
             },
             "require": {
@@ -9098,7 +9098,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-09-01 23:53:02"
+            "time": "2016-11-30 04:02:31"
         },
         {
             "name": "symfony/browser-kit",
