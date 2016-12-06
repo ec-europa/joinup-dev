@@ -14,7 +14,7 @@
 
 // Elements
 // --------------------------------------------------
-.tab 
+.tab
   a
     color: $color-base
     text-decoration: none
@@ -43,6 +43,8 @@
 
 .tab--content-type
   position: relative
+  color: $color-base
+  text-decoration: none
   +breakpoint(sm-mobile, mobile)
     margin-bottom: 30px
     &:last-of-type
@@ -75,6 +77,7 @@
   text-align: center
   margin-top: 25px
   text-decoration: none
+  cursor: pointer
   +breakpoint(sm-mobile, tablet)
     margin-bottom: 25px
   @media (min-width: 600px)
@@ -91,6 +94,10 @@
     font-weight: $font-weight-bold
   .tab__icon
     +icon-size(25px)
+
+.tabs--content-type .tab--more
+  height: auto
+  padding-bottom: 10px
 
 // Dependiencies
 // --------------------------------------------------
