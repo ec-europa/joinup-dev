@@ -6,12 +6,13 @@ package: Joinup
 
 dependencies:
   - ds
-  - og
-  - node
   - field
+  - joinup_core
+  - menu_ui
+  - node
+  - og
   - path
   - text
-  - menu_ui
   - search_api_field
   - user
 

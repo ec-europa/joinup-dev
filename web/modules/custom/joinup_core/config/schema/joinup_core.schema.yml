@@ -22,3 +22,11 @@ field.widget.settings.state_machine_buttons:
   mapping:
     use_transition_label:
       type: integer
+
+facet.widget.config.type:
+  type: facet.widget.default_config
+  label: 'Search api content listing'
+  mapping:
+    tabs:
+      type: integer
+      label: 'Number of tabs'
