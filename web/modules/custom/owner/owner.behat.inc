@@ -11,6 +11,8 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\TermInterface;
 
 /**
  * Behat step definitions for testing owners.
@@ -31,34 +33,42 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * Creates one or many owners with data provided in a table.
    *
    * Table format:
-   * | type                  | name             | id                           |
-   * | Company               | Mightily Oats    | http://example.com/some/path |
-   * | Local authority       | Gotham City Hall |                              |
-   * | Private Individual(s) | Jane Roe         |                              |
+   * | type                        | name             | id                           |
+   * | Company,Industry consortium | Mightily Oats    | http://example.com/some/path |
+   * | Local authority             | Gotham City Hall |                              |
+   * | Private Individual(s)       | Jane Roe         |                              |
    *
    * @param TableNode $owners_table
    *   The owners table.
    *
-   * @throws \Behat\Mink\Exception\ExpectationException;
+   * @throws \Exception;
    *   If a wrong type has been passed.
    *
    * @Given (the following )owner/owners:
    */
   public function givenOwner(TableNode $owners_table) {
-    $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
     foreach ($owners_table->getHash() as $row) {
       // If no type was specified, fallback to 'Private Individual(s)'.
-      $row['type'] = isset($row['type']) ? $row['type'] : 'Private Individual(s)';
+      $types = isset($row['type']) ? array_map('trim', explode(',', $row['type'])) : ['Private Individual(s)'];
 
-      $terms = $term_storage->loadByProperties(['vid' => 'owner_type', 'name' => $row['type']]);
-      if (empty($terms)) {
-        throw new ExpectationException("Owner type '{$row['type']}' doesn't exist.", $this->getDriver());
+      $query = \Drupal::entityQuery('taxonomy_term');
+      $tids = $query
+        ->condition('vid', 'owner_type')
+        ->condition('name', $types, 'IN')
+        ->execute();
+
+      $found = array_map(function (TermInterface $term) {
+        return $term->label();
+      }, Term::loadMultiple($tids));
+
+      if ($not_found = array_diff($types, $found)) {
+        throw new \Exception("Owner types doesn't exist: " . implode(', ', $not_found));
       }
 
       $owner = Rdf::create([
         'rid' => 'owner',
         'id' => !empty($row['id']) ? $row['id'] : $this->getRandomUri(),
-        'field_owner_type' => key($terms),
+        'field_owner_type' => $tids,
         'field_owner_name' => !empty($row['name']) ? $row['name'] : $this->getRandom()->name(8, TRUE),
       ]);
       $owner->save();
