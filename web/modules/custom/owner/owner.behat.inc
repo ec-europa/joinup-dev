@@ -33,10 +33,10 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * Creates one or many owners with data provided in a table.
    *
    * Table format:
-   * | type                        | name             | id                           |
-   * | Company,Industry consortium | Mightily Oats    | http://example.com/some/path |
-   * | Local authority             | Gotham City Hall |                              |
-   * | Private Individual(s)       | Jane Roe         |                              |
+   * | type                        | name        | id                      |
+   * | Company,Industry consortium | Acme Inc.   | http://example.com/path |
+   * | Local authority             | Gotham City |                         |
+   * | Private Individual(s)       | Jane Roe    |                         |
    *
    * @param TableNode $owners_table
    *   The owners table.
