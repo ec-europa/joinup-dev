@@ -202,7 +202,7 @@ content:
     type: state_machine_buttons
     weight: 9
     settings:
-      use_transition_label: '1'
+      use_transition_label: 1
     third_party_settings: {  }
   field_policy_domain:
     weight: 15
