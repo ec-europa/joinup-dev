@@ -5,7 +5,6 @@
  * Contains \CustomPageSubContext.
  */
 
-use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
