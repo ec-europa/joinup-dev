@@ -310,12 +310,10 @@ Feature: News moderation.
       | Stealing from Batman          |
       | Learn batman's secret         |
 
-  Scenario: An entity should be automatically published/un published according to state
-    # Regardless of moderation, the entity is published for the states
-    # Validated, Needs update, Request deletion
-    # and unpublished for Draft and Proposed.
+  Scenario: An entity should be automatically published according to state
     When I am logged in as "Hawkgirl"
     And I go to the "Hawkgirl is a spy" news page
+    Then the "Hawkgirl is a spy" "news" content should not be published
     Then I should see the link "Edit"
     When I click "Edit"
     And I press "Validate"
@@ -325,4 +323,5 @@ Feature: News moderation.
     When I click "Edit"
     And I press "Propose"
     Then I should see the success message "News Hawkgirl is a spy has been updated."
-    Then the "Hawkgirl is a spy" "news" content should not be published
+    # A new draft has been created.
+    Then the "Hawkgirl is a spy" "news" content should be published

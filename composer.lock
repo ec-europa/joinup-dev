@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2f2005d40e9b12276dc205e000273c12",
-    "content-hash": "e6f8088b6ecb439ec30c6ee68c8edef7",
+    "hash": "15c99c308c8e3553e991ab5501be8150",
+    "content-hash": "17b377027e91b37dde7e2fd98331872a",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1953,8 +1953,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc6+0-dev",
-                    "datestamp": "1480365484"
+                    "version": "8.x-1.0-rc4+54-dev",
+                    "datestamp": "1479073440"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2647,6 +2647,9 @@
                 "drupal": {
                     "version": "8.x-1.0-beta3",
                     "datestamp": "1477868939"
+                },
+                "patches_applied": {
+                    "Fire generic events when transition are applied": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7706,12 +7709,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/DrupalDriver.git",
-                "reference": "fe9eb016a9a7b344d8dc38cceec6b30518cb8684"
+                "reference": "23b1fccc208faa698c6cd4f6ed72f157a63aa55a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/fe9eb016a9a7b344d8dc38cceec6b30518cb8684",
-                "reference": "fe9eb016a9a7b344d8dc38cceec6b30518cb8684",
+                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/23b1fccc208faa698c6cd4f6ed72f157a63aa55a",
+                "reference": "23b1fccc208faa698c6cd4f6ed72f157a63aa55a",
                 "shasum": ""
             },
             "require": {
@@ -7755,7 +7758,7 @@
                 "test",
                 "web"
             ],
-            "time": "2016-09-29 17:30:49"
+            "time": "2016-12-06 14:41:00"
         },
         {
             "name": "drupal/drupal-extension",
