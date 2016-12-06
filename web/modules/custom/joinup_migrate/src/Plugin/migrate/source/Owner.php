@@ -94,12 +94,8 @@ class Owner extends JoinupSqlBase {
       ->condition('tn.vid', $row->getSourceProperty('vid'))
       // The publisher type vocabulary vid is 72.
       ->condition('td.vid', 72)
-      // For some reasons the publisher type, in Drupal 6 site, has an unlimited
-      // cardinality. This is wrong according to the data model. We pickup only
-      // the first match.
-      ->range(0, 1)
       ->execute()
-      ->fetchField();
+      ->fetchCol();
     $row->setSourceProperty('type', $type ?: NULL);
 
     return parent::prepareRow($row);
