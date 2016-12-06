@@ -145,11 +145,11 @@ processor_settings:
     settings:
       weights:
         preprocess_index: -30
-  aggregated_field:
-    plugin_id: aggregated_field
-    settings: {  }
   rendered_item:
     plugin_id: rendered_item
+    settings: {  }
+  aggregated_field:
+    plugin_id: aggregated_field
     settings: {  }
 options:
   index_directly: true

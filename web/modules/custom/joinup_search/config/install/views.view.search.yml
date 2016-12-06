@@ -4,6 +4,7 @@ dependencies:
   config:
     - search_api.index.collections
   module:
+    - joinup_core
     - search_api
 id: search
 label: Search
