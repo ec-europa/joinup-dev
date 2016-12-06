@@ -6,7 +6,6 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
@@ -108,30 +107,33 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   }
 
   /**
-   * Selects option in select field at a Owner inline entity widget.
+   * Sets type(s) of the owner field.
    *
-   * @param string $option
-   *    The option to choose from the dropdown list.
+   * @param string $options
+   *    A comma delimited list of options to be checked.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    *   When no select has been found.
    *
-   * @When (I )select :option in the dropdown( list) of the "Owner"( field)
+   * @When (I )set the Owner type(s) to :option
    */
-  public function selectOption($option) {
-    // Fixes a step argument (with \\" replaced back to ")
-    // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
-    $option = str_replace('\\"', '"', $option);
+  public function setOwnerType($options) {
+    // Explode into an array.
+    $options = array_unique(array_map('trim', explode(',', $options)));
 
     $field = $this->getSession()->getPage()->find('named', ['fieldset', 'Owner']);
-    if (!$select = $field->find('named', ['select', 'field_ar_owner[form][inline_entity_form][field_owner_type]'])) {
-      if (!$select = $field->find('named', ['select', 'field_ar_owner[form][inline_entity_form][entities][0][form][field_owner_type]'])) {
-        throw new ElementNotFoundException($this->getSession()->getDriver(), "No select in Owner. Tried: 'field_ar_owner[form][inline_entity_form][field_owner_type]', 'field_ar_owner[form][inline_entity_form][entities][0][form][field_owner_type]'");
+
+    /** @var \Behat\Mink\Element\NodeElement[] $labels */
+    $labels = $field->findAll('xpath', '//label//label');
+    foreach ($labels as $label) {
+      $option = $label->getText();
+      if (in_array($option, $options)) {
+        $field->checkField($option);
+      }
+      else {
+        $field->uncheckField($option);
       }
     }
-
-    /** @var \Behat\Mink\Element\NodeElement $select */
-    $select->selectOption($option);
   }
 
 }
