@@ -26,19 +26,22 @@ class TermReference extends ProcessPluginBase {
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    if (!isset($this->cache[$value])) {
+    if (empty($value)) {
+      return NULL;
+    }
+    if (!isset($this->cache[$this->configuration['vocabulary']][$value])) {
       /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
       $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
       if (!$terms = $storage->loadByProperties([
-        'name' => $value,
+        'name' => (array) $value,
         'vid' => $this->configuration['vocabulary'],
       ])
       ) {
         $migrate_executable->saveMessage("Term '$value' does not exits in destination.");
       }
-      $this->cache[$value] = array_shift(array_keys($terms));
+      $this->cache[$this->configuration['vocabulary']][$value] = array_keys($terms)[0];
     }
-    return $this->cache[$value];
+    return $this->cache[$this->configuration['vocabulary']][$value];
   }
 
 }

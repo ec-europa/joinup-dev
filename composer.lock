@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "92acdf3b34cea7e114dac01e5d5cd869",
-    "content-hash": "ee7c6203bd1f5d27a6c5d8b854c4d985",
+    "hash": "560f43419c2e3b9948166d4af7e3da8b",
+    "content-hash": "3f87ef04edf9218dc069bc606f4c95b9",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1751,7 +1751,8 @@
                     "EntityPublishedInterface @see https://www.drupal.org/node/2789315 @see https://www.drupal.org/node/2810381 @todo Remove in 8.3.x": "./resources/patches/combined-2810381-and-2789315.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
                     "Don't let the whole migration crash on a download failure @see https://www.drupal.org/node/2826200": "https://www.drupal.org/files/issues/2826200-10.patch",
-                    "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch"
+                    "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch",
+                    "SqlBase::prepareQuery() should be called also on count @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch"
                 }
             },
             "autoload": {
@@ -2308,6 +2309,52 @@
             }
         },
         {
+            "name": "drupal/migrate_run",
+            "version": "1.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/migrate_run",
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/migrate_run-8.x-1.0-alpha1.zip",
+                "reference": null,
+                "shasum": "3e8a2af11f2e0ecf9e07c11c23ccacdc2df5029d"
+            },
+            "require": {
+                "drupal/core": "^8.2"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1479550140"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "homepage": "https://www.drupal.org/u/claudiu.cristea",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "The Migrate Drush Runner.",
+            "homepage": "https://www.drupal.org/project/migrate_run",
+            "support": {
+                "source": "https://cgit.drupalcode.org/migrate_run",
+                "issues": "https://www.drupal.org/project/issues/migrate_run",
+                "irc": "irc://irc.freenode.org/drupal-migrate"
+            }
+        },
+        {
             "name": "drupal/migrate_spreadsheet",
             "version": "dev-1.x",
             "source": {
@@ -2563,7 +2610,8 @@
                 },
                 "patches_applied": {
                     "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch",
-                    "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-2_0-on_2753667-8.patch"
+                    "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-2_0-on_2753667-8.patch",
+                    "item_id column is too short @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/2829696-7.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
