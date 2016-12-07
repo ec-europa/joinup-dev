@@ -61,7 +61,7 @@ Feature: Collections Overview
     When I fill in the following:
       | Title         | Colonies in space                           |
       | Description   | Some space mumbo jumbo description.         |
-      | Policy domain | Personnel management and staff remuneration |
+    When I select "Personnel management and staff remuneration" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.

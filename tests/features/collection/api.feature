@@ -33,7 +33,7 @@ Feature: Collection API
     When I fill in the following:
       | Title         | Collection API example                       |
       | Description   | We do not care that much about descriptions. |
-      | Policy domain | Data gathering and processing                |
+    When I select "Data gathering and processing" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I press "Add existing" at the "Owner" field

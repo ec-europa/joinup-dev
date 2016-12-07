@@ -37,8 +37,8 @@ Feature: Proposing a collection
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
-      | Policy domain    | Human resources (http://joinup.eu/ontology/policy-domain#human-resources)                            |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)                               |
+    When I select "Human resources" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I check "Closed collection"
