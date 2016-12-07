@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="Solr" default="help">
+
+    <target name="download-apache-solr">
+        <if>
+            <available file="${solr.dir}" type="dir" property="solr.dir.available" />
+            <then>
+                <echo message="Apache Solr installation directory exists (${solr.dir}), skipping download." />
+            </then>
+            <else>
+                <if>
+                    <available file="${tmp.dir}/${solr.tarball.filename}" type="file" property="solr.tarball.available" />
+                    <then>
+                        <echo message="Apache Solr tarball already downloaded to ${tmp.dir}/${solr.tarball.filename}, skipping download." />
+                    </then>
+                    <else>
+                        <mkdir dir="${tmp.dir}" />
+                        <httpget url="${solr.download.url}" dir="${tmp.dir}" />
+                    </else>
+                </if>
+                <!-- Use the faster native untar on UNIX systems. -->
+                <if>
+                    <os family="unix" />
+                    <then>
+                        <mkdir dir="${solr.vendor.dir}" />
+                        <exec
+                            command='tar xzf "${tmp.dir}/${solr.tarball.filename}" -C "${solr.vendor.dir}"'
+                            dir="${project.basedir}"
+                            passthru="true"
+                            checkreturn="true" />
+                    </then>
+                    <else>
+                        <untar file="${tmp.dir}/${solr.tarball.filename}" todir="${solr.vendor.dir}" />
+                    </else>
+                </if>
+            </else>
+        </if>
+        <!-- Create a symlink of the Solr executable in the vendor/bin directory. -->
+        <if>
+            <available file="${solr.bin}" type="file" property="file.exists" />
+            <then>
+                <echo message="Symlink to Solr binary already exists in ${solr.bin}. Deleting symlink." />
+                <delete file="${solr.bin}" failonerror="false" />
+            </then>
+        </if>
+        <echo message="Creating symlink to Solr binary." />
+        <symlink
+            target="${solr.dir}/bin/solr"
+            link="${solr.bin}"
+        />
+    </target>
+
+    <target
+        name="start-apache-solr"
+        description="Start the Apache Solr server.">
+        <!-- Check if Solr is already running before attempting to start it. -->
+        <exec dir="${solr.dir}"
+              command="./bin/solr status"
+              returnProperty="solr.status"
+              passthru="true" />
+        <if>
+            <equals arg1="${solr.status}" arg2="0" />
+            <then>
+                <echo message="Apache Solr is already running." />
+            </then>
+            <else>
+                <exec dir="${solr.dir}"
+                      command="./bin/solr start"
+                      checkreturn="true"
+                      passthru="true" />
+            </else>
+        </if>
+    </target>
+
+    <target
+        name="restart-apache-solr"
+        description="Restart the Apache Solr server.">
+        <exec dir="${solr.dir}"
+              command="./bin/solr restart"
+              checkreturn="true"
+              passthru="true" />
+    </target>
+
+    <target
+        name="stop-apache-solr"
+        description="Stop the Apache Solr server.">
+        <exec dir="${solr.dir}"
+              command="./bin/solr stop"
+              checkreturn="true"
+              passthru="true" />
+    </target>
+
+    <target name="configure-apache-solr">
+        <if>
+            <not>
+                <available file="${solr.config.dir}" type="dir" property="solr.config.dir.available" />
+            </not>
+            <then>
+                <fail message="Search API Solr is not installed. Did you run `composer install`?" />
+            </then>
+        </if>
+        <if>
+            <available file="${solr.core.dir}" type="dir" property="solr.core.dir.available" />
+            <then>
+                <echo message="A Solr core has already been configured at ${solr.core.dir}. Skipping." />
+            </then>
+            <else>
+                <!-- Create the Solr core. -->
+                <exec dir="${solr.dir}"
+                      command="./bin/solr create_core -c ${solr.core}"
+                      checkreturn="true"
+                      passthru="true"/>
+                <!-- Copy the configuration. -->
+                <copy todir="${solr.core.dir}/conf" overwrite="true">
+                    <fileset dir="${solr.config.dir}" />
+                </copy>
+                <!-- Restart Solr so our configuration changes are picked up. -->
+                <phingcall target="restart-apache-solr" />
+            </else>
+        </if>
+    </target>
+
+    <target
+        name="setup-apache-solr"
+        description="Set up Apache Solr."
+        depends="download-apache-solr, start-apache-solr, configure-apache-solr" />
+
+</project>
