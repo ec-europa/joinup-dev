@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0908d2b8f9f07e6de410557813ce1a9d",
-    "content-hash": "747caeef4a00c16786162924bf1e039f",
+    "hash": "cd61f3bc50c3290e969ab22e8828608b",
+    "content-hash": "b71c8aefe457ea6b315efa53e7c3a506",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2439,7 +2439,7 @@
                     "datestamp": "1456838960"
                 },
                 "patches_applied": {
-                    "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch",
+                    "Fix white screen of death.": "https://www.drupal.org/files/issues/2687155-8.patch",
                     "Errors with schema and installed settings file": "https://www.drupal.org/files/issues/schema_fix-2833695-2-D8.patch"
                 }
             },

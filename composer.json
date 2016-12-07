@@ -110,7 +110,7 @@
                 "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch"
             },
             "drupal/r4032login": {
-                "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch",
+                "Fix white screen of death.": "https://www.drupal.org/files/issues/2687155-8.patch",
                 "Errors with schema and installed settings file": "https://www.drupal.org/files/issues/schema_fix-2833695-2-D8.patch"
             },
             "drupal/search_api": {
