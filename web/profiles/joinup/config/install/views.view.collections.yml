@@ -34,11 +34,10 @@ display:
           output_lifespan: '3600'
           output_lifespan_custom: '0'
       query:
-        type: views_query
+        type: search_api_query
         options:
           bypass_access: false
           skip_access: false
-          parse_mode: terms
       exposed_form:
         type: basic
         options:
