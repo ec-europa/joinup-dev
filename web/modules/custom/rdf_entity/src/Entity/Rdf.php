@@ -300,7 +300,8 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    * {@inheritdoc}
    */
   public function isPublished() {
-    $storage = $this->entityManager()->getStorage($this->getEntityTypeId());
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    $storage = $this->entityTypeManager()->getStorage($this->getEntityTypeId());
     $published_graph = $storage->getBundleGraphUri($this->bundle(), 'default');
     $entity_graph_name = $this->get('graph')->first()->getValue()['value'];
     $entity_graph = $storage->getBundleGraphUri($this->bundle(), $entity_graph_name);
@@ -310,8 +311,15 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   /**
    * {@inheritdoc}
    */
-  public function setPublished($published) {
+  public function setPublished($published = NULL) {
     // TODO: Implement setPublished() method.
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUnpublished() {
+    // TODO: Implement setUnpublished() method.
   }
 
   /**

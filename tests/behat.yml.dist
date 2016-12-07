@@ -23,10 +23,11 @@ default:
       api_driver: 'drupal'
       blackbox: ~
       region_map:
-        Primary menu: '.region-primary-menu'
+        Entity actions: '.block-local-tasks-block'
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'
-        Entity actions: '.block-local-tasks-block'
+        Navigation menu: 'div.navigation-menu ul'
+        Primary menu: '.region-primary-menu'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:
