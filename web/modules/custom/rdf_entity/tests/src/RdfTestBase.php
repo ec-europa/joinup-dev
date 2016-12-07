@@ -1,18 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: idimopoulos
- * Date: 01.12.16
- * Time: 17:28
- */
 
 namespace Drupal\Tests\rdf_entity;
-
 
 use Drupal\Core\Database\Database;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use EasyRdf\Http;
 
+/**
+ * A base class for the rdf tests.
+ *
+ * Sets up the SPARQL database connection.
+ */
 class RdfTestBase extends EntityKernelTestBase {
 
   /**

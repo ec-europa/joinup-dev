@@ -122,9 +122,11 @@ function asset_release_rdf_entity_access(EntityInterface $entity, $operation, Ac
         return AccessResult::allowed();
       }
       break;
+
     case 'edit':
       $allowed_transitions = $entity->field_isr_state->first()->getTransitions();
       return AccessResult::forbiddenIf(empty($allowed_transitions));
+
     default:
       break;
   }

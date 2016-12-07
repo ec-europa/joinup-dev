@@ -50,7 +50,7 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
    *    The WorkflowUserProvider service.
    * @param \Drupal\joinup_user\WorkflowUserProvider $workflow_user_provider
    *    The WorkflowUserProvider service.
-   * @param \Drupal\asset_release\AssetReleaseRelations
+   * @param \Drupal\asset_release\AssetReleaseRelations $asset_release_relations
    *    The Asset release relation service.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider, AssetReleaseRelations $asset_release_relations) {
