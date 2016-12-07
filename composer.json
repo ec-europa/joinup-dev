@@ -5,11 +5,12 @@
     "license": "EUPL",
     "require": {
         "composer/composer": "~1.0",
-        "composer/installers": "^1.0.20",
+        "composer/installers": "^1.2",
         "continuousphp/aws-sdk-phing": "~0.1",
-        "cweagans/composer-patches": "dev-master#5456199acdcc16b243814aa45259f4c56272a634",
+        "cweagans/composer-patches": "~1.6",
+        "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/console": "~1.0",
-        "drupal/core": "^8.2.3",
+        "drupal/core": "8.2.x-dev#d163cc25470ddc690502073b4003d170b5da038a",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^2.0",
         "drupal/facets": "~1.0@alpha",
@@ -45,7 +46,6 @@
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
         "behat/mink-selenium2-driver": "dev-master#721cbbaf37f71434f6acb604dc3a17a6a9be0c4c",
-        "drupal-composer/drupal-scaffold": "^2.0.1",
         "drupal/admin_toolbar": "~1.17",
         "drupal/coder": "~8.2.9",
         "drupal/config_devel": "dev-1.x#92f735cae8e9fb328edca285340a5bfbf72028cc",
@@ -104,8 +104,7 @@
         "patches": {
             "drupal/core": {
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
-                "URI ids in entity references.": "https://www.drupal.org/files/issues/2756401-11.patch",
-                "#2789315: Split off EntityPublished from node and comment into separate interface": "https://www.drupal.org/files/issues/entitypublishedinterface-2789315.patch",
+                "EntityPublishedInterface @see https://www.drupal.org/node/2789315 @see https://www.drupal.org/node/2810381 @todo Remove in 8.3.x": "./resources/patches/combined-2810381-and-2789315.patch",
                 "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
                 "Don't let the whole migration crash on a download failure @see https://www.drupal.org/node/2826200": "https://www.drupal.org/files/issues/2826200-10.patch",
                 "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch"
