@@ -27,6 +27,13 @@ Feature: Collection homepage
     Then I should see text matching "Rohirrim make extraordinary deal"
     Then I should see text matching "Breaking: Gandalf supposedly plans his retirement"
     Then I should see text matching "Big hobbit feast - fireworks at midnight"
+
+    # Test that unrelated content does not show up in the tiles.
+    And I should not see the "Bilbo Baggins" tile
+    # Test that the collection itself does not show up in the tiles.
+    And I should not see the "Middle earth daily" tile
+
+    # Test the filtering by facets.
     When I click the event content tab
     Then I should see text matching "Big hobbit feast - fireworks at midnight"
     Then I should not see text matching "Rohirrim make extraordinary deal"

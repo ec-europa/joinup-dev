@@ -229,14 +229,21 @@ function collection_field_widget_form_alter(&$element, FormStateInterface $form_
 
 /**
  * Implements hook_search_api_query_TAG_alter().
+ *
+ * Alters the Search API queries for the collection content on the collection
+ * homepage:
+ * - Only show content related to the collection.
+ * - Do not show the collection itself in the search results.
  */
 function collection_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
   /** @var EntityInterface $entity */
   $entity = $query->getOption('search_api_field entity');
 
-  // Show only content that is related to this collection.
+  // Show only content that is related to this collection through the aggregated
+  // field. This makes sure that other related entities (such as the collection
+  // owner) do not show up as collection content tiles.
   $query->addCondition('aggregated_field_1', [$entity->id()], 'IN');
 
-  // Remove the page itself from the results.
+  // Remove the collection itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
 }
