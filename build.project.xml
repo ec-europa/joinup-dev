@@ -23,6 +23,9 @@
     <echo msg="Loading Import RDF fixtures task." />
     <taskdef name="importrdffixtures" classname="\DrupalProject\Phing\ImportRdfFixtures" />
 
+    <echo msg="Loading After Import RDF fixtures task." />
+    <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup" />
+
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php">
         <drush
@@ -54,11 +57,17 @@
 
     <target name="import-rdf-fixtures">
         <importrdffixtures
-                IsqlPath="${isql.bin}"
-                DataSourceName="${sparql.dsn}"
-                Username="${sparql.user}"
-                Password="${sparql.password}"
-                SharedDirectory="${sparql.shareddirectory}" />
+            IsqlPath="${isql.bin}"
+            DataSourceName="${sparql.dsn}"
+            Username="${sparql.user}"
+            Password="${sparql.password}"
+            SharedDirectory="${sparql.shareddirectory}" />
+
+        <afterrdffixturesimport
+            IsqlPath="${isql.bin}"
+            DataSourceName="${sparql.dsn}"
+            Username="${sparql.user}"
+            Password="${sparql.password}" />
     </target>
 
     <!-- Set up PHPUnit. -->
