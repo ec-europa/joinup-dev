@@ -1,10 +1,10 @@
 @api
-Feature: Collection page
+Feature: Collection homepage
   In order find content around a topic
   As a user of the website
-  I need to be able see all content related to a collection on the collection page
+  I need to be able see all content related to a collection on the collection homepage
 
-  Scenario: The collection page shows related content
+  Scenario: The collection homepage shows related content
     Given the following owner:
       | name          |
       | Bilbo Baggins |
