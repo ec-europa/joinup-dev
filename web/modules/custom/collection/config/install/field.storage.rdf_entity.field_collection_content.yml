@@ -15,7 +15,7 @@ type: search_api_field
 settings:
   index: collections
   facet_regions:
-    top: Top
+    top: 'Collection content top'
   view_modes:
     'entity:node':
       custom_page: view_mode_tile
