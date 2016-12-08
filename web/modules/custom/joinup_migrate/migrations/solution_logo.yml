@@ -1,10 +1,10 @@
-id: user_photo
-label: 'Users photos'
+id: solution_logo
+label: 'Solution logo file migration'
 migration_tags:
-  - user
+  - solution
   - file
 source:
-  plugin: user_photo
+  plugin: solution_logo
 process:
   uid:
     -

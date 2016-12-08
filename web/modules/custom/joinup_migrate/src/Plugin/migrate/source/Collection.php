@@ -3,6 +3,7 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Database\Database;
 use Drupal\migrate\Row;
 
 /**
@@ -32,6 +33,7 @@ class Collection extends CollectionBase {
       // @todo Insert here spatial coverage.
       // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2950
       'collection_state' => $this->t('Collection state'),
+      'affiliates' => $this->t('Affiliates'),
     ];
   }
 
@@ -62,7 +64,7 @@ class Collection extends CollectionBase {
       ->fields($this->alias['repository_url'], ['field_repository_url_url'])
       ->fields($this->alias['node_revision'], ['body']);
 
-    $query->addExpression("{$this->alias['uri']}.field_id_uri_value", 'uri');
+    $query->addExpression("TRIM({$this->alias['uri']}.field_id_uri_value)", 'uri');
     $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created');
     $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed');
 
@@ -89,23 +91,32 @@ class Collection extends CollectionBase {
         // Don't import malformed URLs.
         $access_url = NULL;
       }
-      else {
-        if (parse_url($access_url, PHP_URL_SCHEME) === NULL) {
-          // Needs a full-qualified URL.
-          $access_url = "http://$access_url";
-        }
+      elseif (parse_url($access_url, PHP_URL_SCHEME) === NULL) {
+        // Needs a full-qualified URL.
+        $access_url = "http://$access_url";
       }
       $row->setSourceProperty('access_url', $access_url);
     }
 
     // Assure a created date.
-    if (!$created = $row->getSourceProperty('created')) {
-      $row->setSourceProperty('created', REQUEST_TIME);
+    if (!$row->getSourceProperty('created')) {
+      $row->setSourceProperty('created', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
     // Assure a changed date.
-    if (!$changed = $row->getSourceProperty('changed')) {
-      $row->setSourceProperty('changed', REQUEST_TIME);
+    if (!$row->getSourceProperty('changed')) {
+      $row->setSourceProperty('changed', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
+
+    // Get affiliates.
+    $affiliates = Database::getConnection()->select('joinup_migrate_mapping', 'j')
+      ->fields('j', ['nid'])
+      ->orderBy('j.collection')
+      ->condition('j.del', 'No')
+      ->condition('j.collection', $row->getSourceProperty('collection'))
+      ->condition('j.type', 'asset_release')
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('affiliates', $affiliates);
 
     return parent::prepareRow($row);
   }

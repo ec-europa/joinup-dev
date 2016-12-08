@@ -5,23 +5,23 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
 use Drupal\migrate\Row;
 
 /**
- * Migrates collection banner file.
+ * Migrates solution banner files.
  *
  * @MigrateSource(
- *   id = "collection_banner"
+ *   id = "solution_banner"
  * )
  */
-class CollectionBanner extends CollectionBase {
+class SolutionBanner extends SolutionBase {
 
   /**
    * {@inheritdoc}
    */
   public function fields() {
-    return parent::fields() + [
+    return [
       'source_path' => $this->t('Source path'),
       'destination_uri' => $this->t('Destination URI'),
       'created' => $this->t('Created time'),
-    ];
+    ] + parent::fields();
   }
 
   /**
@@ -41,8 +41,9 @@ class CollectionBanner extends CollectionBase {
     // Build source path.
     $source_path = NULL;
     $timestamp = NULL;
+
     if ($banner = $row->getSourceProperty('banner')) {
-      $source_path = "../resources/migrate/collection/banner/$banner";
+      $source_path = "../resources/migrate/solution/banner/$banner";
       $timestamp = REQUEST_TIME;
     }
 
@@ -57,7 +58,7 @@ class CollectionBanner extends CollectionBase {
     if ($source_path) {
       // Build de destination URI.
       $basename = basename($source_path);
-      $uri = "public://collection/banner/$basename";
+      $uri = "public://solution/banner/$basename";
     }
     $row->setSourceProperty('destination_uri', $uri);
     $row->setSourceProperty('created', $timestamp);

@@ -19,6 +19,7 @@
         "drupal/message": "~1.0",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
+        "drupal/migrate_run": "~1.0-alpha1",
         "drupal/migrate_spreadsheet": "1.x-dev",
         "drupal/og": "dev-recent-group-content-block",
         "drupal/og_menu": "dev-8.x-1.x",
@@ -113,7 +114,8 @@
             },
             "drupal/search_api": {
                 "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch",
-                "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-2_0-on_2753667-8.patch"
+                "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-2_0-on_2753667-8.patch",
+                "item_id column is too short @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/2829696-7.patch"
             },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"

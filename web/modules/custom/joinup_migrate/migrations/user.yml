@@ -1,5 +1,7 @@
 id: user
 label: 'User accounts'
+migration_tags:
+  - user
 source:
   plugin: user
   track_changes: true

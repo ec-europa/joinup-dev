@@ -1,5 +1,8 @@
 id: collection
 label: 'Collection migration'
+migration_tags:
+  - og
+  - collection
 source:
   plugin: collection
   track_changes: true
@@ -8,6 +11,11 @@ process:
   label: collection
   field_ar_abstract: abstract
   field_ar_access_url: access_url
+  field_ar_affiliates:
+    plugin: migration
+    source: affiliates
+    migration: solution
+    no_stub: true
   field_ar_banner:
     plugin: migration
     source: collection
@@ -15,7 +23,10 @@ process:
     no_stub: true
   field_ar_creation_date: created
   # Blocked by https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2945.
-  # field_ar_description: body
+  # field_is_description/value: body
+  # field_is_description/format:
+  #   plugin: default_value
+  #   default_value: content_editor
   field_ar_elibrary_creation: elibrary
   field_ar_logo:
     plugin: migration
@@ -32,12 +43,13 @@ process:
       strict: true
   field_ar_modification_date: changed
   # Blocked by:
-  # - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2882
   # - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2881
   # field_ar_owner:
   #  plugin: migration
   #  migration: owner
   #  no_stub: true
+  # @todo Revisit and fix this after ISAICP-2993 lands.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2993
   field_policy_domain:
     plugin: term_reference
     source: policy
@@ -56,7 +68,8 @@ process:
 destination:
   plugin: entity:rdf_entity
   default_bundle: collection
-# migration_dependencies:
-#   required:
-#     - collection_logo
-#     - collection_banner
+migration_dependencies:
+ required:
+   - collection_logo
+   - collection_banner
+   - solution

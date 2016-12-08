@@ -2,21 +2,10 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\migrate\Plugin\migrate\source\SqlBase;
-
 /**
  * Base class for distribution migration plugins.
  */
-abstract class DistributionBase extends SqlBase {
-
-  use SourceTrait;
-
-  /**
-   * Table aliases.
-   *
-   * @var string[]
-   */
-  protected $alias = [];
+abstract class DistributionBase extends JoinupSqlBase {
 
   /**
    * {@inheritdoc}
