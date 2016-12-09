@@ -10,7 +10,7 @@
         "cweagans/composer-patches": "~1.6",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/console": "~1.0",
-        "drupal/core": "8.2.x-dev#d163cc25470ddc690502073b4003d170b5da038a",
+        "drupal/core": "~8.2.4",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^2.0",
         "drupal/facets": "~1.0@alpha",
