@@ -16,9 +16,9 @@ Feature: Collection homepage
       | elibrary creation | facilitators       |
       | state             | validated          |
     And news content:
-      | title                                             | body                | collection         |
-      | Rohirrim make extraordinary deal                  | Horse prices drops  | Middle earth daily |
-      | Breaking: Gandalf supposedly plans his retirement | A new white wizard? | Middle earth daily |
+      | title                                             | body                | collection         | status    |
+      | Rohirrim make extraordinary deal                  | Horse prices drops  | Middle earth daily | published |
+      | Breaking: Gandalf supposedly plans his retirement | A new white wizard? | Middle earth daily | published |
     And event content:
       | title                                    | short title      | body                                      | collection         | start date          |
       | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 |
