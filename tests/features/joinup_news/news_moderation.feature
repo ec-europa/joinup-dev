@@ -230,27 +230,27 @@ Feature: News moderation.
       # State: draft, can propose
       | Mirror Master | Creating Legion of Doom       | Save as draft, Propose  | Validate, Request changes, Request deletion |
       # State: validated, owned by Eagle who is a normal member. Should only be able to create a new draft.
-      | Eagle         | Hawkgirl helped Green Lantern | Create new draft        | Update, Propose, Validate, Request changes  |
-      | Mirror Master | Stealing from Batman          | Create new draft        | Update, Propose, Validate, Request changes  |
+      | Eagle         | Hawkgirl helped Green Lantern | Save new draft          | Update, Propose, Validate, Request changes  |
+      | Mirror Master | Stealing from Batman          | Save new draft          | Update, Propose, Validate, Request changes  |
 
   Scenario Outline: Members cannot edit news they own for specific states.
     Given I am logged in as "<user>"
     And I go to the "<title>" news page
     Then I should not see the link "Edit"
     Examples:
-      | user          | title                         |
+      | user          | title                   |
       # State: needs update
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
-      | Eagle         | Space cannon fired            |
+      | Eagle         | Space cannon fired      |
       # State: draft, not owned
-      | Eagle         | Question joined JL            |
+      | Eagle         | Question joined JL      |
       # State: draft, not owned
-      | Cheetah       | Creating Legion of Doom       |
+      | Cheetah       | Creating Legion of Doom |
       # State: needs update
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
-      | Mirror Master | Stealing complete             |
+      | Mirror Master | Stealing complete       |
       # State: deletion request
-      | Mirror Master | Kill the sun                  |
+      | Mirror Master | Kill the sun            |
 
   Scenario Outline: Facilitators have access on content regardless of state.
     Given I am logged in as "<user>"
@@ -266,7 +266,7 @@ Feature: News moderation.
       # News article in 'proposed' state.
       | Hawkgirl | Hawkgirl is a spy             | Update, Validate, Request changes | Save as draft, Request deletion                            |
       # Validated content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
-      | Hawkgirl | Hawkgirl helped Green Lantern | Create new draft, Propose, Update | Validate, Request changes, Request deletion                |
+      | Hawkgirl | Hawkgirl helped Green Lantern | Save new draft, Propose, Update   | Validate, Request changes, Request deletion                |
       # Members can move to 'needs update' state.
       | Hawkgirl | Hawkgirl helped Green Lantern | Update, Propose                   | Save as draft, Request changes, Request deletion           |
       | Hawkgirl | Space cannon fired            | Propose                           | Save as draft, Validate, Request changes, Request deletion |
@@ -274,7 +274,7 @@ Feature: News moderation.
       # Facilitators have access to create news and directly put it to validate. For created and proposed, member role should be used.
       | Metallo  | Creating Legion of Doom       | Save as draft, Propose, Validate  | Request changes, Request deletion                          |
       # Validated content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
-      | Metallo  | Stealing from Batman          | Create new draft, Propose, Update | Request changes, Request deletion                          |
+      | Metallo  | Stealing from Batman          | Save new draft, Propose, Update   | Request changes, Request deletion                          |
       # Members can move to 'needs update' state.
       | Metallo  | Learn batman's secret         | Update, Request changes, Validate | Save as draft, Request deletion                            |
       | Metallo  | Stealing complete             | Propose                           | Save as draft, Request deletion                            |
