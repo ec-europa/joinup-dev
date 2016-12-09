@@ -427,6 +427,15 @@ QUERY;
             $column = $mapping[$bundle->id()][$predicate]['column'];
             foreach ($field as $lang => $items) {
               foreach ($items as $item) {
+                if (isset($mapping[$bundle->id()][$predicate]['storage_definition'])) {
+                  /** @var FieldStorageConfig $field_storage_definition */
+                  $field_storage_definition = $mapping[$bundle->id()][$predicate]['storage_definition'];
+                  $field_storage_schema = $field_storage_definition->getSchema()['columns'];
+                  // Inflate value back into a normal item.
+                  if (isset($field_storage_schema[$column]['serialize']) && $field_storage_schema[$column]['serialize'] === TRUE) {
+                    $item = unserialize($item);
+                  }
+                }
                 if (!isset($return[$entity_id][$field_name]) || !is_string($return[$entity_id][$field_name][$lang])) {
                   $return[$entity_id][$field_name][$lang][][$column] = $item;
                 }
@@ -698,6 +707,14 @@ QUERY;
             continue;
           }
           $item = $entity->get($field_name)->first();
+
+          $column_schema = $this->getColumnSchema($item, $column);
+          // Take care of serialized fields.
+          // @todo Could this be replaced with something more interoperable?
+          // (json?, bnodes?)
+          if (isset($column_schema['serialize']) && $column_schema['serialize'] == TRUE) {
+            $value = serialize($value);
+          }
           // When the field is a entity reference, and it's target implements
           // RdfEntitySparqlStorage (it's an RDF based entity),
           // then store it as a resource.
@@ -723,6 +740,22 @@ QUERY;
     // @todo Do in one transaction... If possible.
     $this->insert($graph, $graph_uri);
 
+  }
+
+  /**
+   * Get the schema definition for a given field column.
+   *
+   * @param \Drupal\Core\Field\FieldItemInterface $item
+   *   The field.
+   * @param string $column
+   *   The column name.
+   *
+   * @return mixed
+   *   The field column schema.
+   */
+  protected function getColumnSchema(FieldItemInterface $item, $column) {
+    $schema = $item->getFieldDefinition()->getFieldStorageDefinition()->getSchema();
+    return $schema['columns'][$column];
   }
 
   /**

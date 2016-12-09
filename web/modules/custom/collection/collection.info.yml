@@ -8,6 +8,7 @@ dependencies:
   - contact_information
   - datetime
   - ds
+  - facets
   - field_group
   - image
   - joinup_core
@@ -17,6 +18,7 @@ dependencies:
   - options
   - owner
   - rdf_entity
+  - search_api_field
   - state_machine
   - text
 
@@ -26,6 +28,9 @@ config_devel:
   - core.entity_view_display.rdf_entity.collection.group_header
   - core.entity_view_display.rdf_entity.collection.view_mode_featured
   - core.entity_view_display.rdf_entity.collection.view_mode_tile
+  - facets.facet.collection_policy_domain
+  - facets.facet.collection_type
+  - facets.facet_source.search_api_field__rdf_entity.field_collection_content
   - field.field.rdf_entity.collection.field_ar_abstract
   - field.field.rdf_entity.collection.field_ar_access_url
   - field.field.rdf_entity.collection.field_ar_affiliates
@@ -41,6 +46,7 @@ config_devel:
   - field.field.rdf_entity.collection.field_ar_owner
   - field.field.rdf_entity.collection.field_ar_shared_content
   - field.field.rdf_entity.collection.field_ar_state
+  - field.field.rdf_entity.collection.field_collection_content
   - field.field.rdf_entity.collection.field_policy_domain
   - field.field.rdf_entity.collection.field_spatial_coverage
   - field.storage.rdf_entity.field_ar_abstract
@@ -58,4 +64,5 @@ config_devel:
   - field.storage.rdf_entity.field_ar_owner
   - field.storage.rdf_entity.field_ar_shared_content
   - field.storage.rdf_entity.field_ar_state
+  - field.storage.rdf_entity.field_collection_content
   - rdf_entity.rdfentity.collection
