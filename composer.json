@@ -117,7 +117,7 @@
             },
             "drupal/search_api": {
                 "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch",
-                "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-2_0-on_2753667-8.patch"
+                "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-7_0-on_2753667-8.patch"
             },
             "drupal/taxonomy_container" : {
                 "Terms with string IDs are missing from dropdown": "https://www.drupal.org/files/issues/2833176-2.patch"

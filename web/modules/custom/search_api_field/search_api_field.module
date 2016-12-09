@@ -73,7 +73,11 @@ function search_api_field_entity_view(array &$build, EntityInterface $entity, En
     $facets = $facet_storage->loadByProperties(['facet_source_id' => 'search_api_field:' . $id]);
 
     // At the moment we support only single-value fields.
-    $settings = $entity->get($field_name)->first()->value;
+    $settings_item = $entity->get($field_name)->first();
+    if (empty($settings_item)) {
+      return;
+    }
+    $settings = $settings_item->value;
 
     // Do not render facets if the field is disabled.
     if (empty($settings['enabled'])) {
