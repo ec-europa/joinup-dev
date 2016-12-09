@@ -16,8 +16,8 @@ Feature: Global search
       | affiliates | Spherification, Foam         |
       | state      | validated                    |
     And news content:
-      | title                 | body             | collection                   | status |
-      | El Celler de Can Roca | The best in town | Molecular cooking collection | 1      |
+      | title                 | body             | collection                   | status    |
+      | El Celler de Can Roca | The best in town | Molecular cooking collection | published |
     And I commit the solr index
 
     Given I am logged in as a user with the "authenticated" role

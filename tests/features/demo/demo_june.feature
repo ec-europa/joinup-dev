@@ -29,15 +29,15 @@ Feature: June 2016 demo
       | Avengers     | Wolverine | member                     |
 
     And news content:
-      | title                       | kicker                                    | body                                                                                                                                | status |
-      | Phil Coulson is down        | Phil Coulson fell by the hands of Loki.   | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                | 1      |
-      | Phoenix is down             | Wolverine took down Jean Gray.            | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. | 1      |
-      | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.     | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                | 1      |
-      | Captain America not dead?   | Captain America found in the ice.         | Captain America's body was found intact and preserved in ice.                                                                       | 1      |
-      | Hellicarrier under attack   | The Hellicarrier was attacked by Loki.    | Loki and his servants have attacked us. Hawkeye took out one engine.                                                                | 1      |
-      | Captain America & Avengers  | Captain America to lead the avengers?     | It is S.H.I.E.L.D.'s opinion that someone like Captain America can be a good leader for avengers.                                   | 1      |
-      | Project Tahiti case 1       | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process.                                                                              | 1      |
-      | Who is Winter soldier?      | Captain America's child friend is alive?  | As it turns out the Hydra's agent-Winter soldier-is no other than Bucky-Captain's America childhood friend.                         | 1      |
+      | title                       | kicker                                    | body                                                                                                                                | status    |
+      | Phil Coulson is down        | Phil Coulson fell by the hands of Loki.   | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                | published |
+      | Phoenix is down             | Wolverine took down Jean Gray.            | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. | published |
+      | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.     | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                | published |
+      | Captain America not dead?   | Captain America found in the ice.         | Captain America's body was found intact and preserved in ice.                                                                       | published |
+      | Hellicarrier under attack   | The Hellicarrier was attacked by Loki.    | Loki and his servants have attacked us. Hawkeye took out one engine.                                                                | published |
+      | Captain America & Avengers  | Captain America to lead the avengers?     | It is S.H.I.E.L.D.'s opinion that someone like Captain America can be a good leader for avengers.                                   | published |
+      | Project Tahiti case 1       | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process.                                                                              | published |
+      | Who is Winter soldier?      | Captain America's child friend is alive?  | As it turns out the Hydra's agent-Winter soldier-is no other than Bucky-Captain's America childhood friend.                         | published |
     And the following "news" content belong to the corresponding collections:
       | content                     | collection   |
       | Phil Coulson is down        | S.H.I.E.L.D. |

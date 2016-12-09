@@ -28,11 +28,11 @@ Feature: Add comments
     And I should not see "I've heard this story..."
 
     Examples:
-      | content type | title               | status |
-      | news         | Scandalous news     | 1      |
-      | event        | Celebrity gathering | 1      |
-      | discussion   | Is gossip bad?      | 1      |
-      | document     | Wikileaks           | 1      |
+      | content type | title               | status    |
+      | news         | Scandalous news     | published |
+      | event        | Celebrity gathering | published |
+      | discussion   | Is gossip bad?      | published |
+      | document     | Wikileaks           | published |
 
   Scenario Outline: Make an authenticated comment, skips moderation.
     Given <content type> content:
@@ -48,8 +48,8 @@ Feature: Add comments
     And I should see text matching "Mr scandal was doing something weird the other day."
 
     Examples:
-      | content type | title               | status |
-      | news         | Scandalous news     | 1      |
-      | event        | Celebrity gathering | 1      |
-      | discussion   | Is gossip bad?      | 1      |
-      | document     | Wikileaks           | 1      |
+      | content type | title               | status    |
+      | news         | Scandalous news     | published |
+      | event        | Celebrity gathering | published |
+      | discussion   | Is gossip bad?      | published |
+      | document     | Wikileaks           | published |

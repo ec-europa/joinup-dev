@@ -459,6 +459,23 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $entity = $this->getRdfEntityByLabel($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD});
       $node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD} = $entity->id();
     }
+
+    // Replace the human readable publication statuses with the boolean values
+    // that are expected by the Node module.
+    if (!empty($node->status)) {
+      $mapping = [
+        'unpublished' => 0,
+        'published' => 1,
+      ];
+      // Force the use of human readable values in Behat test scenarios, throw
+      // an exception if the numeric values are used.
+      if (!array_key_exists($node->status, $mapping)) {
+        $supported_statii = implode(', ', array_keys($mapping));
+        throw new \UnexpectedValueException("Unexpected status '{$node->status}'. Supported statuses are: $supported_statii.");
+      }
+      // Replace the human readable value with the expected boolean.
+      $node->status = $mapping[$node->status];
+    }
   }
 
   /**
