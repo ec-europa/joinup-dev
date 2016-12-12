@@ -145,7 +145,7 @@ Feature: Collection moderation
       | banner              | banner.jpg         |
       | owner               | Carpet Sandation   |
       | contact information | Partyanimal        |
-      | policy domain       | eHealth            |
+      | policy domain       | eProcurement       |
       | state               | proposed           |
     When I am on the homepage
     And I click "Collections"
