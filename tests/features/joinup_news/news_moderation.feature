@@ -154,7 +154,11 @@ Feature: News moderation.
     And I click "Add news"
     Then I should see the heading "Add news"
     And the following fields should be present "Headline, Kicker, Content"
-    And the following fields should not be present "Groups audience, State"
+
+    # The sections about managing revisions and groups should not be visible.
+    And I should not see the text "Revision information"
+    And the following fields should not be present "Groups audience, State, Other groups, Create new revision, Revision log message"
+
     And the following buttons should be present "Save as draft, Validate"
     And the following buttons should not be present "Propose, Request changes, Request deletion"
     When I fill in the following:
