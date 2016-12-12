@@ -223,6 +223,7 @@ WHERE {
   FILTER (lang(?label) = 'en') .
   OPTIONAL {?tid <http://www.w3.org/2004/02/skos/core#broaderTransitive> ?parent }
 }
+ORDER BY DESC(?parent) ?tid
 QUERY;
         $result = $this->sparql->query($query);
         foreach ($result as $term_res) {
