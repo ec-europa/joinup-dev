@@ -2,6 +2,7 @@
 
 namespace Drupal\state_machine_revisions\EventSubscriber;
 
+use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\RevisionableInterface;
@@ -114,6 +115,12 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
    *   TRUE if the state is set as published in the workflow, FALSE otherwise.
    */
   protected function isPublishedState(WorkflowState $state, WorkflowInterface $workflow) {
+    // We rely on being able to inspect the plugin definition. Throw an error if
+    // this is not the case.
+    if (!$workflow instanceof PluginInspectionInterface) {
+      $label = $workflow->getLabel();
+      throw new \InvalidArgumentException("The '$label' workflow is not plugin based.");
+    }
     // Retrieve the raw plugin definition, as all additional plugin settings
     // are stored there.
     $raw_workflow_definition = $workflow->getPluginDefinition();
