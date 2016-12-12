@@ -395,7 +395,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :title :bundle (content )should be published
    */
-  public function nodePublished($bundle, $title) {
+  public function assertNodePublished($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if (!$node->isPublished()) {
@@ -416,7 +416,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :title :bundle (content )should not be published
    */
-  public function nodeNotPublished($bundle, $title) {
+  public function assertNodeNotPublished($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if ($node->isPublished()) {
