@@ -247,7 +247,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function resetRequestGraphs($event) {
     /** @var RdfEntitySparqlStorage $storage */
-    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
     $storage->getGraphHandler()->resetRequestGraphs();
   }
 
