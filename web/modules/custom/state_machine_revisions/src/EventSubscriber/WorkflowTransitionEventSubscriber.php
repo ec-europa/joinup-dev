@@ -71,6 +71,9 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     // - the entity is new;
     // - the new state is a published one;
     // - the current default revision is not published.
+    // @todo Change this to $entity->setDefaultRevision() once issue 2706337 is
+    //   in.
+    // @see https://www.drupal.org/node/2706337
     $entity->isDefaultRevision($entity->isNew() || $is_published_state || !$this->hasPublishedDefaultRevision($entity));
 
     if ($entity instanceof EntityPublishedInterface) {
