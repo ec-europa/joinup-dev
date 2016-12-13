@@ -21,6 +21,7 @@ news_workflow:
       label: Proposed
     validated:
       label: Validated
+      published: true
     deletion_request:
       label: Request deletion
     needs_update:
