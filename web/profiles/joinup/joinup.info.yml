@@ -50,6 +50,7 @@ dependencies:
   - search_api_db
   - solution
   - state_machine
+  - state_machine_revisions
   - text
   - toolbar
   - view_unpublished
@@ -64,7 +65,6 @@ config_devel:
   - block.block.groupheader
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
-  - block.block.joinup_theme_collectioncontent
   - block.block.joinup_theme_content
   - block.block.joinup_theme_footer
   - block.block.joinup_theme_help
@@ -156,6 +156,5 @@ config_devel:
   - user.role.authenticated
   - user.role.moderator
   - user.settings
-  - views.view.collection_content
   - views.view.collections
   - views.view.user_admin_people

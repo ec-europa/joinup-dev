@@ -38,14 +38,18 @@ Feature: "Add custom page" visibility options.
     When I click "Add a new page"
     Then I should see the heading "Add custom page"
     And the following fields should be present "Title, Body"
-    And the following fields should not be present "Groups audience, Other groups"
+
+    # The sections about managing revisions and groups should not be visible.
+    And I should not see the text "Revision information"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+
     When I fill in the following:
       | Title | About us                      |
       | Body  | We are open about everything! |
     And I press "Save"
     Then I should see the heading "About us"
     And I should see the success message "Custom page About us has been created."
-    And the "Open Collective" collection has a custom page titled "About us"
+    And the "Open Collective" collection should have a custom page titled "About us"
     # Check that the link to the custom page is visible on the collection page.
     When I go to the homepage of the "Open Collective" collection
     And I click "About us"

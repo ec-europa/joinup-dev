@@ -14,6 +14,7 @@ dependencies:
 
 config_devel:
   - field.field.node.news.field_comments
+  - core.base_field_override.node.news.status
   - core.entity_form_display.node.news.default
   - core.entity_view_display.node.news.default
   - core.entity_view_display.node.news.view_mode_featured

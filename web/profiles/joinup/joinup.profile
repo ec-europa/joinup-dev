@@ -197,6 +197,16 @@ function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Disable access to the revision information vertical tab.
+ * This prevents access to the revision log and the revision checkbox too.
+ */
+function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['revision_information']['#access'] = FALSE;
+}
+
+/**
  * Implements hook_field_formatter_third_party_settings_form().
  *
  * Allow adding template suggestions for each field.

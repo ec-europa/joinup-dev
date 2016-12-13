@@ -18,6 +18,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_ar_state
+    - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
     - image.style.vertical_medium_image
@@ -75,7 +76,6 @@ content:
             lb-col: false
             classes: {  }
 hidden:
-  collection_content: true
   field_ar_abstract: true
   field_ar_access_url: true
   field_ar_affiliates: true
@@ -89,7 +89,9 @@ hidden:
   field_ar_owner: true
   field_ar_shared_content: true
   field_ar_state: true
+  field_collection_content: true
   field_policy_domain: true
   field_spatial_coverage: true
   join_collection: true
   og_group: true
+  rdf_entity_field_collection_content_top: true
