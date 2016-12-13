@@ -794,7 +794,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Given comments:
    */
-  public function comments(TableNode $table) {
+  public function createComments(TableNode $table) {
     foreach ($table->getColumnsHash() as $comment_values) {
       $query = \Drupal::entityQuery('node')
         ->condition('title', $comment_values['parent'])
