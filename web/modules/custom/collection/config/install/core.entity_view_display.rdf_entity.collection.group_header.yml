@@ -17,6 +17,8 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_shared_content
+    - field.field.rdf_entity.collection.field_ar_state
+    - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
     - image.style.banner
@@ -26,30 +28,6 @@ dependencies:
     - ds
     - image
     - joinup_core
-third_party_settings:
-  ds:
-    layout:
-      id: ds_1col
-      path: modules/contrib/ds
-      library: ''
-      disable_css: false
-      entity_classes: no_classes
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class: {  }
-          ds_content: {  }
-    regions:
-      ds_content:
-        - field_ar_banner
-        - field_ar_logo
-        - label
-        - join_collection
 id: rdf_entity.collection.group_header
 targetEntityType: rdf_entity
 bundle: collection
@@ -79,32 +57,13 @@ content:
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow-el: ''
-            ow-cl: ''
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: div
-            fi-cl: featured__logo
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   join_collection:
     weight: 3
     settings: {  }
@@ -118,34 +77,14 @@ content:
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow-el: ''
-            ow-cl: ''
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: h1
-            fi-cl: featured__text
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
 hidden:
-  collection_content: true
   field_ar_abstract: true
   field_ar_access_url: true
   field_ar_affiliates: true
@@ -158,5 +97,9 @@ hidden:
   field_ar_modification_date: true
   field_ar_owner: true
   field_ar_shared_content: true
+  field_ar_state: true
+  field_collection_content: true
   field_policy_domain: true
   field_spatial_coverage: true
+  og_group: true
+  rdf_entity_field_collection_content_top: true

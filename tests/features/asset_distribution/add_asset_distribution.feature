@@ -8,10 +8,12 @@ Feature: Add distribution through the UI
     Given the following solution:
       | title       | Solution random x name           |
       | description | Some reusable random description |
+      | state       | validated                        |
     And the following collection:
       | title      | Asset Distribution Test |
       | logo       | logo.png                |
       | affiliates | Solution random x name  |
+      | state      | validated               |
     And the following release:
       | title         | Asset release random name        |
       | description   | Some reusable random description |
@@ -50,8 +52,13 @@ Feature: Add distribution through the UI
       When I fill in "Title" with "Custom title of asset distribution"
       And I attach the file "test.zip" to "Add a new file"
       And I fill in "License" with "WTFPL"
+      And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
       And I press "Save"
       Then I should have 1 distribution
+
+      # Debug step since the default view of the distribution, does not have the access URL shown.
+      And the "Custom title of asset distribution" distribution should have the link of the "test.zip" in the access URL field
+
       # Check if the asset distribution is accessible as an anonymous user
       When I go to the homepage of the "Asset release random name" release
       Then I should see the text "Distribution"

@@ -9,6 +9,7 @@ Feature: "Add release" visibility options.
       | title         | Release solution test |
       | description   | My awesome solution   |
       | documentation | text.pdf              |
+      | state         | validated             |
 
     When I am logged in as a "facilitator" of the "Release solution test" solution
     And I go to the homepage of the "Release solution test" solution
@@ -25,19 +26,20 @@ Feature: "Add release" visibility options.
     Then I should not see the link "Add release"
 
   Scenario: Add release as a solution facilitator.
-    Given the following organisation:
-     | name | Organisation example |
+    Given the following owner:
+      | name                 | type    |
+      | Organisation example | Company |
     And the following solutions:
-      | title          | description        | documentation | owner                |
-      | Release Test 1 | test description 1 | text.pdf      | Organisation example |
-      | Release Test 2 | test description 2 | text.pdf      | Organisation example |
+      | title          | description        | documentation | owner                | state     |
+      | Release Test 1 | test description 1 | text.pdf      | Organisation example | validated |
+      | Release Test 2 | test description 2 | text.pdf      | Organisation example | validated |
     # Check that the release cannot take the title of another solution.
     When I am logged in as a "facilitator" of the "Release Test 1" solution
     When I go to the homepage of the "Release Test 1" solution
     And I click "Add release"
     Then I should see the heading "Add Release"
     And the following fields should be present "Name, Release number, Release notes, Documentation, Spatial coverage, Keyword, Status, Language"
-    And the following field widgets should be present "Contact information, Owner"
+    And the following field widgets should be present "Contact information"
     When I fill in "Name" with "Release Test 2"
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."

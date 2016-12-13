@@ -6,14 +6,15 @@ Feature: "Add document" visibility options.
 
   Scenario: "Add document" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following solutions:
-      | title               | logo     | banner     |
-      | Seventh Name        | logo.png | banner.jpg |
-      | The Obsessed Stream | logo.png | banner.jpg |
+      | title               | logo     | banner     | state     |
+      | Seventh Name        | logo.png | banner.jpg | validated |
+      | The Obsessed Stream | logo.png | banner.jpg | validated |
     And the following collection:
       | title      | Collective Seventh Name           |
       | logo       | logo.png                          |
       | banner     | banner.jpg                        |
       | affiliates | Seventh Name, The Obsessed Stream |
+      | state      | validated                         |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Seventh Name" solution
@@ -36,20 +37,25 @@ Feature: "Add document" visibility options.
 
   Scenario: Add document as a facilitator.
     Given solutions:
-      | title               | logo     | banner     |
-      | Winter of Beginning | logo.png | banner.jpg |
+      | title               | logo     | banner     | state     |
+      | Winter of Beginning | logo.png | banner.jpg | validated |
     And the following collection:
       | title      | Collective Winter of Beginning |
       | logo       | logo.png                       |
       | banner     | banner.jpg                     |
       | affiliates | Winter of Beginning            |
+      | state      | validated                      |
     And I am logged in as a facilitator of the "Winter of Beginning" solution
 
     When I go to the homepage of the "Winter of Beginning" solution
     And I click "Add document"
     Then I should see the heading "Add document"
     And the following fields should be present "Title, Short title, Description, File, Source URL"
-    And the following fields should not be present "Groups audience"
+
+    # The sections about managing revisions and groups should not be visible.
+    And I should not see the text "Revision information"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+
     When I fill in the following:
       | Title       | The Sparks of the Butterfly              |
       | Short title | Amazing document                         |

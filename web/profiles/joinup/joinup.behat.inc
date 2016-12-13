@@ -11,12 +11,14 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
 
@@ -25,10 +27,12 @@ use Drupal\User\Entity\User;
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use BrowserCapabilityDetectionTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
   use WorkflowTrait;
+  use WysiwygTrait;
 
   /**
    * Test files.
@@ -90,6 +94,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertAuthenticatedByOgRole($role, $rdf_entity, $rdf_entity_bunlde) {
     $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bunlde);
+    if (!$entity) {
+      throw new \Exception("No entity found with label $rdf_entity");
+    }
     $roles = explode(',', $role);
     $roles = array_map('trim', $roles);
     $roles = $this->getOgRoles($roles, $entity);
@@ -232,6 +239,19 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Reset the request graphs of rdf entity before every step.
+   *
+   * The request graphs are tied to an individual request.
+   *
+   * @BeforeStep
+   */
+  public function resetRequestGraphs($event) {
+    /** @var RdfEntitySparqlStorage $storage */
+    $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+    $storage->getGraphHandler()->resetRequestGraphs();
+  }
+
+  /**
    * Mapping of human readable names to machine names.
    *
    * @return array
@@ -317,37 +337,56 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       }
       /** @var \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend $backend */
       $backend = $search_server->getBackend();
-
-      /** @var \Solarium\Client $solarium_client */
-      $solarium_client = $backend->getSolrConnection();
-      $update = $solarium_client->createUpdate();
+      /** @var \Drupal\search_api_solr\SolrConnectorInterface $connector */
+      $connector = $backend->getSolrConnector();
+      $update = $connector->getUpdateQuery();
       $update->addCommit(TRUE, TRUE);
-      $solarium_client->update($update);
+      $connector->update($update);
     }
   }
 
   /**
-   * Navigates to the canonical page display of a node entity.
+   * Navigates to the edit page display of a node entity.
    *
    * @param string $bundle
-   *   The type of the node page.
+   *   The type of the node entity.
    * @param string $title
    *   The title of the node.
    *
    * @When (I )go to the :bundle (content ) :title edit screen
    * @When (I )visit the :bundle (content ) :title edit screen
    */
-  public function visitCollection($bundle, $title) {
+  public function visitNodeEditForm($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     $this->visitPath($node->url('edit-form'));
   }
 
   /**
+   * Navigates to the canonical page display of a node page.
+   *
+   * This step is only to be used in scenario outlines.
+   * If possible, use a specific page selector.
+   *
+   * @param string $type
+   *   The type of the node entity.
+   * @param string $title
+   *   The name of the news page.
+   *
+   * @When (I )go to the content page of the type :type with the title :title
+   * @When (I )visit the content page of the type :type with the title :title
+   */
+  public function visitNodePage($type, $title) {
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = $this->getNodeByTitle($title, $type);
+    $this->visitPath($node->url());
+  }
+
+  /**
    * Checks if a content entity is published.
    *
    * @param string $bundle
-   *   The node bunlde.
+   *   The node bundle.
    * @param string $title
    *   The node title.
    *
@@ -356,7 +395,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :title :bundle (content )should be published
    */
-  public function nodePublished($bundle, $title) {
+  public function assertNodePublished($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if (!$node->isPublished()) {
@@ -368,7 +407,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks if a content entity is published.
    *
    * @param string $bundle
-   *   The node bunlde.
+   *   The node bundle.
    * @param string $title
    *   The node title.
    *
@@ -377,12 +416,37 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :title :bundle (content )should not be published
    */
-  public function nodeNotPublished($bundle, $title) {
+  public function assertNodeNotPublished($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if ($node->isPublished()) {
       throw new \Exception("$title content should not be published but it is.");
     }
+  }
+
+  /**
+   * Checks if the given content entity has the correct number of revisions.
+   *
+   * @param string $bundle
+   *   The node bundle.
+   * @param string $title
+   *   The node title.
+   * @param int $count
+   *   The expected number of revisions.
+   *
+   * @Then the :title :bundle (content )should have :count revision(s)
+   */
+  public function assertNodeRevisionCount($bundle, $title, $count) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title, $bundle);
+
+    $revision_count = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
+      ->allRevisions()
+      ->condition('nid', $node->id())
+      ->count()
+      ->execute();
+
+    PHPUnit_Framework_Assert::assertEquals($count, $revision_count);
   }
 
   /**
@@ -416,9 +480,26 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // actual URI. Note that this fails if a URI is supplied for a collection or
     // solution in a Behat test. This is by design, the URIs are not exposed to
     // end users of the site so they should not be used in BDD scenarios.
-    if (!empty($node->{OgGroupAudienceHelper::DEFAULT_FIELD})) {
-      $entity = $this->getRdfEntityByLabel($node->{OgGroupAudienceHelper::DEFAULT_FIELD});
-      $node->{OgGroupAudienceHelper::DEFAULT_FIELD} = $entity->id();
+    if (!empty($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD})) {
+      $entity = $this->getRdfEntityByLabel($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD});
+      $node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD} = $entity->id();
+    }
+
+    // Replace the human readable publication statuses with the boolean values
+    // that are expected by the Node module.
+    if (!empty($node->status)) {
+      $mapping = [
+        'unpublished' => 0,
+        'published' => 1,
+      ];
+      // Force the use of human readable values in Behat test scenarios, throw
+      // an exception if the numeric values are used.
+      if (!array_key_exists($node->status, $mapping)) {
+        $supported_statii = implode(', ', array_keys($mapping));
+        throw new \UnexpectedValueException("Unexpected status '{$node->status}'. Supported statuses are: $supported_statii.");
+      }
+      // Replace the human readable value with the expected boolean.
+      $node->status = $mapping[$node->status];
     }
   }
 
@@ -447,8 +528,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'state' => 'field_news_state',
       ],
       'shared' => [
-        'collection' => OgGroupAudienceHelper::DEFAULT_FIELD,
-        'solution' => OgGroupAudienceHelper::DEFAULT_FIELD,
+        'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+        'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
       ],
     ];
 
@@ -549,6 +630,161 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertContentOgMembership($parent, $parent_bundle, $content_bundle, $content) {
     $this->assertOgMembership($parent, $parent_bundle, $content, $content_bundle);
+  }
+
+  /**
+   * Asserts the presence of a tile element with a certain heading.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the expected tile is not found.
+   *
+   * @Given I (should )see the :heading tile
+   */
+  public function assertTilePresent($heading) {
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
+    foreach ($results as $result) {
+      /** @var \Behat\Mink\Element\Element $result */
+      if ($result->getText() === $heading) {
+        return;
+      }
+    }
+
+    throw new \Exception("The tile '$heading' was not found on the page");
+  }
+
+  /**
+   * Asserts that there are no tile elements with a certain heading.
+   *
+   * @param string $heading
+   *   The heading to search.
+   *
+   * @throws \Exception
+   *   Thrown when a tile with the unwanted heading is found.
+   *
+   * @Given I (should )not see the :heading tile
+   */
+  public function assertTileNotPresent($heading) {
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2');
+    foreach ($results as $result) {
+      /** @var \Behat\Mink\Element\Element $result */
+      if ($result->getText() === $heading) {
+        throw new \Exception("The tile '$heading' was not found on the page");
+      }
+    }
+  }
+
+  /**
+   * Assert that certain buttons are present on the page.
+   *
+   * @param string $buttons
+   *    A comma separated list of button labels.
+   *
+   * @throws \Exception
+   *   Thrown when an expected button is not present.
+   *
+   * @Then (the following )buttons should be present :buttons
+   */
+  public function assertButtonsVisible($buttons) {
+    $buttons = explode(',', $buttons);
+    $buttons = array_map('trim', $buttons);
+    $buttons = array_filter($buttons);
+
+    $page = $this->getSession()->getPage();
+    $not_found = [];
+    foreach ($buttons as $button) {
+      if (!$page->findButton($button)) {
+        $not_found[] = $button;
+      }
+    }
+
+    if (!empty($not_found)) {
+      throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $not_found));
+    }
+  }
+
+  /**
+   * Assert that certain buttons are not present on the page.
+   *
+   * @param string $buttons
+   *    A comma separated list of button labels.
+   *
+   * @throws \Exception
+   *   Thrown when an unexpected button is present.
+   *
+   * @Then (the following )buttons should not be present :buttons
+   */
+  public function assertButtonsNotVisible($buttons) {
+    $buttons = explode(',', $buttons);
+    $buttons = array_map('trim', $buttons);
+    $buttons = array_filter($buttons);
+
+    $page = $this->getSession()->getPage();
+    $found = [];
+    foreach ($buttons as $button) {
+      if ($page->findButton($button)) {
+        $found[] = $button;
+      }
+    }
+
+    if (!empty($found)) {
+      throw new \Exception('Button(s) should not be present, but were found: ' . implode(', ', $found));
+    }
+  }
+
+  /**
+   * Click the given link in the plus button menu.
+   *
+   * This will open the plus button first on JavaScript enabled browsers.
+   *
+   * @param string $link
+   *   The link text of the link to click.
+   *
+   * @When I click :link in the plus button menu
+   */
+  public function clickLinkInPlusButtonMenu($link) {
+    // Check if we are running in an environment that supports JavaScript like
+    // Selenium or PhantomJS. If this is the case the plus button menu will be
+    // closed by default and needs to be opened first.
+    if ($this->browserSupportsJavascript()) {
+      $driver = $this->getSession()->getDriver();
+      $this->getSession()->getDriver()->click('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//button');
+
+      // Wait for the menu opening animation to end before clicking the link.
+      $end = microtime(TRUE) + 5;
+      do {
+        usleep(100000);
+      } while (microtime(TRUE) < $end && !$driver->isVisible('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[contains(., "' . $link . '")]'));
+    }
+    $this->getSession()->getPage()->clickLink($link);
+  }
+
+  /**
+   * Enters the given text in the given WYSIWYG editor.
+   *
+   * If this is running on a JavaScript enabled browser it will first click the
+   * 'Source' button so the text can be entered as normal HTML.
+   *
+   * @param string $text
+   *   The text to enter in the WYSIWYG editor.
+   * @param string $label
+   *   The label of the field containing the WYSIWYG editor.
+   *
+   * @When I enter :text in the :label wysiwyg editor
+   */
+  public function enterTextInWysiwyg($text, $label) {
+    // If we are running in a JavaScript enabled browser, first click the
+    // 'Source' button so we can enter the text as HTML and get the same result
+    // as in a non-JS browser.
+    if ($this->browserSupportsJavascript()) {
+      $this->pressWysiwygButton($label, 'Source');
+      $this->setWysiwygText($label, $text);
+    }
+    else {
+      $this->getSession()->getPage()->fillField($label, $text);
+    }
   }
 
 }

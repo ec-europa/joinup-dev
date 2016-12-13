@@ -1,0 +1,246 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C51b16fc2-464c-4dbf-ac61-1c44111925fc?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_banner": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/solution\/2016-10\/generateImage_tYjYII.jpg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_contact_information": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C8b672838-7d24-4050-9983-f1eba5e988a8?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_language": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpublications.europa.eu%5Cresource%5Cauthority%5Clanguage%5CENG?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_logo": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/solution\/2016-10\/generateImage_bXjZea.jpeg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_owner": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Cef3ef74d-28f3-4a1b-9ce8-15c03555b328?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C234b585f-e065-4678-9195-48f1ba78e1d5?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_solution_type": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cdata.europa.eu%5Ceira%5CTestReport?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_policy_domain": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Cpolicy-domain%5Chealth?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/51b16fc2-464c-4dbf-ac61-1c44111925fc"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "solution"
+        }
+    ],
+    "label": [
+        {
+            "value": "Solution in Blacklisted state",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/51b16fc2-464c-4dbf-ac61-1c44111925fc"
+        }
+    ],
+    "graph": [
+        {
+            "value": "draft"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_banner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/solution\/2016-10\/generateImage_tYjYII.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "6c28b803-e15a-4399-bce4-fdbd0d86d2a5"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/solution\/2016-10\/generateImage_tYjYII.jpg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_contact_information": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C8b672838-7d24-4050-9983-f1eba5e988a8?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/contact_information"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/8b672838-7d24-4050-9983-f1eba5e988a8"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_language": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpublications.europa.eu%5Cresource%5Cauthority%5Clanguage%5CENG?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/language"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_logo": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/solution\/2016-10\/generateImage_bXjZea.jpeg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "e24818ee-5d4b-429e-8aa6-302835cb2155"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/solution\/2016-10\/generateImage_bXjZea.jpeg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_owner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Cef3ef74d-28f3-4a1b-9ce8-15c03555b328?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/ef3ef74d-28f3-4a1b-9ce8-15c03555b328"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C234b585f-e065-4678-9195-48f1ba78e1d5?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/234b585f-e065-4678-9195-48f1ba78e1d5"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_solution_type": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cdata.europa.eu%5Ceira%5CTestReport?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/eira"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/eira\/TestReport"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_policy_domain": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Cpolicy-domain%5Chealth?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/joinup.eu\/policy-domain\/health"
+                    }
+                ]
+            }
+        ]
+    },
+    "field_is_description": [
+        {
+            "value": "<p>Aliquip bene cui eligo hendrerit molior olim torqueo. Acsi at iusto obruo. Eum gilvus hendrerit meus proprius secundum vero. Luptatum refero sit. Capto conventio gilvus nostrud premo probo quia. Caecus causa hendrerit illum metuo proprius quadrum saluto ymo. Adipiscing bene cui eligo singularis utrum. Comis distineo dolor exerci nunc obruo suscipit utinam validus veniam. Diam quadrum refoveo. Abluo dignissim dolore nutus olim pecus sudo tego. Abbas erat importunus paratus praesent torqueo voco. Fere jus suscipere. Autem decet similis. Gravis iriure os paratus praesent refoveo venio. Aliquip facilisis letalis vindico. Enim macto odio refero. Abico augue gravis ludus modo paulatim plaga praesent similis ut. Cogo modo oppeto. Augue euismod iriure mos oppeto patria premo roto. Blandit lobortis obruo. Dolor esca nimis os pala usitas validus. At conventio et in incassum iusto neque quidne ratis. Blandit genitus loquor magna patria quae tation torqueo. Consectetuer gemino in iriure laoreet lenis quis sed. Gemino nibh sudo. Consectetuer exputo hos illum iusto melior pneum ulciscor vereor. Conventio nisl secundum. Esse facilisis letalis meus premo. Ad bene exputo immitto nulla refoveo tation tum. Adipiscing cui exerci utinam velit vicis zelus. Fere gemino imputo quidem utrum veniam verto. Autem diam eligo fere interdico ludus patria usitas. Augue hos loquor luptatum nostrud nunc praesent. Abbas melior plaga velit. Ex ibidem jugis obruo quidem ratis refoveo torqueo. Commoveo magna olim probo refero rusticus sed torqueo typicus. Camur nostrud sudo. At enim erat eu humo interdico ratis torqueo uxor ymo. Et neque odio paratus. Acsi amet commoveo eligo enim fere illum verto vindico. Acsi lucidus mauris pertineo pneum torqueo. Esca laoreet oppeto ratis vel. Cui paratus plaga. Ad capto cogo elit iaceo inhibeo sed. Dolus gilvus inhibeo jugis mauris os pagus pneum saepius. Aliquam causa dolus inhibeo sed verto. Abdo ad conventio dignissim euismod tum volutpat. Decet ille incassum nobis saepius vindico. Abbas iaceo luptatum praesent saluto. Aliquam os tum wisi. Dolor interdico iusto jumentum loquor natu nimis nobis velit vulpes. Commodo cui elit nobis refero tamen venio zelus. Capto ea gilvus imputo lucidus odio populus valetudo. Diam gemino ludus modo oppeto os populus sagaciter similis tincidunt. Damnum dolor euismod haero obruo saluto sino sit vulputate. Facilisi imputo paulatim. Ex iustum lucidus macto pecus qui ymo zelus. Pertineo premo saluto tamen turpis vulputate. Consequat cui et gemino imputo populus torqueo utrum. Autem erat ex feugiat hendrerit modo os plaga. Dignissim loquor nibh quibus. Caecus esca quibus. Abdo brevitas camur comis paulatim persto ratis tation velit. Autem damnum defui eu. Esca eum humo jus lenis similis. Blandit diam gravis hos nisl praesent sagaciter saluto ut. Accumsan augue fere saluto typicus. Causa dolor melior quidne ullamcorper vulpes. Adipiscing dolore voco. Feugiat pertineo vel vulpes. Acsi aliquam amet importunus iusto mauris modo natu te vulputate. Ea esse paratus pecus zelus. Aptent elit iustum modo persto typicus utinam vulpes. Cui diam iustum ludus nimis valde. Distineo enim molior patria persto tego vel. Euismod magna quadrum. Camur erat iustum mos obruo suscipit ullamcorper vel. Accumsan blandit sino sit. Autem erat haero refero si.<\/p>\r\n",
+            "format": "content_editor"
+        }
+    ],
+    "field_is_elibrary_creation": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_is_moderation": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_is_state": [
+        {
+            "value": "blacklisted"
+        }
+    ],
+    "field_is_webdav_creation": [
+        {
+            "value": "1"
+        }
+    ]
+}

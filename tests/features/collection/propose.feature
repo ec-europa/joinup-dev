@@ -24,10 +24,12 @@ Feature: Proposing a collection
       | Password | claps         |
     And I press "Log in"
     Then I should see the heading "Propose collection"
+
   Scenario: Propose a collection
-    Given the following organisation:
-      | name | Organisation example |
-    And I am logged in as a user with the "authenticated" role
+    Given owner:
+      | name                 | type    |
+      | Organisation example | Company |
+    And I am logged in as an "authenticated user"
     When I am on the homepage
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
@@ -43,10 +45,9 @@ Feature: Proposing a collection
     And I select "Only members can create new content." from "eLibrary creation"
     And I check "Moderated"
     # Click the button to select an existing owner.
-    And I press "Add existing owner"
+    And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
-    And I press "Add owner"
-    And I press "Save"
+    And I press "Save as draft"
     Then I should see the heading "Ancient and Classical Mythology"
     And I should see the text "Environment (WIP!)"
     And I should see the text "Belgium"
@@ -55,7 +56,7 @@ Feature: Proposing a collection
     And the "Ancient and Classical Mythology" collection should have 1 member
     # There should not be any custom pages in the menu yet, so I should see a
     # button to create a custom page, with accompanying help text.
-    # And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
+    And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
     When I click "Add custom page"
     Then I should see the heading "Add custom page"
     When I fill in the following:
@@ -70,6 +71,7 @@ Feature: Proposing a collection
   Scenario: Propose a collection with a duplicate name
     Given the following collection:
       | title | The Ratcatcher's Guild |
+      | state | validated              |
     Given I am logged in as a user with the "authenticated" role
     When I am on the homepage
     And I click "Propose collection"
@@ -77,7 +79,7 @@ Feature: Proposing a collection
       | Title       | The Ratcatcher's Guild                                            |
       | Description | A guild of serious men with sacks in which things are struggling. |
     And I attach the file "logo.png" to "Logo"
-    And I press "Save"
+    And I press "Save as draft"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
 
   @javascript
@@ -135,3 +137,21 @@ Feature: Proposing a collection
     When I click on element ".js-form-item-field-ar-closed-value label"
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected
+
+  @javascript
+  Scenario: Propose collection form fields should be organized in groups.
+    Given I am logged in as an "authenticated user"
+    When I go to the propose collection form
+    Then the following fields should be visible "Title, Description,  Closed collection, eLibrary creation, Moderated"
+    And the following fields should not be visible "Abstract, Affiliates, Policy domain, Spatial coverage"
+    And the following field widgets should not be visible "Contact information, Owner"
+
+    When I click "Description" tab
+    Then the following fields should be visible "Abstract, Affiliates"
+    And the following field widgets should be visible "Contact information, Owner"
+    And the following fields should not be visible "Title, Description, Closed collection, eLibrary creation, Moderated, Policy domain, Spatial coverage"
+
+    When I click "Categorisation" tab
+    Then the following fields should be visible "Policy domain, Spatial coverage"
+    And the following fields should not be visible "Title, Description, Closed collection, eLibrary creation, Moderated, Abstract, Affiliates"
+    And the following field widgets should not be visible "Contact information, Owner"

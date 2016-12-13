@@ -1,0 +1,121 @@
+<?php
+
+/**
+ * @file
+ * Contains install, update, uninstall functionality for Joinup Migrate module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function joinup_migrate_schema() {
+  return [
+    'joinup_migrate_mapping' => [
+      'description' => 'Keeps migration mapping data',
+      'fields' => [
+        'type' => [
+          'description' => 'Source node-type',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => '',
+        ],
+        'nid' => [
+          'description' => 'The node ID from of the source item',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ],
+        'collection' => [
+          'description' => 'Collection',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'policy' => [
+          'description' => 'Policy domain',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'new_collection' => [
+          'description' => 'If "Yes" a new collection will be created using the data from the Excel sheet. If "No" then the collection will be created using migrated data.',
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => TRUE,
+          'default' => '',
+        ],
+        'del' => [
+          'description' => 'If "Yes" then this content should not be migrated.',
+          'type' => 'varchar',
+          'length' => 10,
+          'not null' => TRUE,
+          'default' => '',
+        ],
+        'abstract' => [
+          'description' => 'Abstract',
+          'type' => 'text',
+        ],
+        'logo' => [
+          'description' => 'Logo',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'banner' => [
+          'description' => 'Banner',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'owner' => [
+          'description' => 'Owner',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'admin_user' => [
+          'description' => 'Administration User',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'elibrary' => [
+          'description' => 'Elibrary Creation',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'pre_moderation' => [
+          'description' => 'Pre Moderation',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'collection_state' => [
+          'description' => 'Collection state',
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => FALSE,
+        ],
+        'status' => [
+          'description' => 'Status',
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => FALSE,
+        ],
+        'row_index' => [
+          'description' => 'The Excel row position on last import',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ],
+      ],
+      'primary key' => ['nid'],
+      'indexes' => [
+        'new_collection' => ['new_collection'],
+        'collection' => ['collection'],
+      ],
+    ],
+  ];
+}

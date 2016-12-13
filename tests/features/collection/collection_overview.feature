@@ -18,12 +18,13 @@ Feature: Collections Overview
       | name          | mail                         | roles |
       | Madam Shirley | i.see.the.future@example.com |       |
     Given collections:
-      | title             | description                    |
-      | eHealth           | Supports health-related fields |
-      | Open Data         | Facilitate access to data sets |
-      | Connecting Europe | Reusable tools and services    |
-    Given organisation:
-      | name | Organisation example |
+      | title             | description                    | state     |
+      | eHealth           | Supports health-related fields | validated |
+      | Open Data         | Facilitate access to data sets | validated |
+      | Connecting Europe | Reusable tools and services    | validated |
+    Given the following owner:
+      | name                 | type                    |
+      | Organisation example | Non-Profit Organisation |
     Then I commit the solr index
     # Check that visiting as an anonymous does not create cache for all users.
     When I am an anonymous user
@@ -52,8 +53,8 @@ Feature: Collections Overview
     When I click "eHealth"
     Then I should see the heading "eHealth"
 
-    # Add new collection.
-    Given I am logged in as "Madam Shirley"
+    # Add new collection as a moderator to directly publish it.
+    Given I am logged in as a moderator
     When I am on the homepage
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
@@ -64,10 +65,10 @@ Feature: Collections Overview
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.
-    And I press "Add existing owner"
+    And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
-    And I press "Save"
+    And I press "Publish"
     Then I visit the "Colonies in space" collection
     Then I should see the text "Colonies in space"
     # Non UATable step.

@@ -18,15 +18,18 @@ dependencies:
   - ds
   - dynamic_page_cache
   - editor
+  - field_group
   - file
   - help
   - image
   - inline_entity_form
+  - joinup_core
   - joinup_discussion
   - joinup_document
   - joinup_event
   - joinup_licence
   - joinup_news
+  - joinup_notification
   - joinup_search
   - joinup_subscription
   - joinup_user
@@ -39,6 +42,7 @@ dependencies:
   - page_cache
   - path
   - r4032login
+  - rdf_draft
   - rdf_entity
   - rdf_export
   - rdf_taxonomy
@@ -46,6 +50,7 @@ dependencies:
   - search_api_db
   - solution
   - state_machine
+  - state_machine_revisions
   - text
   - toolbar
   - view_unpublished
@@ -60,7 +65,6 @@ config_devel:
   - block.block.groupheader
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
-  - block.block.joinup_theme_collectioncontent
   - block.block.joinup_theme_content
   - block.block.joinup_theme_footer
   - block.block.joinup_theme_help
@@ -93,6 +97,7 @@ config_devel:
   - core.date_format.html_week
   - core.date_format.html_year
   - core.date_format.html_yearless_date
+  - core.date_format.date_only
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
@@ -105,8 +110,12 @@ config_devel:
   - core.entity_form_mode.user.register
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.default
+  - core.entity_view_display.user.user.view_mode_featured
+  - core.entity_view_display.user.user.view_mode_tile
   - core.entity_view_mode.node.full
   - core.entity_view_mode.user.full
+  - core.entity_view_mode.user.view_mode_featured
+  - core.entity_view_mode.user.view_mode_tile
   - ds.settings
   - editor.editor.content_editor
   - field.field.ogmenu_instance.navigation.og_audience
@@ -147,6 +156,5 @@ config_devel:
   - user.role.authenticated
   - user.role.moderator
   - user.settings
-  - views.view.collection_content
   - views.view.collections
   - views.view.user_admin_people

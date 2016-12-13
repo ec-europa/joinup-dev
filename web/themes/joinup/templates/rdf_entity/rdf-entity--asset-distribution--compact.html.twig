@@ -14,7 +14,7 @@
         <div class="value gray">{{ content.field_ad_file_size }}</div>
       </div>
       <div class="details__element hide--phone">
-        <div class="value bold underline">Linux</div>
+        <div class="value bold underline">{{ label }}</div>
       </div>
       <div class="details__element hide--phone">
         <div class="label gray">{{ 'licence:'|t }}</div>
@@ -23,6 +23,8 @@
     </div>
     <div class="timeline__action-links action-link__wrapper right hide--phone">
       <a href="{{ url }}" class="action-link">{{ 'Details'|t }}</a>
-      <a href="/" class="action-link">{{ 'Download'|t }}</a>
+      {% if content.promoted_download %}
+        <a href="{{ content.promoted_download }}" class="action-link">{{ 'Download'|t }}</a>
+      {% endif %}
     </div>
   </div>

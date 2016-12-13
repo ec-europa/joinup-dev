@@ -1,0 +1,7 @@
+name: RDF draft
+type: module
+description: Brings the notion of a draft graph to RDF entities.
+core: 8.x
+package: Joinup
+dependencies:
+  - rdf_entity

@@ -6,9 +6,10 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_uri: 'http://schema.org/downloadUrl'
-    mapping_title: 'http://purl.org/dc/terms/title'
-    mapping_options: ''
+    mapping:
+      uri: 'http://schema.org/downloadUrl'
+      title: 'http://purl.org/dc/terms/title'
+      options: ''
 id: rdf_entity.field_download
 field_name: field_download
 entity_type: rdf_entity

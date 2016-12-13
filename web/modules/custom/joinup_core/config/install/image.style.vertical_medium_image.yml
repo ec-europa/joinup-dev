@@ -1,0 +1,15 @@
+uuid: 0a48180b-e204-44c1-81f3-bb712f25ec42
+langcode: en
+status: true
+dependencies: {  }
+name: vertical_medium_image
+label: 'Vertical medium image'
+effects:
+  6f600d69-adf5-472d-813d-28dd5bc8942c:
+    uuid: 6f600d69-adf5-472d-813d-28dd5bc8942c
+    id: image_scale
+    weight: 1
+    data:
+      width: 220
+      height: 330
+      upscale: false

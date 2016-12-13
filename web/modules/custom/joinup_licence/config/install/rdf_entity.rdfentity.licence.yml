@@ -3,12 +3,14 @@ status: true
 dependencies: {  }
 third_party_settings:
   rdf_entity:
-    mapping_rid:
-      target_id: 'http://purl.org/dc/terms/LicenseDocument'
-    mapping_label:
-      value: 'http://purl.org/dc/terms/title'
+    mapping:
+      rid:
+        target_id: 'http://purl.org/dc/terms/LicenseDocument'
+      label:
+        value: 'http://purl.org/dc/terms/title'
+    graph:
+      default: 'http://joinup.eu/licence/published'
+      draft: 'http://joinup.eu/licence/draft'
 name: Licence
 rid: licence
 description: ''
-rdftype: 'http://purl.org/dc/terms/LicenseDocument'
-rdf_label: 'http://purl.org/dc/terms/title'

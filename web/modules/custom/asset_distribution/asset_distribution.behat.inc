@@ -11,7 +11,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -276,7 +276,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       'licence' => 'field_ad_licence',
       'modification date' => 'field_ad_modification_date',
       'representation technique' => 'field_ad_repr_technique',
-      'solution' => OgGroupAudienceHelper::DEFAULT_FIELD,
+      'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
       'status' => 'field_status',
     ];
   }
@@ -290,13 +290,91 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @return array
    *    The array with the values converted.
    */
-  protected function convertValueAliases($fields) {
-    if (isset($fields[OgGroupAudienceHelper::DEFAULT_FIELD])) {
-      $solution = $this->getRdfEntityByLabel($fields[OgGroupAudienceHelper::DEFAULT_FIELD], 'solution');
-      $fields[OgGroupAudienceHelper::DEFAULT_FIELD] = $solution->id();
+  protected function convertValueAliases(array $fields) {
+    if (isset($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD])) {
+      $solution = $this->getRdfEntityByLabel($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD], 'solution');
+      $fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD] = $solution->id();
     }
 
     return $fields;
+  }
+
+  /**
+   * Checks if a distribution in compact view contains download links.
+   *
+   * The compact view is used for example in the "Downloads" page.
+   * This currently only checks the first download link.
+   *
+   * @param string $distribution
+   *    The name of the distribution.
+   *
+   * @throws \Exception
+   *   Thrown if the download link cannot be found.
+   *
+   * @Then I should see the download link in the :distribution( asset) distribution
+   */
+  public function assertLinkDistribution($distribution) {
+    $distribution = $this->getAssetDistributionByName($distribution);
+    if (empty($distribution->field_ad_access_url->first())) {
+      throw new \Exception(sprintf('Asset distribution "%s" does not contain any download links.', $distribution->label()));
+    }
+    $promoted_link = $distribution->field_ad_access_url->first()->uri;
+    $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$promoted_link}']");
+    if (empty($result)) {
+      throw new \Exception(sprintf('No link was found in the "%s" distribution on the page %s', $distribution->label(), $this->getSession()->getCurrentUrl()));
+    }
+  }
+
+  /**
+   * Checks that a distribution in compact view does not contain download links.
+   *
+   * The compact view is used for example in the "Downloads" page.
+   *
+   * @param string $distribution
+   *    The name of the distribution.
+   *
+   * @throws \Exception
+   *   Thrown if the link was found.
+   *
+   * @Then the :distribution( asset) distribution should not have any download urls
+   */
+  public function assertNotLinkDistribution($distribution) {
+    $link = $this->getSession()->getPage()->find('xpath', "//a[contains(text(), '$distribution')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//span[contains(concat(' ', @class, ' '), ' file ')]/a");
+    if (!empty($link)) {
+      throw new \Exception(sprintf('Asset distribution "%s" contains download link(s).', $distribution));
+    }
+  }
+
+  /**
+   * Asserts that a file link is appears to the access url field.
+   *
+   * @param string $distribution
+   *    The distribution title.
+   * @param string $file_name
+   *    The file name.
+   *
+   * @throws \Exception
+   *    Thrown when the file or the link is not found.
+   *
+   * @Then the :distribution distribution should have the link of the :file_name in the access URL field
+   */
+  public function assertLinkSynchronized($distribution, $file_name) {
+    $distribution = $this->getAssetDistributionByName($distribution);
+    foreach ($distribution->field_ad_file as $file) {
+      $file = $file->entity;
+      if ($file->getFilename() === $file_name) {
+        $uri = file_create_url($file->getFileUri());
+        $access_url = $distribution->field_ad_access_url->getValue();
+        if (!in_array($uri, array_column($access_url, 'uri'))) {
+          throw new \Exception("The link of the file {$file_name} was not found in the page.");
+        }
+
+        // The link exists in the access URL field.
+        return;
+      }
+    }
+
+    throw new \Exception("The file {$file_name} was not found in the '{$distribution}' entity'");
   }
 
 }

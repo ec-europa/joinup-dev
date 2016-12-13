@@ -5,8 +5,9 @@ Feature: "Edit" visibility options.
   I need to be able to edit "Release" rdf entities through UI.
 
   Background:
-    Given the following person:
-      | name | Awesome person |
+    Given the following owner:
+      | name           |
+      | Awesome person |
     And the following contact:
       | name        | Awesome contact            |
       | email       | awesomecontact@example.com |
@@ -17,6 +18,7 @@ Feature: "Edit" visibility options.
       | documentation       | text.pdf                |
       | owner               | Awesome person          |
       | contact information | Awesome contact         |
+      | state               | validated               |
     And the following release:
       | title               | My awesome solution abc v1 |
       | description         | A sample release           |

@@ -4,6 +4,7 @@ default:
       contexts:
         - FeatureContext
         - Drupal\joinup\Context\DrupalContext
+        - Drupal\joinup\Context\ScreenshotContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\DrupalExtension\Context\MinkContext
@@ -15,6 +16,7 @@ default:
       files_path: '${behat.files.path}'
       goutte: ~
       javascript_session: 'selenium2'
+      browser_name: '${behat.browser_name}'
       selenium2:
         wd_host: '${behat.webdriver_url}'
     Drupal\DrupalExtension:
@@ -24,7 +26,8 @@ default:
         Entity actions: '.block-local-tasks-block'
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'
-        Navigation menu: '#block-navigation'
+        Navigation menu block: '#block-navigation'
+        Navigation menu: 'div.navigation-menu ul'
         Primary menu: '.region-primary-menu'
       drupal:
         drupal_root: '${website.drupal.dir}'
@@ -32,6 +35,7 @@ default:
         message_selector: '.alert'
         error_message_selector: '.alert.alert--error'
         success_message_selector: '.alert.alert--status'
+        warning_message_selector: '.alert.alert--warning'
         login_form_selector: '#user-login-form'
       subcontexts:
         paths:

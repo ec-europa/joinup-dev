@@ -1,3 +1,9 @@
+// Circle menu
+//
+// Markup: html/circle-menu.html
+//
+// Styleguide 2.3
+
 // Component
 // --------------------------------------------------
 .circle-menu
@@ -6,6 +12,8 @@
 // --------------------------------------------------
 .circle-menu__button
   background-color: $color-orange !important
+  .icon
+    +centered
 
 // Modifiers
 // --------------------------------------------------
@@ -18,15 +26,18 @@
   +breakpoint(mobile)
     display: none
 
+.circle-menu__link
+  min-width: 130px
+
 // Dependiencies
 // --------------------------------------------------
 .circle-menu--tablet
   .mdl-menu__container
-    top: 80px !important
+    margin-top: 10px
 
 .circle-menu--mobile
   .mdl-menu__container
-    bottom: 40px !important
+    margin-bottom: 10px
 
 .circle-menu__button
   .icon
@@ -34,3 +45,8 @@
     +icon-size(45px)
   .mdl-ripple
     background-color: #fff
+
+.featured__menu-wrapper
+  .circle-menu--tablet
+    .mdl-menu__container
+      margin-top: -15px

@@ -6,9 +6,9 @@ Feature: "Add event" visibility options.
 
   Scenario: "Add event" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following collections:
-      | title               | logo     | banner     |
-      | The Stripped Stream | logo.png | banner.jpg |
-      | Years in the Nobody | logo.png | banner.jpg |
+      | title               | logo     | banner     | state     |
+      | The Stripped Stream | logo.png | banner.jpg | validated |
+      | Years in the Nobody | logo.png | banner.jpg | validated |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "The Stripped Stream" collection
@@ -35,15 +35,19 @@ Feature: "Add event" visibility options.
 
   Scenario: Add event as a facilitator.
     Given collections:
-      | title            | logo     | banner     |
-      | Stream of Dreams | logo.png | banner.jpg |
+      | title            | logo     | banner     | state     |
+      | Stream of Dreams | logo.png | banner.jpg | validated |
     And I am logged in as a facilitator of the "Stream of Dreams" collection
 
     When I go to the homepage of the "Stream of Dreams" collection
     And I click "Add event"
     Then I should see the heading "Add event"
     And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website"
-    And the following fields should not be present "Groups audience"
+
+    # The sections about managing revisions and groups should not be visible.
+    And I should not see the text "Revision information"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+
     When I fill in the following:
       | Title       | An amazing event                      |
       | Short title | Amazing event                         |
@@ -51,6 +55,9 @@ Feature: "Add event" visibility options.
     And I fill in "Start date" with the date "2018-08-29"
     And I fill in "Start date" with the time "23:59:00"
     And I press "Save"
+    # @todo Remove this line when caching Search API results is fixed.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2574
+    And I commit the solr index
     Then I should see the heading "An amazing event"
     And I should see the success message "Event An amazing event has been created."
     And the "Stream of Dreams" collection has a event titled "An amazing event"

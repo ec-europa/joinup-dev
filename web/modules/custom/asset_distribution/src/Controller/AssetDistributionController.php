@@ -5,7 +5,7 @@ namespace Drupal\asset_distribution\Controller;
 use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\OgAccessInterface;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -103,7 +103,7 @@ class AssetDistributionController extends ControllerBase {
 
     return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'asset_distribution',
-      OgGroupAudienceHelper::DEFAULT_FIELD => $solution->id(),
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $solution->id(),
     ]);
   }
 

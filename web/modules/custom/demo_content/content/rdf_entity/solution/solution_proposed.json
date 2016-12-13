@@ -1,0 +1,246 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C903a3914-7333-4aa8-8799-064dc70a711c?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_banner": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/solution\/2016-10\/generateImage_4NgF3s.png"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_contact_information": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C882aec35-389b-46af-ab39-c6d834f9a457?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_language": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpublications.europa.eu%5Cresource%5Cauthority%5Clanguage%5CENG?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_logo": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/solution\/2016-10\/generateImage_anMqdz.jpeg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_owner": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Cef3ef74d-28f3-4a1b-9ce8-15c03555b328?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C234b585f-e065-4678-9195-48f1ba78e1d5?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_solution_type": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cdata.europa.eu%5Ceira%5CPublicPolicy?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_policy_domain": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Cpolicy-domain%5Chome-affairs?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/903a3914-7333-4aa8-8799-064dc70a711c"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "solution"
+        }
+    ],
+    "label": [
+        {
+            "value": "Solution in proposed state",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/903a3914-7333-4aa8-8799-064dc70a711c"
+        }
+    ],
+    "graph": [
+        {
+            "value": "draft"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_banner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/solution\/2016-10\/generateImage_4NgF3s.png"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "95befaaa-2cb4-40a1-809a-84f0f05ab075"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/solution\/2016-10\/generateImage_4NgF3s.png"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_contact_information": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C882aec35-389b-46af-ab39-c6d834f9a457?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/contact_information"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/882aec35-389b-46af-ab39-c6d834f9a457"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_language": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpublications.europa.eu%5Cresource%5Cauthority%5Clanguage%5CENG?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/language"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/publications.europa.eu\/resource\/authority\/language\/ENG"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_logo": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/solution\/2016-10\/generateImage_anMqdz.jpeg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "da988adc-e8a7-4f32-945c-88519b8ac7fb"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/solution\/2016-10\/generateImage_anMqdz.jpeg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_owner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Cef3ef74d-28f3-4a1b-9ce8-15c03555b328?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/ef3ef74d-28f3-4a1b-9ce8-15c03555b328"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C234b585f-e065-4678-9195-48f1ba78e1d5?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/234b585f-e065-4678-9195-48f1ba78e1d5"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_solution_type": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cdata.europa.eu%5Ceira%5CPublicPolicy?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/eira"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/eira\/PublicPolicy"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_policy_domain": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Cpolicy-domain%5Chome-affairs?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/joinup.eu\/policy-domain\/home-affairs"
+                    }
+                ]
+            }
+        ]
+    },
+    "field_is_description": [
+        {
+            "value": "Abico antehabeo comis esse mauris meus minim proprius singularis. Appellatio facilisi inhibeo occuro premo secundum. Abdo damnum esse obruo populus ratis valde. At autem cogo fere gravis iustum nisl qui valetudo venio.\r\n\r\nCommodo diam gilvus haero interdico jumentum pagus tation torqueo zelus. Genitus iustum occuro. Exerci praemitto similis turpis. At blandit ibidem incassum oppeto persto si. Consectetuer dolore oppeto patria ratis tum. Exerci ibidem tation veniam. Ad aliquip jugis mauris oppeto quis sit vulputate.\r\n\r\nCommodo decet nutus populus quidne saluto turpis. Abico nibh praesent torqueo. Ad cui exerci populus quae singularis tego. Defui dolus eu feugiat haero quis torqueo usitas.\r\n\r\nElit iaceo in nunc singularis turpis veniam. Iriure iustum pneum usitas. Amet dolore humo nunc pneum quae verto. Abbas appellatio caecus erat et inhibeo olim sit vereor. Abico cui decet iriure iusto obruo. Facilisis loquor metuo vel. Erat eu exputo genitus gilvus importunus quidne sino wisi. Abico jus lobortis minim. Adipiscing ea exerci gemino in qui.\r\n\r\nBlandit facilisi ille luptatum premo. Abigo capto facilisis hos rusticus similis suscipit. Aliquam autem consectetuer cui odio plaga vulpes. Accumsan camur ludus quadrum. Consectetuer verto virtus. Autem odio pecus populus te vindico zelus. Commoveo genitus illum mauris nobis praesent ulciscor.\r\n\r\nComis luctus pecus qui turpis voco. Oppeto pagus praemitto utrum valde. Comis erat esca et ille nimis nisl olim venio vicis. Euismod facilisis ibidem ludus modo pertineo.\r\n\r\nAliquip facilisis nisl praemitto refoveo secundum. Interdico quia tamen vulpes. Ad enim et meus ulciscor. Antehabeo jumentum jus occuro praemitto rusticus saepius tincidunt veniam. Aliquam aptent erat et exerci in jumentum ludus refoveo. Caecus nunc populus. Eligo euismod huic incassum nisl olim sed singularis te torqueo. Cui esse meus persto turpis. Gravis interdico nisl paratus plaga sit sudo.\r\n\r\nBrevitas commoveo ludus te virtus. Abdo defui dolor nostrud os veniam. Abdo aptent mauris pertineo quia turpis. Ad autem elit eros pneum populus praesent quae ullamcorper.\r\n\r\nNimis proprius qui secundum venio volutpat zelus. Letalis uxor vulpes. Causa exerci magna mos pagus pala quidne ymo. Saepius tation usitas vereor. In nisl nostrud quia tum. Comis esca hendrerit lobortis nobis vicis.\r\n\r\nDignissim ea et gilvus nunc paratus sed typicus. Comis enim gilvus magna nibh odio praesent quibus. Nutus tincidunt usitas vicis. Comis dolor iaceo similis. Dignissim dolore eligo enim facilisis illum interdico occuro qui. Aliquam lobortis lucidus probo qui utrum. Aliquam capto feugiat ideo meus neque tincidunt torqueo.\r\n\r\nAd camur diam neque saepius scisco tum usitas. Accumsan haero imputo iusto macto venio. Aptent nibh sino ulciscor. Exerci jugis neque nimis plaga probo rusticus sit utrum voco. Dolus jus metuo odio pagus quibus scisco. Ibidem iriure nostrud pecus scisco secundum venio. Ea metuo sino. Cogo commodo consequat duis melior modo quadrum qui suscipere. Abbas autem fere haero nimis nutus quia suscipere ut venio.\r\n\r\nAliquam conventio cui facilisi nobis nutus quia te tum turpis. Eros et euismod iustum jugis patria pneum. Augue probo quidne. Dolor iaceo ille modo qui quidne refero. Damnum ibidem importunus. Ad comis immitto sed suscipere usitas volutpat. Aliquip eligo eum gilvus in pertineo te valde. Eu mos utinam. Accumsan defui euismod refoveo. Acsi genitus haero incassum laoreet metuo nimis olim suscipere tation.\r\n\r\n",
+            "format": "content_editor"
+        }
+    ],
+    "field_is_elibrary_creation": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_is_moderation": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_is_state": [
+        {
+            "value": "proposed"
+        }
+    ],
+    "field_is_webdav_creation": [
+        {
+            "value": "1"
+        }
+    ]
+}

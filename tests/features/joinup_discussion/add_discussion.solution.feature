@@ -6,14 +6,15 @@ Feature: "Add discussion" visibility options.
 
   Scenario: "Add discussion" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following solutions:
-      | title              | logo     | banner     |
-      | Eager Sliver       | logo.png | banner.jpg |
-      | The Silent Bridges | logo.png | banner.jpg |
+      | title              | logo     | banner     | state     |
+      | Eager Sliver       | logo.png | banner.jpg | validated |
+      | The Silent Bridges | logo.png | banner.jpg | validated |
     And the following collection:
       | title      | Collective Eager Sliver          |
       | logo       | logo.png                         |
       | banner     | banner.jpg                       |
       | affiliates | Eager Sliver, The Silent Bridges |
+      | state      | validated                        |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Eager Sliver" solution
@@ -36,19 +37,25 @@ Feature: "Add discussion" visibility options.
 
   Scenario: Add discussion as a facilitator.
     Given solutions:
-      | title               | logo     | banner     |
-      | Emerald in the Luck | logo.png | banner.jpg |
+      | title               | logo     | banner     | state     |
+      | Emerald in the Luck | logo.png | banner.jpg | validated |
     And the following collection:
       | title      | Collective Emerald in the Luck |
       | logo       | logo.png                       |
       | banner     | banner.jpg                     |
       | affiliates | Emerald in the Luck            |
+      | state      | validated                      |
     And I am logged in as a facilitator of the "Emerald in the Luck" solution
 
     When I go to the homepage of the "Emerald in the Luck" solution
     And I click "Add discussion"
     Then I should see the heading "Add discussion"
     And the following fields should be present "Title, Content, Topic, Active"
+
+    # The sections about managing revisions and groups should not be visible.
+    And I should not see the text "Revision information"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+
     When I fill in the following:
       | Title   | Flight of Girlfriend                       |
       | Content | This is going to be an amazing discussion. |

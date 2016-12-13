@@ -56,7 +56,7 @@ QUERY;
     $endpoint->query($query);
 
     $backend = Server::load('solr')->getBackend();
-    if ($backend instanceof SearchApiSolrBackend && $backend->getSolrHelper()->pingCore()) {
+    if ($backend instanceof SearchApiSolrBackend && $backend->getSolrConnector()->pingCore()) {
       $index = $backend->getServer()->getIndexes()['collections'];
       $backend->deleteAllIndexItems($index);
     }

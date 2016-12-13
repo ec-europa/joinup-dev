@@ -6,13 +6,13 @@ dependencies:
     - text
 third_party_settings:
   rdf_entity:
-    mapping_value: 'dct:description'
-    mapping_summary: ''
-    mapping_format: ''
+    mapping:
+      value: 'http://purl.org/dc/terms/description'
+      format: ''
 id: rdf_entity.field_ad_description
 field_name: field_ad_description
 entity_type: rdf_entity
-type: text_with_summary
+type: text_long
 settings: {  }
 module: text
 locked: false

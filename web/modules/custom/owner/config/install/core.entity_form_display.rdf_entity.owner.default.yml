@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.owner.field_owner_name
+    - field.field.rdf_entity.owner.field_owner_type
+    - rdf_entity.rdfentity.owner
+id: rdf_entity.owner.default
+targetEntityType: rdf_entity
+bundle: owner
+mode: default
+content:
+  field_owner_name:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_owner_type:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+  id:
+    type: auto_uri
+    weight: -10
+    settings:
+      prefix: 'http://example.org/joinup/publisher'
+    third_party_settings: {  }
+hidden:
+  label: true

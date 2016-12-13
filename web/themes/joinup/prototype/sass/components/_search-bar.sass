@@ -1,6 +1,11 @@
 // Search bar
-//
-// Search bar component
+// 
+// Markup: html/search-bar.html
+// 
+// .search-bar                   - Default
+// .search-bar--white            - White colored
+// 
+// 
 
 // Component
 // --------------------------------------------------
@@ -18,14 +23,11 @@
   top: 17px
 
 .search-bar__icon
-  position: absolute
-  top: 50%
-  left: 50%
   padding: 0
-  transform: translate(-50%, -50%)
   color: #fff
   +icon-size(50px)
   +border-radius(50%)
+  +centered
 
 .search-bar__input-container
   margin-left: 40px

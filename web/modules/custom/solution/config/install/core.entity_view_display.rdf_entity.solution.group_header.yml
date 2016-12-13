@@ -27,6 +27,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
+    - field.field.rdf_entity.solution.field_is_state
     - field.field.rdf_entity.solution.field_is_test_resource_type
     - field.field.rdf_entity.solution.field_is_translation
     - field.field.rdf_entity.solution.field_is_version
@@ -44,31 +45,6 @@ dependencies:
     - ds
     - image
     - joinup_core
-third_party_settings:
-  ds:
-    layout:
-      id: ds_1col
-      path: modules/contrib/ds
-      library: ''
-      disable_css: false
-      entity_classes: no_classes
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class: {  }
-          ds_content: {  }
-    regions:
-      ds_content:
-        - field_is_banner
-        - field_is_logo
-        - label
-        - licence
-        - releases_overview
 id: rdf_entity.solution.group_header
 targetEntityType: rdf_entity
 bundle: solution
@@ -98,32 +74,13 @@ content:
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow-el: ''
-            ow-cl: ''
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: div
-            fi-cl: featured__logo
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_is_solution_category:
     weight: 3
     label: above
@@ -140,32 +97,13 @@ content:
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow-el: ''
-            ow-cl: ''
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: h1
-            fi-cl: featured__text
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   licence:
     weight: 3
     settings: {  }
@@ -198,6 +136,7 @@ hidden:
   field_is_solution_type: true
   field_is_source_code_repository: true
   field_is_standardization_level: true
+  field_is_state: true
   field_is_test_resource_type: true
   field_is_translation: true
   field_is_version: true
@@ -208,3 +147,4 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
+  og_group: true

@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.event.body
+    - field.field.node.event.field_comments
     - field.field.node.event.field_event_adtl_address_info
     - field.field.node.event.field_event_agenda
     - field.field.node.event.field_event_contact_email
@@ -16,6 +17,7 @@ dependencies:
     - image.style.thumbnail
     - node.type.event
   module:
+    - comment
     - datetime
     - image
     - inline_entity_form
@@ -34,6 +36,11 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
+  field_comments:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: comment_default
   field_event_adtl_address_info:
     weight: 7
     settings:
@@ -57,10 +64,7 @@ content:
     type: email_default
   field_event_end_date:
     weight: 6
-    settings:
-      increment: 15
-      date_order: YMD
-      time_type: '24'
+    settings: {  }
     third_party_settings: {  }
     type: datetime_default
   field_event_logo:
@@ -92,10 +96,7 @@ content:
   field_event_start_date:
     type: datetime_default
     weight: 3
-    settings:
-      increment: 15
-      date_order: YMD
-      time_type: '24'
+    settings: {  }
     third_party_settings: {  }
   field_event_web_url:
     weight: 10

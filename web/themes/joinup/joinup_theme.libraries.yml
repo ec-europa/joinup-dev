@@ -14,8 +14,17 @@ global-components:
     js/script.js: {}
   dependencies:
     - core/jquery
+
+form-components:
+  Version: 1.x
+  js:
+    js/form.js: {}
+  dependencies:
+    - core/jquery
     - core/jquery.once
     - core/jquery.ui.slider
+    - core/drupal
+    - core/drupalSettings
 
 fonts:
   css:
