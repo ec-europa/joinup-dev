@@ -17,6 +17,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_ar_state
+    - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
     - image.style.thumbnail
@@ -28,6 +29,7 @@ dependencies:
     - joinup_core
     - link
     - rdf_entity
+    - search_api_field
     - text
 third_party_settings:
   field_group:
@@ -147,6 +149,8 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      collapsible: false
+      collapsed: false
     third_party_settings: {  }
     type: inline_entity_form_complex
   field_ar_creation_date:
@@ -196,6 +200,8 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      collapsible: false
+      collapsed: false
     third_party_settings: {  }
     type: inline_entity_form_complex
   field_ar_state:
@@ -204,6 +210,11 @@ content:
     settings:
       use_transition_label: 1
     third_party_settings: {  }
+  field_collection_content:
+    weight: 18
+    settings: {  }
+    third_party_settings: {  }
+    type: search_api_field_default
   field_policy_domain:
     weight: 15
     settings:
