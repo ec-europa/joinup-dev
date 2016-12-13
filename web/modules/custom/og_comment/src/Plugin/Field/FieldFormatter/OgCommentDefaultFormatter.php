@@ -153,6 +153,14 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
 
   /**
    * Check if user has either global or group permission.
+   *
+   * @param string $permission
+   *   The permission string to check.
+   * @param \Drupal\Core\Field\FieldItemListInterface $items
+   *   The field values to be rendered.
+   *
+   * @return bool|\Drupal\Core\Access\AccessResult
+   *   True if the user has access to the items, false otherwise.
    */
   protected function hasPermission($permission, FieldItemListInterface $items) {
     $access = $this->currentUser->hasPermission($permission);
@@ -190,6 +198,8 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
    * The difference is in the calls to hasPermission(), which needs to
    * be checked against the og permissions.
    *
+   * @param \Drupal\Core\Field\FieldItemListInterface $items
+   *   The field values to be rendered.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity whose comment(s) needs rendering.
    * @param string $field_name
