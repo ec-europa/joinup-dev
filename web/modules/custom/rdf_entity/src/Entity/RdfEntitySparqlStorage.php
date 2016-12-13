@@ -599,9 +599,6 @@ WHERE
 QUERY;
       $this->sparql->query($query);
     }
-
-    // Perform the delete and reset the static cache for the deleted entities.
-    $this->doDelete($keyed_entities);
     $this->resetCache(array_keys($keyed_entities));
 
     // Allow code to run after deleting.

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "92acdf3b34cea7e114dac01e5d5cd869",
-    "content-hash": "ee7c6203bd1f5d27a6c5d8b854c4d985",
+    "hash": "a9b90e89b06cc226e70b4b39a60553a9",
+    "content-hash": "fc9c4454fcc15e6fc47a0efceb2f2a22",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2542,7 +2542,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-beta3.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta3",
                 "shasum": "5dd6a5ecef42b760454cbfeb5fa5a1317498a931"
             },
             "require": {
@@ -2687,6 +2687,9 @@
                 "drupal": {
                     "version": "8.x-1.0-beta3",
                     "datestamp": "1477868939"
+                },
+                "patches_applied": {
+                    "Fire generic events when transition are applied": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

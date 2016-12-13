@@ -154,7 +154,11 @@ Feature: News moderation.
     And I click "Add news"
     Then I should see the heading "Add news"
     And the following fields should be present "Headline, Kicker, Content"
-    And the following fields should not be present "Groups audience, State"
+
+    # The sections about managing revisions and groups should not be visible.
+    And I should not see the text "Revision information"
+    And the following fields should not be present "Groups audience, State, Other groups, Create new revision, Revision log message"
+
     And the following buttons should be present "Save as draft, Validate"
     And the following buttons should not be present "Propose, Request changes, Request deletion"
     When I fill in the following:
@@ -310,19 +314,29 @@ Feature: News moderation.
       | Stealing from Batman          |
       | Learn batman's secret         |
 
-  Scenario: An entity should be automatically published/un published according to state
-    # Regardless of moderation, the entity is published for the states
-    # Validated, Needs update, Request deletion
-    # and unpublished for Draft and Proposed.
+  Scenario: An entity should be automatically published according to state
     When I am logged in as "Hawkgirl"
     And I go to the "Hawkgirl is a spy" news page
-    Then I should see the link "Edit"
+    Then the "Hawkgirl is a spy" "news" content should not be published
+    And the "Hawkgirl is a spy" "news" content should have 1 revision
     When I click "Edit"
     And I press "Validate"
     Then I should see the success message "News Hawkgirl is a spy has been updated."
     Then the "Hawkgirl is a spy" "news" content should be published
+    And the "Hawkgirl is a spy" "news" content should have 2 revisions
     And I should see the link "Edit"
     When I click "Edit"
+    And for "Headline" I enter "Hawkgirl saves the planet again"
     And I press "Propose"
-    Then I should see the success message "News Hawkgirl is a spy has been updated."
-    Then the "Hawkgirl is a spy" "news" content should not be published
+    Then I should see the success message "News Hawkgirl saves the planet again has been updated."
+    # A new draft has been created with a new title. The previously validated
+    # revision (with the original title) should still be published.
+    But I should see the heading "Hawkgirl is a spy"
+    And the "Hawkgirl is a spy" "news" content should have 3 revisions
+    # Finally, validate the proposed change. This should again create a new
+    # revision, and the revision with the new title should become published.
+    When I click "Edit"
+    And I press "Validate"
+    Then I should see the success message "News Hawkgirl saves the planet again has been updated."
+    And I should see the heading "Hawkgirl saves the planet again"
+    And the "Hawkgirl saves the planet again" "news" content should have 4 revisions

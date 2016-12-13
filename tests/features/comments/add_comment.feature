@@ -14,8 +14,8 @@ Feature: Add comments
 
   Scenario Outline: Make an anonymous comment, needs moderation.
     Given <content type> content:
-      | title   | body                                                 | collection        |
-      | <title> | How could this ever happen? Moral panic on it's way! | Gossip collection |
+      | title   | body                                                | collection        | status   |
+      | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <status> |
     Given I am an anonymous user
     When I go to the content page of the type "<content type>" with the title "<title>"
     Then I should see text matching "Add new comment"
@@ -28,16 +28,16 @@ Feature: Add comments
     And I should not see "I've heard this story..."
 
     Examples:
-      | content type | title               |
-      | news         | Scandalous news     |
-      | event        | Celebrity gathering |
-      | discussion   | Is gossip bad?      |
-      | document     | Wikileaks           |
+      | content type | title               | status    |
+      | news         | Scandalous news     | published |
+      | event        | Celebrity gathering | published |
+      | discussion   | Is gossip bad?      | published |
+      | document     | Wikileaks           | published |
 
   Scenario Outline: Make an authenticated comment, skips moderation.
     Given <content type> content:
-      | title   | body                                                 | collection        |
-      | <title> | How could this ever happen? Moral panic on it's way! | Gossip collection |
+      | title   | body                                                | collection        | status   |
+      | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <status> |
     Given I am logged in as "Miss tell tales"
     When I go to the content page of the type "<content type>" with the title "<title>"
     Then I should see text matching "Add new comment"
@@ -48,8 +48,8 @@ Feature: Add comments
     And I should see text matching "Mr scandal was doing something weird the other day."
 
     Examples:
-      | content type | title               |
-      | news         | Scandalous news     |
-      | event        | Celebrity gathering |
-      | discussion   | Is gossip bad?      |
-      | document     | Wikileaks           |
+      | content type | title               | status    |
+      | news         | Scandalous news     | published |
+      | event        | Celebrity gathering | published |
+      | discussion   | Is gossip bad?      | published |
+      | document     | Wikileaks           | published |
