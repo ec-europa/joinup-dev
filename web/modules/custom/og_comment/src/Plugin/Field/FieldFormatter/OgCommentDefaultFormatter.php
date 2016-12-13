@@ -15,6 +15,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\og\OgAccessInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -29,6 +30,13 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
    * @var \Drupal\Core\Database\Connection
    */
   protected $database;
+
+  /**
+   * The OG access service.
+   *
+   * @var \Drupal\og\OgAccessInterface
+   */
+  protected $ogAccess;
 
   /**
    * Helper for dealing with group audience fields.
@@ -54,16 +62,18 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
       $container->get('entity.form_builder'),
       $container->get('current_route_match'),
       $container->get('database'),
-      $container->get('og.group_audience_helper')
+      $container->get('og.group_audience_helper'),
+      $container->get('og.access')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, EntityManagerInterface $entity_manager, EntityFormBuilderInterface $entity_form_builder, RouteMatchInterface $route_match, Connection $database, OgGroupAudienceHelperInterface $og_group_audience_helper) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, EntityManagerInterface $entity_manager, EntityFormBuilderInterface $entity_form_builder, RouteMatchInterface $route_match, Connection $database, OgGroupAudienceHelperInterface $og_group_audience_helper, OgAccessInterface $og_access) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $entity_manager, $entity_form_builder, $route_match);
     $this->database = $database;
+    $this->ogAccess = $og_access;
     $this->ogGroupAudienceHelper = $og_group_audience_helper;
   }
 
@@ -184,9 +194,7 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
     $entity_storage = \Drupal::entityTypeManager()->getStorage($entity_type);
     $group = $entity_storage->load($group_id);
 
-    /** @var \Drupal\og\OgAccessInterface $og_access */
-    $og_access = \Drupal::getContainer()->get('og.access');
-    $access = $og_access->userAccess($group, $permission, $this->currentUser);
+    $access = $this->ogAccess->userAccess($group, $permission, $this->currentUser);
     return ($access instanceof AccessResultAllowed);
 
   }
