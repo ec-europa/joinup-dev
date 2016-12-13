@@ -128,8 +128,8 @@ Feature: Navigation menu for custom pages
     # As a collection facilitator
     # I should see a button in the navigation menu that displays options when clicked
     Given the following collection:
-      | title  | Prism Gazers |
-      | logo   | logo.png     |
+      | title | Prism Gazers |
+      | logo  | logo.png     |
     When I am logged in as a facilitator of the "Prism Gazers" collection
     And I go to the homepage of the "Prism Gazers" collection
     Then I should see the contextual links button in the "Navigation menu block"
