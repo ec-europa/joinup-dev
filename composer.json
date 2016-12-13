@@ -28,6 +28,7 @@
         "drupal/search_api": "~1.0@beta",
         "drupal/search_api_solr": "~1.0@beta",
         "drupal/state_machine": "~1.0-beta3",
+        "drupal/taxonomy_container": "~1.0",
         "drupal/token": "~1.0",
         "drupal/view_unpublished": "dev-1.x#869c5b6b80f6badc0b39dff07ba852c9c967b9c7",
         "drush/drush": "~8.0",
@@ -109,6 +110,9 @@
                 "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch",
                 "SqlBase::prepareQuery() should be called also on count @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch"
             },
+            "drupal/inline_entity_form": {
+                "Required IEF forms for existing entities don't work": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
+            },
             "drupal/r4032login": {
                 "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
             },
@@ -117,11 +121,11 @@
                 "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-7_0-on_2753667-8.patch",
                 "item_id column is too short @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/2829696-7.patch"
             },
+            "drupal/taxonomy_container" : {
+                "Terms with string IDs are missing from dropdown": "https://www.drupal.org/files/issues/2833176-2.patch"
+            },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch"
-            },
-            "drupal/inline_entity_form": {
-                "Required IEF forms for existing entities don't work": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
             }
         }
     },
