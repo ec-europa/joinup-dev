@@ -15,6 +15,7 @@ trait OwnerTrait {
    *
    * @param string|null $collection
    *   (optional) If passed, the results will be limited to this collection.
+   *
    * @return int[]
    *   A list of source publisher node IDs.
    */
