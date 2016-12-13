@@ -59,9 +59,9 @@ Feature: Collections Overview
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
     When I fill in the following:
-      | Title         | Colonies in space                                                       |
-      | Description   | Some space mumbo jumbo description.                                     |
-      | Policy domain | Internal Market (WIP!) (http://joinup.eu/policy-domain/internal-market) |
+      | Title         | Colonies in space                           |
+      | Description   | Some space mumbo jumbo description.         |
+    When I select "Personnel management and staff remuneration" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.
