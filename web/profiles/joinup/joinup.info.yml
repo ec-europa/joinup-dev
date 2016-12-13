@@ -50,6 +50,7 @@ dependencies:
   - search_api_db
   - solution
   - state_machine
+  - state_machine_revisions
   - text
   - toolbar
   - view_unpublished
@@ -155,6 +156,5 @@ config_devel:
   - user.role.authenticated
   - user.role.moderator
   - user.settings
-  - views.view.collection_content
   - views.view.collections
   - views.view.user_admin_people

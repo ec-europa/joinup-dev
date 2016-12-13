@@ -50,7 +50,11 @@ Feature: "Add event" visibility options.
     And I click "Add event"
     Then I should see the heading "Add event"
     And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website"
-    And the following fields should not be present "Groups audience"
+
+    # The sections about managing revisions and groups should not be visible.
+    And I should not see the text "Revision information"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+
     When I fill in the following:
       | Title       | An amazing event                      |
       | Short title | Amazing event                         |
