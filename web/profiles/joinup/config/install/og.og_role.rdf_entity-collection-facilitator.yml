@@ -43,4 +43,5 @@ permissions:
   - 'view any unpublished news content'
   - 'view rdf_entity draft graph'
   - 'view unpublished rdf entity'
+  - 'administer comments'
 role_type: standard
