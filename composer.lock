@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a9b90e89b06cc226e70b4b39a60553a9",
-    "content-hash": "fc9c4454fcc15e6fc47a0efceb2f2a22",
+    "hash": "4316d8d97933ca21b1377e3076260824",
+    "content-hash": "da45a329ddabd73b4fe94dd332efab67",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1597,12 +1597,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "d163cc25470ddc690502073b4003d170b5da038a"
+                "reference": "f079ffd1926658a3678cd1cc0e7c2954f4940cf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/d163cc25470ddc690502073b4003d170b5da038a",
-                "reference": "d163cc25470ddc690502073b4003d170b5da038a",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/f079ffd1926658a3678cd1cc0e7c2954f4940cf6",
+                "reference": "f079ffd1926658a3678cd1cc0e7c2954f4940cf6",
                 "shasum": ""
             },
             "require": {
@@ -1750,7 +1750,6 @@
                     "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                     "EntityPublishedInterface @see https://www.drupal.org/node/2789315 @see https://www.drupal.org/node/2810381 @todo Remove in 8.3.x": "./resources/patches/combined-2810381-and-2789315.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
-                    "Don't let the whole migration crash on a download failure @see https://www.drupal.org/node/2826200": "https://www.drupal.org/files/issues/2826200-10.patch",
                     "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch"
                 }
             },
@@ -1775,7 +1774,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-12-05 15:56:48"
+            "time": "2016-12-12 13:15:43"
         },
         {
             "name": "drupal/digital_size_formatter",
@@ -2563,7 +2562,7 @@
                 },
                 "patches_applied": {
                     "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch",
-                    "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-2_0-on_2753667-8.patch"
+                    "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-7_0-on_2753667-8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2754,6 +2753,52 @@
             "homepage": "https://www.drupal.org/project/state_machine",
             "support": {
                 "source": "http://cgit.drupalcode.org/state_machine"
+            }
+        },
+        {
+            "name": "drupal/taxonomy_container",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/taxonomy_container",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/taxonomy_container-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "0e88aa7f88afc5387ab723297a29dca5574d267a"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1479320951"
+                },
+                "patches_applied": {
+                    "Terms with string IDs are missing from dropdown": "https://www.drupal.org/files/issues/2833176-2.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Chi",
+                    "homepage": "https://www.drupal.org/user/556138"
+                }
+            ],
+            "description": "Provides a select list with optgroups for taxonomy terms selection.",
+            "homepage": "https://www.drupal.org/project/taxonomy_container",
+            "support": {
+                "source": "http://cgit.drupalcode.org/taxonomy_container"
             }
         },
         {
@@ -7412,7 +7457,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/klausi/coder/zipball/b08682bd939cf7d3ac7034bee792aa17f80e19d7",
                 "reference": "b08682bd939cf7d3ac7034bee792aa17f80e19d7",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
                 "ext-mbstring": "*",
@@ -7424,7 +7469,7 @@
                 "phpunit/phpunit": ">=3.7"
             },
             "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
