@@ -10,7 +10,7 @@
         "cweagans/composer-patches": "~1.6",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/console": "~1.0",
-        "drupal/core": "8.2.x-dev#d163cc25470ddc690502073b4003d170b5da038a",
+        "drupal/core": "8.2.x-dev#f079ffd1926658a3678cd1cc0e7c2954f4940cf6",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^2.0",
         "drupal/facets": "~1.0@alpha",
@@ -106,7 +106,6 @@
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                 "EntityPublishedInterface @see https://www.drupal.org/node/2789315 @see https://www.drupal.org/node/2810381 @todo Remove in 8.3.x": "./resources/patches/combined-2810381-and-2789315.patch",
                 "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
-                "Don't let the whole migration crash on a download failure @see https://www.drupal.org/node/2826200": "https://www.drupal.org/files/issues/2826200-10.patch",
                 "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch",
                 "SqlBase::prepareQuery() should be called also on count @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch"
             },
@@ -115,7 +114,7 @@
             },
             "drupal/search_api": {
                 "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch",
-                "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-2_0-on_2753667-8.patch",
+                "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-7_0-on_2753667-8.patch",
                 "item_id column is too short @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/2829696-7.patch"
             },
             "drupal/state_machine": {
