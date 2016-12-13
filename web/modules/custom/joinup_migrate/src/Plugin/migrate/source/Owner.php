@@ -15,6 +15,8 @@ use Drupal\migrate\Row;
  */
 class Owner extends JoinupSqlBase {
 
+  use OwnerTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -43,34 +45,18 @@ class Owner extends JoinupSqlBase {
    */
   public function query() {
     // Build a list of publisher allowed NIDs by querying only the objects that
-    // will be migrated (parent repositories or solutions).
-    $or = (new Condition('OR'))
-      ->isNotNull('r.vid')
-      ->isNotNull('s.vid');
-
-    $sub_query = Database::getConnection()->select('joinup_migrate_mapping', 'j')
-      ->condition('j.type', ['asset_release', 'repository'], 'IN')
-      ->condition('j.del', 'No')
-      ->condition('j.collection', ['', '#N/A'], 'NOT IN')
-      ->condition('n.status', 1)
-      ->condition($or);
-
-    $sub_query->leftJoin(static::getSourceDbName() . '.node', 'n', 'j.nid = n.nid');
-    $sub_query->leftJoin(static::getSourceDbName() . '.content_field_repository_publisher', 'r', 'n.vid = r.vid');
-    $sub_query->leftJoin(static::getSourceDbName() . '.content_field_asset_publisher', 's', 'n.vid = s.vid');
-
-    // The NID is provided either by repository or by solution.
-    $sub_query->addExpression("IFNULL(r.field_repository_publisher_nid, s.field_asset_publisher_nid)", 'allowed_nid');
-
-    $allowed_nids = array_values(array_filter(array_unique($sub_query->execute()->fetchCol())));
+    // will be migrated (parent collections and solutions).
+    $allowed_nids = array_values(array_unique(array_merge(
+      $this->getCollectionOwners(),
+      $this->getSolutionOwners()
+    )));
 
     $this->alias['node'] = 'n';
+    /** @var \Drupal\Core\Database\Query\SelectInterface $query */
     $query = $this->select('node', $this->alias['node'])
       ->fields($this->alias['node'], ['nid', 'title', 'vid'])
       ->condition("{$this->alias['node']}.status", 1)
-      ->condition("{$this->alias['node']}.type", 'publisher')
-      // Assure the URI field.
-      ->addTag('uri');
+      ->condition("{$this->alias['node']}.type", 'publisher');
 
     if ($allowed_nids) {
       // Limit publishers only to those refered by migrated repositories and
@@ -78,7 +64,9 @@ class Owner extends JoinupSqlBase {
       $query->condition("{$this->alias['node']}.nid", $allowed_nids, 'IN');
     }
 
-    return $query;
+    return $query
+      // Assure the URI field.
+      ->addTag('uri');
   }
 
   /**

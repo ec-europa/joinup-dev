@@ -15,6 +15,8 @@ use Drupal\migrate\Row;
  */
 class Collection extends CollectionBase {
 
+  use OwnerTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -77,6 +79,8 @@ class Collection extends CollectionBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    $collection = $row->getSourceProperty('collection');
+
     if (!$abstract = $row->getSourceProperty('abstract')) {
       // Fallback to community abstract, if available.
       $row->setSourceProperty('abstract', $row->getSourceProperty('og_description'));
@@ -114,11 +118,14 @@ class Collection extends CollectionBase {
       ->fields('j', ['nid'])
       ->orderBy('j.collection')
       ->condition('j.del', 'No')
-      ->condition('j.collection', $row->getSourceProperty('collection'))
+      ->condition('j.collection', $collection)
       ->condition('j.type', 'asset_release')
       ->execute()
       ->fetchCol();
     $row->setSourceProperty('affiliates', $affiliates);
+
+    // Owner.
+    $row->setSourceProperty('owner', $this->getCollectionOwners($collection) ?: NULL);
 
     return parent::prepareRow($row);
   }
