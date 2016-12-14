@@ -293,7 +293,10 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
     // @todo: We should filter per entity per graph and not load the whole
     // database only to filter later on.
-    $ids_string = "<" . implode(">, <", $ids) . ">";
+    $filter = array_map(function ($id) {
+      return 'str(?field_value) = "' . $id . '"';
+    }, $ids);
+    $filter = implode(' || ', $filter);
     $graphs = $this->getGraphHandler()->getEntityTypeGraphUrisList($this->getEntityType()->getBundleEntityType());
     $named_graph = '';
     foreach ($graphs as $graph) {
@@ -309,7 +312,27 @@ $named_graph
 WHERE{
   GRAPH ?graph {
     ?entity_id ?predicate ?field_value
-    FILTER (?entity_id IN ( $ids_string ) )
+    FILTER ( $filter )
+    FILTER(!isLiteral(?field_value) || (lang(?field_value) = "" || langMatches(lang(?field_value), "EN")))
+  }
+}
+QUERY;
+
+    // Collect URIs.
+    $values = $this->sparql->query($query);
+    $uris = [];
+    foreach ($values as $value) {
+      $uris[] = '<' . (string) $value->entity_id . '>';
+    }
+    $uris = implode(', ', $uris);
+
+    $query = <<<QUERY
+SELECT ?graph ?entity_id ?predicate ?field_value
+$named_graph
+WHERE{
+  GRAPH ?graph {
+    ?entity_id ?predicate ?field_value
+    FILTER (?entity_id IN ( $uris ) )
     FILTER(!isLiteral(?field_value) || (lang(?field_value) = "" || langMatches(lang(?field_value), "EN")))
   }
 }
@@ -357,11 +380,19 @@ QUERY;
    */
   protected function processGraphResults($results) {
     $mapping = $this->mappingHandler->getEntityPredicates($this->entityTypeId);
+
     // If no graphs are passed, fetch all available graphs derived from the
     // results.
-    $values_per_entity = [];
+    $values_per_entity = $ids = $return = [];
     foreach ($results as $result) {
-      $entity_id = (string) $result->entity_id;
+      if ((string) $result->predicate === 'http://purl.org/dc/terms/identifier') {
+        $id = (string) $result->field_value;
+        $ids[(string) $result->entity_id] = $id;
+      }
+    }
+
+    foreach ($results as $delta => $result) {
+      $entity_id = $ids[(string) $result->entity_id];
       $entity_graphs[$entity_id] = (string) $result->graph;
 
       $lang = LanguageInterface::LANGCODE_DEFAULT;
@@ -378,7 +409,6 @@ QUERY;
       return NULL;
     }
 
-    $return = [];
     foreach ($values_per_entity as $entity_id => $values_per_graph) {
       $request_graphs = $this->getGraphHandler()->getRequestGraphs($entity_id);
       $entity_graph_uris = $this->getGraphHandler()->getEntityTypeGraphUris($this->getEntityType()->getBundleEntityType());
@@ -451,7 +481,11 @@ QUERY;
           }
         }
       }
+      $return[$entity_id]['uri'][LanguageInterface::LANGCODE_DEFAULT] = [
+        ['x-default' => array_flip($ids)[$entity_id]],
+      ];
     }
+
     return $return;
   }
 
@@ -488,21 +522,13 @@ QUERY;
   /**
    * {@inheritdoc}
    */
-  public function load($id) {
-    $entities = $this->loadMultiple(array($id));
-    return array_shift($entities);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function loadMultiple(array $ids = NULL) {
     $entities = parent::loadMultiple($ids);
     $uuid_key = $this->entityType->getKey('uuid');
     array_walk($entities, function (ContentEntityInterface $rdf_entity) use ($uuid_key) {
       // The ID of 'rdf_entity' is universally unique because it's a URI. As
       // the backend schema has no UUID, ID is reused as UUID.
-      $rdf_entity->set($uuid_key, $rdf_entity->id());
+      $rdf_entity->set($uuid_key, $rdf_entity->getUri());
     });
     return $entities;
   }
@@ -544,8 +570,9 @@ QUERY;
     // If UUID is queried, just swap it with the ID. They are the same but UUID
     // is not stored, while on ID we can rely.
     $uuid_key = $this->entityType->getKey('uuid');
-    if (isset($values[$uuid_key]) && !isset($values['id'])) {
-      $values['id'] = $values[$uuid_key];
+    $id_key = $this->entityType->getKey('id');
+    if (isset($values[$uuid_key]) && !isset($values[$id_key])) {
+      $values[$id_key] = $values[$uuid_key];
       unset($values[$uuid_key]);
     }
     return parent::loadByProperties($values);
@@ -655,12 +682,12 @@ QUERY;
   }
 
   /**
-   * Generate the id of the entity.
+   * Generate the URI of the entity.
    *
    * @return string
-   *    The new id for the entity.
+   *    The new URI for the entity.
    */
-  protected function generateId() {
+  protected function generateUri() {
     $uuid = new Php();
     // @todo Fetch a bundle specific template.
     return 'http://placeHolder/' . $uuid->generate();
@@ -670,14 +697,18 @@ QUERY;
    * {@inheritdoc}
    */
   protected function doSave($id, EntityInterface $entity) {
+    /** @var \Drupal\rdf_entity\RdfInterface $entity */
+
     $bundle = $entity->bundle();
     // Generate an ID before saving, if none is available. If the ID generation
     // occurs earlier in the process (like on EntityInterface::create()), the
     // entity might be considered not new by modules that don't strictly use the
     // EntityInterface::isNew() method.
-    if (empty($id)) {
-      $id = $this->generateId();
-      $entity->{$this->idKey} = (string) $id;
+    if (empty($entity->getUri())) {
+      $entity->setUri($this->generateUri());
+    }
+    if (!$entity->id()) {
+      $entity->{$this->getEntityType()->getKey('id')} = $entity->getUriHash();
     }
 
     // If the target graph is set, it has priority over the one the entity is
@@ -719,12 +750,12 @@ QUERY;
           // RdfEntitySparqlStorage (it's an RDF based entity),
           // then store it as a resource.
           if ($this->fieldIsReference($item)) {
-            $graph->addResource((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
+            $graph->addResource($entity->id(), (string) $properties['by_field'][$field_name][$column], $value);
           }
           // All other fields get stored as a literal.
           else {
             // @todo Set language and field data type.
-            $graph->addLiteral((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
+            $graph->addLiteral($entity->getUri(), (string) $properties['by_field'][$field_name][$column], $value);
           }
         }
       }
@@ -732,14 +763,13 @@ QUERY;
     // Save the bundle as rdf:type.
     $rdf_bundle_mapping = $this->mappingHandler->getRdfBundleMappedUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle());
     $rdf_bundle = $rdf_bundle_mapping[$entity->bundle()];
-    $graph->addResource((string) $id, $this->rdfBundlePredicate, $rdf_bundle);
+    $graph->addResource($entity->getUri(), $this->rdfBundlePredicate, $rdf_bundle);
 
     if (!$entity->isNew()) {
-      $this->deleteBeforeInsert($id, $graph_uri, $properties_list);
+      $this->deleteBeforeInsert($entity->getUri(), $graph_uri, $properties_list);
     }
     // @todo Do in one transaction... If possible.
     $this->insert($graph, $graph_uri);
-
   }
 
   /**
@@ -763,14 +793,14 @@ QUERY;
    *
    * @param \EasyRdf\Graph $graph
    *   The graph to insert.
-   * @param string $graphUri
+   * @param string $graph_uri
    *   Graph to save to.
    *
    * @return \EasyRdf\Graph|\EasyRdf\Sparql\Result
    *   Response.
    */
-  private function insert(Graph $graph, $graphUri) {
-    $query = "INSERT DATA INTO <$graphUri> {\n";
+  protected function insert(Graph $graph, $graph_uri) {
+    $query = "INSERT DATA INTO <$graph_uri> {\n";
     $query .= $graph->serialise('ntriples') . "\n";
     $query .= '}';
     return $this->sparql->query($query);

@@ -2,6 +2,7 @@
 
 namespace Drupal\rdf_entity\Entity;
 
+use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
@@ -11,63 +12,28 @@ use Drupal\rdf_entity\RdfInterface;
 use Drupal\Core\Entity\EntityChangedTrait;
 
 /**
- * Defines the ContentEntityExample entity.
+ * Defines the Rdf entity.
+ *
+ * The Rdf class defines methods and fields for the Rdf entity.
+ *
+ * Being derived from the ContentEntityBase class, we can override the methods
+ * we want. In our case we want to provide access to the standard fields about
+ * creation and changed time stamps.
+ *
+ * Our interface (see RdfInterface) also exposes the EntityOwnerInterface.
+ * This allows us to provide methods for setting and providing ownership
+ * information.
+ *
+ * The most important part is the definitions of the field properties for this
+ * entity type. These are of the same type as fields added through the GUI, but
+ * they can by changed in code. In the definition we can define if the user with
+ * the rights privileges can influence the presentation (view, edit) of each
+ * field.
+ *
+ * The class also uses the EntityChangedTrait trait which allows it to record
+ * timestamps of save operations.
  *
  * @ingroup rdf_entity
- *
- * This is the main definition of the entity type. From it, an entityType is
- * derived. The most important properties in this example are listed below.
- *
- * id: The unique identifier of this entityType. It follows the pattern
- * 'moduleName_xyz' to avoid naming conflicts.
- *
- * label: Human readable name of the entity type.
- *
- * handlers: Handler classes are used for different tasks. You can use
- * standard handlers provided by D8 or build your own, most probably derived
- * from the standard class. In detail:
- *
- * - view_builder: we use the standard controller to view an instance. It is
- *   called when a route lists an '_entity_view' default for the entityType
- *   (see routing.yml for details. The view can be manipulated by using the
- *   standard drupal tools in the settings.
- *
- * - list_builder: We derive our own list builder class from the
- *   entityListBuilder to control the presentation.
- *   If there is a view available for this entity from the views module, it
- *   overrides the list builder. @todo: any view? naming convention?
- *
- * - form: We derive our own forms to add functionality like additional fields,
- *   redirects etc. These forms are called when the routing list an
- *   '_entity_form' default for the entityType. Depending on the suffix
- *   (.add/.edit/.delete) in the route, the correct form is called.
- *
- * - access: Our own accessController where we determine access rights based on
- *   permissions.
- *
- * More properties:
- *
- *  - base_table: Define the name of the table used to store the data. Make sure
- *    it is unique. The schema is automatically determined from the
- *    BaseFieldDefinitions below. The table is automatically created during
- *    installation.
- *
- *  - fieldable: Can additional fields be added to the entity via the GUI?
- *    Analog to content types.
- *
- *  - entity_keys: How to access the fields. Analog to 'nid' or 'uid'.
- *
- *  - links: Provide links to do standard tasks. The 'edit-form' and
- *    'delete-form' links are added to the list built by the
- *    entityListController. They will show up as action buttons in an additional
- *    column.
- *
- * There are many more properties to be used in an entity type definition. For
- * a complete overview, please refer to the '\Drupal\Core\Entity\EntityType'
- * class definition.
- *
- * The following construct is the actual definition of the entity type which
- * is read and cached. Don't forget to clear cache after changes.
  *
  * @ContentEntityType(
  *   id = "rdf_entity",
@@ -105,35 +71,9 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *   permission_granularity = "bundle",
  *   common_reference_target = TRUE,
  * )
- *
- * The 'links' above are defined by their path. For core to find the
- * corresponding route, the route name must follow the correct pattern:
- *
- * entity.<entity-name>.<link-name> (replace dashes with underscores)
- * Example: 'entity.rdf_entity.canonical'
- *
- * See routing file above for the corresponding implementation
- *
- * The Rdf class defines methods and fields for the Rdf entity.
- *
- * Being derived from the ContentEntityBase class, we can override the methods
- * we want. In our case we want to provide access to the standard fields about
- * creation and changed time stamps.
- *
- * Our interface (see RdfInterface) also exposes the EntityOwnerInterface.
- * This allows us to provide methods for setting and providing ownership
- * information.
- *
- * The most important part is the definitions of the field properties for this
- * entity type. These are of the same type as fields added through the GUI, but
- * they can by changed in code. In the definition we can define if the user with
- * the rights privileges can influence the presentation (view, edit) of each
- * field.
- *
- * The class also uses the EntityChangedTrait trait which allows it to record
- * timestamps of save operations.
  */
 class Rdf extends ContentEntityBase implements RdfInterface {
+
   use EntityChangedTrait;
 
   /**
@@ -190,18 +130,21 @@ class Rdf extends ContentEntityBase implements RdfInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * Define the field properties here.
-   *
-   * Field name, type and size determine the table structure.
-   *
-   * In addition, we can define how the field and its content can be manipulated
-   * in the GUI. The behaviour of the widgets used can be determined here.
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
-    // Standard field, used as unique if primary index.
-    $fields['id'] = BaseFieldDefinition::create('uri')
-      ->setLabel(t('ID'));
+    // This is the RDF unique identifier (URI) used as an unique identifier of
+    // the entity in triple store. Ideally, we have used this as ID but, because
+    // the URI happens to exceed a Drupal accepted length, it will break in core
+    // and in a lot of modules. For this reason we use this as triple store ID
+    // but we compute a shorter hash key to be used as Drupal entity ID.
+    $fields['uri'] = BaseFieldDefinition::create('uri')
+      ->setLabel(new TranslatableMarkup('URI'));
+
+    // This is the Drupal entity ID field. We compute this field as 'uri' hash.
+    $fields['id'] = BaseFieldDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('ID'))
+      ->setSetting('is_ascii', TRUE)
+      ->setSetting('max_length', 48);
 
     $fields['rid'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Rdf Type'))
@@ -227,7 +170,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     // The UUID field is provided just to allow core or modules to retrieve RDF
-    // entities by UUID. In fact UUID is computed with the same value as ID.
+    // entities by UUID. In fact UUID is computed with the same value as 'uri'.
     $fields[$entity_type->getKey('uuid')] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('UUID'))
       ->setRevisionable(FALSE)
@@ -250,7 +193,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    * {@inheritdoc}
    */
   public function uuid() {
-    return $this->id();
+    return $this->getUri();
   }
 
   /**
@@ -258,9 +201,10 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    */
   public function createDuplicate() {
     $duplicate = parent::createDuplicate();
-    // As the ID is NULL, reset also the UUID.
+    // As the ID is NULL, reset also the UUID and the URI.
     $uuid_key = $this->getEntityType()->getKey('uuid');
     $duplicate->set($uuid_key, NULL);
+    $duplicate->set('uri', NULL);
     return $duplicate;
   }
 
@@ -329,6 +273,43 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     if (!$this->isNew()) {
       $this->entityManager()->getStorage($this->entityTypeId)->deleteFromGraph($this->id(), $graph);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getUri() {
+    return $this->get('uri')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUri($uri) {
+    // Once set, the URI cannot be changed.
+    $current_uri = $this->getUri();
+    $is_different = $current_uri !== $uri;
+    if ($current_uri && $is_different) {
+      throw new \InvalidArgumentException('The URI of a RDF entity cannot be changed.');
+    }
+
+    if ($is_different) {
+      $this->set('uri', $uri);
+      // Sync the ID.
+      $this->set('id', $this->getUriHash($uri));
+    }
+
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getUriHash() {
+    if (!$uri = $this->getUri()) {
+      throw new \RuntimeException('URI is not set yet.');
+    }
+    return Crypt::hashBase64($uri);
   }
 
 }
