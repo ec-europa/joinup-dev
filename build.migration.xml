@@ -8,12 +8,14 @@
             depends="enable-migration-modules">
         <echo message="Run migration" />
         <drush
-            command="migrate_drush_run"
+            command="migrate-import"
             assume="yes"
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
             <param>${migration.ids}</param>
+            <option name="feedback" value="1000" />
+            <option name="force" />
         </drush>
     </target>
 

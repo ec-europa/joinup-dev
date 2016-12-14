@@ -11,17 +11,17 @@ bundle: owner
 mode: default
 content:
   field_owner_name:
-    weight: 1
+    weight: 0
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
   field_owner_type:
-    weight: 0
+    weight: 1
     settings: {  }
     third_party_settings: {  }
-    type: options_select
+    type: options_buttons
   id:
     type: auto_uri
     weight: -10

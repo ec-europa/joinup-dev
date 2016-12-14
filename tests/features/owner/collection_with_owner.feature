@@ -21,7 +21,7 @@ Feature: Creation of owners through UI
 
     # Click the button to create an organisation owner.
     And I press "Add new" at the "Owner" field
-    And I select "Company" in the dropdown of the "Owner" field
+    And I set the Owner type to "Company"
     And I fill in "Name" with "Acme"
     And I press "Create owner"
     Then I should see "Acme"
@@ -29,14 +29,13 @@ Feature: Creation of owners through UI
 
     # Edit.
     When I press "Edit" at the "Owner" field
-    And I select "Industry consortium" in the dropdown of the "Owner" field
+    And I set the Owner type to "Industry consortium,Company"
     And I fill in "Name" with "Acme Inc."
     Then I press "Update owner"
     Then I should see "Acme Inc."
     And I should see the link "Industry consortium"
+    And I should see the link "Company"
 
-    # Because the cardinality is 1, we need to delete first the created owner in
-    # order to test more cases.
     When I press "Remove" at the "Owner" field
     And I press "Remove" at the "Owner" field
     Then I should not see "Acme Inc."
@@ -44,14 +43,12 @@ Feature: Creation of owners through UI
 
     # Create a person owner as well.
     And I press "Add new" at the "Owner" field
-    And I select "Private Individual(s)" in the dropdown of the "Owner" field
+    And I set the Owner type to "Private Individual(s)"
     And I fill in "Name" with "John Doe"
     And I press "Create owner"
     Then I should see "John Doe"
     And I should see the link "Private Individual(s)"
 
-    # Because the cardinality is 1, we need to delete first the created owner in
-    # order to test more cases.
     When I press "Remove" at the "Owner" field
     # Press 'Remove' also on confirmation dialog.
     And I press "Remove" at the "Owner" field

@@ -2,7 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Core\Site\Settings;
+use Drupal\Core\Database\Query\Condition;
 use Drupal\migrate\Row;
 
 /**
@@ -39,7 +39,14 @@ class CollectionLogo extends CollectionBase {
     $query->addExpression("{$this->alias['repository_files']}.filepath", 'repository_file');
     $query->addExpression("{$this->alias['repository_files']}.timestamp", 'repository_time');
 
-    return $query->fields('j', ['logo']);
+    $or = (new Condition('OR'))
+      ->isNotNull("{$this->alias['community_files']}.filepath")
+      ->isNotNull("{$this->alias['repository_files']}.filepath")
+      ->isNotNull("j.logo");
+
+    return $query
+      ->fields('j', ['logo'])
+      ->condition($or);
   }
 
   /**
@@ -49,19 +56,16 @@ class CollectionLogo extends CollectionBase {
     // Build source path. A new logo proposal in the mapping table wins.
     $source_path = NULL;
     $timestamp = REQUEST_TIME;
-    // If we don't have a copy of the source file-system, we use the live site
-    // but this is not recommended because is slower and might trigger some
-    // anti-crawler protection from the server.
-    $source_root = Settings::get('joinup_migrate.source.root', 'https://joinup.ec.europa.eu');
+
     if ($logo = $row->getSourceProperty('logo')) {
       $source_path = "../resources/migrate/collection/logo/$logo";
     }
     elseif ($community_file = $row->getSourceProperty('community_file')) {
-      $source_path = "$source_root/$community_file";
+      $source_path = "{$this->getLegacySiteWebRoot()}/$community_file";
       $timestamp = $row->getSourceProperty('community_time');
     }
     elseif ($repository_file = $row->getSourceProperty('repository_file')) {
-      $source_path = "$source_root/$repository_file";
+      $source_path = "{$this->getLegacySiteWebRoot()}/$repository_file";
       $timestamp = $row->getSourceProperty('repository_time');
     }
 
