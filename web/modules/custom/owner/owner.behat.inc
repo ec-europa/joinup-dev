@@ -53,7 +53,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
 
       $terms = $term_storage->loadByProperties(['vid' => 'owner_type', 'name' => $row['type']]);
       if (empty($terms)) {
-        throw new ExpectationException("Owner type '{$row['type']}' doesn't exist.", $this->getDriver());
+        throw new \Exception("Owner type '{$row['type']}' doesn't exist.");
       }
 
       $owner = Rdf::create([
