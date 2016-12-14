@@ -24,6 +24,8 @@ permissions:
   - 'edit own document content'
   - 'edit own event content'
   - 'edit own news content'
+  - 'delete own news content'
+  - 'delete own comments'
   - 'view own unpublished content'
   - unsubscribe
 role_type: required

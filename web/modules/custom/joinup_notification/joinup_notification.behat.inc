@@ -55,6 +55,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       throw new \Exception("User {$recipient} does not have an email.");
     }
 
+    \Drupal::state()->resetCache();
     $mails = \Drupal::state()->get('system.test_mail_collector');
     $last_mail = end($mails);
     if (!$last_mail) {

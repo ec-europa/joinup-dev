@@ -16,12 +16,12 @@ Feature: As a user of the website
       | Mr Crab | Private Individual(s) |
     And the following solutions:
       | title                    | description                | logo     | banner     | owner   | contact information | solution type     | state            | policy domain |
-      | Professional Dreams      | Azure ship                 | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | draft            | Health        |
-      | The Falling Swords       | The Falling Swords         | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | proposed         | Health        |
-      | Flight of Night          | Rose of Doors              | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | validated        | Health        |
-      | The Streams of the Lover | The Ice's Secrets          | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | deletion_request | Health        |
-      | Teacher in the Twins     | The Guardian of the Stream | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | needs_update     | Health        |
-      | Missing Fire             | Flames in the Swords       | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | blacklisted      | Health        |
+      | Professional Dreams      | Azure ship                 | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | draft            | eInclusion    |
+      | The Falling Swords       | The Falling Swords         | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | proposed         | eInclusion    |
+      | Flight of Night          | Rose of Doors              | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | validated        | eInclusion    |
+      | The Streams of the Lover | The Ice's Secrets          | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | deletion_request | eInclusion    |
+      | Teacher in the Twins     | The Guardian of the Stream | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | needs_update     | eInclusion    |
+      | Missing Fire             | Flames in the Swords       | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | blacklisted      | eInclusion    |
     And the following solution user memberships:
       | solution        | user | roles |
       | Flight of Night | Hulk | owner |

@@ -10,6 +10,7 @@ group_bundle: collection
 group_id: null
 permissions:
   - 'add user'
+  - 'administer comments'
   - 'approve and deny subscription'
   - 'create asset_distribution rdf_entity'
   - 'create asset_release rdf_entity'
