@@ -16,8 +16,6 @@ Feature:
     And event content:
       | title               | collection | body                                        |
       | 20 year anniversary | Nintendo64 | The console was released in September 1996. |
-    # Non UATable step.
-    And I commit the solr index
 
     Scenario: Community content listing widget should be shown only to moderators
       Given I am logged in as a facilitator of the "Nintendo64" collection
