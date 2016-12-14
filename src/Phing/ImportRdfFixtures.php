@@ -62,7 +62,7 @@ class ImportRdfFixtures extends VirtuosoTaskBase {
       $graph_name = 'http://' . strtolower($file);
       // Delete the graph first...
       $this->execute("SPARQL CLEAR GRAPH <$graph_name>;");
-      exec("curl --digest --user dba:dba --verbose --url 'http://$this->dsn:8890/sparql-graph-crud-auth?graph-uri=$graph_name' -T $rdf_file_path");
+      exec("curl --digest --user $this->user:$this->pass --verbose --url 'http://$this->dsn:8890/sparql-graph-crud-auth?graph-uri=$graph_name' -T $rdf_file_path");
     }
   }
 
