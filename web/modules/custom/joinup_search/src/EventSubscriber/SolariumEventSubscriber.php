@@ -2,9 +2,9 @@
 
 namespace Drupal\joinup_search\EventSubscriber;
 
+use Solarium\Core\Client\Client;
 use Solarium\Core\Event\Events;
 use Solarium\Core\Event\PreExecute;
-use Solarium\QueryType\Update\Query\Query;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -30,11 +30,12 @@ class SolariumEventSubscriber implements EventSubscriberInterface {
   public function commitOnUpdate(PreExecute $event) {
     $query = $event->getQuery();
 
-    if (!$query instanceof Query) {
+    if ($query->getType() !== Client::QUERY_UPDATE) {
       return;
     }
 
     // Soft commit and wait for a new searcher to be opened.
+    /** @var \Solarium\QueryType\Update\Query\Query $query */
     $query->addCommit(TRUE, TRUE);
   }
 
