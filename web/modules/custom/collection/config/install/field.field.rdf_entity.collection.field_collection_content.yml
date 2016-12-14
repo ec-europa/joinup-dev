@@ -19,14 +19,14 @@ default_value:
     value:
       fields:
         collection_type:
-          weight: '0'
+          weight: 0
           region: top
         collection_policy_domain:
-          weight: '1'
+          weight: 1
           region: top
       enabled: 1
       query_presets: ''
-      limit: '12'
+      limit: 12
 default_value_callback: ''
 settings: {  }
 field_type: search_api_field
