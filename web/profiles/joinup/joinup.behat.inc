@@ -6,6 +6,8 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use Drupal\comment\CommentInterface;
+use \Drupal\comment\Entity\Comment;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -784,6 +786,52 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     else {
       $this->getSession()->getPage()->fillField($label, $text);
+    }
+  }
+
+  /**
+   * Create a comment.
+   *
+   * @Given comments:
+   */
+  public function createComments(TableNode $table) {
+    foreach ($table->getColumnsHash() as $comment_values) {
+      $query = \Drupal::entityQuery('node')
+        ->condition('title', $comment_values['parent'])
+        ->range(0, 1);
+      $result = $query->execute();
+
+      if (empty($result)) {
+        throw new \InvalidArgumentException("Unable to load parent of comment.");
+      }
+
+      // Reload from database to avoid caching issues and get latest version.
+      $id = reset($result);
+
+      $query = \Drupal::entityQuery('user')
+        ->condition('name', $comment_values['author'])
+        ->range(0, 1);
+      $result = $query->execute();
+      $uid = reset($result);
+
+      if (empty($result)) {
+        throw new \InvalidArgumentException("Unable to load author of comment.");
+      }
+      unset($comment_values['parent']);
+      unset($comment_values['author']);
+      $comment_values['uid'] = $uid;
+      $values = [
+        'comment_type' => 'comment',
+        'status' => CommentInterface::PUBLISHED,
+        'uid' => $uid,
+        'field_name' => 'field_comments',
+        'entity_type' => 'node',
+        'entity_id' => $id,
+      ];
+      $comment_values += $values;
+      // Ignore due to conflicting Comment class in Phing.
+      $comment = Comment::create($comment_values);
+      $comment->save();
     }
   }
 
