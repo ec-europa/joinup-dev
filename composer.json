@@ -120,6 +120,9 @@
             },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
+            },
+            "drupal/og": {
+                "OgMembership static cache not cleared": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/226.patch"
             }
         }
     },

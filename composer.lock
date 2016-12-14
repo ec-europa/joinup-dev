@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c45459e210a278db79d3c04a53461809",
-    "content-hash": "2b5634f82ad825a7e6b54d8db72e55b2",
+    "hash": "ca2833e167fbcedde3e6d95e3435ddac",
+    "content-hash": "5bc29adf57d9f5bf1e42368d45c1200e",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1992,8 +1992,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc6+0-dev",
-                    "datestamp": "1480365484"
+                    "version": "8.x-1.0-rc4+54-dev",
+                    "datestamp": "1479073440"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2374,6 +2374,11 @@
                 "drupal/coder": "~8.2"
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "OgMembership static cache not cleared": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/226.patch"
+                }
+            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -7351,7 +7356,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/admin_toolbar-8.x-1.18.zip",
-                "reference": null,
+                "reference": "8.x-1.18",
                 "shasum": "ea5b6b5eb20757fda12e7220819a750e2575359b"
             },
             "require": {
@@ -7506,7 +7511,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.2.zip",
-                "reference": null,
+                "reference": "8.x-1.2",
                 "shasum": "9490c58d1b7e58c5c08533c93d5565f356144591"
             },
             "require": {
@@ -7556,7 +7561,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/default_content-8.x-1.0-alpha3.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha3",
                 "shasum": "6834ce4134fd20df56e7294e9aad033f1500d7dd"
             },
             "require": {
@@ -7627,7 +7632,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-beta1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta1",
                 "shasum": "439d9cab6af0ddb5efbd31e16fbb5da1f510fe6f"
             },
             "require": {
