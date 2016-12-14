@@ -23,6 +23,7 @@ default:
       api_driver: 'drupal'
       blackbox: ~
       region_map:
+        Comment: '.comment'
         Entity actions: '.block-local-tasks-block'
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'

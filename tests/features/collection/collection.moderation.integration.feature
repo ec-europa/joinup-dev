@@ -16,12 +16,12 @@ Feature: As a user of the website
       | Martin Gonzalez |
     And the following collections:
       | title                      | description                | logo     | banner     | owner           | contact information | state            | policy domain |
-      | Willing Fairy              | Willing Fairy              | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | draft            | Health        |
-      | The Fallen Thoughts        | The Fallen Thoughts        | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | proposed         | Health        |
-      | Destruction of Scent       | Destruction of Scent       | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | validated        | Health        |
-      | The School's Stars         | The School's Stars         | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | archival_request | Health        |
-      | The Beginning of the Fairy | The Beginning of the Fairy | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | deletion_request | Health        |
-      | Boy in the Dreams          | Boy in the Dreams          | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | archived         | Health        |
+      | Willing Fairy              | Willing Fairy              | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | draft            | Statistics    |
+      | The Fallen Thoughts        | The Fallen Thoughts        | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | proposed         | EU finance    |
+      | Destruction of Scent       | Destruction of Scent       | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | validated        | eProcurement  |
+      | The School's Stars         | The School's Stars         | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | archival_request | eJustice      |
+      | The Beginning of the Fairy | The Beginning of the Fairy | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | deletion_request | Employment    |
+      | Boy in the Dreams          | Boy in the Dreams          | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | archived         | eHealth       |
     And the following collection user memberships:
       | collection           | user      | roles              |
       | Destruction of Scent | Cornelius | owner, facilitator |

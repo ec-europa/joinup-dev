@@ -38,7 +38,11 @@ Feature: "Add custom page" visibility options.
     When I click "Add a new page"
     Then I should see the heading "Add custom page"
     And the following fields should be present "Title, Body"
-    And the following fields should not be present "Groups audience, Other groups"
+
+    # The sections about managing revisions and groups should not be visible.
+    And I should not see the text "Revision information"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+
     When I fill in the following:
       | Title | About us                      |
       | Body  | We are open about everything! |

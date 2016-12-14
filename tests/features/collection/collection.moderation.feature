@@ -145,13 +145,16 @@ Feature: Collection moderation
       | banner              | banner.jpg         |
       | owner               | Carpet Sandation   |
       | contact information | Partyanimal        |
-      | policy domain       | Health             |
+      | policy domain       | eProcurement       |
       | state               | proposed           |
     When I am on the homepage
     And I click "Collections"
     Then I should not see the heading "Some berry pie"
     When I am logged in as a moderator
     And I am on the homepage
+    # @todo Remove this line when caching Search API results is fixed.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2574
+    And the cache has been cleared
     And I click "Collections"
     # Tile view modes in the "Collections" page are not using heading markup
     # for titles.
@@ -163,6 +166,9 @@ Feature: Collection moderation
     Then I should see the heading "No berry pie"
 
     When I am on the homepage
+    # @todo Remove this line when caching Search API results is fixed.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2574
+    And the cache has been cleared
     And I click "Collections"
     Then I should see the text "No berry pie"
     And I should not see the text "Some berry pie"

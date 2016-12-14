@@ -6,6 +6,8 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use Drupal\comment\CommentInterface;
+use \Drupal\comment\Entity\Comment;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -247,7 +249,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function resetRequestGraphs($event) {
     /** @var RdfEntitySparqlStorage $storage */
-    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
     $storage->getGraphHandler()->resetRequestGraphs();
   }
 
@@ -386,7 +388,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks if a content entity is published.
    *
    * @param string $bundle
-   *   The node bunlde.
+   *   The node bundle.
    * @param string $title
    *   The node title.
    *
@@ -395,7 +397,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :title :bundle (content )should be published
    */
-  public function nodePublished($bundle, $title) {
+  public function assertNodePublished($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if (!$node->isPublished()) {
@@ -407,7 +409,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks if a content entity is published.
    *
    * @param string $bundle
-   *   The node bunlde.
+   *   The node bundle.
    * @param string $title
    *   The node title.
    *
@@ -416,12 +418,37 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :title :bundle (content )should not be published
    */
-  public function nodeNotPublished($bundle, $title) {
+  public function assertNodeNotPublished($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if ($node->isPublished()) {
       throw new \Exception("$title content should not be published but it is.");
     }
+  }
+
+  /**
+   * Checks if the given content entity has the correct number of revisions.
+   *
+   * @param string $bundle
+   *   The node bundle.
+   * @param string $title
+   *   The node title.
+   * @param int $count
+   *   The expected number of revisions.
+   *
+   * @Then the :title :bundle (content )should have :count revision(s)
+   */
+  public function assertNodeRevisionCount($bundle, $title, $count) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title, $bundle);
+
+    $revision_count = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
+      ->allRevisions()
+      ->condition('nid', $node->id())
+      ->count()
+      ->execute();
+
+    PHPUnit_Framework_Assert::assertEquals($count, $revision_count);
   }
 
   /**
@@ -458,6 +485,23 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if (!empty($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD})) {
       $entity = $this->getRdfEntityByLabel($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD});
       $node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD} = $entity->id();
+    }
+
+    // Replace the human readable publication statuses with the boolean values
+    // that are expected by the Node module.
+    if (!empty($node->status)) {
+      $mapping = [
+        'unpublished' => 0,
+        'published' => 1,
+      ];
+      // Force the use of human readable values in Behat test scenarios, throw
+      // an exception if the numeric values are used.
+      if (!array_key_exists($node->status, $mapping)) {
+        $supported_statii = implode(', ', array_keys($mapping));
+        throw new \UnexpectedValueException("Unexpected status '{$node->status}'. Supported statuses are: $supported_statii.");
+      }
+      // Replace the human readable value with the expected boolean.
+      $node->status = $mapping[$node->status];
     }
   }
 
@@ -742,6 +786,52 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     else {
       $this->getSession()->getPage()->fillField($label, $text);
+    }
+  }
+
+  /**
+   * Create a comment.
+   *
+   * @Given comments:
+   */
+  public function createComments(TableNode $table) {
+    foreach ($table->getColumnsHash() as $comment_values) {
+      $query = \Drupal::entityQuery('node')
+        ->condition('title', $comment_values['parent'])
+        ->range(0, 1);
+      $result = $query->execute();
+
+      if (empty($result)) {
+        throw new \InvalidArgumentException("Unable to load parent of comment.");
+      }
+
+      // Reload from database to avoid caching issues and get latest version.
+      $id = reset($result);
+
+      $query = \Drupal::entityQuery('user')
+        ->condition('name', $comment_values['author'])
+        ->range(0, 1);
+      $result = $query->execute();
+      $uid = reset($result);
+
+      if (empty($result)) {
+        throw new \InvalidArgumentException("Unable to load author of comment.");
+      }
+      unset($comment_values['parent']);
+      unset($comment_values['author']);
+      $comment_values['uid'] = $uid;
+      $values = [
+        'comment_type' => 'comment',
+        'status' => CommentInterface::PUBLISHED,
+        'uid' => $uid,
+        'field_name' => 'field_comments',
+        'entity_type' => 'node',
+        'entity_id' => $id,
+      ];
+      $comment_values += $values;
+      // Ignore due to conflicting Comment class in Phing.
+      $comment = Comment::create($comment_values);
+      $comment->save();
     }
   }
 
