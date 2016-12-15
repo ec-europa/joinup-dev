@@ -28,6 +28,7 @@ Feature: "Edit" visibility options.
       | is version of       | My awesome solution abc    |
       | owner               | Awesome person             |
       | contact information | Awesome contact            |
+      | state               | validated                  |
 
   Scenario: "Edit" button should only be shown to solution facilitators.
     When I am logged in as a "facilitator" of the "My awesome solution abc" solution
@@ -50,9 +51,9 @@ Feature: "Edit" visibility options.
     When I fill in "Name" with "My awesome solution abc v1.1"
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."
-    And I press "Save"
+    And I press "Update"
 
     # Verify that the "Release Test 1 v2" is registered as a release to "Release Test 1" solution.
     When I go to the homepage of the "My awesome solution abc" solution
-    Then I should see the text "Releases"
+    When I click "Download releases"
     And I should see the text "My awesome solution abc v1.1"
