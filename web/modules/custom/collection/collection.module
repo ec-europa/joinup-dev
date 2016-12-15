@@ -213,7 +213,6 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
   if ($display->getComponent('join_collection')) {
     $form = \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', \Drupal::currentUser(), $entity);
     $build['join_collection'] = $form;
-    $build['#cache']['tags'][] = 'user.roles';
   }
 }
 
