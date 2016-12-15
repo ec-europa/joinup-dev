@@ -21,6 +21,11 @@ process:
     source: collection
     migration: collection_banner
     no_stub: true
+  field_ar_contact_information:
+    plugin: migration
+    source: contact
+    migration: contact
+    no_stub: true
   field_ar_creation_date: created
   field_ar_description/value: body
   field_ar_description/format:
@@ -46,8 +51,6 @@ process:
     source: owner
     migration: owner
     no_stub: true
-  # @todo Revisit and fix this after ISAICP-2993 lands.
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2993
   field_policy_domain:
     plugin: policy_domain
     source: policy2

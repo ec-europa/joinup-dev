@@ -13,7 +13,9 @@ use Drupal\migrate\Row;
  */
 class Solution extends SolutionBase {
 
+  use ContactTrait;
   use CountryTrait;
+  use MappingTrait;
   use OwnerTrait;
   use UriTrait;
 
@@ -36,6 +38,7 @@ class Solution extends SolutionBase {
       'related' => $this->t('Related solutions'),
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
+      'contact' => $this->t('Contact info'),
     ] + parent::fields();
   }
 
@@ -142,6 +145,9 @@ class Solution extends SolutionBase {
 
     // Owners.
     $row->setSourceProperty('owner', $this->getSolutionOwners($vid) ?: NULL);
+
+    // Owners.
+    $row->setSourceProperty('contact', $this->getSolutionContacts($vid) ?: NULL);
 
     return parent::prepareRow($row);
   }

@@ -7,9 +7,9 @@ source:
   track_changes: true
 process:
   id: uri
-  field_ci_name: field_contact_point_name
-  field_ci_email: field_contact_point_mail
-  field_ci_webpage: field_contact_point_web_page
+  field_ci_name: name
+  field_ci_email: mail
+  field_ci_webpage: webpage
 destination:
   plugin: entity:rdf_entity
   default_bundle: contact_information
