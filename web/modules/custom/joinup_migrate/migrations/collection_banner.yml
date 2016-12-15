@@ -1,5 +1,8 @@
 id: collection_banner
 label: 'Collection banner file migration'
+migration_tags:
+  - collection
+  - file
 source:
   plugin: collection_banner
 process:

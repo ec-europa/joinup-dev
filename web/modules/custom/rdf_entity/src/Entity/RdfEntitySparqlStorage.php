@@ -828,7 +828,7 @@ QUERY;
     $query = "INSERT DATA INTO <$graphUri> {\n";
     $query .= $graph->serialise('ntriples') . "\n";
     $query .= '}';
-    return $this->sparql->query($query);
+    return $this->sparql->update($query);
   }
 
   /**
