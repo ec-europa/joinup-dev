@@ -151,25 +151,32 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
   }
 
   /**
-   * Provides data for create access check.
+   * Tests the asset release workflow.
    */
-  public function createAccessProvider() {
-    return [
-      // Unpublished parent.
-      'draft' => [
-        ['userAuthenticated', FALSE],
-        ['userModerator', TRUE],
-        ['userOgFacilitator', TRUE],
-        ['userOgAdministrator', FALSE],
-      ],
-      // Published parent.
-      'validated' => [
-        ['userAuthenticated', FALSE],
-        ['userModerator', TRUE],
-        ['userOgFacilitator', TRUE],
-        ['userOgAdministrator', FALSE],
-      ],
-    ];
+  public function testWorkflow() {
+    foreach ($this->workflowTransitionsProvider() as $entity_state => $workflow_data) {
+      $parent = $this->createDefaultParent('validated');
+
+      foreach ($workflow_data as $user_var => $transitions) {
+        $content = Rdf::create([
+          'rid' => 'asset_release',
+          'label' => $this->randomMachineName(),
+          'field_isr_state' => $entity_state,
+          'field_isr_is_version_of' => $parent->id(),
+        ]);
+        $content->save();
+
+        $this->userProvider->setUser($this->{$user_var});
+        $actual_transitions = $content->field_isr_state->first()->getTransitions();
+        $actual_transitions = array_map(function ($transition) {
+          return $transition->getId();
+        }, $actual_transitions);
+        sort($actual_transitions);
+        sort($transitions);
+
+        $this->assertEquals($transitions, $actual_transitions, t('Allowed transitions match with settings.'));
+      }
+    }
   }
 
   /**
@@ -178,7 +185,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * @param string $state
    *    The state of the entity.
    *
-   * @return \Drupal\rdf_entity\RdfInterface
+   * @return \Drupal\Core\Entity\EntityInterface
    *    The created solution entity.
    */
   public function createDefaultParent($state) {
@@ -209,6 +216,28 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
     $membership->save();
     $loaded = $this->ogMembershipManager->getMembership($group, $user);
     $this->assertInstanceOf(OgMembership::class, $loaded, t("A membership was successfully created."));
+  }
+
+  /**
+   * Provides data for create access check.
+   */
+  public function createAccessProvider() {
+    return [
+      // Unpublished parent.
+      'draft' => [
+        ['userAuthenticated', FALSE],
+        ['userModerator', TRUE],
+        ['userOgFacilitator', TRUE],
+        ['userOgAdministrator', FALSE],
+      ],
+      // Published parent.
+      'validated' => [
+        ['userAuthenticated', FALSE],
+        ['userModerator', TRUE],
+        ['userOgFacilitator', TRUE],
+        ['userOgAdministrator', FALSE],
+      ],
+    ];
   }
 
   /**
@@ -305,6 +334,50 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgFacilitator', FALSE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
+      ],
+    ];
+  }
+
+  /**
+   * Provides data for transition checks.
+   */
+  public function workflowTransitionsProvider() {
+    return [
+      'draft' => [
+        'userAuthenticated' => [],
+        'userModerator' => [
+          'draft',
+          'validate',
+        ],
+        'userOgFacilitator' => [
+          'draft',
+          'validate',
+        ],
+        'userOgAdministrator' => [],
+      ],
+      'validated' => [
+        'userAuthenticated' => [],
+        'userModerator' => [
+          'draft',
+          'update_published',
+          'request_changes',
+        ],
+        'userOgFacilitator' => [
+          'draft',
+          'update_published',
+        ],
+        'userOgAdministrator' => [],
+      ],
+      'in_assessment' => [
+        'userAuthenticated' => [],
+        'userModerator' => [
+          'update_changes',
+          'validate',
+        ],
+        'userOgFacilitator' => [
+          'update_changes',
+        ],
+        'userOgAdministrator' => [],
       ],
     ];
   }

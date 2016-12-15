@@ -35,6 +35,7 @@ transitions:
       - moderator
   update_changes:
     in_assessment:
+      - moderator
       - rdf_entity-solution-facilitator
   validate:
     draft:

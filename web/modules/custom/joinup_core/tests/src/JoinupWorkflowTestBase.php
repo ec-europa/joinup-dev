@@ -38,6 +38,13 @@ class JoinupWorkflowTestBase extends BrowserTestBase {
   protected $entityAccess;
 
   /**
+   * The user provider service for the workflow guards.
+   *
+   * @var \Drupal\joinup_user\WorkflowUserProvider
+   */
+  protected $userProvider;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -45,6 +52,7 @@ class JoinupWorkflowTestBase extends BrowserTestBase {
     $this->ogMembershipManager = \Drupal::service('og.membership_manager');
     $this->ogAccess = $this->container->get('og.access');
     $this->entityAccess = $this->container->get('entity_type.manager')->getAccessControlHandler('rdf_entity');
+    $this->userProvider = $this->container->get('joinup_user.workflow.user_provider');
   }
 
 }
