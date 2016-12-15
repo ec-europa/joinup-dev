@@ -19,6 +19,7 @@
         "drupal/message": "~1.0",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
+        "drupal/migrate_run": "~1.0-alpha1",
         "drupal/migrate_spreadsheet": "1.x-dev",
         "drupal/og": "dev-recent-group-content-block",
         "drupal/og_menu": "dev-8.x-1.x",
@@ -106,7 +107,8 @@
                 "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                 "EntityPublishedInterface @see https://www.drupal.org/node/2789315 @see https://www.drupal.org/node/2810381 @todo Remove in 8.3.x": "./resources/patches/combined-2810381-and-2789315.patch",
                 "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
-                "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch"
+                "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch",
+                "SqlBase::prepareQuery() should be called also on count @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch"
             },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
@@ -116,7 +118,8 @@
             },
             "drupal/search_api": {
                 "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch",
-                "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-8-on_2753667-8.patch"
+                "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-8-on_2753667-8.patch",
+                "item_id column is too short @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/2829696-7.patch"
             },
             "drupal/taxonomy_container" : {
                 "Terms with string IDs are missing from dropdown": "https://www.drupal.org/files/issues/2833176-2.patch"
