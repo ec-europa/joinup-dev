@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -212,6 +213,14 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
 
   if ($display->getComponent('join_collection')) {
     $form = \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', \Drupal::currentUser(), $entity);
+
+    // This form varies by the role a user has inside the collection. Set the
+    // applicable cache context.
+    $metadata = CacheableMetadata::createFromRenderArray($form);
+    $metadata
+      ->addCacheContexts(['og_role'])
+      ->applyTo($form);
+
     $build['join_collection'] = $form;
   }
 }

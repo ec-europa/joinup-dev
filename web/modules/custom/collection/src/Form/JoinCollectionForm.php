@@ -96,12 +96,6 @@ class JoinCollectionForm extends FormBase {
       ];
     }
 
-    // This form varies by user and collection.
-    // $metadata = new CacheableMetadata();
-    // $metadata
-    // ->merge(CacheableMetadata::createFromObject($user))
-    // ->merge(CacheableMetadata::createFromObject($collection))
-    // ->applyTo($form);
     return $form;
   }
 
