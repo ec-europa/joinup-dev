@@ -62,7 +62,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
       }, Term::loadMultiple($tids));
 
       if ($not_found = array_diff($types, $found)) {
-        throw new \Exception("Owner types doesn't exist: " . implode(', ', $not_found));
+        throw new \Exception("Non-existent owner types: " . implode(', ', $not_found));
       }
 
       $owner = Rdf::create([

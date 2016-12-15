@@ -56,23 +56,14 @@ class ImportRdfFixtures extends VirtuosoTaskBase {
       $fixtures_path = $this->sharedDirectory;
     }
 
-    // Reset the import table (Needed for re-import).
-    $this->execute("delete from db.dba.load_list;");
     foreach (glob($fixtures_path . '*.rdf') as $rdf_file_path) {
       $filename = array_pop(explode('/', $rdf_file_path));
       $file = str_replace('.rdf', '', $filename);
       $graph_name = 'http://' . strtolower($file);
       // Delete the graph first...
       $this->execute("SPARQL CLEAR GRAPH <$graph_name>;");
-      // Schedule for import.
-      $this->execute("ld_add('$rdf_file_path', '$graph_name');");
+      exec("curl --digest --user $this->user:$this->pass --verbose --url 'http://$this->dsn:8890/sparql-graph-crud-auth?graph-uri=$graph_name' -T $rdf_file_path");
     }
-    // Import.
-    $this->execute("rdf_loader_run();");
-    $this->execute("checkpoint;");
-    $this->execute("commit WORK;");
-    $this->execute("checkpoint;");
-    $this->execute("SELECT * FROM DB.DBA.LOAD_LIST WHERE ll_error IS NOT NULL;");
   }
 
   public function setSharedDirectory($dir) {
