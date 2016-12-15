@@ -3,41 +3,14 @@
 namespace Drupal\Tests\rdf_entity\Kernel;
 
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\Tests\rdf_entity\RdfTestBase;
+use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 
 /**
  * Tests the support of saving various encoded stings in the triple store.
  *
  * @group rdf_entity
  */
-class RdfEncodingTest extends RdfTestBase {
-
-  /**
-   * Modules to enable for this test.
-   *
-   * @var string[]
-   */
-  public static $modules = array(
-    'rdf_entity',
-    'rdf_entity_test',
-    'field',
-    'node',
-    'system',
-    'options',
-    'entity_reference',
-  );
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setUp() {
-    parent::setUp();
-
-    $this->installConfig(['rdf_entity']);
-    $this->installEntitySchema('rdf_entity');
-
-    $this->installConfig(['rdf_entity_test']);
-  }
+class RdfEncodingTest extends JoinupKernelTestBase {
 
   /**
    * Test that naughty strings can safely be saved to the database.
@@ -102,7 +75,6 @@ class RdfEncodingTest extends RdfTestBase {
       $this->assertEquals($text['value'], $naughty_string, $msg);
       $rdf->delete();
     }
-
   }
 
 }

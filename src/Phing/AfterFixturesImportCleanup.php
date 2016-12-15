@@ -25,23 +25,7 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     // labeled 'Multilingual Code'.
     // @see http://publications.europa.eu/mdr/resource//documentation/schema/cat.html#element_languages
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2764
-    $this->execute('sparql DELETE FROM <http://languages-skos>
-{
-  ?entity ?field ?value.
-  }
-WHERE
-{
-  ?entity ?field ?value.
-  FILTER(isBlank(?entity))
-};');
-    $this->execute('sparql DELETE FROM <http://languages-skos> {
-  ?entity ?field ?value.
-}
-WHERE
-{
-  ?entity ?field ?value.
-  ?entity rdf:type <http://publications.europa.eu/resource/authority/Multilingual>
-};');
+    $this->execute('sparql DELETE FROM <http://languages-skos> { ?entity ?field ?value. } WHERE { ?entity ?field ?value. FILTER(isBlank(?entity)) };');
 
   }
 
