@@ -331,4 +331,14 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTagsToInvalidate() {
+    if ($this->isNew()) {
+      return [];
+    }
+    return [$this->entityTypeId . ':' . md5($this->id())];
+  }
+
 }
