@@ -83,6 +83,34 @@ class Connection {
   }
 
   /**
+   * Execute the actual update query against the Sparql endpoint.
+   */
+  public function update($query) {
+    if (!empty($this->logger)) {
+      // @todo Fix this. Logger should have been auto started.
+      // Probably related to the overwritten log object in $this->setLogger.
+      // Look at
+      // \Drupal\webprofiler\StackMiddleware\WebprofilerMiddleware::handle.
+      $this->logger->start('webprofiler');
+      $query_start = microtime(TRUE);
+    }
+
+    $results = $this->connection->update($query);
+
+    if (!empty($this->logger)) {
+      $query_end = microtime(TRUE);
+      $this->query = $query;
+      // @fixme Passing in an incorrect but seemingly compatible object.
+      // This will most likely break in PHP7 (incorrect type hinting).
+      // Replace array($query) with the placeholder version.
+      // I should probably implement the statement interface...
+      $this->logger->log($this, array($query), $query_end - $query_start);
+    }
+
+    return $results;
+  }
+
+  /**
    * Helper to get the query. Called from the logger.
    */
   public function getQueryString() {

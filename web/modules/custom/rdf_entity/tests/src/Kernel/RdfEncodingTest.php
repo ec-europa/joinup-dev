@@ -2,99 +2,15 @@
 
 namespace Drupal\Tests\rdf_entity\Kernel;
 
-use Drupal\Core\Database\Database;
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
-use EasyRdf\Http;
+use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 
 /**
  * Tests the support of saving various encoded stings in the triple store.
  *
  * @group rdf_entity
  */
-class RdfEncodingTest extends EntityKernelTestBase {
-
-  /**
-   * The SPARQL database connection.
-   *
-   * @var array
-   */
-  protected $database;
-
-  /**
-   * Modules to enable for this test.
-   *
-   * @var string[]
-   */
-  public static $modules = array(
-    'rdf_entity',
-    'rdf_entity_test',
-    'field',
-    'node',
-    'system',
-    'options',
-    'entity_reference',
-  );
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setUp() {
-    parent::setUp();
-
-    if (!$this->setUpSparql()) {
-      $this->markTestSkipped('No Sparql connection available.');
-    }
-    // Test is not compatible with Virtuoso 6.
-    if ($this->detectVirtuoso6()) {
-      $this->markTestSkipped('Skipping: Not running on Virtuoso 6.');
-    }
-
-    $this->installConfig(['rdf_entity']);
-    $this->installEntitySchema('rdf_entity');
-
-    $this->installConfig(['rdf_entity_test']);
-  }
-
-  /**
-   * Checks if the triple store is an Virtuoso 6 instance.
-   */
-  protected function detectVirtuoso6() {
-    $client = Http::getDefaultHttpClient();
-    $client->resetParameters(TRUE);
-    $client->setUri("http://{$this->database['host']}:{$this->database['port']}/");
-    $client->setMethod('GET');
-    $response = $client->request();
-    $server_header = $response->getHeader('Server');
-    if (strpos($server_header, "Virtuoso/06") === FALSE) {
-      return FALSE;
-    }
-    return TRUE;
-  }
-
-  /**
-   * Setup the db connection to the triple store.
-   */
-  protected function setUpSparql() {
-    // If the test is run with argument db url then use it.
-    // export SIMPLETEST_SPARQL_DB='sparql://127.0.0.1:8890/'.
-    $db_url = getenv('SIMPLETEST_SPARQL_DB');
-    if (empty($db_url)) {
-      return FALSE;
-    }
-    $this->database = Database::convertDbUrlToConnectionInfo($db_url, DRUPAL_ROOT);
-    $this->database['namespace'] = 'Drupal\\rdf_entity\\Database\\Driver\\sparql';
-    Database::addConnectionInfo('sparql_default', 'default', $this->database);
-
-    return TRUE;
-  }
-
-  /**
-   * Clear the index after every test.
-   */
-  public function tearDown() {
-    parent::tearDown();
-  }
+class RdfEncodingTest extends JoinupKernelTestBase {
 
   /**
    * Test that naughty strings can safely be saved to the database.
@@ -159,7 +75,6 @@ class RdfEncodingTest extends EntityKernelTestBase {
       $this->assertEquals($text['value'], $naughty_string, $msg);
       $rdf->delete();
     }
-
   }
 
 }

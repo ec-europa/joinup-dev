@@ -11,10 +11,10 @@ use Drupal\migrate\Row;
  * Provides a processor for mapping_table migration.
  *
  * @MigrateProcessPlugin(
- *   id = "mapping_table_nid"
+ *   id = "mapping_nid"
  * )
  */
-class MappingTableNid extends ProcessPluginBase {
+class MappingNid extends ProcessPluginBase {
 
   /**
    * {@inheritdoc}

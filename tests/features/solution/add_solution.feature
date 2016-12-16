@@ -73,7 +73,7 @@ Feature: "Add solution" visibility options.
       | name  | Contact information example |
     And the following owner:
       | name                 | type    |
-      | Organisation example | Company |
+      | Organisation example | Company, Industry consortium |
     And I am logged in as a facilitator of the "Belgian barista's" collection
 
     When I go to the homepage of the "Belgian barista's" collection
