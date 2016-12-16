@@ -89,17 +89,27 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * Multiple roles can be passed separated with comma.
    *
+   * @param string $roles
+   *   A comma separated list of roles to assign to the user.
+   * @param string $rdf_entity
+   *   The label of the collection or solution of which the user is a member.
+   * @param string $rdf_entity_bundle
+   *   The RDF entity bundle, either 'collection' or 'solution'.
+   *
+   * @throws \Exception
+   *   Thrown when a collection or solution with the given label doesn't exist.
+   *
    * @Given I am logged in as a user with the :role role(s) of the :rdf_entity :rdf_entity_bundle
    * @Given I am logged in as a/an :role of the :rdf_entity :rdf_entity_bundle
    *
    * @see \Drupal\DrupalExtension\Context\DrupalContext::assertAuthenticatedByRole()
    */
-  public function assertAuthenticatedByOgRole($role, $rdf_entity, $rdf_entity_bunlde) {
-    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bunlde);
+  public function assertAuthenticatedByOgRole($roles, $rdf_entity, $rdf_entity_bundle) {
+    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
     if (!$entity) {
       throw new \Exception("No entity found with label $rdf_entity");
     }
-    $roles = explode(',', $role);
+    $roles = explode(',', $roles);
     $roles = array_map('trim', $roles);
     $roles = $this->getOgRoles($roles, $entity);
 
