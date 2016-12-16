@@ -2,8 +2,6 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\migrate\Row;
-
 /**
  * Migrates collections.
  *
@@ -35,7 +33,7 @@ class Contact extends JoinupSqlBase {
     return [
       'nid' => $this->t('ID'),
       'uri' => $this->t('URI'),
-      'name' => $this->t('Name'),
+      'title' => $this->t('Name'),
       'mail' => $this->t('E-mail'),
       'webpage' => $this->t('Webpage'),
     ];
@@ -65,33 +63,19 @@ class Contact extends JoinupSqlBase {
       $query->condition("{$this->alias['node']}.nid", $allowed_nids, 'IN');
     }
     else {
-      // It there's no allowed NID, return nothing.
+      // It there are no allowed NIDs, return nothing.
       $query->condition(1, 2);
     }
 
-    $query->leftJoin('content_field_contact_point_name', 'cn', "{$this->alias['node']}.vid = cn.vid");
     $query->leftJoin('content_field_contact_point_mail', 'cm', "{$this->alias['node']}.vid = cm.vid");
     $query->leftJoin('content_field_contact_point_web_page', 'cw', "{$this->alias['node']}.vid = cw.vid");
 
-    $query->addExpression('cn.field_contact_point_name_value', 'name');
     $query->addExpression('cm.field_contact_point_mail_value', 'mail');
     $query->addExpression('cw.field_contact_point_web_page_url', 'webpage');
 
     return $query
       // Assure the URI field.
       ->addTag('uri');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function prepareRow(Row $row) {
-    $name = trim($row->getSourceProperty('name'));
-    $title = trim($row->getSourceProperty('title'));
-    $name = !$name || ($name == $title) ? $title : trim("$title $name");
-    $row->setSourceProperty('name', $name);
-
-    return parent::prepareRow($row);
   }
 
 }

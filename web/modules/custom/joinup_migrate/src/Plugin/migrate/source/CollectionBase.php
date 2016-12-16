@@ -31,7 +31,7 @@ abstract class CollectionBase extends GroupBase {
     $or = (new Condition('OR'))
       ->condition((new Condition('AND'))
         ->condition('j.new_collection', 'Yes')
-        ->isNotNull('j.policy')
+        ->isNotNull('j.policy2')
         ->isNotNull('j.abstract')
       )
       ->condition("{$this->alias['node']}.type", ['community', 'repository'], 'IN');

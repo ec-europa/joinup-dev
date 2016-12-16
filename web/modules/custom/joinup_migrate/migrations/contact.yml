@@ -7,7 +7,7 @@ source:
   track_changes: true
 process:
   id: uri
-  field_ci_name: name
+  field_ci_name: title
   field_ci_email: mail
   field_ci_webpage: webpage
 destination:
