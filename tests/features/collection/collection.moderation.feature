@@ -137,7 +137,7 @@ Feature: Collection moderation
       | Carpet Sandation | Company |
     And the following contact:
       | name  | Partyanimal             |
-      | email | partyanmial@example.com |
+      | email | partyanimal@example.com |
     And collection:
       | title               | Some berry pie     |
       | description         | Berries are tasty. |
