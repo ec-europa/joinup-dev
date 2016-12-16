@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d783fe627ae97fceac4975b0a44467f1",
-    "content-hash": "eff71ab6d06ab63a9e8b54c110e2feed",
+    "hash": "c0f0687638a3e6dac7f97be2e65019cf",
+    "content-hash": "1a5db361e6cd6f2ccb762bc9ba57e4af",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1596,12 +1596,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "f079ffd1926658a3678cd1cc0e7c2954f4940cf6"
+                "reference": "bd80f1e43885ce75aa54434006754252e0eba489"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/f079ffd1926658a3678cd1cc0e7c2954f4940cf6",
-                "reference": "f079ffd1926658a3678cd1cc0e7c2954f4940cf6",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/bd80f1e43885ce75aa54434006754252e0eba489",
+                "reference": "bd80f1e43885ce75aa54434006754252e0eba489",
                 "shasum": ""
             },
             "require": {
@@ -1749,7 +1749,6 @@
                     "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                     "EntityPublishedInterface @see https://www.drupal.org/node/2789315 @see https://www.drupal.org/node/2810381 @todo Remove in 8.3.x": "./resources/patches/combined-2810381-and-2789315.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
-                    "Properly check if a destination folder for a file exists": "https://www.drupal.org/files/issues/2828542-2.patch",
                     "SqlBase::prepareQuery() should be called also on count @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch"
                 }
             },
@@ -1774,7 +1773,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-12-12 13:15:43"
+            "time": "2016-12-15 22:57:54"
         },
         {
             "name": "drupal/digital_size_formatter",
