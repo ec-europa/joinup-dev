@@ -21,6 +21,11 @@ process:
     source: collection
     migration: collection_banner
     no_stub: true
+  field_ar_contact_information:
+    plugin: migration
+    source: contact
+    migration: contact
+    no_stub: true
   field_ar_creation_date: created
   field_ar_description/value: body
   field_ar_description/format:

@@ -14,9 +14,11 @@ process:
     source: nid
     migration: solution_banner
     no_stub: true
-  # Blocked by ISAICP-3006.
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3006
-  # field_is_contact_information:
+  field_is_contact_information:
+    plugin: migration
+    source: contact
+    migration: contact
+    no_stub: true
   field_ar_creation_date: created
   field_is_description/value: body
   field_is_description/format:
