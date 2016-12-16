@@ -597,7 +597,7 @@ QUERY;
   /**
    * {@inheritdoc}
    */
-  protected function doDelete($entities) {
+  protected function doDelete(array $entities) {
     $entities_by_graph = [];
     /** @var string $id */
     /** @var ContentEntityInterface $entity */
@@ -618,7 +618,7 @@ QUERY;
    * @param string $graph
    *   The graph uri to delete from.
    */
-  protected function doDeleteFromGraph($entities, $graph) {
+  protected function doDeleteFromGraph(array $entities, $graph) {
     $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
 
     $query = <<<QUERY
@@ -951,7 +951,7 @@ QUERY;
   /**
    * {@inheritdoc}
    */
-  protected function setPersistentCache($entities) {
+  protected function setPersistentCache(array $entities) {
     if (!$this->entityType->isPersistentlyCacheable()) {
       return;
     }
