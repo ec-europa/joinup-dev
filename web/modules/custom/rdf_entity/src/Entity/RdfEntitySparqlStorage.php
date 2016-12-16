@@ -597,7 +597,7 @@ QUERY;
   /**
    * {@inheritdoc}
    */
-  protected function doDelete(array $entities) {
+  protected function doDelete($entities) {
     $entities_by_graph = [];
     /** @var string $id */
     /** @var ContentEntityInterface $entity */
@@ -951,7 +951,7 @@ QUERY;
   /**
    * {@inheritdoc}
    */
-  protected function setPersistentCache(array $entities) {
+  protected function setPersistentCache($entities) {
     if (!$this->entityType->isPersistentlyCacheable()) {
       return;
     }
