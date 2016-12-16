@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -19,6 +20,7 @@ use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -36,6 +38,21 @@ function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface
   // Make sure the collection label is unique.
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'collection' && !empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['collection']]);
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function collection_views_pre_view(ViewExecutable $view) {
+  // The collections overview varies by the user's memberships. For example if
+  // you are the owner of a proposed collection you can see it, while a non-
+  // member won't be able to see it yet.
+  if ($view->id() === 'collections') {
+    (new CacheableMetadata())
+      ->setCacheContexts(['og_role', 'user.roles'])
+      ->merge(CacheableMetadata::createFromRenderArray($view->element))
+      ->applyTo($view->element);
   }
 }
 
