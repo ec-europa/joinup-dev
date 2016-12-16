@@ -739,7 +739,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Click the given link in the plus button menu.
    *
-   * This will open the plus button first on JavaScript enabled browsers.
+   * On JavaScript enabled browsers this will first click the plus button to
+   * open the menu.
    *
    * @param string $link
    *   The link text of the link to click.
@@ -750,17 +751,27 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // Check if we are running in an environment that supports JavaScript like
     // Selenium or PhantomJS. If this is the case the plus button menu will be
     // closed by default and needs to be opened first.
+    $this->openPlusButtonMenu();
+    $this->getSession()->getPage()->clickLink($link);
+  }
+
+  /**
+   * Opens the plus button menu on JS-enabled browsers.
+   */
+  protected function openPlusButtonMenu() {
     if ($this->browserSupportsJavascript()) {
       $driver = $this->getSession()->getDriver();
       $this->getSession()->getDriver()->click('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//button');
 
-      // Wait for the menu opening animation to end before clicking the link.
+      // Wait for the menu opening animation to end before continuing.
       $end = microtime(TRUE) + 5;
       do {
         usleep(100000);
-      } while (microtime(TRUE) < $end && !$driver->isVisible('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[contains(., "' . $link . '")]'));
+        // The plus button opening animation runs from the top right to the
+        // bottom left. Wait for the last element to become visible to ensure
+        // the menu is fully opened.
+      } while (microtime(TRUE) < $end && !$driver->isVisible('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[last()]'));
     }
-    $this->getSession()->getPage()->clickLink($link);
   }
 
   /**

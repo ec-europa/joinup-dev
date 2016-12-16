@@ -12,15 +12,15 @@ Feature: "Add custom page" visibility options.
 
     When I am logged in as a member of the "Code Camp" collection
     And I go to the homepage of the "Code Camp" collection
-    Then I should not see the link "Add custom page"
+    Then I should not see the link "Add custom page" in the "Plus button menu"
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Code Camp" collection
-    Then I should not see the link "Add custom page"
+    Then I should not see the link "Add custom page" in the "Plus button menu"
 
     When I am an anonymous user
     And I go to the homepage of the "Code Camp" collection
-    Then I should not see the link "Add custom page"
+    Then I should not see the link "Add custom page" in the "Plus button menu"
 
   Scenario: Add custom page as a facilitator.
     Given collections:
@@ -45,7 +45,7 @@ Feature: "Add custom page" visibility options.
 
     When I fill in the following:
       | Title | About us                      |
-      | Body  | We are open about everything! |
+    And I enter "We are open about everything!" in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the heading "About us"
     And I should see the success message "Custom page About us has been created."
@@ -76,7 +76,7 @@ Feature: "Add custom page" visibility options.
     # Moderators can add custom pages in any collection, whether they are a member or not.
     Given I am logged in as "Falstad"
     When I go to the homepage of the "Open Collective" collection
-    Then I should see the link "Add custom page"
+    Then I should see the link "Add custom page" in the "Plus button menu"
 
     When I go to the homepage of the "Code Camp" collection
-    Then I should see the link "Add custom page"
+    Then I should see the link "Add custom page" in the "Plus button menu"
