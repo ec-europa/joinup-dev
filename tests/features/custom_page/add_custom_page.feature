@@ -4,23 +4,48 @@ Feature: "Add custom page" visibility options.
   As a collection member
   I need to be able to add "Custom page" content through UI.
 
-  Scenario: "Add custom page" button should not be shown to normal members, authenticated users and anonymous users.
+  Scenario: Links and help text for adding custom pages should should only be shown to privileged users
     Given the following collection:
       | title | Code Camp |
       | logo  | logo.png  |
       | state | validated |
 
+    # Custom pages cannot be added by normal members. Custom pages are
+    # considered to be important, and are not considered 'community content'.
     When I am logged in as a member of the "Code Camp" collection
     And I go to the homepage of the "Code Camp" collection
     Then I should not see the link "Add custom page" in the "Plus button menu"
+    And I should not see the link "Add a new page" in the "Left sidebar"
+    And I should not see the text "There are no pages yet. Why don't you start by creating an About page?"
+    # If the normal member is promoted to facilitator, the links and help text
+    # should become visible.
+    Given my role in the "Code Camp" collection changes to facilitator
+    And I reload the page
+    Then I should see the link "Add custom page" in the "Plus button menu"
+    And I should see the link "Add a new page" in the "Left sidebar"
+    And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
 
+    # An authenticated user which is not a member should also not see the links
+    # and help text.
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Code Camp" collection
     Then I should not see the link "Add custom page" in the "Plus button menu"
+    And I should not see the link "Add a new page" in the "Left sidebar"
+    And I should not see the text "There are no pages yet. Why don't you start by creating an About page?"
 
+    # An anonymous user should also not see the links and help text.
     When I am an anonymous user
     And I go to the homepage of the "Code Camp" collection
     Then I should not see the link "Add custom page" in the "Plus button menu"
+    And I should not see the link "Add a new page" in the "Left sidebar"
+    And I should not see the text "There are no pages yet. Why don't you start by creating an About page?"
+
+    # A facilitator should see it.
+    When I am logged in as a facilitator of the "Code Camp" collection
+    And I go to the homepage of the "Code Camp" collection
+    Then I should see the link "Add custom page" in the "Plus button menu"
+    And I should see the link "Add a new page" in the "Left sidebar"
+    And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
 
   Scenario: Add custom page as a facilitator.
     Given collections:

@@ -124,6 +124,38 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Changes the role of a user within a collection or solution.
+   *
+   * Use this to e.g. test promotion or demotion of facilitators.
+   *
+   * @param string $rdf_entity
+   *   The label of the collection or solution of which the user is a member.
+   * @param string $rdf_entity_bundle
+   *   The RDF entity bundle, either 'collection' or 'solution'.
+   * @param string $roles
+   *   A comma separated list of roles to assign to the user. All previously
+   *   assigned roles will be discarded.
+   *
+   * @throws \Exception
+   *   Thrown when a collection or solution with the given label doesn't exist.
+   *
+   * @Given my role(s) in the :rdf_entity :rdf_entity_bundle change(s) to :roles
+   */
+  public function updateGroupRoles($rdf_entity, $rdf_entity_bundle, $roles) {
+    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
+    if (!$entity) {
+      throw new \Exception("No entity found with label $rdf_entity");
+    }
+    $roles = explode(',', $roles);
+    $roles = $this->getOgRoles(array_map('trim', $roles), $entity);
+
+    $current_user = $this->getUserManager()->getCurrentUser();
+    $account = User::load($current_user->uid);
+
+    $this->subscribeUserToGroup($account, $entity, $roles);
+  }
+
+  /**
    * Checks that the logged in user has the given OG roles in the given group.
    *
    * If the user has more than the required roles, he might have permissions
