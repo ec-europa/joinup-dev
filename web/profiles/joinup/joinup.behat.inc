@@ -6,15 +6,19 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use Drupal\comment\CommentInterface;
+use \Drupal\comment\Entity\Comment;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
@@ -25,10 +29,12 @@ use Drupal\User\Entity\User;
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use BrowserCapabilityDetectionTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
   use WorkflowTrait;
+  use WysiwygTrait;
 
   /**
    * Test files.
@@ -243,7 +249,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function resetRequestGraphs($event) {
     /** @var RdfEntitySparqlStorage $storage */
-    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
     $storage->getGraphHandler()->resetRequestGraphs();
   }
 
@@ -382,7 +388,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks if a content entity is published.
    *
    * @param string $bundle
-   *   The node bunlde.
+   *   The node bundle.
    * @param string $title
    *   The node title.
    *
@@ -391,7 +397,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :title :bundle (content )should be published
    */
-  public function nodePublished($bundle, $title) {
+  public function assertNodePublished($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if (!$node->isPublished()) {
@@ -403,7 +409,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks if a content entity is published.
    *
    * @param string $bundle
-   *   The node bunlde.
+   *   The node bundle.
    * @param string $title
    *   The node title.
    *
@@ -412,12 +418,37 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :title :bundle (content )should not be published
    */
-  public function nodeNotPublished($bundle, $title) {
+  public function assertNodeNotPublished($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if ($node->isPublished()) {
       throw new \Exception("$title content should not be published but it is.");
     }
+  }
+
+  /**
+   * Checks if the given content entity has the correct number of revisions.
+   *
+   * @param string $bundle
+   *   The node bundle.
+   * @param string $title
+   *   The node title.
+   * @param int $count
+   *   The expected number of revisions.
+   *
+   * @Then the :title :bundle (content )should have :count revision(s)
+   */
+  public function assertNodeRevisionCount($bundle, $title, $count) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title, $bundle);
+
+    $revision_count = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
+      ->allRevisions()
+      ->condition('nid', $node->id())
+      ->count()
+      ->execute();
+
+    PHPUnit_Framework_Assert::assertEquals($count, $revision_count);
   }
 
   /**
@@ -454,6 +485,23 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if (!empty($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD})) {
       $entity = $this->getRdfEntityByLabel($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD});
       $node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD} = $entity->id();
+    }
+
+    // Replace the human readable publication statuses with the boolean values
+    // that are expected by the Node module.
+    if (!empty($node->status)) {
+      $mapping = [
+        'unpublished' => 0,
+        'published' => 1,
+      ];
+      // Force the use of human readable values in Behat test scenarios, throw
+      // an exception if the numeric values are used.
+      if (!array_key_exists($node->status, $mapping)) {
+        $supported_statii = implode(', ', array_keys($mapping));
+        throw new \UnexpectedValueException("Unexpected status '{$node->status}'. Supported statuses are: $supported_statii.");
+      }
+      // Replace the human readable value with the expected boolean.
+      $node->status = $mapping[$node->status];
     }
   }
 
@@ -685,6 +733,105 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     if (!empty($found)) {
       throw new \Exception('Button(s) should not be present, but were found: ' . implode(', ', $found));
+    }
+  }
+
+  /**
+   * Click the given link in the plus button menu.
+   *
+   * This will open the plus button first on JavaScript enabled browsers.
+   *
+   * @param string $link
+   *   The link text of the link to click.
+   *
+   * @When I click :link in the plus button menu
+   */
+  public function clickLinkInPlusButtonMenu($link) {
+    // Check if we are running in an environment that supports JavaScript like
+    // Selenium or PhantomJS. If this is the case the plus button menu will be
+    // closed by default and needs to be opened first.
+    if ($this->browserSupportsJavascript()) {
+      $driver = $this->getSession()->getDriver();
+      $this->getSession()->getDriver()->click('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//button');
+
+      // Wait for the menu opening animation to end before clicking the link.
+      $end = microtime(TRUE) + 5;
+      do {
+        usleep(100000);
+      } while (microtime(TRUE) < $end && !$driver->isVisible('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[contains(., "' . $link . '")]'));
+    }
+    $this->getSession()->getPage()->clickLink($link);
+  }
+
+  /**
+   * Enters the given text in the given WYSIWYG editor.
+   *
+   * If this is running on a JavaScript enabled browser it will first click the
+   * 'Source' button so the text can be entered as normal HTML.
+   *
+   * @param string $text
+   *   The text to enter in the WYSIWYG editor.
+   * @param string $label
+   *   The label of the field containing the WYSIWYG editor.
+   *
+   * @When I enter :text in the :label wysiwyg editor
+   */
+  public function enterTextInWysiwyg($text, $label) {
+    // If we are running in a JavaScript enabled browser, first click the
+    // 'Source' button so we can enter the text as HTML and get the same result
+    // as in a non-JS browser.
+    if ($this->browserSupportsJavascript()) {
+      $this->pressWysiwygButton($label, 'Source');
+      $this->setWysiwygText($label, $text);
+    }
+    else {
+      $this->getSession()->getPage()->fillField($label, $text);
+    }
+  }
+
+  /**
+   * Create a comment.
+   *
+   * @Given comments:
+   */
+  public function createComments(TableNode $table) {
+    foreach ($table->getColumnsHash() as $comment_values) {
+      $query = \Drupal::entityQuery('node')
+        ->condition('title', $comment_values['parent'])
+        ->range(0, 1);
+      $result = $query->execute();
+
+      if (empty($result)) {
+        throw new \InvalidArgumentException("Unable to load parent of comment.");
+      }
+
+      // Reload from database to avoid caching issues and get latest version.
+      $id = reset($result);
+
+      $query = \Drupal::entityQuery('user')
+        ->condition('name', $comment_values['author'])
+        ->range(0, 1);
+      $result = $query->execute();
+      $uid = reset($result);
+
+      if (empty($result)) {
+        throw new \InvalidArgumentException("Unable to load author of comment.");
+      }
+      unset($comment_values['parent']);
+      unset($comment_values['author']);
+      $comment_values['uid'] = $uid;
+      $values = [
+        'comment_type' => 'comment',
+        'status' => CommentInterface::PUBLISHED,
+        'uid' => $uid,
+        'field_name' => 'field_comments',
+        'entity_type' => 'node',
+        'entity_id' => $id,
+      ];
+      $comment_values += $values;
+      // Ignore due to conflicting Comment class in Phing.
+      $comment = Comment::create($comment_values);
+      $comment->save();
     }
   }
 

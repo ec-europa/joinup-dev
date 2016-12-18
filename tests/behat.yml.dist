@@ -4,6 +4,7 @@ default:
       contexts:
         - FeatureContext
         - Drupal\joinup\Context\DrupalContext
+        - Drupal\joinup\Context\ScreenshotContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\DrupalExtension\Context\MinkContext
@@ -22,16 +23,19 @@ default:
       api_driver: 'drupal'
       blackbox: ~
       region_map:
-        Primary menu: '.region-primary-menu'
+        Comment: '.comment'
+        Entity actions: '.block-local-tasks-block'
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'
-        Entity actions: '.block-local-tasks-block'
+        Navigation menu: 'div.navigation-menu ul'
+        Primary menu: '.region-primary-menu'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:
         message_selector: '.alert'
         error_message_selector: '.alert.alert--error'
         success_message_selector: '.alert.alert--status'
+        warning_message_selector: '.alert.alert--warning'
         login_form_selector: '#user-login-form'
       subcontexts:
         paths:

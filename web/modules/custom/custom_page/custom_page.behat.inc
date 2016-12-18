@@ -39,7 +39,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *   Thrown when a custom page with the given title doesn't exist.
    *
-   * @Then the :collection collection has a custom page titled :title
+   * @Then the :collection collection should have a custom page titled :title
    */
   public function assertOgMembership($title, $collection) {
     $collection = $this->getRdfEntityByLabel($collection, 'collection');
@@ -187,7 +187,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Then the :menu menu of the :label :type should have :count visible item(s)
    */
-  public function assertVisibleItemsInMenu($menu, $label, $type, $count) {
+  public function assertVisibleItemsInMenuCount($menu, $label, $type, $count) {
     /** @var \Drupal\Core\Menu\MenuLinkTreeInterface $link_tree_service */
     $link_tree_service = \Drupal::service('menu.link_tree');
 

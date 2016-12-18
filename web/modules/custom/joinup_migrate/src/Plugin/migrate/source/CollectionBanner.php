@@ -28,16 +28,17 @@ class CollectionBanner extends CollectionBase {
    * {@inheritdoc}
    */
   public function query() {
-    // @todo Find out if we have some D6 source files for banner.
-    return parent::query()->fields('j', ['banner']);
+    $query = parent::query();
+    return $query
+      ->fields('j', ['banner'])
+      ->isNotNull('j.banner');
   }
 
   /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    // Build source path. A new logo proposal in the mapping table takes
-    // precedence.
+    // Build source path.
     $source_path = NULL;
     $timestamp = NULL;
     if ($banner = $row->getSourceProperty('banner')) {

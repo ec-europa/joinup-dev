@@ -73,7 +73,7 @@ Feature: "Add solution" visibility options.
       | name  | Contact information example |
     And the following owner:
       | name                 | type    |
-      | Organisation example | Company |
+      | Organisation example | Company, Industry consortium |
     And I am logged in as a facilitator of the "Belgian barista's" collection
 
     When I go to the homepage of the "Belgian barista's" collection
@@ -85,7 +85,7 @@ Feature: "Add solution" visibility options.
       | Title            | Espresso is the solution                                               |
       | Description      | This is a test text                                                    |
       | Documentation    | text.pdf                                                               |
-      | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)        |
+      | Policy Domain    | Demography and population                                              |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
@@ -108,7 +108,7 @@ Feature: "Add solution" visibility options.
     Then I should see the heading "Espresso is the solution"
     And I should see the text "This is a test text"
     And I should see the link "Belgian barista's"
-    And I should see the link "Environment (WIP!)"
+    And I should see the link "Demography and population"
     And I should see the link "Belgium"
     And I should see the link "Flemish"
     When I click "Belgian barista's"
@@ -124,7 +124,7 @@ Feature: "Add solution" visibility options.
       | Title            | V60 filter coffee solution                                             |
       | Description      | This is a test text                                                    |
       | Documentation    | text.pdf                                                               |
-      | Policy Domain    | Environment (WIP!) (http://joinup.eu/policy-domain/environment)        |
+      | Policy Domain    | eInclusion                                                             |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
@@ -149,6 +149,4 @@ Feature: "Add solution" visibility options.
 
     # Clean up the solution that was created through the UI.
     Then I delete the "V60 filter coffee solution" solution
-    Then I delete the "Espresso is the solution" solution
-    # Delete twice to delete the draft.
     Then I delete the "Espresso is the solution" solution
