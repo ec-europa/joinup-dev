@@ -5,6 +5,7 @@
  * Functions to support theming in the Joinup theme.
  */
 
+use Drupal\user\Entity\User;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
@@ -387,6 +388,43 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_distribution(&$va
 }
 
 /**
+ * Implements hook_preprocess_page_title__node__news().
+ */
+function joinup_theme_preprocess_page_title__node__news(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $route_match->getParameter('node');
+  if (!empty($node)) {
+    // Get node type.
+    if ($node->getType() !== 'news') {
+      return;
+    }
+
+    // Get the view builder service from the entity type manager.
+    /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+    $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
+    // Get the kicker field.
+    $field_news_kicker = $node->field_news_kicker;
+    $field_news_kicker = $viewBuilder->viewField($field_news_kicker, 'default');
+    // Get the author id.
+    $author_id = $node->uid;
+    $author_id = $author_id->getValue('target_id');
+    $author_id = $author_id[0]['target_id'];
+    // Load the author.
+    $author = User::load($author_id);
+
+    $author_photo = $author->field_user_photo;
+    $author_photo = $viewBuilder->viewField($author_photo, 'view_mode_tile');
+    $author_name = $author->name;
+    $author_name = $viewBuilder->viewField($author_name, 'default');
+
+    $variables['additional_content']['author_name'] = $author_name;
+    $variables['additional_content']['author_photo'] = $author_photo;
+    $variables['additional_content']['field_news_kicker'] = $field_news_kicker;
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK_alter() for input.html.twig.
  *
  * Add theme suggestions so we can provide different styling on some form
@@ -487,6 +525,11 @@ function joinup_theme_theme_suggestions_page_title_alter(array &$suggestions, ar
     /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     $entity = $route_match->getParameter('rdf_entity');
     $suggestions[] = 'page_title__rdf_entity__' . $entity->bundle();
+  }
+  elseif ($route_match->getRouteName() === 'entity.node.canonical') {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $route_match->getParameter('node');
+    $suggestions[] = 'page_title__node__' . $node->bundle();
   }
 }
 
