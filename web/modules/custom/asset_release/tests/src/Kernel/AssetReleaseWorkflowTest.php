@@ -102,6 +102,9 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
 
   /**
    * Tests the CRUD operations for the asset release entities.
+   *
+   * Since the browser test is a slow test, both create access and read/update/
+   * delete access are tested below.
    */
   public function testCrudAccess() {
     // Test create access.
@@ -124,7 +127,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
     }
 
     // Test view, update, delete access.
-    foreach ($this->rudAccessProvider() as $parent_state => $content_data) {
+    foreach ($this->readUpdateDeleteAccessProvider() as $parent_state => $content_data) {
       $parent = $this->createDefaultParent($parent_state);
 
       foreach ($content_data as $content_state => $test_data_arrays) {
@@ -220,6 +223,20 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
 
   /**
    * Provides data for create access check.
+   *
+   * The access to create a release is checked against the parent entity as it
+   * is dependant to og permissions.
+   * The structure of the array is:
+   * @code
+   * $access_array = [
+   *  'parent_state' => [
+   *    ['user1', 'expected_result'],
+   *    ['user2', 'expected_result'],
+   * ];
+   * @code
+   * The user variable represents the variable defined in the test.
+   * Only two parent states need to be tested as the expected result might
+   * differ depending on whether the parent is published or not.
    */
   public function createAccessProvider() {
     return [
@@ -242,8 +259,26 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
 
   /**
    * Provides data for access check.
+   *
+   * The structure of the array is:
+   * @code
+   * $access_array = [
+   *   'parent_state' => [
+   *     'entity_state' => [
+   *        ['operation', 'user1', 'expected_result'],
+   *        ['operation', 'user2', 'expected_result'],
+   *     ],
+   *   ],
+   * ];
+   * @code
+   * Only two parent states need to be tested as the expected result might
+   * differ depending on whether the parent is published or not.
+   *
+   * The reason that this is just an array and not a proper provider is that it
+   * would take a lot of time to reinstall an instance of the site for each
+   * entry.
    */
-  public function rudAccessProvider() {
+  public function readUpdateDeleteAccessProvider() {
     return [
       // Unpublished parent.
       'draft' => [
