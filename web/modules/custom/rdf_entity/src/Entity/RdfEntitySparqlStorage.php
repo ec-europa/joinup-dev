@@ -554,6 +554,49 @@ QUERY;
   /**
    * {@inheritdoc}
    */
+  public function delete(array $entities) {
+    if (!$entities) {
+      // If no entities were passed, do nothing.
+      return;
+    }
+
+    // Ensure that the entities are keyed by ID.
+    $keyed_entities = [];
+    foreach ($entities as $entity) {
+      $keyed_entities[$entity->id()] = $entity;
+    }
+
+    // Allow code to run before deleting.
+    $entity_class = $this->entityClass;
+    $entity_class::preDelete($this, $keyed_entities);
+    foreach ($keyed_entities as $entity) {
+      $this->invokeHook('predelete', $entity);
+    }
+    $entities_by_graph = [];
+    /** @var \Drupal\Core\Entity\EntityInterface $keyed_entity */
+    foreach ($keyed_entities as $keyed_entity) {
+      // Determine all possible graphs for the entity.
+      $graphs = $this->graphHandler->getEntityTypeGraphUris($this->entityType->getBundleEntityType());
+      foreach ($graphs[$keyed_entity->bundle()] as $graph_name => $graph_uri) {
+        $entities_by_graph[$graph_uri][$keyed_entity->id()] = $keyed_entity;
+      }
+    }
+    /** @var string $id */
+    foreach ($entities_by_graph as $graph => $entities_to_delete) {
+      $this->doDeleteFromGraph($entities_to_delete, $graph);
+    }
+    $this->resetCache(array_keys($keyed_entities));
+
+    // Allow code to run after deleting.
+    $entity_class::postDelete($this, $keyed_entities);
+    foreach ($keyed_entities as $entity) {
+      $this->invokeHook('delete', $entity);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function doDelete($entities) {
     $entities_by_graph = [];
     /** @var string $id */
@@ -563,9 +606,22 @@ QUERY;
       $entities_by_graph[$graph_uri][$id] = $entity;
     }
     foreach ($entities_by_graph as $graph => $entities_to_delete) {
-      $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
+      $this->doDeleteFromGraph($entities, $graph);
+    }
+  }
 
-      $query = <<<QUERY
+  /**
+   * Construct and execute the delete query.
+   *
+   * @param array $entities
+   *   An array of entity objects to delete.
+   * @param string $graph
+   *   The graph uri to delete from.
+   */
+  protected function doDeleteFromGraph($entities, $graph) {
+    $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
+
+    $query = <<<QUERY
 DELETE FROM <$graph>
 {
   ?entity ?field ?value
@@ -578,8 +634,7 @@ WHERE
   )
 }
 QUERY;
-      $this->sparql->query($query);
-    }
+    $this->sparql->query($query);
   }
 
   /**
