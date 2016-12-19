@@ -7,7 +7,7 @@ use Drupal\Tests\BrowserTestBase;
 use EasyRdf\Http;
 
 /**
- * Base setup for a joinup workflow test.
+ * Base setup for a Joinup workflow test.
  *
  * @group rdf_entity
  */

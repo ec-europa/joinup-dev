@@ -1,6 +1,6 @@
 field.formatter.third_party.joinup:
   type: mapping
-  label: 'Theme settings for joinup project.'
+  label: 'Theme settings for Joinup project.'
   mapping:
     template_suggestion:
       type: string
@@ -18,14 +18,14 @@ field.formatter.settings.image_url_formatter:
 
 field.widget.settings.state_machine_buttons:
   type: mapping
-  label: 'Theme settings for joinup project.'
+  label: 'Theme settings for Joinup project.'
   mapping:
     use_transition_label:
       type: integer
 
 facet.widget.config.type:
   type: facet.widget.default_config
-  label: 'Search api content listing'
+  label: 'Search API content listing'
   mapping:
     tabs:
       type: integer

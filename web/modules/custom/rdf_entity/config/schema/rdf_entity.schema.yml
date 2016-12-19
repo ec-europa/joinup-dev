@@ -61,7 +61,7 @@ field.widget.settings.datetime_create_update:
 
 field.formatter.third_party.joinup:
   type: mapping
-  label: 'Theme settings for joinup project.'
+  label: 'Theme settings for Joinup project.'
   mapping:
     template_suggestion:
       type: string
