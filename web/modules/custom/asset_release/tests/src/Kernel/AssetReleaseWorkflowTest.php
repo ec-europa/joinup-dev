@@ -110,6 +110,8 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
     // Test create access.
     foreach ($this->createAccessProvider() as $parent_state => $test_data_arrays) {
       $parent = $this->createDefaultParent($parent_state);
+      // Initialize the release entity as it is going to be used in all sub
+      // cases.
       $content = Rdf::create([
         'rid' => 'asset_release',
         'field_isr_is_version_of' => $parent->id(),
@@ -131,6 +133,8 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
       $parent = $this->createDefaultParent($parent_state);
 
       foreach ($content_data as $content_state => $test_data_arrays) {
+        // Initialize the release entity as it is going to be used in all sub
+        // cases.
         $content = Rdf::create([
           'rid' => 'asset_release',
           'label' => $this->randomMachineName(),
@@ -169,6 +173,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
         ]);
         $content->save();
 
+        // Override the user to be checked for the allowed transitions.
         $this->userProvider->setUser($this->{$user_var});
         $actual_transitions = $content->field_isr_state->first()->getTransitions();
         $actual_transitions = array_map(function ($transition) {
@@ -375,6 +380,20 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
 
   /**
    * Provides data for transition checks.
+   *
+   * The structure of the array is:
+   * @code
+   * $workflow_array = [
+   *   'entity_state' => [
+   *     'user' => [
+   *       'transition',
+   *       'transition',
+   *     ],
+   *   ],
+   * ];
+   * @code
+   * There can be multiple transitions that can lead to a specific state, so
+   * the check is being done on allowed transitions.
    */
   public function workflowTransitionsProvider() {
     return [
