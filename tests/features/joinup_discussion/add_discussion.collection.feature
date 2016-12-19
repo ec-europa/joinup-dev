@@ -52,9 +52,6 @@ Feature: "Add discussion" visibility options.
       | Title   | An amazing discussion                      |
       | Content | This is going to be an amazing discussion. |
     And I press "Save"
-    # @todo Remove this line when caching Search API results is fixed.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2574
-    And I commit the solr index
     Then I should see the heading "An amazing discussion"
     And I should see the success message "Discussion An amazing discussion has been created."
     And the "The World of the Waves" collection has a discussion titled "An amazing discussion"

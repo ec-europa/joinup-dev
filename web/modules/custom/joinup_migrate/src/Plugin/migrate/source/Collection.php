@@ -22,7 +22,7 @@ class Collection extends CollectionBase {
     return parent::fields() + [
       'uri' => $this->t('URI'),
       'new_collection' => $this->t('New collection?'),
-      'policy' => $this->t('Policy domain'),
+      'policy2' => $this->t('Policy domain'),
       'abstract' => $this->t('Abstract'),
       'access_url' => $this->t('Access URL'),
       'created' => $this->t('Creation date'),
@@ -52,7 +52,7 @@ class Collection extends CollectionBase {
       ->fields('j', [
         'collection',
         'new_collection',
-        'policy',
+        'policy2',
         'abstract',
         'elibrary',
         'pre_moderation',

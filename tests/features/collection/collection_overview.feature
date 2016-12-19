@@ -25,7 +25,6 @@ Feature: Collections Overview
     Given the following owner:
       | name                 | type                    |
       | Organisation example | Non-Profit Organisation |
-    Then I commit the solr index
     # Check that visiting as an anonymous does not create cache for all users.
     When I am an anonymous user
     And I am on the homepage
@@ -71,8 +70,6 @@ Feature: Collections Overview
     And I press "Publish"
     Then I visit the "Colonies in space" collection
     Then I should see the text "Colonies in space"
-    # Non UATable step.
-    When I commit the solr index
 
     And I am on the homepage
     And I click "Collections"
