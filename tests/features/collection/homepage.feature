@@ -22,7 +22,6 @@ Feature: Collection homepage
     And event content:
       | title                                    | short title      | body                                      | collection         | start date          |
       | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 |
-    And I commit the solr index
     And I go to the homepage of the "Middle earth daily" collection
     Then I should see text matching "Rohirrim make extraordinary deal"
     Then I should see text matching "Breaking: Gandalf supposedly plans his retirement"
