@@ -1,0 +1,88 @@
+id: solution
+label: 'Solutions migration'
+migration_tags:
+  - solution
+  - og
+source:
+  plugin: solution
+  track_changes: true
+process:
+  id: uri
+  label: title
+  field_is_banner:
+    plugin: migration
+    source: nid
+    migration: solution_banner
+    no_stub: true
+  field_is_contact_information:
+    plugin: migration
+    source: contact
+    migration: contact
+    no_stub: true
+  field_ar_creation_date: created
+  field_is_description/value: body
+  field_is_description/format:
+    plugin: default_value
+    default_value: content_editor
+  # Blocked by ISAICP-3007.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
+  # field_is_documentation:
+  field_keywords: keywords
+  field_is_landing_page: landing_page
+  field_is_logo:
+    plugin: migration
+    source: nid
+    migration: solution_logo
+    no_stub: true
+  field_is_metrics_page: metrics_page
+  field_is_modification_date: changed
+  field_is_owner:
+    plugin: migration
+    source: owner
+    migration: owner
+    no_stub: true
+  field_policy_domain:
+    plugin: policy_domain
+    source: policy2
+  # @todo Fix this in ISAICP-3019
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
+  # field_is_related_solutions:
+  # @todo Fix after ISAICP-3020
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3020
+  # field_is_solution_type:
+  field_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
+  field_is_state:
+    plugin: static_map
+    source: sid
+    map:
+      36: draft
+      37: proposed
+      38: needs_update
+      39: validated
+      40: needs_update
+      41: proposed
+      50: deletion_request
+      52: blacklisted
+    default_value: draft
+  field_status:
+    plugin: static_map
+    source: status
+    map:
+      11646: http://purl.org/adms/status/Completed
+      11647: http://purl.org/adms/status/Deprecated
+      11648: http://purl.org/adms/status/UnderDevelopment
+      11649: http://purl.org/adms/status/Withdrawn
+  # @todo Fix this in ISAICP-3019
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
+  # field_is_translation:
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: solution
+migration_dependencies:
+  required:
+    - solution_banner
+    - solution_logo
+    - owner

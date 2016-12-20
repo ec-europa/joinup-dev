@@ -33,7 +33,13 @@ function joinup_migrate_schema() {
           'not null' => FALSE,
         ],
         'policy' => [
-          'description' => 'Policy domain',
+          'description' => 'Policy domain 1',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'policy2' => [
+          'description' => 'Policy domain 2',
           'type' => 'varchar',
           'length' => 255,
           'not null' => FALSE,

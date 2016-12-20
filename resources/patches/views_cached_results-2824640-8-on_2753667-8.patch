@@ -20,7 +20,7 @@ index af229fb..051951a 100644
 +  public function alterCacheMetadata(CacheableMetadata $cache_metadata) {
 +    // When additional access checks are executed, the cache has to vary
 +    // by user.
-+    if (!empty($this->view->query->options['skip_access']) && $this->view->query->options['skip_access'] == FALSE) {
++    if (isset($this->view->query->options['skip_access']) && $this->view->query->options['skip_access'] === FALSE) {
 +      $cache_metadata->addCacheContexts(['user']);
 +    }
 +  }

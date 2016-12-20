@@ -6,12 +6,13 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\TermInterface;
 
 /**
  * Behat step definitions for testing owners.
@@ -32,34 +33,42 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * Creates one or many owners with data provided in a table.
    *
    * Table format:
-   * | type                  | name             | id                           |
-   * | Company               | Mightily Oats    | http://example.com/some/path |
-   * | Local authority       | Gotham City Hall |                              |
-   * | Private Individual(s) | Jane Roe         |                              |
+   * | type                        | name        | id                      |
+   * | Company,Industry consortium | Acme Inc.   | http://example.com/path |
+   * | Local authority             | Gotham City |                         |
+   * | Private Individual(s)       | Jane Roe    |                         |
    *
    * @param TableNode $owners_table
    *   The owners table.
    *
-   * @throws \Behat\Mink\Exception\ExpectationException;
+   * @throws \Exception;
    *   If a wrong type has been passed.
    *
    * @Given (the following )owner/owners:
    */
   public function givenOwner(TableNode $owners_table) {
-    $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
     foreach ($owners_table->getHash() as $row) {
       // If no type was specified, fallback to 'Private Individual(s)'.
-      $row['type'] = isset($row['type']) ? $row['type'] : 'Private Individual(s)';
+      $types = isset($row['type']) ? array_map('trim', explode(',', $row['type'])) : ['Private Individual(s)'];
 
-      $terms = $term_storage->loadByProperties(['vid' => 'owner_type', 'name' => $row['type']]);
-      if (empty($terms)) {
-        throw new ExpectationException("Owner type '{$row['type']}' doesn't exist.", $this->getDriver());
+      $query = \Drupal::entityQuery('taxonomy_term');
+      $tids = $query
+        ->condition('vid', 'owner_type')
+        ->condition('name', $types, 'IN')
+        ->execute();
+
+      $found = array_map(function (TermInterface $term) {
+        return $term->label();
+      }, Term::loadMultiple($tids));
+
+      if ($not_found = array_diff($types, $found)) {
+        throw new \Exception("Non-existent owner types: " . implode(', ', $not_found));
       }
 
       $owner = Rdf::create([
         'rid' => 'owner',
         'id' => !empty($row['id']) ? $row['id'] : $this->getRandomUri(),
-        'field_owner_type' => key($terms),
+        'field_owner_type' => $tids,
         'field_owner_name' => !empty($row['name']) ? $row['name'] : $this->getRandom()->name(8, TRUE),
       ]);
       $owner->save();
@@ -108,30 +117,33 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   }
 
   /**
-   * Selects option in select field at a Owner inline entity widget.
+   * Sets type(s) of the owner field.
    *
-   * @param string $option
-   *    The option to choose from the dropdown list.
+   * @param string $options
+   *    A comma delimited list of options to be checked.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    *   When no select has been found.
    *
-   * @When (I )select :option in the dropdown( list) of the "Owner"( field)
+   * @When (I )set the Owner type(s) to :option
    */
-  public function selectOption($option) {
-    // Fixes a step argument (with \\" replaced back to ")
-    // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
-    $option = str_replace('\\"', '"', $option);
+  public function setOwnerType($options) {
+    // Explode into an array.
+    $options = array_unique(array_map('trim', explode(',', $options)));
 
     $field = $this->getSession()->getPage()->find('named', ['fieldset', 'Owner']);
-    if (!$select = $field->find('named', ['select', 'field_ar_owner[form][inline_entity_form][field_owner_type]'])) {
-      if (!$select = $field->find('named', ['select', 'field_ar_owner[form][inline_entity_form][entities][0][form][field_owner_type]'])) {
-        throw new ElementNotFoundException($this->getSession()->getDriver(), "No select in Owner. Tried: 'field_ar_owner[form][inline_entity_form][field_owner_type]', 'field_ar_owner[form][inline_entity_form][entities][0][form][field_owner_type]'");
+
+    /** @var \Behat\Mink\Element\NodeElement[] $labels */
+    $labels = $field->findAll('xpath', '//label//label');
+    foreach ($labels as $label) {
+      $option = $label->getText();
+      if (in_array($option, $options)) {
+        $field->checkField($option);
+      }
+      else {
+        $field->uncheckField($option);
       }
     }
-
-    /** @var \Behat\Mink\Element\NodeElement $select */
-    $select->selectOption($option);
   }
 
 }
