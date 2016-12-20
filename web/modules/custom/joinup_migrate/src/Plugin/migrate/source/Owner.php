@@ -14,6 +14,7 @@ use Drupal\migrate\Row;
 class Owner extends JoinupSqlBase {
 
   use OwnerTrait;
+  use MappingTrait;
 
   /**
    * {@inheritdoc}
@@ -57,9 +58,13 @@ class Owner extends JoinupSqlBase {
       ->condition("{$this->alias['node']}.type", 'publisher');
 
     if ($allowed_nids) {
-      // Limit publishers only to those refered by migrated repositories and
+      // Limit publishers only to those referred by migrated repositories and
       // interoperability solutions.
       $query->condition("{$this->alias['node']}.nid", $allowed_nids, 'IN');
+    }
+    else {
+      // It there's no allowed NID, return nothing.
+      $query->condition(1, 2);
     }
 
     return $query
