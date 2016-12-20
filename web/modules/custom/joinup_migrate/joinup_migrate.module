@@ -15,6 +15,7 @@ use Drupal\joinup_migrate\Plugin\migrate\source\JoinupSqlBase;
  * table and adding the uri field to the query as 'uri'.
  */
 function joinup_migrate_query_uri_alter(AlterableInterface $query) {
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
   $alias = $query->getMetaData('alias');
   $source_db = JoinupSqlBase::getSourceDbName();
   $alias['uri'] = $query->leftJoin("$source_db.content_field_id_uri", 'uri', "{$alias['node']}.vid = %alias.vid");

@@ -27,12 +27,14 @@ trait OwnerTrait {
     $query = $this->getMappingBaseQuery()
       ->condition('j.type', ['asset_release', 'repository'], 'IN')
       ->condition('j.owner', 'Yes')
+      ->condition('n.status', 1)
       ->condition($or);
 
     if ($collection) {
       $query->condition('j.collection', $collection);
     }
 
+    $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'j.nid = n.nid');
     $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.content_field_asset_publisher', 's', 'n.vid = s.vid');
     $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.content_field_repository_publisher', 'r', 'n.vid = r.vid');
 
@@ -55,12 +57,14 @@ trait OwnerTrait {
     /** @var \Drupal\Core\Database\Query\SelectInterface $query */
     $query = $this->getMappingBaseQuery()
       ->condition('j.type', 'asset_release')
+      ->condition('n.status', 1)
       ->isNotNull('s.vid');
 
     if ($solution_vid) {
       $query->condition('s.vid', $solution_vid);
     }
 
+    $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'j.nid = n.nid');
     $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.content_field_asset_publisher', 's', 'n.vid = s.vid');
 
     $query->addExpression('s.field_asset_publisher_nid', 'allowed_nid');

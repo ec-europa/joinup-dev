@@ -34,7 +34,10 @@ abstract class CollectionBase extends GroupBase {
         ->isNotNull('j.policy2')
         ->isNotNull('j.abstract')
       )
-      ->condition("{$this->alias['node']}.type", ['community', 'repository'], 'IN');
+      ->condition((new Condition('AND'))
+        ->condition("{$this->alias['node']}.status", 1)
+        ->condition("{$this->alias['node']}.type", ['community', 'repository'], 'IN')
+      );
 
     return $query->condition($or);
   }

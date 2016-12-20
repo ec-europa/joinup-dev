@@ -39,6 +39,7 @@ abstract class SolutionBase extends GroupBase {
 
     return $query
       ->fields($this->alias['node'], ['nid'])
+      ->condition("{$this->alias['node']}.status", 1)
       ->condition("{$this->alias['node']}.type", 'asset_release');
   }
 
