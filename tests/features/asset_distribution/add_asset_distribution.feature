@@ -52,7 +52,7 @@ Feature: Add distribution through the UI
       # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
       And I should see the link "contacting us"
       When I fill in "Title" with "Custom title of asset distribution"
-      And I attach the file "test.zip" to "Add a new file"
+      And I attach the file "test.zip" to "Distribution file"
       And I select "WTFPL" from "License"
       And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
       And I press "Save"
