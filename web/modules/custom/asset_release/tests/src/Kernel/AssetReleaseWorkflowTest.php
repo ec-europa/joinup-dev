@@ -203,7 +203,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
       'label' => $this->randomMachineName(),
     ]);
     $parent->save();
-    $this->assertInstanceOf(RdfInterface::class, $parent, "The solution group was created.");
+    $this->assertInstanceOf(RdfInterface::class, $parent, 'The solution group was created.');
     $this->createOgMembership($parent, $this->userOgFacilitator, [$this->roleFacilitator]);
     $this->createOgMembership($parent, $this->userOgAdministrator, [$this->roleAdministrator]);
     return $parent;
@@ -223,7 +223,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
     $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
     $membership->save();
     $loaded = $this->ogMembershipManager->getMembership($group, $user);
-    $this->assertInstanceOf(OgMembership::class, $loaded, t("A membership was successfully created."));
+    $this->assertInstanceOf(OgMembership::class, $loaded, t('A membership was successfully created.'));
   }
 
   /**
