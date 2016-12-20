@@ -25,12 +25,12 @@ class RdfTestBase extends EntityKernelTestBase {
    *
    * @var string[]
    */
-  public static $modules = array(
+  public static $modules = [
     'ds',
     'comment',
     'field',
     'system',
-  );
+  ];
 
   /**
    * {@inheritdoc}
@@ -83,13 +83,6 @@ class RdfTestBase extends EntityKernelTestBase {
     Database::addConnectionInfo('sparql_default', 'default', $this->database);
 
     return TRUE;
-  }
-
-  /**
-   * Clear the index after every test.
-   */
-  public function tearDown() {
-    parent::tearDown();
   }
 
 }

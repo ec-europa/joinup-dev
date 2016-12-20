@@ -11,13 +11,17 @@ Feature: Asset release moderation
     And the following contact:
       | name  | SheriMoore              |
       | email | SheriMoore @example.com |
-    And users:
-      | name            | roles     |
-      | Bonnie Holloway |           |
-    And the following solutions:
-      | title     | description | logo     | banner     | owner       | contact information | state     |
-      | Dark Ship | Dark ship   | logo.png | banner.jpg | Kenny Logan | SheriMoore          | validated |
-    And the following solution user memberships:
+    And user:
+      | Username | Bonnie Holloway |
+    And the following solution:
+      | title               | Dark Ship   |
+      | description         | Dark ship   |
+      | logo                | logo.png    |
+      | banner              | banner.jpg  |
+      | owner               | Kenny Logan |
+      | contact information | SheriMoore  |
+      | state               | validated   |
+    And the following solution user membership:
       | solution  | user            | roles |
       | Dark Ship | Bonnie Holloway | owner |
     When I am logged in as "Bonnie Holloway"
@@ -59,5 +63,5 @@ Feature: Asset release moderation
     And I go to the "Release of the dark ship" release
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
-    # The published version does not change.
+    # The published is updated.
     Then I should see the heading "Release fix v1"

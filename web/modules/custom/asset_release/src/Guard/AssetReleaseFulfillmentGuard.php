@@ -22,15 +22,14 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
   /**
    * The entity type manager service.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   private $entityTypeManager;
 
   /**
    * Holds the workflow user object needed for the checks.
    *
-   * This will almost always return the logged in users but in case a check is
-   * needed to be done on a different account, it should be possible.
+   * Will be used to override the default user used by workflows.
    *
    * @var \Drupal\joinup_user\WorkflowUserProvider
    */
@@ -47,11 +46,11 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
    * Instantiates a AssetReleaseFulfillmentGuard service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *    The WorkflowUserProvider service.
+   *    The entity type manager service.
    * @param \Drupal\joinup_user\WorkflowUserProvider $workflow_user_provider
-   *    The WorkflowUserProvider service.
+   *    The workflow user provider service.
    * @param \Drupal\asset_release\AssetReleaseRelations $asset_release_relations
-   *    The Asset release relation service.
+   *    The asset release relation service.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider, AssetReleaseRelations $asset_release_relations) {
     $this->entityTypeManager = $entity_type_manager;

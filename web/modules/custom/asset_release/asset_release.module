@@ -166,8 +166,13 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
  * - When the entity is saved into the default graph, the draft must be deleted.
  */
 function asset_release_entity_update(EntityInterface $entity) {
+  // Quick escape check to avoid unnecessary loadings.
+  if ($entity->bundle() != 'asset_release') {
+    return;
+  }
+
   $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'asset_release' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
     return;
   }
 
