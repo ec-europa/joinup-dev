@@ -6,6 +6,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\migrate\destination\DestinationBase;
+use Drupal\migrate\Plugin\MigrateDestinationFastRollbackInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -17,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "mapping"
  * )
  */
-class Mapping extends DestinationBase implements ContainerFactoryPluginInterface {
+class Mapping extends DestinationBase implements MigrateDestinationFastRollbackInterface, ContainerFactoryPluginInterface {
 
   /**
    * The database service.
@@ -139,6 +140,25 @@ class Mapping extends DestinationBase implements ContainerFactoryPluginInterface
     $this->database->delete('joinup_migrate_mapping')
       ->condition('nid', $destination_identifier['nid'])
       ->execute();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function rollbackMultiple(array $destination_ids) {
+    $nids = array_map(function (array $item) {
+      return $item['nid'];
+    }, $destination_ids);
+    $this->database->delete('joinup_migrate_mapping')
+      ->condition('nid', $nids, 'IN')
+      ->execute();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function rollbackAll() {
+    $this->database->truncate('joinup_migrate_mapping')->execute();
   }
 
 }

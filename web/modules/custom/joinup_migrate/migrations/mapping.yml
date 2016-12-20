@@ -103,3 +103,5 @@ process:
   row_index: row_index
 destination:
   plugin: mapping
+  fast_rollback: true
+  fast_rollback_batch_size: 0

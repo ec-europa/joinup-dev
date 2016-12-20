@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c0f0687638a3e6dac7f97be2e65019cf",
-    "content-hash": "1a5db361e6cd6f2ccb762bc9ba57e4af",
+    "hash": "74077e80d1df2b0db7ab31bee7b04e34",
+    "content-hash": "733017d0b053896060991620b3e2b059",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1749,7 +1749,8 @@
                     "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
                     "EntityPublishedInterface @see https://www.drupal.org/node/2789315 @see https://www.drupal.org/node/2810381 @todo Remove in 8.3.x": "./resources/patches/combined-2810381-and-2789315.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
-                    "SqlBase::prepareQuery() should be called also on count @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch"
+                    "SqlBase::prepareQuery() should be called also on count @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch",
+                    "Support fast rollbacks @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-21.patch"
                 }
             },
             "autoload": {
@@ -2667,6 +2668,9 @@
                 "drupal": {
                     "version": "8.x-1.0-beta1",
                     "datestamp": "1477470239"
+                },
+                "patches_applied": {
+                    "Cannot subscribe to Solarium events": "https://www.drupal.org/files/issues/cannot_subscribe_to-2835770-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
