@@ -54,9 +54,6 @@ Feature: "Add document" visibility options.
       | Description | This is going to be an amazing document. |
     And I attach the file "test.zip" to "File"
     And I press "Save"
-    # @todo Remove this line when caching Search API results is fixed.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2574
-    And I commit the solr index
     Then I should see the heading "An amazing document"
     And I should see the success message "Document An amazing document has been created."
     # Check that the link to the document is visible on the collection page.
