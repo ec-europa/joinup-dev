@@ -44,10 +44,10 @@ class PolicyDomain extends ProcessPluginBase {
           break;
         }
       }
-
-      if (!isset(static::$cache[$value])) {
-        $migrate_executable->saveMessage("Term '$value' does not exits in destination.");
-      }
+    }
+    if (!isset(static::$cache[$value])) {
+      $migrate_executable->saveMessage("Term '$value' does not exits in destination.");
+      return NULL;
     }
 
     return static::$cache[$value];
