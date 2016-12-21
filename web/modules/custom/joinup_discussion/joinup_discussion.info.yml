@@ -15,8 +15,10 @@ config_devel:
   - field.field.node.discussion.field_comments
   - field.field.node.discussion.field_discussion_active
   - field.field.node.discussion.field_discussion_content
+  - field.field.node.discussion.field_discussion_state
   - field.field.node.discussion.field_topic
   - field.field.node.discussion.og_audience
   - field.storage.node.field_discussion_active
   - field.storage.node.field_discussion_content
+  - field.storage.node.field_discussion_state
   - node.type.discussion
