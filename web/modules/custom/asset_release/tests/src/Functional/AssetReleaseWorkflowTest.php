@@ -11,7 +11,7 @@ use Drupal\rdf_entity\RdfInterface;
 use Drupal\Tests\joinup_core\JoinupWorkflowTestBase;
 
 /**
- * Tests the support of saving various encoded stings in the triple store.
+ * Tests crud operations and the workflow for the asset release rdf entity.
  *
  * @group asset_release
  */
