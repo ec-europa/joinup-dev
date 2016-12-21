@@ -7,7 +7,7 @@
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\comment\CommentInterface;
-use \Drupal\comment\Entity\Comment;
+use Drupal\comment\Entity\Comment;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
