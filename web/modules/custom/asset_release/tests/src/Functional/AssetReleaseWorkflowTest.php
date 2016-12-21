@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\asset_release\Kernel;
+namespace Drupal\Tests\asset_release\Functional;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
