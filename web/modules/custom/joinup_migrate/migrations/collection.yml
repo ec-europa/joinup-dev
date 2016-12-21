@@ -21,6 +21,11 @@ process:
     source: collection
     migration: collection_banner
     no_stub: true
+  field_ar_contact_information:
+    plugin: migration
+    source: contact
+    migration: contact
+    no_stub: true
   field_ar_creation_date: created
   field_ar_description/value: body
   field_ar_description/format:
@@ -41,11 +46,11 @@ process:
       default_value: 1
       strict: true
   field_ar_modification_date: changed
-  # Blocked by https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3031
-  # field_ar_owner:
-  #   plugin: migration
-  #   migration: owner
-  #   no_stub: true
+  field_ar_owner:
+    plugin: migration
+    source: owner
+    migration: owner
+    no_stub: true
   field_policy_domain:
     plugin: policy_domain
     source: policy2

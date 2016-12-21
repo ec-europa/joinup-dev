@@ -15,6 +15,10 @@ use Drupal\migrate\Row;
  */
 class Collection extends CollectionBase {
 
+  use ContactTrait;
+  use OwnerTrait;
+  use MappingTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -35,6 +39,7 @@ class Collection extends CollectionBase {
       // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2950
       'collection_state' => $this->t('Collection state'),
       'affiliates' => $this->t('Affiliates'),
+      'contact' => $this->t('Contact info'),
     ];
   }
 
@@ -77,6 +82,8 @@ class Collection extends CollectionBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    $collection = $row->getSourceProperty('collection');
+
     if (!$abstract = $row->getSourceProperty('abstract')) {
       // Fallback to community abstract, if available.
       $row->setSourceProperty('abstract', $row->getSourceProperty('og_description'));
@@ -114,11 +121,17 @@ class Collection extends CollectionBase {
       ->fields('j', ['nid'])
       ->orderBy('j.collection')
       ->condition('j.del', 'No')
-      ->condition('j.collection', $row->getSourceProperty('collection'))
+      ->condition('j.collection', $collection)
       ->condition('j.type', 'asset_release')
       ->execute()
       ->fetchCol();
     $row->setSourceProperty('affiliates', $affiliates);
+
+    // Owner.
+    $row->setSourceProperty('owner', $this->getCollectionOwners($collection) ?: NULL);
+
+    // Owners.
+    $row->setSourceProperty('contact', $this->getCollectionContacts($collection) ?: NULL);
 
     return parent::prepareRow($row);
   }

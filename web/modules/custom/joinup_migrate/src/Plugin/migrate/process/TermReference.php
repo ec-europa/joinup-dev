@@ -38,6 +38,7 @@ class TermReference extends ProcessPluginBase {
       ])
       ) {
         $migrate_executable->saveMessage("Term '$value' does not exits in destination.");
+        return NULL;
       }
       $this->cache[$this->configuration['vocabulary']][$value] = array_keys($terms)[0];
     }
