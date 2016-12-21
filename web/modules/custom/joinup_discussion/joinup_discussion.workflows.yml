@@ -1,0 +1,40 @@
+# The workflow of the discussion entity.
+discussion_workflow:
+  id: discussion_workflow
+  label: "Default"
+  group: discussion
+  states:
+    draft:
+      label: Draft
+    in_assessment:
+      label: In assessment
+    validated:
+      label: Validated
+    archived:
+      label: Archived
+  transitions:
+    draft:
+      label: Save as draft
+      # I see no validated -> draft in the design
+      from: [draft, validated]
+      to: draft
+    validate:
+      label: Publish
+      from: [draft, in_assessment]
+      to: validated
+    update_published:
+      label: Update
+      from: [validated]
+      to: validated
+    request_changes:
+      label: Request changes
+      from: [validated]
+      to: in_assessment
+    update_changes:
+      label: Update
+      from: [in_assessment]
+      to: in_assessment
+    disable:
+      label: Disable
+      from: [validated]
+      to: archived
