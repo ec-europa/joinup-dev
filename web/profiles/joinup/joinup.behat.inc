@@ -17,6 +17,7 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\og\Og;
@@ -33,6 +34,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
 
@@ -109,8 +111,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if (!$entity) {
       throw new \Exception("No entity found with label $rdf_entity");
     }
-    $roles = explode(',', $roles);
-    $roles = array_map('trim', $roles);
+    $roles = $this->explodeCommaSeparatedStepArgument($roles);
     $roles = $this->getOgRoles($roles, $entity);
 
     // Check if a user with this role is already logged in.
@@ -156,8 +157,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if (!$entity) {
       throw new \Exception("No entity found with label $rdf_entity");
     }
-    $roles = explode(',', $roles);
-    $roles = $this->getOgRoles(array_map('trim', $roles), $entity);
+    $roles = $this->explodeCommaSeparatedStepArgument($roles);
+    $roles = $this->getOgRoles($roles, $entity);
 
     $current_user = $this->getUserManager()->getCurrentUser();
     $account = User::load($current_user->uid);
@@ -732,9 +733,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then (the following )buttons should be present :buttons
    */
   public function assertButtonsVisible($buttons) {
-    $buttons = explode(',', $buttons);
-    $buttons = array_map('trim', $buttons);
-    $buttons = array_filter($buttons);
+    $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
     $page = $this->getSession()->getPage();
     $not_found = [];
@@ -761,9 +760,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then (the following )buttons should not be present :buttons
    */
   public function assertButtonsNotVisible($buttons) {
-    $buttons = explode(',', $buttons);
-    $buttons = array_map('trim', $buttons);
-    $buttons = array_filter($buttons);
+    $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
     $page = $this->getSession()->getPage();
     $found = [];
