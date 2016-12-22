@@ -13,7 +13,10 @@ use Drupal\migrate\Row;
  */
 class Solution extends SolutionBase {
 
+  use ContactTrait;
   use CountryTrait;
+  use MappingTrait;
+  use OwnerTrait;
   use UriTrait;
 
   /**
@@ -31,10 +34,11 @@ class Solution extends SolutionBase {
       'landing_page' => $this->t('Landing page'),
       'logo' => $this->t('Logo'),
       'metrics_page' => $this->t('Metrics page'),
-      'policy' => $this->t('Policy domain'),
+      'policy2' => $this->t('Policy domain'),
       'related' => $this->t('Related solutions'),
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
+      'contact' => $this->t('Contact info'),
     ] + parent::fields();
   }
 
@@ -59,7 +63,7 @@ class Solution extends SolutionBase {
     $query->addExpression("TRIM({$this->alias['data_set_uri']}.field_id_uri_value)", 'metrics_page');
 
     return $query
-      ->fields('j', ['policy'])
+      ->fields('j', ['policy2'])
       ->fields($this->alias['node'], ['title', 'created', 'changed', 'vid'])
       ->fields($this->alias['node_revision'], ['body'])
       ->fields($this->alias['state'], ['sid'])
@@ -140,14 +144,10 @@ class Solution extends SolutionBase {
     $row->setSourceProperty('status', $status);
 
     // Owners.
-    $query = $this->select('content_field_asset_publisher', 'p');
-    $query->join('node', 'n', 'p.field_asset_publisher_nid = n.nid');
-    $owner = $query->fields('n', ['nid'])
-      ->condition('p.vid', $vid)
-      ->condition('n.status', 1)
-      ->execute()
-      ->fetchCol();
-    $row->setSourceProperty('owner', $owner ?: NULL);
+    $row->setSourceProperty('owner', $this->getSolutionOwners($vid) ?: NULL);
+
+    // Owners.
+    $row->setSourceProperty('contact', $this->getSolutionContacts($vid) ?: NULL);
 
     return parent::prepareRow($row);
   }

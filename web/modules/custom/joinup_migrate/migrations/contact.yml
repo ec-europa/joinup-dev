@@ -1,0 +1,18 @@
+id: contact
+label: 'Contact information migration'
+migration_tags:
+  - contact
+source:
+  plugin: contact
+  track_changes: true
+process:
+  id: uri
+  field_ci_name: title
+  field_ci_email: mail
+  field_ci_webpage: webpage
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: contact_information
+migration_dependencies:
+ required:
+   - mapping

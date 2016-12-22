@@ -16,7 +16,7 @@ settings:
   allowed_values:
     -
       value: 0
-      label: 'No GITB compliant'
+      label: 'Not GITB compliant'
     -
       value: 1
       label: 'GITB compliant'
