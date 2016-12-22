@@ -7,6 +7,7 @@ dependencies:
   - joinup_core
 
 config_devel:
+  - core.base_field_override.node.discussion.status
   - core.entity_form_display.node.discussion.default
   - core.entity_view_display.node.discussion.default
   - core.entity_view_display.node.discussion.default
