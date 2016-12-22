@@ -23,12 +23,12 @@ default:
       api_driver: 'drupal'
       blackbox: ~
       region_map:
-        Plus button menu: 'div.add-content-menu ul'
         Comment: '.comment'
         Entity actions: '.block-local-tasks-block'
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'
         Navigation menu: 'div.navigation-menu ul'
+        Plus button menu: 'div.add-content-menu ul'
         Primary menu: '.region-primary-menu'
       drupal:
         drupal_root: '${website.drupal.dir}'
