@@ -10,6 +10,7 @@ discussion_workflow:
       label: In assessment
     validated:
       label: Validated
+      published: true
     archived:
       label: Archived
   transitions:
