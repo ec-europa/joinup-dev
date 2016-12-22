@@ -26,10 +26,12 @@ transitions:
   draft:
     draft:
       - moderator
+      - rdf_entity-collection-facilitator
       - rdf_entity-solution-facilitator
     # see workflows.yml, why validated -> draft ?
     validated:
       - moderator
+      - rdf_entity-collection-facilitator
       - rdf_entity-solution-facilitator
   request_changes:
     validated:
@@ -37,16 +39,19 @@ transitions:
   update_changes:
     in_assessment:
       - moderator
+      - rdf_entity-collection-facilitator
       - rdf_entity-solution-facilitator
   validate:
     draft:
       - moderator
+      - rdf_entity-collection-facilitator
       - rdf_entity-solution-facilitator
     in_assessment:
       - moderator
   update_published:
     validated:
       - moderator
+      - rdf_entity-collection-facilitator
       - rdf_entity-solution-facilitator
   disable:
     validated:
