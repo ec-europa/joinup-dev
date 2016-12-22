@@ -12,9 +12,11 @@ entity_type: node
 bundle: discussion
 label: State
 description: ''
-required: false
+required: true
 translatable: false
-default_value: {  }
+default_value:
+  -
+    value: draft
 default_value_callback: ''
 settings:
   workflow: discussion_workflow
