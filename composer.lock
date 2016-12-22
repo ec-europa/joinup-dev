@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3b6bd7d8081bb2e21a8d5c7474d7b765",
-    "content-hash": "dd02d443f03de0a08e27dee3e59411ce",
+    "hash": "472bffae648c4761a85960e207da1573",
+    "content-hash": "9fb743d4242ac61e6b583811c8bf12cb",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2592,9 +2592,8 @@
             "require": {
                 "drupal/core": "^8.1"
             },
-            "suggest": {
-                "drupal/core": "Required by drupal/search_api_views_taxonomy",
-                "drupal/search_api_db": "Required by drupal/search_api_db_defaults"
+            "require-dev": {
+                "drupal/search_api_db": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -2606,8 +2605,6 @@
                     "datestamp": "1477302541"
                 },
                 "patches_applied": {
-                    "Add entity type list cache tags.": "https://www.drupal.org/files/issues/set_list_cache_tags-2753667-8.patch",
-                    "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-8-on_2753667-8.patch",
                     "item_id column is too short @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/2829696-7.patch"
                 }
             },
