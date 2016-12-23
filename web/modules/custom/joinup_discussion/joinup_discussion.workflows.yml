@@ -14,11 +14,6 @@ discussion_workflow:
     archived:
       label: Archived
   transitions:
-    draft:
-      label: Save as draft
-      # I see no validated -> draft in the design
-      from: [draft, validated]
-      to: draft
     validate:
       label: Publish
       from: [draft, in_assessment]
