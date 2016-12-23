@@ -47,11 +47,13 @@ Feature: Add distribution through the UI
       # forced to check for the widget heading.
       # @todo to be handled in ISAICP-2655
       And I should see the text "Access URL"
-      And I should see the text "Distribution file"
+      And I should see the text "Distribution files"
+      # @todo: The link has to be changed to the legal contact form.
+      # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
       And I should see the link "contacting us"
       When I fill in "Title" with "Custom title of asset distribution"
-      And I attach the file "test.zip" to "Add a new file"
-      And I fill in "License" with "WTFPL"
+      And I attach the file "test.zip" to "Distribution file"
+      And I select "WTFPL" from "License"
       And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
       And I press "Save"
       Then I should have 1 distribution

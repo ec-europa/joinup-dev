@@ -14,10 +14,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides a destination plugin for the Joinup mapping table.
  *
  * @MigrateDestination(
- *   id = "mapping_table"
+ *   id = "mapping"
  * )
  */
-class MappingTable extends DestinationBase implements ContainerFactoryPluginInterface {
+class Mapping extends DestinationBase implements ContainerFactoryPluginInterface {
 
   /**
    * The database service.
@@ -75,7 +75,8 @@ class MappingTable extends DestinationBase implements ContainerFactoryPluginInte
       'nid' => $this->t('Source node ID'),
       'type' => $this->t('Source node-type'),
       'collection' => $this->t('Collection'),
-      'policy' => $this->t('Policy domain'),
+      'policy' => $this->t('Policy domain 1'),
+      'policy2' => $this->t('Policy domain 2'),
       'new_collection' => $this->t('Is new collection?'),
       'del' => $this->t('Delete?'),
       'abstract' => $this->t('Abstract'),
@@ -100,6 +101,14 @@ class MappingTable extends DestinationBase implements ContainerFactoryPluginInte
     }
 
     $values = $row->getDestination();
+
+    // Assure sane defaults for $values.
+    foreach ($this->fields() as $key => $value) {
+      if (!array_key_exists($key, $values)) {
+        $values[$key] = NULL;
+      }
+    }
+
     $nid = $values['nid'];
     try {
       if (empty($old_destination_id_values)) {
