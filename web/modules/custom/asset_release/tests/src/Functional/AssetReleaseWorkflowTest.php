@@ -82,6 +82,13 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function getEntityType() {
+    return 'rdf_entity';
+  }
+
+  /**
    * Creates a user with roles.
    *
    * @param array $roles

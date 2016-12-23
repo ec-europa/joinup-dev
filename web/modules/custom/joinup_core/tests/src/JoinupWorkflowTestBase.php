@@ -10,7 +10,7 @@ use Drupal\Tests\rdf_entity\RdfDatabaseConnectionTrait;
  *
  * @group rdf_entity
  */
-class JoinupWorkflowTestBase extends BrowserTestBase {
+abstract class JoinupWorkflowTestBase extends BrowserTestBase {
 
   use RdfDatabaseConnectionTrait;
 
@@ -36,7 +36,7 @@ class JoinupWorkflowTestBase extends BrowserTestBase {
   /**
    * The entity access manager service.
    *
-   * @var \Drupal\rdf_entity\RdfAccessControlHandler
+   * @var \Drupal\Core\Entity\EntityAccessControlHandlerInterface
    */
   protected $entityAccess;
 
@@ -63,9 +63,17 @@ class JoinupWorkflowTestBase extends BrowserTestBase {
     parent::setUp();
     $this->ogMembershipManager = \Drupal::service('og.membership_manager');
     $this->ogAccess = $this->container->get('og.access');
-    $this->entityAccess = $this->container->get('entity_type.manager')->getAccessControlHandler('rdf_entity');
+    $this->entityAccess = $this->container->get('entity_type.manager')->getAccessControlHandler($this->getEntityType());
     $this->userProvider = $this->container->get('joinup_user.workflow.user_provider');
   }
+
+  /**
+   * Returns the type of the entity being tested.
+   *
+   * @return string
+   *   The entity type.
+   */
+  protected abstract function getEntityType();
 
   /**
    * {@inheritdoc}
