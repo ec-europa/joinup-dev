@@ -128,7 +128,8 @@
                 "Terms with string IDs are missing from dropdown": "https://www.drupal.org/files/issues/2833176-2.patch"
             },
             "drupal/state_machine": {
-                "Fire generic events when transition are applied": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch"
+                "Fire generic events when transition are applied": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
+                "Schema validation error when running functional tests": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch"
             },
             "drupal/og": {
                 "OgMembership static cache not cleared": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/226.patch"
