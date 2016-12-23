@@ -17,16 +17,11 @@
   <div class="page__title-wrapper">
       <h1 class="page__title">{{ additional_content.field_news_kicker }}</h1>
       <div class="details">
-        <div class="details__element">
+        <div class="details__element details__element-headline">
           <div class="value gray">{{ title }}</div>
         </div>
       </div>
-      <div class="details">
-        <div class="details__element">
-          <div class="value gray">{{ additional_content.author_photo }}</div>
-          <div class="value gray">{{ additional_content.author_name }}</div>
-        </div>
-      </div>
+      {{ additional_content.author }}
   </div>
 {% endif %}
 {{ title_suffix }}

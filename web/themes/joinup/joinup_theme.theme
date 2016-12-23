@@ -161,6 +161,9 @@ function joinup_theme_preprocess_block(&$variables) {
               $is_listing = TRUE;
             }
           }
+          elseif ($node_type == 'news') {
+            $is_listing = TRUE;
+          }
         }
         break;
 
@@ -413,14 +416,13 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
     // Load the author.
     $author = User::load($author_id);
 
-    $author_photo = $author->field_user_photo;
-    $author_photo = $viewBuilder->viewField($author_photo, 'view_mode_tile');
-    $author_name = $author->name;
-    $author_name = $viewBuilder->viewField($author_name, 'default');
-
-    $variables['additional_content']['author_name'] = $author_name;
-    $variables['additional_content']['author_photo'] = $author_photo;
     $variables['additional_content']['field_news_kicker'] = $field_news_kicker;
+
+    // Get the view builder service from the entity type manager.
+    /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+    $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
+    $author_compact = $viewBuilder->view($author, 'compact');
+    $variables['additional_content']['author'] = $author_compact;
   }
 }
 
@@ -601,6 +603,13 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
       $original_theme_hook = $variables['theme_hook_original'];
       $suggestions[] = $original_theme_hook . '__licence';
     }
+  }
+
+  // Add suggestion based on view mode for user entity.
+  if ($hook == 'user' && !empty($variables['elements']['#view_mode'])) {
+    $original_theme_hook = $variables['theme_hook_original'];
+    $view_mode = $variables['elements']['#view_mode'];
+    $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $view_mode);
   }
 
   // Some entities share the same template when rendered using tile and featured

@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * Theme override to present all user data.
+ *
+ * This template is used when viewing a registered user's page,
+ * e.g., example.com/user/123. 123 being the user's ID.
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ *   print a subset such as 'content.field_example'. Fields attached to a user
+ *   such as 'user_picture' are available as 'content.user_picture'.
+ * - attributes: HTML attributes for the container element.
+ * - user: A Drupal User entity.
+ *
+ * @see template_preprocess_user()
+ */
+#}
+<div class="details__user">
+  {% if content.field_user_photo|render %}
+  <div class="details__user-item">
+    <div class="details__avatar">
+      {{ content.field_user_photo }}
+    </div>
+  </div>
+  {% endif %}
+  <div class="details__user-item">
+    {% if content.field_user_family_name|render and content.field_user_first_name|render %}
+      <a href="{{ path('entity.user.canonical', {'user': user.id}) }}">{{ content.field_user_family_name }} {{ content.field_user_first_name }}</a>
+    {% else %}
+      <a href="{{ path('entity.user.canonical', {'user': user.id}) }}">{{ user.label }}</a>
+    {% endif %}
+  </div>
+</div>
