@@ -4,3 +4,31 @@
  * @file
  * Contains functions relative to the discussion entity.
  */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\og\Og;
+
+/**
+ * Implements hook_node_access().
+ */
+function joinup_discussion_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->bundle() !== 'discussion' || $account->isAnonymous() || $account->hasPermission('administer nodes')) {
+    return AccessResult::neutral();
+  }
+
+  switch ($operation) {
+    case 'view':
+      $parent = \Drupal::service('joinup_discussion.relations_manager')->getDiscussionParent($entity);
+      $membership = Og::getMembership($parent, $account);
+      if (empty($membership)) {
+        return AccessResult::neutral();
+      }
+      break;
+
+    case 'edit':
+      $allowed_transitions = $entity->get('field_discussion_state')->first()->getTransitions();
+      return AccessResult::forbiddenIf(empty($allowed_transitions));
+  }
+}
