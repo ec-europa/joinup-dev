@@ -13,6 +13,7 @@ discussion_workflow:
       published: true
     archived:
       label: Archived
+      published: true
   transitions:
     validate:
       label: Publish
