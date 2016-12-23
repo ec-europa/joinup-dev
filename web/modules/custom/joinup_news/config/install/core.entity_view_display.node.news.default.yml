@@ -14,6 +14,7 @@ dependencies:
     - node.type.news
   module:
     - comment
+    - ds
     - link
     - options
     - text
@@ -42,7 +43,16 @@ content:
     label: hidden
     settings:
       link_to_entity: false
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: string
   field_news_source_url:
     weight: 3
@@ -66,14 +76,33 @@ content:
     label: hidden
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: entity_reference_label
   field_topic:
     weight: 106
     label: hidden
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: entity_reference__listing_tag
     type: entity_reference_label
   links:
     weight: 0
@@ -85,5 +114,15 @@ content:
     label: hidden
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
 hidden: {  }
