@@ -70,7 +70,6 @@
  *   in different view modes.
  */
 #}
-
 {% set topics = content.field_topic|render %}
 {% set collection = content.og_audience|render %}
 {% set spatial_coverage = content.field_spatial_coverage|render %}
@@ -96,7 +95,7 @@
         {% trans %}This news is about <span class="is-only-placeholder">{{ solution }} solution</span>, as part of {{ collection }} collection{% endtrans %}
       {% endif %}
     </div>
-
+    <div class="details__state">{{ content.field_news_state }}</div>
     <div class="action-link__wrapper right">
       {# todo: It is only placeholder #}
       <a href="/" class="action-link is-only-placeholder">
@@ -105,4 +104,5 @@
       </a>
     </div>
   </div>
+  {{ content.field_comments }}
 </article>
