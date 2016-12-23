@@ -15,13 +15,14 @@
 {{ title_prefix }}
 {% if title %}
   <div class="page__title-wrapper">
-      <h1 class="page__title">{{ additional_content.field_news_kicker }}</h1>
+      <h1 class="page__title">{{ title }}</h1>
       <div class="details">
         <div class="details__element details__element-headline">
-          <div class="value gray">{{ title }}</div>
+          <div class="value gray">{{ additional_content.field_news_kicker }}</div>
         </div>
       </div>
       {{ additional_content.author }}
+      - <div class="details__element details__element-created"><span class="value gray">{{ additional_content.created }}</span></div>
   </div>
 {% endif %}
 {{ title_suffix }}

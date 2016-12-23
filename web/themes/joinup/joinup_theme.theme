@@ -416,7 +416,12 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
     // Load the author.
     $author = User::load($author_id);
 
+    // Get creation date.
+    $created = $node->getCreatedTime();
+    $created = \Drupal::service('date.formatter')->format($created, 'date_only');
+
     $variables['additional_content']['field_news_kicker'] = $field_news_kicker;
+    $variables['additional_content']['created'] = $created;
 
     // Get the view builder service from the entity type manager.
     /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
