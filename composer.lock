@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "357e45ee9e7aef2ccc952a148c25ea5d",
-    "content-hash": "cdd17f30f864d1f8080d586f0598cb85",
+    "hash": "75400a4ea3ff8d544ec8522980fdfa35",
+    "content-hash": "7dcf445d6e07a506ccfa1047e5753afb",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2595,11 +2595,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta3+38-dev",
-                    "datestamp": "1482091683"
+                    "version": "8.x-1.0-beta3+40-dev",
+                    "datestamp": "1482510782"
                 },
                 "patches_applied": {
-                    "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-33.patch",
+                    "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-46.patch",
                     "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-8-on_2753667-33.patch",
                     "item_id column is too short @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/2829696-7.patch"
                 }
@@ -6474,16 +6474,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.29.0",
+            "version": "v1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "74f723e542368ca2080b252740be5f1113ebb898"
+                "reference": "c6ff71094fde15d12398eaba029434b013dc5e59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/74f723e542368ca2080b252740be5f1113ebb898",
-                "reference": "74f723e542368ca2080b252740be5f1113ebb898",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/c6ff71094fde15d12398eaba029434b013dc5e59",
+                "reference": "c6ff71094fde15d12398eaba029434b013dc5e59",
                 "shasum": ""
             },
             "require": {
@@ -6496,7 +6496,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.29-dev"
+                    "dev-master": "1.30-dev"
                 }
             },
             "autoload": {
@@ -6531,7 +6531,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-12-13 17:28:18"
+            "time": "2016-12-23 11:06:22"
         },
         {
             "name": "typhonius/behattask",
