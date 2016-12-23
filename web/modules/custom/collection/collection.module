@@ -54,6 +54,7 @@ function collection_views_pre_view(ViewExecutable $view) {
   //   property like _view_display_cache_contexts on the router object which is
   //   created in PathPluginBase::getRoute(). We can then use this to output the
   //   correct cache contexts in ViewPageController::handle().
+  // @see https://www.drupal.org/node/2839058
   if ($view->id() === 'collections') {
     $view->display_handler->display['cache_metadata']['contexts'][] = 'og_role';
     $view->display_handler->display['cache_metadata']['contexts'][] = 'user.roles';
