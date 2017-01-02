@@ -10,7 +10,7 @@ id: rdf_entity.asset_distribution.field_ad_file
 field_name: field_ad_file
 entity_type: rdf_entity
 bundle: asset_distribution
-label: 'Distribution file'
+label: 'Distribution files'
 description: ''
 required: false
 translatable: false

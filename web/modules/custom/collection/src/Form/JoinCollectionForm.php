@@ -3,7 +3,6 @@
 namespace Drupal\collection\Form;
 
 use Drupal\Component\Serialization\Json;
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -97,12 +96,6 @@ class JoinCollectionForm extends FormBase {
       ];
     }
 
-    // This form varies by user and collection.
-    // $metadata = new CacheableMetadata();
-    // $metadata
-    // ->merge(CacheableMetadata::createFromObject($user))
-    // ->merge(CacheableMetadata::createFromObject($collection))
-    // ->applyTo($form);
     return $form;
   }
 
@@ -151,11 +144,6 @@ class JoinCollectionForm extends FormBase {
     drupal_set_message($this->t('You are now a member of %collection.', [
       '%collection' => $collection->getName(),
     ]));
-
-    // @todo: This is a temporary workaround for the lack of og cache
-    // contexts/tags. Remove this when Og provides proper cache context.
-    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2628
-    Cache::invalidateTags(['user.roles']);
   }
 
   /**

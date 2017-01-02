@@ -26,7 +26,7 @@ Feature: Asset distribution overview on solution.
     When I go to the homepage of the "Thief in the Angels" release
     And I click "Add distribution"
     When I fill in "Title" with "Linux"
-    And I attach the file "test.zip" to "Add a new file"
+    And I attach the file "test.zip" to "Distribution file"
     And I press "Save"
     And I go to the homepage of the "The Child of the Past" release
     # Create a distribution with no file attached.
