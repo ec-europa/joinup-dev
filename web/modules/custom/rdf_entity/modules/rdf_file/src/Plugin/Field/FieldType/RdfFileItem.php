@@ -265,7 +265,7 @@ class RdfFileItem extends EntityReferenceItem {
    *
    * @see token_replace()
    */
-  public function getUploadLocation($data = array()) {
+  public function getUploadLocation(array $data = array()) {
     return static::doGetUploadLocation($this->getSettings(), $data);
   }
 
@@ -281,7 +281,7 @@ class RdfFileItem extends EntityReferenceItem {
    *   An unsanitized file directory URI with tokens replaced. The result of
    *   the token replacement is then converted to plain text and returned.
    */
-  protected static function doGetUploadLocation(array $settings, $data = []) {
+  protected static function doGetUploadLocation(array $settings, array $data = []) {
     $destination = trim($settings['file_directory'], '/');
 
     // Replace tokens. As the tokens might contain HTML we convert it to plain

@@ -3,7 +3,7 @@
 namespace Drupal\rdf_file\Plugin\EntityReferenceSelection;
 
 use Drupal\Core\Entity\Plugin\EntityReferenceSelection\DefaultSelection;
-use Drupal\file\Entity\File;
+use Drupal\rdf_file\Entity\RemoteFile;
 
 /**
  * Default plugin implementation of the Entity Reference Selection plugin.
@@ -22,23 +22,24 @@ class RdfFileSelection extends DefaultSelection {
    * {@inheritdoc}
    */
   public function validateReferenceableEntities(array $ids) {
-    $results = [];
+    /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
+    $file_handler = \Drupal::service('rdf_file.handler');
     $found = [];
 
-    if ($ids) {
-      $query = $this->buildEntityQuery();
-      $results = $query
-        ->condition('uri', $ids, 'IN')
-        ->execute();
-    }
-    foreach ($results as $result) {
-      $file = File::load($result);
-      $uri = $file->getFileUri();
+    foreach ($ids as $id) {
+      $file = $file_handler->UrlToFile($id);
+      // External file are always found.
+      if ($file instanceof RemoteFile) {
+        $uri = $file->getFileUri();
+      }
+      else {
+        $uri = $file_handler::fileToUrl($file);
+      }
+
       if (in_array($uri, $ids)) {
         $found[] = $uri;
       }
     }
-
     return $found;
   }
 

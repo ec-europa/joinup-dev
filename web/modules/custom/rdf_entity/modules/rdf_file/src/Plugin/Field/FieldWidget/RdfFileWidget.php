@@ -249,12 +249,11 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     // Field stores FID value in a single mode, so we need to transform it for
     // form element to recognize it correctly.
     if (!isset($items[$delta]->fids) && isset($items[$delta]->target_id)) {
+      /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
+      $file_handler = \Drupal::service('rdf_file.handler');
       $target_id = $items[$delta]->target_id;
-      $results = \Drupal::entityQuery('file')
-        ->condition('uri', $target_id)
-        ->execute();
-
-      $items[$delta]->fids = $results;
+      $file = $file_handler->UrlToFile($target_id);
+      $items[$delta]->fids = [$file->id()];
     }
     $element['#default_value'] = $items[$delta]->getValue() + $defaults;
 
@@ -283,12 +282,14 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     // Since file upload widget now supports uploads of more than one file at a
     // time it always returns an array of fids. We have to translate this to a
     // single fid, as field expects single value.
+    /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
+    $file_handler = \Drupal::service('rdf_file.handler');
     $new_values = array();
     foreach ($values as &$value) {
       foreach ($value['fids'] as $fid) {
         $new_value = $value;
         $file = File::load($fid);
-        $new_value['target_id'] = $file->getFileUri();
+        $new_value['target_id'] = $file_handler->fileToUrl($file);
         unset($new_value['fids']);
         $new_values[] = $new_value;
       }
@@ -522,7 +523,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
    *   A description of the file suitable for use in the administrative
    *   interface.
    */
-  protected static function getDescriptionFromElement($element) {
+  protected static function getDescriptionFromElement(array $element) {
     // Use the actual file description, if it's available.
     if (!empty($element['#default_value']['description'])) {
       return $element['#default_value']['description'];

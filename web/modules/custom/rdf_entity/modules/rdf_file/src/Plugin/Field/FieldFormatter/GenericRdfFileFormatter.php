@@ -54,6 +54,8 @@ class GenericRdfFileFormatter extends FileFormatterBase {
    * viewed.
    */
   public function prepareView(array $entities_items) {
+    /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
+    $file_handler = \Drupal::service('rdf_file.handler');
     // Collect entity IDs to load. For performance, we want to use a single
     // "multiple entity load" to load all the entities for the multiple
     // "entity reference item lists" being displayed. We thus cannot use
@@ -67,22 +69,10 @@ class GenericRdfFileFormatter extends FileFormatterBase {
         // at FALSE.
         $item->_loaded = FALSE;
         if ($this->needsEntityLoad($item)) {
-          $ids[] = $item->target_id;
+          $file = $file_handler->UrlToFile($item->target_id);
+          $entities[$item->target_id] = $file;
         }
       }
-    }
-    $query = \Drupal::entityQuery('file');
-    $results = $query
-      ->condition('uri', $ids, 'IN')
-      ->execute();
-    if ($results) {
-      $target_type = $this->getFieldSetting('target_type');
-      $target_entities = \Drupal::entityManager()->getStorage($target_type)->loadMultiple($results);
-    }
-    $entities = [];
-    /** @var \Drupal\file\Entity\File $target_entity */
-    foreach ($target_entities as $target_entity) {
-      $entities[$target_entity->getFileUri()] = $target_entity;
     }
 
     // For each item, pre-populate the loaded entity in $item->entity, and set
