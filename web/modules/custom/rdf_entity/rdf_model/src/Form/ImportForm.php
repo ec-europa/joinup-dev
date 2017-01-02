@@ -4,7 +4,6 @@ namespace Drupal\rdf_model\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use EasyRdf\Format;
 
 /**
  * Configuration form for rdf_export module.
@@ -49,6 +48,12 @@ class ImportForm extends FormBase {
     return $form;
   }
 
+  /**
+   * Builds a list of available ontologies.
+   *
+   * @return array
+   *    Ontologies.
+   */
   protected function getOntologies() {
     $query = "SELECT ?ontology ?label ?comment
 WHERE {
@@ -70,6 +75,12 @@ WHERE {
     return $ontology_list;
   }
 
+  /**
+   * Builds a list of ontology classes.
+   *
+   * @return array
+   *    Ontology classed, keyed by ontology.
+   */
   protected function getClasses() {
     $query = "SELECT ?ontology ?class ?label ?comment
 WHERE {
@@ -105,7 +116,6 @@ WHERE {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $triggering_element = $form_state->getTriggeringElement();
     $ontology = $triggering_element['#options']['ontology'];
-   $a = 1;
   }
 
 }
