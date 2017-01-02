@@ -1,0 +1,10 @@
+rdf_model.import_form:
+  path: '/admin/config/rdf_entity/model-import'
+  defaults:
+    _form: '\Drupal\rdf_model\Form\ImportForm'
+    _title: 'Rdf ontology importer'
+  requirements:
+    _permission: 'administer rdf metadata settings'
+  options:
+    _admin_route: TRUE
+

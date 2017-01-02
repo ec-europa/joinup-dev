@@ -1,0 +1,9 @@
+name: Rdf model
+type: module
+description: 'Import ontologies'
+package: Custom
+dependencies:
+  - rdf_entity
+
+version: '8.x-1.x-dev'
+core: '8.x'
