@@ -13,6 +13,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Render\ElementInfoManagerInterface;
 use Drupal\file\Element\ManagedFile;
 use Drupal\file\Entity\File;
+use Drupal\rdf_file\Entity\RemoteFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -235,7 +236,6 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
         'file' => $this->t('File'),
         'remote-file' => $this->t('Remote file'),
       ],
-      '#default_value' => 'file',
     ];
     $element['file-wrap']['remote-file'] = [
       '#type' => 'textfield',
@@ -277,7 +277,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     );
 
     $element['#weight'] = $delta;
-
+    $element['file-wrap']['file']['#default_value'] = $defaults;
     // Field stores FID value in a single mode, so we need to transform it for
     // form element to recognize it correctly.
     if (!isset($items[$delta]->fids) && isset($items[$delta]->target_id)) {
@@ -285,11 +285,20 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       $file_handler = \Drupal::service('rdf_file.handler');
       $target_id = $items[$delta]->target_id;
       $file = $file_handler->UrlToFile($target_id);
-      $items[$delta]->fids = [$file->id()];
+      if ($file) {
+        $items[$delta]->fids = [$file->id()];
+        if ($file instanceof RemoteFile) {
+          $element['file-wrap']['remote-file']['#default_value'] = $items[$delta]->getValue()['target_id'];
+          $element['file-wrap']['select']['#default_value'] = 'remote-file';
+        }
+        else {
+          $element['file-wrap']['file']['#default_value'] = $items[$delta]->getValue() + $defaults;
+          $element['file-wrap']['select']['#default_value'] = 'file';
+        }
+      }
     }
-    $element['file-wrap']['file']['#default_value'] = $items[$delta]->getValue() + $defaults;
 
-    $default_fids = $element['file-wrap']['file']['#extended'] ? $element['file-wrap']['file']['#default_value']['fids'] : $element['file-wrap']['file']['#default_value'];
+    $default_fids = $element['file-wrap']['file']['#default_value']['fids'];
     if (empty($default_fids)) {
       $file_upload_help = array(
         '#theme' => 'file_upload_help',
@@ -324,13 +333,25 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     $file_handler = \Drupal::service('rdf_file.handler');
     $new_values = array();
     foreach ($values as &$value) {
-      foreach ($value['file-wrap']['file']['fids'] as $fid) {
+      $type = $value['file-wrap']['select'];
+      // Local file.
+      if ($type == 'file') {
+        foreach ($value['file-wrap']['file']['fids'] as $fid) {
+          $new_value = $value;
+          $file = File::load($fid);
+          $new_value['target_id'] = $file_handler->fileToUrl($file);
+          unset($new_value['fids']);
+          $new_values[] = $new_value;
+        }
+      }
+      // Remote file.
+      else {
         $new_value = $value;
-        $file = File::load($fid);
-        $new_value['target_id'] = $file_handler->fileToUrl($file);
+        $new_value['target_id'] = $value['file-wrap']['remote-file'];
         unset($new_value['fids']);
         $new_values[] = $new_value;
       }
+
     }
 
     return $new_values;
