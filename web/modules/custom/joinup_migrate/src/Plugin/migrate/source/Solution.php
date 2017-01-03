@@ -63,7 +63,7 @@ class Solution extends SolutionBase {
     $query->addExpression("TRIM({$this->alias['data_set_uri']}.field_id_uri_value)", 'metrics_page');
 
     return $query
-      ->fields('j', ['policy2'])
+      ->fields('m', ['policy2'])
       ->fields($this->alias['node'], ['title', 'created', 'changed', 'vid'])
       ->fields($this->alias['node_revision'], ['body'])
       ->fields($this->alias['state'], ['sid'])
