@@ -4,10 +4,14 @@ discussion_workflow:
   label: "Default"
   group: discussion
   states:
+    # The state used as initial.
     draft:
       label: Draft
+    # State used to flag content that is being reviewed.
     in_assessment:
       label: In assessment
+    proposed:
+      label: Proposed
     validated:
       label: Validated
       published: true
@@ -17,7 +21,7 @@ discussion_workflow:
   transitions:
     validate:
       label: Publish
-      from: [draft, in_assessment]
+      from: [draft]
       to: validated
     update_published:
       label: Update
@@ -26,11 +30,24 @@ discussion_workflow:
     request_changes:
       label: Request changes
       from: [validated]
+      to: proposed
+    report:
+      label: Report
+      from: [validated]
       to: in_assessment
-    update_changes:
-      label: Update
+    approve_report:
+      label: Approve report
       from: [in_assessment]
-      to: in_assessment
+      to: proposed
+    update_proposed:
+      label: Update proposed
+      from: [proposed]
+      to: proposed
+    # Approve the proposed version and publish it.
+    approve_proposed:
+      label: Approve proposed
+      from: [proposed]
+      to: validated
     disable:
       label: Disable
       from: [validated]
