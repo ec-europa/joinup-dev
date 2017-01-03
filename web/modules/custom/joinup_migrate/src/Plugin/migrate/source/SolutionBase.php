@@ -1,6 +1,7 @@
 <?php
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
+
 use Drupal\Core\Database\Database;
 
 /**

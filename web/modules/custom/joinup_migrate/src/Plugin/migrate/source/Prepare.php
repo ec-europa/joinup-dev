@@ -134,7 +134,7 @@ class Prepare extends SourcePluginBase {
         $publishers = $source
           ->select($publisher[$row['type']][0])
           ->fields($publisher[$row['type']][0], [$publisher[$row['type']][1]])
-          ->condition($publisher[$row['type']][0] .'.vid', $row['vid'])
+          ->condition($publisher[$row['type']][0] . '.vid', $row['vid'])
           ->execute()
           ->fetchCol();
         if ($publishers) {
@@ -143,7 +143,7 @@ class Prepare extends SourcePluginBase {
         $contacts = $source
           ->select($contact[$row['type']][0])
           ->fields($contact[$row['type']][0], [$contact[$row['type']][1]])
-          ->condition($contact[$row['type']][0] .'.vid', $row['vid'])
+          ->condition($contact[$row['type']][0] . '.vid', $row['vid'])
           ->execute()
           ->fetchCol();
         if ($contacts) {
