@@ -16,6 +16,7 @@ use Drupal\migrate\Row;
 class Collection extends CollectionBase {
 
   use ContactTrait;
+  use CountryTrait;
   use OwnerTrait;
   use MappingTrait;
 
@@ -35,8 +36,7 @@ class Collection extends CollectionBase {
       'pre_moderation' => $this->t('Pre moderation'),
       'changed_time' => $this->t('Last changed date'),
       'owner' => $this->t('Owner'),
-      // @todo Insert here spatial coverage.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2950
+      'country' => $this->t('Spatial coverage'),
       'collection_state' => $this->t('Collection state'),
       'affiliates' => $this->t('Affiliates'),
       'contact' => $this->t('Contact info'),
@@ -61,7 +61,13 @@ class Collection extends CollectionBase {
         'pre_moderation',
         'collection_state',
       ])
-      ->fields($this->alias['node'], ['nid', 'type', 'created', 'changed'])
+      ->fields($this->alias['node'], [
+        'nid',
+        'vid',
+        'type',
+        'created',
+        'changed',
+      ])
       ->fields($this->alias['og'], ['og_description'])
       ->fields($this->alias['community'], ['field_community_url_url'])
       ->fields($this->alias['repository_url'], ['field_repository_url_url'])
@@ -130,7 +136,42 @@ class Collection extends CollectionBase {
     // Contacts.
     $row->setSourceProperty('contact', $this->getCollectionContacts($collection) ?: NULL);
 
+    // Spatial coverage.
+    $row->setSourceProperty('country', $this->getSpatialCoverage($row));
+
     return parent::prepareRow($row);
+  }
+
+  /**
+   * Gets the spatial coverage for a collection.
+   *
+   * @param \Drupal\migrate\Row $row
+   *   The source row.
+   *
+   * @return string[]
+   *   A list of country names.
+   */
+  protected function getSpatialCoverage(Row $row) {
+    // The country list is inherited from corresponding Drupal 6 node.
+    if (in_array($row->getSourceProperty('type'), ['repository', 'community'])) {
+      $vids = [$row->getSourceProperty('vid')];
+    }
+    // The country list is compiled from the compounding content-types.
+    else {
+      $query = Database::getConnection()->select('joinup_migrate_mapping', 'm')
+        ->distinct()
+        ->fields('n', ['vid'])
+        ->condition('m.collection', $row->getSourceProperty('collection'))
+        // @todo: Fix this list based on reply to ISAICP-2950, comment 2001607.
+        // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2950?focusedCommentId=2001607&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-2001607
+        ->condition('n.type', ['asset_release'], 'IN')
+        ->condition('m.del', 'No')
+        ->isNotNull('m.nid');
+      $query->join(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'm.nid = n.nid');
+      $vids = $query->execute()->fetchCol();
+    }
+
+    return $vids ? $this->getCountries($vids) : [];
   }
 
 }

@@ -126,7 +126,7 @@ class Solution extends SolutionBase {
     }
 
     // Country.
-    $row->setSourceProperty('country', $this->getCountries($row->getSourceProperty('vid')));
+    $row->setSourceProperty('country', $this->getCountries([$row->getSourceProperty('vid')]));
 
     // Status.
     $query = $this->select('term_node', 'tn');
