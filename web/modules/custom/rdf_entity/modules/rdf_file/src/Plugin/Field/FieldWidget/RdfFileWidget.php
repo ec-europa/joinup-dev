@@ -99,7 +99,8 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     }
 
     // Determine the number of widgets to display.
-    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
+    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()
+      ->getCardinality();
     switch ($cardinality) {
       case FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED:
         $max = count($items);
@@ -193,7 +194,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       $elements['#file_upload_description'] = array(
         '#theme' => 'file_upload_help',
         '#description' => '',
-        '#upload_validators' => $elements[0]['#upload_validators'],
+        '#upload_validators' => $elements[0]['file-wrap']['file']['#upload_validators'],
         '#cardinality' => $cardinality,
       );
     }
@@ -216,7 +217,8 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       'description_field' => NULL,
     );
 
-    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
+    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()
+      ->getCardinality();
     $defaults = array(
       'fids' => array(),
       'display' => (bool) $field_settings['display_default'],
@@ -226,12 +228,36 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     // Essentially we use the managed_file type, extended with some
     // enhancements.
     $element_info = $this->elementInfo->getInfo('managed_file');
-    $element += array(
+    $element['file-wrap']['#type'] = 'container';
+    $element['file-wrap']['select'] = [
+      '#type' => 'radios',
+      '#options' => [
+        'file' => $this->t('File'),
+        'remote-file' => $this->t('Remote file'),
+      ],
+      '#default_value' => 'file',
+    ];
+    $element['file-wrap']['remote-file'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Remote file'),
+      '#states' => array(
+        // Only show this field when the 'remote file' radio is selected.
+        'visible' => array(
+          ':input[name="field_file[' . $delta . '][file-wrap][select]"]' => array('value' => 'remote-file'),
+        ),
+      ),
+    ];
+    $element['file-wrap']['file'] = array(
       '#type' => 'managed_file',
       '#upload_location' => $items[$delta]->getUploadLocation(),
       '#upload_validators' => $items[$delta]->getUploadValidators(),
       '#value_callback' => array(get_class($this), 'value'),
-      '#process' => array_merge($element_info['#process'], array(array(get_class($this), 'process'))),
+      '#process' => array_merge($element_info['#process'], array(
+        array(
+          get_class($this),
+          'process',
+        ),
+      )),
       '#progress_indicator' => $this->getSetting('progress_indicator'),
       // Allows this field to return an array instead of a single value.
       '#extended' => TRUE,
@@ -242,6 +268,12 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       '#display_default' => $field_settings['display_default'],
       '#description_field' => $field_settings['description_field'],
       '#cardinality' => $cardinality,
+      '#states' => array(
+        // Only show this field when the 'file' radio is selected.
+        'visible' => array(
+          ':input[name="field_file[' . $delta . '][file-wrap][select]"]' => array('value' => 'file'),
+        ),
+      ),
     );
 
     $element['#weight'] = $delta;
@@ -255,20 +287,26 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       $file = $file_handler->UrlToFile($target_id);
       $items[$delta]->fids = [$file->id()];
     }
-    $element['#default_value'] = $items[$delta]->getValue() + $defaults;
+    $element['file-wrap']['file']['#default_value'] = $items[$delta]->getValue() + $defaults;
 
-    $default_fids = $element['#extended'] ? $element['#default_value']['fids'] : $element['#default_value'];
+    $default_fids = $element['file-wrap']['file']['#extended'] ? $element['file-wrap']['file']['#default_value']['fids'] : $element['file-wrap']['file']['#default_value'];
     if (empty($default_fids)) {
       $file_upload_help = array(
         '#theme' => 'file_upload_help',
         '#description' => $element['#description'],
-        '#upload_validators' => $element['#upload_validators'],
+        '#upload_validators' => $element['file-wrap']['file']['#upload_validators'],
         '#cardinality' => $cardinality,
       );
-      $element['#description'] = \Drupal::service('renderer')->renderPlain($file_upload_help);
+      $element['#description'] = \Drupal::service('renderer')
+        ->renderPlain($file_upload_help);
       $element['#multiple'] = $cardinality != 1 ? TRUE : FALSE;
       if ($cardinality != 1 && $cardinality != -1) {
-        $element['#element_validate'] = array(array(get_class($this), 'validateMultipleCount'));
+        $element['#element_validate'] = array(
+          array(
+            get_class($this),
+            'validateMultipleCount',
+          ),
+        );
       }
     }
 
@@ -286,7 +324,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     $file_handler = \Drupal::service('rdf_file.handler');
     $new_values = array();
     foreach ($values as &$value) {
-      foreach ($value['fids'] as $fid) {
+      foreach ($value['file-wrap']['file']['fids'] as $fid) {
         $new_value = $value;
         $file = File::load($fid);
         $new_value['target_id'] = $file_handler->fileToUrl($file);
@@ -353,7 +391,8 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     array_pop($array_parents);
     $previously_uploaded_count = count(Element::children(NestedArray::getValue($form, $array_parents))) - 1;
 
-    $field_storage_definitions = \Drupal::entityManager()->getFieldStorageDefinitions($element['#entity_type']);
+    $field_storage_definitions = \Drupal::entityManager()
+      ->getFieldStorageDefinitions($element['#entity_type']);
     $field_storage = $field_storage_definitions[$element['#field_name']];
     $newly_uploaded_count = count($values['fids']);
     $total_uploaded_count = $newly_uploaded_count + $previously_uploaded_count;
