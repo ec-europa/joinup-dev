@@ -22,7 +22,7 @@ class RdfFileRedirect {
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect object.
    */
-  function redirect(File $file) {
+  public function redirect(File $file) {
     $url = $file->url();
     return new RedirectResponse($url);
   }
