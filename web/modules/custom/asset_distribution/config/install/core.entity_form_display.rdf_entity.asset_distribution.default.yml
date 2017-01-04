@@ -16,8 +16,8 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
-    - asset_distribution
     - file
+    - link
     - rdf_entity
     - text
 id: rdf_entity.asset_distribution.default
@@ -42,10 +42,9 @@ content:
     weight: 2
     settings:
       rows: 9
-      summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea_with_summary
+    type: text_textarea
   field_ad_file:
     weight: 4
     settings:
@@ -67,12 +66,9 @@ content:
     third_party_settings: {  }
   field_ad_licence:
     weight: 5
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_select
   field_ad_modification_date:
     type: datetime_create_update
     weight: 9
