@@ -31,39 +31,25 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
   protected $userModerator;
 
   /**
-   * A user to be used as a solution facilitator.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $userOgFacilitator;
-
-  /**
-   * A user to be used as a solution administrator.
+   * A user with the administrator role in the parent rdf entity.
    *
    * @var \Drupal\Core\Session\AccountInterface
    */
   protected $userOgAdministrator;
 
   /**
-   * The solution parent entity.
+   * A user with the facilitator role in the parent rdf entity.
    *
-   * @var \Drupal\rdf_entity\RdfInterface
+   * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $solutionGroup;
+  protected $userOgFacilitator;
 
   /**
-   * The solution facilitator role.
+   * A user with the member role in the parent rdf entity.
    *
-   * @var \Drupal\og\Entity\OgRole
+   * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $roleFacilitator;
-
-  /**
-   * The solution administrator role.
-   *
-   * @var \Drupal\og\Entity\OgRole
-   */
-  protected $roleAdministrator;
+  protected $userOgMember;
 
   /**
    * {@inheritdoc}
@@ -73,6 +59,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
 
     $this->userAuthenticated = $this->createUserWithRoles();
     $this->userModerator = $this->createUserWithRoles(['moderator']);
+    $this->userOgMember = $this->createUserWithRoles();
     $this->userOgFacilitator = $this->createUserWithRoles();
     $this->userOgAdministrator = $this->createUserWithRoles();
   }
@@ -164,32 +151,39 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
   }
 
   /**
-   * Tests the asset release workflow.
+   * Tests the discussion workflow.
    */
   public function testWorkflow() {
-    $this->markTestSkipped('Not implemented');
-    foreach ($this->workflowTransitionsProvider() as $entity_state => $workflow_data) {
-      $parent = $this->createParent('validated');
+    foreach ($this->workflowTransitionsProvider() as $content_state => $workflow_data) {
+      foreach (['collection', 'solution'] as $parent_bundle) {
+        $parent = $this->createParent($parent_bundle, 'validated');
 
-      foreach ($workflow_data as $user_var => $transitions) {
-        $content = Rdf::create([
-          'rid' => 'asset_release',
-          'label' => $this->randomMachineName(),
-          'field_isr_state' => $entity_state,
-          'field_isr_is_version_of' => $parent->id(),
-        ]);
-        $content->save();
+        foreach ($workflow_data as $user_var => $transitions) {
+          $content = $this->createNode([
+            'type' => 'discussion',
+            'field_discussion_state' => $content_state,
+            OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
+          ]);
+          $content->save();
 
-        // Override the user to be checked for the allowed transitions.
-        $this->userProvider->setUser($this->{$user_var});
-        $actual_transitions = $content->field_isr_state->first()->getTransitions();
-        $actual_transitions = array_map(function ($transition) {
-          return $transition->getId();
-        }, $actual_transitions);
-        sort($actual_transitions);
-        sort($transitions);
+          // Solution group has a member state that is coming from OG, but it
+          // has no privileges.
+          // @todo no better way? This is U G L Y. Argh, my eyes!
+          if ($parent_bundle === 'solution' && $user_var === 'userOgMember') {
+            $transitions = [];
+          }
 
-        $this->assertEquals($transitions, $actual_transitions, t('Allowed transitions match with settings.'));
+          // Override the user to be checked for the allowed transitions.
+          $this->userProvider->setUser($this->{$user_var});
+          $actual_transitions = $content->get('field_discussion_state')->first()->getTransitions();
+          $actual_transitions = array_map(function ($transition) {
+            return $transition->getId();
+          }, $actual_transitions);
+          sort($actual_transitions);
+          sort($transitions);
+
+          $this->assertEquals($transitions, $actual_transitions, "Transitions do not match for user $user_var, state $content_state and parent $parent_bundle.");
+        }
       }
     }
   }
@@ -219,8 +213,10 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
     $parent->save();
     $this->assertInstanceOf(RdfInterface::class, $parent, "The $bundle group was created.");
 
+    $member_role = OgRole::getRole('rdf_entity', $bundle, 'member');
     $facilitator_role = OgRole::getRole('rdf_entity', $bundle, 'facilitator');
     $administrator_role = OgRole::getRole('rdf_entity', $bundle, 'administrator');
+    $this->createOgMembership($parent, $this->userOgMember, [$member_role]);
     $this->createOgMembership($parent, $this->userOgFacilitator, [$facilitator_role]);
     $this->createOgMembership($parent, $this->userOgAdministrator, [$administrator_role]);
 
@@ -403,39 +399,63 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
     return [
       'draft' => [
         'userAuthenticated' => [],
-        'userModerator' => [
-          'draft',
+        'userOgMember' => [
           'validate',
         ],
         'userOgFacilitator' => [
-          'draft',
           'validate',
         ],
-        'userOgAdministrator' => [],
+        'userModerator' => [
+          'validate',
+        ],
       ],
       'validated' => [
         'userAuthenticated' => [],
-        'userModerator' => [
-          'draft',
+        'userOgMember' => [
           'update_published',
-          'request_changes',
         ],
         'userOgFacilitator' => [
-          'draft',
           'update_published',
+          'request_changes',
+          'report',
+          'disable',
         ],
-        'userOgAdministrator' => [],
+        'userModerator' => [
+          'update_published',
+          'request_changes',
+          'report',
+          'disable',
+        ],
       ],
       'in_assessment' => [
         'userAuthenticated' => [],
+        'userOgMember' => [],
+        'userOgFacilitator' => [
+          'approve_report',
+        ],
         'userModerator' => [
-          'update_changes',
-          'validate',
+          'approve_report',
+        ],
+      ],
+      'proposed' => [
+        'userAuthenticated' => [],
+        'userOgMember' => [
+          'update_proposed',
         ],
         'userOgFacilitator' => [
-          'update_changes',
+          'update_proposed',
+          'approve_proposed',
         ],
-        'userOgAdministrator' => [],
+        'userModerator' => [
+          'update_proposed',
+          'approve_proposed',
+        ],
+      ],
+      'archived' => [
+        'userAuthenticated' => [],
+        'userOgMember' => [],
+        'userOgFacilitator' => [],
+        'userModerator' => [],
       ],
     ];
   }
