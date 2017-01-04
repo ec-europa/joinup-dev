@@ -21,10 +21,12 @@ class RdfFileHandler {
    *   URL.
    */
   static public function fileToUrl(FileInterface $file) {
+    global $base_url;
     if ($file instanceof RemoteFile) {
       throw new \Exception('Only regular files can be converted.');
     }
-    return "http://localhost/file-dereference/" . $file->id();
+    // @see rdf_file.routing.yml for dereference redirect.
+    return $base_url . '/file-dereference/' . $file->id();
   }
 
   /**
