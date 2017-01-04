@@ -23,7 +23,6 @@ class UserProfile extends UserBase {
       'last_name' => $this->t('Family name'),
       'first_name' => $this->t('First name'),
       'company_name' => $this->t('Company'),
-      'professional_profile' => $this->t('Professional profile'),
     ];
   }
 
@@ -41,7 +40,6 @@ class UserProfile extends UserBase {
     $query->addExpression("{$this->alias['profile']}.field_lastname_value", 'last_name');
     $query->addExpression("{$this->alias['profile']}.field_firstname_value", 'first_name');
     $query->addExpression("{$this->alias['profile']}.field_company_name_value", 'company_name');
-    $query->addExpression("{$this->alias['profile']}.field_professional_profile_value", 'professional_profile');
 
     return $query;
   }

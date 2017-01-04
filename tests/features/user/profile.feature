@@ -40,7 +40,7 @@ Feature: User profile
     Then I click "Leonardo Da Vinci"
     Then I click "Edit"
     Then the following fields should be present "Email address, Username, Password, Confirm password"
-    Then the following fields should be present "First name, Family name, Photo, Professional domain, Professional profile"
+    Then the following fields should be present "First name, Family name, Photo, Professional domain, Business title"
     Then the following fields should be present "Nationality, Professional domain, Organisation"
     Then the following fields should not be present "Time zone"
     And I fill in "First name" with "Leo"
