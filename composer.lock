@@ -1910,7 +1910,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha7.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha7",
                 "shasum": "a7286f02c28c3c82959e123654fc557d20531f05"
             },
             "require": {
@@ -2317,7 +2317,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/migrate_run-8.x-1.0-alpha1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha1",
                 "shasum": "3e8a2af11f2e0ecf9e07c11c23ccacdc2df5029d"
             },
             "require": {
@@ -2587,7 +2587,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-beta4.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta4",
                 "shasum": "77e79980b56ca722080477e5b3e9aa8fffa87fb1"
             },
             "require": {
@@ -2648,7 +2648,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-beta1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta1",
                 "shasum": "2b8c127d5da0124f61aab80979b3313ae22d9b82"
             },
             "require": {
@@ -2718,7 +2718,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta3.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta3",
                 "shasum": "9ca0101738db00673f2511707a76d6ea0c9ce4db"
             },
             "require": {
@@ -2812,7 +2812,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/taxonomy_container-8.x-1.0.zip",
-                "reference": null,
+                "reference": "8.x-1.0",
                 "shasum": "0e88aa7f88afc5387ab723297a29dca5574d267a"
             },
             "require": {
@@ -2858,7 +2858,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/token-8.x-1.0-rc1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-rc1",
                 "shasum": "204b2f18a3d770589d66656aa83121d2156d0a31"
             },
             "require": {
@@ -7495,7 +7495,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/admin_toolbar-8.x-1.18.zip",
-                "reference": null,
+                "reference": "8.x-1.18",
                 "shasum": "ea5b6b5eb20757fda12e7220819a750e2575359b"
             },
             "require": {
@@ -7771,7 +7771,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-beta1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta1",
                 "shasum": "439d9cab6af0ddb5efbd31e16fbb5da1f510fe6f"
             },
             "require": {
@@ -7909,12 +7909,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/drupalextension.git",
-                "reference": "08faae4fa41157986e5f579861c9532efb49d59d"
+                "reference": "28b7337313ba3a63e1a99330249d1266c810f50f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/drupalextension/zipball/08faae4fa41157986e5f579861c9532efb49d59d",
-                "reference": "08faae4fa41157986e5f579861c9532efb49d59d",
+                "url": "https://api.github.com/repos/pfrenssen/drupalextension/zipball/28b7337313ba3a63e1a99330249d1266c810f50f",
+                "reference": "28b7337313ba3a63e1a99330249d1266c810f50f",
                 "shasum": ""
             },
             "require": {
@@ -7964,7 +7964,7 @@
             "support": {
                 "source": "https://github.com/pfrenssen/drupalextension/tree/update-behat"
             },
-            "time": "2017-01-04T20:14:33+00:00"
+            "time": "2017-01-04 22:39:43"
         },
         {
             "name": "fabpot/goutte",
