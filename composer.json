@@ -53,7 +53,7 @@
         "drupal/config_update": "~1.2",
         "drupal/default_content": "~1.0",
         "drupal/devel": "~1.0@alpha",
-        "drupal/drupal-extension": "dev-update-behat",
+        "drupal/drupal-extension": "dev-master#4d072006873a15a704764985c22dfb591c129c7e",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
         "mikey179/vfsStream": "~1.2",
@@ -176,10 +176,6 @@
         {
             "type": "vcs",
             "url": "git@github.com:ec-europa/og_menu"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:pfrenssen/drupalextension"
         },
         {
         "type": "package",
