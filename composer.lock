@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "32cf482c1c0b3e576f66d8e4d7a2e5a4",
+    "content-hash": "a3fffedc26f7a126a19125701d85762e",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1807,7 +1807,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha7.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha7",
                 "shasum": "a7286f02c28c3c82959e123654fc557d20531f05"
             },
             "require": {
@@ -2360,7 +2360,7 @@
             "version": "dev-7.x-2.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pfrenssen/phingdrushtask.git",
+                "url": "https://git.drupal.org/project/phingdrushtask.git",
                 "reference": "13428ee7a229da3b7e6be4687587048150b1fd25"
             },
             "dist": {
@@ -2370,7 +2370,7 @@
                 "shasum": ""
             },
             "require": {
-                "drush/drush": "6.5 - 8.1",
+                "drush/drush": "6 - 8",
                 "phing/phing": "~2.9"
             },
             "type": "library",
@@ -2398,7 +2398,7 @@
                 "issues": "https://www.drupal.org/project/issues/phingdrushtask",
                 "source": "https://github.com/pfrenssen/phingdrushtask/tree/7.x-2.x"
             },
-            "time": "2016-10-12 12:47:47"
+            "time": "2016-10-12T12:47:47+00:00"
         },
         {
             "name": "drupal/r4032login",
@@ -2484,7 +2484,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-beta4.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta4",
                 "shasum": "77e79980b56ca722080477e5b3e9aa8fffa87fb1"
             },
             "require": {
@@ -2758,7 +2758,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/token-8.x-1.0-rc1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-rc1",
                 "shasum": "204b2f18a3d770589d66656aa83121d2156d0a31"
             },
             "require": {
@@ -7638,7 +7638,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-01-01T15:45:31+00:00"
+            "time": "2017-01-01 15:45:31"
         },
         {
             "name": "fabpot/goutte",
