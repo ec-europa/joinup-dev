@@ -27,11 +27,11 @@ transitions:
     draft:
       - rdf_entity-collection-member
       - rdf_entity-collection-facilitator
-      - rdf_entity-solution-member
       - rdf_entity-solution-facilitator
       - moderator
   update_published:
     validated:
+      - rdf_entity-collection-member
       - rdf_entity-collection-facilitator
       - rdf_entity-solution-facilitator
       - moderator
@@ -52,6 +52,7 @@ transitions:
       - moderator
   update_proposed:
     proposed:
+      - rdf_entity-collection-member
       - rdf_entity-collection-facilitator
       - rdf_entity-solution-facilitator
       - moderator
