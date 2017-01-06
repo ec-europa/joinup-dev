@@ -45,7 +45,6 @@ dependencies:
   module:
     - ds
     - image
-    - joinup
     - joinup_core
 id: rdf_entity.solution.group_header
 targetEntityType: rdf_entity
