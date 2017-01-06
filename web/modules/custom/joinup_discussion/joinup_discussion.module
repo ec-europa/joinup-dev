@@ -32,6 +32,11 @@ function joinup_discussion_node_access(EntityInterface $entity, $operation, Acco
       if (empty($membership)) {
         return AccessResult::neutral();
       }
+
+      if (!$entity->isPublished() && $membership->hasPermission('view any unpublished content')) {
+        return AccessResult::allowed();
+      }
+
       break;
 
     case 'edit':
