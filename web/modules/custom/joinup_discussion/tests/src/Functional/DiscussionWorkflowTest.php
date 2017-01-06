@@ -256,7 +256,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
   protected function isPublishedState($state) {
     $states = [
       'validated',
-      'disabled',
+      'archived',
     ];
 
     return in_array($state, $states);
