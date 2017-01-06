@@ -52,6 +52,12 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   public function handleRevision(WorkflowTransitionEvent $event) {
     $entity = $event->getEntity();
 
+    // Verify if the new state is marked as published state.
+    $is_published_state = $this->isPublishedState($event->getToState(), $event->getWorkflow());
+    if ($entity instanceof EntityPublishedInterface) {
+      $entity->setPublished($is_published_state);
+    }
+
     // Bail out if this entity doesn't implement revisions. We do not limit
     // strictly to content entities.
     if (!$entity instanceof RevisionableInterface) {
@@ -61,12 +67,10 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     // Since all content entities implement the RevisionableInterface, we have
     // to check if the entity has the revision support and if it is set to
     // create a new revision.
-    if (!$entity->getEntityType()->isRevisionable() || !$entity->isNewRevision()) {
+    if (!$entity->getEntityType()->isRevisionable() || (!$entity->isNewRevision() && !$entity->isNew())) {
       return;
     }
 
-    // Verify if the new state is marked as published state.
-    $is_published_state = $this->isPublishedState($event->getToState(), $event->getWorkflow());
     // Set revision as default when:
     // - the entity is new;
     // - the new state is a published one;
@@ -75,10 +79,6 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     //   in.
     // @see https://www.drupal.org/node/2706337
     $entity->isDefaultRevision($entity->isNew() || $is_published_state || !$this->hasPublishedDefaultRevision($entity));
-
-    if ($entity instanceof EntityPublishedInterface) {
-      $entity->setPublished($is_published_state);
-    }
   }
 
   /**
