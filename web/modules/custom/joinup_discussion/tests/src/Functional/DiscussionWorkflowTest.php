@@ -132,8 +132,8 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
             'type' => 'discussion',
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
             'field_discussion_state' => $content_state,
+            'status' => $this->isPublishedState($content_state),
           ]);
-          $content->save();
 
           foreach ($test_data_arrays as $test_data_array) {
             $operation = $test_data_array[0];
@@ -238,6 +238,29 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
     $membership->save();
     $loaded = $this->ogMembershipManager->getMembership($group, $user);
     $this->assertInstanceOf(OgMembership::class, $loaded, t('A membership was successfully created.'));
+  }
+
+  /**
+   * Determines if a state should be published in the discussion workflow.
+   *
+   * When programmatically creating a node in a certain state, there is no
+   * state_machine transition fired. The state_machine_revisions subscriber has
+   * the code to handle publishing of states, but it won't kick in. This
+   * function is used to determine if the node should be created as published.
+   *
+   * @param string $state
+   *   The state to check.
+   *
+   * @return bool
+   *   If the state is published or not.
+   */
+  protected function isPublishedState($state) {
+    $states = [
+      'validated',
+      'disabled',
+    ];
+
+    return in_array($state, $states);
   }
 
   /**
