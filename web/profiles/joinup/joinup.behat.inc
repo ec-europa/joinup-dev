@@ -7,7 +7,7 @@
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\comment\CommentInterface;
-use \Drupal\comment\Entity\Comment;
+use Drupal\comment\Entity\Comment;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -17,6 +17,7 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\og\Og;
@@ -33,6 +34,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
 
@@ -97,18 +99,27 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * Multiple roles can be passed separated with comma.
    *
+   * @param string $roles
+   *   A comma separated list of roles to assign to the user.
+   * @param string $rdf_entity
+   *   The label of the collection or solution of which the user is a member.
+   * @param string $rdf_entity_bundle
+   *   The RDF entity bundle, either 'collection' or 'solution'.
+   *
+   * @throws \Exception
+   *   Thrown when a collection or solution with the given label doesn't exist.
+   *
    * @Given I am logged in as a user with the :role role(s) of the :rdf_entity :rdf_entity_bundle
    * @Given I am logged in as a/an :role of the :rdf_entity :rdf_entity_bundle
    *
    * @see \Drupal\DrupalExtension\Context\DrupalContext::assertAuthenticatedByRole()
    */
-  public function assertAuthenticatedByOgRole($role, $rdf_entity, $rdf_entity_bunlde) {
-    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bunlde);
+  public function assertAuthenticatedByOgRole($roles, $rdf_entity, $rdf_entity_bundle) {
+    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
     if (!$entity) {
       throw new \Exception("No entity found with label $rdf_entity");
     }
-    $roles = explode(',', $role);
-    $roles = array_map('trim', $roles);
+    $roles = $this->explodeCommaSeparatedStepArgument($roles);
     $roles = $this->getOgRoles($roles, $entity);
 
     // Check if a user with this role is already logged in.
@@ -129,6 +140,38 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // Login.
       $this->login($user);
     }
+  }
+
+  /**
+   * Changes the role of a user within a collection or solution.
+   *
+   * Use this to e.g. test promotion or demotion of facilitators.
+   *
+   * @param string $rdf_entity
+   *   The label of the collection or solution of which the user is a member.
+   * @param string $rdf_entity_bundle
+   *   The RDF entity bundle, either 'collection' or 'solution'.
+   * @param string $roles
+   *   A comma separated list of roles to assign to the user. All previously
+   *   assigned roles will be discarded.
+   *
+   * @throws \Exception
+   *   Thrown when a collection or solution with the given label doesn't exist.
+   *
+   * @Given my role(s) in the :rdf_entity :rdf_entity_bundle change(s) to :roles
+   */
+  public function updateGroupRoles($rdf_entity, $rdf_entity_bundle, $roles) {
+    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
+    if (!$entity) {
+      throw new \Exception("No entity found with label $rdf_entity");
+    }
+    $roles = $this->explodeCommaSeparatedStepArgument($roles);
+    $roles = $this->getOgRoles($roles, $entity);
+
+    $current_user = $this->getUserManager()->getCurrentUser();
+    $account = User::load($current_user->uid);
+
+    $this->subscribeUserToGroup($account, $entity, $roles);
   }
 
   /**
@@ -698,9 +741,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then (the following )buttons should be present :buttons
    */
   public function assertButtonsVisible($buttons) {
-    $buttons = explode(',', $buttons);
-    $buttons = array_map('trim', $buttons);
-    $buttons = array_filter($buttons);
+    $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
     $page = $this->getSession()->getPage();
     $not_found = [];
@@ -727,9 +768,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then (the following )buttons should not be present :buttons
    */
   public function assertButtonsNotVisible($buttons) {
-    $buttons = explode(',', $buttons);
-    $buttons = array_map('trim', $buttons);
-    $buttons = array_filter($buttons);
+    $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
     $page = $this->getSession()->getPage();
     $found = [];
@@ -747,7 +786,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Click the given link in the plus button menu.
    *
-   * This will open the plus button first on JavaScript enabled browsers.
+   * On JavaScript enabled browsers this will first click the plus button to
+   * open the menu.
    *
    * @param string $link
    *   The link text of the link to click.
@@ -758,17 +798,27 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // Check if we are running in an environment that supports JavaScript like
     // Selenium or PhantomJS. If this is the case the plus button menu will be
     // closed by default and needs to be opened first.
+    $this->openPlusButtonMenu();
+    $this->getSession()->getPage()->clickLink($link);
+  }
+
+  /**
+   * Opens the plus button menu on JS-enabled browsers.
+   */
+  protected function openPlusButtonMenu() {
     if ($this->browserSupportsJavascript()) {
       $driver = $this->getSession()->getDriver();
       $this->getSession()->getDriver()->click('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//button');
 
-      // Wait for the menu opening animation to end before clicking the link.
+      // Wait for the menu opening animation to end before continuing.
       $end = microtime(TRUE) + 5;
       do {
         usleep(100000);
-      } while (microtime(TRUE) < $end && !$driver->isVisible('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[contains(., "' . $link . '")]'));
+        // The plus button opening animation runs from the top right to the
+        // bottom left. Wait for the last element to become visible to ensure
+        // the menu is fully opened.
+      } while (microtime(TRUE) < $end && !$driver->isVisible('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[last()]'));
     }
-    $this->getSession()->getPage()->clickLink($link);
   }
 
   /**
