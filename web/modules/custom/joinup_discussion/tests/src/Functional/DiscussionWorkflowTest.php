@@ -97,31 +97,30 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
    * delete access are tested below.
    */
   public function testCrudAccess() {
-    foreach (['collection', 'solution'] as $parent_bundle) {
-      // Test create access.
-      foreach ($this->createAccessProvider() as $parent_state => $test_data_arrays) {
-        $parent = $this->createParent($parent_bundle, $parent_state);
+    // Test create access.
+    foreach ($this->createAccessProvider() as $parent_bundle => $test_data_arrays) {
+      $parent = $this->createParent($parent_bundle, 'validated');
 
-        // Initialize the discussion entity as it is going to be used in all sub
-        // cases.
-        $content = $this->createNode([
-          'type' => 'discussion',
-          OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
-        ]);
+      // Initialize the discussion entity as it is going to be used in all sub
+      // cases.
+      $content = $this->createNode([
+        'type' => 'discussion',
+        OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
+      ]);
 
-        foreach ($test_data_arrays as $test_data) {
-          $operation = 'create';
-          $user_var = $test_data[0];
-          $expected_result = $test_data[1];
+      foreach ($test_data_arrays as $test_data) {
+        $operation = 'create';
+        list($user_var, $expected_result) = $test_data;
 
-          $access = $this->ogAccess->userAccessEntity('create', $content, $this->{$user_var})->isAllowed();
-          $result = $expected_result ? t('have') : t('not have');
-          $message = "User {$user_var} should {$result} {$operation} access for bundle 'discussion'.";
-          $this->assertEquals($expected_result, $access, $message);
-        }
+        $access = $this->ogAccess->userAccessEntity('create', $content, $this->{$user_var})->isAllowed();
+        $result = $expected_result ? t('have') : t('not have');
+        $message = "User {$user_var} should {$result} {$operation} access for bundle 'discussion' with parent {$parent_bundle}.";
+        $this->assertEquals($expected_result, $access, $message);
       }
+    }
 
-      // Test view, update, delete access.
+    // Test view, update, delete access.
+    foreach (['collection', 'solution'] as $parent_bundle) {
       foreach ($this->readUpdateDeleteAccessProvider() as $parent_state => $content_data) {
         $parent = $this->createParent($parent_bundle, $parent_state);
 
@@ -271,30 +270,33 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
    * The structure of the array is:
    * @code
    * $access_array = [
-   *  'parent_state' => [
+   *  'parent_bundle' => [
    *    ['user1', 'expected_result'],
    *    ['user2', 'expected_result'],
    * ];
    * @code
    * The user variable represents the variable defined in the test.
-   * Only two parent states need to be tested as the expected result might
-   * differ depending on whether the parent is published or not.
+   * No parent state needs to be checked as it doesn't affect the possibility
+   * to create discussion.
    */
   protected function createAccessProvider() {
     return [
-      // Unpublished parent.
-      'draft' => [
+      // Permissions for discussions created inside a collection.
+      'collection' => [
         ['userAuthenticated', FALSE],
         ['userModerator', TRUE],
+        ['userOgMember', TRUE],
         ['userOgFacilitator', TRUE],
+        // @todo this should be false.
         ['userOgAdministrator', TRUE],
       ],
-      // Published parent.
-      'validated' => [
+      // Permissions for discussions created inside a solution.
+      'solution' => [
         ['userAuthenticated', FALSE],
         ['userModerator', TRUE],
+        ['userOgMember', FALSE],
         ['userOgFacilitator', TRUE],
-        ['userOgAdministrator', TRUE],
+        ['userOgAdministrator', FALSE],
       ],
     ];
   }
@@ -327,10 +329,12 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
         'validated' => [
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
+          ['view', 'userOgMember', FALSE],
           ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', TRUE],
+          ['view', 'userOgAdministrator', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
+          ['update', 'userOgMember', FALSE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
           ['delete', 'userAuthenticated', FALSE],
@@ -355,20 +359,6 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
       ],
       // Published parent.
       'validated' => [
-        'draft' => [
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', FALSE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
         'validated' => [
           ['view', 'userAuthenticated', TRUE],
           ['view', 'userModerator', TRUE],
@@ -474,6 +464,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           'approve_proposed',
         ],
       ],
+      // Once the node is in archived state, no actions can be taken anymore.
       'archived' => [
         'userAuthenticated' => [],
         'userOgMember' => [],
