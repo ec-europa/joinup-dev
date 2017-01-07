@@ -32,16 +32,21 @@ abstract class DistributionBase extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    $this->alias['node'] = 'n';
-    $query = $this->select('node', $this->alias['node']);
+    $this->alias['asset_release_node'] = 'asset_release_node';
 
-    $this->alias['asset_distro'] = $query->join('content_field_asset_distribution', 'asset_distro', "{$this->alias['node']}.nid = %alias.field_asset_distribution_nid");
-    $this->alias['node_release'] = $query->join('node', 'node_release', "{$this->alias['asset_distro']}.vid = %alias.vid");
-    $this->alias['mapping'] = $query->join("{$this->getDestinationDbName()}.joinup_migrate_mapping", 'mapping', "{$this->alias['node_release']}.nid = %alias.nid AND %alias.type = 'asset_release' AND %alias.del = 'No'");
+    /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+    $query = $this->select('node', $this->alias['asset_release_node'])
+      // @todo Limit distributions to those linked in interoperability solutions
+      //   but expand this filter if there's other conclusion in ISAICP-2840,
+      //   comment 2003714.
+      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2840?focusedCommentId=2003714&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-2003714
+      ->condition("{$this->alias['asset_release_node']}.type", 'asset_release');
 
-    return $query
-      ->fields($this->alias['node'], ['nid'])
-      ->condition("{$this->alias['node']}.type", 'distribution');
+    $this->alias['content_field_asset_distribution'] = $query->join('content_field_asset_distribution', 'content_field_asset_distribution', "{$this->alias['asset_release_node']}.vid = %alias.vid");
+    $this->alias['node'] = $query->join('node', 'n', "{$this->alias['content_field_asset_distribution']}.field_asset_distribution_nid = %alias.nid");
+    $this->alias['mapping'] = $query->join("{$this->getDestinationDbName()}.joinup_migrate_mapping", 'mapping', "{$this->alias['asset_release_node']}.nid = %alias.nid AND %alias.type = 'asset_release' AND %alias.del = 'No'");
+
+    return $query->fields($this->alias['node'], ['nid']);
   }
 
 }

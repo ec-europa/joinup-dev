@@ -1,0 +1,15 @@
+id: distribution
+label: 'Distributions migration'
+migration_tags:
+  - distribution
+source:
+  plugin: distribution
+process:
+  id: uri
+  label: title
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: asset_distribution
+migration_dependencies:
+ required:
+   - distribution_file

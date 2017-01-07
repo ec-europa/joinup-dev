@@ -39,6 +39,7 @@ class Solution extends SolutionBase {
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
       'contact' => $this->t('Contact info'),
+      'distribution' => $this->t('Distribution'),
     ] + parent::fields();
   }
 
@@ -148,6 +149,14 @@ class Solution extends SolutionBase {
 
     // Owners.
     $row->setSourceProperty('contact', $this->getSolutionContacts($vid) ?: NULL);
+
+    // Distributions.
+    $query = $this->select('content_field_asset_distribution', 'd')
+      ->fields('n', ['nid'])
+      ->condition('d.vid', $vid);
+    $query->join('node', 'n', 'd.field_asset_distribution_nid = n.nid');
+    $distributions = $query->execute()->fetchCol();
+    $row->setSourceProperty('distribution', $distributions);
 
     return parent::prepareRow($row);
   }

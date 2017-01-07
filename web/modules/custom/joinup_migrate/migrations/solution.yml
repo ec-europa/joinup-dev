@@ -24,6 +24,11 @@ process:
   field_is_description/format:
     plugin: default_value
     default_value: content_editor
+  field_is_distribution:
+    plugin: migration
+    source: distribution
+    migration: distribution
+    no_stub: true
   # Blocked by ISAICP-3007.
   # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
   # field_is_documentation:
@@ -85,4 +90,5 @@ migration_dependencies:
   required:
     - solution_banner
     - solution_logo
+    - distribution
     - owner

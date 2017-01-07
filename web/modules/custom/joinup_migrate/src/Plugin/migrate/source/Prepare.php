@@ -83,6 +83,13 @@ class Prepare extends SourcePluginBase {
       ->fields('n', ['vid'])
       ->condition('m.collection', $allowed, 'IN')
       ->orderBy('m.collection', 'ASC');
+    if ($allowed) {
+      $query->condition('m.collection', $allowed, 'IN');
+    }
+    else {
+      $query->condition(1, 2);
+    }
+
     $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'm.nid = n.nid');
 
     $collections = [];

@@ -31,7 +31,7 @@ class DistributionFile extends DistributionBase {
   public function query() {
     $query = parent::query();
 
-    $this->alias['content_type_distribution'] = $query->join('content_type_distribution', 'content_type_distribution', "n.vid = %alias.vid");
+    $this->alias['content_type_distribution'] = $query->join('content_type_distribution', 'content_type_distribution', "{$this->alias['node']}.vid = %alias.vid");
     $this->alias['files'] = $query->join('files', 'files', "{$this->alias['content_type_distribution']}.field_distribution_access_url_fid = %alias.fid AND %alias.filepath <> ''");
 
     $query->addExpression("{$this->alias['files']}.filepath", 'source_path');
