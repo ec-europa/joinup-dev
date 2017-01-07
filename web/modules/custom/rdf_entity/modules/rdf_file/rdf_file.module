@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * @file
+ * Theme hook implementations.
+ */
+
 use Drupal\Core\Render\Element;
 
 /**
@@ -21,7 +27,7 @@ function rdf_file_theme() {
  *   An associative array containing:
  *   - element: A render element representing the widgets.
  */
-function template_preprocess_rdf_file_widget_multiple(&$variables) {
+function template_preprocess_rdf_file_widget_multiple(array &$variables) {
   $element = $variables['element'];
 
   // Special ID and classes for draggable tables.
