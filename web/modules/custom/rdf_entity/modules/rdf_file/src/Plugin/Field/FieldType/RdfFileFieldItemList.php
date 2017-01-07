@@ -19,6 +19,8 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
    * {@inheritdoc}
    */
   public function postSave($update) {
+    /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
+    $file_handler = \Drupal::service('rdf_file.handler');
     $entity = $this->getEntity();
 
     if (!$update) {
@@ -54,7 +56,8 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
       if ($original->hasTranslation($langcode)) {
         $original_items = $original->getTranslation($langcode)->{$field_name};
         foreach ($original_items as $item) {
-          $original_ids[] = $item->target_id;
+          $file = $file_handler->UrlToFile($item->target_id);
+          $original_ids[] = $file->id();
         }
       }
 
@@ -72,6 +75,34 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
         }
       }
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function referencedEntities() {
+    /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
+    $file_handler = \Drupal::service('rdf_file.handler');
+    if (empty($this->list)) {
+      return array();
+    }
+
+    // Collect the IDs of existing entities to load, and directly grab the
+    // "autocreate" entities that are already populated in $item->entity.
+    $target_entities = $ids = array();
+    foreach ($this->list as $delta => $item) {
+      if ($item->target_id !== NULL) {
+        $file = $file_handler->urlToFile($item->target_id);
+        $target_entities[$delta] = $file;
+      }
+      elseif ($item->hasNewEntity()) {
+        $target_entities[$delta] = $item->entity;
+      }
+    }
+    // Ensure the returned array is ordered by deltas.
+    ksort($target_entities);
+
+    return $target_entities;
   }
 
   /**

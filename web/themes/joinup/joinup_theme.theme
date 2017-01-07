@@ -204,7 +204,10 @@ function joinup_preprocess_file_managed_file(array &$variables) {
   // Workaround for https://www.drupal.org/node/2705471
   // Restore states related attributes.
   $element = &$variables['element'];
-  $variables['attributes']['data-drupal-states'] = Json::encode($element['#states']);
+  if (!empty($element['#states'])) {
+    $variables['attributes']['data-drupal-states'] = Json::encode($element['#states']);
+  }
+
 }
 
 /**

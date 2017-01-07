@@ -2,6 +2,7 @@
 
 namespace Drupal\rdf_file\Plugin\Field\FieldWidget;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -174,7 +175,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       $elements['#file_upload_delta'] = $delta;
       $elements['#type'] = 'details';
       $elements['#open'] = TRUE;
-      $elements['#theme'] = 'file_widget_multiple';
+      $elements['#theme'] = 'rdf_file_widget_multiple';
       $elements['#theme_wrappers'] = array('details');
       $elements['#process'] = array(array(get_class($this), 'processMultiple'));
       $elements['#title'] = $title;
@@ -192,13 +193,41 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       // field. These are added here so that they may be referenced easily
       // through a hook_form_alter().
       $elements['#file_upload_title'] = t('Add a new file');
-      $elements['#file_upload_description'] = array(
-        '#theme' => 'file_upload_help',
-        '#description' => '',
-        '#upload_validators' => $elements[0]['file-wrap']['file']['#upload_validators'],
-        '#cardinality' => $cardinality,
-      );
     }
+
+    //if ($elements) {
+      $elements += array(
+        '#theme' => 'field_multiple_value_form',
+        '#field_name' => $field_name,
+        '#cardinality' => $cardinality,
+        '#cardinality_multiple' => $this->fieldDefinition->getFieldStorageDefinition()->isMultiple(),
+        '#required' => $this->fieldDefinition->isRequired(),
+        '#title' => $title,
+        '#description' => $description,
+        '#max_delta' => $max,
+      );
+      // Add 'add more' button, if not working with a programmed form.
+      if ($cardinality == FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED && !$form_state->isProgrammed()) {
+        $id_prefix = implode('-', array_merge($parents, array($field_name)));
+        $wrapper_id = Html::getUniqueId($id_prefix . '-add-more-wrapper');
+        $elements['#prefix'] = '<div id="' . $wrapper_id . '">';
+        $elements['#suffix'] = '</div>';
+
+        $elements['add_more'] = array(
+          '#type' => 'submit',
+          '#name' => strtr($id_prefix, '-', '_') . '_add_more',
+          '#value' => t('Add another item'),
+          '#attributes' => array('class' => array('field-add-more-submit')),
+          '#limit_validation_errors' => array(array_merge($parents, array($field_name))),
+          '#submit' => array(array(get_class($this), 'addMoreSubmit')),
+          '#ajax' => array(
+            'callback' => array(get_class($this), 'addMoreAjax'),
+            'wrapper' => $wrapper_id,
+            'effect' => 'fade',
+          ),
+        );
+      }
+    //}
 
     return $elements;
   }
@@ -238,7 +267,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       ],
     ];
     $element['file-wrap']['remote-file'] = [
-      '#type' => 'textfield',
+      '#type' => 'url',
       '#title' => $this->t('Remote file'),
       '#states' => array(
         // Only show this field when the 'remote file' radio is selected.
@@ -247,6 +276,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
         ),
       ),
     ];
+    $element['#cardinality'] = $cardinality;
     $element['file-wrap']['file'] = array(
       '#type' => 'managed_file',
       '#upload_location' => $items[$delta]->getUploadLocation(),
@@ -287,13 +317,16 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       $file = $file_handler->UrlToFile($target_id);
       if ($file) {
         $items[$delta]->fids = [$file->id()];
+        $val = $items[$delta]->getValue();
         if ($file instanceof RemoteFile) {
-          $element['file-wrap']['remote-file']['#default_value'] = $items[$delta]->getValue()['target_id'];
+          $element['file-wrap']['remote-file']['#default_value'] = $target_id;
           $element['file-wrap']['select']['#default_value'] = 'remote-file';
+          $element['file-wrap']['file']['#default_value'] = NULL;
         }
         else {
           $element['file-wrap']['file']['#default_value'] = $items[$delta]->getValue() + $defaults;
           $element['file-wrap']['select']['#default_value'] = 'file';
+          $element['file-wrap']['remote-file']['#default_value'] = NULL;
         }
       }
     }
@@ -332,7 +365,17 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
     $file_handler = \Drupal::service('rdf_file.handler');
     $new_values = array();
-    foreach ($values as &$value) {
+    foreach ($values as $delta => &$value) {
+      // Skip when element is deleted.
+      $trigger = $form_state->getTriggeringElement();
+      $trigger_elem = array_pop($trigger['#array_parents']);
+      // Skip the element where the delete button has been pressed.
+      if ($trigger_elem == 'remove_button') {
+        $trigger_delta = $trigger['#array_parents'][2];
+        if ($trigger_delta == $delta) {
+          continue;
+        }
+      }
       $type = $value['file-wrap']['select'];
       // Local file.
       if ($type == 'file') {
@@ -345,13 +388,14 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
         }
       }
       // Remote file.
-      else {
+      elseif ($type == 'remote-file') {
         $new_value = $value;
-        $new_value['target_id'] = $value['file-wrap']['remote-file'];
-        unset($new_value['fids']);
-        $new_values[] = $new_value;
+        if (!empty($value['file-wrap']['remote-file'])) {
+          $new_value['target_id'] = $value['file-wrap']['remote-file'];
+          unset($new_value['fids']);
+          $new_values[] = $new_value;
+        }
       }
-
     }
 
     return $new_values;
@@ -486,7 +530,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     // Adjust the Ajax settings so that on upload and remove of any individual
     // file, the entire group of file fields is updated together.
     if ($element['#cardinality'] != 1) {
-      $parents = array_slice($element['#array_parents'], 0, -1);
+      $parents = array_slice($element['#array_parents'], 0, -3);
       $new_options = array(
         'query' => array(
           'element_parents' => implode('/', $parents),
@@ -610,17 +654,17 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     // have #default_value set appropriately for the current state of the field,
     // so nothing is lost in doing this.
     $button = $form_state->getTriggeringElement();
-    $parents = array_slice($button['#parents'], 0, -2);
+    $parents = array_slice($button['#parents'], 0, -4);
     NestedArray::setValue($form_state->getUserInput(), $parents, NULL);
 
     // Go one level up in the form, to the widgets container.
-    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -1));
+    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -3));
     $field_name = $element['#field_name'];
     $parents = $element['#field_parents'];
 
-    $submitted_values = NestedArray::getValue($form_state->getValues(), array_slice($button['#parents'], 0, -2));
+    $submitted_values = NestedArray::getValue($form_state->getValues(), array_slice($button['#parents'], 0, -3));
     foreach ($submitted_values as $delta => $submitted_value) {
-      if (empty($submitted_value['fids'])) {
+      if (empty($submitted_value['file-wrap']['file']['fids'])) {
         unset($submitted_values[$delta]);
       }
     }
@@ -629,10 +673,10 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     // them, as we display each file in it's own widget.
     $new_values = array();
     foreach ($submitted_values as $delta => $submitted_value) {
-      if (is_array($submitted_value['fids'])) {
-        foreach ($submitted_value['fids'] as $fid) {
+      if (is_array($submitted_value['file-wrap']['file']['fids'])) {
+        foreach ($submitted_value['file-wrap']['file']['fids'] as $fid) {
           $new_value = $submitted_value;
-          $new_value['fids'] = array($fid);
+          $new_value['file-wrap']['file']['fids'] = array($fid);
           $new_values[] = $new_value;
         }
       }
@@ -645,7 +689,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     $submitted_values = array_values($new_values);
 
     // Update form_state values.
-    NestedArray::setValue($form_state->getValues(), array_slice($button['#parents'], 0, -2), $submitted_values);
+    NestedArray::setValue($form_state->getValues(), array_slice($button['#parents'], 0, -4), $submitted_values);
 
     // Update items.
     $field_state = static::getWidgetState($parents, $field_name, $form_state);
