@@ -22,6 +22,7 @@ permissions:
   - 'create rdf entity news'
   - 'create solution rdf_entity'
   - 'delete any custom_page content'
+  - 'delete any discussion content'
   - 'delete any document content'
   - 'delete any event content'
   - 'delete any news content'
