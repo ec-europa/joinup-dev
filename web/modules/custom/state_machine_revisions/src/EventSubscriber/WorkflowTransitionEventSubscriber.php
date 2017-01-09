@@ -67,7 +67,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     // Since all content entities implement the RevisionableInterface, we have
     // to check if the entity has the revision support and if it is set to
     // create a new revision.
-    if (!$entity->getEntityType()->isRevisionable() || (!$entity->isNewRevision() && !$entity->isNew())) {
+    if (!$entity->getEntityType()->isRevisionable() || !$entity->isNewRevision()) {
       return;
     }
 
