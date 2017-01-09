@@ -121,13 +121,7 @@ class JoinupDiscussionFulfillmentGuard implements GuardInterface {
    * @see https://www.drupal.org/node/2745673
    */
   protected function getState(EntityInterface $entity) {
-    if ($entity->isNew()) {
-      return $entity->field_discussion_state->first()->value;
-    }
-    else {
-      $unchanged_entity = $this->entityTypeManager->getStorage('node')->loadUnchanged($entity->id());
-      return $unchanged_entity->field_discussion_state->first()->value;
-    }
+    return $entity->get('field_discussion_state')->first()->value;
   }
 
 }
