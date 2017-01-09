@@ -7,6 +7,33 @@ source:
 process:
   id: uri
   label: title
+  field_ad_repr_technique:
+    -
+      plugin: static_map
+      source: technique
+      bypass: true
+      map:
+        'BPMN (Business Process Modeling Notation)': 'Business Process Modeling Notation'
+        'Common Logic': 'Common logic'
+        'DTD (Document Type Definition)': 'Document Type Definition'
+        'Genericode': genericode
+        'IDEF (Integration Definition Methods)': 'Integration Definition'
+        'KIF (Knowledge Interchange Format)': 'Knowledge Interchange Format'
+        'OWL (Web Ontology Language)': 'Web Ontology Language Full/DL/Lite'
+        'RDF Schema': 'Resource Description Framework Schema'
+        'RIF (Rule Markup Language)': 'Rule Interchange Format'
+        'RuleML (Rule Markup Language)': 'Rule Markup Langauge'
+        'SBVR (Semantics of Business Vocabulary and Rules)': 'Semantics of Business Vocabulary and Rules'
+        'SKOS (SImple Knowledge Organization Schema)': 'Simple Knowledge Organization System'
+        'SPARQL (Query Language for RDF)': 'SPARQL Query Language for RDF'
+        'SPIN (SPARQL Inference Notation)': 'SPARQL Inference Notation'
+        'SWRL (Semantic Web Rule Language)': 'Semantic Web Rule Language'
+        'UML (Unified Modeling Language)': 'Unified Modelling Language'
+        'WSDL (Web Service Description Language)': 'Web Service Description Language'
+        'WSMO (Web Service Modeling Ontology)': 'Web Service Modelling Ontology'
+    -
+      plugin: term_reference
+      vocabulary: representation_technique
 destination:
   plugin: entity:rdf_entity
   default_bundle: asset_distribution
