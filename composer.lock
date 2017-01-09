@@ -1937,8 +1937,8 @@
             "require": {
                 "drupal/core": "~8.0"
             },
-            "suggest": {
-                "drupal/entity_reference_revisions": "Required by drupal/inline_entity_form"
+            "require-dev": {
+                "drupal/entity_reference_revisions": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -2192,6 +2192,14 @@
                 "GPL-2.0+"
             ],
             "authors": [
+                {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
                 {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
