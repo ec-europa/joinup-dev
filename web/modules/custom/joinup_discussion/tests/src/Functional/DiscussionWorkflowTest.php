@@ -2,9 +2,6 @@
 
 namespace Drupal\Tests\joinup_discussion\Functional;
 
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -69,25 +66,6 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
    */
   protected function getEntityType() {
     return 'node';
-  }
-
-  /**
-   * Creates a user with roles.
-   *
-   * @param array $roles
-   *    An array of roles to initialize the user with.
-   *
-   * @return \Drupal\Core\Session\AccountInterface
-   *    The created user object.
-   */
-  public function createUserWithRoles(array $roles = []) {
-    $user = $this->createUser();
-    foreach ($roles as $role) {
-      $user->addRole($role);
-    }
-    $user->save();
-
-    return $user;
   }
 
   /**
@@ -220,23 +198,6 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
     $this->createOgMembership($parent, $this->userOgAdministrator, [$administrator_role]);
 
     return $parent;
-  }
-
-  /**
-   * Creates and asserts an Og membership.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $group
-   *    The Og group.
-   * @param \Drupal\Core\Session\AccountInterface $user
-   *    The user this membership refers to.
-   * @param array $roles
-   *    An array of role objects.
-   */
-  protected function createOgMembership(EntityInterface $group, AccountInterface $user, array $roles = []) {
-    $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
-    $membership->save();
-    $loaded = $this->ogMembershipManager->getMembership($group, $user);
-    $this->assertInstanceOf(OgMembership::class, $loaded, t('A membership was successfully created.'));
   }
 
   /**

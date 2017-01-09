@@ -2,6 +2,9 @@
 
 namespace Drupal\Tests\joinup_core;
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\og\Entity\OgMembership;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\rdf_entity\RdfDatabaseConnectionTrait;
 
@@ -65,6 +68,42 @@ abstract class JoinupWorkflowTestBase extends BrowserTestBase {
     $this->ogAccess = $this->container->get('og.access');
     $this->entityAccess = $this->container->get('entity_type.manager')->getAccessControlHandler($this->getEntityType());
     $this->userProvider = $this->container->get('joinup_user.workflow.user_provider');
+  }
+
+  /**
+   * Creates a user with roles.
+   *
+   * @param array $roles
+   *    An array of roles to initialize the user with.
+   *
+   * @return \Drupal\Core\Session\AccountInterface
+   *    The created user object.
+   */
+  protected function createUserWithRoles(array $roles = []) {
+    $user = $this->createUser();
+    foreach ($roles as $role) {
+      $user->addRole($role);
+    }
+    $user->save();
+
+    return $user;
+  }
+
+  /**
+   * Creates and asserts an Og membership.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *    The Og group.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *    The user this membership refers to.
+   * @param array $roles
+   *    An array of role objects.
+   */
+  protected function createOgMembership(EntityInterface $group, AccountInterface $user, array $roles = []) {
+    $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
+    $membership->save();
+    $loaded = $this->ogMembershipManager->getMembership($group, $user);
+    $this->assertInstanceOf(OgMembership::class, $loaded, t('A membership was successfully created.'));
   }
 
   /**

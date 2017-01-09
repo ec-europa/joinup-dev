@@ -2,9 +2,6 @@
 
 namespace Drupal\Tests\asset_release\Functional;
 
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
@@ -86,25 +83,6 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    */
   protected function getEntityType() {
     return 'rdf_entity';
-  }
-
-  /**
-   * Creates a user with roles.
-   *
-   * @param array $roles
-   *    An array of roles to initialize the user with.
-   *
-   * @return \Drupal\Core\Session\AccountInterface
-   *    The created user object.
-   */
-  public function createUserWithRoles($roles = []) {
-    $user = $this->createUser();
-    foreach ($roles as $role) {
-      $user->addRole($role);
-    }
-    $user->save();
-
-    return $user;
   }
 
   /**
@@ -203,7 +181,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * @return \Drupal\Core\Entity\EntityInterface
    *    The created solution entity.
    */
-  public function createDefaultParent($state) {
+  protected function createDefaultParent($state) {
     $parent = Rdf::create([
       'rid' => 'solution',
       'field_is_state' => $state,
@@ -214,23 +192,6 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
     $this->createOgMembership($parent, $this->userOgFacilitator, [$this->roleFacilitator]);
     $this->createOgMembership($parent, $this->userOgAdministrator, [$this->roleAdministrator]);
     return $parent;
-  }
-
-  /**
-   * Creates and asserts an Og membership.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $group
-   *    The Og group.
-   * @param \Drupal\Core\Session\AccountInterface $user
-   *    The user this membership refers to.
-   * @param array $roles
-   *    An array of role objects.
-   */
-  public function createOgMembership(EntityInterface $group, AccountInterface $user, array $roles = []) {
-    $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
-    $membership->save();
-    $loaded = $this->ogMembershipManager->getMembership($group, $user);
-    $this->assertInstanceOf(OgMembership::class, $loaded, t('A membership was successfully created.'));
   }
 
   /**
