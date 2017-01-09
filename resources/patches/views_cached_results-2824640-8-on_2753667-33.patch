@@ -1,17 +1,17 @@
-diff --git a/src/Plugin/views/cache/SearchApiCache.php b/src/Plugin/views/cache/SearchApiCache.php
-index af229fb..051951a 100644
---- a/src/Plugin/views/cache/SearchApiCache.php
-+++ b/src/Plugin/views/cache/SearchApiCache.php
+diff --git a/src/Plugin/views/SearchApiCachePluginTrait.php b/src/Plugin/views/SearchApiCachePluginTrait.php
+index dd57f716..2b09e59e 100644
+--- a/src/Plugin/views/SearchApiCachePluginTrait.php
++++ b/src/Plugin/views/SearchApiCachePluginTrait.php
 @@ -3,6 +3,7 @@
- namespace Drupal\search_api\Plugin\views\cache;
+ namespace Drupal\search_api\Plugin\views;
  
  use Drupal\Core\Cache\Cache;
 +use Drupal\Core\Cache\CacheableMetadata;
- use Drupal\Core\Datetime\DateFormatterInterface;
- use Drupal\Core\Entity\EntityTypeManagerInterface;
  use Drupal\search_api\Plugin\views\query\SearchApiQuery;
-@@ -184,4 +185,15 @@ class SearchApiCache extends Time {
-     return $tags;
+ use Drupal\search_api\SearchApiException;
+ 
+@@ -124,4 +125,15 @@ trait SearchApiCachePluginTrait {
+     throw new SearchApiException('No matching Search API Views query found in view.');
    }
  
 +  /**
