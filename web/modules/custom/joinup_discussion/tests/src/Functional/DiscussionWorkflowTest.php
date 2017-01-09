@@ -80,7 +80,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
    * @return \Drupal\Core\Session\AccountInterface
    *    The created user object.
    */
-  public function createUserWithRoles($roles = []) {
+  public function createUserWithRoles(array $roles = []) {
     $user = $this->createUser();
     foreach ($roles as $role) {
       $user->addRole($role);
