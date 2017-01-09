@@ -24,7 +24,6 @@ Feature: Discussion moderation
     When I am logged in as "Gabe Rogers"
     And I go to the homepage of the "DIY collection" collection
     And I click "Add discussion" in the plus button menu
-    #And I enter "Paying somebody else to do it?" in the "Content" wysiwyg editor
     And I fill in the following:
       | Title   | Best method to cut logs        |
       | Content | Paying somebody else to do it? |
