@@ -353,7 +353,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['update', 'userOgAdministrator', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', FALSE],
+          ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'proposed' => [
@@ -367,7 +367,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['update', 'userOgAdministrator', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', FALSE],
+          ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'archived' => [
@@ -381,7 +381,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['update', 'userOgAdministrator', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', FALSE],
+          ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
       ],
@@ -398,7 +398,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['update', 'userOgAdministrator', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', FALSE],
+          ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'in_assessment' => [
@@ -412,7 +412,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['update', 'userOgAdministrator', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', FALSE],
+          ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'proposed' => [
@@ -426,7 +426,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['update', 'userOgAdministrator', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', FALSE],
+          ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'archived' => [
@@ -440,7 +440,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['update', 'userOgAdministrator', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', FALSE],
+          ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
       ],
