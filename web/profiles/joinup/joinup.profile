@@ -14,6 +14,7 @@ use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_form_FORMID_alter().
@@ -265,5 +266,26 @@ function joinup_theme_suggestions_field_alter(array &$suggestions, array &$varia
         $variables['element']['#joinup_template_suggestion'] = $suggestion;
       }
     }
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function joinup_views_pre_view(ViewExecutable $view) {
+  // The collections overview varies by the user's memberships. For example if
+  // you are the owner of a proposed collection you can see it, while a non-
+  // member won't be able to see it yet.
+  // Note that for page displays this currently only affects the query result
+  // cache in Views, not the render cache. ViewPageController::handle() only
+  // sets a cache context when contextual links are enabled.
+  // @todo Solve this properly on render cache level by providing a dedicated
+  //   property like _view_display_cache_contexts on the router object which is
+  //   created in PathPluginBase::getRoute(). We can then use this to output the
+  //   correct cache contexts in ViewPageController::handle().
+  // @see https://www.drupal.org/node/2839058
+  if ($view->id() === 'collections') {
+    $view->display_handler->display['cache_metadata']['contexts'][] = 'og_role';
+    $view->display_handler->display['cache_metadata']['contexts'][] = 'user.roles';
   }
 }

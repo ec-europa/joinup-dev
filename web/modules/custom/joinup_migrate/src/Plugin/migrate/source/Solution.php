@@ -26,9 +26,9 @@ class Solution extends SolutionBase {
     return [
       'uri' => $this->t('URI'),
       'title' => $this->t('Title'),
-      'created' => $this->t('Creation date'),
+      'created_time' => $this->t('Creation date'),
       'body' => $this->t('Description'),
-      'changed' => $this->t('Last changed date'),
+      'changed_time' => $this->t('Last changed date'),
       'owner' => $this->t('Owners'),
       'keywords' => $this->t('Keywords'),
       'landing_page' => $this->t('Landing page'),
@@ -58,8 +58,8 @@ class Solution extends SolutionBase {
     $this->alias['data_set_uri'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_id_uri", 'data_set_uri', "{$this->alias['node_metrics']}.vid = %alias.vid");
 
     $query->addExpression("TRIM({$this->alias['content_type_documentation']}.field_documentation_access_url1_url)", 'landing_page');
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created');
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed');
+    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created_time');
+    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed_time');
     $query->addExpression("TRIM({$this->alias['data_set_uri']}.field_id_uri_value)", 'metrics_page');
 
     return $query
@@ -97,12 +97,12 @@ class Solution extends SolutionBase {
     }
 
     // Assure a created date.
-    if (!$row->getSourceProperty('created')) {
-      $row->setSourceProperty('created', date('Y-m-d\TH:i:s', REQUEST_TIME));
+    if (!$row->getSourceProperty('created_time')) {
+      $row->setSourceProperty('created_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
     // Assure a changed date.
-    if (!$row->getSourceProperty('changed')) {
-      $row->setSourceProperty('changed', date('Y-m-d\TH:i:s', REQUEST_TIME));
+    if (!$row->getSourceProperty('changed_time')) {
+      $row->setSourceProperty('changed_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
 
     // Extract keywords.
