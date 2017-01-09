@@ -509,12 +509,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @BeforeNodeCreate
    */
-  public function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+  public static function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
     $node = $scope->getEntity();
 
     // Replace field label aliases with the actual field names.
     foreach (get_object_vars($node) as $alias => $value) {
-      $name = $this->getNodeFieldNameFromAlias($node->type, $alias);
+      $name = self::getNodeFieldNameFromAlias($node->type, $alias);
       if ($name !== $alias) {
         unset($node->alias);
         $node->$name = $value;
@@ -526,7 +526,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // solution in a Behat test. This is by design, the URIs are not exposed to
     // end users of the site so they should not be used in BDD scenarios.
     if (!empty($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD})) {
-      $entity = $this->getRdfEntityByLabel($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD});
+      $entity = self::getRdfEntityByLabel($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD});
       $node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD} = $entity->id();
     }
 
@@ -559,7 +559,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @return string
    *   The actual field name, or the original string if the alias is not known.
    */
-  protected function getNodeFieldNameFromAlias($type, $alias) {
+  protected static function getNodeFieldNameFromAlias($type, $alias) {
     $aliases = [
       'document' => [
         'short title' => 'field_document_short_title',
