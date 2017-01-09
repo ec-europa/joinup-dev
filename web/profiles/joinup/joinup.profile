@@ -204,6 +204,7 @@ function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form
  */
 function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['revision_information']['#access'] = FALSE;
+  $form['revision']['#access'] = FALSE;
 }
 
 /**
