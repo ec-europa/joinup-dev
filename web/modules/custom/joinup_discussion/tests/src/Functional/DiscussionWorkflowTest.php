@@ -301,7 +301,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgMember', FALSE],
-          ['delete', 'userOgFacilitator', FALSE],
+          ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'in_assessment' => [
