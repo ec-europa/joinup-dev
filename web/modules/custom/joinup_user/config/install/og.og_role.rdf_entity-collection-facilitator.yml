@@ -27,6 +27,7 @@ permissions:
   - 'delete any event content'
   - 'delete any news content'
   - 'edit any custom_page content'
+  - 'edit any discussion content'
   - 'edit any document content'
   - 'edit any event content'
   - 'edit any news content'
