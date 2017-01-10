@@ -25,7 +25,7 @@ trait RdfEntityTrait {
    * @throws \InvalidArgumentException
    *   Thrown when an RDF entity with the given name and type does not exist.
    */
-  protected function getRdfEntityByLabel($label, $type = NULL) {
+  protected static function getRdfEntityByLabel($label, $type = NULL) {
     $query = \Drupal::entityQuery('rdf_entity')
       ->condition('label', $label)
       ->range(0, 1);

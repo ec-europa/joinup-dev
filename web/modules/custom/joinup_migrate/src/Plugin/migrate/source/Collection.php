@@ -29,11 +29,11 @@ class Collection extends CollectionBase {
       'policy2' => $this->t('Policy domain'),
       'abstract' => $this->t('Abstract'),
       'access_url' => $this->t('Access URL'),
-      'created' => $this->t('Creation date'),
+      'created_time' => $this->t('Creation date'),
       'body' => $this->t('Description'),
       'elibrary' => $this->t('eLibrary creation'),
       'pre_moderation' => $this->t('Pre moderation'),
-      'changed' => $this->t('Last changed date'),
+      'changed_time' => $this->t('Last changed date'),
       'owner' => $this->t('Owner'),
       // @todo Insert here spatial coverage.
       // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2950
@@ -55,13 +55,10 @@ class Collection extends CollectionBase {
 
     $query
       ->fields('j', [
-        'collection',
-        'new_collection',
         'policy2',
         'abstract',
         'elibrary',
         'pre_moderation',
-        'owner',
         'collection_state',
       ])
       ->fields($this->alias['node'], ['nid', 'type', 'created', 'changed'])
@@ -70,8 +67,8 @@ class Collection extends CollectionBase {
       ->fields($this->alias['repository_url'], ['field_repository_url_url'])
       ->fields($this->alias['node_revision'], ['body']);
 
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created');
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed');
+    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created_time');
+    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed_time');
 
     return $query
       // Assure the URI field.
@@ -108,12 +105,12 @@ class Collection extends CollectionBase {
     }
 
     // Assure a created date.
-    if (!$row->getSourceProperty('created')) {
-      $row->setSourceProperty('created', date('Y-m-d\TH:i:s', REQUEST_TIME));
+    if (!$row->getSourceProperty('created_time')) {
+      $row->setSourceProperty('created_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
     // Assure a changed date.
-    if (!$row->getSourceProperty('changed')) {
-      $row->setSourceProperty('changed', date('Y-m-d\TH:i:s', REQUEST_TIME));
+    if (!$row->getSourceProperty('changed_time')) {
+      $row->setSourceProperty('changed_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
 
     // Get affiliates.
@@ -130,7 +127,7 @@ class Collection extends CollectionBase {
     // Owner.
     $row->setSourceProperty('owner', $this->getCollectionOwners($collection) ?: NULL);
 
-    // Owners.
+    // Contacts.
     $row->setSourceProperty('contact', $this->getCollectionContacts($collection) ?: NULL);
 
     return parent::prepareRow($row);
