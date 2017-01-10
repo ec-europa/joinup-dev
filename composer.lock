@@ -7358,7 +7358,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-01-03T14:08:06+00:00"
+            "time": "2017-01-03 14:08:06"
         },
         {
             "name": "behat/transliterator",
@@ -7871,7 +7871,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-01-03T14:21:15+00:00"
+            "time": "2017-01-03 14:21:15"
         },
         {
             "name": "drupal/drupal-extension",
@@ -7932,7 +7932,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-01-01 15:45:31"
+            "time": "2017-01-01T15:45:31+00:00"
         },
         {
             "name": "fabpot/goutte",
