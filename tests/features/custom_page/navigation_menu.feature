@@ -130,6 +130,9 @@ Feature: Navigation menu for custom pages
     Given the following collection:
       | title | Prism Gazers |
       | logo  | logo.png     |
+    And custom_page content:
+      | title           | body                   | collection   |
+      | Mists of dreams | This is a sample body. | Prism Gazers |
     When I am logged in as a facilitator of the "Prism Gazers" collection
     And I go to the homepage of the "Prism Gazers" collection
     Then I should see the contextual links button in the "Navigation menu block"
