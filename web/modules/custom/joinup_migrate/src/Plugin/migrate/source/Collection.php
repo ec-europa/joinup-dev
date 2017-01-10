@@ -162,8 +162,6 @@ class Collection extends CollectionBase {
         ->distinct()
         ->fields('n', ['vid'])
         ->condition('m.collection', $row->getSourceProperty('collection'))
-        // @todo: Fix this list based on reply to ISAICP-2950, comment 2001607.
-        // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2950?focusedCommentId=2001607&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-2001607
         ->condition('n.type', ['asset_release'], 'IN')
         ->condition('m.del', 'No')
         ->isNotNull('m.nid');
