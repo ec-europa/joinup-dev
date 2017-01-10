@@ -123,7 +123,7 @@ Feature: Navigation menu for custom pages
     But I should not see the link "About us" in the "Navigation menu"
 
   @javascript
-  Scenario: The contextual link in the navigation menu should be always visible
+  Scenario: The contextual links button in the navigation menu should be always visible
     # In order to easily discover that I can manage the items in the navigation menu
     # As a collection facilitator
     # I should see a button in the navigation menu that displays options when clicked
