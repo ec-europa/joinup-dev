@@ -63,7 +63,7 @@ class Owner extends JoinupSqlBase {
       $query->condition("{$this->alias['node']}.nid", $allowed_nids, 'IN');
     }
     else {
-      // It there's no allowed NID, return nothing.
+      // It there are no allowed NIDs, return nothing.
       $query->condition(1, 2);
     }
 

@@ -18,11 +18,9 @@ trait MappingTrait {
   protected function getMappingBaseQuery() {
     /** @var \Drupal\Core\Database\Query\SelectInterface $query */
     $query = Database::getConnection()->select('joinup_migrate_mapping', 'j', ['fetch' => \PDO::FETCH_ASSOC])
+      ->distinct()
       ->condition('j.del', 'No')
-      ->condition('j.collection', ['', '#N/A'], 'NOT IN')
-      ->condition('n.status', 1);
-
-    $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'j.nid = n.nid');
+      ->condition('j.collection', ['', '#N/A'], 'NOT IN');
 
     return $query;
   }

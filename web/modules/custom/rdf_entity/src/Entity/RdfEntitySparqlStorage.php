@@ -618,7 +618,7 @@ QUERY;
    * @param string $graph
    *   The graph uri to delete from.
    */
-  protected function doDeleteFromGraph($entities, $graph) {
+  protected function doDeleteFromGraph(array $entities, $graph) {
     $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
 
     $query = <<<QUERY

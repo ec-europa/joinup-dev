@@ -27,12 +27,8 @@ display:
         type: none
         options: {  }
       cache:
-        type: search_api
-        options:
-          results_lifespan: '3600'
-          results_lifespan_custom: '0'
-          output_lifespan: '3600'
-          output_lifespan_custom: '0'
+        type: search_api_tag
+        options: {  }
       query:
         type: views_query
         options:
@@ -486,8 +482,9 @@ display:
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      show_admin_links: false
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -504,7 +501,7 @@ display:
       display_extenders: {  }
       path: collections
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
