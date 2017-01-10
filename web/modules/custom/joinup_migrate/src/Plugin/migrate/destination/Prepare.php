@@ -12,13 +12,13 @@ use Drupal\migrate\Row;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a destination plugin for the Joinup mapping table.
+ * Provides a destination plugin for the collection_prepare migration.
  *
  * @MigrateDestination(
- *   id = "mapping"
+ *   id = "prepare"
  * )
  */
-class Mapping extends DestinationBase implements MigrateDestinationFastRollbackInterface, ContainerFactoryPluginInterface {
+class Prepare extends DestinationBase implements MigrateDestinationFastRollbackInterface, ContainerFactoryPluginInterface {
 
   /**
    * The database service.
@@ -64,7 +64,7 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
    */
   public function getIds() {
     return [
-      'nid' => ['type' => 'integer'],
+      'collection' => ['type' => 'string'],
     ];
   }
 
@@ -73,23 +73,18 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
    */
   public function fields(MigrationInterface $migration = NULL) {
     return [
-      'nid' => $this->t('Source node ID'),
-      'type' => $this->t('Source node-type'),
       'collection' => $this->t('Collection'),
-      'policy' => $this->t('Policy domain 1'),
-      'policy2' => $this->t('Policy domain 2'),
-      'new_collection' => $this->t('Is new collection?'),
-      'del' => $this->t('Delete?'),
+      'nid' => $this->t('Node ID'),
+      'policy2' => $this->t('Level2 policy domain'),
       'abstract' => $this->t('Abstract'),
       'logo' => $this->t('Logo'),
       'banner' => $this->t('Banner'),
-      'owner' => $this->t('Owner'),
-      'admin_user' => $this->t('Administration User'),
-      'elibrary' => $this->t('Elibrary Creation'),
+      'elibrary' => $this->t('Elibrary creation'),
       'pre_moderation' => $this->t('Pre Moderation'),
-      'collection_state' => $this->t('Collection State'),
-      'status' => $this->t('Status of the collection'),
-      'row_index' => $this->t('Excel row index'),
+      'collection_state' => $this->t('Collection state'),
+      'status' => $this->t('Status'),
+      'publisher' => $this->t('Publisher'),
+      'contact' => $this->t('Contact'),
     ];
   }
 
@@ -110,22 +105,39 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
       }
     }
 
-    $nid = $values['nid'];
+    $collection = $values['collection'];
+    $insert = empty($old_destination_id_values);
+
+    if ($insert) {
+      // There's no primary key in the destination table. We need to manually
+      // check the uniqueness.
+      $found = (bool) $this->database->select('joinup_migrate_collection', 'c')
+        ->fields('c', ['collection'])
+        ->condition('c.collection', $collection)
+        ->execute()
+        ->fetchField();
+      if ($found) {
+        throw new MigrateException("Collection '$collection' already exist and cannot be inserted.");
+      }
+    }
+
     try {
-      if (empty($old_destination_id_values)) {
-        $this->database->insert('joinup_migrate_mapping')
+      // Inserting.
+      if ($insert) {
+        $this->database->insert('joinup_migrate_collection')
           ->fields(array_keys($this->fields()))
           ->values($values)
           ->execute();
       }
+      // Updating.
       else {
-        unset($values['nid']);
-        $this->database->update('joinup_migrate_mapping')
+        unset($values['collection']);
+        $this->database->update('joinup_migrate_collection')
           ->fields($values)
-          ->condition('nid', $nid)
+          ->condition('collection', $collection)
           ->execute();
       }
-      return [$nid];
+      return [$collection];
     }
     catch (MigrateException $exception) {
       throw new MigrateException($exception->getMessage());
@@ -137,8 +149,8 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
    */
   public function rollback(array $destination_identifier) {
     parent::rollback($destination_identifier);
-    $this->database->delete('joinup_migrate_mapping')
-      ->condition('nid', $destination_identifier['nid'])
+    $this->database->delete('joinup_migrate_collection')
+      ->condition('collection', $destination_identifier['collection'])
       ->execute();
   }
 
@@ -146,11 +158,11 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
    * {@inheritdoc}
    */
   public function rollbackMultiple(array $destination_ids) {
-    $nids = array_map(function (array $item) {
-      return $item['nid'];
+    $collections = array_map(function (array $item) {
+      return $item['collection'];
     }, $destination_ids);
-    $this->database->delete('joinup_migrate_mapping')
-      ->condition('nid', $nids, 'IN')
+    $this->database->delete('joinup_migrate_collection')
+      ->condition('collection', $collections, 'IN')
       ->execute();
   }
 
@@ -158,7 +170,7 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
    * {@inheritdoc}
    */
   public function rollbackAll() {
-    $this->database->truncate('joinup_migrate_mapping')->execute();
+    $this->database->truncate('joinup_migrate_collection')->execute();
   }
 
 }

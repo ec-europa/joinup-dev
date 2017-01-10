@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Database\Query\Condition;
 
 /**
@@ -19,29 +20,23 @@ trait ContactTrait {
    *   A list of source publisher node IDs.
    */
   protected function getCollectionContacts($collection = NULL) {
-    $or = (new Condition('OR'))
-      ->isNotNull('r.vid')
-      ->isNotNull('s.vid');
-
     /** @var \Drupal\Core\Database\Query\SelectInterface $query */
-    $query = $this->getMappingBaseQuery()
-      ->condition('j.type', ['asset_release', 'repository'], 'IN')
-      ->condition('j.owner', 'Yes')
-      ->condition('n.status', 1)
-      ->condition($or);
+    $query = Database::getConnection()
+      ->select('joinup_migrate_collection', 'c', ['fetch' => \PDO::FETCH_ASSOC])
+      ->fields('c', ['contact'])
+      ->isNotNull('c.contact');
 
     if ($collection) {
-      $query->condition('j.collection', $collection);
+      $query->condition('c.collection', $collection);
     }
 
-    $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'j.nid = n.nid');
-    $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.content_type_asset_release', 's', 'n.vid = s.vid');
-    $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.content_type_repository', 'r', 'n.vid = r.vid');
+    $contacts = [];
+    foreach ($query->execute()->fetchCol() as $item) {
+      $item = substr(substr($item, 1), 0, strlen($item) - 2);
+      $contacts = array_merge($contacts, array_map('intval', explode('|', $item)));
+    }
 
-    // The NID is provided either by repository or by solution.
-    $query->addExpression("IFNULL(r.field_repository_contact_point_nid, s.field_asset_contact_point_nid)", 'allowed_nid');
-
-    return array_values(array_filter(array_unique($query->execute()->fetchCol())));
+    return array_values(array_unique($contacts));
   }
 
   /**

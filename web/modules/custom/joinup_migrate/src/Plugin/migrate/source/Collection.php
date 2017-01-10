@@ -55,13 +55,10 @@ class Collection extends CollectionBase {
 
     $query
       ->fields('j', [
-        'collection',
-        'new_collection',
         'policy2',
         'abstract',
         'elibrary',
         'pre_moderation',
-        'owner',
         'collection_state',
       ])
       ->fields($this->alias['node'], ['nid', 'type', 'created', 'changed'])
@@ -130,7 +127,7 @@ class Collection extends CollectionBase {
     // Owner.
     $row->setSourceProperty('owner', $this->getCollectionOwners($collection) ?: NULL);
 
-    // Owners.
+    // Contacts.
     $row->setSourceProperty('contact', $this->getCollectionContacts($collection) ?: NULL);
 
     return parent::prepareRow($row);

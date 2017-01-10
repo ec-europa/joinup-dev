@@ -2,10 +2,12 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Core\Database\Database;
+
 /**
  * Base class for solution migrations.
  */
-abstract class SolutionBase extends GroupBase {
+abstract class SolutionBase extends JoinupSqlBase {
 
   /**
    * {@inheritdoc}
@@ -32,15 +34,16 @@ abstract class SolutionBase extends GroupBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = parent::query();
+    /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+    $query = Database::getConnection()->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
+      ->condition('m.del', 'No')
+      ->condition('m.type', 'asset_release');
 
-    $this->alias['node'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'n', "j.nid = %alias.nid");
-    $this->alias['node_revision'] = $query->leftJoin("{$this->getSourceDbName()}.node_revisions", 'node_revision', "{$this->alias['node']}.vid = %alias.vid");
+    $this->alias['collection'] = $query->join('joinup_migrate_collection', 'c', "m.collection = %alias.collection");
+    $this->alias['node'] = $query->join("{$this->getSourceDbName()}.node", 'n', "m.nid = %alias.nid");
+    $this->alias['node_revision'] = $query->join("{$this->getSourceDbName()}.node_revisions", 'node_revision', "{$this->alias['node']}.vid = %alias.vid");
 
-    return $query
-      ->fields($this->alias['node'], ['nid'])
-      ->condition("{$this->alias['node']}.status", 1)
-      ->condition("{$this->alias['node']}.type", 'asset_release');
+    return $query->fields($this->alias['node'], ['nid']);
   }
 
 }
