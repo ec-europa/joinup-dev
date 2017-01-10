@@ -140,33 +140,37 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_isr_description
-datasource_settings:
-  'entity:node':
-    bundles:
-      default: true
-      selected: {  }
-    languages:
-      default: true
-      selected: {  }
-    settings: {  }
-  'entity:rdf_entity':
-    bundles:
-      default: true
-      selected: {  }
-    settings: {  }
 processor_settings:
   add_url:
-    weights:
-      preprocess_index: -30
+    plugin_id: add_url
     settings: {  }
   rendered_item:
+    plugin_id: rendered_item
     settings: {  }
   aggregated_field:
-    settings: {  }
-tracker_settings:
-  default:
+    plugin_id: aggregated_field
     settings: {  }
 options:
   index_directly: true
   cron_limit: 50
+datasource_settings:
+  'entity:node':
+    plugin_id: 'entity:node'
+    settings:
+      bundles:
+        default: true
+        selected: {  }
+      languages:
+        default: true
+        selected: {  }
+  'entity:rdf_entity':
+    plugin_id: 'entity:rdf_entity'
+    settings:
+      bundles:
+        default: true
+        selected: {  }
+tracker_settings:
+  default:
+    plugin_id: default
+    settings: {  }
 server: solr
