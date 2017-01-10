@@ -10,6 +10,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_documentation
+    - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_elibrary_creation
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
@@ -190,6 +191,7 @@ hidden:
   field_is_affiliations_requests: true
   field_is_business_process: true
   field_is_creation_date: true
+  field_is_distribution: true
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true

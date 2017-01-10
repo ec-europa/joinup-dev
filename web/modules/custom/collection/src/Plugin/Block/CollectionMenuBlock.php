@@ -2,6 +2,7 @@
 
 namespace Drupal\collection\Plugin\Block;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
 use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\og_menu\Plugin\Block\OgMenuBlock;
@@ -117,6 +118,15 @@ class CollectionMenuBlock extends OgMenuBlock {
       $build['#theme'] = 'menu__og__' . strtr($menu_name, '-', '_');
     }
     return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    // Since we are showing a help text to facilitators and owners, this block
+    // varies by OG role.
+    return Cache::mergeContexts(parent::getCacheContexts(), ['og_role']);
   }
 
 }

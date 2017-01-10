@@ -30,8 +30,8 @@ class SolutionBanner extends SolutionBase {
   public function query() {
     $query = parent::query();
     return $query
-      ->fields('j', ['banner'])
-      ->isNotNull('j.banner');
+      ->fields('m', ['banner'])
+      ->isNotNull('m.banner');
   }
 
   /**
