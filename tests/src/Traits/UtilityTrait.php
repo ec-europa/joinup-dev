@@ -133,13 +133,20 @@ trait UtilityTrait {
    */
   protected function findContextualLinkButtonInRegion($region) {
     $session = $this->getSession();
+    /** @var \Behat\Mink\Element\NodeElement $region_object */
     $region_object = $session->getPage()->find('region', $region);
     if (!$region_object) {
       throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
     }
+
     // Check if the wrapper for the contextual links is present on the page.
-    /** @var \Behat\Mink\Element\NodeElement $button */
-    $button = $region_object->find('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " contextual ")]/button');
+    // Since the button is appended by the contextual.js script, we might need
+    // to wait a bit before the button itself is visible.
+    $button = $region_object->waitFor(5, function ($object) {
+      /** @var \Behat\Mink\Element\NodeElement $object */
+      return $object->find('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " contextual ")]/button');
+    });
+
     if (!$button) {
       throw new \Exception(sprintf('No contextual links found in the region "%s" on the page "%s".', $region, $session->getCurrentUrl()));
     }
