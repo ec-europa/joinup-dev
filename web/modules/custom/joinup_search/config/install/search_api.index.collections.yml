@@ -148,18 +148,24 @@ datasource_settings:
     languages:
       default: true
       selected: {  }
+    settings: {  }
   'entity:rdf_entity':
     bundles:
       default: true
       selected: {  }
+    settings: {  }
 processor_settings:
   add_url:
     weights:
       preprocess_index: -30
-  rendered_item: { }
-  aggregated_field: { }
+    settings: {  }
+  rendered_item:
+    settings: {  }
+  aggregated_field:
+    settings: {  }
 tracker_settings:
-  default: { }
+  default:
+    settings: {  }
 options:
   index_directly: true
   cron_limit: 50
