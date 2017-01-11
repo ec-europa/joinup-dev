@@ -302,10 +302,10 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'validated' => [
-          ['view', 'userAuthenticated', TRUE],
+          ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', TRUE],
+          ['view', 'userOgAdministrator', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],

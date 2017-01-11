@@ -107,10 +107,16 @@ function asset_release_rdf_entity_access(EntityInterface $entity, $operation, Ac
     return AccessResult::neutral();
   }
 
-  $parent = \Drupal::service('asset_release.relations')->getReleaseSolution($entity);
-
   switch ($operation) {
     case 'view':
+      $parent = \Drupal::service('asset_release.relations')->getReleaseSolution($entity);
+
+      /** @var \Drupal\Core\Entity\EntityAccessControlHandlerInterface $access_handler */
+      $access_handler = \Drupal::service('entity_type.manager')->getAccessControlHandler('rdf_entity');
+      if (!$access_handler->access($parent, 'view', $account)) {
+        return AccessResult::forbidden();
+      }
+
       $membership = Og::getMembership($parent, $account);
       if (empty($membership)) {
         return AccessResult::neutral();
