@@ -195,39 +195,40 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       $elements['#file_upload_title'] = t('Add a new file');
     }
 
-    // If ($elements) {.
-    $elements += array(
-      '#theme' => 'field_multiple_value_form',
-      '#field_name' => $field_name,
-      '#cardinality' => $cardinality,
-      '#cardinality_multiple' => $this->fieldDefinition->getFieldStorageDefinition()->isMultiple(),
-      '#required' => $this->fieldDefinition->isRequired(),
-      '#title' => $title,
-      '#description' => $description,
-      '#max_delta' => $max,
-    );
-    // Add 'add more' button, if not working with a programmed form.
-    if ($cardinality == FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED && !$form_state->isProgrammed()) {
-      $id_prefix = implode('-', array_merge($parents, array($field_name)));
-      $wrapper_id = Html::getUniqueId($id_prefix . '-add-more-wrapper');
-      $elements['#prefix'] = '<div id="' . $wrapper_id . '">';
-      $elements['#suffix'] = '</div>';
-
-      $elements['add_more'] = array(
-        '#type' => 'submit',
-        '#name' => strtr($id_prefix, '-', '_') . '_add_more',
-        '#value' => t('Add another item'),
-        '#attributes' => array('class' => array('field-add-more-submit')),
-        '#limit_validation_errors' => array(array_merge($parents, array($field_name))),
-        '#submit' => array(array(get_class($this), 'addMoreSubmit')),
-        '#ajax' => array(
-          'callback' => array(get_class($this), 'addMoreAjax'),
-          'wrapper' => $wrapper_id,
-          'effect' => 'fade',
-        ),
+    if ($elements) {
+      $elements += array(
+        '#theme' => 'field_multiple_value_form',
+        '#field_name' => $field_name,
+        '#cardinality' => $cardinality,
+        '#cardinality_multiple' => $this->fieldDefinition->getFieldStorageDefinition()
+          ->isMultiple(),
+        '#required' => $this->fieldDefinition->isRequired(),
+        '#title' => $title,
+        '#description' => $description,
+        '#max_delta' => $max,
       );
+      // Add 'add more' button, if not working with a programmed form.
+      if ($cardinality == FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED && !$form_state->isProgrammed()) {
+        $id_prefix = implode('-', array_merge($parents, array($field_name)));
+        $wrapper_id = Html::getUniqueId($id_prefix . '-add-more-wrapper');
+        $elements['#prefix'] = '<div id="' . $wrapper_id . '">';
+        $elements['#suffix'] = '</div>';
+
+        $elements['add_more'] = array(
+          '#type' => 'submit',
+          '#name' => strtr($id_prefix, '-', '_') . '_add_more',
+          '#value' => t('Add another item'),
+          '#attributes' => array('class' => array('field-add-more-submit')),
+          '#limit_validation_errors' => array(array_merge($parents, array($field_name))),
+          '#submit' => array(array(get_class($this), 'addMoreSubmit')),
+          '#ajax' => array(
+            'callback' => array(get_class($this), 'addMoreAjax'),
+            'wrapper' => $wrapper_id,
+            'effect' => 'fade',
+          ),
+        );
+      }
     }
-    // }.
     return $elements;
   }
 
@@ -248,6 +249,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
 
     $cardinality = $this->fieldDefinition->getFieldStorageDefinition()
       ->getCardinality();
+    $field_name = $this->fieldDefinition->getName();
     $defaults = array(
       'fids' => array(),
       'display' => (bool) $field_settings['display_default'],
@@ -271,7 +273,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       '#states' => array(
         // Only show this field when the 'remote file' radio is selected.
         'visible' => array(
-          ':input[name="field_file[' . $delta . '][file-wrap][select]"]' => array('value' => 'remote-file'),
+          ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => array('value' => 'remote-file'),
         ),
       ),
     ];
@@ -300,7 +302,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       '#states' => array(
         // Only show this field when the 'file' radio is selected.
         'visible' => array(
-          ':input[name="field_file[' . $delta . '][file-wrap][select]"]' => array('value' => 'file'),
+          ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => array('value' => 'file'),
         ),
       ),
     );
@@ -316,7 +318,6 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       $file = $file_handler->UrlToFile($target_id);
       if ($file) {
         $items[$delta]->fids = [$file->id()];
-        $val = $items[$delta]->getValue();
         if ($file instanceof RemoteFile) {
           $element['file-wrap']['remote-file']['#default_value'] = $target_id;
           $element['file-wrap']['select']['#default_value'] = 'remote-file';
