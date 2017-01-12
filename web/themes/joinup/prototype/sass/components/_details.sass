@@ -48,6 +48,15 @@
 
 .details__bottom
   font-weight: $font-weight-bold
+  .tag
+    margin-right: 1px
+    &:after
+      content: ','
+    &:last-of-type
+      margin-right: 0
+      &:after
+        content: none
+
 // Modifiers
 // --------------------------------------------------
 
