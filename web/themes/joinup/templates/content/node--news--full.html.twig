@@ -71,31 +71,19 @@
  */
 #}
 {% set topics = content.field_topic|render %}
-{% set collection = content.og_audience|render %}
 {% set spatial_coverage = content.field_spatial_coverage|render %}
-{# It is only placeholder #}
-{% set solution = 'Test solution' %}
 <article{{ attributes }}>
   <div class="page__content page__content-image">
     {{ content.body }}
     <div class="details__bottom">
-      {% if topics and spatial_coverage and solution %}
-        {% trans %}This news is about {{ topics }}, <span class="is-only-placeholder">{{ solution }} solution</span> as part of {{ collection }} collection in {{ spatial_coverage }} area{% endtrans %}
-      {% elseif topics and spatial_coverage %}
-        {% trans %}This news is about {{ topics }}, as part of {{ collection }} collection in {{ spatial_coverage }} area{% endtrans %}
-      {% elseif topics and solution %}
-          {% trans %}This news is about {{ topics }}, <span class="is-only-placeholder">{{ solution }} solution</span> as part of {{ collection }} collection{% endtrans %}
-      {% elseif spatial_coverage and solution %}
-          {% trans %}This news is about <span class="is-only-placeholder">{{ solution }} solution</span>, as part of {{ collection }} collection in {{ spatial_coverage }} area{% endtrans %}
+      {% if topics and spatial_coverage %}
+        {% trans %}This news is about {{ topics }} in {{ spatial_coverage }} area{% endtrans %}
       {% elseif spatial_coverage %}
-        {% trans %}This news is part of {{ collection }} collection in {{ spatial_coverage }} area{% endtrans %}
+        {% trans %}This news is in {{ spatial_coverage }} area{% endtrans %}
       {% elseif topics %}
-        {% trans %}This news is about {{ topics }}, as part of {{ collection }} collection{% endtrans %}
-      {% elseif solution %}
-        {% trans %}This news is about <span class="is-only-placeholder">{{ solution }} solution</span>, as part of {{ collection }} collection{% endtrans %}
+        {% trans %}This news is about {{ topics }}{% endtrans %}
       {% endif %}
     </div>
-    <div class="details__state">{{ content.field_news_state }}</div>
     <div class="action-link__wrapper right">
       {# todo: It is only placeholder #}
       <a href="/" class="action-link is-only-placeholder">
