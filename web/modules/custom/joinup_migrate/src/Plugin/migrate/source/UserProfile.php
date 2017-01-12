@@ -50,7 +50,7 @@ class UserProfile extends UserBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    $row->setSourceProperty('country', $this->getCountries($row->getSourceProperty('profile_vid')));
+    $row->setSourceProperty('country', $this->getCountries([$row->getSourceProperty('profile_vid')]));
     return parent::prepareRow($row);
   }
 
