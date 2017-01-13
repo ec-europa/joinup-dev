@@ -15,6 +15,7 @@ class Solution extends SolutionBase {
 
   use ContactTrait;
   use CountryTrait;
+  use ElibraryCreationTrait;
   use MappingTrait;
   use OwnerTrait;
   use UriTrait;
@@ -39,6 +40,7 @@ class Solution extends SolutionBase {
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
       'contact' => $this->t('Contact info'),
+      'elibrary' => $this->t('Elibrary creation'),
     ] + parent::fields();
   }
 
@@ -63,7 +65,7 @@ class Solution extends SolutionBase {
     $query->addExpression("TRIM({$this->alias['data_set_uri']}.field_id_uri_value)", 'metrics_page');
 
     return $query
-      ->fields('m', ['policy2'])
+      ->fields('m', ['elibrary', 'policy2'])
       ->fields($this->alias['node'], ['title', 'created', 'changed', 'vid'])
       ->fields($this->alias['node_revision'], ['body'])
       ->fields($this->alias['state'], ['sid'])
@@ -105,7 +107,7 @@ class Solution extends SolutionBase {
       $row->setSourceProperty('changed_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
 
-    // Extract keywords.
+    // Keywords.
     $query = $this->select('term_node', 'tn');
     $query->join('term_data', 'td', 'tn.tid = td.tid');
     $keywords = $query
@@ -146,8 +148,11 @@ class Solution extends SolutionBase {
     // Owners.
     $row->setSourceProperty('owner', $this->getSolutionOwners($vid) ?: NULL);
 
-    // Owners.
+    // Contacts.
     $row->setSourceProperty('contact', $this->getSolutionContacts($vid) ?: NULL);
+
+    // Elibrary creation.
+    $this->elibraryCreation($row);
 
     return parent::prepareRow($row);
   }

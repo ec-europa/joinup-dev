@@ -19,14 +19,19 @@ process:
     source: contact
     migration: contact
     no_stub: true
-  field_ar_creation_date: created
+  field_is_creation_date: created_time
   field_is_description/value: body
   field_is_description/format:
     plugin: default_value
     default_value: content_editor
-  # Blocked by ISAICP-3007.
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
+
+  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2835
+  # field_is_distribution:
+
+  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
   # field_is_documentation:
+
+  field_is_elibrary_creation: elibrary
   field_keywords: keywords
   field_is_landing_page: landing_page
   field_is_logo:
@@ -35,7 +40,7 @@ process:
     migration: solution_logo
     no_stub: true
   field_is_metrics_page: metrics_page
-  field_is_modification_date: changed
+  field_is_modification_date: changed_time
   field_is_owner:
     plugin: migration
     source: owner
