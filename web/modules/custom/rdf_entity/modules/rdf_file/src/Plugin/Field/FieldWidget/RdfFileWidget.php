@@ -259,6 +259,8 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     // Essentially we use the managed_file type, extended with some
     // enhancements.
     $element_info = $this->elementInfo->getInfo('managed_file');
+    $element['#type'] = 'elements_need_a_type';
+    $element['#theme_wrappers'] = array('form_element');
     $element['file-wrap']['#type'] = 'container';
     $element['file-wrap']['select'] = [
       '#type' => 'radios',
