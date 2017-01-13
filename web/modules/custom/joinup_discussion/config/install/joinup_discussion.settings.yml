@@ -24,7 +24,7 @@
 # of indexing states.
 transitions:
   validate:
-    draft:
+    __new__:
       - rdf_entity-collection-member
       - rdf_entity-collection-facilitator
       - rdf_entity-solution-facilitator

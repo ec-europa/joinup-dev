@@ -5,8 +5,8 @@ discussion_workflow:
   group: discussion
   states:
     # The state used as initial.
-    draft:
-      label: Draft
+    __new__:
+      label: New
     # State used to flag content that is being reviewed.
     in_assessment:
       label: In assessment
@@ -21,7 +21,7 @@ discussion_workflow:
   transitions:
     validate:
       label: Publish
-      from: [draft]
+      from: [__new__]
       to: validated
     update_published:
       label: Update

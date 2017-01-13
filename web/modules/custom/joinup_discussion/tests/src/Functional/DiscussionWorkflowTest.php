@@ -429,7 +429,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
    */
   protected function workflowTransitionsProvider() {
     return [
-      'draft' => [
+      '__new__' => [
         'userAuthenticated' => [],
         'userOgMember' => [
           'validate',
