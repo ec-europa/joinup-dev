@@ -6,7 +6,7 @@ package: Custom
 # These modules are required by the tests, must be available at bootstrap time
 dependencies:
   - options
-  - entity_reference
+  - taxonomy
 
 config_devel:
   - core.entity_view_mode.rdf_entity.compact
