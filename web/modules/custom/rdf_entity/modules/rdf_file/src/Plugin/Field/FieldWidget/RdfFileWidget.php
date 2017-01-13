@@ -282,6 +282,8 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     $element['#cardinality'] = $cardinality;
     $element['file-wrap']['file'] = array(
       '#type' => 'managed_file',
+      '#title_display' => 'invisible',
+      '#title' => $this->fieldDefinition->getLabel(),
       '#upload_location' => $items[$delta]->getUploadLocation(),
       '#upload_validators' => $items[$delta]->getUploadValidators(),
       '#value_callback' => array(get_class($this), 'value'),
