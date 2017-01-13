@@ -250,7 +250,8 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
         ['userModerator', TRUE],
         ['userOgMember', TRUE],
         ['userOgFacilitator', TRUE],
-        // @todo this should be false.
+        // By default, og returns the 'member' role as part of the user roles.
+        // @see: \Drupal\og\Entity\OgMembership::getRoles().
         ['userOgAdministrator', TRUE],
       ],
       // Permissions for discussions created inside a solution.
