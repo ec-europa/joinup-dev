@@ -44,7 +44,6 @@ class Prepare extends SourcePluginBase {
       'logo' => $this->t('Logo'),
       'banner' => $this->t('Banner'),
       'elibrary' => $this->t('Elibrary creation'),
-      'pre_moderation' => $this->t('Pre Moderation'),
       'collection_state' => $this->t('Collection state'),
       'status' => $this->t('Status'),
     ];
@@ -109,10 +108,6 @@ class Prepare extends SourcePluginBase {
         }
         if (!empty($row['elibrary'])) {
           $collections[$row['collection']]['elibrary'] = (int) $row['elibrary'];
-        }
-        if (!empty($row['pre_moderation'])) {
-          $moderation = $row['pre_moderation'] === 'Yes' ? 1 : 0;
-          $collections[$row['collection']]['pre_moderation'] = $moderation;
         }
       }
       // Collections inheriting values from 'community' or 'repository'.

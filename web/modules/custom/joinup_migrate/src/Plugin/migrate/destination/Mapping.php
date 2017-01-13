@@ -86,7 +86,6 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
       'owner' => $this->t('Owner'),
       'admin_user' => $this->t('Administration User'),
       'elibrary' => $this->t('Elibrary Creation'),
-      'pre_moderation' => $this->t('Pre Moderation'),
       'collection_state' => $this->t('Collection State'),
       'status' => $this->t('Status of the collection'),
       'row_index' => $this->t('Excel row index'),
