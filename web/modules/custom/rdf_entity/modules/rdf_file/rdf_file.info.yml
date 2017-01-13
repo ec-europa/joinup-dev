@@ -5,6 +5,7 @@ package: Custom
 # core: 8.x
 # These modules are required by the tests, must be available at bootstrap time
 dependencies:
+  - file
   - rdf_entity
 
 version: '8.x-1.x-dev'

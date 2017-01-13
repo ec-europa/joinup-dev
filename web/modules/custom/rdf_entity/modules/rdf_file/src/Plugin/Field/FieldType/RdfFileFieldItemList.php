@@ -56,7 +56,7 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
       if ($original->hasTranslation($langcode)) {
         $original_items = $original->getTranslation($langcode)->{$field_name};
         foreach ($original_items as $item) {
-          $file = $file_handler->UrlToFile($item->target_id);
+          $file = $file_handler::urlToFile($item->target_id);
           $original_ids[] = $file->id();
         }
       }
@@ -92,7 +92,7 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
     $target_entities = $ids = array();
     foreach ($this->list as $delta => $item) {
       if ($item->target_id !== NULL) {
-        $file = $file_handler->urlToFile($item->target_id);
+        $file = $file_handler::urlToFile($item->target_id);
         $target_entities[$delta] = $file;
       }
       elseif ($item->hasNewEntity()) {

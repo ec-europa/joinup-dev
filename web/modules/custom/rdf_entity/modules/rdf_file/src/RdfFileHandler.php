@@ -20,7 +20,7 @@ class RdfFileHandler {
    * @return string
    *   URL.
    */
-  static public function fileToUrl(FileInterface $file) {
+  public static function fileToUrl(FileInterface $file) {
     global $base_url;
     if ($file instanceof RemoteFile) {
       throw new \Exception('Only regular files can be converted.');
@@ -38,7 +38,7 @@ class RdfFileHandler {
    * @return \Drupal\Core\Entity\EntityInterface
    *   The file object.
    */
-  public function urlToFile($url) {
+  public static function urlToFile($url) {
     // Not a url, but a normal file id.
     // This can occurs when an object is created in code (not through a form).
     if (is_numeric($url)) {

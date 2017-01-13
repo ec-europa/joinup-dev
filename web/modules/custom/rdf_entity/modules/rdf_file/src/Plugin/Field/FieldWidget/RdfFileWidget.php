@@ -319,7 +319,7 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
       /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
       $file_handler = \Drupal::service('rdf_file.handler');
       $target_id = $items[$delta]->target_id;
-      $file = $file_handler->UrlToFile($target_id);
+      $file = $file_handler::urlToFile($target_id);
       if ($file) {
         $items[$delta]->fids = [$file->id()];
         if ($file instanceof RemoteFile) {

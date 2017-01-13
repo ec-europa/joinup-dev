@@ -69,7 +69,7 @@ class GenericRdfFileFormatter extends FileFormatterBase {
         // at FALSE.
         $item->_loaded = FALSE;
         if ($this->needsEntityLoad($item)) {
-          $file = $file_handler->UrlToFile($item->target_id);
+          $file = $file_handler::urlToFile($item->target_id);
           $entities[$item->target_id] = $file;
         }
       }

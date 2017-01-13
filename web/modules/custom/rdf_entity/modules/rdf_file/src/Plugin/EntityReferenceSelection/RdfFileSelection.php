@@ -27,7 +27,7 @@ class RdfFileSelection extends DefaultSelection {
     $found = [];
 
     foreach ($ids as $id) {
-      $file = $file_handler->UrlToFile($id);
+      $file = $file_handler::urlToFile($id);
       // External file are always found.
       if ($file instanceof RemoteFile) {
         $uri = $file->getFileUri();

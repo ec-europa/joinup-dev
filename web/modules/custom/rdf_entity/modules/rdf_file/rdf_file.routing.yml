@@ -1,6 +1,6 @@
 rdf_file.dereference:
   path: '/file-dereference/{file}'
   defaults:
-    _controller: '\Drupal\rdf_file\Controller\RdfFileRedirect::redirect'
+    _controller: '\Drupal\rdf_file\Controller\RdfFileRedirect::redirectToFile'
   requirements:
       _access: 'TRUE'
