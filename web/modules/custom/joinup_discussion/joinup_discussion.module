@@ -36,11 +36,16 @@ function joinup_discussion_node_access(EntityInterface $entity, $operation, Acco
       if (!$entity->isPublished() && $membership->hasPermission('view any unpublished content')) {
         return AccessResult::allowed();
       }
-
       break;
 
     case 'update':
       $allowed_transitions = $entity->get('field_discussion_state')->first()->getTransitions();
       return AccessResult::forbiddenIf(empty($allowed_transitions));
+
+    default:
+      break;
+
   }
+
+  return AccessResult::neutral();
 }

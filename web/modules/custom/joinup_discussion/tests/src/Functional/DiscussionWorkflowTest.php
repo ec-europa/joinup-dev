@@ -141,6 +141,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
             'type' => 'discussion',
             'field_discussion_state' => $content_state,
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
+            'status' => $this->isPublishedState($content_state),
           ]);
           $content->save();
 
