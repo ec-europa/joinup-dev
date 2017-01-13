@@ -39,6 +39,11 @@ class RdfFileHandler {
    *   The file object.
    */
   public function urlToFile($url) {
+    // Not a url, but a normal file id.
+    // This can occurs when an object is created in code (not through a form).
+    if (is_numeric($url)) {
+      return File::load($url);
+    }
     $matches = [];
     preg_match('/\/file-dereference\/([0-9]+)/', $url, $matches);
     if (!empty($matches)) {
