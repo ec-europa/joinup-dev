@@ -2597,8 +2597,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta4+1-dev",
-                    "datestamp": "1483286642"
+                    "version": "8.x-1.0-beta4+2-dev",
+                    "datestamp": "1483803242"
                 },
                 "patches_applied": {
                     "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-46.patch",
@@ -7932,7 +7932,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-01-01 15:45:31"
+            "time": "2017-01-01T15:45:31+00:00"
         },
         {
             "name": "fabpot/goutte",
