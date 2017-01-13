@@ -15,6 +15,11 @@ use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 class RdfEntityCreationTest extends JoinupKernelTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  public static $modules = ['taxonomy'];
+
+  /**
    * Tests overlapping IDs.
    *
    * @covers ::doSave
@@ -39,7 +44,7 @@ class RdfEntityCreationTest extends JoinupKernelTestBase {
 
     // Check that the expected exception is throw when trying to create a new
     // entity with the same ID.
-    $this->setExpectedException(\InvalidArgumentException::class, "Attempting to create a new entity with the ID 'http://example.com' already taken.");
+    $this->setExpectedException(\InvalidArgumentException::class, "Attempting to create a new 'dummy' entity with the ID 'http://example.com' already taken by an existing 'dummy' entity.");
     Rdf::create([
       'rid' => 'dummy',
       'id' => 'http://example.com',
