@@ -34,7 +34,6 @@ abstract class DistributionBase extends JoinupSqlBase {
   public function query() {
     $this->alias['asset_release_node'] = 'asset_release_node';
 
-
     /** @var \Drupal\Core\Database\Query\SelectInterface $query */
     $query = $this->select('node', $this->alias['asset_release_node'])
       // @todo Limit distributions to those linked in interoperability solutions
