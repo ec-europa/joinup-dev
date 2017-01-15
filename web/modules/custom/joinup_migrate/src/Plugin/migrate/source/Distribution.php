@@ -22,6 +22,9 @@ class Distribution extends DistributionBase {
     return [
       'uri' => $this->t('URI'),
       'title' => $this->t('Name'),
+      'created_time' => $this->t('Created time'),
+      'body' => $this->t('Description'),
+      'changed_time' => $this->t('Changed time'),
       'technique' => $this->t('Representation technique'),
     ] + parent::fields();
   }
@@ -32,8 +35,14 @@ class Distribution extends DistributionBase {
   public function query() {
     $query = parent::query();
 
+    $this->alias['node_revision'] = $query->join('node_revisions', 'node_revision', "{$this->alias['node']}.vid = %alias.vid");
+
+    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created_time');
+    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed_time');
+
     return $query
       ->fields($this->alias['node'], ['title', 'vid'])
+      ->fields($this->alias['node_revision'], ['body'])
       // Assure the URI field.
       ->addTag('uri');
   }
