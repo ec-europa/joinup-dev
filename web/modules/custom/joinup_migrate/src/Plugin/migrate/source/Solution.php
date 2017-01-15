@@ -127,23 +127,8 @@ class Solution extends SolutionBase {
       }
     }
 
-    // Country.
-    $row->setSourceProperty('country', $this->getCountries([$row->getSourceProperty('vid')]));
-
-    // Status.
-    $query = $this->select('term_node', 'tn');
-    $query->join('term_data', 'td', 'tn.tid = td.tid');
-    $status = $query
-      ->fields('tn', ['tid'])
-      ->condition('tn.nid', $nid)
-      ->condition('tn.vid', $vid)
-      // The status vocabulary vid is 69.
-      ->condition('td.vid', 69)
-      ->orderBy('tn.tid', 'DESC')
-      ->range(0, 1)
-      ->execute()
-      ->fetchCol();
-    $row->setSourceProperty('status', $status);
+    // Spatial coverage.
+    $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Owners.
     $row->setSourceProperty('owner', $this->getSolutionOwners($vid) ?: NULL);

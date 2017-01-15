@@ -49,12 +49,13 @@ process:
   field_policy_domain:
     plugin: policy_domain
     source: policy2
-  # @todo Fix this in ISAICP-3019
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
+
+  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
   # field_is_related_solutions:
-  # @todo Fix after ISAICP-3020
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3020
+
+  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3020
   # field_is_solution_type:
+
   field_spatial_coverage:
     plugin: term_reference
     source: country
@@ -72,17 +73,20 @@ process:
       50: deletion_request
       52: blacklisted
     default_value: draft
-  field_status:
-    plugin: static_map
-    source: status
-    map:
-      11646: http://purl.org/adms/status/Completed
-      11647: http://purl.org/adms/status/Deprecated
-      11648: http://purl.org/adms/status/UnderDevelopment
-      11649: http://purl.org/adms/status/Withdrawn
-  # @todo Fix this in ISAICP-3019
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
+
+  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
+  # field_status:
+  #   plugin: static_map
+  #   source: status
+  #   map:
+  #     11646: http://purl.org/adms/status/Completed
+  #     11647: http://purl.org/adms/status/Deprecated
+  #     11648: http://purl.org/adms/status/UnderDevelopment
+  #     11649: http://purl.org/adms/status/Withdrawn
+
+  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
   # field_is_translation:
+
 destination:
   plugin: entity:rdf_entity
   default_bundle: solution
