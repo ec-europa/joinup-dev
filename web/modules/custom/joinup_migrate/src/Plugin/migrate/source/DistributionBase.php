@@ -37,7 +37,7 @@ abstract class DistributionBase extends JoinupSqlBase {
 
     $this->alias['asset_distro'] = $query->join('content_field_asset_distribution', 'asset_distro', "{$this->alias['node']}.nid = %alias.field_asset_distribution_nid");
     $this->alias['node_release'] = $query->join('node', 'node_release', "{$this->alias['asset_distro']}.vid = %alias.vid");
-    $this->alias['mapping'] = $query->join("{$this->getDestinationDbName()}.joinup_migrate_mapping", 'mapping', "{$this->alias['node_release']}.nid = %alias.nid AND %alias.type = 'asset_release' AND %alias.del = 'No'");
+    $this->alias['mapping'] = $query->join("{$this->getDestinationDbName()}.joinup_migrate_mapping", 'mapping', "{$this->alias['node_release']}.nid = %alias.nid AND %alias.type = 'asset_release' AND %alias.migrate = 1");
 
     return $query
       ->fields($this->alias['node'], ['nid'])

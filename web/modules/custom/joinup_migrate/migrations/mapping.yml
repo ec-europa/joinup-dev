@@ -15,15 +15,14 @@ source:
     - 'Policy domain 1'
     - 'Policy domain 2'
     - 'New collection'
-    - Delete
+    - Migrate
     - Abstract
     - Logo
     - Banner
     - Owner
-    - 'Administration User'
     - 'Elibrary Creation'
-    - 'Collection State'
-    - 'Status of the collection'
+    - 'Collection Status'
+    - 'Content item status'
   row_index_column: row_index
   keys:
     Nid:
@@ -88,15 +87,20 @@ process:
   policy: 'Policy domain 1'
   policy2: 'Policy domain 2'
   new_collection: 'New collection'
-  del: Delete
+  migrate:
+    plugin: static_map
+    source: Migrate
+    map:
+      'Yes': 1
+      'No': 0
+    default_value: 1
   abstract: Abstract
   logo: Logo
   banner: Banner
   owner: Owner
-  admin_user: 'Administration User'
   elibrary: 'Elibrary Creation'
-  collection_state: 'Collection State'
-  status: 'Status of the collection'
+  collection_status: 'Collection Status'
+  content_item_status: 'Content item status'
   row_index: row_index
 destination:
   plugin: mapping
