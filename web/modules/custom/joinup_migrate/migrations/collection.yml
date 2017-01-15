@@ -38,12 +38,8 @@ process:
     migration: collection_logo
     no_stub: true
   field_ar_moderation:
-    plugin: static_map
-    source: pre_moderation
-    map:
-      Yes: true
-      No: false
-    default_value: false
+    plugin: default_value
+    default_value: true
   field_ar_modification_date: changed_time
   field_ar_owner:
     plugin: migration
@@ -58,13 +54,8 @@ process:
     source: country
     vocabulary: spatial
   field_ar_state:
-    -
-      plugin: get
-      source: collection_state
-    -
-      plugin: default_value
-      default_value: validated
-      strict: true
+    plugin: default_value
+    default_value: validated
 destination:
   plugin: entity:rdf_entity
   default_bundle: collection

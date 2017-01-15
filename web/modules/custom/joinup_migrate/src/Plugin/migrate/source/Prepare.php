@@ -44,8 +44,6 @@ class Prepare extends SourcePluginBase {
       'logo' => $this->t('Logo'),
       'banner' => $this->t('Banner'),
       'elibrary' => $this->t('Elibrary creation'),
-      'pre_moderation' => $this->t('Pre Moderation'),
-      'collection_state' => $this->t('Collection state'),
       'status' => $this->t('Status'),
     ];
   }
@@ -67,10 +65,10 @@ class Prepare extends SourcePluginBase {
     $db = Database::getConnection();
     $source = Database::getConnection('default', 'migrate');
 
-    // Build a list of collections that have at least 1 row with 'del' == 'Yes'.
+    // Build a list of collections that have at least 1 row with 'migrate' == 1.
     $allowed = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
       ->fields('m', ['collection'])
-      ->condition('m.del', 'No')
+      ->condition('m.migrate', 1)
       ->condition('m.collection', ['', '#N/A'], 'NOT IN')
       ->isNotNull('m.policy2')
       ->groupBy('m.collection')
@@ -78,11 +76,13 @@ class Prepare extends SourcePluginBase {
       ->execute()
       ->fetchCol();
 
+    $fields = $this->fields();
+    unset($fields['status']);
     $query = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
-      ->fields('m', array_keys($this->fields()))
+      ->fields('m', array_keys($fields))
       ->fields('n', ['vid'])
-      ->condition('m.collection', $allowed, 'IN')
       ->orderBy('m.collection', 'ASC');
+
     if ($allowed) {
       $query->condition('m.collection', $allowed, 'IN');
     }
@@ -116,10 +116,6 @@ class Prepare extends SourcePluginBase {
         }
         if (!empty($row['elibrary'])) {
           $collections[$row['collection']]['elibrary'] = (int) $row['elibrary'];
-        }
-        if (!empty($row['pre_moderation'])) {
-          $moderation = $row['pre_moderation'] === 'Yes' ? 1 : 0;
-          $collections[$row['collection']]['pre_moderation'] = $moderation;
         }
       }
       // Collections inheriting values from 'community' or 'repository'.

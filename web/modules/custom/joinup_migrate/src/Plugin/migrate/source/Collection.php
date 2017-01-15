@@ -17,6 +17,7 @@ class Collection extends CollectionBase {
 
   use ContactTrait;
   use CountryTrait;
+  use ElibraryCreationTrait;
   use OwnerTrait;
   use MappingTrait;
 
@@ -33,11 +34,9 @@ class Collection extends CollectionBase {
       'created_time' => $this->t('Creation date'),
       'body' => $this->t('Description'),
       'elibrary' => $this->t('eLibrary creation'),
-      'pre_moderation' => $this->t('Pre moderation'),
       'changed_time' => $this->t('Last changed date'),
       'owner' => $this->t('Owner'),
       'country' => $this->t('Spatial coverage'),
-      'collection_state' => $this->t('Collection state'),
       'affiliates' => $this->t('Affiliates'),
       'contact' => $this->t('Contact info'),
     ];
@@ -58,8 +57,6 @@ class Collection extends CollectionBase {
         'policy2',
         'abstract',
         'elibrary',
-        'pre_moderation',
-        'collection_state',
       ])
       ->fields($this->alias['node'], [
         'nid',
@@ -123,7 +120,7 @@ class Collection extends CollectionBase {
     $affiliates = Database::getConnection()->select('joinup_migrate_mapping', 'j')
       ->fields('j', ['nid'])
       ->orderBy('j.collection')
-      ->condition('j.del', 'No')
+      ->condition('j.migrate', 1)
       ->condition('j.collection', $collection)
       ->condition('j.type', 'asset_release')
       ->execute()
@@ -138,6 +135,9 @@ class Collection extends CollectionBase {
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getSpatialCoverage($row));
+
+    // Elibrary creation.
+    $this->elibraryCreation($row);
 
     return parent::prepareRow($row);
   }
@@ -163,7 +163,7 @@ class Collection extends CollectionBase {
         ->fields('n', ['vid'])
         ->condition('m.collection', $row->getSourceProperty('collection'))
         ->condition('n.type', ['asset_release'], 'IN')
-        ->condition('m.del', 'No')
+        ->condition('m.migrate', 1)
         ->isNotNull('m.nid');
       $query->join(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'm.nid = n.nid');
       $vids = $query->execute()->fetchCol();

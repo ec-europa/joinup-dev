@@ -21,6 +21,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\RdfGraphHandler;
 use Drupal\rdf_entity\RdfMappingHandler;
+use Drupal\taxonomy\Entity\Term;
 use EasyRdf\Graph;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -734,8 +735,9 @@ QUERY;
       $id = $this->generateId();
       $entity->{$this->idKey} = (string) $id;
     }
-    elseif ($entity->isNew() && $this->idExists($id)) {
-      throw new \InvalidArgumentException("Attempting to create a new entity with the ID '$id' already taken.");
+    // The ID cannot overlap an existing 'rdf_entity' or 'taxonomy_term'.
+    elseif ($entity->isNew() && (($existing = $this->load($id)) || ($existing = Term::load($id)))) {
+      throw new \InvalidArgumentException("Attempting to create a new '$bundle' entity with the ID '$id' already taken by an existing '{$existing->bundle()}' entity.");
     }
 
     // If the target graph is set, it has priority over the one the entity is
@@ -1062,24 +1064,6 @@ WHERE {
 }
 QUERY;
     $this->sparql->query($query);
-  }
-
-  /**
-   * Checks if a specific entity ID already exists in the backend.
-   *
-   * @param string $id
-   *   The ID to be checked.
-   *
-   * @return bool
-   *   TRUE if this entity ID already exists, FALSE otherwise.
-   */
-  protected function idExists($id) {
-    $query = <<<QUERY
-ASK {
-  <$id> ?field ?value
-}
-QUERY;
-    return $this->sparql->query($query)->isTrue();
   }
 
 }
