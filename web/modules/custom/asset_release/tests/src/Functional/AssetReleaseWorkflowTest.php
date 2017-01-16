@@ -148,6 +148,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
           $user_var = $test_data_array[1];
           $expected_result = $test_data_array[2];
 
+          $this->userProvider->setUser($this->{$user_var});
           $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
           $result = $expected_result ? t('have') : t('not have');
           $message = "User {$user_var} should {$result} {$operation} access for entity {$content->label()} ({$content_state}) with the parent entity in {$parent_state} state.";
