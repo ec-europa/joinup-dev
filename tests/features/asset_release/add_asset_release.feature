@@ -43,20 +43,19 @@ Feature: "Add release" visibility options.
     When I fill in "Name" with "Release Test 2"
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."
-    And I press "Save"
+    And I press "Publish"
     Then I should see the error message "Content with name Release Test 2 already exists."
 
     # Check that the same title as the parent is valid.
     When I fill in "Name" with "Release Test 1 v2"
-    And I press "Save"
+    And I press "Publish"
     Then I should have 1 release
-    And I should see the text "Is version of"
-    And I should see the text "Release Test 1"
 
     # Verify that the "Release Test 1 v2" is registered as a release to "Release Test 1" solution.
     When I go to the homepage of the "Release Test 1" solution
-    Then I should see the text "Releases"
-    And I should see the text "Release Test 1 v2"
+    Then I should see the text "Download releases"
+    When I click "Download releases"
+    Then I should see the text "Release Test 1 v2"
 
     # Check that the release cannot take the title of another release in another solution.
     When I am logged in as a "facilitator" of the "Release Test 2" solution
@@ -67,16 +66,8 @@ Feature: "Add release" visibility options.
     When I fill in "Name" with "Release Test 1 v2"
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."
-    And I press "Save"
+    And I press "Publish"
     Then I should see the error message "Content with name Release Test 1 v2 already exists."
-
-    # Check relationship with solution.
-    When I go to the homepage of the "Release Test 1" solution
-    And I should see the text "Releases"
-    And I should see the text "Release Test 1 v2"
-    When I click "Release Test 1 v2"
-    Then I should see the text "Is version of"
-    And I should see the text "Release Test 1"
 
     # Cleanup created release.
     Then I delete the "Release Test 1 v2" release

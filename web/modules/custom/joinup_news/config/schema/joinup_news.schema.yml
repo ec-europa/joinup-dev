@@ -15,8 +15,5 @@ joinup_news.settings:
             type: sequence
             label: 'Source state'
             sequence:
-              type: sequence
-              label: 'Roles'
-              sequence:
-                type: string
-                label: 'Role'
+              type: string
+              label: 'Role'

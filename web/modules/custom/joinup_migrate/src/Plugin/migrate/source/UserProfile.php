@@ -23,7 +23,7 @@ class UserProfile extends UserBase {
       'last_name' => $this->t('Family name'),
       'first_name' => $this->t('First name'),
       'company_name' => $this->t('Company'),
-      'professional_profile' => $this->t('Professional profile'),
+      'country' => $this->t('Nationality'),
     ];
   }
 
@@ -41,7 +41,6 @@ class UserProfile extends UserBase {
     $query->addExpression("{$this->alias['profile']}.field_lastname_value", 'last_name');
     $query->addExpression("{$this->alias['profile']}.field_firstname_value", 'first_name');
     $query->addExpression("{$this->alias['profile']}.field_company_name_value", 'company_name');
-    $query->addExpression("{$this->alias['profile']}.field_professional_profile_value", 'professional_profile');
 
     return $query;
   }
@@ -50,7 +49,12 @@ class UserProfile extends UserBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    $row->setSourceProperty('country', $this->getCountries($row->getSourceProperty('profile_vid')));
+    $countries = $this->getCountries([$row->getSourceProperty('profile_vid')], FALSE);
+    // We don't migrate nationality in the case when the source user has more
+    // than one country set. The user will have to manually update its profile.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2960
+    $countries = count($countries) === 1 ? $countries : [];
+    $row->setSourceProperty('country', $countries);
     return parent::prepareRow($row);
   }
 
