@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_search\Plugin\facets\widget;
+namespace Drupal\joinup_core\Plugin\facets\widget;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\facets\FacetInterface;
