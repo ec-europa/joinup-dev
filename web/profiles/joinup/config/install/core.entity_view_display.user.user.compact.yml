@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.user.compact
+    - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_frequency
@@ -11,7 +12,6 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_professional_profile
     - field.field.user.user.field_user_subscription_events
     - image.style.profile_icon
   module:
@@ -73,11 +73,11 @@ content:
         template_suggestion: no_wrappers
     type: image
 hidden:
+  field_user_business_title: true
   field_user_frequency: true
   field_user_group_types: true
   field_user_nationality: true
   field_user_organisation: true
   field_user_professional_domain: true
-  field_user_professional_profile: true
   field_user_subscription_events: true
   member_for: true
