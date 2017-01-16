@@ -1,0 +1,16 @@
+asset_release.settings:
+  type: config_object
+  label: 'Asset release workflow permission settings'
+  mapping:
+    transitions:
+      type: sequence
+      label: 'Allowed transitions'
+      sequence:
+        type: sequence
+        label: 'Target state'
+        sequence:
+          type: sequence
+          label: 'Source state'
+          sequence:
+            type: string
+            label: 'Roles'

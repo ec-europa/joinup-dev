@@ -10,6 +10,7 @@ group_bundle: collection
 group_id: null
 permissions:
   - 'add user'
+  - 'administer comments'
   - 'approve and deny subscription'
   - 'create asset_distribution rdf_entity'
   - 'create asset_release rdf_entity'
@@ -43,5 +44,4 @@ permissions:
   - 'view any unpublished news content'
   - 'view rdf_entity draft graph'
   - 'view unpublished rdf entity'
-  - 'administer comments'
-role_type: standard
+role_type: null

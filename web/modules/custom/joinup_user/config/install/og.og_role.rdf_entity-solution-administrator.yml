@@ -10,4 +10,4 @@ group_id: null
 permissions:
   - 'message notification on validate'
   - 'request solution deletion'
-role_type: standard
+role_type: null
