@@ -13,20 +13,10 @@ process:
   field_licence_description/format:
     plugin: default_value
     default_value: content_editor
-  # @todo In D6 licence type is 1..N while in D8 is 1..1. Fix this.
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2833?focusedCommentId=2003091&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-2003091
   field_licence_type:
-    -
-      plugin: static_map
-      source: type
-      bypass: true
-      # @todo Add here the mapping for 'Viral effect (a.k.a. Share-alike)'
-      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2833?focusedCommentId=2003038&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-2003038
-      map: {  }
-    -
-      plugin: term_reference
-      source: type
-      vocabulary: licence_type
+    plugin: term_reference
+    source: type
+    vocabulary: licence_type
 destination:
   plugin: entity:rdf_entity
   default_bundle: licence

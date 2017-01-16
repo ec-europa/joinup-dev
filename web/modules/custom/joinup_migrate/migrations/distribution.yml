@@ -22,9 +22,11 @@ process:
   # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2843
   # field_ad_format:
 
-  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2833
-  # field_ad_licence
-
+  field_ad_licence:
+    plugin: migration
+    source: licence
+    migration: licence
+    no_stub: true
   field_ad_modification_date: changed_time
   field_ad_repr_technique:
     -
