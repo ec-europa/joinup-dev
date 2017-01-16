@@ -25,24 +25,32 @@ trait CountryTrait {
   ];
 
   /**
-   * Gets a list of countries based on the node vid.
+   * Gets a list of countries based on a list of node revision IDs.
    *
-   * @param int $vid
-   *   The node vid.
+   * @param int[] $vids
+   *   A list of node revision IDs.
+   * @param bool $include_continent_countries
+   *   (optional) If continents will be expanded to their countries. If the
+   *   value is FALSE, continent countries will be ignored. Defaults to TRUE.
    *
    * @return string[]
    *   A list of country names.
    */
-  protected function getCountries($vid) {
+  protected function getCountries(array $vids, $include_continent_countries = TRUE) {
+    if (empty($vids)) {
+      return [];
+    }
+
     $query = $this->select('term_node', 'tn')
       ->fields('td', ['name'])
+      // The country vocabulary has vid equals 26.
       ->condition('td.vid', 26)
-      ->condition('tn.vid', $vid);
+      ->condition('tn.vid', $vids, 'IN');
     $query->join('term_data', 'td', 'tn.tid = td.tid');
 
     $terms = [];
     foreach ($query->execute()->fetchCol() as $term) {
-      if ($countries = $this->getCountriesByContinent($term)) {
+      if ($include_continent_countries && $countries = $this->getCountriesByContinent($term)) {
         // Replace continents with their component countries.
         $terms = array_merge($terms, $countries);
       }
@@ -54,7 +62,7 @@ trait CountryTrait {
     // Corrections.
     return array_map(function ($term) {
       return isset($this->countryCorrection[$term]) ? $this->countryCorrection[$term] : $term;
-    }, $terms);
+    }, array_unique($terms));
   }
 
   /**

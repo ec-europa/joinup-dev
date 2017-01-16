@@ -2,6 +2,10 @@
 
 namespace Drupal\Tests\asset_release\Functional;
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Session\AnonymousUserSession;
+use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
@@ -13,6 +17,13 @@ use Drupal\Tests\joinup_core\JoinupWorkflowTestBase;
  * @group asset_release
  */
 class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
+
+  /**
+   * A non authenticated user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $userAnonymous;
 
   /**
    * A user with the authenticated role.
@@ -69,6 +80,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
   public function setUp() {
     parent::setUp();
 
+    $this->userAnonymous = new AnonymousUserSession();
     $this->userAuthenticated = $this->createUserWithRoles();
     $this->userModerator = $this->createUserWithRoles(['moderator']);
     $this->userOgFacilitator = $this->createUserWithRoles();
@@ -76,6 +88,25 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
 
     $this->roleFacilitator = OgRole::getRole('rdf_entity', 'solution', 'facilitator');
     $this->roleAdministrator = OgRole::getRole('rdf_entity', 'solution', 'administrator');
+  }
+
+  /**
+   * Creates a user with roles.
+   *
+   * @param array $roles
+   *    An array of roles to initialize the user with.
+   *
+   * @return \Drupal\Core\Session\AccountInterface
+   *    The created user object.
+   */
+  public function createUserWithRoles(array $roles = []) {
+    $user = $this->createUser();
+    foreach ($roles as $role) {
+      $user->addRole($role);
+    }
+    $user->save();
+
+    return $user;
   }
 
   /**
@@ -133,6 +164,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
           $user_var = $test_data_array[1];
           $expected_result = $test_data_array[2];
 
+          $this->userProvider->setUser($this->{$user_var});
           $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
           $result = $expected_result ? t('have') : t('not have');
           $message = "User {$user_var} should {$result} {$operation} access for entity {$content->label()} ({$content_state}) with the parent entity in {$parent_state} state.";
@@ -195,6 +227,23 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
   }
 
   /**
+   * Creates and asserts an Og membership.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *    The Og group.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *    The user this membership refers to.
+   * @param array $roles
+   *    An array of role objects.
+   */
+  public function createOgMembership(EntityInterface $group, AccountInterface $user, array $roles = []) {
+    $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
+    $membership->save();
+    $loaded = $this->ogMembershipManager->getMembership($group, $user);
+    $this->assertInstanceOf(OgMembership::class, $loaded, t('A membership was successfully created.'));
+  }
+
+  /**
    * Provides data for create access check.
    *
    * The access to create a release is checked against the parent entity as it
@@ -215,6 +264,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
     return [
       // Unpublished parent.
       'draft' => [
+        ['userAnonymous', FALSE],
         ['userAuthenticated', FALSE],
         ['userModerator', TRUE],
         ['userOgFacilitator', TRUE],
@@ -222,6 +272,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
       ],
       // Published parent.
       'validated' => [
+        ['userAnonymous', FALSE],
         ['userAuthenticated', FALSE],
         ['userModerator', TRUE],
         ['userOgFacilitator', TRUE],
@@ -256,42 +307,51 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
       // Unpublished parent.
       'draft' => [
         'draft' => [
+          ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', FALSE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'validated' => [
-          ['view', 'userAuthenticated', TRUE],
+          ['view', 'userAnonymous', FALSE],
+          ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', TRUE],
+          ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', FALSE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'in_assessment' => [
+          ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', FALSE],
@@ -301,42 +361,51 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
       // Published parent.
       'validated' => [
         'draft' => [
+          ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', FALSE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'validated' => [
+          ['view', 'userAnonymous', TRUE],
           ['view', 'userAuthenticated', TRUE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', TRUE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', FALSE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'in_assessment' => [
+          ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', FALSE],
