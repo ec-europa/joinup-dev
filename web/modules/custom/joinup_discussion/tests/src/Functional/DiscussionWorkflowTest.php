@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\joinup_discussion\Functional;
 
+use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -12,6 +13,13 @@ use Drupal\Tests\joinup_core\JoinupWorkflowTestBase;
  * Tests CRUD operations and workflow transitions for the discussion node.
  */
 class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
+
+  /**
+   * A non authenticated user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $userAnonymous;
 
   /**
    * A user with the authenticated role.
@@ -54,6 +62,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
   public function setUp() {
     parent::setUp();
 
+    $this->userAnonymous = new AnonymousUserSession();
     $this->userAuthenticated = $this->createUserWithRoles();
     $this->userModerator = $this->createUserWithRoles(['moderator']);
     $this->userOgMember = $this->createUserWithRoles();
@@ -246,6 +255,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
     return [
       // Permissions for discussions created inside a collection.
       'collection' => [
+        ['userAnonymous', TRUE],
         ['userAuthenticated', FALSE],
         ['userModerator', TRUE],
         ['userOgMember', TRUE],
@@ -256,6 +266,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
       ],
       // Permissions for discussions created inside a solution.
       'solution' => [
+        ['userAnonymous', FALSE],
         ['userAuthenticated', FALSE],
         ['userModerator', TRUE],
         ['userOgMember', FALSE],
@@ -291,16 +302,19 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
       // Unpublished parent.
       'draft' => [
         'validated' => [
+          ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgMember', FALSE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgMember', FALSE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgMember', FALSE],
@@ -308,42 +322,51 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'in_assessment' => [
+          ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'proposed' => [
+          ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'archived' => [
+          ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', FALSE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', TRUE],
@@ -353,56 +376,68 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
       // Published parent.
       'validated' => [
         'validated' => [
+          ['view', 'userAnonymous', TRUE],
           ['view', 'userAuthenticated', TRUE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', TRUE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'in_assessment' => [
+          ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'proposed' => [
+          ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', TRUE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'archived' => [
+          ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', TRUE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', TRUE],
+          ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', FALSE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
           ['delete', 'userOgFacilitator', TRUE],
