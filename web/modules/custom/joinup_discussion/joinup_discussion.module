@@ -14,7 +14,7 @@ use Drupal\og\Og;
  * Implements hook_node_access().
  */
 function joinup_discussion_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($entity->bundle() !== 'discussion' || $account->isAnonymous() || $account->hasPermission('administer nodes')) {
+  if ($entity->bundle() !== 'discussion' || $account->hasPermission('administer nodes')) {
     return AccessResult::neutral();
   }
 
