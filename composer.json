@@ -130,9 +130,6 @@
             },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch"
-            },
-            "drupal/og": {
-                "OgMembership static cache not cleared": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/226.patch"
             }
         }
     },

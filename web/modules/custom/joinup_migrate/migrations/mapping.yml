@@ -3,10 +3,9 @@ label: 'Mapping table migration'
 migration_tags:
   - excel
 source:
-  plugin: spreadsheet
+  plugin: mapping
   cache_counts: true
   track_changes: true
-  file: '../resources/migrate/D05.0x Joinup Migration Plan_Content Item Mapping Small v0.3.xlsx'
   worksheet: '1. Content items'
   origin: A3
   header_row: 2

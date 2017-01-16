@@ -29,11 +29,14 @@ trait CountryTrait {
    *
    * @param int[] $vids
    *   A list of node revision IDs.
+   * @param bool $include_continent_countries
+   *   (optional) If continents will be expanded to their countries. If the
+   *   value is FALSE, continent countries will be ignored. Defaults to TRUE.
    *
    * @return string[]
    *   A list of country names.
    */
-  protected function getCountries(array $vids) {
+  protected function getCountries(array $vids, $include_continent_countries = TRUE) {
     if (empty($vids)) {
       return [];
     }
@@ -47,7 +50,7 @@ trait CountryTrait {
 
     $terms = [];
     foreach ($query->execute()->fetchCol() as $term) {
-      if ($countries = $this->getCountriesByContinent($term)) {
+      if ($include_continent_countries && $countries = $this->getCountriesByContinent($term)) {
         // Replace continents with their component countries.
         $terms = array_merge($terms, $countries);
       }
