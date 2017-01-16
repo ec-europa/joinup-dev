@@ -82,6 +82,14 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     $this->handleFileFields($values, 'user', 'user');
 
+    // Login method needs a password.
+    if (!isset($values['pass'])) {
+      $values['pass'] = $values['name'];
+    }
+    if (!isset($values['mail'])) {
+      $values['mail'] = $values['name'] . '@example.com';
+    }
+
     $user = (object) $values;
     $this->userCreate($user);
   }
@@ -311,7 +319,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       'First name' => 'field_user_first_name',
       'Family name' => 'field_user_family_name',
       'Photo' => 'field_user_photo',
-      'Professional profile' => 'field_user_professional_profile',
+      'Business title' => 'field_user_business_title',
       'Organisation' => 'field_user_organisation',
       'Nationality' => 'field_user_nationality',
       'Professional domain' => 'field_user_professional_domain',

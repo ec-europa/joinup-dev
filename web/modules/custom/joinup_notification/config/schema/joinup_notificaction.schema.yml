@@ -45,8 +45,10 @@ joinup_notification.settings:
           type: sequence
           label: 'Roles'
           sequence:
-            type: string
+            type: sequence
             label: 'Message ID'
+            sequence:
+              type: string
     delete_notifications:
       type: sequence
       label: 'Entity type'
@@ -57,5 +59,7 @@ joinup_notification.settings:
           type: sequence
           label: 'Roles'
           sequence:
-            type: string
+            type: sequence
             label: 'Message ID'
+            sequence:
+              type: string

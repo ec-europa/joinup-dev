@@ -31,9 +31,9 @@
     <div class="listing__field">
       <h2 class="listing__title"><a href="{{ path('entity.user.canonical', {'user': user.id}) }}">{{ content.field_user_family_name }} {{ content.field_user_first_name }}</a></h2>
     </div>
-    {% if (content.field_user_professional_profile|render) %}
+    {% if (content.field_user_business_title|render) %}
       <div class="listing__field">
-        <p class="listing__teaser">{{ content.field_user_professional_profile }}</p>
+        <p class="listing__teaser">{{ content.field_user_business_title }}</p>
       </div>
     {% endif %}
   </div>

@@ -26,7 +26,7 @@ process:
     source: contact
     migration: contact
     no_stub: true
-  field_ar_creation_date: created
+  field_ar_creation_date: created_time
   field_ar_description/value: body
   field_ar_description/format:
     plugin: default_value
@@ -38,14 +38,13 @@ process:
     migration: collection_logo
     no_stub: true
   field_ar_moderation:
-    -
-      plugin: get
-      source: pre_moderation
-    -
-      plugin: default_value
-      default_value: 1
-      strict: true
-  field_ar_modification_date: changed
+    plugin: static_map
+    source: pre_moderation
+    map:
+      Yes: true
+      No: false
+    default_value: false
+  field_ar_modification_date: changed_time
   field_ar_owner:
     plugin: migration
     source: owner
@@ -54,9 +53,10 @@ process:
   field_policy_domain:
     plugin: policy_domain
     source: policy2
-  # Blocked by: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2950
-  # field_spatial_coverage:
-  #   TBD...
+  field_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
   field_ar_state:
     -
       plugin: get

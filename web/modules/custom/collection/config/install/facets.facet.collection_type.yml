@@ -13,7 +13,7 @@ widget:
   type: type
   config:
     show_numbers: true
-    tabs: '3'
+    tabs: 3
 query_operator: or
 exclude: false
 only_visible_when_facet_source_is_visible: true

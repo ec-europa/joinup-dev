@@ -25,19 +25,24 @@ trait CountryTrait {
   ];
 
   /**
-   * Gets a list of countries based on the node vid.
+   * Gets a list of countries based on a list of node revision IDs.
    *
-   * @param int $vid
-   *   The node vid.
+   * @param int[] $vids
+   *   A list of node revision IDs.
    *
    * @return string[]
    *   A list of country names.
    */
-  protected function getCountries($vid) {
+  protected function getCountries(array $vids) {
+    if (empty($vids)) {
+      return [];
+    }
+
     $query = $this->select('term_node', 'tn')
       ->fields('td', ['name'])
+      // The country vocabulary has vid equals 26.
       ->condition('td.vid', 26)
-      ->condition('tn.vid', $vid);
+      ->condition('tn.vid', $vids, 'IN');
     $query->join('term_data', 'td', 'tn.tid = td.tid');
 
     $terms = [];
@@ -54,7 +59,7 @@ trait CountryTrait {
     // Corrections.
     return array_map(function ($term) {
       return isset($this->countryCorrection[$term]) ? $this->countryCorrection[$term] : $term;
-    }, $terms);
+    }, array_unique($terms));
   }
 
   /**
