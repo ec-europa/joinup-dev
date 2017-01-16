@@ -1993,8 +1993,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc6+0-dev",
-                    "datestamp": "1480365484"
+                    "version": "8.x-1.0-rc4+54-dev",
+                    "datestamp": "1479073440"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2421,6 +2421,11 @@
                 "drupal/coder": "~8.2"
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "OgMembership static cache not cleared": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/226.patch"
+                }
+            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -2525,7 +2530,8 @@
                     "datestamp": "1456838960"
                 },
                 "patches_applied": {
-                    "Fix white screen of death.": "https://www.drupal.org/files/issues/AccessDeniedExpression-cause-blank-screen-2687155-4.patch"
+                    "Fix white screen of death.": "https://www.drupal.org/files/issues/2687155-8.patch",
+                    "Errors with schema and installed settings file": "https://www.drupal.org/files/issues/schema_fix-2833695-2-D8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

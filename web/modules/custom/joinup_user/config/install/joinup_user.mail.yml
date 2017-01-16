@@ -1,0 +1,3 @@
+email_admin_update:
+  body: "[user:display-name],\r\n\r\nA site administrator at [site:name] has updated your account for you.\r\n\r\n[user:changes]\r\n\r\n--  [site:name] team"
+  subject: 'An administrator updated your account for you at [site:name]'

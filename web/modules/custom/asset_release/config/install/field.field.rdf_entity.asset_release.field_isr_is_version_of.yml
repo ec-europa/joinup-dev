@@ -23,6 +23,5 @@ settings:
       solution: solution
     sort:
       field: _none
-    target_type: rdf_entity
   access_override: false
 field_type: og_standard_reference

@@ -82,6 +82,14 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     $this->handleFileFields($values, 'user', 'user');
 
+    // Login method needs a password.
+    if (!isset($values['pass'])) {
+      $values['pass'] = $values['name'];
+    }
+    if (!isset($values['mail'])) {
+      $values['mail'] = $values['name'] . '@example.com';
+    }
+
     $user = (object) $values;
     $this->userCreate($user);
   }
