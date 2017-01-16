@@ -23,10 +23,6 @@ process:
     migration: user_photo
     source: uid
     no_stub: true
-  field_user_professional_profile/value: professional_profile
-  field_user_professional_profile/format:
-    plugin: default_value
-    default_value: content_editor
 
 destination:
   plugin: entity:user
