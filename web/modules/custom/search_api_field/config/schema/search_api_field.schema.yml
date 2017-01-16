@@ -1,0 +1,54 @@
+# Schema for the configuration files of the search_api_field module.
+
+field.storage_settings.search_api_field:
+  type: mapping
+  label: 'Community content listing field settings'
+  mapping:
+    index:
+      type: string
+      label: 'The search api index'
+    facet_regions:
+      type: sequence
+      label: 'Region'
+      sequence:
+        type: string
+        label: 'Region label'
+    view_modes:
+      type: sequence
+      label: 'Handler'
+      sequence:
+        type: sequence
+        label: 'Bundle'
+        sequence:
+          type: string
+          label: 'View mode'
+
+field.value.search_api_field:
+  type: mapping
+  label: 'Default value'
+  mapping:
+    value:
+      type: mapping
+      label: 'Value'
+      mapping:
+        fields:
+          type: sequence
+          label: 'Field name'
+          sequence:
+            type: mapping
+            mapping:
+              weight:
+                type: integer
+                label: 'Weight'
+              region:
+                type: string
+                label: 'Region'
+        enabled:
+          type: integer
+          value: 'Enabled'
+        query_presets:
+          type: string
+          label: 'Query presets'
+        limit:
+          type: integer
+          label: 'Limit'

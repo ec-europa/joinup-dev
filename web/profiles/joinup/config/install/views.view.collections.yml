@@ -30,11 +30,10 @@ display:
         type: search_api_tag
         options: {  }
       query:
-        type: views_query
+        type: search_api_query
         options:
           bypass_access: false
           skip_access: false
-          parse_mode: terms
       exposed_form:
         type: basic
         options:
