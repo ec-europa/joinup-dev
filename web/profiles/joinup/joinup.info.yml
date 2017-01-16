@@ -53,6 +53,7 @@ dependencies:
   - state_machine_revisions
   - text
   - toolbar
+  - user
   - view_unpublished
   - views
 
@@ -141,20 +142,16 @@ config_devel:
   - filter.format.full_html
   - filter.format.restricted_html
   - image.style.profile_icon
-  - og.og_membership_type.og_membership_type
-  - og.og_role.rdf_entity-collection-administrator
-  - og.og_role.rdf_entity-collection-facilitator
-  - og.og_role.rdf_entity-collection-member
-  - og.og_role.rdf_entity-collection-non-member
-  - og.settings
   - og_menu.ogmenu.navigation
+  - og.settings
   - system.theme
+  - views.view.collection_content
+  - views.view.collections
+  - views.view.user_admin_people
   - user.flood
   - user.mail
-  - user.role.administrator
   - user.role.anonymous
   - user.role.authenticated
-  - user.role.moderator
   - user.settings
   - views.view.collections
   - views.view.user_admin_people
