@@ -110,6 +110,13 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function getEntityType() {
+    return 'rdf_entity';
+  }
+
+  /**
    * Tests the CRUD operations for the asset release entities.
    *
    * Since the browser test is a slow test, both create access and read/update/
@@ -206,7 +213,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * @return \Drupal\Core\Entity\EntityInterface
    *    The created solution entity.
    */
-  public function createDefaultParent($state) {
+  protected function createDefaultParent($state) {
     $parent = Rdf::create([
       'rid' => 'solution',
       'field_is_state' => $state,
