@@ -19,11 +19,11 @@ default_value:
     value:
       fields:
         field_cp_content_listing_content_type:
-          weight: '0'
+          weight: 0
           region: top
       enabled: 0
       query_presets: ''
-      limit: '12'
+      limit: 12
 default_value_callback: ''
 settings: {  }
 field_type: search_api_field
