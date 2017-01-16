@@ -43,7 +43,6 @@ abstract class JoinupKernelTestBase extends KernelTestBase {
    */
   public static $modules = [
     'rdf_entity',
-    'taxonomy',
     'field',
     'system',
     'user',

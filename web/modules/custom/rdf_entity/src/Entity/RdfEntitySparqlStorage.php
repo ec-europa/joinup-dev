@@ -21,7 +21,6 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\RdfGraphHandler;
 use Drupal\rdf_entity\RdfMappingHandler;
-use Drupal\taxonomy\Entity\Term;
 use EasyRdf\Graph;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -734,10 +733,6 @@ QUERY;
     if (empty($id)) {
       $id = $this->generateId();
       $entity->{$this->idKey} = (string) $id;
-    }
-    // The ID cannot overlap an existing 'rdf_entity' or 'taxonomy_term'.
-    elseif ($entity->isNew() && (($existing = $this->load($id)) || ($existing = Term::load($id)))) {
-      throw new \InvalidArgumentException("Attempting to create a new '$bundle' entity with the ID '$id' already taken by an existing '{$existing->bundle()}' entity.");
     }
 
     // If the target graph is set, it has priority over the one the entity is
