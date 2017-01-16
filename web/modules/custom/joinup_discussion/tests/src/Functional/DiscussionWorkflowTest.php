@@ -255,7 +255,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
     return [
       // Permissions for discussions created inside a collection.
       'collection' => [
-        ['userAnonymous', TRUE],
+        ['userAnonymous', FALSE],
         ['userAuthenticated', FALSE],
         ['userModerator', TRUE],
         ['userOgMember', TRUE],
@@ -427,7 +427,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'archived' => [
-          ['view', 'userAnonymous', FALSE],
+          ['view', 'userAnonymous', TRUE],
           ['view', 'userAuthenticated', TRUE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
