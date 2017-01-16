@@ -367,7 +367,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \Exception
    *   Thrown when a solution is not found.
    *
-   * @Given (the following )solution user memberships:
+   * @Given (the following )solution user membership(s):
    */
   public function givenSolutionUserMemberships(TableNode $membership_table) {
     foreach ($membership_table->getColumnsHash() as $values) {

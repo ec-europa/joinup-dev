@@ -19,6 +19,7 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_release_notes
     - field.field.rdf_entity.asset_release.field_isr_release_number
     - field.field.rdf_entity.asset_release.field_isr_solution_type
+    - field.field.rdf_entity.asset_release.field_isr_state
     - field.field.rdf_entity.asset_release.field_isr_translation
     - field.field.rdf_entity.asset_release.field_keywords
     - field.field.rdf_entity.asset_release.field_policy_domain
@@ -28,6 +29,7 @@ dependencies:
   module:
     - datetime
     - ds
+    - state_machine
     - text
 id: rdf_entity.asset_release.default
 targetEntityType: rdf_entity
@@ -56,7 +58,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   field_isr_creation_date:
-    weight: 14
+    weight: 1
     label: hidden
     settings:
       future_format: '@interval hence'
@@ -74,7 +76,7 @@ content:
         template_suggestion: no_wrappers
     type: datetime_time_ago
   field_isr_distribution:
-    weight: 17
+    weight: 3
     label: hidden
     settings:
       view_mode: view_mode_tile
@@ -98,7 +100,7 @@ content:
     third_party_settings: {  }
     type: list_default
   field_isr_is_version_of:
-    weight: 16
+    weight: 2
     label: above
     settings:
       link: true
@@ -164,7 +166,7 @@ content:
     type: entity_reference_label
   field_isr_release_notes:
     type: text_default
-    weight: 19
+    weight: 4
     label: hidden
     settings: {  }
     third_party_settings:
@@ -188,6 +190,12 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+  field_isr_state:
+    type: state_transition_form
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_isr_webdav_creation:
     weight: 15
     label: above
@@ -222,7 +230,7 @@ content:
   label:
     label: hidden
     type: string
-    weight: 2
+    weight: 0
     settings:
       link_to_entity: false
     third_party_settings:

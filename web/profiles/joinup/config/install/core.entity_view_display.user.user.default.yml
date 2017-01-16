@@ -10,7 +10,7 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_professional_profile
+    - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_subscription_events
   module:
     - image
@@ -77,7 +77,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_user_professional_profile:
+  field_user_business_title:
     weight: 6
     label: above
     settings: {  }

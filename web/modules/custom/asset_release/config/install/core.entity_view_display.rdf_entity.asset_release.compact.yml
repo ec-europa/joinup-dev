@@ -20,6 +20,7 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_release_notes
     - field.field.rdf_entity.asset_release.field_isr_release_number
     - field.field.rdf_entity.asset_release.field_isr_solution_type
+    - field.field.rdf_entity.asset_release.field_isr_state
     - field.field.rdf_entity.asset_release.field_isr_translation
     - field.field.rdf_entity.asset_release.field_keywords
     - field.field.rdf_entity.asset_release.field_policy_domain
@@ -210,6 +211,7 @@ hidden:
   field_isr_owner: true
   field_isr_related_solutions: true
   field_isr_solution_type: true
+  field_isr_state: true
   field_isr_translation: true
   field_keywords: true
   field_policy_domain: true

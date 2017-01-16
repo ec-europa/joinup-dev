@@ -9,6 +9,7 @@ group_bundle: solution
 group_id: null
 permissions:
   - 'add user'
+  - 'administer comments'
   - 'create asset_distribution rdf_entity'
   - 'create asset_release rdf_entity'
   - 'create discussion content'
@@ -31,7 +32,8 @@ permissions:
   - 'update own asset_release rdf_entity'
   - 'view any unpublished content'
   - 'view any unpublished news content'
+  - 'view rdf_entity default graph'
   - 'view rdf_entity draft graph'
+  - 'view rdf entity'
   - 'view unpublished rdf entity'
-  - 'administer comments'
-role_type: standard
+role_type: null
