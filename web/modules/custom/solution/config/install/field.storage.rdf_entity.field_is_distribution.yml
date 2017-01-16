@@ -6,14 +6,13 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://www.w3.org/ns/dcat#keyword'
-id: rdf_entity.field_keywords
-field_name: field_keywords
+      target_id: 'http://www.w3.org/ns/dcat#distribution'
+id: rdf_entity.field_is_distribution
+field_name: field_is_distribution
 entity_type: rdf_entity
-type: string
+type: entity_reference
 settings:
-  max_length: 255
-  is_ascii: false
+  target_type: rdf_entity
 module: core
 locked: false
 cardinality: -1
