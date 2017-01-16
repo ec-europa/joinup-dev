@@ -74,6 +74,13 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+  field_news_kicker:
+    type: string
+    weight: 2
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_topic:
     type: entity_reference_label
     weight: 1
@@ -93,7 +100,6 @@ content:
         template_suggestion: entity_reference__listing_tag
 hidden:
   field_comments: true
-  field_news_kicker: true
   field_news_source_url: true
   field_news_state: true
   field_spatial_coverage: true
