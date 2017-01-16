@@ -16,11 +16,12 @@ third_party_settings:
         value: 'http://www.w3.org/2004/02/skos/core#prefLabel'
       description:
         value: ''
-      format: ''
+      format:
+        value: ''
       weight:
         value: ''
       parent:
-      target_id: 'http://www.w3.org/2004/02/skos/core#broader'
+        target_id: 'http://www.w3.org/2004/02/skos/core#broader'
       changed:
         value: ''
       default_langcode:

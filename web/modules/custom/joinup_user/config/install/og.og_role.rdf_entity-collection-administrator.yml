@@ -10,4 +10,4 @@ group_bundle: collection
 group_id: null
 permissions:
   - 'request collection deletion'
-role_type: standard
+role_type: null
