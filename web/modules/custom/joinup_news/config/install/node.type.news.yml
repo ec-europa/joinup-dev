@@ -10,7 +10,7 @@ third_party_settings:
 name: News
 type: news
 description: ''
-help: 'The kicker is a short, catchy word or phrase and will be placed over the headline.'
+help: ''
 new_revision: true
 preview_mode: 2
 display_submitted: false

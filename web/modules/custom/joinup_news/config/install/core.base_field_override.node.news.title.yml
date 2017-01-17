@@ -8,7 +8,7 @@ field_name: title
 entity_type: node
 bundle: news
 label: Kicker
-description: ''
+description: 'The kicker is a short, catchy word or phrase and will be placed over the headline.'
 required: true
 translatable: true
 default_value: {  }
