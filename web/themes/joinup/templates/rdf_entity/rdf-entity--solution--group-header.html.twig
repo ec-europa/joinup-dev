@@ -9,8 +9,10 @@
   <a class="featured__link-wrapper featured__link-wrapper--outer" href="{{ path('entity.rdf_entity.canonical',{'rdf_entity': rdf_entity.id()}) }}"></a>
   <div class="featured__inner-wrapper">
     {# @todo This is temporary, once all fields are available, it will be replaced. #}
+    <a href="{{ path('entity.rdf_entity.canonical',{'rdf_entity': rdf_entity.id()}) }}">
       <div class="featured__logo">{{ content.field_is_logo }}</div>
       <h1 class="featured__text">{{ label }}</h1>
+    </a>
       <div class="featured__stats">
         <div class="stats__column">
           <div class="stats__wrapper">
@@ -24,7 +26,6 @@
           </div>
         </div>
       </div>
-      <a class="featured__link-wrapper" href="{{ path('entity.rdf_entity.canonical',{'rdf_entity': rdf_entity.id()}) }}"></a>
       {{ content.releases_overview }}
   </div>
 </div>
