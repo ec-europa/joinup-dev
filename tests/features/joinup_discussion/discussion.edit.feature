@@ -18,8 +18,8 @@ Feature: "Discussion page" editing.
       | collection   | user   | roles  |
       | <collection> | <user> | <role> |
     And "discussion" content:
-      | title        | author | collection   |
-      | <discussion> | <user> | <collection> |
+      | title        | author | collection   | state     |
+      | <discussion> | <user> | <collection> | validated |
     When I am logged in as "<user>"
     And I go to the "<discussion>" discussion
     Then I should see the link "Edit" in the "Entity actions" region
