@@ -388,8 +388,8 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
 
   /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
   $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
-  $field_news_kicker = $viewBuilder->viewField($node->field_news_kicker, 'default');
-  $variables['additional_content']['field_news_kicker'] = $field_news_kicker;
+  $field_news_headline = $viewBuilder->viewField($node->field_news_headline, 'default');
+  $variables['additional_content']['field_news_headline'] = $field_news_headline;
 
   $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
   $variables['additional_content']['created'] = $created;
