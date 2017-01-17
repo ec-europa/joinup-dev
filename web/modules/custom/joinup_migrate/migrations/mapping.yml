@@ -22,7 +22,6 @@ source:
     - Owner
     - 'Administration User'
     - 'Elibrary Creation'
-    - 'Pre Moderation'
     - 'Collection State'
     - 'Status of the collection'
   row_index_column: row_index
@@ -96,7 +95,6 @@ process:
   owner: Owner
   admin_user: 'Administration User'
   elibrary: 'Elibrary Creation'
-  pre_moderation: 'Pre Moderation'
   collection_state: 'Collection State'
   status: 'Status of the collection'
   row_index: row_index
