@@ -38,12 +38,8 @@ process:
     migration: collection_logo
     no_stub: true
   field_ar_moderation:
-    plugin: static_map
-    source: pre_moderation
-    map:
-      Yes: true
-      No: false
-    default_value: false
+    plugin: default_value
+    default_value: true
   field_ar_modification_date: changed_time
   field_ar_owner:
     plugin: migration
