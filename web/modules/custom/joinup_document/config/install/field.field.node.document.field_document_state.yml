@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_document_state
+    - node.type.document
+  module:
+    - state_machine
+id: node.document.field_document_state
+field_name: field_document_state
+entity_type: node
+bundle: document
+label: State
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: __new__
+default_value_callback: ''
+settings:
+  workflow: document_pre_moderation
+  workflow_callback: joinup_document_workflow_selector
+field_type: state
