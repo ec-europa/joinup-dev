@@ -143,9 +143,7 @@ field_settings:
 processor_settings:
   add_url:
     plugin_id: add_url
-    settings:
-      weights:
-        preprocess_index: -30
+    settings: {  }
   rendered_item:
     plugin_id: rendered_item
     settings: {  }
