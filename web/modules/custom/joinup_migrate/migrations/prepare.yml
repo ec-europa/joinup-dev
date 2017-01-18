@@ -2,6 +2,7 @@ id: prepare
 label: 'Prepare migrations'
 source:
   plugin: prepare
+  cache_counts: true
   track_changes: true
 process:
   collection: collection
