@@ -20,18 +20,17 @@ use Drupal\user\RoleInterface;
 class JoinupDocumentFulfillmentGuard implements GuardInterface {
 
   /**
-   * Elibrary option that defines that only facilitators can create content.
+   * Elibrary option defining that only facilitators can create content.
    */
   const ELIBRARY_LEVEL_0 = 0;
 
   /**
-   * Elibrary option that defines that members and facilitators can create
-   * content.
+   * Elibrary option defining that members and facilitators can create content.
    */
   const ELIBRARY_LEVEL_1 = 1;
 
   /**
-   * Elibrary option that defines that any registered user can create content.
+   * Elibrary option defining that any registered user can create content.
    */
   const ELIBRARY_LEVEL_2 = 2;
 
@@ -158,6 +157,7 @@ class JoinupDocumentFulfillmentGuard implements GuardInterface {
    *
    * @param \Drupal\Core\Entity\EntityInterface $document
    *    The document entity.
+   *
    * @return array
    *    An array of roles that are allowed.
    */

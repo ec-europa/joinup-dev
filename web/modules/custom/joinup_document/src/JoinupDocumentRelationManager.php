@@ -66,10 +66,11 @@ class JoinupDocumentRelationManager implements ContainerInjectionInterface {
    *
    * @param \Drupal\Core\Entity\EntityInterface $document
    *    The document entity.
+   *
    * @return string
    *    The id of the workflow to use.
    */
-  public function getDocumentWorkflow(EntityInterface $document){
+  public function getDocumentWorkflow(EntityInterface $document) {
     $parent = $this->getDocumentParent($document);
     if (empty($parent) || in_array($parent->bundle(), ['collection', 'solution'])) {
       return 'document_pre_moderated';

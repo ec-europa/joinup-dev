@@ -74,6 +74,7 @@ function joinup_document_node_access(EntityInterface $entity, $operation, Accoun
  *
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *    The document entity.
+ *
  * @return string
  *    The id of the workflow to use.
  *
