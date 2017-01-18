@@ -7,7 +7,6 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Database;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -15,6 +14,7 @@ use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_form_FORMID_alter().
@@ -198,14 +198,14 @@ function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form
 }
 
 /**
- * Implements hook_ENTITY_TYPE_view_alter().
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Disable access to the revision information vertical tab.
+ * This prevents access to the revision log and the revision checkbox too.
  */
-function joinup_comment_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  // Add contextual links to comments.
-  $build['#contextual_links']['comment'] = [
-    'route_parameters' => ['comment' => $entity->id()],
-    'metadata' => ['changed' => $entity->getChangedTime()],
-  ];
+function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['revision_information']['#access'] = FALSE;
+  $form['revision']['#access'] = FALSE;
 }
 
 /**
@@ -266,5 +266,26 @@ function joinup_theme_suggestions_field_alter(array &$suggestions, array &$varia
         $variables['element']['#joinup_template_suggestion'] = $suggestion;
       }
     }
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function joinup_views_pre_view(ViewExecutable $view) {
+  // The collections overview varies by the user's memberships. For example if
+  // you are the owner of a proposed collection you can see it, while a non-
+  // member won't be able to see it yet.
+  // Note that for page displays this currently only affects the query result
+  // cache in Views, not the render cache. ViewPageController::handle() only
+  // sets a cache context when contextual links are enabled.
+  // @todo Solve this properly on render cache level by providing a dedicated
+  //   property like _view_display_cache_contexts on the router object which is
+  //   created in PathPluginBase::getRoute(). We can then use this to output the
+  //   correct cache contexts in ViewPageController::handle().
+  // @see https://www.drupal.org/node/2839058
+  if ($view->id() === 'collections') {
+    $view->display_handler->display['cache_metadata']['contexts'][] = 'og_role';
+    $view->display_handler->display['cache_metadata']['contexts'][] = 'user.roles';
   }
 }

@@ -154,7 +154,11 @@ Feature: News moderation.
     And I click "Add news"
     Then I should see the heading "Add news"
     And the following fields should be present "Headline, Kicker, Content"
-    And the following fields should not be present "Groups audience, State"
+
+    # The sections about managing revisions and groups should not be visible.
+    And I should not see the text "Revision information"
+    And the following fields should not be present "Groups audience, State, Other groups, Create new revision, Revision log message"
+
     And the following buttons should be present "Save as draft, Validate"
     And the following buttons should not be present "Propose, Request changes, Request deletion"
     When I fill in the following:
@@ -230,27 +234,27 @@ Feature: News moderation.
       # State: draft, can propose
       | Mirror Master | Creating Legion of Doom       | Save as draft, Propose  | Validate, Request changes, Request deletion |
       # State: validated, owned by Eagle who is a normal member. Should only be able to create a new draft.
-      | Eagle         | Hawkgirl helped Green Lantern | Create new draft        | Update, Propose, Validate, Request changes  |
-      | Mirror Master | Stealing from Batman          | Create new draft        | Update, Propose, Validate, Request changes  |
+      | Eagle         | Hawkgirl helped Green Lantern | Save new draft          | Update, Propose, Validate, Request changes  |
+      | Mirror Master | Stealing from Batman          | Save new draft          | Update, Propose, Validate, Request changes  |
 
   Scenario Outline: Members cannot edit news they own for specific states.
     Given I am logged in as "<user>"
     And I go to the "<title>" news page
     Then I should not see the link "Edit"
     Examples:
-      | user          | title                         |
+      | user          | title                   |
       # State: needs update
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
-      | Eagle         | Space cannon fired            |
+      | Eagle         | Space cannon fired      |
       # State: draft, not owned
-      | Eagle         | Question joined JL            |
+      | Eagle         | Question joined JL      |
       # State: draft, not owned
-      | Cheetah       | Creating Legion of Doom       |
+      | Cheetah       | Creating Legion of Doom |
       # State: needs update
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
-      | Mirror Master | Stealing complete             |
+      | Mirror Master | Stealing complete       |
       # State: deletion request
-      | Mirror Master | Kill the sun                  |
+      | Mirror Master | Kill the sun            |
 
   Scenario Outline: Facilitators have access on content regardless of state.
     Given I am logged in as "<user>"
@@ -266,7 +270,7 @@ Feature: News moderation.
       # News article in 'proposed' state.
       | Hawkgirl | Hawkgirl is a spy             | Update, Validate, Request changes | Save as draft, Request deletion                            |
       # Validated content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
-      | Hawkgirl | Hawkgirl helped Green Lantern | Create new draft, Propose, Update | Validate, Request changes, Request deletion                |
+      | Hawkgirl | Hawkgirl helped Green Lantern | Save new draft, Propose, Update   | Validate, Request changes, Request deletion                |
       # Members can move to 'needs update' state.
       | Hawkgirl | Hawkgirl helped Green Lantern | Update, Propose                   | Save as draft, Request changes, Request deletion           |
       | Hawkgirl | Space cannon fired            | Propose                           | Save as draft, Validate, Request changes, Request deletion |
@@ -274,7 +278,7 @@ Feature: News moderation.
       # Facilitators have access to create news and directly put it to validate. For created and proposed, member role should be used.
       | Metallo  | Creating Legion of Doom       | Save as draft, Propose, Validate  | Request changes, Request deletion                          |
       # Validated content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
-      | Metallo  | Stealing from Batman          | Create new draft, Propose, Update | Request changes, Request deletion                          |
+      | Metallo  | Stealing from Batman          | Save new draft, Propose, Update   | Request changes, Request deletion                          |
       # Members can move to 'needs update' state.
       | Metallo  | Learn batman's secret         | Update, Request changes, Validate | Save as draft, Request deletion                            |
       | Metallo  | Stealing complete             | Propose                           | Save as draft, Request deletion                            |
@@ -310,19 +314,29 @@ Feature: News moderation.
       | Stealing from Batman          |
       | Learn batman's secret         |
 
-  Scenario: An entity should be automatically published/un published according to state
-    # Regardless of moderation, the entity is published for the states
-    # Validated, Needs update, Request deletion
-    # and unpublished for Draft and Proposed.
+  Scenario: An entity should be automatically published according to state
     When I am logged in as "Hawkgirl"
     And I go to the "Hawkgirl is a spy" news page
-    Then I should see the link "Edit"
+    Then the "Hawkgirl is a spy" "news" content should not be published
+    And the "Hawkgirl is a spy" "news" content should have 1 revision
     When I click "Edit"
     And I press "Validate"
     Then I should see the success message "News Hawkgirl is a spy has been updated."
     Then the "Hawkgirl is a spy" "news" content should be published
+    And the "Hawkgirl is a spy" "news" content should have 2 revisions
     And I should see the link "Edit"
     When I click "Edit"
+    And for "Headline" I enter "Hawkgirl saves the planet again"
     And I press "Propose"
-    Then I should see the success message "News Hawkgirl is a spy has been updated."
-    Then the "Hawkgirl is a spy" "news" content should not be published
+    Then I should see the success message "News Hawkgirl saves the planet again has been updated."
+    # A new draft has been created with a new title. The previously validated
+    # revision (with the original title) should still be published.
+    But I should see the heading "Hawkgirl is a spy"
+    And the "Hawkgirl is a spy" "news" content should have 3 revisions
+    # Finally, validate the proposed change. This should again create a new
+    # revision, and the revision with the new title should become published.
+    When I click "Edit"
+    And I press "Validate"
+    Then I should see the success message "News Hawkgirl saves the planet again has been updated."
+    And I should see the heading "Hawkgirl saves the planet again"
+    And the "Hawkgirl saves the planet again" "news" content should have 4 revisions

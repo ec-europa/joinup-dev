@@ -92,14 +92,15 @@ class AssetDistributionController extends ControllerBase {
   /**
    * Creates a new asset_distribution entity.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $asset_release
-   *   The asset release that the distribution is associated with.
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The RDF entity that the distribution is associated with. Can be either an
+   *   'asset_release' or a 'solution'.
    *
    * @return \Drupal\Core\Entity\EntityInterface
    *   The unsaved asset_distribution entity.
    */
-  protected function createNewAssetDistribution(RdfInterface $asset_release) {
-    $solution = $this->assetDistributionRelations->getReleaseSolution($asset_release);
+  protected function createNewAssetDistribution(RdfInterface $rdf_entity) {
+    $solution = $rdf_entity->bundle() === 'solution' ? $rdf_entity : $this->assetDistributionRelations->getReleaseSolution($rdf_entity);
 
     return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'asset_distribution',

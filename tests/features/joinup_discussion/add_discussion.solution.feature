@@ -51,10 +51,15 @@ Feature: "Add discussion" visibility options.
     And I click "Add discussion"
     Then I should see the heading "Add discussion"
     And the following fields should be present "Title, Content, Topic, Active"
+
+    # The sections about managing revisions and groups should not be visible.
+    And I should not see the text "Revision information"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+
     When I fill in the following:
       | Title   | Flight of Girlfriend                       |
       | Content | This is going to be an amazing discussion. |
-    And I press "Save"
+    And I press "Publish"
     Then I should see the heading "Flight of Girlfriend"
     And I should see the success message "Discussion Flight of Girlfriend has been created."
     And the "Emerald in the Luck" solution has a discussion titled "Flight of Girlfriend"

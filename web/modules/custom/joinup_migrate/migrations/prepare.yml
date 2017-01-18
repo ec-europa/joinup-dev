@@ -1,0 +1,26 @@
+id: prepare
+label: 'Prepare migrations'
+source:
+  plugin: prepare
+  track_changes: true
+process:
+  collection: collection
+  type: type
+  nid: nid
+  policy2: policy2
+  abstract: abstract
+  logo: logo
+  banner: banner
+  elibrary: elibrary
+  publisher: publisher
+  contact: contact
+  # @todo Fix in https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068.
+  # collection_state: collection_state
+  # status: status
+destination:
+  plugin: prepare
+  fast_rollback: true
+  fast_rollback_batch_size: 0
+migration_dependencies:
+ required:
+   - mapping

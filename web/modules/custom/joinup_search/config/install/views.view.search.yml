@@ -4,6 +4,7 @@ dependencies:
   config:
     - search_api.index.collections
   module:
+    - joinup_core
     - search_api
 id: search
 label: Search
@@ -24,14 +25,13 @@ display:
         type: none
         options: {  }
       cache:
-        type: tag
+        type: none
         options: {  }
       query:
-        type: views_query
+        type: search_api_query
         options:
           bypass_access: false
           skip_access: false
-          parse_mode: terms
       exposed_form:
         type: basic
         options:
@@ -161,7 +161,7 @@ display:
       arguments: {  }
       display_extenders: {  }
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -180,7 +180,7 @@ display:
       defaults:
         cache: false
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'

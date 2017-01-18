@@ -6,6 +6,8 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use Drupal\comment\CommentInterface;
+use Drupal\comment\Entity\Comment;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -15,6 +17,7 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\og\Og;
@@ -31,6 +34,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
 
@@ -78,6 +82,14 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     $this->handleFileFields($values, 'user', 'user');
 
+    // Login method needs a password.
+    if (!isset($values['pass'])) {
+      $values['pass'] = $values['name'];
+    }
+    if (!isset($values['mail'])) {
+      $values['mail'] = $values['name'] . '@example.com';
+    }
+
     $user = (object) $values;
     $this->userCreate($user);
   }
@@ -87,18 +99,27 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * Multiple roles can be passed separated with comma.
    *
+   * @param string $roles
+   *   A comma separated list of roles to assign to the user.
+   * @param string $rdf_entity
+   *   The label of the collection or solution of which the user is a member.
+   * @param string $rdf_entity_bundle
+   *   The RDF entity bundle, either 'collection' or 'solution'.
+   *
+   * @throws \Exception
+   *   Thrown when a collection or solution with the given label doesn't exist.
+   *
    * @Given I am logged in as a user with the :role role(s) of the :rdf_entity :rdf_entity_bundle
    * @Given I am logged in as a/an :role of the :rdf_entity :rdf_entity_bundle
    *
    * @see \Drupal\DrupalExtension\Context\DrupalContext::assertAuthenticatedByRole()
    */
-  public function assertAuthenticatedByOgRole($role, $rdf_entity, $rdf_entity_bunlde) {
-    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bunlde);
+  public function assertAuthenticatedByOgRole($roles, $rdf_entity, $rdf_entity_bundle) {
+    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
     if (!$entity) {
       throw new \Exception("No entity found with label $rdf_entity");
     }
-    $roles = explode(',', $role);
-    $roles = array_map('trim', $roles);
+    $roles = $this->explodeCommaSeparatedStepArgument($roles);
     $roles = $this->getOgRoles($roles, $entity);
 
     // Check if a user with this role is already logged in.
@@ -119,6 +140,38 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // Login.
       $this->login($user);
     }
+  }
+
+  /**
+   * Changes the role of a user within a collection or solution.
+   *
+   * Use this to e.g. test promotion or demotion of facilitators.
+   *
+   * @param string $rdf_entity
+   *   The label of the collection or solution of which the user is a member.
+   * @param string $rdf_entity_bundle
+   *   The RDF entity bundle, either 'collection' or 'solution'.
+   * @param string $roles
+   *   A comma separated list of roles to assign to the user. All previously
+   *   assigned roles will be discarded.
+   *
+   * @throws \Exception
+   *   Thrown when a collection or solution with the given label doesn't exist.
+   *
+   * @Given my role(s) in the :rdf_entity :rdf_entity_bundle change(s) to :roles
+   */
+  public function updateGroupRoles($rdf_entity, $rdf_entity_bundle, $roles) {
+    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
+    if (!$entity) {
+      throw new \Exception("No entity found with label $rdf_entity");
+    }
+    $roles = $this->explodeCommaSeparatedStepArgument($roles);
+    $roles = $this->getOgRoles($roles, $entity);
+
+    $current_user = $this->getUserManager()->getCurrentUser();
+    $account = User::load($current_user->uid);
+
+    $this->subscribeUserToGroup($account, $entity, $roles);
   }
 
   /**
@@ -247,7 +300,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function resetRequestGraphs($event) {
     /** @var RdfEntitySparqlStorage $storage */
-    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
     $storage->getGraphHandler()->resetRequestGraphs();
   }
 
@@ -266,7 +319,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       'First name' => 'field_user_first_name',
       'Family name' => 'field_user_family_name',
       'Photo' => 'field_user_photo',
-      'Professional profile' => 'field_user_professional_profile',
+      'Business title' => 'field_user_business_title',
       'Organisation' => 'field_user_organisation',
       'Nationality' => 'field_user_nationality',
       'Professional domain' => 'field_user_professional_domain',
@@ -386,7 +439,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks if a content entity is published.
    *
    * @param string $bundle
-   *   The node bunlde.
+   *   The node bundle.
    * @param string $title
    *   The node title.
    *
@@ -395,7 +448,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :title :bundle (content )should be published
    */
-  public function nodePublished($bundle, $title) {
+  public function assertNodePublished($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if (!$node->isPublished()) {
@@ -407,7 +460,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks if a content entity is published.
    *
    * @param string $bundle
-   *   The node bunlde.
+   *   The node bundle.
    * @param string $title
    *   The node title.
    *
@@ -416,12 +469,37 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :title :bundle (content )should not be published
    */
-  public function nodeNotPublished($bundle, $title) {
+  public function assertNodeNotPublished($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if ($node->isPublished()) {
       throw new \Exception("$title content should not be published but it is.");
     }
+  }
+
+  /**
+   * Checks if the given content entity has the correct number of revisions.
+   *
+   * @param string $bundle
+   *   The node bundle.
+   * @param string $title
+   *   The node title.
+   * @param int $count
+   *   The expected number of revisions.
+   *
+   * @Then the :title :bundle (content )should have :count revision(s)
+   */
+  public function assertNodeRevisionCount($bundle, $title, $count) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title, $bundle);
+
+    $revision_count = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
+      ->allRevisions()
+      ->condition('nid', $node->id())
+      ->count()
+      ->execute();
+
+    PHPUnit_Framework_Assert::assertEquals($count, $revision_count);
   }
 
   /**
@@ -439,12 +517,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @BeforeNodeCreate
    */
-  public function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+  public static function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
     $node = $scope->getEntity();
 
     // Replace field label aliases with the actual field names.
     foreach (get_object_vars($node) as $alias => $value) {
-      $name = $this->getNodeFieldNameFromAlias($node->type, $alias);
+      $name = self::getNodeFieldNameFromAlias($node->type, $alias);
       if ($name !== $alias) {
         unset($node->alias);
         $node->$name = $value;
@@ -456,8 +534,25 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // solution in a Behat test. This is by design, the URIs are not exposed to
     // end users of the site so they should not be used in BDD scenarios.
     if (!empty($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD})) {
-      $entity = $this->getRdfEntityByLabel($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD});
+      $entity = self::getRdfEntityByLabel($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD});
       $node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD} = $entity->id();
+    }
+
+    // Replace the human readable publication statuses with the boolean values
+    // that are expected by the Node module.
+    if (!empty($node->status)) {
+      $mapping = [
+        'unpublished' => 0,
+        'published' => 1,
+      ];
+      // Force the use of human readable values in Behat test scenarios, throw
+      // an exception if the numeric values are used.
+      if (!array_key_exists($node->status, $mapping)) {
+        $supported_statii = implode(', ', array_keys($mapping));
+        throw new \UnexpectedValueException("Unexpected status '{$node->status}'. Supported statuses are: $supported_statii.");
+      }
+      // Replace the human readable value with the expected boolean.
+      $node->status = $mapping[$node->status];
     }
   }
 
@@ -472,7 +567,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @return string
    *   The actual field name, or the original string if the alias is not known.
    */
-  protected function getNodeFieldNameFromAlias($type, $alias) {
+  protected static function getNodeFieldNameFromAlias($type, $alias) {
     $aliases = [
       'document' => [
         'short title' => 'field_document_short_title',
@@ -646,9 +741,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then (the following )buttons should be present :buttons
    */
   public function assertButtonsVisible($buttons) {
-    $buttons = explode(',', $buttons);
-    $buttons = array_map('trim', $buttons);
-    $buttons = array_filter($buttons);
+    $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
     $page = $this->getSession()->getPage();
     $not_found = [];
@@ -675,9 +768,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then (the following )buttons should not be present :buttons
    */
   public function assertButtonsNotVisible($buttons) {
-    $buttons = explode(',', $buttons);
-    $buttons = array_map('trim', $buttons);
-    $buttons = array_filter($buttons);
+    $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
     $page = $this->getSession()->getPage();
     $found = [];
@@ -695,7 +786,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Click the given link in the plus button menu.
    *
-   * This will open the plus button first on JavaScript enabled browsers.
+   * On JavaScript enabled browsers this will first click the plus button to
+   * open the menu.
    *
    * @param string $link
    *   The link text of the link to click.
@@ -706,17 +798,27 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // Check if we are running in an environment that supports JavaScript like
     // Selenium or PhantomJS. If this is the case the plus button menu will be
     // closed by default and needs to be opened first.
+    $this->openPlusButtonMenu();
+    $this->getSession()->getPage()->clickLink($link);
+  }
+
+  /**
+   * Opens the plus button menu on JS-enabled browsers.
+   */
+  protected function openPlusButtonMenu() {
     if ($this->browserSupportsJavascript()) {
       $driver = $this->getSession()->getDriver();
       $this->getSession()->getDriver()->click('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//button');
 
-      // Wait for the menu opening animation to end before clicking the link.
+      // Wait for the menu opening animation to end before continuing.
       $end = microtime(TRUE) + 5;
       do {
         usleep(100000);
-      } while (microtime(TRUE) < $end && !$driver->isVisible('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[contains(., "' . $link . '")]'));
+        // The plus button opening animation runs from the top right to the
+        // bottom left. Wait for the last element to become visible to ensure
+        // the menu is fully opened.
+      } while (microtime(TRUE) < $end && !$driver->isVisible('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[last()]'));
     }
-    $this->getSession()->getPage()->clickLink($link);
   }
 
   /**
@@ -742,6 +844,52 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     else {
       $this->getSession()->getPage()->fillField($label, $text);
+    }
+  }
+
+  /**
+   * Create a comment.
+   *
+   * @Given comments:
+   */
+  public function createComments(TableNode $table) {
+    foreach ($table->getColumnsHash() as $comment_values) {
+      $query = \Drupal::entityQuery('node')
+        ->condition('title', $comment_values['parent'])
+        ->range(0, 1);
+      $result = $query->execute();
+
+      if (empty($result)) {
+        throw new \InvalidArgumentException("Unable to load parent of comment.");
+      }
+
+      // Reload from database to avoid caching issues and get latest version.
+      $id = reset($result);
+
+      $query = \Drupal::entityQuery('user')
+        ->condition('name', $comment_values['author'])
+        ->range(0, 1);
+      $result = $query->execute();
+      $uid = reset($result);
+
+      if (empty($result)) {
+        throw new \InvalidArgumentException("Unable to load author of comment.");
+      }
+      unset($comment_values['parent']);
+      unset($comment_values['author']);
+      $comment_values['uid'] = $uid;
+      $values = [
+        'comment_type' => 'comment',
+        'status' => CommentInterface::PUBLISHED,
+        'uid' => $uid,
+        'field_name' => 'field_comments',
+        'entity_type' => 'node',
+        'entity_id' => $id,
+      ];
+      $comment_values += $values;
+      // Ignore due to conflicting Comment class in Phing.
+      $comment = Comment::create($comment_values);
+      $comment->save();
     }
   }
 

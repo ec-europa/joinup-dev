@@ -21,6 +21,7 @@ news_workflow:
       label: Proposed
     validated:
       label: Validated
+      published: true
     deletion_request:
       label: Request deletion
     needs_update:
@@ -31,7 +32,7 @@ news_workflow:
       from: [__new__, draft]
       to: draft
     new_draft:
-      label: Create new draft
+      label: Save new draft
       from: [validated]
       to: draft
     propose:

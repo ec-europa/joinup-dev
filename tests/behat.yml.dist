@@ -4,7 +4,6 @@ default:
       contexts:
         - FeatureContext
         - Drupal\joinup\Context\DrupalContext
-        - Drupal\joinup\Context\ScreenshotContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\DrupalExtension\Context\MinkContext
@@ -23,10 +22,13 @@ default:
       api_driver: 'drupal'
       blackbox: ~
       region_map:
-        Primary menu: '.region-primary-menu'
+        Comment: '.comment'
+        Entity actions: '.block-local-tasks-block'
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'
-        Entity actions: '.block-local-tasks-block'
+        Navigation menu: 'div.navigation-menu ul'
+        Plus button menu: 'div.add-content-menu ul'
+        Primary menu: '.region-primary-menu'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:

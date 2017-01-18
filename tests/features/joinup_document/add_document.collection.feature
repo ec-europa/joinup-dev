@@ -43,16 +43,17 @@ Feature: "Add document" visibility options.
     And I click "Add document"
     Then I should see the heading "Add document"
     And the following fields should be present "Title, Short title, Description, File, Source URL"
-    And the following fields should not be present "Groups audience"
+
+    # The sections about managing revisions and groups should not be visible.
+    And I should not see the text "Revision information"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+
     When I fill in the following:
       | Title       | An amazing document                      |
       | Short title | Amazing document                         |
       | Description | This is going to be an amazing document. |
     And I attach the file "test.zip" to "File"
     And I press "Save"
-    # @todo Remove this line when caching Search API results is fixed.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2574
-    And I commit the solr index
     Then I should see the heading "An amazing document"
     And I should see the success message "Document An amazing document has been created."
     # Check that the link to the document is visible on the collection page.

@@ -137,7 +137,7 @@ Feature: Collection moderation
       | Carpet Sandation | Company |
     And the following contact:
       | name  | Partyanimal             |
-      | email | partyanmial@example.com |
+      | email | partyanimal@example.com |
     And collection:
       | title               | Some berry pie     |
       | description         | Berries are tasty. |
@@ -145,7 +145,7 @@ Feature: Collection moderation
       | banner              | banner.jpg         |
       | owner               | Carpet Sandation   |
       | contact information | Partyanimal        |
-      | policy domain       | Health             |
+      | policy domain       | eProcurement       |
       | state               | proposed           |
     When I am on the homepage
     And I click "Collections"

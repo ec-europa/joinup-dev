@@ -427,6 +427,15 @@ QUERY;
             $column = $mapping[$bundle->id()][$predicate]['column'];
             foreach ($field as $lang => $items) {
               foreach ($items as $item) {
+                if (isset($mapping[$bundle->id()][$predicate]['storage_definition'])) {
+                  /** @var FieldStorageConfig $field_storage_definition */
+                  $field_storage_definition = $mapping[$bundle->id()][$predicate]['storage_definition'];
+                  $field_storage_schema = $field_storage_definition->getSchema()['columns'];
+                  // Inflate value back into a normal item.
+                  if (isset($field_storage_schema[$column]['serialize']) && $field_storage_schema[$column]['serialize'] === TRUE) {
+                    $item = unserialize($item);
+                  }
+                }
                 if (!isset($return[$entity_id][$field_name]) || !is_string($return[$entity_id][$field_name][$lang])) {
                   $return[$entity_id][$field_name][$lang][][$column] = $item;
                 }
@@ -545,6 +554,49 @@ QUERY;
   /**
    * {@inheritdoc}
    */
+  public function delete(array $entities) {
+    if (!$entities) {
+      // If no entities were passed, do nothing.
+      return;
+    }
+
+    // Ensure that the entities are keyed by ID.
+    $keyed_entities = [];
+    foreach ($entities as $entity) {
+      $keyed_entities[$entity->id()] = $entity;
+    }
+
+    // Allow code to run before deleting.
+    $entity_class = $this->entityClass;
+    $entity_class::preDelete($this, $keyed_entities);
+    foreach ($keyed_entities as $entity) {
+      $this->invokeHook('predelete', $entity);
+    }
+    $entities_by_graph = [];
+    /** @var \Drupal\Core\Entity\EntityInterface $keyed_entity */
+    foreach ($keyed_entities as $keyed_entity) {
+      // Determine all possible graphs for the entity.
+      $graphs = $this->graphHandler->getEntityTypeGraphUris($this->entityType->getBundleEntityType());
+      foreach ($graphs[$keyed_entity->bundle()] as $graph_name => $graph_uri) {
+        $entities_by_graph[$graph_uri][$keyed_entity->id()] = $keyed_entity;
+      }
+    }
+    /** @var string $id */
+    foreach ($entities_by_graph as $graph => $entities_to_delete) {
+      $this->doDeleteFromGraph($entities_to_delete, $graph);
+    }
+    $this->resetCache(array_keys($keyed_entities));
+
+    // Allow code to run after deleting.
+    $entity_class::postDelete($this, $keyed_entities);
+    foreach ($keyed_entities as $entity) {
+      $this->invokeHook('delete', $entity);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function doDelete($entities) {
     $entities_by_graph = [];
     /** @var string $id */
@@ -554,9 +606,22 @@ QUERY;
       $entities_by_graph[$graph_uri][$id] = $entity;
     }
     foreach ($entities_by_graph as $graph => $entities_to_delete) {
-      $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
+      $this->doDeleteFromGraph($entities, $graph);
+    }
+  }
 
-      $query = <<<QUERY
+  /**
+   * Construct and execute the delete query.
+   *
+   * @param array $entities
+   *   An array of entity objects to delete.
+   * @param string $graph
+   *   The graph uri to delete from.
+   */
+  protected function doDeleteFromGraph(array $entities, $graph) {
+    $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
+
+    $query = <<<QUERY
 DELETE FROM <$graph>
 {
   ?entity ?field ?value
@@ -569,8 +634,7 @@ WHERE
   )
 }
 QUERY;
-      $this->sparql->query($query);
-    }
+    $this->sparql->query($query);
   }
 
   /**
@@ -698,6 +762,14 @@ QUERY;
             continue;
           }
           $item = $entity->get($field_name)->first();
+
+          $column_schema = $this->getColumnSchema($item, $column);
+          // Take care of serialized fields.
+          // @todo Could this be replaced with something more interoperable?
+          // (json?, bnodes?)
+          if (isset($column_schema['serialize']) && $column_schema['serialize'] == TRUE) {
+            $value = serialize($value);
+          }
           // When the field is a entity reference, and it's target implements
           // RdfEntitySparqlStorage (it's an RDF based entity),
           // then store it as a resource.
@@ -726,6 +798,22 @@ QUERY;
   }
 
   /**
+   * Get the schema definition for a given field column.
+   *
+   * @param \Drupal\Core\Field\FieldItemInterface $item
+   *   The field.
+   * @param string $column
+   *   The column name.
+   *
+   * @return mixed
+   *   The field column schema.
+   */
+  protected function getColumnSchema(FieldItemInterface $item, $column) {
+    $schema = $item->getFieldDefinition()->getFieldStorageDefinition()->getSchema();
+    return $schema['columns'][$column];
+  }
+
+  /**
    * Insert a graph of triples.
    *
    * @param \EasyRdf\Graph $graph
@@ -740,7 +828,7 @@ QUERY;
     $query = "INSERT DATA INTO <$graphUri> {\n";
     $query .= $graph->serialise('ntriples') . "\n";
     $query .= '}';
-    return $this->sparql->query($query);
+    return $this->sparql->update($query);
   }
 
   /**

@@ -43,13 +43,15 @@ Feature: "Add discussion" visibility options.
     And I click "Add discussion"
     Then I should see the heading "Add discussion"
     And the following fields should be present "Title, Content, Topic, Active"
+
+    # The section about managing revisions should not be visible.
+    And I should not see the text "Revision information"
+    And the following fields should not be present "Create new revision, Revision log message"
+
     When I fill in the following:
       | Title   | An amazing discussion                      |
       | Content | This is going to be an amazing discussion. |
-    And I press "Save"
-    # @todo Remove this line when caching Search API results is fixed.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2574
-    And I commit the solr index
+    And I press "Publish"
     Then I should see the heading "An amazing discussion"
     And I should see the success message "Discussion An amazing discussion has been created."
     And the "The World of the Waves" collection has a discussion titled "An amazing discussion"

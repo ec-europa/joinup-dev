@@ -18,7 +18,7 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\views\Views;
+use Drupal\search_api\Query\QueryInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -188,14 +188,7 @@ function collection_module_implements_alter(&$implementations, $hook) {
  */
 function collection_entity_extra_field_info() {
   $fields = [];
-  // Create a 'collection content' field, available on the collection display.
   $collection = RdfEntityType::load('collection');
-  $fields['rdf_entity'][$collection->id()]['display']['collection_content'] = [
-    'label' => t('Collection content'),
-    'description' => t('Content in this collection'),
-    'weight' => 100,
-    'visible' => TRUE,
-  ];
   // Add the join/leave collection form as field.
   // @todo will be removed in ISAICP-2743
   $fields['rdf_entity'][$collection->id()]['display']['join_collection'] = [
@@ -210,37 +203,24 @@ function collection_entity_extra_field_info() {
 /**
  * Implements hook_ENTITY_TYPE_view().
  *
- * Populates the two extra fields 'collection_content' and 'join_collection'.
+ * Populates the extra field 'join_collection'.
  */
 function collection_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if ($entity->bundle() != 'collection') {
     return;
   }
 
-  if ($display->getComponent('collection_content')) {
-    $view_name = 'collection_content';
-    $display_id = 'default';
-    $view = Views::getView($view_name);
-    if ($view && $view->access($display_id)) {
-      $build['collection_content'] = [
-        '#type' => 'view',
-        '#name' => $view_name,
-        '#display_id' => $display_id,
-        '#arguments' => [
-          // Use the entity id as a contextual filter.
-          $entity->id(),
-        ],
-      ];
-      // Tag the view with the group content cache tag, so that it gets
-      // invalidated whenever the group content changes.
-      $build['#cache']['tags'][] = 'og-group-content:rdf_entity:' . $entity->id();
-    }
-  }
-
   if ($display->getComponent('join_collection')) {
-    $form = \Drupal::formBuilder()->getForm('\Drupal\collection\Form\JoinCollectionForm', \Drupal::currentUser(), $entity);
-    $build['join_collection'] = $form;
-    $build['#cache']['tags'][] = 'user.roles';
+    $build['join_collection'] = [
+      '#lazy_builder' => [
+        'collection.lazy_builders:renderJoinCollectionForm',
+        [$entity->id()],
+      ],
+      '#create_placeholder' => TRUE,
+      // This form varies by the role a user has inside the collection. Set the
+      // applicable cache context.
+      '#cache' => ['contexts' => ['og_role']],
+    ];
   }
 }
 
@@ -252,4 +232,25 @@ function collection_field_widget_form_alter(&$element, FormStateInterface $form_
   if ($field_name == 'field_ar_closed') {
     $element['#attached']['library'][] = 'collection/collection_form';
   }
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ *
+ * Alters the Search API queries for the collection content on the collection
+ * homepage:
+ * - Only show content related to the collection.
+ * - Do not show the collection itself in the search results.
+ */
+function collection_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
+  /** @var EntityInterface $entity */
+  $entity = $query->getOption('search_api_field entity');
+
+  // Show only content that is related to this collection through the aggregated
+  // field. This makes sure that other related entities (such as the collection
+  // owner) do not show up as collection content tiles.
+  $query->addCondition('aggregated_field_1', [$entity->id()], 'IN');
+
+  // Remove the collection itself from the results.
+  $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
 }

@@ -25,7 +25,6 @@ Feature: Collections Overview
     Given the following owner:
       | name                 | type                    |
       | Organisation example | Non-Profit Organisation |
-    Then I commit the solr index
     # Check that visiting as an anonymous does not create cache for all users.
     When I am an anonymous user
     And I am on the homepage
@@ -59,9 +58,9 @@ Feature: Collections Overview
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
     When I fill in the following:
-      | Title         | Colonies in space                                                       |
-      | Description   | Some space mumbo jumbo description.                                     |
-      | Policy domain | Internal Market (WIP!) (http://joinup.eu/policy-domain/internal-market) |
+      | Title         | Colonies in space                           |
+      | Description   | Some space mumbo jumbo description.         |
+    When I select "Personnel management and staff remuneration" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.
@@ -71,8 +70,6 @@ Feature: Collections Overview
     And I press "Publish"
     Then I visit the "Colonies in space" collection
     Then I should see the text "Colonies in space"
-    # Non UATable step.
-    When I commit the solr index
 
     And I am on the homepage
     And I click "Collections"

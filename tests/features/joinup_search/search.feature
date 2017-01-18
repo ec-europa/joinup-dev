@@ -16,9 +16,8 @@ Feature: Global search
       | affiliates | Spherification, Foam         |
       | state      | validated                    |
     And news content:
-      | title                 | body             | collection                   |
-      | El Celler de Can Roca | The best in town | Molecular cooking collection |
-    And I commit the solr index
+      | title                 | body             | collection                   | status    |
+      | El Celler de Can Roca | The best in town | Molecular cooking collection | published |
 
     Given I am logged in as a user with the "authenticated" role
     When I am at "/search"

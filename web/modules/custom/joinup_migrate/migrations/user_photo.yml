@@ -1,5 +1,8 @@
 id: user_photo
 label: 'Users photos'
+migration_tags:
+  - user
+  - file
 source:
   plugin: user_photo
 process:

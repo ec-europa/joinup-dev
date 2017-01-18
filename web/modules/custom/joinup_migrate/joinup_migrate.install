@@ -33,7 +33,13 @@ function joinup_migrate_schema() {
           'not null' => FALSE,
         ],
         'policy' => [
-          'description' => 'Policy domain',
+          'description' => 'Policy domain 1',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'policy2' => [
+          'description' => 'Policy domain 2',
           'type' => 'varchar',
           'length' => 255,
           'not null' => FALSE,
@@ -86,12 +92,6 @@ function joinup_migrate_schema() {
           'length' => 255,
           'not null' => FALSE,
         ],
-        'pre_moderation' => [
-          'description' => 'Pre Moderation',
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => FALSE,
-        ],
         'collection_state' => [
           'description' => 'Collection state',
           'type' => 'varchar',
@@ -115,6 +115,87 @@ function joinup_migrate_schema() {
       'indexes' => [
         'new_collection' => ['new_collection'],
         'collection' => ['collection'],
+      ],
+    ],
+    'joinup_migrate_collection' => [
+      'fields' => [
+        'collection' => [
+          'description' => 'Collection',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'type' => [
+          'description' => 'Source node-type',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => '',
+        ],
+        'nid' => [
+          'description' => 'The node ID from of the source item',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => FALSE,
+          'default' => 0,
+        ],
+        'policy2' => [
+          'description' => 'Policy domain 2',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+        ],
+        'abstract' => [
+          'description' => 'Abstract',
+          'type' => 'text',
+        ],
+        'logo' => [
+          'description' => 'Logo',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'banner' => [
+          'description' => 'Banner',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'elibrary' => [
+          'description' => 'Elibrary creation',
+          'type' => 'int',
+          'size' => 'tiny',
+          'not null' => FALSE,
+        ],
+        'collection_state' => [
+          'description' => 'Collection state',
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => FALSE,
+        ],
+        'status' => [
+          'description' => 'Status',
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => FALSE,
+        ],
+        'publisher' => [
+          'description' => 'Publisher NIDs',
+          'type' => 'varchar',
+          'length' => 1024,
+          'not null' => FALSE,
+        ],
+        'contact' => [
+          'description' => 'Contact NIDs',
+          'type' => 'varchar',
+          'length' => 1024,
+          'not null' => FALSE,
+        ],
+      ],
+      'indexes' => [
+        'collection' => ['collection'],
+        'nid' => ['nid'],
+        'type' => ['type'],
       ],
     ],
   ];

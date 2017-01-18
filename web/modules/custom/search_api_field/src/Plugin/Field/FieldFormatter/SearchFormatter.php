@@ -2,6 +2,7 @@
 
 namespace Drupal\search_api_field\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -112,8 +113,11 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     }
 
     // At the moment, this formatter supports only single-value fields.
-    $settings = $items->first()->value;
-
+    $settings_item = $items->first();
+    if (empty($settings_item)) {
+      return [];
+    }
+    $settings = $settings_item->value;
     // Bail out if the field is disabled.
     if (empty($settings['enabled'])) {
       return [];
@@ -152,7 +156,25 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     }
 
     $result = $query->execute();
-    return $this->renderSearchResults($result, $limit);
+    $render = $this->renderSearchResults($result, $limit);
+    $tags = [];
+    // Check the search index for entity data sources,
+    // and add all as cache tags.
+    foreach ($search_api_index->getDatasources() as $datasource) {
+      $plugin_def = $datasource->getPluginDefinition();
+      if ($plugin_def['id'] != 'entity') {
+        continue;
+      }
+      $entity_type_id = $plugin_def['entity_type'];
+      $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
+      $list_tags = $entity_type->getListCacheTags();
+      $tags = Cache::mergeTags($tags, $list_tags);
+    }
+    $render['#cache'] = [
+      'tags' => $tags,
+      'contexts' => ['url.path'],
+    ];
+    return $render;
   }
 
   /**
@@ -182,6 +204,9 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       // Search results might be stale, so we check if the entity has been
       // found in the system.
       if (!$entity) {
+        continue;
+      }
+      if (!$entity->access('view')) {
         continue;
       }
 

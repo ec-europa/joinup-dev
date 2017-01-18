@@ -13,12 +13,14 @@
     <!-- Run a single migration given its ID. -->
     <target name="run-single-migration">
         <drush
-            command="migrate_drush_run"
+            command="migrate-import"
             assume="yes"
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
-            <param>${migration}</param>
+            <param>${migration.ids}</param>
+            <option name="feedback" value="1000" />
+            <option name="force" />
         </drush>
     </target>
 
@@ -47,6 +49,7 @@
  'namespace' => 'Drupal\\Core\\Database\\Driver\\${migration.db.type}',${line.separator}
  'driver' => '${migration.db.type}',${line.separator}];${line.separator}" />
         <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.source.root'] = '${migration.source.root}';${line.separator}" />
+        <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.mode'] = '${migration.mode}';${line.separator}" />
     </target>
 
     <!-- Enable migration modules. -->
