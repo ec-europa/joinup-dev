@@ -12,11 +12,28 @@ use Drupal\og\MembershipManagerInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
+use Drupal\user\RoleInterface;
 
 /**
  * Class JoinupDocumentFulfillmentGuard.
  */
 class JoinupDocumentFulfillmentGuard implements GuardInterface {
+
+  /**
+   * Elibrary option that defines that only facilitators can create content.
+   */
+  const ELIBRARY_LEVEL_0 = 0;
+
+  /**
+   * Elibrary option that defines that members and facilitators can create
+   * content.
+   */
+  const ELIBRARY_LEVEL_1 = 1;
+
+  /**
+   * Elibrary option that defines that any registered user can create content.
+   */
+  const ELIBRARY_LEVEL_2 = 2;
 
   /**
    * The config factory.
@@ -98,7 +115,19 @@ class JoinupDocumentFulfillmentGuard implements GuardInterface {
     // Check if the user has one of the allowed system roles.
     $from_state = $this->getState($entity);
     $transition_id = $transition->getId();
-    $authorized_roles = isset($allowed_conditions[$transition_id][$from_state]) ? $allowed_conditions[$transition_id][$from_state] : [];
+    $workflow_authorized_roles = isset($allowed_conditions[$transition_id][$from_state]) ? $allowed_conditions[$transition_id][$from_state] : [];
+    // Get the roles according to the eLibrary creation.
+    $elibrary_authorized_roles = $this->getElibraryAllowedRoles($entity);
+    $authorized_roles = array_intersect($workflow_authorized_roles, $elibrary_authorized_roles);
+
+    // If the owner is still allowed, check for ownership.
+    if (in_array('owner', $authorized_roles)) {
+      if ($entity->getOwnerId() === $this->workflowUserProvider->getUser()->id()) {
+        return TRUE;
+      }
+    }
+    unset($authorized_roles['owner']);
+
     $user = $this->workflowUserProvider->getUser();
     if (array_intersect($authorized_roles, $user->getRoles())) {
       return TRUE;
@@ -122,6 +151,66 @@ class JoinupDocumentFulfillmentGuard implements GuardInterface {
    */
   protected function getState(EntityInterface $entity) {
     return $entity->get('field_document_state')->first()->value;
+  }
+
+  /**
+   * Returns allowed roles according to the eLibrary creation field.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $document
+   *    The document entity.
+   * @return array
+   *    An array of roles that are allowed.
+   */
+  protected function getElibraryAllowedRoles(EntityInterface $document) {
+    $roles_array = [
+      self::ELIBRARY_LEVEL_0 => [
+        'rdf_entity-collection-facilitator',
+        'rdf_entity-solution-facilitator',
+        'moderator',
+      ],
+      self::ELIBRARY_LEVEL_1 => [
+        'rdf_entity-collection-facilitator',
+        'rdf_entity-solution-facilitator',
+        'rdf_entity-collection-member',
+        'moderator',
+      ],
+      self::ELIBRARY_LEVEL_2 => [
+        'rdf_entity-collection-facilitator',
+        'rdf_entity-solution-facilitator',
+        'rdf_entity-collection-member',
+        RoleInterface::AUTHENTICATED_ID,
+        'moderator',
+      ],
+    ];
+
+    $parent = $this->relationManager->getDocumentParent($document);
+    if (empty($parent)) {
+      // For security reasons, if no parent is returned, return the strictest
+      // option.
+      return $roles_array[self::ELIBRARY_LEVEL_0];
+    }
+
+    $elibrary_name = $this->getParentElibraryName($parent);
+    $elibrary_creation = $parent->{$elibrary_name}->value;
+    return $roles_array[$elibrary_creation];
+  }
+
+  /**
+   * Returns the eLibrary creation machine name.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The parent entity.
+   *
+   * @return string
+   *    The machine name of the eLibrary creation field.
+   */
+  protected function getParentElibraryName(EntityInterface $entity) {
+    $field_array = [
+      'collection' => 'field_ar_elibrary_creation',
+      'solution' => 'field_is_elibrary_creation',
+    ];
+
+    return $field_array[$entity->bundle()];
   }
 
 }

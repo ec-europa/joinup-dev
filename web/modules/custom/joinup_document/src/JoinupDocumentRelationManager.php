@@ -71,22 +71,17 @@ class JoinupDocumentRelationManager implements ContainerInjectionInterface {
    */
   public function getDocumentWorkflow(EntityInterface $document){
     $parent = $this->getDocumentParent($document);
-    if (empty($parent)) {
+    if (empty($parent) || in_array($parent->bundle(), ['collection', 'solution'])) {
       return 'document_pre_moderated';
     }
+    $fields = [
+      'collection' => 'field_ar_moderation',
+      'solution' => 'field_is_moderation',
+    ];
 
-    if ($parent->bundle() === 'solution') {
-      // Solutions are only post_moderated as they only have facilitators.
-      return 'document_post_moderated';
-    }
-    else if ($parent->bundle() === 'collection') {
-      $moderation = $parent->field_ar_moderation->value;
-      $workflow_id = $moderation == TRUE ? 'document_pre_moderated' : 'document_post_moderated';
-      return $workflow_id;
-    }
-
-    // By default, pre_moderation is selected.
-    return 'document_pre_moderated';
+    $moderation = $parent->{$fields[$parent->bundle()]}->value;
+    $workflow_id = $moderation == TRUE ? 'document_pre_moderated' : 'document_post_moderated';
+    return $workflow_id;
   }
 
 }

@@ -25,15 +25,17 @@
 # keyed by the target state) is to follow the state_machines module logic
 # of indexing states.
 transitions:
-  document_pre_moderated:
+  document_post_moderated:
     save_as_draft:
       __new__:
+        - authenticated
         - rdf_entity-collection-member
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
         - moderator
     validate:
       __new__:
+        - authenticated
         - rdf_entity-collection-member
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
@@ -75,7 +77,7 @@ transitions:
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
         - moderator
-  document_post_moderated:
+  document_pre_moderated:
     save_as_draft:
       __new__:
         - rdf_entity-collection-member
@@ -84,6 +86,7 @@ transitions:
         - moderator
     propose:
       __new__:
+        - authenticated
         - rdf_entity-collection-member
       draft:
         - owner
