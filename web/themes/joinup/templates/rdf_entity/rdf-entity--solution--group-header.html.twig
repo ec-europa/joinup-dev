@@ -6,7 +6,6 @@
 #}
 <div class="featured__outer-wrapper" style="background-image: url('{{ content.field_is_banner }}');">
   <div class="featured__overlay"></div>
-  <a class="featured__link-wrapper featured__link-wrapper--outer" href="{{ path('entity.rdf_entity.canonical',{'rdf_entity': rdf_entity.id()}) }}"></a>
   <div class="featured__inner-wrapper">
     {# @todo This is temporary, once all fields are available, it will be replaced. #}
     <a href="{{ path('entity.rdf_entity.canonical',{'rdf_entity': rdf_entity.id()}) }}">
