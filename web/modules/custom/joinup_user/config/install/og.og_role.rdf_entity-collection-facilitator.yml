@@ -43,7 +43,6 @@ permissions:
   - 'update any navigation ogmenu_instance'
   - 'update group'
   - 'view any unpublished content'
-  - 'view any unpublished news content'
   - 'view rdf_entity draft graph'
   - 'view unpublished rdf entity'
 role_type: null
