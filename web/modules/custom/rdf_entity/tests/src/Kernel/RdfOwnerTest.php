@@ -34,9 +34,16 @@ class RdfOwnerTest extends JoinupKernelTestBase {
       'label' => $this->randomMachineName(),
     ));
     $owned->save();
+    $ownerless = Rdf::create(array(
+      'rid' => 'with_owner',
+      'label' => $this->randomMachineName(),
+      'uid' => NULL,
+    ));
+    $ownerless->save();
 
     $this->assertNull($not_owned->getOwnerId(), "The entity with no mapping for uid does not have an owner.");
     $this->assertEquals($owner->id(), $owned->getOwnerId(), "The entity with a mapping for uid has an owner.");
+    $this->assertNull($ownerless->getOwnerId(), "Entity key 'uid' can be empty.");
 
     // Verify that even trying to set an owner, no changes are made since no
     // mapping exists.
