@@ -39,7 +39,7 @@ abstract class JoinupKernelTestBase extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  protected function setUp() {
     parent::setUp();
 
     if (!$this->setUpSparql()) {
