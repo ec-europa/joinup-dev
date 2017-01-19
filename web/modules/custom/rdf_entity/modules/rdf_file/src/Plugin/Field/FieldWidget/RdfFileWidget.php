@@ -9,6 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\file\Entity\File;
 use Drupal\file\Plugin\Field\FieldWidget\FileWidget;
+use Drupal\rdf_file\Entity\RemoteFile;
 
 /**
  * Plugin implementation of the 'file_generic' widget.
@@ -217,6 +218,9 @@ class RdfFileWidget extends FileWidget {
         'visible' => array(
           ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => array('value' => 'remote-file'),
         ),
+        'enabled' => array(
+          ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => array('value' => 'remote-file'),
+        ),
       ),
     ];
     $element['#cardinality'] = $cardinality;
@@ -246,6 +250,9 @@ class RdfFileWidget extends FileWidget {
       '#states' => array(
         // Only show this field when the 'file' radio is selected.
         'visible' => array(
+          ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => array('value' => 'file'),
+        ),
+        'enabled' => array(
           ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => array('value' => 'file'),
         ),
       ),
@@ -346,12 +353,7 @@ class RdfFileWidget extends FileWidget {
   }
 
   /**
-   * Form API callback: Processes a file_generic field element.
-   *
-   * Expands the file_generic type to include the description and display
-   * fields.
-   *
-   * This method is assigned as a #process callback in formElement() method.
+   * {@inheritdoc}
    */
   public static function process($element, FormStateInterface $form_state, $form) {
     $item = $element['#value'];
@@ -424,11 +426,7 @@ class RdfFileWidget extends FileWidget {
   }
 
   /**
-   * Form submission handler for upload/remove button of formElement().
-   *
-   * This runs in addition to and after file_managed_file_submit().
-   *
-   * @see file_managed_file_submit()
+   * {@inheritdoc}
    */
   public static function submit($form, FormStateInterface $form_state) {
     // During the form rebuild, formElement() will create field item widget
