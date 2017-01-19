@@ -58,6 +58,17 @@ function joinup_document_node_access(EntityInterface $entity, $operation, Accoun
     case 'update':
       $allowed_transitions = $entity->get('field_document_state')->first()->getTransitions();
       return AccessResult::allowedIf(!empty($allowed_transitions));
+      break;
+
+    case 'delete':
+      // @todo: This is weird and might not work.
+      // The authenticated user can only delete his own document.
+      // In a pre moderated workflow, he will not be able to do that either.
+      $workflow = \Drupal::service('joinup_document.relations_manager')->getDocumentWorkflow($entity);
+      if ($workflow === 'document_pre_moderated') {
+        return AccessResult::allowedIfHasPermission($account, 'delete any document content');
+      }
+
   }
 
   return AccessResult::neutral();
