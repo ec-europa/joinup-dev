@@ -47,16 +47,16 @@ function rdf_taxonomy_entity_base_field_info_alter(&$fields, EntityTypeInterface
  * Implements hook_ENTITY_TYPE_access().
  */
 function rdf_taxonomy_taxonomy_vocabulary_access(VocabularyInterface $vocabulary, $operation, AccountInterface $account) {
-  $locked_vocabulary = $vocabulary->getThirdPartySetting('rdf_taxonomy', 'locked', TRUE);
-  return AccessResult::forbiddenIf($locked_vocabulary);
+  $locked = ($operation !== 'view') && $vocabulary->getThirdPartySetting('rdf_taxonomy', 'locked', TRUE);
+  return AccessResult::forbiddenIf($locked);
 }
 
 /**
  * Implements hook_ENTITY_TYPE_access().
  */
 function rdf_taxonomy_taxonomy_term_access(TermInterface $term, $operation, AccountInterface $account) {
-  $locked_vocabulary = $term->vid->entity->getThirdPartySetting('rdf_taxonomy', 'locked', TRUE);
-  return AccessResult::forbiddenIf($locked_vocabulary);
+  $locked = ($operation !== 'view') && $term->vid->entity->getThirdPartySetting('rdf_taxonomy', 'locked', TRUE);
+  return AccessResult::forbiddenIf($locked);
 }
 
 /**
@@ -64,8 +64,8 @@ function rdf_taxonomy_taxonomy_term_access(TermInterface $term, $operation, Acco
  */
 function rdf_taxonomy_taxonomy_term_create_access(AccountInterface $account, array $context, $entity_bundle) {
   $vocabulary = Vocabulary::load($entity_bundle);
-  $locked_vocabulary = $vocabulary->getThirdPartySetting('rdf_taxonomy', 'locked', TRUE);
-  return AccessResult::forbiddenIf($locked_vocabulary);
+  $locked = $vocabulary->getThirdPartySetting('rdf_taxonomy', 'locked', TRUE);
+  return AccessResult::forbiddenIf($locked);
 }
 
 /**
