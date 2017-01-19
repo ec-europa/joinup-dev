@@ -2,21 +2,13 @@
 
 namespace Drupal\rdf_file\Plugin\Field\FieldWidget;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Render\ElementInfoManagerInterface;
-use Drupal\file\Element\ManagedFile;
 use Drupal\file\Entity\File;
-use Drupal\rdf_file\Entity\RemoteFile;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Drupal\file\Plugin\Field\FieldWidget\FileWidget;
 
 /**
  * Plugin implementation of the 'file_generic' widget.
@@ -29,59 +21,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  *   }
  * )
  */
-class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, ElementInfoManagerInterface $element_info) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
-    $this->elementInfo = $element_info;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static($plugin_id, $plugin_definition, $configuration['field_definition'], $configuration['settings'], $configuration['third_party_settings'], $container->get('element_info'));
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultSettings() {
-    return array(
-      'progress_indicator' => 'throbber',
-    ) + parent::defaultSettings();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    $element['progress_indicator'] = array(
-      '#type' => 'radios',
-      '#title' => t('Progress indicator'),
-      '#options' => array(
-        'throbber' => t('Throbber'),
-        'bar' => t('Bar with progress meter'),
-      ),
-      '#default_value' => $this->getSetting('progress_indicator'),
-      '#description' => t('The throbber display does not show the status of uploads but takes up less space. The progress bar is helpful for monitoring progress on large uploads.'),
-      '#weight' => 16,
-      '#access' => file_progress_implementation(),
-    );
-    return $element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsSummary() {
-    $summary = array();
-    $summary[] = t('Progress indicator: @progress_indicator', array('@progress_indicator' => $this->getSetting('progress_indicator')));
-    return $summary;
-  }
+class RdfFileWidget extends FileWidget {
 
   /**
    * Overrides \Drupal\Core\Field\WidgetBase::formMultipleElements().
@@ -406,87 +346,6 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function extractFormValues(FieldItemListInterface $items, array $form, FormStateInterface $form_state) {
-    parent::extractFormValues($items, $form, $form_state);
-
-    // Update reference to 'items' stored during upload to take into account
-    // changes to values like 'alt' etc.
-    // @see \Drupal\file\Plugin\Field\FieldWidget\FileWidget::submit()
-    $field_name = $this->fieldDefinition->getName();
-    $field_state = static::getWidgetState($form['#parents'], $field_name, $form_state);
-    $field_state['items'] = $items->getValue();
-    static::setWidgetState($form['#parents'], $field_name, $form_state, $field_state);
-  }
-
-  /**
-   * Form API callback. Retrieves the value for the file_generic field element.
-   *
-   * This method is assigned as a #value_callback in formElement() method.
-   */
-  public static function value($element, $input = FALSE, FormStateInterface $form_state = NULL) {
-    if ($input) {
-      // Checkboxes lose their value when empty.
-      // If the display field is present make sure its unchecked value is saved.
-      if (empty($input['display'])) {
-        $input['display'] = $element['#display_field'] ? 0 : 1;
-      }
-    }
-
-    // We depend on the managed file element to handle uploads.
-    $return = ManagedFile::valueCallback($element, $input, $form_state);
-
-    // Ensure that all the required properties are returned even if empty.
-    $return += array(
-      'fids' => array(),
-      'display' => 1,
-      'description' => '',
-    );
-
-    return $return;
-  }
-
-  /**
-   * Form element validation callback for upload element on file widget.
-   *
-   * Checks if user has uploaded more files than allowed.
-   * This validator is used only when cardinality not set to 1 or unlimited.
-   */
-  public static function validateMultipleCount($element, FormStateInterface $form_state, $form) {
-    $values = NestedArray::getValue($form_state->getValues(), $element['#parents']);
-
-    $array_parents = $element['#array_parents'];
-    array_pop($array_parents);
-    $previously_uploaded_count = count(Element::children(NestedArray::getValue($form, $array_parents))) - 1;
-
-    $field_storage_definitions = \Drupal::entityManager()
-      ->getFieldStorageDefinitions($element['#entity_type']);
-    $field_storage = $field_storage_definitions[$element['#field_name']];
-    $newly_uploaded_count = count($values['fids']);
-    $total_uploaded_count = $newly_uploaded_count + $previously_uploaded_count;
-    if ($total_uploaded_count > $field_storage->getCardinality()) {
-      $keep = $newly_uploaded_count - $total_uploaded_count + $field_storage->getCardinality();
-      $removed_files = array_slice($values['fids'], $keep);
-      $removed_names = array();
-      foreach ($removed_files as $fid) {
-        $file = File::load($fid);
-        $removed_names[] = $file->getFilename();
-      }
-      $args = [
-        '%field' => $field_storage->getName(),
-        '@max' => $field_storage->getCardinality(),
-        '@count' => $total_uploaded_count,
-        '%list' => implode(', ', $removed_names),
-      ];
-      $message = t('Field %field can only hold @max values but there were @count uploaded. The following files have been omitted as a result: %list.', $args);
-      drupal_set_message($message, 'warning');
-      $values['fids'] = array_slice($values['fids'], 0, $keep);
-      NestedArray::setValue($form_state->getValues(), $element['#parents'], $values);
-    }
-  }
-
-  /**
    * Form API callback: Processes a file_generic field element.
    *
    * Expands the file_generic type to include the description and display
@@ -565,86 +424,6 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
   }
 
   /**
-   * Form API callback: Processes a group of file_generic field elements.
-   *
-   * Adds the weight field to each row so it can be ordered and adds a new Ajax
-   * wrapper around the entire group so it can be replaced all at once.
-   *
-   * This method on is assigned as a #process callback in formMultipleElements()
-   * method.
-   */
-  public static function processMultiple($element, FormStateInterface $form_state, $form) {
-    $element_children = Element::children($element, TRUE);
-    $count = count($element_children);
-
-    // Count the number of already uploaded files, in order to display new
-    // items in \Drupal\file\Element\ManagedFile::uploadAjaxCallback().
-    if (!$form_state->isRebuilding()) {
-      $count_items_before = 0;
-      foreach ($element_children as $children) {
-        if (!empty($element[$children]['#default_value']['fids'])) {
-          $count_items_before++;
-        }
-      }
-
-      $form_state->set('file_upload_delta_initial', $count_items_before);
-    }
-
-    foreach ($element_children as $delta => $key) {
-      if ($key != $element['#file_upload_delta']) {
-        $description = static::getDescriptionFromElement($element[$key]);
-        $element[$key]['_weight'] = array(
-          '#type' => 'weight',
-          '#title' => $description ? t('Weight for @title', array('@title' => $description)) : t('Weight for new file'),
-          '#title_display' => 'invisible',
-          '#delta' => $count,
-          '#default_value' => $delta,
-        );
-      }
-      else {
-        // The title needs to be assigned to the upload field so that validation
-        // errors include the correct widget label.
-        $element[$key]['#title'] = $element['#title'];
-        $element[$key]['_weight'] = array(
-          '#type' => 'hidden',
-          '#default_value' => $delta,
-        );
-      }
-    }
-
-    // Add a new wrapper around all the elements for Ajax replacement.
-    $element['#prefix'] = '<div id="' . $element['#id'] . '-ajax-wrapper">';
-    $element['#suffix'] = '</div>';
-
-    return $element;
-  }
-
-  /**
-   * Retrieves the file description from a field field element.
-   *
-   * This helper static method is used by processMultiple() method.
-   *
-   * @param array $element
-   *   An associative array with the element being processed.
-   *
-   * @return array|false
-   *   A description of the file suitable for use in the administrative
-   *   interface.
-   */
-  protected static function getDescriptionFromElement(array $element) {
-    // Use the actual file description, if it's available.
-    if (!empty($element['#default_value']['description'])) {
-      return $element['#default_value']['description'];
-    }
-    // Otherwise, fall back to the filename.
-    if (!empty($element['#default_value']['filename'])) {
-      return $element['#default_value']['filename'];
-    }
-    // This is probably a newly uploaded file; no description is available.
-    return FALSE;
-  }
-
-  /**
    * Form submission handler for upload/remove button of formElement().
    *
    * This runs in addition to and after file_managed_file_submit().
@@ -699,17 +478,6 @@ class RdfFileWidget extends WidgetBase implements ContainerFactoryPluginInterfac
     $field_state = static::getWidgetState($parents, $field_name, $form_state);
     $field_state['items'] = $submitted_values;
     static::setWidgetState($parents, $field_name, $form_state, $field_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function flagErrors(FieldItemListInterface $items, ConstraintViolationListInterface $violations, array $form, FormStateInterface $form_state) {
-    // Never flag validation errors for the remove button.
-    $clicked_button = end($form_state->getTriggeringElement()['#parents']);
-    if ($clicked_button !== 'remove_button') {
-      parent::flagErrors($items, $violations, $form, $form_state);
-    }
   }
 
 }
