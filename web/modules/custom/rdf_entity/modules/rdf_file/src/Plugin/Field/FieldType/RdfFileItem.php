@@ -28,29 +28,14 @@ class RdfFileItem extends FileItem {
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    return array(
-      'columns' => array(
-        'target_id' => array(
-          'description' => 'The ID of the file entity.',
-          'type' => 'varchar',
-          'length' => 2048,
-        ),
-        'display' => array(
-          'description' => 'Flag to control whether this file should be displayed when viewing content.',
-          'type' => 'int',
-          'size' => 'tiny',
-          'unsigned' => TRUE,
-          'default' => 1,
-        ),
-        'description' => array(
-          'description' => 'A description of the file.',
-          'type' => 'text',
-        ),
-      ),
-      'indexes' => array(
-        'target_id' => array('target_id'),
-      ),
-    );
+    $schema = parent::schema($field_definition);
+    $schema['columns']['target_id'] = [
+      'description' => 'The URI of the file entity.',
+      'type' => 'varchar',
+      'length' => 2048,
+    ];
+    unset($schema['foreign keys']);
+    return $schema;
   }
 
   /**
@@ -58,13 +43,6 @@ class RdfFileItem extends FileItem {
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
     $properties = parent::propertyDefinitions($field_definition);
-
-    $properties['display'] = DataDefinition::create('boolean')
-      ->setLabel(t('Display'))
-      ->setDescription(t('Flag to control whether this file should be displayed when viewing content'));
-
-    $properties['description'] = DataDefinition::create('string')
-      ->setLabel(t('Description'));
 
     $target_id_definition = DataReferenceTargetDefinition::create('string')
       ->setLabel(new TranslatableMarkup('@label ID', ['@label' => 'file']));
