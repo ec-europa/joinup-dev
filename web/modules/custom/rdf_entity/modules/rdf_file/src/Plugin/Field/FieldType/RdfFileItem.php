@@ -4,7 +4,6 @@ namespace Drupal\rdf_file\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\TypedData\DataReferenceTargetDefinition;
 use Drupal\file\Plugin\Field\FieldType\FileItem;
 
