@@ -26,7 +26,7 @@ services:
         - { name: route_processor_outbound, priority: 200 }
   sparql.graph_handler:
     class: \Drupal\rdf_entity\RdfGraphHandler
-    arguments: ['@entity.manager']
+    arguments: ['@entity_type.manager', '@module_handler']
   sparql.mapping_handler:
     class: \Drupal\rdf_entity\RdfMappingHandler
     arguments: ['@entity.manager']
