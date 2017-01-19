@@ -59,6 +59,9 @@ transitions:
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
         - moderator
+    request_deletion:
+      validated:
+        - owner
     report:
       validated:
         - rdf_entity-collection-facilitator

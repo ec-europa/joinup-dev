@@ -17,6 +17,8 @@ document_pre_moderated:
       label: In assessment
     proposed:
       label: Proposed
+    deletion_request:
+      label: 'Deletion request'
   transitions:
     save_as_draft:
       label: 'Save as draft'
@@ -35,24 +37,28 @@ document_pre_moderated:
       from: [validated]
       to: validated
     request_changes:
-      label: Request changes
+      label: 'Request changes'
       from: [validated]
       to: proposed
+    request_deletion:
+      label: 'Request deletion'
+      from: [validated]
+      to: deletion_request
     report:
       label: Report
       from: [validated]
       to: in_assessment
     approve_report:
-      label: Approve report
+      label: 'Approve report'
       from: [in_assessment]
       to: proposed
     update_proposed:
-      label: Update proposed
+      label: 'Update proposed'
       from: [proposed]
       to: proposed
     # Approve the proposed version and publish it.
     approve_proposed:
-      label: Approve proposed
+      label: 'Approve proposed'
       from: [proposed]
       to: validated
 # The workflow of the document entity for a post moderated parent.
@@ -88,7 +94,7 @@ document_post_moderated:
       from: [validated]
       to: validated
     request_changes:
-      label: Request changes
+      label: 'Request changes'
       from: [validated]
       to: proposed
     report:
@@ -96,15 +102,15 @@ document_post_moderated:
       from: [validated]
       to: in_assessment
     approve_report:
-      label: Approve report
+      label: 'Approve report'
       from: [in_assessment]
       to: proposed
     update_proposed:
-      label: Update proposed
+      label: 'Update proposed'
       from: [proposed]
       to: proposed
     # Approve the proposed version and publish it.
     approve_proposed:
-      label: Approve proposed
+      label: 'Approve proposed'
       from: [proposed]
       to: validated
