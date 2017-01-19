@@ -341,4 +341,11 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     return [$this->entityTypeId . ':' . md5($this->id())];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function hasGraph($graph) {
+    return $this->entityTypeManager()->getStorage($this->getEntityTypeId())->hasGraph($this->id(), $graph);
+  }
+
 }
