@@ -28,6 +28,10 @@ owner_workflow:
       label: Request changes
       from: [validated]
       to: in_assessment
+    update_changes:
+      label: Update
+      from: [in_assessment]
+      to: in_assessment
     approve_changes:
       label: Approve changes
       from: [in_assessment]
