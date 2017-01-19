@@ -5,7 +5,9 @@
  * Main functions and hook implementations of the Owner module.
  */
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
@@ -76,4 +78,21 @@ function owner_entity_auto_label(EntityInterface $entity) {
   $field = $fields[$entity->bundle()];
   $names = array_column($entity->get($field)->getValue(), 'value');
   $entity->set('label', implode(', ', $names));
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function owner_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->bundle() != 'owner' || $account->hasPermission('administer rdf entity')) {
+    return AccessResult::neutral();
+  }
+
+  switch ($operation) {
+    case 'edit':
+      $allowed_transitions = $entity->get('field_owner_state')->first()->getTransitions();
+      return AccessResult::forbiddenIf(empty($allowed_transitions));
+  }
+
+  return AccessResult::neutral();
 }
