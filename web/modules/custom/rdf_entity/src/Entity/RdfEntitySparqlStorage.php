@@ -538,6 +538,22 @@ QUERY;
   }
 
   /**
+   * Checks if a RDF entity has a specific graph.
+   *
+   * @param mixed $entity_id
+   *   The entity ID.
+   * @param string $graph
+   *   The graph to be checked ('draft', etc).
+   *
+   * @return bool
+   *   TRUE if this entity has the specified graph.
+   */
+  public function hasGraph($entity_id, $graph) {
+    $this->getGraphHandler()->setRequestGraphs($entity_id, $this->entityTypeId, [$graph]);
+    return (bool) $this->load($entity_id);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function loadByProperties(array $values = []) {
