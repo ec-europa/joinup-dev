@@ -206,8 +206,8 @@ class RdfFileWidget extends FileWidget {
     $element['file-wrap']['select'] = [
       '#type' => 'radios',
       '#options' => [
-        'file' => $this->t('File'),
-        'remote-file' => $this->t('Remote file'),
+        'file' => $this->t('Upload file'),
+        'remote-file' => $this->t('Remote file URL'),
       ],
     ];
     $element['file-wrap']['remote-file'] = [
