@@ -57,7 +57,7 @@ function joinup_document_node_access(EntityInterface $entity, $operation, Accoun
 
     case 'update':
       $allowed_transitions = $entity->get('field_document_state')->first()->getTransitions();
-      return AccessResult::forbiddenIf(empty($allowed_transitions));
+      return AccessResult::allowedIf(!empty($allowed_transitions));
   }
 
   return AccessResult::neutral();

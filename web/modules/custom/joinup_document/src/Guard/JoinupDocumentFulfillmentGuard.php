@@ -114,10 +114,14 @@ class JoinupDocumentFulfillmentGuard implements GuardInterface {
     // Check if the user has one of the allowed system roles.
     $from_state = $this->getState($entity);
     $transition_id = $transition->getId();
-    $workflow_authorized_roles = isset($allowed_conditions[$transition_id][$from_state]) ? $allowed_conditions[$transition_id][$from_state] : [];
-    // Get the roles according to the eLibrary creation.
-    $elibrary_authorized_roles = $this->getElibraryAllowedRoles($entity);
-    $authorized_roles = array_intersect($workflow_authorized_roles, $elibrary_authorized_roles);
+    $authorized_roles = isset($allowed_conditions[$transition_id][$from_state]) ? $allowed_conditions[$transition_id][$from_state] : [];
+
+    // If the entity is new, check the eLibrary roles.
+    if ($entity->isNew()) {
+      // Get the roles according to the eLibrary creation.
+      $elibrary_authorized_roles = $this->getElibraryAllowedRoles($entity);
+      $authorized_roles = array_intersect($authorized_roles, $elibrary_authorized_roles);
+    }
 
     // If the owner is still allowed, check for ownership.
     if (in_array('owner', $authorized_roles)) {
