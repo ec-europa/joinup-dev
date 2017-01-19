@@ -22,6 +22,7 @@ permissions:
   - 'create solution releases'
   - 'delete contact_information rdf entity'
   - 'delete licence rdf entity'
+  - 'delete any document content'
   - 'edit any custom_page content'
   - 'edit contact_information rdf entity'
   - 'edit licence rdf entity'

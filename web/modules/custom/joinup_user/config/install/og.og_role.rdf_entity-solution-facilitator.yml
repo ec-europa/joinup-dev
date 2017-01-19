@@ -18,6 +18,7 @@ permissions:
   - 'create news content'
   - 'delete any news content'
   - 'delete any discussion content'
+  - 'delete any document content'
   - 'edit any discussion content'
   - 'edit any news content'
   - 'edit own custom_page content'

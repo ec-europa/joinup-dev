@@ -18,6 +18,7 @@ function joinup_user_install() {
     'access dashboard',
     'create contact_information rdf entity',
     'create owner rdf entity',
+    'delete own document content',
     'edit own comments',
     'export rdf metadata',
     'manage own subscriptions',
