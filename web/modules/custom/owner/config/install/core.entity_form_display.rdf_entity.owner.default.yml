@@ -6,8 +6,6 @@ dependencies:
     - field.field.rdf_entity.owner.field_owner_state
     - field.field.rdf_entity.owner.field_owner_type
     - rdf_entity.rdfentity.owner
-  module:
-    - joinup_core
 id: rdf_entity.owner.default
 targetEntityType: rdf_entity
 bundle: owner
@@ -22,10 +20,9 @@ content:
     type: string_textfield
   field_owner_state:
     weight: 2
-    settings:
-      use_transition_label: 1
+    settings: {  }
     third_party_settings: {  }
-    type: state_machine_buttons
+    type: options_select
   field_owner_type:
     weight: 1
     settings: {  }
