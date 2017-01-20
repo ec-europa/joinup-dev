@@ -41,20 +41,20 @@ class RdfOwnerTest extends JoinupKernelTestBase {
     ));
     $ownerless->save();
 
-    $this->assertNull($not_owned->getOwnerId(), "The entity with no mapping for uid does not have an owner.");
-    $this->assertEquals($owner->id(), $owned->getOwnerId(), "The entity with a mapping for uid has an owner.");
-    $this->assertNull($ownerless->getOwnerId(), "Entity key 'uid' can be empty.");
+    $this->assertNull($not_owned->getOwnerId(), 'The entity with no mapping for uid does not have an owner.');
+    $this->assertEquals($owner->id(), $owned->getOwnerId(), 'The entity with a mapping for uid has an owner.');
+    $this->assertNull($ownerless->getOwnerId(), 'Entity key \'uid\' can be empty.');
 
     // Verify that even trying to set an owner, no changes are made since no
     // mapping exists.
     $not_owned->setOwner($owner);
-    $this->assertNull($not_owned->getOwnerId(), "The entity with no mapping for uid does not set an owner.");
+    $this->assertNull($not_owned->getOwnerId(), 'The entity with no mapping for uid does not set an owner.');
 
     // Entities with owner should change the value of the owner if another is
     // set.
     $owned->setOwner($another_owner);
     $owned->save();
-    $this->assertEquals($another_owner->id(), $owned->getOwnerId(), "The owner is updated properly.");
+    $this->assertEquals($another_owner->id(), $owned->getOwnerId(), 'The owner is updated properly.');
   }
 
 }

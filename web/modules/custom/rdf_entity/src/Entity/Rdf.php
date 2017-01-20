@@ -341,14 +341,14 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    * {@inheritdoc}
    */
   public function getOwner() {
-    return ($this->hasUidMapping() ? $this->get('uid')->entity : NULL);
+    return $this->hasUidMapping() ? $this->get('uid')->entity : NULL;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getOwnerId() {
-    return ($this->hasUidMapping() ? $this->getEntityKey('uid') : NULL);
+    return $this->hasUidMapping() ? $this->getEntityKey('uid') : NULL;
   }
 
   /**
