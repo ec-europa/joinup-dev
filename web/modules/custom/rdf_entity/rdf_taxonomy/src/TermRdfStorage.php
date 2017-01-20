@@ -80,10 +80,10 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
    *   An array of values to set, keyed by property name. A value for the
    *   vocabulary ID ('vid') is required.
    */
-  public function create(array $values = array()) {
+  public function create(array $values = []) {
     // Save new terms with no parents by default.
     if (empty($values['parent'])) {
-      $values['parent'] = array(0);
+      $values['parent'] = [''];
     }
     $entity = parent::create($values);
     return $entity;
@@ -107,16 +107,12 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
   /**
    * {@inheritdoc}
    */
-  public function deleteTermHierarchy($tids) {
-    // @todo Implement hierarchy updates.
-  }
+  public function deleteTermHierarchy($tids) {}
 
   /**
    * {@inheritdoc}
    */
-  public function updateTermHierarchy(EntityInterface $term) {
-    // @todo Implement hierarchy updates.
-  }
+  public function updateTermHierarchy(EntityInterface $term) {}
 
   /**
    * {@inheritdoc}
@@ -200,6 +196,7 @@ QUERY;
    * {@inheritdoc}
    */
   public function loadTree($vid, $parent = 0, $max_depth = NULL, $load_entities = FALSE) {
+    $parent = $parent === 0 ? '' : $parent;
     $cache_key = implode(':', func_get_args());
     if (empty($this->trees[$cache_key])) {
 
@@ -227,10 +224,7 @@ ORDER BY DESC(?parent) ?tid
 QUERY;
         $result = $this->sparql->query($query);
         foreach ($result as $term_res) {
-          $term_parent = 0;
-          if (isset($term_res->parent)) {
-            $term_parent = (string) $term_res->parent;
-          }
+          $term_parent = isset($term_res->parent) ? (string) $term_res->parent : '';
           $tid = (string) $term_res->tid;
           $label = (string) $term_res->label;
           $values = [
@@ -242,7 +236,7 @@ QUERY;
           ];
           $term = (object) $values;
           $this->treeChildren[$vid][$term_parent][] = $term->tid;
-          $this->treeParents[$vid][$term->tid][] = $parent;
+          $this->treeParents[$vid][$term->tid][] = $term_parent;
           $this->treeTerms[$vid][$term->tid] = $term;
         }
       }
@@ -272,9 +266,6 @@ QUERY;
           $child = current($this->treeChildren[$vid][$parent]);
           do {
             if (empty($child)) {
-              break;
-            }
-            if ($load_entities && empty($term_entities[$child]) || !$load_entities && empty($this->treeTerms[$vid][$child])) {
               break;
             }
             $term = $load_entities ? $term_entities[$child] : $this->treeTerms[$vid][$child];
