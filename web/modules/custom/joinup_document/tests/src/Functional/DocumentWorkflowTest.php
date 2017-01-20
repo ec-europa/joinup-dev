@@ -91,26 +91,31 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
    * delete access are tested below.
    */
   public function testCrudAccess() {
+    // The owner, when it comes to 'create' operation, is just an authenticated
+    // user.
+    $test_roles = array_diff($this->getAvailableUsers(), ['owner']);
+
     // Test create access.
-    foreach ($this->createAccessProvider() as $parent_bundle => $test_data_arrays) {
-      $parent = $this->createParent($parent_bundle, 'validated');
+    foreach ($this->createAccessProvider() as $parent_bundle => $elibrary_data) {
+      foreach ($elibrary_data as $elibrary => $allowed_roles) {
+        $parent = $this->createParent($parent_bundle, 'validated', NULL, $elibrary);
+        $content = $this->createNode([
+          'type' => 'document',
+          OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
+        ]);
 
-      // Initialize the document entity as it is going to be used in all sub
-      // cases.
-      $content = $this->createNode([
-        'type' => 'document',
-        OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
-      ]);
-
-      foreach ($test_data_arrays as $test_data) {
+        $non_allowed_roles = array_diff($test_roles, $allowed_roles);
         $operation = 'create';
-        list($user_var, $expected_result) = $test_data;
-
-        $access = $this->ogAccess->userAccessEntity('create', $content, $this->{$user_var})
-          ->isAllowed();
-        $result = $expected_result ? t('have') : t('not have');
-        $message = "User {$user_var} should {$result} {$operation} access for bundle 'document' with parent {$parent_bundle}.";
-        $this->assertEquals($expected_result, $access, $message);
+        foreach ($allowed_roles as $user_var) {
+          $access = $this->ogAccess->userAccessEntity('create', $content, $this->{$user_var})->isAllowed();
+          $message = "User {$user_var} should have {$operation} access for bundle 'document' with parent {$parent_bundle}.";
+          $this->assertEquals(TRUE, $access, $message);
+        }
+        foreach ($non_allowed_roles as $user_var) {
+          $access = $this->ogAccess->userAccessEntity('create', $content, $this->{$user_var})->isAllowed();
+          $message = "User {$user_var} should not have {$operation} access for bundle 'document' with parent {$parent_bundle}.";
+          $this->assertEquals(FALSE, $access, $message);
+        }
       }
     }
 
@@ -162,7 +167,7 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
    * ];
    * @code
    * The user variable represents the variable defined in the test.
-   * No parent state needs to be checked as it doesn't affect the possibility
+   * No parent state needs to be checked as it does not affect the possibility
    * to create document.
    */
   protected function createAccessProvider() {
@@ -211,20 +216,26 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
    *   The bundle of the entity to create.
    * @param string $state
    *    The state of the entity.
+   * @param string $moderation
+   *    whether the parent is pre or post moderated.
+   * @param string $elibrary
+   *    The 'eLibrary_creation' value of the parent entity.
    *
    * @return \Drupal\Core\Entity\EntityInterface
    *    The created entity.
    */
-  protected function createParent($bundle, $state) {
-    $state_field = [
-      'collection' => 'field_ar_state',
-      'solution' => 'field_is_state',
+  protected function createParent($bundle, $state = 'validated', $moderation = NULL, $elibrary = NULL) {
+    $field_identifier = [
+      'collection' => 'field_ar_',
+      'solution' => 'field_is_',
     ];
 
     $parent = Rdf::create([
       'label' => $this->randomMachineName(),
       'rid' => $bundle,
-      $state_field[$bundle] => $state,
+      $field_identifier[$bundle] . 'state' => $state,
+      $field_identifier[$bundle] . 'moderation' => $moderation,
+      $field_identifier[$bundle] . 'elibrary_creation' => $elibrary,
     ]);
     $parent->save();
     $this->assertInstanceOf(RdfInterface::class, $parent, "The $bundle group was created.");
@@ -564,4 +575,21 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
     return 'node';
   }
 
+  /**
+   * Returns a list of users to be used for the tests.
+   *
+   * @return array
+   *    A list of user variables.
+   */
+  protected function getAvailableUsers() {
+    return [
+      'userOwner',
+      'userAnonymous',
+      'userAuthenticated',
+      'userModerator',
+      'userOgMember',
+      'userOgFacilitator',
+      'userOgAdministrator',
+    ];
+  }
 }
