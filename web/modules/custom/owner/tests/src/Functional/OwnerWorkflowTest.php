@@ -35,6 +35,13 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
   protected $userModerator;
 
   /**
+   * A user that will be set as owner of the entity.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $userOwner;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -43,6 +50,7 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
     $this->userAnonymous = new AnonymousUserSession();
     $this->userAuthenticated = $this->createUserWithRoles();
     $this->userModerator = $this->createUserWithRoles(['moderator']);
+    $this->userOwner = $this->createUserWithRoles();
   }
 
   /**
@@ -50,6 +58,54 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
    */
   protected function getEntityType() {
     return 'rdf_entity';
+  }
+
+  /**
+   * Tests the CRUD operations for the asset release entities.
+   *
+   * Since the browser test is a slow test, both create access and read/update/
+   * delete access are tested below.
+   */
+  public function testCrudAccess() {
+    // Test create access.
+    foreach ($this->createAccessProvider() as $user_var => $expected_result) {
+      $access = $this->entityAccess->createAccess('owner', $this->{$user_var});
+      $result = $expected_result ? t('have') : t('not have');
+      $message = "User {$user_var} should {$result} create access for bundle 'owner'.";
+      $this->assertEquals($expected_result, $access, $message);
+    }
+
+    // Test view, update, delete access.
+    foreach ($this->readUpdateDeleteAccessProvider() as $entity_state => $test_data) {
+      $content = Rdf::create([
+        'rid' => 'owner',
+        'label' => $this->randomMachineName(),
+        'field_owner_state' => $entity_state,
+        'uid' => $this->userOwner->id(),
+      ]);
+      $content->save();
+
+      $available_users = [
+        'userAnonymous',
+        'userAuthenticated',
+        'userModerator',
+        'userOwner',
+      ];
+      foreach ($test_data as $operation => $allowed_users) {
+        foreach ($available_users as $user_var) {
+          $this->userProvider->setUser($this->{$user_var});
+
+          // If the current user is found in the allowed list, the expected
+          // access result is true, otherwise false.
+          $expected_result = in_array($user_var, $allowed_users);
+
+          $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
+          $result = $expected_result ? t('have') : t('not have');
+          $message = "User {$user_var} should {$result} {$operation} access for entity {$content->label()} ({$entity_state}).";
+          $this->assertEquals($expected_result, $access, $message);
+        }
+      }
+    }
   }
 
   /**
@@ -77,6 +133,81 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
         $this->assertEquals($transitions, $actual_transitions, "Transitions do not match for user $user_var, state $entity_state.");
       }
     }
+  }
+
+  /**
+   * Provides data for create access check.
+   */
+  public function createAccessProvider() {
+    return [
+      'userAnonymous' => FALSE,
+      'userAuthenticated' => TRUE,
+      'userModerator' => TRUE,
+    ];
+  }
+
+  /**
+   * Provides data for access check.
+   *
+   * The structure of the array is:
+   * @code
+   * $access_array = [
+   *   'entity_state' => [
+   *     'operation' => [
+   *        'allowed_role1',
+   *        'allowed_role2',
+   *     ],
+   *   ],
+   * ];
+   * @code
+   */
+  public function readUpdateDeleteAccessProvider() {
+    return [
+      'validated' => [
+        'view' => [
+          'userAnonymous',
+          'userAuthenticated',
+          'userModerator',
+          'userOwner',
+        ],
+        'edit' => [
+          'userModerator',
+          'userOwner',
+        ],
+        'delete' => [
+          'userModerator',
+        ],
+      ],
+      'in_assessment' => [
+        'view' => [
+          'userAnonymous',
+          'userAuthenticated',
+          'userModerator',
+          'userOwner',
+        ],
+        'edit' => [
+          'userModerator',
+          'userOwner',
+        ],
+        'delete' => [
+          'userModerator',
+        ],
+      ],
+      'deletion_request' => [
+        'view' => [
+          'userAnonymous',
+          'userAuthenticated',
+          'userModerator',
+          'userOwner',
+        ],
+        'edit' => [
+          'userModerator',
+        ],
+        'delete' => [
+          'userModerator',
+        ],
+      ],
+    ];
   }
 
   /**
