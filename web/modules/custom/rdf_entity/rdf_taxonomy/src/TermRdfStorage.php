@@ -227,9 +227,9 @@ ORDER BY DESC(?parent) ?tid
 QUERY;
         $result = $this->sparql->query($query);
         foreach ($result as $term_res) {
-          $parent = 0;
+          $term_parent = 0;
           if (isset($term_res->parent)) {
-            $parent = (string) $term_res->parent;
+            $term_parent = (string) $term_res->parent;
           }
           $tid = (string) $term_res->tid;
           $label = (string) $term_res->label;
@@ -237,11 +237,11 @@ QUERY;
             'tid' => $tid,
             'vid' => $vid,
             'name' => $label,
-            'parent' => $parent,
+            'parent' => $term_parent,
             'weight' => 0,
           ];
           $term = (object) $values;
-          $this->treeChildren[$vid][$parent][] = $term->tid;
+          $this->treeChildren[$vid][$term_parent][] = $term->tid;
           $this->treeParents[$vid][$term->tid][] = $parent;
           $this->treeTerms[$vid][$term->tid] = $term;
         }
