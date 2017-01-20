@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\Core\Entity\EntityChangedTrait;
+use Drupal\user\UserInterface;
 
 /**
  * Defines the ContentEntityExample entity.
@@ -90,6 +91,7 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *   fieldable = TRUE,
  *   entity_keys = {
  *     "id" = "id",
+ *     "uid" = "uid",
  *     "bundle" = "rid",
  *     "label" = "label",
  *     "uuid" = "uuid",
@@ -208,6 +210,19 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setDescription(t('The Rdf type of this entity.'))
       ->setSetting('target_type', 'rdf_type');
 
+    $fields['uid'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Authored by'))
+      ->setDescription(t('The username of the content author.'))
+      ->setSetting('target_type', 'user')
+      ->setDefaultValueCallback('Drupal\rdf_entity\Entity\Rdf::getCurrentUserId')
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', array(
+        'label' => 'hidden',
+        'type' => 'author',
+        'weight' => 0,
+      ))
+      ->setDisplayConfigurable('form', TRUE);
+
     $fields['label'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Title'))
       ->setRequired(TRUE)
@@ -325,6 +340,55 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   /**
    * {@inheritdoc}
    */
+  public function getOwner() {
+    return $this->hasUidMapping() ? $this->get('uid')->entity : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOwnerId() {
+    return $this->hasUidMapping() ? $this->getEntityKey('uid') : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwnerId($uid) {
+    if ($this->hasUidMapping()) {
+      $this->set('uid', $uid);
+    }
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwner(UserInterface $account) {
+    if ($this->hasUidMapping()) {
+      $this->set('uid', $account->id());
+    }
+    return $this;
+  }
+
+  /**
+   * Returns whether the bundle of the entity has a mapping for the uid key.
+   *
+   * @return bool
+   *    Whether the entity bundle has a value for the uid key mapping.
+   */
+  protected function hasUidMapping() {
+    if (empty($this->bundle())) {
+      return NULL;
+    }
+    $bundle = $this->entityTypeManager()->getStorage('rdf_type')->load($this->bundle());
+    $mapping = rdf_entity_get_third_party_property($bundle, 'mapping', 'uid');
+    return !empty($mapping['target_id']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function deleteFromGraph($graph) {
     if (!$this->isNew()) {
       $this->entityManager()->getStorage($this->entityTypeId)->deleteFromGraph($this->id(), $graph);
@@ -339,6 +403,18 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       return [];
     }
     return [$this->entityTypeId . ':' . md5($this->id())];
+  }
+
+  /**
+   * Default value callback for 'uid' base field definition.
+   *
+   * @see ::baseFieldDefinitions()
+   *
+   * @return array
+   *   An array of default values.
+   */
+  public static function getCurrentUserId() {
+    return array(\Drupal::currentUser()->id());
   }
 
 }
