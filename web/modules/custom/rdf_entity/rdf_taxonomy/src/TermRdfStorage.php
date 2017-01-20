@@ -5,6 +5,7 @@ namespace Drupal\rdf_taxonomy;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 use Drupal\taxonomy\TermStorageInterface;
+use EasyRdf\Graph;
 
 /**
  * Defines a Controller class for taxonomy terms.
@@ -23,6 +24,11 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
     'http://www.w3.org/2004/02/skos/core#inScheme',
     'http://www.w3.org/2004/02/skos/core#topConceptOf',
   ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $rdfBundlePredicate = 'http://www.w3.org/2004/02/skos/core#inScheme';
 
   /**
    * Array of loaded parents keyed by child term ID.
@@ -75,15 +81,34 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
 
   /**
    * {@inheritdoc}
-   *
-   * @param array $values
-   *   An array of values to set, keyed by property name. A value for the
-   *   vocabulary ID ('vid') is required.
    */
-  public function create(array $values = array()) {
+  protected function doPreSave(EntityInterface $entity) {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+    if (empty($entity->parent->target_id)) {
+      // If the parent target ID is set to '' (empty string), remove the item to
+      // avoid storing a triple corresponding to parent field in the backend.
+      $entity->get('parent')->removeItem(0);
+    }
+    return parent::doPreSave($entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function alterGraph(Graph &$graph, EntityInterface $entity) {
+    parent::alterGraph($graph, $entity);
+    // @todo Document this. I have no idea what this is for, I only know that
+    //   taxonomy terms require this.
+    $graph->addResource($entity->id(), 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://www.w3.org/2004/02/skos/core#Concept');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function create(array $values = []) {
     // Save new terms with no parents by default.
     if (empty($values['parent'])) {
-      $values['parent'] = array(0);
+      $values['parent'] = [''];
     }
     $entity = parent::create($values);
     return $entity;
@@ -107,16 +132,12 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
   /**
    * {@inheritdoc}
    */
-  public function deleteTermHierarchy($tids) {
-    // @todo Implement hierarchy updates.
-  }
+  public function deleteTermHierarchy($tids) {}
 
   /**
    * {@inheritdoc}
    */
-  public function updateTermHierarchy(EntityInterface $term) {
-    // @todo Implement hierarchy updates.
-  }
+  public function updateTermHierarchy(EntityInterface $term) {}
 
   /**
    * {@inheritdoc}
@@ -200,6 +221,16 @@ QUERY;
    * {@inheritdoc}
    */
   public function loadTree($vid, $parent = 0, $max_depth = NULL, $load_entities = FALSE) {
+    // The parent is either the root (0 or '') or a non-empty value. If NULL has
+    // been passed, means that tree under a non-saved term was requested but
+    // a non-saved term cannot have children.
+    if ($parent === NULL) {
+      return [];
+    }
+    // Core term uses 0 (as integer) for root level. RDF Taxonomy has string IDs
+    // thus we convert 0 to '' (empty string) to denote the root level.
+    $parent = $parent === 0 ? '' : $parent;
+
     $cache_key = implode(':', func_get_args());
     if (empty($this->trees[$cache_key])) {
 
@@ -223,26 +254,20 @@ WHERE {
   FILTER (lang(?label) = 'en') .
   OPTIONAL {?tid <http://www.w3.org/2004/02/skos/core#broaderTransitive> ?parent }
 }
-ORDER BY DESC(?parent) ?tid
+ORDER BY ?label
 QUERY;
         $result = $this->sparql->query($query);
         foreach ($result as $term_res) {
-          $parent = 0;
-          if (isset($term_res->parent)) {
-            $parent = (string) $term_res->parent;
-          }
-          $tid = (string) $term_res->tid;
-          $label = (string) $term_res->label;
-          $values = [
-            'tid' => $tid,
+          $term_parent = isset($term_res->parent) ? (string) $term_res->parent : '';
+          $term = (object) [
+            'tid' => (string) $term_res->tid,
             'vid' => $vid,
-            'name' => $label,
-            'parent' => $parent,
+            'name' => (string) $term_res->label,
+            'parent' => $term_parent,
             'weight' => 0,
           ];
-          $term = (object) $values;
-          $this->treeChildren[$vid][$parent][] = $term->tid;
-          $this->treeParents[$vid][$term->tid][] = $parent;
+          $this->treeChildren[$vid][$term_parent][] = $term->tid;
+          $this->treeParents[$vid][$term->tid][] = $term_parent;
           $this->treeTerms[$vid][$term->tid] = $term;
         }
       }
@@ -272,9 +297,6 @@ QUERY;
           $child = current($this->treeChildren[$vid][$parent]);
           do {
             if (empty($child)) {
-              break;
-            }
-            if ($load_entities && empty($term_entities[$child]) || !$load_entities && empty($this->treeTerms[$vid][$child])) {
               break;
             }
             $term = $load_entities ? $term_entities[$child] : $this->treeTerms[$vid][$child];
@@ -328,9 +350,7 @@ QUERY;
   /**
    * {@inheritdoc}
    */
-  public function resetWeights($vid) {
-    // SKOS doesn't use weights...
-  }
+  public function resetWeights($vid) {}
 
   /**
    * {@inheritdoc}
