@@ -4,6 +4,8 @@ transitions:
     __new__:
       - authenticated
       - moderator
+    deletion_request:
+      - moderator
   update_published:
     validated:
       - authenticated

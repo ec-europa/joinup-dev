@@ -18,7 +18,7 @@ owner_workflow:
   transitions:
     validate:
       label: Publish
-      from: [__new__]
+      from: [__new__, deletion_request]
       to: validated
     update_published:
       label: Update
