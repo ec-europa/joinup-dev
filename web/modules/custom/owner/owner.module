@@ -65,18 +65,12 @@ function owner_inline_entity_form_entity_builder($entity_type, EntityInterface $
  *   The entity to process.
  */
 function owner_entity_auto_label(EntityInterface $entity) {
-  $fields = [
-    'owner' => 'field_owner_name',
-  ];
-
-  // Handle only our entity bundles.
-  if (!isset($fields[$entity->bundle()])) {
+  if ($entity->bundle() !== 'owner') {
     return;
   }
 
   // Generate the label using the values of the name field.
-  $field = $fields[$entity->bundle()];
-  $names = array_column($entity->get($field)->getValue(), 'value');
+  $names = array_column($entity->get('field_owner_name')->getValue(), 'value');
   $entity->set('label', implode(', ', $names));
 }
 
