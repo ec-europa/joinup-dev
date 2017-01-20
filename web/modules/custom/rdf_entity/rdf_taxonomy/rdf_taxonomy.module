@@ -22,7 +22,6 @@ use Drupal\taxonomy\VocabularyInterface;
  * implementation of the Drupal\Core\Entity\EntityStorageInterface interface.
  */
 function rdf_taxonomy_entity_type_alter(array &$entity_types) {
-  $entity_types['taxonomy_vocabulary']->setStorageClass('Drupal\rdf_taxonomy\VocabularyRdfStorage');
   $entity_types['taxonomy_term']->setStorageClass('Drupal\rdf_taxonomy\TermRdfStorage');
   $entity_types['taxonomy_term']->setHandlerClass('views_data', NULL);
   $entity_types['taxonomy_term']->setHandlerClass('list_builder', RdfTaxonomyTermListBuilder::class);
@@ -72,13 +71,26 @@ function rdf_taxonomy_taxonomy_term_create_access(AccountInterface $account, arr
  * Implements hook_form_BASE_FORM_ID_alter().
  */
 function rdf_taxonomy_form_taxonomy_term_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // RDF terms have no weight.
+  // RDF terms have no weight. Set 0 as value and hide weight from UI.
   $form['relations']['weight'] = [
     '#type' => 'value',
     '#value' => 0,
   ];
 
+  // RDF terms have no language. Set the entity default language to prevent a
+  // form validation error.
   /** @var \Drupal\taxonomy\TermInterface $term */
   $term = $form_state->getFormObject()->getEntity();
   $form['langcode']['widget'][0]['value']['#default_value'] = $term->language()->getId();
+
+  // Convert the root option value from 0 (as integer) to '0' (as string).
+  $root = array_shift($form['relations']['parent']['#options']);
+  $form['relations']['parent']['#options'] = ['' => $root] + $form['relations']['parent']['#options'];
+  if (($index = array_search(0, $form['relations']['parent']['#default_value'], TRUE)) !== FALSE) {
+    $form['relations']['parent']['#default_value'][$index] = '';
+  }
+
+  // Visual enhancements.
+  $form['relations']['#open'] = TRUE;
+  $form['relations']['parent']['#size'] = 16;
 }

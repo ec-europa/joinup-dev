@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,6 +21,13 @@ class RdfTaxonomyTermListBuilder extends EntityListBuilder {
    * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected $routeMatch;
+
+  /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
 
   /**
    * The vocabulary for this term listing.
@@ -37,10 +45,13 @@ class RdfTaxonomyTermListBuilder extends EntityListBuilder {
    *   The entity storage class.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The current route match service.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer service.
    */
-  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match) {
+  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match, RendererInterface $renderer) {
     parent::__construct($entity_type, $storage);
     $this->routeMatch = $route_match;
+    $this->renderer = $renderer;
   }
 
   /**
@@ -50,7 +61,8 @@ class RdfTaxonomyTermListBuilder extends EntityListBuilder {
     return new static(
       $entity_type,
       $container->get('entity_type.manager')->getStorage($entity_type->id()),
-      $container->get('current_route_match')
+      $container->get('current_route_match'),
+      $container->get('renderer')
     );
   }
 
@@ -58,47 +70,16 @@ class RdfTaxonomyTermListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function getEntityIds() {
-    $query = $this->getStorage()->getQuery()
-      ->condition('vid', $this->getVocabulary()->id());
-
-    // @todo Use pager when \Drupal\rdf_entity\Entity\Query\Sparql\Query knows
-    //   sorting.
-    // Only add the pager if a limit is specified.
-    // if ($this->limit) {
-    // $query->pager($this->limit);
-    // }
-    return $query->execute();
+    return $this->getStorage()->getQuery()
+      ->condition('vid', $this->getVocabulary()->id())
+      ->execute();
   }
 
   /**
    * {@inheritdoc}
    */
   public function load() {
-    // @todo Implement sorting in \Drupal\rdf_entity\Entity\Query\Sparql\Query
-    //   and drop this implementation of ::load()
-    /** @var \Drupal\taxonomy\TermStorageInterface $storage */
-    $storage = $this->getStorage();
-
-    $loaded = parent::load();
-    $tree = [];
-    /** @var \Drupal\taxonomy\TermInterface $term */
-    foreach ($loaded as $tid => $term) {
-      $parent = $storage->loadParents($term->id());
-      $parent = reset($parent);
-      $parent_label = $parent ? $parent->label() : '';
-      $tree[$parent_label][(string) $term->label()] = $tid;
-    }
-
-    ksort($tree, SORT_NATURAL | SORT_FLAG_CASE);
-    $sorted = [];
-    foreach ($tree as $parent_label => $terms) {
-      ksort($terms, SORT_NATURAL | SORT_FLAG_CASE);
-      foreach ($terms as $tid) {
-        $sorted[$tid] = $loaded[$tid];
-      }
-    }
-
-    return $sorted;
+    return $this->getStorage()->loadTree($this->getVocabulary()->id(), 0, NULL, TRUE);
   }
 
   /**
@@ -106,7 +87,6 @@ class RdfTaxonomyTermListBuilder extends EntityListBuilder {
    */
   public function buildHeader() {
     return [
-      'parent' => $this->t('Parent'),
       'name' => $this->t('Term'),
     ] + parent::buildHeader();
   }
@@ -115,27 +95,11 @@ class RdfTaxonomyTermListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /** @var \Drupal\taxonomy\TermStorageInterface $storage */
-    $storage = $this->getStorage();
-    $parents = $storage->loadParents($entity->id());
-    $parent = reset($parents);
-    if ($parent) {
-      $parent_render = [
-        '#type' => 'link',
-        '#title' => $parent->label(),
-        '#url' => $parent->toUrl(),
-      ];
-    }
-    else {
-      $parent_render = ['#plain_text' => $this->t('<root>')];
-    }
-
+    $indent = ['#theme' => 'indentation', '#size' => $entity->depth];
     return [
-      'parent' => [
-        'data' => $parent_render,
-      ],
       'name' => [
         'data' => [
+          '#prefix' => $this->renderer->render($indent),
           '#type' => 'link',
           '#title' => $entity->label(),
           '#url' => $entity->toUrl(),

@@ -22,6 +22,7 @@ use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\RdfGraphHandler;
 use Drupal\rdf_entity\RdfMappingHandler;
 use EasyRdf\Graph;
+use EasyRdf\Literal;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -550,6 +551,7 @@ QUERY;
    */
   public function hasGraph($entity_id, $graph) {
     $this->getGraphHandler()->setRequestGraphs($entity_id, $this->entityTypeId, [$graph]);
+    // @todo Find a cheaper way to do this, without a full entity load.
     return (bool) $this->load($entity_id);
   }
 
@@ -768,7 +770,7 @@ QUERY;
             continue;
           }
           // Skip the bundle as it is handled separately later.
-          if ($field_name == 'rid') {
+          if ($field_name == $this->bundleKey) {
             continue;
           }
           /** @var \Drupal\Core\Field\FieldItemList $field_item_list */
@@ -777,6 +779,7 @@ QUERY;
           if ($field_item_list->isEmpty()) {
             continue;
           }
+          /** @var \Drupal\Core\Field\FieldItemInterface $item */
           $item = $entity->get($field_name)->first();
 
           $column_schema = $this->getColumnSchema($item, $column);
@@ -787,31 +790,83 @@ QUERY;
             $value = serialize($value);
           }
           // When the field is a entity reference, and it's target implements
-          // RdfEntitySparqlStorage (it's an RDF based entity),
+          // RdfEntitySparqlStorage or a descendant (it's an RDF based entity),
           // then store it as a resource.
           if ($this->fieldIsReference($item)) {
             $graph->addResource((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
           }
           // All other fields get stored as a literal.
           else {
-            // @todo Set language and field data type.
-            $graph->addLiteral((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
+            $langcode = $this->resolveFieldLangcode($entity, $item);
+            // @todo Add datatype to literal.
+            $literal = new Literal($value, $langcode);
+            $graph->addLiteral((string) $id, (string) $properties['by_field'][$field_name][$column], $literal);
           }
         }
       }
     }
-    // Save the bundle as rdf:type.
+
+    // Save the bundle.
     $rdf_bundle_mapping = $this->mappingHandler->getRdfBundleMappedUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle());
     $rdf_bundle = $rdf_bundle_mapping[$entity->bundle()];
     $graph->addResource((string) $id, $this->rdfBundlePredicate, $rdf_bundle);
 
+    // Give implementations a chance to alter the graph before is saved.
+    $this->alterGraph($graph, $entity);
+
+    // @todo Do all next operations in one transaction.
     if (!$entity->isNew()) {
       $this->deleteBeforeInsert($id, $graph_uri, $properties_list);
     }
-    // @todo Do in one transaction... If possible.
-    $this->insert($graph, $graph_uri);
-
+    try {
+      $this->insert($graph, $graph_uri);
+      return $entity->isNew() ? SAVED_NEW : SAVED_UPDATED;
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
   }
+
+  /**
+   * Resolves the language based on entity and current site language.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface
+   *   The entity.
+   * @param \Drupal\Core\Field\FieldItemInterface $field_item
+   *   The field for which to resolve the language.
+   *
+   * @return string|null
+   *   A language code or NULL, if the field has no language.
+   */
+  protected function resolveFieldLangcode(EntityInterface $entity, FieldItemInterface $field_item) {
+    if (!$langcode = $field_item->getLangcode()) {
+      return NULL;
+    }
+    $non_languages = [LanguageInterface::LANGCODE_NOT_SPECIFIED, LanguageInterface::LANGCODE_DEFAULT, LanguageInterface::LANGCODE_NOT_APPLICABLE, LanguageInterface::LANGCODE_SITE_DEFAULT, LanguageInterface::LANGCODE_SYSTEM];
+
+    // Accept only real languages or NULL.
+    if (in_array($langcode, $non_languages)) {
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
+      if (in_array($langcode, $non_languages)) {
+        return NULL;
+      }
+    }
+
+    return $langcode;
+  }
+
+  /**
+   * Alters the graph before saving the entity.
+   *
+   * Implementation are able to change, delete or add items to the graph before
+   * this is saved to SPARQL backend.
+   *
+   * @param \EasyRdf\Graph $graph
+   *   The graph to be altered.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity being saved.
+   */
+  protected function alterGraph(Graph &$graph, EntityInterface $entity) {}
 
   /**
    * Get the schema definition for a given field column.
@@ -1041,7 +1096,7 @@ QUERY;
     $target_entity = $target->getValue();
     $target_entity_type = $target_entity->getEntityType();
     $target_entity_storage_class = trim($target_entity_type->getStorageClass(), "\\");
-    return $target_entity_storage_class === RdfEntitySparqlStorage::class;
+    return ($target_entity_storage_class === RdfEntitySparqlStorage::class) || is_subclass_of($target_entity_storage_class, RdfEntitySparqlStorage::class);
   }
 
   /**
