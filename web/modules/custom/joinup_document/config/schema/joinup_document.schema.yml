@@ -4,16 +4,16 @@ joinup_document.settings:
   mapping:
     transitions:
       type: sequence
-      label: 'Transitions allowed'
-      workflow_id:
+      label: 'Workflow id'
+      sequence:
         type: sequence
-        label: 'Workflow id'
+        label: 'Transition id'
         sequence:
           type: sequence
-          label: 'Target state'
+          label: 'Source state'
           sequence:
             type: sequence
-            label: 'Source state'
+            label: 'Roles allowed to perform transition'
             sequence:
               type: string
-              label: 'Roles'
+              label: 'Role allowed to perform transition'
