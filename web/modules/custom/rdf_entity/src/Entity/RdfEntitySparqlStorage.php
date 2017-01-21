@@ -22,6 +22,7 @@ use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\RdfGraphHandler;
 use Drupal\rdf_entity\RdfMappingHandler;
 use EasyRdf\Graph;
+use EasyRdf\Literal;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -550,6 +551,7 @@ QUERY;
    */
   public function hasGraph($entity_id, $graph) {
     $this->getGraphHandler()->setRequestGraphs($entity_id, $this->entityTypeId, [$graph]);
+    // @todo Find a cheaper way to do this, without a full entity load.
     return (bool) $this->load($entity_id);
   }
 
@@ -768,7 +770,7 @@ QUERY;
             continue;
           }
           // Skip the bundle as it is handled separately later.
-          if ($field_name == 'rid') {
+          if ($field_name == $this->bundleKey) {
             continue;
           }
           /** @var \Drupal\Core\Field\FieldItemList $field_item_list */
@@ -787,31 +789,55 @@ QUERY;
             $value = serialize($value);
           }
           // When the field is a entity reference, and it's target implements
-          // RdfEntitySparqlStorage (it's an RDF based entity),
+          // RdfEntitySparqlStorage or a descendant (it's an RDF based entity),
           // then store it as a resource.
           if ($this->fieldIsReference($item)) {
             $graph->addResource((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
           }
           // All other fields get stored as a literal.
           else {
-            // @todo Set language and field data type.
-            $graph->addLiteral((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
+            $langcode = $field_item_list->getFieldDefinition()->isTranslatable() ? $entity->language()->getId() : NULL;
+            // @todo Add datatype to literal.
+            $literal = new Literal($value, $langcode);
+            $graph->addLiteral((string) $id, (string) $properties['by_field'][$field_name][$column], $literal);
           }
         }
       }
     }
-    // Save the bundle as rdf:type.
+
+    // Save the bundle.
     $rdf_bundle_mapping = $this->mappingHandler->getRdfBundleMappedUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle());
     $rdf_bundle = $rdf_bundle_mapping[$entity->bundle()];
     $graph->addResource((string) $id, $this->rdfBundlePredicate, $rdf_bundle);
 
+    // Give a chance to implementations to alter the graph before is saved.
+    $this->alterGraph($graph, $entity);
+
+    // @todo Do all next operations in one transaction.
     if (!$entity->isNew()) {
       $this->deleteBeforeInsert($id, $graph_uri, $properties_list);
     }
-    // @todo Do in one transaction... If possible.
-    $this->insert($graph, $graph_uri);
-
+    try {
+      $this->insert($graph, $graph_uri);
+      return $entity->isNew() ? SAVED_NEW : SAVED_UPDATED;
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
   }
+
+  /**
+   * Alters the graph before saving the entity.
+   *
+   * Implementation are able to change, delete or add items to the graph before
+   * this is saved to SPARQL backend.
+   *
+   * @param \EasyRdf\Graph $graph
+   *   The graph to be altered.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity being saved.
+   */
+  protected function alterGraph(Graph &$graph, EntityInterface $entity) {}
 
   /**
    * Get the schema definition for a given field column.
@@ -1041,7 +1067,7 @@ QUERY;
     $target_entity = $target->getValue();
     $target_entity_type = $target_entity->getEntityType();
     $target_entity_storage_class = trim($target_entity_type->getStorageClass(), "\\");
-    return $target_entity_storage_class === RdfEntitySparqlStorage::class;
+    return ($target_entity_storage_class === RdfEntitySparqlStorage::class) || is_subclass_of($target_entity_storage_class, RdfEntitySparqlStorage::class);
   }
 
   /**
