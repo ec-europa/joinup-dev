@@ -2,7 +2,6 @@
 
 namespace Drupal\rdf_entity\Entity;
 
-use Drupal\Component\Uuid\Php;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -19,6 +18,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\RdfEntityIdPluginManager;
 use Drupal\rdf_entity\RdfGraphHandler;
 use Drupal\rdf_entity\RdfMappingHandler;
 use EasyRdf\Graph;
@@ -82,6 +82,13 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   protected $mappingHandler;
 
   /**
+   * The RDF entity ID generator plugin manager.
+   *
+   * @var \Drupal\rdf_entity\RdfEntityIdPluginManager
+   */
+  protected $entityIdPluginManager;
+
+  /**
    * Initialize the storage backend.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
@@ -102,8 +109,10 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *    The rdf graph helper service.
    * @param \Drupal\rdf_entity\RdfMappingHandler $rdf_mapping_handler
    *    The rdf mapping helper service.
+   * @param \Drupal\rdf_entity\RdfEntityIdPluginManager $entity_id_plugin_manager
+   *   The RDF entity ID generator plugin manager.
    */
-  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
+  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler, RdfEntityIdPluginManager $entity_id_plugin_manager) {
     parent::__construct($entity_type, $entity_manager, $cache);
     $this->sparql = $sparql;
     $this->languageManager = $language_manager;
@@ -111,6 +120,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $this->moduleHandler = $module_handler;
     $this->graphHandler = $rdf_graph_handler;
     $this->mappingHandler = $rdf_mapping_handler;
+    $this->entityIdPluginManager = $entity_id_plugin_manager;
   }
 
   /**
@@ -126,7 +136,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $container->get('language_manager'),
       $container->get('module_handler'),
       $container->get('sparql.graph_handler'),
-      $container->get('sparql.mapping_handler')
+      $container->get('sparql.mapping_handler'),
+      $container->get('plugin.manager.rdf_entity.id')
     );
   }
 
@@ -682,7 +693,7 @@ QUERY;
      * graph contains the published entities.
      */
     if (in_array('Drupal\Core\Entity\EntityPublishedInterface', class_implements($this->entityClass))) {
-      if (\Drupal::moduleHandler()->moduleExists('rdf_draft')) {
+      if ($this->moduleHandler->moduleExists('rdf_draft')) {
         $query->setGraphType(['draft', 'default']);
       }
     }
@@ -728,18 +739,6 @@ QUERY;
   }
 
   /**
-   * Generate the id of the entity.
-   *
-   * @return string
-   *    The new id for the entity.
-   */
-  protected function generateId() {
-    $uuid = new Php();
-    // @todo Fetch a bundle specific template.
-    return 'http://placeHolder/' . $uuid->generate();
-  }
-
-  /**
    * {@inheritdoc}
    */
   protected function doSave($id, EntityInterface $entity) {
@@ -749,8 +748,8 @@ QUERY;
     // entity might be considered not new by modules that don't strictly use the
     // EntityInterface::isNew() method.
     if (empty($id)) {
-      $id = $this->generateId();
-      $entity->{$this->idKey} = (string) $id;
+      $id = $this->entityIdPluginManager->getPlugin($entity)->generate();
+      $entity->{$this->idKey} = $id;
     }
 
     // If the target graph is set, it has priority over the one the entity is
