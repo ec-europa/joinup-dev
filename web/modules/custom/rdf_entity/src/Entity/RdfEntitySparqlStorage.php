@@ -778,6 +778,7 @@ QUERY;
           if ($field_item_list->isEmpty()) {
             continue;
           }
+          /** @var \Drupal\Core\Field\FieldItemInterface $item */
           $item = $entity->get($field_name)->first();
 
           $column_schema = $this->getColumnSchema($item, $column);
@@ -795,7 +796,7 @@ QUERY;
           }
           // All other fields get stored as a literal.
           else {
-            $langcode = $field_item_list->getFieldDefinition()->isTranslatable() ? $entity->language()->getId() : NULL;
+            $langcode = $this->resolveFieldLangcode($entity, $item);
             // @todo Add datatype to literal.
             $literal = new Literal($value, $langcode);
             $graph->addLiteral((string) $id, (string) $properties['by_field'][$field_name][$column], $literal);
@@ -809,7 +810,7 @@ QUERY;
     $rdf_bundle = $rdf_bundle_mapping[$entity->bundle()];
     $graph->addResource((string) $id, $this->rdfBundlePredicate, $rdf_bundle);
 
-    // Give a chance to implementations to alter the graph before is saved.
+    // Give implementations a chance to alter the graph before is saved.
     $this->alterGraph($graph, $entity);
 
     // @todo Do all next operations in one transaction.
@@ -823,6 +824,34 @@ QUERY;
     catch (\Exception $e) {
       return FALSE;
     }
+  }
+
+  /**
+   * Resolves the language based on entity and current site language.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface
+   *   The entity.
+   * @param \Drupal\Core\Field\FieldItemInterface $field_item
+   *   The field for which to resolve the language.
+   *
+   * @return string|null
+   *   A language code or NULL, if the field has no language.
+   */
+  protected function resolveFieldLangcode(EntityInterface $entity, FieldItemInterface $field_item) {
+    if (!$langcode = $field_item->getLangcode()) {
+      return NULL;
+    }
+    $non_languages = [LanguageInterface::LANGCODE_NOT_SPECIFIED, LanguageInterface::LANGCODE_DEFAULT, LanguageInterface::LANGCODE_NOT_APPLICABLE, LanguageInterface::LANGCODE_SITE_DEFAULT, LanguageInterface::LANGCODE_SYSTEM];
+
+    // Accept only real languages or NULL.
+    if (in_array($langcode, $non_languages)) {
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
+      if (in_array($langcode, $non_languages)) {
+        return NULL;
+      }
+    }
+
+    return $langcode;
   }
 
   /**
