@@ -22,7 +22,7 @@ class Fallback extends RdfEntityIdPluginBase {
    * {@inheritdoc}
    */
   public function generate() {
-    return 'http://placeHolder/' .  (new Php())->generate();
+    return 'http://placeHolder/' . (new Php())->generate();
   }
 
 }
