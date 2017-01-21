@@ -84,10 +84,11 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
    */
   protected function doPreSave(EntityInterface $entity) {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    if (empty($entity->parent->target_id)) {
+    $parent = $entity->get('parent');
+    if ($parent->first() && empty($parent->target_id)) {
       // If the parent target ID is set to '' (empty string), remove the item to
       // avoid storing a triple corresponding to parent field in the backend.
-      $entity->get('parent')->removeItem(0);
+      $parent->removeItem(0);
     }
     return parent::doPreSave($entity);
   }
