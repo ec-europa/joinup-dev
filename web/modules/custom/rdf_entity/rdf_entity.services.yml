@@ -30,3 +30,6 @@ services:
   sparql.mapping_handler:
     class: \Drupal\rdf_entity\RdfMappingHandler
     arguments: ['@entity.manager']
+  plugin.manager.rdf_entity.id:
+    class: Drupal\rdf_entity\RdfEntityIdPluginManager
+    arguments: ['@container.namespaces', '@cache.discovery', '@module_handler', '@entity_type.manager']
