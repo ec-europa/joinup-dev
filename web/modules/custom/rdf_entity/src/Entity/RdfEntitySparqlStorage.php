@@ -829,7 +829,7 @@ QUERY;
   /**
    * Resolves the language based on entity and current site language.
    *
-   * @param \Drupal\Core\Entity\EntityInterface
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity.
    * @param \Drupal\Core\Field\FieldItemInterface $field_item
    *   The field for which to resolve the language.
@@ -841,7 +841,14 @@ QUERY;
     if (!$langcode = $field_item->getLangcode()) {
       return NULL;
     }
-    $non_languages = [LanguageInterface::LANGCODE_NOT_SPECIFIED, LanguageInterface::LANGCODE_DEFAULT, LanguageInterface::LANGCODE_NOT_APPLICABLE, LanguageInterface::LANGCODE_SITE_DEFAULT, LanguageInterface::LANGCODE_SYSTEM];
+
+    $non_languages = [
+      LanguageInterface::LANGCODE_NOT_SPECIFIED,
+      LanguageInterface::LANGCODE_DEFAULT,
+      LanguageInterface::LANGCODE_NOT_APPLICABLE,
+      LanguageInterface::LANGCODE_SITE_DEFAULT,
+      LanguageInterface::LANGCODE_SYSTEM,
+    ];
 
     // Accept only real languages or NULL.
     if (in_array($langcode, $non_languages)) {

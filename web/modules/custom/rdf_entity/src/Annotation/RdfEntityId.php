@@ -36,6 +36,8 @@ class RdfEntityId extends Plugin {
    *
    * The fist level is the entity type and the second, a list of bundles.
    *
+   * @var array
+   *
    * @code
    *   ...
    *   bundles = {
@@ -45,8 +47,6 @@ class RdfEntityId extends Plugin {
    *     },
    *   },
    * @endcode
-   *
-   * @var array
    */
   public $bundles = [];
 

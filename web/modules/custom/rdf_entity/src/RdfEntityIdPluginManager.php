@@ -26,12 +26,12 @@ class RdfEntityIdPluginManager extends DefaultPluginManager implements FallbackP
   /**
    * The entity type manager service.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
-   * Constructs the RdfEntityIdPluginManager object
+   * Constructs the RdfEntityIdPluginManager object.
    *
    * @param \Traversable $namespaces
    *   An object that implements \Traversable which contains the root paths
