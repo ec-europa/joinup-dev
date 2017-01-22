@@ -3,7 +3,7 @@
 namespace Drupal\rdf_taxonomy\Plugin\rdf_entity\Id;
 
 use Drupal\Component\Transliteration\TransliterationInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\rdf_entity\RdfEntityIdPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   },
  * )
  */
-class PolicyDomainVocabulary extends RdfEntityIdPluginBase implements ContainerFactoryPluginInterface {
+class PolicyDomainVocabulary extends RdfEntityIdPluginBase {
 
   /**
    * The transliteration service.
@@ -38,11 +38,13 @@ class PolicyDomainVocabulary extends RdfEntityIdPluginBase implements ContainerF
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    * @param \Drupal\Component\Transliteration\TransliterationInterface $transliteration
    *   The transliteration service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, TransliterationInterface $transliteration) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, TransliterationInterface $transliteration) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager);
     $this->transliteration = $transliteration;
   }
 
@@ -54,6 +56,7 @@ class PolicyDomainVocabulary extends RdfEntityIdPluginBase implements ContainerF
       $configuration,
       $plugin_id,
       $plugin_definition,
+      $container->get('entity_type.manager'),
       $container->get('transliteration')
     );
   }
@@ -63,7 +66,14 @@ class PolicyDomainVocabulary extends RdfEntityIdPluginBase implements ContainerF
    */
   public function generate() {
     $entity = $this->getEntity();
-    $pattern = empty($entity->parent->target_id) ? 'http://joinup.eu/ontology/policy-domain/category#%s' : 'http://joinup.eu/ontology/policy-domain/category#%s';
+
+    if (empty($entity->parent->target_id)) {
+      $pattern = 'http://joinup.eu/ontology/policy-domain/category#%s';
+    }
+    else {
+      $pattern = 'http://joinup.eu/ontology/policy-domain#%s';
+    }
+
     $name = strtolower($this->transliteration->transliterate($entity->label()));
     // Replace non-alphanumeric characters with dash.
     $name = preg_replace('/[^a-z0-9]+/', '-', $name);

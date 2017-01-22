@@ -21,7 +21,7 @@ class RdfEntityIdPluginManager extends DefaultPluginManager implements FallbackP
    *
    * @var array
    */
-  protected $cache = [];
+  protected $instances = [];
 
   /**
    * The entity type manager service.
@@ -67,19 +67,21 @@ class RdfEntityIdPluginManager extends DefaultPluginManager implements FallbackP
    *   The plugin.
    */
   public function getPlugin(EntityInterface $entity) {
-    $options = ['entity' => $entity];
     $entity_type_id = $entity->getEntityTypeId();
     $bundle = $entity->bundle();
 
-    foreach ($this->getDefinitions() as $plugin_id => $definition) {
-      if (isset($definition['bundles'][$entity_type_id])) {
-        if (in_array($bundle, $definition['bundles'][$entity_type_id])) {
+    if (!isset($this->instances[$entity_type_id][$bundle])) {
+      $options = ['entity' => $entity, 'plugin_id' => NULL];
+      foreach ($this->getDefinitions() as $plugin_id => $definition) {
+        if (isset($definition['bundles'][$entity_type_id]) && in_array($bundle, $definition['bundles'][$entity_type_id])) {
           $options['plugin_id'] = $plugin_id;
+          break;
         }
       }
+      $this->instances[$entity_type_id][$bundle] = $this->getInstance($options);
     }
 
-    return $this->getInstance($options);
+    return $this->instances[$entity_type_id][$bundle];
   }
 
   /**
@@ -87,6 +89,7 @@ class RdfEntityIdPluginManager extends DefaultPluginManager implements FallbackP
    */
   public function getDefinitions() {
     return array_filter(parent::getDefinitions(), function (array $definition) {
+      // Remove the fallback plugin from discovery.
       return $definition['id'] != $this->getFallbackPluginId($definition['id']);
     });
   }
@@ -99,19 +102,14 @@ class RdfEntityIdPluginManager extends DefaultPluginManager implements FallbackP
     if (empty($entity = $options['entity'])) {
       throw new \InvalidArgumentException("Options must contain the 'entity' object.");
     }
-    $plugin_id = empty($options['plugin_id']) ? NULL : $options['plugin_id'];
-    $entity_type_id = $entity->getEntityTypeId();
-    $bundle = $entity->bundle();
 
-    if (!isset($this->cache[$entity_type_id][$bundle])) {
-      $class = get_class($this->entityTypeManager->getStorage($entity->getEntityTypeId()));
-      if ($class != RdfEntitySparqlStorage::class && !is_subclass_of($class, RdfEntitySparqlStorage::class)) {
-        throw new \InvalidArgumentException("Passed entity must extend RdfEntitySparqlStorage.");
-      }
-      $this->cache[$entity_type_id][$bundle] = $this->createInstance($plugin_id, ['entity' => $entity]);
+    $plugin_id = array_key_exists('plugin_id', $options) ? $options['plugin_id'] : NULL;
+    $class = get_class($this->entityTypeManager->getStorage($entity->getEntityTypeId()));
+    if ($class != RdfEntitySparqlStorage::class && !is_subclass_of($class, RdfEntitySparqlStorage::class)) {
+      throw new \InvalidArgumentException("Passed entity must extend RdfEntitySparqlStorage.");
     }
 
-    return $this->cache[$entity_type_id][$bundle];
+    return $this->createInstance($plugin_id, ['entity' => $entity]);
   }
 
 }
