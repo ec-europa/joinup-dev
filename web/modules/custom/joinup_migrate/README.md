@@ -80,6 +80,9 @@ In order to start a migration we will need to do some preparation:
 
     # Files path. Point to the webroot of legacy site.
     migration.source.root = /path/to/mount/point/joinupv2.0
+
+    # How the migration will run: 'production' or 'test' mode.
+    migration.mode = production
     ```
 
     Note that `migration.db.host`, `migration.db.port`, `migration.db.user` and
@@ -90,6 +93,9 @@ In order to start a migration we will need to do some preparation:
     same use. The MySQL user used to connect to the Drupal 8 site should be
     granted with read-only permissions against the D6 database, so he can read
     source data.
+
+    Set the `migration.mode` to `test` if you want to run a migration only on a
+    small subset of relevant data, covering most of the cases.
 
 1. Run the migration setup. Note that this should normally only be run once
    since it will write the migration database credentials to `settings.php`.

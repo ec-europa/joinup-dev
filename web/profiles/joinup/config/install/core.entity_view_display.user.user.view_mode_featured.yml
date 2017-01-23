@@ -11,7 +11,7 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_professional_profile
+    - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_subscription_events
     - image.style.vertical_medium_image
   module:
@@ -53,7 +53,7 @@ content:
             lb-col: false
             classes: {  }
     type: image
-  field_user_professional_profile:
+  field_user_business_title:
     type: text_trimmed
     weight: 3
     label: hidden

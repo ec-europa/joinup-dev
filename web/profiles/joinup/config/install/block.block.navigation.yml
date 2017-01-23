@@ -19,8 +19,8 @@ settings:
   label: 'Collection menu'
   provider: collection
   label_display: '0'
-  level: '1'
-  depth: '1'
+  level: 1
+  depth: 1
   context_mapping:
     og: '@collection.collection_route_context:og'
 visibility:
