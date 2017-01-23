@@ -75,6 +75,14 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
       $this->assertEquals($expected_result, $access, $message);
     }
 
+    // A list of possible users.
+    $available_users = [
+      'userAnonymous',
+      'userAuthenticated',
+      'userModerator',
+      'userOwner',
+    ];
+
     // Test view, update, delete access.
     foreach ($this->readUpdateDeleteAccessProvider() as $entity_state => $test_data) {
       $content = Rdf::create([
@@ -85,12 +93,6 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
       ]);
       $content->save();
 
-      $available_users = [
-        'userAnonymous',
-        'userAuthenticated',
-        'userModerator',
-        'userOwner',
-      ];
       foreach ($test_data as $operation => $allowed_users) {
         foreach ($available_users as $user_var) {
           $this->userProvider->setUser($this->{$user_var});
@@ -104,6 +106,26 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
           $message = "User {$user_var} should {$result} {$operation} access for entity {$content->label()} ({$entity_state}).";
           $this->assertEquals($expected_result, $access, $message);
         }
+      }
+
+      // To save code (or for lazyness?) we are reusing the same owner entity,
+      // referencing it in a collection. The entity access handler has static
+      // caching that needs to be cleared to properly run the access checks on
+      // the content.
+      $this->entityAccess->resetCache();
+
+      // Owner entities that are referenced in other ones cannot be deleted.
+      $parent = Rdf::create([
+        'rid' => 'collection',
+        'label' => $this->randomMachineName(),
+        'uid' => $this->userOwner->id(),
+        'field_ar_state' => 'draft',
+        'field_ar_owner' => $content->id(),
+      ]);
+      $parent->save();
+      foreach ($available_users as $user_var) {
+        $this->userProvider->setUser($this->{$user_var});
+        $this->assertFalse($this->entityAccess->access($content, 'delete', $this->{$user_var}), "User {$user_var} should not have delete access for entity {$content->label()} ({$entity_state}).");
       }
     }
   }
