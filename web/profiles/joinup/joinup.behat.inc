@@ -376,6 +376,35 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks that a select field has exclusively the provided options.
+   *
+   * @param string $select
+   *   The name of the select element.
+   * @param string $options
+   *   A comma-separated list of options to be present.
+   *
+   * @Given the :select select has only the :options option(s)
+   */
+  public function assertSelectOptions($select, $options) {
+    /** @var \Behat\Mink\Element\NodeElement $field */
+    $field = $this->getSession()->getPage()->find('named', ['select', $select]);
+
+    // Retrieve all the options in the select.
+    $available_options = array_map(function ($option) {
+      /** @var \Behat\Mink\Element\NodeElement $option */
+      return trim($option->getText());
+    }, $field->findAll('xpath', '//option'));
+    sort($available_options);
+
+    $options = $this->explodeCommaSeparatedStepArgument($options);
+    sort($options);
+
+    // The PHPUnit assertion will allow to undestand easily which values are
+    // missing and which one are extra.
+    \PHPUnit_Framework_Assert::assertEquals($options, $available_options, "The {$select} select doesn't contain the wanted options.");
+  }
+
+  /**
    * Commit the solr index for testing purposes.
    *
    * @Then I commit the solr index
