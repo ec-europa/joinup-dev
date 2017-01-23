@@ -19,6 +19,6 @@ default_value:
     value: __new__
 default_value_callback: ''
 settings:
-  workflow: document_pre_moderation
+  workflow: pre_moderated
   workflow_callback: joinup_document_workflow_selector
 field_type: state

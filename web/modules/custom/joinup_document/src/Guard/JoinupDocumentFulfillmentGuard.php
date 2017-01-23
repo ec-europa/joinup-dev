@@ -22,17 +22,17 @@ class JoinupDocumentFulfillmentGuard implements GuardInterface {
   /**
    * Elibrary option defining that only facilitators can create content.
    */
-  const ELIBRARY_LEVEL_0 = 0;
+  const ELIBRARY_ONLY_FACILITATORS = 0;
 
   /**
    * Elibrary option defining that members and facilitators can create content.
    */
-  const ELIBRARY_LEVEL_1 = 1;
+  const ELIBRARY_MEMBERS_FACILITATORS = 1;
 
   /**
    * Elibrary option defining that any registered user can create content.
    */
-  const ELIBRARY_LEVEL_2 = 2;
+  const ELIBRARY_REGISTERED_USERS = 2;
 
   /**
    * The config factory.
@@ -129,7 +129,7 @@ class JoinupDocumentFulfillmentGuard implements GuardInterface {
         return TRUE;
       }
     }
-    unset($authorized_roles['owner']);
+    $authorized_roles = array_diff($authorized_roles, ['owner']);
 
     $user = $this->workflowUserProvider->getUser();
     if (array_intersect($authorized_roles, $user->getRoles())) {
@@ -167,18 +167,18 @@ class JoinupDocumentFulfillmentGuard implements GuardInterface {
    */
   protected function getElibraryAllowedRoles(EntityInterface $document) {
     $roles_array = [
-      self::ELIBRARY_LEVEL_0 => [
+      self::ELIBRARY_ONLY_FACILITATORS => [
         'rdf_entity-collection-facilitator',
         'rdf_entity-solution-facilitator',
         'moderator',
       ],
-      self::ELIBRARY_LEVEL_1 => [
+      self::ELIBRARY_MEMBERS_FACILITATORS => [
         'rdf_entity-collection-facilitator',
         'rdf_entity-solution-facilitator',
         'rdf_entity-collection-member',
         'moderator',
       ],
-      self::ELIBRARY_LEVEL_2 => [
+      self::ELIBRARY_REGISTERED_USERS => [
         'rdf_entity-collection-facilitator',
         'rdf_entity-solution-facilitator',
         'rdf_entity-collection-member',
@@ -191,7 +191,7 @@ class JoinupDocumentFulfillmentGuard implements GuardInterface {
     if (empty($parent)) {
       // For security reasons, if no parent is returned, return the strictest
       // option.
-      return $roles_array[self::ELIBRARY_LEVEL_0];
+      return $roles_array[self::ELIBRARY_ONLY_FACILITATORS];
     }
 
     $elibrary_name = $this->getParentElibraryName($parent);

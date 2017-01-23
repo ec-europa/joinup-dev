@@ -73,7 +73,7 @@ class JoinupDocumentRelationManager implements ContainerInjectionInterface {
   public function getDocumentWorkflow(EntityInterface $document) {
     $parent = $this->getDocumentParent($document);
     if (empty($parent) || in_array($parent->bundle(), ['collection', 'solution'])) {
-      return 'document_pre_moderated';
+      return 'pre_moderated';
     }
     $fields = [
       'collection' => 'field_ar_moderation',
@@ -81,7 +81,7 @@ class JoinupDocumentRelationManager implements ContainerInjectionInterface {
     ];
 
     $moderation = $parent->{$fields[$parent->bundle()]}->value;
-    $workflow_id = $moderation == TRUE ? 'document_pre_moderated' : 'document_post_moderated';
+    $workflow_id = $moderation == TRUE ? 'pre_moderated' : 'post_moderated';
     return $workflow_id;
   }
 
