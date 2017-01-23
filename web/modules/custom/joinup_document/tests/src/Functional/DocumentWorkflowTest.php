@@ -3,6 +3,7 @@
 namespace Drupal\Tests\joinup_document\Functional;
 
 use Drupal\Core\Session\AnonymousUserSession;
+use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -93,13 +94,13 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
   public function testCrudAccess() {
     // The owner, when it comes to 'create' operation, is just an authenticated
     // user.
-    $test_roles = array_diff($this->getAvailableUsers(), ['owner']);
+    $test_roles = array_diff($this->getAvailableUsers(), ['userOwner']);
 
     // Test create access.
     foreach ($this->createAccessProvider() as $parent_bundle => $elibrary_data) {
       foreach ($elibrary_data as $elibrary => $allowed_roles) {
         $parent = $this->createParent($parent_bundle, 'validated', NULL, $elibrary);
-        $content = $this->createNode([
+        $content = Node::create([
           'type' => 'document',
           OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
           'uid' => $this->userOwner->id(),
@@ -108,11 +109,13 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
         $non_allowed_roles = array_diff($test_roles, $allowed_roles);
         $operation = 'create';
         foreach ($allowed_roles as $user_var) {
+          $this->userProvider->setUser($this->{$user_var});
           $access = $this->workflowAccess->entityAccess($content, $operation, $this->{$user_var})->isAllowed();
           $message = "User {$user_var} should have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
           $this->assertEquals(TRUE, $access, $message);
         }
         foreach ($non_allowed_roles as $user_var) {
+          $this->userProvider->setUser($this->{$user_var});
           $access = $this->workflowAccess->entityAccess($content, 'create', $this->{$user_var})->isAllowed();
           $message = "User {$user_var} should not have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
           $this->assertEquals(FALSE, $access, $message);
