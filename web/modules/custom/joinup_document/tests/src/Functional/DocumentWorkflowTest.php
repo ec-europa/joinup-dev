@@ -205,9 +205,12 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
           'userOgFacilitator',
         ],
         self::ELIBRARY_REGISTERED_USERS => [
-          'userModerator',
           'userAuthenticated',
+          'userModerator',
           'userOgFacilitator',
+          // The following users also have access due to being authenticated.
+          'userOgMember',
+          'userOgAdministrator',
         ],
       ]
     ];
