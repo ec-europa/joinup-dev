@@ -102,18 +102,18 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
         $content = $this->createNode([
           'type' => 'document',
           OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
+          'uid' => $this->userOwner->id(),
         ]);
 
         $non_allowed_roles = array_diff($test_roles, $allowed_roles);
         $operation = 'create';
         foreach ($allowed_roles as $user_var) {
-          $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-          $access = $this->ogAccess->userAccessEntity('create', $content, $this->{$user_var})->isAllowed();
+          $access = $this->workflowAccess->entityAccess($content, $operation, $this->{$user_var})->isAllowed();
           $message = "User {$user_var} should have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
           $this->assertEquals(TRUE, $access, $message);
         }
         foreach ($non_allowed_roles as $user_var) {
-          $access = $this->ogAccess->userAccessEntity('create', $content, $this->{$user_var})->isAllowed();
+          $access = $this->workflowAccess->entityAccess($content, 'create', $this->{$user_var})->isAllowed();
           $message = "User {$user_var} should not have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
           $this->assertEquals(FALSE, $access, $message);
         }
