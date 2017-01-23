@@ -55,7 +55,17 @@ function joinup_core_field_widget_form_alter(&$element, FormStateInterface $form
   if ($fieldType != 'state' || empty($form_state->getBuildInfo()['callback_object'])) {
     return;
   }
-  $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
+
+  $form = $context['form'];
+  // Inline entity forms have the related entity directly in the form, as the
+  // form state is the one of the main form.
+  if (isset($form['#type']) && $form['#type'] === 'inline_entity_form') {
+    $entity = $form['#entity'];
+  }
+  else {
+    $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
+  }
+
   if (!($entity instanceof ContentEntityInterface)) {
     return;
   }
