@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\rdf_taxonomy\Plugin\rdf_entity\Id;
+namespace Drupal\joinup_core\Plugin\rdf_entity\Id;
 
 use Drupal\Component\Transliteration\TransliterationInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;

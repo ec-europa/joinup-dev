@@ -1,21 +1,24 @@
 <?php
 
-namespace Drupal\rdf_taxonomy\Plugin\EntityReferenceSelection;
+namespace Drupal\joinup_core\Plugin\EntityReferenceSelection;
 
 use Drupal\taxonomy\Plugin\EntityReferenceSelection\TermSelection;
 
 /**
- * Provides specific access control for the taxonomy_term entity type.
+ * Provides a RDF taxonomy term selection (with groups).
+ *
+ * This is inspired from https://www.drupal.org/project/taxonomy_container but
+ * is adapted to use string ID for the parent term.
  *
  * @EntityReferenceSelection(
- *   id = "term_rdf_selection",
+ *   id = "grouped_rdf_taxonomy_term_selection",
  *   label = @Translation("Taxonomy RDF term selection (with groups)"),
  *   entity_types = {"taxonomy_term"},
- *   group = "term_rdf_selection",
+ *   group = "grouped_rdf_taxonomy_term_selection",
  *   weight = 1
  * )
  */
-class TermRdfSelection extends TermSelection {
+class GroupedRdfTaxonomyTermSelection extends TermSelection {
 
   /**
    * {@inheritdoc}
