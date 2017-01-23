@@ -39,7 +39,7 @@ abstract class JoinupKernelTestBase extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  protected function setUp() {
     parent::setUp();
 
     if (!$this->setUpSparql()) {
@@ -49,7 +49,8 @@ abstract class JoinupKernelTestBase extends KernelTestBase {
     if ($this->detectVirtuoso6()) {
       $this->markTestSkipped('Skipping: Not running on Virtuoso 6.');
     }
-
+    $this->installSchema('system', 'sequences');
+    $this->installEntitySchema('user');
     $this->installConfig(['rdf_entity']);
     $this->installEntitySchema('rdf_entity');
     $this->installConfig(['rdf_entity_test']);

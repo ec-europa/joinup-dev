@@ -5,11 +5,11 @@ third_party_settings:
   rdf_entity:
     mapping:
       rid:
-        target_id: 'http://example.com/dummy'
+        target_id: 'http://example.com/dummy_with_owner'
       uid:
-        target_id: ''
+        target_id: 'http://example.com/dummy_with_owner/uid'
       label:
-        value: 'http://example.com/dummy_label'
+        value: 'http://example.com/dummy_with_owner_label'
       uuid:
         value: ''
       graph:
@@ -17,6 +17,6 @@ third_party_settings:
     graph:
       default: 'http://example.com/dummy/published'
       draft: 'http://example.com/dummy/draft'
-name: Dummy
-rid: dummy
+name: 'With Owner'
+rid: with_owner
 description: ''
