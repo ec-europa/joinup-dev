@@ -8,7 +8,7 @@ dependencies:
     - field.field.node.document.field_document_publication_date
     - field.field.node.document.field_document_short_title
     - field.field.node.document.field_document_source_url
-    - field.field.node.document.field_document_state
+    - field.field.node.document.field_state
     - field.field.node.document.og_audience
     - node.type.document
   module:
@@ -61,7 +61,7 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
-  field_document_state:
+  field_state:
     type: state_machine_buttons
     weight: 7
     settings:

@@ -107,13 +107,14 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
         $non_allowed_roles = array_diff($test_roles, $allowed_roles);
         $operation = 'create';
         foreach ($allowed_roles as $user_var) {
+          $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
           $access = $this->ogAccess->userAccessEntity('create', $content, $this->{$user_var})->isAllowed();
-          $message = "User {$user_var} should have {$operation} access for bundle 'document' with parent {$parent_bundle}.";
+          $message = "User {$user_var} should have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
           $this->assertEquals(TRUE, $access, $message);
         }
         foreach ($non_allowed_roles as $user_var) {
           $access = $this->ogAccess->userAccessEntity('create', $content, $this->{$user_var})->isAllowed();
-          $message = "User {$user_var} should not have {$operation} access for bundle 'document' with parent {$parent_bundle}.";
+          $message = "User {$user_var} should not have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
           $this->assertEquals(FALSE, $access, $message);
         }
       }
@@ -130,7 +131,7 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
           $content = $this->createNode([
             'type' => 'document',
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
-            'field_document_state' => $content_state,
+            'field_state' => $content_state,
             'status' => $this->isPublishedState($content_state),
           ]);
 
@@ -455,7 +456,7 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
         foreach ($workflow_data as $user_var => $transitions) {
           $content = $this->createNode([
             'type' => 'document',
-            'field_document_state' => $content_state,
+            'field_state' => $content_state,
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
             'status' => $this->isPublishedState($content_state),
           ]);
@@ -470,7 +471,7 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
 
           // Override the user to be checked for the allowed transitions.
           $this->userProvider->setUser($this->{$user_var});
-          $actual_transitions = $content->get('field_document_state')
+          $actual_transitions = $content->get('field_state')
             ->first()
             ->getTransitions();
           $actual_transitions = array_map(function ($transition) {

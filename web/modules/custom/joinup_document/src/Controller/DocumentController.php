@@ -80,7 +80,7 @@ class DocumentController extends ControllerBase {
       return AccessResult::forbidden();
     }
     $document = $this->createDocumentEntity($rdf_entity);
-    return AccessResult::allowedIf(!empty($document->get('field_document_state')->first()->getTransitions()));
+    return AccessResult::allowedIf(!empty($document->get('field_state')->first()->getTransitions()));
   }
 
   /**

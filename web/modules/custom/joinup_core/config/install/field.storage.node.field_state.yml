@@ -4,8 +4,8 @@ dependencies:
   module:
     - node
     - state_machine
-id: node.field_document_state
-field_name: field_document_state
+id: node.field_state
+field_name: field_state
 entity_type: node
 type: state
 settings: {  }

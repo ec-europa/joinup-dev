@@ -153,7 +153,7 @@ class JoinupDocumentFulfillmentGuard implements GuardInterface {
    * @see https://www.drupal.org/node/2745673
    */
   protected function getState(EntityInterface $entity) {
-    return $entity->get('field_document_state')->first()->value;
+    return $entity->get('field_state')->first()->value;
   }
 
   /**

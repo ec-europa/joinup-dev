@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_document_state
+    - field.storage.node.field_state
     - node.type.document
   module:
     - state_machine
-id: node.document.field_document_state
-field_name: field_document_state
+id: node.document.field_state
+field_name: field_state
 entity_type: node
 bundle: document
 label: State
