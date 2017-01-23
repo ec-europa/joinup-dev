@@ -17,6 +17,7 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
@@ -34,6 +35,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use TraversingTrait;
   use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
@@ -330,27 +332,19 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Checks that the given select field has the given options.
    *
-   * To do this we extract the field text which contains the values expected
-   * to be found in the select box as a concatenated string.
-   * Then we check if the value is contained in the extracted value.
-   *
    * @param string $select
    *    The name of the field element.
    * @param string $options
    *    The options to be checked separated by comma. Only labels are accepted.
    *
-   * @throws Exception
-   *    Throws an exception when a value does not exists.
-   *
-   * @Given (the ):select field has the :options option(s)
+   * @Given (the ):select field should contain the :options option(s)
    */
-  public function checkSelectOptions($select, $options) {
-    $values = $this->getSession()->getPage()->findField($select)->getText();
-    foreach (explode(',', $options) as $option) {
-      if (strpos($values, trim($option)) === FALSE) {
-        throw new \Exception("The option {$option} should exist in the {$select} field but was not found.");
-      }
-    }
+  public function checkSelectContainsOptions($select, $options) {
+    $field = $this->findSelect($select);
+    $available_options = array_values($this->getSelectOptions($field));
+    $options = $this->explodeCommaSeparatedStepArgument($options);
+
+    \PHPUnit_Framework_Assert::assertArraySubset($options, $available_options, "The '{$select}' select doesn't contain all the wanted options.");
   }
 
   /**
@@ -364,14 +358,17 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @throws Exception
    *    Throws an exception when a value exists.
    *
-   * @Given (the ):select field does not have the :options option(s)
+   * @Given (the ):select field should not contain the :options option(s)
    */
-  public function checkSelectOptionsInverse($select, $options) {
-    $values = $this->getSession()->getPage()->findField($select)->getText();
-    foreach (explode(',', $options) as $option) {
-      if (strpos($values, trim($option)) !== FALSE) {
-        throw new \Exception("The option {$option} should not exist in the {$select} field but was found.");
-      }
+  public function checkSelectDoesNotContainOptions($select, $options) {
+    $field = $this->findSelect($select);
+    $available_options = array_values($this->getSelectOptions($field));
+    $options = $this->explodeCommaSeparatedStepArgument($options);
+
+    $intersection = array_intersect($available_options, $options);
+
+    if (!empty($intersection)) {
+      throw new \Exception("The select '{$select}' should not contain the options: " . implode(', ', $intersection));
     }
   }
 
@@ -383,17 +380,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $options
    *   A comma-separated list of options to be present.
    *
-   * @Given the :select select has only the :options option(s)
+   * @Given the :select select has the :options option(s)
    */
   public function assertSelectOptions($select, $options) {
-    /** @var \Behat\Mink\Element\NodeElement $field */
-    $field = $this->getSession()->getPage()->find('named', ['select', $select]);
-
-    // Retrieve all the options in the select.
-    $available_options = array_map(function ($option) {
-      /** @var \Behat\Mink\Element\NodeElement $option */
-      return trim($option->getText());
-    }, $field->findAll('xpath', '//option'));
+    $field = $this->findSelect($select);
+    $available_options = $this->getSelectOptions($field);
     sort($available_options);
 
     $options = $this->explodeCommaSeparatedStepArgument($options);
