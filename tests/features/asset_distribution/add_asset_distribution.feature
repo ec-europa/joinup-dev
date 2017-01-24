@@ -22,7 +22,7 @@ Feature: Add distribution through the UI
       | title       | WTFPL                                    |
       | description | The WTFPL is a rather permissive licence |
 
-    Scenario: "Add distribution" from the solution page.
+    Scenario: Add a distribution to a solution as a facilitator.
       When I am logged in as a "facilitator" of the "Solution random x name" solution
       And I go to the homepage of the "Solution random x name" solution
       Then I should see the link "Add distribution"
@@ -89,8 +89,7 @@ Feature: Add distribution through the UI
       When I go to the homepage of the "Solution random x name" solution
       Then I should not see the link "Add distribution"
 
-
-    Scenario: Add distribution as a facilitator.
+    Scenario: Add a distribution to a release as a facilitator.
       When I am logged in as a "facilitator" of the "Solution random x name" solution
       When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
       And I click "Add distribution"
