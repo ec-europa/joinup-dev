@@ -380,7 +380,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $options
    *   A comma-separated list of options to be present.
    *
-   * @Given the :select select has the :options option(s)
+   * @Given the :select select available options should be :options
    */
   public function assertSelectOptions($select, $options) {
     $field = $this->findSelect($select);
@@ -392,7 +392,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     // The PHPUnit assertion will allow to undestand easily which values are
     // missing and which one are extra.
-    \PHPUnit_Framework_Assert::assertEquals($options, $available_options, "The {$select} select doesn't contain the wanted options.");
+    \PHPUnit_Framework_Assert::assertEquals($options, $available_options, "The '{$select}' select options don't match the wanted ones.");
   }
 
   /**
