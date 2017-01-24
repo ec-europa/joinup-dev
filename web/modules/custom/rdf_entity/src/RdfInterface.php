@@ -44,4 +44,15 @@ interface RdfInterface extends ContentEntityInterface, EntityPublishedInterface,
    */
   public function deleteFromGraph($graph);
 
+  /**
+   * Checks if the entity has a specific graph.
+   *
+   * @param string $graph
+   *   The graph to be checked ('draft', etc).
+   *
+   * @return bool
+   *   TRUE if this entity has the specified graph.
+   */
+  public function hasGraph($graph);
+
 }

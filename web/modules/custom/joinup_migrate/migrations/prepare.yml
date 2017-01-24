@@ -7,6 +7,7 @@ process:
   collection: collection
   type: type
   nid: nid
+  policy: policy
   policy2: policy2
   abstract: abstract
   logo: logo
@@ -14,8 +15,7 @@ process:
   elibrary: elibrary
   publisher: publisher
   contact: contact
-  # @todo Fix in https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068.
-  # collection_state: collection_state
+  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068.
   # status: status
 destination:
   plugin: prepare

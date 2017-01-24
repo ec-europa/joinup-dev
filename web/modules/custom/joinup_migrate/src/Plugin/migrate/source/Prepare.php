@@ -4,7 +4,6 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Core\Database\Database;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
-use Drupal\migrate\Row;
 
 /**
  * Prepares the collection migration.
@@ -38,13 +37,13 @@ class Prepare extends SourcePluginBase {
       'nid' => $this->t('Node ID'),
       'type' => $this->t('Node type'),
       'new_collection' => $this->t('New collection'),
+      'policy' => $this->t('Level1 policy domain'),
       'policy2' => $this->t('Level2 policy domain'),
       'abstract' => $this->t('Abstract'),
       'owner' => $this->t('Owner'),
       'logo' => $this->t('Logo'),
       'banner' => $this->t('Banner'),
       'elibrary' => $this->t('Elibrary creation'),
-      'collection_state' => $this->t('Collection state'),
       'status' => $this->t('Status'),
     ];
   }
@@ -66,10 +65,10 @@ class Prepare extends SourcePluginBase {
     $db = Database::getConnection();
     $source = Database::getConnection('default', 'migrate');
 
-    // Build a list of collections that have at least 1 row with 'del' == 'Yes'.
+    // Build a list of collections that have at least 1 row with 'migrate' == 1.
     $allowed = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
       ->fields('m', ['collection'])
-      ->condition('m.del', 'No')
+      ->condition('m.migrate', 1)
       ->condition('m.collection', ['', '#N/A'], 'NOT IN')
       ->isNotNull('m.policy2')
       ->groupBy('m.collection')
@@ -77,52 +76,63 @@ class Prepare extends SourcePluginBase {
       ->execute()
       ->fetchCol();
 
+    $fields = $this->fields();
+    unset($fields['status']);
     $query = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
-      ->fields('m', array_keys($this->fields()))
+      ->fields('m', array_keys($fields))
       ->fields('n', ['vid'])
-      ->condition('m.collection', $allowed, 'IN')
       ->orderBy('m.collection', 'ASC');
+
+    if ($allowed) {
+      $query->condition('m.collection', $allowed, 'IN');
+    }
+    else {
+      // Return an empty set if there are no eligible collections.
+      $query->condition(1, 2);
+    }
+
     $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'm.nid = n.nid');
 
     $collections = [];
     foreach ($query->execute()->fetchAll() as $row) {
-      if (!isset($collections[$row['collection']])) {
-        $collections[$row['collection']] = [
-          'collection' => $row['collection'],
+      $collection = $row['collection'];
+      if (!isset($collections[$collection])) {
+        $collections[$collection] = [
+          'collection' => $collection,
         ];
       }
 
       // New collections.
       if ($row['new_collection'] === 'Yes') {
-        $collections[$row['collection']]['nid'] = 0;
-        $collections[$row['collection']]['type'] = '';
+        $collections[$collection]['nid'] = 0;
+        $collections[$collection]['type'] = '';
 
         if (!empty($row['abstract'])) {
-          $collections[$row['collection']]['abstract'] = $row['abstract'];
+          $collections[$collection]['abstract'] = $row['abstract'];
         }
         if (!empty($row['logo'])) {
-          $collections[$row['collection']]['logo'] = $row['logo'];
+          $collections[$collection]['logo'] = $row['logo'];
         }
         if (!empty($row['banner'])) {
-          $collections[$row['collection']]['banner'] = $row['banner'];
+          $collections[$collection]['banner'] = $row['banner'];
         }
         if (!empty($row['elibrary'])) {
-          $collections[$row['collection']]['elibrary'] = (int) $row['elibrary'];
+          $collections[$collection]['elibrary'] = (int) $row['elibrary'];
         }
       }
       // Collections inheriting values from 'community' or 'repository'.
       else {
         if (in_array($row['type'], ['community', 'repository'])) {
-          if (isset($collections[$row['collection']]['nid'])) {
-            $map->saveMessage(['collection' => $row['collection']], "On collection '{$row['collection']}' nid {$row['nid']} ({$row['type']}) is overriding existing value {$collections[$row['collection']]['nid']} ({$collections[$row['collection']]['type']}).");
+          if (isset($collections[$collection]['nid'])) {
+            $map->saveMessage(['collection' => $collection], "On collection '$collection' nid {$row['nid']} ({$row['type']}) is overriding existing value {$collections[$collection]['nid']} ({$collections[$collection]['type']}).");
           }
-          $collections[$row['collection']]['nid'] = $row['nid'];
-          $collections[$row['collection']]['type'] = $row['type'];
+          $collections[$collection]['nid'] = $row['nid'];
+          $collections[$collection]['type'] = $row['type'];
         }
       }
 
       if (!empty($row['policy2'])) {
-        $collections[$row['collection']]['policy2'] = $row['policy2'];
+        $collections[$collection]['policy2'] = $row['policy2'];
       }
 
       if (!empty($row['owner']) && ($row['owner'] == 'Yes') && in_array($row['type'], array_keys($publisher))) {
@@ -133,7 +143,7 @@ class Prepare extends SourcePluginBase {
           ->execute()
           ->fetchCol();
         if ($publishers) {
-          $collections[$row['collection']]['publisher'] = '|' . implode('|', $publishers) . '|';
+          $collections[$collection]['publisher'] = '|' . implode('|', $publishers) . '|';
         }
         $contacts = $source
           ->select($contact[$row['type']][0])
@@ -142,22 +152,23 @@ class Prepare extends SourcePluginBase {
           ->execute()
           ->fetchCol();
         if ($contacts) {
-          $collections[$row['collection']]['contact'] = '|' . implode('|', $contacts) . '|';
+          $collections[$collection]['contact'] = '|' . implode('|', $contacts) . '|';
         }
       }
     }
 
-    return new \ArrayIterator($collections);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function prepareRow(Row $row) {
-    if ($row->getSourceProperty('nid') === NULL) {
-      $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), "Collection '{$row->getSourceProperty('collection')}' should inherit data from D6 but has no 'community' or 'repository' records defined.");
+    foreach ($collections as $collection => $data) {
+      // New collections's nid is 0. Collections with a NULL nid are collections
+      // inheriting their data (abstract, etc.) from a Drupal 6 'community' or
+      // 'repository' but not containing any 'community' or 'repository'. Such
+      // cases should not be migrated and the error should be logged.
+      if (!isset($data['nid'])) {
+        $map->saveMessage(['collection' => $collection], "Collection '$collection' should inherit data from D6 but has no 'community' or 'repository' records defined.");
+        unset($collections[$collection]);
+      }
     }
-    return parent::prepareRow($row);
+
+    return new \ArrayIterator($collections);
   }
 
 }

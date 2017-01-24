@@ -34,19 +34,30 @@ function rdf_draft_entity_type_alter(array &$entity_types) {
   if ($recurse) {
     return;
   }
+
+  $config = \Drupal::config('rdf_draft.settings');
   foreach ($entity_types as $entity_type_id => $entity_type) {
-    if ($entity_type->hasViewBuilderClass() && $entity_type->hasLinkTemplate('canonical')) {
-      $recurse = TRUE;
-      $storage = \Drupal::entityManager()->getStorage($entity_type_id);
-      $recurse = FALSE;
-      if ($storage  instanceof RdfEntitySparqlStorage) {
-        $definitions = $storage->getGraphDefinitions();
-        unset($definitions['default']);
-        // Set the link templates for each graph type.
-        foreach ($definitions as $name => $definition) {
-          $entity_type->setLinkTemplate('rdf-draft-' . $name, "/$entity_type_id/{{$entity_type_id}}/graph/$name");
-        }
-      }
+    if (
+      // This entity type is not eligible for RDF Draft.
+      !($bundles = $config->get("revision_bundle_{$entity_type_id}"))
+      // Or doesn't have any 'draft' enabled bundle.
+      || !array_filter($bundles)
+      // Or doesn't have a view builder class.
+      || !$entity_type->hasViewBuilderClass()
+      // Or is missing a canonical link template.
+      || !$entity_type->hasLinkTemplate('canonical')
+    ) {
+      continue;
+    }
+
+    $recurse = TRUE;
+    $storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
+    $recurse = FALSE;
+    $definitions = $storage->getGraphDefinitions();
+    unset($definitions['default']);
+    // Set the link templates for each graph type.
+    foreach ($definitions as $name => $definition) {
+      $entity_type->setLinkTemplate('rdf-draft-' . $name, "/$entity_type_id/{{$entity_type_id}}/graph/$name");
     }
   }
 }
@@ -60,7 +71,7 @@ function rdf_draft_entity_operation(EntityInterface $entity) {
   if ($storage  instanceof RdfEntitySparqlStorage) {
     $definitions = $storage->getGraphDefinitions();
     foreach ($definitions as $name => $definition) {
-      if ($entity->hasLinkTemplate('rdf-draft-' . $name)) {
+      if ($entity->hasLinkTemplate('rdf-draft-' . $name) && $entity->hasGraph($name)) {
         $operations[$name] = array(
           'title' => t('View @graph', ['@graph' => $name]),
           'weight' => 100,
