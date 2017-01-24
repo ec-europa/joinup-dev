@@ -33,7 +33,7 @@ function demo_users_rdf_entity_insert(EntityInterface $entity) {
 
   // Check if there is already a membership. If one of the facilitators create
   // an entity, then the membership will already exist.
-  if (!Og::getMembership($entity, $facilitator)) {
+  if (!Og::getMembership($entity, $facilitator) && ($facilitator->id() != \Drupal::currentUser()->id())) {
     /** @var \Drupal\og\OgMembershipInterface $membership */
     $membership = OgMembership::create();
     $membership

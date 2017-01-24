@@ -4,7 +4,7 @@ dependencies:
   config:
     - field.field.node.news.body
     - field.field.node.news.field_comments
-    - field.field.node.news.field_news_kicker
+    - field.field.node.news.field_news_headline
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_state
     - field.field.node.news.field_spatial_coverage
@@ -30,12 +30,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_comments:
-    weight: 29
+    weight: 7
     settings: {  }
     third_party_settings: {  }
     type: comment_default
-  field_news_kicker:
-    weight: 1
+  field_news_headline:
+    weight: 0
     settings:
       size: 60
       placeholder: ''
@@ -72,7 +72,7 @@ content:
     type: entity_reference_autocomplete
   title:
     type: string_textfield
-    weight: 0
+    weight: 1
     settings:
       size: 60
       placeholder: ''
