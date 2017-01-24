@@ -62,16 +62,8 @@ Feature: Add distribution through the UI
       # Clean up the asset distribution that was created through the UI.
       Then I delete the "Linux x86-64 SDK" asset distribution
 
-      # Test that unauthorized users cannot add a distribution directly from the
-      # solution page.
-      When I am logged in as an "authenticated user"
-      And I go to the homepage of the "Solution random x name" solution
-      Then I should not see the link "Add distribution"
-
-      When I am an anonymous user
-      And I go to the homepage of the "Solution random x name" solution
-      Then I should not see the link "Add distribution"
-
+    # Test that unauthorized users cannot add a distribution, both for a release
+    # and directly from the solution page.
     Scenario: "Add distribution" button should not be shown to unprivileged users.
       When I am logged in as a "facilitator" of the "Solution random x name" solution
       And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
@@ -82,10 +74,15 @@ Feature: Add distribution through the UI
       When I am logged in as an "authenticated user"
       And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
       Then I should not see the link "Add distribution"
+      When I go to the homepage of the "Solution random x name" solution
+      Then I should not see the link "Add distribution"
 
       When I am an anonymous user
       And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
       Then I should not see the link "Add distribution"
+      When I go to the homepage of the "Solution random x name" solution
+      Then I should not see the link "Add distribution"
+
 
     Scenario: Add distribution as a facilitator.
       When I am logged in as a "facilitator" of the "Solution random x name" solution
