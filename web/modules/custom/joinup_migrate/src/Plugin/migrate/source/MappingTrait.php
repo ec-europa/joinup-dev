@@ -19,7 +19,7 @@ trait MappingTrait {
     /** @var \Drupal\Core\Database\Query\SelectInterface $query */
     $query = Database::getConnection()->select('joinup_migrate_mapping', 'j', ['fetch' => \PDO::FETCH_ASSOC])
       ->distinct()
-      ->condition('j.del', 'No')
+      ->condition('j.migrate', 1)
       ->condition('j.collection', ['', '#N/A'], 'NOT IN');
 
     return $query;

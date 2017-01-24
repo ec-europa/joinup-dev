@@ -15,6 +15,7 @@ class Solution extends SolutionBase {
 
   use ContactTrait;
   use CountryTrait;
+  use ElibraryCreationTrait;
   use MappingTrait;
   use OwnerTrait;
   use UriTrait;
@@ -39,6 +40,7 @@ class Solution extends SolutionBase {
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
       'contact' => $this->t('Contact info'),
+      'elibrary' => $this->t('Elibrary creation'),
     ] + parent::fields();
   }
 
@@ -49,7 +51,7 @@ class Solution extends SolutionBase {
     $query = parent::query();
 
     $this->alias['content_type_asset_release'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_asset_release", 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_documentation", 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_homepage_doc_nid = %alias.nid");
+    $this->alias['node_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_homepage_doc_nid = %alias.nid");
     $this->alias['content_type_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_documentation", 'content_type_documentation', "{$this->alias['node_documentation']}.vid = %alias.vid");
     $this->alias['state'] = $query->leftJoin("{$this->getSourceDbName()}.workflow_node", 'state', "{$this->alias['node']}.nid = %alias.nid");
 
@@ -63,7 +65,7 @@ class Solution extends SolutionBase {
     $query->addExpression("TRIM({$this->alias['data_set_uri']}.field_id_uri_value)", 'metrics_page');
 
     return $query
-      ->fields('m', ['policy2'])
+      ->fields('m', ['elibrary', 'policy2'])
       ->fields($this->alias['node'], ['title', 'created', 'changed', 'vid'])
       ->fields($this->alias['node_revision'], ['body'])
       ->fields($this->alias['state'], ['sid'])
@@ -105,7 +107,7 @@ class Solution extends SolutionBase {
       $row->setSourceProperty('changed_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
 
-    // Extract keywords.
+    // Keywords.
     $query = $this->select('term_node', 'tn');
     $query->join('term_data', 'td', 'tn.tid = td.tid');
     $keywords = $query
@@ -125,29 +127,17 @@ class Solution extends SolutionBase {
       }
     }
 
-    // Country.
-    $row->setSourceProperty('country', $this->getCountries([$row->getSourceProperty('vid')]));
-
-    // Status.
-    $query = $this->select('term_node', 'tn');
-    $query->join('term_data', 'td', 'tn.tid = td.tid');
-    $status = $query
-      ->fields('tn', ['tid'])
-      ->condition('tn.nid', $nid)
-      ->condition('tn.vid', $vid)
-      // The status vocabulary vid is 69.
-      ->condition('td.vid', 69)
-      ->orderBy('tn.tid', 'DESC')
-      ->range(0, 1)
-      ->execute()
-      ->fetchCol();
-    $row->setSourceProperty('status', $status);
+    // Spatial coverage.
+    $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Owners.
     $row->setSourceProperty('owner', $this->getSolutionOwners($vid) ?: NULL);
 
-    // Owners.
+    // Contacts.
     $row->setSourceProperty('contact', $this->getSolutionContacts($vid) ?: NULL);
+
+    // Elibrary creation.
+    $this->elibraryCreation($row);
 
     return parent::prepareRow($row);
   }
