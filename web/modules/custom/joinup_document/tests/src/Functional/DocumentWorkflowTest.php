@@ -130,7 +130,7 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
           $parent = $this->createParent($parent_bundle, $parent_state, $moderation);
           foreach ($content_state_data as $content_state => $operation_data) {
             foreach ($operation_data as $operation => $allowed_roles) {
-              $content = Node::create([
+              $content = $this->createNode([
                 'type' => 'document',
                 OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
                 'uid' => $this->userOwner->id(),
@@ -142,13 +142,13 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
               $moderated_message = $moderation ? 'pre moderated' : 'post moderated';
               foreach ($allowed_roles as $user_var) {
                 $this->userProvider->setUser($this->{$user_var});
-                $access = $this->workflowAccess->entityAccess($content, $operation, $this->{$user_var})->isAllowed();
+                $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
                 $message = "User {$user_var} should have {$operation} access for the '{$content_state}' 'document' with a {$moderated_message} {$parent_bundle} parent.";
                 $this->assertEquals(TRUE, $access, $message);
               }
               foreach ($non_allowed_roles as $user_var) {
                 $this->userProvider->setUser($this->{$user_var});
-                $access = $this->workflowAccess->entityAccess($content, 'create', $this->{$user_var})->isAllowed();
+                $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
                 $message = "User {$user_var} should not have {$operation} access for the '{$content_state}' 'document' with a {$moderated_message} {$parent_bundle} parent.";
                 $this->assertEquals(FALSE, $access, $message);
               }

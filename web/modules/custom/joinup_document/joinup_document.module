@@ -31,7 +31,7 @@ function joinup_document_entity_bundle_field_info_alter(&$fields, EntityTypeInte
  * Implements hook_node_access().
  */
 function joinup_document_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($entity->bundle() !== 'document') {
+  if ($entity->bundle() !== 'document' || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
     return AccessResult::neutral();
   }
   return \Drupal::service('joinup_core.workflow_access')->entityAccess($entity, $operation, $account);

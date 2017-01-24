@@ -48,7 +48,7 @@ class JoinupWorkflowAccessControlHandler {
 
   // @todo: We need to check CRUD access.
   public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account) {
-    if ((!in_array($entity->getEntityTypeId(), ['rdf_entity', 'node'])) || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
+    if ((!in_array($entity->getEntityTypeId(), ['rdf_entity', 'node']))) {
       return AccessResult::neutral();
     }
 
