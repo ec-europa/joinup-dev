@@ -143,13 +143,13 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
               foreach ($allowed_roles as $user_var) {
                 $this->userProvider->setUser($this->{$user_var});
                 $access = $this->workflowAccess->entityAccess($content, $operation, $this->{$user_var})->isAllowed();
-                $message = "User {$user_var} should have {$operation} access for bundle 'document' with a {$moderated_message} {$parent_bundle} parent.";
+                $message = "User {$user_var} should have {$operation} access for the '{$content_state}' 'document' with a {$moderated_message} {$parent_bundle} parent.";
                 $this->assertEquals(TRUE, $access, $message);
               }
               foreach ($non_allowed_roles as $user_var) {
                 $this->userProvider->setUser($this->{$user_var});
                 $access = $this->workflowAccess->entityAccess($content, 'create', $this->{$user_var})->isAllowed();
-                $message = "User {$user_var} should not have {$operation} access for bundle 'document' with a {$moderated_message} {$parent_bundle} parent.";
+                $message = "User {$user_var} should not have {$operation} access for the '{$content_state}' 'document' with a {$moderated_message} {$parent_bundle} parent.";
                 $this->assertEquals(FALSE, $access, $message);
               }
             }
