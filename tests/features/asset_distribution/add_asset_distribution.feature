@@ -103,8 +103,8 @@ Feature: Add distribution through the UI
       # @todo: The link has to be changed to the legal contact form.
       # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
       And I should see the link "contacting us"
-      When I fill in "Title" with "Linux x86-64 SDK"
-      And I enter "<p>The full software development kit for systems based on the x86-64 architecture.</p>" in the "Description" wysiwyg editor
+      When I fill in "Title" with "Source tarball"
+      And I enter "<p>The full source code.</p>" in the "Description" wysiwyg editor
       And I attach the file "test.zip" to "Distribution file"
       And I select "WTFPL" from "License"
       And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
@@ -112,19 +112,19 @@ Feature: Add distribution through the UI
       Then I should have 1 distribution
 
       # Debug step since the default view of the distribution, does not have the access URL shown.
-      And the "Linux x86-64 SDK" distribution should have the link of the "test.zip" in the access URL field
+      And the "Source tarball" distribution should have the link of the "test.zip" in the access URL field
 
       # Check if the asset distribution is accessible as an anonymous user
       When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
       Then I should see the text "Distribution"
-      And I should see the link "Linux x86-64 SDK"
-      When I click "Linux x86-64 SDK"
-      Then I should see the heading "Linux x86-64 SDK"
+      And I should see the link "Source tarball"
+      When I click "Source tarball"
+      Then I should see the heading "Source tarball"
       And I should see the link "WTFPL"
-      And I should see the text "The full software development kit for systems based on the x86-64 architecture."
+      And I should see the text "The full source code."
 
       # The licence label should be shown also in the solution UI.
       When I go to the homepage of the "Solution random x name" solution
       Then I should see the text "WTFPL"
       # Clean up the asset distribution that was created through the UI.
-      Then I delete the "Linux x86-64 SDK" asset distribution
+      Then I delete the "Source tarball" asset distribution
