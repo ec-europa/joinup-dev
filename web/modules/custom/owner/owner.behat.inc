@@ -10,6 +10,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\TermInterface;
@@ -21,6 +22,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
 
   use RandomGeneratorTrait;
   use RdfEntityTrait;
+  use UtilityTrait;
 
   /**
    * Test owner rdf entities.
@@ -129,7 +131,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    */
   public function setOwnerType($options) {
     // Explode into an array.
-    $options = array_unique(array_map('trim', explode(',', $options)));
+    $options = $this->explodeCommaSeparatedStepArgument($options);
 
     $field = $this->getSession()->getPage()->find('named', ['fieldset', 'Owner']);
 
