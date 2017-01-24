@@ -32,22 +32,27 @@ class RdfEntityId extends Plugin {
   public $label;
 
   /**
-   * A two level array with bundles where this plugin applies.
+   * A two level array with entity types and bundles where this plugin applies.
    *
-   * The fist level is the entity type and the second, a list of bundles.
+   * The fist level is either the entity type ID or a list/array of bundles
+   * keyed by entity type ID.
    *
    * @var array
    *
    * @code
    *   ...
-   *   bundles = {
+   *   applyTo = {
+   *     "rdf_entity",
    *     "taxonomy_term" = {
    *       "tags",
    *       "topics",
    *     },
    *   },
    * @endcode
+   * In this example, the plugin applies to all 'rdf_entity' entities,
+   * regardless of the entity bundle and to bundles 'tags' and 'topics' of
+   * 'taxonomy_term' entity type.
    */
-  public $bundles = [];
+  public $applyTo = [];
 
 }

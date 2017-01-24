@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @RdfEntityId(
  *   id = "policy_domain",
  *   name = @Translation("Policy domain terms"),
- *   bundles = {
+ *   applyTo = {
  *     "taxonomy_term" = {
  *       "policy_domain",
  *     },

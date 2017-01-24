@@ -2,15 +2,24 @@
 
 namespace Drupal\rdf_entity;
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
+use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a base plugin for entity ID generator plugins.
  */
 abstract class RdfEntityIdPluginBase extends PluginBase implements RdfEntityIdPluginInterface, ContainerFactoryPluginInterface {
+
+  /**
+   * The entity for which the ID is being generated.
+   *
+   * @var \Drupal\Core\Entity\ContentEntityInterface
+   */
+  protected $entity;
 
   /**
    * The entity type manager service.
@@ -51,8 +60,21 @@ abstract class RdfEntityIdPluginBase extends PluginBase implements RdfEntityIdPl
   /**
    * {@inheritdoc}
    */
+  public function setEntity(ContentEntityInterface $entity) {
+    $class = get_class($this->entityTypeManager->getStorage($entity->getEntityTypeId()));
+    if ($class != RdfEntitySparqlStorage::class && !is_subclass_of($class, RdfEntitySparqlStorage::class)) {
+      throw new \InvalidArgumentException("Passed entity must extend RdfEntitySparqlStorage.");
+    }
+
+    $this->entity = $entity;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getEntity() {
-    return $this->configuration['entity'];
+    return $this->entity;
   }
 
 }

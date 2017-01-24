@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\rdf_entity\Annotation\RdfEntityId;
-use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 
 /**
  * Plugin manager for entity ID generator plugins.
@@ -19,7 +18,7 @@ class RdfEntityIdPluginManager extends DefaultPluginManager implements FallbackP
   /**
    * Cached plugin instances.
    *
-   * @var array
+   * @var \Drupal\rdf_entity\RdfEntityIdPluginInterface[][]
    */
   protected $instances = [];
 
@@ -71,17 +70,25 @@ class RdfEntityIdPluginManager extends DefaultPluginManager implements FallbackP
     $bundle = $entity->bundle();
 
     if (!isset($this->instances[$entity_type_id][$bundle])) {
-      $options = ['entity' => $entity, 'plugin_id' => NULL];
+      $options = ['plugin_id' => NULL];
       foreach ($this->getDefinitions() as $plugin_id => $definition) {
-        if (isset($definition['bundles'][$entity_type_id]) && in_array($bundle, $definition['bundles'][$entity_type_id])) {
-          $options['plugin_id'] = $plugin_id;
-          break;
+        if (isset($definition['applyTo'])) {
+          $apply_to = $definition['applyTo'];
+          if (
+            // Either the plugin applies to all bundles of this entity type.
+            (is_string($apply_to) && ($apply_to === $entity_type_id))
+            // Or the plugin applies specifically to this entity bundle.
+            || (is_array($apply_to) && isset($apply_to[$entity_type_id]) && in_array($bundle, $apply_to[$entity_type_id]))
+          ) {
+            $options['plugin_id'] = $plugin_id;
+            break;
+          }
         }
       }
       $this->instances[$entity_type_id][$bundle] = $this->getInstance($options);
     }
 
-    return $this->instances[$entity_type_id][$bundle];
+    return $this->instances[$entity_type_id][$bundle]->setEntity($entity);
   }
 
   /**
@@ -98,18 +105,8 @@ class RdfEntityIdPluginManager extends DefaultPluginManager implements FallbackP
    * {@inheritdoc}
    */
   public function getInstance(array $options) {
-    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    if (empty($entity = $options['entity'])) {
-      throw new \InvalidArgumentException("Options must contain the 'entity' object.");
-    }
-
     $plugin_id = array_key_exists('plugin_id', $options) ? $options['plugin_id'] : NULL;
-    $class = get_class($this->entityTypeManager->getStorage($entity->getEntityTypeId()));
-    if ($class != RdfEntitySparqlStorage::class && !is_subclass_of($class, RdfEntitySparqlStorage::class)) {
-      throw new \InvalidArgumentException("Passed entity must extend RdfEntitySparqlStorage.");
-    }
-
-    return $this->createInstance($plugin_id, ['entity' => $entity]);
+    return $this->createInstance($plugin_id);
   }
 
 }
