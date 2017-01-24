@@ -54,13 +54,8 @@ process:
     source: country
     vocabulary: spatial
   field_ar_state:
-    -
-      plugin: get
-      source: collection_state
-    -
-      plugin: default_value
-      default_value: validated
-      strict: true
+    plugin: default_value
+    default_value: validated
 destination:
   plugin: entity:rdf_entity
   default_bundle: collection

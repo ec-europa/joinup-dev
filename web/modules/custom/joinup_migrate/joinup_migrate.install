@@ -13,18 +13,18 @@ function joinup_migrate_schema() {
     'joinup_migrate_mapping' => [
       'description' => 'Keeps migration mapping data',
       'fields' => [
+        'nid' => [
+          'description' => 'The node ID from of the source item',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ],
         'type' => [
           'description' => 'Source node-type',
           'type' => 'varchar',
           'length' => 255,
           'not null' => TRUE,
           'default' => '',
-        ],
-        'nid' => [
-          'description' => 'The node ID from of the source item',
-          'type' => 'int',
-          'unsigned' => TRUE,
-          'not null' => TRUE,
         ],
         'collection' => [
           'description' => 'Collection',
@@ -51,12 +51,11 @@ function joinup_migrate_schema() {
           'not null' => TRUE,
           'default' => '',
         ],
-        'del' => [
-          'description' => 'If "Yes" then this content should not be migrated.',
-          'type' => 'varchar',
-          'length' => 10,
-          'not null' => TRUE,
-          'default' => '',
+        'migrate' => [
+          'description' => '1 if this content should be migrated, 0 otherwise.',
+          'type' => 'int',
+          'size' => 'tiny',
+          'default' => 1,
         ],
         'abstract' => [
           'description' => 'Abstract',
@@ -80,26 +79,20 @@ function joinup_migrate_schema() {
           'length' => 255,
           'not null' => FALSE,
         ],
-        'admin_user' => [
-          'description' => 'Administration User',
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => FALSE,
-        ],
         'elibrary' => [
           'description' => 'Elibrary Creation',
           'type' => 'varchar',
           'length' => 255,
           'not null' => FALSE,
         ],
-        'collection_state' => [
-          'description' => 'Collection state',
+        'collection_status' => [
+          'description' => 'Collection status',
           'type' => 'varchar',
           'length' => 32,
           'not null' => FALSE,
         ],
-        'status' => [
-          'description' => 'Status',
+        'content_item_status' => [
+          'description' => 'Content item status',
           'type' => 'varchar',
           'length' => 32,
           'not null' => FALSE,
@@ -115,6 +108,7 @@ function joinup_migrate_schema() {
       'indexes' => [
         'new_collection' => ['new_collection'],
         'collection' => ['collection'],
+        'migrate' => ['migrate'],
       ],
     ],
     'joinup_migrate_collection' => [
@@ -167,18 +161,6 @@ function joinup_migrate_schema() {
           'size' => 'tiny',
           'not null' => FALSE,
         ],
-        'collection_state' => [
-          'description' => 'Collection state',
-          'type' => 'varchar',
-          'length' => 32,
-          'not null' => FALSE,
-        ],
-        'status' => [
-          'description' => 'Status',
-          'type' => 'varchar',
-          'length' => 32,
-          'not null' => FALSE,
-        ],
         'publisher' => [
           'description' => 'Publisher NIDs',
           'type' => 'varchar',
@@ -189,6 +171,12 @@ function joinup_migrate_schema() {
           'description' => 'Contact NIDs',
           'type' => 'varchar',
           'length' => 1024,
+          'not null' => FALSE,
+        ],
+        'status' => [
+          'description' => 'Status',
+          'type' => 'varchar',
+          'length' => 32,
           'not null' => FALSE,
         ],
       ],
