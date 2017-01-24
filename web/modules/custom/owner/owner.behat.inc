@@ -148,4 +148,19 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
     }
   }
 
+  /**
+   * Navigates to the canonical page display of an owner.
+   *
+   * @param string $owner
+   *   The label of the owner.
+   *
+   * @When (I )go to (the homepage of )the :owner owner
+   * @When (I )visit (the homepage of )the :owner owner
+   */
+  public function visitOwner($owner) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $owner */
+    $owner = $this->getRdfEntityByLabel($owner);
+    $this->visitPath($owner->url());
+  }
+
 }
