@@ -123,35 +123,59 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
       }
     }
 
-    // Test view, update, delete access.
-    foreach (['collection', 'solution'] as $parent_bundle) {
-      foreach ($this->readUpdateDeleteAccessProvider() as $parent_state => $content_data) {
-        $parent = $this->createParent($parent_bundle, $parent_state);
+    $test_roles = $this->getAvailableUsers();
+    foreach ($this->readUpdateDeleteAccessProvider() as $parent_bundle => $parent_state_data) {
+      foreach ($parent_state_data as $parent_state => $moderation_data) {
+        foreach ($moderation_data as $moderation => $content_state_data) {
+          $parent = $this->createParent($parent_bundle, $parent_state, $moderation);
+          foreach ($content_state_data as $content_state => $operation_data) {
+            foreach ($operation_data as $operation => $allowed_roles) {
+              $content = Node::create([
+                'type' => 'document',
+                OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
+                'uid' => $this->userOwner->id(),
+                'state' => $content_state,
+                'status' => $this->isPublishedState($content_state),
+              ]);
 
-        foreach ($content_data as $content_state => $test_data_arrays) {
-          // Initialize the document entity as it is going to be used in all
-          // sub cases.
-          $content = $this->createNode([
-            'type' => 'document',
-            OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
-            'field_state' => $content_state,
-            'status' => $this->isPublishedState($content_state),
-          ]);
-
-          foreach ($test_data_arrays as $test_data_array) {
-            $operation = $test_data_array[0];
-            $user_var = $test_data_array[1];
-            $expected_result = $test_data_array[2];
-
-            $this->userProvider->setUser($this->{$user_var});
-            $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-            $result = $expected_result ? t('have') : t('not have');
-            $message = "User {$user_var} should {$result} {$operation} access for entity {$content->label()} ({$content_state}) with the parent {$parent_bundle} entity in {$parent_state} state.";
-            $this->assertEquals($expected_result, $access, $message);
+              $non_allowed_roles = array_diff($test_roles, $allowed_roles);
+              $moderated_message = $moderation ? 'pre moderated' : 'post moderated';
+              foreach ($allowed_roles as $user_var) {
+                $this->userProvider->setUser($this->{$user_var});
+                $access = $this->workflowAccess->entityAccess($content, $operation, $this->{$user_var})->isAllowed();
+                $message = "User {$user_var} should have {$operation} access for bundle 'document' with a {$moderated_message} {$parent_bundle} parent.";
+                $this->assertEquals(TRUE, $access, $message);
+              }
+              foreach ($non_allowed_roles as $user_var) {
+                $this->userProvider->setUser($this->{$user_var});
+                $access = $this->workflowAccess->entityAccess($content, 'create', $this->{$user_var})->isAllowed();
+                $message = "User {$user_var} should not have {$operation} access for bundle 'document' with a {$moderated_message} {$parent_bundle} parent.";
+                $this->assertEquals(FALSE, $access, $message);
+              }
+            }
           }
         }
       }
     }
+  }
+
+
+  /**
+   * Returns a list of users to be used for the tests.
+   *
+   * @return array
+   *    A list of user variables.
+   */
+  protected function getAvailableUsers() {
+    return [
+      'userOwner',
+      'userAnonymous',
+      'userAuthenticated',
+      'userModerator',
+      'userOgMember',
+      'userOgFacilitator',
+      'userOgAdministrator',
+    ];
   }
 
   /**
@@ -279,153 +303,32 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
    * entry.
    */
   protected function readUpdateDeleteAccessProvider() {
-    return [
-      // Unpublished parent.
+    $access_array = [
       'draft' => [
-        'validated' => [
-          ['view', 'userAnonymous', FALSE],
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgMember', FALSE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgMember', FALSE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgMember', FALSE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-        'in_assessment' => [
-          ['view', 'userAnonymous', FALSE],
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-        'proposed' => [
-          ['view', 'userAnonymous', FALSE],
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-        'archived' => [
-          ['view', 'userAnonymous', FALSE],
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', FALSE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-      ],
-      // Published parent.
-      'validated' => [
-        'validated' => [
-          ['view', 'userAnonymous', TRUE],
-          ['view', 'userAuthenticated', TRUE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', TRUE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-        'in_assessment' => [
-          ['view', 'userAnonymous', FALSE],
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-        'proposed' => [
-          ['view', 'userAnonymous', FALSE],
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-        'archived' => [
-          ['view', 'userAnonymous', TRUE],
-          ['view', 'userAuthenticated', TRUE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', TRUE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', FALSE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
+        self::PRE_MODERATION => [
+          'validated' => [
+            'view' => [
+              'userModerator',
+              'userOgFacilitator',
+              'userOwner',
+            ],
+            'update' => [
+              'userModerator',
+              'userOgFacilitator',
+              'userOwner',
+            ],
+            'delete' => []
+          ],
         ],
       ],
     ];
+
+    $return_array = [];
+    foreach (['collection', 'solution'] as $bundle) {
+      $return_array[$bundle] = $access_array;
+    }
+
+    return $return_array;
   }
 
   /**
@@ -580,23 +483,5 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
    */
   protected function getEntityType() {
     return 'node';
-  }
-
-  /**
-   * Returns a list of users to be used for the tests.
-   *
-   * @return array
-   *    A list of user variables.
-   */
-  protected function getAvailableUsers() {
-    return [
-      'userOwner',
-      'userAnonymous',
-      'userAuthenticated',
-      'userModerator',
-      'userOgMember',
-      'userOgFacilitator',
-      'userOgAdministrator',
-    ];
   }
 }
