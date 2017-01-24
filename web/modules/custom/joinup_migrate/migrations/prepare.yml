@@ -12,7 +12,6 @@ process:
   logo: logo
   banner: banner
   elibrary: elibrary
-  pre_moderation: pre_moderation
   publisher: publisher
   contact: contact
   # @todo Fix in https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068.

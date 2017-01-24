@@ -6,8 +6,14 @@ third_party_settings:
     mapping:
       rid:
         target_id: 'http://example.com/dummy'
+      uid:
+        target_id: ''
       label:
         value: 'http://example.com/dummy_label'
+      uuid:
+        value: ''
+      graph:
+        value: ''
     graph:
       default: 'http://example.com/dummy/published'
       draft: 'http://example.com/dummy/draft'

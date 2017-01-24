@@ -1,0 +1,28 @@
+{#
+/**
+ * @file
+ * Theme override for page titles.
+ *
+ * Available variables:
+ * - title_attributes: HTML attributes for the page title element.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title: The page title, for use in the actual content.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ */
+#}
+{{ title_prefix }}
+{% if title %}
+  <div class="page__title-wrapper">
+      <h1 class="page__title">{{ title }}</h1>
+      <div class="details">
+        <div class="details__element details__element-headline">
+          <div class="value gray">{{ additional_content.field_news_headline }}</div>
+        </div>
+      </div>
+      {{ additional_content.author }}
+      - <div class="details__element details__element-created"><span class="value gray">{{ additional_content.created }}</span></div>
+  </div>
+{% endif %}
+{{ title_suffix }}

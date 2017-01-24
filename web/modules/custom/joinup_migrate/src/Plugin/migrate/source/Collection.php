@@ -33,7 +33,6 @@ class Collection extends CollectionBase {
       'created_time' => $this->t('Creation date'),
       'body' => $this->t('Description'),
       'elibrary' => $this->t('eLibrary creation'),
-      'pre_moderation' => $this->t('Pre moderation'),
       'changed_time' => $this->t('Last changed date'),
       'owner' => $this->t('Owner'),
       'country' => $this->t('Spatial coverage'),
@@ -58,7 +57,6 @@ class Collection extends CollectionBase {
         'policy2',
         'abstract',
         'elibrary',
-        'pre_moderation',
         'collection_state',
       ])
       ->fields($this->alias['node'], [
@@ -138,6 +136,13 @@ class Collection extends CollectionBase {
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getSpatialCoverage($row));
+
+    // Elibrary creation.
+    $elibrary = $row->getSourceProperty('elibrary');
+    if (!in_array($elibrary, [NULL, '0', '1', '2'], TRUE)) {
+      $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), "Collection '$collection': Elibrary value " . var_export($elibrary, TRUE) . " (allowed 0, 1, 2)");
+      $row->setSourceProperty('elibrary', NULL);
+    }
 
     return parent::prepareRow($row);
   }

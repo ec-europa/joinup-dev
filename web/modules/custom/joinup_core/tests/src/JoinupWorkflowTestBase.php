@@ -2,30 +2,20 @@
 
 namespace Drupal\Tests\joinup_core;
 
-use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\og\Entity\OgMembership;
 use Drupal\Tests\BrowserTestBase;
-use EasyRdf\Http;
+use Drupal\Tests\rdf_entity\RdfDatabaseConnectionTrait;
 
 /**
  * Base setup for a Joinup workflow test.
  *
  * @group rdf_entity
  */
-class JoinupWorkflowTestBase extends BrowserTestBase {
+abstract class JoinupWorkflowTestBase extends BrowserTestBase {
 
-  /**
-   * The SPARQL database info.
-   *
-   * @var array
-   */
-  protected $sparqlConnectionInfo;
-
-  /**
-   * The SPARQL database connection.
-   *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
-   */
-  protected $sparql;
+  use RdfDatabaseConnectionTrait;
 
   /**
    * {@inheritdoc}
@@ -49,7 +39,7 @@ class JoinupWorkflowTestBase extends BrowserTestBase {
   /**
    * The entity access manager service.
    *
-   * @var \Drupal\rdf_entity\RdfAccessControlHandler
+   * @var \Drupal\Core\Entity\EntityAccessControlHandlerInterface
    */
   protected $entityAccess;
 
@@ -76,9 +66,53 @@ class JoinupWorkflowTestBase extends BrowserTestBase {
     parent::setUp();
     $this->ogMembershipManager = \Drupal::service('og.membership_manager');
     $this->ogAccess = $this->container->get('og.access');
-    $this->entityAccess = $this->container->get('entity_type.manager')->getAccessControlHandler('rdf_entity');
+    $this->entityAccess = $this->container->get('entity_type.manager')->getAccessControlHandler($this->getEntityType());
     $this->userProvider = $this->container->get('joinup_user.workflow.user_provider');
   }
+
+  /**
+   * Creates a user with roles.
+   *
+   * @param array $roles
+   *    An array of roles to initialize the user with.
+   *
+   * @return \Drupal\Core\Session\AccountInterface
+   *    The created user object.
+   */
+  protected function createUserWithRoles(array $roles = []) {
+    $user = $this->createUser();
+    foreach ($roles as $role) {
+      $user->addRole($role);
+    }
+    $user->save();
+
+    return $user;
+  }
+
+  /**
+   * Creates and asserts an Og membership.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *    The Og group.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *    The user this membership refers to.
+   * @param array $roles
+   *    An array of role objects.
+   */
+  protected function createOgMembership(EntityInterface $group, AccountInterface $user, array $roles = []) {
+    $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
+    $membership->save();
+    $loaded = $this->ogMembershipManager->getMembership($group, $user);
+    $this->assertInstanceOf(OgMembership::class, $loaded, t('A membership was successfully created.'));
+  }
+
+  /**
+   * Returns the type of the entity being tested.
+   *
+   * @return string
+   *   The entity type.
+   */
+  protected abstract function getEntityType();
 
   /**
    * {@inheritdoc}
@@ -102,44 +136,6 @@ EndOfQuery;
     }
 
     parent::tearDown();
-  }
-
-  /**
-   * Checks if the triple store is an Virtuoso 6 instance.
-   *
-   * @return bool
-   *   TRUE if it's a Virtuoso 6 server.
-   */
-  protected function detectVirtuoso6() {
-    $client = Http::getDefaultHttpClient();
-    $client->resetParameters(TRUE);
-    $client->setUri("http://{$this->sparqlConnectionInfo['host']}:{$this->sparqlConnectionInfo['port']}/");
-    $client->setMethod('GET');
-    $response = $client->request();
-    $server_header = $response->getHeader('Server');
-    if (strpos($server_header, "Virtuoso/06") === FALSE) {
-      return FALSE;
-    }
-    return TRUE;
-  }
-
-  /**
-   * Setup the db connection to the triple store.
-   */
-  protected function setUpSparql() {
-    // If the test is run with argument db url then use it.
-    // export SIMPLETEST_SPARQL_DB='sparql://127.0.0.1:8890/'.
-    $db_url = getenv('SIMPLETEST_SPARQL_DB');
-    if (empty($db_url)) {
-      return FALSE;
-    }
-    $this->sparqlConnectionInfo = Database::convertDbUrlToConnectionInfo($db_url, dirname(dirname(__DIR__)));
-    $this->sparqlConnectionInfo['namespace'] = 'Drupal\\rdf_entity\\Database\\Driver\\sparql';
-    Database::addConnectionInfo('sparql_default', 'default', $this->sparqlConnectionInfo);
-
-    $this->sparql = Database::getConnection('default', 'sparql_default');
-
-    return TRUE;
   }
 
 }
