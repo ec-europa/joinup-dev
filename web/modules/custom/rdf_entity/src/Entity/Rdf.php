@@ -417,4 +417,11 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     return array(\Drupal::currentUser()->id());
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function hasGraph($graph) {
+    return $this->entityTypeManager()->getStorage($this->getEntityTypeId())->hasGraph($this->id(), $graph);
+  }
+
 }

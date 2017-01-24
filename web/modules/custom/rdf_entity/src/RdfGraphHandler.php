@@ -3,7 +3,8 @@
 namespace Drupal\rdf_entity;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
@@ -17,14 +18,14 @@ class RdfGraphHandler {
   /**
    * The entity type manager service.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityManager;
+  protected $entityTypeManager;
 
   /**
-   * The entity type manager service.
+   * The module handler service.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
   protected $moduleHandler;
 
@@ -69,14 +70,16 @@ class RdfGraphHandler {
   protected $targetGraph = NULL;
 
   /**
-   * Constructs a QueryFactory object.
+   * Constructs a RDF graph handler object.
    *
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *    The entity type manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler service.
    */
-  public function __construct(EntityManagerInterface $entity_manager) {
-    $this->entityManager = $entity_manager;
-    $this->moduleHandler = $this->getModuleHandlerService();
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ModuleHandlerInterface $module_handler) {
+    $this->entityTypeManager = $entity_type_manager;
+    $this->moduleHandler = $module_handler;
 
     // Allow altering the default active graph.
     $graph = $this->enabledGraphs;
@@ -178,7 +181,7 @@ class RdfGraphHandler {
     if (empty($graph_names)) {
       $graph_names = $this->getEntityTypeEnabledGraphs();
     }
-    $bundle_entities = $this->entityManager->getStorage($entity_type_bundle_key)->loadMultiple();
+    $bundle_entities = $this->entityTypeManager->getStorage($entity_type_bundle_key)->loadMultiple();
     $graphs = [];
     foreach ($bundle_entities as $bundle_entity) {
       foreach ($graph_names as $graph_name) {
@@ -421,7 +424,7 @@ class RdfGraphHandler {
    */
   protected function getBundleGraphUriFromSettings($bundle_type_key, $bundle_id, $graph_name) {
     /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $bundle */
-    $bundle = $this->entityManager->getStorage($bundle_type_key)->load($bundle_id);
+    $bundle = $this->entityTypeManager->getStorage($bundle_type_key)->load($bundle_id);
     $graph = rdf_entity_get_third_party_property($bundle, 'graph', $graph_name, FALSE);
     if (!$graph) {
       throw new \Exception(format_string('Unable to determine graph %graph for bundle %bundle', [
@@ -430,15 +433,6 @@ class RdfGraphHandler {
       ]));
     }
     return $graph;
-  }
-
-  /**
-   * Returns the module handler service object.
-   *
-   * @todo: Check how we can inject this.
-   */
-  protected function getModuleHandlerService() {
-    return \Drupal::moduleHandler();
   }
 
 }
