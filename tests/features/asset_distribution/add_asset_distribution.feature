@@ -71,6 +71,12 @@ Feature: Add distribution through the UI
       Then I click "Add"
       Then I should see the link "Add distribution"
 
+      When I am logged in as a "member" of the "Asset Distribution Test" collection
+      And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
+      Then I should not see the link "Add distribution"
+      When I go to the homepage of the "Solution random x name" solution
+      Then I should not see the link "Add distribution"
+
       When I am logged in as an "authenticated user"
       And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
       Then I should not see the link "Add distribution"
