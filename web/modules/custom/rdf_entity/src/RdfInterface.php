@@ -4,6 +4,7 @@ namespace Drupal\rdf_entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
+use Drupal\user\EntityOwnerInterface;
 
 /**
  * Provides an interface defining a Rdf entity.
@@ -12,7 +13,7 @@ use Drupal\Core\Entity\EntityPublishedInterface;
  *
  * @ingroup rdf_entity
  */
-interface RdfInterface extends ContentEntityInterface, EntityPublishedInterface {
+interface RdfInterface extends ContentEntityInterface, EntityPublishedInterface, EntityOwnerInterface {
 
   /**
    * Gets the name of the rdf entity.
@@ -42,5 +43,16 @@ interface RdfInterface extends ContentEntityInterface, EntityPublishedInterface 
    *    The graph machine name.
    */
   public function deleteFromGraph($graph);
+
+  /**
+   * Checks if the entity has a specific graph.
+   *
+   * @param string $graph
+   *   The graph to be checked ('draft', etc).
+   *
+   * @return bool
+   *   TRUE if this entity has the specified graph.
+   */
+  public function hasGraph($graph);
 
 }

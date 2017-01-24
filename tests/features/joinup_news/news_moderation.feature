@@ -44,7 +44,7 @@ Feature: News moderation.
       | Legion of Doom | Mirror Master | member      |
       | Legion of Doom | Cheetah       | member      |
     And "news" content:
-      | title                         | kicker                                      | body                                                                    | state            | author        |
+      | title                         | headline                                    | body                                                                    | state            | author        |
       | Creating Justice League       | 6 Members to start with                     | TBD                                                                     | draft            | Eagle         |
       | Hawkgirl is a spy             | Her race lies in another part of the galaxy | Hawkgirl has been giving information about Earth to Thanagarians.       | proposed         | Eagle         |
       | Hawkgirl helped Green Lantern | Hawkgirl went against Thanagarians?         | It was all of a sudden when Hawkgirl turned her back to her own people. | validated        | Eagle         |
@@ -162,8 +162,8 @@ Feature: News moderation.
     And the following buttons should be present "Save as draft, Validate"
     And the following buttons should not be present "Propose, Request changes, Request deletion"
     When I fill in the following:
-      | Headline | Eagle joins the JL                   |
-      | Kicker   | Eagle from WWII                      |
+      | Kicker   | Eagle joins the JL                   |
+      | Headline | Eagle from WWII                      |
       | Content  | Specialized in close combat training |
     And I press "Save as draft"
     # Check reference to news page.
@@ -177,7 +177,6 @@ Feature: News moderation.
     And the following buttons should be present "Save as draft, Validate"
     And the following buttons should not be present "Propose, Request changes, Request deletion"
     And I press "Validate"
-    Then I should see the text "Validated"
     Then I should see the success message "News Eagle joins the JL has been updated."
     And the "Eagle joins the JL" news content should be published
     When I click "Justice League"
@@ -191,8 +190,8 @@ Feature: News moderation.
     And the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Validate, Request changes, Request deletion"
     When I fill in the following:
-      | Headline | Cheetah kills WonderWoman                             |
-      | Kicker   | Scarch of poison                                      |
+      | Kicker   | Cheetah kills WonderWoman                             |
+      | Headline | Scarch of poison                                      |
       | Content  | A specific poison could expose Wonder-womans weakness |
     And I press "Propose"
     # Check reference to news page.
@@ -213,7 +212,6 @@ Feature: News moderation.
     And the following buttons should be present "Update, Request changes, Validate"
     And the following buttons should not be present "Save as draft, Request deletion"
     And I press "Validate"
-    Then I should see the text "Validated"
     And the "Cheetah kills WonderWoman" news content should be published
     When I click "Legion of Doom"
     Then I should see the link "Cheetah kills WonderWoman"
@@ -326,7 +324,7 @@ Feature: News moderation.
     And the "Hawkgirl is a spy" "news" content should have 2 revisions
     And I should see the link "Edit"
     When I click "Edit"
-    And for "Headline" I enter "Hawkgirl saves the planet again"
+    And for "Kicker" I enter "Hawkgirl saves the planet again"
     And I press "Propose"
     Then I should see the success message "News Hawkgirl saves the planet again has been updated."
     # A new draft has been created with a new title. The previously validated
