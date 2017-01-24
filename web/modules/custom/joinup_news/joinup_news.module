@@ -8,6 +8,7 @@
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_news\Guard\JoinupNewsFulfillmentGuard;
 use Drupal\og\Og;
@@ -70,4 +71,30 @@ function joinup_news_node_access(EntityInterface $node, $op, AccountInterface $a
   }
 
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function joinup_news_field_widget_entity_reference_autocomplete_form_alter(&$element, FormStateInterface $form_state, $context) {
+  /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $items */
+  $items = $context['items'];
+
+  // Handle only the specific field.
+  $field_name = $items->getFieldDefinition()->getName();
+  if ($field_name !== 'field_news_shared_in') {
+    return;
+  }
+
+  $entity = $items->getEntity();
+  /** @var \Drupal\rdf_entity\RdfInterface $parent */
+  $parent = \Drupal::service('joinup_news.relations_manager')->getNewsParent($entity);
+
+  if (!empty($parent)) {
+    // Limit the referencable entities to be of the same bundle of the parent
+    // of the news.
+    $element['target_id']['#selection_settings']['target_bundles'] = [
+      $parent->bundle() => $parent->bundle(),
+    ];
+  }
 }
