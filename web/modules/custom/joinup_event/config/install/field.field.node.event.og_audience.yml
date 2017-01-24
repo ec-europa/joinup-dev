@@ -20,7 +20,6 @@ default_value_callback: ''
 settings:
   handler: 'default:rdf_entity'
   handler_settings:
-    target_type: rdf_entity
     target_bundles:
       collection: collection
       solution: solution

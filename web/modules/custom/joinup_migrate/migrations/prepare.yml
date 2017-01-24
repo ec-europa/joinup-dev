@@ -2,6 +2,7 @@ id: prepare
 label: 'Prepare migrations'
 source:
   plugin: prepare
+  cache_counts: true
   track_changes: true
 process:
   collection: collection
@@ -12,11 +13,9 @@ process:
   logo: logo
   banner: banner
   elibrary: elibrary
-  pre_moderation: pre_moderation
   publisher: publisher
   contact: contact
-  # @todo Fix in https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068.
-  # collection_state: collection_state
+  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068.
   # status: status
 destination:
   plugin: prepare

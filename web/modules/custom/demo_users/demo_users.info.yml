@@ -4,4 +4,6 @@ description: Provides demo users for the joinup project.
 core: 8.x
 package: Joinup
 dependencies:
+  - collection
   - default_content
+  - solution

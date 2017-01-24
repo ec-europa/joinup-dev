@@ -4,7 +4,6 @@ default:
       contexts:
         - FeatureContext
         - Drupal\joinup\Context\DrupalContext
-        - Drupal\joinup\Context\ScreenshotContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\DrupalExtension\Context\MinkContext
@@ -27,6 +26,7 @@ default:
         Entity actions: '.block-local-tasks-block'
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'
+        Navigation menu block: '#block-navigation'
         Navigation menu: 'div.navigation-menu ul'
         Plus button menu: 'div.add-content-menu ul'
         Primary menu: '.region-primary-menu'

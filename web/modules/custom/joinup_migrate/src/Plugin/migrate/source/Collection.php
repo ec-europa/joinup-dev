@@ -16,6 +16,8 @@ use Drupal\migrate\Row;
 class Collection extends CollectionBase {
 
   use ContactTrait;
+  use CountryTrait;
+  use ElibraryCreationTrait;
   use OwnerTrait;
   use MappingTrait;
 
@@ -32,12 +34,9 @@ class Collection extends CollectionBase {
       'created_time' => $this->t('Creation date'),
       'body' => $this->t('Description'),
       'elibrary' => $this->t('eLibrary creation'),
-      'pre_moderation' => $this->t('Pre moderation'),
       'changed_time' => $this->t('Last changed date'),
       'owner' => $this->t('Owner'),
-      // @todo Insert here spatial coverage.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2950
-      'collection_state' => $this->t('Collection state'),
+      'country' => $this->t('Spatial coverage'),
       'affiliates' => $this->t('Affiliates'),
       'contact' => $this->t('Contact info'),
     ];
@@ -58,10 +57,14 @@ class Collection extends CollectionBase {
         'policy2',
         'abstract',
         'elibrary',
-        'pre_moderation',
-        'collection_state',
       ])
-      ->fields($this->alias['node'], ['nid', 'type', 'created', 'changed'])
+      ->fields($this->alias['node'], [
+        'nid',
+        'vid',
+        'type',
+        'created',
+        'changed',
+      ])
       ->fields($this->alias['og'], ['og_description'])
       ->fields($this->alias['community'], ['field_community_url_url'])
       ->fields($this->alias['repository_url'], ['field_repository_url_url'])
@@ -117,7 +120,7 @@ class Collection extends CollectionBase {
     $affiliates = Database::getConnection()->select('joinup_migrate_mapping', 'j')
       ->fields('j', ['nid'])
       ->orderBy('j.collection')
-      ->condition('j.del', 'No')
+      ->condition('j.migrate', 1)
       ->condition('j.collection', $collection)
       ->condition('j.type', 'asset_release')
       ->execute()
@@ -130,7 +133,43 @@ class Collection extends CollectionBase {
     // Contacts.
     $row->setSourceProperty('contact', $this->getCollectionContacts($collection) ?: NULL);
 
+    // Spatial coverage.
+    $row->setSourceProperty('country', $this->getSpatialCoverage($row));
+
+    // Elibrary creation.
+    $this->elibraryCreation($row);
+
     return parent::prepareRow($row);
+  }
+
+  /**
+   * Gets the spatial coverage for a collection.
+   *
+   * @param \Drupal\migrate\Row $row
+   *   The source row.
+   *
+   * @return string[]
+   *   A list of country names.
+   */
+  protected function getSpatialCoverage(Row $row) {
+    // The country list is inherited from corresponding Drupal 6 node.
+    if (in_array($row->getSourceProperty('type'), ['repository', 'community'])) {
+      $vids = [$row->getSourceProperty('vid')];
+    }
+    // The country list is compiled from the compounding content-types.
+    else {
+      $query = Database::getConnection()->select('joinup_migrate_mapping', 'm')
+        ->distinct()
+        ->fields('n', ['vid'])
+        ->condition('m.collection', $row->getSourceProperty('collection'))
+        ->condition('n.type', ['asset_release'], 'IN')
+        ->condition('m.migrate', 1)
+        ->isNotNull('m.nid');
+      $query->join(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'm.nid = n.nid');
+      $vids = $query->execute()->fetchCol();
+    }
+
+    return $vids ? $this->getCountries($vids) : [];
   }
 
 }

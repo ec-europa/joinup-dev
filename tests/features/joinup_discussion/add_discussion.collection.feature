@@ -51,7 +51,7 @@ Feature: "Add discussion" visibility options.
     When I fill in the following:
       | Title   | An amazing discussion                      |
       | Content | This is going to be an amazing discussion. |
-    And I press "Save"
+    And I press "Publish"
     Then I should see the heading "An amazing discussion"
     And I should see the success message "Discussion An amazing discussion has been created."
     And the "The World of the Waves" collection has a discussion titled "An amazing discussion"

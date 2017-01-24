@@ -44,6 +44,7 @@
  'namespace' => 'Drupal\\Core\\Database\\Driver\\${migration.db.type}',${line.separator}
  'driver' => '${migration.db.type}',${line.separator}];${line.separator}" />
         <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.source.root'] = '${migration.source.root}';${line.separator}" />
+        <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.mode'] = '${migration.mode}';${line.separator}" />
     </target>
 
     <!-- Enable migration modules. -->

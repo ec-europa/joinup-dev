@@ -135,9 +135,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation                     | logo | moderation | modification date | owner |
-   * Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users |      | yes        |                   |       |
-   * Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users |      | no         |                   |       |
+   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation                     | logo | moderation | modification date | owner | state                                                               |
+   * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users |      | yes        |                   |       |                                                                     |
+   * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users |      | no         |                   |       | draft|proposed|validated|archival request|deletion request|archived |
    * @codingStandardsIgnoreEnd
    *
    * Only the title field is required.
@@ -167,6 +167,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
 
       // Convert user friendly values to machine values.
       $values = $this->convertValueAliases($values);
+
+      // Provide default values.
+      $values = $this->provideDefaultValues($values);
 
       $this->createCollection($values);
     }
@@ -203,6 +206,29 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Enriches the provided field values with defaults for missing values.
+   *
+   * @param array $fields
+   *    An array of fields keyed by field name.
+   *
+   * @return array
+   *    The array with default values added.
+   */
+  protected function provideDefaultValues(array $fields) {
+    $default_values = [
+      'field_ar_state' => 'draft',
+    ];
+
+    foreach ($default_values as $field => $default_value) {
+      if (!isset($fields[$field])) {
+        $fields[$field] = $default_value;
+      }
+    }
+
+    return $fields;
+  }
+
+  /**
    * Converts values from user friendly to normal machine values.
    *
    * @param array $fields
@@ -220,6 +246,14 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'field_ar_elibrary_creation' =>
         ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
       'field_ar_closed' => ['no' => 0, 'yes' => 1],
+      'field_ar_state' => [
+        'draft' => 'draft',
+        'proposed' => 'proposed',
+        'validated' => 'validated',
+        'archival request' => 'archival_request',
+        'deletion request' => 'deletion_request',
+        'archived' => 'archived',
+      ],
     ];
 
     foreach ($fields as $field => $value) {
@@ -270,14 +304,17 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Creates a collection with data provided in a table.
    *
+   * @codingStandardsIgnoreStart
    * Table format:
-   * | title           | Open Data Initiative                  |
-   * | author          | Mightily Oats                         |
-   * | logo            | logo.png                              |
-   * | moderation      | yes|no                                |
-   * | closed          | yes|no                                |
-   * | create elibrary | facilitators|members|registered users |
-   * | metadata url    | https://ec.europa.eu/my/url           |
+   * | title           | Open Data Initiative                                                |
+   * | author          | Mightily Oats                                                       |
+   * | logo            | logo.png                                                            |
+   * | moderation      | yes|no                                                              |
+   * | closed          | yes|no                                                              |
+   * | create elibrary | facilitators|members|registered users                               |
+   * | metadata url    | https://ec.europa.eu/my/url                                         |
+   * | state           | draft|proposed|validated|archival request|deletion request|archived |
+   * @codingStandardsIgnoreEnd
    *
    * Only the title field is required.
    *
@@ -305,6 +342,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
 
     // Convert user friendly values to machine values.
     $values = $this->convertValueAliases($values);
+
+    // Provide default values.
+    $values = $this->provideDefaultValues($values);
 
     $this->createCollection($values);
   }
@@ -384,7 +424,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *   Thrown when a collection is not found.
    *
-   * @Given (the following )collection user memberships:
+   * @Given (the following )collection user membership(s):
    */
   public function givenCollectionUserMemberships(TableNode $membership_table) {
     foreach ($membership_table->getColumnsHash() as $values) {

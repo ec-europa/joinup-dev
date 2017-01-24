@@ -5,7 +5,7 @@ dependencies:
     - core.entity_view_mode.node.view_mode_featured
     - field.field.node.news.body
     - field.field.node.news.field_comments
-    - field.field.node.news.field_news_kicker
+    - field.field.node.news.field_news_headline
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_state
     - field.field.node.news.field_spatial_coverage
@@ -24,13 +24,13 @@ content:
   body:
     label: hidden
     type: text_trimmed
-    weight: 1
+    weight: 0
     settings:
       trim_length: 600
     third_party_settings: {  }
   field_topic:
     type: entity_reference_label
-    weight: 106
+    weight: 1
     label: hidden
     settings:
       link: false
@@ -47,7 +47,7 @@ content:
         template_suggestion: entity_reference__listing_tag
 hidden:
   field_comments: true
-  field_news_kicker: true
+  field_news_headline: true
   field_news_source_url: true
   field_news_state: true
   field_spatial_coverage: true

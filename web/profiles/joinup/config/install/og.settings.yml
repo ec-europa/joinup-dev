@@ -4,7 +4,6 @@ groups:
     - collection
     - solution
 node_access_strict: true
-use_queue: null
 delete_orphans: true
 delete_orphans_plugin_id: simple
 group_resolvers:
