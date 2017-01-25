@@ -91,7 +91,7 @@ function joinup_news_field_widget_entity_reference_autocomplete_form_alter(&$ele
   $parent = \Drupal::service('joinup_news.relations_manager')->getNewsParent($entity);
 
   if (!empty($parent)) {
-    // Limit the referencable entities to be of the same bundle of the parent
+    // Limit the referenceable entities to be of the same bundle of the parent
     // of the news.
     $element['target_id']['#selection_settings']['target_bundles'] = [
       $parent->bundle() => $parent->bundle(),
