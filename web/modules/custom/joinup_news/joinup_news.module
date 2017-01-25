@@ -27,6 +27,10 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
     if (!empty($fields['title'])) {
       $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
     }
+
+    if (!empty($fields['field_news_shared_in'])) {
+      $fields['field_news_shared_in']->addConstraint('UniqueFieldValue');
+    }
   }
 }
 
