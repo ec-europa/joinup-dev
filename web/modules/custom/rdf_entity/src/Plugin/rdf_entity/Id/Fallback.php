@@ -8,7 +8,7 @@ use Drupal\rdf_entity\RdfEntityIdPluginBase;
 /**
  * Provides a fallback entity ID generator plugin.
  *
- * This plugin doesn't declare a 'bundle' annotation because it applies to all
+ * This plugin doesn't declare an 'applyTo' annotation because it applies to all
  * RDF entity bundles lacking a specific plugin.
  *
  * @RdfEntityId(
