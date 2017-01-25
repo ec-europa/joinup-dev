@@ -1,4 +1,4 @@
 services:
   joinup_core.workflow_access:
     class: Drupal\joinup_core\JoinupWorkflowAccessControlHandler
-    arguments: ['@og.membership_manager']
+    arguments: ['@entity_type.manager', '@og.membership_manager']

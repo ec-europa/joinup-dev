@@ -27,6 +27,7 @@ function joinup_user_install() {
     'propose collection rdf entity',
     'propose solution rdf entity',
     'skip comment approval',
+    'update own document content',
     'use text format basic_html',
     'use text format content_editor',
     'view own unpublished content',
