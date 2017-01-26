@@ -245,7 +245,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Navigates to the canonical page display of an asset release.
+   * Navigates to the canonical page display of an asset distribution.
    *
    * @param string $title
    *   The title of the asset distribution.
