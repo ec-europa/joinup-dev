@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_discussion_state
+    - field.storage.node.field_state
     - node.type.discussion
   module:
     - state_machine
-id: node.discussion.field_discussion_state
-field_name: field_discussion_state
+id: node.discussion.field_state
+field_name: field_state
 entity_type: node
 bundle: discussion
 label: State

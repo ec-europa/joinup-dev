@@ -5,10 +5,8 @@
  * Contains joinup_document.module.
  */
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Session\AccountInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -24,16 +22,6 @@ function joinup_document_entity_bundle_field_info_alter(&$fields, EntityTypeInte
       $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['document']]);
     }
   }
-}
-
-/**
- * Implements hook_node_access().
- */
-function joinup_document_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($entity->bundle() !== 'document' || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
-    return AccessResult::neutral();
-  }
-  return \Drupal::service('joinup_core.workflow_access')->entityAccess($entity, $operation, $account);
 }
 
 /**

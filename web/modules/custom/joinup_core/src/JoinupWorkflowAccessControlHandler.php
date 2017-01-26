@@ -167,7 +167,8 @@ class JoinupWorkflowAccessControlHandler {
     $parent = $this->getEntityParent($entity);
     $access_handler = $this->entityTypeManager->getAccessControlHandler('rdf_entity');
     if (!$access_handler->access($parent, 'view', $account)) {
-      return AccessResult::forbiddenIf($entity->getOwnerId() !== $account->id());
+      // Anonymous users do not have access to content of non published groups.
+      return AccessResult::forbiddenIf($account->isAnonymous() || $entity->getOwnerId() !== $account->id());
     }
 
     $membership = Og::getMembership($parent, $account);
@@ -258,22 +259,8 @@ class JoinupWorkflowAccessControlHandler {
    *    The id of the workflow to use.
    */
   protected function getEntityWorkflow(EntityInterface $entity) {
-    if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
-      return self::WORKFLOW_DEFAULT;
-    }
-
-    $parent = $this->getEntityParent($entity);
-    if (empty($parent) || in_array($parent->bundle(), ['collection', 'solution'])) {
-      return self::WORKFLOW_PRE_MODERATED;
-    }
-    $fields = [
-      'collection' => 'field_ar_moderation',
-      'solution' => 'field_is_moderation',
-    ];
-
-    $moderation = $parent->{$fields[$parent->bundle()]}->value;
-    $workflow_id = $moderation == TRUE ? self::WORKFLOW_PRE_MODERATED : self::WORKFLOW_POST_MODERATED;
-    return $workflow_id;
+    $workflow = $entity->field_state->first()->getWorkflow();
+    return $workflow->id();
   }
 
 }

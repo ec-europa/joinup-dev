@@ -117,7 +117,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           $content = $this->createNode([
             'type' => 'discussion',
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
-            'field_discussion_state' => $content_state,
+            'field_state' => $content_state,
             'status' => $this->isPublishedState($content_state),
           ]);
 
@@ -148,7 +148,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
         foreach ($workflow_data as $user_var => $transitions) {
           $content = $this->createNode([
             'type' => 'discussion',
-            'field_discussion_state' => $content_state,
+            'field_state' => $content_state,
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
             'status' => $this->isPublishedState($content_state),
           ]);
@@ -163,7 +163,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
 
           // Override the user to be checked for the allowed transitions.
           $this->userProvider->setUser($this->{$user_var});
-          $actual_transitions = $content->get('field_discussion_state')->first()->getTransitions();
+          $actual_transitions = $content->get('field_state')->first()->getTransitions();
           $actual_transitions = array_map(function ($transition) {
             return $transition->getId();
           }, $actual_transitions);
