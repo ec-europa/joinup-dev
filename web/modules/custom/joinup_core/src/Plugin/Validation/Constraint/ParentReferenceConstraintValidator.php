@@ -14,6 +14,10 @@ class ParentReferenceConstraintValidator extends ConstraintValidator {
    * {@inheritdoc}
    */
   public function validate($items, Constraint $constraint) {
+    if (!$items->count()) {
+      return;
+    }
+
     /** @var ParentReferenceConstraint $constraint */
     $service = $constraint->service;
     $method = $constraint->method;
