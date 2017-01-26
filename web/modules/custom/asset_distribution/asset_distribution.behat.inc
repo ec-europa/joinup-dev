@@ -96,7 +96,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * | description | A sample distribution                        |
    * | access url  | http://internal-or-external.path/to/file.zip |
    * | file        | test.zip                                     |
-   * | parent      | Release or solution name
+   * | parent      | Release or solution name                     |
    *
    * Fields 'title' and 'description' are required.
    *
