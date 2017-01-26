@@ -17,9 +17,10 @@ Feature: Asset distribution overview on solution.
       | Thief in the Angels   | text.pdf      | 2              | Notes 2       | 28-01-1995 12:06 | Lovely Butterfly |
       | The Child of the Past | text.pdf      | 1              | Notes 1       | 28-01-1996 12:05 | Lovely Butterfly |
     And the following asset distributions:
-      | title   | file     | creation date     | parent                |
-      | Linux   | test.zip | 28-01-1995 12:05  | Thief in the Angels   |
-      | Windows |          | 28-01-1995 12:06  | The Child of the Past |
+      | title       | file     | creation date     | parent                |
+      | Linux       | test.zip | 28-01-1995 12:05  | Thief in the Angels   |
+      | Windows     |          | 28-01-1995 12:06  | The Child of the Past |
+      | User manual | test.zip | 28-01-1995 11:07  | Lovely Butterfly      |
     And the following collection:
       | title      | End of Past      |
       | affiliates | Lovely Butterfly |
@@ -33,6 +34,9 @@ Feature: Asset distribution overview on solution.
       | release                 |
       | The Child of the Past 1 |
       | Thief in the Angels 2   |
+    # The standalone distribution should also be visible.
+    And I should see the link "User manual"
+    And I should see the text "Standalone distribution"
 
     And I should see the download link in the "Linux" asset distribution
     And the "Windows" asset distribution should not have any download urls

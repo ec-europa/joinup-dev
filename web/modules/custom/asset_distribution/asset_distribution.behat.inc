@@ -164,7 +164,20 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       // If the 'parent' key is present we will have to create a relation to the
       // parent entity, which is either a release or a solution.
       elseif ($key === 'parent') {
-        $parent_label = $value;
+        $parent_entity = self::getRdfEntityByLabel($value);
+
+        // If we know the parent then we can transparently populate the group
+        // reference to the solution.
+        if (!array_key_exists('solution', $aliased_values)) {
+          $solution_label = NULL;
+          if ($parent_entity->bundle() === 'solution') {
+            $solution_label = $parent_entity->label();
+          }
+          elseif ($solution_entity_id = $parent_entity->field_isr_is_version_of->value) {
+            $solution_label = Rdf::load($solution_entity_id)->label();
+          }
+          $values[OgGroupAudienceHelperInterface::DEFAULT_FIELD] = $solution_label;
+        }
       }
       else {
         throw new \Exception("Unknown key '$key' in asset distribution table.");
@@ -176,8 +189,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     $asset_distribution_entity = $this->createAssetDistribution($values);
 
     // Create the relation with the parent entity if requested.
-    if (!empty($parent_label)) {
-      $parent_entity = self::getRdfEntityByLabel($parent_label);
+    if (!empty($parent_entity)) {
       asset_distribution_add_parent_relation($asset_distribution_entity, $parent_entity);
     }
   }
