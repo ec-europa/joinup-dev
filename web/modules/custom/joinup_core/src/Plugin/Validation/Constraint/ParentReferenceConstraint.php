@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraint;
  * @Constraint(
  *   id = "ParentReference",
  *   label = @Translation("Parent reference constraint", context = "Validation"),
+ *   type = { "entity_reference" }
  * )
  */
 class ParentReferenceConstraint extends Constraint {
