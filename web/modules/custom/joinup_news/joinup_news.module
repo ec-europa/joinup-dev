@@ -11,7 +11,6 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_news\Guard\JoinupNewsFulfillmentGuard;
 use Drupal\og\Og;
-use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().

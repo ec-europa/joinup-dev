@@ -280,8 +280,8 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
 
   // Attach the related solutions component.
   if ($display->getComponent('related_solutions')) {
-    $ids = get_related_solutions_ids($entity);
-    $build['related_solutions'] = build_related_solutions_list($ids);
+    $ids = solution_get_related_solutions_ids($entity);
+    $build['related_solutions'] = solution_build_related_solutions_list($ids);
   }
 }
 
@@ -294,7 +294,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
  * @return array|int
  *   List of entity ids of related solutions.
  */
-function get_related_solutions_ids(EntityInterface $entity) {
+function solution_get_related_solutions_ids(EntityInterface $entity) {
   $ids = [];
   static $recurse = FALSE;
   if ($recurse) {
@@ -340,7 +340,7 @@ function get_related_solutions_ids(EntityInterface $entity) {
  * @return array
  *   The render array of related solutions.
  */
-function build_related_solutions_list(array $ids) {
+function solution_build_related_solutions_list(array $ids) {
   $build = [];
   $entities = Rdf::loadMultiple($ids);
   $delta = 0;
