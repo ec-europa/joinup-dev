@@ -31,6 +31,7 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
         'service' => 'joinup_news.relations_manager',
         'method' => 'getNewsParent',
       ]);
+      $fields['field_news_shared_in']->addConstraint('NewsSharedInValidReference');
     }
   }
 }
