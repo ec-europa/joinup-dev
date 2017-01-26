@@ -21,8 +21,8 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
   // @todo Add test coverage for these constraints.
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2500
   if ($entity_type->id() == 'node' && $bundle == 'news') {
-    if (!empty($fields['title'])) {
-      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
+    if (!empty($fields['field_news_headline'])) {
+      $fields['field_news_headline']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
     }
 
     if (!empty($fields['field_news_shared_in'])) {
