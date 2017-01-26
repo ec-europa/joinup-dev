@@ -263,7 +263,7 @@ class JoinupWorkflowAccessControlHandler {
     }
 
     $parent = $this->getEntityParent($entity);
-    if (empty($parent) || !in_array($parent->bundle(), ['collection', 'solution'])) {
+    if (empty($parent) || in_array($parent->bundle(), ['collection', 'solution'])) {
       return self::WORKFLOW_PRE_MODERATED;
     }
     $fields = [

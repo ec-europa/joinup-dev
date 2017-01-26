@@ -28,6 +28,7 @@ transitions:
   pre_moderated:
     save_as_draft:
       __new__:
+        - authenticated
         - rdf_entity-collection-member
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
@@ -62,6 +63,11 @@ transitions:
     request_deletion:
       validated:
         - owner
+    reject_deletion:
+      deletion_request:
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
     report:
       validated:
         - rdf_entity-collection-facilitator

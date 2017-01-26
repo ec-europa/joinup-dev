@@ -491,39 +491,33 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
   /**
    * Tests the document workflow.
    */
-  public function ntestWorkflow() {
-    foreach ($this->workflowTransitionsProvider() as $content_state => $workflow_data) {
-      foreach (['collection', 'solution'] as $parent_bundle) {
-        $parent = $this->createParent($parent_bundle, 'validated');
+  public function testWorkflow() {
+    foreach ($this->workflowTransitionsProvider() as $parent_moderation => $content_data) {
+      foreach ($content_data as $content_state => $workflow_data) {
+        foreach (['collection', 'solution'] as $parent_bundle) {
+          $parent = $this->createParent($parent_bundle, 'validated', $parent_moderation);
 
-        foreach ($workflow_data as $user_var => $transitions) {
-          $content = $this->createNode([
-            'type' => 'document',
-            'field_state' => $content_state,
-            OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
-            'status' => $this->isPublishedState($content_state),
-          ]);
-          $content->save();
+          foreach ($workflow_data as $user_var => $transitions) {
+            $content = $this->createNode([
+              'type' => 'document',
+              'uid' => $this->userOwner->id(),
+              'field_state' => $content_state,
+              OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
+              'status' => $this->isPublishedState($content_state),
+            ]);
 
-          // Solution group has a member state that is coming from OG, but it
-          // has no privileges.
-          // @todo no better way? This is U G L Y. Argh, my eyes!
-          if ($parent_bundle === 'solution' && $user_var === 'userOgMember') {
-            $transitions = [];
+            // Override the user to be checked for the allowed transitions.
+            $this->userProvider->setUser($this->{$user_var});
+            $actual_transitions = $content->get('field_state')->first()->getTransitions();
+            $actual_transitions = array_map(function ($transition) {
+              return $transition->getId();
+            }, $actual_transitions);
+            sort($actual_transitions);
+            sort($transitions);
+
+            $moderated_message = $parent_moderation ? 'pre moderated' : 'post moderated';
+            $this->assertEquals($transitions, $actual_transitions, "Transitions do not match for user $user_var, state $content_state and a $moderated_message $parent_bundle for a parent.");
           }
-
-          // Override the user to be checked for the allowed transitions.
-          $this->userProvider->setUser($this->{$user_var});
-          $actual_transitions = $content->get('field_state')
-            ->first()
-            ->getTransitions();
-          $actual_transitions = array_map(function ($transition) {
-            return $transition->getId();
-          }, $actual_transitions);
-          sort($actual_transitions);
-          sort($transitions);
-
-          $this->assertEquals($transitions, $actual_transitions, "Transitions do not match for user $user_var, state $content_state and parent $parent_bundle.");
         }
       }
     }
@@ -535,10 +529,12 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
    * The structure of the array is:
    * @code
    * $workflow_array = [
-   *   'entity_state' => [
-   *     'user' => [
-   *       'transition',
-   *       'transition',
+   *   'parent_moderation' => [
+   *     'entity_state' => [
+   *       'user' => [
+   *         'transition',
+   *         'transition',
+   *       ],
    *     ],
    *   ],
    * ];
@@ -548,66 +544,168 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
    */
   protected function workflowTransitionsProvider() {
     return [
-      '__new__' => [
-        'userAuthenticated' => [],
-        'userOgMember' => [
-          'validate',
+      self::PRE_MODERATION => [
+        '__new__' => [
+          'userAuthenticated' => [
+            'save_as_draft',
+            'propose',
+          ],
+          'userOgMember' => [
+            'save_as_draft',
+            'propose',
+          ],
+          'userOgFacilitator' => [
+            'save_as_draft',
+            'propose',
+            'validate',
+          ],
+          'userModerator' => [
+            'save_as_draft',
+            'propose',
+            'validate',
+          ],
         ],
-        'userOgFacilitator' => [
-          'validate',
+        'draft' => [
+          'userAuthenticated' => [],
+          'userOwner' => [
+            'propose',
+          ],
+          'userOgMember' => [],
+          'userOgFacilitator' => [
+            'validate',
+          ],
+          'userModerator' => [
+            'validate',
+          ],
         ],
-        'userModerator' => [
-          'validate',
+        'proposed' => [
+          'userAuthenticated' => [],
+          'userOwner' => [
+            'update_proposed',
+          ],
+          'userOgMember' => [],
+          'userOgFacilitator' => [
+            'update_proposed',
+            'approve_proposed',
+          ],
+          'userModerator' => [
+            'update_proposed',
+            'approve_proposed',
+          ],
+        ],
+        'validated' => [
+          'userAuthenticated' => [],
+          'userOwner' => [
+            'request_deletion',
+          ],
+          'userOgMember' => [],
+          'userOgFacilitator' => [
+            'report',
+            'update_published',
+            'request_changes',
+          ],
+          'userModerator' => [
+            'report',
+            'update_published',
+            'request_changes',
+          ],
+        ],
+        'in_assessment' => [
+          'userAuthenticated' => [],
+          'userOwner' => [],
+          'userOgMember' => [],
+          'userOgFacilitator' => [
+            'approve_report',
+          ],
+          'userModerator' => [
+            'approve_report',
+          ],
+        ],
+        'deletion_request' => [
+          'userAuthenticated' => [],
+          'userOwner' => [],
+          'userOgMember' => [],
+          'userOgFacilitator' => [
+            'reject_deletion',
+          ],
+          'userModerator' => [
+            'reject_deletion',
+          ],
         ],
       ],
-      'validated' => [
-        'userAuthenticated' => [],
-        'userOgMember' => [
-          'update_published',
+      self::POST_MODERATION => [
+        '__new__' => [
+          'userAuthenticated' => [
+            'save_as_draft',
+            'validate',
+          ],
+          'userOgMember' => [
+            'save_as_draft',
+            'validate',
+          ],
+          'userOgFacilitator' => [
+            'save_as_draft',
+            'validate',
+          ],
+          'userModerator' => [
+            'save_as_draft',
+            'validate',
+          ],
         ],
-        'userOgFacilitator' => [
-          'update_published',
-          'request_changes',
-          'report',
-          'disable',
+        'draft' => [
+          'userAuthenticated' => [],
+          'userOwner' => [
+            'validate',
+          ],
+          'userOgMember' => [],
+          'userOgFacilitator' => [
+            'validate',
+          ],
+          'userModerator' => [
+            'validate',
+          ],
         ],
-        'userModerator' => [
-          'update_published',
-          'request_changes',
-          'report',
-          'disable',
+        'proposed' => [
+          'userAuthenticated' => [],
+          'userOwner' => [
+            'update_proposed',
+          ],
+          'userOgMember' => [],
+          'userOgFacilitator' => [
+            'update_proposed',
+            'approve_proposed',
+          ],
+          'userModerator' => [
+            'update_proposed',
+            'approve_proposed',
+          ],
         ],
-      ],
-      'in_assessment' => [
-        'userAuthenticated' => [],
-        'userOgMember' => [],
-        'userOgFacilitator' => [
-          'approve_report',
+        'validated' => [
+          'userAuthenticated' => [],
+          'userOwner' => [
+            'update_published',
+          ],
+          'userOgMember' => [],
+          'userOgFacilitator' => [
+            'update_published',
+            'request_changes',
+          ],
+          'userModerator' => [
+            'update_published',
+            'request_changes',
+          ],
         ],
-        'userModerator' => [
-          'approve_report',
+        'in_assessment' => [
+          'userAuthenticated' => [],
+          'userOwner' => [],
+          'userOgMember' => [],
+          'userOgFacilitator' => [
+            'approve_report',
+          ],
+          'userModerator' => [
+            'approve_report',
+          ],
         ],
-      ],
-      'proposed' => [
-        'userAuthenticated' => [],
-        'userOgMember' => [
-          'update_proposed',
-        ],
-        'userOgFacilitator' => [
-          'update_proposed',
-          'approve_proposed',
-        ],
-        'userModerator' => [
-          'update_proposed',
-          'approve_proposed',
-        ],
-      ],
-      // Once the node is in archived state, no actions can be taken anymore.
-      'archived' => [
-        'userAuthenticated' => [],
-        'userOgMember' => [],
-        'userOgFacilitator' => [],
-        'userModerator' => [],
       ],
     ];
   }

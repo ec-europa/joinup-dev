@@ -44,6 +44,10 @@ pre_moderated:
       label: 'Request deletion'
       from: [validated]
       to: deletion_request
+    reject_deletion:
+      label: 'Reject deletion'
+      from: [deletion_request]
+      to: validated
     report:
       label: Report
       from: [validated]
