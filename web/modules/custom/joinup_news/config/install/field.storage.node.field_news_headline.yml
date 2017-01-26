@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - node
-id: node.field_news_kicker
-field_name: field_news_kicker
+id: node.field_news_headline
+field_name: field_news_headline
 entity_type: node
 type: string
 settings:

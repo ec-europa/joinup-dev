@@ -577,7 +577,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'start date' => 'field_start_date',
       ],
       'news' => [
-        'kicker' => 'field_news_kicker',
+        'headline' => 'field_news_headline',
         'state' => 'field_news_state',
       ],
       'shared' => [

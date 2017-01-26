@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Core\Database\Query\Condition;
 use Drupal\migrate\Row;
 
 /**
@@ -31,16 +32,23 @@ class SolutionLogo extends SolutionBase {
   public function query() {
     $query = parent::query();
 
-    $this->alias['content_type_asset_release'] = $query->join("{$this->getSourceDbName()}.content_type_asset_release", 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_documentation'] = $query->join("{$this->getSourceDbName()}.content_type_documentation", 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_sw_logo_nid = %alias.nid");
-    $this->alias['content_type_documentation'] = $query->join("{$this->getSourceDbName()}.content_type_documentation", 'content_type_documentation', "{$this->alias['node_documentation']}.vid = %alias.vid");
-    $this->alias['files'] = $query->join("{$this->getSourceDbName()}.files", 'files', "{$this->alias['content_type_documentation']}.field_documentation_access_url_fid = %alias.fid");
+    $this->alias['content_type_asset_release'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_asset_release", 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
+    $this->alias['node_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_sw_logo_nid = %alias.nid");
+    $this->alias['content_type_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_documentation", 'content_type_documentation', "{$this->alias['node_documentation']}.vid = %alias.vid");
+    $this->alias['files'] = $query->leftJoin("{$this->getSourceDbName()}.files", 'files', "{$this->alias['content_type_documentation']}.field_documentation_access_url_fid = %alias.fid");
 
-    $query
+    $and = (new Condition('AND'))
       ->isNotNull("{$this->alias['files']}.filepath")
       ->condition("{$this->alias['files']}.filepath", '', '<>');
 
-    $query->addExpression("CONCAT_WS('\/', '{$this->getLegacySiteWebRoot()}', {$this->alias['files']}.filepath)", 'source_path');
+    $or = (new Condition('OR'))
+      ->condition($and)
+      ->isNotNull('m.logo');
+
+    $query
+      ->fields('m', ['logo'])
+      ->condition($or);
+
     $query->addExpression("FROM_UNIXTIME({$this->alias['files']}.timestamp, '%Y-%m-%dT%H:%i:%s')", 'created');
     $query->addExpression("{$this->alias['files']}.uid", 'file_uid');
 
@@ -56,15 +64,26 @@ class SolutionLogo extends SolutionBase {
       $row->setSourceProperty('created', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
 
-    $uri = NULL;
-    if ($source_path = $row->getSourceProperty('source_path')) {
-      // Build de destination URI.
-      $basename = basename($source_path);
-      $uri = "public://solution/logo/$basename";
+    if ($basename = $row->getSourceProperty('logo')) {
+      $source_path = "../resources/migrate/solution/logo/$basename";
     }
-    $row->setSourceProperty('destination_uri', $uri);
+    elseif ($filepath = $row->getSourceProperty('filepath')) {
+      $source_path = $this->getLegacySiteWebRoot() . '/' . $filepath;
+      $basename = $basename($filepath);
+    }
+    else {
+      // Skip this row if there's no file.
+      return FALSE;
+    }
 
-    // Don't let photos belong to anonymous.
+    // Set the source path.
+    $row->setSourceProperty('source_path', $source_path);
+
+    // Build de destination URI.
+    $destination_uri = "public://solution/logo/$basename";
+    $row->setSourceProperty('destination_uri', $destination_uri);
+
+    // Don't let images belong to anonymous.
     if (($file_uid = $row->getSourceProperty('file_uid')) == 0) {
       // Will be replaced with 1 by the default_value process.
       $row->setSourceProperty('file_uid', -1);

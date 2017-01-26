@@ -29,7 +29,7 @@ Feature: June 2016 demo
       | Avengers     | Wolverine | member                     |
 
     And news content:
-      | title                       | kicker                                    | body                                                                                                                                | status    |
+      | title                       | headline                                  | body                                                                                                                                | status    |
       | Phil Coulson is down        | Phil Coulson fell by the hands of Loki.   | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                | published |
       | Phoenix is down             | Wolverine took down Jean Gray.            | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. | published |
       | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.     | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                | published |
@@ -154,8 +154,8 @@ Feature: June 2016 demo
     When I click "Add news" in the plus button menu
     Then I should see the heading "Add news"
     And I fill in the following:
-      | Headline | New York under attack          |
-      | Kicker   | S.H.I.E.L.D. to nuke New York? |
+      | Kicker   | New York under attack          |
+      | Headline | S.H.I.E.L.D. to nuke New York? |
     And I enter "In a desperate attempt to stop the nuke, Nick fury shot down an airplane of S.H.I.E.L.D." in the "Content" wysiwyg editor
     And I press "Save as draft"
     Then I should see the heading "New York under attack"

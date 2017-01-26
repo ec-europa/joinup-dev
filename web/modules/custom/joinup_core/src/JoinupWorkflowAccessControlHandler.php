@@ -110,7 +110,7 @@ class JoinupWorkflowAccessControlHandler {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The group content entity object.
-   * @param $operation
+   * @param string $operation
    *    The CRUD operation.
    * @param \Drupal\Core\Session\AccountInterface $account
    *    The user account.

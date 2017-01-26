@@ -19,8 +19,8 @@ Feature: As a user of the website
       | Willing Fairy              | Willing Fairy              | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | draft            | Statistics    |
       | The Fallen Thoughts        | The Fallen Thoughts        | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | proposed         | EU finance    |
       | Destruction of Scent       | Destruction of Scent       | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | validated        | eProcurement  |
-      | The School's Stars         | The School's Stars         | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | archival_request | eJustice      |
-      | The Beginning of the Fairy | The Beginning of the Fairy | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | deletion_request | Employment    |
+      | The School's Stars         | The School's Stars         | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | archival request | eJustice      |
+      | The Beginning of the Fairy | The Beginning of the Fairy | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | deletion request | Employment    |
       | Boy in the Dreams          | Boy in the Dreams          | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | archived         | eHealth       |
     And the following collection user memberships:
       | collection           | user      | roles              |
