@@ -687,10 +687,12 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
           ],
           'userOgMember' => [],
           'userOgFacilitator' => [
+            'report',
             'update_published',
             'request_changes',
           ],
           'userModerator' => [
+            'report',
             'update_published',
             'request_changes',
           ],

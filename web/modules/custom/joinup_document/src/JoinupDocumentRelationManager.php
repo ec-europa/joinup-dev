@@ -72,7 +72,7 @@ class JoinupDocumentRelationManager implements ContainerInjectionInterface {
    */
   public function getDocumentWorkflow(EntityInterface $document) {
     $parent = $this->getDocumentParent($document);
-    if (empty($parent) || in_array($parent->bundle(), ['collection', 'solution'])) {
+    if (empty($parent) || !in_array($parent->bundle(), ['collection', 'solution'])) {
       return 'pre_moderated';
     }
     $fields = [
