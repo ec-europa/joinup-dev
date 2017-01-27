@@ -93,7 +93,7 @@ Feature: Owner moderation
     And I press "Save"
     Then I should see the heading "EU healthy group"
 
-    # The owner asks for deletion.
+    # The facilitator asks for deletion.
     When I am logged in as "Raeburn Hibbert"
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
