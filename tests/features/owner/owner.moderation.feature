@@ -102,6 +102,11 @@ Feature: Owner moderation
     When I select "Deletion request" from "State"
     And I press "Save"
     Then I should see the heading "EU healthy group"
+    # The facilitator should still be able to edit the owner, so they can undo
+    # the deletion request if needed.
+    When I click "Edit" in the "Entity actions" region
+    Then the "State" select available options should be "Validated, Deletion request"
+    And the option "Deletion request" should be selected
 
     # The moderator cannot still delete the owner as it's referenced.
     When I am logged in as a moderator
