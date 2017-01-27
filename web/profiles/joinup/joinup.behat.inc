@@ -337,7 +337,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $options
    *    The options to be checked separated by comma. Only labels are accepted.
    *
-   * @Given (the ):select field should contain the :options option(s)
+   * @Then (the ):select field should contain the :options option(s)
    */
   public function checkSelectContainsOptions($select, $options) {
     $field = $this->findSelect($select);
@@ -358,7 +358,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @throws Exception
    *    Throws an exception when a value exists.
    *
-   * @Given (the ):select field should not contain the :options option(s)
+   * @Then (the ):select field should not contain the :options option(s)
    */
   public function checkSelectDoesNotContainOptions($select, $options) {
     $field = $this->findSelect($select);
@@ -380,7 +380,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $options
    *   A comma-separated list of options to be present.
    *
-   * @Given the :select select available options should be :options
+   * @Then the :select select available options should be :options
    */
   public function assertSelectOptions($select, $options) {
     $field = $this->findSelect($select);
@@ -714,7 +714,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @throws \Exception
    *   Thrown when the expected tile is not found.
    *
-   * @Given I (should )see the :heading tile
+   * @Then I (should )see the :heading tile
    */
   public function assertTilePresent($heading) {
     $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
@@ -737,7 +737,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @throws \Exception
    *   Thrown when a tile with the unwanted heading is found.
    *
-   * @Given I (should )not see the :heading tile
+   * @Then I (should )not see the :heading tile
    */
   public function assertTileNotPresent($heading) {
     $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2');
