@@ -390,7 +390,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $options = $this->explodeCommaSeparatedStepArgument($options);
     sort($options);
 
-    // The PHPUnit assertion will allow to undestand easily which values are
+    // The PHPUnit assertion will allow to understand easily which values are
     // missing and which one are extra.
     \PHPUnit_Framework_Assert::assertEquals($options, $available_options, "The '{$select}' select options don't match the wanted ones.");
   }
