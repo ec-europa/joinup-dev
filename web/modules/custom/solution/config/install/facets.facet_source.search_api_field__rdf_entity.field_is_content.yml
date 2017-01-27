@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: search_api_field__rdf_entity.field_is_content
+name: 'search_api_field:rdf_entity.field_is_content'
+filter_key: ''
+url_processor: query_string
