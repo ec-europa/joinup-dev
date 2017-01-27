@@ -113,6 +113,7 @@ Feature: Owner moderation
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
     Then I should not see the link "Delete"
+    And the option "Deletion request" should be selected
 
     # Change the owner in the collection.
     When I go to the homepage of the "The healthy food European project" collection
