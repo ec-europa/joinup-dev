@@ -132,7 +132,7 @@ class AssetReleaseController extends ControllerBase {
     $view_builder = $this->entityTypeManager()->getViewBuilder('rdf_entity');
 
     // Retrieve all releases for this solution.
-    $ids = $this->queryFactory->get('rdf_entity', 'AND')
+    $ids = $this->queryFactory->get('rdf_entity')
       ->condition('rid', 'asset_release')
       ->condition('field_isr_is_version_of', $rdf_entity->id())
       // @todo: This is a temporary fix. We need to implement the sort in the
@@ -156,7 +156,7 @@ class AssetReleaseController extends ControllerBase {
       }
     }
 
-    $standalone_distribution_ids = $this->queryFactory->get('rdf_entity', 'AND')
+    $standalone_distribution_ids = $this->queryFactory->get('rdf_entity')
       ->condition('rid', 'asset_distribution')
       ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $rdf_entity->id())
       ->condition('id', $release_distribution_ids, 'NOT IN')
