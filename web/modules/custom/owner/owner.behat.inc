@@ -8,6 +8,7 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UtilityTrait;
@@ -20,6 +21,7 @@ use Drupal\taxonomy\TermInterface;
  */
 class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use MaterialDesignTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
   use UtilityTrait;
@@ -133,17 +135,23 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
     // Explode into an array.
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
-    $field = $this->getSession()->getPage()->find('named', ['fieldset', 'Owner']);
+    /** @var \Behat\Mink\Element\NodeElement $owner_fieldset */
+    $owner_fieldset = $this->getSession()->getPage()->find('named', ['fieldset', 'Owner']);
 
     /** @var \Behat\Mink\Element\NodeElement[] $labels */
-    $labels = $field->findAll('xpath', '//label//label');
+    $labels = $owner_fieldset->findAll('xpath', '//label//label');
+
+    if (empty($labels)) {
+      throw new \Exception('No options found in the owner field.');
+    }
+
     foreach ($labels as $label) {
       $option = $label->getText();
       if (in_array($option, $options)) {
-        $field->checkField($option);
+        $this->checkMaterialDesignField($option, $owner_fieldset);
       }
       else {
-        $field->uncheckField($option);
+        $this->uncheckMaterialDesignField($option, $owner_fieldset);
       }
     }
   }

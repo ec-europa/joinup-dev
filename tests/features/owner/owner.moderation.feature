@@ -14,15 +14,16 @@ Feature: Owner moderation
 
     When I am logged in as "Raeburn Hibbert"
     And I am on the homepage
-    And I click "Propose collection"
-    When I fill in the following:
-      | Title       | The healthy food European project           |
-      | Description | Keep Europe healthy through healthy eating. |
-    When I select "European Policies" from "Policy domain"
+    And I click "Propose collection" in the plus button menu
+    And I fill in "Title" with "The healthy food European project"
+    And I enter "Keep Europe healthy through healthy eating." in the "Description" wysiwyg editor
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
+    And I click the 'Categorisation' tab
+    And I select "European Policies" from "Policy domain"
 
     # An authenticated user can create an owner in published state.
+    And I click the 'Description' tab
     And I press "Add new" at the "Owner" field
     And I set the Owner type to "Academia/Scientific organisation"
     And I fill in "Name" with "EU healthy movement"

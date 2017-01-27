@@ -634,7 +634,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   When the tab is not found on the page.
    *
-   * @When I click :tab tab
+   * @When I click( the) :tab tab
    */
   public function assertVerticalTabLink($tab) {
     $page = $this->getSession()->getPage();
