@@ -47,7 +47,7 @@ class JoinupDiscussionRelationManager implements ContainerInjectionInterface {
    * @return \Drupal\rdf_entity\RdfInterface|null
    *   The rdf entity the discussion belongs to, or NULL when no group is found.
    */
-  public function getDiscussionParent(EntityInterface $discussion) {
+  public function getParent(EntityInterface $discussion) {
     if ($discussion->bundle() !== 'discussion') {
       return NULL;
     }
