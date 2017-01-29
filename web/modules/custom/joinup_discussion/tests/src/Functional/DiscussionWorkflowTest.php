@@ -100,6 +100,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
       // cases.
       $content = $this->createNode([
         'type' => 'discussion',
+        'uid' => $this->userOwner->id(),
         OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
       ]);
 
@@ -125,6 +126,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           $content = $this->createNode([
             'type' => 'discussion',
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
+            'uid' => $this->userOwner->id(),
             'field_state' => $content_state,
             'status' => $this->isPublishedState($content_state),
           ]);
@@ -157,6 +159,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           $content = $this->createNode([
             'type' => 'discussion',
             'field_state' => $content_state,
+            'uid' => $this->userOwner->id(),
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
             'status' => $this->isPublishedState($content_state),
           ]);
@@ -310,18 +313,21 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
       // Unpublished parent.
       'draft' => [
         'validated' => [
+          ['view', 'userOwner', TRUE],
           ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgMember', FALSE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userOwner', TRUE],
           ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgMember', FALSE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userOwner', FALSE],
           ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
@@ -330,16 +336,19 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'in_assessment' => [
+          ['view', 'userOwner', TRUE],
           ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userOwner', FALSE],
           ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userOwner', FALSE],
           ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
@@ -347,16 +356,19 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'proposed' => [
+          ['view', 'userOwner', TRUE],
           ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userOwner', TRUE],
           ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userOwner', FALSE],
           ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
@@ -364,16 +376,19 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'archived' => [
+          ['view', 'userOwner', TRUE],
           ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userOwner', FALSE],
           ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
+          ['update', 'userModerator', FALSE],
           ['update', 'userOgFacilitator', FALSE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userOwner', FALSE],
           ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
@@ -384,16 +399,19 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
       // Published parent.
       'validated' => [
         'validated' => [
+          ['view', 'userOwner', TRUE],
           ['view', 'userAnonymous', TRUE],
           ['view', 'userAuthenticated', TRUE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', TRUE],
+          ['update', 'userOwner', TRUE],
           ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userOwner', FALSE],
           ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
@@ -401,16 +419,19 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'in_assessment' => [
+          ['view', 'userOwner', TRUE],
           ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userOwner', FALSE],
           ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userOwner', FALSE],
           ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
@@ -418,16 +439,19 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'proposed' => [
+          ['view', 'userOwner', TRUE],
           ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', FALSE],
+          ['update', 'userOwner', TRUE],
           ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
           ['update', 'userModerator', TRUE],
           ['update', 'userOgFacilitator', TRUE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userOwner', FALSE],
           ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
@@ -435,16 +459,19 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgAdministrator', FALSE],
         ],
         'archived' => [
+          ['view', 'userOwner', TRUE],
           ['view', 'userAnonymous', TRUE],
           ['view', 'userAuthenticated', TRUE],
           ['view', 'userModerator', TRUE],
           ['view', 'userOgFacilitator', TRUE],
           ['view', 'userOgAdministrator', TRUE],
+          ['update', 'userOwner', FALSE],
           ['update', 'userAnonymous', FALSE],
           ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
+          ['update', 'userModerator', FALSE],
           ['update', 'userOgFacilitator', FALSE],
           ['update', 'userOgAdministrator', FALSE],
+          ['delete', 'userOwner', FALSE],
           ['delete', 'userAnonymous', FALSE],
           ['delete', 'userAuthenticated', FALSE],
           ['delete', 'userModerator', TRUE],
@@ -475,7 +502,12 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
   protected function workflowTransitionsProvider() {
     return [
       '__new__' => [
-        'userAuthenticated' => [],
+        'userOwner' => [
+          'validate',
+        ],
+        'userAuthenticated' => [
+          'validate',
+        ],
         'userOgMember' => [
           'validate',
         ],
@@ -488,9 +520,10 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
       ],
       'validated' => [
         'userAuthenticated' => [],
-        'userOgMember' => [
+        'userOwner' => [
           'update_published',
         ],
+        'userOgMember' => [],
         'userOgFacilitator' => [
           'update_published',
           'request_changes',
@@ -506,6 +539,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
       ],
       'in_assessment' => [
         'userAuthenticated' => [],
+        'userOwner' => [],
         'userOgMember' => [],
         'userOgFacilitator' => [
           'approve_report',
@@ -516,9 +550,10 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
       ],
       'proposed' => [
         'userAuthenticated' => [],
-        'userOgMember' => [
+        'userOwner' => [
           'update_proposed',
         ],
+        'userOgMember' => [],
         'userOgFacilitator' => [
           'update_proposed',
           'approve_proposed',
@@ -531,6 +566,7 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
       // Once the node is in archived state, no actions can be taken anymore.
       'archived' => [
         'userAuthenticated' => [],
+        'userOwner' => [],
         'userOgMember' => [],
         'userOgFacilitator' => [],
         'userModerator' => [],

@@ -23,46 +23,48 @@
 # keyed by the target state) is to follow the state_machines module logic
 # of indexing states.
 transitions:
-  validate:
-    __new__:
-      - rdf_entity-collection-member
-      - rdf_entity-collection-facilitator
-      - rdf_entity-solution-facilitator
-      - moderator
-  update_published:
-    validated:
-      - rdf_entity-collection-member
-      - rdf_entity-collection-facilitator
-      - rdf_entity-solution-facilitator
-      - moderator
-  request_changes:
-    validated:
-      - rdf_entity-collection-facilitator
-      - rdf_entity-solution-facilitator
-      - moderator
-  report:
-    validated:
-      - rdf_entity-collection-facilitator
-      - rdf_entity-solution-facilitator
-      - moderator
-  approve_report:
-    in_assessment:
-      - rdf_entity-collection-facilitator
-      - rdf_entity-solution-facilitator
-      - moderator
-  update_proposed:
-    proposed:
-      - rdf_entity-collection-member
-      - rdf_entity-collection-facilitator
-      - rdf_entity-solution-facilitator
-      - moderator
-  approve_proposed:
-    proposed:
-      - rdf_entity-collection-facilitator
-      - rdf_entity-solution-facilitator
-      - moderator
-  disable:
-    validated:
-      - rdf_entity-collection-facilitator
-      - rdf_entity-solution-facilitator
-      - moderator
+  node:discussion:post_moderated:
+    validate:
+      __new__:
+        - authenticated
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    update_published:
+      validated:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    request_changes:
+      validated:
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    report:
+      validated:
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    approve_report:
+      in_assessment:
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    update_proposed:
+      proposed:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    approve_proposed:
+      proposed:
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    disable:
+      validated:
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
