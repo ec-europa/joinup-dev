@@ -46,7 +46,8 @@ function joinup_document_workflow_selector(EntityInterface $entity) {
   if ($entity->bundle() != 'document') {
     throw new Exception("This method can only be called for document entities.");
   }
-  /** @var \Drupal\joinup_document\JoinupDocumentRelationManager $relation_manager */
-  $relation_manager = \Drupal::service('joinup_document.relations_manager');
-  return $relation_manager->getDocumentWorkflow($entity);
+  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
+  $relation_manager = \Drupal::service('joinup_core.relations_manager');
+  $moderation = $relation_manager->getParentModeration($entity);
+  return $moderation == 1 ? 'node:document:pre_moderated' : 'node:document:post_moderated';
 }

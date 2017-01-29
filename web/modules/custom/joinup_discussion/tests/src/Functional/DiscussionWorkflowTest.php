@@ -15,6 +15,13 @@ use Drupal\Tests\joinup_core\JoinupWorkflowTestBase;
 class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
 
   /**
+   * A user assigned as an owner to document entities.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $userOwner;
+
+  /**
    * A non authenticated user.
    *
    * @var \Drupal\Core\Session\AccountInterface
@@ -62,12 +69,13 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
   public function setUp() {
     parent::setUp();
 
+    $this->userOwner = $this->createUser();
     $this->userAnonymous = new AnonymousUserSession();
-    $this->userAuthenticated = $this->createUserWithRoles();
+    $this->userAuthenticated = $this->createUser();
     $this->userModerator = $this->createUserWithRoles(['moderator']);
-    $this->userOgMember = $this->createUserWithRoles();
-    $this->userOgFacilitator = $this->createUserWithRoles();
-    $this->userOgAdministrator = $this->createUserWithRoles();
+    $this->userOgMember = $this->createUser();
+    $this->userOgFacilitator = $this->createUser();
+    $this->userOgAdministrator = $this->createUser();
   }
 
   /**

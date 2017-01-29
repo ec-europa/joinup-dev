@@ -46,7 +46,7 @@ abstract class JoinupWorkflowTestBase extends BrowserTestBase {
   /**
    * The user provider service for the workflow guards.
    *
-   * @var \Drupal\joinup_user\WorkflowUserProvider
+   * @var \Drupal\joinup_core\WorkflowUserProvider
    */
   protected $userProvider;
 
@@ -78,7 +78,7 @@ abstract class JoinupWorkflowTestBase extends BrowserTestBase {
     $this->ogMembershipManager = \Drupal::service('og.membership_manager');
     $this->ogAccess = $this->container->get('og.access');
     $this->entityAccess = $this->container->get('entity_type.manager')->getAccessControlHandler($this->getEntityType());
-    $this->userProvider = $this->container->get('joinup_user.workflow.user_provider');
+    $this->userProvider = $this->container->get('joinup_core.workflow.user_provider');
     $this->workflowAccess = $this->container->get('joinup_core.workflow_access');
   }
 

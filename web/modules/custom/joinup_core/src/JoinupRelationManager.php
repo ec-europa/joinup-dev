@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_discussion;
+namespace Drupal\joinup_core;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Service to manage relations for the discussion node bundle.
  */
-class JoinupDiscussionRelationManager implements ContainerInjectionInterface {
+class JoinupRelationManager implements ContainerInjectionInterface {
 
   /**
    * The OG membership manager service.

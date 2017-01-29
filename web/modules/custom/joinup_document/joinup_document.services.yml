@@ -1,9 +1,6 @@
 services:
   joinup_document.fulfillment_guard:
     class: Drupal\joinup_document\Guard\JoinupDocumentFulfillmentGuard
-    arguments: ['@entity_type.manager', '@joinup_user.workflow.user_provider', '@joinup_document.relations_manager', '@og.membership_manager', '@config.factory', '@current_user']
+    arguments: ['@entity_type.manager', '@joinup_core.workflow.user_provider', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user']
     tags:
       - { name: state_machine.guard, group: document }
-  joinup_document.relations_manager:
-    class: Drupal\joinup_document\JoinupDocumentRelationManager
-    arguments: ['@og.membership_manager']

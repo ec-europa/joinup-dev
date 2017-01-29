@@ -11,6 +11,6 @@ services:
       - { name: cache.context }
   solution.fulfillment_guard:
     class: Drupal\solution\Guard\SolutionFulfillmentGuard
-    arguments: ['@joinup_user.workflow.user_provider']
+    arguments: ['@joinup_core.workflow.user_provider']
     tags:
       - { name: state_machine.guard, group: solution }

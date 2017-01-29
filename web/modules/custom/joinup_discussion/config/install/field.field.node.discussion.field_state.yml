@@ -19,6 +19,6 @@ default_value:
     value: __new__
 default_value_callback: ''
 settings:
-  workflow: discussion_workflow
+  workflow: 'node:discussion:post_moderated'
   workflow_callback: ''
 field_type: state
