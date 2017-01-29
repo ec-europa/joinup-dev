@@ -39,26 +39,42 @@ class JoinupRelationManager implements ContainerInjectionInterface {
   }
 
   /**
-   * Retrieves the parent of the discussion node.
+   * Retrieves the parent of the entity.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $discussion
-   *   The discussion node.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The group content entity.
    *
    * @return \Drupal\rdf_entity\RdfInterface|null
-   *   The rdf entity the discussion belongs to, or NULL when no group is found.
+   *    The rdf entity the passed entity belongs to, or NULL when no group is
+   *    found.
    */
-  public function getParent(EntityInterface $discussion) {
-    if ($discussion->bundle() !== 'discussion') {
-      return NULL;
-    }
-
-    $groups = $this->membershipManager->getGroups($discussion);
-
+  public function getParent(EntityInterface $entity) {
+    $groups = $this->membershipManager->getGroups($entity);
     if (empty($groups['rdf_entity'])) {
       return NULL;
     }
 
     return reset($groups['rdf_entity']);
+  }
+
+  /**
+   * Retrieves the moderation state of the parent.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The group content entity.
+   *
+   * @return int
+   *    The moderation status.
+   */
+  public function getParentModeration(EntityInterface $entity) {
+    $parent = $this->getParent($entity);
+    $field_array = [
+      'collection' => 'field_ar_moderation',
+      'solution' => 'field_is_moderation',
+    ];
+
+    $moderation = $parent->{$field_array[$parent->bundle()]}->value;
+    return $moderation;
   }
 
 }

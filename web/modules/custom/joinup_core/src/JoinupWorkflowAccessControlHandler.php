@@ -131,7 +131,7 @@ class JoinupWorkflowAccessControlHandler {
       case 'update':
       case 'edit':
         $allowed_transitions = $entity->get('field_state')->first()->getTransitions();
-        return AccessResult::allowedIf(!empty($allowed_transitions));
+        return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
 
       case 'delete':
         return $this->entityDeleteAccess($entity, $account);
@@ -260,7 +260,7 @@ class JoinupWorkflowAccessControlHandler {
    */
   protected function getEntityWorkflow(EntityInterface $entity) {
     $workflow = $entity->field_state->first()->getWorkflow();
-    return $workflow->id();
+    return $workflow->getId();
   }
 
 }

@@ -1,5 +1,5 @@
 # The workflow of the document entity for a pre moderated parent.
-pre_moderated:
+node:document:pre_moderated:
   id: pre_moderated
   label: "Default"
   group: document
@@ -66,7 +66,7 @@ pre_moderated:
       from: [proposed]
       to: validated
 # The workflow of the document entity for a post moderated parent.
-post_moderated:
+node:document:post_moderated:
   id: post_moderated
   label: "Default"
   group: document
