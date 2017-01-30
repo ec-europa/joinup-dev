@@ -130,7 +130,7 @@ abstract class NodeGuard implements GuardInterface {
     // If the entity is new, check the eLibrary roles.
     if ($entity->isNew()) {
       // Get the roles according to the eLibrary creation.
-      $elibrary_authorized_roles = $this->getELibraryAllowedRoles($entity);
+      $elibrary_authorized_roles = $this->getElibraryAllowedRoles($entity);
       $authorized_roles = array_intersect($authorized_roles, $elibrary_authorized_roles);
     }
 
@@ -176,7 +176,7 @@ abstract class NodeGuard implements GuardInterface {
    * @return array
    *    An array of roles that are allowed.
    */
-  protected function getELibraryAllowedRoles(EntityInterface $document) {
+  protected function getElibraryAllowedRoles(EntityInterface $document) {
     $roles_array = [
       self::ELIBRARY_ONLY_FACILITATORS => [
         'rdf_entity-collection-facilitator',
@@ -205,7 +205,7 @@ abstract class NodeGuard implements GuardInterface {
       return $roles_array[self::ELIBRARY_ONLY_FACILITATORS];
     }
 
-    $e_library_name = $this->getParentELibraryName($parent);
+    $e_library_name = $this->getParentElibraryName($parent);
     $e_library_creation = $parent->{$e_library_name}->value;
     return $roles_array[$e_library_creation];
   }
@@ -219,7 +219,7 @@ abstract class NodeGuard implements GuardInterface {
    * @return string
    *    The machine name of the eLibrary creation field.
    */
-  protected function getParentELibraryName(EntityInterface $entity) {
+  protected function getParentElibraryName(EntityInterface $entity) {
     $field_array = [
       'collection' => 'field_ar_elibrary_creation',
       'solution' => 'field_is_elibrary_creation',

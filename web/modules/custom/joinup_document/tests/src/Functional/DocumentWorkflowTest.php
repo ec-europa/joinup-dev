@@ -2,13 +2,6 @@
 
 namespace Drupal\Tests\joinup_document\Functional;
 
-use Drupal\Core\Session\AnonymousUserSession;
-use Drupal\node\Entity\Node;
-use Drupal\og\Entity\OgRole;
-use Drupal\og\OgGroupAudienceHelper;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfInterface;
-use Drupal\Tests\joinup_core\JoinupWorkflowTestBase;
 use Drupal\Tests\joinup_core\NodeWorkflowTestBase;
 
 /**
@@ -387,7 +380,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
 
     $parent_access_array = [];
     $return_array = [];
-    $e_library_states = $this->getELibraryStates();
+    $e_library_states = $this->getElibraryStates();
 
     foreach ($access_array as $moderation_state => $moderation_data) {
       foreach ($moderation_data as $content_state => $user_var_data) {
@@ -397,7 +390,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
             $return_array[$parent_bundle][$e_library] = $access_array;
             // Special handle the create conditions that are affected by
             // eLibrary and moderation.
-            $return_array[$parent_bundle][$e_library][$moderation_state]['__new__'] = $this->getWorkflowELibraryCreationRoles($e_library, $moderation_state);
+            $return_array[$parent_bundle][$e_library][$moderation_state]['__new__'] = $this->getWorkflowElibraryCreationRoles($e_library, $moderation_state);
           }
         }
       }
@@ -409,8 +402,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  protected
-  function isPublishedState($state) {
+  public function isPublishedState($state) {
     $states = [
       'validated',
       'in_assessment',
@@ -431,7 +423,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
    * @return array
    *    An array with users as keys and allowed transitions as values.
    */
-  protected function getWorkflowELibraryCreationRoles($e_library, $moderation) {
+  protected function getWorkflowElibraryCreationRoles($e_library, $moderation) {
     $allowed_roles = [
       self::ELIBRARY_ONLY_FACILITATORS => [
         self::PRE_MODERATION => [

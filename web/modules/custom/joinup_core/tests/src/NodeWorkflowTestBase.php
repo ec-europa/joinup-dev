@@ -350,11 +350,11 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * @return array
    *    An array of the available eLibrary states.
    */
-  protected function getELibraryStates() {
+  protected function getElibraryStates() {
     return [
       self::ELIBRARY_ONLY_FACILITATORS,
       self::ELIBRARY_MEMBERS_FACILITATORS,
-      self::ELIBRARY_REGISTERED_USERS
+      self::ELIBRARY_REGISTERED_USERS,
     ];
   }
 

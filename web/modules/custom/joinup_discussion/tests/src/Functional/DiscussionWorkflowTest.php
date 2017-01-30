@@ -115,8 +115,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
             'userModerator',
             'userOgFacilitator',
           ],
-          'update' => [
-          ],
+          'update' => [],
           'delete' => [
             'userModerator',
             'userOgFacilitator',
@@ -222,7 +221,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
 
     $parent_access_array = [];
     $return_array = [];
-    $e_library_states = $this->getELibraryStates();
+    $e_library_states = $this->getElibraryStates();
 
     foreach ($access_array as $moderation_state => $moderation_data) {
       foreach ($moderation_data as $content_state => $user_var_data) {
@@ -232,7 +231,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
             $return_array[$parent_bundle][$e_library] = $access_array;
             // Special handle the create conditions that are affected by
             // eLibrary and moderation.
-            $return_array[$parent_bundle][$e_library][$moderation_state]['__new__'] = $this->getWorkflowELibraryCreationRoles($e_library, $moderation_state);
+            $return_array[$parent_bundle][$e_library][$moderation_state]['__new__'] = $this->getWorkflowElibraryCreationRoles($e_library, $moderation_state);
           }
         }
       }
@@ -264,7 +263,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
    * @return array
    *    An array with users as keys and allowed transitions as values.
    */
-  protected function getWorkflowELibraryCreationRoles($e_library, $moderation) {
+  protected function getWorkflowElibraryCreationRoles($e_library, $moderation) {
     $allowed_roles = [
       self::ELIBRARY_ONLY_FACILITATORS => [
         self::POST_MODERATION => [
