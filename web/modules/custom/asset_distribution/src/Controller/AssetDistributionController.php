@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AssetDistributionController extends ControllerBase {
 
   /**
-   * Drupal\asset_distribution\AssetDistributionRelations definition.
+   * The asset distribution relation manager.
    *
    * @var \Drupal\asset_distribution\AssetDistributionRelations
    */
@@ -57,10 +57,10 @@ class AssetDistributionController extends ControllerBase {
    *
    * We need to override the functionality of the create form for pages
    * that include the rdf_entity id in the url so that the the asset release
-   * refers to this asset distribution.
+   * refers to this asset distribution or solution.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The asset release rdf entity.
+   *   The asset release or solution rdf entity.
    *
    * @return array
    *   Return the form array to be rendered.
@@ -68,17 +68,15 @@ class AssetDistributionController extends ControllerBase {
   public function add(RdfInterface $rdf_entity) {
     $distribution = $this->createNewAssetDistribution($rdf_entity);
 
-    /** @var \Drupal\Core\Form\FormBuilderInterface $form_builder */
-    $form = $this->entityFormBuilder()->getForm($distribution);
-
-    return $form;
+    return $this->entityFormBuilder()->getForm($distribution);
   }
 
   /**
-   * Handles access to the distribution add form through solution pages.
+   * Handles access to the distribution add form.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The asset release RDF entity for which the distribution is created.
+   *   The asset release or solution RDF entity for which the distribution
+   *   is created.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
