@@ -19,7 +19,7 @@ use Drupal\og\Og;
  *
  * @package Drupal\joinup_core
  */
-class JoinupWorkflowAccessControlHandler {
+class NodeWorkflowAccessControlHandler {
 
   /**
    * The state field machine name.

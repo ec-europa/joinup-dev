@@ -57,7 +57,7 @@ abstract class JoinupWorkflowTestBase extends BrowserTestBase {
    * used directly for the create access since it requires an entity and not
    * just a bundle.
    *
-   * @var \Drupal\joinup_core\JoinupWorkflowAccessControlHandler
+   * @var \Drupal\joinup_core\NodeWorkflowAccessControlHandler
    */
   protected $workflowAccess;
 
