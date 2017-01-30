@@ -127,6 +127,14 @@ abstract class JoinupWorkflowTestBase extends BrowserTestBase {
   protected abstract function getEntityType();
 
   /**
+   * Returns the entity bundle for the tested node type.
+   *
+   * @return string
+   *    The entity bundle machine name.
+   */
+  abstract protected function getEntityBundle();
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
