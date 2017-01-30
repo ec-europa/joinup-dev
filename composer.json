@@ -14,8 +14,8 @@
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^2.0",
         "drupal/facets": "~1.0@alpha",
-        "drupal/field_group": "dev-1.x#0f289425f4f1b156737fe27ae29dde2c55bbec27",
-        "drupal/inline_entity_form": "dev-1.x",
+        "drupal/field_group": "~1.0-rc6",
+        "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
         "drupal/message": "~1.0",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
@@ -103,7 +103,7 @@
         },
         "patches": {
             "drupal/core": {
-                "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
+                "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/file_usage_limits-2675600-14.patch",
                 "EntityPublishedInterface @see https://www.drupal.org/node/2789315 @see https://www.drupal.org/node/2810381 @todo Remove in 8.3.x": "./resources/patches/combined-2810381-and-2789315.patch",
                 "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
                 "SqlBase::prepareQuery() should be called also on count @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch",

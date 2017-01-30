@@ -16,25 +16,17 @@ Feature: Asset distribution overview on solution.
       | title                 | documentation | release number | release notes | creation date    | is version of    |
       | Thief in the Angels   | text.pdf      | 2              | Notes 2       | 28-01-1995 12:06 | Lovely Butterfly |
       | The Child of the Past | text.pdf      | 1              | Notes 1       | 28-01-1996 12:05 | Lovely Butterfly |
+    And the following asset distributions:
+      | title       | file     | creation date     | parent                |
+      | Linux       | test.zip | 28-01-1995 12:05  | Thief in the Angels   |
+      | Windows     |          | 28-01-1995 12:06  | The Child of the Past |
+      | User manual | test.zip | 28-01-1995 11:07  | Lovely Butterfly      |
     And the following collection:
       | title      | End of Past      |
       | affiliates | Lovely Butterfly |
       | state      | validated        |
 
-    # Create distributions.
-    When I am logged in as a "facilitator" of the "Lovely Butterfly" solution
-    When I go to the homepage of the "Thief in the Angels" release
-    And I click "Add distribution"
-    When I fill in "Title" with "Linux"
-    And I attach the file "test.zip" to "Distribution file"
-    And I press "Save"
-    And I go to the homepage of the "The Child of the Past" release
-    # Create a distribution with no file attached.
-    And I click "Add distribution"
-    And I fill in "Title" with "Windows"
-    And I press "Save"
-
-    And I go to the homepage of the "Lovely Butterfly" solution
+    When I go to the homepage of the "Lovely Butterfly" solution
     And I click "Download"
     Then I should see the heading "Releases for Lovely Butterfly solution"
     # The release titles include the version as a suffix.
@@ -42,13 +34,11 @@ Feature: Asset distribution overview on solution.
       | release                 |
       | The Child of the Past 1 |
       | Thief in the Angels 2   |
+    # The standalone distribution should also be visible.
+    And I should see the link "User manual"
+    And I should see the text "Standalone distribution"
 
     And I should see the download link in the "Linux" asset distribution
     And the "Windows" asset distribution should not have any download urls
 
     And the "The Child of the Past" release should be marked as the latest release
-
-    # Clean up the asset distribution that was created through the UI.
-    Then I delete the "Linux" asset distribution
-    # Clean up the asset distribution that was created through the UI.
-    Then I delete the "Windows" asset distribution
