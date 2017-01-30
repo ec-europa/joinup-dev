@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b21ce37588f0719d0ac2c53503493c1c",
+    "content-hash": "f722f9ceefa77a387dfe92328f9339bb",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -7777,12 +7777,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/drupalextension.git",
-                "reference": "c08daab452b31e0c8b43b363d2c1e94265789664"
+                "reference": "f3c1f460f3664de9a1bda1585ec7397695ea120e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/c08daab452b31e0c8b43b363d2c1e94265789664",
-                "reference": "c08daab452b31e0c8b43b363d2c1e94265789664",
+                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/f3c1f460f3664de9a1bda1585ec7397695ea120e",
+                "reference": "f3c1f460f3664de9a1bda1585ec7397695ea120e",
                 "shasum": ""
             },
             "require": {
@@ -7830,7 +7830,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-01-24T15:22:27+00:00"
+            "time": "2017-01-30 11:56:03"
         },
         {
             "name": "fabpot/goutte",
