@@ -6,7 +6,7 @@ name: Type
 url_alias: collection_type
 weight: 0
 show_only_one_result: true
-field_identifier: aggregated_field
+field_identifier: entity_bundle
 query_type_name: null
 facet_source_id: 'search_api_field:rdf_entity.field_collection_content'
 widget:

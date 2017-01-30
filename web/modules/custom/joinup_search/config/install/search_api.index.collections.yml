@@ -21,7 +21,7 @@ name: 'Search index'
 description: ''
 read_only: false
 field_settings:
-  aggregated_field:
+  entity_bundle:
     label: Bundle
     property_path: aggregated_field
     type: string
@@ -144,11 +144,11 @@ processor_settings:
   add_url:
     plugin_id: add_url
     settings: {  }
-  rendered_item:
-    plugin_id: rendered_item
-    settings: {  }
   aggregated_field:
     plugin_id: aggregated_field
+    settings: {  }
+  rendered_item:
+    plugin_id: rendered_item
     settings: {  }
 options:
   index_directly: true
