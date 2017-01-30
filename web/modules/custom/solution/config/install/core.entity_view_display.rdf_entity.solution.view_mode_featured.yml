@@ -45,6 +45,7 @@ dependencies:
     - ds
     - image
     - text
+    - user
 id: rdf_entity.solution.view_mode_featured
 targetEntityType: rdf_entity
 bundle: solution

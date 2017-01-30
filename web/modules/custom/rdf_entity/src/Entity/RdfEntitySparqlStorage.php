@@ -1028,7 +1028,9 @@ QUERY;
     $target_entity = $target->getValue();
     $target_entity_type = $target_entity->getEntityType();
     $target_entity_storage_class = trim($target_entity_type->getStorageClass(), "\\");
-    return $target_entity_storage_class === RdfEntitySparqlStorage::class;
+    $classes = class_parents($target_entity_storage_class);
+    $classes[$target_entity_storage_class] = $target_entity_storage_class;
+    return in_array(RdfEntitySparqlStorage::class, $classes);
   }
 
   /**

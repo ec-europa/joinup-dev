@@ -340,6 +340,9 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_release(&$variabl
   $is_latest_release = FALSE;
   $field_solution = $entity->get('field_isr_is_version_of');
   if (!empty($field_solution) && ($solution = $field_solution->entity)) {
+    // @todo Find a better way of marking the latest release that doesn't
+    //   involve performing a database query in the theme layer.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
     $latest_release = solution_get_latest_release($solution);
     if ($latest_release && $latest_release->id() === $entity->id()) {
       $is_latest_release = TRUE;
