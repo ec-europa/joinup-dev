@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "178a1f6cc06b5631a68799d5c99499bb",
+    "content-hash": "76056b85bad8f7842005c6aab57a70e1",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1992,7 +1992,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/field_group-8.x-1.0-rc6.zip",
-                "reference": null,
+                "reference": "8.x-1.0-rc6",
                 "shasum": "1ce3c6387e745a04a1099956a5bf39bb50096d44"
             },
             "require": {
@@ -2051,8 +2051,8 @@
             "require": {
                 "drupal/core": "~8.0"
             },
-            "suggest": {
-                "drupal/entity_reference_revisions": "Required by drupal/inline_entity_form"
+            "require-dev": {
+                "drupal/entity_reference_revisions": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -2608,8 +2608,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta4+7-dev",
-                    "datestamp": "1485110583"
+                    "version": "8.x-1.0-beta4+2-dev",
+                    "datestamp": "1483803242"
                 },
                 "patches_applied": {
                     "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-46.patch",
@@ -2662,6 +2662,9 @@
                 "drupal/core": "~8.0",
                 "drupal/search_api": "*",
                 "solarium/solarium": "3.6.*"
+            },
+            "suggest": {
+                "drupal/core": "Required by drupal/search_api_solr_defaults"
             },
             "type": "drupal-module",
             "extra": {
@@ -2742,7 +2745,8 @@
                 },
                 "patches_applied": {
                     "Fire generic events when transition are applied": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
-                    "Schema validation error when running functional tests": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch"
+                    "Schema validation error when running functional tests": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
+                    "Disable static cache for workflow_callback": "https://www.drupal.org/files/issues/static_cache_disable_for_workflow_callback-2846986-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7211,7 +7215,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-01-04T12:59:47+00:00"
+            "time": "2017-01-04 12:59:47"
         },
         {
             "name": "behat/transliterator",
