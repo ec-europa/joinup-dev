@@ -8,6 +8,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
+    - field.field.rdf_entity.solution.field_is_content
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
@@ -25,7 +26,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
-    - field.field.rdf_entity.solution.field_is_content
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
@@ -108,6 +108,7 @@ hidden:
   field_is_banner: true
   field_is_business_process: true
   field_is_contact_information: true
+  field_is_content: true
   field_is_creation_date: true
   field_is_distribution: true
   field_is_documentation: true
@@ -123,7 +124,6 @@ hidden:
   field_is_owner: true
   field_is_product_type: true
   field_is_related_solutions: true
-  field_is_content: true
   field_is_solution_type: true
   field_is_source_code_repository: true
   field_is_standardization_level: true
