@@ -5,7 +5,7 @@ namespace Drupal\joinup_document\Guard;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\Guard\JoinupGuard;
+use Drupal\joinup_core\Guard\NodeGuard;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\joinup_core\WorkflowUserProvider;
 use Drupal\og\MembershipManagerInterface;
@@ -13,7 +13,7 @@ use Drupal\og\MembershipManagerInterface;
 /**
  * Class JoinupDocumentFulfillmentGuard.
  */
-class JoinupDocumentFulfillmentGuard extends JoinupGuard {
+class JoinupDocumentFulfillmentGuard extends NodeGuard {
 
   /**
    * Instantiates the JoinupDocumentFulfillmentGuard service.

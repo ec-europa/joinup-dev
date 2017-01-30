@@ -15,9 +15,9 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 use Drupal\user\RoleInterface;
 
 /**
- * Class JoinupGuard.
+ * Class NodeGuard.
  */
-class JoinupGuard implements GuardInterface {
+abstract class NodeGuard implements GuardInterface {
 
   /**
    * Elibrary option defining that only facilitators can create content.
@@ -72,7 +72,7 @@ class JoinupGuard implements GuardInterface {
   /**
    * The workflow user provider service.
    *
-   * @var \Drupal\joinup_user\WorkflowUserProvider
+   * @var \Drupal\joinup_core\WorkflowUserProvider
    */
   protected $workflowUserProvider;
 
@@ -112,7 +112,7 @@ class JoinupGuard implements GuardInterface {
    * {@inheritdoc}
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    if (empty($transitions)) {
+    if (empty($this->transitions)) {
       return FALSE;
     }
 
@@ -130,7 +130,7 @@ class JoinupGuard implements GuardInterface {
     // If the entity is new, check the eLibrary roles.
     if ($entity->isNew()) {
       // Get the roles according to the eLibrary creation.
-      $elibrary_authorized_roles = $this->getElibraryAllowedRoles($entity);
+      $elibrary_authorized_roles = $this->getELibraryAllowedRoles($entity);
       $authorized_roles = array_intersect($authorized_roles, $elibrary_authorized_roles);
     }
 
@@ -176,7 +176,7 @@ class JoinupGuard implements GuardInterface {
    * @return array
    *    An array of roles that are allowed.
    */
-  protected function getElibraryAllowedRoles(EntityInterface $document) {
+  protected function getELibraryAllowedRoles(EntityInterface $document) {
     $roles_array = [
       self::ELIBRARY_ONLY_FACILITATORS => [
         'rdf_entity-collection-facilitator',
@@ -205,9 +205,9 @@ class JoinupGuard implements GuardInterface {
       return $roles_array[self::ELIBRARY_ONLY_FACILITATORS];
     }
 
-    $elibrary_name = $this->getParentElibraryName($parent);
-    $elibrary_creation = $parent->{$elibrary_name}->value;
-    return $roles_array[$elibrary_creation];
+    $e_library_name = $this->getParentELibraryName($parent);
+    $e_library_creation = $parent->{$e_library_name}->value;
+    return $roles_array[$e_library_creation];
   }
 
   /**
@@ -219,7 +219,7 @@ class JoinupGuard implements GuardInterface {
    * @return string
    *    The machine name of the eLibrary creation field.
    */
-  protected function getParentElibraryName(EntityInterface $entity) {
+  protected function getParentELibraryName(EntityInterface $entity) {
     $field_array = [
       'collection' => 'field_ar_elibrary_creation',
       'solution' => 'field_is_elibrary_creation',
