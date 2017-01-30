@@ -3,6 +3,7 @@
 namespace Drupal\asset_distribution\Controller;
 
 use Drupal\asset_distribution\AssetDistributionRelations;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\OgAccessInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -86,6 +87,12 @@ class AssetDistributionController extends ControllerBase {
     // Create a new distribution entity in order to check permissions on it.
     $distribution = $this->createNewAssetDistribution($rdf_entity);
 
+    // If the distribution entity isn't created correctly, forbid access to the
+    // page.
+    if (!$distribution) {
+      return AccessResult::forbidden();
+    }
+
     return $this->ogAccess->userAccessEntity('create', $distribution);
   }
 
@@ -101,6 +108,12 @@ class AssetDistributionController extends ControllerBase {
    */
   protected function createNewAssetDistribution(RdfInterface $rdf_entity) {
     $solution = $rdf_entity->bundle() === 'solution' ? $rdf_entity : $this->assetDistributionRelations->getReleaseSolution($rdf_entity);
+
+    // A solution is needed to create a distribution. If the rdf entity
+    // parameter is neither a solution or a release, the variable will be empty.
+    if (empty($solution)) {
+      return NULL;
+    }
 
     return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'asset_distribution',
