@@ -249,7 +249,7 @@ function collection_search_api_query_search_api_field_field_collection_content_a
   // Show only content that is related to this collection through the aggregated
   // field. This makes sure that other related entities (such as the collection
   // owner) do not show up as collection content tiles.
-  $query->addCondition('aggregated_field_1', [$entity->id()], 'IN');
+  $query->addCondition('entity_groups', [$entity->id()], 'IN');
 
   // Remove the collection itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');

@@ -30,8 +30,8 @@ field_settings:
       fields:
         - 'entity:node/type'
         - 'entity:rdf_entity/rid'
-  aggregated_field_1:
-    label: 'Aggregated field'
+  entity_groups:
+    label: Groups
     property_path: aggregated_field
     type: string
     configuration:

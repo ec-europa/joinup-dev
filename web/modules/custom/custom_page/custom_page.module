@@ -137,7 +137,7 @@ function custom_page_search_api_query_search_api_field_field_cp_content_listing_
   }
 
   // Show only content belonging to the same group.
-  $query->addCondition('aggregated_field_1', [$group->id()], 'IN');
+  $query->addCondition('entity_groups', [$group->id()], 'IN');
 
   // Remove the page itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
