@@ -56,18 +56,6 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_submit(&$for
   /** @var RdfInterface $distribution */
   $distribution = $form_state->getFormObject()->getEntity();
 
-  // Only add the relation if it doesn't yet exist.
-  $field_name = $parent->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
-  $related_distributions = $parent->get($field_name)->getValue();
-  foreach ($related_distributions as $related_distribution) {
-    if ($related_distribution['target_id'] === $distribution->id()) {
-      return;
-    }
-  }
-
-  $related_distributions[]['target_id'] = $distribution->id();
-  $parent->set($field_name, $related_distributions);
-  $parent->save();
   asset_distribution_add_parent_relation($distribution, $parent);
 
   // Redirect to the parent solution or asset release from where we started.
