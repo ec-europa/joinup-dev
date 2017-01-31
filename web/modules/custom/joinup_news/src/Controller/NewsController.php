@@ -69,13 +69,6 @@ class NewsController extends ControllerBase {
    * to create news articles inside of their group, which in practice means this
    * is granted to collection and solution facilitators.
    *
-   * @todo Depending on the 'eLibrary creation' setting, members should be able
-   *   to create news.
-   * @todo If a collection is open non-members should be able to create news.
-   *
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2654
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2445
-   *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the news entity is created.
    *
@@ -83,19 +76,11 @@ class NewsController extends ControllerBase {
    *   The access result object.
    */
   public function createNewsAccess(RdfInterface $rdf_entity) {
-    // @todo Add also 'solution' when a workflow for news will be in place.
-    if (!in_array($rdf_entity->bundle(), ['collection'])) {
+    if (!in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
       return AccessResult::forbidden();
     }
-
-    $user = $this->currentUser();
-    // Grant access if the user is a moderator.
-    if (in_array('moderator', $user->getRoles())) {
-      return AccessResult::allowed()->addCacheContexts(['user.roles']);
-    }
-    // Grant access depending on whether the user has permission to create a
-    // custom page according to their OG role.
-    return $this->ogAccess->userAccessGroupContentEntityOperation('create', $rdf_entity, $this->createNewsEntity($rdf_entity), $user);
+    $document = $this->createNewsEntity($rdf_entity);
+    return AccessResult::allowedIf(!empty($document->get('field_state')->first()->getTransitions()));
   }
 
   /**
