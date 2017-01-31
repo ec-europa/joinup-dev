@@ -272,10 +272,12 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
           ],
           'userOgMember' => [],
           'userOgFacilitator' => [
+            'needs_update',
             'update_proposed',
             'validate',
           ],
           'userModerator' => [
+            'needs_update',
             'update_proposed',
             'validate',
           ],
