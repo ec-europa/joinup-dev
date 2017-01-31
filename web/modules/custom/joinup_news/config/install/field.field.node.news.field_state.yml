@@ -15,8 +15,10 @@ description: ''
 required: true
 translatable: false
 default_value: {  }
-default_value_callback: ''
+default_value_callback:
+  -
+    value: __new__
 settings:
-  workflow: news_workflow
-  workflow_callback: ''
+  workflow: ''
+  workflow_callback: joinup_news_workflow_selector
 field_type: state
