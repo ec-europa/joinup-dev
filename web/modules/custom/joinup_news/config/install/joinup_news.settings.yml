@@ -48,6 +48,11 @@ transitions:
         - rdf_entity-collection-member
       draft:
         - owner
+      needs_update:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
     update_proposed:
       proposed:
         - owner
@@ -84,6 +89,11 @@ transitions:
     request_deletion:
       validated:
         - owner
+    reject_deletion:
+      deletion_request:
+        - moderator
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
   node:news:post_moderated:
     save_as_draft:
       __new__:
@@ -104,6 +114,12 @@ transitions:
         - rdf_entity-solution-facilitator
         - moderator
       needs_update:
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    update_proposed:
+      proposed:
+        - owner
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
         - moderator

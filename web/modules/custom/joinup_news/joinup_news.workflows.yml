@@ -46,6 +46,10 @@ node:news:pre_moderated:
       label: Request deletion
       from: [validated]
       to: deletion_request
+    reject_deletion:
+      label: Request deletion
+      from: [deletion_request]
+      to: validated
 node:news:post_moderated:
   id: post_moderated
   label: "Post moderated"
