@@ -126,8 +126,8 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @param string $options
    *    A comma delimited list of options to be checked.
    *
-   * @throws \Behat\Mink\Exception\ElementNotFoundException
-   *   When no select has been found.
+   * @throws \Exception
+   *   Thrown when the owner field appears empty in the page.
    *
    * @When (I )set the Owner type(s) to :option
    */
@@ -136,7 +136,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     /** @var \Behat\Mink\Element\NodeElement $owner_fieldset */
-    $owner_fieldset = $this->getSession()->getPage()->find('named', ['fieldset', 'Owner']);
+    $owner_fieldset = $this->getSession()->getPage()->find('named', ['fieldset', 'Type']);
 
     /** @var \Behat\Mink\Element\NodeElement[] $labels */
     $labels = $owner_fieldset->findAll('xpath', '//label//label');

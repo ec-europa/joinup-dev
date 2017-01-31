@@ -79,8 +79,7 @@ Feature: Owner moderation
     And the "State" select available options should be "In assessment"
     And I should not see the link "Delete"
     # Do the changes.
-    When I check the box "Non-Governmental Organisation"
-    And I uncheck the box "Academia/Scientific organisation"
+    When I set the Owner type to "Non-Governmental Organisation"
     And I press "Save"
     Then I should see the heading "EU healthy group"
 
