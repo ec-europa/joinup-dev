@@ -15,7 +15,6 @@ Feature: Discussion moderation
       | logo              | logo.png                                 |
       | elibrary creation | members                                  |
       | state             | validated                                |
-      | moderation        | yes                                      |
     And the following collection user membership:
       | collection     | user            | roles       |
       | DIY collection | Gabe Rogers     | member      |
