@@ -38,7 +38,7 @@ transitions:
         - rdf_entity-solution-facilitator
         - moderator
       validated:
-        - authenticated
+        - owner
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
         - moderator
@@ -48,8 +48,8 @@ transitions:
         - rdf_entity-collection-member
       draft:
         - owner
-    update_propose:
-      propose:
+    update_proposed:
+      proposed:
         - owner
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
@@ -67,10 +67,6 @@ transitions:
         - moderator
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
-      validated:
-        - moderator
-        - rdf_entity-collection-facilitator
-        - rdf_entity-solution-facilitator
       deletion_request:
         - moderator
         - rdf_entity-collection-facilitator
@@ -85,7 +81,7 @@ transitions:
         - moderator
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
-    deletion_request:
+    request_deletion:
       validated:
         - owner
   node:news:post_moderated:
@@ -111,13 +107,7 @@ transitions:
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
         - moderator
-    propose:
-      proposed:
-        - owner
-        - rdf_entity-collection-facilitator
-        - rdf_entity-solution-facilitator
-        - moderator
-    validated:
+    validate:
       __new__:
         - authenticated
         - rdf_entity-collection-member

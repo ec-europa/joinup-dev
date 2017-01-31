@@ -26,7 +26,7 @@ node:news:pre_moderated:
       label: Propose
       from: [__new__, draft, needs_update]
       to: proposed
-    update_propose:
+    update_proposed:
       label: Update
       from: [proposed]
       to: proposed
@@ -71,7 +71,7 @@ node:news:post_moderated:
       label: Propose
       from: [validated, needs_update]
       to: proposed
-    update_propose:
+    update_proposed:
       label: Update
       from: [proposed]
       to: proposed
