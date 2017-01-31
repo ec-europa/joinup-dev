@@ -490,4 +490,30 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
 
   // Remove the solution itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+
+  // Get the ids of the distributions directly associated to the solution.
+  $distributions = array_map(function ($entity) {
+    return $entity->id();
+  }, $entity->get('field_is_distribution')->referencedEntities());
+
+  if (!empty($distributions)) {
+    // We need to filter out all the distributions except the ones that are
+    // directly associated to the solution.
+    $or = $query->createConditionGroup('OR');
+    // The next line might seem crazy but I am not drunk. It's needed to bypass
+    // Solr problems with negated queries. To fix this, we need to use the
+    // '(*:* NOT entity_bundle:"asset_distribution")' format. Unfortunately
+    // SearchApiSolrBackend::createFilterQuery() uses that syntax only when
+    // multiple values are provided. While ugly, nothing is really wrong about
+    // passing twice the same bundle.
+    // @see \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend::createFilterQuery()
+    // @see http://stackoverflow.com/a/635109
+    $or->addCondition('entity_bundle', ['asset_distribution', 'asset_distribution'], 'NOT IN');
+    $or->addCondition($entity->getEntityType()->getKey('id'), $distributions, 'IN');
+    $query->addConditionGroup($or);
+  }
+  else {
+    // Exclude all the distributions.
+    $query->addCondition('entity_bundle', 'asset_distribution', '<>');
+  }
 }
