@@ -23,17 +23,18 @@ Feature: Owner moderation
     And I select "European Policies" from "Policy domain"
 
     # An authenticated user can create an owner in published state.
-    And I click the 'Description' tab
+    When I click the 'Description' tab
     And I press "Add new" at the "Owner" field
     And I set the Owner type to "Academia/Scientific organisation"
     And I fill in "Name" with "EU healthy movement"
-    # Only the validated state should be available in the dropdown.
-    And the "State" select available options should be "Validated"
-    And I press "Create owner"
+    # The dropdown with the workflow states should not be visible now.
+    Then I should not see the text "State"
+    When I press "Create owner"
     Then I should see "EU healthy movement"
-    # Edit the owner entity and verify that the state field is up to date.
+    # Edit the owner entity and check that the state field is still not visible.
     When I press "Edit" at the "Owner" field
-    Then the "State" select available options should be "Validated, Deletion request"
+    Then I should not see the text "State"
+    # Go back to the main form.
     Then I press "Cancel"
 
     # Save the collection to finalise the creation of the owner entity.
