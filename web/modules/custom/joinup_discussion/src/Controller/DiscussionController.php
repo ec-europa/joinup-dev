@@ -79,14 +79,8 @@ class DiscussionController extends ControllerBase {
     if (!in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
       return AccessResult::forbidden();
     }
-    $user = $this->currentUser();
-    // Grant access if the user is a moderator.
-    if (in_array('moderator', $user->getRoles())) {
-      return AccessResult::allowed()->addCacheContexts(['user.roles']);
-    }
-    // Grant access depending on whether the user has permission to create a
-    // discussion node entity according to their OG role.
-    return $this->ogAccess->userAccessGroupContentEntityOperation('create', $rdf_entity, $this->createDiscussionEntity($rdf_entity), $user);
+    $document = $this->createDiscussionEntity($rdf_entity);
+    return AccessResult::allowedIf(!empty($document->get('field_state')->first()->getTransitions()));
   }
 
   /**
