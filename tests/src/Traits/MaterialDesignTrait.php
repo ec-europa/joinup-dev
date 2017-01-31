@@ -62,7 +62,7 @@ trait MaterialDesignTrait {
    */
   protected function uncheckMaterialDesignField(string $label, TraversableElement $element) {
     if ($this->browserSupportsJavascript()) {
-      // Check if the checkbox has already been unchecked.
+      // Only check if the checkbox is unchecked.
       if ($this->findMaterialDesignCheckbox($label, $element)->isChecked()) {
         $this->toggleMaterialDesignCheckbox($label, $element);
       }
