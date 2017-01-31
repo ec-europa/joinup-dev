@@ -5,12 +5,8 @@
  * Provides functionality for the news content entity.
  */
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_news\Guard\JoinupNewsFulfillmentGuard;
-use Drupal\og\Og;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
