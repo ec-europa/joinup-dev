@@ -46,18 +46,8 @@ transitions:
       __new__:
         - authenticated
         - rdf_entity-collection-member
-        - rdf_entity-collection-facilitator
-        - rdf_entity-solution-facilitator
-        - moderator
       draft:
         - owner
-        - rdf_entity-collection-facilitator
-        - rdf_entity-solution-facilitator
-        - moderator
-      needs_update:
-        - moderator
-        - rdf_entity-collection-facilitator
-        - rdf_entity-solution-facilitator
     update_propose:
       propose:
         - owner
