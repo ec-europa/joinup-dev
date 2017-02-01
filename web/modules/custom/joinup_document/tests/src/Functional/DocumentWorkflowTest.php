@@ -212,25 +212,29 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
 
     $parent_access_array = [];
     $return_array = [];
-    $e_library_states = $this->getElibraryStates();
-
-    foreach ($access_array as $moderation_state => $moderation_data) {
-      foreach ($moderation_data as $content_state => $user_var_data) {
-        foreach (['collection', 'solution'] as $parent_bundle) {
-          $parent_access_array[$parent_bundle] = $access_array;
-          foreach ($e_library_states as $e_library) {
-            $return_array[$parent_bundle][$e_library] = $access_array;
+    // The only think affected by whether the parent is published is the view
+    // permission. We are using 'draft' state for an unpublished parent and
+    // 'validated' state for published.
+    // For the published state, everyone should be able to see published
+    // content.
+    foreach (['collection', 'solution'] as $parent_bundle) {
+      foreach (['draft', 'validated'] as $parent_state) {
+        $parent_access_array[$parent_bundle][$parent_state] = $access_array;
+        foreach ($access_array as $moderation_state => $moderation_data) {
+          foreach ($moderation_data as $content_state => $operation_data) {
+            foreach ($operation_data as $operation => $roles) {
+              if ($parent_state === 'validated' && $this->isPublishedState($content_state)) {
+                $parent_access_array[$parent_state][$moderation_state][$content_state][$operation] = [
+                  'userOwner',
+                  'userAuthenticated',
+                  'userModerator',
+                  'userOgMember',
+                  'userOgFacilitator',
+                  'userOgAdministrator',
+                ];
+              }
+            }
           }
-        }
-      }
-    }
-
-    // Special handle the create conditions that are affected by
-    // eLibrary and moderation.
-    foreach ($return_array as $parent_bundle => $parent_data) {
-      foreach ($parent_data as $e_library => $e_library_data) {
-        foreach ($e_library_data as $moderation_state => $moderation_data) {
-          $return_array[$parent_bundle][$e_library][$moderation_state]['__new__'] = $this->getWorkflowElibraryCreationRoles($e_library, $moderation_state);
         }
       }
     }
@@ -381,13 +385,22 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
     foreach ($access_array as $moderation_state => $moderation_data) {
       foreach ($moderation_data as $content_state => $user_var_data) {
         foreach (['collection', 'solution'] as $parent_bundle) {
-          $parent_access_array[$parent_bundle] = $access_array;
-          foreach ($e_library_states as $e_library) {
-            $return_array[$parent_bundle][$e_library] = $access_array;
-            // Special handle the create conditions that are affected by
-            // eLibrary and moderation.
-            $return_array[$parent_bundle][$e_library][$moderation_state]['__new__'] = $this->getWorkflowElibraryCreationRoles($e_library, $moderation_state);
+          foreach (['draft', 'validated'] as $parent_state) {
+            $parent_access_array[$parent_bundle][$parent_state] = $access_array;
+            foreach ($e_library_states as $e_library) {
+              $return_array[$parent_bundle][$e_library] = $access_array;
+            }
           }
+        }
+      }
+    }
+
+    // Special handle the create conditions that are affected by
+    // eLibrary and moderation.
+    foreach ($return_array as $parent_bundle => $parent_data) {
+      foreach ($parent_data as $e_library => $e_library_data) {
+        foreach ($e_library_data as $moderation_state => $moderation_data) {
+          $return_array[$parent_bundle][$e_library][$moderation_state]['__new__'] = $this->getWorkflowElibraryCreationRoles($e_library, $moderation_state);
         }
       }
     }
@@ -424,10 +437,12 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
       self::ELIBRARY_ONLY_FACILITATORS => [
         self::PRE_MODERATION => [
           'userOgFacilitator' => [
+            'propose',
             'save_as_draft',
             'validate',
           ],
           'userModerator' => [
+            'propose',
             'save_as_draft',
             'validate',
           ],
@@ -450,10 +465,12 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
             'propose',
           ],
           'userOgFacilitator' => [
+            'propose',
             'save_as_draft',
             'validate',
           ],
           'userModerator' => [
+            'propose',
             'save_as_draft',
             'validate',
           ],
@@ -489,10 +506,14 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
           ],
           'userOgFacilitator' => [
             'save_as_draft',
+          // For being a member as well.
+            'propose',
             'validate',
           ],
           'userModerator' => [
             'save_as_draft',
+          // For being an authenticated user.
+            'propose',
             'validate',
           ],
         ],

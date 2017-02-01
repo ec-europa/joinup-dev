@@ -136,17 +136,15 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
         $parent_access_array[$parent_bundle][$parent_state] = $access_array;
         foreach ($access_array as $moderation_state => $moderation_data) {
           foreach ($moderation_data as $content_state => $operation_data) {
-            foreach ($operation_data as $operation => $roles) {
-              if ($parent_state === 'validated' && $this->isPublishedState($content_state)) {
-                $parent_access_array[$parent_state][$moderation_state][$content_state][$operation] = [
-                  'userOwner',
-                  'userAuthenticated',
-                  'userModerator',
-                  'userOgMember',
-                  'userOgFacilitator',
-                  'userOgAdministrator',
-                ];
-              }
+            if ($parent_state === 'validated' && $this->isPublishedState($content_state)) {
+              $parent_access_array[$parent_state][$moderation_state][$content_state]['view'] = [
+                'userOwner',
+                'userAuthenticated',
+                'userModerator',
+                'userOgMember',
+                'userOgFacilitator',
+                'userOgAdministrator',
+              ];
             }
           }
         }
@@ -154,6 +152,18 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
     }
 
     return $return_array;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function isPublishedState($state) {
+    $states = [
+      'validated',
+      'archived',
+    ];
+
+    return in_array($state, $states);
   }
 
   /**
@@ -226,9 +236,11 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
     foreach ($access_array as $moderation_state => $moderation_data) {
       foreach ($moderation_data as $content_state => $user_var_data) {
         foreach (['collection', 'solution'] as $parent_bundle) {
-          $parent_access_array[$parent_bundle] = $access_array;
-          foreach ($e_library_states as $e_library) {
-            $return_array[$parent_bundle][$e_library] = $access_array;
+          foreach (['draft', 'validated'] as $parent_state) {
+            $parent_access_array[$parent_bundle][$parent_state] = $access_array;
+            foreach ($e_library_states as $e_library) {
+              $return_array[$parent_bundle][$e_library] = $access_array;
+            }
           }
         }
       }
@@ -245,18 +257,6 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
     }
 
     return $return_array;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function isPublishedState($state) {
-    $states = [
-      'validated',
-      'archived',
-    ];
-
-    return in_array($state, $states);
   }
 
   /**
