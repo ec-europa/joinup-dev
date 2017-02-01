@@ -18,7 +18,7 @@ default_value:
   -
     value:
       fields:
-        solution_type:
+        solution_content_bundle:
           weight: 0
           region: top
         solution_policy_domain:
