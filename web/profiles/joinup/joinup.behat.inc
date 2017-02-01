@@ -753,14 +753,20 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Assert that certain buttons are present on the page.
    *
    * @param string $buttons
-   *    A comma separated list of button labels.
+   *   A comma separated list of button labels.
+   * @param int $count
+   *   Optional number of buttons that are expected to be present. Use this to
+   *   verify that no unexpected additional buttons are present on the page. If
+   *   omitted the number of buttons will not be verified.
    *
    * @throws \Exception
-   *   Thrown when an expected button is not present.
+   *   Thrown when an expected button is not present or when the number of
+   *   buttons is wrong.
    *
-   * @Then (the following )buttons should be present :buttons
+   * @Then (the following )button(s) should be present :buttons
+   * @Then the following :count button(s) should be present :buttons
    */
-  public function assertButtonsVisible($buttons) {
+  public function assertButtonsVisible($buttons, $count = NULL) {
     $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
     $page = $this->getSession()->getPage();
@@ -773,6 +779,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     if (!empty($not_found)) {
       throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $not_found));
+    }
+
+    if (!empty($count)) {
+      $actual = count($this->getSession()->getPage()->findAll('xpath', '//input[@type = "submit"]'));
+      \PHPUnit_Framework_Assert::assertEquals($count, $actual);
     }
   }
 
@@ -911,6 +922,25 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $comment = Comment::create($comment_values);
       $comment->save();
     }
+  }
+
+  /**
+   * Checks the current workflow state on an entity edit form.
+   *
+   * @param string $state
+   *   The expected workflow state.
+   *
+   * @throws \Exception
+   *   Thrown when the current workflow state field is not shown on the page.
+   *
+   * @Then the current workflow state should be :state
+   */
+  public function assertCurrentWorkflowState(string $state) {
+    $element = $this->getSession()->getPage()->find('css', 'div.current-workflow-state');
+    if (empty($element)) {
+      throw new \Exception('The current workflow state field is not present on the page.');
+    }
+    \PHPUnit_Framework_Assert::assertEquals($state, trim($element->getText()));
   }
 
 }

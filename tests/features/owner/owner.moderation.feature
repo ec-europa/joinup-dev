@@ -27,15 +27,8 @@ Feature: Owner moderation
     And I press "Add new" at the "Owner" field
     And I set the Owner type to "Academia/Scientific organisation"
     And I fill in "Name" with "EU healthy movement"
-    # The dropdown with the workflow states should not be visible now.
-    Then I should not see the text "State"
     When I press "Create owner"
     Then I should see "EU healthy movement"
-    # Edit the owner entity and check that the state field is still not visible.
-    When I press "Edit" at the "Owner" field
-    Then I should not see the text "State"
-    # Go back to the main form.
-    Then I press "Cancel"
 
     # Save the collection to finalise the creation of the owner entity.
     When I press "Propose"
@@ -45,11 +38,11 @@ Feature: Owner moderation
     When I go to the homepage of the "EU healthy movement" owner
     And I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Owner EU healthy movement"
-    And the "State" select available options should be "Validated, Deletion request"
-    And the option "Validated" should be selected
+    And the following 2 buttons should be present "Update, Request deletion"
+    And the current workflow state should be "Validated"
     And I should not see the link "Delete"
     When I fill in "Name" with "EU healthy group"
-    And I press "Save"
+    And I press "Update"
     Then I should see the heading "EU healthy group"
 
     # Request an update as moderator: the chosen owner type is wrong.
@@ -57,13 +50,11 @@ Feature: Owner moderation
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Owner EU healthy group"
-    And the "State" select available options should be "Validated, In assessment, Deletion request"
-    And the option "Validated" should be selected
+    And the following 3 buttons should be present "Update, Request changes, Request deletion"
+    And the current workflow state should be "Validated"
     # Deletion should not be possible as the owner entity is referenced by the collection.
     And I should not see the link "Delete"
-    # Change the state and save.
-    When I select "In assessment" from "State"
-    And I press "Save"
+    And I press "Request changes"
     Then I should see the heading "EU healthy group"
 
     # Another authenticated user should not be allowed to edit the owner entity.
@@ -77,48 +68,43 @@ Feature: Owner moderation
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Owner EU healthy group"
-    And the "State" select available options should be "In assessment"
+    And the following 1 button should be present "Update"
+    And the current workflow state should be "In assessment"
     And I should not see the link "Delete"
     # Do the changes.
     When I set the Owner type to "Non-Governmental Organisation"
-    And I press "Save"
+    And I press "Update"
     Then I should see the heading "EU healthy group"
 
     # The moderator approves the changes.
     When I am logged in as a moderator
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
-    Then the "State" select available options should be "In assessment, Validated"
-    And the option "In assessment" should be selected
-    When I select "Validated" from "State"
-    And I press "Save"
+    And the following 2 buttons should be present "Update, Approve changes"
+    And the current workflow state should be "In assessment"
+    And I press "Approve changes"
     Then I should see the heading "EU healthy group"
 
     # The facilitator asks for deletion.
     When I am logged in as "Raeburn Hibbert"
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
-    Then the "State" select available options should be "Validated, Deletion request"
-    And the option "Validated" should be selected
-    When I select "Deletion request" from "State"
-    And I press "Save"
+    And the following 2 buttons should be present "Update, Request deletion"
+    And the current workflow state should be "Validated"
+    And I press "Request deletion"
     Then I should see the heading "EU healthy group"
-    # The facilitator should still be able to edit the owner, so they can undo
-    # the deletion request if needed.
-    When I click "Edit" in the "Entity actions" region
-    Then the "State" select available options should be "Validated, Deletion request"
-    And the option "Deletion request" should be selected
 
     # The moderator cannot still delete the owner as it's referenced.
     When I am logged in as a moderator
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
     Then I should not see the link "Delete"
-    And the option "Deletion request" should be selected
+    And the current workflow state should be "Deletion request"
 
     # Change the owner in the collection.
     When I go to the homepage of the "The healthy food European project" collection
     And I click "Edit"
+    And I click the 'Description' tab
     And I press "Remove" at the "Owner" field
     # Confirm removal.
     And I press "Remove" at the "Owner" field
