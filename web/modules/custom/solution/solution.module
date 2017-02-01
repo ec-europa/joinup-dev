@@ -494,7 +494,7 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
   // If we don't have any releases associated to this solution, it also means
   // that any distribution available is directly associated. We don't need any
   // further filtering on the results.
-  if ($entity->get('field_is_has_version')->count()) {
+  if (!$entity->get('field_is_has_version')->count()) {
     return;
   }
 
