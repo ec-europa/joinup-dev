@@ -229,10 +229,17 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
           $parent_access_array[$parent_bundle] = $access_array;
           foreach ($e_library_states as $e_library) {
             $return_array[$parent_bundle][$e_library] = $access_array;
-            // Special handle the create conditions that are affected by
-            // eLibrary and moderation.
-            $return_array[$parent_bundle][$e_library][$moderation_state]['__new__'] = $this->getWorkflowElibraryCreationRoles($e_library, $moderation_state);
           }
+        }
+      }
+    }
+
+    // Special handle the create conditions that are affected by
+    // eLibrary and moderation.
+    foreach ($return_array as $parent_bundle => $parent_data) {
+      foreach ($parent_data as $e_library => $e_library_data) {
+        foreach ($e_library_data as $moderation_state => $moderation_data) {
+          $return_array[$parent_bundle][$e_library][$moderation_state]['__new__'] = $this->getWorkflowElibraryCreationRoles($e_library, $moderation_state);
         }
       }
     }
