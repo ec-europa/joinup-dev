@@ -263,24 +263,22 @@ Feature: News moderation.
     And the following buttons should be present "<available buttons>"
     And the following buttons should not be present "<unavailable buttons>"
     Examples:
-      | user     | title                         | available buttons                 | unavailable buttons                                        |
+      | user     | title                         | available buttons                                | unavailable buttons                                       |
       # Post moderated
       # News article in 'proposed' state.
-      | Hawkgirl | Hawkgirl is a spy             | Update, Validate, Request changes | Save as draft, Request deletion                            |
-      # Validated content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
-      | Hawkgirl | Hawkgirl helped Green Lantern | Save new draft, Propose, Update   | Validate, Request changes, Request deletion                |
-      # Members can move to 'needs update' state.
-      | Hawkgirl | Hawkgirl helped Green Lantern | Update, Propose                   | Save as draft, Request changes, Request deletion           |
-      | Hawkgirl | Space cannon fired            | Propose                           | Save as draft, Validate, Request changes, Request deletion |
+      | Hawkgirl | Hawkgirl is a spy             | Update, Publish, Request changes                 | Save as draft, Request deletion                           |
+      # Publishd content can be moved back to 'Proposed', 'Draft' or to 'Needs update' state by a facilitator. It can also be updated.
+      | Hawkgirl | Hawkgirl helped Green Lantern | Save new draft, Propose, Update, Request changes | Save as draft, Publish, Request deletion                  |
+      | Hawkgirl | Space cannon fired            | Propose                                          | Save as draft, Publish, Request changes, Request deletion |
       # Pre moderated
       # Facilitators have access to create news and directly put it to validate. For created and proposed, member role should be used.
-      | Metallo  | Creating Legion of Doom       | Save as draft, Propose, Validate  | Request changes, Request deletion                          |
-      # Validated content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
-      | Metallo  | Stealing from Batman          | Save new draft, Propose, Update   | Request changes, Request deletion                          |
+      | Metallo  | Creating Legion of Doom       | Save as draft, Propose, Publish                  | Request changes, Request deletion                         |
+      # Publishd content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
+      | Metallo  | Stealing from Batman          | Save new draft, Request changes, Update          | Propose, Request deletion                                 |
       # Members can move to 'needs update' state.
-      | Metallo  | Learn batman's secret         | Update, Request changes, Validate | Save as draft, Request deletion                            |
-      | Metallo  | Stealing complete             | Propose                           | Save as draft, Request deletion                            |
-      | Metallo  | Kill the sun                  | Validate                          | Save as draft, Propose, Request changes, Request deletion  |
+      | Metallo  | Learn batman's secret         | Update, Request changes, Publish                 | Save as draft, Request deletion                           |
+      | Metallo  | Stealing complete             | Propose                                          | Save as draft, Request deletion                           |
+      | Metallo  | Kill the sun                  | Publish                                          | Save as draft, Propose, Request changes, Request deletion |
 
   Scenario Outline: Facilitators cannot view unpublished content of another collection.
     Given I am logged in as "<user>"
