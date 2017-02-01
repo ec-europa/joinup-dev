@@ -491,6 +491,13 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
   // Remove the solution itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
 
+  // If we don't have any releases associated to this solution, it also means
+  // that any distribution available is directly associated. We don't need any
+  // further filtering on the results.
+  if ($entity->get('field_is_has_version')->count()) {
+    return;
+  }
+
   // Get the ids of the distributions directly associated to the solution.
   $distributions = array_map(function ($entity) {
     return $entity->id();
