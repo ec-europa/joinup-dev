@@ -245,7 +245,7 @@ Feature: News moderation.
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
       | Question      | Space cannon fired      |
       # State: draft, not owned
-      | Question      | Question joined JL      |
+      | Eagle         | Question joined JL      |
       # State: draft, not owned
       | Cheetah       | Creating Legion of Doom |
       # State: needs update, not owned
@@ -272,13 +272,13 @@ Feature: News moderation.
       | Hawkgirl | Space cannon fired            | Propose                                          | Save as draft, Publish, Request changes, Request deletion |
       # Pre moderated
       # Facilitators have access to create news and directly put it to validate. For created and proposed, member role should be used.
-      | Metallo  | Creating Legion of Doom       | Save as draft, Propose, Publish                  | Request changes, Request deletion                         |
+      | Metallo  | Creating Legion of Doom       | Save as draft, Publish                           | Request changes, Propose, Request deletion                |
       # Publishd content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
       | Metallo  | Stealing from Batman          | Save new draft, Request changes, Update          | Propose, Request deletion                                 |
       # Members can move to 'needs update' state.
       | Metallo  | Learn batman's secret         | Update, Request changes, Publish                 | Save as draft, Request deletion                           |
       | Metallo  | Stealing complete             | Propose                                          | Save as draft, Request deletion                           |
-      | Metallo  | Kill the sun                  | Publish                                          | Save as draft, Propose, Request changes, Request deletion |
+      | Metallo  | Kill the sun                  | Reject deletion                                  | Save as draft, Propose, Request changes, Request deletion |
 
   Scenario Outline: Facilitators cannot view unpublished content of another collection.
     Given I am logged in as "<user>"
