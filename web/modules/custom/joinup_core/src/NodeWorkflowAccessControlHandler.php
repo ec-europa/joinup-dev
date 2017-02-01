@@ -230,7 +230,8 @@ class NodeWorkflowAccessControlHandler {
     }
 
     $moderation = $this->relationManager->getParentModeration($entity);
-    if ($moderation == 1) { // Pre moderated.
+    // Pre moderated.
+    if ($moderation == 1) {
       return AccessResult::forbiddenIf(!$account->hasPermission("delete any {$entity->bundle()} {$entity_type}"));
     }
 
