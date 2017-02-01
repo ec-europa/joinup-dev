@@ -93,16 +93,27 @@ class NodeWorkflowAccessControlHandler {
   private $membershipManager;
 
   /**
+   * The discussions relation manager.
+   *
+   * @var \Drupal\joinup_core\JoinupRelationManager
+   */
+  protected $relationManager;
+
+  /**
    * Constructs a JoinupDocumentRelationManager object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The OG membership manager service.
+   * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
+   *   The relation manager service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupRelationManager $relation_manager) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $og_membership_manager;
+    $this->relationManager = $relation_manager;
+
   }
 
   /**
@@ -218,8 +229,8 @@ class NodeWorkflowAccessControlHandler {
       return AccessResult::allowed();
     }
 
-    $workflow = $this->getEntityWorkflow($entity);
-    if ($workflow === self::WORKFLOW_PRE_MODERATED) {
+    $moderation = $this->relationManager->getParentModeration($entity);
+    if ($moderation == 1) { // Pre moderated.
       return AccessResult::forbiddenIf(!$account->hasPermission("delete any {$entity->bundle()} {$entity_type}"));
     }
 
