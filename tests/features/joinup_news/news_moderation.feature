@@ -243,15 +243,15 @@ Feature: News moderation.
       | user          | title                   |
       # State: needs update
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
-      | Eagle         | Space cannon fired      |
+      | Question      | Space cannon fired      |
       # State: draft, not owned
-      | Eagle         | Question joined JL      |
+      | Question      | Question joined JL      |
       # State: draft, not owned
       | Cheetah       | Creating Legion of Doom |
-      # State: needs update
+      # State: needs update, not owned
       # Todo: rejected content should still be editable. Ilias suggests it should then move to Draft state. See ISAICP-2761.
-      | Mirror Master | Stealing complete       |
-      # State: deletion request
+      | Cheetah       | Stealing complete       |
+      # State: deletion request, owned
       | Mirror Master | Kill the sun            |
 
   Scenario Outline: Facilitators have access on content regardless of state.
