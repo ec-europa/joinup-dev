@@ -37,6 +37,7 @@ transitions:
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
         - moderator
+    save_new_draft:
       validated:
         - owner
         - rdf_entity-collection-facilitator
@@ -72,10 +73,6 @@ transitions:
         - moderator
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
-      deletion_request:
-        - moderator
-        - rdf_entity-collection-facilitator
-        - rdf_entity-solution-facilitator
     update_validated:
       validated:
         - moderator
@@ -83,6 +80,10 @@ transitions:
         - rdf_entity-solution-facilitator
     needs_update:
       proposed:
+        - moderator
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+      validated:
         - moderator
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
@@ -107,6 +108,12 @@ transitions:
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
         - moderator
+    save_new_draft:
+      validated:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
     propose:
       validated:
         - owner
@@ -114,6 +121,7 @@ transitions:
         - rdf_entity-solution-facilitator
         - moderator
       needs_update:
+        - owner
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
         - moderator
@@ -147,6 +155,10 @@ transitions:
         - moderator
     needs_update:
       proposed:
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+      validated:
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
         - moderator

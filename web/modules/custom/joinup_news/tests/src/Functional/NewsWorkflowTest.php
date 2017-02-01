@@ -285,19 +285,19 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
         'validated' => [
           'userAuthenticated' => [],
           'userOwner' => [
-            'save_as_draft',
+            'save_new_draft',
             'request_deletion',
           ],
           'userOgMember' => [],
           'userOgFacilitator' => [
-            'save_as_draft',
+            'save_new_draft',
             'update_validated',
-            'request_changes',
+            'needs_update',
           ],
           'userModerator' => [
-            'save_as_draft',
+            'save_new_draft',
             'update_validated',
-            'request_changes',
+            'needs_update',
           ],
         ],
         'needs_update' => [
@@ -450,10 +450,12 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
         self::PRE_MODERATION => [
           'userOgFacilitator' => [
             'save_as_draft',
+            'propose',
             'validate',
           ],
           'userModerator' => [
             'save_as_draft',
+            'propose',
             'validate',
           ],
         ],
@@ -476,10 +478,12 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
           ],
           'userOgFacilitator' => [
             'save_as_draft',
+            'propose',
             'validate',
           ],
           'userModerator' => [
             'save_as_draft',
+            'propose',
             'validate',
           ],
         ],
@@ -514,10 +518,12 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
           ],
           'userOgFacilitator' => [
             'save_as_draft',
+            'propose',
             'validate',
           ],
           'userModerator' => [
             'save_as_draft',
+            'propose',
             'validate',
           ],
         ],

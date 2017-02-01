@@ -22,6 +22,10 @@ node:news:pre_moderated:
       label: Save as draft
       from: [__new__, draft]
       to: draft
+    save_new_draft:
+      label: Save new draft
+      from: [validated]
+      to: draft
     propose:
       label: Propose
       from: [__new__, draft, needs_update]
@@ -35,19 +39,19 @@ node:news:pre_moderated:
       from: [__new__, draft, proposed, deletion_request]
       to: validated
     update_validated:
-      label: 'Update published'
+      label: Update
       from: [validated]
       to: validated
     needs_update:
       label: Request changes
-      from: [proposed]
+      from: [proposed, validated]
       to: needs_update
     request_deletion:
       label: Request deletion
       from: [validated]
       to: deletion_request
     reject_deletion:
-      label: Request deletion
+      label: Reject deletion
       from: [deletion_request]
       to: validated
 node:news:post_moderated:
@@ -71,6 +75,10 @@ node:news:post_moderated:
       label: Save as draft
       from: [__new__, draft]
       to: draft
+    save_new_draft:
+      label: Save new draft
+      from: [validated]
+      to: draft
     propose:
       label: Propose
       from: [validated, needs_update]
@@ -89,5 +97,5 @@ node:news:post_moderated:
       to: validated
     needs_update:
       label: Request changes
-      from: [proposed]
+      from: [proposed, validated]
       to: needs_update
