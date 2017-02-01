@@ -38,8 +38,9 @@ field_settings:
       type: union
       fields:
         - 'entity:node/og_audience'
-        - 'entity:rdf_entity/og_audience'
         - 'entity:rdf_entity/collection'
+        - 'entity:rdf_entity/og_audience'
+        - 'entity:rdf_entity/field_isr_is_version_of'
   title:
     label: Title
     datasource_id: 'entity:node'
