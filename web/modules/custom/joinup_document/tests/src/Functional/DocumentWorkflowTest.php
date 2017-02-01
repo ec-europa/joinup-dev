@@ -437,10 +437,12 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
       self::ELIBRARY_ONLY_FACILITATORS => [
         self::PRE_MODERATION => [
           'userOgFacilitator' => [
+            'propose',
             'save_as_draft',
             'validate',
           ],
           'userModerator' => [
+            'propose',
             'save_as_draft',
             'validate',
           ],
@@ -463,10 +465,12 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
             'propose',
           ],
           'userOgFacilitator' => [
+            'propose',
             'save_as_draft',
             'validate',
           ],
           'userModerator' => [
+            'propose',
             'save_as_draft',
             'validate',
           ],
@@ -502,10 +506,14 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
           ],
           'userOgFacilitator' => [
             'save_as_draft',
+          // For being a member as well.
+            'propose',
             'validate',
           ],
           'userModerator' => [
             'save_as_draft',
+          // For being an authenticated user.
+            'propose',
             'validate',
           ],
         ],

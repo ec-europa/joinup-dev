@@ -188,7 +188,8 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
               sort($transitions);
 
               $moderated_message = $parent_moderation ? 'pre moderated' : 'post moderated';
-              $this->assertEquals($transitions, $actual_transitions, "Transitions do not match for user $user_var, state $content_state and a $moderated_message $parent_bundle for a parent.");
+              $message = "Transitions do not match for user $user_var, state $content_state and a $moderated_message $parent_bundle for a parent (eLibrary: $e_library_state).";
+              $this->assertEquals($transitions, $actual_transitions, $message);
             }
           }
         }
