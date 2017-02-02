@@ -25,7 +25,7 @@
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phingdrushtask": "dev-7.x-2.x#13428ee7a229da3b7e6be4687587048150b1fd25",
         "drupal/r4032login": "dev-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
-        "drupal/search_api": "dev-1.x#ff41470b2b5399b83b86085d4b7a2c2f4e753370",
+        "drupal/search_api": "~1.0@beta",
         "drupal/search_api_solr": "~1.0@beta",
         "drupal/state_machine": "~1.0-beta3",
         "drupal/taxonomy_container": "~1.0",
