@@ -62,8 +62,7 @@ class Prepare extends SourcePluginBase {
       'repository' => ['content_type_repository', 'field_repository_contact_point_nid'],
     ];
 
-    $db = Database::getConnection();
-    $source = Database::getConnection('default', 'migrate');
+    $db = Database::getConnection('default', 'migrate');
 
     // Build a list of collections that have at least 1 row with 'migrate' == 1.
     $allowed = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
@@ -91,7 +90,7 @@ class Prepare extends SourcePluginBase {
       $query->condition(1, 2);
     }
 
-    $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'm.nid = n.nid');
+    $query->leftJoin('node', 'n', 'm.nid = n.nid');
 
     $collections = [];
     foreach ($query->execute()->fetchAll() as $row) {
@@ -136,7 +135,7 @@ class Prepare extends SourcePluginBase {
       }
 
       if (!empty($row['owner']) && ($row['owner'] == 'Yes') && in_array($row['type'], array_keys($publisher))) {
-        $publishers = $source
+        $publishers = $db
           ->select($publisher[$row['type']][0])
           ->fields($publisher[$row['type']][0], [$publisher[$row['type']][1]])
           ->condition($publisher[$row['type']][0] . '.vid', $row['vid'])
@@ -145,7 +144,7 @@ class Prepare extends SourcePluginBase {
         if ($publishers) {
           $collections[$collection]['publisher'] = '|' . implode('|', $publishers) . '|';
         }
-        $contacts = $source
+        $contacts = $db
           ->select($contact[$row['type']][0])
           ->fields($contact[$row['type']][0], [$contact[$row['type']][1]])
           ->condition($contact[$row['type']][0] . '.vid', $row['vid'])

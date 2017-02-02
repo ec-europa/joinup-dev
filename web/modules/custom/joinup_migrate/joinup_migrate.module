@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Database\Query\AlterableInterface;
-use Drupal\joinup_migrate\Plugin\migrate\source\JoinupSqlBase;
 
 /**
  * Implements hook_query_TAG_alter().
@@ -17,8 +16,7 @@ use Drupal\joinup_migrate\Plugin\migrate\source\JoinupSqlBase;
 function joinup_migrate_query_uri_alter(AlterableInterface $query) {
   /** @var \Drupal\Core\Database\Query\SelectInterface $query */
   $alias = $query->getMetaData('alias');
-  $source_db = JoinupSqlBase::getSourceDbName();
-  $alias['uri'] = $query->leftJoin("$source_db.content_field_id_uri", 'uri', "{$alias['node']}.vid = %alias.vid");
+  $alias['uri'] = $query->leftJoin('content_field_id_uri', 'uri', "{$alias['node']}.vid = %alias.vid");
   // Save back aliases.
   $query->addMetaData('alias', $alias);
   $query->addExpression("TRIM({$alias['uri']}.field_id_uri_value)", 'uri');

@@ -31,8 +31,8 @@ class CollectionLogo extends CollectionBase {
   public function query() {
     $query = parent::query();
 
-    $this->alias['community_files'] = $query->leftJoin("{$this->getSourceDbName()}.files", 'community_files', "{$this->alias['community']}.field_community_logo_fid = %alias.fid");
-    $this->alias['repository_files'] = $query->leftJoin("{$this->getSourceDbName()}.files", 'repository_files', "{$this->alias['repository']}.field_repository_logo_fid = %alias.fid");
+    $this->alias['community_files'] = $query->leftJoin('files', 'community_files', "{$this->alias['community']}.field_community_logo_fid = %alias.fid");
+    $this->alias['repository_files'] = $query->leftJoin('files', 'repository_files', "{$this->alias['repository']}.field_repository_logo_fid = %alias.fid");
 
     $query->addExpression("{$this->alias['community_files']}.filepath", 'community_file');
     $query->addExpression("{$this->alias['community_files']}.timestamp", 'community_time');

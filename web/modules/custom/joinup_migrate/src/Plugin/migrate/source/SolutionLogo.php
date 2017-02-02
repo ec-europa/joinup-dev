@@ -32,10 +32,10 @@ class SolutionLogo extends SolutionBase {
   public function query() {
     $query = parent::query();
 
-    $this->alias['content_type_asset_release'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_asset_release", 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_sw_logo_nid = %alias.nid");
-    $this->alias['content_type_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_documentation", 'content_type_documentation', "{$this->alias['node_documentation']}.vid = %alias.vid");
-    $this->alias['files'] = $query->leftJoin("{$this->getSourceDbName()}.files", 'files', "{$this->alias['content_type_documentation']}.field_documentation_access_url_fid = %alias.fid");
+    $this->alias['content_type_asset_release'] = $query->leftJoin('content_type_asset_release', 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
+    $this->alias['node_documentation'] = $query->leftJoin('node', 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_sw_logo_nid = %alias.nid");
+    $this->alias['content_type_documentation'] = $query->leftJoin('content_type_documentation', 'content_type_documentation', "{$this->alias['node_documentation']}.vid = %alias.vid");
+    $this->alias['files'] = $query->leftJoin('files', 'files', "{$this->alias['content_type_documentation']}.field_documentation_access_url_fid = %alias.fid");
 
     $and = (new Condition('AND'))
       ->isNotNull("{$this->alias['files']}.filepath")
