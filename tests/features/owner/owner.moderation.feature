@@ -85,21 +85,21 @@ Feature: Owner moderation
     And I press "Approve changes"
     Then I should see the heading "EU healthy group"
 
-    # The facilitator asks for deletion.
+    # The facilitator asks for deletion. This is rejected since the owner is
+    # used by the collection.
     When I am logged in as "Raeburn Hibbert"
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
     And the following 2 buttons should be present "Update, Request deletion"
     And the current workflow state should be "Validated"
     And I press "Request deletion"
-    Then I should see the heading "EU healthy group"
+    Then I should see the error message 'The owner cannot be deleted since it owns the following collections: "The healthy food European project". Please set a different owner for these collections before requesting deletion.'
 
-    # The moderator cannot still delete the owner as it's referenced.
+    # Also a moderator cannot delete the owner as it's used by the collection.
     When I am logged in as a moderator
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
     Then I should not see the link "Delete"
-    And the current workflow state should be "Deletion request"
 
     # Change the owner in the collection.
     When I go to the homepage of the "The healthy food European project" collection
@@ -116,7 +116,18 @@ Feature: Owner moderation
     And I press "Propose"
     Then I should see the heading "The healthy food European project"
 
-    # Now the moderator can delete the old owner.
+    # Now the facilitator can request deletion.
+    When I am logged in as "Raeburn Hibbert"
+    And I go to the homepage of the "EU healthy group" owner
+    And I click "Edit" in the "Entity actions" region
+    And the following 2 buttons should be present "Update, Request deletion"
+    And the current workflow state should be "Validated"
+    And I press "Request deletion"
+    Then I should see the heading "EU healthy group"
+    And I should not see the error message containing 'The owner cannot be deleted'
+
+    # Now the moderator is able to delete the old owner.
+    When I am logged in as a moderator
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
     Then I should see the link "Delete"
