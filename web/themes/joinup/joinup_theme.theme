@@ -5,6 +5,7 @@
  * Functions to support theming in the Joinup theme.
  */
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
@@ -160,7 +161,7 @@ function joinup_theme_preprocess_block(&$variables) {
               $is_listing = TRUE;
             }
           }
-          elseif ($node_type == 'news') {
+          elseif ($node_type == 'news' || $node_type == 'event') {
             $is_listing = TRUE;
           }
         }
@@ -399,6 +400,57 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   $author = $node->get('uid')->entity;
   $author_compact = $viewBuilder->view($author, 'compact');
   $variables['additional_content']['author'] = $author_compact;
+}
+
+/**
+ * Implements hook_preprocess_page_title__node__event().
+ */
+function joinup_theme_preprocess_page_title__node__event(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['entity'];
+
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
+
+  if (!$node->field_event_end_date->isEmpty()) {
+    // Get date objects for start and end dates.
+    $start_date = $node->field_event_start_date->first()->getValue()['value'];
+    /* @var \Drupal\Core\Datetime\DrupalDateTime $start_date */
+    $start_date = new DrupalDateTime($start_date);
+
+    $end_date = $node->field_event_end_date->first()->getValue()['value'];
+    /* @var \Drupal\Core\Datetime\DrupalDateTime $end_date */
+    $end_date = new DrupalDateTime($end_date);
+
+    // Get year and month.
+    $start_date_year = $start_date->format('Y');
+    $end_date_year = $end_date->format('Y');
+
+    $start_date_month = $start_date->format('m');
+    $end_date_month = $end_date->format('m');
+
+    // Compare year and month and decide if start date has full format.
+    if ($start_date_year != $end_date_year) {
+      $field_event_start_date = $viewBuilder->viewField($node->field_event_start_date, 'default');
+    }
+    elseif ($start_date_month != $end_date_month) {
+      $field_event_start_date = $start_date->format('d F');
+    }
+    else {
+      $field_event_start_date = $start_date->format('d');
+    }
+  }
+  else {
+    $field_event_start_date = $viewBuilder->viewField($node->field_event_start_date, 'default');
+  }
+
+  // Get dates and location fields.
+  $field_event_end_date = $viewBuilder->viewField($node->field_event_end_date, 'default');
+  $field_event_location = $viewBuilder->viewField($node->field_event_location, 'default');
+
+  $variables['additional_content']['field_event_start_date'] = $field_event_start_date;
+  $variables['additional_content']['field_event_end_date'] = $field_event_end_date;
+  $variables['additional_content']['field_event_location'] = $field_event_location;
 }
 
 /**

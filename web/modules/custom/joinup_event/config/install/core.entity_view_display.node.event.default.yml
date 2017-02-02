@@ -21,6 +21,7 @@ dependencies:
   module:
     - comment
     - datetime
+    - ds
     - image
     - link
     - text
@@ -46,40 +47,49 @@ content:
     type: comment_default
   field_event_adtl_address_info:
     weight: 107
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
   field_event_agenda:
     weight: 103
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_event_contact_email:
     weight: 108
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
   field_event_end_date:
     weight: 106
-    label: above
+    label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
-    third_party_settings: {  }
+      format_type: textual_month
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
     type: datetime_default
   field_event_location:
     weight: 112
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_event_logo:
     weight: 104
-    label: above
+    label: hidden
     settings:
       image_style: image_style_event_logo
       image_link: content
@@ -87,29 +97,31 @@ content:
     type: image
   field_event_organisation:
     weight: 110
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_event_short_title:
-    weight: 102
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
   field_event_start_date:
     weight: 105
-    label: above
+    label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
-    third_party_settings: {  }
+      format_type: textual_month
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
     type: datetime_default
   field_event_web_url:
     weight: 109
-    label: above
+    label: hidden
     settings:
       trim_length: 80
       url_only: false
@@ -123,4 +135,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_event_short_title: true
   og_audience: true

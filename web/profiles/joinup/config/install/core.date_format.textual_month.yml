@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: textual_month
+label: 'Textual month'
+locked: false
+pattern: 'd F Y'
