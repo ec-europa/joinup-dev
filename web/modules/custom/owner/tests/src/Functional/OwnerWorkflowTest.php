@@ -139,8 +139,11 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
         $content = Rdf::create([
           'rid' => 'owner',
           'label' => $this->randomMachineName(),
-          'field_owner_state' => $entity_state,
         ]);
+        // Override the default state of 'validated' that is set during entity
+        // creation.
+        // @see owner_rdf_entity_create()
+        $content->set('field_owner_state', $entity_state);
         $content->save();
 
         // Override the user to be checked for the allowed transitions.
