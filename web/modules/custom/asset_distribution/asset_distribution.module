@@ -52,25 +52,14 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
  * @see asset_distribution_form_rdf_entity_asset_distribution_form_alter()
  */
 function asset_distribution_form_rdf_entity_asset_distribution_form_submit(&$form, FormStateInterface $form_state) {
-  $rdf = Rdf::load($form_state->get('context_rdf_entity_id'));
+  $parent = Rdf::load($form_state->get('context_rdf_entity_id'));
   /** @var RdfInterface $distribution */
   $distribution = $form_state->getFormObject()->getEntity();
 
-  // Only add the relation if it doesn't yet exist.
-  $field_name = $rdf->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
-  $related_distributions = $rdf->get($field_name)->getValue();
-  foreach ($related_distributions as $related_distribution) {
-    if ($related_distribution['target_id'] === $distribution->id()) {
-      return;
-    }
-  }
-
-  $related_distributions[]['target_id'] = $distribution->id();
-  $rdf->set($field_name, $related_distributions);
-  $rdf->save();
+  asset_distribution_add_parent_relation($distribution, $parent);
 
   // Redirect to the parent solution or asset release from where we started.
-  $form_state->setRedirectUrl($rdf->toUrl());
+  $form_state->setRedirectUrl($parent->toUrl());
 }
 
 /**
@@ -160,9 +149,8 @@ function asset_distribution_rdf_entity_presave(RdfInterface $distribution) {
     $file = File::load($file_field->get('target_id')->getValue());
     if ($file) {
       $file_urls[] = $file->url();
+      $file_size += $file->getSize();
     }
-
-    $file_size += $file->getSize();
   }
 
   // Remove removed files from access urls.
@@ -200,11 +188,47 @@ function asset_distribution_preprocess_rdf_entity(&$variables) {
     return;
   }
 
-  // For the Release download page, there is only one available download link
-  // so we set the one available here.
+  // Make some alterations for the Release download page.
+  // @see \Drupal\asset_release\Controller\AssetReleaseController::overview()
   if ($variables['view_mode'] === 'compact') {
+    // There is only one available download link so we set the one available
+    // here.
     if (!empty($rdf_entity->field_ad_access_url->first()->uri)) {
       $variables['content']['promoted_download'] = $rdf_entity->field_ad_access_url->first()->uri;
     }
+
+    // Provide a flag if this is a standalone distribution.
+    $variables['is_standalone'] = !empty($rdf_entity->standalone);
+
+    // Provide a flag that indicates if this is displayed at the top of the
+    // timeline.
+    $variables['is_top_of_timeline'] = !empty($rdf_entity->top_of_timeline);
   }
+}
+
+/**
+ * Adds relation between an asset distribution and a parent solution or release.
+ *
+ * In the data model the relation is placed on the parent instead of on the
+ * child.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $distribution
+ *   The asset distribution to relate.
+ * @param \Drupal\rdf_entity\RdfInterface $parent
+ *   The parent entity, this can be either an asset release or an
+ *   interoperability solution.
+ */
+function asset_distribution_add_parent_relation(RdfInterface $distribution, RdfInterface $parent) {
+  // Only add the relation if it doesn't yet exist.
+  $field_name = $parent->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
+  $related_distributions = $parent->get($field_name)->getValue();
+  foreach ($related_distributions as $related_distribution) {
+    if ($related_distribution['target_id'] === $distribution->id()) {
+      return;
+    }
+  }
+
+  $related_distributions[]['target_id'] = $distribution->id();
+  $parent->set($field_name, $related_distributions);
+  $parent->save();
 }
