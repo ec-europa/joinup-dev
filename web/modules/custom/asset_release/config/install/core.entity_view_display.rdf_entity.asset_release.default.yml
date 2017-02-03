@@ -8,7 +8,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_description
     - field.field.rdf_entity.asset_release.field_isr_distribution
     - field.field.rdf_entity.asset_release.field_isr_documentation
-    - field.field.rdf_entity.asset_release.field_isr_has_version
     - field.field.rdf_entity.asset_release.field_isr_included_asset
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
     - field.field.rdf_entity.asset_release.field_isr_language
@@ -248,7 +247,6 @@ hidden:
   field_isr_contact_information: true
   field_isr_description: true
   field_isr_documentation: true
-  field_isr_has_version: true
   field_isr_included_asset: true
   field_isr_language: true
   field_isr_logo: true

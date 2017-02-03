@@ -30,7 +30,6 @@ config_devel:
   - field.field.rdf_entity.asset_release.field_isr_description
   - field.field.rdf_entity.asset_release.field_isr_distribution
   - field.field.rdf_entity.asset_release.field_isr_documentation
-  - field.field.rdf_entity.asset_release.field_isr_has_version
   - field.field.rdf_entity.asset_release.field_isr_included_asset
   - field.field.rdf_entity.asset_release.field_isr_is_version_of
   - field.field.rdf_entity.asset_release.field_keywords
@@ -53,7 +52,6 @@ config_devel:
   - field.storage.rdf_entity.field_isr_description
   - field.storage.rdf_entity.field_isr_distribution
   - field.storage.rdf_entity.field_isr_documentation
-  - field.storage.rdf_entity.field_isr_has_version
   - field.storage.rdf_entity.field_isr_included_asset
   - field.storage.rdf_entity.field_isr_is_version_of
   - field.storage.rdf_entity.field_isr_language
