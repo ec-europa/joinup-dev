@@ -66,7 +66,7 @@ class DefaultRdfEntityIdGenerator extends RdfEntityIdPluginBase {
     $bundle = $this->getEntity()->bundle();
     $uuid = $this->uuid->generate();
 
-    return "http://$base_url/$entity_type_id/$bundle/$uuid";
+    return "$base_url/$entity_type_id/$bundle/$uuid";
   }
 
 }
