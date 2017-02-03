@@ -14,6 +14,9 @@ process:
     source: nid
     migration: solution_banner
     no_stub: true
+
+  # Contact info imported from 'project_project' is handled in ISAICP-3103.
+  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3103
   field_is_contact_information:
     plugin: migration
     source: contact
@@ -66,6 +69,7 @@ process:
     plugin: static_map
     source: sid
     map:
+      # asset_release
       36: draft
       37: proposed
       38: needs_update
@@ -74,6 +78,11 @@ process:
       41: proposed
       50: deletion_request
       52: blacklisted
+      # project_project
+      1: draft
+      8: proposed
+      9: validated
+      10: needs_update
     default_value: draft
 
   # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068

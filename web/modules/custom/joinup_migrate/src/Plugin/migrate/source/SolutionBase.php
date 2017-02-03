@@ -48,7 +48,7 @@ abstract class SolutionBase extends JoinupSqlBase {
         ->condition('m.type', 'asset_release')
         ->condition("{$this->alias['node_og']}.type", 'repository')
       )
-      ->isNull("{$this->alias['node_og']}.nid");
+      ->condition('m.type', 'project_project');
 
     return $query
       ->fields($this->alias['node'], ['nid'])

@@ -51,14 +51,17 @@ trait OwnerTrait {
     $query
       ->condition('j.type', 'asset_release')
       ->condition('n.status', 1)
-      ->isNotNull('s.vid');
+      ->isNotNull('s.vid')
+      ->condition('g.type', 'repository');
 
     if ($solution_vid) {
       $query->condition('s.vid', $solution_vid);
     }
 
-    $query->leftJoin('node', 'n', 'j.nid = n.nid');
-    $query->leftJoin('content_field_asset_publisher', 's', 'n.vid = s.vid');
+    $query->join('node', 'n', 'j.nid = n.nid');
+    $query->join('content_field_asset_publisher', 's', 'n.vid = s.vid');
+    $query->join('og_ancestry', 'oa', 'j.nid = oa.nid');
+    $query->join('node', 'g', 'oa.group_nid = g.nid');
 
     $query->addExpression('s.field_asset_publisher_nid', 'allowed_nid');
 
