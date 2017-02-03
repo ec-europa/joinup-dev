@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f722f9ceefa77a387dfe92328f9339bb",
+    "content-hash": "178a1f6cc06b5631a68799d5c99499bb",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1753,7 +1753,7 @@
             "type": "drupal-core",
             "extra": {
                 "patches_applied": {
-                    "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch",
+                    "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/file_usage_limits-2675600-14.patch",
                     "EntityPublishedInterface @see https://www.drupal.org/node/2789315 @see https://www.drupal.org/node/2810381 @todo Remove in 8.3.x": "./resources/patches/combined-2810381-and-2789315.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
                     "SqlBase::prepareQuery() should be called also on count @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch",
@@ -1983,11 +1983,17 @@
         },
         {
             "name": "drupal/field_group",
-            "version": "dev-1.x",
+            "version": "1.0.0-rc6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/field_group",
-                "reference": "0f289425f4f1b156737fe27ae29dde2c55bbec27"
+                "reference": "8.x-1.0-rc6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/field_group-8.x-1.0-rc6.zip",
+                "reference": null,
+                "shasum": "1ce3c6387e745a04a1099956a5bf39bb50096d44"
             },
             "require": {
                 "drupal/core": "*"
@@ -2032,8 +2038,7 @@
             "homepage": "https://www.drupal.org/project/field_group",
             "support": {
                 "source": "http://cgit.drupalcode.org/field_group"
-            },
-            "time": "2016-11-09 22:13:58"
+            }
         },
         {
             "name": "drupal/inline_entity_form",
@@ -7830,7 +7835,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-01-30 11:56:03"
+            "time": "2017-01-24T15:22:27+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -8606,7 +8611,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-01-26T16:15:36+00:00"
+            "time": "2017-01-25T19:17:47+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -9185,7 +9190,6 @@
         "composer/composer": 20,
         "drupal/core": 20,
         "drupal/facets": 15,
-        "drupal/field_group": 20,
         "drupal/inline_entity_form": 20,
         "drupal/migrate_spreadsheet": 20,
         "drupal/og": 20,

@@ -7,6 +7,7 @@ use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\OgAccessInterface;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -129,7 +130,9 @@ class AssetReleaseController extends ControllerBase {
    */
   public function overview(RdfInterface $rdf_entity) {
     $view_builder = $this->entityTypeManager()->getViewBuilder('rdf_entity');
-    $ids = $this->queryFactory->get('rdf_entity', 'AND')
+
+    // Retrieve all releases for this solution.
+    $ids = $this->queryFactory->get('rdf_entity')
       ->condition('rid', 'asset_release')
       ->condition('field_isr_is_version_of', $rdf_entity->id())
       // @todo: This is a temporary fix. We need to implement the sort in the
@@ -139,14 +142,58 @@ class AssetReleaseController extends ControllerBase {
       ->execute();
 
     $releases = Rdf::loadMultiple($ids);
+
+    // Retrieve all standalone distributions for this solution. These are
+    // downloads that are not associated with a release.
+    // The standalone distributions are not flagged in any way, and the relation
+    // between releases and distributions is backwards (the relation is present
+    // on the parent entity). We work around this by retrieving all
+    // distributions excluding the ones that are associated with a release.
+    $release_distribution_ids = [];
+    foreach ($releases as $release) {
+      foreach ($release->get('field_isr_distribution')->getValue() as $distribution_reference) {
+        $release_distribution_ids[] = $distribution_reference['target_id'];
+      }
+    }
+
+    $standalone_distribution_ids = $this->queryFactory->get('rdf_entity')
+      ->condition('rid', 'asset_distribution')
+      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $rdf_entity->id())
+      ->condition('id', $release_distribution_ids, 'NOT IN')
+      ->execute();
+
+    $standalone_distributions = Rdf::loadMultiple($standalone_distribution_ids);
+
+    // Put a flag on the standalone distributions so they can be identified for
+    // theming purposes.
+    foreach ($standalone_distributions as $standalone_distribution) {
+      $standalone_distribution->standalone = TRUE;
+    }
+
+    $releases = array_merge($releases, $standalone_distributions);
     usort($releases, function ($release1, $release2) {
-      $ct1 = $release1->field_isr_creation_date->value;
-      $ct2 = $release2->field_isr_creation_date->value;
-      if (empty($ct1) || empty($ct2) || ($ct1 == $ct2)) {
+      $get_creation_date = function (RdfInterface $entity) {
+        $date = $entity->bundle() === 'asset_release' ? $entity->field_isr_creation_date->value : $entity->field_ad_creation_date->value;
+        // Sort entries without a creation date on the bottom so they don't
+        // stick to the top for all eternity.
+        if (empty($date)) {
+          $date = '1970-01-01';
+        }
+        return strtotime($date);
+      };
+
+      $ct1 = $get_creation_date($release1);
+      $ct2 = $get_creation_date($release2);
+      if ($ct1 == $ct2) {
         return 0;
       }
       return ($ct1 < $ct2) ? 1 : -1;
     });
+
+    // Flag the first release so it can be themed accordingly.
+    $first_release = reset($releases);
+    $first_release->top_of_timeline = TRUE;
+
     $build_array = [];
     /** @var \Drupal\rdf_entity\RdfInterface $release */
     foreach ($releases as $release) {
