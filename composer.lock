@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "76056b85bad8f7842005c6aab57a70e1",
+    "content-hash": "178a1f6cc06b5631a68799d5c99499bb",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -7215,7 +7215,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-01-04 12:59:47"
+            "time": "2017-01-04T12:59:47+00:00"
         },
         {
             "name": "behat/transliterator",
