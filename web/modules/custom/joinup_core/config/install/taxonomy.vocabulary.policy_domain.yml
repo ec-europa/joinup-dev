@@ -30,6 +30,7 @@ third_party_settings:
     graph:
       default: 'http://policy_domain'
       draft: 'http://policy_domain'
+    entity_id_plugin: policy_domain
   rdf_taxonomy:
     locked: false
 name: 'Policy domain'
