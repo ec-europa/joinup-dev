@@ -4,7 +4,7 @@ namespace Drupal\rdf_entity;
 
 use Drupal\Component\Plugin\FallbackPluginManagerInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
@@ -44,8 +44,8 @@ class RdfEntityIdPluginManager extends DefaultPluginManager implements FallbackP
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct('Plugin/rdf_entity/Id', $namespaces, $module_handler, RdfEntityIdPluginInterface::class, RdfEntityId::class);
-    $this->alterInfo('rdf_taxonomy_tid_info');
-    $this->setCacheBackend($cache_backend, 'rdf_taxonomy_tid_plugins');
+    $this->alterInfo('rdf_entity_id_info');
+    $this->setCacheBackend($cache_backend, 'rdf_entity_id_plugins');
     $this->entityTypeManager = $entity_type_manager;
   }
 
@@ -53,52 +53,38 @@ class RdfEntityIdPluginManager extends DefaultPluginManager implements FallbackP
    * {@inheritdoc}
    */
   public function getFallbackPluginId($plugin_id, array $configuration = []) {
-    return 'fallback';
+    return 'default';
   }
 
   /**
    * Initializes the proper plugin given a RDF entity.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity.
    *
    * @return \Drupal\rdf_entity\RdfEntityIdPluginInterface
    *   The plugin.
    */
-  public function getPlugin(EntityInterface $entity) {
+  public function getPlugin(ContentEntityInterface $entity) {
     $entity_type_id = $entity->getEntityTypeId();
-    $bundle = $entity->bundle();
+    $bundle_id = $entity->bundle();
 
-    if (!isset($this->instances[$entity_type_id][$bundle])) {
+    if (!isset($this->instances[$entity_type_id][$bundle_id])) {
       $options = ['plugin_id' => NULL];
-      foreach ($this->getDefinitions() as $plugin_id => $definition) {
-        if (isset($definition['applyTo'])) {
-          $apply_to = $definition['applyTo'];
-          if (
-            // Either the plugin applies to all bundles of this entity type.
-            (is_string($apply_to) && ($apply_to === $entity_type_id))
-            // Or the plugin applies specifically to this entity bundle.
-            || (is_array($apply_to) && isset($apply_to[$entity_type_id]) && in_array($bundle, $apply_to[$entity_type_id]))
-          ) {
-            $options['plugin_id'] = $plugin_id;
-            break;
+      if ($bundle_entity_type_id = $entity->getEntityType()->getBundleEntityType()) {
+        if ($bundle_storage = $this->entityTypeManager->getStorage($bundle_entity_type_id)) {
+          /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $bundle */
+          if ($bundle = $bundle_storage->load($bundle_id)) {
+            if ($plugin_id = $bundle->getThirdPartySetting('rdf_entity', 'entity_id_plugin')) {
+              $options['plugin_id'] = $plugin_id;
+            }
           }
         }
       }
-      $this->instances[$entity_type_id][$bundle] = $this->getInstance($options);
+      $this->instances[$entity_type_id][$bundle_id] = $this->getInstance($options);
     }
 
-    return $this->instances[$entity_type_id][$bundle]->setEntity($entity);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getDefinitions() {
-    return array_filter(parent::getDefinitions(), function (array $definition) {
-      // Remove the fallback plugin from discovery.
-      return $definition['id'] != $this->getFallbackPluginId($definition['id']);
-    });
+    return $this->instances[$entity_type_id][$bundle_id]->setEntity($entity);
   }
 
   /**

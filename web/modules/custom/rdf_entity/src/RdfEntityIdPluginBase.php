@@ -29,7 +29,7 @@ abstract class RdfEntityIdPluginBase extends PluginBase implements RdfEntityIdPl
   protected $entityTypeManager;
 
   /**
-   * Constructs a PolicyDomainVocabulary plugin.
+   * Constructs an entity ID generator plugin.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
