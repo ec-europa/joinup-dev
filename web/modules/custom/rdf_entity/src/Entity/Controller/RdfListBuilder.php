@@ -4,6 +4,7 @@ namespace Drupal\rdf_entity\Entity\Controller;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
+use Drupal\rdf_entity\Form\RdfListBuilderFilterForm;
 
 /**
  * Provides a list controller for rdf_entity entity.
@@ -19,14 +20,23 @@ class RdfListBuilder extends EntityListBuilder {
   public function load() {
     /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage */
     $rdf_storage = $this->getStorage();
+    /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
+    $bundle_info = \Drupal::service('entity_type.bundle.info');
+    $request = \Drupal::request();
+    $rid = $request->get('rid') ?: NULL;
+    if ($rid) {
+      $rid = in_array($rid, array_keys($bundle_info->getBundleInfo('rdf_entity'))) ? [$rid] : NULL;
+    }
 
-    $query = $rdf_storage->getQuery()->condition('rid', NULL, 'IN');
+    $query = $rdf_storage->getQuery()->condition('rid', $rid, 'IN');
+
     // If a graph type is set in the url, validate it, and use it in the query.
-    if (!empty($_GET['graph'])) {
+    $graph = $request->get('graph');
+    if (!empty($graph)) {
       $def = $rdf_storage->getGraphDefinitions();
-      if (is_string($_GET['graph']) && isset($def[$_GET['graph']])) {
+      if (isset($def[$graph])) {
         // Use the graph to build the list.
-        $query->setGraphType([$_GET['graph']]);
+        $query->setGraphType([$graph]);
       }
     }
     else {
@@ -60,7 +70,7 @@ class RdfListBuilder extends EntityListBuilder {
         $options[$name] = $definition['title'];
       }
       // Embed the graph selection form.
-      $form = \Drupal::formBuilder()->getForm('Drupal\rdf_entity\Form\GraphSelectForm', $options);
+      $form = \Drupal::formBuilder()->getForm(RdfListBuilderFilterForm::class, $options);
       if ($form) {
         $build['graph_form'] = $form;
       }
