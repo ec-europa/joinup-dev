@@ -14,12 +14,6 @@ class RdfListBuilderFilterForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $bi = $form_state->getBuildInfo();
-    $options = $bi['args'][0];
-    if (count($options) <= 1) {
-      return $form;
-    }
-
     /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
     $bundle_info = \Drupal::service('entity_type.bundle.info');
     $request = \Drupal::request();
@@ -28,12 +22,20 @@ class RdfListBuilderFilterForm extends FormBase {
       '#type' => 'container',
       '#attributes' => ['class' => ['container-inline']],
     ];
-    $form['inline']['graph'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Graph'),
-      '#options' => $options,
-      '#default_value' => $request->get('graph'),
-    ];
+
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+    $graphs = array_map(function (array $definition) {
+      return $definition['title'];
+    }, $storage->getGraphDefinitions());
+    if (count($graphs) > 1) {
+      $form['inline']['graph'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Graph'),
+        '#options' => $graphs,
+        '#default_value' => $request->get('graph'),
+      ];
+    }
     $form['inline']['rid'] = [
       '#type' => 'select',
       '#title' => $this->t('Bundle'),
@@ -49,6 +51,7 @@ class RdfListBuilderFilterForm extends FormBase {
       '#type' => 'submit',
     ];
     $form['#method'] = 'get';
+
     return $form;
   }
 

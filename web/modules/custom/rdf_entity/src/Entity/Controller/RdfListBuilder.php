@@ -8,33 +8,32 @@ use Drupal\rdf_entity\Form\RdfListBuilderFilterForm;
 
 /**
  * Provides a list controller for rdf_entity entity.
- *
- * @ingroup content_entity_example
  */
 class RdfListBuilder extends EntityListBuilder {
+
+  /**
+   * The pager size.
+   *
+   * @var int
+   */
   protected $limit = 20;
 
   /**
    * {@inheritdoc}
    */
-  public function load() {
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage */
+  protected function getEntityIds() {
     $rdf_storage = $this->getStorage();
     /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
     $bundle_info = \Drupal::service('entity_type.bundle.info');
     $request = \Drupal::request();
-    $rid = $request->get('rid') ?: NULL;
-    if ($rid) {
-      $rid = in_array($rid, array_keys($bundle_info->getBundleInfo('rdf_entity'))) ? [$rid] : NULL;
-    }
-
-    $query = $rdf_storage->getQuery()->condition('rid', $rid, 'IN');
+    /** @var \Drupal\rdf_entity\Entity\Query\Sparql\Query $query */
+    $query = $rdf_storage->getQuery();
 
     // If a graph type is set in the url, validate it, and use it in the query.
     $graph = $request->get('graph');
     if (!empty($graph)) {
-      $def = $rdf_storage->getGraphDefinitions();
-      if (isset($def[$graph])) {
+      $definitions = $rdf_storage->getGraphDefinitions();
+      if (isset($definitions[$graph])) {
         // Use the graph to build the list.
         $query->setGraphType([$graph]);
       }
@@ -43,14 +42,20 @@ class RdfListBuilder extends EntityListBuilder {
       $query->setGraphType($rdf_storage->getGraphHandler()->getEntityTypeEnabledGraphs());
     }
 
+    $rid = $request->get('rid') ?: NULL;
+    if ($rid) {
+      $rid = in_array($rid, array_keys($bundle_info->getBundleInfo('rdf_entity'))) ? [$rid] : NULL;
+    }
+
+    $query->condition('rid', $rid, 'IN');
+
     // Only add the pager if a limit is specified.
     if ($this->limit) {
       $query->pager($this->limit);
     }
     $header = $this->buildHeader();
     $query->tableSort($header);
-    $rids = $query->execute();
-    return $this->storage->loadMultiple($rids);
+    return $query->execute();
   }
 
   /**
@@ -61,22 +66,9 @@ class RdfListBuilder extends EntityListBuilder {
    * buildHeader() and buildRow() implementations.
    */
   public function render() {
-    /** @var RdfEntitySparqlStorage $storage */
-    $storage = $this->storage;
-    $definitions = $storage->getGraphDefinitions();
-    if (count($definitions)) {
-      $options = [];
-      foreach ($definitions as $name => $definition) {
-        $options[$name] = $definition['title'];
-      }
-      // Embed the graph selection form.
-      $form = \Drupal::formBuilder()->getForm(RdfListBuilderFilterForm::class, $options);
-      if ($form) {
-        $build['graph_form'] = $form;
-      }
-    }
-    $build['table'] = parent::render();
-    return $build;
+    return [
+      'filter_form' => \Drupal::formBuilder()->getForm(RdfListBuilderFilterForm::class),
+    ] + parent::render();
   }
 
   /**
