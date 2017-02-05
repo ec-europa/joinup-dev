@@ -18,6 +18,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Exception\DuplicatedIdException;
 use Drupal\rdf_entity\RdfEntityIdPluginManager;
 use Drupal\rdf_entity\RdfGraphHandler;
 use Drupal\rdf_entity\RdfMappingHandler;
@@ -752,7 +753,7 @@ QUERY;
       $entity->{$this->idKey} = $id;
     }
     elseif ($entity->isNew() && $this->idExists($id)) {
-      throw new \InvalidArgumentException("Attempting to create a new entity with the ID '$id' already taken.");
+      throw new DuplicatedIdException("Attempting to create a new entity with the ID '$id' already taken.");
     }
 
     // If the target graph is set, it has priority over the one the entity is
@@ -1150,7 +1151,7 @@ QUERY;
    * @return bool
    *   TRUE if this entity ID already exists, FALSE otherwise.
    */
-  protected function idExists($id) {
+  public function idExists($id) {
     $query = <<<QUERY
 ASK {
   <$id> ?field ?value
