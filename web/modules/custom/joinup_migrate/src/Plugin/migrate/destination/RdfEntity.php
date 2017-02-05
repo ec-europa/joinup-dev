@@ -25,7 +25,7 @@ class RdfEntity extends EntityContentBase {
 
     $id = $row->getDestinationProperty('id');
     if ($id && empty($old_destination_id_values) && $this->storage->idExists($id)) {
-      throw new DuplicatedIdException("Migrate a new entity with the ID '$id' already taken.");
+      throw new DuplicatedIdException("ID '$id' already taken.");
     }
 
     return parent::getEntity($row, $old_destination_id_values);
