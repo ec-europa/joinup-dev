@@ -75,7 +75,7 @@ class Release extends JoinupSqlBase {
         'vid',
         'title',
         'created',
-        'changed'
+        'changed',
       ])
       ->fields('mapping', ['policy2'])
       // Assure the URI field.
