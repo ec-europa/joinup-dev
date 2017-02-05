@@ -218,7 +218,7 @@ function joinup_migrate_source_db_schema($table) {
         'roles' => [
           'description' => 'Roles',
           'type' => 'text',
-          ],
+        ],
       ],
       'indexes' => [
         'collection' => ['collection'],

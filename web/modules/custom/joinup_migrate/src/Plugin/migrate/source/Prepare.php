@@ -148,7 +148,11 @@ class Prepare extends SourcePluginBase {
         $uid = (int) $item->uid;
         if (!isset($collections[$collection]['roles'])) {
           // Initialize an empty array.
-          $collections[$collection]['roles'] = ['admin' => [], 'facilitator' => [], 'member' => []];
+          $collections[$collection]['roles'] = [
+            'admin' => [],
+            'facilitator' => [],
+            'member' => [],
+          ];
         }
 
         // Group owner.
