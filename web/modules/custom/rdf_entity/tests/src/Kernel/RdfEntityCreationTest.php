@@ -3,6 +3,7 @@
 namespace Drupal\Tests\rdf_entity\Kernel;
 
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\Exception\DuplicatedIdException;
 use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 
 /**
@@ -39,7 +40,7 @@ class RdfEntityCreationTest extends JoinupKernelTestBase {
 
     // Check that the expected exception is throw when trying to create a new
     // entity with the same ID.
-    $this->setExpectedException(\InvalidArgumentException::class, "Attempting to create a new entity with the ID 'http://example.com' already taken.");
+    $this->setExpectedException(DuplicatedIdException::class, "Attempting to create a new entity with the ID 'http://example.com' already taken.");
     Rdf::create([
       'rid' => 'dummy',
       'id' => 'http://example.com',
