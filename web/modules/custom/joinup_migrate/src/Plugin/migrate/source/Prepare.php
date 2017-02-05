@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Database\Database;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 
@@ -134,7 +135,40 @@ class Prepare extends SourcePluginBase {
         $collections[$collection]['policy2'] = $row['policy2'];
       }
 
-      if (!empty($row['owner']) && ($row['owner'] == 'Yes') && in_array($row['type'], array_keys($publisher))) {
+      $is_owner = !empty($row['owner']) && ($row['owner'] === 'Yes');
+
+      // OG roles.
+      $query = $db->select('og_users_roles', 'ur')
+        ->fields('ur', ['uid', 'rid'])
+        ->fields('u', ['is_admin'])
+        ->condition('ur.gid', (int) $row['nid'])
+        ->orderBy('ur.uid');
+      $query->join('og_uid', 'u', 'ur.gid = u.nid AND ur.uid = u.uid');
+      foreach ($query->execute()->fetchAll() as $item) {
+        $uid = (int) $item->uid;
+        if (!isset($collections[$collection]['roles'])) {
+          // Initialize an empty array.
+          $collections[$collection]['roles'] = ['admin' => [], 'facilitator' => [], 'member' => []];
+        }
+
+        // Group owner.
+        if ((int) $item->is_admin === 1) {
+          $key = $is_owner ? 'admin' : 'facilitator';
+          if (!in_array($uid, $collections[$collection]['roles'][$key])) {
+            $collections[$collection]['roles'][$key][] = $uid;
+          }
+        }
+        // Group facilitator.
+        if ($item->rid == 4 && !in_array($uid, $collections[$collection]['roles']['facilitator'])) {
+          $collections[$collection]['roles']['facilitator'][] = $uid;
+        }
+        // Group members.
+        if ($item->rid == 5 && !in_array($uid, $collections[$collection]['roles']['member'])) {
+          $collections[$collection]['roles']['member'][] = $uid;
+        }
+      }
+
+      if ($is_owner && in_array($row['type'], array_keys($publisher))) {
         $publishers = $db
           ->select($publisher[$row['type']][0])
           ->fields($publisher[$row['type']][0], [$publisher[$row['type']][1]])
@@ -157,6 +191,9 @@ class Prepare extends SourcePluginBase {
     }
 
     foreach ($collections as $collection => $data) {
+      // Serialize roles.
+      $collections[$collection]['roles'] = Json::encode($collections[$collection]['roles']);
+
       // New collections's nid is 0. Collections with a NULL nid are collections
       // inheriting their data (abstract, etc.) from a Drupal 6 'community' or
       // 'repository' but not containing any 'community' or 'repository'. Such
