@@ -24,7 +24,7 @@
         "drupal/og": "dev-8.x-1.x#c75de3a0a59de375106cb50d1e5d6e96f1bb1858",
         "drupal/og_menu": "dev-8.x-1.x",
         "drupal/phingdrushtask": "dev-7.x-2.x#13428ee7a229da3b7e6be4687587048150b1fd25",
-        "drupal/r4032login": "dev-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
+        "drupal/r4032login": "dev-1.x#73ef6fe6864d3225c06979b0aa7b44659d179a16",
         "drupal/search_api": "~1.0@beta",
         "drupal/search_api_solr": "~1.0@beta",
         "drupal/state_machine": "~1.0-beta3",
@@ -53,7 +53,7 @@
         "drupal/config_update": "~1.2",
         "drupal/default_content": "~1.0",
         "drupal/devel": "~1.0@alpha",
-        "drupal/drupal-extension": "dev-master#4d072006873a15a704764985c22dfb591c129c7e",
+        "drupal/drupal-extension": "dev-master#8d2eea92396b7079f3f9ac6f67c8987aa1e911a5",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
         "mikey179/vfsStream": "~1.2",
@@ -114,7 +114,6 @@
                 "Required IEF forms for existing entities don't work": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
             },
             "drupal/r4032login": {
-                "Fix white screen of death.": "https://www.drupal.org/files/issues/2687155-8.patch",
                 "Errors with schema and installed settings file": "https://www.drupal.org/files/issues/schema_fix-2833695-2-D8.patch"
             },
             "drupal/search_api": {
