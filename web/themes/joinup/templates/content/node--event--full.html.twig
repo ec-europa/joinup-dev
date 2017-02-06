@@ -86,9 +86,21 @@
     <img src="/themes/joinup/images/location-image.jpg">
     <div class="details__location-body page__content">
       <h3 class="details__location-title">{{ content.field_event_location }}</h3>
-      {{ content.field_event_adtl_address_info }}
-      {{ content.field_event_web_url }}
-      {{ content.field_event_contact_email }}
+      {% if content.field_event_adtl_address_info|render %}
+        <div class="details__field">
+          {{ content.field_event_adtl_address_info }}
+        </div>
+      {% endif %}
+      {% if content.field_event_web_url|render %}
+        <div class="details__field">
+          {{ content.field_event_web_url }}
+        </div>
+      {% endif %}
+      {% if content.field_event_contact_email|render %}
+        <div class="details__field">
+          {{ content.field_event_contact_email }}
+        </div>
+      {% endif %}
     </div>
   </div>
   {{ content.field_comments }}
