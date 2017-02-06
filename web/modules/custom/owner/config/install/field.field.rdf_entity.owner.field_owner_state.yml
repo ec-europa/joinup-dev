@@ -16,7 +16,7 @@ required: true
 translatable: false
 default_value:
   -
-    value: __new__
+    value: validated
 default_value_callback: ''
 settings:
   workflow: owner_workflow

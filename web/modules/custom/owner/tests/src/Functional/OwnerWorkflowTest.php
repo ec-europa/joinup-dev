@@ -254,14 +254,6 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
    */
   public function workflowTransitionsProvider() {
     return [
-      '__new__' => [
-        'userAuthenticated' => [
-          'validate',
-        ],
-        'userModerator' => [
-          'validate',
-        ],
-      ],
       'validated' => [
         'userAuthenticated' => [
           'update_published',
