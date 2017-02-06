@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_core\Entity\JoinupRdfEntityStorage;
 use Drupal\og\Og;
 
 /**
@@ -107,4 +108,11 @@ function joinup_core_entity_graph_access(EntityInterface $entity, $operation, Ac
 
   $has_permission = $membership->hasPermission($map[$operation]) || $membership->hasPermission($type_map[$operation]);
   return $has_permission ? AccessResult::allowed() : AccessResult::neutral();
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_core_entity_type_alter(array &$entity_types) {
+  $entity_types['rdf_entity']->setStorageClass(JoinupRdfEntityStorage::class);
 }

@@ -1,0 +1,6 @@
+services:
+  entity.query.joinup_rdf_sparql:
+    class: Drupal\joinup_core\Entity\Query\Sparql\QueryFactory
+    arguments: ['@sparql_endpoint', '@entity_type.manager', '@sparql.graph_handler', '@sparql.mapping_handler']
+    tags:
+      - { name: backend_overridable }
