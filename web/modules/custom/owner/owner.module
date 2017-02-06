@@ -199,7 +199,7 @@ function owner_is_owner_referenced(EntityInterface $entity) {
  * @return \Drupal\rdf_entity\Entity\Rdf[]
  *   An array of referencing collection entities.
  */
-function owner_get_references(EntityInterface $entity): array {
+function owner_get_references(EntityInterface $entity) {
   $query = \Drupal::entityQuery('rdf_entity');
   $result = $query
     ->condition('rid', 'collection')

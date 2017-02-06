@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 namespace Drupal\joinup\Traits;
 
 use Behat\Mink\Element\TraversableElement;
@@ -30,7 +28,7 @@ trait MaterialDesignTrait {
    *   Thrown when the animated checkbox or the hidden input field with the
    *   given label is not found.
    */
-  protected function checkMaterialDesignField(string $label, TraversableElement $element) {
+  protected function checkMaterialDesignField($label, TraversableElement $element) {
     if ($this->browserSupportsJavascript()) {
       // Check if the checkbox has already been checked.
       if (!$this->findMaterialDesignCheckbox($label, $element)->isChecked()) {
@@ -60,7 +58,7 @@ trait MaterialDesignTrait {
    *   Thrown when the animated checkbox or the hidden input field with the
    *   given label is not found.
    */
-  protected function uncheckMaterialDesignField(string $label, TraversableElement $element) {
+  protected function uncheckMaterialDesignField($label, TraversableElement $element) {
     if ($this->browserSupportsJavascript()) {
       // Only check if the checkbox is unchecked.
       if ($this->findMaterialDesignCheckbox($label, $element)->isChecked()) {
@@ -88,7 +86,7 @@ trait MaterialDesignTrait {
    *   Thrown when the browser does not support JavaScript or when the animated
    *   checkbox with the given label is not found.
    */
-  protected function toggleMaterialDesignCheckbox(string $label, TraversableElement $element) {
+  protected function toggleMaterialDesignCheckbox($label, TraversableElement $element) {
     if (!$this->browserSupportsJavascript()) {
       throw new \Exception("The animated checkbox with label $label cannot be toggled in a browser that doesn't support JavaScript.");
     }
@@ -120,7 +118,7 @@ trait MaterialDesignTrait {
    *   Thrown when the browser does not support JavaScript or when the animated
    *   checkbox with the given label is not found.
    */
-  protected function findMaterialDesignCheckbox(string $label, TraversableElement $element) {
+  protected function findMaterialDesignCheckbox($label, TraversableElement $element) {
     if (!$this->browserSupportsJavascript()) {
       throw new \Exception("The hidden input field for the $label checkbox cannot be found in a browser that doesn't support JavaScript.");
     }

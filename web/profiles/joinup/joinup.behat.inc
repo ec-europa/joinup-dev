@@ -935,7 +935,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the current workflow state should be :state
    */
-  public function assertCurrentWorkflowState(string $state) {
+  public function assertCurrentWorkflowState($state) {
     $element = $this->getSession()->getPage()->find('css', 'div.current-workflow-state');
     if (empty($element)) {
       throw new \Exception('The current workflow state field is not present on the page.');
