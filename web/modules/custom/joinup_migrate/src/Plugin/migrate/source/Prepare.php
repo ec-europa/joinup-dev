@@ -138,12 +138,17 @@ class Prepare extends SourcePluginBase {
       $is_owner = !empty($row['owner']) && ($row['owner'] === 'Yes');
 
       // OG roles.
+      /** @var \Drupal\Core\Database\Query\SelectInterface $query */
       $query = $db->select('og_users_roles', 'ur')
         ->fields('ur', ['uid', 'rid'])
         ->fields('u', ['is_admin', 'created'])
         ->condition('ur.gid', (int) $row['nid'])
         ->orderBy('ur.uid');
       $query->join('og_uid', 'u', 'ur.gid = u.nid AND ur.uid = u.uid');
+      $query->join('users', 'users', 'ur.uid = users.uid');
+      // Only migrated users are allowed.
+      $query->addTag('user_migrate');
+
       foreach ($query->execute()->fetchAll() as $item) {
         $uid = (int) $item->uid;
         $created = (int) $item->created;

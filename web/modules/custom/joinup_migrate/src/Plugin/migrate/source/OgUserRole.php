@@ -53,11 +53,6 @@ class OgUserRole extends SourcePluginBase {
       'member' => 'rdf_entity-collection-member',
     ];
 
-    /** @var \Drupal\migrate\Plugin\MigrationPluginManagerInterface $manager */
-    $manager = \Drupal::service('plugin.manager.migration');
-    /** @var \Drupal\migrate\Plugin\MigrationInterface $migration */
-    $migration = $manager->createInstance('user');
-
     $query = Database::getConnection('default', 'migrate')
       ->select('joinup_migrate_collection', 'c')
       ->fields('c', ['collection', 'roles']);
@@ -67,11 +62,8 @@ class OgUserRole extends SourcePluginBase {
       $roles = Json::decode($data->roles);
       foreach ($roles as $type => $uids) {
         foreach ($uids as $uid => $created) {
-          // Don't pollute the destination. Migrate only for imported users.
-          if ($migration->getIdMap()->lookupDestinationIds(['uid' => $uid])) {
-            $info[$data->collection][$uid]['created'] = $created;
-            $info[$data->collection][$uid]['roles'][] = $role_type[$type];
-          }
+          $info[$data->collection][$uid]['created'] = $created;
+          $info[$data->collection][$uid]['roles'][] = $role_type[$type];
         }
       }
     }
