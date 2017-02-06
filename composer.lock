@@ -107,7 +107,7 @@
             ],
             "description": "Cross-origin resource sharing library and stack middleware",
             "homepage": "https://github.com/asm89/stack-cors",
-            "keywords": [Closing
+            "keywords": [
                 "cors",
                 "stack"
             ],
