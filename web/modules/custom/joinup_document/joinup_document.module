@@ -56,7 +56,7 @@ function joinup_document_node_access(EntityInterface $entity, $operation, Accoun
  */
 function joinup_document_workflow_selector(EntityInterface $entity) {
   if ($entity->bundle() != 'document') {
-    throw new Exception("This method can only be called for document entities.");
+    throw new Exception('This method can only be called for document entities.');
   }
   /** @var \Drupal\joinup_document\JoinupDocumentRelationManager $relation_manager */
   $relation_manager = \Drupal::service('joinup_document.relations_manager');

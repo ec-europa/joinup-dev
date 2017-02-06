@@ -27,12 +27,12 @@ class JoinupWorkflowAccessControlHandler {
   const STATE_FIELD = 'field_state';
 
   /**
-   * Flag for pre moderated groups.
+   * Flag for pre-moderated groups.
    */
   const PRE_MODERATION = 1;
 
   /**
-   * Flag for post moderated groups.
+   * Flag for post-moderated groups.
    */
   const POST_MODERATION = 0;
 
@@ -65,14 +65,14 @@ class JoinupWorkflowAccessControlHandler {
   const WORKFLOW_DEFAULT = 'default';
 
   /**
-   * The machine_name of the pre moderated workflow for group content.
+   * The machine name of the pre moderated workflow for group content.
    *
    * @todo: Backport this to entity types other than document.
    */
   const WORKFLOW_PRE_MODERATED = 'pre_moderated';
 
   /**
-   * The machine_name of the post moderated workflow for group content.
+   * The machine name of the post moderated workflow for group content.
    *
    * @todo: Backport this to entity types other than document.
    */
@@ -83,14 +83,14 @@ class JoinupWorkflowAccessControlHandler {
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  private $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * The membership manager.
    *
    * @var \Drupal\og\MembershipManager
    */
-  private $membershipManager;
+  protected $membershipManager;
 
   /**
    * Constructs a JoinupDocumentRelationManager object.
@@ -152,7 +152,7 @@ class JoinupWorkflowAccessControlHandler {
    * - Otherwise we return neutral.
    * Note that admin permissions are already checked in the entity access
    * handler class.
-   * If we return normal, the entity access handler class, will automatically
+   * If we return neutral, the entity access handler class, will automatically
    * take care of the user being able to view his own unpublished content.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
@@ -175,7 +175,7 @@ class JoinupWorkflowAccessControlHandler {
       return AccessResult::neutral();
     }
 
-    $entity_type = ($entity->getEntityTypeId() == 'node') ? 'content' : 'rdf_entity';
+    $entity_type = ($entity->getEntityTypeId() === 'node') ? 'content' : 'rdf_entity';
     if (!$entity->isPublished() && $membership->hasPermission("view any unpublished {$entity_type}")) {
       return AccessResult::allowed();
     }
@@ -206,7 +206,7 @@ class JoinupWorkflowAccessControlHandler {
    *    The access result.
    */
   protected function entityDeleteAccess(EntityInterface $entity, AccountInterface $account) {
-    $entity_type = ($entity->getEntityTypeId() == 'node') ? 'content' : 'rdf_entity';
+    $entity_type = ($entity->getEntityTypeId() === 'node') ? 'content' : 'rdf_entity';
     if ($account->hasPermission("delete any {$entity->bundle()} {$entity_type}")) {
       return AccessResult::allowed();
     }
@@ -272,7 +272,7 @@ class JoinupWorkflowAccessControlHandler {
     ];
 
     $moderation = $parent->{$fields[$parent->bundle()]}->value;
-    $workflow_id = $moderation == TRUE ? self::WORKFLOW_PRE_MODERATED : self::WORKFLOW_POST_MODERATED;
+    $workflow_id = $moderation === TRUE ? self::WORKFLOW_PRE_MODERATED : self::WORKFLOW_POST_MODERATED;
     return $workflow_id;
   }
 

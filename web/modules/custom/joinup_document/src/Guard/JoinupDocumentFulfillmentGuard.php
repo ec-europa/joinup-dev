@@ -105,7 +105,7 @@ class JoinupDocumentFulfillmentGuard implements GuardInterface {
    * {@inheritdoc}
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    if ($this->workflowUserProvider->getUser()->hasPermission('bypass node access')) {
+    if ($this->workflowUserProvider->getUser()->hasPermission($entity->getEntityType()->getAdminPermission())) {
       return TRUE;
     }
 
@@ -195,12 +195,12 @@ class JoinupDocumentFulfillmentGuard implements GuardInterface {
     }
 
     $elibrary_name = $this->getParentElibraryName($parent);
-    $elibrary_creation = $parent->{$elibrary_name}->value;
+    $elibrary_creation = $parent->get($elibrary_name)->first()->value;
     return $roles_array[$elibrary_creation];
   }
 
   /**
-   * Returns the eLibrary creation machine name.
+   * Returns the eLibrary creation field machine name.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The parent entity.

@@ -15,10 +15,35 @@ use Drupal\Tests\joinup_core\JoinupWorkflowTestBase;
  */
 class DocumentWorkflowTest extends JoinupWorkflowTestBase {
 
+  /**
+   * Flag for pre-moderated groups.
+   */
   const PRE_MODERATION = 1;
+
+  /**
+   * Flag for post-moderated groups.
+   */
   const POST_MODERATION = 0;
+
+  /**
+   * Flag for option for the eLibrary creation field.
+   *
+   * Only facilitators are allowed to create content.
+   */
   const ELIBRARY_ONLY_FACILITATORS = 0;
+
+  /**
+   * Flag for option for the eLibrary creation field.
+   *
+   * Only users that are subscribed to the group are allowed to create content.
+   */
   const ELIBRARY_MEMBERS_FACILITATORS = 1;
+
+  /**
+   * Flag for option for the eLibrary creation field.
+   *
+   * All registered users can create content.
+   */
   const ELIBRARY_REGISTERED_USERS = 2;
 
   /**
@@ -106,19 +131,13 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
           'uid' => $this->userOwner->id(),
         ]);
 
-        $non_allowed_roles = array_diff($test_roles, $allowed_roles);
         $operation = 'create';
-        foreach ($allowed_roles as $user_var) {
+        foreach ($test_roles as $user_var) {
           $this->userProvider->setUser($this->{$user_var});
           $access = $this->workflowAccess->entityAccess($content, $operation, $this->{$user_var})->isAllowed();
-          $message = "User {$user_var} should have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
-          $this->assertEquals(TRUE, $access, $message);
-        }
-        foreach ($non_allowed_roles as $user_var) {
-          $this->userProvider->setUser($this->{$user_var});
-          $access = $this->workflowAccess->entityAccess($content, 'create', $this->{$user_var})->isAllowed();
-          $message = "User {$user_var} should not have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
-          $this->assertEquals(FALSE, $access, $message);
+          $expected = in_array($user_var, $allowed_roles);
+          $message = "User {$user_var} should " . ($expected ? '' : 'not') . " have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
+          $this->assertEquals($expected, $access, $message);
         }
       }
     }
@@ -138,19 +157,13 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
                 'status' => $this->isPublishedState($content_state),
               ]);
 
-              $non_allowed_roles = array_diff($test_roles, $allowed_roles);
               $moderated_message = $moderation ? 'pre moderated' : 'post moderated';
-              foreach ($allowed_roles as $user_var) {
+              foreach ($test_roles as $user_var) {
                 $this->userProvider->setUser($this->{$user_var});
-                $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-                $message = "User {$user_var} should have {$operation} access for the '{$content_state}' 'document' with a {$moderated_message} {$parent_bundle} parent in a {$parent_state} state.";
-                $this->assertEquals(TRUE, $access, $message);
-              }
-              foreach ($non_allowed_roles as $user_var) {
-                $this->userProvider->setUser($this->{$user_var});
-                $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-                $message = "User {$user_var} should not have {$operation} access for the '{$content_state}' 'document' with a {$moderated_message} {$parent_bundle} parent in a {$parent_state} state.";
-                $this->assertEquals(FALSE, $access, $message);
+                $access = $this->workflowAccess->entityAccess($content, $operation, $this->{$user_var})->isAllowed();
+                $expected = in_array($user_var, $allowed_roles);
+                $message = "User {$user_var} should " . ($expected ? '' : 'not') . " have {$operation} access for the '{$content_state}' 'document' with a {$moderated_message} {$parent_bundle} parent in a {$parent_state} state.";
+                $this->assertEquals($expected, $access, $message);
               }
             }
           }
@@ -255,17 +268,14 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
    *    The created entity.
    */
   protected function createParent($bundle, $state = 'validated', $moderation = NULL, $elibrary = NULL) {
-    $field_identifier = [
-      'collection' => 'field_ar_',
-      'solution' => 'field_is_',
-    ];
+    $field_prefix = $bundle === 'collection' ? 'field_ar_' : 'field_is_';
 
     $parent = Rdf::create([
       'label' => $this->randomMachineName(),
       'rid' => $bundle,
-      $field_identifier[$bundle] . 'state' => $state,
-      $field_identifier[$bundle] . 'moderation' => $moderation,
-      $field_identifier[$bundle] . 'elibrary_creation' => $elibrary,
+      $field_prefix . 'state' => $state,
+      $field_prefix . 'moderation' => $moderation,
+      $field_prefix . 'elibrary_creation' => $elibrary,
     ]);
     $parent->save();
     $this->assertInstanceOf(RdfInterface::class, $parent, "The $bundle group was created.");
@@ -456,6 +466,8 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
       ],
     ];
 
+    // When it comes to documents, access check is the same regardless of the
+    // bundle of the parent.
     $return_array = [];
     foreach (['collection', 'solution'] as $bundle) {
       $return_array[$bundle] = $access_array;
@@ -515,7 +527,7 @@ class DocumentWorkflowTest extends JoinupWorkflowTestBase {
             sort($actual_transitions);
             sort($transitions);
 
-            $moderated_message = $parent_moderation ? 'pre moderated' : 'post moderated';
+            $moderated_message = $parent_moderation ? 'pre-moderated' : 'post-moderated';
             $this->assertEquals($transitions, $actual_transitions, "Transitions do not match for user $user_var, state $content_state and a $moderated_message $parent_bundle for a parent.");
           }
         }
