@@ -140,12 +140,14 @@ class Prepare extends SourcePluginBase {
       // OG roles.
       $query = $db->select('og_users_roles', 'ur')
         ->fields('ur', ['uid', 'rid'])
-        ->fields('u', ['is_admin'])
+        ->fields('u', ['is_admin', 'created'])
         ->condition('ur.gid', (int) $row['nid'])
         ->orderBy('ur.uid');
       $query->join('og_uid', 'u', 'ur.gid = u.nid AND ur.uid = u.uid');
       foreach ($query->execute()->fetchAll() as $item) {
         $uid = (int) $item->uid;
+        $created = (int) $item->created;
+
         if (!isset($collections[$collection]['roles'])) {
           // Initialize an empty array.
           $collections[$collection]['roles'] = [
@@ -158,17 +160,17 @@ class Prepare extends SourcePluginBase {
         // Group owner.
         if ((int) $item->is_admin === 1) {
           $key = $is_owner ? 'admin' : 'facilitator';
-          if (!in_array($uid, $collections[$collection]['roles'][$key])) {
-            $collections[$collection]['roles'][$key][] = $uid;
+          if (!isset($collections[$collection]['roles'][$key][$uid])) {
+            $collections[$collection]['roles'][$key][$uid] = $created;
           }
         }
         // Group facilitator.
-        if ($item->rid == 4 && !in_array($uid, $collections[$collection]['roles']['facilitator'])) {
-          $collections[$collection]['roles']['facilitator'][] = $uid;
+        if ($item->rid == 4 && !isset($collections[$collection]['roles']['facilitator'][$uid])) {
+          $collections[$collection]['roles']['facilitator'][$uid] = $created;
         }
         // Group members.
-        if ($item->rid == 5 && !in_array($uid, $collections[$collection]['roles']['member'])) {
-          $collections[$collection]['roles']['member'][] = $uid;
+        if ($item->rid == 5 && !isset($collections[$collection]['roles']['member'][$uid])) {
+          $collections[$collection]['roles']['member'][$uid] = $created;
         }
       }
 
