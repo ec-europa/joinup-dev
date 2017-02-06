@@ -34,17 +34,22 @@ class RdfListBuilderFilterForm extends FormBase {
         '#title' => $this->t('Graph'),
         '#options' => $graphs,
         '#default_value' => $request->get('graph'),
+        '#empty_value' => NULL,
+        '#empty_option' => $this->t('- Any -'),
       ];
     }
+
+    $bundles = array_map(function (array $info) {
+      return $info['label'];
+    }, $bundle_info->getBundleInfo('rdf_entity'));
+    asort($bundles);
     $form['inline']['rid'] = [
       '#type' => 'select',
       '#title' => $this->t('Bundle'),
-      '#options' => array_map(function (array $info) {
-        return $info['label'];
-      }, $bundle_info->getBundleInfo('rdf_entity')),
+      '#options' => $bundles,
       '#default_value' => $request->get('rid'),
       '#empty_value' => NULL,
-      '#empty_option' => $this->t('- All -'),
+      '#empty_option' => $this->t('- Any -'),
     ];
     $form['inline']['submit'] = [
       '#value' => $this->t('Filter'),

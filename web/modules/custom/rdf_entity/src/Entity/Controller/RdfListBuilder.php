@@ -22,12 +22,12 @@ class RdfListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   protected function getEntityIds() {
+    $request = \Drupal::request();
     $rdf_storage = $this->getStorage();
     /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
     $bundle_info = \Drupal::service('entity_type.bundle.info');
-    $request = \Drupal::request();
     /** @var \Drupal\rdf_entity\Entity\Query\Sparql\Query $query */
-    $query = $rdf_storage->getQuery();
+    $query = \Drupal::entityQuery('rdf_entity');
 
     // If a graph type is set in the url, validate it, and use it in the query.
     $graph = $request->get('graph');
@@ -42,12 +42,19 @@ class RdfListBuilder extends EntityListBuilder {
       $query->setGraphType($rdf_storage->getGraphHandler()->getEntityTypeEnabledGraphs());
     }
 
-    $rid = $request->get('rid') ?: NULL;
-    if ($rid) {
+    if ($rid = $request->get('rid') ?: NULL) {
       $rid = in_array($rid, array_keys($bundle_info->getBundleInfo('rdf_entity'))) ? [$rid] : NULL;
     }
 
     $query->condition('rid', $rid, 'IN');
+    // Special treatment for 'solution' and 'asset_release'.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
+    if ($rid[0] === 'asset_release') {
+      $query->exists('field_isr_is_version_of');
+    }
+    elseif ($rid[0] === 'solution') {
+      $query->notExists('field_isr_is_version_of');
+    }
 
     // Only add the pager if a limit is specified.
     if ($this->limit) {
