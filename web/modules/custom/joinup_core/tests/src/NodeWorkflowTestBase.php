@@ -72,11 +72,24 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
   protected $userOgMember;
 
   /**
+   * The workflow access provider service.
+   *
+   * This service is called in the corresponding entity access hooks but is
+   * used directly for the create access since it requires an entity and not
+   * just a bundle due to the need to check extra information regarding the
+   * group that the entity belongs to.
+   *
+   * @var \Drupal\joinup_core\NodeWorkflowAccessControlHandler
+   */
+  protected $workflowAccess;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
 
+    $this->workflowAccess = $this->container->get('joinup_core.node_workflow_access');
     $this->userOwner = $this->createUser();
     $this->userAnonymous = new AnonymousUserSession();
     $this->userAuthenticated = $this->createUser();

@@ -117,5 +117,5 @@ function joinup_core_node_access(EntityInterface $entity, $operation, AccountInt
   if (!in_array($entity->bundle(), ['document', 'discussion'])) {
     return AccessResult::neutral();
   }
-  return \Drupal::service('joinup_core.workflow_access')->entityAccess($entity, $operation, $account);
+  return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($entity, $operation, $account);
 }

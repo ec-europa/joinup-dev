@@ -63,7 +63,7 @@ abstract class NodeGuard implements GuardInterface {
   protected $ogMembershipManager;
 
   /**
-   * The discussions relation manager.
+   * The relation manager service.
    *
    * @var \Drupal\joinup_core\JoinupRelationManager
    */
@@ -84,7 +84,10 @@ abstract class NodeGuard implements GuardInterface {
   protected $transitions;
 
   /**
-   * Instantiates the JoinupDiscussionFulfillmentGuard service.
+   * Instantiates the NodeGuard service.
+   *
+   * The classes inheriting this class, should also ensure that they set the
+   * protected variable $transitions to be used by the ::allowed() method.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager service.

@@ -113,7 +113,6 @@ class NodeWorkflowAccessControlHandler {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $og_membership_manager;
     $this->relationManager = $relation_manager;
-
   }
 
   /**
@@ -130,7 +129,7 @@ class NodeWorkflowAccessControlHandler {
    *    The result of the access check.
    */
   public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account) {
-    if ((!in_array($entity->getEntityTypeId(), ['rdf_entity', 'node']))) {
+    if ($entity->getEntityTypeId() === 'node') {
       return AccessResult::neutral();
     }
 
@@ -140,7 +139,6 @@ class NodeWorkflowAccessControlHandler {
 
       case 'create':
       case 'update':
-      case 'edit':
         $allowed_transitions = $entity->get('field_state')->first()->getTransitions();
         return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
 
@@ -230,7 +228,11 @@ class NodeWorkflowAccessControlHandler {
     }
 
     $moderation = $this->relationManager->getParentModeration($entity);
-    // Pre moderated.
+    // If the parent is in pre-moderated state, the user can only delete the
+    // entity if he has the 'delete all' permission because owners are not
+    // allowed to.
+    // Access is denied because if neutral is returned, the default entity
+    // access control handler will allow it.
     if ($moderation == 1) {
       return AccessResult::forbiddenIf(!$account->hasPermission("delete any {$entity->bundle()} {$entity_type}"));
     }
@@ -259,10 +261,6 @@ class NodeWorkflowAccessControlHandler {
 
   /**
    * Returns the appropriate workflow to use for the passed entity.
-   *
-   * If the entity is a group, then the workflow is the default workflow.
-   * If the entity is a group content, then the workflow is dependant to the
-   * moderation settings of the parent.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The group content entity.
