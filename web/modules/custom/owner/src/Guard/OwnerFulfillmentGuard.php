@@ -65,11 +65,7 @@ class OwnerFulfillmentGuard implements GuardInterface {
     // Check if the user has one of the allowed system roles.
     $authorized_roles = isset($allowed_conditions[$transition->getId()][$from_state]) ? $allowed_conditions[$transition->getId()][$from_state] : [];
     $user = $this->workflowUserProvider->getUser();
-    if (array_intersect($authorized_roles, $user->getRoles())) {
-      return TRUE;
-    }
-
-    return FALSE;
+    return (bool) array_intersect($authorized_roles, $user->getRoles());
   }
 
   /**
@@ -84,13 +80,7 @@ class OwnerFulfillmentGuard implements GuardInterface {
    * @see https://www.drupal.org/node/2745673
    */
   protected function getState(RdfInterface $entity) {
-    if ($entity->isNew()) {
-      return $entity->field_owner_state->first()->value;
-    }
-    else {
-      $unchanged_entity = $this->entityTypeManager->getStorage('rdf_entity')->loadUnchanged($entity->id());
-      return $unchanged_entity->field_owner_state->first()->value;
-    }
+    return $entity->field_owner_state->first()->value;
   }
 
 }

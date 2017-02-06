@@ -139,8 +139,9 @@ function owner_rdf_entity_access(EntityInterface $entity, $operation, AccountInt
     return AccessResult::forbiddenIf(owner_is_owner_referenced($entity));
   }
 
+  // RDF Entity administrators always have access on all owner entities.
   if ($account->hasPermission('administer rdf entity')) {
-    return AccessResult::neutral();
+    return AccessResult::allowed();
   }
 
   switch ($operation) {
