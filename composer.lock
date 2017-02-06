@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8cbb69343e8bbd17a79a3c83e9008d0a",
+    "content-hash": "79feadba7a4a9d99e2e1efe219df966a",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1753,6 +1753,7 @@
             "type": "drupal-core",
             "extra": {
                 "patches_applied": {
+                    "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-17.patch",
                     "EntityPublishedInterface. @see https://www.drupal.org/node/2789315 @see https://www.drupal.org/node/2810381 @todo Remove in 8.3.x": "./resources/patches/combined-2810381-and-2789315.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194.patch",
                     "SqlBase::prepareQuery() should be called also on count. @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch",
