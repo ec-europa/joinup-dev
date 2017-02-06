@@ -130,7 +130,8 @@
             },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
-                "Schema validation error when running functional tests": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch"
+                "Schema validation error when running functional tests": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
+                "Disable static cache for workflow_callback": "https://www.drupal.org/files/issues/static_cache_disable_for_workflow_callback-2846986-2.patch"
             }
         }
     },

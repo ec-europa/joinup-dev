@@ -89,7 +89,7 @@ function collection_entity_insert(EntityInterface $entity) {
  * node.
  */
 function collection_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($entity->bundle() != 'collection' || $account->isAnonymous() || \Drupal::currentUser()->hasPermission('administer rdf entity')) {
+  if ($entity->bundle() != 'collection' || $account->isAnonymous() || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
     return AccessResult::neutral();
   }
 

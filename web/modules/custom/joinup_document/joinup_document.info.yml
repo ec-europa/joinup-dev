@@ -16,6 +16,7 @@ config_devel:
   - field.field.node.document.field_document_publication_date
   - field.field.node.document.field_document_short_title
   - field.field.node.document.field_document_source_url
+  - field.field.node.document.field_state
   - field.field.node.document.og_audience
   - field.storage.node.field_document_file
   - field.storage.node.field_document_publication_date
