@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ae92882e806169c1b8a61f4e11698f2",
+    "content-hash": "a1c3662e499c8625a0ed14e6e2376a2c",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1758,10 +1758,10 @@
             "type": "drupal-core",
             "extra": {
                 "patches_applied": {
-                    "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/file_usage_limits-2675600-14.patch",
-                    "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
-                    "SqlBase::prepareQuery() should be called also on count @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch",
-                    "Support fast rollbacks @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch"
+                    "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-17.patch",
+                    "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194.patch",
+                    "SqlBase::prepareQuery() should be called also on count. @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch",
+                    "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch"
                 }
             },
             "autoload": {
@@ -2068,7 +2068,7 @@
                     "datestamp": "1479155639"
                 },
                 "patches_applied": {
-                    "Required IEF forms for existing entities don't work": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
+                    "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2670,7 +2670,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/r4032login",
-                "reference": "4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9"
+                "reference": "73ef6fe6864d3225c06979b0aa7b44659d179a16"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2685,8 +2685,7 @@
                     "datestamp": "1486244883"
                 },
                 "patches_applied": {
-                    "Fix white screen of death.": "https://www.drupal.org/files/issues/2687155-8.patch",
-                    "Errors with schema and installed settings file": "https://www.drupal.org/files/issues/schema_fix-2833695-2-D8.patch"
+                    "Errors with schema and installed settings file. @see https://www.drupal.org/node/2833695": "https://www.drupal.org/files/issues/schema_fix-2833695-2-D8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2736,7 +2735,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/r4032login"
             },
-            "time": "2016-03-01 13:56:38"
+            "time": "2017-02-04 21:57:20"
         },
         {
             "name": "drupal/search_api",
@@ -2768,9 +2767,9 @@
                     "datestamp": "1483286941"
                 },
                 "patches_applied": {
-                    "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-46.patch",
-                    "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-8-on_2753667-33.patch",
-                    "item_id column is too short @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/2829696-7.patch"
+                    "Add entity type list cache tags. @see https://www.drupal.org/node/2753667": "https://www.drupal.org/files/issues/2753667-46.patch",
+                    "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640 @see https://www.drupal.org/node/2753667": "./resources/patches/views_cached_results-2824640-8-on_2753667-33.patch",
+                    "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/2829696-7.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2828,7 +2827,7 @@
                     "datestamp": "1477470239"
                 },
                 "patches_applied": {
-                    "Cannot subscribe to Solarium events": "https://www.drupal.org/files/issues/cannot_subscribe_to-2835770-2.patch"
+                    "Cannot subscribe to Solarium events. @see https://www.drupal.org/node/2835770": "https://www.drupal.org/files/issues/cannot_subscribe_to-2835770-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2896,8 +2895,8 @@
                     "datestamp": "1477868939"
                 },
                 "patches_applied": {
-                    "Fire generic events when transition are applied": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
-                    "Schema validation error when running functional tests": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch"
+                    "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
+                    "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2991,7 +2990,7 @@
                     "datestamp": "1479320951"
                 },
                 "patches_applied": {
-                    "Terms with string IDs are missing from dropdown": "https://www.drupal.org/files/issues/2833176-2.patch"
+                    "Terms with string IDs are missing from dropdown. @see https://www.drupal.org/node/2833176": "https://www.drupal.org/files/issues/2833176-17.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7946,7 +7945,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-02-03 08:39:12"
+            "time": "2017-02-03T08:39:12+00:00"
         },
         {
             "name": "fabpot/goutte",
