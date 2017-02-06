@@ -399,7 +399,14 @@ class RdfGraphHandler {
    *    The id of the graph.
    */
   public function getBundleGraphId($entity_type_bundle_key, $bundle_id, $graph_uri) {
-    $graphs = $this->getEntityTypeGraphUris($entity_type_bundle_key);
+    static $cache = [];
+    if (!isset($cache[$entity_type_bundle_key])) {
+      $graphs = $this->getEntityTypeGraphUris($entity_type_bundle_key);
+      $cache[$entity_type_bundle_key] = $graphs;
+    }
+    else {
+      $graphs = $cache[$entity_type_bundle_key];
+    }
     return array_search($graph_uri, $graphs[$bundle_id]);
   }
 
@@ -420,8 +427,15 @@ class RdfGraphHandler {
    *    Thrown if the graph is not found.
    */
   protected function getBundleGraphUriFromSettings($bundle_type_key, $bundle_id, $graph_name) {
-    /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $bundle */
-    $bundle = $this->entityManager->getStorage($bundle_type_key)->load($bundle_id);
+    static $cache = [];
+    if (!isset($cache["$bundle_type_key:$bundle_id"])) {
+      /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $bundle */
+      $bundle = $this->entityTypeManager->getStorage($bundle_type_key)->load($bundle_id);
+      $cache["$bundle_type_key:$bundle_id"] = $bundle;
+    }
+    else {
+      $bundle = $cache["$bundle_type_key:$bundle_id"];
+    }
     $graph = rdf_entity_get_third_party_property($bundle, 'graph', $graph_name, FALSE);
     if (!$graph) {
       throw new \Exception(format_string('Unable to determine graph %graph for bundle %bundle', [
