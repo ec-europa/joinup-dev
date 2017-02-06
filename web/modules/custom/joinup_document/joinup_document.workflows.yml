@@ -9,7 +9,6 @@ node:document:pre_moderated:
       label: New
     draft:
       label: Draft
-    # State used to flag content that is being reviewed.
     validated:
       label: Validated
       published: true
@@ -76,7 +75,6 @@ node:document:post_moderated:
       label: New
     draft:
       label: Draft
-    # State used to flag content that is being reviewed.
     validated:
       label: Validated
       published: true
