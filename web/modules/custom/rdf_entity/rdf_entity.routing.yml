@@ -97,4 +97,4 @@ rdf_entity.admin_index:
     _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
     _title: 'Rdf entity'
   requirements:
-    _permission: 'administer rdf_entity entity'
+    _permission: 'administer rdf_entity'

@@ -4,4 +4,4 @@ rdf_draft.settings:
     _title: 'RDF draft settings'
     _form: '\Drupal\rdf_draft\Form\SettingsForm'
   requirements:
-    _permission: 'administer rdf_entity entity'
+    _permission: 'administer rdf_entity'

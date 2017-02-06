@@ -129,7 +129,7 @@ class NodeWorkflowAccessControlHandler {
    *    The result of the access check.
    */
   public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account) {
-    if ($entity->getEntityTypeId() === 'node') {
+    if ($entity->getEntityTypeId() !== 'node') {
       return AccessResult::neutral();
     }
 

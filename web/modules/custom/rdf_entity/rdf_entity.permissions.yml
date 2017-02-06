@@ -4,7 +4,7 @@
   title: View unpublished rdf entities
 'view rdf entity overview':
   title: View Rdf entity overview
-'administer rdf_entity entity':
+'administer rdf_entity':
   title: Administer settings
 
 permission_callbacks:
