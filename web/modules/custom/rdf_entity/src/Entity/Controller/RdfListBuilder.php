@@ -27,7 +27,7 @@ class RdfListBuilder extends EntityListBuilder {
     /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
     $bundle_info = \Drupal::service('entity_type.bundle.info');
     /** @var \Drupal\rdf_entity\Entity\Query\Sparql\Query $query */
-    $query = \Drupal::entityQuery('rdf_entity');
+    $query = $rdf_storage->getQuery();
 
     // If a graph type is set in the url, validate it, and use it in the query.
     $graph = $request->get('graph');
