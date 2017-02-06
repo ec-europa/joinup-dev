@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec45d65dd2ba120a0e41f379dcf0f51e",
+    "content-hash": "6ffc11d23448b155959f14bc5ecc59cf",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2736,11 +2736,17 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "dev-1.x",
+            "version": "1.0.0-beta4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "ff41470b2b5399b83b86085d4b7a2c2f4e753370"
+                "reference": "8.x-1.0-beta4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-beta4.zip",
+                "reference": null,
+                "shasum": "77e79980b56ca722080477e5b3e9aa8fffa87fb1"
             },
             "require": {
                 "drupal/core": "^8.2"
@@ -2754,8 +2760,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta4+13-dev",
-                    "datestamp": "1486027684"
+                    "version": "8.x-1.0-beta4+7-dev",
+                    "datestamp": "1485110583"
                 },
                 "patches_applied": {
                     "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-46.patch",
@@ -2787,8 +2793,7 @@
                 "source": "http://git.drupal.org/project/search_api.git",
                 "issues": "https://www.drupal.org/project/issues/search_api",
                 "irc": "irc://irc.freenode.org/drupal-search-api"
-            },
-            "time": "2016-12-18 20:06:03"
+            }
         },
         {
             "name": "drupal/search_api_solr",
@@ -9292,7 +9297,7 @@
         "drupal/og_menu": 15,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
-        "drupal/search_api": 20,
+        "drupal/search_api": 10,
         "drupal/search_api_solr": 10,
         "drupal/view_unpublished": 20,
         "google/material-design-lite": 20,
