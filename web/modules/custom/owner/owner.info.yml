@@ -6,12 +6,16 @@ package: Joinup
 
 dependencies:
   - joinup_core
+  - state_machine
 
 config_devel:
   - core.base_field_override.rdf_entity.owner.label
   - core.entity_form_display.rdf_entity.owner.default
-  - rdf_entity.rdfentity.owner
+  - core.entity_form_display.rdf_entity.owner.inline
   - field.field.rdf_entity.owner.field_owner_name
+  - field.field.rdf_entity.owner.field_owner_state
   - field.field.rdf_entity.owner.field_owner_type
-  - field.storage.rdf_entity.field_owner_type
   - field.storage.rdf_entity.field_owner_name
+  - field.storage.rdf_entity.field_owner_state
+  - field.storage.rdf_entity.field_owner_type
+  - rdf_entity.rdfentity.owner

@@ -7,6 +7,7 @@
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\UtilityTrait;
@@ -16,6 +17,7 @@ use Drupal\joinup\Traits\UtilityTrait;
  */
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
+  use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use UtilityTrait;
@@ -634,9 +636,15 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   When the tab is not found on the page.
    *
-   * @When I click :tab tab
+   * @When I click( the) :tab tab
    */
   public function assertVerticalTabLink($tab) {
+    // When this is running in a browser without JavaScript the vertical tabs
+    // are rendered as a details element.
+    if (!$this->browserSupportsJavascript()) {
+      return;
+    }
+
     $page = $this->getSession()->getPage();
 
     $xpath = "//li[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item ')]"

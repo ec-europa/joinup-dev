@@ -8,8 +8,10 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\TermInterface;
@@ -19,8 +21,10 @@ use Drupal\taxonomy\TermInterface;
  */
 class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use MaterialDesignTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
+  use UtilityTrait;
 
   /**
    * Test owner rdf entities.
@@ -122,28 +126,49 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @param string $options
    *    A comma delimited list of options to be checked.
    *
-   * @throws \Behat\Mink\Exception\ElementNotFoundException
-   *   When no select has been found.
+   * @throws \Exception
+   *   Thrown when the owner field appears empty in the page.
    *
    * @When (I )set the Owner type(s) to :option
    */
   public function setOwnerType($options) {
     // Explode into an array.
-    $options = array_unique(array_map('trim', explode(',', $options)));
+    $options = $this->explodeCommaSeparatedStepArgument($options);
 
-    $field = $this->getSession()->getPage()->find('named', ['fieldset', 'Owner']);
+    /** @var \Behat\Mink\Element\NodeElement $owner_fieldset */
+    $owner_fieldset = $this->getSession()->getPage()->find('named', ['fieldset', 'Type']);
 
     /** @var \Behat\Mink\Element\NodeElement[] $labels */
-    $labels = $field->findAll('xpath', '//label//label');
+    $labels = $owner_fieldset->findAll('xpath', '//label//label');
+
+    if (empty($labels)) {
+      throw new \Exception('No options found in the owner field.');
+    }
+
     foreach ($labels as $label) {
       $option = $label->getText();
       if (in_array($option, $options)) {
-        $field->checkField($option);
+        $this->checkMaterialDesignField($option, $owner_fieldset);
       }
       else {
-        $field->uncheckField($option);
+        $this->uncheckMaterialDesignField($option, $owner_fieldset);
       }
     }
+  }
+
+  /**
+   * Navigates to the canonical page display of an owner.
+   *
+   * @param string $owner
+   *   The label of the owner.
+   *
+   * @When (I )go to (the homepage of )the :owner owner
+   * @When (I )visit (the homepage of )the :owner owner
+   */
+  public function visitOwner($owner) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $owner */
+    $owner = $this->getRdfEntityByLabel($owner);
+    $this->visitPath($owner->url());
   }
 
 }
