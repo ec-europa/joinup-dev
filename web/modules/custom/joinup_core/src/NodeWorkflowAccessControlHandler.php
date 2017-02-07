@@ -100,6 +100,13 @@ class NodeWorkflowAccessControlHandler {
   protected $relationManager;
 
   /**
+   * The workflow user provider service.
+   *
+   * @var \Drupal\joinup_core\WorkflowUserProvider
+   */
+  protected $workflowUserProvider;
+
+  /**
    * Constructs a JoinupDocumentRelationManager object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -108,11 +115,14 @@ class NodeWorkflowAccessControlHandler {
    *   The OG membership manager service.
    * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
    *   The relation manager service.
+   * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
+   *   The workflow user provider service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupRelationManager $relation_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupRelationManager $relation_manager, WorkflowUserProvider $workflow_user_provider) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $og_membership_manager;
     $this->relationManager = $relation_manager;
+    $this->workflowUserProvider = $workflow_user_provider;
   }
 
   /**
@@ -128,7 +138,11 @@ class NodeWorkflowAccessControlHandler {
    * @return \Drupal\Core\Access\AccessResult
    *    The result of the access check.
    */
-  public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account) {
+  public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account = null) {
+    if ($account === null) {
+      $account = $this->workflowUserProvider->getUser();
+    }
+
     if ($entity->getEntityTypeId() !== 'node') {
       return AccessResult::neutral();
     }

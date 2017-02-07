@@ -22,11 +22,11 @@ class WorkflowUserProvider {
   /**
    * Constructs an WorkflowUserProvider service.
    *
-   * @param \Drupal\Core\Session\AccountProxyInterface $account_proxy
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The service that contains the current active user.
    */
-  public function __construct(AccountProxyInterface $account_proxy) {
-    $this->account = $account_proxy;
+  public function __construct(AccountProxyInterface $currentUser) {
+    $this->account = $currentUser;
   }
 
   /**
