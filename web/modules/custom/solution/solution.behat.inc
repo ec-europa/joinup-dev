@@ -408,10 +408,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $storage = \Drupal::service('entity_type.manager')->getStorage('rdf_entity');
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
-      foreach ($storage->getGraphHandler()->getEntityTypeEnabledGraphs() as $graph) {
-        $storage->getGraphHandler()->setTargetGraphToEntity($solution, $graph);
-        $solution->delete();
-      }
+      $solution->delete();
     }
   }
 

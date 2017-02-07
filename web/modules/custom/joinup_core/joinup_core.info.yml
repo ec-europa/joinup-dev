@@ -22,6 +22,7 @@ dependencies:
 config_devel:
   - comment.type.comment
   - core.entity_form_display.comment.comment.default
+  - core.entity_form_mode.rdf_entity.inline
   - core.entity_view_display.comment.comment.default
   - core.entity_view_mode.node.view_mode_tile
   - core.entity_view_mode.rdf_entity.group_header
