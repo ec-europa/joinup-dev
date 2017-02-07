@@ -87,7 +87,7 @@ use Drupal\user\UserInterface;
  *   },
  *   list_cache_contexts = { "user" },
  *   base_table = null,
- *   admin_permission = "administer rdf_entity",
+ *   admin_permission = "administer rdf entity",
  *   fieldable = TRUE,
  *   entity_keys = {
  *     "id" = "id",
