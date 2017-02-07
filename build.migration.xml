@@ -7,11 +7,6 @@
             description="Run the migrations."
             depends="enable-migration-modules">
         <echo message="Running migration IDs" />
-        <foreach list="${migration.ids}" param="migration" target="run-single-migration" />
-    </target>
-
-    <!-- Run a single migration given its ID. -->
-    <target name="run-single-migration">
         <drush
             command="migrate-import"
             assume="yes"
