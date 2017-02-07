@@ -734,6 +734,9 @@ QUERY;
       $id = $this->generateId();
       $entity->{$this->idKey} = (string) $id;
     }
+    elseif ($entity->isNew() && $this->idExists($id)) {
+      throw new \InvalidArgumentException("Attempting to create a new entity with the ID '$id' already taken.");
+    }
 
     // If the target graph is set, it has priority over the one the entity is
     // loaded from. If no target graph is set, use the previous one.
@@ -1025,7 +1028,9 @@ QUERY;
     $target_entity = $target->getValue();
     $target_entity_type = $target_entity->getEntityType();
     $target_entity_storage_class = trim($target_entity_type->getStorageClass(), "\\");
-    return $target_entity_storage_class === RdfEntitySparqlStorage::class;
+    $classes = class_parents($target_entity_storage_class);
+    $classes[$target_entity_storage_class] = $target_entity_storage_class;
+    return in_array(RdfEntitySparqlStorage::class, $classes);
   }
 
   /**
@@ -1059,6 +1064,24 @@ WHERE {
 }
 QUERY;
     $this->sparql->query($query);
+  }
+
+  /**
+   * Checks if a specific entity ID already exists in the backend.
+   *
+   * @param string $id
+   *   The ID to be checked.
+   *
+   * @return bool
+   *   TRUE if this entity ID already exists, FALSE otherwise.
+   */
+  protected function idExists($id) {
+    $query = <<<QUERY
+ASK {
+  <$id> ?field ?value
+}
+QUERY;
+    return $this->sparql->query($query)->isTrue();
   }
 
 }

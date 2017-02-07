@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_news_kicker
+    - field.storage.node.field_news_headline
     - node.type.news
-id: node.news.field_news_kicker
-field_name: field_news_kicker
+id: node.news.field_news_headline
+field_name: field_news_headline
 entity_type: node
 bundle: news
-label: Kicker
-description: 'The kicker is a short, catchy word or phrase and will be placed over the headline.'
+label: Headline
+description: 'Headline of the news.'
 required: true
 translatable: false
 default_value: {  }

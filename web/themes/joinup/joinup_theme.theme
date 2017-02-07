@@ -160,6 +160,9 @@ function joinup_theme_preprocess_block(&$variables) {
               $is_listing = TRUE;
             }
           }
+          elseif ($node_type == 'news') {
+            $is_listing = TRUE;
+          }
         }
         break;
 
@@ -326,64 +329,79 @@ function joinup_theme_preprocess_form_element(&$variables) {
  * Implements hook_preprocess_page_title__rdf_entity__asset_release().
  */
 function joinup_theme_preprocess_page_title__rdf_entity__asset_release(&$variables) {
-  $route_match = \Drupal::routeMatch();
   /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
-  $entity = $route_match->getParameter('rdf_entity');
-  if (!empty($entity)) {
-    // Get entity type.
-    if ($entity->getType() !== 'asset_release') {
-      return;
-    }
-    $variables['additional_content']['full_label'] = new TranslatableMarkup('@label @ver', ['@label' => $entity->label(), '@ver' => $entity->field_isr_release_number->value]);
+  $entity = $variables['entity'];
 
-    $is_latest_release = FALSE;
-    $field_solution = $entity->get('field_isr_is_version_of');
-    if (!empty($field_solution) && ($solution = $field_solution->entity)) {
-      $latest_release = solution_get_latest_release($solution);
-      if ($latest_release && $latest_release->id() === $entity->id()) {
-        $is_latest_release = TRUE;
-      }
-    }
-    $variables['additional_content']['is_latest_release'] = $is_latest_release;
-    if (!$is_latest_release && $latest_release) {
-      $variables['additional_content']['latest_release'] = $latest_release->toUrl()->toString();
-    }
+  $variables['additional_content']['full_label'] = new TranslatableMarkup('@label @ver', [
+    '@label' => $entity->label(),
+    '@ver' => $entity->field_isr_release_number->value,
+  ]);
 
-    // Get the view builder service from the entity type manager.
-    /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-    $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
-    // Get the creation date field.
-    $creation_date = $entity->field_isr_creation_date;
-    $creation_date = $viewBuilder->viewField($creation_date, 'default');
-    $variables['additional_content']['field_isr_creation_date'] = $creation_date;
+  $is_latest_release = FALSE;
+  $field_solution = $entity->get('field_isr_is_version_of');
+  if (!empty($field_solution) && ($solution = $field_solution->entity)) {
+    // @todo Find a better way of marking the latest release that doesn't
+    //   involve performing a database query in the theme layer.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
+    $latest_release = solution_get_latest_release($solution);
+    if ($latest_release && $latest_release->id() === $entity->id()) {
+      $is_latest_release = TRUE;
+    }
   }
+  $variables['additional_content']['is_latest_release'] = $is_latest_release;
+  if (!$is_latest_release && $latest_release) {
+    $variables['additional_content']['latest_release'] = $latest_release->toUrl()->toString();
+  }
+
+  // Get the view builder service from the entity type manager.
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
+  // Get the creation date field.
+  $creation_date = $entity->field_isr_creation_date;
+  $creation_date = $viewBuilder->viewField($creation_date, 'default');
+  $variables['additional_content']['field_isr_creation_date'] = $creation_date;
 }
 
 /**
  * Implements hook_preprocess_page_title__rdf_entity__asset_distribution().
  */
 function joinup_theme_preprocess_page_title__rdf_entity__asset_distribution(&$variables) {
-  $route_match = \Drupal::routeMatch();
   /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
-  $entity = $route_match->getParameter('rdf_entity');
-  if (!empty($entity)) {
-    // Get entity type.
-    if ($entity->getType() !== 'asset_distribution') {
-      return;
-    }
+  $entity = $variables['entity'];
 
-    // Get the view builder service from the entity type manager.
-    /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-    $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
-    // Get the file size and licence fields.
-    $field_ad_file_size = $entity->field_ad_file_size;
-    $field_ad_licence = $entity->field_ad_licence;
-    $field_ad_file_size = $viewBuilder->viewField($field_ad_file_size, 'default');
-    $field_ad_licence = $viewBuilder->viewField($field_ad_licence, 'default');
+  // Get the view builder service from the entity type manager.
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
+  // Get the file size and licence fields.
+  $field_ad_file_size = $entity->field_ad_file_size;
+  $field_ad_licence = $entity->field_ad_licence;
+  $field_ad_file_size = $viewBuilder->viewField($field_ad_file_size, 'default');
+  $field_ad_licence = $viewBuilder->viewField($field_ad_licence, 'default');
 
-    $variables['additional_content']['field_ad_file_size'] = $field_ad_file_size;
-    $variables['additional_content']['field_ad_licence'] = $field_ad_licence;
-  }
+  $variables['additional_content']['field_ad_file_size'] = $field_ad_file_size;
+  $variables['additional_content']['field_ad_licence'] = $field_ad_licence;
+}
+
+/**
+ * Implements hook_preprocess_page_title__node__news().
+ */
+function joinup_theme_preprocess_page_title__node__news(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['entity'];
+
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
+  $field_news_headline = $viewBuilder->viewField($node->field_news_headline, 'default');
+  $variables['additional_content']['field_news_headline'] = $field_news_headline;
+
+  $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
+  $variables['additional_content']['created'] = $created;
+
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
+  $author = $node->get('uid')->entity;
+  $author_compact = $viewBuilder->view($author, 'compact');
+  $variables['additional_content']['author'] = $author_compact;
 }
 
 /**
@@ -481,12 +499,18 @@ function joinup_theme_theme_suggestions_container_alter(array &$suggestions, arr
  *
  * Adds suggestions when the route is the canonical view of a rdf entity.
  */
-function joinup_theme_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {
+function joinup_theme_theme_suggestions_page_title_alter(array &$suggestions, array &$variables) {
   $route_match = \Drupal::routeMatch();
-  if ($route_match->getRouteName() === 'entity.rdf_entity.canonical') {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
-    $entity = $route_match->getParameter('rdf_entity');
-    $suggestions[] = 'page_title__rdf_entity__' . $entity->bundle();
+  $route_name = $route_match->getRouteName();
+
+  $entity_types = ['rdf_entity', 'node'];
+  foreach ($entity_types as $entity_type) {
+    if ($route_name === "entity.{$entity_type}.canonical") {
+      /** @var \Drupal\core\Entity\EntityInterface $entity */
+      $entity = $route_match->getParameter($entity_type);
+      $suggestions[] = 'page_title__' . $entity_type . '__' . $entity->bundle();
+      $variables['entity'] = $entity;
+    }
   }
 }
 
@@ -558,6 +582,13 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
       $original_theme_hook = $variables['theme_hook_original'];
       $suggestions[] = $original_theme_hook . '__licence';
     }
+  }
+
+  // Add suggestion based on view mode for user entity.
+  if ($hook == 'user' && !empty($variables['elements']['#view_mode'])) {
+    $original_theme_hook = $variables['theme_hook_original'];
+    $view_mode = $variables['elements']['#view_mode'];
+    $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $view_mode);
   }
 
   // Some entities share the same template when rendered using tile and featured

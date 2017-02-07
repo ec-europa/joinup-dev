@@ -5,6 +5,8 @@
 // Component
 // --------------------------------------------------
 .sidebar-menu
+  z-index: 2
+  position: relative
   +breakpoint(desktop)
     width: 100%
     .mdl-menu__container,
@@ -67,6 +69,13 @@
     color: $color-base
   +breakpoint(desktop)
     display: block
+
+.sidebar-menu__contextual
+  ul
+    z-index: 3
+    position: relative
+  button
+    position: relative !important
 
 // Dependiencies
 // --------------------------------------------------
