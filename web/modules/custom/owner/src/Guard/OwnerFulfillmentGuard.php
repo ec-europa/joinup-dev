@@ -2,6 +2,7 @@
 
 namespace Drupal\owner\Guard;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_core\WorkflowUserProvider;
@@ -22,7 +23,7 @@ class OwnerFulfillmentGuard implements GuardInterface {
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  private $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * Holds the workflow user object needed for the checks.
@@ -31,7 +32,14 @@ class OwnerFulfillmentGuard implements GuardInterface {
    *
    * @var \Drupal\joinup_core\WorkflowUserProvider
    */
-  private $workflowUserProvider;
+  protected $workflowUserProvider;
+
+  /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
 
   /**
    * Instantiates a OwnerFulfillmentGuard service.
@@ -40,10 +48,13 @@ class OwnerFulfillmentGuard implements GuardInterface {
    *    The entity type manager service.
    * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
    *    The workflow user provider service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider, ConfigFactoryInterface $config_factory) {
     $this->entityTypeManager = $entity_type_manager;
     $this->workflowUserProvider = $workflow_user_provider;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -60,7 +71,7 @@ class OwnerFulfillmentGuard implements GuardInterface {
     // for the transitions defined in the settings if they include a role the
     // user has.
     // @see: owner.settings.yml
-    $allowed_conditions = \Drupal::config('owner.settings')->get('transitions');
+    $allowed_conditions = $this->configFactory->get('owner.settings')->get('transitions');
 
     // Check if the user has one of the allowed system roles.
     $authorized_roles = isset($allowed_conditions[$transition->getId()][$from_state]) ? $allowed_conditions[$transition->getId()][$from_state] : [];
