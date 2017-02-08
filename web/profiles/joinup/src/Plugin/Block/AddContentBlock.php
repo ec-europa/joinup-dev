@@ -266,6 +266,13 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * {@inheritdoc}
    */
+  public function getCacheMaxAge() {
+    return 0;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCacheContexts() {
     $context = parent::getCacheContexts();
     // The links are only visible for certain roles on certain collections.

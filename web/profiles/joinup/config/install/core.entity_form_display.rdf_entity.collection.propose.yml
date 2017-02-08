@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.rdf_entity.inline
     - core.entity_form_mode.rdf_entity.propose
     - field.field.rdf_entity.collection.field_ar_abstract
     - field.field.rdf_entity.collection.field_ar_access_url
@@ -18,6 +19,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_ar_state
+    - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
     - image.style.thumbnail
@@ -195,7 +197,7 @@ content:
   field_ar_owner:
     weight: 9
     settings:
-      form_mode: default
+      form_mode: inline
       override_labels: true
       label_singular: owner
       label_plural: owners
@@ -234,3 +236,5 @@ content:
     third_party_settings: {  }
 hidden:
   field_ar_shared_content: true
+  field_collection_content: true
+  uid: true

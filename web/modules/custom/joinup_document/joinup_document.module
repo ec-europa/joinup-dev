@@ -44,7 +44,7 @@ function joinup_document_entity_bundle_field_info_alter(&$fields, EntityTypeInte
  */
 function joinup_document_workflow_selector(EntityInterface $entity) {
   if ($entity->bundle() != 'document') {
-    throw new Exception("This method can only be called for document entities.");
+    throw new Exception('This method can only be called for document entities.');
   }
   /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
   $relation_manager = \Drupal::service('joinup_core.relations_manager');

@@ -63,7 +63,7 @@ abstract class NodeGuard implements GuardInterface {
   protected $ogMembershipManager;
 
   /**
-   * The discussions relation manager.
+   * The relation manager service.
    *
    * @var \Drupal\joinup_core\JoinupRelationManager
    */
@@ -84,7 +84,10 @@ abstract class NodeGuard implements GuardInterface {
   protected $transitions;
 
   /**
-   * Instantiates the JoinupDiscussionFulfillmentGuard service.
+   * Instantiates the NodeGuard service.
+   *
+   * The classes inheriting this class, should also ensure that they set the
+   * protected variable $transitions to be used by the ::allowed() method.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager service.
@@ -170,13 +173,13 @@ abstract class NodeGuard implements GuardInterface {
   /**
    * Returns allowed roles according to the eLibrary creation field.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $document
-   *    The document entity.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The group content entity.
    *
    * @return array
    *    An array of roles that are allowed.
    */
-  protected function getElibraryAllowedRoles(EntityInterface $document) {
+  protected function getElibraryAllowedRoles(EntityInterface $entity) {
     $roles_array = [
       self::ELIBRARY_ONLY_FACILITATORS => [
         'rdf_entity-collection-facilitator',
@@ -198,7 +201,7 @@ abstract class NodeGuard implements GuardInterface {
       ],
     ];
 
-    $parent = $this->relationManager->getParent($document);
+    $parent = $this->relationManager->getParent($entity);
     if (empty($parent)) {
       // For security reasons, if no parent is returned, return the strictest
       // option.

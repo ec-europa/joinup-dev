@@ -126,8 +126,8 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
 
     $parent_access_array = [];
     $return_array = [];
-    // The only think affected by whether the parent is published is the view
-    // permission. We are using 'draft' state for an unpublished parent and
+    // The only think affected by whether the parent is published or not, is the
+    // view permission. We are using 'draft' state for an unpublished parent and
     // 'validated' state for published.
     // For the published state, everyone should be able to see published
     // content.
@@ -229,10 +229,11 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
       ],
     ];
 
+    // The allowed transitions remain between parent group's bundle regardless
+    // of the moderation or publication status.
     $parent_access_array = [];
     $return_array = [];
     $e_library_states = $this->getElibraryStates();
-
     foreach ($access_array as $moderation_state => $moderation_data) {
       foreach ($moderation_data as $content_state => $user_var_data) {
         foreach (['collection', 'solution'] as $parent_bundle) {
@@ -246,7 +247,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
       }
     }
 
-    // Special handle the create conditions that are affected by
+    // Special handle the transitions to create an entity that are affected by
     // eLibrary and moderation.
     foreach ($return_array as $parent_bundle => $parent_data) {
       foreach ($parent_data as $e_library => $e_library_data) {

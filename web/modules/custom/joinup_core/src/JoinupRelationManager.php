@@ -8,7 +8,7 @@ use Drupal\og\MembershipManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Service to manage relations for the discussion node bundle.
+ * Service to manage relations for the group content entities.
  */
 class JoinupRelationManager implements ContainerInjectionInterface {
 
@@ -20,7 +20,7 @@ class JoinupRelationManager implements ContainerInjectionInterface {
   protected $membershipManager;
 
   /**
-   * Constructs a JoinupDiscussionRelationManager object.
+   * Constructs a JoinupRelationshipManager object.
    *
    * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The OG membership manager service.

@@ -51,17 +51,6 @@ abstract class JoinupWorkflowTestBase extends BrowserTestBase {
   protected $userProvider;
 
   /**
-   * The workflow access provider service.
-   *
-   * This service is called in the corresponding entity access hooks but is
-   * used directly for the create access since it requires an entity and not
-   * just a bundle.
-   *
-   * @var \Drupal\joinup_core\NodeWorkflowAccessControlHandler
-   */
-  protected $workflowAccess;
-
-  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -79,7 +68,6 @@ abstract class JoinupWorkflowTestBase extends BrowserTestBase {
     $this->ogAccess = $this->container->get('og.access');
     $this->entityAccess = $this->container->get('entity_type.manager')->getAccessControlHandler($this->getEntityType());
     $this->userProvider = $this->container->get('joinup_core.workflow.user_provider');
-    $this->workflowAccess = $this->container->get('joinup_core.workflow_access');
   }
 
   /**

@@ -27,12 +27,12 @@ class NodeWorkflowAccessControlHandler {
   const STATE_FIELD = 'field_state';
 
   /**
-   * Flag for pre moderated groups.
+   * Flag for pre-moderated groups.
    */
   const PRE_MODERATION = 1;
 
   /**
-   * Flag for post moderated groups.
+   * Flag for post-moderated groups.
    */
   const POST_MODERATION = 0;
 
@@ -65,14 +65,14 @@ class NodeWorkflowAccessControlHandler {
   const WORKFLOW_DEFAULT = 'default';
 
   /**
-   * The machine_name of the pre moderated workflow for group content.
+   * The machine name of the pre moderated workflow for group content.
    *
    * @todo: Backport this to entity types other than document.
    */
   const WORKFLOW_PRE_MODERATED = 'pre_moderated';
 
   /**
-   * The machine_name of the post moderated workflow for group content.
+   * The machine name of the post moderated workflow for group content.
    *
    * @todo: Backport this to entity types other than document.
    */
@@ -83,14 +83,14 @@ class NodeWorkflowAccessControlHandler {
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  private $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * The membership manager.
    *
    * @var \Drupal\og\MembershipManager
    */
-  private $membershipManager;
+  protected $membershipManager;
 
   /**
    * The discussions relation manager.
@@ -98,6 +98,13 @@ class NodeWorkflowAccessControlHandler {
    * @var \Drupal\joinup_core\JoinupRelationManager
    */
   protected $relationManager;
+
+  /**
+   * The workflow user provider service.
+   *
+   * @var \Drupal\joinup_core\WorkflowUserProvider
+   */
+  protected $workflowUserProvider;
 
   /**
    * Constructs a JoinupDocumentRelationManager object.
@@ -108,12 +115,14 @@ class NodeWorkflowAccessControlHandler {
    *   The OG membership manager service.
    * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
    *   The relation manager service.
+   * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
+   *   The workflow user provider service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupRelationManager $relation_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupRelationManager $relation_manager, WorkflowUserProvider $workflow_user_provider) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $og_membership_manager;
     $this->relationManager = $relation_manager;
-
+    $this->workflowUserProvider = $workflow_user_provider;
   }
 
   /**
@@ -129,8 +138,12 @@ class NodeWorkflowAccessControlHandler {
    * @return \Drupal\Core\Access\AccessResult
    *    The result of the access check.
    */
-  public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account) {
-    if ((!in_array($entity->getEntityTypeId(), ['rdf_entity', 'node']))) {
+  public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account = NULL) {
+    if ($account === NULL) {
+      $account = $this->workflowUserProvider->getUser();
+    }
+
+    if ($entity->getEntityTypeId() !== 'node') {
       return AccessResult::neutral();
     }
 
@@ -140,7 +153,6 @@ class NodeWorkflowAccessControlHandler {
 
       case 'create':
       case 'update':
-      case 'edit':
         $allowed_transitions = $entity->get('field_state')->first()->getTransitions();
         return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
 
@@ -163,7 +175,7 @@ class NodeWorkflowAccessControlHandler {
    * - Otherwise we return neutral.
    * Note that admin permissions are already checked in the entity access
    * handler class.
-   * If we return normal, the entity access handler class, will automatically
+   * If we return neutral, the entity access handler class, will automatically
    * take care of the user being able to view his own unpublished content.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
@@ -187,7 +199,7 @@ class NodeWorkflowAccessControlHandler {
       return AccessResult::neutral();
     }
 
-    $entity_type = ($entity->getEntityTypeId() == 'node') ? 'content' : 'rdf_entity';
+    $entity_type = ($entity->getEntityTypeId() === 'node') ? 'content' : 'rdf_entity';
     if (!$entity->isPublished() && $membership->hasPermission("view any unpublished {$entity_type}")) {
       return AccessResult::allowed();
     }
@@ -218,7 +230,7 @@ class NodeWorkflowAccessControlHandler {
    *    The access result.
    */
   protected function entityDeleteAccess(EntityInterface $entity, AccountInterface $account) {
-    $entity_type = ($entity->getEntityTypeId() == 'node') ? 'content' : 'rdf_entity';
+    $entity_type = ($entity->getEntityTypeId() === 'node') ? 'content' : 'rdf_entity';
     if ($account->hasPermission("delete any {$entity->bundle()} {$entity_type}")) {
       return AccessResult::allowed();
     }
@@ -230,7 +242,11 @@ class NodeWorkflowAccessControlHandler {
     }
 
     $moderation = $this->relationManager->getParentModeration($entity);
-    // Pre moderated.
+    // If the parent is in pre-moderated state, the user can only delete the
+    // entity if he has the 'delete all' permission because owners are not
+    // allowed to.
+    // Access is denied because if neutral is returned, the default entity
+    // access control handler will allow it.
     if ($moderation == 1) {
       return AccessResult::forbiddenIf(!$account->hasPermission("delete any {$entity->bundle()} {$entity_type}"));
     }
@@ -259,10 +275,6 @@ class NodeWorkflowAccessControlHandler {
 
   /**
    * Returns the appropriate workflow to use for the passed entity.
-   *
-   * If the entity is a group, then the workflow is the default workflow.
-   * If the entity is a group content, then the workflow is dependant to the
-   * moderation settings of the parent.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *    The group content entity.
