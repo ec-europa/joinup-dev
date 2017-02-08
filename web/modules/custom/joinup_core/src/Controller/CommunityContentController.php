@@ -29,7 +29,7 @@ abstract class CommunityContentController extends ControllerBase {
   /**
    * The node workflow access control handler.
    *
-   * @param \Drupal\joinup_core\NodeWorkflowAccessControlHandler
+   * @var \Drupal\joinup_core\NodeWorkflowAccessControlHandler
    */
   protected $workflowAccessControlHanlder;
 
