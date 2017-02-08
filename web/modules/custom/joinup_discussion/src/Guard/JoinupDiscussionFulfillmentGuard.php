@@ -63,26 +63,26 @@ class JoinupDiscussionFulfillmentGuard implements GuardInterface {
   /**
    * Instantiates the JoinupDiscussionFulfillmentGuard service.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
-   * @param \Drupal\joinup_user\WorkflowUserProvider $workflowUserProvider
+   * @param \Drupal\joinup_user\WorkflowUserProvider $workflow_user_provider
    *   The workflow user provider service.
-   * @param \Drupal\joinup_discussion\JoinupDiscussionRelationManager $relationManager
+   * @param \Drupal\joinup_discussion\JoinupDiscussionRelationManager $relation_manager
    *   The discussions relation service.
-   * @param \Drupal\og\MembershipManagerInterface $ogMembershipManager
+   * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The OG membership manager service.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.
-   * @param \Drupal\Core\Session\AccountInterface $currentUser
+   * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, WorkflowUserProvider $workflowUserProvider, JoinupDiscussionRelationManager $relationManager, MembershipManagerInterface $ogMembershipManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser) {
-    $this->configFactory = $configFactory;
-    $this->currentUser = $currentUser;
-    $this->entityTypeManager = $entityTypeManager;
-    $this->ogMembershipManager = $ogMembershipManager;
-    $this->relationManager = $relationManager;
-    $this->workflowUserProvider = $workflowUserProvider;
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider, JoinupDiscussionRelationManager $relation_manager, MembershipManagerInterface $og_membership_manager, ConfigFactoryInterface $config_factory, AccountInterface $current_user) {
+    $this->entityTypeManager = $entity_type_manager;
+    $this->workflowUserProvider = $workflow_user_provider;
+    $this->relationManager = $relation_manager;
+    $this->ogMembershipManager = $og_membership_manager;
+    $this->configFactory = $config_factory;
+    $this->currentUser = $current_user;
   }
 
   /**
