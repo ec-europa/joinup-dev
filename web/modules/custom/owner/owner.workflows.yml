@@ -1,0 +1,39 @@
+# The workflow of the owner entity.
+owner_workflow:
+  id: owner_workflow
+  label: "Default"
+  group: owner
+  states:
+    # The first state is used as the initial state when creating a new entity.
+    validated:
+      label: Validated
+    # State used to flag content that is being reviewed.
+    in_assessment:
+      label: In assessment
+    deletion_request:
+      label: Deletion request
+  transitions:
+    validate:
+      label: Publish
+      from: [deletion_request]
+      to: validated
+    update_published:
+      label: Update
+      from: [validated]
+      to: validated
+    request_changes:
+      label: Request changes
+      from: [validated]
+      to: in_assessment
+    update_changes:
+      label: Update
+      from: [in_assessment]
+      to: in_assessment
+    approve_changes:
+      label: Approve changes
+      from: [in_assessment]
+      to: validated
+    request_deletion:
+      label: Request deletion
+      from: [validated]
+      to: deletion_request

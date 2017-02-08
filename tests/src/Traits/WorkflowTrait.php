@@ -147,7 +147,7 @@ trait WorkflowTrait {
   protected function getEntityStateField(EntityInterface $entity) {
     $field_definition = $this->getEntityStateFieldDefinition($entity);
     if ($field_definition == NULL) {
-      throw new \Exception("No state fields were found in the entity.");
+      throw new \Exception('No state fields were found in the entity.');
     }
     return $entity->{$field_definition->getName()}->first();
   }
