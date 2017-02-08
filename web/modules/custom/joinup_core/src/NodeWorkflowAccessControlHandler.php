@@ -138,8 +138,8 @@ class NodeWorkflowAccessControlHandler {
    * @return \Drupal\Core\Access\AccessResult
    *    The result of the access check.
    */
-  public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account = null) {
-    if ($account === null) {
+  public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account = NULL) {
+    if ($account === NULL) {
       $account = $this->workflowUserProvider->getUser();
     }
 
