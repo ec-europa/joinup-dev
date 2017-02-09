@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.event.field_event_short_title
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
+    - field.field.node.event.field_state
     - field.field.node.event.og_audience
     - image.style.image_style_event_logo
     - node.type.event
@@ -22,6 +23,7 @@ dependencies:
     - datetime
     - image
     - link
+    - options
     - text
     - user
 id: node.event.default
@@ -32,74 +34,85 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 1
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_comments:
-    weight: 111
+    weight: 11
     label: above
     settings:
       pager_id: 0
+      view_mode: default
     third_party_settings: {  }
     type: comment_default
+    region: content
   field_event_adtl_address_info:
-    weight: 107
+    weight: 7
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
   field_event_agenda:
-    weight: 103
+    weight: 3
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   field_event_contact_email:
-    weight: 108
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
   field_event_end_date:
-    weight: 106
+    weight: 6
     label: above
     settings:
       format_type: medium
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
+    region: content
   field_event_logo:
-    weight: 104
+    weight: 4
     label: above
     settings:
       image_style: image_style_event_logo
       image_link: content
     third_party_settings: {  }
     type: image
+    region: content
   field_event_organisation:
-    weight: 110
+    weight: 10
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_event_short_title:
-    weight: 102
+    weight: 2
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_event_start_date:
-    weight: 105
+    weight: 5
     label: above
     settings:
       format_type: medium
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
+    region: content
   field_event_web_url:
-    weight: 109
+    weight: 9
     label: above
     settings:
       trim_length: 80
@@ -109,8 +122,17 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
+  field_state:
+    type: list_default
+    weight: 12
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   links:
-    weight: 100
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
 hidden:

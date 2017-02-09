@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_state
+    - node.type.event
+  module:
+    - state_machine
+id: node.event.field_state
+field_name: field_state
+entity_type: node
+bundle: event
+label: State
+description: ''
+required: true
+translatable: true
+default_value:
+  -
+    value: __new__
+default_value_callback: ''
+settings:
+  workflow: ''
+  workflow_callback: 'joinup_event_workflow_selector'
+field_type: state

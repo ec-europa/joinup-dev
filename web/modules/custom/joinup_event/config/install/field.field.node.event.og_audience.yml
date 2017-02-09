@@ -5,6 +5,7 @@ dependencies:
     - field.storage.node.og_audience
     - node.type.event
     - rdf_entity.rdfentity.collection
+    - rdf_entity.rdfentity.solution
   module:
     - og
 id: node.event.og_audience
