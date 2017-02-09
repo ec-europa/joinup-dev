@@ -1,6 +1,6 @@
 taxonomy.vocabulary.*.third_party.rdf_entity:
   type: mapping
-  label: 'Third party settings'
+  label: 'RDF Entity third party settings'
   mapping:
     graph:
       type: sequence
@@ -13,4 +13,15 @@ taxonomy.vocabulary.*.third_party.rdf_entity:
         type: sequence
         sequence:
           type: string
-          label: 'Mapping of field properies to their rdf counterpart.'
+          label: 'Mapping of field properties to their rdf counterpart.'
+    entity_id_plugin:
+      type: string
+      label: 'The plugin that generates the entity ID'
+
+taxonomy.vocabulary.*.third_party.rdf_taxonomy:
+  type: mapping
+  label: 'RDF Taxonomy third party settings'
+  mapping:
+    locked:
+      type: boolean
+      label: 'If true, terms cannot be added or edited via UI'
