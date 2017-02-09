@@ -3,8 +3,10 @@
 namespace Drupal\asset_release\Guard;
 
 use Drupal\asset_release\AssetReleaseRelations;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_user\WorkflowUserProvider;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
@@ -24,7 +26,7 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  private $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * Holds the workflow user object needed for the checks.
@@ -33,29 +35,49 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
    *
    * @var \Drupal\joinup_user\WorkflowUserProvider
    */
-  private $workflowUserProvider;
+  protected $workflowUserProvider;
 
   /**
    * The asset release relation manager.
    *
    * @var \Drupal\asset_release\AssetReleaseRelations
    */
-  private $assetReleaseRelationManager;
+  protected $assetReleaseRelationManager;
 
   /**
-   * Instantiates a AssetReleaseFulfillmentGuard service.
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * The current logged in user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
+   * Constructs an AssetReleaseFulfillmentGuard service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *    The entity type manager service.
+   *   The entity type manager service.
    * @param \Drupal\joinup_user\WorkflowUserProvider $workflow_user_provider
-   *    The workflow user provider service.
+   *   The workflow user provider service.
    * @param \Drupal\asset_release\AssetReleaseRelations $asset_release_relations
-   *    The asset release relation service.
+   *   The asset release relation service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory service.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current logged in user.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider, AssetReleaseRelations $asset_release_relations) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider, AssetReleaseRelations $asset_release_relations, ConfigFactoryInterface $config_factory, AccountInterface $current_user) {
     $this->entityTypeManager = $entity_type_manager;
     $this->workflowUserProvider = $workflow_user_provider;
     $this->assetReleaseRelationManager = $asset_release_relations;
+    $this->configFactory = $config_factory;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -68,8 +90,8 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
     // for the transitions defined in the settings if they include a role the
     // user has.
     // @see: asset_release.settings.yml
-    $allowed_conditions = \Drupal::config('asset_release.settings')->get('transitions');
-    if (\Drupal::currentUser()->hasPermission('bypass node access')) {
+    $allowed_conditions = $this->configFactory->get('asset_release.settings')->get('transitions');
+    if ($this->currentUser->hasPermission('bypass node access')) {
       return TRUE;
     }
 

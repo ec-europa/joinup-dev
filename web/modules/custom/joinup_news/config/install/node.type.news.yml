@@ -12,5 +12,5 @@ type: news
 description: ''
 help: ''
 new_revision: true
-preview_mode: 2
+preview_mode: 0
 display_submitted: false
