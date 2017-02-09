@@ -6,11 +6,12 @@
 #}
 <div class="featured__outer-wrapper" style="background-image: url('{{ content.field_ar_banner }}');">
   <div class="featured__overlay"></div>
-  <a class="featured__link-wrapper featured__link-wrapper--outer" href="{{ path('entity.rdf_entity.canonical',{'rdf_entity': rdf_entity.id()}) }}"></a>
   <div class="featured__inner-wrapper">
     {# @todo This is temporary, once all fields are available, it will be replaced. #}
-    <div class="featured__logo">{{ content.field_ar_logo }}</div>
-    <h1 class="featured__text">{{ label }}</h1>
+    <a href="{{ path('entity.rdf_entity.canonical',{'rdf_entity': rdf_entity.id()}) }}">
+      <div class="featured__logo">{{ content.field_ar_logo }}</div>
+      <h1 class="featured__text">{{ label }}</h1>
+    </a>
     <div class="featured__stats is-only-placeholder">
       <div class="stats__column stats__column--border stats__column--wide">
         <div class="stats__wrapper stats__wrapper--centered">
@@ -31,7 +32,6 @@
         </div>
       </div>
     </div>
-    <a class="featured__link-wrapper" href="{{ path('entity.rdf_entity.canonical',{'rdf_entity': rdf_entity.id()}) }}"></a>
     {{ content.join_collection }}
   </div>
 </div>

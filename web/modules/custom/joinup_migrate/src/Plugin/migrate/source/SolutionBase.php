@@ -36,7 +36,7 @@ abstract class SolutionBase extends JoinupSqlBase {
   public function query() {
     /** @var \Drupal\Core\Database\Query\SelectInterface $query */
     $query = Database::getConnection()->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
-      ->condition('m.del', 'No')
+      ->condition('m.migrate', 1)
       ->condition('m.type', 'asset_release');
 
     $this->alias['collection'] = $query->join('joinup_migrate_collection', 'c', "m.collection = %alias.collection");

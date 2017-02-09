@@ -7,8 +7,10 @@
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 
 /**
@@ -16,8 +18,10 @@ use Drupal\joinup\Traits\UtilityTrait;
  */
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
+  use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
+  use TraversingTrait;
   use UtilityTrait;
 
   /**
@@ -564,29 +568,105 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Finds a vertical tab given its text and clicks it.
+   * Checks that the contextual links button is visible in the browser.
+   *
+   * This checks actual visibility in the browser, so this needs the
+   * '@javascript' tag to be present on the test scenario.
+   *
+   * @param string $region
+   *   The region in which the contextual link is expected to be visible.
+   *
+   * @Then I (should )see the contextual links button in the :region( region)
+   * @Then the contextual links button should be visible in the :region( region)
+   */
+  public function assertContextualLinkButtonVisible($region) {
+    $button = $this->findContextualLinkButtonInRegion($region);
+    $this->assertVisuallyVisible($button);
+  }
+
+  /**
+   * Clicks the contextual links button in the given region.
+   *
+   * @param string $region
+   *   The name of the region where the contextual links button resides.
+   *
+   * @When I click the contextual links button in the :region( region)
+   */
+  public function clickContextualLinkButton($region) {
+    $button = $this->findContextualLinkButtonInRegion($region);
+    $button->click();
+  }
+
+  /**
+   * Checks that the given named element is not visible for human eyes.
+   *
+   * This is similar to methods like MinkContext::assertLinkRegion() but
+   * instead of verifying the presence of the element in the DOM it checks
+   * with the browser if the element is actually invisible.
+   *
+   * This is intended for verifying things like hover states.
+   *
+   * @Then the :locator :element in the :region( region) should not be visible
+   */
+  public function assertElementNotVisibleInRegion($locator, $element, $region) {
+    $element = $this->findNamedElementInRegion($locator, $element, $region);
+    $this->assertNotVisuallyVisible($element);
+  }
+
+  /**
+   * Checks that the given named element is visible for human eyes.
+   *
+   * This is similar to methods like MinkContext::assertLinkRegion() but instead
+   * of verifying the presence of the element in the DOM it checks with the
+   * browser if the element is actually visible.
+   *
+   * This is intended for verifying things like hover states.
+   *
+   * @Then the :locator :element in the :region( region) should be visible
+   */
+  public function assertElementVisibleInRegion($locator, $element, $region) {
+    $element = $this->findNamedElementInRegion($locator, $element, $region);
+    $this->assertVisuallyVisible($element);
+  }
+
+  /**
+   * Finds a vertical tab given its title and clicks it.
    *
    * @param string $tab
-   *   The tab text.
+   *   The tab title.
    *
    * @throws \Exception
    *   When the tab is not found on the page.
    *
-   * @When I click :tab tab
+   * @When I click( the) :tab tab
    */
-  public function assertVerticalTabLink($tab) {
-    $page = $this->getSession()->getPage();
-
-    $xpath = "//li[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item ')]"
-      . "//a[./@href]/strong[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item-title ')]"
-      . "[normalize-space(string(.)) = '$tab']";
-    $tab = $page->find('xpath', $xpath);
-
-    if ($tab === NULL) {
-      throw new \Exception('Tab not found: ' . $tab);
+  public function clickVerticalTabLink($tab) {
+    // When this is running in a browser without JavaScript the vertical tabs
+    // are rendered as a details element.
+    if (!$this->browserSupportsJavascript()) {
+      return;
     }
 
-    $tab->click();
+    $this->findVerticalTab($tab)->clickLink($tab);
+  }
+
+  /**
+   * Asserts that a vertical tab is active.
+   *
+   * @param string $tab
+   *   The tab title.
+   *
+   * @throws \Exception
+   *   When the tab is not found on the page or it's not active.
+   *
+   * @Then the :tab tab should be active
+   */
+  public function assertVerticalTabActive($tab) {
+    $element = $this->findVerticalTab($tab);
+
+    if (!$element->hasClass('is-selected')) {
+      throw new \Exception("The tab '$tab' is not active.");
+    }
   }
 
 }

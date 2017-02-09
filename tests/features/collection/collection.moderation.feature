@@ -8,13 +8,13 @@ Feature: Collection moderation
   Scenario: 'Draft' and 'Propose' states are available but moderators should also see 'Validated' state.
     When I am logged in as an "authenticated user"
     And I go to the homepage
-    And I click "Propose collection"
+    And I click "Propose collection" in the plus button menu
     Then the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
 
     When I am logged in as a user with the "moderator" role
     And I go to the homepage
-    And I click "Propose collection"
+    And I click "Propose collection" in the plus button menu
     Then the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Request deletion, Archive"
 
@@ -40,8 +40,8 @@ Feature: Collection moderation
       | Deep Past               | Azure ship              | logo.png | banner.jpg | Simon Sandoval | Francis             | draft            |
       | The Licking Silence     | The Licking Silence     | logo.png | banner.jpg | Simon Sandoval | Francis             | proposed         |
       | Person of Wizards       | Person of Wizards       | logo.png | banner.jpg | Simon Sandoval | Francis             | validated        |
-      | The Shard's Hunter      | The Shard's Hunter      | logo.png | banner.jpg | Simon Sandoval | Francis             | archival_request |
-      | The Dreams of the Mists | The Dreams of the Mists | logo.png | banner.jpg | Simon Sandoval | Francis             | deletion_request |
+      | The Shard's Hunter      | The Shard's Hunter      | logo.png | banner.jpg | Simon Sandoval | Francis             | archival request |
+      | The Dreams of the Mists | The Dreams of the Mists | logo.png | banner.jpg | Simon Sandoval | Francis             | deletion request |
       | Luck in the Abyss       | Luck in the Abyss       | logo.png | banner.jpg | Simon Sandoval | Francis             | archived         |
     And the following collection user memberships:
       | collection              | user         | roles       |
