@@ -4,6 +4,7 @@ Feature: Owner moderation
   As a user of the website
   I need to be able to transit the owners from one state to another.
 
+  @terms
   Scenario: Publish, update, request changes, publish again and ask to delete an owner.
     Given users:
       | name            |

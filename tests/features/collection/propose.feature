@@ -158,7 +158,7 @@ Feature: Proposing a collection
     And the following fields should not be visible "Title, Description, Closed collection, eLibrary creation, Moderated, Abstract, Affiliates"
     And the following field widgets should not be visible "Contact information, Owner"
 
-  @javascript
+  @javascript @terms
   # This is a regression test for a bug where nothing was happening when
   # submitting the collection form after not filling some of the required
   # fields. This was due the HTML5 constraint validation not being able to
