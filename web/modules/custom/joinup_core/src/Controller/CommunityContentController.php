@@ -11,7 +11,7 @@ use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Controller that handles the form to add document to a collection.
+ * Controller that handles the form to add community content to a collection.
  *
  * The parent is passed as a parameter from the route.
  *
@@ -38,12 +38,12 @@ abstract class CommunityContentController extends ControllerBase {
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
-   * @param \Drupal\joinup_core\NodeWorkflowAccessControlHandler $workflow_access_control_hanlder
+   * @param \Drupal\joinup_core\NodeWorkflowAccessControlHandler $workflow_access_control_handler
    *   The node workflow access control handler.
    */
-  public function __construct(OgAccessInterface $og_access, NodeWorkflowAccessControlHandler $workflow_access_control_hanlder) {
+  public function __construct(OgAccessInterface $og_access, NodeWorkflowAccessControlHandler $workflow_access_control_handler) {
     $this->ogAccess = $og_access;
-    $this->workflowAccessControlHanlder = $workflow_access_control_hanlder;
+    $this->workflowAccessControlHanlder = $workflow_access_control_handler;
   }
 
   /**
@@ -57,7 +57,7 @@ abstract class CommunityContentController extends ControllerBase {
   }
 
   /**
-   * Controller for the base form.
+   * Constructs a create form for community content.
    *
    * The main purpose is to automatically reference the parent group entity.
    *
@@ -69,9 +69,7 @@ abstract class CommunityContentController extends ControllerBase {
    */
   public function add(RdfInterface $rdf_entity) {
     $node = $this->createContentEntity($rdf_entity);
-    $form = $this->entityFormBuilder()->getForm($node);
-
-    return $form;
+    return $this->entityFormBuilder()->getForm($node);
   }
 
   /**
@@ -108,7 +106,7 @@ abstract class CommunityContentController extends ControllerBase {
   }
 
   /**
-   * Returns the bundle that of the entity this controller is about.
+   * Returns the bundle of the entity this controller is about.
    *
    * @return string
    *    The bundle machine name.

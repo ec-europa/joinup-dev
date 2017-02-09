@@ -29,15 +29,16 @@ Feature: Document moderation
       | The Naked Ashes | Kirk Collier | facilitator |
 
   Scenario: Available transitions change per eLibrary and moderation settings.
-    # For post moderated collections with eLibrary set to allow all users, even
-    # authenticated users can create content.
+    # For post moderated collections with eLibrary set to allow all users to
+    # create content, authenticated users that are not members can create
+    # documents.
     When I am logged in as "Crab y Patties"
     And go to the homepage of the "The Naked Ashes" collection
     And I click "Add document" in the plus button menu
     # Post moderated collections allow publishing content directly.
     And I should see the button "Publish"
 
-    # Changing settings to the collection should affect the allowed transitions.
+    # Edit the collection and set it as moderated.
     When I am logged in as a moderator
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "Edit" in the "Entity actions" region
@@ -45,8 +46,8 @@ Feature: Document moderation
     Then I press "Publish"
     And I should see the heading "The Naked Ashes"
 
-    # The authenticated user should still be able to create content but not
-    # publish it.
+    # The parent group is now pre-moderated: authenticated non-member users
+    # should still be able to create documents but not to publish them.
     When I am logged in as "Crab y Patties"
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "Add document" in the plus button menu
@@ -54,7 +55,8 @@ Feature: Document moderation
     But I should see the button "Save as draft"
     And I should see the button "Request approval"
 
-    # The eLibrary should block access for specific users.
+    # Edit the collection and set it to allow only members to create new
+    # content.
     When I am logged in as a moderator
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "Edit" in the "Entity actions" region
@@ -63,8 +65,7 @@ Feature: Document moderation
     Then I press "Publish"
     And I should see the link "Add document"
 
-    # The authenticated user should still be able to create content but not
-    # publish it.
+    # Non-members should not be able to create documents anymore.
     When I am logged in as "Crab y Patties"
     And I go to the homepage of the "The Naked Ashes" collection
     Then I should not see the link "Add document"
@@ -95,7 +96,7 @@ Feature: Document moderation
     Then I should see the button "Request changes"
     And I press "Request changes"
 
-    # Implement changes.
+    # Implement changes as owner of the document.
     When I am logged in as "Gretchen Greene"
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "A not so amazing document"
