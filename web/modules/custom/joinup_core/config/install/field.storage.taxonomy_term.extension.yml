@@ -3,7 +3,6 @@ status: true
 dependencies:
   module:
     - taxonomy
-third_party_settings:
 id: taxonomy_term.extension
 field_name: extension
 entity_type: taxonomy_term
