@@ -28,7 +28,6 @@
         "drupal/search_api": "~1.0@beta",
         "drupal/search_api_solr": "~1.0@beta",
         "drupal/state_machine": "~1.0-beta3",
-        "drupal/taxonomy_container": "~1.0",
         "drupal/token": "~1.0",
         "drupal/view_unpublished": "~1.0@alpha",
         "drush/drush": "~8.0",
@@ -104,6 +103,8 @@
         },
         "patches": {
             "drupal/core": {
+                "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-2.patch",
+                "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                 "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-17.patch",
                 "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194.patch",
                 "SqlBase::prepareQuery() should be called also on count. @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch",

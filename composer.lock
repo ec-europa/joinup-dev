@@ -1758,6 +1758,8 @@
             "type": "drupal-core",
             "extra": {
                 "patches_applied": {
+                    "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-2.patch",
+                    "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-17.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194.patch",
                     "SqlBase::prepareQuery() should be called also on count. @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch",
@@ -2345,7 +2347,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha2",
-                    "datestamp": "1486341185"
+                    "datestamp": "1486473783"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2682,7 +2684,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1486244883"
+                    "datestamp": "1486245484"
                 },
                 "patches_applied": {
                     "Errors with schema and installed settings file. @see https://www.drupal.org/node/2833695": "https://www.drupal.org/files/issues/schema_fix-2833695-2-D8.patch"
@@ -7944,6 +7946,52 @@
                 "web"
             ],
             "time": "2017-02-03 08:39:12"
+        },
+        {
+            "name": "drupal/taxonomy_container",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/taxonomy_container",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/taxonomy_container-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "0e88aa7f88afc5387ab723297a29dca5574d267a"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1479320951"
+                },
+                "patches_applied": {
+                    "Terms with string IDs are missing from dropdown. @see https://www.drupal.org/node/2833176": "https://www.drupal.org/files/issues/2833176-17.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Chi",
+                    "homepage": "https://www.drupal.org/user/556138"
+                }
+            ],
+            "description": "Provides a select list with optgroups for taxonomy terms selection.",
+            "homepage": "https://www.drupal.org/project/taxonomy_container",
+            "support": {
+                "source": "http://cgit.drupalcode.org/taxonomy_container"
+            }
         },
         {
             "name": "fabpot/goutte",
