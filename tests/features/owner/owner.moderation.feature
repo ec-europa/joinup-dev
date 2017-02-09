@@ -20,7 +20,7 @@ Feature: Owner moderation
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I click the 'Categorisation' tab
-    And I select "European Policies" from "Policy domain"
+    And I select "EU and European Policies" from "Policy domain"
 
     # An authenticated user can create an owner in published state.
     When I click the 'Description' tab
