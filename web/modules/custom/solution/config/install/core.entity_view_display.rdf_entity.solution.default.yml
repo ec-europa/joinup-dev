@@ -41,10 +41,10 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - datetime
-    - file
     - link
     - og
     - options
+    - rdf_file
     - text
     - user
 id: rdf_entity.solution.default
@@ -103,11 +103,11 @@ content:
       link: false
     third_party_settings: {  }
   field_is_documentation:
-    weight: 3
+    weight: 37
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: file_default
+    type: rdf_file_default
   field_is_elibrary_creation:
     weight: 16
     label: above
