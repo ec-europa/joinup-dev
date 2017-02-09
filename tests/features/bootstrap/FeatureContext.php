@@ -7,8 +7,10 @@
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 
 /**
@@ -16,8 +18,10 @@ use Drupal\joinup\Traits\UtilityTrait;
  */
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
+  use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
+  use TraversingTrait;
   use UtilityTrait;
 
   /**
@@ -626,29 +630,43 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Finds a vertical tab given its text and clicks it.
+   * Finds a vertical tab given its title and clicks it.
    *
    * @param string $tab
-   *   The tab text.
+   *   The tab title.
    *
    * @throws \Exception
    *   When the tab is not found on the page.
    *
-   * @When I click :tab tab
+   * @When I click( the) :tab tab
    */
-  public function assertVerticalTabLink($tab) {
-    $page = $this->getSession()->getPage();
-
-    $xpath = "//li[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item ')]"
-      . "//a[./@href]/strong[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item-title ')]"
-      . "[normalize-space(string(.)) = '$tab']";
-    $tab = $page->find('xpath', $xpath);
-
-    if ($tab === NULL) {
-      throw new \Exception('Tab not found: ' . $tab);
+  public function clickVerticalTabLink($tab) {
+    // When this is running in a browser without JavaScript the vertical tabs
+    // are rendered as a details element.
+    if (!$this->browserSupportsJavascript()) {
+      return;
     }
 
-    $tab->click();
+    $this->findVerticalTab($tab)->clickLink($tab);
+  }
+
+  /**
+   * Asserts that a vertical tab is active.
+   *
+   * @param string $tab
+   *   The tab title.
+   *
+   * @throws \Exception
+   *   When the tab is not found on the page or it's not active.
+   *
+   * @Then the :tab tab should be active
+   */
+  public function assertVerticalTabActive($tab) {
+    $element = $this->findVerticalTab($tab);
+
+    if (!$element->hasClass('is-selected')) {
+      throw new \Exception("The tab '$tab' is not active.");
+    }
   }
 
   /**
