@@ -15,7 +15,7 @@ services:
       - { name: 'event_subscriber' }
   collection.fulfillment_guard:
     class: Drupal\collection\Guard\CollectionFulfillmentGuard
-    arguments: ['@entity_type.manager', '@joinup_user.workflow.user_provider', '@config.factory', '@current_user']
+    arguments: ['@entity_type.manager', '@joinup_core.workflow.user_provider', '@config.factory', '@current_user']
     tags:
       - { name: state_machine.guard, group: collection }
   collection.lazy_builders:

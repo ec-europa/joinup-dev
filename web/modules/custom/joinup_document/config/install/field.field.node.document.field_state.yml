@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_discussion_state
-    - node.type.discussion
+    - field.storage.node.field_state
+    - node.type.document
   module:
     - state_machine
-id: node.discussion.field_discussion_state
-field_name: field_discussion_state
+id: node.document.field_state
+field_name: field_state
 entity_type: node
-bundle: discussion
+bundle: document
 label: State
 description: ''
 required: true
@@ -19,6 +19,6 @@ default_value:
     value: __new__
 default_value_callback: ''
 settings:
-  workflow: discussion_workflow
-  workflow_callback: ''
+  workflow: ''
+  workflow_callback: joinup_document_workflow_selector
 field_type: state

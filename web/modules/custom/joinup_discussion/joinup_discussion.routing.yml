@@ -5,7 +5,7 @@ joinup_discussion.rdf_entity_discussion.add:
     _controller: '\Drupal\joinup_discussion\Controller\DiscussionController::add'
     _title: 'Add discussion'
   requirements:
-    _custom_access: '\Drupal\joinup_discussion\Controller\DiscussionController::createDiscussionAccess'
+    _custom_access: '\Drupal\joinup_discussion\Controller\DiscussionController::createAccess'
   options:
     parameters:
       rdf_entity:

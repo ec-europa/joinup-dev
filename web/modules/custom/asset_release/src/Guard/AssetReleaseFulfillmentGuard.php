@@ -6,8 +6,8 @@ use Drupal\asset_release\AssetReleaseRelations;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\joinup_core\WorkflowUserProvider;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_user\WorkflowUserProvider;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
@@ -33,7 +33,7 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
    *
    * Will be used to override the default user used by workflows.
    *
-   * @var \Drupal\joinup_user\WorkflowUserProvider
+   * @var \Drupal\joinup_core\WorkflowUserProvider
    */
   protected $workflowUserProvider;
 
@@ -62,9 +62,9 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
    * Constructs an AssetReleaseFulfillmentGuard service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager service.
-   * @param \Drupal\joinup_user\WorkflowUserProvider $workflow_user_provider
-   *   The workflow user provider service.
+   *    The entity type manager service.
+   * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
+   *    The workflow user provider service.
    * @param \Drupal\asset_release\AssetReleaseRelations $asset_release_relations
    *   The asset release relation service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
