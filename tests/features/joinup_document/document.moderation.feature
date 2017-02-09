@@ -8,8 +8,8 @@ Feature: Document moderation
     Given users:
       | name            |
       | Crab y Patties  |
-      | Gretchen Greene     |
-      | Kirk Collier |
+      | Gretchen Greene |
+      | Kirk Collier    |
     And the following owner:
       | name          |
       | thisisanowner |
@@ -25,8 +25,8 @@ Feature: Document moderation
       | policy domain     | Demography and population       |
     And the following collection user membership:
       | collection      | user            | roles       |
-      | The Naked Ashes | Gretchen Greene     | member      |
-      | The Naked Ashes | Kirk Collier | facilitator |
+      | The Naked Ashes | Gretchen Greene | member      |
+      | The Naked Ashes | Kirk Collier    | facilitator |
 
   Scenario: Available transitions change per eLibrary and moderation settings.
     # For post moderated collections with eLibrary set to allow all users to
