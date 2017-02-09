@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.mime_type
+    - taxonomy.vocabulary.file_type
+id: taxonomy_term.file_type.mime_type
+field_name: mime_type
+entity_type: taxonomy_term
+bundle: file_type
+label: Mimetype
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

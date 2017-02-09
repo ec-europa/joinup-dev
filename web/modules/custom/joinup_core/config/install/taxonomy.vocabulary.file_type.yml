@@ -15,7 +15,7 @@ third_party_settings:
       name:
         value: 'http://www.w3.org/2004/02/skos/core#prefLabel'
       description:
-        value: ''
+        value: 'http://www.w3.org/2004/02/skos/core#altLabel'
       format:
         value: ''
       weight:
