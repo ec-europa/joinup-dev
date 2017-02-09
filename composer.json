@@ -50,7 +50,7 @@
         "drupal/coder": "~8.2.9",
         "drupal/config_devel": "dev-1.x#92f735cae8e9fb328edca285340a5bfbf72028cc",
         "drupal/config_update": "~1.2",
-        "drupal/default_content": "~1.0",
+        "drupal/default_content": "1.x-dev",
         "drupal/devel": "~1.0@alpha",
         "drupal/drupal-extension": "dev-master#8d2eea92396b7079f3f9ac6f67c8987aa1e911a5",
         "jcalderonzumba/gastonjs": "^1.1@dev",
@@ -110,6 +110,9 @@
                 "SqlBase::prepareQuery() should be called also on count. @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch",
                 "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch"
             },
+            "drupal/default_content": {
+                "Dependency to rest module. @see https://www.drupal.org/node/2848425": "https://www.drupal.org/files/issues/dependency_on_rest-2848425-6.patch"
+            },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
             },
@@ -129,7 +132,8 @@
             },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
-                "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch"
+                "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
+                "Disable static cache for workflow_callback. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/static_cache_disable_for_workflow_callback-2846986-2.patch"
             }
         }
     },

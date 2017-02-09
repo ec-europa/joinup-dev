@@ -5,7 +5,7 @@ namespace Drupal\owner\Guard;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\joinup_user\WorkflowUserProvider;
+use Drupal\joinup_core\WorkflowUserProvider;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -30,7 +30,7 @@ class OwnerFulfillmentGuard implements GuardInterface {
    *
    * Will be used to override the default user used by workflows.
    *
-   * @var \Drupal\joinup_user\WorkflowUserProvider
+   * @var \Drupal\joinup_core\WorkflowUserProvider
    */
   protected $workflowUserProvider;
 
@@ -46,7 +46,7 @@ class OwnerFulfillmentGuard implements GuardInterface {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *    The entity type manager service.
-   * @param \Drupal\joinup_user\WorkflowUserProvider $workflow_user_provider
+   * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
    *    The workflow user provider service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.

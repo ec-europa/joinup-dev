@@ -574,7 +574,7 @@ QUERY;
     // is not stored, while on ID we can rely.
     $uuid_key = $this->entityType->getKey('uuid');
     if (isset($values[$uuid_key]) && !isset($values['id'])) {
-      $values['id'] = $values[$uuid_key];
+      $values[$this->entityType->getKey('id')] = $values[$uuid_key];
       unset($values[$uuid_key]);
     }
     return parent::loadByProperties($values);

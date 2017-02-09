@@ -5,7 +5,7 @@ dependencies:
     - field.field.node.discussion.field_comments
     - field.field.node.discussion.field_discussion_active
     - field.field.node.discussion.field_discussion_content
-    - field.field.node.discussion.field_discussion_state
+    - field.field.node.discussion.field_state
     - field.field.node.discussion.field_topic
     - field.field.node.discussion.og_audience
     - node.type.discussion
@@ -41,7 +41,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-  field_discussion_state:
+  field_state:
     weight: 27
     settings:
       use_transition_label: 1
