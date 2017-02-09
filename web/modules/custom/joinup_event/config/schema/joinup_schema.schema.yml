@@ -1,0 +1,19 @@
+joinup_event.settings:
+  type: config_object
+  label: 'Event workflow permission settings'
+  mapping:
+    transitions:
+      type: sequence
+      label: 'Workflow id'
+      sequence:
+        type: sequence
+        label: 'Transition id'
+        sequence:
+          type: sequence
+          label: 'Source state'
+          sequence:
+            type: sequence
+            label: 'Roles allowed to perform transition'
+            sequence:
+              type: string
+              label: 'Role allowed to perform transition'
