@@ -1,0 +1,11 @@
+field.storage_settings.rdf_file:
+  type: field.storage_settings.file
+  label: 'Rdf file settings'
+  mapping:
+    target_type:
+      type: string
+      label: 'Type of item to reference'
+
+field.field_settings.rdf_file:
+  type: field.field_settings.file
+  label: 'RDF file settings'
