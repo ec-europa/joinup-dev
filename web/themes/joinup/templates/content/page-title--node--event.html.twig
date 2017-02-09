@@ -19,9 +19,14 @@
       <div class="details">
         <div class="details__element details__element--block">
           <div class="value gray">
-          {{ additional_content.field_event_start_date }}
-          {% if additional_content.field_event_end_date|render %}{{ 'to'|t }} {{ additional_content.field_event_end_date }} {% endif %}
-        </div>
+            {% set start_date = additional_content.field_event_start_date|render %}
+            {% set end_date = additional_content.field_event_end_date|render %}
+            {% if end_date %}
+              {% trans %}{{ start_date }} to {{ end_date }}{% endtrans %}
+            {% else %}
+              {{ start_date }}
+            {% endif %}
+          </div>
         </div>
         <div class="details__element details__element--block">
           <div class="value gray"><a href="#location-wrapper">{{ additional_content.field_event_location }}</a></div>
