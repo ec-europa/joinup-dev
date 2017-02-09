@@ -1,15 +1,13 @@
 {#
 /**
  * @file
- * Theme override for page titles.
+ * Theme override for page title when the route is the canonical view of an event node.
  *
  * Available variables:
- * - title_attributes: HTML attributes for the page title element.
- * - title_prefix: Additional output populated by modules, intended to be
- *   displayed in front of the main title tag that appears in the template.
- * - title: The page title, for use in the actual content.
- * - title_suffix: Additional output populated by modules, intended to be
- *   displayed after the main title tag that appears in the template.
+ * - additional_content: extra elements to be rendered. It has the properties:
+ *     * field_event_start_date: the start date of the event.
+ *     * field_event_end_date: the end date of the event.
+ *     * field_event_location: the event location.
  */
 #}
 {{ title_prefix }}
