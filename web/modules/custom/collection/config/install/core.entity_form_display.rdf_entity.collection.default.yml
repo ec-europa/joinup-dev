@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.rdf_entity.inline
     - field.field.rdf_entity.collection.field_ar_abstract
     - field.field.rdf_entity.collection.field_ar_access_url
     - field.field.rdf_entity.collection.field_ar_affiliates
@@ -193,7 +194,7 @@ content:
   field_ar_owner:
     weight: 16
     settings:
-      form_mode: default
+      form_mode: inline
       override_labels: true
       label_singular: owner
       label_plural: owners
@@ -243,3 +244,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_ar_shared_content: true
+  uid: true
