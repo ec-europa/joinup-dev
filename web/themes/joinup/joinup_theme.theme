@@ -567,7 +567,8 @@ function joinup_theme_theme_suggestions_container_alter(array &$suggestions, arr
 /**
  * Implements hook_theme_suggestions_HOOK_alter() for page-title.html.twig.
  *
- * Adds suggestions when the route is the canonical view of a rdf entity.
+ * Adds suggestions when the route is the canonical view of a rdf entity or a
+ * node.
  */
 function joinup_theme_theme_suggestions_page_title_alter(array &$suggestions, array &$variables) {
   $route_match = \Drupal::routeMatch();
