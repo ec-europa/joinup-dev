@@ -7,10 +7,13 @@ joinup_discussion.settings:
       label: 'Allowed transitions'
       sequence:
         type: sequence
-        label: 'Target state'
+        label: 'Workflow ID'
         sequence:
           type: sequence
-          label: 'Source state'
+          label: 'Target state'
           sequence:
-            type: string
-            label: 'Roles'
+            type: sequence
+            label: 'Source state'
+            sequence:
+              type: string
+              label: 'Roles'
