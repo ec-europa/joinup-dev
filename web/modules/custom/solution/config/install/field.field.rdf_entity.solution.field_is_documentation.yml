@@ -20,7 +20,7 @@ settings:
   file_directory: '[date:custom:Y]-[date:custom:m]'
   file_extensions: 'txt doc docx pdf'
   max_filesize: ''
-  description_field: 0
+  description_field: false
   handler: 'rdf_file_default:file'
   handler_settings: {  }
 field_type: rdf_file

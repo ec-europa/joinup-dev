@@ -1,43 +1,11 @@
 field.storage_settings.rdf_file:
-  type: mapping
-  label: 'File settings'
+  type: field.storage_settings.file
+  label: 'Rdf file settings'
   mapping:
     target_type:
       type: string
       label: 'Type of item to reference'
-    display_field:
-      type: integer
-      label: 'Enable Display field'
-    display_default:
-      type: integer
-      label: 'Files displayed by default'
-    uri_scheme:
-      type: string
-      label: 'Upload destination'
 
 field.field_settings.rdf_file:
-  type: base_rdf_file_field_field_settings
+  type: field.field_settings.file
   label: 'RDF file settings'
-  mapping:
-    description_field:
-      type: integer
-      label: 'Enable Description field'
-
-base_rdf_file_field_field_settings:
-  type: mapping
-  mapping:
-    handler:
-      type: string
-      label: 'Reference method'
-    handler_settings:
-      type: entity_reference_selection.[%parent.handler]
-      label: 'Entity reference selection settings'
-    file_directory:
-      type: string
-      label: 'File directory'
-    file_extensions:
-      type: string
-      label: 'Allowed file extensions'
-    max_filesize:
-      type: string
-      label: 'Maximum upload size'
