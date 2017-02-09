@@ -5,7 +5,7 @@ joinup_news.rdf_entity_news.add:
     _controller: '\Drupal\joinup_news\Controller\NewsController::add'
     _title: 'Add news'
   requirements:
-    _custom_access: '\Drupal\joinup_news\Controller\NewsController::createNewsAccess'
+    _custom_access: '\Drupal\joinup_news\Controller\NewsController::createAccess'
   options:
     parameters:
       rdf_entity:
