@@ -53,7 +53,7 @@ Feature: Document moderation
     And I click "Add document" in the plus button menu
     Then I should not see the button "Publish"
     But I should see the button "Save as draft"
-    And I should see the button "Request approval"
+    And I should see the button "Propose"
 
     # Edit the collection and set it to allow only members to create new
     # content.
