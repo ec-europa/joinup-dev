@@ -121,9 +121,6 @@
             "drupal/search_api_solr": {
                 "Cannot subscribe to Solarium events. @see https://www.drupal.org/node/2835770": "https://www.drupal.org/files/issues/cannot_subscribe_to-2835770-2.patch"
             },
-            "drupal/taxonomy_container" : {
-                "Terms with string IDs are missing from dropdown. @see https://www.drupal.org/node/2833176": "https://www.drupal.org/files/issues/2833176-17.patch"
-            },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
                 "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
