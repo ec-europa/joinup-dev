@@ -267,7 +267,7 @@ Feature: News moderation.
       # Post moderated
       # News article in 'proposed' state.
       | Hawkgirl | Hawkgirl is a spy             | Update, Publish, Request changes | Save as draft, Request deletion, Preview                            |
-      # Publishd content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
+      # Published content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
       | Hawkgirl | Hawkgirl helped Green Lantern | Save new draft, Propose, Update   | Publish, Request changes, Request deletion, Preview                |
       # Members can move to 'needs update' state.
       | Hawkgirl | Hawkgirl helped Green Lantern | Update, Propose                   | Save as draft, Request changes, Request deletion, Preview           |
