@@ -6,7 +6,6 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.field_ad_access_url
     - field.field.rdf_entity.asset_distribution.field_ad_creation_date
     - field.field.rdf_entity.asset_distribution.field_ad_description
-    - field.field.rdf_entity.asset_distribution.field_ad_file
     - field.field.rdf_entity.asset_distribution.field_ad_file_size
     - field.field.rdf_entity.asset_distribution.field_ad_format
     - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
@@ -25,12 +24,13 @@ targetEntityType: rdf_entity
 bundle: asset_distribution
 mode: view_mode_featured
 content:
-  field_ad_file:
+  field_ad_access_url:
+    type: rdf_file_default
     weight: 9
+    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: file_default
   field_ad_file_size:
     type: digital_size
     weight: 10
@@ -59,7 +59,6 @@ content:
             lb-col: false
             classes: {  }
 hidden:
-  field_ad_access_url: true
   field_ad_creation_date: true
   field_ad_description: true
   field_ad_format: true
