@@ -139,6 +139,12 @@ function joinup_migrate_schema() {
           'length' => 255,
           'not null' => TRUE,
         ],
+        'policy' => [
+          'description' => 'Policy domain',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
         'abstract' => [
           'description' => 'Abstract',
           'type' => 'text',

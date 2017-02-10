@@ -1,0 +1,19 @@
+id: policy_domain
+label: 'Policy Domain terms migration'
+migration_tags:
+  - taxonomy_term
+source:
+  plugin: policy_domain
+  track_changes: true
+process:
+  name: name
+  parent:
+    plugin: term_reference
+    source: parent
+    vocabulary: policy_domain
+destination:
+  plugin: entity:taxonomy_term
+  default_bundle: policy_domain
+migration_dependencies:
+ required:
+   - prepare

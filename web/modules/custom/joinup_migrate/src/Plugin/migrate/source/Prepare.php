@@ -37,6 +37,7 @@ class Prepare extends SourcePluginBase {
       'nid' => $this->t('Node ID'),
       'type' => $this->t('Node type'),
       'new_collection' => $this->t('New collection'),
+      'policy' => $this->t('Level1 policy domain'),
       'policy2' => $this->t('Level2 policy domain'),
       'abstract' => $this->t('Abstract'),
       'owner' => $this->t('Owner'),

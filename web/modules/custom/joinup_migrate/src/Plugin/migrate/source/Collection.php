@@ -128,7 +128,11 @@ class Collection extends CollectionBase {
     $row->setSourceProperty('affiliates', $affiliates);
 
     // Owner.
-    $row->setSourceProperty('owner', $this->getCollectionOwners($collection) ?: NULL);
+    $owner = $this->getCollectionOwners($collection) ?: NULL;
+    $row->setSourceProperty('owner', $owner);
+    if (!$owner) {
+      $this->migration->getIdMap()->saveMessage(['collection' => $collection], "No owner for '$collection'");
+    }
 
     // Contacts.
     $row->setSourceProperty('contact', $this->getCollectionContacts($collection) ?: NULL);
