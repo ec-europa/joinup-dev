@@ -44,7 +44,7 @@ content:
     weight: 4
     region: content
     settings:
-      use_transition_label: 0
+      use_transition_label: 1
     third_party_settings: {  }
   field_ci_webpage:
     weight: 2
