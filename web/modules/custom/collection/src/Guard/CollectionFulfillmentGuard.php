@@ -2,9 +2,11 @@
 
 namespace Drupal\collection\Guard;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\joinup_user\WorkflowUserProvider;
+use Drupal\joinup_core\WorkflowUserProvider;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
@@ -28,7 +30,7 @@ class CollectionFulfillmentGuard implements GuardInterface {
    *
    * @var \Drupal\Core\Entity\EntityTypeManager
    */
-  private $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * Holds the workflow user object needed for the checks.
@@ -36,21 +38,41 @@ class CollectionFulfillmentGuard implements GuardInterface {
    * This will almost always return the logged in users but in case a check is
    * needed to be done on a different account, it should be possible.
    *
-   * @var \Drupal\joinup_user\WorkflowUserProvider
+   * @var \Drupal\joinup_core\WorkflowUserProvider
    */
-  private $workflowUserProvider;
+  protected $workflowUserProvider;
+
+  /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * The current logged in user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
 
   /**
    * Instantiates a CollectionFulfillmentGuard service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *    The WorkflowUserProvider service.
-   * @param \Drupal\joinup_user\WorkflowUserProvider $workflow_user_provider
+   * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
    *    The WorkflowUserProvider service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory service.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current logged in user.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider, ConfigFactoryInterface $config_factory, AccountInterface $current_user) {
     $this->entityTypeManager = $entity_type_manager;
     $this->workflowUserProvider = $workflow_user_provider;
+    $this->currentUser = $current_user;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -69,9 +91,9 @@ class CollectionFulfillmentGuard implements GuardInterface {
     // for the transitions defined in the settings if they include a role the
     // user has.
     // @see: collection.settings.yml
-    $allowed_conditions = \Drupal::config('collection.settings')->get('transitions');
+    $allowed_conditions = $this->configFactory->get('collection.settings')->get('transitions');
 
-    if (\Drupal::currentUser()->hasPermission('bypass node access')) {
+    if ($this->currentUser->hasPermission('bypass node access')) {
       return TRUE;
     }
 

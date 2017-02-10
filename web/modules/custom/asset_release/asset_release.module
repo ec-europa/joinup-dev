@@ -115,7 +115,7 @@ function asset_release_theme($existing, $type, $theme, $path) {
  * node.
  */
 function asset_release_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($entity->bundle() != 'asset_release' || $account->hasPermission('administer rdf entity')) {
+  if ($entity->bundle() != 'asset_release' || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
     return AccessResult::neutral();
   }
 

@@ -123,6 +123,17 @@ function joinup_core_entity_graph_access(EntityInterface $entity, $operation, Ac
 }
 
 /**
+ * Implements hook_node_access().
+ */
+function joinup_core_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  // @todo: when all bundles are in, remove the first check.
+  if (!in_array($entity->bundle(), ['document', 'discussion'])) {
+    return AccessResult::neutral();
+  }
+  return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($entity, $operation, $account);
+}
+
+/**
  * Implements hook_entity_base_field_info().
  *
  * Provides a base field that displays the current workflow state on nodes and

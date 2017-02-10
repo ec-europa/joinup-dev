@@ -63,6 +63,7 @@ Feature: "Add solution" visibility options.
     Then I should not see the link "Propose solution"
     But I should see the link "Add solution"
 
+  @terms
   Scenario: Add solution as a collection facilitator.
     Given the following collection:
       | title | Belgian barista's |
@@ -85,7 +86,7 @@ Feature: "Add solution" visibility options.
       | Title            | Espresso is the solution                                               |
       | Description      | This is a test text                                                    |
       | Documentation    | text.pdf                                                               |
-      | Policy Domain    | Demography and population                                              |
+      | Policy Domain    | Demography                                                             |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
@@ -108,7 +109,7 @@ Feature: "Add solution" visibility options.
     Then I should see the heading "Espresso is the solution"
     And I should see the text "This is a test text"
     And I should see the link "Belgian barista's"
-    And I should see the link "Demography and population"
+    And I should see the link "Demography"
     And I should see the link "Belgium"
     And I should see the link "Flemish"
     When I click "Belgian barista's"
@@ -124,7 +125,7 @@ Feature: "Add solution" visibility options.
       | Title            | V60 filter coffee solution                                             |
       | Description      | This is a test text                                                    |
       | Documentation    | text.pdf                                                               |
-      | Policy Domain    | eInclusion                                                             |
+      | Policy Domain    | E-inclusion                                                            |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"

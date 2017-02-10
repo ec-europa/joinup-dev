@@ -2,7 +2,10 @@
 
 namespace Drupal\joinup_news\Guard;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -17,6 +20,7 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
  * @package Drupal\joinup_news\Guard
  */
 class JoinupNewsFulfillmentGuard implements GuardInterface {
+
   /**
    * Constant representing the pre-moderating parent.
    */
@@ -31,6 +35,43 @@ class JoinupNewsFulfillmentGuard implements GuardInterface {
    * Virtual state.
    */
   const NON_STATE = '__new__';
+
+  /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * The current logged in user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
+   * Constructs a JoinupNewsFulfillmentGuard service.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory service.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current logged in user.
+   */
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory, AccountInterface $current_user) {
+    $this->entityTypeManager = $entity_type_manager;
+    $this->configFactory = $config_factory;
+    $this->currentUser = $current_user;
+  }
 
   /**
    * {@inheritdoc}
@@ -57,7 +98,7 @@ class JoinupNewsFulfillmentGuard implements GuardInterface {
         $parent->field_ar_moderation->first()->value :
         $parent->field_is_moderation->first()->value;
     }
-    $allowed_transitions = \Drupal::config('joinup_news.settings')->get('transitions');
+    $allowed_transitions = $this->configFactory->get('joinup_news.settings')->get('transitions');
 
     // Some transitions are not allowed per parent's moderation.
     // Check for the transitions allowed.
@@ -76,13 +117,12 @@ class JoinupNewsFulfillmentGuard implements GuardInterface {
 
     // Check if the user has one of the allowed system roles.
     $authorized_roles = $allowed_transitions[$is_moderated][$to_state][$from_state];
-    $user = \Drupal::currentUser();
-    if (array_intersect($authorized_roles, $user->getRoles())) {
+    if (array_intersect($authorized_roles, $this->currentUser->getRoles())) {
       return TRUE;
     }
 
     // Check if the user has one of the allowed group roles.
-    $membership = Og::getMembership($parent, $user->getAccount());
+    $membership = Og::getMembership($parent, $this->currentUser->getAccount());
     return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
   }
 
@@ -111,7 +151,7 @@ class JoinupNewsFulfillmentGuard implements GuardInterface {
       return $entity->field_news_state->first()->value;
     }
     else {
-      $unchanged_entity = \Drupal::entityTypeManager()->getStorage('node')->loadUnchanged($entity->id());
+      $unchanged_entity = $this->entityTypeManager->getStorage('node')->loadUnchanged($entity->id());
       return $unchanged_entity->field_news_state->first()->value;
     }
   }
