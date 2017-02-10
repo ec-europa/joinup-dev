@@ -6,7 +6,7 @@ use Drupal\Core\Database\Database;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 
 /**
- * Migrates collections.
+ * Migrates policy domain terms.
  *
  * @MigrateSource(
  *   id = "policy_domain"

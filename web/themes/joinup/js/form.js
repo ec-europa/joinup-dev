@@ -78,7 +78,7 @@
       // validation errors.
       var alreadyTriggered = false;
 
-      $('.field-group-tabs-wrapper input', context).once('tabValidation').each(function () {
+      $('.field-group-tabs-wrapper :input', context).once('tabValidation').each(function () {
         this.addEventListener('invalid', function (e) {
           // Open any hidden parents first.
           $(e.target).parents('details').each(function () {

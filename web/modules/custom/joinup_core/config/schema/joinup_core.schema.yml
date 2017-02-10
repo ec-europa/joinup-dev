@@ -16,6 +16,17 @@ field.formatter.settings.image_url_formatter:
       type: string
       label: 'Image style'
 
+field.widget.settings.current_workflow_state_widget:
+  type: mapping
+  label: 'Field widget format settings for the current workflow state field.'
+  mapping:
+    title:
+      type: string
+      label: 'The title to use for the field widget.'
+    title_display:
+      type: string
+      label: 'The setting that determines how the field widget title is displayed.'
+
 field.widget.settings.state_machine_buttons:
   type: mapping
   label: 'Theme settings for Joinup project.'

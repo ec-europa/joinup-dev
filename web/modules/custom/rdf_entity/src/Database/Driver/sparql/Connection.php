@@ -56,6 +56,12 @@ class Connection {
 
   /**
    * Execute the actual query against the Sparql endpoint.
+   *
+   * @param string $query
+   *   The query to execute.
+   *
+   * @return \EasyRdf\Sparql\Result
+   *   The query result.
    */
   public function query($query) {
     if (!empty($this->logger)) {

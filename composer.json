@@ -10,7 +10,7 @@
         "cweagans/composer-patches": "~1.6",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/console": "~1.0",
-        "drupal/core": "8.2.x-dev#bd80f1e43885ce75aa54434006754252e0eba489",
+        "drupal/core": "~8.3.0@alpha",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^2.0",
         "drupal/facets": "~1.0@alpha",
@@ -21,15 +21,15 @@
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "~1.0-alpha1",
         "drupal/migrate_spreadsheet": "1.x-dev",
-        "drupal/og": "dev-8.x-1.x#c75de3a0a59de375106cb50d1e5d6e96f1bb1858",
-        "drupal/og_menu": "dev-8.x-1.x",
+        "drupal/og": "dev-1.x#34a9425ffeeb267ceeba21261f4719d0ced36e58",
+        "drupal/og_menu": "~1.0@alpha",
         "drupal/phingdrushtask": "dev-7.x-2.x#13428ee7a229da3b7e6be4687587048150b1fd25",
-        "drupal/r4032login": "dev-1.x#4b2077aa70e3f7b00b8a9cba25af5b948ba2e3b9",
-        "drupal/search_api": "dev-1.x#ff41470b2b5399b83b86085d4b7a2c2f4e753370",
+        "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
+        "drupal/search_api": "~1.0@beta",
         "drupal/search_api_solr": "~1.0@beta",
         "drupal/state_machine": "~1.0-beta3",
         "drupal/token": "~1.0",
-        "drupal/view_unpublished": "dev-1.x#869c5b6b80f6badc0b39dff07ba852c9c967b9c7",
+        "drupal/view_unpublished": "~1.0@alpha",
         "drush/drush": "~8.0",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
         "ec-europa/infra": "~0.5",
@@ -50,9 +50,9 @@
         "drupal/coder": "~8.2.9",
         "drupal/config_devel": "dev-1.x#92f735cae8e9fb328edca285340a5bfbf72028cc",
         "drupal/config_update": "~1.2",
-        "drupal/default_content": "~1.0",
+        "drupal/default_content": "dev-1.x#18f2408a0f74d871b076ef94d1b83f380ea797c9",
         "drupal/devel": "~1.0@alpha",
-        "drupal/drupal-extension": "dev-master#4d072006873a15a704764985c22dfb591c129c7e",
+        "drupal/drupal-extension": "dev-master#8d2eea92396b7079f3f9ac6f67c8987aa1e911a5",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
         "mikey179/vfsStream": "~1.2",
@@ -103,31 +103,28 @@
         },
         "patches": {
             "drupal/core": {
-                "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/file_usage_limits-2675600-14.patch",
-                "EntityPublishedInterface @see https://www.drupal.org/node/2789315 @see https://www.drupal.org/node/2810381 @todo Remove in 8.3.x": "./resources/patches/combined-2810381-and-2789315.patch",
-                "#2346893: Duplicate AJAX wrapper around a file field": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-176.patch",
-                "Support fast rollbacks @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
                 "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-2.patch",
-                "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch"
+                "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
+                "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-17.patch",
+                "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194.patch",
+                "SqlBase::prepareQuery() should be called also on count. @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch",
+                "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch"
             },
             "drupal/inline_entity_form": {
-                "Required IEF forms for existing entities don't work": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
-            },
-            "drupal/r4032login": {
-                "Fix white screen of death.": "https://www.drupal.org/files/issues/2687155-8.patch",
-                "Errors with schema and installed settings file": "https://www.drupal.org/files/issues/schema_fix-2833695-2-D8.patch"
+                "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
             },
             "drupal/search_api": {
-                "Add entity type list cache tags.": "https://www.drupal.org/files/issues/2753667-46.patch",
-                "Views cached results are not taking into account the access check": "./resources/patches/views_cached_results-2824640-8-on_2753667-33.patch",
-                "item_id column is too short @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/2829696-7.patch"
+                "Add entity type list cache tags. @see https://www.drupal.org/node/2753667": "https://www.drupal.org/files/issues/2753667-46.patch",
+                "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640 @see https://www.drupal.org/node/2753667": "./resources/patches/views_cached_results-2824640-8-on_2753667-33.patch",
+                "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/2829696-7.patch"
             },
             "drupal/search_api_solr": {
-                "Cannot subscribe to Solarium events": "https://www.drupal.org/files/issues/cannot_subscribe_to-2835770-2.patch"
+                "Cannot subscribe to Solarium events. @see https://www.drupal.org/node/2835770": "https://www.drupal.org/files/issues/cannot_subscribe_to-2835770-2.patch"
             },
             "drupal/state_machine": {
-                "Fire generic events when transition are applied": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
-                "Schema validation error when running functional tests": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch"
+                "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
+                "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
+                "Disable static cache for workflow_callback. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/static_cache_disable_for_workflow_callback-2846986-2.patch"
             }
         }
     },
@@ -167,15 +164,6 @@
                     "reference": "master"
                 }
             }
-        },
-        {
-            "_comment": "This is the development repository of the D8 port of Organic Groups. Remove this when an official alpha release is made.",
-            "type": "vcs",
-            "url": "git@github.com:amitaibu/og"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:ec-europa/og_menu"
         },
         {
         "type": "package",

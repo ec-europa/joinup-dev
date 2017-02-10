@@ -157,3 +157,25 @@ Feature: Proposing a collection
     Then the following fields should be visible "Policy domain, Spatial coverage"
     And the following fields should not be visible "Title, Description, Closed collection, eLibrary creation, Moderated, Abstract, Affiliates"
     And the following field widgets should not be visible "Contact information, Owner"
+
+  @javascript @terms
+  # This is a regression test for a bug where nothing was happening when
+  # submitting the collection form after not filling some of the required
+  # fields. This was due the HTML5 constraint validation not being able to
+  # focus the wanted element because it was hidden by css.
+  # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3057
+  Scenario: Browser validation errors should focus the correct field group.
+    Given I am logged in as an "authenticated user"
+    When I go to the propose collection form
+    Then the "Main" tab should be active
+    # This form has two elements only that have browser-side validation.
+    When I fill in "Title" with "Constraint validation API"
+    And I press "Propose"
+    # Our code should have changed the active tab now. A browser message will
+    # be shown to the user.
+    Then the "Categorisation" tab should be active
+    # Fill the required field.
+    When I select "HR" from "Policy domain"
+    And I press "Propose"
+    # The backend-side validation will kick in now.
+    Then I should see the error message "Description field is required."

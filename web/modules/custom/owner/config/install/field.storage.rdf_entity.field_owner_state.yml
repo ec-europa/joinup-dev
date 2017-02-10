@@ -2,11 +2,15 @@ langcode: en
 status: true
 dependencies:
   module:
-    - node
+    - rdf_entity
     - state_machine
-id: node.field_discussion_state
-field_name: field_discussion_state
-entity_type: node
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value: 'http://joinup.eu/owner/workflow_status'
+id: rdf_entity.field_owner_state
+field_name: field_owner_state
+entity_type: rdf_entity
 type: state
 settings: {  }
 module: state_machine

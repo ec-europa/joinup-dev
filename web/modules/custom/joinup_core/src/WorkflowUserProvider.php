@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_user;
+namespace Drupal\joinup_core;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -8,7 +8,7 @@ use Drupal\Core\Session\AccountProxyInterface;
 /**
  * Provides a user object to the state_machine workflow guard classes.
  *
- * @package Drupal\joinup_user
+ * @package Drupal\joinup_core
  */
 class WorkflowUserProvider {
 
@@ -22,11 +22,11 @@ class WorkflowUserProvider {
   /**
    * Constructs an WorkflowUserProvider service.
    *
-   * @param \Drupal\Core\Session\AccountProxyInterface $account_proxy
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The service that contains the current active user.
    */
-  public function __construct(AccountProxyInterface $account_proxy) {
-    $this->account = $account_proxy;
+  public function __construct(AccountProxyInterface $currentUser) {
+    $this->account = $currentUser;
   }
 
   /**

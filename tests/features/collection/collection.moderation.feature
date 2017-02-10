@@ -8,13 +8,13 @@ Feature: Collection moderation
   Scenario: 'Draft' and 'Propose' states are available but moderators should also see 'Validated' state.
     When I am logged in as an "authenticated user"
     And I go to the homepage
-    And I click "Propose collection"
+    And I click "Propose collection" in the plus button menu
     Then the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
 
     When I am logged in as a user with the "moderator" role
     And I go to the homepage
-    And I click "Propose collection"
+    And I click "Propose collection" in the plus button menu
     Then the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Request deletion, Archive"
 

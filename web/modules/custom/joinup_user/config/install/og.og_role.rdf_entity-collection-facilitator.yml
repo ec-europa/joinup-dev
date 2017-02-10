@@ -24,6 +24,7 @@ permissions:
   - 'delete any custom_page content'
   - 'delete any discussion content'
   - 'delete any document content'
+  - 'delete any document content'
   - 'delete any event content'
   - 'delete any news content'
   - 'edit any custom_page content'
@@ -43,7 +44,6 @@ permissions:
   - 'update any navigation ogmenu_instance'
   - 'update group'
   - 'view any unpublished content'
-  - 'view any unpublished news content'
   - 'view rdf_entity draft graph'
   - 'view unpublished rdf entity'
 role_type: null
