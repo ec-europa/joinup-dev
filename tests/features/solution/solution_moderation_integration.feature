@@ -3,6 +3,7 @@ Feature: As a user of the website
   I want to be able to perform available transitions
   according to the state of the entity and the graph they are stored in.
 
+  @terms
   Scenario: Check availability of actions depending on the state and the graph.
     Given users:
       | name            | pass            | roles     |
@@ -16,12 +17,12 @@ Feature: As a user of the website
       | Mr Crab | Private Individual(s) |
     And the following solutions:
       | title                    | description                | logo     | banner     | owner   | contact information | solution type     | state            | policy domain |
-      | Professional Dreams      | Azure ship                 | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | draft            | eInclusion    |
-      | The Falling Swords       | The Falling Swords         | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | proposed         | eInclusion    |
-      | Flight of Night          | Rose of Doors              | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | validated        | eInclusion    |
-      | The Streams of the Lover | The Ice's Secrets          | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | deletion_request | eInclusion    |
-      | Teacher in the Twins     | The Guardian of the Stream | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | needs_update     | eInclusion    |
-      | Missing Fire             | Flames in the Swords       | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | blacklisted      | eInclusion    |
+      | Professional Dreams      | Azure ship                 | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | draft            | E-inclusion   |
+      | The Falling Swords       | The Falling Swords         | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | proposed         | E-inclusion   |
+      | Flight of Night          | Rose of Doors              | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | validated        | E-inclusion   |
+      | The Streams of the Lover | The Ice's Secrets          | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | deletion_request | E-inclusion   |
+      | Teacher in the Twins     | The Guardian of the Stream | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | needs_update     | E-inclusion   |
+      | Missing Fire             | Flames in the Swords       | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | blacklisted      | E-inclusion   |
     And the following solution user memberships:
       | solution        | user | roles |
       | Flight of Night | Hulk | owner |

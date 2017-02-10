@@ -13,13 +13,14 @@ Feature: Collections Overview
     Then I should see the heading "Collections"
 
   # @todo The small header, which contains collections link, should be removed for anonymous users on the homepage - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639.
+  @terms
   Scenario: View collection overview as an anonymous user
     Given users:
       | name          | mail                         | roles |
       | Madam Shirley | i.see.the.future@example.com |       |
     Given collections:
       | title             | description                    | state     |
-      | eHealth           | Supports health-related fields | validated |
+      | E-health          | Supports health-related fields | validated |
       | Open Data         | Facilitate access to data sets | validated |
       | Connecting Europe | Reusable tools and services    | validated |
     Given the following owner:
@@ -35,7 +36,7 @@ Feature: Collections Overview
     When I am logged in as "Madam Shirley"
     And I am on the homepage
     And I click "Collections"
-    Then I should see the text "eHealth"
+    Then I should see the text "E-health"
     And I should see the text "Open Data"
     And I should see the text "Connecting Europe"
 
@@ -43,14 +44,14 @@ Feature: Collections Overview
     And I am on the homepage
     Then I should see the link "Collections"
     When I click "Collections"
-    Then I should see the link "eHealth"
+    Then I should see the link "E-health"
     And I should see the text "Supports health-related fields"
     And I should see the link "Open Data"
     And I should see the text "Facilitate access to data sets"
     And I should see the link "Connecting Europe"
     And I should see the text "Reusable tools and services"
-    When I click "eHealth"
-    Then I should see the heading "eHealth"
+    When I click "E-health"
+    Then I should see the heading "E-health"
 
     # Add new collection as a moderator to directly publish it.
     Given I am logged in as a moderator
@@ -60,7 +61,7 @@ Feature: Collections Overview
     When I fill in the following:
       | Title         | Colonies in space                           |
       | Description   | Some space mumbo jumbo description.         |
-    When I select "Personnel management and staff remuneration" from "Policy domain"
+    When I select "Employment and Support Allowance" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.

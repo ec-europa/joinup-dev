@@ -669,4 +669,38 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
   }
 
+  /**
+   * Creates testing terms for scenarios tagged with @terms tag.
+   *
+   * Limitation: It creates terms with maximum 2 level hierarchy.
+   *
+   * @beforeScenario @terms
+   */
+  public function provideTestingTerms() {
+    $fixture = file_get_contents(__DIR__ . '/../../fixtures/testing_terms.yml');
+    $hierarchy = \Drupal\Component\Serialization\Yaml::decode($fixture);
+    foreach ($hierarchy as $vid => $terms) {
+      foreach ($terms as $key => $data) {
+        $has_children = is_array($terms);
+        $name = $has_children ? $key : $data;
+        $term = (object) [
+          'vocabulary_machine_name' => $vid,
+          'name' => $name,
+        ];
+        $this->termCreate($term);
+        $parent_tid = $term->tid;
+        if ($has_children) {
+          foreach ($data as $name) {
+            $term = (object) [
+              'vocabulary_machine_name' => $vid,
+              'name' => $name,
+              'parent' => $parent_tid,
+            ];
+            $this->termCreate($term);
+          }
+        }
+      }
+    }
+  }
+
 }

@@ -4,6 +4,7 @@ Feature: Creation of owners through UI
   As a user
   I need to be able to create owners, or add existing, through the UI when proposing a collection.
 
+  @terms
   Scenario: Propose a collection
     Given the following owner:
       | name            | type    |
@@ -15,7 +16,7 @@ Feature: Creation of owners through UI
     When I fill in the following:
       | Title         | Classical and Ancient Mythology                                                                      |
       | Description   | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
-    When I select "European Policies" from "Policy domain"
+    When I select "EU and European Policies" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
 
