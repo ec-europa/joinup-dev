@@ -1,4 +1,4 @@
-@api
+@api @terms
 Feature: Document moderation
   In order to manage documents
   As a user of the website
@@ -22,7 +22,7 @@ Feature: Document moderation
       | moderation        | no                              |
       | state             | validated                       |
       | owner             | thisisanowner                   |
-      | policy domain     | Demography and population       |
+      | policy domain     | E-inclusion                     |
     And the following collection user membership:
       | collection      | user            | roles       |
       | The Naked Ashes | Gretchen Greene | member      |

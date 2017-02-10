@@ -175,7 +175,7 @@ Feature: Proposing a collection
     # be shown to the user.
     Then the "Categorisation" tab should be active
     # Fill the required field.
-    When I select "Statistics and Analysis" from "Policy domain"
+    When I select "HR" from "Policy domain"
     And I press "Propose"
     # The backend-side validation will kick in now.
     Then I should see the error message "Description field is required."
