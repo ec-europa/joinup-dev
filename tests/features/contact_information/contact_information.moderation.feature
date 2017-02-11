@@ -17,7 +17,7 @@ Feature: Contact Information moderation
       | logo          | logo.png                                      |
       | banner        | banner.jpg                                    |
       | owner         | Anglo-Saxon Museum                            |
-      | policy domain | Demography                                    |
+      | policy domain | E-inclusion                                   |
       | state         | draft                                         |
     And collection user membership:
       | collection                   | user            | roles       |
