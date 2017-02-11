@@ -1,4 +1,8 @@
 services:
+  joinup.joinup_custom_access:
+    class: Drupal\joinup\Access\JoinupCustomAccess
+    tags:
+      - { name: access_check, applies_to: _joinup_custom_access }
   joinup.uid_1_only_access:
     class: Drupal\joinup\Access\Uid1OnlyAccess
     arguments: ['@current_user']
