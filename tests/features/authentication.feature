@@ -30,25 +30,29 @@ Feature: User authentication
     Then I should see the error message "Access denied. You must log in to view this page."
 
     Examples:
-      | path                      |
-      | admin                     |
-      | admin/config              |
-      | admin/content             |
-      | admin/content/rdf         |
-      | admin/people              |
-      | admin/structure           |
-      | propose/collection        |
-      | propose/solution          |
-      | dashboard                 |
-      | node/add                  |
-      | node/add/custom_page      |
-      | node/add/document         |
-      | node/add/event            |
-      | node/add/news             |
-      | rdf_entity/add            |
-      | rdf_entity/add/collection |
-      | rdf_entity/add/solution   |
-      | licence                   |
+      | path                               |
+      | admin                              |
+      | admin/config                       |
+      | admin/content                      |
+      | admin/content/rdf                  |
+      | admin/people                       |
+      | admin/structure                    |
+      | propose/collection                 |
+      | propose/solution                   |
+      | dashboard                          |
+      | node/add                           |
+      | node/add/custom_page               |
+      | node/add/document                  |
+      | node/add/event                     |
+      | node/add/news                      |
+      | rdf_entity/add                     |
+      | rdf_entity/add/asset_distribution  |
+      | rdf_entity/add/asset_release       |
+      | rdf_entity/add/collection          |
+      | rdf_entity/add/contact_information |
+      | rdf_entity/add/owner               |
+      | rdf_entity/add/solution            |
+      | licence                            |
 
   @api
   Scenario Outline: Authenticated user can access pages they are authorized to
@@ -70,22 +74,26 @@ Feature: User authentication
     Then I should get an access denied error
 
     Examples:
-      | path                      |
-      | admin                     |
-      | admin/config              |
-      | admin/content             |
-      | admin/content/rdf         |
-      | admin/people              |
-      | admin/structure           |
-      | node/add                  |
-      | node/add/custom_page      |
-      | node/add/document         |
-      | node/add/event            |
-      | node/add/news             |
-      | rdf_entity/add            |
-      | rdf_entity/add/collection |
-      | rdf_entity/add/solution   |
-      | licence                   |
+      | path                               |
+      | admin                              |
+      | admin/config                       |
+      | admin/content                      |
+      | admin/content/rdf                  |
+      | admin/people                       |
+      | admin/structure                    |
+      | node/add                           |
+      | node/add/custom_page               |
+      | node/add/document                  |
+      | node/add/event                     |
+      | node/add/news                      |
+      | rdf_entity/add                     |
+      | rdf_entity/add/asset_distribution  |
+      | rdf_entity/add/asset_release       |
+      | rdf_entity/add/collection          |
+      | rdf_entity/add/contact_information |
+      | rdf_entity/add/owner               |
+      | rdf_entity/add/solution            |
+      | licence                            |
 
   @api
   Scenario Outline: Moderator can access pages they are authorized to
@@ -93,11 +101,14 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path              |
-      | admin/people      |
-      | admin/content/rdf |
-      | dashboard         |
-      | licence           |
+      | path               |
+      | admin/people       |
+      | admin/content/rdf  |
+      | dashboard          |
+      | licence            |
+      | licence/add        |
+      | propose/collection |
+      | propose/solution   |
 
   @api
   Scenario Outline: Moderator cannot access restricted pages
@@ -151,3 +162,4 @@ Feature: User authentication
       | node/add/news             |
       | rdf_entity/add            |
       | rdf_entity/add/collection |
+      | rdf_entity/add/solution   |
