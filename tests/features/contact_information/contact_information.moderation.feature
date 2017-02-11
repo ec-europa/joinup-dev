@@ -1,4 +1,4 @@
-@api @javascript
+@api
 Feature: Contact Information moderation
   In order to manage contact information
   As a facilitator or moderator
@@ -79,7 +79,6 @@ Feature: Contact Information moderation
     When I fill in "Name" with "Æthelred, Lord of the Mercians"
     And I press "Update"
     Then I should see the heading "Æthelred, Lord of the Mercians"
-Then I break
 
     # The moderator approves the changes.
     Given I am logged in as a moderator
@@ -107,5 +106,4 @@ Then I break
     When I click "Delete"
     # Confirm the deletion.
     And I press "Delete"
-    Then I break
     Then I should not see the link "EU healthy group"
