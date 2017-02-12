@@ -200,7 +200,7 @@ class RdfFileWidget extends FileWidget {
     // Essentially we use the managed_file type, extended with some
     // enhancements.
     $element_info = $this->elementInfo->getInfo('managed_file');
-    $element['#type'] = 'elements_need_a_type';
+    $element['#type'] = 'rdf_file';
     $element['#theme_wrappers'] = array('form_element');
     $element['file-wrap']['#type'] = 'container';
     $element['file-wrap']['select'] = [
@@ -227,7 +227,7 @@ class RdfFileWidget extends FileWidget {
     $element['file-wrap']['file'] = array(
       '#type' => 'managed_file',
       '#title_display' => 'invisible',
-      '#title' => $this->fieldDefinition->getLabel(),
+      '#title' => $this->t('Upload file'),
       '#upload_location' => $items[$delta]->getUploadLocation(),
       '#upload_validators' => $items[$delta]->getUploadValidators(),
       '#value_callback' => array(get_class($this), 'value'),
