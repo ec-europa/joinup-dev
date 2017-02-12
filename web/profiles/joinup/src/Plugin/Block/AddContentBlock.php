@@ -265,6 +265,9 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
 
   /**
    * {@inheritdoc}
+   *
+   * @todo: Temporary workaround for wrong caching.
+   * @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3133
    */
   public function getCacheMaxAge() {
     return 0;

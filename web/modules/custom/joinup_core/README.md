@@ -1,26 +1,26 @@
 # Workflows
-For the moderation of the content, the module 
+For the moderation of entities, the module
 [state_machine](https://drupal.org/project/state_machine) was selected as the 
-native moderation system is working only with content.
+native moderation system is working only with nodes.
 Information on the state_machine can also be found in the 
 [github repo](https://github.com/bojanz/state_machine/blob/8.x-1.x/README.md).
 
-How to define the workflow:
+##How to define the workflow:
 State machine module already provides the basic functionality there.
-To create a workflow the following need to be declared:
-* Create the two yaml files defined in the state machine (workflow_groups and 
-workflows) for the entity type.
-* Create the guard class that will handle the management of the allowed
-transitions.
-* Create a state field in the entity type you want to be moderated.
+To create a workflow the following steps are needed:
+* create the two yaml files defined in the state machine (workflow_groups and
+workflows) for the entity type;
+* create the guard class that will handle the management of the allowed
+transitions;
+* create a state field in the entity type you want to be moderated.
 There is already a base storage in the joinup_core module provided for a field
-named field_state (for node entities).
-* If more than one workflows are defined in the entity type, a workflow callback
+named field_state (for node entities);
+* if more than one workflow are defined in the entity type, a workflow callback
 will need to be defined for the field and the property 'workflow_callback' has
 to be set.
-* A settings file has to be provided for each entity type in order to define the
+* a settings file has to be provided for each entity type in order to define the
 roles that are allowed per transition.
-* In order to be able to perform checks in users other than the current logged
+* in order to be able to perform checks in users other than the current logged
 in user, joinup_core also provides the `Drupal\joinup_core\WorkflowUserProvider`
 class that allows to set the user in stake for the access check. The default
 user remains the current logged in user.
@@ -34,7 +34,7 @@ provided by `joinup_core` module).
 ### The workflow
 The workflow(s) defined for each entity type must have an id that follow the
 pattern ```<entity_type>:<bundle>:<pre_moderated|post_moderated>```.
-For example, for the node bundle `news`, for a pre_moderated workflow, the id of
+For example, for the node bundle `news`, for a pre-moderated workflow, the id of
 the workflow will be `node:news:pre_moderated`. Most community content have a
 `pre_moderated` and a `post_moderated` workflow.  
 If there is only one workflow needed for the file, still, one of the above
@@ -55,7 +55,7 @@ Here is an example of this callback:
 ```
 function joinup_news_workflow_selector(EntityInterface $entity) {
   if ($entity->bundle() != 'news') {
-    throw new Exception("This method can only be called for document entities.");
+    throw new Exception('This method can only be called for document entities.');
   }
   /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
   $relation_manager = \Drupal::service('joinup_core.relations_manager');
@@ -133,13 +133,13 @@ file.
     for example, because tests take care of edge cases as well.
     * The `owner` is a special handle and is *not* a role in the system. The
     owner represents the author of the entity, if one exists, and is not to be
-    confused with the owner entity type of the rdf_entities.
+    confused with the owner entity type of the rdf entities.
     
 ### The guard class
 The `Guard class` will take care of the allowed transitions. This class
 is now centralized and the base class exists in joinup_core. This class is
 `Drupal\joinup_core\Guard\NodeGuard`. The guard classes of the community content
-should extend this class and make use of the `allowed()` method-if possible-
+should extend this class and make use of the `allowed()` method -if possible-
 without overriding it.  
 The only thing needed to be done in the guard class, is to load the 
 corresponding settings file from the database and store the allowed transitions
@@ -155,16 +155,16 @@ used in the `allowed()` method so it needs to be populated otherwise the
 functionality will break.
 
 By default the checks taking place in the `NodeGuard` class are (by sequence):
-* If the transition array is not populated (as described above), no transitions
-are allowed.
-* If the passed user has the admin permission on the entity type, all
-available transitions are allowed for that user.
-* If the owner is allowed to perform the transition and the user is the owner,
-the transition is allowed.
-* If there are normal roles (authenticated, moderator) that are allowed to
-perform the transition and the user is one of them, the transition is allowed.
-* If there are Og roles that are allowed to perform the transition and the user
-is one of them, the transition is allowed.
+* if the transition array is not populated (as described above), no transitions
+are allowed;
+* if the passed user has the admin permission on the entity type, all
+available transitions are allowed for that user;
+* if the owner is allowed to perform the transition and the user is the owner,
+the transition is allowed;
+* if there are normal roles (authenticated, moderator) that are allowed to
+perform the transition and the user is one of them, the transition is allowed;
+* if there are Og roles that are allowed to perform the transition and the user
+is one of them, the transition is allowed;
 
 Note that in the above cases, the parent's eLibrary settings, in the case of a
 new entity created, are already taken into account. The allowed roles are a 
@@ -205,15 +205,16 @@ normal handler to check if he has normal permission to view the content.
 
 #### **Create**  
 The `create` operation, unlike the normal access control system, requires an
-entity instead of a bundle only. This is because, the access control handler
+entity instead of a bundle only. This is because the access control handler
 requires the settings from the parent group. In joinup, we are handling access
 like that in every custom access needed.  
 Note that access to normal `node/add/<bundle_type>` is prohibited in the 
 project. Users are allowed to create community content only within the context
 of a group.  
 
-The access check is given to the user if there are allowed transitions from the
+The access is given to the user if there are allowed transitions from the
 default one (`__new__`).
+
 **Important:**  
 A non saved entity must be passed as an argument as the eLibrary creation is
 only taken into account for entities that have the `->isNew()` handle returning
@@ -227,19 +228,19 @@ only. This will also take into account Og membership and parent group's
 settings.
 
 #### **Delete**
-The `delete` state, for community content, is allowed to the author only if the
-parent group is post moderated, otherwise, it is only allowed to facilitators
+The `delete` operation for community content is allowed to the author only if the
+parent group is post-moderated. Otherwise, it is only allowed to facilitators
 and moderators and the author needs to request deletion in order to remove it
 from the site.
 
 The access check sequence is:
-* If the user has the `delete any <bundle> <content>` as a site wide permission,
-allow access.
-* If the user has the `delete any <bundle> <content>` as an Og permission, allow
-access.
-* If the parent is a pre-moderated group, disallow `delete` access if the user
-does not have the `delete any <bundle> <content>`.
-* Otherwise, the handler will return a neutral result and the default node
+* if the user has the `delete any <bundle> <content>` as a site wide permission,
+allow access;
+* if the user has the `delete any <bundle> <content>` as an Og permission, allow
+access;
+* if the parent is a pre-moderated group, disallow `delete` access if the user
+does not have the `delete any <bundle> <content>`;
+* otherwise, the handler will return a neutral result and the default node
 access handler will check if the user has the right to delete his own content.
 
 =========================
@@ -250,22 +251,22 @@ The community content also share a base class for testing.
 The base class is `Drupal\Tests\joinup_core\NodeWorkflowTestBase` and all the
 logic of the testing resides there.  
 For the purposes of the testing, the following users are being used:
-* **$userOwner**: The user will be assigned as an author of every content
+* **$userOwner**: the user will be assigned as an author of every content
 created.
-* **$userAuthenticated**: The user has only the `authenticated` role assigned
+* **$userAuthenticated**: the user has only the `authenticated` role assigned
 and is not assigned with an Og role to the entities.
-* **$userModerator**: The user is assigned the `moderator` role and is also not
+* **$userModerator**: the user is assigned the `moderator` role and is also not
 assigned with an Og role to the entities.
-* **$userOgMember**: The user is an authenticated user that is automatically
+* **$userOgMember**: the user with the `authenticated` role that is automatically
 assigned as a member to any group entity created. Note that this user is
 assigned as a member to solutions as well because even if we do not use the
 notion of a member, we still need to ensure that there are no security leaks.
-* **$userOgFacilitator**: The user is an authenticated user that is 
+* **$userOgFacilitator**: the user with the `authenticated` role that is 
 automatically assigned as a facilitator to any group entity created.
-* **$userOgAdministrator**: The user is an authenticated user that is 
+* **$userOgAdministrator**: the user with the `authenticated` role that is 
 automatically assigned as an administrator to any group entity created.
 
-**Note**
+**Note**  
 The `\Drupal\og\OgMembership::getRoles()`, the 
 `Drupal\Core\Session\UserSession::getRoles()` and the
 `Drupal\Core\Session\AccountProxy::getRoles()` always return the locked roles by
@@ -285,8 +286,8 @@ The structure of the array is:
 $access_array = [
   'parent_bundle' => [
     'elibrary_status' => [
-      'user variable 1'
-      'user variable 2'
+      'user variable 1',
+      'user variable 2',
      ],
    ],
  ];
@@ -298,9 +299,8 @@ affect the outcome.
 The last level of the array is meant for one of the available users provided by
 the base class as defined earlier.
 
-* **readUpdateDeleteAccessProvider**
-The entity operation access check.
-The structure of the array is  
+* **readUpdateDeleteAccessProvider**  
+The entity operation access check. The structure of the array is  
 ```
  $access_array = [
   'parent_bundle' => [
@@ -323,9 +323,8 @@ The test is also checking negative cases, so for the user variables not present
 in each array, there will be a check to ensure that the user does not have the
 corresponding operation access.
 
-* **workflowTransitionsProvider**
-Tests the transitions available for each case.  
-The structure of the array is:
+* **workflowTransitionsProvider**  
+Tests the transitions available for each case. The structure of the array is:
 ```
 $workflow_array = [
   'parent_bundle' => [
@@ -346,7 +345,7 @@ This test does not check for negative cases so if you want to ensure a user does
 not have any allowed transitions, just provide him in the `user variable` level
 with an empty array of transitions.
 
-* **isPublishedState**
+* **isPublishedState**  
 Since the content publication state is handled by an even provider, there is no
 direct way of setting whether a state is published or not (the published flag
 is set on the transition, not the state).  

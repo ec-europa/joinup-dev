@@ -20,7 +20,6 @@ dependencies:
   - rdf_entity
   - search_api_field
   - state_machine
-  - taxonomy_container
   - text
 
 config_devel:

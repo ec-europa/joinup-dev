@@ -247,7 +247,7 @@ class NodeWorkflowAccessControlHandler {
     // allowed to.
     // Access is denied because if neutral is returned, the default entity
     // access control handler will allow it.
-    if ($moderation == 1) {
+    if ($moderation == self::PRE_MODERATION) {
       return AccessResult::forbiddenIf(!$account->hasPermission("delete any {$entity->bundle()} {$entity_type}"));
     }
 
