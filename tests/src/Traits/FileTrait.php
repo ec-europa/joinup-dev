@@ -3,6 +3,7 @@
 namespace Drupal\joinup\Traits;
 
 use Drupal\file\Entity\File;
+use Drupal\rdf_file\RdfFileHandler;
 
 /**
  * Helper methods for dealing with files.
@@ -30,7 +31,7 @@ trait FileTrait {
    * @throws \Exception
    *   Throws an exception when the file is not found.
    */
-  public function createFile($filename, $files_path) {
+  protected function createFile($filename, $files_path) {
     $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
     if (!is_file($path)) {
       throw new \Exception("File '$filename' was not found in file path '$files_path'.");
@@ -45,6 +46,25 @@ trait FileTrait {
     $this->files[$file->id()] = $file;
 
     return $file->id();
+  }
+
+  /**
+   * Uploads a RDF file for an entity and returns the file's ID.
+   *
+   * @param string $filename
+   *   The file name given by the user.
+   * @param string $files_path
+   *   The file path where the file exists in.
+   *
+   * @return string
+   *   The file ID.
+   *
+   * @throws \Exception
+   *   Throws an exception when the file is not found.
+   */
+  protected function uploadRdfFile($filename, $files_path) {
+    $id = $this->createFile($filename, $files_path);
+    return RdfFileHandler::fileToUrl($this->files[$id]);
   }
 
   /**

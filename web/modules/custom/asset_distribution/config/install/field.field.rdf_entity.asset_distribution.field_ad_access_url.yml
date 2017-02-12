@@ -21,6 +21,6 @@ settings:
   file_extensions: 'zip tar tar.gz'
   max_filesize: ''
   description_field: false
-  handler: 'default:file'
+  handler: 'rdf_file_default:file'
   handler_settings: {  }
 field_type: rdf_file
