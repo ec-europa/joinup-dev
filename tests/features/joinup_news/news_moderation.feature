@@ -267,13 +267,13 @@ Feature: News moderation.
       # Post moderated
       # News article in 'proposed' state.
       | Hawkgirl | Hawkgirl is a spy             | Update, Publish, Request changes                 | Save as draft, Request deletion, Preview                           |
-      # Publishd content can be moved back to 'Proposed', 'Draft' or to 'Needs update' state by a facilitator. It can also be updated.
+      # Published content can be moved back to 'Proposed', 'Draft' or to 'Needs update' state by a facilitator. It can also be updated.
       | Hawkgirl | Hawkgirl helped Green Lantern | Save new draft, Propose, Update, Request changes | Save as draft, Publish, Request deletion, Preview                  |
       | Hawkgirl | Space cannon fired            | Propose                                          | Save as draft, Publish, Request changes, Request deletion, Preview |
       # Pre moderated
       # Facilitators have access to create news and directly put it to validate. For created and proposed, member role should be used.
       | Metallo  | Creating Legion of Doom       | Save as draft, Publish                           | Request changes, Propose, Request deletion, Preview                |
-      # Publishd content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
+      # Published content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
       | Metallo  | Stealing from Batman          | Save new draft, Request changes, Update          | Propose, Request deletion, Preview                                 |
       # Members can move to 'needs update' state.
       | Metallo  | Learn batman's secret         | Update, Request changes, Publish                 | Save as draft, Request deletion, Preview                           |
