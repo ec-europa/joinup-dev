@@ -52,7 +52,7 @@ Feature: Event moderation
     And I go to the homepage of the "Wet Lords" collection
     And I click "Add event" in the plus button menu
     Then I should not see the button "Publish"
-    And I should not see the button "Propose"
+    And I should see the button "Propose"
     But I should see the button "Save as draft"
 
     # Edit the collection and set it to allow only members to create new
