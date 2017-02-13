@@ -127,7 +127,7 @@ function joinup_core_entity_graph_access(EntityInterface $entity, $operation, Ac
  */
 function joinup_core_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
   // @todo: when all bundles are in, remove the first check.
-  if (!in_array($entity->bundle(), ['document', 'discussion'])) {
+  if (!in_array($entity->bundle(), ['document', 'discussion', 'news'])) {
     return AccessResult::neutral();
   }
   return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($entity, $operation, $account);
