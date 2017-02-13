@@ -1,6 +1,9 @@
 # The allowed conditions for the contact information workflow transitions.
 transitions:
   validate:
+    __new__:
+      - authenticated
+      - moderator
     deletion_request:
       - moderator
   update_published:
