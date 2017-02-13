@@ -6,6 +6,7 @@
  */
 
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
@@ -678,7 +679,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function provideTestingTerms() {
     $fixture = file_get_contents(__DIR__ . '/../../fixtures/testing_terms.yml');
-    $hierarchy = \Drupal\Component\Serialization\Yaml::decode($fixture);
+    $hierarchy = Yaml::decode($fixture);
     foreach ($hierarchy as $vid => $terms) {
       foreach ($terms as $key => $data) {
         $has_children = is_array($terms);
