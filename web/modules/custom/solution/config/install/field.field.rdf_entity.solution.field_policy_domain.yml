@@ -9,7 +9,7 @@ id: rdf_entity.solution.field_policy_domain
 field_name: field_policy_domain
 entity_type: rdf_entity
 bundle: solution
-label: 'Policy Domain'
+label: 'Policy domain'
 description: ''
 required: true
 translatable: false
