@@ -60,10 +60,12 @@ class OgUserRole extends SourcePluginBase {
     $info = [];
     foreach ($query->execute()->fetchAll() as $data) {
       $roles = Json::decode($data->roles);
-      foreach ($roles as $type => $uids) {
-        foreach ($uids as $uid => $created) {
-          $info[$data->collection][$uid]['created'] = $created;
-          $info[$data->collection][$uid]['roles'][] = $role_type[$type];
+      if ($roles) {
+        foreach ($roles as $type => $uids) {
+          foreach ($uids as $uid => $created) {
+            $info[$data->collection][$uid]['created'] = $created;
+            $info[$data->collection][$uid]['roles'][] = $role_type[$type];
+          }
         }
       }
     }

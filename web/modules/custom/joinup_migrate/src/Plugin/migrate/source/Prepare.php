@@ -203,7 +203,9 @@ class Prepare extends SourcePluginBase {
 
     foreach ($collections as $collection => $data) {
       // Serialize roles.
-      $collections[$collection]['roles'] = Json::encode($collections[$collection]['roles']);
+      if (!empty($collections[$collection]['roles'])) {
+        $collections[$collection]['roles'] = Json::encode($collections[$collection]['roles']);
+      }
 
       // New collections's nid is 0. Collections with a NULL nid are collections
       // inheriting their data (abstract, etc.) from a Drupal 6 'community' or
