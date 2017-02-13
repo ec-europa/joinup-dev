@@ -13,6 +13,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
 use Drupal\og\Og;
 
 /**
@@ -194,4 +195,14 @@ QUERY;
       }
     }
   }
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_core_entity_type_alter(array &$entity_types) {
+  // Provides a workaround for asset_release and solution RDF entity bundles.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
+  // @todo Remove when ISAICP-3126 gets in.
+  $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
 }
