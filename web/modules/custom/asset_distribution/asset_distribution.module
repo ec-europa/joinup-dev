@@ -11,7 +11,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\rdf_file\Entity\RemoteFile;
 use Drupal\rdf_file\RdfFileHandler;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -139,11 +138,18 @@ function asset_distribution_rdf_entity_presave(RdfInterface $distribution) {
     return;
   }
 
-  if (!empty($fid = $distribution->field_ad_access_url->target_id)) {
+  if (!empty($file_id = $distribution->field_ad_access_url->target_id)) {
     /** @var \Drupal\file\FileInterface $file */
-    if ($file = RdfFileHandler::urlToFile($fid)) {
-      if (!($file instanceof RemoteFile)) {
+    if ($file = RdfFileHandler::urlToFile($file_id)) {
+      if (!RdfFileHandler::isRemote($file)) {
+        // Set the file size field.
         $distribution->get('field_ad_file_size')->setValue($file->getSize());
+
+        // Set the file format field.
+        $tid = asset_distribution_get_file_type_term_by_mime($file->getMimeType());
+        if ($tid) {
+          $distribution->get('field_ad_format')->setValue($tid);
+        }
       }
     }
   }
@@ -208,4 +214,35 @@ function asset_distribution_add_parent_relation(RdfInterface $distribution, RdfI
   $related_distributions[]['target_id'] = $distribution->id();
   $parent->set($field_name, $related_distributions);
   $parent->save();
+}
+
+/**
+ * Returns the ID of the 'file_type' term given a mime type.
+ *
+ * @param string $mime_type
+ *   The mime type for which to locate the 'file_type' term.
+ *
+ * @return string|null
+ *   The term ID as URI or NULL, if the term doesn't exists.
+ */
+function asset_distribution_get_file_type_term_by_mime($mime_type) {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
+  $sparql = \Drupal::service('sparql_endpoint');
+
+  $query = <<<QUERY
+SELECT ?entity_id
+WHERE {
+  ?entity_id <http://publications.europa.eu/ontology/authority/op-mapped-code> ?op_mime_type .
+  ?op_mime_type <http://purl.org/dc/elements/1.1/source> "manifestation-type-cellar" .
+  ?op_mime_type <http://publications.europa.eu/ontology/authority/legacy-code> "$mime_type" .
+}
+QUERY;
+
+  $results = $sparql->query($query);
+  if ($results->count()) {
+    $result = &$results[0];
+    return $result->entity_id->getUri();
+  }
+
+  return NULL;
 }

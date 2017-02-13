@@ -398,7 +398,28 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     if (($file->getFilename() !== $file_name) || !file_create_url($file->getFileUri())) {
       throw new \Exception("The file {$file_name} was not found in the '{$distribution->label()}' distribution'");
     }
-    // The file is in the entity and has a valid URL.
+
+    $files_path = $this->getMinkParameter('files_path');
+    $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file_name;
+    if (!is_file($path)) {
+      throw new \Exception("File '$file_name' was not found in file path '$files_path'.");
+    }
+
+    /** @var \Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesserInterface $mime_guesser */
+    $mime_guesser = \Drupal::service('file.mime_type.guesser');
+    $mime_type = $mime_guesser->guess($path);
+    $expected_file_type = asset_distribution_get_file_type_term_by_mime($mime_type);
+    $expected_file_size = filesize($path);
+
+    // Test the file format.
+    if ($expected_file_type !== $distribution->field_ad_format->target_id) {
+      throw new \Exception("File '$file_name' has the format '{$distribution->field_ad_format->target_id}'. Expected '$expected_file_type'.");
+    }
+
+    // Test the file size.
+    if ($expected_file_size !== (int) $distribution->field_ad_file_size->value) {
+      throw new \Exception("File '$file_name' has the size '{$distribution->field_ad_file_size->value}'. Expected '$expected_file_size'.");
+    }
   }
 
   /**
@@ -418,12 +439,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     $id = $this->rdfFileFieldHelper($rdf_file_field, 'file');
 
     // Qualify the file path.
-    $path = $filename;
-    if ($files_path = $this->getMinkParameter('files_path')) {
-      $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $path;
-      if (!is_file($path)) {
-        throw new \Exception("File '$filename' was not found in file path '$files_path'.");
-      }
+    $files_path = $this->getMinkParameter('files_path');
+    $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
+    if (!is_file($path)) {
+      throw new \Exception("File '$filename' was not found in file path '$files_path'.");
     }
 
     // Attach the file.

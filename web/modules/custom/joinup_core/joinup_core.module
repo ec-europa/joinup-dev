@@ -156,6 +156,16 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
 }
 
 /**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_core_entity_type_alter(array &$entity_types) {
+  // Provides a workaround for asset_release and solution RDF entity bundles.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
+  // @todo Remove when ISAICP-3126 gets in.
+  $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
+}
+
+/**
  * Implements hook_ENTITY_TYPE_storage_load().
  *
  * Fill $term->extension and $term->mime_type fields from 'file_type' vocabulary
@@ -195,14 +205,4 @@ QUERY;
       }
     }
   }
-}
-
-/**
- * Implements hook_entity_type_alter().
- */
-function joinup_core_entity_type_alter(array &$entity_types) {
-  // Provides a workaround for asset_release and solution RDF entity bundles.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
-  // @todo Remove when ISAICP-3126 gets in.
-  $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
 }
