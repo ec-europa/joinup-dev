@@ -81,7 +81,7 @@ Feature: Solution API
     # Then I wait for AJAX to finish
     And I fill in "Owner" with "Leechidna"
     And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
-    And I fill in "Policy Domain" with "EU and European Policies"
+    And I select "EU and European Policies" from "Policy Domain"
     And I select "[ABB8] Citizen" from "Solution type"
     And I press "Add owner"
     And I press "Save"
