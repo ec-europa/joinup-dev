@@ -13,6 +13,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
 use Drupal\og\Og;
 
 /**
@@ -152,4 +153,56 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
 
     return $fields;
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_storage_load().
+ *
+ * Fill $term->extension and $term->mime_type fields from 'file_type' vocabulary
+ * by a direct query as, due to their RDF representation, this cannot be done by
+ * a simple RDF field mapping. Because we do this at storage level, the values
+ * get cached in the 'cache_entity' bin, avoiding performance issues.
+ */
+function joinup_core_taxonomy_term_storage_load(array $terms) {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
+  $sparql = \Drupal::service('sparql_endpoint');
+
+  $query = <<<QUERY
+SELECT ?extension ?mime_type
+WHERE {
+  <%s> <http://publications.europa.eu/ontology/authority/op-mapped-code> ?op_extension .
+  ?op_extension <http://purl.org/dc/elements/1.1/source> "file-extension" .
+  ?op_extension <http://publications.europa.eu/ontology/authority/legacy-code> ?extension .
+  <%s> <http://publications.europa.eu/ontology/authority/op-mapped-code> ?op_mime_type .
+  ?op_mime_type <http://purl.org/dc/elements/1.1/source> "manifestation-type-cellar" .
+  ?op_mime_type <http://publications.europa.eu/ontology/authority/legacy-code> ?mime_type .
+}
+QUERY;
+
+  /** @var \Drupal\taxonomy\TermInterface[] $terms */
+  foreach ($terms as $term) {
+    if ($term->bundle() === 'file_type') {
+      $term_id = $term->id();
+      $results = $sparql->query(sprintf($query, $term_id, $term_id));
+      if ($results->count()) {
+        $result = &$results[0];
+        // A file type might have more than one extension separated by space.
+        $extensions = array_filter(explode(' ', trim($result->extension->getValue())));
+        foreach ($extensions as $extension) {
+          $term->get('extension')->appendItem(['value' => $extension]);
+        }
+        $term->set('mime_type', trim($result->mime_type->getValue()));
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_core_entity_type_alter(array &$entity_types) {
+  // Provides a workaround for asset_release and solution RDF entity bundles.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
+  // @todo Remove when ISAICP-3126 gets in.
+  $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
 }
