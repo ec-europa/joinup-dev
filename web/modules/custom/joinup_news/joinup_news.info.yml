@@ -29,5 +29,4 @@ config_devel:
   - field.field.node.news.og_audience
   - field.storage.node.field_news_headline
   - field.storage.node.field_news_source_url
-  - field.storage.node.field_state
   - node.type.news
