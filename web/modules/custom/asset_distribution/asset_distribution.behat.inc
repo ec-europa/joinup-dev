@@ -131,12 +131,11 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    */
   protected function createAssetDistribution(array $values) {
     // The Access URL field is either an external URI, or file upload.
-    if (!empty($values['field_ad_access_url'])) {
+    if (!empty($url = $values['field_ad_access_url'])) {
       global $base_url;
-      $url = $values['field_ad_access_url'];
       if (!UrlHelper::isValid($url, TRUE) || !UrlHelper::isExternal($url) || UrlHelper::externalIsLocal($url, $base_url)) {
         // It's a local file to be uploaded.
-        $values['field_ad_access_url'] = $this->uploadRdfFile($values['field_ad_access_url'], $this->getMinkParameter('files_path'));
+        $values['field_ad_access_url'] = $this->uploadRdfFile($url, $this->getMinkParameter('files_path'));
       }
     }
 
@@ -352,7 +351,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     if (empty($distribution->field_ad_access_url->first())) {
       throw new \Exception(sprintf('Asset distribution "%s" does not contain any download links.', $distribution->label()));
     }
-    $promoted_link = $distribution->field_ad_access_url->first()->uri;
+    $file = RdfFileHandler::urlToFile($distribution->field_ad_access_url->target_id);
+    $promoted_link = RdfFileHandler::isRemote($file) ? $distribution->field_ad_access_url->target_id : file_create_url($file->getFileUri());
     $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$promoted_link}']");
     if (empty($result)) {
       throw new \Exception(sprintf('No link was found in the "%s" distribution on the page %s', $distribution->label(), $this->getSession()->getCurrentUrl()));
