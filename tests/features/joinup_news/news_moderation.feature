@@ -44,7 +44,7 @@ Feature: News moderation.
       | Legion of Doom | Mirror Master | member      |
       | Legion of Doom | Cheetah       | member      |
     And "news" content:
-      | title                         | headline                                    | body                                                                    | field_state      | author        |
+      | title                         | headline                                    | body                                                                    | state            | author        |
       | Creating Justice League       | 6 Members to start with                     | TBD                                                                     | draft            | Eagle         |
       | Hawkgirl is a spy             | Her race lies in another part of the galaxy | Hawkgirl has been giving information about Earth to Thanagarians.       | proposed         | Eagle         |
       | Hawkgirl helped Green Lantern | Hawkgirl went against Thanagarians?         | It was all of a sudden when Hawkgirl turned her back to her own people. | validated        | Eagle         |
