@@ -73,12 +73,14 @@ class ContactInformationWorkflowTest extends JoinupWorkflowTestBase {
   public function testWorkflow() {
     foreach ($this->workflowTransitionsProvider() as $entity_state => $workflow_data) {
       foreach ($workflow_data as $user_var => $transitions) {
+        // The created entity is not saved because this will trigger the
+        // '__new__' state to be converted to 'validated'.
+        // @see: contact_information_rdf_entity_presave().
         $content = Rdf::create([
           'rid' => 'contact_information',
           'label' => $this->randomMachineName(),
           'field_ci_state' => $entity_state,
         ]);
-        $content->save();
 
         // Override the user to be checked for the allowed transitions.
         $this->userProvider->setUser($this->{$user_var});
@@ -115,6 +117,14 @@ class ContactInformationWorkflowTest extends JoinupWorkflowTestBase {
    */
   public function workflowTransitionsProvider() {
     return [
+      '__new__' => [
+        'userAuthenticated' => [
+          'validate',
+        ],
+        'userModerator' => [
+          'validate',
+        ],
+      ],
       'validated' => [
         'userAuthenticated' => [
           'update_published',

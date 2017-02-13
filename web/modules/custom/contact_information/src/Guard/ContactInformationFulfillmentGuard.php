@@ -30,7 +30,7 @@ class ContactInformationFulfillmentGuard implements GuardInterface {
    *
    * Will be used to override the default user used by workflows.
    *
-   * @var \Drupal\joinup_user\WorkflowUserProvider
+   * @var \Drupal\joinup_core\WorkflowUserProvider
    */
   protected $workflowUserProvider;
 
