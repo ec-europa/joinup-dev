@@ -598,7 +598,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       ],
       'news' => [
         'headline' => 'field_news_headline',
-        'state' => 'field_news_state',
+        'state' => 'field_state',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,

@@ -2,21 +2,22 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_news_state
+    - field.storage.node.field_state
     - node.type.news
   module:
     - state_machine
-id: node.news.field_news_state
-field_name: field_news_state
+id: node.news.field_state
+field_name: field_state
 entity_type: node
 bundle: news
 label: State
 description: ''
 required: true
 translatable: false
-default_value: {  }
-default_value_callback: ''
+default_value:
+  -
+    value: __new__
 settings:
-  workflow: news_workflow
-  workflow_callback: ''
+  workflow: ''
+  workflow_callback: joinup_news_workflow_selector
 field_type: state
