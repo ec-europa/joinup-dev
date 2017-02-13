@@ -2706,7 +2706,7 @@
                 "issues": "https://www.drupal.org/project/issues/phingdrushtask",
                 "source": "https://github.com/pfrenssen/phingdrushtask/tree/7.x-2.x"
             },
-            "time": "2016-10-12T12:47:47+00:00"
+            "time": "2016-10-12 12:47:47"
         },
         {
             "name": "drupal/r4032login",
@@ -7670,7 +7670,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/default_content",
-                "reference": "11fa54825b611dc280dd0621b090c2b53dea0f29"
+                "reference": "e4e75b9fa7929568be23d3362ae31f39b769a9aa"
             },
             "require": {
                 "drupal/core": "*"
@@ -7681,8 +7681,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+3-dev",
-                    "datestamp": "1486594686"
+                    "version": "8.x-1.0-alpha3+4-dev",
+                    "datestamp": "1486595584"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
