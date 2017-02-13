@@ -5,6 +5,8 @@ contact_information_workflow:
   group: contact_information
   states:
     # The first state is used as the initial state when creating a new entity.
+    __new__:
+      label: - New -
     validated:
       label: Validated
     # State used to flag content that is being reviewed.
@@ -15,7 +17,7 @@ contact_information_workflow:
   transitions:
     validate:
       label: Publish
-      from: [deletion_request]
+      from: [__new__, deletion_request]
       to: validated
     update_published:
       label: Update
