@@ -924,8 +924,15 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $uid = reset($result);
 
       if (empty($result)) {
-        throw new \InvalidArgumentException("Unable to load author of comment.");
+        throw new \InvalidArgumentException('Unable to load author of comment.');
       }
+
+      // Replace field_body alias if present.
+      if (isset($comment_values['message'])) {
+        $comment_values['field_body'] = $comment_values['message'];
+        unset($comment_values['message']);
+      }
+
       unset($comment_values['parent']);
       unset($comment_values['author']);
       $comment_values['uid'] = $uid;
