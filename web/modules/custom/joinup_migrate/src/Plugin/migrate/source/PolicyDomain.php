@@ -43,8 +43,9 @@ class PolicyDomain extends SourcePluginBase {
    * {@inheritdoc}
    */
   public function initializeIterator() {
+    $db = Database::getConnection('default', 'migrate');
     /** @var \Drupal\Core\Database\Query\SelectInterface $query */
-    $query = Database::getConnection()->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
+    $query = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
       ->condition('m.type', 'asset_release')
       ->condition('m.migrate', 1);
     $query->join('joinup_migrate_collection', 'c', 'm.collection = c.collection');

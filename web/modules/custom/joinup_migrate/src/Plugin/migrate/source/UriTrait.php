@@ -33,7 +33,7 @@ trait UriTrait {
         $uri = "http://$uri";
       }
 
-      if (!$allow_internal && $url['host'] === 'joinup.ec.europa.eu') {
+      if (!$allow_internal && !empty($url['host']) && $url['host'] === 'joinup.ec.europa.eu') {
         $row->setSourceProperty($name, NULL);
         return;
       }
