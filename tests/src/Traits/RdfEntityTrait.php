@@ -55,7 +55,7 @@ trait RdfEntityTrait {
    * @param string $type
    *   The RDF entity type.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   The RDF entity.
    *
    * @throws \InvalidArgumentException

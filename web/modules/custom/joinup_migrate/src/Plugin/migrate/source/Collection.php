@@ -3,7 +3,6 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Database\Database;
 use Drupal\migrate\Row;
 
 /**
@@ -48,9 +47,9 @@ class Collection extends CollectionBase {
   public function query() {
     $query = parent::query();
 
-    $this->alias['og'] = $query->leftJoin("{$this->getSourceDbName()}.og", 'og', "{$this->alias['node']}.nid = %alias.nid");
-    $this->alias['repository_url'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_repository_url", 'repository_url', "{$this->alias['repository']}.vid = %alias.vid");
-    $this->alias['node_revision'] = $query->leftJoin("{$this->getSourceDbName()}.node_revisions", 'node_revision', "{$this->alias['node']}.vid = %alias.vid");
+    $this->alias['og'] = $query->leftJoin('og', 'og', "{$this->alias['node']}.nid = %alias.nid");
+    $this->alias['repository_url'] = $query->leftJoin('content_field_repository_url', 'repository_url', "{$this->alias['repository']}.vid = %alias.vid");
+    $this->alias['node_revision'] = $query->leftJoin('node_revisions', 'node_revision', "{$this->alias['node']}.vid = %alias.vid");
 
     $query
       ->fields('j', [
@@ -117,7 +116,7 @@ class Collection extends CollectionBase {
     }
 
     // Get affiliates.
-    $affiliates = Database::getConnection()->select('joinup_migrate_mapping', 'j')
+    $affiliates = $this->select('joinup_migrate_mapping', 'j')
       ->fields('j', ['nid'])
       ->orderBy('j.collection')
       ->condition('j.migrate', 1)
@@ -128,7 +127,11 @@ class Collection extends CollectionBase {
     $row->setSourceProperty('affiliates', $affiliates);
 
     // Owner.
-    $row->setSourceProperty('owner', $this->getCollectionOwners($collection) ?: NULL);
+    $owner = $this->getCollectionOwners($collection) ?: NULL;
+    $row->setSourceProperty('owner', $owner);
+    if (!$owner) {
+      $this->migration->getIdMap()->saveMessage(['collection' => $collection], "No owner for '$collection'");
+    }
 
     // Contacts.
     $row->setSourceProperty('contact', $this->getCollectionContacts($collection) ?: NULL);
@@ -158,14 +161,14 @@ class Collection extends CollectionBase {
     }
     // The country list is compiled from the compounding content-types.
     else {
-      $query = Database::getConnection()->select('joinup_migrate_mapping', 'm')
+      $query = $this->select('joinup_migrate_mapping', 'm')
         ->distinct()
         ->fields('n', ['vid'])
         ->condition('m.collection', $row->getSourceProperty('collection'))
         ->condition('n.type', ['asset_release'], 'IN')
         ->condition('m.migrate', 1)
         ->isNotNull('m.nid');
-      $query->join(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'm.nid = n.nid');
+      $query->join('node', 'n', 'm.nid = n.nid');
       $vids = $query->execute()->fetchCol();
     }
 

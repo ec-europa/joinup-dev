@@ -87,7 +87,7 @@ use Drupal\user\UserInterface;
  *   },
  *   list_cache_contexts = { "user" },
  *   base_table = null,
- *   admin_permission = "administer rdf_entity entity",
+ *   admin_permission = "administer rdf entity",
  *   fieldable = TRUE,
  *   entity_keys = {
  *     "id" = "id",
@@ -415,6 +415,13 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    */
   public static function getCurrentUserId() {
     return array(\Drupal::currentUser()->id());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasGraph($graph) {
+    return $this->entityTypeManager()->getStorage($this->getEntityTypeId())->hasGraph($this->id(), $graph);
   }
 
 }

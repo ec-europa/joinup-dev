@@ -5,6 +5,7 @@
  * Functions to support theming in the Joinup theme.
  */
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
@@ -194,6 +195,25 @@ function joinup_theme_preprocess_fieldset(&$variables) {
 }
 
 /**
+ * Prepares variables for file form widget templates.
+ *
+ * Default template: file-managed-file.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: A render element representing the file.
+ */
+function joinup_preprocess_file_managed_file(array &$variables) {
+  // Workaround for https://www.drupal.org/node/2705471
+  // Restore states related attributes.
+  $element = &$variables['element'];
+  if (!empty($element['#states'])) {
+    $variables['attributes']['data-drupal-states'] = Json::encode($element['#states']);
+  }
+
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
@@ -340,6 +360,9 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_release(&$variabl
   $is_latest_release = FALSE;
   $field_solution = $entity->get('field_isr_is_version_of');
   if (!empty($field_solution) && ($solution = $field_solution->entity)) {
+    // @todo Find a better way of marking the latest release that doesn't
+    //   involve performing a database query in the theme layer.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
     $latest_release = solution_get_latest_release($solution);
     if ($latest_release && $latest_release->id() === $entity->id()) {
       $is_latest_release = TRUE;

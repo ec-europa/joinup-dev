@@ -389,6 +389,24 @@ class Query extends QueryBase implements QueryInterface {
       $this->condition->condition('?entity', SparqlArg::uri($field_rdf_name), $value);
     }
 
+    if ($operator == 'IN') {
+      if (!$value) {
+        return $this;
+      }
+      // @todo this code will be handled in ISAICP-2631
+      if (strpos($property, '.') !== FALSE) {
+        list ($field_name, $column) = explode('.', $property);
+      }
+      else {
+        $field_name = $property;
+      }
+      $field_rdf_name = $this->getFieldRdfPropertyName($field_name, $field_storage_definitions);
+      $this->condition->condition('?entity', SparqlArg::uri($field_rdf_name), '?' . $field_name);
+      $ids_list = "(<" . implode(">, <", $value) . ">)";
+      $this->filter->filter('?' . $field_name . ' IN ' . $ids_list);
+      return $this;
+    }
+
     return $this;
   }
 

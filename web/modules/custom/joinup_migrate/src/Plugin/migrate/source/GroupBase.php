@@ -2,8 +2,6 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Core\Database\Database;
-
 /**
  * Provides a base class for group (collection, solution) source plugins.
  */
@@ -24,8 +22,7 @@ abstract class GroupBase extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    return Database::getConnection()
-      ->select('joinup_migrate_collection', 'j', ['fetch' => \PDO::FETCH_ASSOC])
+    return $this->select('joinup_migrate_collection', 'j')
       ->fields('j', ['collection']);
   }
 

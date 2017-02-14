@@ -46,6 +46,7 @@ dependencies:
     - ds
     - image
     - joinup_core
+    - user
 id: rdf_entity.solution.group_header
 targetEntityType: rdf_entity
 bundle: solution

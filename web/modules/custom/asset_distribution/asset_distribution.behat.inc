@@ -69,9 +69,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @codingStandardsIgnoreStart
    *   Table format:
-   *   uri                                     | title            | description                | access url                               | file     | creation date     | modification date
-   *   http://joinup.eu/asset_distribution/foo | Foo distribution | This is a foo distribution | http://base_url.com/path-to-file.zip     | test.zip | 28-01-1995 12:05  |
-   *   http://joinup.eu/asset_distribution/bar | Bar distribution | This is a bar distribution | http://external_url.com/path-to-file.zip | test.zip | 28-01-1995 12:06  |
+   *   | uri                                     | title            | description                | access url                               | file     | creation date     | modification date | parent        |
+   *   | http://joinup.eu/asset_distribution/foo | Foo distribution | This is a foo distribution | http://base_url.com/path-to-file.zip     | test.zip | 28-01-1995 12:05  | 30-01-1995 10:44  | Solution name |
+   *   | http://joinup.eu/asset_distribution/bar | Bar distribution | This is a bar distribution | http://external_url.com/path-to-file.zip | test.zip | 28-01-1995 12:06  |                   | Release name  |
    * @codingStandardsIgnoreEnd
    *
    * Fields title and description are mandatory.
@@ -79,26 +79,11 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )asset distributions:
+   * @Given (the following )(asset )distributions:
    */
   public function givenAssetDistributions(TableNode $asset_distribution_table) {
-    $aliases = self::assetDistributionFieldAliases();
-
-    foreach ($asset_distribution_table->getColumnsHash() as $asset_distribution) {
-      $values = [];
-      // Replace the column aliases with the actual field names.
-      foreach ($asset_distribution as $key => $value) {
-        if (array_key_exists($key, $aliases)) {
-          $values[$aliases[$key]] = $value;
-        }
-        else {
-          throw new \Exception("Unknown column '$key' in asset distribution table.");
-        }
-      };
-
-      $values = $this->convertValueAliases($values);
-
-      $this->createAssetDistribution($values);
+    foreach ($asset_distribution_table->getColumnsHash() as $values) {
+      $this->createAssetDistributionFromAliasedTableValues($values);
     }
   }
 
@@ -106,13 +91,14 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Creates an asset distribution with data provided in a table.
    *
    * Table format:
-   * | title             | Sample distribution                          |
-   * | uri               | http://joinup.eu/distribution/foobar         |
-   * | description       | A sample distribution                        |
-   * | access url        | http://internal-or-external.path/to/file.zip |
-   * | file              | test.zip                                     |
+   * | title       | Sample distribution                          |
+   * | uri         | http://joinup.eu/distribution/foobar         |
+   * | description | A sample distribution                        |
+   * | access url  | http://internal-or-external.path/to/file.zip |
+   * | file        | test.zip                                     |
+   * | parent      | Release or solution name                     |
    *
-   * Fields title and description are required.
+   * Fields 'title' and 'description' are required.
    *
    * @param TableNode $asset_distribution_table
    *   The asset distribution data.
@@ -120,25 +106,11 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )distribution:
+   * @Given (the following )(asset )distribution:
    */
   public function givenAssetDistribution(TableNode $asset_distribution_table) {
-    $aliases = self::assetDistributionFieldAliases();
-
-    $values = [];
-    // Replace the column aliases with the actual field names.
-    foreach ($asset_distribution_table->getRowsHash() as $key => $value) {
-      if (array_key_exists($key, $aliases)) {
-        $values[$aliases[$key]] = $value;
-      }
-      else {
-        throw new \Exception("Unknown column '$key' in solution table.");
-      }
-    };
-
-    $values = $this->convertValueAliases($values);
-
-    $this->createAssetDistribution($values);
+    $values = $asset_distribution_table->getRowsHash();
+    $this->createAssetDistributionFromAliasedTableValues($values);
   }
 
   /**
@@ -166,6 +138,60 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
 
     return $asset_distribution;
+  }
+
+  /**
+   * Creates an asset distribution using the provided aliases table values.
+   *
+   * @param array $aliased_values
+   *   An associative array of values used to create the distribuion, with keys
+   *   using the aliases from self::assetDistributionFieldAliases(). If the key
+   *   'parent' is present, a relation with a parent solution or release with
+   *   a label matching this value will be created.
+   *
+   * @throws \Exception
+   *   Thrown when an unknown key alias is present in the list of values.
+   */
+  protected function createAssetDistributionFromAliasedTableValues(array $aliased_values) {
+    $aliases = self::assetDistributionFieldAliases();
+
+    $values = [];
+    // Replace the column aliases with the actual field names.
+    foreach ($aliased_values as $key => $value) {
+      if (array_key_exists($key, $aliases)) {
+        $values[$aliases[$key]] = $value;
+      }
+      // If the 'parent' key is present we will have to create a relation to the
+      // parent entity, which is either a release or a solution.
+      elseif ($key === 'parent') {
+        $parent_entity = self::getRdfEntityByLabel($value);
+
+        // If we know the parent then we can transparently populate the group
+        // reference to the solution.
+        if (!array_key_exists('solution', $aliased_values)) {
+          $solution_label = NULL;
+          if ($parent_entity->bundle() === 'solution') {
+            $solution_label = $parent_entity->label();
+          }
+          elseif ($solution_entity_id = $parent_entity->field_isr_is_version_of->value) {
+            $solution_label = Rdf::load($solution_entity_id)->label();
+          }
+          $values[OgGroupAudienceHelperInterface::DEFAULT_FIELD] = $solution_label;
+        }
+      }
+      else {
+        throw new \Exception("Unknown key '$key' in asset distribution table.");
+      }
+    };
+
+    $values = $this->convertValueAliases($values);
+
+    $asset_distribution_entity = $this->createAssetDistribution($values);
+
+    // Create the relation with the parent entity if requested.
+    if (!empty($parent_entity)) {
+      asset_distribution_add_parent_relation($asset_distribution_entity, $parent_entity);
+    }
   }
 
   /**
@@ -231,7 +257,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Navigates to the canonical page display of an asset release.
+   * Navigates to the canonical page display of an asset distribution.
    *
    * @param string $title
    *   The title of the asset distribution.
@@ -291,7 +317,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *    The array with the values converted.
    */
   protected function convertValueAliases(array $fields) {
-    if (isset($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD])) {
+    if (!empty($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD])) {
       $solution = $this->getRdfEntityByLabel($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD], 'solution');
       $fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD] = $solution->id();
     }

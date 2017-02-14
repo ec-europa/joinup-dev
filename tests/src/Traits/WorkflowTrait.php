@@ -60,7 +60,7 @@ trait WorkflowTrait {
 
     // Set the user to the workflow user provider so that states available are
     // retrieved for the specific account.
-    \Drupal::service('joinup_user.workflow.user_provider')->setUser($user);
+    \Drupal::service('joinup_core.workflow.user_provider')->setUser($user);
 
     $field = $this->getEntityStateField($entity);
     $allowed_transitions = $field->getTransitions();
@@ -93,7 +93,7 @@ trait WorkflowTrait {
 
     // Set the user to the workflow user provider so that states available are
     // retrieved for the specific account.
-    \Drupal::service('joinup_user.workflow.user_provider')->setUser($user);
+    \Drupal::service('joinup_core.workflow.user_provider')->setUser($user);
 
     $field = $this->getEntityStateField($entity);
 
@@ -147,7 +147,7 @@ trait WorkflowTrait {
   protected function getEntityStateField(EntityInterface $entity) {
     $field_definition = $this->getEntityStateFieldDefinition($entity);
     if ($field_definition == NULL) {
-      throw new \Exception("No state fields were found in the entity.");
+      throw new \Exception('No state fields were found in the entity.');
     }
     return $entity->{$field_definition->getName()}->first();
   }

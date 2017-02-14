@@ -123,19 +123,6 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           '#attributes' => ['class' => ['circle-menu__link']],
         ];
       }
-
-      // 'Add discussion' link.
-      $discussion_url = Url::fromRoute('joinup_discussion.rdf_entity_discussion.add', [
-        'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
-      ]);
-      if ($discussion_url->access()) {
-        $links['discussion'] = [
-          '#type' => 'link',
-          '#title' => $this->t('Add discussion'),
-          '#url' => $discussion_url,
-          '#attributes' => ['class' => ['circle-menu__link']],
-        ];
-      }
     }
 
     /** @var \Drupal\Core\Plugin\Context\Context[] $solution_contexts */
@@ -274,6 +261,16 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     }
 
     return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @todo: Temporary workaround for wrong caching.
+   * @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3133
+   */
+  public function getCacheMaxAge() {
+    return 0;
   }
 
   /**

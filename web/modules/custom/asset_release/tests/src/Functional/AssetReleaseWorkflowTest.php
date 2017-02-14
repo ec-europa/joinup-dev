@@ -473,4 +473,11 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function getEntityBundle() {
+    return 'asset_release';
+  }
+
 }

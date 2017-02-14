@@ -11,7 +11,7 @@ services:
       - { name: cache.context }
   asset_release.fulfillment_guard:
     class: Drupal\asset_release\Guard\AssetReleaseFulfillmentGuard
-    arguments: ['@entity_type.manager', '@joinup_user.workflow.user_provider', '@asset_release.relations']
+    arguments: ['@entity_type.manager', '@joinup_core.workflow.user_provider', '@asset_release.relations', '@config.factory', '@current_user']
     tags:
       - { name: state_machine.guard, group: asset_release }
   asset_release.relations:

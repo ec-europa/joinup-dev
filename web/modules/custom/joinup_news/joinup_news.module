@@ -5,14 +5,9 @@
  * Provides functionality for the news content entity.
  */
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_news\Guard\JoinupNewsFulfillmentGuard;
-use Drupal\og\Og;
-use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -37,46 +32,28 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
 }
 
 /**
- * Implements hook_node_access().
+ * Returns the appropriate workflow to use for the news entity.
  *
- * Interrupts the permissions for updating a node. The permission is not
- * granted if there are no transitions allowed for the current state of the
- * node.
+ * The callback ensures that even if the parent is updated and the moderation
+ * status changes, it will still use the proper workflow.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *    The news entity.
+ *
+ * @return string
+ *    The id of the workflow to use.
+ *
+ * @throws Exception
+ *    Thrown when the function is called for a different bundle.
  */
-function joinup_news_node_access(EntityInterface $node, $op, AccountInterface $account) {
-  if ($node->bundle() != 'news') {
-    return AccessResult::neutral();
+function joinup_news_workflow_selector(EntityInterface $entity) {
+  if ($entity->bundle() != 'news') {
+    throw new Exception('This method can only be called for document entities.');
   }
-
-  if ($op == 'update') {
-    $allowed_transitions = $node->get('field_news_state')->first()->getTransitions();
-    if (empty($allowed_transitions)) {
-      return AccessResult::forbidden();
-    }
-  }
-
-  // Check if the user is a member and has a global permission.
-  if ($op == 'view' && !$node->isPublished()) {
-    $parent = JoinupNewsFulfillmentGuard::getParent($node);
-    // Temporary workaround because Og is not checking for membership.
-    // @todo Remove workaround as soon as this is fixed in OG.
-    // @see https://github.com/amitaibu/og/pull/217
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2622
-    if ($parent instanceof RdfInterface && Og::isMember($parent, Drupal::currentUser())) {
-      /** @var \Drupal\Core\Access\AccessResult $global_permission */
-      $global_permission = \Drupal::service('og.access')->userAccessEntity('view any unpublished content', $parent, $account);
-      if ($global_permission->isAllowed()) {
-        return $global_permission;
-      }
-
-      $global_permission = \Drupal::service('og.access')->userAccessEntity('view any unpublished news content', $parent, $account);
-      if ($global_permission->isAllowed()) {
-        return $global_permission;
-      }
-    }
-  }
-
-  return AccessResult::neutral();
+  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
+  $relation_manager = \Drupal::service('joinup_core.relations_manager');
+  $moderation = $relation_manager->getParentModeration($entity);
+  return $moderation == 1 ? 'node:news:pre_moderated' : 'node:news:post_moderated';
 }
 
 /**

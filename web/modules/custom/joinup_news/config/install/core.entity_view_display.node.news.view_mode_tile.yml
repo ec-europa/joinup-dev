@@ -8,7 +8,7 @@ dependencies:
     - field.field.node.news.field_news_headline
     - field.field.node.news.field_news_shared_in
     - field.field.node.news.field_news_source_url
-    - field.field.node.news.field_news_state
+    - field.field.node.news.field_state
     - field.field.node.news.field_spatial_coverage
     - field.field.node.news.field_topic
     - field.field.node.news.og_audience
@@ -97,7 +97,7 @@ hidden:
   field_news_headline: true
   field_news_shared_in: true
   field_news_source_url: true
-  field_news_state: true
+  field_state: true
   field_spatial_coverage: true
   links: true
   og_audience: true
