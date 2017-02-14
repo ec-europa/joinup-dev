@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\rdf_entity;
+namespace Drupal\rdf_entity\Tests;
 
 use Drupal\Core\Database\Database;
 use EasyRdf\Http;
@@ -64,6 +64,40 @@ trait RdfDatabaseConnectionTrait {
     $this->sparql = Database::getConnection('default', 'sparql_default');
 
     return TRUE;
+  }
+
+  /**
+   * Sets the connection details to the settings.php file.
+   *
+   * The BrowserTestBase is creating a new copy of the settings.php file to the
+   * test directory so the sparql entry needs to be inserted to the new
+   * configuration.
+   *
+   * @todo: The settings should not be hardcoded.
+   */
+  protected function setUpSparqlForBrowser() {
+    $key = 'sparql_default';
+    $target = 'default';
+    $database = array(
+      'prefix' => '',
+      'host' => 'localhost',
+      'port' => '8890',
+      'namespace' => 'Drupal\\rdf_entity\\Database\\Driver\\sparql',
+      'driver' => 'sparql',
+    );
+    $settings['databases'][$key][$target] = (object) array(
+      'value' => $database,
+      'required' => TRUE,
+    );
+    if (!isset($settings_file)) {
+      $settings_file = \Drupal::service('site.path') . '/settings.php';
+    }
+
+    // Settings file is readonly at the moment.
+    chmod($settings_file, 0666);
+    drupal_rewrite_settings($settings);
+    // Restore original permissions to the settings file.
+    chmod($settings_file, 0444);
   }
 
 }

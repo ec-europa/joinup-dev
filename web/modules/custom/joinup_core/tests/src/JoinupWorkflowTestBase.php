@@ -5,7 +5,7 @@ namespace Drupal\Tests\joinup_core;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
-use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\rdf_entity\RdfWebTestBase;
 use Drupal\Tests\rdf_entity\RdfDatabaseConnectionTrait;
 
 /**
@@ -13,7 +13,7 @@ use Drupal\Tests\rdf_entity\RdfDatabaseConnectionTrait;
  *
  * @group rdf_entity
  */
-abstract class JoinupWorkflowTestBase extends BrowserTestBase {
+abstract class JoinupWorkflowTestBase extends RdfWebTestBase {
 
   use RdfDatabaseConnectionTrait;
 
@@ -53,16 +53,7 @@ abstract class JoinupWorkflowTestBase extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
-    // The SPARQL connection has to be set up before.
-    if (!$this->setUpSparql()) {
-      $this->markTestSkipped('No Sparql connection available.');
-    }
-    // Test is not compatible with Virtuoso 6.
-    if ($this->detectVirtuoso6()) {
-      $this->markTestSkipped('Skipping: Not running on Virtuoso 6.');
-    }
-
+  protected function setUp() {
     parent::setUp();
     $this->ogMembershipManager = \Drupal::service('og.membership_manager');
     $this->ogAccess = $this->container->get('og.access');
@@ -121,29 +112,5 @@ abstract class JoinupWorkflowTestBase extends BrowserTestBase {
    *    The entity bundle machine name.
    */
   abstract protected function getEntityBundle();
-
-  /**
-   * {@inheritdoc}
-   */
-  public function tearDown() {
-    // Delete all data produced by testing module.
-    foreach (['published', 'draft'] as $graph) {
-      $query = <<<EndOfQuery
-DELETE {
-  GRAPH <http://example.com/dummy/$graph> {
-    ?entity ?field ?value
-  }
-}
-WHERE {
-  GRAPH <http://example.com/dummy/$graph> {
-    ?entity ?field ?value
-  }
-}
-EndOfQuery;
-      $this->sparql->query($query);
-    }
-
-    parent::tearDown();
-  }
 
 }

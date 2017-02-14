@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\rdf\Kernel;
+namespace Drupal\rdf_entity\Tests\Kernel;
 
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\simpletest\UserCreationTrait;
@@ -12,6 +12,7 @@ use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
  * @group rdf_entity
  */
 class RdfOwnerTest extends JoinupKernelTestBase {
+
   use UserCreationTrait;
 
   /**

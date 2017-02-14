@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\rdf_entity\Kernel;
+namespace Drupal\rdf_entity\Tests\Kernel;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\rdf_entity\Entity\Rdf;

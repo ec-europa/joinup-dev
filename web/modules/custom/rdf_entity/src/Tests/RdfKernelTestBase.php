@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\rdf_entity;
+namespace Drupal\rdf_entity\Tests;
 
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
@@ -9,7 +9,7 @@ use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
  *
  * Sets up the SPARQL database connection.
  */
-class RdfTestBase extends EntityKernelTestBase {
+abstract class RdfKernelTestBase extends EntityKernelTestBase {
 
   use RdfDatabaseConnectionTrait;
 
@@ -28,7 +28,7 @@ class RdfTestBase extends EntityKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  protected function setUp() {
     parent::setUp();
 
     if (!$this->setUpSparql()) {

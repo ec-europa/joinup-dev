@@ -4,6 +4,7 @@ namespace Drupal\Tests\joinup_core\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\rdf_entity\RdfDatabaseConnectionTrait;
+use Drupal\Tests\rdf_entity\RdfKernelTestBase;
 
 /**
  * Provides a base class for Joinup kernel tests.
@@ -21,7 +22,7 @@ use Drupal\Tests\rdf_entity\RdfDatabaseConnectionTrait;
  * cleaning it after the test. You can extend the tearDown() method for this
  * purpose.
  */
-abstract class JoinupKernelTestBase extends KernelTestBase {
+abstract class JoinupKernelTestBase extends RdfKernelTestBase {
 
   use RdfDatabaseConnectionTrait;
 
