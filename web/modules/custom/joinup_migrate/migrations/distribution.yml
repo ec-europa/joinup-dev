@@ -7,12 +7,7 @@ source:
 process:
   id: uri
   label: title
-
-  # These two fields will be merged into a single one in ISAICP-3007
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
-  # field_ad_access_url:
-  # field_ad_file:
-
+  field_ad_access_url: access_url
   field_ad_creation_date: created_time
   field_ad_description/value: body
   field_ad_description/format:
