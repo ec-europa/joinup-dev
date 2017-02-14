@@ -26,20 +26,20 @@ Feature: Creation of news through the UI.
 
     # Sharing inside the same parent should not be possible.
     And I fill in "Shared in" with "Metal fans"
-    And I press "Validate"
+    And I press "Publish"
     Then I should see the error message "You cannot reference the parent Metal fans in field Shared in."
 
     # Sharing into a solution should not be possible.
     When I fill in "Shared in" with "Density catalogue project"
-    And I press "Validate"
+    And I press "Publish"
     Then I should see the error message 'There are no entities matching "Density catalogue project".'
 
     # Share the content in another collection.
     When I fill in "Shared in" with "Hardcore diggers"
-    And I press "Validate"
+    And I press "Publish"
     Then I should see the success message "News Ytterbium metal of the year has been created."
     # Verify that the referenced collection is rendered as tile.
-    #And I should see the "Hardcore diggers" tile
+    And I should see the "Hardcore diggers" tile
 
     # Edit again and try to share into the same collection.
     When I click "Edit" in the "Entity actions" region
@@ -52,7 +52,7 @@ Feature: Creation of news through the UI.
     And I press "Update"
     Then I should see the success message "News Ytterbium metal of the year has been updated."
     # Verify that the tiles are shown.
-    #Then I should see the "Hardcore diggers" tile
-    #And I should see the "Cool blacksmiths" tile
+    Then I should see the "Hardcore diggers" tile
+    And I should see the "Cool blacksmiths" tile
 
     # @todo Add test coverage for solutions when ISAICP-2544 work is done.
