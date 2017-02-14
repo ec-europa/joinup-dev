@@ -1,5 +1,5 @@
 id: distribution
-label: 'Distributions migration'
+label: 'Distribution'
 migration_tags:
   - distribution
 source:

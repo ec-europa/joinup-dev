@@ -1,5 +1,5 @@
 id: owner
-label: 'Owner migration'
+label: 'Owner'
 source:
   plugin: owner
   track_changes: true

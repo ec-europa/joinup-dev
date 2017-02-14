@@ -1,5 +1,5 @@
 id: collection
-label: 'Collection migration'
+label: 'Collection'
 migration_tags:
   - og
   - collection

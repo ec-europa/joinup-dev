@@ -1,5 +1,5 @@
 id: collection_banner
-label: 'Collection banner file migration'
+label: 'Collection banner'
 migration_tags:
   - collection
   - file

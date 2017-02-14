@@ -1,5 +1,5 @@
 id: licence
-label: 'Licence migration'
+label: 'Licence'
 migration_tags:
   - distribution
   - licence
