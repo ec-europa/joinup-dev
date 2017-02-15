@@ -181,14 +181,14 @@ class RdfFileFieldTest extends RdfWebTestBase {
   /**
    * Gets the absolute URI of an entity.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   * @param \Drupal\file\FileInterface $file
    *   The entity for which to generate the URI.
    *
    * @return string
    *   The absolute URI.
    */
-  protected function getAbsoluteUri(ContentEntityInterface $entity) {
-    return $entity->toUrl('canonical', array('absolute' => TRUE));
+  protected function getFileAbsoluteUri(FileInterface $file) {
+    return file_create_url($file->getFileUri());
   }
 
   /**

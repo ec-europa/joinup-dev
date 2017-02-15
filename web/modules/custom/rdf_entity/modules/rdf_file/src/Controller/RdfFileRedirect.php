@@ -24,7 +24,7 @@ class RdfFileRedirect extends ControllerBase {
    *   The redirect object.
    */
   public function redirectToFile(FileInterface $file) {
-    $url = $file->url();
+    $url = $file->toUrl();
     return new RedirectResponse($url);
   }
 

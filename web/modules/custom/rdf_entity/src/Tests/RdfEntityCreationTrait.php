@@ -67,7 +67,6 @@ trait RdfEntityCreationTrait {
     $settings += array(
       'label'     => $this->randomMachineName(8),
       'rid'      => 'dummy',
-      'id'       => $this->getRandomUri(),
     );
     $rdf_entity = Rdf::create($settings);
     $rdf_entity->save();

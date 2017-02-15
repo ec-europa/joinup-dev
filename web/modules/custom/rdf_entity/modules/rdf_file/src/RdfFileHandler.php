@@ -38,7 +38,7 @@ class RdfFileHandler {
    * @param string $url
    *   URL.
    *
-   * @return \Drupal\Core\Entity\EntityInterface
+   * @return \Drupal\file\FileInterface
    *   The file object.
    */
   public static function urlToFile($url) {
