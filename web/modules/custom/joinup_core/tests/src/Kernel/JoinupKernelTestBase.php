@@ -40,8 +40,6 @@ abstract class JoinupKernelTestBase extends RdfKernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    parent::setUp();
-
     if (!$this->setUpSparql()) {
       $this->markTestSkipped('No Sparql connection available.');
     }
@@ -49,6 +47,8 @@ abstract class JoinupKernelTestBase extends RdfKernelTestBase {
     if ($this->detectVirtuoso6()) {
       $this->markTestSkipped('Skipping: Not running on Virtuoso 6.');
     }
+
+    parent::setUp();
     $this->installSchema('system', 'sequences');
     $this->installEntitySchema('user');
     $this->installConfig(['rdf_entity']);
