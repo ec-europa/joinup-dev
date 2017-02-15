@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\rdf_entity\Tests;
+namespace Drupal\tests\rdf_entity;
 
 use Drupal\Tests\BrowserTestBase;
 

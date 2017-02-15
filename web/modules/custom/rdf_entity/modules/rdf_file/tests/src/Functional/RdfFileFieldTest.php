@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\rdf_file\Tests;
+namespace Drupal\Tests\rdf_file;
 
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\rdf_entity\Tests\RdfWebTestBase;
+use Drupal\Tests\rdf_entity\RdfWebTestBase;
 use Drupal\rdf_file\Entity\RemoteFile;
 use Drupal\rdf_file\RdfFileHandler;
 

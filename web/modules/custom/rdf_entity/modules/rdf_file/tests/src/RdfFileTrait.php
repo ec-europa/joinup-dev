@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\rdf_file\Tests;
+namespace Drupal\Tests\rdf_file;
 
 use Drupal\file\Entity\File;
-use Drupal\rdf_entity\Tests\RdfEntityCreationTrait;
+use Drupal\Tests\rdf_entity\RdfEntityCreationTrait;
 use Drupal\Tests\TestFileCreationTrait;
 
 /**
