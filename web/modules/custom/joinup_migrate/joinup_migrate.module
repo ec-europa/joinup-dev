@@ -42,7 +42,7 @@ function joinup_migrate_query_user_migrate_alter(AlterableInterface $query) {
     throw new \LogicException("Table {users} not part of the query.");
   }
 
-  $userpoints_table = $query->leftJoin('userpoints', 'userpoints', "$users_table.uid = %alias.uid");
+  $userpoints_table = $query->join('userpoints', 'userpoints', "$users_table.uid = %alias.uid");
 
   $query
     // Exclude anonymous.
