@@ -15,7 +15,6 @@ class Solution extends SolutionBase {
 
   use ContactTrait;
   use CountryTrait;
-  use ElibraryCreationTrait;
   use MappingTrait;
   use OwnerTrait;
   use UriTrait;
@@ -41,7 +40,6 @@ class Solution extends SolutionBase {
       'status' => $this->t('Status'),
       'contact' => $this->t('Contact info'),
       'distribution' => $this->t('Distribution'),
-      'elibrary' => $this->t('Elibrary creation'),
     ] + parent::fields();
   }
 
@@ -66,7 +64,7 @@ class Solution extends SolutionBase {
     $query->addExpression("TRIM({$this->alias['data_set_uri']}.field_id_uri_value)", 'metrics_page');
 
     return $query
-      ->fields('m', ['elibrary', 'policy2'])
+      ->fields('m', ['policy2'])
       ->fields($this->alias['node'], ['title', 'created', 'changed', 'vid'])
       ->fields($this->alias['node_revision'], ['body'])
       ->fields($this->alias['state'], ['sid'])
@@ -144,9 +142,6 @@ class Solution extends SolutionBase {
     $query->join('node', 'n', 'd.field_asset_distribution_nid = n.nid');
     $distributions = $query->execute()->fetchCol();
     $row->setSourceProperty('distribution', $distributions);
-
-    // Elibrary creation.
-    $this->elibraryCreation($row);
 
     return parent::prepareRow($row);
   }

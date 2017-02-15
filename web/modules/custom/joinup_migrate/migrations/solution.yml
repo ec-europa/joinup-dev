@@ -36,7 +36,6 @@ process:
   # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
   # field_is_documentation:
 
-  field_is_elibrary_creation: elibrary
   field_keywords: keywords
   field_is_landing_page: landing_page
   field_is_logo:

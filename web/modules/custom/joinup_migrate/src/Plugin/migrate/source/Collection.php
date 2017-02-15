@@ -16,7 +16,6 @@ class Collection extends CollectionBase {
 
   use ContactTrait;
   use CountryTrait;
-  use ElibraryCreationTrait;
   use OwnerTrait;
   use MappingTrait;
 
@@ -138,9 +137,6 @@ class Collection extends CollectionBase {
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getSpatialCoverage($row));
-
-    // Elibrary creation.
-    $this->elibraryCreation($row);
 
     return parent::prepareRow($row);
   }

@@ -77,7 +77,7 @@ class Prepare extends SourcePluginBase {
       ->fetchCol();
 
     $fields = $this->fields();
-    unset($fields['status']);
+    unset($fields['status'], $fields['elibrary']);
     $query = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
       ->fields('m', array_keys($fields))
       ->fields('n', ['vid'])
@@ -99,6 +99,7 @@ class Prepare extends SourcePluginBase {
       if (!isset($collections[$collection])) {
         $collections[$collection] = [
           'collection' => $collection,
+          'elibrary' => NULL,
         ];
       }
 
@@ -128,6 +129,22 @@ class Prepare extends SourcePluginBase {
           }
           $collections[$collection]['nid'] = $row['nid'];
           $collections[$collection]['type'] = $row['type'];
+
+          // Elibrary on community should be computed.
+          if ($row['type'] === 'community') {
+            $deactivated = (bool) $db->select('content_type_community', 'c')
+              ->fields('c', ['vid'])
+              ->condition('c.vid', (int) $row['vid'])
+              ->condition('c.field_community_forum_creation_value', 'Deactivated')
+              ->condition('c.field_community_wiki_creation_value', 'Deactivated')
+              ->condition('c.field_community_news_creation_value', 'Deactivated')
+              ->condition('c.field_community_documents_creati_value', 'Deactivated')
+              ->execute()
+              ->fetchField();
+            if ($deactivated) {
+              $collections[$collection]['elibrary'] = 0;
+            }
+          }
         }
       }
 
