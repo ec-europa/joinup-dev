@@ -2,8 +2,6 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Core\Database\Database;
-
 /**
  * Provides common methods to deal with collection and solution owners.
  */
@@ -20,8 +18,8 @@ trait OwnerTrait {
    */
   protected function getCollectionOwners($collection = NULL) {
     /** @var \Drupal\Core\Database\Query\SelectInterface $query */
-    $query = Database::getConnection()
-      ->select('joinup_migrate_collection', 'c', ['fetch' => \PDO::FETCH_ASSOC])
+    $query = $this->select('joinup_migrate_collection', 'c');
+    $query
       ->fields('c', ['publisher'])
       ->isNotNull('c.publisher');
 
@@ -49,17 +47,21 @@ trait OwnerTrait {
    */
   protected function getSolutionOwners($solution_vid = NULL) {
     /** @var \Drupal\Core\Database\Query\SelectInterface $query */
-    $query = $this->getMappingBaseQuery()
+    $query = $this->getMappingBaseQuery();
+    $query
       ->condition('j.type', 'asset_release')
       ->condition('n.status', 1)
-      ->isNotNull('s.vid');
+      ->isNotNull('s.vid')
+      ->condition('g.type', 'repository');
 
     if ($solution_vid) {
       $query->condition('s.vid', $solution_vid);
     }
 
-    $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'j.nid = n.nid');
-    $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.content_field_asset_publisher', 's', 'n.vid = s.vid');
+    $query->join('node', 'n', 'j.nid = n.nid');
+    $query->join('content_field_asset_publisher', 's', 'n.vid = s.vid');
+    $query->join('og_ancestry', 'oa', 'j.nid = oa.nid');
+    $query->join('node', 'g', 'oa.group_nid = g.nid');
 
     $query->addExpression('s.field_asset_publisher_nid', 'allowed_nid');
 
