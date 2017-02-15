@@ -1,18 +1,20 @@
 <?php
 
 namespace Drupal\rdf_entity\Tests;
-use Drupal\Tests\BrowserTestBase;
 
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Base setup for a Joinup workflow test.
  */
-abstract class RdfWebTestBase extends BrowserTestBase  {
+abstract class RdfWebTestBase extends BrowserTestBase {
 
   use RdfDatabaseConnectionTrait;
 
   /**
    * An array of graphs to clear after the test.
+   *
+   * @var array
    */
   protected $usedGraphs = [];
 

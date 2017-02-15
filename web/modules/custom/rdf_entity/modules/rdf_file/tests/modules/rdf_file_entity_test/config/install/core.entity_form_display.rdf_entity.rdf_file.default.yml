@@ -1,0 +1,40 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.rdf_file.field_rdf_file
+    - rdf_entity.rdfentity.rdf_file
+  module:
+    - rdf_entity
+third_party_settings: { }
+id: rdf_entity.rdf_file.default
+targetEntityType: rdf_entity
+bundle: rdf_file
+mode: default
+content:
+  field_rdf_file:
+    weight: 7
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+  field_ar_creation_date:
+    weight: 12
+    settings:
+      behaviour: create
+    third_party_settings: {  }
+    type: datetime_create_update
+  id:
+    type: auto_uri
+    weight: 0
+    settings:
+      prefix: 'http://joinup.eu/adms/asset-repository'
+    third_party_settings: {  }
+  label:
+    type: string_textfield
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: { }

@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\joinup_core\Kernel;
 
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\rdf_entity\RdfDatabaseConnectionTrait;
 use Drupal\Tests\rdf_entity\RdfKernelTestBase;
 

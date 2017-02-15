@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_rdf_file
+    - rdf_entity.rdfentity.rdf_file
+  module:
+    - rdf_file
+id: rdf_entity.rdf_file.field_rdf_file
+field_name: field_rdf_file
+entity_type: rdf_entity
+bundle: rdf_file
+label: Rdf file field
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'txt doc docx pdf'
+  max_filesize: ''
+  description_field: false
+  handler: 'rdf_file_default:file'
+  handler_settings: {  }
+field_type: rdf_file

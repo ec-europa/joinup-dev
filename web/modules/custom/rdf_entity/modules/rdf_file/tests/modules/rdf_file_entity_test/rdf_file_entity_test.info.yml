@@ -1,0 +1,10 @@
+name: 'Rdf file test entity'
+type: module
+description: 'Support module for rdf file tests.'
+core: 8.x
+package: Testing
+version: VERSION
+
+dependencies:
+  - rdf_entity
+  - rdf_entity_test
