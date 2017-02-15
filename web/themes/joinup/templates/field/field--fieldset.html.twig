@@ -39,19 +39,19 @@
 
 {% if label_hidden %}
   {% if multiple %}
-    <div{{ attributes }}>
+    <div{{ attributes.addClass('fieldset__field') }}>
       {% for item in items %}
         <div{{ item.attributes }}>{{ item.content }}</div>
       {% endfor %}
     </div>
   {% else %}
     {% for item in items %}
-      <div{{ attributes }}>{{ item.content }}</div>
+      <div{{ attributes.addClass('fieldset__field') }}>{{ item.content }}</div>
     {% endfor %}
   {% endif %}
 {% else %}
-  <div{{ attributes }}>
-    <div{{ title_attributes.addClass('details__label') }}>{{ label }}</div>
+  <div{{ attributes.addClass('fieldset__field') }}>
+    <div{{ title_attributes.addClass('fieldset__field-label') }}>{{ label }}</div>
     {% if multiple %}
       <div>
     {% endif %}

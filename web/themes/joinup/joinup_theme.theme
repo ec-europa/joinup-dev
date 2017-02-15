@@ -438,7 +438,7 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
 
     if ($format_date($start_date, 'Y') !== $format_date($end_date, 'Y')) {
       // If the two dates span across a year, show the full start date.
-      $start_date_text = $date_formatter->format($start_date->getTimestamp(), 'textual_month');
+      $start_date_text = $date_formatter->format($start_date->getTimestamp(), 'date_only_text_month');
     }
     elseif ($format_date($start_date, 'm') != $format_date($end_date, 'm')) {
       // Show only month and year if they span across months.
@@ -472,6 +472,17 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
   $variables['additional_content']['field_event_start_date'] = $field_event_start_date;
   $variables['additional_content']['field_event_end_date'] = $field_event_end_date;
   $variables['additional_content']['field_event_location'] = $field_event_location;
+
+  // Creates id for location wrapper.
+  $variables['location_wrapper_id'] = 'field-event-location-wrapper';
+}
+
+/**
+ * Implements hook_preprocess_node__event().
+ */
+function joinup_theme_preprocess_node__event(&$variables) {
+  // Creates id for location wrapper.
+  $variables['location_wrapper_id'] = 'field-event-location-wrapper';
 }
 
 /**

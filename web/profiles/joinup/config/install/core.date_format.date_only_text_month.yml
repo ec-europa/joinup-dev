@@ -1,7 +1,7 @@
 langcode: en
 status: true
 dependencies: {  }
-id: textual_month
-label: 'Textual month'
+id: date_only_text_month
+label: 'Date only with textual month'
 locked: false
 pattern: 'd F Y'
