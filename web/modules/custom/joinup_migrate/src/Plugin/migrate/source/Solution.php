@@ -46,35 +46,6 @@ class Solution extends SolutionBase {
   /**
    * {@inheritdoc}
    */
-  public function query() {
-    $query = parent::query();
-
-    $this->alias['content_type_asset_release'] = $query->leftJoin('content_type_asset_release', 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_documentation'] = $query->leftJoin('node', 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_homepage_doc_nid = %alias.nid");
-    $this->alias['content_type_documentation'] = $query->leftJoin('content_type_documentation', 'content_type_documentation', "{$this->alias['node_documentation']}.vid = %alias.vid");
-    $this->alias['state'] = $query->leftJoin('workflow_node', 'state', "{$this->alias['node']}.nid = %alias.nid");
-
-    $this->alias['content_field_asset_sw_metrics'] = $query->leftJoin('content_field_asset_sw_metrics', 'content_field_asset_sw_metrics', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_metrics'] = $query->leftJoin('node', 'node_metrics', "{$this->alias['content_field_asset_sw_metrics']}.field_asset_sw_metrics_nid = %alias.nid");
-    $this->alias['data_set_uri'] = $query->leftJoin('content_field_id_uri', 'data_set_uri', "{$this->alias['node_metrics']}.vid = %alias.vid");
-
-    $query->addExpression("TRIM({$this->alias['content_type_documentation']}.field_documentation_access_url1_url)", 'landing_page');
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created_time');
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed_time');
-    $query->addExpression("TRIM({$this->alias['data_set_uri']}.field_id_uri_value)", 'metrics_page');
-
-    return $query
-      ->fields('m', ['policy2'])
-      ->fields($this->alias['node'], ['title', 'created', 'changed', 'vid'])
-      ->fields($this->alias['node_revision'], ['body'])
-      ->fields($this->alias['state'], ['sid'])
-      // Assure the URI field.
-      ->addTag('uri');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function prepareRow(Row $row) {
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
@@ -95,15 +66,6 @@ class Solution extends SolutionBase {
       if ($alias && ($uri === $alias)) {
         $row->setSourceProperty('uri', NULL);
       }
-    }
-
-    // Assure a created date.
-    if (!$row->getSourceProperty('created_time')) {
-      $row->setSourceProperty('created_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
-    }
-    // Assure a changed date.
-    if (!$row->getSourceProperty('changed_time')) {
-      $row->setSourceProperty('changed_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
     }
 
     // Keywords.

@@ -18,7 +18,7 @@ trait ContactTrait {
    */
   protected function getCollectionContacts($collection = NULL) {
     /** @var \Drupal\Core\Database\Query\SelectInterface $query */
-    $query = $this->select('joinup_migrate_collection', 'c');
+    $query = $this->select('joinup_migrate_prepare', 'c');
     $query
       ->fields('c', ['contact'])
       ->isNotNull('c.contact');

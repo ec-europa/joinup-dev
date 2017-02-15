@@ -48,7 +48,7 @@ class PolicyDomain extends SourcePluginBase {
     $query = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
       ->condition('m.type', 'asset_release')
       ->condition('m.migrate', 1);
-    $query->join('joinup_migrate_collection', 'c', 'm.collection = c.collection');
+    $query->join('joinup_migrate_prepare', 'c', 'm.collection = c.collection');
     $query->addExpression('c.policy', 'collection_parent');
     $query->addExpression('c.policy2', 'collection_name');
     $query->addExpression('m.policy', 'solution_parent');

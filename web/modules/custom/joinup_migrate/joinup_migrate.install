@@ -13,10 +13,15 @@ use Drupal\Core\Database\Database;
 function joinup_migrate_install() {
   // Create intermediary tables we need for migration. The tables will be
   // created on the source database because they will provide source data.
-  $schema = Database::getConnection('default', 'migrate')->schema();
-  foreach (['joinup_migrate_mapping', 'joinup_migrate_collection'] as $table) {
-    $schema->dropTable($table);
-    $schema->createTable($table, joinup_migrate_source_db_schema($table));
+  $db = Database::getConnection('default', 'migrate');
+  foreach (['joinup_migrate_mapping', 'joinup_migrate_prepare'] as $table) {
+    $db->schema()->dropTable($table);
+    $db->schema()->createTable($table, joinup_migrate_source_db_schema($table));
+  }
+
+  // Install MySQL views.
+  foreach (file_scan_directory(__DIR__ . '/fixture', '/\.sql$/') as $file) {
+    $db->query(file_get_contents($file->uri))->execute();
   }
 
   // Fix the migrate_report path.
@@ -29,8 +34,14 @@ function joinup_migrate_install() {
  * Implements hook_uninstall().
  */
 function joinup_migrate_uninstall() {
-  foreach (['joinup_migrate_mapping', 'joinup_migrate_collection'] as $table) {
-    Database::getConnection('default', 'migrate')->schema()->dropTable($table);
+  $db = Database::getConnection('default', 'migrate');
+  foreach (['joinup_migrate_mapping', 'joinup_migrate_prepare'] as $table) {
+    $db->schema()->dropTable($table);
+  }
+
+  // Remove MySQL views.
+  foreach (file_scan_directory(__DIR__ . '/fixture', '/\.sql$/') as $file) {
+    $db->query("DROP VIEW IF EXISTS {$file->name}")->execute();
   }
 }
 
@@ -146,7 +157,7 @@ function joinup_migrate_source_db_schema($table) {
         'migrate' => ['migrate'],
       ],
     ],
-    'joinup_migrate_collection' => [
+    'joinup_migrate_prepare' => [
       'fields' => [
         'collection' => [
           'description' => 'Collection',
