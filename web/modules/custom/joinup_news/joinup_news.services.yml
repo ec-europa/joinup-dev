@@ -4,6 +4,3 @@ services:
     arguments: ['@entity_type.manager', '@joinup_core.workflow.user_provider', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user']
     tags:
       - { name: state_machine.guard, group: news }
-  joinup_news.relations_manager:
-    class: Drupal\joinup_news\JoinupNewsRelationManager
-    arguments: ['@og.membership_manager']

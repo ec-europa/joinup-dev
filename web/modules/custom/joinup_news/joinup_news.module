@@ -23,8 +23,8 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
     if (!empty($fields['field_news_shared_in'])) {
       $fields['field_news_shared_in']->addConstraint('UniqueFieldValue');
       $fields['field_news_shared_in']->addConstraint('ParentReference', [
-        'service' => 'joinup_news.relations_manager',
-        'method' => 'getNewsParent',
+        'service' => 'joinup_core.relations_manager',
+        'method' => 'getParent',
       ]);
       $fields['field_news_shared_in']->addConstraint('NewsSharedInValidReference');
     }
@@ -71,7 +71,7 @@ function joinup_news_field_widget_entity_reference_autocomplete_form_alter(&$ele
 
   $entity = $items->getEntity();
   /** @var \Drupal\rdf_entity\RdfInterface $parent */
-  $parent = \Drupal::service('joinup_news.relations_manager')->getNewsParent($entity);
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
 
   if (!empty($parent)) {
     // Limit the referenceable entities to be of the same bundle of the parent

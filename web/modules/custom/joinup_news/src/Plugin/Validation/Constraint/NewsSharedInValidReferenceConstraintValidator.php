@@ -3,7 +3,7 @@
 namespace Drupal\joinup_news\Plugin\Validation\Constraint;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\joinup_news\JoinupNewsRelationManager;
+use Drupal\joinup_core\JoinupRelationManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -16,17 +16,17 @@ class NewsSharedInValidReferenceConstraintValidator extends ConstraintValidator 
   /**
    * The news relation manager.
    *
-   * @var \Drupal\joinup_news\JoinupNewsRelationManager
+   * @var \Drupal\joinup_core\JoinupRelationManager
    */
   protected $relationManager;
 
   /**
    * Instantiate the NewsSharedInValidReferenceConstraintValidator validator.
    *
-   * @param \Drupal\joinup_news\JoinupNewsRelationManager $relationManager
+   * @param \Drupal\joinup_core\JoinupRelationManager $relationManager
    *   The news relation manager.
    */
-  public function __construct(JoinupNewsRelationManager $relationManager) {
+  public function __construct(JoinupRelationManager $relationManager) {
     $this->relationManager = $relationManager;
   }
 
@@ -35,7 +35,7 @@ class NewsSharedInValidReferenceConstraintValidator extends ConstraintValidator 
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('joinup_news.relations_manager')
+      $container->get('joinup_core.relations_manager')
     );
   }
 
@@ -49,7 +49,7 @@ class NewsSharedInValidReferenceConstraintValidator extends ConstraintValidator 
       return;
     }
 
-    $parent = $this->relationManager->getNewsParent($items->getEntity());
+    $parent = $this->relationManager->getParent($items->getEntity());
     if (empty($parent)) {
       return;
     }
