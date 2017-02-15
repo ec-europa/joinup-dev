@@ -18,6 +18,11 @@ function joinup_migrate_install() {
     $schema->dropTable($table);
     $schema->createTable($table, joinup_migrate_source_db_schema($table));
   }
+
+  // Fix the migrate_report path.
+  \Drupal::configFactory()->getEditable('migrate_report.config')
+    ->set('report_dir', 'public://migration')
+    ->save();
 }
 
 /**
