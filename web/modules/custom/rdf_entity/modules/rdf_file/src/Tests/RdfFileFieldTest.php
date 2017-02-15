@@ -2,7 +2,6 @@
 
 namespace Drupal\rdf_file\Tests;
 
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -69,8 +68,22 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $type_name = 'rdf_file';
     $field_name = 'field_rdf_file';
     $test_file = $this->getTestFile('text');
+    $settings = ['rid' => $type_name];
 
-    $id = $this->uploadRdfFile($test_file, $field_name, NULL, ['rid' => $type_name]);
+    // Test file for new entities.
+    $id = $this->uploadRdfFile($test_file, $field_name, NULL, $settings);
+    $rdf_storage->resetCache(array($id));
+    $rdf_entity = $rdf_storage->load($id);
+    $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
+    $this->assertTrue(is_file($rdf_entity_file->getFileUri()), 'New file saved to disk on rdf_entity creation.');
+
+    // Test when the entity has a remote file and we upload a local one.
+    // The widget should quietly overwrite the remote one as the select input
+    // now points to a file and not a remote file.
+    $rdf_entity = $this->createRdfEntity($settings + [
+      $field_name => $this->getFileAbsoluteUri($rdf_entity_file),
+    ]);
+    $id = $this->uploadRdfFile($test_file, $field_name, $rdf_entity->id());
     $rdf_storage->resetCache(array($id));
     $rdf_entity = $rdf_storage->load($id);
     $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
@@ -89,15 +102,33 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $type_name = 'rdf_file';
     $field_name = 'field_rdf_file';
     $test_file = $this->getTestFile('text');
+    $settings = ['rid' => $type_name];
 
-    $id = $this->setRemoteFile($this->getAbsoluteUri($test_file), $field_name, NULL, ['rid' => $type_name]);
+    $id = $this->setRemoteFile($this->getFileAbsoluteUri($test_file), $field_name, NULL, $settings);
     $rdf_storage->resetCache(array($id));
     $rdf_entity = $rdf_storage->load($id);
     $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue($rdf_entity_file instanceof RemoteFile, 'The remote file entity was saved successfully.');
 
     // Ensure the file can be downloaded.
-    $this->drupalGet(file_create_url($rdf_entity_file->getFileUri()));
+    $this->drupalGet($this->getFileAbsoluteUri($rdf_entity_file));
+    $this->assertResponse(200, 'Confirmed that the generated URL is correct by downloading the shipped file.');
+
+    // Test when the entity has a local file and we set a remote one.
+    // The widget should quietly overwrite the remote one as the select input
+    // now points to a remote file.
+    $rdf_entity = $this->createRdfEntity($settings + [
+      $field_name => $test_file,
+    ]);
+
+    $id = $this->setRemoteFile($this->getFileAbsoluteUri($test_file), $field_name, $rdf_entity->id());
+    $rdf_storage->resetCache(array($id));
+    $rdf_entity = $rdf_storage->load($id);
+    $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
+    $this->assertTrue($rdf_entity_file instanceof RemoteFile, 'The remote file entity was saved successfully.');
+
+    // Ensure the file can be downloaded.
+    $this->drupalGet($this->getFileAbsoluteUri($rdf_entity_file));
     $this->assertResponse(200, 'Confirmed that the generated URL is correct by downloading the shipped file.');
   }
 
