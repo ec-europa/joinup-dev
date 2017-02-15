@@ -227,7 +227,7 @@ class RdfFileWidget extends FileWidget {
     $element['file-wrap']['file'] = array(
       '#type' => 'managed_file',
       '#title_display' => 'invisible',
-      '#title' => $this->t('Upload file'),
+      '#title' => $this->fieldDefinition->getLabel(),
       '#upload_location' => $items[$delta]->getUploadLocation(),
       '#upload_validators' => $items[$delta]->getUploadValidators(),
       '#value_callback' => array(get_class($this), 'value'),
