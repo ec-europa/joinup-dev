@@ -5,8 +5,8 @@ namespace Drupal\Tests\joinup_core;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
-use Drupal\Tests\rdf_entity\RdfWebTestBase;
-use Drupal\Tests\rdf_entity\RdfDatabaseConnectionTrait;
+use Drupal\rdf_entity\Tests\RdfDatabaseConnectionTrait;
+use Drupal\rdf_entity\Tests\RdfWebTestBase;
 
 /**
  * Base setup for a Joinup workflow test.
