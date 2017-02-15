@@ -22,7 +22,6 @@ abstract class RdfWebTestBase extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    parent::setUp();
     // The SPARQL connection has to be set up before.
     if (!$this->setUpSparql()) {
       $this->markTestSkipped('No Sparql connection available.');
@@ -31,6 +30,7 @@ abstract class RdfWebTestBase extends BrowserTestBase {
     if ($this->detectVirtuoso6()) {
       $this->markTestSkipped('Skipping: Not running on Virtuoso 6.');
     }
+    parent::setUp();
     $this->setUpSparqlForBrowser();
   }
 
