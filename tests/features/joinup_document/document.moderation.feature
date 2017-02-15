@@ -29,7 +29,7 @@ Feature: Document moderation
       | The Naked Ashes | Kirk Collier    | facilitator |
 
   Scenario: Available transitions change per eLibrary and moderation settings.
-    # For post moderated collections with eLibrary set to allow all users to
+    # For post-moderated collections with eLibrary set to allow all users to
     # create content, authenticated users that are not members can create
     # documents.
     When I am logged in as "Crab y Patties"

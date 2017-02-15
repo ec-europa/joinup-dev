@@ -42,6 +42,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_event_logo:
     weight: 1
     label: hidden
@@ -57,6 +58,7 @@ content:
             lb-col: false
             classes: {  }
     type: image
+    region: content
   field_event_short_title:
     weight: 0
     label: hidden
@@ -64,6 +66,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_event_start_date:
     weight: 3
     label: hidden
@@ -79,6 +82,7 @@ content:
             lb-col: false
             classes: {  }
     type: datetime_default
+    region: content
 hidden:
   field_comments: true
   field_event_adtl_address_info: true
