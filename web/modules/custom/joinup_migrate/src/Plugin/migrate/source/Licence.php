@@ -49,7 +49,7 @@ class Licence extends JoinupSqlBase {
 
     $query->join('content_field_asset_distribution', 'cad', 'nar.vid = cad.vid');
     $query->join('node', 'nd', 'cad.field_asset_distribution_nid = nd.nid');
-    $query->join('joinup_migrate_mapping', 'm', "nar.nid = m.nid AND m.type = 'asset_release' AND m.migrate = 1");
+    $query->join('d8_mapping', 'm', "nar.nid = m.nid AND m.type = 'asset_release' AND m.migrate = 1");
     $query->join('content_field_distribution_licence', 'cl', 'nd.vid = cl.vid');
     $query->join('node', 'nl', "cl.field_distribution_licence_nid = nl.nid AND nl.type = 'licence'");
     $query->join('og_ancestry', 'og_ancestry', 'nar.nid = %alias.nid');

@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW joinup_migrate_solution (
+CREATE OR REPLACE VIEW d8_solution (
   collection,
   type,
   nid,
@@ -41,8 +41,8 @@ SELECT
   m.logo,
   nr.body,
   TRIM(cfu.field_id_uri_value)
-FROM joinup_migrate_mapping m
-INNER JOIN joinup_migrate_prepare p ON m.collection = p.collection
+FROM d8_mapping m
+INNER JOIN d8_prepare p ON m.collection = p.collection
 INNER JOIN node n ON m.nid = n.nid
 INNER JOIN node_revisions nr ON n.vid = nr.vid
 LEFT JOIN og_ancestry o ON m.nid = o.nid

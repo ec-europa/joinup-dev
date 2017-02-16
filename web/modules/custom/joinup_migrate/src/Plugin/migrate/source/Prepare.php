@@ -66,7 +66,7 @@ class Prepare extends SourcePluginBase {
     $db = Database::getConnection('default', 'migrate');
 
     // Build a list of collections that have at least 1 row with 'migrate' == 1.
-    $allowed = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
+    $allowed = $db->select('d8_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
       ->fields('m', ['collection'])
       ->condition('m.migrate', 1)
       ->condition('m.collection', ['', '#N/A'], 'NOT IN')
@@ -78,7 +78,7 @@ class Prepare extends SourcePluginBase {
 
     $fields = $this->fields();
     unset($fields['status'], $fields['elibrary']);
-    $query = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
+    $query = $db->select('d8_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
       ->fields('m', array_keys($fields))
       ->fields('n', ['vid'])
       ->orderBy('m.collection', 'ASC');

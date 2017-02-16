@@ -115,7 +115,7 @@ class Collection extends CollectionBase {
     }
 
     // Get affiliates.
-    $affiliates = $this->select('joinup_migrate_mapping', 'j')
+    $affiliates = $this->select('d8_mapping', 'j')
       ->fields('j', ['nid'])
       ->orderBy('j.collection')
       ->condition('j.migrate', 1)
@@ -157,7 +157,7 @@ class Collection extends CollectionBase {
     }
     // The country list is compiled from the compounding content-types.
     else {
-      $query = $this->select('joinup_migrate_mapping', 'm')
+      $query = $this->select('d8_mapping', 'm')
         ->distinct()
         ->fields('n', ['vid'])
         ->condition('m.collection', $row->getSourceProperty('collection'))

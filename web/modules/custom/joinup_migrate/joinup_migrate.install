@@ -14,7 +14,7 @@ function joinup_migrate_install() {
   // Create intermediary tables we need for migration. The tables will be
   // created on the source database because they will provide source data.
   $db = Database::getConnection('default', 'migrate');
-  foreach (['joinup_migrate_mapping', 'joinup_migrate_prepare'] as $table) {
+  foreach (['d8_mapping', 'd8_prepare'] as $table) {
     $db->schema()->dropTable($table);
     $db->schema()->createTable($table, joinup_migrate_source_db_schema($table));
   }
@@ -35,7 +35,7 @@ function joinup_migrate_install() {
  */
 function joinup_migrate_uninstall() {
   $db = Database::getConnection('default', 'migrate');
-  foreach (['joinup_migrate_mapping', 'joinup_migrate_prepare'] as $table) {
+  foreach (['d8_mapping', 'd8_prepare'] as $table) {
     $db->schema()->dropTable($table);
   }
 
@@ -56,7 +56,7 @@ function joinup_migrate_uninstall() {
  */
 function joinup_migrate_source_db_schema($table) {
   $schema = [
-    'joinup_migrate_mapping' => [
+    'd8_mapping' => [
       'description' => 'Keeps migration mapping data',
       'fields' => [
         'nid' => [
@@ -157,7 +157,7 @@ function joinup_migrate_source_db_schema($table) {
         'migrate' => ['migrate'],
       ],
     ],
-    'joinup_migrate_prepare' => [
+    'd8_prepare' => [
       'fields' => [
         'collection' => [
           'description' => 'Collection',

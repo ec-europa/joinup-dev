@@ -32,7 +32,7 @@ abstract class SolutionBase extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    return $this->select('joinup_migrate_solution', 's')->fields('s', ['nid']);
+    return $this->select('d8_solution', 's')->fields('s', ['nid']);
   }
 
 }

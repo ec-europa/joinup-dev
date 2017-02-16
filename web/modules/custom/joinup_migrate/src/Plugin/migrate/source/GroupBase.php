@@ -22,7 +22,7 @@ abstract class GroupBase extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    return $this->select('joinup_migrate_prepare', 'j')
+    return $this->select('d8_prepare', 'j')
       ->fields('j', ['collection']);
   }
 

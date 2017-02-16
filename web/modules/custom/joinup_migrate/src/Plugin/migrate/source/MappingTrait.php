@@ -14,7 +14,7 @@ trait MappingTrait {
    *   Base query for mapping table.
    */
   protected function getMappingBaseQuery() {
-    return $this->select('joinup_migrate_mapping', 'j')
+    return $this->select('d8_mapping', 'j')
       ->distinct()
       ->condition('j.migrate', 1)
       ->condition('j.collection', ['', '#N/A'], 'NOT IN');

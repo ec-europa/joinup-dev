@@ -61,7 +61,7 @@ class Release extends JoinupSqlBase {
     $this->alias['content_field_asset_version'] = $query->join('content_field_asset_version', 'content_field_asset_version', "{$this->alias['node']}.vid = %alias.vid");
     $this->alias['og_ancestry'] = $query->join('og_ancestry', 'og_ancestry', "{$this->alias['node']}.nid = %alias.nid");
     $this->alias['group_node'] = $query->join('node', 'group_node', "{$this->alias['og_ancestry']}.group_nid = %alias.nid AND %alias.type = 'project_project'");
-    $this->alias['mapping'] = $query->join('joinup_migrate_mapping', 'mapping', "{$this->alias['group_node']}.nid = %alias.nid AND %alias.migrate = 1");
+    $this->alias['mapping'] = $query->join('d8_mapping', 'mapping', "{$this->alias['group_node']}.nid = %alias.nid AND %alias.migrate = 1");
 
     $query->addExpression("{$this->alias['content_type_asset_release']}.field_language_multiple_value", 'language');
     $query->addExpression("{$this->alias['content_type_asset_release']}.field_asset_version_note_value", 'version_notes');
