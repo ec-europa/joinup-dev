@@ -17,7 +17,7 @@ content:
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-    type: file_generic
+    type: rdf_file_generic
   field_ar_creation_date:
     weight: 12
     settings:
