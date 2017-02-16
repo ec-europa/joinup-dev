@@ -28,7 +28,7 @@ class SolutionBanner extends SolutionBase {
    * {@inheritdoc}
    */
   public function query() {
-    return parent::query()->isNotNull('banner');
+    return parent::query()->fields('s', ['banner'])->isNotNull('s.banner');
   }
 
   /**

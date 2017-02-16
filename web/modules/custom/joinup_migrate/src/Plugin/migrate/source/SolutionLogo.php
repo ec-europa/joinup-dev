@@ -30,7 +30,7 @@ class SolutionLogo extends SolutionBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = parent::query();
+    $query = parent::query()->fields('s', ['logo']);
 
     $query->leftJoin('content_field_project_soft_logo', 'sl', 's.vid = sl.vid');
     $query->leftJoin('files', 'f', 'sl.field_project_soft_logo_fid = f.fid');
@@ -52,8 +52,8 @@ class SolutionLogo extends SolutionBase {
     $query->condition($or);
 
     $query->addExpression("IF(s.logo IS NOT NULL, '', IF(s.type = 'asset_release', s.docs_filepath, f.filepath))", 'file_path');
-    $query->addExpression("FROM_UNIXTIME(IF(s.type = 'asset_release', s.timestamp, f.timestamp), '%Y-%m-%dT%H:%i:%s')", 'created');
-    $query->addExpression("IF(s.type = 'asset_release', s.uid, f.uid)", 'file_uid');
+    $query->addExpression("FROM_UNIXTIME(IF(s.type = 'asset_release', s.docs_timestamp, f.timestamp), '%Y-%m-%dT%H:%i:%s')", 'created');
+    $query->addExpression("IF(s.type = 'asset_release', s.docs_uid, f.uid)", 'file_uid');
 
     return $query;
   }

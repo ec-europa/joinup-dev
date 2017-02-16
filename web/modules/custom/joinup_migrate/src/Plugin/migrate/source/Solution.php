@@ -46,6 +46,26 @@ class Solution extends SolutionBase {
   /**
    * {@inheritdoc}
    */
+  public function query() {
+    return parent::query()
+      ->fields('s', [
+        'vid',
+        'title',
+        'uri',
+        'created_time',
+        'changed_time',
+        'body',
+        'sid',
+        'policy2',
+        'landing_page',
+        'metrics_page',
+      ]
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function prepareRow(Row $row) {
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');

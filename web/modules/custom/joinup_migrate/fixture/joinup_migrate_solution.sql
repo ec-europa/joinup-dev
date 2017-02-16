@@ -1,4 +1,25 @@
-CREATE OR REPLACE VIEW joinup_migrate_solution (collection, type, nid, vid, title, created_time, changed_time, uri, landing_page, docs_fid, docs_filepath, docs_timestamp, docs_uid, sid, policy2, banner, logo, body, metrics_page) AS
+CREATE OR REPLACE VIEW joinup_migrate_solution (
+  collection,
+  type,
+  nid,
+  vid,
+  title,
+  created_time,
+  changed_time,
+  uri,
+  landing_page,
+  docs_fid,
+  docs_filepath,
+  docs_timestamp,
+  docs_uid,
+  sid,
+  policy,
+  policy2,
+  banner,
+  logo,
+  body,
+  metrics_page
+) AS
 SELECT
   m.collection,
   m.type,
@@ -14,6 +35,7 @@ SELECT
   f.timestamp,
   f.uid,
   w.sid,
+  m.policy,
   m.policy2,
   m.banner,
   m.logo,

@@ -14,7 +14,7 @@ abstract class SolutionBase extends JoinupSqlBase {
     return [
       'nid' => [
         'type' => 'integer',
-        'alias' => 'n',
+        'alias' => 's',
       ],
     ];
   }
@@ -32,7 +32,7 @@ abstract class SolutionBase extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    return $this->select('joinup_migrate_solution', 's');
+    return $this->select('joinup_migrate_solution', 's')->fields('s', ['nid']);
   }
 
 }
