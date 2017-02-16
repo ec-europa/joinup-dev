@@ -2,20 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.og_audience
-    - node.type.event
+    - field.storage.node.field_news_shared_in
+    - node.type.news
     - rdf_entity.rdfentity.collection
     - rdf_entity.rdfentity.solution
-  module:
-    - og
-id: node.event.og_audience
-field_name: og_audience
+id: node.news.field_news_shared_in
+field_name: field_news_shared_in
 entity_type: node
-bundle: event
-label: 'Groups audience'
-description: 'OG group audience reference field.'
+bundle: news
+label: 'Shared in'
+description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
@@ -24,5 +22,8 @@ settings:
     target_bundles:
       collection: collection
       solution: solution
-  access_override: false
-field_type: og_standard_reference
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: collection
+field_type: entity_reference
