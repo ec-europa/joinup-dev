@@ -29,7 +29,6 @@ abstract class JoinupKernelTestBase extends RdfKernelTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
-    'rdf_entity',
     'field',
     'system',
     'user',
@@ -49,10 +48,7 @@ abstract class JoinupKernelTestBase extends RdfKernelTestBase {
     }
 
     parent::setUp();
-    $this->installSchema('system', 'sequences');
     $this->installEntitySchema('user');
-    $this->installConfig(['rdf_entity']);
-    $this->installEntitySchema('rdf_entity');
     $this->installConfig(['rdf_entity_test']);
   }
 
