@@ -22,6 +22,11 @@ class Solution extends SolutionBase {
   /**
    * {@inheritdoc}
    */
+  protected $reservedUriTables = ['collection'];
+
+  /**
+   * {@inheritdoc}
+   */
   public function fields() {
     return [
       'uri' => $this->t('URI'),
