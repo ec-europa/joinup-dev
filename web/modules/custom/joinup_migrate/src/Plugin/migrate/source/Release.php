@@ -18,11 +18,16 @@ class Release extends JoinupSqlBase {
   /**
    * {@inheritdoc}
    */
+  protected $reservedUriTables = ['collection', 'solution'];
+
+  /**
+   * {@inheritdoc}
+   */
   public function getIds() {
     return [
       'nid' => [
         'type' => 'integer',
-        'alias' => 'n',
+        'alias' => 'r',
       ],
     ];
   }
@@ -52,34 +57,18 @@ class Release extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    $this->alias['node'] = 'n';
-    /** @var \Drupal\Core\Database\Query\SelectInterface $query */
-    $query = $this->select('node', $this->alias['node'])
-      ->condition("{$this->alias['node']}.type", 'asset_release');
-
-    $this->alias['content_type_asset_release'] = $query->join('content_type_asset_release', 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['content_field_asset_version'] = $query->join('content_field_asset_version', 'content_field_asset_version', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['og_ancestry'] = $query->join('og_ancestry', 'og_ancestry', "{$this->alias['node']}.nid = %alias.nid");
-    $this->alias['group_node'] = $query->join('node', 'group_node', "{$this->alias['og_ancestry']}.group_nid = %alias.nid AND %alias.type = 'project_project'");
-    $this->alias['mapping'] = $query->join('d8_mapping', 'mapping', "{$this->alias['group_node']}.nid = %alias.nid AND %alias.migrate = 1");
-
-    $query->addExpression("{$this->alias['content_type_asset_release']}.field_language_multiple_value", 'language');
-    $query->addExpression("{$this->alias['content_type_asset_release']}.field_asset_version_note_value", 'version_notes');
-    $query->addExpression("{$this->alias['content_field_asset_version']}.field_asset_version_value", 'version_number');
-    // The parent 'project_project' (which is a D8 solution').
-    $query->addExpression("{$this->alias['group_node']}.nid", 'solution');
-
-    return $query
-      ->fields($this->alias['node'], [
-        'nid',
-        'vid',
-        'title',
-        'created',
-        'changed',
-      ])
-      ->fields('mapping', ['policy2'])
-      // Assure the URI field.
-      ->addTag('uri');
+    return $this->select('d8_release', 'r')->fields('r', [
+      'nid',
+      'vid',
+      'title',
+      'created_time',
+      'changed_time',
+      'uri',
+      'solution',
+      'language',
+      'version_notes',
+      'version_number',
+    ]);
   }
 
   /**
