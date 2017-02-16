@@ -2,14 +2,11 @@ langcode: en
 status: true
 dependencies:
   module:
+    - node
     - rdf_entity
-third_party_settings:
-  rdf_entity:
-    mapping:
-      target_id: 'http://purl.org/dc/terms/hasVersion'
-id: rdf_entity.field_isr_has_version
-field_name: field_isr_has_version
-entity_type: rdf_entity
+id: node.field_news_shared_in
+field_name: field_news_shared_in
+entity_type: node
 type: entity_reference
 settings:
   target_type: rdf_entity

@@ -44,17 +44,16 @@ class Licence extends JoinupSqlBase {
     $query = $this->select('node', 'nar')
       ->distinct()
       ->fields('nl', ['nid'])
-      // @todo Limit distributions to those linked in interoperability solutions
-      //   but expand this filter if there's other conclusion in ISAICP-2840,
-      //   comment 2003714.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2840?focusedCommentId=2003714&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-2003714
-      ->condition('nar.type', 'asset_release');
+      ->condition('nar.type', 'asset_release')
+      ->condition('group_node.type', ['repository', 'project_project'], 'IN');
 
     $query->join('content_field_asset_distribution', 'cad', 'nar.vid = cad.vid');
     $query->join('node', 'nd', 'cad.field_asset_distribution_nid = nd.nid');
-    $query->join("{$this->getDestinationDbName()}.joinup_migrate_mapping", 'm', "nar.nid = m.nid AND m.type = 'asset_release' AND m.migrate = 1");
+    $query->join('joinup_migrate_mapping', 'm', "nar.nid = m.nid AND m.type = 'asset_release' AND m.migrate = 1");
     $query->join('content_field_distribution_licence', 'cl', 'nd.vid = cl.vid');
     $query->join('node', 'nl', "cl.field_distribution_licence_nid = nl.nid AND nl.type = 'licence'");
+    $query->join('og_ancestry', 'og_ancestry', 'nar.nid = %alias.nid');
+    $query->join('node', 'group_node', 'og_ancestry.group_nid = %alias.nid');
 
     $allowed_licences = $query->execute()->fetchCol();
 

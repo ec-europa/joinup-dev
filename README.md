@@ -197,6 +197,8 @@ See the [readme](web/themes/joinup/README.md) in the theme folder.
 ### Technical details
 
 * In [Rdf draft module](web/modules/custom/rdf_entity/rdf_draft/README.md)
-there are information on handling draft in CRUD operations for rdf entities.
+there is information on handling draft in CRUD operations for rdf entities.
 * In [Joinup notification module](web/modules/custom/joinup_notification/README.md)
-there are information on how to handle notifications in Joinup.
+there is information on how to handle notifications in Joinup.
+* In [Joinup core module](web/modules/custom/joinup_core/README.md) there is
+information on how to handle and create workflows.

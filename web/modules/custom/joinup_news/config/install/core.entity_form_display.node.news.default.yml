@@ -5,8 +5,9 @@ dependencies:
     - field.field.node.news.body
     - field.field.node.news.field_comments
     - field.field.node.news.field_news_headline
+    - field.field.node.news.field_news_shared_in
     - field.field.node.news.field_news_source_url
-    - field.field.node.news.field_news_state
+    - field.field.node.news.field_state
     - field.field.node.news.field_spatial_coverage
     - field.field.node.news.field_topic
     - field.field.node.news.og_audience
@@ -41,6 +42,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+  field_news_shared_in:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
   field_news_source_url:
     weight: 3
     settings:
@@ -48,7 +57,7 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
-  field_news_state:
+  field_state:
     weight: 6
     settings:
       use_transition_label: 1

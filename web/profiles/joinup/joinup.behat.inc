@@ -595,10 +595,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       'event' => [
         'short title' => 'field_event_short_title',
         'start date' => 'field_start_date',
+        'state' => 'field_state',
       ],
       'news' => [
         'headline' => 'field_news_headline',
-        'state' => 'field_news_state',
+        'state' => 'field_state',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
@@ -744,7 +745,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {
-        throw new \Exception("The tile '$heading' was not found on the page");
+        throw new \Exception("The tile '$heading' was found on the page");
       }
     }
   }
