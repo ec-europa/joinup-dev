@@ -67,8 +67,9 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $rdf_storage = $this->container->get('entity.manager')->getStorage('rdf_entity');
     $type_name = 'rdf_file';
     $field_name = 'field_rdf_file';
-    $test_file = $this->getTestFile('text');
     $settings = ['rid' => $type_name];
+    $test_file = $this->getTestFile('text');
+    $this->assertTrue($test_file instanceof FileInterface, "Test file created.");
 
     // Test file for new entities.
     $id = $this->uploadRdfFile($test_file, $field_name, NULL, $settings);
@@ -101,8 +102,9 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $rdf_storage = $this->container->get('entity.manager')->getStorage('rdf_entity');
     $type_name = 'rdf_file';
     $field_name = 'field_rdf_file';
-    $test_file = $this->getTestFile('text');
     $settings = ['rid' => $type_name];
+    $test_file = $this->getTestFile('text');
+    $this->assertTrue($test_file instanceof FileInterface, "Test file created.");
 
     $id = $this->setRemoteFile($this->getFileAbsoluteUri($test_file), $field_name, NULL, $settings);
     $rdf_storage->resetCache(array($id));
