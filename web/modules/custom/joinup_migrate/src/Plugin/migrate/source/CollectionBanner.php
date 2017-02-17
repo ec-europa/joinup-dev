@@ -40,7 +40,7 @@ class CollectionBanner extends CollectionBase {
     $source_path = "../resources/migrate/collection/banner/{$row->getSourceProperty('banner')}";
     $row->setSourceProperty('source_path', $source_path);
     $basename = basename($source_path);
-    $row->setSourceProperty('destination_uri',  "public://collection/banner/$basename");
+    $row->setSourceProperty('destination_uri', "public://collection/banner/$basename");
 
     return parent::prepareRow($row);
   }

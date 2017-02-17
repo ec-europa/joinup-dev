@@ -3,7 +3,6 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Unicode;
-use Drupal\Core\Database\Query\Condition;
 use Drupal\migrate\Row;
 
 /**
@@ -33,9 +32,9 @@ class SolutionLogo extends SolutionBase {
   public function query() {
     return parent::query()
       ->fields('s', [
-      'logo',
-      'logo_timestamp',
-      'logo_uid',
+        'logo',
+        'logo_timestamp',
+        'logo_uid',
       ])
       ->isNotNull('s.logo');
   }

@@ -31,8 +31,11 @@ abstract class JoinupSqlBase extends SqlBase {
    *
    * Migration source plugin classes should implement this property to declare
    * a list of tables/views that should be checked for the 'uri' field in order
-   * to build an 'already taken' URI list. For example 'solution' migration
-   * might want to set this property as:
+   * to build an 'already taken' URI list.
+   *
+   * @var string[]
+   *
+   * For example 'solution' migration might want to set this property as:
    * @code
    * protected $reservedUriTables = ['collection'];
    * @endcode
@@ -41,8 +44,6 @@ abstract class JoinupSqlBase extends SqlBase {
    * Solutions cannot have URIs (as IDs) that are already in Collections.
    *
    * Note that array items should not have the 'd8_' prefix.
-   *
-   * @var string[]
    */
   protected $reservedUriTables = [];
 
