@@ -22,7 +22,7 @@ Feature: Add comments
     And I fill in "Your name" with "Mr Scandal"
     And I fill in "Email" with "mrscandal@example.com"
     And I fill in "Comment" with "I've heard this story..."
-    Then I press "Save"
+    Then I press "Post comment"
     Then I should see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And I should not see "I've heard this story..."
@@ -42,7 +42,7 @@ Feature: Add comments
     When I go to the content page of the type "<content type>" with the title "<title>"
     Then I should see text matching "Add new comment"
     And I fill in "Comment" with "Mr scandal was doing something weird the other day."
-    Then I press "Save"
+    Then I press "Post comment"
     Then I should not see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And I should see text matching "Mr scandal was doing something weird the other day."
