@@ -20,6 +20,11 @@ class Distribution extends DistributionBase {
   use UriTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  protected $reservedUriTables = ['collection', 'solution', 'release'];
+
+  /**
    * The migration plugin manager service.
    *
    * @var \Drupal\migrate\Plugin\MigrationPluginManager
@@ -88,27 +93,17 @@ class Distribution extends DistributionBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = parent::query();
-
-    $this->alias['node_revision'] = $query->join('node_revisions', 'node_revision', "{$this->alias['node']}.vid = %alias.vid");
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created_time');
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed_time');
-
-    $this->alias['content_type_distribution'] = $query->leftJoin('content_type_distribution', 'content_type_distribution', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['content_field_distribution_access_url1'] = $query->leftJoin('content_field_distribution_access_url1', 'content_field_distribution_access_url1', "{$this->alias['node']}.vid = %alias.vid");
-
-    $this->alias['content_field_distribution_licence'] = $query->leftJoin('content_field_distribution_licence', 'content_field_distribution_licence', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_licence'] = $query->leftJoin('node', 'node_licence', "{$this->alias['content_field_distribution_licence']}.field_distribution_licence_nid = %alias.nid AND %alias.type = 'licence'");
-
-    $query->addExpression("{$this->alias['node_licence']}.nid", 'licence');
-
-    return $query
-      ->fields($this->alias['node'], ['title', 'vid'])
-      ->fields($this->alias['node_revision'], ['body'])
-      ->fields($this->alias['content_type_distribution'], ['field_distribution_access_url_fid'])
-      ->fields($this->alias['content_field_distribution_access_url1'], ['field_distribution_access_url1_url'])
-      // Assure the URI field.
-      ->addTag('uri');
+    return parent::query()->fields('d', [
+      'uri',
+      'vid',
+      'title',
+      'body',
+      'created_time',
+      'changed_time',
+      'licence',
+      'file_id',
+      'access_url',
+    ]);
   }
 
   /**
@@ -135,8 +130,8 @@ class Distribution extends DistributionBase {
     $row->setSourceProperty('technique', $representation_technique);
 
     // Resolve 'access_url'.
-    $access_url = NULL;
-    if ($fid = $row->getSourceProperty('field_distribution_access_url_fid')) {
+    if ($row->getSourceProperty('file_id')) {
+      $access_url = NULL;
       // The 'access_url' is a file, lookup in the 'distribution_file' migration
       // to get the migrated file ID.
       if ($lookup = $this->getDistributionFileMigration()->getIdMap()->lookupDestinationIds(['nid' => $nid])) {
@@ -146,9 +141,9 @@ class Distribution extends DistributionBase {
         }
       }
     }
-    elseif ($url = $row->getSourceProperty('field_distribution_access_url1_url')) {
-      // The 'access_url' is reference to a remote file.
-      $access_url = $url;
+    else {
+      // The 'access_url' might be a reference to a remote file or NULL.
+      $access_url = $row->getSourceProperty('access_url');
     }
     $row->setSourceProperty('access_url', $access_url);
 
