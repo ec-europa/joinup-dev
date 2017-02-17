@@ -492,17 +492,6 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
   $variables['additional_content']['field_event_start_date'] = $field_event_start_date;
   $variables['additional_content']['field_event_end_date'] = $field_event_end_date;
   $variables['additional_content']['field_event_location'] = $field_event_location;
-
-  // Creates id for location wrapper.
-  $variables['location_wrapper_id'] = 'field-event-location-wrapper';
-}
-
-/**
- * Implements hook_preprocess_node__event().
- */
-function joinup_theme_preprocess_node__event(&$variables) {
-  // Creates id for location wrapper.
-  $variables['location_wrapper_id'] = 'field-event-location-wrapper';
 }
 
 /**

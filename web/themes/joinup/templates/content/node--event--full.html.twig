@@ -4,7 +4,7 @@
  * Theme override to display a node of bundle event.
  *
  * Available variables:
- * - location_wrapper_id: The id of a wrapper, which contains address fields.
+ * - node: the node entity.
  */
 #}
 <article{{ attributes }}>
@@ -19,7 +19,7 @@
       </a>
     </div>
   </div>
-  <div id="{{ location_wrapper_id }}" class="fieldset--separated">
+  <div id="event-location--{{ node.id }}" class="fieldset--separated">
     <img src="/themes/joinup/images/location-image.jpg">
     <div class="page__content">
       <h3 class="fieldset__header">{{ content.field_event_location }}</h3>
