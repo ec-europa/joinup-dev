@@ -17,14 +17,6 @@ Feature: Asset distribution deleting.
     When I am logged in as a facilitator of the "Rough valentine's day" solution
     And I go to the homepage of the "Francesco's cats" asset distribution
     And I click "Edit"
+    Then I should see the link "Delete"
+    When I click "Delete"
     Then I should see the button "Delete"
-
-    When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Francesco's cats" asset distribution
-    And I click "Edit"
-    Then I should not see the button "Delete"
-
-    When I am an anonymous user
-    And I go to the homepage of the "Francesco's cats" asset distribution
-    And I click "Edit"
-    Then I should not see the button "Delete"
