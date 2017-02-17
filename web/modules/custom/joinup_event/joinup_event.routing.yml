@@ -5,7 +5,7 @@ joinup_event.rdf_entity_event.add:
     _controller: '\Drupal\joinup_event\Controller\EventController::add'
     _title: 'Add event'
   requirements:
-    _custom_access: '\Drupal\joinup_event\Controller\EventController::createEventAccess'
+    _custom_access: '\Drupal\joinup_event\Controller\EventController::createAccess'
   options:
     parameters:
       rdf_entity:

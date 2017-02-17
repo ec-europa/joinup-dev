@@ -15,6 +15,7 @@ dependencies:
     - field.field.node.event.field_event_short_title
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
+    - field.field.node.event.field_state
     - field.field.node.event.og_audience
     - image.style.image_style_event_logo
     - node.type.event
@@ -24,6 +25,7 @@ dependencies:
     - ds
     - image
     - link
+    - options
     - text
     - user
 id: node.event.default

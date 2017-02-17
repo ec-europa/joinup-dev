@@ -1,0 +1,33 @@
+id: og_user_role
+label: 'Organic Groups user-role'
+migration_tags:
+  - og
+  - collection
+source:
+  plugin: og_user_role
+  track_changes: true
+process:
+  uid:
+    plugin: migration
+    source: uid
+    migration: user
+    no_stub: true
+  entity_type:
+    plugin: default_value
+    default_value: rdf_entity
+  entity_id:
+    plugin: migration
+    source: collection
+    migration: collection
+    default_value: rdf_entity
+    no_stub: true
+  state:
+    plugin: default_value
+    default_value: active
+  roles: roles
+destination:
+  plugin: entity:og_membership
+  default_bundle: default
+migration_dependencies:
+ required:
+   - collection

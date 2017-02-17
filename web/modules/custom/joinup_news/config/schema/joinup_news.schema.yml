@@ -4,16 +4,16 @@ joinup_news.settings:
   mapping:
     transitions:
       type: sequence
-      label: 'Allowed transitions'
+      label: 'Workflow id'
       sequence:
         type: sequence
-        label: 'The moderation of the parent entity'
+        label: 'Transition id'
         sequence:
           type: sequence
-          label: 'Target state'
+          label: 'Source state'
           sequence:
             type: sequence
-            label: 'Source state'
+            label: 'Roles allowed to perform transition'
             sequence:
               type: string
-              label: 'Role'
+              label: 'Role allowed to perform transition'

@@ -8,6 +8,7 @@
 use Drupal\comment\CommentInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\message\Entity\Message;
 
 /**
@@ -59,4 +60,13 @@ function joinup_comment_entity_delete(EntityInterface $entity) {
     \Drupal::getContainer()->get('message_notify.sender')->send($message, [], 'email');
   }
 
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Change the submit button label for the comment form.
+ */
+function joinup_comment_form_comment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['submit']['#value'] = t('Post comment');
 }

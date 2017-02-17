@@ -10,11 +10,11 @@ Feature: Discussion moderation
       | Gabe Rogers     |
       | Brigham Salvage |
     And the following collection:
-      | title               | DIY collection                           |
-      | description         | Collection of "Do it yourself" projects. |
-      | logo                | logo.png                                 |
-      | elibrary creation   | facilitators                             |
-      | state               | validated                                |
+      | title             | DIY collection                           |
+      | description       | Collection of "Do it yourself" projects. |
+      | logo              | logo.png                                 |
+      | elibrary creation | members                                  |
+      | state             | validated                                |
     And the following collection user membership:
       | collection     | user            | roles       |
       | DIY collection | Gabe Rogers     | member      |
@@ -87,3 +87,52 @@ Feature: Discussion moderation
     And I go to the "Best method to cut Eucalyptus wood logs" discussion
     #Then I should not see the link "Edit" in the "Entity actions" region
     Then I should not see the link "Edit" in the "Entity actions" region
+
+  Scenario: Disabling a discussion prevents additional comments to be created.
+    Given users:
+      | name          | mail                      |
+      | Vince Rome    | vince.rome@example.com    |
+      | Lance Rustici | lance.rustici@example.com |
+      | Denny Winslow | denny.winslow@example.com |
+    And the following collection:
+      | title             | Valentine's day survival kit                   |
+      | description       | How to survive the most scary day of the year. |
+      | logo              | logo.png                                       |
+      | elibrary creation | members                                        |
+      | state             | validated                                      |
+    And the following collection user membership:
+      | collection                   | user          | roles       |
+      | Valentine's day survival kit | Vince Rome    | member      |
+      | Valentine's day survival kit | Lance Rustici | facilitator |
+    And discussion content:
+      | title                        | content                    | author     | state     | collection                   |
+      | What's the best escape gift? | Buying chocolate is risky. | Vince Rome | validated | Valentine's day survival kit |
+    And comments:
+      | message                   | author        | mail                 | name       | parent                       |
+      | Do not buy rings.         | Lance Rustici |                      |            | What's the best escape gift? |
+      | What about a trip abroad? |               | anon@bestadvices.com | Anon buddy | What's the best escape gift? |
+
+    # The comment form is available, even for non-members.
+    When I am logged in as "Denny Winslow"
+    And I go to the "What's the best escape gift?" discussion
+    Then I should see the button "Post comment"
+
+    # Disable the discussion with the facilitator.
+    When I am logged in as "Lance Rustici"
+    And I go to the "What's the best escape gift?" discussion
+    And I click "Edit" in the "Entity actions" region
+    And I press "Disable"
+    Then I should see the message "Discussion What's the best escape gift? has been updated"
+
+    # The comments should still be visible.
+    And I should see the text "Do not buy rings."
+    And I should see the text "What about a trip abroad?"
+    # But not the form.
+    But I should not see the button "Post comment"
+
+    # Comments are closed for the discussion author too.
+    When I am logged in as "Vince Rome"
+    And I go to the "What's the best escape gift?" discussion
+    Then I should see the text "Do not buy rings."
+    And I should see the text "What about a trip abroad?"
+    But I should not see the button "Post comment"

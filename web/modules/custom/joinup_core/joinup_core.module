@@ -13,6 +13,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
 use Drupal\og\Og;
 
 /**
@@ -123,6 +124,17 @@ function joinup_core_entity_graph_access(EntityInterface $entity, $operation, Ac
 }
 
 /**
+ * Implements hook_node_access().
+ */
+function joinup_core_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  // @todo: when all bundles are in, remove the first check.
+  if (!in_array($entity->bundle(), ['document', 'discussion', 'news'])) {
+    return AccessResult::neutral();
+  }
+  return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($entity, $operation, $account);
+}
+
+/**
  * Implements hook_entity_base_field_info().
  *
  * Provides a base field that displays the current workflow state on nodes and
@@ -141,4 +153,14 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
 
     return $fields;
   }
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_core_entity_type_alter(array &$entity_types) {
+  // Provides a workaround for asset_release and solution RDF entity bundles.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
+  // @todo Remove when ISAICP-3126 gets in.
+  $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
 }

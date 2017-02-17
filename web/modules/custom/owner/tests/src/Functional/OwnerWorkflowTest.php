@@ -61,6 +61,13 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function getEntityBundle() {
+    return 'owner';
+  }
+
+  /**
    * Tests the CRUD operations for the asset release entities.
    *
    * Since the browser test is a slow test, both create access and read/update/

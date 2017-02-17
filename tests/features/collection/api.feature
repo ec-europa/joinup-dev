@@ -1,4 +1,4 @@
-@api
+@api @terms
 Feature: Collection API
   In order to manage collections programmatically
   As a backend developer
@@ -12,7 +12,7 @@ Feature: Collection API
       | moderation        | no                   |
       | closed            | no                   |
       | elibrary creation | facilitators         |
-      | policy domain     | eHealth              |
+      | policy domain     | E-health             |
       | state             | validated            |
     Then I should have 1 collection
 
@@ -33,7 +33,7 @@ Feature: Collection API
     When I fill in the following:
       | Title         | Collection API example                       |
       | Description   | We do not care that much about descriptions. |
-    When I select "Data gathering and processing" from "Policy domain"
+    When I select "Data gathering, data processing" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I press "Add existing" at the "Owner" field
