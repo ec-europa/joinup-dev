@@ -6,6 +6,10 @@ CREATE OR REPLACE VIEW d8_release (
   changed_time,
   uri,
   solution,
+  docs_url,
+  docs_path,
+  docs_timestamp,
+  docs_uid,
   language,
   version_notes,
   version_number
@@ -18,6 +22,10 @@ SELECT
   FROM_UNIXTIME(n.changed, '%Y-%m-%dT%H:%i:%s'),
   TRIM(uri.field_id_uri_value),
   g.nid,
+  TRIM(ctd.field_documentation_access_url1_url),
+  fd.filepath,
+  fd.timestamp,
+  fd.uid,
   ctar.field_language_multiple_value,
   ctar.field_asset_version_note_value,
   cfav.field_asset_version_value
@@ -27,6 +35,10 @@ INNER JOIN node g ON o.group_nid = g.nid AND g.type = 'project_project'
 INNER JOIN d8_mapping m ON g.nid = m.nid AND m.migrate = 1
 INNER JOIN content_type_asset_release ctar ON n.vid = ctar.vid
 INNER JOIN content_field_asset_version cfav ON n.vid = cfav.vid
+LEFT JOIN content_field_asset_documentation cfad ON ctar.vid = cfad.vid
+LEFT JOIN node nd ON cfad.field_asset_documentation_nid = nd.nid
+LEFT JOIN content_type_documentation ctd ON nd.vid = ctd.vid
+LEFT JOIN files fd ON ctd.field_documentation_access_url_fid = fd.fid
 LEFT JOIN content_field_id_uri uri ON n.vid = uri.vid
 WHERE n.type = 'asset_release'
 ORDER BY g.nid ASC, n.nid ASC

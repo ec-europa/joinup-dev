@@ -8,8 +8,8 @@ CREATE OR REPLACE VIEW d8_solution (
   changed_time,
   uri,
   landing_page,
-  docs_fid,
-  docs_filepath,
+  docs_url,
+  docs_path,
   docs_timestamp,
   docs_uid,
   sid,
@@ -32,10 +32,10 @@ SELECT
   FROM_UNIXTIME(n.changed, '%Y-%m-%dT%H:%i:%s'),
   TRIM(uri.field_id_uri_value),
   TRIM(ctd.field_documentation_access_url1_url),
-  f.fid,
-  f.filepath,
-  f.timestamp,
-  f.uid,
+  TRIM(ctd1.field_documentation_access_url1_url),
+  fd.filepath,
+  fd.timestamp,
+  fd.uid,
   w.sid,
   m.policy,
   m.policy2,
@@ -55,7 +55,10 @@ LEFT JOIN content_field_id_uri uri ON n.vid = uri.vid
 LEFT JOIN content_type_asset_release car ON n.vid = car.vid
 LEFT JOIN node d ON car.field_asset_homepage_doc_nid = d.nid
 LEFT JOIN content_type_documentation ctd ON d.vid = ctd.vid
-LEFT JOIN files f ON ctd.field_documentation_access_url_fid = f.fid
+LEFT JOIN content_field_asset_documentation cfad ON car.vid = cfad.vid
+LEFT JOIN node nd ON cfad.field_asset_documentation_nid = nd.nid
+LEFT JOIN content_type_documentation ctd1 ON nd.vid = ctd1.vid
+LEFT JOIN files fd ON ctd1.field_documentation_access_url_fid = fd.fid
 LEFT JOIN workflow_node w ON m.nid = w.nid
 LEFT JOIN content_field_asset_sw_metrics swm ON n.vid = swm.vid
 LEFT JOIN node nm ON swm.field_asset_sw_metrics_nid = nm.nid
