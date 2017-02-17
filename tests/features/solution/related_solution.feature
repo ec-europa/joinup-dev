@@ -41,6 +41,5 @@ Feature: Related solution
     And I visit the "Java" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
-    And the cache has been cleared
     And I visit the "Java" solution
     Then I should see the "Python" tile
