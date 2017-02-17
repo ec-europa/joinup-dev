@@ -114,6 +114,9 @@
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
             },
+            "drupal/persistent_login": {
+              "Wrong cached page is being served after re-opening the browser": "https://www.drupal.org/files/issues/wrong_cached_page_is-2853553-2.patch"
+            },
             "drupal/search_api": {
                 "Add entity type list cache tags. @see https://www.drupal.org/node/2753667": "https://www.drupal.org/files/issues/2753667-46.patch",
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640 @see https://www.drupal.org/node/2753667": "./resources/patches/views_cached_results-2824640-8-on_2753667-33.patch",
