@@ -76,7 +76,7 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $rdf_storage->resetCache(array($id));
     $rdf_entity = $rdf_storage->load($id);
     $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
-    $this->assertTrue(is_file($rdf_entity_file->getFileUri()), 'New file saved to disk on rdf_entity creation.');
+    $this->assertTrue(is_file($rdf_entity_file->getFileUri()), "File {$rdf_entity_file->getFileUri()} exists.");
 
     // Test when the entity has a remote file and we upload a local one.
     // The widget should quietly overwrite the remote one as the select input
@@ -110,7 +110,7 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $rdf_storage->resetCache(array($id));
     $rdf_entity = $rdf_storage->load($id);
     $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
-    $this->assertTrue($rdf_entity_file instanceof RemoteFile, 'The remote file entity was saved successfully.');
+    $this->assertTrue($rdf_entity_file instanceof RemoteFile, "File {$rdf_entity_file->getFileUri()} exists.");
 
     // Ensure the file can be downloaded.
     $this->drupalGet($this->getFileAbsoluteUri($rdf_entity_file));
