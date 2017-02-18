@@ -14,6 +14,7 @@ use Drupal\migrate\Row;
 class Release extends JoinupSqlBase {
 
   use CountryTrait;
+  use RdfFileFieldTrait;
 
   /**
    * {@inheritdoc}
@@ -50,6 +51,7 @@ class Release extends JoinupSqlBase {
       'version_number' => $this->t('Version number'),
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
+      'documentation' => $this->t('Documentation'),
     ] + parent::fields();
   }
 
@@ -68,6 +70,8 @@ class Release extends JoinupSqlBase {
       'language',
       'version_notes',
       'version_number',
+      'docs_path',
+      'docs_url',
     ]);
   }
 
@@ -75,11 +79,6 @@ class Release extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    if (!$row->getSourceProperty('solution')) {
-      // Don't migrate orphans.
-      return FALSE;
-    }
-
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
 
@@ -152,6 +151,9 @@ class Release extends JoinupSqlBase {
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));
+
+    // Resolve documentation.
+    $this->setRdfFileTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
 
     return parent::prepareRow($row);
   }

@@ -2,11 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Core\State\StateInterface;
-use Drupal\migrate\Plugin\MigrationInterface;
-use Drupal\migrate\Plugin\MigrationPluginManager;
 use Drupal\migrate\Row;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a distribution migration source plugin.
@@ -17,61 +13,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Distribution extends DistributionBase {
 
+  use RdfFileFieldTrait;
   use UriTrait;
 
   /**
    * {@inheritdoc}
    */
   protected $reservedUriTables = ['collection', 'solution', 'release'];
-
-  /**
-   * The migration plugin manager service.
-   *
-   * @var \Drupal\migrate\Plugin\MigrationPluginManager
-   */
-  protected $migrationPluginManager;
-
-  /**
-   * The 'distribution_file' migration.
-   *
-   * @var \Drupal\migrate\Plugin\MigrationInterface
-   */
-  protected $distributionFileMigration;
-
-  /**
-   * Constructs a Drupal\Component\Plugin\PluginBase object.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\migrate\Plugin\MigrationInterface $migration
-   *   The current migration.
-   * @param \Drupal\Core\State\StateInterface $state
-   *   The state service.
-   * @param \Drupal\migrate\Plugin\MigrationPluginManager $migration_plugin_manager
-   *   The migration plugin manager service.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, MigrationPluginManager $migration_plugin_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state);
-    $this->migrationPluginManager = $migration_plugin_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $migration,
-      $container->get('state'),
-      $container->get('plugin.manager.migration')
-    );
-  }
 
   /**
    * {@inheritdoc}
@@ -130,37 +78,9 @@ class Distribution extends DistributionBase {
     $row->setSourceProperty('technique', $representation_technique);
 
     // Resolve 'access_url'.
-    if ($row->getSourceProperty('file_id')) {
-      $access_url = NULL;
-      // The 'access_url' is a file, lookup in the 'distribution_file' migration
-      // to get the migrated file ID.
-      if ($lookup = $this->getDistributionFileMigration()->getIdMap()->lookupDestinationIds(['nid' => $nid])) {
-        if (!empty($lookup[0][0])) {
-          global $base_url;
-          $access_url = $base_url . '/file-dereference/' . $lookup[0][0];
-        }
-      }
-    }
-    else {
-      // The 'access_url' might be a reference to a remote file or NULL.
-      $access_url = $row->getSourceProperty('access_url');
-    }
-    $row->setSourceProperty('access_url', $access_url);
+    $this->setRdfFileTargetId($row, 'access_url', ['nid' => $nid], 'file_id', 'distribution_file', 'access_url');
 
     return parent::prepareRow($row);
-  }
-
-  /**
-   * Gets 'distribution_file' migration.
-   *
-   * @return \Drupal\migrate\Plugin\MigrationInterface
-   *   The 'distribution_file' migration.
-   */
-  protected function getDistributionFileMigration() {
-    if (!isset($this->distributionFileMigration)) {
-      $this->distributionFileMigration = $this->migrationPluginManager->createInstance('distribution_file');
-    }
-    return $this->distributionFileMigration;
   }
 
 }

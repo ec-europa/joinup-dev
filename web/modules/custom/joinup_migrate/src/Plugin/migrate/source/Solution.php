@@ -17,6 +17,7 @@ class Solution extends SolutionBase {
   use CountryTrait;
   use MappingTrait;
   use OwnerTrait;
+  use RdfFileFieldTrait;
   use UriTrait;
 
   /**
@@ -45,6 +46,7 @@ class Solution extends SolutionBase {
       'status' => $this->t('Status'),
       'contact' => $this->t('Contact info'),
       'distribution' => $this->t('Distribution'),
+      'documentation' => $this->t('Documentation'),
     ] + parent::fields();
   }
 
@@ -64,6 +66,8 @@ class Solution extends SolutionBase {
         'policy2',
         'landing_page',
         'metrics_page',
+        'docs_url',
+        'docs_path',
       ]
     );
   }
@@ -112,6 +116,9 @@ class Solution extends SolutionBase {
         $this->normalizeUri($name, $row, FALSE);
       }
     }
+
+    // Resolve documentation.
+    $this->setRdfFileTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));
