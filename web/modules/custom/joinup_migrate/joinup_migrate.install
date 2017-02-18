@@ -5,6 +5,7 @@
  * Contains install, update, uninstall functionality for Joinup Migrate module.
  */
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Database\Database;
 
 /**
@@ -19,9 +20,15 @@ function joinup_migrate_install() {
     $db->schema()->createTable($table, joinup_migrate_source_db_schema($table));
   }
 
-  // Install MySQL views.
-  foreach (file_scan_directory(__DIR__ . '/fixture', '/\.sql$/') as $file) {
-    $db->query(file_get_contents($file->uri))->execute();
+  // Install MySQL helper views.
+  $views = file_scan_directory(__DIR__ . '/fixture', '/\.sql$/', ['key' => 'name']);
+  // Sort by priority. Some MySQL views depend on others, meaning that the
+  // install order matters. The priority is an ASCII character, followed by a
+  // dot character, that prefixes the file name. For example files 0.d8_*.sql
+  // will be installed before 1.d8_*.sql.
+  ksort($views);
+  foreach ($views as $view) {
+    $db->query(file_get_contents($view->uri))->execute();
   }
 
   // Fix the migrate_report path.
@@ -39,9 +46,12 @@ function joinup_migrate_uninstall() {
     $db->schema()->dropTable($table);
   }
 
-  // Remove MySQL views.
+  // Remove MySQL helper views.
   foreach (file_scan_directory(__DIR__ . '/fixture', '/\.sql$/') as $file) {
-    $db->query("DROP VIEW IF EXISTS {$file->name}")->execute();
+    // Remove the prefix. Each file is prefixed with a single ASCII character
+    // representing the priority and a dot.
+    $view = Unicode::substr($file->name, 2);
+    $db->query("DROP VIEW IF EXISTS $view")->execute();
   }
 }
 
