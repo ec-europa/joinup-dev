@@ -162,9 +162,8 @@ class Prepare extends SourcePluginBase {
         ->condition('ur.gid', (int) $row['nid'])
         ->orderBy('ur.uid');
       $query->join('og_uid', 'u', 'ur.gid = u.nid AND ur.uid = u.uid');
-      $query->join('users', 'users', 'ur.uid = users.uid');
       // Only migrated users are allowed.
-      $query->addTag('user_migrate');
+      $query->join('d8_user', 'users', 'ur.uid = users.uid');
 
       foreach ($query->execute()->fetchAll() as $item) {
         $uid = (int) $item->uid;
