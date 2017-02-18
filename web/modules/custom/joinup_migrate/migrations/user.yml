@@ -6,9 +6,7 @@ source:
   plugin: user
   track_changes: true
 process:
-  status:
-    plugin: default_value
-    default_value: 1
+  status: status
   name: name
   pass: pass
   mail: mail
@@ -20,17 +18,15 @@ process:
     source: timezone
   init: init
   roles:
-    -
-      plugin: static_map
+    - plugin: explode
       source: roles
+      delimiter: ','
+      strict: false
+    - plugin: static_map
       map:
         6: administrator
         3: moderator
-      default_value: 0
-    -
-      # Do not import "authenticated user" role or any other role not mapped.
-      plugin: skip_on_empty
-      method: process
+      default_value: []
 destination:
   plugin: entity:user
   md5_passwords: true
