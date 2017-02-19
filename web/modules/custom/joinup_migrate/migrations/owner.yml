@@ -21,6 +21,16 @@ process:
     -
       plugin: term_reference
       vocabulary: owner_type
+  uid:
+    - plugin: migration
+      migration: user
+      source: uid
+      no_stub: true
+    - plugin: default_value
+      default_value: 1
 destination:
   plugin: entity:rdf_entity
   default_bundle: owner
+migration_dependencies:
+ required:
+   - prepare

@@ -14,10 +14,7 @@ use Drupal\migrate\Row;
  */
 class Collection extends CollectionBase {
 
-  use ContactTrait;
   use CountryTrait;
-  use OwnerTrait;
-  use MappingTrait;
 
   /**
    * {@inheritdoc}
@@ -43,21 +40,21 @@ class Collection extends CollectionBase {
    * {@inheritdoc}
    */
   public function query() {
-    return parent::query()
-      ->fields('c', [
-        'nid',
-        'vid',
-        'type',
-        'uri',
-        'created_time',
-        'changed_time',
-        'abstract',
-        'body',
-        'policy2',
-        'elibrary',
-        'access_url',
-      ]
-    );
+    return parent::query()->fields('c', [
+      'nid',
+      'vid',
+      'type',
+      'uri',
+      'created_time',
+      'changed_time',
+      'abstract',
+      'body',
+      'policy2',
+      'elibrary',
+      'owner',
+      'contact',
+      'access_url',
+    ]);
   }
 
   /**
@@ -86,15 +83,13 @@ class Collection extends CollectionBase {
       ->fetchCol();
     $row->setSourceProperty('affiliates', $affiliates);
 
-    // Owner.
-    $owner = $this->getCollectionOwners($collection) ?: NULL;
-    $row->setSourceProperty('owner', $owner);
-    if (!$owner) {
+    // Log missed owner values.
+    if (!$row->getSourceProperty('owner')) {
       $this->migration->getIdMap()->saveMessage(['collection' => $collection], "No owner for '$collection'");
     }
 
-    // Contacts.
-    $row->setSourceProperty('contact', $this->getCollectionContacts($collection) ?: NULL);
+    drush_print_r($collection);
+    drush_print_r($row->getSourceProperty('contact'));
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getSpatialCoverage($row));
