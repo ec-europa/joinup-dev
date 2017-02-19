@@ -203,7 +203,7 @@ class Prepare extends SourcePluginBase {
           ->execute()
           ->fetchCol();
         if ($publishers) {
-          $collections[$collection]['publisher'] = '|' . implode('|', $publishers) . '|';
+          $collections[$collection]['publisher'] = implode(',', $publishers);
         }
         $contacts = $db
           ->select($contact[$row['type']][0])
@@ -212,7 +212,7 @@ class Prepare extends SourcePluginBase {
           ->execute()
           ->fetchCol();
         if ($contacts) {
-          $collections[$collection]['contact'] = '|' . implode('|', $contacts) . '|';
+          $collections[$collection]['contact'] = implode(',', $contacts);
         }
       }
     }

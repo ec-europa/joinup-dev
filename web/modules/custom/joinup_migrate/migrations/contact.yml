@@ -15,4 +15,4 @@ destination:
   default_bundle: contact_information
 migration_dependencies:
  required:
-   - mapping
+   - prepare

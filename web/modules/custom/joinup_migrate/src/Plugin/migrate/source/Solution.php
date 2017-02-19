@@ -13,10 +13,7 @@ use Drupal\migrate\Row;
  */
 class Solution extends SolutionBase {
 
-  use ContactTrait;
   use CountryTrait;
-  use MappingTrait;
-  use OwnerTrait;
   use RdfFileFieldTrait;
   use UriTrait;
 
@@ -124,10 +121,20 @@ class Solution extends SolutionBase {
     $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Owners.
-    $row->setSourceProperty('owner', $this->getSolutionOwners($vid) ?: NULL);
+    $owner = $this->select('d8_owner', 'o')
+      ->fields('o', ['nid'])
+      ->condition('o.solution', $nid)
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('owner', $owner);
 
     // Contacts.
-    $row->setSourceProperty('contact', $this->getSolutionContacts($vid) ?: NULL);
+    $contact = $this->select('d8_contact', 'c')
+      ->fields('c', ['nid'])
+      ->condition('c.solution', $nid)
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('contact', $contact);
 
     // Distributions.
     $query = $this->select('content_field_asset_distribution', 'd')

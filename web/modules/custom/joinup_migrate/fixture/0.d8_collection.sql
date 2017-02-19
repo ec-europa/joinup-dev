@@ -12,6 +12,8 @@ CREATE OR REPLACE VIEW d8_collection (
   body,
   access_url,
   elibrary,
+  owner,
+  contact,
   banner,
   logo,
   logo_timestamp
@@ -30,6 +32,8 @@ SELECT
   nr.body,
   IF(n.type = 'community', ctc.field_community_url_url, cfru.field_repository_url_url),
   p.elibrary,
+  p.publisher,
+  p.contact,
   p.banner,
   IF(p.nid = 0, p.logo, IF(n.type = 'community' AND fc.filepath IS NOT NULL AND fc.filepath <> '', fc.filepath, IF(fr.filepath IS NOT NULL AND fr.filepath <> '', fr.filepath, NULL))),
   IF(p.nid = 0, UNIX_TIMESTAMP(), IF(n.type = 'community' AND fc.timestamp IS NOT NULL AND fc.timestamp > 0, fc.timestamp, IF(fr.timestamp IS NOT NULL AND fr.timestamp > 0, fr.timestamp, UNIX_TIMESTAMP())))
