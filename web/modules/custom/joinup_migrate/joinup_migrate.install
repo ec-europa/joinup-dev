@@ -48,9 +48,9 @@ function joinup_migrate_uninstall() {
 
   // Remove MySQL helper views.
   foreach (file_scan_directory(__DIR__ . '/fixture', '/\.sql$/') as $file) {
-    // Remove the prefix. Each file is prefixed with a single ASCII character
-    // representing the priority and a dot.
-    $view = Unicode::substr($file->name, 2);
+    // Replace the priority prefix the 'd8_' prefix. Each file is prefixed with
+    // a single ASCII character representing the priority and a dot.
+    $view = 'd8_' . Unicode::substr($file->name, 2);
     $db->query("DROP VIEW IF EXISTS $view")->execute();
   }
 }
