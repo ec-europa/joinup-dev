@@ -7,7 +7,7 @@ contact_information.settings:
       label: 'Allowed transitions'
       sequence:
         type: sequence
-        label: 'Target state'
+        label: 'Transition ID'
         sequence:
           type: sequence
           label: 'Source state'
