@@ -9,7 +9,7 @@ use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\Tests\joinup_core\JoinupWorkflowTestBase;
+use Drupal\Tests\joinup_core\Functional\JoinupWorkflowTestBase;
 
 /**
  * Tests crud operations and the workflow for the asset release rdf entity.
