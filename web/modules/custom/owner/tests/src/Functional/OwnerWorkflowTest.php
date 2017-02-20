@@ -4,7 +4,7 @@ namespace Drupal\Tests\owner\Functional;
 
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\Tests\joinup_core\JoinupWorkflowTestBase;
+use Drupal\Tests\joinup_core\Functional\JoinupWorkflowTestBase;
 
 /**
  * Tests crud operations and the workflow for the owner rdf entity.

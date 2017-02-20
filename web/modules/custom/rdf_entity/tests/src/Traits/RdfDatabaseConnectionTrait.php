@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\rdf_entity;
+namespace Drupal\Tests\rdf_entity\Traits;
 
 use Drupal\Core\Database\Database;
 use EasyRdf\Http;
