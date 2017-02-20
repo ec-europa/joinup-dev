@@ -1,3 +1,8 @@
 services:
   joinup_user.active_form_submit:
-    class: \Drupal\joinup_user\ActiveFormSubmit
+    class: Drupal\joinup_user\ActiveFormSubmit
+  joinup_user.user_route_context:
+    class: Drupal\joinup_user\ContextProvider\UserRouteContext
+    arguments: ['@current_route_match']
+    tags:
+      - { name: 'context_provider' }
