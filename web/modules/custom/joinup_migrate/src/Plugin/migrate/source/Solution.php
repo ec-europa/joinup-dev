@@ -15,12 +15,16 @@ class Solution extends SolutionBase {
 
   use CountryTrait;
   use RdfFileFieldTrait;
-  use UriTrait;
 
   /**
    * {@inheritdoc}
    */
   protected $reservedUriTables = ['collection'];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $uriProperties = ['uri', 'landing_page', 'metrics_page'];
 
   /**
    * {@inheritdoc}
@@ -51,22 +55,20 @@ class Solution extends SolutionBase {
    * {@inheritdoc}
    */
   public function query() {
-    return parent::query()
-      ->fields('s', [
-        'vid',
-        'title',
-        'uri',
-        'created_time',
-        'changed_time',
-        'body',
-        'sid',
-        'policy2',
-        'landing_page',
-        'metrics_page',
-        'docs_url',
-        'docs_path',
-      ]
-    );
+    return parent::query()->fields('s', [
+      'vid',
+      'title',
+      'uri',
+      'created_time',
+      'changed_time',
+      'body',
+      'sid',
+      'policy2',
+      'landing_page',
+      'metrics_page',
+      'docs_url',
+      'docs_path',
+    ]);
   }
 
   /**
@@ -75,24 +77,6 @@ class Solution extends SolutionBase {
   public function prepareRow(Row $row) {
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
-
-    // Destroy self lookup URIs.
-    $uri = $row->getSourceProperty('uri');
-    if ($uri == "https://joinup.ec.europa.eu/node/$nid") {
-      $row->setSourceProperty('uri', NULL);
-    }
-    else {
-      $alias = $this->select('url_alias', 'a')
-        ->fields('a', ['dst'])
-        ->condition('a.src', "node/$nid")
-        ->orderBy('a.pid', 'DESC')
-        ->range(0, 1)
-        ->execute()
-        ->fetchField();
-      if ($alias && ($uri === $alias)) {
-        $row->setSourceProperty('uri', NULL);
-      }
-    }
 
     // Keywords.
     $query = $this->select('term_node', 'tn');
@@ -106,13 +90,6 @@ class Solution extends SolutionBase {
       ->execute()
       ->fetchCol();
     $row->setSourceProperty('keywords', array_unique($keywords));
-
-    // Filter and fix landing and metrics pages.
-    foreach (['landing', 'metrics'] as $name) {
-      if ($page = $row->getSourceProperty($name . '_page')) {
-        $this->normalizeUri($name, $row, FALSE);
-      }
-    }
 
     // Resolve documentation.
     $this->setRdfFileTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');

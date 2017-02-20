@@ -24,8 +24,8 @@ function joinup_migrate_install() {
   $views = file_scan_directory(__DIR__ . '/fixture', '/\.sql$/', ['key' => 'name']);
   // Sort by priority. Some MySQL views depend on others, meaning that the
   // install order matters. The priority is an ASCII character, followed by a
-  // dot character, that prefixes the file name. For example files 0.d8_*.sql
-  // will be installed before 1.d8_*.sql.
+  // dot character, that prefixes the file name. For example files 0.*.sql will
+  // be installed before 1.*.sql.
   ksort($views);
   foreach ($views as $view) {
     $db->query(file_get_contents($view->uri))->execute();

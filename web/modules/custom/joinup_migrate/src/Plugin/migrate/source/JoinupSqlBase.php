@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Site\Settings;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
@@ -11,20 +12,6 @@ use Drupal\migrate\Row;
  * Provides a base class for SqlBase classes.
  */
 abstract class JoinupSqlBase extends SqlBase {
-
-  /**
-   * Collect here table aliases.
-   *
-   * @var string[]
-   */
-  protected $alias = [];
-
-  /**
-   * If the query has been already prepared.
-   *
-   * @var bool
-   */
-  protected $isQueryPrepared = FALSE;
 
   /**
    * A list of source objects that should be checked for existing URIs.
@@ -48,26 +35,14 @@ abstract class JoinupSqlBase extends SqlBase {
   protected $reservedUriTables = [];
 
   /**
-   * {@inheritdoc}
+   * A list of source properties representing URIs to be normalised.
+   *
+   * Such fields are checked if they are valid URIs and if they don't point to
+   * the Drupal 6 old URLs.
+   *
+   * @var string[]
    */
-  protected function prepareQuery() {
-    if (!$this->isQueryPrepared) {
-      $this->query = parent::prepareQuery();
-      // Save the alias list.
-      $this->query->addMetaData('alias', $this->alias);
-      $this->isQueryPrepared = TRUE;
-    }
-    return $this->query;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function count($refresh = FALSE) {
-    // @see https://www.drupal.org/node/2833060
-    $query = clone $this->prepareQuery();
-    return $query->countQuery()->execute()->fetchField();
-  }
+  protected $uriProperties = ['uri'];
 
   /**
    * Gets the legacy site webroot directory.
@@ -99,6 +74,15 @@ abstract class JoinupSqlBase extends SqlBase {
         $row->setSourceProperty('uri', NULL);
       }
     }
+
+    // Normalize URIs.
+    foreach ($this->uriProperties as $property) {
+      if ($row->hasSourceProperty($property)) {
+        $uri = $row->getSourceProperty($property);
+        $row->setSourceProperty($property, $this->normalizeUri($uri));
+      }
+    }
+
     return parent::prepareRow($row);
   }
 
@@ -125,6 +109,48 @@ abstract class JoinupSqlBase extends SqlBase {
         }
       }
       $uri = array_merge($uri, array_diff($cache[$table], $uri));
+    }
+
+    return $uri;
+  }
+
+  /**
+   * Normalizes an URI.
+   *
+   * It checks if the URI has the correct pattern and doesn't point to the old
+   * Drupal 6 site. If the validation fails, it returns NULL.
+   *
+   * @param string $uri
+   *   The URI to be normalized.
+   *
+   * @return string|null
+   *   The normalized URI or NULL.
+   */
+  protected function normalizeUri($uri) {
+    $uri = trim($uri);
+
+    if (empty($uri)) {
+      return NULL;
+    }
+
+    // Don't allow malformed URIs.
+    if (!$url = parse_url($uri)) {
+      return NULL;
+    }
+
+    if (empty($url['scheme'])) {
+      // Needs a full-qualified URL. The URI might be 'www.example.com'.
+      $uri = "http://$uri";
+    }
+
+    // Check for a valid URI pattern.
+    if (!UrlHelper::isValid($uri, TRUE)) {
+      return NULL;
+    }
+
+    // Don't allow empty host or old Joinup host.
+    if (empty($url['host']) || $url['host'] === 'joinup.ec.europa.eu') {
+      return NULL;
     }
 
     return $uri;

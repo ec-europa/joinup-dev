@@ -99,7 +99,7 @@ trait RdfFileFieldTrait {
     }
     else {
       // The URI might be a reference to a remote file or NULL.
-      $uri = $row->getSourceProperty($url_property);
+      $uri = $this->normalizeUri($row->getSourceProperty($url_property));
     }
     $row->setSourceProperty($rdf_file_field_property, $uri);
   }

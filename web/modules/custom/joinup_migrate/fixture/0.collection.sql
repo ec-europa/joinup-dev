@@ -36,7 +36,7 @@ SELECT
   p.contact,
   p.banner,
   IF(p.nid = 0, p.logo, IF(n.type = 'community' AND fc.filepath IS NOT NULL AND fc.filepath <> '', fc.filepath, IF(fr.filepath IS NOT NULL AND fr.filepath <> '', fr.filepath, NULL))),
-  IF(p.nid = 0, UNIX_TIMESTAMP(), IF(n.type = 'community' AND fc.timestamp IS NOT NULL AND fc.timestamp > 0, fc.timestamp, IF(fr.timestamp IS NOT NULL AND fr.timestamp > 0, fr.timestamp, UNIX_TIMESTAMP())))
+  IF(p.nid = 0, NULL, IF(n.type = 'community' AND fc.timestamp IS NOT NULL AND fc.timestamp > 0, fc.timestamp, IF(fr.timestamp IS NOT NULL AND fr.timestamp > 0, fr.timestamp, NULL)))
 FROM d8_prepare p
 LEFT JOIN node n ON p.nid = n.nid
 LEFT JOIN node_revisions nr ON n.vid = nr.vid

@@ -24,4 +24,5 @@ destination:
   fast_rollback_batch_size: 0
 migration_dependencies:
  required:
+   - user
    - mapping

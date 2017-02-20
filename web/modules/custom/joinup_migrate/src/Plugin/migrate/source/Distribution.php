@@ -14,7 +14,6 @@ use Drupal\migrate\Row;
 class Distribution extends DistributionBase {
 
   use RdfFileFieldTrait;
-  use UriTrait;
 
   /**
    * {@inheritdoc}
@@ -60,9 +59,6 @@ class Distribution extends DistributionBase {
   public function prepareRow(Row $row) {
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
-
-    // Normalize URI.
-    $this->normalizeUri('uri', $row, FALSE);
 
     // Representation technique.
     $query = $this->select('term_node', 'tn');

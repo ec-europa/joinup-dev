@@ -2,7 +2,6 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\migrate\Row;
 
 /**
@@ -15,6 +14,11 @@ use Drupal\migrate\Row;
 class Collection extends CollectionBase {
 
   use CountryTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $uriProperties = ['uri', 'access_url'];
 
   /**
    * {@inheritdoc}
@@ -63,18 +67,6 @@ class Collection extends CollectionBase {
   public function prepareRow(Row $row) {
     $collection = $row->getSourceProperty('collection');
 
-    if ($access_url = $row->getSourceProperty('access_url')) {
-      if (!UrlHelper::isValid($access_url)) {
-        // Don't import malformed URLs.
-        $access_url = NULL;
-      }
-      elseif (parse_url($access_url, PHP_URL_SCHEME) === NULL) {
-        // Needs a full-qualified URL.
-        $access_url = "http://$access_url";
-      }
-      $row->setSourceProperty('access_url', $access_url);
-    }
-
     // Get affiliates.
     $affiliates = $this->select('d8_solution', 's')
       ->fields('s', ['nid'])
@@ -87,9 +79,6 @@ class Collection extends CollectionBase {
     if (!$row->getSourceProperty('owner')) {
       $this->migration->getIdMap()->saveMessage(['collection' => $collection], "No owner for '$collection'");
     }
-
-    drush_print_r($collection);
-    drush_print_r($row->getSourceProperty('contact'));
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getSpatialCoverage($row));

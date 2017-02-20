@@ -82,33 +82,6 @@ class Release extends JoinupSqlBase {
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
 
-    // Destroy self lookup URIs.
-    $uri = $row->getSourceProperty('uri');
-    if ($uri == "https://joinup.ec.europa.eu/node/$nid") {
-      $row->setSourceProperty('uri', NULL);
-    }
-    else {
-      $alias = $this->select('url_alias', 'a')
-        ->fields('a', ['dst'])
-        ->condition('a.src', "node/$nid")
-        ->orderBy('a.pid', 'DESC')
-        ->range(0, 1)
-        ->execute()
-        ->fetchField();
-      if ($alias && ($uri === $alias)) {
-        $row->setSourceProperty('uri', NULL);
-      }
-    }
-
-    // Assure a created date.
-    if (!$row->getSourceProperty('created_time')) {
-      $row->setSourceProperty('created_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
-    }
-    // Assure a changed date.
-    if (!$row->getSourceProperty('changed_time')) {
-      $row->setSourceProperty('changed_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
-    }
-
     // Keywords.
     $query = $this->select('term_node', 'tn');
     $query->join('term_data', 'td', 'tn.tid = td.tid');
