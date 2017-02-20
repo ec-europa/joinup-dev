@@ -9,3 +9,7 @@ field.storage_settings.rdf_file:
 field.field_settings.rdf_file:
   type: field.field_settings.file
   label: 'RDF file settings'
+
+field.widget.settings.rdf_file_generic:
+  type: field.widget.settings.file_generic
+  label: 'RDF file generic widget'

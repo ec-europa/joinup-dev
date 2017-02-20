@@ -589,16 +589,21 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   protected static function getNodeFieldNameFromAlias($type, $alias) {
     $aliases = [
+      'discussion' => [
+        'state' => 'field_state',
+        'content' => 'field_discussion_content',
+      ],
       'document' => [
         'short title' => 'field_document_short_title',
       ],
       'event' => [
         'short title' => 'field_event_short_title',
         'start date' => 'field_start_date',
+        'state' => 'field_state',
       ],
       'news' => [
         'headline' => 'field_news_headline',
-        'state' => 'field_news_state',
+        'state' => 'field_state',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
@@ -744,7 +749,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {
-        throw new \Exception("The tile '$heading' was not found on the page");
+        throw new \Exception("The tile '$heading' was found on the page");
       }
     }
   }
@@ -879,7 +884,23 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Create a comment.
+   * Create comment entities.
+   *
+   * Table format:
+   * @codingStandardsIgnoreStart
+   * | subject        | message         | author   | mail          | name      | parent      |
+   * | Subject 1      | Comment body    |          | anon@test.com | Anonymous | Parent node |
+   * | Subject 2      | Comment body    | John Doe |               |           | Parent node |
+   * @codingStandardsIgnoreEnd
+   *
+   * If author is filled, mail and name are not required.
+   *
+   * @param TableNode $table
+   *   The comment data.
+   *
+   * @throws \Exception
+   *   Thrown when the parent node cannot be found, or when the author cannot
+   *   be found.
    *
    * @Given comments:
    */
@@ -891,7 +912,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $result = $query->execute();
 
       if (empty($result)) {
-        throw new \InvalidArgumentException("Unable to load parent of comment.");
+        throw new \InvalidArgumentException('Unable to load parent of comment.');
       }
 
       // Reload from database to avoid caching issues and get latest version.
@@ -904,8 +925,15 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $uid = reset($result);
 
       if (empty($result)) {
-        throw new \InvalidArgumentException("Unable to load author of comment.");
+        throw new \InvalidArgumentException('Unable to load author of comment.');
       }
+
+      // Replace field_body alias if present.
+      if (isset($comment_values['message'])) {
+        $comment_values['field_body'] = $comment_values['message'];
+        unset($comment_values['message']);
+      }
+
       unset($comment_values['parent']);
       unset($comment_values['author']);
       $comment_values['uid'] = $uid;
@@ -918,7 +946,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'entity_id' => $id,
       ];
       $comment_values += $values;
-      // Ignore due to conflicting Comment class in Phing.
       $comment = Comment::create($comment_values);
       $comment->save();
     }
