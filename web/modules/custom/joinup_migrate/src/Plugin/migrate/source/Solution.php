@@ -13,12 +13,14 @@ use Drupal\migrate\Row;
  */
 class Solution extends SolutionBase {
 
-  use ContactTrait;
   use CountryTrait;
-  use ElibraryCreationTrait;
-  use MappingTrait;
-  use OwnerTrait;
+  use RdfFileFieldTrait;
   use UriTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $reservedUriTables = ['collection'];
 
   /**
    * {@inheritdoc}
@@ -41,7 +43,7 @@ class Solution extends SolutionBase {
       'status' => $this->t('Status'),
       'contact' => $this->t('Contact info'),
       'distribution' => $this->t('Distribution'),
-      'elibrary' => $this->t('Elibrary creation'),
+      'documentation' => $this->t('Documentation'),
     ] + parent::fields();
   }
 
@@ -49,29 +51,22 @@ class Solution extends SolutionBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = parent::query();
-
-    $this->alias['content_type_asset_release'] = $query->leftJoin('content_type_asset_release', 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_documentation'] = $query->leftJoin('node', 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_homepage_doc_nid = %alias.nid");
-    $this->alias['content_type_documentation'] = $query->leftJoin('content_type_documentation', 'content_type_documentation', "{$this->alias['node_documentation']}.vid = %alias.vid");
-    $this->alias['state'] = $query->leftJoin('workflow_node', 'state', "{$this->alias['node']}.nid = %alias.nid");
-
-    $this->alias['content_field_asset_sw_metrics'] = $query->leftJoin('content_field_asset_sw_metrics', 'content_field_asset_sw_metrics', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_metrics'] = $query->leftJoin('node', 'node_metrics', "{$this->alias['content_field_asset_sw_metrics']}.field_asset_sw_metrics_nid = %alias.nid");
-    $this->alias['data_set_uri'] = $query->leftJoin('content_field_id_uri', 'data_set_uri', "{$this->alias['node_metrics']}.vid = %alias.vid");
-
-    $query->addExpression("TRIM({$this->alias['content_type_documentation']}.field_documentation_access_url1_url)", 'landing_page');
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created_time');
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed_time');
-    $query->addExpression("TRIM({$this->alias['data_set_uri']}.field_id_uri_value)", 'metrics_page');
-
-    return $query
-      ->fields('m', ['elibrary', 'policy2'])
-      ->fields($this->alias['node'], ['title', 'created', 'changed', 'vid'])
-      ->fields($this->alias['node_revision'], ['body'])
-      ->fields($this->alias['state'], ['sid'])
-      // Assure the URI field.
-      ->addTag('uri');
+    return parent::query()
+      ->fields('s', [
+        'vid',
+        'title',
+        'uri',
+        'created_time',
+        'changed_time',
+        'body',
+        'sid',
+        'policy2',
+        'landing_page',
+        'metrics_page',
+        'docs_url',
+        'docs_path',
+      ]
+    );
   }
 
   /**
@@ -99,15 +94,6 @@ class Solution extends SolutionBase {
       }
     }
 
-    // Assure a created date.
-    if (!$row->getSourceProperty('created_time')) {
-      $row->setSourceProperty('created_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
-    }
-    // Assure a changed date.
-    if (!$row->getSourceProperty('changed_time')) {
-      $row->setSourceProperty('changed_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
-    }
-
     // Keywords.
     $query = $this->select('term_node', 'tn');
     $query->join('term_data', 'td', 'tn.tid = td.tid');
@@ -128,14 +114,27 @@ class Solution extends SolutionBase {
       }
     }
 
+    // Resolve documentation.
+    $this->setRdfFileTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
+
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Owners.
-    $row->setSourceProperty('owner', $this->getSolutionOwners($vid) ?: NULL);
+    $owner = $this->select('d8_owner', 'o')
+      ->fields('o', ['nid'])
+      ->condition('o.solution', $nid)
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('owner', $owner);
 
     // Contacts.
-    $row->setSourceProperty('contact', $this->getSolutionContacts($vid) ?: NULL);
+    $contact = $this->select('d8_contact', 'c')
+      ->fields('c', ['nid'])
+      ->condition('c.solution', $nid)
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('contact', $contact);
 
     // Distributions.
     $query = $this->select('content_field_asset_distribution', 'd')
@@ -144,9 +143,6 @@ class Solution extends SolutionBase {
     $query->join('node', 'n', 'd.field_asset_distribution_nid = n.nid');
     $distributions = $query->execute()->fetchCol();
     $row->setSourceProperty('distribution', $distributions);
-
-    // Elibrary creation.
-    $this->elibraryCreation($row);
 
     return parent::prepareRow($row);
   }

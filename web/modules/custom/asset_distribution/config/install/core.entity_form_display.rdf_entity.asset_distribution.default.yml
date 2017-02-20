@@ -5,7 +5,6 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.field_ad_access_url
     - field.field.rdf_entity.asset_distribution.field_ad_creation_date
     - field.field.rdf_entity.asset_distribution.field_ad_description
-    - field.field.rdf_entity.asset_distribution.field_ad_file
     - field.field.rdf_entity.asset_distribution.field_ad_file_size
     - field.field.rdf_entity.asset_distribution.field_ad_format
     - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
@@ -16,9 +15,8 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
-    - file
-    - link
     - rdf_entity
+    - rdf_file
     - text
 id: rdf_entity.asset_distribution.default
 targetEntityType: rdf_entity
@@ -28,10 +26,10 @@ content:
   field_ad_access_url:
     weight: 3
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
+      progress_indicator: throbber
     third_party_settings: {  }
-    type: link_default
+    type: rdf_file_generic
+    region: content
   field_ad_creation_date:
     type: datetime_create_update
     weight: 8
@@ -45,12 +43,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
-  field_ad_file:
-    weight: 4
-    settings:
-      progress_indicator: throbber
-    third_party_settings: {  }
-    type: file_generic
   field_ad_format:
     weight: 6
     settings:

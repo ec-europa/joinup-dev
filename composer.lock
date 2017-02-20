@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7eeec35abaecb8f2b713582c80e2d875",
+    "content-hash": "ca713f82688eaf1f0689921cb9a7274e",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -115,16 +115,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.22.0",
+            "version": "3.22.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "7ef8e6b785d7b522c478ce4e13630b2b93eea87b"
+                "reference": "eea83aaac2b6c86f72a5c85c54d1839b70d4fd21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7ef8e6b785d7b522c478ce4e13630b2b93eea87b",
-                "reference": "7ef8e6b785d7b522c478ce4e13630b2b93eea87b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/eea83aaac2b6c86f72a5c85c54d1839b70d4fd21",
+                "reference": "eea83aaac2b6c86f72a5c85c54d1839b70d4fd21",
                 "shasum": ""
             },
             "require": {
@@ -191,7 +191,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-02-08T01:00:51+00:00"
+            "time": "2017-02-17T20:09:40+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -1600,16 +1600,16 @@
         },
         {
             "name": "drupal/console-extend-plugin",
-            "version": "0.2.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console-extend-plugin.git",
-                "reference": "3c6b873205c6e33f24b33807901d3287a4ff9a02"
+                "reference": "df2396782960335d18a8e5eb6ab630a37ca5f493"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-extend-plugin/zipball/3c6b873205c6e33f24b33807901d3287a4ff9a02",
-                "reference": "3c6b873205c6e33f24b33807901d3287a4ff9a02",
+                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-extend-plugin/zipball/df2396782960335d18a8e5eb6ab630a37ca5f493",
+                "reference": "df2396782960335d18a8e5eb6ab630a37ca5f493",
                 "shasum": ""
             },
             "require": {
@@ -1637,20 +1637,20 @@
                 }
             ],
             "description": "Drupal Console Extend Plugin",
-            "time": "2017-02-09T17:09:50+00:00"
+            "time": "2017-02-14T08:38:49+00:00"
         },
         {
             "name": "drupal/core",
-            "version": "8.3.0-alpha1",
+            "version": "8.3.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "9cf9a8fb5a53674491efcd62f82a70b4cd138aee"
+                "reference": "7b628e88038c32482a5f9552ca400c8cbdef8c1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/9cf9a8fb5a53674491efcd62f82a70b4cd138aee",
-                "reference": "9cf9a8fb5a53674491efcd62f82a70b4cd138aee",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/7b628e88038c32482a5f9552ca400c8cbdef8c1c",
+                "reference": "7b628e88038c32482a5f9552ca400c8cbdef8c1c",
                 "shasum": ""
             },
             "require": {
@@ -1790,7 +1790,7 @@
             "require-dev": {
                 "behat/mink": "1.7.x-dev",
                 "behat/mink-goutte-driver": "~1.2",
-                "drupal/coder": "8.2.8",
+                "drupal/coder": "8.2.10",
                 "jcalderonzumba/gastonjs": "~1.0.2",
                 "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
                 "mikey179/vfsstream": "~1.2",
@@ -1804,8 +1804,8 @@
                     "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-17.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194.patch",
-                    "SqlBase::prepareQuery() should be called also on count. @see https://www.drupal.org/node/2833060": "https://www.drupal.org/files/issues/sqlbase_preparequery-2833060-2.patch",
-                    "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch"
+                    "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
+                    "Explode processor is too strict @see https://www.drupal.org/node/2853823": "https://www.drupal.org/files/issues/2853823-7.patch"
                 }
             },
             "autoload": {
@@ -1829,7 +1829,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2017-02-01T16:59:40+00:00"
+            "time": "2017-02-15T16:16:18+00:00"
         },
         {
             "name": "drupal/digital_size_formatter",
@@ -2205,26 +2205,24 @@
         },
         {
             "name": "drupal/message",
-            "version": "1.0.0-alpha4",
+            "version": "1.0.0-alpha5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/message",
-                "reference": "8.x-1.0-alpha4"
+                "reference": "8.x-1.0-alpha5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-alpha4.zip",
-                "reference": "8.x-1.0-alpha4",
-                "shasum": "bee9bb864406df855af5077e727a0c1c0ed93b18"
+                "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-alpha5.zip",
+                "reference": null,
+                "shasum": "46e6b72b141fc73ff86616b29f84a6483371c5c2"
             },
             "require": {
                 "drupal/core": "*"
             },
             "require-dev": {
-                "drupal/coder": "^2.0"
-            },
-            "suggest": {
-                "drupal/token": "Required by drupal/message_example"
+                "drupal/coder": "^2.0",
+                "drupal/token": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -2232,8 +2230,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4",
-                    "datestamp": "1477938239"
+                    "version": "8.x-1.0-alpha5",
+                    "datestamp": "1487017983"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2363,6 +2361,49 @@
             "homepage": "https://www.drupal.org/project/migrate_drush",
             "support": {
                 "source": "http://cgit.drupalcode.org/migrate_drush"
+            }
+        },
+        {
+            "name": "drupal/migrate_report",
+            "version": "1.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/migrate_report",
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/migrate_report-8.x-1.0-alpha1.zip",
+                "reference": null,
+                "shasum": "9d365bf9e0abae1b469d501a3ec77f876ab6acac"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1487106486"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                }
+            ],
+            "description": "Provides raw report on last migration",
+            "homepage": "https://www.drupal.org/project/migrate_report",
+            "support": {
+                "source": "http://cgit.drupalcode.org/migrate_report"
             }
         },
         {
@@ -2706,7 +2747,7 @@
                 "issues": "https://www.drupal.org/project/issues/phingdrushtask",
                 "source": "https://github.com/pfrenssen/phingdrushtask/tree/7.x-2.x"
             },
-            "time": "2016-10-12 12:47:47"
+            "time": "2016-10-12T12:47:47+00:00"
         },
         {
             "name": "drupal/r4032login",
@@ -3872,7 +3913,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2016-04-20 05:45:29"
+            "time": "2017-01-20 06:45:09"
         },
         {
             "name": "mtdowling/jmespath.php",
@@ -3931,16 +3972,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v3.0.3",
+            "version": "v3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "5b8182cc0abb4b0ff290ba9df6c0e1323286013a"
+                "reference": "0bf561dfe75ba80441c22adecc0529056671a7d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/5b8182cc0abb4b0ff290ba9df6c0e1323286013a",
-                "reference": "5b8182cc0abb4b0ff290ba9df6c0e1323286013a",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/0bf561dfe75ba80441c22adecc0529056671a7d2",
+                "reference": "0bf561dfe75ba80441c22adecc0529056671a7d2",
                 "shasum": ""
             },
             "require": {
@@ -3978,7 +4019,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2017-02-03T21:57:31+00:00"
+            "time": "2017-02-10T20:20:03+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -7366,7 +7407,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-02-06 08:22:23"
+            "time": "2017-02-06T08:22:23+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -7681,8 +7722,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+4-dev",
-                    "datestamp": "1486595584"
+                    "version": "8.x-1.0-alpha3+5-dev",
+                    "datestamp": "1486947184"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9221,7 +9262,7 @@
         },
         {
             "name": "symfony/browser-kit",
-            "version": "v3.2.3",
+            "version": "v3.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/browser-kit.git",

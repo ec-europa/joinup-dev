@@ -5,7 +5,7 @@ dependencies:
     - field.storage.rdf_entity.field_isr_documentation
     - rdf_entity.rdfentity.asset_release
   module:
-    - file
+    - rdf_file
 id: rdf_entity.asset_release.field_isr_documentation
 field_name: field_isr_documentation
 entity_type: rdf_entity
@@ -17,10 +17,10 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_directory: 'documentation'
   file_extensions: 'txt doc docx pdf'
   max_filesize: ''
   description_field: false
-  handler: 'default:file'
+  handler: 'rdf_file_default:file'
   handler_settings: {  }
-field_type: file
+field_type: rdf_file

@@ -1,5 +1,5 @@
 id: prepare
-label: 'Prepare migrations'
+label: 'Prepare'
 source:
   plugin: prepare
   track_changes: true
