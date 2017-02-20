@@ -153,8 +153,6 @@ config_devel:
   - views.view.user_admin_people
   - user.flood
   - user.mail
-  - user.role.anonymous
-  - user.role.authenticated
   - user.settings
   - views.view.collections
   - views.view.user_admin_people

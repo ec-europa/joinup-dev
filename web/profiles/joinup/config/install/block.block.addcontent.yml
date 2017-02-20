@@ -2,7 +2,6 @@ langcode: en
 status: false
 dependencies:
   module:
-    - facets
     - joinup
   theme:
     - joinup_theme
@@ -17,10 +16,4 @@ settings:
   label: 'Add content'
   provider: joinup
   label_display: visible
-visibility:
-  other_facet:
-    id: other_facet
-    facets: ''
-    facet_value: ''
-    negate: false
-    context_mapping: {  }
+visibility: {  }
