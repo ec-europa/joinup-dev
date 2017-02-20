@@ -5,9 +5,14 @@ core: 8.x
 package: Joinup
 dependencies:
   - og
+  - search_api_field
   - user
 
 config_devel:
+  - facets.facet.user_type
+  - facets.facet_source.search_api_field__user.field_user_content
+  - field.field.user.user.field_user_content
+  - field.storage.user.field_user_content
   - og.og_membership_type.og_membership_type
   - og.og_role.rdf_entity-collection-administrator
   - og.og_role.rdf_entity-collection-facilitator
@@ -18,4 +23,3 @@ config_devel:
   - og.og_role.rdf_entity-solution-member
   - og.og_role.rdf_entity-solution-non-member
   - user.role.administrator
-  - user.role.authenticated
