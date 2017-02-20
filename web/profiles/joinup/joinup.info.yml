@@ -64,6 +64,7 @@ themes:
 config_devel:
   - block.block.addcontent
   - block.block.groupheader
+  - block.block.userheader
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
   - block.block.joinup_theme_content
