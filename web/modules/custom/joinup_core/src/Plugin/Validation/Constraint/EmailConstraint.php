@@ -21,11 +21,4 @@ class EmailConstraint extends Constraint {
    */
   public $message = 'The e-mail %email is not valid.';
 
-  /**
-   * {@inheritdoc}
-   */
-  public function validatedBy() {
-    return parent::validatedBy();
-  }
-
 }

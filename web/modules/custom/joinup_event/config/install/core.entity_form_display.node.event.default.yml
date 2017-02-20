@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.event.field_event_short_title
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
+    - field.field.node.event.field_state
     - field.field.node.event.og_audience
     - image.style.thumbnail
     - node.type.event
@@ -21,6 +22,7 @@ dependencies:
     - datetime
     - image
     - inline_entity_form
+    - joinup_core
     - link
     - text
 id: node.event.default
@@ -36,11 +38,13 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
+    region: content
   field_comments:
-    weight: 26
+    weight: 11
     settings: {  }
     third_party_settings: {  }
     type: comment_default
+    region: content
   field_event_adtl_address_info:
     weight: 7
     settings:
@@ -48,6 +52,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
+    region: content
   field_event_agenda:
     weight: 4
     settings:
@@ -55,6 +60,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
   field_event_contact_email:
     weight: 9
     settings:
@@ -62,11 +68,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: email_default
+    region: content
   field_event_end_date:
     weight: 6
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
+    region: content
   field_event_logo:
     weight: 5
     settings:
@@ -74,6 +82,7 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
+    region: content
   field_event_organisation:
     weight: 8
     settings:
@@ -84,8 +93,11 @@ content:
       allow_existing: true
       match_operator: CONTAINS
       override_labels: false
+      collapsible: false
+      collapsed: false
     third_party_settings: {  }
     type: inline_entity_form_complex
+    region: content
   field_event_short_title:
     weight: 1
     settings:
@@ -93,11 +105,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_event_start_date:
     type: datetime_default
     weight: 3
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_event_web_url:
     weight: 10
     settings:
@@ -105,6 +119,14 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+    region: content
+  field_state:
+    type: state_machine_buttons
+    weight: 12
+    region: content
+    settings:
+      use_transition_label: 1
+    third_party_settings: {  }
   title:
     type: string_textfield
     weight: 0
@@ -112,8 +134,10 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden:
   created: true
+  current_workflow_state: true
   og_audience: true
   path: true
   promote: true

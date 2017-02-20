@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.news.body
     - field.field.node.news.field_comments
     - field.field.node.news.field_news_headline
+    - field.field.node.news.field_news_shared_in
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_state
     - field.field.node.news.field_spatial_coverage
@@ -45,6 +46,24 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+  field_news_shared_in:
+    weight: 10
+    label: above
+    settings:
+      view_mode: view_mode_tile
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    type: entity_reference_entity_view
   field_news_source_url:
     weight: 4
     label: hidden
