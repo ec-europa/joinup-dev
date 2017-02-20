@@ -14,7 +14,12 @@ class Contact extends JoinupSqlBase {
   /**
    * {@inheritdoc}
    */
-  protected $reservedUriTables = ['collection', 'solution', 'release', 'distribution'];
+  protected $reservedUriTables = [
+    'collection',
+    'solution',
+    'release',
+    'distribution',
+  ];
 
   /**
    * {@inheritdoc}
