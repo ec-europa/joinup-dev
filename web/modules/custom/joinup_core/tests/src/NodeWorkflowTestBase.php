@@ -238,10 +238,16 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * The structure of the array is:
    * @code
    * $access_array = [
-   *   'parent_state' => [
-   *     'entity_state' => [
-   *        ['operation', 'user1', 'expected_result'],
-   *        ['operation', 'user2', 'expected_result'],
+   *  'parent_bundle' => [
+   *    'parent_state' => [
+   *      'parent_moderation' => [
+   *        'entity_state' => [
+   *          'operation' => [
+   *            'allowed user 1',
+   *            'allowed user 2',
+   *           ],
+   *         ],
+   *       ],
    *     ],
    *   ],
    * ];
@@ -261,11 +267,15 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * The structure of the array is:
    * @code
    * $workflow_array = [
-   *   'parent_moderation' => [
-   *     'entity_state' => [
-   *       'user' => [
-   *         'transition',
-   *         'transition',
+   *   'parent_bundle' => [
+   *     'parent_e_library' => [
+   *       'parent_moderation' => [
+   *         'entity_state' => [
+   *           'user' => [
+   *             'transition',
+   *             'transition',
+   *           ],
+   *         ],
    *       ],
    *     ],
    *   ],

@@ -39,17 +39,11 @@ abstract class UserBase extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = $this->select('users', 'u');
-    $query->leftJoin('userpoints', 'up', 'u.uid = up.uid');
-
-    return $query
+    return $this->select('users', 'u')
       ->fields('u', ['uid'])
       ->orderBy('u.uid')
-      ->condition('u.uid', 0, '>')
-      // Only active users.
-      ->condition('u.status', 1)
-      // Only with kudos >= 10.
-      ->condition('up.points', 10, '>=');
+      // Add user migrate filters.
+      ->addTag('user_migrate');
   }
 
 }

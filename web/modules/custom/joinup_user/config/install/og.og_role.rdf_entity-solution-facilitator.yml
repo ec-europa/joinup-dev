@@ -16,6 +16,8 @@ permissions:
   - 'create document content'
   - 'create event content'
   - 'create news content'
+  - 'delete asset_distribution rdf entity'
+  - 'delete any asset_distribution rdf_entity'
   - 'delete any discussion content'
   - 'delete any document content'
   - 'delete any news content'
@@ -33,8 +35,8 @@ permissions:
   - 'update own asset_distribution rdf_entity'
   - 'update own asset_release rdf_entity'
   - 'view any unpublished content'
+  - 'view rdf entity'
   - 'view rdf_entity default graph'
   - 'view rdf_entity draft graph'
-  - 'view rdf entity'
   - 'view unpublished rdf entity'
 role_type: null
