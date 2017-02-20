@@ -41,11 +41,11 @@ dependencies:
     - image.style.thumbnail
     - rdf_entity.rdfentity.solution
   module:
-    - file
     - image
     - inline_entity_form
     - joinup_core
     - link
+    - rdf_file
     - text
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
@@ -88,7 +88,7 @@ content:
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-    type: file_generic
+    type: rdf_file_generic
     region: content
   field_is_elibrary_creation:
     weight: 12
@@ -171,12 +171,9 @@ content:
     third_party_settings: {  }
     region: content
   field_policy_domain:
-    type: entity_reference_autocomplete
+    type: options_select
     weight: 5
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
     region: content
   field_spatial_coverage:

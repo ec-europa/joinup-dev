@@ -51,14 +51,14 @@ class Solution extends SolutionBase {
   public function query() {
     $query = parent::query();
 
-    $this->alias['content_type_asset_release'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_asset_release", 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_homepage_doc_nid = %alias.nid");
-    $this->alias['content_type_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_documentation", 'content_type_documentation', "{$this->alias['node_documentation']}.vid = %alias.vid");
-    $this->alias['state'] = $query->leftJoin("{$this->getSourceDbName()}.workflow_node", 'state', "{$this->alias['node']}.nid = %alias.nid");
+    $this->alias['content_type_asset_release'] = $query->leftJoin('content_type_asset_release', 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
+    $this->alias['node_documentation'] = $query->leftJoin('node', 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_homepage_doc_nid = %alias.nid");
+    $this->alias['content_type_documentation'] = $query->leftJoin('content_type_documentation', 'content_type_documentation', "{$this->alias['node_documentation']}.vid = %alias.vid");
+    $this->alias['state'] = $query->leftJoin('workflow_node', 'state', "{$this->alias['node']}.nid = %alias.nid");
 
-    $this->alias['content_field_asset_sw_metrics'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_asset_sw_metrics", 'content_field_asset_sw_metrics', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_metrics'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'node_metrics', "{$this->alias['content_field_asset_sw_metrics']}.field_asset_sw_metrics_nid = %alias.nid");
-    $this->alias['data_set_uri'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_id_uri", 'data_set_uri', "{$this->alias['node_metrics']}.vid = %alias.vid");
+    $this->alias['content_field_asset_sw_metrics'] = $query->leftJoin('content_field_asset_sw_metrics', 'content_field_asset_sw_metrics', "{$this->alias['node']}.vid = %alias.vid");
+    $this->alias['node_metrics'] = $query->leftJoin('node', 'node_metrics', "{$this->alias['content_field_asset_sw_metrics']}.field_asset_sw_metrics_nid = %alias.nid");
+    $this->alias['data_set_uri'] = $query->leftJoin('content_field_id_uri', 'data_set_uri', "{$this->alias['node_metrics']}.vid = %alias.vid");
 
     $query->addExpression("TRIM({$this->alias['content_type_documentation']}.field_documentation_access_url1_url)", 'landing_page');
     $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created_time');

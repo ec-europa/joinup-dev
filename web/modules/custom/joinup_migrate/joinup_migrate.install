@@ -5,11 +5,41 @@
  * Contains install, update, uninstall functionality for Joinup Migrate module.
  */
 
+use Drupal\Core\Database\Database;
+
 /**
- * Implements hook_schema().
+ * Implements hook_install().
  */
-function joinup_migrate_schema() {
-  return [
+function joinup_migrate_install() {
+  // Create intermediary tables we need for migration. The tables will be
+  // created on the source database because they will provide source data.
+  $schema = Database::getConnection('default', 'migrate')->schema();
+  foreach (['joinup_migrate_mapping', 'joinup_migrate_collection'] as $table) {
+    $schema->dropTable($table);
+    $schema->createTable($table, joinup_migrate_source_db_schema($table));
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function joinup_migrate_uninstall() {
+  foreach (['joinup_migrate_mapping', 'joinup_migrate_collection'] as $table) {
+    Database::getConnection('default', 'migrate')->schema()->dropTable($table);
+  }
+}
+
+/**
+ * Gets the schema definition for a specific table.
+ *
+ * @param string $table
+ *   The table for which to get the schema definition.
+ *
+ * @return array[]
+ *   The table schema definition.
+ */
+function joinup_migrate_source_db_schema($table) {
+  $schema = [
     'joinup_migrate_mapping' => [
       'description' => 'Keeps migration mapping data',
       'fields' => [
@@ -185,6 +215,10 @@ function joinup_migrate_schema() {
           'length' => 32,
           'not null' => FALSE,
         ],
+        'roles' => [
+          'description' => 'Roles',
+          'type' => 'text',
+        ],
       ],
       'indexes' => [
         'collection' => ['collection'],
@@ -193,4 +227,6 @@ function joinup_migrate_schema() {
       ],
     ],
   ];
+
+  return $schema[$table];
 }

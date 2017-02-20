@@ -4,3 +4,7 @@ services:
     arguments: ['@entity_type.manager', '@joinup_core.workflow.user_provider', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user']
     tags:
       - { name: state_machine.guard, group: discussion }
+  joinup_discussion.workflow_transition:
+    class: Drupal\joinup_discussion\EventSubscriber\WorkflowTransitionEventSubscriber
+    tags:
+      - { name: event_subscriber }

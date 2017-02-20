@@ -42,6 +42,7 @@ Feature: User authentication
       | dashboard                          |
       | node/add                           |
       | node/add/custom_page               |
+      | node/add/discussion                |
       | node/add/document                  |
       | node/add/event                     |
       | node/add/news                      |
@@ -83,6 +84,7 @@ Feature: User authentication
       | admin/structure                    |
       | node/add                           |
       | node/add/custom_page               |
+      | node/add/discussion                |
       | node/add/document                  |
       | node/add/event                     |
       | node/add/news                      |
@@ -124,6 +126,7 @@ Feature: User authentication
       | admin/structure           |
       | node/add                  |
       | node/add/custom_page      |
+      | node/add/discussion       |
       | node/add/document         |
       | node/add/event            |
       | node/add/news             |
@@ -157,6 +160,7 @@ Feature: User authentication
       | admin/structure           |
       | node/add                  |
       | node/add/custom_page      |
+      | node/add/discussion       |
       | node/add/document         |
       | node/add/event            |
       | node/add/news             |

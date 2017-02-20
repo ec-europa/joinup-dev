@@ -65,6 +65,7 @@ content:
             lb-col: false
             classes: {  }
     type: text_trimmed
+    region: content
   field_is_logo:
     type: image
     weight: 25
@@ -80,6 +81,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_is_solution_category:
     weight: 3
     label: above
@@ -87,6 +89,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   label:
     type: string
     weight: 24
@@ -101,6 +104,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
 hidden:
   field_is_actor: true
   field_is_affiliations_requests: true
@@ -138,4 +142,5 @@ hidden:
   field_status: true
   licence: true
   og_group: true
+  related_solutions: true
   releases_overview: true
