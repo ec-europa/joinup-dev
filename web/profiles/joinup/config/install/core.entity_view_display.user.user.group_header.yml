@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.user.group_header
     - field.field.user.user.field_user_business_title
+    - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_frequency
@@ -123,6 +124,8 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_user_content: true
   field_user_frequency: true
   field_user_group_types: true
   field_user_subscription_events: true
+  user_field_user_content_top: true

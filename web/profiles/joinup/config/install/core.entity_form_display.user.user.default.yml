@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.user.user.field_user_business_title
+    - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_frequency
@@ -15,6 +16,7 @@ dependencies:
     - image.style.thumbnail
   module:
     - image
+    - search_api_field
     - text
     - user
 id: user.user.default
@@ -34,6 +36,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
+  field_user_content:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: search_api_field_default
     region: content
   field_user_family_name:
     weight: 2

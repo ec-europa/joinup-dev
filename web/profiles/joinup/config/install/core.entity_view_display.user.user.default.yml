@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.user.user.field_user_business_title
+    - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_frequency
@@ -13,12 +14,25 @@ dependencies:
     - field.field.user.user.field_user_professional_domain
     - field.field.user.user.field_user_subscription_events
   module:
+    - search_api_field
     - user
 id: user.user.default
 targetEntityType: user
 bundle: user
 mode: default
-content: {  }
+content:
+  field_user_content:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: search_api_field
+    region: content
+  user_field_user_content_top:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_user_business_title: true
   field_user_family_name: true

@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_form_mode.user.register
     - field.field.user.user.field_user_business_title
+    - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_frequency
@@ -43,6 +44,7 @@ content:
     region: content
 hidden:
   field_user_business_title: true
+  field_user_content: true
   field_user_frequency: true
   field_user_group_types: true
   field_user_nationality: true
