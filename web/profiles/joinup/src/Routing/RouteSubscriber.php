@@ -25,24 +25,13 @@ class RouteSubscriber extends RouteSubscriberBase {
     // To prevent this we're adding our own access handler to those routes here.
     $routes = [
       'rdf_entity.rdf_add_page',
+      'rdf_entity.rdf_add',
       'node.add',
       'node.add_page',
     ];
     foreach ($routes as $route) {
       if ($route = $collection->get($route)) {
         $route->addRequirements(['_uid_1_only' => 'TRUE']);
-      }
-    }
-
-    // Add a custom route access control service to routes that should have the
-    // default access overridden for business reasons.
-    // @see \Drupal\joinup\Access\JoinupCustomAccess::access()
-    $routes = [
-      'rdf_entity.rdf_add',
-    ];
-    foreach ($routes as $route) {
-      if ($route = $collection->get($route)) {
-        $route->addRequirements(['_joinup_custom_access' => 'TRUE']);
       }
     }
   }

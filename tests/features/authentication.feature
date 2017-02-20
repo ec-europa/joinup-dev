@@ -51,6 +51,7 @@ Feature: User authentication
       | rdf_entity/add/asset_release       |
       | rdf_entity/add/collection          |
       | rdf_entity/add/contact_information |
+      | rdf_entity/add/licence             |
       | rdf_entity/add/owner               |
       | rdf_entity/add/solution            |
       | licence                            |
@@ -82,6 +83,8 @@ Feature: User authentication
       | admin/content/rdf                  |
       | admin/people                       |
       | admin/structure                    |
+      | licence                            |
+      | licence/add                        |
       | node/add                           |
       | node/add/custom_page               |
       | node/add/discussion                |
@@ -93,9 +96,9 @@ Feature: User authentication
       | rdf_entity/add/asset_release       |
       | rdf_entity/add/collection          |
       | rdf_entity/add/contact_information |
+      | rdf_entity/add/licence             |
       | rdf_entity/add/owner               |
       | rdf_entity/add/solution            |
-      | licence                            |
 
   @api
   Scenario Outline: Moderator can access pages they are authorized to
@@ -119,20 +122,25 @@ Feature: User authentication
     Then I should get an access denied error
 
     Examples:
-      | path                      |
-      | admin                     |
-      | admin/config              |
-      | admin/content             |
-      | admin/structure           |
-      | node/add                  |
-      | node/add/custom_page      |
-      | node/add/discussion       |
-      | node/add/document         |
-      | node/add/event            |
-      | node/add/news             |
-      | rdf_entity/add            |
-      | rdf_entity/add/collection |
-      | rdf_entity/add/solution   |
+      | path                               |
+      | admin                              |
+      | admin/config                       |
+      | admin/content                      |
+      | admin/structure                    |
+      | node/add                           |
+      | node/add/custom_page               |
+      | node/add/discussion                |
+      | node/add/document                  |
+      | node/add/event                     |
+      | node/add/news                      |
+      | rdf_entity/add                     |
+      | rdf_entity/add/asset_distribution  |
+      | rdf_entity/add/asset_release       |
+      | rdf_entity/add/collection          |
+      | rdf_entity/add/contact_information |
+      | rdf_entity/add/licence             |
+      | rdf_entity/add/owner               |
+      | rdf_entity/add/solution            |
 
   @api
   Scenario Outline: Administrator can access pages they are authorized to
@@ -151,19 +159,24 @@ Feature: User authentication
     Then I should get an access denied error
 
     Examples:
-      | path                      |
-      | admin                     |
-      | admin/config              |
-      | admin/content             |
-      | admin/content/rdf         |
-      | admin/people              |
-      | admin/structure           |
-      | node/add                  |
-      | node/add/custom_page      |
-      | node/add/discussion       |
-      | node/add/document         |
-      | node/add/event            |
-      | node/add/news             |
-      | rdf_entity/add            |
-      | rdf_entity/add/collection |
-      | rdf_entity/add/solution   |
+      | path                               |
+      | admin                              |
+      | admin/config                       |
+      | admin/content                      |
+      | admin/content/rdf                  |
+      | admin/people                       |
+      | admin/structure                    |
+      | node/add                           |
+      | node/add/custom_page               |
+      | node/add/discussion                |
+      | node/add/document                  |
+      | node/add/event                     |
+      | node/add/news                      |
+      | rdf_entity/add                     |
+      | rdf_entity/add/asset_distribution  |
+      | rdf_entity/add/asset_release       |
+      | rdf_entity/add/collection          |
+      | rdf_entity/add/contact_information |
+      | rdf_entity/add/licence             |
+      | rdf_entity/add/owner               |
+      | rdf_entity/add/solution            |
