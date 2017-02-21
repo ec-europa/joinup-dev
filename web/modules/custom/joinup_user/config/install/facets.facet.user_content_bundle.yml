@@ -1,9 +1,9 @@
 langcode: en
 status: true
 dependencies: {  }
-id: user_type
+id: user_content_bundle
 name: Type
-url_alias: user_type
+url_alias: user_content_bundle
 weight: 0
 min_count: 1
 show_only_one_result: true

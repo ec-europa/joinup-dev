@@ -18,7 +18,7 @@ default_value:
   -
     value:
       fields:
-        user_type:
+        user_content_bundle:
           weight: 0
           region: top
       enabled: 1

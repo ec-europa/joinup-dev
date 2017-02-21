@@ -9,7 +9,7 @@ dependencies:
   - user
 
 config_devel:
-  - facets.facet.user_type
+  - facets.facet.user_content_bundle
   - facets.facet_source.search_api_field__user.field_user_content
   - field.field.user.user.field_user_content
   - field.storage.user.field_user_content
