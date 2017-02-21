@@ -76,6 +76,8 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $id = $this->uploadRdfFile($test_file, $field_name, NULL, $settings);
     $rdf_storage->resetCache(array($id));
     $rdf_entity = $rdf_storage->load($id);
+    $this->assertTrue($rdf_entity instanceof RdfInterface, "The entity was successfully loaded.");
+    $this->assertTrue(!empty($rdf_entity->{$field_name}->target_id), "The target ID is not empty");
     $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue(is_file($rdf_entity_file->getFileUri()), "File {$rdf_entity_file->getFileUri()} exists.");
 
@@ -110,6 +112,8 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $id = $this->setRemoteFile($this->getFileAbsoluteUri($test_file), $field_name, NULL, $settings);
     $rdf_storage->resetCache(array($id));
     $rdf_entity = $rdf_storage->load($id);
+    $this->assertTrue($rdf_entity instanceof RdfInterface, "The entity was successfully loaded.");
+    $this->assertTrue(!empty($rdf_entity->{$field_name}->target_id), "The target ID is not empty");
     $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue($rdf_entity_file instanceof RemoteFile, "File {$rdf_entity_file->getFileUri()} exists.");
 
