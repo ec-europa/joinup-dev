@@ -134,9 +134,10 @@ function joinup_theme_preprocess_block(&$variables) {
     switch ($route_name) {
       case 'entity.rdf_entity.canonical':
         $entities = [
-          'collection',
-          'asset_release',
           'asset_distribution',
+          'asset_release',
+          'collection',
+          'solution',
         ];
         // Get entity type.
         $entity = $route_match->getParameter('rdf_entity');

@@ -25,7 +25,7 @@ settings:
       news: view_mode_tile
     'entity:rdf_entity':
       asset_distribution: view_mode_tile
-      asset_release: compact
+      asset_release: view_mode_tile
       collection: view_mode_tile
       contact_information: default
       licence: default
