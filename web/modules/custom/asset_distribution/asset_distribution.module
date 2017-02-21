@@ -32,7 +32,7 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
   // release, there is no field provided for it. Without a solution or a release
   // the asset distribution will be dangling and won't be reachable.
   if (!$rdf || !$rdf instanceof RdfInterface || !in_array($rdf->bundle(), ['asset_release', 'solution'])) {
-    throw new AccessDeniedHttpException("Distributions can only be created in context of a '{$rdf->bundle()}'.");
+    throw new AccessDeniedHttpException('Distributions can only be created in context of a solution or an asset release.');
   }
 
   $form_state->set('context_rdf_entity_id', $rdf->id());

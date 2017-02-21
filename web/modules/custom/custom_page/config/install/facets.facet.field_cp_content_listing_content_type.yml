@@ -6,7 +6,7 @@ name: 'Content type'
 url_alias: field_cp_content_listing_content_type
 weight: 0
 show_only_one_result: true
-field_identifier: aggregated_field
+field_identifier: entity_bundle
 query_type_name: null
 facet_source_id: 'search_api_field:node.field_cp_content_listing'
 widget:

@@ -159,10 +159,10 @@ display:
       empty: {  }
       relationships: {  }
       arguments:
-        aggregated_field_1:
-          id: aggregated_field_1
+        entity_groups:
+          id: entity_groups
           table: search_api_index_collections
-          field: aggregated_field_1
+          field: entity_groups
           relationship: none
           group_type: group
           admin_label: ''
