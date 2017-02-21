@@ -1,8 +1,9 @@
 <?php
 
-namespace Drupal\Tests\rdf_entity;
+namespace Drupal\Tests\rdf_entity\Kernel;
 
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 
 /**
  * A base class for the rdf tests.

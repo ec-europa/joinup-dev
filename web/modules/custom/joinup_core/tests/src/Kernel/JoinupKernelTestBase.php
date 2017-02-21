@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\joinup_core\Kernel;
 
-use Drupal\Tests\rdf_entity\RdfDatabaseConnectionTrait;
-use Drupal\Tests\rdf_entity\RdfKernelTestBase;
+use Drupal\Tests\rdf_entity\Kernel\RdfKernelTestBase;
+use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 
 /**
  * Provides a base class for Joinup kernel tests.

@@ -1,8 +1,9 @@
 <?php
 
-namespace Drupal\Tests\rdf_entity;
+namespace Drupal\Tests\rdf_entity\Functional;
 
 use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 
 /**
  * Base setup for a Joinup workflow test.

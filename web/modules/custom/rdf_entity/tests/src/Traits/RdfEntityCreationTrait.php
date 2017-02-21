@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\rdf_entity;
+namespace Drupal\Tests\rdf_entity\Traits;
 
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\RandomGeneratorTrait;

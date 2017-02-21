@@ -5,9 +5,10 @@ namespace Drupal\Tests\rdf_file;
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\Tests\rdf_entity\RdfWebTestBase;
+use Drupal\Tests\rdf_entity\Functional\RdfWebTestBase;
 use Drupal\rdf_file\Entity\RemoteFile;
 use Drupal\rdf_file\RdfFileHandler;
+use Drupal\Tests\rdf_file\Traits\RdfFileTrait;
 
 /**
  * Provides methods specifically for testing File module's field handling.
