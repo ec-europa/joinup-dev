@@ -4,7 +4,7 @@ namespace Drupal\Tests\contact_information\Functional;
 
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\Tests\joinup_core\JoinupWorkflowTestBase;
+use Drupal\Tests\joinup_core\Functional\JoinupWorkflowTestBase;
 
 /**
  * Tests the workflow for the contact information entity.
