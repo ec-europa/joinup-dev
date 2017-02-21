@@ -41,19 +41,25 @@ class RdfPermissions {
    */
   protected function buildPermissions(RdfEntityType $type) {
     $type_id = $type->id();
-    $type_params = array('%type_name' => $type->label());
+    $type_params = ['%type_name' => $type->label()];
 
-    return array(
-      "create $type_id rdf entity" => array(
+    return [
+      "create $type_id rdf entity" => [
         'title' => $this->t('%type_name: Create new rdf entity', $type_params),
-      ),
-      "edit $type_id rdf entity" => array(
-        'title' => $this->t('%type_name: Edit rdf entity', $type_params),
-      ),
-      "delete $type_id rdf entity" => array(
-        'title' => $this->t('%type_name: Delete rdf entity', $type_params),
-      ),
-    );
+      ],
+      "edit own $type_id rdf entity" => [
+        'title' => $this->t('%type_name: Edit own rdf entity', $type_params),
+      ],
+      "edit $type_id rdf entity" => [
+        'title' => $this->t('%type_name: Edit any rdf entity', $type_params),
+      ],
+      "delete own $type_id rdf entity" => [
+        'title' => $this->t('%type_name: Delete own rdf entity', $type_params),
+      ],
+      "delete $type_id rdf entity" => [
+        'title' => $this->t('%type_name: Delete any rdf entity', $type_params),
+      ],
+    ];
   }
 
 }

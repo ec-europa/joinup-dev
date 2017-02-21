@@ -41,6 +41,7 @@ Feature: Solution API
       | state             | validated                   |
     Then I should have 1 solution
 
+  @terms
   Scenario: Assign ownership during creation of solutions through UI
     Given the following owner:
       | name      | type            |
@@ -80,7 +81,7 @@ Feature: Solution API
     # Then I wait for AJAX to finish
     And I fill in "Owner" with "Leechidna"
     And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
-    And I fill in "Policy Domain" with "Maritime and inland waterway transport"
+    And I select "EU and European Policies" from "Policy domain"
     And I select "[ABB8] Citizen" from "Solution type"
     And I press "Add owner"
     And I press "Save"

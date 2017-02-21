@@ -17,6 +17,7 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
@@ -34,6 +35,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use TraversingTrait;
   use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
@@ -330,27 +332,19 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Checks that the given select field has the given options.
    *
-   * To do this we extract the field text which contains the values expected
-   * to be found in the select box as a concatenated string.
-   * Then we check if the value is contained in the extracted value.
-   *
    * @param string $select
    *    The name of the field element.
    * @param string $options
    *    The options to be checked separated by comma. Only labels are accepted.
    *
-   * @throws Exception
-   *    Throws an exception when a value does not exists.
-   *
-   * @Given (the ):select field has the :options option(s)
+   * @Then (the ):select field should contain the :options option(s)
    */
-  public function checkSelectOptions($select, $options) {
-    $values = $this->getSession()->getPage()->findField($select)->getText();
-    foreach (explode(',', $options) as $option) {
-      if (strpos($values, trim($option)) === FALSE) {
-        throw new \Exception("The option {$option} should exist in the {$select} field but was not found.");
-      }
-    }
+  public function checkSelectContainsOptions($select, $options) {
+    $field = $this->findSelect($select);
+    $available_options = array_values($this->getSelectOptions($field));
+    $options = $this->explodeCommaSeparatedStepArgument($options);
+
+    \PHPUnit_Framework_Assert::assertArraySubset($options, $available_options, "The '{$select}' select doesn't contain all the wanted options.");
   }
 
   /**
@@ -364,15 +358,41 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @throws Exception
    *    Throws an exception when a value exists.
    *
-   * @Given (the ):select field does not have the :options option(s)
+   * @Then (the ):select field should not contain the :options option(s)
    */
-  public function checkSelectOptionsInverse($select, $options) {
-    $values = $this->getSession()->getPage()->findField($select)->getText();
-    foreach (explode(',', $options) as $option) {
-      if (strpos($values, trim($option)) !== FALSE) {
-        throw new \Exception("The option {$option} should not exist in the {$select} field but was found.");
-      }
+  public function checkSelectDoesNotContainOptions($select, $options) {
+    $field = $this->findSelect($select);
+    $available_options = array_values($this->getSelectOptions($field));
+    $options = $this->explodeCommaSeparatedStepArgument($options);
+
+    $intersection = array_intersect($available_options, $options);
+
+    if (!empty($intersection)) {
+      throw new \Exception("The select '{$select}' should not contain the options: " . implode(', ', $intersection));
     }
+  }
+
+  /**
+   * Checks that a select field has exclusively the provided options.
+   *
+   * @param string $select
+   *   The name of the select element.
+   * @param string $options
+   *   A comma-separated list of options to be present.
+   *
+   * @Then the :select select available options should be :options
+   */
+  public function assertSelectOptions($select, $options) {
+    $field = $this->findSelect($select);
+    $available_options = $this->getSelectOptions($field);
+    sort($available_options);
+
+    $options = $this->explodeCommaSeparatedStepArgument($options);
+    sort($options);
+
+    // The PHPUnit assertion will allow to understand easily which values are
+    // missing and which one are extra.
+    \PHPUnit_Framework_Assert::assertEquals($options, $available_options, "The '{$select}' select options don't match the wanted ones.");
   }
 
   /**
@@ -569,16 +589,21 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   protected static function getNodeFieldNameFromAlias($type, $alias) {
     $aliases = [
+      'discussion' => [
+        'state' => 'field_state',
+        'content' => 'field_discussion_content',
+      ],
       'document' => [
         'short title' => 'field_document_short_title',
       ],
       'event' => [
         'short title' => 'field_event_short_title',
         'start date' => 'field_start_date',
+        'state' => 'field_state',
       ],
       'news' => [
         'headline' => 'field_news_headline',
-        'state' => 'field_news_state',
+        'state' => 'field_state',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
@@ -694,7 +719,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @throws \Exception
    *   Thrown when the expected tile is not found.
    *
-   * @Given I (should )see the :heading tile
+   * @Then I (should )see the :heading tile
    */
   public function assertTilePresent($heading) {
     $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
@@ -717,30 +742,36 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @throws \Exception
    *   Thrown when a tile with the unwanted heading is found.
    *
-   * @Given I (should )not see the :heading tile
+   * @Then I (should )not see the :heading tile
    */
   public function assertTileNotPresent($heading) {
     $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2');
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {
-        throw new \Exception("The tile '$heading' was not found on the page");
+        throw new \Exception("The tile '$heading' was found on the page");
       }
     }
   }
 
   /**
-   * Assert that certain buttons are present on the page.
+   * Assert that the given form submission buttons are present on the page.
    *
    * @param string $buttons
-   *    A comma separated list of button labels.
+   *   A comma separated list of button labels.
+   * @param int $count
+   *   Optional number of buttons that are expected to be present. Use this to
+   *   verify that no unexpected additional buttons are present on the page. If
+   *   omitted the number of buttons will not be verified.
    *
    * @throws \Exception
-   *   Thrown when an expected button is not present.
+   *   Thrown when an expected button is not present or when the number of
+   *   buttons is wrong.
    *
-   * @Then (the following )buttons should be present :buttons
+   * @Then (the following )button(s) should be present :buttons
+   * @Then the following :count button(s) should be present :buttons
    */
-  public function assertButtonsVisible($buttons) {
+  public function assertFormSubmitButtonsVisible($buttons, $count = NULL) {
     $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
     $page = $this->getSession()->getPage();
@@ -753,6 +784,14 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     if (!empty($not_found)) {
       throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $not_found));
+    }
+
+    if (!empty($count)) {
+      // Only check the actual form submit buttons, ignore other buttons that
+      // might be present in wysiwygs or are used to add multiple values to a
+      // field.
+      $actual = count($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " form-actions ")]//input[@type = "submit"]'));
+      \PHPUnit_Framework_Assert::assertEquals($count, $actual);
     }
   }
 
@@ -848,7 +887,23 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Create a comment.
+   * Create comment entities.
+   *
+   * Table format:
+   * @codingStandardsIgnoreStart
+   * | subject        | message         | author   | mail          | name      | parent      |
+   * | Subject 1      | Comment body    |          | anon@test.com | Anonymous | Parent node |
+   * | Subject 2      | Comment body    | John Doe |               |           | Parent node |
+   * @codingStandardsIgnoreEnd
+   *
+   * If author is filled, mail and name are not required.
+   *
+   * @param TableNode $table
+   *   The comment data.
+   *
+   * @throws \Exception
+   *   Thrown when the parent node cannot be found, or when the author cannot
+   *   be found.
    *
    * @Given comments:
    */
@@ -860,7 +915,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $result = $query->execute();
 
       if (empty($result)) {
-        throw new \InvalidArgumentException("Unable to load parent of comment.");
+        throw new \InvalidArgumentException('Unable to load parent of comment.');
       }
 
       // Reload from database to avoid caching issues and get latest version.
@@ -873,8 +928,15 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $uid = reset($result);
 
       if (empty($result)) {
-        throw new \InvalidArgumentException("Unable to load author of comment.");
+        throw new \InvalidArgumentException('Unable to load author of comment.');
       }
+
+      // Replace field_body alias if present.
+      if (isset($comment_values['message'])) {
+        $comment_values['field_body'] = $comment_values['message'];
+        unset($comment_values['message']);
+      }
+
       unset($comment_values['parent']);
       unset($comment_values['author']);
       $comment_values['uid'] = $uid;
@@ -887,10 +949,28 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'entity_id' => $id,
       ];
       $comment_values += $values;
-      // Ignore due to conflicting Comment class in Phing.
       $comment = Comment::create($comment_values);
       $comment->save();
     }
+  }
+
+  /**
+   * Checks the current workflow state on an entity edit form.
+   *
+   * @param string $state
+   *   The expected workflow state.
+   *
+   * @throws \Exception
+   *   Thrown when the current workflow state field is not shown on the page.
+   *
+   * @Then the current workflow state should be :state
+   */
+  public function assertCurrentWorkflowState($state) {
+    $element = $this->getSession()->getPage()->find('css', 'div.current-workflow-state');
+    if (empty($element)) {
+      throw new \Exception('The current workflow state field is not present on the page.');
+    }
+    \PHPUnit_Framework_Assert::assertEquals($state, trim($element->getText()));
   }
 
 }

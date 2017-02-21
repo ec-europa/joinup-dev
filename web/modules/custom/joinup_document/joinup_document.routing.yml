@@ -5,7 +5,7 @@ joinup_document.rdf_entity_document.add:
     _controller: '\Drupal\joinup_document\Controller\DocumentController::add'
     _title: 'Add document'
   requirements:
-    _custom_access: '\Drupal\joinup_document\Controller\DocumentController::createDocumentAccess'
+    _custom_access: '\Drupal\joinup_document\Controller\DocumentController::createAccess'
   options:
     parameters:
       rdf_entity:

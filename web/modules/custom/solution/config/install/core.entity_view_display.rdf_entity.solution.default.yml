@@ -42,10 +42,10 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - datetime
-    - file
     - link
     - og
     - options
+    - rdf_file
     - search_api_field
     - text
     - user
@@ -61,6 +61,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_affiliations_requests:
     weight: 25
     label: above
@@ -68,6 +69,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_business_process:
     weight: 32
     label: above
@@ -75,6 +77,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_contact_information:
     weight: 6
     label: above
@@ -96,12 +99,14 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
+    region: content
   field_is_description:
     weight: 2
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   field_is_distribution:
     type: entity_reference_entity_view
     weight: 28
@@ -110,18 +115,21 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
+    region: content
   field_is_documentation:
-    weight: 3
+    weight: 37
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: file_default
+    type: rdf_file_default
+    region: content
   field_is_elibrary_creation:
     weight: 16
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
   field_is_has_version:
     weight: 27
     label: above
@@ -129,6 +137,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_included_asset:
     weight: 11
     label: above
@@ -136,6 +145,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_issue_tracker:
     weight: 22
     label: above
@@ -147,6 +157,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_is_landing_page:
     weight: 20
     label: above
@@ -158,6 +169,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_is_language:
     weight: 15
     label: above
@@ -165,6 +177,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_metrics_page:
     weight: 21
     label: above
@@ -176,6 +189,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_is_moderation:
     weight: 17
     label: above
@@ -185,6 +199,7 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    region: content
   field_is_modification_date:
     weight: 5
     label: above
@@ -193,6 +208,7 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
+    region: content
   field_is_owner:
     weight: 7
     label: above
@@ -200,6 +216,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_product_type:
     weight: 33
     label: above
@@ -207,6 +224,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_related_solutions:
     weight: 8
     label: above
@@ -214,6 +232,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_solution_category:
     weight: 3
     label: above
@@ -221,6 +240,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_solution_type:
     weight: 10
     label: above
@@ -228,6 +248,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_source_code_repository:
     weight: 24
     label: above
@@ -239,6 +260,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_is_standardization_level:
     weight: 34
     label: above
@@ -246,12 +268,14 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_state:
     type: list_default
     weight: 36
     label: above
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_is_test_resource_type:
     weight: 30
     label: above
@@ -259,6 +283,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_translation:
     weight: 12
     label: above
@@ -266,6 +291,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_is_version:
     weight: 29
     label: above
@@ -273,6 +299,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_is_webdav_creation:
     weight: 18
     label: above
@@ -282,6 +309,7 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    region: content
   field_is_webdav_url:
     weight: 19
     label: above
@@ -293,6 +321,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_is_wiki:
     weight: 23
     label: above
@@ -304,6 +333,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_keywords:
     weight: 13
     label: above
@@ -311,6 +341,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_policy_domain:
     weight: 26
     label: above
@@ -318,6 +349,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_spatial_coverage:
     weight: 9
     label: above
@@ -325,6 +357,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_status:
     weight: 14
     label: above
@@ -332,6 +365,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   label:
     label: hidden
     type: string
@@ -339,10 +373,12 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    region: content
   licence:
     weight: 35
     settings: {  }
     third_party_settings: {  }
+    region: content
   og_group:
     weight: 0
     type: og_group_subscribe
@@ -353,10 +389,12 @@ content:
     weight: 38
     settings: {  }
     third_party_settings: {  }
+    region: content
   related_solutions:
     weight: 37
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden:
   field_is_banner: true
   field_is_logo: true

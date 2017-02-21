@@ -3,6 +3,7 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\destination;
 
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Database\Database;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\migrate\destination\DestinationBase;
@@ -55,7 +56,7 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
       $plugin_id,
       $plugin_definition,
       $migration,
-      $container->get('database')
+      Database::getConnection('default', 'migrate')
     );
   }
 
@@ -75,6 +76,7 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
     return [
       'collection' => $this->t('Collection'),
       'nid' => $this->t('Node ID'),
+      'policy' => $this->t('Level1 policy domain'),
       'policy2' => $this->t('Level2 policy domain'),
       'abstract' => $this->t('Abstract'),
       'logo' => $this->t('Logo'),
@@ -83,6 +85,7 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
       'publisher' => $this->t('Publisher'),
       'contact' => $this->t('Contact'),
       'status' => $this->t('Status'),
+      'roles' => $this->t('Roles'),
     ];
   }
 

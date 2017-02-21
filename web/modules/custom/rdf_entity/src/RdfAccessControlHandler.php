@@ -22,7 +22,10 @@ class RdfAccessControlHandler extends EntityAccessControlHandler {
     if (!$entity instanceof RdfInterface) {
       throw new \Exception('Can only handle access of Rdf entity instances.');
     }
+
     $entity_bundle = $entity->bundle();
+    $is_owner = $account->id() === $entity->getOwnerId();
+
     switch ($operation) {
       case 'view':
         if (!$entity->isPublished()) {
@@ -31,11 +34,20 @@ class RdfAccessControlHandler extends EntityAccessControlHandler {
         return AccessResult::allowedIfHasPermission($account, 'view rdf entity');
 
       case 'edit':
-        return AccessResult::allowedIfHasPermission($account, 'edit ' . $entity_bundle . ' rdf entity');
+        if ($account->hasPermission('edit ' . $entity_bundle . ' rdf entity')) {
+          return AccessResult::allowed();
+        }
+
+        return AccessResult::allowedIf($is_owner && $account->hasPermission('edit own ' . $entity_bundle . ' rdf entity'));
 
       case 'delete':
-        return AccessResult::allowedIfHasPermission($account, 'delete ' . $entity_bundle . ' rdf entity');
+        if ($account->hasPermission('delete ' . $entity_bundle . ' rdf entity')) {
+          return AccessResult::allowed();
+        }
+
+        return AccessResult::allowedIf($is_owner && $account->hasPermission('delete own ' . $entity_bundle . ' rdf entity'));
     }
+
     return AccessResult::neutral();
   }
 

@@ -193,7 +193,7 @@ function solution_add_form_parent_submit(array &$form, FormStateInterface $form_
  * node.
  */
 function solution_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if (\Drupal::currentUser()->hasPermission('bypass node access')) {
+  if ($account->hasPermission($entity->getEntityType()->getAdminPermission())) {
     return AccessResult::neutral();
   }
   if ($entity->bundle() != 'solution') {

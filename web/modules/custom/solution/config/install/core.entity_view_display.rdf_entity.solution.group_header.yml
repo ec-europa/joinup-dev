@@ -67,6 +67,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_is_logo:
     type: image
     weight: 1
@@ -84,6 +85,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
+    region: content
   field_is_solution_category:
     weight: 3
     label: above
@@ -91,6 +93,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   label:
     label: hidden
     type: string
@@ -107,14 +110,17 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
+    region: content
   licence:
     weight: 3
     settings: {  }
     third_party_settings: {  }
+    region: content
   releases_overview:
     weight: 4
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden:
   field_is_actor: true
   field_is_affiliations_requests: true
