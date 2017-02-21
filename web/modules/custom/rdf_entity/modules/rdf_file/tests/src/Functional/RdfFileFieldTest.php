@@ -74,6 +74,9 @@ class RdfFileFieldTest extends RdfWebTestBase {
 
     // Test file for new entities.
     $id = $this->uploadRdfFile($test_file, $field_name, NULL, $settings);
+    $rdf_entity = $rdf_storage->load($id);
+    $this->assertTrue($rdf_entity instanceof RdfInterface, "The entity was successfully loaded!");
+    $this->assertTrue(!empty($rdf_entity->{$field_name}->target_id), "The target ID is not empty!");
     $rdf_storage->resetCache(array($id));
     $rdf_entity = $rdf_storage->load($id);
     $this->assertTrue($rdf_entity instanceof RdfInterface, "The entity was successfully loaded.");
@@ -110,6 +113,9 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $this->assertTrue($test_file instanceof FileInterface, "Test file created.");
 
     $id = $this->setRemoteFile($this->getFileAbsoluteUri($test_file), $field_name, NULL, $settings);
+    $rdf_entity = $rdf_storage->load($id);
+    $this->assertTrue($rdf_entity instanceof RdfInterface, "The entity was successfully loaded!");
+    $this->assertTrue(!empty($rdf_entity->{$field_name}->target_id), "The target ID is not empty!");
     $rdf_storage->resetCache(array($id));
     $rdf_entity = $rdf_storage->load($id);
     $this->assertTrue($rdf_entity instanceof RdfInterface, "The entity was successfully loaded.");
