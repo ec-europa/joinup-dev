@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\joinup_core;
+namespace Drupal\Tests\joinup_core\Functional;
 
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\node\Entity\Node;

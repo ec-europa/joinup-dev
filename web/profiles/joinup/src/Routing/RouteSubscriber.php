@@ -25,6 +25,7 @@ class RouteSubscriber extends RouteSubscriberBase {
     // To prevent this we're adding our own access handler to those routes here.
     $routes = [
       'rdf_entity.rdf_add_page',
+      'rdf_entity.rdf_add',
       'node.add',
       'node.add_page',
     ];
