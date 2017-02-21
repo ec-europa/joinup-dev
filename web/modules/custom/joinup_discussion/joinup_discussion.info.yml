@@ -14,10 +14,9 @@ config_devel:
   - core.entity_view_display.node.discussion.default
   - core.entity_view_display.node.discussion.view_mode_featured
   - core.entity_view_display.node.discussion.view_mode_tile
+  - field.field.node.discussion.body
   - field.field.node.discussion.field_comments
-  - field.field.node.discussion.field_discussion_content
   - field.field.node.discussion.field_state
   - field.field.node.discussion.field_topic
   - field.field.node.discussion.og_audience
-  - field.storage.node.field_discussion_content
   - node.type.discussion

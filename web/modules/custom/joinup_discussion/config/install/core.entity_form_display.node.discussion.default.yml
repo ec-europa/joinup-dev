@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.discussion.body
     - field.field.node.discussion.field_comments
-    - field.field.node.discussion.field_discussion_content
     - field.field.node.discussion.field_state
     - field.field.node.discussion.field_topic
     - field.field.node.discussion.og_audience
@@ -30,7 +30,7 @@ content:
     third_party_settings: {  }
     type: comment_default
     region: content
-  field_discussion_content:
+  body:
     type: text_textarea
     weight: 1
     settings:

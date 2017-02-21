@@ -3,8 +3,8 @@ status: true
 dependencies:
   config:
     - core.entity_view_display.comment.comment.default
+    - field.field.node.discussion.body
     - field.field.node.discussion.field_comments
-    - field.field.node.discussion.field_discussion_content
     - field.field.node.discussion.field_state
     - field.field.node.discussion.field_topic
     - field.field.node.discussion.og_audience
@@ -28,7 +28,7 @@ content:
       view_mode: default
     third_party_settings: {  }
     region: content
-  field_discussion_content:
+  body:
     weight: 1
     label: above
     settings: {  }
