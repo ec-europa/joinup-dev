@@ -27,6 +27,16 @@ function contact_information_rdf_entity_presave(EntityInterface $entity) {
   }
 
   contact_information_entity_auto_label($entity);
+
+  // The initial state of a contact information entity is validated. The contact
+  // is created as part of proposing a collection, and in the collection propose
+  // form the workflow state is hidden from the user, so it would remain in the
+  // "__new__" state after submission.
+  // We can safely set the initial state to "validated" because a newly created
+  // contact information entities don't need to be validated by a third party.
+  if ($entity->field_ci_state->value === '__new__') {
+    $entity->set('field_ci_state', 'validated');
+  }
 }
 
 /**

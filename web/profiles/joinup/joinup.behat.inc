@@ -755,7 +755,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Assert that certain buttons are present on the page.
+   * Assert that the given form submission buttons are present on the page.
    *
    * @param string $buttons
    *   A comma separated list of button labels.
@@ -771,7 +771,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then (the following )button(s) should be present :buttons
    * @Then the following :count button(s) should be present :buttons
    */
-  public function assertButtonsVisible($buttons, $count = NULL) {
+  public function assertFormSubmitButtonsVisible($buttons, $count = NULL) {
     $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
     $page = $this->getSession()->getPage();
@@ -787,7 +787,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     if (!empty($count)) {
-      $actual = count($this->getSession()->getPage()->findAll('xpath', '//input[@type = "submit"]'));
+      // Only check the actual form submit buttons, ignore other buttons that
+      // might be present in wysiwygs or are used to add multiple values to a
+      // field.
+      $actual = count($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " form-actions ")]//input[@type = "submit"]'));
       \PHPUnit_Framework_Assert::assertEquals($count, $actual);
     }
   }
