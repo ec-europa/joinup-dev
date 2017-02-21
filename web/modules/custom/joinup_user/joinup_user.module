@@ -8,6 +8,7 @@
 use \Drupal\Core\Form\FormStateInterface;
 use \Drupal\Core\Session\AccountInterface;
 use \Drupal\Component\Render\PlainTextOutput;
+use \Drupal\search_api\Query\QueryInterface;
 use \Drupal\user\UserInterface;
 
 /**
@@ -209,4 +210,22 @@ function joinup_user_form_alter_validate(&$form, FormStateInterface $form_state)
     $active_form = \Drupal::getContainer()->get('joinup_user.active_form_submit');
     $active_form->setFormId($build_info['form_id']);
   }
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ *
+ * Alters the Search API query for the user content:
+ * - show only the content the user is author of;
+ * - do not show entities of some bundles.
+ */
+function joinup_user_search_api_query_search_api_field_field_user_content_alter(QueryInterface &$query) {
+  /** @var \Drupal\user\Entity\User $entity */
+  $entity = $query->getOption('search_api_field entity');
+
+  // Show only content the user is author of.
+  $query->addCondition('entity_author', $entity->id());
+
+  // Do not show contact information and owner entities as they are not worthy.
+  $query->addCondition('entity_bundle', ['contact_information', 'owner'], 'NOT IN');
 }
