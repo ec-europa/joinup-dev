@@ -82,7 +82,7 @@
       <h5 class="listing__author">{{ author_name|striptags }}</h5>
     </div>
     <div class="listing__field">
-      <p class="listing__teaser">{{ content.field_discussion_content }}</p>
+      <p class="listing__teaser">{{ content.body }}</p>
     </div>
     {% if content.field_topic|render %}
       <div class="listing__field listing__tags">{{ content.field_topic }}</div>

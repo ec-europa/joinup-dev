@@ -591,7 +591,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $aliases = [
       'discussion' => [
         'state' => 'field_state',
-        'content' => 'field_discussion_content',
+        'content' => 'body',
       ],
       'document' => [
         'short title' => 'field_document_short_title',

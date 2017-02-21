@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_discussion_content
+    - field.storage.node.body
     - node.type.discussion
   module:
     - text
-id: node.discussion.field_discussion_content
-field_name: field_discussion_content
+id: node.discussion.body
+field_name: body
 entity_type: node
 bundle: discussion
 label: Content
@@ -16,5 +16,6 @@ required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
-field_type: text_long
+settings:
+  display_summary: false
+field_type: text_with_summary
