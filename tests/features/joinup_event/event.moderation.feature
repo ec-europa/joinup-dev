@@ -78,6 +78,7 @@ Feature: Event moderation
       | Title       | Rainbow of Worlds                     |
       | Short title | Rainbow of Worlds                     |
       | Description | This is going to be an amazing event. |
+      | Location    | Worlds crossroad                      |
     And I fill in "Start date" with the date "2018-08-30"
     And I fill in "Start date" with the time "23:59:00"
     And I press "Save as draft"

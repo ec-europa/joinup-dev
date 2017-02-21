@@ -3,7 +3,7 @@ Feature: Asset distribution deleting.
   In order to manage asset distributions
   As a solution owner or solution facilitator
   I need to be able to delete asset distributions through the UI.
-  
+
   Scenario: "Delete" button should be shown to facilitators of the related solution.
     Given the following solutions:
       | title                 | description        | state     |

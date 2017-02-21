@@ -1,18 +1,17 @@
-# The workflow of the owner entity.
-owner_workflow:
-  id: owner_workflow
+# The workflow of the contact_information entity.
+contact_information_workflow:
+  id: contact_information_workflow
   label: "Default"
-  group: owner
+  group: contact_information
   states:
-    # The state used as initial.
+    # The first state is used as the initial state when creating a new entity.
     __new__:
-      label: New
+      label: - New -
+    validated:
+      label: Validated
     # State used to flag content that is being reviewed.
     in_assessment:
       label: In assessment
-    validated:
-      label: Validated
-      published: true
     deletion_request:
       label: Deletion request
   transitions:
