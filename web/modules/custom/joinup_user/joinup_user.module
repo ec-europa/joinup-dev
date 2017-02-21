@@ -8,6 +8,7 @@
 use \Drupal\Core\Form\FormStateInterface;
 use \Drupal\Core\Session\AccountInterface;
 use \Drupal\Component\Render\PlainTextOutput;
+use Drupal\og\Og;
 use \Drupal\search_api\Query\QueryInterface;
 use \Drupal\user\UserInterface;
 
@@ -220,12 +221,29 @@ function joinup_user_form_alter_validate(&$form, FormStateInterface $form_state)
  * - do not show entities of some bundles.
  */
 function joinup_user_search_api_query_search_api_field_field_user_content_alter(QueryInterface &$query) {
-  /** @var \Drupal\user\Entity\User $entity */
-  $entity = $query->getOption('search_api_field entity');
+  /** @var \Drupal\user\Entity\User $user */
+  $user = $query->getOption('search_api_field entity');
 
-  // Show only content the user is author of.
-  $query->addCondition('entity_author', $entity->id());
-
-  // Do not show contact information and owner entities as they are not worthy.
+  // Do not show contact information and owner entities as they are not
+  // relevant.
   $query->addCondition('entity_bundle', ['contact_information', 'owner'], 'NOT IN');
+
+  $groups = [];
+  foreach (Og::getMemberships($user) as $membership) {
+    $groups[] = $membership->getGroupId();
+  }
+
+  if ($groups) {
+    $or = $query->createConditionGroup('OR');
+
+    // Show all the content the user is author of.
+    $or->addCondition('id', $groups, 'IN');
+    // Or all the groups he belongs to.
+    $or->addCondition('entity_author', $user->id());
+    $query->addConditionGroup($or);
+  }
+  else {
+    // Show only content the user is author of.
+    $query->addCondition('entity_author', $user->id());
+  }
 }
