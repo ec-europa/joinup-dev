@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ar_state
+    - rdf_entity.rdfentity.collection
+  module:
+    - state_machine
+id: rdf_entity.collection.field_ar_state
+field_name: field_ar_state
+entity_type: rdf_entity
+bundle: collection
+label: State
+description: ''
+required: true
+translatable: false
+default_value: { }
+default_value_callback: ''
+settings:
+  workflow: collection_workflow
+  workflow_callback: ''
+field_type: state

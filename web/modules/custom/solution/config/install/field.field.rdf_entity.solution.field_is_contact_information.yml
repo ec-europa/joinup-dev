@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.rdf_entity.field_is_contact_information
-    - rdf_entity.rdfentity.collection
+    - rdf_entity.rdfentity.contact_information
     - rdf_entity.rdfentity.solution
 id: rdf_entity.solution.field_is_contact_information
 field_name: field_is_contact_information
@@ -11,7 +11,7 @@ entity_type: rdf_entity
 bundle: solution
 label: 'Contact information'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -19,7 +19,9 @@ settings:
   handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
-      collection: collection
+      contact_information: contact_information
     sort:
       field: _none
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference

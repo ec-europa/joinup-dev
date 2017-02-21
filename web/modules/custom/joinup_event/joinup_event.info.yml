@@ -8,21 +8,26 @@ package: Joinup
 config_devel:
   - core.entity_form_display.node.event.default
   - core.entity_view_display.node.event.default
+  - core.entity_view_display.node.event.view_mode_featured
+  - core.entity_view_display.node.event.view_mode_tile
   - field.field.node.event.body
   - field.field.node.event.field_event_adtl_address_info
   - field.field.node.event.field_event_agenda
   - field.field.node.event.field_event_contact_email
   - field.field.node.event.field_event_end_date
   - field.field.node.event.field_event_logo
+  - field.field.node.event.field_event_organisation
   - field.field.node.event.field_event_short_title
   - field.field.node.event.field_event_start_date
   - field.field.node.event.field_event_web_url
-  - field.field.node.event.og_group_ref
+  - field.field.node.event.field_state
+  - field.field.node.event.og_audience
   - field.storage.node.field_event_adtl_address_info
   - field.storage.node.field_event_agenda
   - field.storage.node.field_event_contact_email
   - field.storage.node.field_event_end_date
   - field.storage.node.field_event_logo
+  - field.storage.node.field_event_organisation
   - field.storage.node.field_event_short_title
   - field.storage.node.field_event_start_date
   - field.storage.node.field_event_web_url

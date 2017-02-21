@@ -1,31 +1,100 @@
 // Search bar
-//
-// Search bar component
+// 
+// Markup: html/search-bar.html
+// 
+// .search-bar                   - Default
+// .search-bar--white            - White colored
+// 
+// 
 
 // Component
 // --------------------------------------------------
 .search-bar
+  
 
 // Elements
 // --------------------------------------------------
+.search-bar__wrapper
+  text-align: center
+  margin-bottom: 40px
+
 .search-bar__label
   position: absolute
   top: 17px
 
 .search-bar__icon
-  background: url('../images/search-icon.png') center no-repeat
-  width: 23px
-  height: 23px
+  padding: 0
+  color: #fff
+  +icon-size(50px)
+  +border-radius(50%)
+  +centered
 
 .search-bar__input-container
+  margin-left: 40px
   padding-top: 7px
-
 
 // Modifiers
 // --------------------------------------------------
 .search-bar--header
   position: absolute
   top: 0
-  right: 100px
-  width: 200px
+  right: 75px
+  width: 120px
   padding: 0
+  +breakpoint(tablet)
+    width: 200px
+
+.search-bar--section
+  width: 85%
+  margin-left: -40px
+  padding: 0
+  +breakpoint(tablet)
+    width: 570px
+  .search-bar__label
+    position: absolute
+    top: auto
+    bottom: 0
+    left: -12px
+    min-width: auto
+    padding: 0
+    color: lighten($color-grey-medium, 10%)
+    +icon-size(50px)
+    +border-radius(50%)
+  .search-bar__input
+    font-weight: $font-weight-thin
+    padding-left: 40px
+    border-bottom: 2px solid lighten($color-grey-medium, 10%)
+  .search-bar__input::-webkit-input-placeholder
+    font-size: $font-size-base
+    font-weight: $font-weight-thin
+    font-style: italic
+    color: lighten($color-grey-medium, 10%)
+  .search-bar__input:-moz-placeholder
+    font-size: $font-size-base
+    font-weight: $font-weight-thin
+    font-style: italic
+    color: lighten($color-grey-medium, 10%)
+  .search-bar__input::-moz-placeholder
+    font-size: $font-size-base
+    font-weight: $font-weight-thin
+    font-style: italic
+    color: lighten($color-grey-medium, 10%)
+  .search-bar__input:-ms-input-placeholder 
+    font-size: $font-size-base
+    font-weight: $font-weight-thin
+    font-style: italic
+    color: lighten($color-grey-medium, 10%)
+
+.search-bar--white
+  .search-bar__label
+    color: #fff
+  .search-bar__input
+    border-bottom-color: #fff
+  .search-bar__input::-webkit-input-placeholder
+    color: #fff
+  .search-bar__input:-moz-placeholder
+    color: #fff
+  .search-bar__input::-moz-placeholder
+    color: #fff
+  .search-bar__input:-ms-input-placeholder 
+    color: #fff

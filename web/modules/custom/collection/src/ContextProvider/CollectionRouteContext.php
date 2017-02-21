@@ -9,6 +9,7 @@ use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -42,13 +43,23 @@ class CollectionRouteContext implements ContextProviderInterface {
   protected $routeMatch;
 
   /**
+   * The OG membership manager.
+   *
+   * @var \Drupal\og\MembershipManagerInterface
+   */
+  protected $membershipManager;
+
+  /**
    * Constructs a new CollectionRouteContext.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match object.
+   * @param \Drupal\og\MembershipManagerInterface $membership_manager
+   *   The OG membership manager.
    */
-  public function __construct(RouteMatchInterface $route_match) {
+  public function __construct(RouteMatchInterface $route_match, MembershipManagerInterface $membership_manager) {
     $this->routeMatch = $route_match;
+    $this->membershipManager = $membership_manager;
   }
 
   /**
@@ -72,7 +83,7 @@ class CollectionRouteContext implements ContextProviderInterface {
           $entity_type = $route_parameter->getEntityTypeId();
 
           // Check if the object is a og content entity.
-          if (Og::isGroupContent($entity_type, $bundle) && ($groups = Og::getGroupIds($route_parameter, 'rdf_entity', 'collection'))) {
+          if (Og::isGroupContent($entity_type, $bundle) && ($groups = $this->membershipManager->getGroupIds($route_parameter, 'rdf_entity', 'collection'))) {
             // A content can belong to only one rdf_entity.
             // Check that the content is not an orphaned one.
             if ($collection_id = reset($groups['rdf_entity'])) {

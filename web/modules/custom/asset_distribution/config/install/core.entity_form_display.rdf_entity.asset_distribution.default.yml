@@ -13,10 +13,11 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.field_ad_modification_date
     - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
     - field.field.rdf_entity.asset_distribution.field_status
+    - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
-    - asset_distribution
     - file
+    - link
     - rdf_entity
     - text
 id: rdf_entity.asset_distribution.default
@@ -25,45 +26,33 @@ bundle: asset_distribution
 mode: default
 content:
   field_ad_access_url:
-    weight: 4
+    weight: 3
     settings:
-      file_fields:
-        - field_ad_file
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: url_file_synchronizer_widget
+    type: link_default
   field_ad_creation_date:
     type: datetime_create_update
-    weight: 9
+    weight: 8
     settings:
       behaviour: create
     third_party_settings: {  }
   field_ad_description:
-    weight: 3
+    weight: 2
     settings:
       rows: 9
-      summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea_with_summary
+    type: text_textarea
   field_ad_file:
-    weight: 5
+    weight: 4
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
-  field_ad_file_size:
-    type: file_size_calculator_widget
-    weight: 0
-    settings:
-      file_fields:
-        - field_ad_file
-        - field_test
-      size_type: '1048576'
-    third_party_settings: {  }
   field_ad_format:
-    weight: 7
+    weight: 6
     settings:
       match_operator: CONTAINS
       size: 60
@@ -72,40 +61,31 @@ content:
     type: entity_reference_autocomplete
   field_ad_gitb_compliant:
     type: options_select
-    weight: 11
+    weight: 10
     settings: {  }
     third_party_settings: {  }
   field_ad_licence:
-    weight: 6
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    weight: 5
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_select
   field_ad_modification_date:
     type: datetime_create_update
-    weight: 10
+    weight: 9
     settings:
       behaviour: create
     third_party_settings: {  }
   field_ad_repr_technique:
-    weight: 8
+    weight: 7
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-  id:
-    type: auto_uri
-    weight: 1
-    settings:
-      prefix: 'http://example.org/joinup/licence'
-    third_party_settings: {  }
   label:
     type: string_textfield
-    weight: 2
+    weight: 1
     settings:
       size: 60
       placeholder: ''
@@ -113,3 +93,4 @@ content:
 hidden:
   field_ad_file_size: true
   field_status: true
+  og_audience: true

@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - og
+    - og_menu
+    - rdf_entity
+id: ogmenu_instance.og_audience
+field_name: og_audience
+entity_type: ogmenu_instance
+type: og_standard_reference
+settings:
+  target_type: rdf_entity
+module: og
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

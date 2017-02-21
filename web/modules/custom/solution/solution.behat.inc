@@ -8,9 +8,16 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\NodeTrait;
+use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
+use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -18,9 +25,14 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use EntityReferenceTrait;
   use FileTrait;
+  use NodeTrait;
+  use OgTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
+  use WorkflowTrait;
+  use UtilityTrait;
 
   /**
    * Test solutions.
@@ -48,7 +60,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @When (I )go to (the homepage of )the :solution solution
    * @When (I )visit (the homepage of )the :solution solution
    */
-  public function visitCollection($solution) {
+  public function visitSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
     $solution = $this->getSolutionByName($solution);
     $this->visitPath($solution->url());
@@ -156,6 +168,67 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Make group content part of a solution.
+   *
+   * Table format:
+   * | content                | solution          |
+   * | Content entity 1 title | Solution 1 title  |
+   * | Content entity 2 title | Solution 1 title  |
+   * | Content entity 3 title | Solution 2 title  |
+   *
+   * @param string $bundle
+   *   The bundle of the content entity.
+   * @param TableNode $membership_table
+   *   The membership table.
+   *
+   * @Given (the following ):bundle content belong to the corresponding solutions:
+   */
+  public function givenContentMemberships($bundle, TableNode $membership_table) {
+    // As each given step is executed in the same request
+    // we need to reset the mapping.
+    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage->getGraphHandler()->resetRequestGraphs();
+    foreach ($membership_table->getColumnsHash() as $values) {
+      $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
+      /** @var \Drupal\node\NodeInterface $content */
+      $content = $this->getNodeByTitle($values['content'], $bundle);
+      $content->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->set(0, $group->id());
+      $content->save();
+    }
+  }
+
+  /**
+   * Asserts that a user is an owner of the given solution.
+   *
+   * To be owner of a solution, a user should be an administrator and
+   * a facilitator.
+   *
+   * @param string $username
+   *    The name of the user.
+   * @param string $solution
+   *    The label of the group entity.
+   *
+   * @throws \Exception
+   *    Throws an exception when the user is not found.
+   *
+   * @Given (the user ):username should be the owner of the :solution solution
+   */
+  public function assertSolutionOwnership($username, $solution) {
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      throw new \Exception("User {$username} could not be found.");
+    }
+
+    $solution = $this->getRdfEntityByLabel($solution, 'solution');
+    $owner_roles = [
+      OgRoleInterface::ADMINISTRATOR,
+      'facilitator',
+    ];
+
+    $this->assertOgGroupOwnership($user, $solution, $owner_roles);
+  }
+
+  /**
    * Creates a solution from the given property and field data.
    *
    * @param array $values
@@ -168,8 +241,16 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *   Thrown when a given image is not found.
    */
   protected function createSolution(array $values) {
-    if (!empty($values['field_is_documentation'])) {
-      $values['field_is_documentation'] = [$this->createFile($values['field_is_documentation'], $this->getMinkParameter('files_path'))];
+    $file_fields = [
+      'field_is_documentation',
+      'field_is_banner',
+      'field_is_logo',
+    ];
+
+    foreach ($file_fields as $field_name) {
+      if (!empty($values[$field_name])) {
+        $values[$field_name] = [$this->createFile($values[$field_name], $this->getMinkParameter('files_path'))];
+      }
     }
 
     $values['rid'] = 'solution';
@@ -268,29 +349,52 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Checks the number of available releases.
+   * Subscribes the given users to the given solution.
    *
-   * @param int $number
-   *   The expected number of releases.
+   * The role Id of organic group roles are consisting of 3 parts, the entity
+   * type ID and the bundle of the group, and the machine name of the role.
+   * Do not provide the complete ID of the Og role. The entity type ID and
+   * bundle are going to be added automatically.
+   *
+   * Table format:
+   * | solution          | user | roles                      |
+   * | Sample solution A | John | facilitator, administrator |
+   * | Sample solution B | Jack |                            |
+   *
+   * @param TableNode $membership_table
+   *   The membership table.
    *
    * @throws \Exception
-   *   Thrown when the number of release entities do not
-   *   match the expectation.
+   *   Thrown when a solution is not found.
    *
-   * @Then I should have :number release(s)
+   * @Given (the following )solution user membership(s):
    */
-  public function assertReleaseCount($number) {
-    // We cannot rely on $this->assertRdfEntityCount() because a release shares
-    // the same bundle with a solution. We need to distinguish them by the
-    // presence of the 'is_version_of' field - if this field is missing it is a
-    // solution, if it is present it is a release.
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'asset_release')
-      ->exists('field_isr_is_version_of')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
+  public function givenSolutionUserMemberships(TableNode $membership_table) {
+    foreach ($membership_table->getColumnsHash() as $values) {
+      // Load group.
+      $group = $this->getSolutionByName($values['solution']);
+
+      // Load member.
+      $member = user_load_by_name($values['user']);
+      if (empty($member)) {
+        throw new \Exception('User ' . $values['user'] . ' not found.');
+      }
+
+      // Convert role names to role IDs.
+      $roles = [];
+      if (!empty($values['roles'])) {
+        $role_names = $this->explodeCommaSeparatedStepArgument($values['roles']);
+        // Every owner is also a facilitator. In Joinup the facilitator role is
+        // assigned to the owner when they create the solution. Since in this
+        // step the solutions are already created, mimick this behaviour by
+        // making sure every owner also has the 'facilitator' role.
+        if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
+          $role_names[] = 'facilitator';
+        }
+        $roles = $this->getOgRoles($role_names, $group);
+      }
+
+      $this->subscribeUserToGroup($member, $group, $roles);
     }
   }
 
@@ -300,6 +404,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @AfterScenario
    */
   public function cleanSolutions() {
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    $storage = \Drupal::service('entity_type.manager')->getStorage('rdf_entity');
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
       $solution->delete();
@@ -318,21 +424,22 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'uri' => 'id',
       'title' => 'label',
       'affiliations requests' => 'field_is_affiliations_requests',
+      'banner' => 'field_is_banner',
       'contact information' => 'field_is_contact_information',
       'creation date' => 'field_is_creation_date',
       'description' => 'field_is_description',
-      'distribution' => 'field_is_distribution',
       'documentation' => 'field_is_documentation',
       'elibrary creation' => 'field_is_elibrary_creation',
-      'issue tracker' => 'field_is_issue_tracker',
       'keywords' => 'field_keywords',
       'landing page' => 'field_is_landing_page',
       'language' => 'field_is_language',
       'latest release' => 'field_is_latest_release',
+      'logo' => 'field_is_logo',
       'metrics page' => 'field_is_metrics_page',
       'moderation' => 'field_is_moderation',
       'modification date' => 'field_is_modification_date',
       'owner' => 'field_is_owner',
+      'policy domain' => 'field_policy_domain',
       'related solutions' => 'field_is_related_solutions',
       'solution type' => 'field_is_solution_type',
       'source code repository' => 'field_is_source_code_repository',
@@ -343,7 +450,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
-      'collection' => 'og_group_ref',
+      'state' => 'field_is_state',
+      'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
     ];
   }
 
@@ -359,7 +467,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
-  protected function convertValueAliases($fields) {
+  protected function convertValueAliases(array $fields) {
     $mapped_values = [
       'field_is_moderation' => ['no' => 0, 'yes' => 1],
       'field_is_elibrary_creation' =>
@@ -377,19 +485,82 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     }
 
-    // Check for the OG group.
-    if (isset($fields['field_is_distribution'])) {
-      $distribution = $this->getRdfEntityByLabel($fields['field_is_distribution'], 'asset_distribution');
-      $fields['field_is_distribution'] = [$distribution->id()];
-    }
-
-    // Check for the OG group.
-    if (isset($fields['og_group_ref'])) {
-      $collection = $this->getRdfEntityByLabel($fields['og_group_ref'], 'collection');
-      $fields['og_group_ref'] = $collection->id();
-    }
+    // Convert any entity reference field label value with the entity id.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $fields);
 
     return $fields;
+  }
+
+  /**
+   * Checks that a user has the available state options for the solution.
+   *
+   * The method also checks that these options are the only options available.
+   *
+   * Table format:
+   * | solution   | user | options          |
+   * | Solution A | John | Status1          |
+   * | Solution B | Jack | Status1, Status2 |
+   *
+   * @param TableNode $check_table
+   *   The table with the triplets solution-user-options.
+   *
+   * @throws \Exception
+   *    Thrown when the user does not exist.
+   *
+   * @todo: Maybe there is a better definition available here like 'The
+   * following state buttons should be available for the user on the
+   * collection'.
+   *
+   * @Given for the following solution, the corresponding user should have the corresponding (available )state buttons:
+   */
+  public function verifyWorkflowStates(TableNode $check_table) {
+    foreach ($check_table->getColumnsHash() as $values) {
+      // Load entity.
+      $solution = $this->getSolutionByName($values['solution']);
+
+      // Load user.
+      $user = user_load_by_name($values['user']);
+      if (empty($user)) {
+        throw new \Exception('User ' . $values['user'] . ' not found.');
+      }
+
+      // Convert states to an array.
+      $states = empty($values['states']) ? [] : explode(',', $values['states']);
+      $states = array_map('trim', $states);
+
+      $this->assertAvailableTransitions($solution, $states, $user);
+    }
+  }
+
+  /**
+   * Applies a transition to a solution.
+   *
+   * @param string $username
+   *    The username applying the transition.
+   * @param string $entity_name
+   *    The title of the solution.
+   * @param string $to_state
+   *    The state that the solution transits to.
+   *
+   * @throws \Exception
+   *    An exception is thrown if the user is not found or the transition is not
+   *    allowed for this user.
+   *
+   * @Given the user :username changes the state of the :entity_name solution to :to_state
+   */
+  public function applySolutionWorkflowTransition($username, $entity_name, $to_state) {
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      throw new \Exception("User {$username} was not found.");
+    }
+    $solution = $this->getSolutionByName($entity_name);
+    $available_states = $this->getAvailableStates($solution, $user);
+    if (($transition_id = array_search($to_state, $available_states)) === FALSE) {
+      throw new \Exception("The given user does not have permission to apply the specific transition.");
+    }
+    $transition = $solution->get('field_is_state')->first()->getWorkflow()->getTransition($transition_id);
+    $solution->get('field_is_state')->first()->applyTransition($transition);
+    $solution->save();
   }
 
 }

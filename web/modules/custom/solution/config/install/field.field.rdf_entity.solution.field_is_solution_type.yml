@@ -4,17 +4,24 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_is_solution_type
     - rdf_entity.rdfentity.solution
+    - taxonomy.vocabulary.eira
 id: rdf_entity.solution.field_is_solution_type
 field_name: field_is_solution_type
 entity_type: rdf_entity
 bundle: solution
 label: 'Solution type'
-description: ''
-required: false
+description: 'EIA Building block'
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:rdf_entity'
-  handler_settings: {  }
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      eira: eira
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference

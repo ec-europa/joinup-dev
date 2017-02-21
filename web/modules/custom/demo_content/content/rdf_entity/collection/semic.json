@@ -1,0 +1,267 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C11c81d8f-1527-4044-a694-b847d66362e1?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_affiliates": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Ca3e28554-6104-4e4e-a1f5-e23265e3bca7?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C903a3914-7333-4aa8-8799-064dc70a711c?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Cc64ac7c9-48b2-4c64-abbd-b7fc0e9c24c7?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Ceb8a23ce-121f-438b-8ccf-a2f3bfb63268?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C51b16fc2-464c-4dbf-ac61-1c44111925fc?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_banner": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/2016-10\/banner_8.jpg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_logo": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/collection\/2016-10\/logo_9.png"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_owner": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3e9231e3-14d9-430c-91f0-626d1e3381e0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_policy_domain": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Cpolicy-domain%5Chome-affairs?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/11c81d8f-1527-4044-a694-b847d66362e1"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "collection"
+        }
+    ],
+    "label": [
+        {
+            "value": "Semantic Interoperability Community - SEMIC",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/11c81d8f-1527-4044-a694-b847d66362e1"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_affiliates": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/www.w3.org\/ns\/person#"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Ca3e28554-6104-4e4e-a1f5-e23265e3bca7?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/a3e28554-6104-4e4e-a1f5-e23265e3bca7"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C903a3914-7333-4aa8-8799-064dc70a711c?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/903a3914-7333-4aa8-8799-064dc70a711c"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Cc64ac7c9-48b2-4c64-abbd-b7fc0e9c24c7?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/c64ac7c9-48b2-4c64-abbd-b7fc0e9c24c7"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Ceb8a23ce-121f-438b-8ccf-a2f3bfb63268?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/eb8a23ce-121f-438b-8ccf-a2f3bfb63268"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C51b16fc2-464c-4dbf-ac61-1c44111925fc?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/51b16fc2-464c-4dbf-ac61-1c44111925fc"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_banner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/2016-10\/banner_8.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "9ed063e8-c372-45d4-8444-3dbee4ca50c7"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/2016-10\/banner_8.jpg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_logo": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/collection\/2016-10\/logo_9.png"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "d003f0c3-2a7f-480f-9481-78a29a18477e"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/collection\/2016-10\/logo_9.png"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_owner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3e9231e3-14d9-430c-91f0-626d1e3381e0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/3e9231e3-14d9-430c-91f0-626d1e3381e0"
+                    }
+                ]
+            }
+        ]
+    },
+    "field_policy_domain": [
+        {
+            "target_id": "http:\/\/joinup.eu/policy-domain/home-affairs"
+        }
+    ],
+    "field_ar_closed": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_ar_description": [
+        {
+            "value": "<h3>About SEMIC<\/h3>\r\n\r\n<p>The&nbsp;<strong>Semantic Interoperability Community (SEMIC)<\/strong>&nbsp;is a European Commission initiative aiming to improve the semantic interoperability of interconnected e-Government systems. It is funded under&nbsp;<a href=\"http:\/\/ec.europa.eu\/isa\/actions\/01-trusted-information-exchange\/1-1action_en.htm\">Action 1.1<\/a>&nbsp;(<em>Improving semantic interoperability in European e-Government systems<\/em>) of the&nbsp;<a href=\"http:\/\/ec.europa.eu\/isa\/index_en.htm\">Interoperability Solutions for European Public Administrations (ISA) Programme<\/a>.<\/p>\r\n\r\n<p><strong>Semantic interoperability<\/strong>&nbsp;refers to the preservation of meaning in the exchange of electronic information (see also&nbsp;<a href=\"http:\/\/ec.europa.eu\/isa\/documents\/isa_annex_ii_eif_en.pdf\">European Interoperability Framework<\/a>). It means that, in the context of an information exchange, the receiver and the sender of information can understand and interpret it the same way. The lack of semantic interoperability between European e-Government systems is one of the major obstacles in the provision of cross-border and cross-sector digital public services.&nbsp;<\/p>\r\n\r\n<p>Dr. Vassilios Peristeras, Programme officer of ISA&nbsp;<a href=\"http:\/\/ec.europa.eu\/isa\/actions\/01-trusted-information-exchange\/1-1action_en.htm\">Action 1.1<\/a>&nbsp;explains the action\u2019s vision for semantic interoperability, which boils down to the establishment of common agreements on the meaning of different entities, e.g. basic data about persons, businesses or addresses, exchanged in the context of cross-border and\/or cross-sector information exchanges.<\/p>\r\n\r\n<h3>SEMIC activities<\/h3>\r\n\r\n<p>SEMIC focuses on the following activities:<\/p>\r\n\r\n<h4>Development and promotion of Core Vocabularies<\/h4>\r\n\r\n<p>The&nbsp;<a href=\"https:\/\/joinup.ec.europa.eu\/node\/102288\">e-Government Core Vocabularies<\/a>&nbsp;are simplified, re-usable and extensible data models that capture the fundamental characteristics of an entity, such as a person, a business, a location or a public service, in a context-neutral way. They can be used by public administrations to attain a minimum level of semantic interoperability for e-Government systems.<\/p>\r\n\r\n<p>Read more about the e-Government Core Vocabularies&nbsp;<a href=\"https:\/\/joinup.ec.europa.eu\/node\/145983\">here<\/a>.<\/p>\r\n\r\n<h4>Development and promotion of the DCAT-AP<\/h4>\r\n\r\n<p><br \/>\r\nSEMIC fosters the interoperability of open data portals by building consensus on and promoting the DCAT Application profile for data portals in Europe (<a href=\"https:\/\/joinup.ec.europa.eu\/node\/69559\">DCAT-AP<\/a>). DCAT-AP provides a common specification for describing public sector datasets and enables the exchange of descriptions of datasets among data portals.<br \/>\r\nRead more about DCAT-AP <a href=\"https:\/\/joinup.ec.europa.eu\/node\/145996\">here<\/a>.<\/p>\r\n\r\n<h4><br \/>\r\nManagement of data standards<\/h4>\r\n\r\n<p><br \/>\r\nThe European Interoperability Reference Architecture (<a href=\"https:\/\/joinup.ec.europa.eu\/node\/99464\">EIRA<\/a>) defines a data standard as \u201ca structural metadata specification that describes or defines other data. Structural metadata indicates how compound objects are put together. It can consist of among others data models, reference data, and identifier schemas\u201d.<br \/>\r\nSEMIC has established an international Community of Practice which is working on specifications, good practices and lessons learned for setting up proper governance and management of data standards, and for selecting the right support tools. Such activities will greatly enhance the potential for coordination and interoperability between public administrations in the context of cross-border and\/or cross-sector information exchanges.<br \/>\r\nRead more about the Community of Practice on data standards <a href=\"https:\/\/joinup.ec.europa.eu\/node\/109954\/\">here<\/a>.<\/p>\r\n\r\n<h4><br \/>\r\nExploring Linked Open Government Data (LOGD)<\/h4>\r\n\r\n<p><br \/>\r\nLinked Data enables the provision of \u201cdata as a service\u201d and conceives the Web as an open ecosystem where data owners, data publishers, and data consumers can interconnect and integrate disparate datasets. SEMIC explores the potential of linked open government data, from a business and a technical point of view, as an enabler to the flexible integration of data coming from different e-Government systems.<br \/>\r\nRead more about LOGD <a href=\"https:\/\/joinup.ec.europa.eu\/node\/145998\">here<\/a>.<\/p>\r\n\r\n<h4><br \/>\r\nSEMIC Conference<\/h4>\r\n\r\n<p><br \/>\r\nThe SEMIC conference is an annual international event which brings together policy makers, ICT solution developers, industry and researchers with a common interest in topics related to information exchange and management for public administration.<br \/>\r\nRead more about the SEMIC conference <a href=\"https:\/\/joinup.ec.europa.eu\/node\/145999\">here<\/a>.<\/p>\r\n",
+            "format": "content_editor"
+        }
+    ],
+    "field_ar_elibrary_creation": [
+        {
+            "value": "1"
+        }
+    ],
+    "field_ar_moderation": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_ar_modification_date": [
+        {
+            "value": "2016-10-07T11:03:15"
+        }
+    ],
+    "field_ar_state": [
+        {
+            "value": "validated"
+        }
+    ]
+}

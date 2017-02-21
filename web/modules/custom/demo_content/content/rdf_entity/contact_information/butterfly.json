@@ -1,0 +1,48 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C8b672838-7d24-4050-9983-f1eba5e988a8?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/contact_information"
+        }
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/8b672838-7d24-4050-9983-f1eba5e988a8"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "contact_information"
+        }
+    ],
+    "label": [
+        {
+            "value": "Butterfly",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/8b672838-7d24-4050-9983-f1eba5e988a8"
+        }
+    ],
+    "field_ci_email": [
+        {
+            "value": "butterfly@example.com"
+        }
+    ],
+    "field_ci_name": [
+        {
+            "value": "Butterfly"
+        }
+    ],
+    "field_ci_webpage": [
+        {
+            "uri": "http:\/\/valeyofbutterflies.com",
+            "title": null,
+            "options": []
+        }
+    ]
+}

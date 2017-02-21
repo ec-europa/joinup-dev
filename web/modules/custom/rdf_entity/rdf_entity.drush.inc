@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file
- * Purge the triple store from the cli.
+ * Purge the triple store from the CLI.
  */
 
 use \Drush\Log\LogLevel;
@@ -15,10 +16,10 @@ function rdf_entity_drush_command() {
   $items = array();
 
   $items['rdf-entity-purge'] = array(
-    'description' => 'Delete the whole index at the Sparql endpoint..',
+    'description' => 'Delete the whole index at the Sparql endpoint.',
     'examples' => array(
-      'drush rdf-entity-purge' => dt('Purge the triple store..'),
-      'drush repl' => dt('Alias to purge the triple store.'),
+      'drush rdf-entity-purge' => dt('Purge the triple store.'),
+      'drush rep' => dt('Alias to purge the triple store.'),
     ),
     'aliases' => array('rep'),
   );
@@ -55,7 +56,7 @@ QUERY;
     $endpoint->query($query);
 
     $backend = Server::load('solr')->getBackend();
-    if ($backend instanceof SearchApiSolrBackend && $backend->getSolrHelper()->pingCore()) {
+    if ($backend instanceof SearchApiSolrBackend && $backend->getSolrConnector()->pingCore()) {
       $index = $backend->getServer()->getIndexes()['collections'];
       $backend->deleteAllIndexItems($index);
     }

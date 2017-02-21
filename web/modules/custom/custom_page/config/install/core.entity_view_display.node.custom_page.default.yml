@@ -3,9 +3,12 @@ status: true
 dependencies:
   config:
     - field.field.node.custom_page.body
-    - field.field.node.custom_page.og_group_ref
+    - field.field.node.custom_page.field_cp_content_listing
+    - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
+    - ds
+    - search_api_field
     - text
     - user
 id: node.custom_page.default
@@ -19,11 +22,28 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
+  field_cp_content_listing:
+    weight: 4
+    label: hidden
+    settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: search_api_field
   links:
     weight: 0
     settings: {  }
     third_party_settings: {  }
-  og_group_ref:
+  node_field_cp_content_listing_top:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+  og_audience:
     type: entity_reference_label
     weight: 2
     label: above

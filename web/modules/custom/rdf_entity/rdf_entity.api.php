@@ -16,7 +16,7 @@
  *
  * @ingroup rdf_entity_api
  */
-function hook_rdf_apply_default_fields_alter(\Drupal\field\Entity\FieldStorageConfig $storage, &$values) {
+function hook_rdf_apply_default_fields_alter(\Drupal\field\Entity\FieldStorageConfig $storage, array &$values) {
   if ($storage->getType() == 'text_long') {
     // Handle multiple values in a field.
     foreach ($values as &$value) {

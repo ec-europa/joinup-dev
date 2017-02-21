@@ -1,0 +1,42 @@
+.bold
+  font-weight: $font-weight-bold
+
+.italic
+  font-style: italic
+
+.underline
+  text-decoration: underline
+
+.gray
+  color: $color-grey-medium
+
+.blue
+  color: $color-blue-slider
+
+.left
+  text-align: left
+
+.center
+  text-align: center
+
+.right
+  text-align: right
+
+.hide--phone
+  +breakpoint(sm-mobile, mobile)
+    display: none !important
+
+.hide--tablet
+  +breakpoint(mobile, tablet)
+    display: none !important
+
+.hide--desktop
+  +breakpoint(tablet, desktop)
+    display: none !important
+
+.row
+  margin-left: -16px
+  margin-right: -16px
+
+hr
+  margin: 0

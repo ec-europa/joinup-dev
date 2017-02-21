@@ -5,15 +5,18 @@ Feature: Custom page API
   I need to be able to use the Node API to handle the "Custom page" bundle
 
   Scenario: Programmatically create a Custom page
-    Given the following collection:
+    Given the following owner:
+      | name            |
+      | Rufus Drumknott |
+    And the following collection:
       | title             | Le Foie Heureux |
       | owner             | Rufus Drumknott |
       | logo              | logo.png        |
       | moderation        | yes             |
-      | closed            | yes             |
       | elibrary creation | facilitators    |
+      | state             | validated       |
     And custom_page content:
-      | title      | body                                     | groups audience |
+      | title      | body                                     | collection      |
       | Dummy page | This is some dummy content like foo:bar. | Le Foie Heureux |
      # @Fixme unimplemented. See ISAICP-2369
      # | Exclude from menu |                                              |

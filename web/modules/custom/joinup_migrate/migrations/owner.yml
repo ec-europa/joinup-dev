@@ -1,0 +1,26 @@
+id: owner
+label: 'Owner migration'
+source:
+  plugin: owner
+  track_changes: true
+migration_tags:
+  - owner
+process:
+  id: uri
+  field_owner_name: title
+  field_owner_type:
+    -
+      plugin: static_map
+      source: type
+      bypass: true
+      map:
+        'Local authority': 'Local Authority'
+        'Non-governmental organisation': 'Non-Governmental Organisation'
+        'Non-profit organisation': 'Non-Profit Organisation'
+        'Private individual(s)': 'Private Individual(s)'
+    -
+      plugin: term_reference
+      vocabulary: owner_type
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: owner

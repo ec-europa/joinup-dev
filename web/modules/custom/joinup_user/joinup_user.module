@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Main functions and hook implementations of the Joinup user module.
@@ -62,7 +63,7 @@ function joinup_user_mail($key, &$message, $params) {
     ->getLanguage($params['account']->getPreferredLangcode());
   $original_language = $language_manager->getConfigOverrideLanguage();
   $language_manager->setConfigOverrideLanguage($language);
-  $mail_config = \Drupal::config('user.mail');
+  $mail_config = \Drupal::config('joinup_user.mail');
 
   $token_options = [
     'langcode' => $langcode,
@@ -102,7 +103,7 @@ function joinup_user_mail($key, &$message, $params) {
  *
  * @see user_mail_tokens()
  */
-function joinup_user_mail_tokens(&$replacements, $data, $options) {
+function joinup_user_mail_tokens(array &$replacements, array $data, array $options) {
   user_mail_tokens($replacements, $data, $options);
   if (isset($data['user']) && isset($data['original'])) {
     $changes = joinup_user_account_changes($data['original'], $data['user']);
@@ -158,7 +159,7 @@ function joinup_user_account_changes(AccountInterface $old_account, AccountInter
  */
 function joinup_user_form_user_admin_settings_alter(&$form, FormStateInterface $form_state) {
   $form['#submit'][] = 'joinup_user_form_user_admin_settings_alter_submit';
-  $mail_config = \Drupal::config('user.mail');
+  $mail_config = \Drupal::config('joinup_user.mail');
   $email_token_help = t('Available variables are: [site:name], [site:url], [user:display-name], [user:account-name], [user:mail], [site:login-url], [site:url-brief], [user:edit-url], [user:one-time-login-url], [user:cancel-url], [user:changes].');
   $form['email_admin_update'] = array(
     '#type' => 'details',
@@ -185,7 +186,7 @@ function joinup_user_form_user_admin_settings_alter(&$form, FormStateInterface $
  * Submit callback: Save the email settings.
  */
 function joinup_user_form_user_admin_settings_alter_submit(array &$form, FormStateInterface $form_state) {
-  \Drupal::configFactory()->getEditable('user.mail')
+  \Drupal::configFactory()->getEditable('joinup_user.mail')
     ->set('email_admin_update.body', $form_state->getValue('user_mail_update_account_body'))
     ->set('email_admin_update.subject', $form_state->getValue('user_mail_update_account_subject'))
     ->save();

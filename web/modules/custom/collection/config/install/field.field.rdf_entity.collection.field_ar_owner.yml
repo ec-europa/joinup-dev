@@ -4,17 +4,24 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_ar_owner
     - rdf_entity.rdfentity.collection
+    - rdf_entity.rdfentity.owner
 id: rdf_entity.collection.field_ar_owner
 field_name: field_ar_owner
 entity_type: rdf_entity
 bundle: collection
 label: Owner
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:rdf_entity'
-  handler_settings: {  }
+  handler_settings:
+    target_bundles:
+      owner: owner
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: owner
 field_type: entity_reference

@@ -1,0 +1,61 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3bac70f9-dd21-42dc-b669-cee3d5823ec3?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/licence"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/licence\/field_licence_type": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpurl.org%5Cadms%5Clicencetype%5CAttribution?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/3bac70f9-dd21-42dc-b669-cee3d5823ec3"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "licence"
+        }
+    ],
+    "label": [
+        {
+            "value": "GNU",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/3bac70f9-dd21-42dc-b669-cee3d5823ec3"
+        }
+    ],
+    "field_licence_description": [
+        {
+            "value": "<p>See&nbsp;https:\/\/www.gnu.org\/licenses\/gpl-3.0.html<\/p>\r\n",
+            "format": "content_editor"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/licence\/field_licence_type": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpurl.org%5Cadms%5Clicencetype%5CAttribution?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/licence_type"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/purl.org\/adms\/licencetype\/Attribution"
+                    }
+                ]
+            }
+        ]
+    }
+}

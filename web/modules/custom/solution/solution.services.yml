@@ -9,3 +9,8 @@ services:
     arguments: ['@request_stack']
     tags:
       - { name: cache.context }
+  solution.fulfillment_guard:
+    class: Drupal\solution\Guard\SolutionFulfillmentGuard
+    arguments: ['@entity_type.manager', '@joinup_core.workflow.user_provider', '@config.factory', '@current_user']
+    tags:
+      - { name: state_machine.guard, group: solution }

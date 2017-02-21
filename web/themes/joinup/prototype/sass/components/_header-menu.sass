@@ -1,5 +1,19 @@
+// Header menu
+//
+// Markup: html/header-menu.html
+// 
+// Menu placed in the header with active Collection item
+// 
+// Styleguide 2.7.2
+
 // Component
 // --------------------------------------------------
+.header-menu
+  display: none
+  +breakpoint(tablet)
+    display: -webkit-flex
+    display: -ms-flexbox
+    display: flex
 
 // Elements
 // --------------------------------------------------
@@ -32,9 +46,12 @@
 // Modifiers
 // --------------------------------------------------
 
+// Dependiencies
+// --------------------------------------------------
+
 // States
 // --------------------------------------------------
-.header-menu__link.active-trail
+.header-menu__link.active-trail, .header-menu__link.is-active
   color: $color-blue-default
   background: #fff
   border-top: 2px solid $color-orange

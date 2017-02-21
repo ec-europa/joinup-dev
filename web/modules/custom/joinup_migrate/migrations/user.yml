@@ -1,0 +1,36 @@
+id: user
+label: 'User accounts'
+migration_tags:
+  - user
+source:
+  plugin: user
+  track_changes: true
+process:
+  status:
+    plugin: default_value
+    default_value: 1
+  name: name
+  pass: pass
+  mail: mail
+  created: created
+  access: access
+  login: login
+  timezone:
+    plugin: user_update_7002
+    source: timezone
+  init: init
+  roles:
+    -
+      plugin: static_map
+      source: roles
+      map:
+        6: administrator
+        3: moderator
+      default_value: 0
+    -
+      # Do not import "authenticated user" role or any other role not mapped.
+      plugin: skip_on_empty
+      method: process
+destination:
+  plugin: entity:user
+  md5_passwords: true

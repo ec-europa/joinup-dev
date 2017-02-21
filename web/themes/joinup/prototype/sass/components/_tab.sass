@@ -1,14 +1,20 @@
+// Tab
+//
+// Markup: html/tab.html
+//
+// Styleguide 2.11
+
 // Component
 // --------------------------------------------------
 .tab
-  background-color: $color-grey-ligher
+  background-color: $color-grey-light
 
 .tabs
   border-bottom: 1px solid $color-grey-light
 
 // Elements
 // --------------------------------------------------
-.tab 
+.tab
   a
     color: $color-base
     text-decoration: none
@@ -22,8 +28,90 @@
 .tab--horizontal
   border-bottom: 1px solid $color-grey-light
 
+.tabs--content-type
+  margin: 30px 0
+  border-bottom: 1px solid darken($color-grey-light, 5%)
+  @media (min-width: 600px)
+    display: flex
+    flex-wrap: nowrap
+    justify-content: space-between
+    align-items: flex-start
+    text-align: center
+    border-bottom: none
+  +breakpoint(tablet, tablet)
+    margin: 40px -60px 0 -60px
+
+.tab--content-type
+  position: relative
+  color: $color-base
+  text-decoration: none
+  +breakpoint(sm-mobile, mobile)
+    margin-bottom: 30px
+    &:last-of-type
+      margin-bottom: 0
+  @media (min-width: 600px)
+    width: 30%
+    height: 100px
+    margin-right: 5%
+  @media (min-width: 700px)
+    width: 25%
+    margin-right: 0
+  .tab__icon
+    color: lighten($color-grey-medium, 10%)
+    position: absolute
+    top: -12px
+    left: -18px
+    +icon-size(80px)
+  .tab__text
+    margin-bottom: 15px
+    padding-left: 60px
+  .tab__text--upper,
+  .tab__text--lower
+    text-align: left
+  .tab__text--upper
+    font-size: 32px
+    font-weight: $font-weight-bold
+
+.tab--more
+  position: relative
+  text-align: center
+  margin-top: 25px
+  text-decoration: none
+  cursor: pointer
+  +breakpoint(sm-mobile, tablet)
+    margin-bottom: 25px
+  @media (min-width: 600px)
+    width: 90px
+    height: 100px
+  .tab__text,
+  .tab__icon
+    display: inline-block
+    vertical-align: middle
+    color: $color-orange
+  .tab__text
+    font-size: $font-size-small
+    text-transform: uppercase
+    font-weight: $font-weight-bold
+  .tab__icon
+    +icon-size(25px)
+
+.tabs--content-type .tab--more
+  height: auto
+  padding-bottom: 10px
+
 // Dependiencies
 // --------------------------------------------------
+.timeline
+  .tab--more
+    position: absolute
+    right: -40px
+    bottom: -140px
+    display: block
+    width: 120px
+    height: 40px
+    padding: 0
+  .tab--more-wrapper
+    top: 50%
 
 // States
 // --------------------------------------------------
@@ -31,3 +119,21 @@
   border-bottom: 1px solid #fff
   background-color: #fff
   font-weight: $font-weight-medium
+
+.tab--content-type.is-active
+  position: relative
+  border-bottom: 2px solid $color-orange
+  .tab__icon
+    color: $color-base
+  &:after
+    content: ""
+    position: absolute
+    right: 0
+    left: 0
+    bottom: -6px
+    margin: 0 auto
+    width: 0
+    height: 0
+    border-left: 4px solid transparent
+    border-right: 4px solid transparent
+    border-top: 4px solid $color-orange

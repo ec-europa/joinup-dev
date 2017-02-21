@@ -1,0 +1,8 @@
+rdf_export.settings:
+ type: config_object
+ label: 'Rdf export settings'
+ mapping:
+  export_types:
+    type: sequence
+    sequence:
+      type: string

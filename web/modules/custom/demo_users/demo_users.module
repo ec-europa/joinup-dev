@@ -1,0 +1,45 @@
+<?php
+
+/**
+ * @file
+ * Contains functionality regarding the demo users of the joinup project.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\og\Entity\OgMembership;
+use Drupal\og\Entity\OgRole;
+use Drupal\og\Og;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ *
+ * There are two organic groups, the collection and the solution, and two users
+ * intended to be used as facilitators, the collection_facilitator and the
+ * solution_facilitator respectively.
+ *
+ * This function will assign the appropriate user as a facilitator to the entity
+ * passed.
+ */
+function demo_users_rdf_entity_insert(EntityInterface $entity) {
+  if (!in_array($entity->bundle(), ['collection', 'solution'])) {
+    return;
+  }
+  $user_name = $entity->bundle() . '_facilitator';
+  $facilitator = user_load_by_name($user_name);
+  if (empty($facilitator)) {
+    return;
+  }
+  $role_id = $entity->getEntityTypeId() . '-' . $entity->bundle() . '-facilitator';
+
+  // Check if there is already a membership. If one of the facilitators create
+  // an entity, then the membership will already exist.
+  if (!Og::getMembership($entity, $facilitator) && ($facilitator->id() != \Drupal::currentUser()->id())) {
+    /** @var \Drupal\og\OgMembershipInterface $membership */
+    $membership = OgMembership::create();
+    $membership
+      ->setUser($facilitator)
+      ->setGroup($entity)
+      ->addRole(OgRole::load($role_id))
+      ->save();
+  }
+}

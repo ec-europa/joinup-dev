@@ -4,7 +4,8 @@ dependencies:
   config:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.custom_page.body
-    - field.field.node.custom_page.og_group_ref
+    - field.field.node.custom_page.field_cp_content_listing
+    - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
     - ds
@@ -12,25 +13,6 @@ dependencies:
     - user
 third_party_settings:
   ds:
-    layout:
-      id: ds_1col
-      path: modules/contrib/ds
-      library: ''
-      disable_css: false
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class: {  }
-          ds_content: {  }
-    regions:
-      ds_content:
-        - node_title
-        - body
     fields:
       node_title:
         plugin_id: node_title
@@ -57,7 +39,7 @@ third_party_settings:
             fis-cl: ''
             fis-at: ''
             fi: true
-            fi-el: h2
+            fi-el: div
             fi-cl: listing__title
             fi-at: ''
             suffix: ''
@@ -76,47 +58,19 @@ content:
   body:
     label: hidden
     type: text_trimmed
-    weight: 1
+    weight: 0
     settings:
       trim_length: 200
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: div
-            fi-cl: listing__teaser
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
-  links:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-  og_group_ref:
-    type: entity_reference_label
-    weight: 9
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-hidden: {  }
+            classes: {  }
+hidden:
+  field_cp_content_listing: true
+  links: true
+  node_field_cp_content_listing_top: true
+  og_audience: true

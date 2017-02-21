@@ -7,4 +7,5 @@ Feature: Licence API
     Given the following licence:
       | title       | Open licence              |
       | description | Licence agreement details |
+      | type        | Public domain             |
     Then I should have 1 licence

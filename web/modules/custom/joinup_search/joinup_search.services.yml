@@ -1,0 +1,5 @@
+services:
+  joinup_search.solarium:
+    class: Drupal\joinup_search\EventSubscriber\SolariumEventSubscriber
+    tags:
+      - { name: event_subscriber }

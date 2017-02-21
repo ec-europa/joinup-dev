@@ -3,3 +3,23 @@ type: module
 description: A document content type
 core: 8.x
 package: Joinup
+
+config_devel:
+  - core.base_field_override.node.document.title
+  - core.entity_form_display.node.document.default
+  - core.entity_view_display.node.document.default
+  - core.entity_view_display.node.document.view_mode_featured
+  - core.entity_view_display.node.document.view_mode_tile
+  - field.field.node.document.body
+  - field.field.node.document.field_comments
+  - field.field.node.document.field_document_file
+  - field.field.node.document.field_document_publication_date
+  - field.field.node.document.field_document_short_title
+  - field.field.node.document.field_document_source_url
+  - field.field.node.document.field_state
+  - field.field.node.document.og_audience
+  - field.storage.node.field_document_file
+  - field.storage.node.field_document_publication_date
+  - field.storage.node.field_document_short_title
+  - field.storage.node.field_document_source_url
+  - node.type.document

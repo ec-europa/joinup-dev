@@ -5,26 +5,31 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_uuid:
-      value: ''
-    mapping_vid:
-      target_id: 'http://eurovoc.europa.eu/100141'
-    mapping_langcode:
-      value: ''
-    mapping_name:
-      value: 'http://www.w3.org/2004/02/skos/core#prefLabel'
-    mapping_description:
-      value: ''
-      format: ''
-    mapping_weight:
-      value: ''
-    mapping_parent:
-      target_id: 'http://www.w3.org/2004/02/skos/core#broader'
-    mapping_changed:
-      value: ''
-    mapping_default_langcode:
-      value: ''
-    mapping_path: {  }
+    mapping:
+      uuid:
+        value: ''
+      vid:
+        target_id: 'http://eurovoc.europa.eu/100141'
+      langcode:
+        value: ''
+      name:
+        value: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+      description:
+        value: ''
+      format:
+        value: ''
+      weight:
+        value: ''
+      parent:
+        target_id: 'http://www.w3.org/2004/02/skos/core#broader'
+      changed:
+        value: ''
+      default_langcode:
+        value: ''
+      path: {  }
+    graph:
+      default: 'http://joinup.eu/license_type/published'
+      draft: 'http://joinup.eu/collection/draft'
 name: EuroVoc
 vid: eurovoc
 description: ''

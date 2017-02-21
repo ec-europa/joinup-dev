@@ -2,11 +2,10 @@
 
 namespace Drupal\solution\Controller;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\OgAccess;
-use Drupal\og\OgAccessInterface;
+use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class SolutionController.
@@ -17,32 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @package Drupal\solution\Controller
  */
 class SolutionController extends ControllerBase {
-
-  /**
-   * The OG access handler.
-   *
-   * @var \Drupal\og\OgAccessInterface
-   */
-  protected $ogAccess;
-
-  /**
-   * Constructs a CustomPageController.
-   *
-   * @param \Drupal\og\OgAccessInterface $og_access
-   *   The OG access handler.
-   */
-  public function __construct(OgAccessInterface $og_access) {
-    $this->ogAccess = $og_access;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('og.access')
-    );
-  }
 
   /**
    * Controller for the base form.
@@ -60,8 +33,10 @@ class SolutionController extends ControllerBase {
   public function add(RdfInterface $rdf_entity) {
     $solution = $this->createNewSolution($rdf_entity);
 
-    $form = $this->entityFormBuilder()->getForm($solution);
-
+    // Pass the collection to the form state so that the parent connection is
+    // established.
+    // @see: solution_add_form_parent_submit
+    $form = $this->entityFormBuilder()->getForm($solution, 'default', ['collection' => $rdf_entity->id()]);
     return $form;
   }
 
@@ -69,29 +44,33 @@ class SolutionController extends ControllerBase {
    * Handles access to the solution add form through collection pages.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The RDF entity for which the custom page is created.
+   *   The RDF entity for which the solution is created.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
   public function createSolutionAccess(RdfInterface $rdf_entity) {
-    return $this->ogAccess->userAccessEntity('create', $this->createNewSolution($rdf_entity), $this->currentUser());
+    $user = $this->currentUser();
+    if (empty($rdf_entity) && !$user->isAnonymous()) {
+      return AccessResult::neutral();
+    }
+    $membership = Og::getMembership($rdf_entity, $user);
+    return (!empty($membership) && $membership->hasPermission('create solution rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
   /**
-   * Creates a new custom page entity.
+   * Creates a new solution entity.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection with which the custom page will be associated.
+   *   The collection with which the solution will be associated.
    *
    * @return \Drupal\Core\Entity\EntityInterface
-   *   The unsaved custom page entity.
+   *   The unsaved solution entity.
    */
   protected function createNewSolution(RdfInterface $rdf_entity) {
-    return $this->entityTypeManager()->getStorage('rdf_entity')->create(array(
+    return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'solution',
-      'og_group_ref' => $rdf_entity->id(),
-    ));
+    ]);
   }
 
 }

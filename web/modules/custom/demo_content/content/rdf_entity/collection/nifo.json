@@ -1,0 +1,113 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C4e56d06c-c8c3-40fd-b2a0-773301ebe9b8?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_banner": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/2016-09\/generateImage_xjSCHE.jpeg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_logo": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_ouLAYD.jpg"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/4e56d06c-c8c3-40fd-b2a0-773301ebe9b8"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "collection"
+        }
+    ],
+    "label": [
+        {
+            "value": "National Interoperability Framework Observatory - NIFO",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/4e56d06c-c8c3-40fd-b2a0-773301ebe9b8"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_banner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/2016-09\/generateImage_xjSCHE.jpeg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "807716e7-ddc2-45c8-a5e3-b3cfc2c50b46"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/2016-09\/generateImage_xjSCHE.jpeg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_logo": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_ouLAYD.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "377010d3-18bb-4636-98db-467415b1bc66"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_ouLAYD.jpg"
+                    }
+                ]
+            }
+        ]
+    },
+    "field_ar_closed": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_ar_description": [
+        {
+            "value": "<p>The NIFO community is a dedicated space for sharing experience and best practices on policies, systems, challenges and successes related to interoperability.&nbsp;<\/p>\n        <p>The objectives of this community is to gather contacts nominated by European countries and other stakeholders.&nbsp;<\/p>\n        <p>NIFO analyses the National Interoperability Frameworks (NIFs) of the Member States and associated countries and their alignment with the European Interoperability Framework (EIF). &nbsp;The aim of this observatory is to serve as a source of inspiration towards the establishment and further development of the National Interoperability Frameworks. The analysis is based on a model that allows the various aspects of the NIFs to be compared with the EIF and aims to highlight characteristics that are similar. The model takes into account the Digital Agenda.<\/p>\n        <h3>Join us!<\/h3>\n        <p>Join us and share your own news items, events, studies and best practices. Explore our observations on interoperability and eGovernment activities within Europe.<\/p>\n        <h3>Our services<\/h3>\n        <img alt=\"Services\" data-align=\"center\" data-entity-type=\"file\" data-entity-uuid=\"463f5b28-7fee-476c-9603-30215c2079f1\" src=\"\/sites\/default\/files\/inline-images\/Description_Image_0.PNG\" \/>\n        <p>&nbsp;<\/p>",
+            "format": "content_editor"
+        }
+    ],
+    "field_ar_elibrary_creation": [
+        {
+            "value": "1"
+        }
+    ],
+    "field_ar_moderation": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_ar_state": [
+        {
+            "value": "validated"
+        }
+    ]
+}

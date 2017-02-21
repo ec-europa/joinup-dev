@@ -1,0 +1,37 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      uuid:
+        value: ''
+      vid:
+        target_id: 'http://purl.org/adms/publishertype/1.0'
+      langcode:
+        value: ''
+      name:
+        value: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+      description:
+        value: 'http://www.w3.org/2004/02/skos/core#definition'
+      format:
+        value: ''
+      weight:
+        value: ''
+      parent:
+        target_id: 'http://www.w3.org/2004/02/skos/core#broader'
+      changed:
+        value: ''
+      default_langcode:
+        value: ''
+      path: {  }
+    graph:
+      default: 'http://adms_skos_v1.00'
+      draft: 'http://adms_skos_v1.00'
+name: 'Owner type'
+vid: owner_type
+description: ''
+hierarchy: 0
+weight: 0

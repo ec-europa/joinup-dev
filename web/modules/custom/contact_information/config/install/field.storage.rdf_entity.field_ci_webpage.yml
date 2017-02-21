@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      uri: 'http://www.w3.org/2006/vcard/ns#hasURL'
+      title: ''
+      options: ''
+id: rdf_entity.field_ci_webpage
+field_name: field_ci_webpage
+entity_type: rdf_entity
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="Joinup migration" default="help">
+
+    <!-- Run the migration IDs specified in the configuration. -->
+    <target name="run-migration"
+            description="Run the migration."
+            depends="enable-migration-modules">
+        <echo message="Run migration" />
+        <drush
+            command="migrate-import"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <param>${migration.ids}</param>
+            <option name="feedback" value="1000" />
+            <option name="force" />
+        </drush>
+    </target>
+
+    <target name="import-legacy-db"
+            description="Import the legacy D6 database."
+            depends="create-d6-db">
+        <pdosqlexec url="${migration.db.type}:host=localhost;dbname=${migration.db.name}"
+                    userid="${migration.db.user}"
+                    password="${migration.db.password}">
+            <transaction src="${migration.db.import_path}"/>
+        </pdosqlexec>
+    </target>
+
+    <!-- Add migration settings to Drupal settings file. -->
+    <target name="setup-migration"
+            description="Initial setup to prepare the build for migration. Only needs to be run once."
+            depends="writable-settings-php">
+        <echo message="Setup migration" />
+        <append destFile="${website.settings.php}" text="${line.separator}$databases['migrate']['default'] = [${line.separator}
+ 'database' => '${migration.db.name}',${line.separator}
+ 'username' => '${migration.db.user}',${line.separator}
+ 'password' => '${migration.db.password}',${line.separator}
+ 'prefix' => '${migration.db.prefix}',${line.separator}
+ 'host' => '${migration.db.host}',${line.separator}
+ 'port' => '${migration.db.port}',${line.separator}
+ 'namespace' => 'Drupal\\Core\\Database\\Driver\\${migration.db.type}',${line.separator}
+ 'driver' => '${migration.db.type}',${line.separator}];${line.separator}" />
+        <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.source.root'] = '${migration.source.root}';${line.separator}" />
+        <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.mode'] = '${migration.mode}';${line.separator}" />
+    </target>
+
+    <!-- Enable migration modules. -->
+    <target name="enable-migration-modules">
+        <drush
+            command="pm-enable"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <param>${migration.modules}</param>
+        </drush>
+    </target>
+
+    <target name="create-d6-db">
+        <pdosqlexec url="${migration.db.type}:host=${migration.db.host}" userid="${migration.db.user}" password="${migration.db.password}">
+            DROP DATABASE IF EXISTS ${migration.db.name};
+        </pdosqlexec>
+        <pdosqlexec url="${migration.db.type}:host=${migration.db.host}" userid="${migration.db.user}" password="${migration.db.password}">
+            CREATE DATABASE ${migration.db.name};
+        </pdosqlexec>
+    </target>
+
+</project>
+

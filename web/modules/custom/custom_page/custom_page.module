@@ -8,10 +8,12 @@
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgMembership;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -67,7 +69,7 @@ function custom_page_entity_insert(EntityInterface $entity) {
     return;
   }
   /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-  $group = $node->get('og_group_ref')->first();
+  $group = $node->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->first();
   if (!$group) {
     return;
   }
@@ -75,7 +77,7 @@ function custom_page_entity_insert(EntityInterface $entity) {
   // Fetch the menu.
   $values = [
     'type' => 'navigation',
-    OgGroupAudienceHelper::DEFAULT_FIELD => $value['target_id'],
+    OgGroupAudienceHelperInterface::DEFAULT_FIELD => $value['target_id'],
   ];
   $storage = \Drupal::entityManager()->getStorage('ogmenu_instance');
   $instances = $storage->loadByProperties($values);
@@ -90,4 +92,74 @@ function custom_page_entity_insert(EntityInterface $entity) {
     'link' => ['uri' => 'internal:/node/' . $node->id()],
   ]);
   $menu_link_content->save();
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ *
+ * Replaces the standard OG Menu Instance form with a customized one that is
+ * suitable for use in the front end.
+ */
+function custom_page_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+  $entity_types['ogmenu_instance']->setFormClass('edit', 'Drupal\custom_page\Form\OgMenuInstanceForm');
+}
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ */
+function custom_page_menu_local_actions_alter(&$local_actions) {
+  // Remove the 'Add link' local action from the custom page navigation menu
+  // edit form. In default Drupal this is intended for webmasters, but we expose
+  // this form to end users which do not interact directly with menu links.
+  // Instead of this our users have an 'Add page' local action which leads to a
+  // node add form. The menu link itself is created behind the scenes.
+  foreach ($local_actions as &$local_action) {
+    if ($local_action['route_name'] === 'entity.ogmenu_instance.add_link') {
+      if (($key = array_search('entity.ogmenu_instance.edit_form', $local_action['appears_on'])) !== FALSE) {
+        unset($local_action['appears_on'][$key]);
+      }
+      break;
+    }
+  }
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ */
+function custom_page_search_api_query_search_api_field_field_cp_content_listing_alter(QueryInterface &$query) {
+  /** @var EntityInterface $entity */
+  $entity = $query->getOption('search_api_field entity');
+  /** @var EntityInterface $group */
+  $group = $entity->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->first()->entity;
+  if (!$group) {
+    return;
+  }
+
+  // Show only content belonging to the same group.
+  $query->addCondition('aggregated_field_1', [$group->id()], 'IN');
+
+  // Remove the page itself from the results.
+  $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+}
+
+/**
+ * Implements hook_field_widget_search_api_field_default_form_alter().
+ *
+ * Customize the search_api_field widget for custom pages.
+ */
+function custom_page_field_widget_search_api_field_default_form_alter(&$element, FormStateInterface $form_state, $context) {
+  /** @var \Drupal\Core\Field\FieldItemListInterface $items */
+  $items = $context['items'];
+  $field_name = $items->getFieldDefinition()->getName();
+
+  if ($field_name === 'field_cp_content_listing') {
+    // Swap the default label with one that better represents our functionality.
+    $element['enabled']['#title'] = t('Display a community content listing');
+
+    // There is no need to allow customizing the facets. For now.
+    foreach (['fields', 'refresh_rows', 'refresh'] as $key) {
+      $element['wrapper'][$key]['#access'] = FALSE;
+    }
+  }
 }

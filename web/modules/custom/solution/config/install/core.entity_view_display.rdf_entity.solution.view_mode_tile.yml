@@ -5,6 +5,7 @@ dependencies:
     - core.entity_view_mode.rdf_entity.view_mode_tile
     - field.field.rdf_entity.solution.field_is_actor
     - field.field.rdf_entity.solution.field_is_affiliations_requests
+    - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_creation_date
@@ -17,6 +18,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_issue_tracker
     - field.field.rdf_entity.solution.field_is_landing_page
     - field.field.rdf_entity.solution.field_is_language
+    - field.field.rdf_entity.solution.field_is_logo
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_modification_date
@@ -26,6 +28,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
+    - field.field.rdf_entity.solution.field_is_state
     - field.field.rdf_entity.solution.field_is_test_resource_type
     - field.field.rdf_entity.solution.field_is_translation
     - field.field.rdf_entity.solution.field_is_version
@@ -36,224 +39,49 @@ dependencies:
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
-    - field.field.rdf_entity.solution.field_topic
-    - field.field.rdf_entity.solution.og_group_ref
+    - image.style.horizontal_medium_image
     - rdf_entity.rdfentity.solution
   module:
-    - datetime
     - ds
-    - file
-    - link
-    - options
+    - image
     - text
-third_party_settings:
-  ds:
-    layout:
-      id: ds_1col
-      path: modules/contrib/ds
-      library: ''
-      disable_css: false
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class: {  }
-          ds_content: {  }
-    regions:
-      ds_content:
-        - label
-        - field_is_description
+    - user
 id: rdf_entity.solution.view_mode_tile
 targetEntityType: rdf_entity
 bundle: solution
 mode: view_mode_tile
 content:
-  field_is_actor:
-    weight: 30
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_affiliations_requests:
-    weight: 24
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_business_process:
-    weight: 31
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_contact_information:
-    weight: 4
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_creation_date:
-    weight: 2
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
   field_is_description:
-    weight: 1
+    weight: 26
     label: hidden
     settings:
       trim_length: 200
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: h2
-            fi-cl: listing__teaser
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
+            classes: {  }
     type: text_trimmed
-  field_is_distribution:
+    region: content
+  field_is_logo:
+    type: image
     weight: 25
-    label: above
+    label: hidden
     settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_documentation:
-    weight: 33
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: file_default
-  field_is_elibrary_creation:
-    weight: 15
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-  field_is_has_version:
-    weight: 27
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_included_asset:
-    weight: 9
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_issue_tracker:
-    weight: 21
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  field_is_landing_page:
-    weight: 18
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  field_is_language:
-    weight: 13
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_metrics_page:
-    weight: 20
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  field_is_moderation:
-    weight: 16
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-  field_is_modification_date:
-    weight: 3
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
-  field_is_owner:
-    weight: 5
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_product_type:
-    weight: 32
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_related_solutions:
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
+      image_style: horizontal_medium_image
+      image_link: content
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    region: content
   field_is_solution_category:
     weight: 3
     label: above
@@ -261,158 +89,58 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_is_solution_type:
-    weight: 7
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_source_code_repository:
-    weight: 23
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  field_is_standardization_level:
-    weight: 34
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_test_resource_type:
-    weight: 28
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_translation:
-    weight: 10
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_is_version:
-    weight: 29
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  field_is_webdav_creation:
-    weight: 17
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-  field_is_webdav_url:
-    weight: 19
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  field_is_wiki:
-    weight: 22
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  field_keywords:
-    weight: 12
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_policy_domain:
-    weight: 26
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_spatial_coverage:
-    weight: 8
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_status:
-    weight: 14
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_topic:
-    weight: 11
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
+    region: content
   label:
-    label: hidden
     type: string
-    weight: 0
+    weight: 24
+    label: hidden
     settings:
       link_to_entity: true
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: 'listing__field listing__field--top-padding'
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: h2
-            fi-cl: listing__title
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
-  og_group_ref:
-    type: entity_reference_label
-    weight: 35
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-hidden: {  }
+            classes: {  }
+    region: content
+hidden:
+  field_is_actor: true
+  field_is_affiliations_requests: true
+  field_is_banner: true
+  field_is_business_process: true
+  field_is_contact_information: true
+  field_is_creation_date: true
+  field_is_distribution: true
+  field_is_documentation: true
+  field_is_elibrary_creation: true
+  field_is_has_version: true
+  field_is_included_asset: true
+  field_is_issue_tracker: true
+  field_is_landing_page: true
+  field_is_language: true
+  field_is_metrics_page: true
+  field_is_moderation: true
+  field_is_modification_date: true
+  field_is_owner: true
+  field_is_product_type: true
+  field_is_related_solutions: true
+  field_is_solution_type: true
+  field_is_source_code_repository: true
+  field_is_standardization_level: true
+  field_is_state: true
+  field_is_test_resource_type: true
+  field_is_translation: true
+  field_is_version: true
+  field_is_webdav_creation: true
+  field_is_webdav_url: true
+  field_is_wiki: true
+  field_keywords: true
+  field_policy_domain: true
+  field_spatial_coverage: true
+  field_status: true
+  licence: true
+  og_group: true
+  related_solutions: true
+  releases_overview: true

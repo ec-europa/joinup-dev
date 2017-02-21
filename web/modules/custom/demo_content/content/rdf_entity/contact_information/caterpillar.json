@@ -1,0 +1,41 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C882aec35-389b-46af-ab39-c6d834f9a457?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/contact_information"
+        }
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/882aec35-389b-46af-ab39-c6d834f9a457"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "contact_information"
+        }
+    ],
+    "label": [
+        {
+            "value": "Caterpillar",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/882aec35-389b-46af-ab39-c6d834f9a457"
+        }
+    ],
+    "field_ci_email": [
+        {
+            "value": "caterpillar@example.com"
+        }
+    ],
+    "field_ci_name": [
+        {
+            "value": "Caterpillar"
+        }
+    ]
+}

@@ -2,9 +2,12 @@
 
 namespace Drupal\asset_distribution\Controller;
 
-use Drupal\Core\Access\AccessResult;
+use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\og\OgAccessInterface;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AssetDistributionController.
@@ -17,24 +20,56 @@ use Drupal\rdf_entity\RdfInterface;
 class AssetDistributionController extends ControllerBase {
 
   /**
+   * Drupal\asset_distribution\AssetDistributionRelations definition.
+   *
+   * @var \Drupal\asset_distribution\AssetDistributionRelations
+   */
+  protected $assetDistributionRelations;
+
+  /**
+   * The OG access handler.
+   *
+   * @var \Drupal\og\OgAccessInterface
+   */
+  protected $ogAccess;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(AssetDistributionRelations $asset_distribution_relations, OgAccessInterface $og_access) {
+    $this->assetDistributionRelations = $asset_distribution_relations;
+    $this->ogAccess = $og_access;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('asset_distribution.relations'),
+      $container->get('og.access')
+    );
+  }
+
+  /**
    * Controller for the base form.
    *
    * We need to override the functionality of the create form for pages
-   * that include the rdf_entity id in the url so that the the solution refers
-   * to this asset distribution.
+   * that include the rdf_entity id in the url so that the the asset release
+   * refers to this asset distribution.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The solution rdf_entity.
+   *   The asset release rdf entity.
    *
    * @return array
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity) {
-    $rdf_entity = $this->entityTypeManager()->getStorage('rdf_entity')->create(array(
-      'rid' => 'asset_distribution',
-    ));
+    $distribution = $this->createNewAssetDistribution($rdf_entity);
+
     /** @var \Drupal\Core\Form\FormBuilderInterface $form_builder */
-    $form = $this->entityFormBuilder()->getForm($rdf_entity);
+    $form = $this->entityFormBuilder()->getForm($distribution);
+
     return $form;
   }
 
@@ -42,24 +77,35 @@ class AssetDistributionController extends ControllerBase {
    * Handles access to the distribution add form through solution pages.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The solution RDF entity for which the distribution is created.
+   *   The asset release RDF entity for which the distribution is created.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
   public function createAssetDistributionAccess(RdfInterface $rdf_entity) {
-    // Check that the passed in RDF entity is a solution, and that the user
-    // has the permission to create distribution entities.
-    // @todo Collection owners and facilitators should also have the right to
-    //   create distributions related to the solutions they manage.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2450
-    if ($rdf_entity->bundle() == 'asset_release' && $this->currentUser()
-        ->hasPermission('create asset_distribution rdf entity')
-    ) {
-      return AccessResult::allowed();
-    }
+    // Create a new distribution entity in order to check permissions on it.
+    $distribution = $this->createNewAssetDistribution($rdf_entity);
 
-    return AccessResult::forbidden();
+    return $this->ogAccess->userAccessEntity('create', $distribution);
+  }
+
+  /**
+   * Creates a new asset_distribution entity.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The RDF entity that the distribution is associated with. Can be either an
+   *   'asset_release' or a 'solution'.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   The unsaved asset_distribution entity.
+   */
+  protected function createNewAssetDistribution(RdfInterface $rdf_entity) {
+    $solution = $rdf_entity->bundle() === 'solution' ? $rdf_entity : $this->assetDistributionRelations->getReleaseSolution($rdf_entity);
+
+    return $this->entityTypeManager()->getStorage('rdf_entity')->create([
+      'rid' => 'asset_distribution',
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $solution->id(),
+    ]);
   }
 
 }

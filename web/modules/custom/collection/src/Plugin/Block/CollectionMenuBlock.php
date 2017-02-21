@@ -2,6 +2,7 @@
 
 namespace Drupal\collection\Plugin\Block;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
 use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\og_menu\Plugin\Block\OgMenuBlock;
@@ -47,37 +48,85 @@ class CollectionMenuBlock extends OgMenuBlock {
     );
     $tree = $this->menuTree->transform($tree, $manipulators);
     $build = $this->menuTree->build($tree);
-    if (!$tree) {
+
+    // Define URLs that are used in help texts.
+    $create_custom_page_url = Url::fromRoute('custom_page.collection_custom_page.add', [
+      'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
+    ]);
+
+    $menu_instance = $this->getOgMenuInstance();
+    $edit_navigation_menu_url = Url::fromRoute('entity.ogmenu_instance.edit_form', [
+      'ogmenu_instance' => $menu_instance->id(),
+    ]);
+
+    // When the tree is empty, no pages have been added yet to it. Show an help
+    // text to point the user to take some action.
+    if (empty($tree)) {
       $build['create']['info'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => $this->t("There are no pages yet. Why don't you start by creating an <em>About</em> page?"),
+        '#access' => $create_custom_page_url->access(),
       ];
-      $create_url = Url::fromRoute('custom_page.collection_custom_page.add', [
-        'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
-      ]);
       $build['create']['link'] = [
         '#type' => 'link',
-        '#title' => $this->t('Add a custom page'),
-        '#url' => $create_url,
-        '#attributes' => ['class' => ['button', 'button--small']],
-        '#access' => $create_url->access(),
+        '#title' => $this->t('Add a new page'),
+        '#url' => $create_custom_page_url,
+        '#access' => $create_custom_page_url->access(),
       ];
     }
-    $menu_instance = $this->getOgMenuInstance();
-    if ($menu_instance instanceof OgMenuInstanceInterface) {
-      $build['#contextual_links']['ogmenu'] = [
-        'route_parameters' => [
-          'ogmenu_instance' => $menu_instance->id(),
-        ],
+    elseif (empty($build['#items'])) {
+      // If there are entries in the tree but none of those is in the build
+      // array, it means that all the available pages have been disabled inside
+      // the menu configuration.
+      $build['disabled'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t('All the pages have been disabled for this collection. You can <a href=":edit_menu_url">edit the menu configuration</a> or <a href=":add_page_url">add a new page</a>.',
+          [
+            ':edit_menu_url' => $edit_navigation_menu_url->toString(),
+            ':add_page_url' => $create_custom_page_url->toString(),
+          ]),
+        '#access' => $create_custom_page_url->access(),
       ];
+    }
+
+    if ($menu_instance instanceof OgMenuInstanceInterface) {
+      // Make sure the cache tag from the OG menu are associated with this
+      // block, so that it will always be invalidated whenever the menu changes.
+      // @see \Drupal\Core\Menu\MenuTreeStorage::save()
+      $build['#cache']['tags'][] = 'config:system.menu.ogmenu-' . $menu_instance->id();
+
+      // Show the "Edit menu" link only when at least one element is available.
+      if ($tree) {
+        $build['#contextual_links']['ogmenu'] = [
+          'route_parameters' => [
+            'ogmenu_instance' => $menu_instance->id(),
+          ],
+        ];
+      }
       $build['#contextual_links']['collection_menu_block'] = [
         'route_parameters' => [
           'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
         ],
       ];
     }
+
+    // Improve the template suggestion.
+    if (!empty($build['#items']) && $menu_instance) {
+      $menu_name = $menu_instance->getType();
+      $build['#theme'] = 'menu__og__' . strtr($menu_name, '-', '_');
+    }
     return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    // Since we are showing a help text to facilitators and owners, this block
+    // varies by OG role.
+    return Cache::mergeContexts(parent::getCacheContexts(), ['og_role']);
   }
 
 }

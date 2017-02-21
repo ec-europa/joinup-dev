@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.rdf_entity.field_is_owner
+    - rdf_entity.rdfentity.owner
     - rdf_entity.rdfentity.solution
 id: rdf_entity.solution.field_is_owner
 field_name: field_is_owner
@@ -10,11 +11,17 @@ entity_type: rdf_entity
 bundle: solution
 label: Owner
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:rdf_entity'
-  handler_settings: {  }
+  handler_settings:
+    target_bundles:
+      owner: owner
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: null
 field_type: entity_reference

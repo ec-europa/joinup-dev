@@ -1,0 +1,54 @@
+langcode: en
+status: true
+dependencies: {  }
+id: collection_policy_domain
+name: 'Policy Domain'
+url_alias: collection_policy_domain
+weight: 0
+show_only_one_result: false
+field_identifier: tid
+query_type_name: null
+facet_source_id: 'search_api_field:rdf_entity.field_collection_content'
+widget:
+  type: links
+  config:
+    show_numbers: true
+    soft_limit: 0
+query_operator: or
+exclude: false
+only_visible_when_facet_source_is_visible: true
+processor_configs:
+  active_widget_order:
+    processor_id: active_widget_order
+    weights:
+      sort: -10
+    settings:
+      sort: DESC
+  count_limit:
+    processor_id: count_limit
+    weights:
+      build: -10
+    settings:
+      minimum_items: 1
+      maximum_items: null
+  count_widget_order:
+    processor_id: count_widget_order
+    weights:
+      sort: -10
+    settings:
+      sort: DESC
+  display_value_widget_order:
+    processor_id: display_value_widget_order
+    weights:
+      sort: -10
+    settings:
+      sort: ASC
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: -10
+      build: -10
+    settings: {  }
+empty_behavior:
+  behavior: none
+facet_configs: {  }

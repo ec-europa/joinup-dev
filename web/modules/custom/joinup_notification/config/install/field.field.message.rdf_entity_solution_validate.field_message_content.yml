@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_content
+    - message.template.rdf_entity_solution_validate
+    - rdf_entity.rdfentity.solution
+id: message.rdf_entity_solution_validate.field_message_content
+field_name: field_message_content
+entity_type: message
+bundle: rdf_entity_solution_validate
+label: Content
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      solution: solution
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: solution
+field_type: entity_reference

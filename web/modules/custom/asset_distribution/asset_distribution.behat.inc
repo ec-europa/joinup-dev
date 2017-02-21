@@ -11,6 +11,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -68,9 +69,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @codingStandardsIgnoreStart
    *   Table format:
-   *   uri                                     | title            | description                | access url                               | file     | creation date     | modification date
-   *   http://joinup.eu/asset_distribution/foo | Foo distribution | This is a foo distribution | http://base_url.com/path-to-file.zip     | test.zip | 28-01-1995 12:05  |
-   *   http://joinup.eu/asset_distribution/bar | Bar distribution | This is a bar distribution | http://external_url.com/path-to-file.zip | test.zip | 28-01-1995 12:06  |
+   *   | uri                                     | title            | description                | access url                               | file     | creation date     | modification date | parent        |
+   *   | http://joinup.eu/asset_distribution/foo | Foo distribution | This is a foo distribution | http://base_url.com/path-to-file.zip     | test.zip | 28-01-1995 12:05  | 30-01-1995 10:44  | Solution name |
+   *   | http://joinup.eu/asset_distribution/bar | Bar distribution | This is a bar distribution | http://external_url.com/path-to-file.zip | test.zip | 28-01-1995 12:06  |                   | Release name  |
    * @codingStandardsIgnoreEnd
    *
    * Fields title and description are mandatory.
@@ -78,23 +79,11 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )asset distributions:
+   * @Given (the following )(asset )distributions:
    */
   public function givenAssetDistributions(TableNode $asset_distribution_table) {
-    $aliases = self::assetDistributionFieldAliases();
-
-    foreach ($asset_distribution_table->getColumnsHash() as $asset_distribution) {
-      $values = [];
-      // Replace the column aliases with the actual field names.
-      foreach ($asset_distribution as $key => $value) {
-        if (array_key_exists($key, $aliases)) {
-          $values[$aliases[$key]] = $value;
-        }
-        else {
-          throw new \Exception("Unknown column '$key' in asset distribution table.");
-        }
-      };
-      $this->createAssetDistribution($values);
+    foreach ($asset_distribution_table->getColumnsHash() as $values) {
+      $this->createAssetDistributionFromAliasedTableValues($values);
     }
   }
 
@@ -102,13 +91,14 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Creates an asset distribution with data provided in a table.
    *
    * Table format:
-   * | title             | Sample distribution                          |
-   * | uri               | http://joinup.eu/distribution/foobar         |
-   * | description       | A sample distribution                        |
-   * | access url        | http://internal-or-external.path/to/file.zip |
-   * | file              | test.zip                                     |
+   * | title       | Sample distribution                          |
+   * | uri         | http://joinup.eu/distribution/foobar         |
+   * | description | A sample distribution                        |
+   * | access url  | http://internal-or-external.path/to/file.zip |
+   * | file        | test.zip                                     |
+   * | parent      | Release or solution name                     |
    *
-   * Fields title and description are required.
+   * Fields 'title' and 'description' are required.
    *
    * @param TableNode $asset_distribution_table
    *   The asset distribution data.
@@ -116,22 +106,11 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )asset distribution:
+   * @Given (the following )(asset )distribution:
    */
   public function givenAssetDistribution(TableNode $asset_distribution_table) {
-    $aliases = self::assetDistributionFieldAliases();
-
-    $values = [];
-    // Replace the column aliases with the actual field names.
-    foreach ($asset_distribution_table->getRowsHash() as $key => $value) {
-      if (array_key_exists($key, $aliases)) {
-        $values[$aliases[$key]] = $value;
-      }
-      else {
-        throw new \Exception("Unknown column '$key' in solution table.");
-      }
-    };
-    $this->createAssetDistribution($values);
+    $values = $asset_distribution_table->getRowsHash();
+    $this->createAssetDistributionFromAliasedTableValues($values);
   }
 
   /**
@@ -159,6 +138,60 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
 
     return $asset_distribution;
+  }
+
+  /**
+   * Creates an asset distribution using the provided aliases table values.
+   *
+   * @param array $aliased_values
+   *   An associative array of values used to create the distribuion, with keys
+   *   using the aliases from self::assetDistributionFieldAliases(). If the key
+   *   'parent' is present, a relation with a parent solution or release with
+   *   a label matching this value will be created.
+   *
+   * @throws \Exception
+   *   Thrown when an unknown key alias is present in the list of values.
+   */
+  protected function createAssetDistributionFromAliasedTableValues(array $aliased_values) {
+    $aliases = self::assetDistributionFieldAliases();
+
+    $values = [];
+    // Replace the column aliases with the actual field names.
+    foreach ($aliased_values as $key => $value) {
+      if (array_key_exists($key, $aliases)) {
+        $values[$aliases[$key]] = $value;
+      }
+      // If the 'parent' key is present we will have to create a relation to the
+      // parent entity, which is either a release or a solution.
+      elseif ($key === 'parent') {
+        $parent_entity = self::getRdfEntityByLabel($value);
+
+        // If we know the parent then we can transparently populate the group
+        // reference to the solution.
+        if (!array_key_exists('solution', $aliased_values)) {
+          $solution_label = NULL;
+          if ($parent_entity->bundle() === 'solution') {
+            $solution_label = $parent_entity->label();
+          }
+          elseif ($solution_entity_id = $parent_entity->field_isr_is_version_of->value) {
+            $solution_label = Rdf::load($solution_entity_id)->label();
+          }
+          $values[OgGroupAudienceHelperInterface::DEFAULT_FIELD] = $solution_label;
+        }
+      }
+      else {
+        throw new \Exception("Unknown key '$key' in asset distribution table.");
+      }
+    };
+
+    $values = $this->convertValueAliases($values);
+
+    $asset_distribution_entity = $this->createAssetDistribution($values);
+
+    // Create the relation with the parent entity if requested.
+    if (!empty($parent_entity)) {
+      asset_distribution_add_parent_relation($asset_distribution_entity, $parent_entity);
+    }
   }
 
   /**
@@ -217,10 +250,24 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param int $number
    *   The expected number of asset distributions.
    *
-   * @Then I should have :number asset distribution(s)
+   * @Then I should have :number distribution(s)
    */
   public function assertAssetDistributionCount($number) {
     $this->assertRdfEntityCount($number, 'asset_distribution');
+  }
+
+  /**
+   * Navigates to the canonical page display of an asset distribution.
+   *
+   * @param string $title
+   *   The title of the asset distribution.
+   *
+   * @When (I )go to (the homepage of )the :asset_distribution asset distribution
+   * @When (I )visit (the homepage of )the :asset_distribution asset distribution
+   */
+  public function visitAssetDistribution($title) {
+    $distribution = $this->getAssetDistributionByName($title);
+    $this->visitPath($distribution->url());
   }
 
   /**
@@ -255,8 +302,105 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       'licence' => 'field_ad_licence',
       'modification date' => 'field_ad_modification_date',
       'representation technique' => 'field_ad_repr_technique',
+      'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
       'status' => 'field_status',
     ];
+  }
+
+  /**
+   * Converts values from user friendly to normal machine values.
+   *
+   * @param array $fields
+   *    An array of fields keyed by field name.
+   *
+   * @return array
+   *    The array with the values converted.
+   */
+  protected function convertValueAliases(array $fields) {
+    if (!empty($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD])) {
+      $solution = $this->getRdfEntityByLabel($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD], 'solution');
+      $fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD] = $solution->id();
+    }
+
+    return $fields;
+  }
+
+  /**
+   * Checks if a distribution in compact view contains download links.
+   *
+   * The compact view is used for example in the "Downloads" page.
+   * This currently only checks the first download link.
+   *
+   * @param string $distribution
+   *    The name of the distribution.
+   *
+   * @throws \Exception
+   *   Thrown if the download link cannot be found.
+   *
+   * @Then I should see the download link in the :distribution( asset) distribution
+   */
+  public function assertLinkDistribution($distribution) {
+    $distribution = $this->getAssetDistributionByName($distribution);
+    if (empty($distribution->field_ad_access_url->first())) {
+      throw new \Exception(sprintf('Asset distribution "%s" does not contain any download links.', $distribution->label()));
+    }
+    $promoted_link = $distribution->field_ad_access_url->first()->uri;
+    $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$promoted_link}']");
+    if (empty($result)) {
+      throw new \Exception(sprintf('No link was found in the "%s" distribution on the page %s', $distribution->label(), $this->getSession()->getCurrentUrl()));
+    }
+  }
+
+  /**
+   * Checks that a distribution in compact view does not contain download links.
+   *
+   * The compact view is used for example in the "Downloads" page.
+   *
+   * @param string $distribution
+   *    The name of the distribution.
+   *
+   * @throws \Exception
+   *   Thrown if the link was found.
+   *
+   * @Then the :distribution( asset) distribution should not have any download urls
+   */
+  public function assertNotLinkDistribution($distribution) {
+    $link = $this->getSession()->getPage()->find('xpath', "//a[contains(text(), '$distribution')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//span[contains(concat(' ', @class, ' '), ' file ')]/a");
+    if (!empty($link)) {
+      throw new \Exception(sprintf('Asset distribution "%s" contains download link(s).', $distribution));
+    }
+  }
+
+  /**
+   * Asserts that a file link is appears to the access url field.
+   *
+   * @param string $distribution
+   *    The distribution title.
+   * @param string $file_name
+   *    The file name.
+   *
+   * @throws \Exception
+   *    Thrown when the file or the link is not found.
+   *
+   * @Then the :distribution distribution should have the link of the :file_name in the access URL field
+   */
+  public function assertLinkSynchronized($distribution, $file_name) {
+    $distribution = $this->getAssetDistributionByName($distribution);
+    foreach ($distribution->field_ad_file as $file) {
+      $file = $file->entity;
+      if ($file->getFilename() === $file_name) {
+        $uri = file_create_url($file->getFileUri());
+        $access_url = $distribution->field_ad_access_url->getValue();
+        if (!in_array($uri, array_column($access_url, 'uri'))) {
+          throw new \Exception("The link of the file {$file_name} was not found in the page.");
+        }
+
+        // The link exists in the access URL field.
+        return;
+      }
+    }
+
+    throw new \Exception("The file {$file_name} was not found in the '{$distribution}' entity'");
   }
 
 }

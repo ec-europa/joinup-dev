@@ -6,6 +6,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_abstract
     - field.field.rdf_entity.collection.field_ar_access_url
     - field.field.rdf_entity.collection.field_ar_affiliates
+    - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
     - field.field.rdf_entity.collection.field_ar_creation_date
@@ -16,104 +17,21 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_shared_content
+    - field.field.rdf_entity.collection.field_ar_state
+    - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
-    - field.field.rdf_entity.collection.field_topic
-    - image.style.image_style_collection_logo
+    - image.style.horizontal_medium_image
     - rdf_entity.rdfentity.collection
   module:
-    - datetime
     - ds
     - image
-    - link
-    - options
     - text
-third_party_settings:
-  ds:
-    layout:
-      id: ds_2col
-      path: modules/contrib/ds
-      library: layout_plugin/ds_2col
-      disable_css: true
-      settings:
-        wrappers:
-          left: div
-          right: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class:
-            listing__card: listing__card
-            mdl-card: mdl-card
-          left:
-            listing__field--image-wrapper: listing__field--image-wrapper
-          right:
-            listing__metadata: listing__metadata
-    regions:
-      left:
-        - field_ar_logo
-      right:
-        - label
-        - field_ar_description
 id: rdf_entity.collection.view_mode_tile
 targetEntityType: rdf_entity
 bundle: collection
 mode: view_mode_tile
 content:
-  collection_content:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
-  field_ar_abstract:
-    type: text_trimmed
-    weight: 16
-    label: above
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-  field_ar_access_url:
-    type: link_separate
-    weight: 12
-    label: above
-    settings:
-      trim_length: 80
-      rel: ''
-      target: ''
-      url_only: false
-      url_plain: false
-    third_party_settings: {  }
-  field_ar_affiliates:
-    type: entity_reference_label
-    weight: 11
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-  field_ar_closed:
-    type: boolean
-    weight: 13
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-  field_ar_contact_information:
-    type: entity_reference_label
-    weight: 14
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-  field_ar_creation_date:
-    type: datetime_plain
-    weight: 15
-    label: above
-    settings:
-      timezone_override: ''
-    third_party_settings: {  }
   field_ar_description:
     weight: 2
     label: hidden
@@ -122,126 +40,27 @@ content:
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: div
-            fi-cl: listing__teaser
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
+            classes: {  }
     type: text_trimmed
-  field_ar_elibrary_creation:
-    type: list_default
-    weight: 10
-    label: above
-    settings: {  }
-    third_party_settings: {  }
   field_ar_logo:
     weight: 0
     label: hidden
     settings:
-      image_style: image_style_collection_logo
+      image_style: horizontal_medium_image
       image_link: content
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: div
-            fi-cl: listing__image
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
+            classes: {  }
     type: image
-  field_ar_moderation:
-    type: boolean
-    weight: 9
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-  field_ar_modification_date:
-    type: datetime_plain
-    weight: 4
-    label: above
-    settings:
-      timezone_override: ''
-    third_party_settings: {  }
-  field_ar_owner:
-    type: entity_reference_label
-    weight: 3
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-  field_ar_shared_content:
-    type: entity_reference_label
-    weight: 5
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-  field_policy_domain:
-    type: entity_reference_label
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-  field_spatial_coverage:
-    type: entity_reference_label
-    weight: 8
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-  field_topic:
-    type: entity_reference_label
-    weight: 7
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
   label:
     label: hidden
     type: string
@@ -251,30 +70,28 @@ content:
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: div
-            fi-cl: listing__title
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
-hidden: {  }
+            classes: {  }
+hidden:
+  field_ar_abstract: true
+  field_ar_access_url: true
+  field_ar_affiliates: true
+  field_ar_banner: true
+  field_ar_closed: true
+  field_ar_contact_information: true
+  field_ar_creation_date: true
+  field_ar_elibrary_creation: true
+  field_ar_moderation: true
+  field_ar_modification_date: true
+  field_ar_owner: true
+  field_ar_shared_content: true
+  field_ar_state: true
+  field_collection_content: true
+  field_policy_domain: true
+  field_spatial_coverage: true
+  join_collection: true
+  og_group: true
+  rdf_entity_field_collection_content_top: true

@@ -1,0 +1,100 @@
+// Filters
+//
+// Filters used in the collection/solution listings.
+//
+// Markup: html/filters.html
+//
+// Styleguide 2.6
+
+// Component
+// --------------------------------------------------
+.filter
+  margin-bottom: 15px
+  padding-left: 0
+  &:before
+    display: none
+  +breakpoint(mobile)
+    display: inline-block
+    margin-right: 8px
+    vertical-align: top
+    &:last-of-type
+      margin-right: 0
+
+.filters
+  padding-left: 0
+  +breakpoint(sm-mobile, mobile)
+    text-align: left
+
+// Elements
+// --------------------------------------------------
+.filter__label,
+.filter__term,
+.filter__icon
+  display: inline-block
+  vertical-align: middle
+
+.filter__term
+  color: $color-orange
+
+.filter__icon
+  position: relative
+  top: 1px
+  +icon-size(20px)
+
+.filter__dropdown-toggle
+  font-size: 14px
+  position: relative
+  border: none
+  outline: none
+  background: none
+  .filter__label
+    color: $color-orange
+
+.filter__dropdown
+  display: none
+  margin-top: 15px
+  padding: 30px
+  background-color: #fff
+  .filters
+    margin-bottom: 0
+
+.filters--more
+  .facet-item
+    margin-bottom: 0
+    width: 100%
+
+// Modifiers
+// --------------------------------------------------
+.filters--solutions
+  margin-top: 30px
+  margin-bottom: 10px
+
+// Dependiencies
+// --------------------------------------------------
+.listing__header
+  .filter
+    font-size: $font-size-base
+    display: inline
+    margin-bottom: 0
+
+// States
+// --------------------------------------------------
+.filter__dropdown-toggle
+  &.is-active
+    &:before
+      bottom: -30px
+      display: block
+      width: 0
+      height: 0
+      content: ''
+      border-right: 12px solid transparent
+      border-bottom: 12px solid #fff
+      border-left: 12px solid transparent
+      +centered($horizontal: true, $vertical: false)
+
+.filter__dropdown
+  &.is-active
+    display: block
+
+.filters--more
+  margin-top: 0

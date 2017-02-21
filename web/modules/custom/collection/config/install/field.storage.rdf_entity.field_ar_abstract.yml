@@ -6,8 +6,9 @@ dependencies:
     - text
 third_party_settings:
   rdf_entity:
-    mapping_value: 'dct:abstract'
-    mapping_format: ''
+    mapping:
+      value: 'http://purl.org/dc/terms/abstract'
+      format: ''
 id: rdf_entity.field_ar_abstract
 field_name: field_ar_abstract
 entity_type: rdf_entity

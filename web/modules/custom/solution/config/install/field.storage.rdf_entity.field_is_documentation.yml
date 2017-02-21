@@ -4,21 +4,23 @@ dependencies:
   module:
     - file
     - rdf_entity
+    - rdf_file
 third_party_settings:
   rdf_entity:
-    mapping_target_id: 'foaf:page'
-    mapping_display: ''
-    mapping_description: ''
+    mapping:
+      target_id: 'http://xmlns.com/foaf/spec/#term_page'
+      display: ''
+      description: ''
 id: rdf_entity.field_is_documentation
 field_name: field_is_documentation
 entity_type: rdf_entity
-type: file
+type: rdf_file
 settings:
   display_field: false
   display_default: false
   uri_scheme: public
   target_type: file
-module: file
+module: rdf_file
 locked: false
 cardinality: 1
 translatable: true

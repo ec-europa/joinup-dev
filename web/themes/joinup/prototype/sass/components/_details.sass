@@ -1,0 +1,76 @@
+// Component
+// --------------------------------------------------
+
+// Elements
+// --------------------------------------------------
+.details__element
+  font-size: $font-size-xsmall
+  display: inline-block
+  margin-right: 10px
+  padding-right: 10px
+  vertical-align: top
+  border-right: 1px solid $color-grey-medium
+  &:last-of-type
+    margin-right: 0
+    padding-right: 0
+    border-right: none
+  *
+    display: inline
+
+.details__element-item a
+  color: $color-blue-dark
+  font-weight: $font-weight-bold
+
+.details__user
+  margin: 10px 0 0 0
+  display: inline-block
+
+.details__avatar
+  margin-right: 10px
+  img
+    width: 40px
+    height: 40px
+    background-color: #fff
+    +border-radius(50%)
+
+.details__user-item
+  display: inline-block
+  a
+    color: $color-grey-medium
+    text-decoration: none
+
+.details__element-headline span
+  font-size: $font-size-small
+
+.details__element-created
+  display: inline-block
+  vertical-align: middle
+
+.details__bottom
+  font-weight: $font-weight-bold
+  .tag
+    margin-right: 1px
+    &:after
+      content: ','
+    &:last-of-type
+      margin-right: 0
+      &:after
+        content: none
+
+// Modifiers
+// --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.page__title-wrapper
+  .details
+    margin: 10px 0
+    +breakpoint(mobile)
+      margin: 0
+
+.timeline__listing-details
+  .details__element
+    +breakpoint(sm-mobile, mobile)
+      margin-right: 0
+      padding-right: 0
+      border-right: none

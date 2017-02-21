@@ -1,0 +1,124 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Ce682a47c-4fa3-49c7-9d42-416379751111?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_banner": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/2016-09\/generateImage_ZF4xhN.jpeg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_logo": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_duhR5g.jpeg"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/e682a47c-4fa3-49c7-9d42-416379751111"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "collection"
+        }
+    ],
+    "label": [
+        {
+            "value": "Common Assessment Method for Standards and Specifications - CAMSS",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/e682a47c-4fa3-49c7-9d42-416379751111"
+        }
+    ],
+    "field_ar_abstract": [
+        {
+            "value": "<p>The objective of CAMSS is to establish a neutral and unbiased method for the assessment of technical specifications and standards in the field of ICT.<\/p>",
+            "format": "content_editor"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_banner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/2016-09\/generateImage_ZF4xhN.jpeg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "801eef9d-b244-4f90-afe8-e1b8b4a89d08"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/2016-09\/generateImage_ZF4xhN.jpeg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_logo": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_duhR5g.jpeg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "17b4482e-340f-45fd-b6c2-d7e724957193"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_duhR5g.jpeg"
+                    }
+                ]
+            }
+        ]
+    },
+    "field_ar_closed": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_ar_creation_date": [
+        {
+            "value": "2016-06-08T17:03:26"
+        }
+    ],
+    "field_ar_description": [
+        {
+            "value": "<p>The assessment of standards and specifications for eGovernment solutions is currently organised on a national basis, e.g. within the context of Member States\u2019 National Interoperability Frameworks. \"CAMSS\" is an initiative to promote collaboration between EU Member States in defining a \"Common Assessment Method for Standards and Specifications\" and to share with other countries the assessment study results for the development of eGovernment services.<\/p>\n        <p>In this way interoperability between EU Member States in the area of eGovernment will be expanded through the sharing of information and knowledge, the alignment of national processes and by reusing best practices. It will also speed up the assessment processes, reduce their cost throughout European public administrations and avoid ICT vendor specific lock-in.<\/p>\n        <p><strong>The main objective of CAMSS is to establish a neutral and unbiased method for the assessment of technical specifications and standards in the field of ICT.<\/strong><\/p>\n        <p>The expected beneficiaries of the CAMSS are the public administrations in the Member States and EU institutions, standardisation bodies and IT services industry. For these beneficiaries, CAMSS aims at providing a best practice (common) assessment method and guidance for the assessment of ICT technical specification or standards when defining ICT architectures and establishing European public services.<\/p>\n        <p>The use of the CAMSS by Member States will help to promote transparency in the choice of eGovernment solutions and standards. It should also lead to a more efficient use of public funds via sharing and reuse among eGovernment projects. The CAMSS toolkit consists of a documented reference assessment process, a set of quality requirements (criteria), and assessment tools.<\/p>\n        <p>More information on CAMSS, its objectives, potential benefits and overall approach is available at the&nbsp;<a href=\"http:\/\/ec.europa.eu\/isa\/actions\/02-interoperability-architecture\/2-2action_en.htm\">European Commission's Interoperability Solutions for European Public Administrations - ISA programme website<\/a>.\"<\/p>",
+            "format": "content_editor"
+        }
+    ],
+    "field_ar_elibrary_creation": [
+        {
+            "value": "1"
+        }
+    ],
+    "field_ar_moderation": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_ar_state": [
+        {
+            "value": "validated"
+        }
+    ]
+}

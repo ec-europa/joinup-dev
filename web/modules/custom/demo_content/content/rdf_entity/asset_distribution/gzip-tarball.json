@@ -1,0 +1,172 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C177a01da-800a-4519-84f1-f4b5ac20734e?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/asset_distribution"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_file": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/2016-09\/drupal-8.1.9.tar_4.gz"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_format": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C4e56d06c-c8c3-40fd-b2a0-773301ebe9b8?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_licence": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C8c3e0162-ec2a-4de6-abf7-d014034d0350?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_repr_technique": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpurl.org%5Cadms%5Crepresentationtechnique%5CWSMO?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/og_audience": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json",
+                "lang": "und"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/177a01da-800a-4519-84f1-f4b5ac20734e"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "asset_distribution"
+        }
+    ],
+    "label": [
+        {
+            "value": "Gzip tarball",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/177a01da-800a-4519-84f1-f4b5ac20734e"
+        }
+    ],
+    "field_ad_access_url": [
+        {
+            "uri": "http:\/\/joinup.dev\/sites\/default\/files\/2016-09\/drupal-8.1.9.tar_4.gz",
+            "title": null,
+            "options": []
+        }
+    ],
+    "field_ad_creation_date": [
+        {
+            "value": "2016-09-13T17:02:35"
+        }
+    ],
+    "field_ad_description": [
+        {
+            "value": "<p>Gzipped tarball.<\/p>\r\n",
+            "format": null,
+            "summary": null
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_file": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/2016-09\/drupal-8.1.9.tar_4.gz"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "0313ec7c-90aa-4bd8-b20f-fb8c675ff263"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/2016-09\/drupal-8.1.9.tar_4.gz"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_format": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C4e56d06c-c8c3-40fd-b2a0-773301ebe9b8?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/4e56d06c-c8c3-40fd-b2a0-773301ebe9b8"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_licence": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C8c3e0162-ec2a-4de6-abf7-d014034d0350?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/licence"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/8c3e0162-ec2a-4de6-abf7-d014034d0350"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/og_audience": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/www.w3.org\/ns\/person#"
+                    }
+                ],
+                "lang": "und"
+            }
+        ]
+    },
+    "field_ad_file_size": [
+        {
+            "value": "12648210"
+        }
+    ],
+    "field_ad_gitb_compliant": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_ad_modification_date": [
+        {
+            "value": "2016-09-13T17:02:35"
+        }
+    ],
+    "field_ad_repr_technique": [
+        {
+            "target_id": "http:\/\/purl.org\/adms\/representationtechnique\/WSMO"
+        }
+    ]
+}

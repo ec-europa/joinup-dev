@@ -5,15 +5,9 @@
  * Provides functionality for the news content entity.
  */
 
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\NodeInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\og\Og;
-use Drupal\Core\Access\AccessResult;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -22,139 +16,68 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
   // @todo Add test coverage for these constraints.
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2500
   if ($entity_type->id() == 'node' && $bundle == 'news') {
-    if (!empty($fields['field_news_short_title'])) {
-      $fields['field_news_short_title']->addConstraint('UniqueField');
+    if (!empty($fields['field_news_headline'])) {
+      $fields['field_news_headline']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
     }
-    if (!empty($fields['title'])) {
-      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
+
+    if (!empty($fields['field_news_shared_in'])) {
+      $fields['field_news_shared_in']->addConstraint('UniqueFieldValue');
+      $fields['field_news_shared_in']->addConstraint('ParentReference', [
+        'service' => 'joinup_core.relations_manager',
+        'method' => 'getParent',
+      ]);
+      $fields['field_news_shared_in']->addConstraint('NewsSharedInValidReference');
     }
   }
 }
 
 /**
- * Implements hook_node_access().
+ * Returns the appropriate workflow to use for the news entity.
  *
- * Interrupts the permissions for updating a node. The permission is not
- * granted if there are no transitions allowed for the current state of the
- * node.
- */
-function joinup_news_node_access(EntityInterface $node, $op, AccountInterface $account) {
-  if ($node->bundle() != 'news') {
-    return AccessResult::neutral();
-  }
-
-  if ($op == 'update') {
-    $allowed_transitions = $node->get('field_news_state')->first()->getTransitions();
-    if (empty($allowed_transitions)) {
-      return AccessResult::forbidden();
-    }
-  }
-
-  // Check if the user is a member and has a global permission.
-  if ($op == 'view' && !$node->isPublished()) {
-    $parent = joinup_news_get_parent($node);
-    // Temporary workaround because Og is not checking for membership.
-    if ($parent instanceof RdfInterface && Og::isMember($parent, Drupal::currentUser())) {
-      /** @var \Drupal\Core\Access\AccessResult $global_permission */
-      $global_permission = \Drupal::service('og.access')->userAccessEntity('view any unpublished content', $parent, $account);
-      if ($global_permission->isAllowed()) {
-        return $global_permission;
-      }
-
-      $global_permission = \Drupal::service('og.access')->userAccessEntity('view any unpublished news content', $parent, $account);
-      if ($global_permission->isAllowed()) {
-        return $global_permission;
-      }
-    }
-  }
-
-  return AccessResult::neutral();
-}
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
+ * The callback ensures that even if the parent is updated and the moderation
+ * status changes, it will still use the proper workflow.
  *
- * Handles the publication of the node. For the states 'draft', 'proposed', the
- * node should be non published. For the states 'validated', 'in_assessment',
- * 'deletion_request', the node should be published.
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *    The news entity.
+ *
+ * @return string
+ *    The id of the workflow to use.
+ *
+ * @throws Exception
+ *    Thrown when the function is called for a different bundle.
  */
-function joinup_news_node_presave(EntityInterface $entity) {
+function joinup_news_workflow_selector(EntityInterface $entity) {
   if ($entity->bundle() != 'news') {
-    return;
+    throw new Exception('This method can only be called for document entities.');
   }
-
-  $state = $entity->field_news_state->first()->value;
-  if (empty($state)) {
-    return;
-  }
-
-  if (in_array($state, ['draft', 'proposed'])) {
-    $entity->setPublished(FALSE);
-  }
-  elseif (in_array($state, ['validated', 'in_assessment', 'deletion_request'])) {
-    $entity->setPublished(TRUE);
-  }
+  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
+  $relation_manager = \Drupal::service('joinup_core.relations_manager');
+  $moderation = $relation_manager->getParentModeration($entity);
+  return $moderation == 1 ? 'node:news:pre_moderated' : 'node:news:post_moderated';
 }
 
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
- *
- * The state_machine forces the current value to be available in the options.
- * However, there are cases where the user cannot keep the node in the same
- * state when editing it.
- * Since we are already checking for the allowed states and we are blocking the
- * access if there are no available transitions, it is safe to simply remove
- * the default value if it is not included in the allowed transitions.
- *
- * @see \Drupal\state_machine\Plugin\Field\FieldType\StateItem::getAllowedStates
- * @see https://www.drupal.org/node/2746091
  */
-function joinup_news_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
-  $fieldType = $context['items']->getFieldDefinition()->getType();
-  if ($fieldType != 'state' || empty($form_state->getBuildInfo()['callback_object'])) {
-    return;
-  }
-  $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
-  if (!($entity instanceof NodeInterface) || $entity->bundle() != 'news') {
+function joinup_news_field_widget_entity_reference_autocomplete_form_alter(&$element, FormStateInterface $form_state, $context) {
+  /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $items */
+  $items = $context['items'];
+
+  // Handle only the specific field.
+  $field_name = $items->getFieldDefinition()->getName();
+  if ($field_name !== 'field_news_shared_in') {
     return;
   }
 
-  $default_value = reset($element['#default_value']);
-  $allowed_transitions = $entity->get('field_news_state')->first()->getTransitions();
-  $allowed_states = array_map(function ($transition) {
-    return $transition->getToState()->getId();
-  }, $allowed_transitions);
+  $entity = $items->getEntity();
+  /** @var \Drupal\rdf_entity\RdfInterface $parent */
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
 
-  if (!in_array($default_value, $allowed_states)) {
-    unset($element['#options'][$default_value], $element['#default_value']);
-    // Re-set a default because otherwise the 'empty' value will be available.
-    $default_value = array_keys($allowed_transitions);
-    $element['#default_value'] = reset($default_value);
+  if (!empty($parent)) {
+    // Limit the referenceable entities to be of the same bundle of the parent
+    // of the news.
+    $element['target_id']['#selection_settings']['target_bundles'] = [
+      $parent->bundle() => $parent->bundle(),
+    ];
   }
-}
-
-/**
- * Returns the owner entity of this node if it exists.
- *
- * The news entity can belong to a collection or a solution, depending on
- * how it was created. This function will return the parent of the entity.
- *
- * @param \Drupal\Core\Entity\EntityInterface $entity
- *    The news content entity.
- *
- * @return \Drupal\rdf_entity\RdfInterface|null
- *    The parent of the entity. This can be a collection or a solution.
- *    If there is no parent found, return NULL.
- */
-function joinup_news_get_parent(EntityInterface $entity) {
-  $parent = NULL;
-  if (!empty($entity->og_group_ref->first()->target_id)) {
-    /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    $parent = Rdf::load($entity->og_group_ref->first()->target_id);
-  }
-  if (!empty($entity->field_news_parent->first()->target_id)) {
-    /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    $parent = Rdf::load($entity->field_news_parent->first()->target_id);
-  }
-  return $parent;
 }

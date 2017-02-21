@@ -4,32 +4,3 @@
  * @file
  * Contains demo_content.module.
  */
-
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\og\Entity\OgMembership;
-use Drupal\og\OgMembershipInterface;
-
-/**
- * Implements hook_ENTITY_TYPE_create().
- */
-function demo_content_rdf_entity_create(EntityInterface $entity) {
-  if ($entity->bundle() !== 'collection') {
-    return;
-  }
-
-  // Set 'facilitator' user as a facilitator for the collection.
-  $facilitator = user_load_by_name('facilitator');
-  if (empty($facilitator)) {
-    return;
-  }
-
-  /** @var \Drupal\og\OgMembershipInterface $membership */
-  $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
-  $membership
-    ->setUser($facilitator->id())
-    ->setEntityId($entity->id())
-    ->setGroupEntityType($entity->getEntityTypeId())
-    ->setFieldName($membership->getFieldName())
-    ->addRole('rdf_entity-collection-facilitator')
-    ->save();
-}

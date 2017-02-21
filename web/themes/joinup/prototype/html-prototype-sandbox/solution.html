@@ -1,0 +1,49 @@
+{{> partials/head }}
+  
+  <div class="mdl-layout mdl-js-layout">
+    
+    {{> partials/header }}
+
+    <!-- Section featured start -->
+    <div class="section section--featured">
+
+      {{> partials/featured--solutions }}
+
+    </div>
+    <!-- Section featured end -->
+    <!-- Section content start -->
+    <div class="section section--content">
+      <div class="main-container mdl-grid">  
+        <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
+            
+          {{> partials/sidebar-menu--solutions }}
+
+        </div>
+        <div class="section section--main mdl-cell mdl-cell--8-col">
+
+          {{> partials/filters }}
+
+          <div class="listing listing--grid">
+            <div class="row">
+              <div class="mdl-grid">
+                
+                {{> partials/listing-item--default }}
+                {{> partials/listing-item--default }}
+                {{> partials/listing-item--default }}
+                {{> partials/listing-item--default }}
+                {{> partials/listing-item--default }}
+                {{> partials/listing-item--default }}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Section content end -->
+
+    {{> partials/footer }}
+    
+  </div>
+
+{{> partials/scripts }}

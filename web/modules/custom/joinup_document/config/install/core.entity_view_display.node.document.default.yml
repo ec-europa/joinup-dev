@@ -2,14 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_display.comment.comment.default
     - field.field.node.document.body
+    - field.field.node.document.field_comments
     - field.field.node.document.field_document_file
     - field.field.node.document.field_document_publication_date
     - field.field.node.document.field_document_short_title
     - field.field.node.document.field_document_source_url
-    - field.field.node.document.og_group_ref
+    - field.field.node.document.field_state
+    - field.field.node.document.og_audience
     - node.type.document
   module:
+    - comment
     - datetime
     - file
     - link
@@ -26,6 +30,14 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
+  field_comments:
+    weight: 5
+    label: above
+    settings:
+      pager_id: 0
+      view_mode: default
+    third_party_settings: {  }
+    type: comment_default
   field_document_file:
     weight: 3
     label: above
@@ -59,5 +71,6 @@ content:
     third_party_settings: {  }
     type: link
 hidden:
+  field_state: true
   links: true
-  og_group_ref: true
+  og_audience: true

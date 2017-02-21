@@ -9,7 +9,7 @@ field_name: field_ar_shared_content
 entity_type: rdf_entity
 bundle: collection
 label: 'Shared content'
-description: ''
+description: 'Placeholder for future functionality to share community content between different collections. Ref. ISAICP-2247.'
 required: false
 translatable: false
 default_value: {  }

@@ -4,41 +4,53 @@ Feature: June 2016 demo
   I should be able to interact with the website and manage content.
 
   Scenario: Manage collection and view collection scenarios.
-    Given collections:
-      | title          | description                           | logo     | moderation |
-      | S.H.I.E.L.D.   | Well, they are mostly flying around.  | logo.png | yes        |
-      | x-Men          | Based on Proffessor Xavier's mantion. | logo.png | no         |
-      | Avengers       | Based on Tony stark's tower.          | logo.png | yes        |
-      | Fantastic four | Based on Reed Richard's tower.        | logo.png | yes        |
-    And solutions:
-      | title                     | description                                | documentation | moderation | collection   |
-      | Avengers initiative       | Gather the strongest into a group.         | text.pdf      | no         | S.H.I.E.L.D. |
-      | Project Tahiti            | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        | S.H.I.E.L.D. |
-      | Hellicarrier              | Provide a flying fortress as headquarters. | text.pdf      | no         | S.H.I.E.L.D. |
-      | Project 'Captain America' | Bring 'Captain america' back into action.  | text.pdf      | yes        | S.H.I.E.L.D. |
+    Given solutions:
+      | title                     | description                                | documentation | moderation | state     |
+      | Avengers initiative       | Gather the strongest into a group.         | text.pdf      | no         | validated |
+      | Project Tahiti            | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        | validated |
+      | Hellicarrier              | Provide a flying fortress as headquarters. | text.pdf      | no         | validated |
+      | Project 'Captain America' | Bring 'Captain america' back into action.  | text.pdf      | yes        | validated |
+    And collections:
+      | title          | description                          | logo     | moderation | affiliates                                                                   | state     |
+      | S.H.I.E.L.D.   | Well, they are mostly flying around. | logo.png | yes        | Avengers initiative, Project Tahiti, Hellicarrier, Project 'Captain America' | validated |
+      | x-Men          | Based on Professor Xavier's mansion. | logo.png | no         |                                                                              | validated |
+      | Avengers       | Based on Tony stark's tower.         | logo.png | yes        |                                                                              | validated |
+      | Fantastic four | Based on Reed Richard's tower.       | logo.png | yes        |                                                                              | validated |
+
     And users:
       | name      | pass                 | mail                    | roles     |
       | Stan lee  | cameoineverymovie    | stan.lee@example.com    | moderator |
       | Nick Fury | ihaveasecret         | nick.fury@example.com   |           |
       | Wolverine | smellslikemetalclaws | logan.x.men@example.com |           |
-    And user memberships:
-      | collection   | user      | roles                              |
-      | S.H.I.E.L.D. | Nick Fury | administrator, facilitator, member |
-      | x-Men        | Wolverine | facilitator, member                |
-      | Avengers     | Wolverine | member                             |
+    And collection user memberships:
+      | collection   | user      | roles                      |
+      | S.H.I.E.L.D. | Nick Fury | owner, facilitator, member |
+      | x-Men        | Wolverine | facilitator, member        |
+      | Avengers     | Wolverine | member                     |
+
     And news content:
-      | title                       | field_news_kicker                       | body                                                                                                                                |
-      | Phil Coulson is down        | Phil Coulson fell by the hands of Loki. | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                |
-      | Phoenix is down             | Wolverine took down Jean Gray.          | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. |
-      | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.   | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                |
-    # The field_news_parent refers to a parent solution.
-    And news content:
-      | title                      | field_news_kicker                         | body                                                                                                        | field_news_parent         |
-      | Captain America not dead?  | Captain America found in the ice.         | Captain America's body was found intact and preserved in ice.                                               | Project 'Captain America' |
-      | Hellicarrier under attack  | The Hellicarrier was attacked by Loki.    | Loki and his servants have attacked us. Hawkeye took out one engine.                                        | Hellicarrier              |
-      | Captain America & Avengers | Captain America to lead the avengers?     | It is S.H.I.E.L.D.'s opinion that someone like Captain America can be a good leader for avengers.           | Avengers initiative       |
-      | Project Tahiti case 1      | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process                                                       | Project Tahiti            |
-      | Who is Winter soldier?     | Captain America's child friend is alive?  | As it turns out the Hydra's agent-Winter soldier-is no other than Bucky-Captain's America childhood friend. | Project 'Captain America' |
+      | title                       | headline                                  | body                                                                                                                                | status    |
+      | Phil Coulson is down        | Phil Coulson fell by the hands of Loki.   | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                | published |
+      | Phoenix is down             | Wolverine took down Jean Gray.            | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. | published |
+      | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.     | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                | published |
+      | Captain America not dead?   | Captain America found in the ice.         | Captain America's body was found intact and preserved in ice.                                                                       | published |
+      | Hellicarrier under attack   | The Hellicarrier was attacked by Loki.    | Loki and his servants have attacked us. Hawkeye took out one engine.                                                                | published |
+      | Captain America & Avengers  | Captain America to lead the avengers?     | It is S.H.I.E.L.D.'s opinion that someone like Captain America can be a good leader for avengers.                                   | published |
+      | Project Tahiti case 1       | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process.                                                                              | published |
+      | Who is Winter soldier?      | Captain America's child friend is alive?  | As it turns out the Hydra's agent-Winter soldier-is no other than Bucky-Captain's America childhood friend.                         | published |
+    And the following "news" content belong to the corresponding collections:
+      | content                     | collection   |
+      | Phil Coulson is down        | S.H.I.E.L.D. |
+      | Phoenix is down             | x-Men        |
+      | S.H.I.E.L.D. is infiltrated | S.H.I.E.L.D. |
+    And the following "news" content belong to the corresponding solutions:
+      | content                    | solution                  |
+      | Captain America not dead?  | Project 'Captain America' |
+      | Hellicarrier under attack  | Hellicarrier              |
+      | Captain America & Avengers | Avengers initiative       |
+      | Project Tahiti case 1      | Project Tahiti            |
+      | Who is Winter soldier?     | Project 'Captain America' |
+
     And custom_page content:
       | title              | body                                                                                                                              |
       | S.H.I.E.L.D. Home  | Welcome to S.H.I.E.L.D. webspace. <br />You can find anything about S.H.I.E.L.D. here.                                            |
@@ -49,11 +61,6 @@ Feature: June 2016 demo
       | S.H.I.E.L.D. Home  | S.H.I.E.L.D. |
       | About S.H.I.E.L.D. | S.H.I.E.L.D. |
       | List of members    | S.H.I.E.L.D. |
-    And the following "news" content belong to the corresponding collections:
-      | content                     | collection   |
-      | Phil Coulson is down        | S.H.I.E.L.D. |
-      | Phoenix is down             | x-Men        |
-      | S.H.I.E.L.D. is infiltrated | S.H.I.E.L.D. |
     And the following "custom_page" content menu items for the corresponding collections:
       | collection   | label              | page               | weight |
       | S.H.I.E.L.D. | S.H.I.E.L.D. Home  | S.H.I.E.L.D. Home  | 1      |
@@ -113,14 +120,11 @@ Feature: June 2016 demo
     When I click "List of members"
     Then I should see the heading "List of members"
     And I should see the text "Here is a list of members known to the public:"
-    # Also do a sample check for the visibility of the collection actions.
-    And I should see the link "Add custom page"
 
     # Add new custom page.
-    When I click "Add custom page"
-    And I fill in the following:
-      | Title | How to apply                                                                                                                        |
-      | Body  | You want to become a S.H.I.E.L.D. agent? <br />If you were worthy, S.H.I.E.L.D. <b>would have found you already</b>. <br />GET OUT. |
+    When I click "Add custom page" in the plus button menu
+    And I enter "How to apply" for "Title"
+    And I enter "You want to become a S.H.I.E.L.D. agent? <br />If you were worthy, S.H.I.E.L.D. <b>would have found you already</b>. <br />GET OUT." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the heading "How to apply"
     And I should see the text "You want to become a S.H.I.E.L.D. agent?"
@@ -136,36 +140,39 @@ Feature: June 2016 demo
     And I should see the text "List of members"
     When I click "List of members"
     Then I should see the heading "List of members"
-    # This step is unnecessary.
-    And I should see the text "Edit"
 
     # Edit page.
     When I click "Edit"
     Then I should see the heading "Edit Custom page List of members"
     # @todo: We have to set the link to the other page.
-    When I fill in "Body" with "Here is a list of members known to the public: <br><ul><li>Nick Fury</li></ul><br />Want to apply? Check the other page for this."
+    When I enter "Here is a list of members known to the public: <br><ul><li>Nick Fury</li></ul><br />Want to apply? Check the other page for this." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the heading "List of members"
     And I should see the text "Want to apply? Check the other page for this."
-    # Also check for the visibility of the collection action 'Add news'.
-    And I should see the link "Add news"
 
     # Add news.
-    When I click "Add news"
+    When I click "Add news" in the plus button menu
     Then I should see the heading "Add news"
     And I fill in the following:
-      | Headline | New York under attack                                                                    |
-      | Kicker   | S.H.I.E.L.D. to nuke New York?                                                           |
-      | Content  | In a desperate attempt to stop the nuke, Nick fury shot down an airplane of S.H.I.E.L.D. |
-    And I press "Save"
-    And I should see the heading "New York under attack"
+      | Kicker   | New York under attack          |
+      | Headline | S.H.I.E.L.D. to nuke New York? |
+    And I enter "In a desperate attempt to stop the nuke, Nick fury shot down an airplane of S.H.I.E.L.D." in the "Content" wysiwyg editor
+    And I press "Save as draft"
+    Then I should see the heading "New York under attack"
     And I should see the text "S.H.I.E.L.D. to nuke New York?"
+    # Content is saved as draft but should be viewable by the content owner on
+    # the collection overview.
+    When I go to the homepage of the "S.H.I.E.L.D." collection
+    Then I should see the link "New York under attack"
 
     # Scenario B: A non member registered user, browses the website.
     When I am logged in as "Wolverine"
     Then I should see the link "Collections"
 
     # Collections overview.
+    # @todo Remove this line when caching Search API results is fixed.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2574
+    When the cache has been cleared
     When I click "Collections"
     Then I should see the text "S.H.I.E.L.D."
     And I should see the text "x-Men"
@@ -182,7 +189,8 @@ Feature: June 2016 demo
     # News belonging to the solution.
     And I should see the text "Phil Coulson is down"
     And I should see the text "S.H.I.E.L.D. is infiltrated"
-    And I should see the text "New York under attack"
+    # The draft news article should not be visible to a non-member.
+    And I should not see the text "New York under attack"
     # News from solutions.
     And I should not see the text "Captain America not dead?"
     And I should not see the text "Hellicarrier under attack"

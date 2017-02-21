@@ -2,17 +2,18 @@ langcode: en
 status: true
 dependencies:
   module:
-    - node
     - rdf_entity
+    - taxonomy
 third_party_settings:
   rdf_entity:
-    mapping_target_id: 'dct:type'
+    mapping:
+      target_id: 'http://purl.org/dc/terms/type'
 id: rdf_entity.field_licence_type
 field_name: field_licence_type
 entity_type: rdf_entity
 type: entity_reference
 settings:
-  target_type: node
+  target_type: taxonomy_term
 module: core
 locked: false
 cardinality: 1

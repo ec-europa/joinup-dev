@@ -13,14 +13,14 @@ Feature: "Custom page" editing.
       | title       | Dumbo Collective                                                            |
       | description | Featuring a semi-anthropomorphic elephant who is cruelly nicknamed "Dumbo". |
       | logo        | logo.png                                                                    |
-      | uri         | http://joinup.eu/disney/dumbo                                               |
-    And the following user memberships:
+      | state       | validated                                                                   |
+    And the following collection user memberships:
       | collection       | user         | roles       |
       | Dumbo Collective | Mickey Mouse | facilitator |
       | Dumbo Collective | Pluto        | member      |
     And "custom_page" content:
-      | title                            | og_group_ref                  | body                                                                                                                      |
-      | Buena Vista Distribution Company | http://joinup.eu/disney/dumbo | Established in 1953, the unit handles distribution, marketing and promotion for films produced by the Walt Disney Studios |
+      | title                            | collection       | body                                                                                                                      |
+      | Buena Vista Distribution Company | Dumbo Collective | Established in 1953, the unit handles distribution, marketing and promotion for films produced by the Walt Disney Studios |
 
   Scenario: Check visibility of edit button.
     # Group owner should see the button.
@@ -34,6 +34,7 @@ Feature: "Custom page" editing.
     # A moderator can edit all custom pages.
     When I am logged in as a user with the moderator role
     And I go to the "Buena Vista Distribution Company" custom page
+    # Moderators have the 'administer nodes' permission.
     Then I should see the link "Edit"
     # A normal logged in user should not be able to edit the custom page.
     When I am logged in as a user with the authenticated role

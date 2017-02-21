@@ -3,3 +3,5 @@ type: module
 description: Demo content for Joinup project
 core: 8.x
 package: Joinup
+dependencies:
+  - default_content

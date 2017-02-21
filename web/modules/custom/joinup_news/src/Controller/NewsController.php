@@ -2,11 +2,7 @@
 
 namespace Drupal\joinup_news\Controller;
 
-use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\OgAccess;
-use Drupal\og\OgAccessInterface;
-use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\joinup_core\Controller\CommunityContentController;
 
 /**
  * Controller that handles the form to add news to a collection or a solution.
@@ -15,84 +11,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @package Drupal\joinup_news\Controller
  */
-class NewsController extends ControllerBase {
-
-  /**
-   * The OG access handler.
-   *
-   * @var \Drupal\og\OgAccessInterface
-   */
-  protected $ogAccess;
-
-  /**
-   * Constructs a CustomPageController.
-   *
-   * @param \Drupal\og\OgAccessInterface $og_access
-   *   The OG access handler.
-   */
-  public function __construct(OgAccessInterface $og_access) {
-    $this->ogAccess = $og_access;
-  }
+class NewsController extends CommunityContentController {
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('og.access')
-    );
-  }
-
-  /**
-   * Controller for the base form.
-   *
-   * The main purpose is to automatically reference the parent group entity.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection or solution rdf_entity.
-   *
-   * @return array
-   *   Return the form array to be rendered.
-   */
-  public function add(RdfInterface $rdf_entity) {
-    $node = $this->createNewsEntity($rdf_entity);
-    $form = $this->entityFormBuilder()->getForm($node);
-
-    return $form;
-  }
-
-  /**
-   * Handles access to the news add form through rdf entity pages.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The RDF entity for which the news entity is created.
-   *
-   * @return \Drupal\Core\Access\AccessResult
-   *   The access result object.
-   */
-  public function createNewsAccess(RdfInterface $rdf_entity) {
-    return $this->ogAccess->userAccessEntity('create', $this->createNewsEntity($rdf_entity), $this->currentUser());
-  }
-
-  /**
-   * Returns a news content entity.
-   *
-   * The news content entity is pre-filled with the parent Rdf entity and the
-   * initial state. The initial state is needed to provide the appropriate
-   * options to the user.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *    The parent that the news content entity belongs to.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
-   *    A node entity.
-   */
-  protected function createNewsEntity(RdfInterface $rdf_entity) {
-    $field = ($rdf_entity->bundle() == 'collection') ? 'og_group_ref' : 'field_news_parent';
-    return $this->entityTypeManager()->getStorage('node')->create([
-      'type' => 'news',
-      $field => $rdf_entity->id(),
-    ]);
+  protected function getBundle() {
+    return 'news';
   }
 
 }

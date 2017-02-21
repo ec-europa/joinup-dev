@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: comment_deletion
+label: 'Comment deletion'
+description: 'Message to the comment author when his comment gets deleted'
+text:
+  -
+    value: "<p>You comment on Joinup has been removed.</p>\r\n"
+    format: content_editor
+  -
+    value: "<p>Your comment</p>\r\n\r\n<p>[message:field_comment_text]</p>\r\n\r\n<p>published on</p>\r\n\r\n<p>[message:field_page:entity:url]</p>\r\n\r\n<p>has been deleted.</p>\r\n"
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }

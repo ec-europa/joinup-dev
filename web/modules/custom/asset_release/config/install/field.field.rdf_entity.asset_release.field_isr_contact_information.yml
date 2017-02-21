@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_isr_contact_information
     - rdf_entity.rdfentity.asset_release
+    - rdf_entity.rdfentity.contact_information
 id: rdf_entity.asset_release.field_isr_contact_information
 field_name: field_isr_contact_information
 entity_type: rdf_entity
@@ -18,7 +19,9 @@ settings:
   handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
-      collection: collection
+      contact_information: contact_information
     sort:
       field: _none
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference

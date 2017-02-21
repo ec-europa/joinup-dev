@@ -1,0 +1,96 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the RDF Taxonomy module.
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\rdf_taxonomy\RdfTaxonomyTermListBuilder;
+use Drupal\taxonomy\TermInterface;
+use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\taxonomy\VocabularyInterface;
+
+/**
+ * Implements hook_entity_type_alter().
+ *
+ * Set the controller class for vocabularies and terms to an alternate
+ * implementation of the Drupal\Core\Entity\EntityStorageInterface interface.
+ */
+function rdf_taxonomy_entity_type_alter(array &$entity_types) {
+  $entity_types['taxonomy_term']->setStorageClass('Drupal\rdf_taxonomy\TermRdfStorage');
+  $entity_types['taxonomy_term']->setHandlerClass('views_data', NULL);
+  $entity_types['taxonomy_term']->setHandlerClass('list_builder', RdfTaxonomyTermListBuilder::class);
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function rdf_taxonomy_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() != 'taxonomy_term') {
+    return;
+  }
+  // Change the tid type to string (RDF uri).
+  $fields['tid'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Term ID'))
+    ->setDescription(t('The term ID.'))
+    ->setReadOnly(TRUE);
+  $fields['tid']->setTargetEntityTypeId('taxonomy_term');
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function rdf_taxonomy_taxonomy_vocabulary_access(VocabularyInterface $vocabulary, $operation, AccountInterface $account) {
+  $locked = ($operation !== 'view') && $vocabulary->getThirdPartySetting('rdf_taxonomy', 'locked', TRUE);
+  return AccessResult::forbiddenIf($locked);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function rdf_taxonomy_taxonomy_term_access(TermInterface $term, $operation, AccountInterface $account) {
+  $locked = ($operation !== 'view') && $term->vid->entity->getThirdPartySetting('rdf_taxonomy', 'locked', TRUE);
+  return AccessResult::forbiddenIf($locked);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_create_access().
+ */
+function rdf_taxonomy_taxonomy_term_create_access(AccountInterface $account, array $context, $entity_bundle) {
+  $vocabulary = Vocabulary::load($entity_bundle);
+  $locked = $vocabulary->getThirdPartySetting('rdf_taxonomy', 'locked', TRUE);
+  return AccessResult::forbiddenIf($locked);
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function rdf_taxonomy_form_taxonomy_term_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // RDF terms have no weight. Set 0 as value and hide weight from UI.
+  $form['relations']['weight'] = [
+    '#type' => 'value',
+    '#value' => 0,
+  ];
+
+  // RDF terms have no language. Set the entity default language to prevent a
+  // form validation error.
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  $term = $form_state->getFormObject()->getEntity();
+  $form['langcode']['widget'][0]['value']['#default_value'] = $term->language()->getId();
+
+  // Convert the root option value from 0 (as integer) to '' (empty string).
+  $root = array_shift($form['relations']['parent']['#options']);
+  $form['relations']['parent']['#options'] = ['' => $root] + $form['relations']['parent']['#options'];
+  if (($index = array_search(0, $form['relations']['parent']['#default_value'], TRUE)) !== FALSE) {
+    $form['relations']['parent']['#default_value'][$index] = '';
+  }
+
+  // Visual enhancements.
+  $form['relations']['#open'] = TRUE;
+  $form['relations']['parent']['#size'] = 16;
+}

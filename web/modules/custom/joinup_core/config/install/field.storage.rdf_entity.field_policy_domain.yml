@@ -6,7 +6,8 @@ dependencies:
     - taxonomy
 third_party_settings:
   rdf_entity:
-    mapping_target_id: 'http://www.w3.org/ns/dcat#keyword'
+    mapping:
+      target_id: 'http://joinup.eu/voc/policy-domain'
 id: rdf_entity.field_policy_domain
 field_name: field_policy_domain
 entity_type: rdf_entity

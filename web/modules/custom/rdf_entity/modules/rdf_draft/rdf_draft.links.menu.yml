@@ -1,0 +1,5 @@
+rdf_draft.settings:
+  title: 'RDF draft settings'
+  parent: rdf_entity.admin_index
+  description: 'Administer RDF draft settings.'
+  route_name: rdf_draft.settings

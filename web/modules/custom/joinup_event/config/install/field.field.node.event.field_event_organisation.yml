@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_organisation
+    - node.type.event
+    - rdf_entity.rdfentity.owner
+id: node.event.field_event_organisation
+field_name: field_event_organisation
+entity_type: node
+bundle: event
+label: Organisation
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      owner: owner
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: organisation
+field_type: entity_reference

@@ -17,9 +17,9 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: 'collection/[date:custom:Y]-[date:custom:m]'
+  file_directory: collection/logo
   file_extensions: 'png gif jpg jpeg'
-  max_filesize: '10 MB'
+  max_filesize: '1 MB'
   max_resolution: ''
   min_resolution: ''
   alt_field: false
@@ -27,11 +27,11 @@ settings:
   title_field: false
   title_field_required: false
   default_image:
-    alt: ''
-    height: null
-    title: ''
     uuid: ''
+    alt: ''
+    title: ''
     width: null
+    height: null
   handler: 'default:file'
   handler_settings: {  }
 field_type: image

@@ -4,23 +4,31 @@ description: News content type.
 core: 8.x
 package: Joinup
 dependencies:
- - state_machine
-
-dependencies:
+  - collection
   - ds
+  - joinup_comment
+  - og
+  - solution
+  - state_machine
+  - view_unpublished
 
 config_devel:
+  - field.field.node.news.field_comments
+  - core.base_field_override.node.news.status
+  - core.base_field_override.node.news.title
   - core.entity_form_display.node.news.default
   - core.entity_view_display.node.news.default
+  - core.entity_view_display.node.news.view_mode_featured
   - core.entity_view_display.node.news.view_mode_tile
   - field.field.node.news.body
-  - field.field.node.news.field_news_kicker
-  - field.field.node.news.field_news_parent
+  - field.field.node.news.field_news_headline
+  - field.field.node.news.field_news_shared_in
   - field.field.node.news.field_news_source_url
-  - field.field.node.news.field_news_state
-  - field.field.node.news.og_group_ref
-  - field.storage.node.field_news_kicker
-  - field.storage.node.field_news_parent
+  - field.field.node.news.field_state
+  - field.field.node.news.field_spatial_coverage
+  - field.field.node.news.field_topic
+  - field.field.node.news.og_audience
+  - field.storage.node.field_news_headline
+  - field.storage.node.field_news_shared_in
   - field.storage.node.field_news_source_url
-  - field.storage.node.field_news_state
   - node.type.news

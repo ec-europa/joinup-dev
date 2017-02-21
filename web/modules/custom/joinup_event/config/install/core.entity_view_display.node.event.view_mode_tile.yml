@@ -4,65 +4,92 @@ dependencies:
   config:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.event.body
+    - field.field.node.event.field_comments
     - field.field.node.event.field_event_adtl_address_info
     - field.field.node.event.field_event_agenda
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_logo
+    - field.field.node.event.field_event_organisation
     - field.field.node.event.field_event_short_title
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
-    - field.field.node.event.og_group_ref
-    - image.style.image_style_event_logo
+    - field.field.node.event.og_audience
+    - image.style.horizontal_medium_image
     - node.type.event
   module:
     - datetime
+    - ds
     - image
+    - text
     - user
-_core:
-  default_config_hash: 9-pEl0yXAJ17PBB1bwdPYGg_kscQX40-iZcG5ZjUIj4
 id: node.event.view_mode_tile
 targetEntityType: node
 bundle: event
 mode: view_mode_tile
 content:
-  field_event_end_date:
-    weight: 3
+  body:
+    type: text_trimmed
+    weight: 2
     label: hidden
     settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
+      trim_length: 50
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    region: content
   field_event_logo:
-    weight: 0
+    weight: 1
     label: hidden
     settings:
-      image_style: image_style_event_logo
+      image_style: horizontal_medium_image
       image_link: content
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
     type: image
+    region: content
   field_event_short_title:
-    weight: 1
+    weight: 0
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_event_start_date:
-    weight: 2
+    weight: 3
     label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
-    third_party_settings: {  }
+      format_type: date_only
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
     type: datetime_default
+    region: content
 hidden:
-  body: true
+  field_comments: true
   field_event_adtl_address_info: true
   field_event_agenda: true
   field_event_contact_email: true
+  field_event_end_date: true
+  field_event_organisation: true
   field_event_web_url: true
   links: true
-  og_group_ref: true
-
+  og_audience: true

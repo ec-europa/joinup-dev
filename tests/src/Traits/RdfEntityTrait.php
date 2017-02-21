@@ -14,10 +14,10 @@ trait RdfEntityTrait {
    *
    * If multiple RDF entities have the same name the first one will be returned.
    *
-   * @param string $title
-   *   The RDF entity title.
+   * @param string $label
+   *   The RDF entity label.
    * @param string $type
-   *   The RDF entity type.
+   *   Optional RDF entity type.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
    *   The RDF entity.
@@ -25,15 +25,18 @@ trait RdfEntityTrait {
    * @throws \InvalidArgumentException
    *   Thrown when an RDF entity with the given name and type does not exist.
    */
-  protected function getRdfEntityByLabel($title, $type) {
+  protected static function getRdfEntityByLabel($label, $type = NULL) {
     $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', $type)
-      ->condition('label', $title)
+      ->condition('label', $label)
       ->range(0, 1);
+    if (!empty($type)) {
+      $query->condition('rid', $type);
+    }
     $result = $query->execute();
 
     if (empty($result)) {
-      throw new \InvalidArgumentException("The $type entity with the name '$title' was not found.");
+      $message = $type ? "The $type entity with the label '$label' was not found." : "The RDF entity with the label '$label' was not found.";
+      throw new \InvalidArgumentException($message);
     }
 
     return Rdf::load(reset($result));
@@ -52,7 +55,7 @@ trait RdfEntityTrait {
    * @param string $type
    *   The RDF entity type.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   The RDF entity.
    *
    * @throws \InvalidArgumentException

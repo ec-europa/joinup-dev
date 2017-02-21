@@ -1,0 +1,146 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.view_mode_featured
+    - field.field.rdf_entity.solution.field_is_actor
+    - field.field.rdf_entity.solution.field_is_affiliations_requests
+    - field.field.rdf_entity.solution.field_is_banner
+    - field.field.rdf_entity.solution.field_is_business_process
+    - field.field.rdf_entity.solution.field_is_contact_information
+    - field.field.rdf_entity.solution.field_is_creation_date
+    - field.field.rdf_entity.solution.field_is_description
+    - field.field.rdf_entity.solution.field_is_distribution
+    - field.field.rdf_entity.solution.field_is_documentation
+    - field.field.rdf_entity.solution.field_is_elibrary_creation
+    - field.field.rdf_entity.solution.field_is_has_version
+    - field.field.rdf_entity.solution.field_is_included_asset
+    - field.field.rdf_entity.solution.field_is_issue_tracker
+    - field.field.rdf_entity.solution.field_is_landing_page
+    - field.field.rdf_entity.solution.field_is_language
+    - field.field.rdf_entity.solution.field_is_logo
+    - field.field.rdf_entity.solution.field_is_metrics_page
+    - field.field.rdf_entity.solution.field_is_moderation
+    - field.field.rdf_entity.solution.field_is_modification_date
+    - field.field.rdf_entity.solution.field_is_owner
+    - field.field.rdf_entity.solution.field_is_product_type
+    - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_solution_type
+    - field.field.rdf_entity.solution.field_is_source_code_repository
+    - field.field.rdf_entity.solution.field_is_standardization_level
+    - field.field.rdf_entity.solution.field_is_state
+    - field.field.rdf_entity.solution.field_is_test_resource_type
+    - field.field.rdf_entity.solution.field_is_translation
+    - field.field.rdf_entity.solution.field_is_version
+    - field.field.rdf_entity.solution.field_is_webdav_creation
+    - field.field.rdf_entity.solution.field_is_webdav_url
+    - field.field.rdf_entity.solution.field_is_wiki
+    - field.field.rdf_entity.solution.field_keywords
+    - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_spatial_coverage
+    - field.field.rdf_entity.solution.field_status
+    - image.style.vertical_medium_image
+    - rdf_entity.rdfentity.solution
+  module:
+    - ds
+    - image
+    - text
+    - user
+id: rdf_entity.solution.view_mode_featured
+targetEntityType: rdf_entity
+bundle: solution
+mode: view_mode_featured
+content:
+  field_is_description:
+    weight: 26
+    label: hidden
+    settings:
+      trim_length: 200
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: text_trimmed
+    region: content
+  field_is_logo:
+    type: image
+    weight: 25
+    label: hidden
+    settings:
+      image_style: vertical_medium_image
+      image_link: content
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    region: content
+  field_is_solution_category:
+    weight: 3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  label:
+    type: string
+    weight: 24
+    label: hidden
+    settings:
+      link_to_entity: true
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    region: content
+hidden:
+  field_is_actor: true
+  field_is_affiliations_requests: true
+  field_is_banner: true
+  field_is_business_process: true
+  field_is_contact_information: true
+  field_is_creation_date: true
+  field_is_distribution: true
+  field_is_documentation: true
+  field_is_elibrary_creation: true
+  field_is_has_version: true
+  field_is_included_asset: true
+  field_is_issue_tracker: true
+  field_is_landing_page: true
+  field_is_language: true
+  field_is_metrics_page: true
+  field_is_moderation: true
+  field_is_modification_date: true
+  field_is_owner: true
+  field_is_product_type: true
+  field_is_related_solutions: true
+  field_is_solution_type: true
+  field_is_source_code_repository: true
+  field_is_standardization_level: true
+  field_is_state: true
+  field_is_test_resource_type: true
+  field_is_translation: true
+  field_is_version: true
+  field_is_webdav_creation: true
+  field_is_webdav_url: true
+  field_is_wiki: true
+  field_keywords: true
+  field_policy_domain: true
+  field_spatial_coverage: true
+  field_status: true
+  licence: true
+  og_group: true
+  related_solutions: true
+  releases_overview: true

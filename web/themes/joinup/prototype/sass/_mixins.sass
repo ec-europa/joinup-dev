@@ -1,3 +1,41 @@
+// Breakpoints
+=breakpoint($min: null, $max: null)
+  // Declare breakpoint value variables
+  $min-width: null !default
+  $max-width: null !default
+
+  // Always interpret min value since it is cardinal.
+  @if $min == lg or $min == lg-desktop
+    $min-width: $screen-lg-min
+  @else if $min == md or $min == desktop
+    $min-width: $screen-md-min
+  @else if $min == sm or $min == tablet
+    $min-width: $screen-sm-min
+  @else if $min == xs or $min == mobile
+    $min-width: $screen-xs-min
+  @else if $min == xxs or $min == sm-mobile
+    $min-width: $screen-xxs-min
+
+  // Interpret also max value if defined.
+  @if $max
+    @if $max == md or $max == desktop
+      $max-width: $screen-md-max
+    @else if $max == sm or $max == tablet
+      $max-width: $screen-sm-max
+    @else if $max == xs or $max == mobile
+      $max-width: $screen-xs-max
+    @else if $max == xxs or $max == sm-mobile
+      $max-width: $screen-xxs-max
+
+    // Render min and max breakpoint if both are defined
+    @media (min-width: $min-width) and (max-width: $max-width)
+      @content
+
+  @else
+    // Else render only min breakpoint.
+    @media (min-width: $min-width)
+      @content
+
 // Border radius
 =border-radius($radius)
   -webkit-border-radius: $radius
@@ -10,3 +48,27 @@
   height: $size
   line-height: $size
   font-size: $size
+
+// Centering
+=centered($horizontal: true, $vertical: true)
+  position: absolute
+  @if ($horizontal and $vertical)
+    top: 50%
+    left: 50%
+    -webkit-transform: translate(-50%, -50%)
+    -moz-transform: translate(-50%, -50%)
+    -ms-transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%)
+  @else if ($horizontal)
+    left: 50%
+    -webkit-transform: translate(-50%, 0)
+    -moz-transform: translate(-50%, 0)
+    -ms-transform: translate(-50%, 0)
+    transform: translate(-50%, 0)
+  @else if ($vertical)
+    top: 50%
+    -webkit-transform: translate(0, -50%)
+    -moz-transform: translate(0, -50%)
+    -ms-transform: translate(0, -50%)
+    transform: translate(0, -50%)
+

@@ -4,6 +4,8 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_isr_is_version_of
     - rdf_entity.rdfentity.asset_release
+  module:
+    - og
 id: rdf_entity.asset_release.field_isr_is_version_of
 field_name: field_isr_is_version_of
 entity_type: rdf_entity
@@ -18,7 +20,8 @@ settings:
   handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
-      asset_release: asset_release
+      solution: solution
     sort:
       field: _none
-field_type: entity_reference
+  access_override: false
+field_type: og_standard_reference

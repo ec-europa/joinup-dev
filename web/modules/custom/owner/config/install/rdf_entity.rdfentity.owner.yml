@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings:
+  rdf_entity:
+    mapping:
+      rid:
+        target_id: 'http://xmlns.com/foaf/spec/#term_Agent'
+      uid:
+        target_id: 'http://joinup.eu/owner/uid'
+      label:
+        value: 'http://purl.org/dc/terms/title'
+      uuid:
+        value: ''
+      graph:
+        value: ''
+    graph:
+      default: 'http://joinup.eu/owner/published'
+      draft: 'http://joinup.eu/owner/draft'
+name: Owner
+rid: owner
+description: ''
