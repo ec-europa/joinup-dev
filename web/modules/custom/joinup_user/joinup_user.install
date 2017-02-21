@@ -21,6 +21,7 @@ function joinup_user_install() {
     'create document content',
     'delete own document content',
     'edit own comments',
+    'edit own contact_information rdf entity',
     'edit own owner rdf entity',
     'export rdf metadata',
     'manage own subscriptions',

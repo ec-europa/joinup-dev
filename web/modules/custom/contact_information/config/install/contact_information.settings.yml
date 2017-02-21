@@ -1,4 +1,4 @@
-# The array of allowed conditions for the owner workflow transitions.
+# The allowed conditions for the contact information workflow transitions.
 transitions:
   validate:
     __new__:
