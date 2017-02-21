@@ -41,6 +41,15 @@ field_settings:
         - 'entity:rdf_entity/collection'
         - 'entity:rdf_entity/og_audience'
         - 'entity:rdf_entity/field_isr_is_version_of'
+  entity_author:
+    label: 'Aggregated field'
+    property_path: aggregated_field
+    type: integer
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/uid'
+        - 'entity:rdf_entity/uid'
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -141,19 +150,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_isr_description
-processor_settings:
-  add_url:
-    plugin_id: add_url
-    settings: {  }
-  aggregated_field:
-    plugin_id: aggregated_field
-    settings: {  }
-  rendered_item:
-    plugin_id: rendered_item
-    settings: {  }
-options:
-  index_directly: true
-  cron_limit: 50
 datasource_settings:
   'entity:node':
     bundles:
@@ -166,6 +162,19 @@ datasource_settings:
     bundles:
       default: true
       selected: {  }
+processor_settings:
+  add_url:
+    plugin_id: add_url
+    settings: {  }
+  aggregated_field:
+    plugin_id: aggregated_field
+    settings: {  }
+  rendered_item:
+    plugin_id: rendered_item
+    settings: {  }
 tracker_settings:
-  default: { }
+  default: {  }
+options:
+  index_directly: true
+  cron_limit: 50
 server: solr
