@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\joinup_document\Functional;
 
-use Drupal\Tests\joinup_core\NodeWorkflowTestBase;
+use Drupal\Tests\joinup_core\Functional\NodeWorkflowTestBase;
 
 /**
  * Tests CRUD operations and workflow transitions for the document node.

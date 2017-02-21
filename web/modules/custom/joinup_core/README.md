@@ -248,8 +248,8 @@ access handler will check if the user has the right to delete his own content.
 # Testing
 
 The community content also share a base class for testing.  
-The base class is `Drupal\Tests\joinup_core\NodeWorkflowTestBase` and all the
-logic of the testing resides there.  
+The base class is `Drupal\Tests\joinup_core\Functional\NodeWorkflowTestBase` and
+all the logic of the testing resides there.  
 For the purposes of the testing, the following users are being used:
 * **$userOwner**: the user will be assigned as an author of every content
 created.
