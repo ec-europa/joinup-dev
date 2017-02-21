@@ -9,14 +9,14 @@ id: rdf_entity.solution.field_policy_domain
 field_name: field_policy_domain
 entity_type: rdf_entity
 bundle: solution
-label: 'Policy Domain'
+label: 'Policy domain'
 description: ''
 required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:taxonomy_term'
+  handler: grouped_rdf_taxonomy_term_selection
   handler_settings:
     target_bundles:
       policy_domain: policy_domain

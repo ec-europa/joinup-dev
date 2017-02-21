@@ -2,7 +2,6 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Core\Database\Database;
 use Drupal\Core\Site\Settings;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
@@ -20,56 +19,32 @@ abstract class JoinupSqlBase extends SqlBase {
   protected $alias = [];
 
   /**
-   * Source database name.
+   * If the query has been already prepared.
    *
-   * @var string
+   * @var bool
    */
-  protected static $sourceDbName;
-
-  /**
-   * Destination database name.
-   *
-   * @var string
-   */
-
-  protected static $destinationDbName;
+  protected $isQueryPrepared = FALSE;
 
   /**
    * {@inheritdoc}
    */
   protected function prepareQuery() {
-    $this->query = parent::prepareQuery();
-    // Save the alias list.
-    $this->query->addMetaData('alias', $this->alias);
+    if (!$this->isQueryPrepared) {
+      $this->query = parent::prepareQuery();
+      // Save the alias list.
+      $this->query->addMetaData('alias', $this->alias);
+      $this->isQueryPrepared = TRUE;
+    }
     return $this->query;
   }
 
   /**
-   * Gets source database name.
-   *
-   * @return string
-   *   The database name.
+   * {@inheritdoc}
    */
-  public static function getSourceDbName() {
-    if (!isset(static::$sourceDbName)) {
-      static::$sourceDbName = Database::getConnection('default', 'migrate')
-        ->getConnectionOptions()['database'];
-    }
-    return static::$sourceDbName;
-  }
-
-  /**
-   * Gets destination database name.
-   *
-   * @return string
-   *   The database name.
-   */
-  public static function getDestinationDbName() {
-    if (!isset(static::$destinationDbName)) {
-      static::$destinationDbName = Database::getConnection()
-        ->getConnectionOptions()['database'];
-    }
-    return static::$destinationDbName;
+  public function count($refresh = FALSE) {
+    // @see https://www.drupal.org/node/2833060
+    $query = clone $this->prepareQuery();
+    return $query->countQuery()->execute()->fetchField();
   }
 
   /**

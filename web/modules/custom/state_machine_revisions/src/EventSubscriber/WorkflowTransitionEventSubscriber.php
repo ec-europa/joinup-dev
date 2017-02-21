@@ -25,7 +25,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   protected $revisionManager;
 
   /**
-   * Constructs a new EntityRevisionConverter object.
+   * Constructs a new WorkflowTransitionEventSubscriber object.
    *
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revisionManager
    *   The revision manager.
