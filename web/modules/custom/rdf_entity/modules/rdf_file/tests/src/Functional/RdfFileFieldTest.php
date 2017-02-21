@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\rdf_file;
+namespace Drupal\Tests\rdf_file\Functional;
 
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
