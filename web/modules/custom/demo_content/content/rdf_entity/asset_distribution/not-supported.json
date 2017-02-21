@@ -6,11 +6,6 @@
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/asset_distribution"
         },
-        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_file": [
-            {
-                "href": "http:\/\/default\/sites\/default\/files\/2016-09\/drupal-6.38.tar.gz"
-            }
-        ],
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_format": [
             {
                 "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Ce682a47c-4fa3-49c7-9d42-416379751111?_format=hal_json"
@@ -79,28 +74,6 @@
         }
     ],
     "_embedded": {
-        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_file": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "http:\/\/default\/sites\/default\/files\/2016-09\/drupal-6.38.tar.gz"
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "c966dfe3-b99f-4932-900e-7d72c8c41bcd"
-                    }
-                ],
-                "uri": [
-                    {
-                        "value": "http:\/\/default\/sites\/default\/files\/2016-09\/drupal-6.38.tar.gz"
-                    }
-                ]
-            }
-        ],
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_format": [
             {
                 "_links": {
@@ -154,11 +127,6 @@
             }
         ]
     },
-    "field_ad_file_size": [
-        {
-            "value": "1113790"
-        }
-    ],
     "field_ad_gitb_compliant": [
         {
             "value": "1"

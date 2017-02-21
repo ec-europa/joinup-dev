@@ -2,22 +2,27 @@ langcode: en
 status: true
 dependencies:
   module:
-    - link
+    - file
     - rdf_entity
+    - rdf_file
 third_party_settings:
   rdf_entity:
     mapping:
-      uri: 'http://www.w3.org/ns/dcat#accessURL'
-      title: ''
-      options: ''
+      target_id: 'http://www.w3.org/ns/dcat#accessURL'
+      display: ''
+      description: ''
 id: rdf_entity.field_ad_access_url
 field_name: field_ad_access_url
 entity_type: rdf_entity
-type: link
-settings: {  }
-module: link
+type: rdf_file
+settings:
+  target_type: file
+  display_field: false
+  display_default: false
+  uri_scheme: public
+module: rdf_file
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

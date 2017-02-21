@@ -19,6 +19,9 @@ class RdfFileHandler {
    *
    * @return string
    *   URL.
+   *
+   * @throws \Exception
+   *   When a RemoteFile has been accidentally passed.
    */
   public static function fileToUrl(FileInterface $file) {
     global $base_url;
@@ -50,6 +53,19 @@ class RdfFileHandler {
       return File::load($matches[1]);
     }
     return RemoteFile::load($url);
+  }
+
+  /**
+   * Checks if a file entity is s remote file.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The file being checked.
+   *
+   * @return bool
+   *   TRUE id it's a remote file.
+   */
+  public static function isRemote(FileInterface $file) {
+    return $file instanceof RemoteFile;
   }
 
 }
