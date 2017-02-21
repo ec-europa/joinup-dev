@@ -103,6 +103,7 @@ config_devel:
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
+  - core.date_format.date_only_text_month
   - core.entity_form_display.ogmenu_instance.navigation.default
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
