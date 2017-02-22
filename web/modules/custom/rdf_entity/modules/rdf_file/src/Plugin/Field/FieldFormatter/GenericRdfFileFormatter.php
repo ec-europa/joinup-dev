@@ -42,6 +42,11 @@ class GenericRdfFileFormatter extends FileFormatterBase {
         // formatter output and should not be rendered in the field template.
         unset($item->_attributes);
       }
+
+      // Allow showing the full URI as tip.
+      // @todo Probably the UX/UI team should decide if the full URL should be
+      //   permanently displayed when showing distributions.
+      $elements[$delta]['#attributes']['title'] = file_create_url($file->getFileUri());
     }
 
     return $elements;

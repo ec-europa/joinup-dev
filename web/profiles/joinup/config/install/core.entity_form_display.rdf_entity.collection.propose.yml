@@ -151,7 +151,7 @@ content:
   field_ar_contact_information:
     weight: 8
     settings:
-      form_mode: default
+      form_mode: inline
       override_labels: true
       label_singular: 'contact information'
       label_plural: 'contact information'
