@@ -17,7 +17,7 @@ class RdfFieldStorageConfigEditForm extends FieldStorageConfigEditForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $type = $this->entity->get('entity_type');
     // Skip validation of cardinality for Sparql backend fields.
-    if ((\Drupal::entityManager()->getStorage($type)) instanceof RdfEntitySparqlStorage) {
+    if ($this->entityTypeManager->getStorage($type) instanceof RdfEntitySparqlStorage) {
       return;
     }
     parent::validateForm($form, $form_state);
