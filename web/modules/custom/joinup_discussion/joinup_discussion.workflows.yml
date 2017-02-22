@@ -1,7 +1,7 @@
 # The workflow of the discussion entity.
-discussion_workflow:
-  id: discussion_workflow
-  label: "Default"
+node:discussion:post_moderated:
+  id: post_moderated
+  label: "Post moderated"
   group: discussion
   states:
     # The state used as initial.

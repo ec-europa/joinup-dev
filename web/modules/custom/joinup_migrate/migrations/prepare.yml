@@ -2,12 +2,12 @@ id: prepare
 label: 'Prepare migrations'
 source:
   plugin: prepare
-  cache_counts: true
   track_changes: true
 process:
   collection: collection
   type: type
   nid: nid
+  policy: policy
   policy2: policy2
   abstract: abstract
   logo: logo
@@ -17,6 +17,7 @@ process:
   contact: contact
   # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068.
   # status: status
+  roles: roles
 destination:
   plugin: prepare
   fast_rollback: true

@@ -6,10 +6,12 @@
  */
 
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 
 /**
@@ -20,6 +22,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
+  use TraversingTrait;
   use UtilityTrait;
 
   /**
@@ -628,35 +631,117 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Finds a vertical tab given its text and clicks it.
+   * Finds a vertical tab given its title and clicks it.
    *
    * @param string $tab
-   *   The tab text.
+   *   The tab title.
    *
    * @throws \Exception
    *   When the tab is not found on the page.
    *
    * @When I click( the) :tab tab
    */
-  public function assertVerticalTabLink($tab) {
+  public function clickVerticalTabLink($tab) {
     // When this is running in a browser without JavaScript the vertical tabs
     // are rendered as a details element.
     if (!$this->browserSupportsJavascript()) {
       return;
     }
 
-    $page = $this->getSession()->getPage();
+    $this->findVerticalTab($tab)->clickLink($tab);
+  }
 
-    $xpath = "//li[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item ')]"
-      . "//a[./@href]/strong[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item-title ')]"
-      . "[normalize-space(string(.)) = '$tab']";
-    $tab = $page->find('xpath', $xpath);
+  /**
+   * Asserts that a vertical tab is active.
+   *
+   * @param string $tab
+   *   The tab title.
+   *
+   * @throws \Exception
+   *   When the tab is not found on the page or it's not active.
+   *
+   * @Then the :tab tab should be active
+   */
+  public function assertVerticalTabActive($tab) {
+    $element = $this->findVerticalTab($tab);
 
-    if ($tab === NULL) {
-      throw new \Exception('Tab not found: ' . $tab);
+    if (!$element->hasClass('is-selected')) {
+      throw new \Exception("The tab '$tab' is not active.");
+    }
+  }
+
+  /**
+   * Creates testing terms for scenarios tagged with @terms tag.
+   *
+   * Limitation: It creates terms with maximum 2 level hierarchy.
+   *
+   * @beforeScenario @terms
+   */
+  public function provideTestingTerms() {
+    $fixture = file_get_contents(__DIR__ . '/../../fixtures/testing_terms.yml');
+    $hierarchy = Yaml::decode($fixture);
+    foreach ($hierarchy as $vid => $terms) {
+      foreach ($terms as $key => $data) {
+        $has_children = is_array($terms);
+        $name = $has_children ? $key : $data;
+        $term = (object) [
+          'vocabulary_machine_name' => $vid,
+          'name' => $name,
+        ];
+        $this->termCreate($term);
+        $parent_tid = $term->tid;
+        if ($has_children) {
+          foreach ($data as $name) {
+            $term = (object) [
+              'vocabulary_machine_name' => $vid,
+              'name' => $name,
+              'parent' => $parent_tid,
+            ];
+            $this->termCreate($term);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Fills a multi-value field.
+   *
+   * In Drupal a field can have a cardinality bigger than one. In that case,
+   * the field widget will be rendered multiple times. This method will fill
+   * each item with the corresponding value.
+   * This doesn't handle widgets with multiple inputs and it relies on the
+   * number of items to match the number of values. Clicking the
+   * button to add more items is left to the user.
+   *
+   * @param string $field
+   *   The name of the field.
+   * @param string $values
+   *   A comma separated list of values.
+   *
+   * @throws \Exception
+   *   When the field cannot be found or the number of values is different from
+   *   the number of elements found.
+   *
+   * @When I fill in :field with values :values
+   */
+  public function fillFieldWithValues($field, $values) {
+    $values = $this->explodeCommaSeparatedStepArgument($values);
+
+    /** @var \Behat\Mink\Element\NodeElement[] $items */
+    $items = $this->getSession()->getPage()->findAll('named', array('field', $field));
+
+    if (empty($items)) {
+      throw new \Exception("Cannot find field $field.");
     }
 
-    $tab->click();
+    if (count($items) !== count($values)) {
+      throw new \Exception('Expected ' . count($values) . ' items for field ' . $field . ', found ' . count($items));
+    }
+
+    foreach ($items as $delta => $item) {
+      $item->setValue($values[$delta]);
+    }
   }
 
 }

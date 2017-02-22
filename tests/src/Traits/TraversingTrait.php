@@ -51,4 +51,31 @@ trait TraversingTrait {
     return $options;
   }
 
+  /**
+   * Finds a vertical tab by its title.
+   *
+   * @param string $tab
+   *   The title of the vertical tab.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The vertical tab element.
+   *
+   * @throws \Exception
+   *   Thrown when no tab element is found.
+   */
+  protected function findVerticalTab($tab) {
+    // Xpath to find the vertical tabs.
+    $xpath = "//li[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item ')]";
+    // Filter down to the tab containing a link with the provided text.
+    $xpath .= "[.//a[./@href]/strong[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item-title ')]"
+      . "[normalize-space(string(.)) = '$tab']]";
+    $element = $this->getSession()->getPage()->find('xpath', $xpath);
+
+    if ($element === NULL) {
+      throw new \Exception('Tab not found: ' . $tab);
+    }
+
+    return $element;
+  }
+
 }

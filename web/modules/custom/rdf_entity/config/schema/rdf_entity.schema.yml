@@ -33,6 +33,9 @@ rdf_entity.rdfentity.*.third_party.rdf_entity:
         sequence:
           type: string
           label: 'Mapping of field properies to their rdf counterpart.'
+    entity_id_plugin:
+      type: string
+      label: 'The plugin that generates the entity ID'
 
 field.storage.*.*.third_party.rdf_entity:
   type: mapping

@@ -1,9 +1,10 @@
 services:
   joinup_discussion.fulfillment_guard:
     class: Drupal\joinup_discussion\Guard\JoinupDiscussionFulfillmentGuard
-    arguments: ['@entity_type.manager', '@joinup_user.workflow.user_provider', '@joinup_discussion.relations_manager', '@og.membership_manager', '@config.factory', '@current_user']
+    arguments: ['@entity_type.manager', '@joinup_core.workflow.user_provider', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user']
     tags:
       - { name: state_machine.guard, group: discussion }
-  joinup_discussion.relations_manager:
-    class: Drupal\joinup_discussion\JoinupDiscussionRelationManager
-    arguments: ['@og.membership_manager']
+  joinup_discussion.workflow_transition:
+    class: Drupal\joinup_discussion\EventSubscriber\WorkflowTransitionEventSubscriber
+    tags:
+      - { name: event_subscriber }

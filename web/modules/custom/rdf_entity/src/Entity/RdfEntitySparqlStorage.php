@@ -2,7 +2,6 @@
 
 namespace Drupal\rdf_entity\Entity;
 
-use Drupal\Component\Uuid\Php;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -19,9 +18,12 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Exception\DuplicatedIdException;
+use Drupal\rdf_entity\RdfEntityIdPluginManager;
 use Drupal\rdf_entity\RdfGraphHandler;
 use Drupal\rdf_entity\RdfMappingHandler;
 use EasyRdf\Graph;
+use EasyRdf\Literal;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -81,6 +83,13 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   protected $mappingHandler;
 
   /**
+   * The RDF entity ID generator plugin manager.
+   *
+   * @var \Drupal\rdf_entity\RdfEntityIdPluginManager
+   */
+  protected $entityIdPluginManager;
+
+  /**
    * Initialize the storage backend.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
@@ -101,8 +110,10 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *    The rdf graph helper service.
    * @param \Drupal\rdf_entity\RdfMappingHandler $rdf_mapping_handler
    *    The rdf mapping helper service.
+   * @param \Drupal\rdf_entity\RdfEntityIdPluginManager $entity_id_plugin_manager
+   *   The RDF entity ID generator plugin manager.
    */
-  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
+  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler, RdfEntityIdPluginManager $entity_id_plugin_manager) {
     parent::__construct($entity_type, $entity_manager, $cache);
     $this->sparql = $sparql;
     $this->languageManager = $language_manager;
@@ -110,6 +121,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     $this->moduleHandler = $module_handler;
     $this->graphHandler = $rdf_graph_handler;
     $this->mappingHandler = $rdf_mapping_handler;
+    $this->entityIdPluginManager = $entity_id_plugin_manager;
   }
 
   /**
@@ -125,7 +137,8 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $container->get('language_manager'),
       $container->get('module_handler'),
       $container->get('sparql.graph_handler'),
-      $container->get('sparql.mapping_handler')
+      $container->get('sparql.mapping_handler'),
+      $container->get('plugin.manager.rdf_entity.id')
     );
   }
 
@@ -538,6 +551,23 @@ QUERY;
   }
 
   /**
+   * Checks if a RDF entity has a specific graph.
+   *
+   * @param mixed $entity_id
+   *   The entity ID.
+   * @param string $graph
+   *   The graph to be checked ('draft', etc).
+   *
+   * @return bool
+   *   TRUE if this entity has the specified graph.
+   */
+  public function hasGraph($entity_id, $graph) {
+    $this->getGraphHandler()->setRequestGraphs($entity_id, $this->entityTypeId, [$graph]);
+    // @todo Find a cheaper way to do this, without a full entity load.
+    return (bool) $this->load($entity_id);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function loadByProperties(array $values = []) {
@@ -545,7 +575,7 @@ QUERY;
     // is not stored, while on ID we can rely.
     $uuid_key = $this->entityType->getKey('uuid');
     if (isset($values[$uuid_key]) && !isset($values['id'])) {
-      $values['id'] = $values[$uuid_key];
+      $values[$this->entityType->getKey('id')] = $values[$uuid_key];
       unset($values[$uuid_key]);
     }
     return parent::loadByProperties($values);
@@ -664,7 +694,7 @@ QUERY;
      * graph contains the published entities.
      */
     if (in_array('Drupal\Core\Entity\EntityPublishedInterface', class_implements($this->entityClass))) {
-      if (\Drupal::moduleHandler()->moduleExists('rdf_draft')) {
+      if ($this->moduleHandler->moduleExists('rdf_draft')) {
         $query->setGraphType(['draft', 'default']);
       }
     }
@@ -710,18 +740,6 @@ QUERY;
   }
 
   /**
-   * Generate the id of the entity.
-   *
-   * @return string
-   *    The new id for the entity.
-   */
-  protected function generateId() {
-    $uuid = new Php();
-    // @todo Fetch a bundle specific template.
-    return 'http://placeHolder/' . $uuid->generate();
-  }
-
-  /**
    * {@inheritdoc}
    */
   protected function doSave($id, EntityInterface $entity) {
@@ -731,11 +749,11 @@ QUERY;
     // entity might be considered not new by modules that don't strictly use the
     // EntityInterface::isNew() method.
     if (empty($id)) {
-      $id = $this->generateId();
-      $entity->{$this->idKey} = (string) $id;
+      $id = $this->entityIdPluginManager->getPlugin($entity)->generate();
+      $entity->{$this->idKey} = $id;
     }
     elseif ($entity->isNew() && $this->idExists($id)) {
-      throw new \InvalidArgumentException("Attempting to create a new entity with the ID '$id' already taken.");
+      throw new DuplicatedIdException("Attempting to create a new entity with the ID '$id' already taken.");
     }
 
     // If the target graph is set, it has priority over the one the entity is
@@ -755,7 +773,7 @@ QUERY;
             continue;
           }
           // Skip the bundle as it is handled separately later.
-          if ($field_name == 'rid') {
+          if ($field_name == $this->bundleKey) {
             continue;
           }
           /** @var \Drupal\Core\Field\FieldItemList $field_item_list */
@@ -764,6 +782,7 @@ QUERY;
           if ($field_item_list->isEmpty()) {
             continue;
           }
+          /** @var \Drupal\Core\Field\FieldItemInterface $item */
           $item = $entity->get($field_name)->first();
 
           $column_schema = $this->getColumnSchema($item, $column);
@@ -774,31 +793,90 @@ QUERY;
             $value = serialize($value);
           }
           // When the field is a entity reference, and it's target implements
-          // RdfEntitySparqlStorage (it's an RDF based entity),
+          // RdfEntitySparqlStorage or a descendant (it's an RDF based entity),
           // then store it as a resource.
           if ($this->fieldIsReference($item)) {
             $graph->addResource((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
           }
           // All other fields get stored as a literal.
           else {
-            // @todo Set language and field data type.
-            $graph->addLiteral((string) $id, (string) $properties['by_field'][$field_name][$column], $value);
+            $langcode = $this->resolveFieldLangcode($entity, $item);
+            // @todo Add datatype to literal.
+            $literal = new Literal($value, $langcode);
+            $graph->addLiteral((string) $id, (string) $properties['by_field'][$field_name][$column], $literal);
           }
         }
       }
     }
-    // Save the bundle as rdf:type.
+
+    // Save the bundle.
     $rdf_bundle_mapping = $this->mappingHandler->getRdfBundleMappedUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle());
     $rdf_bundle = $rdf_bundle_mapping[$entity->bundle()];
     $graph->addResource((string) $id, $this->rdfBundlePredicate, $rdf_bundle);
 
+    // Give implementations a chance to alter the graph before is saved.
+    $this->alterGraph($graph, $entity);
+
+    // @todo Do all next operations in one transaction.
     if (!$entity->isNew()) {
       $this->deleteBeforeInsert($id, $graph_uri, $properties_list);
     }
-    // @todo Do in one transaction... If possible.
-    $this->insert($graph, $graph_uri);
-
+    try {
+      $this->insert($graph, $graph_uri);
+      return $entity->isNew() ? SAVED_NEW : SAVED_UPDATED;
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
   }
+
+  /**
+   * Resolves the language based on entity and current site language.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity.
+   * @param \Drupal\Core\Field\FieldItemInterface $field_item
+   *   The field for which to resolve the language.
+   *
+   * @return string|null
+   *   A language code or NULL, if the field has no language.
+   */
+  protected function resolveFieldLangcode(EntityInterface $entity, FieldItemInterface $field_item) {
+    if (!$langcode = $field_item->getLangcode()) {
+      return NULL;
+    }
+
+    $non_languages = [
+      LanguageInterface::LANGCODE_NOT_SPECIFIED,
+      LanguageInterface::LANGCODE_DEFAULT,
+      LanguageInterface::LANGCODE_NOT_APPLICABLE,
+      LanguageInterface::LANGCODE_SITE_DEFAULT,
+      LanguageInterface::LANGCODE_SYSTEM,
+    ];
+
+    // Accept only real languages or NULL.
+    if (in_array($langcode, $non_languages)) {
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
+      if (in_array($langcode, $non_languages)) {
+        return NULL;
+      }
+    }
+
+    return $langcode;
+  }
+
+  /**
+   * Alters the graph before saving the entity.
+   *
+   * Implementation are able to change, delete or add items to the graph before
+   * this is saved to SPARQL backend.
+   *
+   * @param \EasyRdf\Graph $graph
+   *   The graph to be altered.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity being saved.
+   */
+  protected function alterGraph(Graph &$graph, EntityInterface $entity) {}
 
   /**
    * Get the schema definition for a given field column.
@@ -1028,9 +1106,7 @@ QUERY;
     $target_entity = $target->getValue();
     $target_entity_type = $target_entity->getEntityType();
     $target_entity_storage_class = trim($target_entity_type->getStorageClass(), "\\");
-    $classes = class_parents($target_entity_storage_class);
-    $classes[$target_entity_storage_class] = $target_entity_storage_class;
-    return in_array(RdfEntitySparqlStorage::class, $classes);
+    return ($target_entity_storage_class === RdfEntitySparqlStorage::class) || is_subclass_of($target_entity_storage_class, RdfEntitySparqlStorage::class);
   }
 
   /**
@@ -1075,7 +1151,7 @@ QUERY;
    * @return bool
    *   TRUE if this entity ID already exists, FALSE otherwise.
    */
-  protected function idExists($id) {
+  public function idExists($id) {
     $query = <<<QUERY
 ASK {
   <$id> ?field ?value

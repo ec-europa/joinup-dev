@@ -84,13 +84,14 @@ Feature: Organic Groups integration
     And I should see the "Join this collection" button
     And the "Folk Dance and Song Society" collection should have 0 members
 
+  @terms
   Scenario: Edit a Collection
     Given the following owner:
       | name                 | type                    |
       | Organisation example | Non-Profit Organisation |
     Given collections:
-      | title                 | logo     | banner     | abstract                                   | access url                             | closed | creation date    | description                               | elibrary creation | moderation | policy domain | owner                | state |
-      | Überwaldean Land Eels | logo.png | banner.jpg | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified. | facilitators      | yes        | eProcurement  | Organisation example | draft |
+      | title                 | logo     | banner     | abstract                                   | access url                             | closed | creation date    | description                               | elibrary creation | moderation | policy domain     | owner                | state |
+      | Überwaldean Land Eels | logo.png | banner.jpg | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified. | facilitators      | yes        | Supplier exchange | Organisation example | draft |
     And users:
       | name           | roles |
       | Madame Sharn   |       |

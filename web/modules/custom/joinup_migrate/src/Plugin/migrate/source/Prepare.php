@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Database\Database;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 
@@ -37,6 +38,7 @@ class Prepare extends SourcePluginBase {
       'nid' => $this->t('Node ID'),
       'type' => $this->t('Node type'),
       'new_collection' => $this->t('New collection'),
+      'policy' => $this->t('Level1 policy domain'),
       'policy2' => $this->t('Level2 policy domain'),
       'abstract' => $this->t('Abstract'),
       'owner' => $this->t('Owner'),
@@ -61,8 +63,7 @@ class Prepare extends SourcePluginBase {
       'repository' => ['content_type_repository', 'field_repository_contact_point_nid'],
     ];
 
-    $db = Database::getConnection();
-    $source = Database::getConnection('default', 'migrate');
+    $db = Database::getConnection('default', 'migrate');
 
     // Build a list of collections that have at least 1 row with 'migrate' == 1.
     $allowed = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
@@ -90,7 +91,7 @@ class Prepare extends SourcePluginBase {
       $query->condition(1, 2);
     }
 
-    $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'm.nid = n.nid');
+    $query->leftJoin('node', 'n', 'm.nid = n.nid');
 
     $collections = [];
     foreach ($query->execute()->fetchAll() as $row) {
@@ -134,8 +135,52 @@ class Prepare extends SourcePluginBase {
         $collections[$collection]['policy2'] = $row['policy2'];
       }
 
-      if (!empty($row['owner']) && ($row['owner'] == 'Yes') && in_array($row['type'], array_keys($publisher))) {
-        $publishers = $source
+      $is_owner = !empty($row['owner']) && ($row['owner'] === 'Yes');
+
+      // OG roles.
+      /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+      $query = $db->select('og_users_roles', 'ur')
+        ->fields('ur', ['uid', 'rid'])
+        ->fields('u', ['is_admin', 'created'])
+        ->condition('ur.gid', (int) $row['nid'])
+        ->orderBy('ur.uid');
+      $query->join('og_uid', 'u', 'ur.gid = u.nid AND ur.uid = u.uid');
+      $query->join('users', 'users', 'ur.uid = users.uid');
+      // Only migrated users are allowed.
+      $query->addTag('user_migrate');
+
+      foreach ($query->execute()->fetchAll() as $item) {
+        $uid = (int) $item->uid;
+        $created = (int) $item->created;
+
+        if (!isset($collections[$collection]['roles'])) {
+          // Initialize an empty array.
+          $collections[$collection]['roles'] = [
+            'admin' => [],
+            'facilitator' => [],
+            'member' => [],
+          ];
+        }
+
+        // Group owner.
+        if ((int) $item->is_admin === 1) {
+          $key = $is_owner ? 'admin' : 'facilitator';
+          if (!isset($collections[$collection]['roles'][$key][$uid])) {
+            $collections[$collection]['roles'][$key][$uid] = $created;
+          }
+        }
+        // Group facilitator.
+        if ($item->rid == 4 && !isset($collections[$collection]['roles']['facilitator'][$uid])) {
+          $collections[$collection]['roles']['facilitator'][$uid] = $created;
+        }
+        // Group members.
+        if ($item->rid == 5 && !isset($collections[$collection]['roles']['member'][$uid])) {
+          $collections[$collection]['roles']['member'][$uid] = $created;
+        }
+      }
+
+      if ($is_owner && in_array($row['type'], array_keys($publisher))) {
+        $publishers = $db
           ->select($publisher[$row['type']][0])
           ->fields($publisher[$row['type']][0], [$publisher[$row['type']][1]])
           ->condition($publisher[$row['type']][0] . '.vid', $row['vid'])
@@ -144,7 +189,7 @@ class Prepare extends SourcePluginBase {
         if ($publishers) {
           $collections[$collection]['publisher'] = '|' . implode('|', $publishers) . '|';
         }
-        $contacts = $source
+        $contacts = $db
           ->select($contact[$row['type']][0])
           ->fields($contact[$row['type']][0], [$contact[$row['type']][1]])
           ->condition($contact[$row['type']][0] . '.vid', $row['vid'])
@@ -157,6 +202,11 @@ class Prepare extends SourcePluginBase {
     }
 
     foreach ($collections as $collection => $data) {
+      // Serialize roles.
+      if (!empty($collections[$collection]['roles'])) {
+        $collections[$collection]['roles'] = Json::encode($collections[$collection]['roles']);
+      }
+
       // New collections's nid is 0. Collections with a NULL nid are collections
       // inheriting their data (abstract, etc.) from a Drupal 6 'community' or
       // 'repository' but not containing any 'community' or 'repository'. Such

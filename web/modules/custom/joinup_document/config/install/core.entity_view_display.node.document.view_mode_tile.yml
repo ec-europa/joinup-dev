@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.document.field_document_publication_date
     - field.field.node.document.field_document_short_title
     - field.field.node.document.field_document_source_url
+    - field.field.node.document.field_state
     - field.field.node.document.og_audience
     - node.type.document
   module:
@@ -36,7 +37,7 @@ content:
             lb-col: false
             classes: {  }
   field_document_file:
-    weight: 3
+    weight: 2
     label: hidden
     settings: {  }
     third_party_settings:
@@ -66,5 +67,6 @@ hidden:
   field_comments: true
   field_document_publication_date: true
   field_document_source_url: true
+  field_state: true
   links: true
   og_audience: true

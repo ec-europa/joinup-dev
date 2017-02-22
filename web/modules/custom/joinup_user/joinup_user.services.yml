@@ -1,6 +1,3 @@
 services:
   joinup_user.active_form_submit:
     class: \Drupal\joinup_user\ActiveFormSubmit
-  joinup_user.workflow.user_provider:
-    class: Drupal\joinup_user\WorkflowUserProvider
-    arguments: ['@current_user']

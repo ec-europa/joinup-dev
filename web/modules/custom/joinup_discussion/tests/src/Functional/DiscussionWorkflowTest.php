@@ -2,228 +2,160 @@
 
 namespace Drupal\Tests\joinup_discussion\Functional;
 
-use Drupal\Core\Session\AnonymousUserSession;
-use Drupal\og\Entity\OgRole;
-use Drupal\og\OgGroupAudienceHelper;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfInterface;
-use Drupal\Tests\joinup_core\JoinupWorkflowTestBase;
+use Drupal\Tests\joinup_core\Functional\NodeWorkflowTestBase;
 
 /**
  * Tests CRUD operations and workflow transitions for the discussion node.
  */
-class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
-
-  /**
-   * A non authenticated user.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $userAnonymous;
-
-  /**
-   * A user with the authenticated role.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $userAuthenticated;
-
-  /**
-   * A user with the moderator role.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $userModerator;
-
-  /**
-   * A user with the administrator role in the parent rdf entity.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $userOgAdministrator;
-
-  /**
-   * A user with the facilitator role in the parent rdf entity.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $userOgFacilitator;
-
-  /**
-   * A user with the member role in the parent rdf entity.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $userOgMember;
+class DiscussionWorkflowTest extends NodeWorkflowTestBase {
 
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
-    parent::setUp();
-
-    $this->userAnonymous = new AnonymousUserSession();
-    $this->userAuthenticated = $this->createUserWithRoles();
-    $this->userModerator = $this->createUserWithRoles(['moderator']);
-    $this->userOgMember = $this->createUserWithRoles();
-    $this->userOgFacilitator = $this->createUserWithRoles();
-    $this->userOgAdministrator = $this->createUserWithRoles();
+  protected function createAccessProvider() {
+    return [
+      'collection' => [
+        self::ELIBRARY_ONLY_FACILITATORS => [
+          'userModerator',
+          'userOgFacilitator',
+        ],
+        self::ELIBRARY_MEMBERS_FACILITATORS => [
+          'userModerator',
+          'userOgMember',
+          'userOgFacilitator',
+          // By default, og returns the 'member' role as part of the user roles.
+          // @see: \Drupal\og\Entity\OgMembership::getRoles().
+          'userOgAdministrator',
+        ],
+        self::ELIBRARY_REGISTERED_USERS => [
+          'userAuthenticated',
+          'userModerator',
+          'userOgFacilitator',
+          // The following users also have access due to being authenticated.
+          'userOgMember',
+          'userOgAdministrator',
+        ],
+      ],
+      'solution' => [
+        self::ELIBRARY_ONLY_FACILITATORS => [
+          'userModerator',
+          'userOgFacilitator',
+        ],
+        self::ELIBRARY_MEMBERS_FACILITATORS => [
+          'userModerator',
+          'userOgFacilitator',
+        ],
+        self::ELIBRARY_REGISTERED_USERS => [
+          'userAuthenticated',
+          'userModerator',
+          'userOgFacilitator',
+          'userOgMember',
+          'userOgAdministrator',
+        ],
+      ],
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getEntityType() {
-    return 'node';
-  }
-
-  /**
-   * Tests the CRUD operations for the asset release entities.
-   *
-   * Since the browser test is a slow test, both create access and read/update/
-   * delete access are tested below.
-   */
-  public function testCrudAccess() {
-    // Test create access.
-    foreach ($this->createAccessProvider() as $parent_bundle => $test_data_arrays) {
-      $parent = $this->createParent($parent_bundle, 'validated');
-
-      // Initialize the discussion entity as it is going to be used in all sub
-      // cases.
-      $content = $this->createNode([
-        'type' => 'discussion',
-        OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
-      ]);
-
-      foreach ($test_data_arrays as $test_data) {
-        $operation = 'create';
-        list($user_var, $expected_result) = $test_data;
-
-        $access = $this->ogAccess->userAccessEntity('create', $content, $this->{$user_var})->isAllowed();
-        $result = $expected_result ? t('have') : t('not have');
-        $message = "User {$user_var} should {$result} {$operation} access for bundle 'discussion' with parent {$parent_bundle}.";
-        $this->assertEquals($expected_result, $access, $message);
-      }
-    }
-
-    // Test view, update, delete access.
-    foreach (['collection', 'solution'] as $parent_bundle) {
-      foreach ($this->readUpdateDeleteAccessProvider() as $parent_state => $content_data) {
-        $parent = $this->createParent($parent_bundle, $parent_state);
-
-        foreach ($content_data as $content_state => $test_data_arrays) {
-          // Initialize the discussion entity as it is going to be used in all
-          // sub cases.
-          $content = $this->createNode([
-            'type' => 'discussion',
-            OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
-            'field_discussion_state' => $content_state,
-            'status' => $this->isPublishedState($content_state),
-          ]);
-
-          foreach ($test_data_arrays as $test_data_array) {
-            $operation = $test_data_array[0];
-            $user_var = $test_data_array[1];
-            $expected_result = $test_data_array[2];
-
-            $this->userProvider->setUser($this->{$user_var});
-            $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-            $result = $expected_result ? t('have') : t('not have');
-            $message = "User {$user_var} should {$result} {$operation} access for entity {$content->label()} ({$content_state}) with the parent {$parent_bundle} entity in {$parent_state} state.";
-            $this->assertEquals($expected_result, $access, $message);
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * Tests the discussion workflow.
-   */
-  public function testWorkflow() {
-    foreach ($this->workflowTransitionsProvider() as $content_state => $workflow_data) {
-      foreach (['collection', 'solution'] as $parent_bundle) {
-        $parent = $this->createParent($parent_bundle, 'validated');
-
-        foreach ($workflow_data as $user_var => $transitions) {
-          $content = $this->createNode([
-            'type' => 'discussion',
-            'field_discussion_state' => $content_state,
-            OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
-            'status' => $this->isPublishedState($content_state),
-          ]);
-          $content->save();
-
-          // Solution group has a member state that is coming from OG, but it
-          // has no privileges.
-          // @todo no better way? This is U G L Y. Argh, my eyes!
-          if ($parent_bundle === 'solution' && $user_var === 'userOgMember') {
-            $transitions = [];
-          }
-
-          // Override the user to be checked for the allowed transitions.
-          $this->userProvider->setUser($this->{$user_var});
-          $actual_transitions = $content->get('field_discussion_state')->first()->getTransitions();
-          $actual_transitions = array_map(function ($transition) {
-            return $transition->getId();
-          }, $actual_transitions);
-          sort($actual_transitions);
-          sort($transitions);
-
-          $this->assertEquals($transitions, $actual_transitions, "Transitions do not match for user $user_var, state $content_state and parent $parent_bundle.");
-        }
-      }
-    }
-  }
-
-  /**
-   * Creates a parent entity and initializes memberships.
-   *
-   * @param string $bundle
-   *   The bundle of the entity to create.
-   * @param string $state
-   *    The state of the entity.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
-   *    The created entity.
-   */
-  protected function createParent($bundle, $state) {
-    $state_field = [
-      'collection' => 'field_ar_state',
-      'solution' => 'field_is_state',
+  protected function readUpdateDeleteAccessProvider() {
+    $access_array = [
+      self::POST_MODERATION => [
+        'validated' => [
+          'view' => [
+            'userOwner',
+            'userModerator',
+            'userOgFacilitator',
+          ],
+          'update' => [
+            'userOwner',
+            'userModerator',
+            'userOgFacilitator',
+          ],
+          'delete' => [
+            'userModerator',
+            'userOgFacilitator',
+          ],
+        ],
+        'in_assessment' => [
+          'view' => [
+            'userOwner',
+            'userModerator',
+            'userOgFacilitator',
+          ],
+          'update' => [
+            'userModerator',
+            'userOgFacilitator',
+          ],
+          'delete' => [
+            'userModerator',
+            'userOgFacilitator',
+          ],
+        ],
+        'proposed' => [
+          'view' => [
+            'userOwner',
+            'userModerator',
+            'userOgFacilitator',
+          ],
+          'update' => [
+            'userOwner',
+            'userModerator',
+            'userOgFacilitator',
+          ],
+          'delete' => [
+            'userModerator',
+            'userOgFacilitator',
+          ],
+        ],
+        'archived' => [
+          'view' => [
+            'userOwner',
+            'userModerator',
+            'userOgFacilitator',
+          ],
+          'update' => [],
+          'delete' => [
+            'userModerator',
+            'userOgFacilitator',
+          ],
+        ],
+      ],
     ];
 
-    $parent = Rdf::create([
-      'label' => $this->randomMachineName(),
-      'rid' => $bundle,
-      $state_field[$bundle] => $state,
-    ]);
-    $parent->save();
-    $this->assertInstanceOf(RdfInterface::class, $parent, "The $bundle group was created.");
+    $parent_access_array = [];
+    $return_array = [];
+    // The only think affected by whether the parent is published or not, is the
+    // view permission. We are using 'draft' state for an unpublished parent and
+    // 'validated' state for published.
+    // For the published state, everyone should be able to see published
+    // content.
+    foreach (['collection', 'solution'] as $parent_bundle) {
+      foreach (['draft', 'validated'] as $parent_state) {
+        $parent_access_array[$parent_bundle][$parent_state] = $access_array;
+        foreach ($access_array as $moderation_state => $moderation_data) {
+          foreach ($moderation_data as $content_state => $operation_data) {
+            if ($parent_state === 'validated' && $this->isPublishedState($content_state)) {
+              $parent_access_array[$parent_state][$moderation_state][$content_state]['view'] = [
+                'userOwner',
+                'userAuthenticated',
+                'userModerator',
+                'userOgMember',
+                'userOgFacilitator',
+                'userOgAdministrator',
+              ];
+            }
+          }
+        }
+      }
+    }
 
-    $member_role = OgRole::getRole('rdf_entity', $bundle, 'member');
-    $facilitator_role = OgRole::getRole('rdf_entity', $bundle, 'facilitator');
-    $administrator_role = OgRole::getRole('rdf_entity', $bundle, 'administrator');
-    $this->createOgMembership($parent, $this->userOgMember, [$member_role]);
-    $this->createOgMembership($parent, $this->userOgFacilitator, [$facilitator_role]);
-    $this->createOgMembership($parent, $this->userOgAdministrator, [$administrator_role]);
-
-    return $parent;
+    return $return_array;
   }
 
   /**
-   * Determines if a state should be published in the discussion workflow.
-   *
-   * When programmatically creating a node in a certain state, there is no
-   * state_machine transition fired. The state_machine_revisions subscriber has
-   * the code to handle publishing of states, but it won't kick in. This
-   * function is used to determine if the node should be created as published.
-   *
-   * @param string $state
-   *   The state to check.
-   *
-   * @return bool
-   *   If the state is published or not.
+   * {@inheritdoc}
    */
   protected function isPublishedState($state) {
     $states = [
@@ -235,299 +167,164 @@ class DiscussionWorkflowTest extends JoinupWorkflowTestBase {
   }
 
   /**
-   * Provides data for create access check.
-   *
-   * The access to create a release is checked against the parent entity as it
-   * is dependant to og permissions.
-   * The structure of the array is:
-   * @code
-   * $access_array = [
-   *  'parent_bundle' => [
-   *    ['user1', 'expected_result'],
-   *    ['user2', 'expected_result'],
-   * ];
-   * @code
-   * The user variable represents the variable defined in the test.
-   * No parent state needs to be checked as it doesn't affect the possibility
-   * to create discussion.
-   */
-  protected function createAccessProvider() {
-    return [
-      // Permissions for discussions created inside a collection.
-      'collection' => [
-        ['userAnonymous', FALSE],
-        ['userAuthenticated', FALSE],
-        ['userModerator', TRUE],
-        ['userOgMember', TRUE],
-        ['userOgFacilitator', TRUE],
-        // By default, og returns the 'member' role as part of the user roles.
-        // @see: \Drupal\og\Entity\OgMembership::getRoles().
-        ['userOgAdministrator', TRUE],
-      ],
-      // Permissions for discussions created inside a solution.
-      'solution' => [
-        ['userAnonymous', FALSE],
-        ['userAuthenticated', FALSE],
-        ['userModerator', TRUE],
-        ['userOgMember', FALSE],
-        ['userOgFacilitator', TRUE],
-        ['userOgAdministrator', FALSE],
-      ],
-    ];
-  }
-
-  /**
-   * Provides data for access check.
-   *
-   * The structure of the array is:
-   * @code
-   * $access_array = [
-   *   'parent_state' => [
-   *     'entity_state' => [
-   *        ['operation', 'user1', 'expected_result'],
-   *        ['operation', 'user2', 'expected_result'],
-   *     ],
-   *   ],
-   * ];
-   * @code
-   * Only two parent states need to be tested as the expected result might
-   * differ depending on whether the parent is published or not.
-   *
-   * The reason that this is just an array and not a proper provider is that it
-   * would take a lot of time to reinstall an instance of the site for each
-   * entry.
-   */
-  protected function readUpdateDeleteAccessProvider() {
-    return [
-      // Unpublished parent.
-      'draft' => [
-        'validated' => [
-          ['view', 'userAnonymous', FALSE],
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgMember', FALSE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgMember', FALSE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgMember', FALSE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-        'in_assessment' => [
-          ['view', 'userAnonymous', FALSE],
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-        'proposed' => [
-          ['view', 'userAnonymous', FALSE],
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-        'archived' => [
-          ['view', 'userAnonymous', FALSE],
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', FALSE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-      ],
-      // Published parent.
-      'validated' => [
-        'validated' => [
-          ['view', 'userAnonymous', TRUE],
-          ['view', 'userAuthenticated', TRUE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', TRUE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-        'in_assessment' => [
-          ['view', 'userAnonymous', FALSE],
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-        'proposed' => [
-          ['view', 'userAnonymous', FALSE],
-          ['view', 'userAuthenticated', FALSE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', FALSE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', TRUE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-        'archived' => [
-          ['view', 'userAnonymous', TRUE],
-          ['view', 'userAuthenticated', TRUE],
-          ['view', 'userModerator', TRUE],
-          ['view', 'userOgFacilitator', TRUE],
-          ['view', 'userOgAdministrator', TRUE],
-          ['update', 'userAnonymous', FALSE],
-          ['update', 'userAuthenticated', FALSE],
-          ['update', 'userModerator', TRUE],
-          ['update', 'userOgFacilitator', FALSE],
-          ['update', 'userOgAdministrator', FALSE],
-          ['delete', 'userAnonymous', FALSE],
-          ['delete', 'userAuthenticated', FALSE],
-          ['delete', 'userModerator', TRUE],
-          ['delete', 'userOgFacilitator', TRUE],
-          ['delete', 'userOgAdministrator', FALSE],
-        ],
-      ],
-    ];
-  }
-
-  /**
-   * Provides data for transition checks.
-   *
-   * The structure of the array is:
-   * @code
-   * $workflow_array = [
-   *   'entity_state' => [
-   *     'user' => [
-   *       'transition',
-   *       'transition',
-   *     ],
-   *   ],
-   * ];
-   * @code
-   * There can be multiple transitions that can lead to a specific state, so
-   * the check is being done on allowed transitions.
+   * {@inheritdoc}
    */
   protected function workflowTransitionsProvider() {
-    return [
-      '__new__' => [
-        'userAuthenticated' => [],
-        'userOgMember' => [
-          'validate',
+    $access_array = [
+      self::POST_MODERATION => [
+        '__new__' => [],
+        'validated' => [
+          'userAuthenticated' => [],
+          'userOwner' => [
+            'update_published',
+          ],
+          'userOgMember' => [],
+          'userOgFacilitator' => [
+            'update_published',
+            'request_changes',
+            'report',
+            'disable',
+          ],
+          'userModerator' => [
+            'update_published',
+            'request_changes',
+            'report',
+            'disable',
+          ],
         ],
-        'userOgFacilitator' => [
-          'validate',
+        'in_assessment' => [
+          'userAuthenticated' => [],
+          'userOwner' => [],
+          'userOgMember' => [],
+          'userOgFacilitator' => [
+            'approve_report',
+          ],
+          'userModerator' => [
+            'approve_report',
+          ],
         ],
-        'userModerator' => [
-          'validate',
+        'proposed' => [
+          'userAuthenticated' => [],
+          'userOwner' => [
+            'update_proposed',
+          ],
+          'userOgMember' => [],
+          'userOgFacilitator' => [
+            'update_proposed',
+            'approve_proposed',
+          ],
+          'userModerator' => [
+            'update_proposed',
+            'approve_proposed',
+          ],
         ],
-      ],
-      'validated' => [
-        'userAuthenticated' => [],
-        'userOgMember' => [
-          'update_published',
+        // Once the node is in archived state, no actions can be taken anymore.
+        'archived' => [
+          'userAuthenticated' => [],
+          'userOwner' => [],
+          'userOgMember' => [],
+          'userOgFacilitator' => [],
+          'userModerator' => [],
         ],
-        'userOgFacilitator' => [
-          'update_published',
-          'request_changes',
-          'report',
-          'disable',
-        ],
-        'userModerator' => [
-          'update_published',
-          'request_changes',
-          'report',
-          'disable',
-        ],
-      ],
-      'in_assessment' => [
-        'userAuthenticated' => [],
-        'userOgMember' => [],
-        'userOgFacilitator' => [
-          'approve_report',
-        ],
-        'userModerator' => [
-          'approve_report',
-        ],
-      ],
-      'proposed' => [
-        'userAuthenticated' => [],
-        'userOgMember' => [
-          'update_proposed',
-        ],
-        'userOgFacilitator' => [
-          'update_proposed',
-          'approve_proposed',
-        ],
-        'userModerator' => [
-          'update_proposed',
-          'approve_proposed',
-        ],
-      ],
-      // Once the node is in archived state, no actions can be taken anymore.
-      'archived' => [
-        'userAuthenticated' => [],
-        'userOgMember' => [],
-        'userOgFacilitator' => [],
-        'userModerator' => [],
       ],
     ];
+
+    // The allowed transitions remain between parent group's bundle regardless
+    // of the moderation or publication status.
+    $parent_access_array = [];
+    $return_array = [];
+    $e_library_states = $this->getElibraryStates();
+    foreach ($access_array as $moderation_state => $moderation_data) {
+      foreach ($moderation_data as $content_state => $user_var_data) {
+        foreach (['collection', 'solution'] as $parent_bundle) {
+          foreach (['draft', 'validated'] as $parent_state) {
+            $parent_access_array[$parent_bundle][$parent_state] = $access_array;
+            foreach ($e_library_states as $e_library) {
+              $return_array[$parent_bundle][$e_library] = $access_array;
+            }
+          }
+        }
+      }
+    }
+
+    // Special handle the transitions to create an entity that are affected by
+    // eLibrary and moderation.
+    foreach ($return_array as $parent_bundle => $parent_data) {
+      foreach ($parent_data as $e_library => $e_library_data) {
+        foreach ($e_library_data as $moderation_state => $moderation_data) {
+          $return_array[$parent_bundle][$e_library][$moderation_state]['__new__'] = $this->getWorkflowElibraryCreationRoles($e_library, $moderation_state);
+        }
+      }
+    }
+
+    return $return_array;
+  }
+
+  /**
+   * Retrieves the allowed conditions per parent's eLibrary settings.
+   *
+   * @var int $e_library
+   *    The eLibrary settings for the parent.
+   * @var int $moderation
+   *    The moderation settings for the parent.
+   *
+   * @return array
+   *    An array with users as keys and allowed transitions as values.
+   */
+  protected function getWorkflowElibraryCreationRoles($e_library, $moderation) {
+    $allowed_roles = [
+      self::ELIBRARY_ONLY_FACILITATORS => [
+        self::POST_MODERATION => [
+          'userOgFacilitator' => [
+            'validate',
+          ],
+          'userModerator' => [
+            'validate',
+          ],
+        ],
+      ],
+      self::ELIBRARY_MEMBERS_FACILITATORS => [
+        self::POST_MODERATION => [
+          'userOgMember' => [
+            'validate',
+          ],
+          'userOgFacilitator' => [
+            'validate',
+          ],
+          'userModerator' => [
+            'validate',
+          ],
+        ],
+      ],
+      self::ELIBRARY_REGISTERED_USERS => [
+        self::POST_MODERATION => [
+          'userAuthenticated' => [
+            'validate',
+          ],
+          'userOgMember' => [
+            'validate',
+          ],
+          'userOgAdministrator' => [
+            'validate',
+          ],
+          'userOgFacilitator' => [
+            'validate',
+          ],
+          'userModerator' => [
+            'validate',
+          ],
+        ],
+      ],
+    ];
+
+    return $allowed_roles[$e_library][$moderation];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getEntityBundle() {
+    return 'discussion';
   }
 
 }

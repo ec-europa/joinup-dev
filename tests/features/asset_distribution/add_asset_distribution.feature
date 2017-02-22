@@ -34,13 +34,12 @@ Feature: Add distribution through the UI
       # forced to check for the widget heading.
       # @todo to be handled in ISAICP-2655
       And I should see the text "Access URL"
-      And I should see the text "Distribution files"
       # @todo: The link has to be changed to the legal contact form.
       # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
       And I should see the link "contacting us"
       When I fill in "Title" with "Linux x86-64 SDK"
       And I enter "<p>The full software development kit for systems based on the x86-64 architecture.</p>" in the "Description" wysiwyg editor
-      And I attach the file "test.zip" to "Distribution file"
+      Given I upload the file "test.zip" to "Access URL"
       And I select "WTFPL" from "License"
       And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
       And I press "Save"
@@ -99,13 +98,12 @@ Feature: Add distribution through the UI
       # forced to check for the widget heading.
       # @todo to be handled in ISAICP-2655
       And I should see the text "Access URL"
-      And I should see the text "Distribution files"
       # @todo: The link has to be changed to the legal contact form.
       # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
       And I should see the link "contacting us"
       When I fill in "Title" with "Source tarball"
       And I enter "<p>The full source code.</p>" in the "Description" wysiwyg editor
-      And I attach the file "test.zip" to "Distribution file"
+      Given I upload the file "test.zip" to "Access URL"
       And I select "WTFPL" from "License"
       And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
       And I press "Save"

@@ -52,9 +52,10 @@ Feature: "Add event" visibility options.
       | Title       | An amazing event                      |
       | Short title | Amazing event                         |
       | Description | This is going to be an amazing event. |
+      | Location    | Rue Belliard, 28                      |
     And I fill in "Start date" with the date "2018-08-29"
     And I fill in "Start date" with the time "23:59:00"
-    And I press "Save"
+    And I press "Save as draft"
     Then I should see the heading "An amazing event"
     And I should see the success message "Event An amazing event has been created."
     And the "Stream of Dreams" collection has a event titled "An amazing event"

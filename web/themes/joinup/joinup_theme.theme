@@ -5,6 +5,8 @@
  * Functions to support theming in the Joinup theme.
  */
 
+use Drupal\Component\Serialization\Json;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
@@ -160,7 +162,7 @@ function joinup_theme_preprocess_block(&$variables) {
               $is_listing = TRUE;
             }
           }
-          elseif ($node_type == 'news') {
+          elseif ($node_type == 'news' || $node_type == 'event') {
             $is_listing = TRUE;
           }
         }
@@ -191,6 +193,25 @@ function joinup_theme_preprocess_fieldset(&$variables) {
   $variables['legend']['attributes'] = new Attribute([
     'for' => $variables['element']['#id'],
   ]);
+}
+
+/**
+ * Prepares variables for file form widget templates.
+ *
+ * Default template: file-managed-file.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: A render element representing the file.
+ */
+function joinup_preprocess_file_managed_file(array &$variables) {
+  // Workaround for https://www.drupal.org/node/2705471
+  // Restore states related attributes.
+  $element = &$variables['element'];
+  if (!empty($element['#states'])) {
+    $variables['attributes']['data-drupal-states'] = Json::encode($element['#states']);
+  }
+
 }
 
 /**
@@ -405,6 +426,75 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_page_title__node__event().
+ */
+function joinup_theme_preprocess_page_title__node__event(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['entity'];
+
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
+
+  // When we have an end date, the start date format changes based on the time
+  // span between the two.
+  if (!$node->get('field_event_end_date')->isEmpty()) {
+    /* @var \Drupal\Core\Datetime\DrupalDateTime $start_date */
+    $start_date = $node->get('field_event_start_date')->first()->date;
+    /* @var \Drupal\Core\Datetime\DrupalDateTime $end_date */
+    $end_date = $node->get('field_event_end_date')->first()->date;
+
+    // Formatting a date should go through the proper service.
+    /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+    $date_formatter = \Drupal::service('date.formatter');
+
+    // Get the user timezone to properly format dates.
+    // @see \Drupal\datetime\Plugin\Field\FieldFormatter\DateTimeFormatterBase::setTimeZone()
+    $timezone = drupal_get_user_timezone();
+
+    // Helper function to reduce verbosity on formatting dates.
+    $format_date = function (DrupalDateTime $date, $format) use ($date_formatter, $timezone) {
+      return $date_formatter->format($date->getTimestamp(), 'custom', $format, $timezone);
+    };
+
+    if ($format_date($start_date, 'Y') !== $format_date($end_date, 'Y')) {
+      // If the two dates span across a year, show the full start date.
+      $start_date_text = $date_formatter->format($start_date->getTimestamp(), 'date_only_text_month');
+    }
+    elseif ($format_date($start_date, 'm') != $format_date($end_date, 'm')) {
+      // Show only month and year if they span across months.
+      $start_date_text = $format_date($start_date, 'd F');
+    }
+    else {
+      // Show only the day otherwise.
+      $start_date_text = $format_date($start_date, 'd');
+    }
+
+    $field_event_start_date = [
+      '#theme' => 'time',
+      '#text' => $start_date_text,
+      '#html' => FALSE,
+      '#attributes' => [
+        // Create the ISO date in Universal Time.
+        // Do not use the date formatter as we don't want to touch anything in
+        // this date.
+        'datetime' => $start_date->format("Y-m-d\TH:i:s") . 'Z',
+      ],
+    ];
+  }
+  else {
+    $field_event_start_date = $viewBuilder->viewField($node->get('field_event_start_date'), 'default');
+  }
+
+  // Get dates and location fields.
+  $field_event_end_date = $viewBuilder->viewField($node->get('field_event_end_date'), 'default');
+  $field_event_location = $viewBuilder->viewField($node->get('field_event_location'), 'default');
+
+  $variables['additional_content']['field_event_start_date'] = $field_event_start_date;
+  $variables['additional_content']['field_event_end_date'] = $field_event_end_date;
+  $variables['additional_content']['field_event_location'] = $field_event_location;
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK_alter() for input.html.twig.
  *
  * Add theme suggestions so we can provide different styling on some form
@@ -497,7 +587,8 @@ function joinup_theme_theme_suggestions_container_alter(array &$suggestions, arr
 /**
  * Implements hook_theme_suggestions_HOOK_alter() for page-title.html.twig.
  *
- * Adds suggestions when the route is the canonical view of a rdf entity.
+ * Adds suggestions when the route is the canonical view of a rdf entity or a
+ * node.
  */
 function joinup_theme_theme_suggestions_page_title_alter(array &$suggestions, array &$variables) {
   $route_match = \Drupal::routeMatch();

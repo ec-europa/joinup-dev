@@ -61,7 +61,7 @@ Feature: "Add document" visibility options.
       | Short title | Amazing document                         |
       | Description | This is going to be an amazing document. |
     And I attach the file "test.zip" to "File"
-    And I press "Save"
+    And I press "Save as draft"
     Then I should see the heading "The Sparks of the Butterfly"
     And I should see the success message "Document The Sparks of the Butterfly has been created."
     And the "Winter of Beginning" solution has a document titled "The Sparks of the Butterfly"
