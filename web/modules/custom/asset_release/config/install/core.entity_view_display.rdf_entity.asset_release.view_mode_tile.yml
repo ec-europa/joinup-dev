@@ -9,7 +9,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_description
     - field.field.rdf_entity.asset_release.field_isr_distribution
     - field.field.rdf_entity.asset_release.field_isr_documentation
-    - field.field.rdf_entity.asset_release.field_isr_has_version
     - field.field.rdf_entity.asset_release.field_isr_included_asset
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
     - field.field.rdf_entity.asset_release.field_isr_language
@@ -29,7 +28,6 @@ dependencies:
     - rdf_entity.rdfentity.asset_release
   module:
     - ds
-    - joinup
     - text
     - user
 id: rdf_entity.asset_release.view_mode_tile
