@@ -17,7 +17,7 @@ Feature: Asset distribution editing.
     And the following distribution:
       | title       | Asset distribution example |
       | description | Sample description         |
-      | file        | test.zip                   |
+      | access url  | test.zip                   |
       | solution    | Solution A                 |
     And the following release:
       | title         | Asset release example      |

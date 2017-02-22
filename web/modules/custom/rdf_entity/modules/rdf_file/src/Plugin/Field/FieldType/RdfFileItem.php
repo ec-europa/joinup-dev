@@ -51,4 +51,25 @@ class RdfFileItem extends FileItem {
     return $properties;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function isEmpty() {
+    $is_empty = parent::isEmpty();
+
+    // An entity reference item is empty when the target ID is strictly NULL in
+    // order to allow pointing to 0 (integer zero) or '' (empty string). That
+    // makes sense if you think that a user reference can point to Anonymous
+    // user (uid === 0) or a taxonomy term points to the root (tid === 0). But
+    // an rdf_file item is empty when the target ID is '' (empty string).
+    if (!$is_empty && is_string($this->target_id)) {
+      $target_id = trim($this->target_id);
+      if ($target_id === '') {
+        return TRUE;
+      }
+    }
+
+    return $is_empty;
+  }
+
 }
