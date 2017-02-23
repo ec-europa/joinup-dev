@@ -88,9 +88,6 @@ class RdfFileFieldTest extends RdfWebTestBase {
 
     // Test file for new entities.
     $id = $this->uploadRdfFile($test_file, $field_name, NULL, $settings);
-    $rdf_entity = $rdf_storage->load($id);
-    $this->assertTrue($rdf_entity instanceof RdfInterface, "The entity was successfully loaded!");
-    $this->assertTrue(!empty($rdf_entity->{$field_name}->target_id), "The target ID is not empty!");
     $rdf_storage->resetCache(array($id));
     $rdf_entity = $rdf_storage->load($id);
     $this->assertTrue($rdf_entity instanceof RdfInterface, "The entity was successfully loaded.");
@@ -127,9 +124,6 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $this->assertTrue($test_file instanceof FileInterface, "Test file created.");
 
     $id = $this->setRemoteFile($this->getFileAbsoluteUri($test_file), $field_name, NULL, $settings);
-    $rdf_entity = $rdf_storage->load($id);
-    $this->assertTrue($rdf_entity instanceof RdfInterface, "The entity was successfully loaded!");
-    $this->assertTrue(!empty($rdf_entity->{$field_name}->target_id), "The target ID is not empty!");
     $rdf_storage->resetCache(array($id));
     $rdf_entity = $rdf_storage->load($id);
     $this->assertTrue($rdf_entity instanceof RdfInterface, "The entity was successfully loaded.");
@@ -225,6 +219,8 @@ class RdfFileFieldTest extends RdfWebTestBase {
    *    The id of the rdf entity.
    */
   protected function prepareAndPostForm($rdf_entity_id, $field_name, $select, $file_uri, $field_html_name) {
+    $this->pr("The field name is \"{$field_name}[0][file-wrap][select]\"");
+    $this->pr("The file uri is {$file_uri}");
     // Set that the file is local.
     $edit["{$field_name}[0][file-wrap][select]"] = $select;
     $edit[$field_html_name] = $file_uri;
