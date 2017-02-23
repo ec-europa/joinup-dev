@@ -54,3 +54,49 @@ Feature: User profile
     # This message is typical shown when the mail server is not responding. This is just a smoke test
     # to see that all is fine and dandy, and mails are being delivered.
     Then I should not see the error message "Unable to send email. Contact the site administrator if the problem persists."
+
+  Scenario: The user public profile page shows the content he's author of or is member of.
+    Given users:
+      | name            | mail                        |
+      | Corwin Robert   | corwin.robert@example.com   |
+      | Anise Edwardson | anise.edwardson@example.com |
+    And the following solutions:
+      | title              | description                                     | logo     | banner     | state     |
+      | E.C.O. fertilizers | Ecologic cool organic fertilizers production.   | logo.png | banner.jpg | validated |
+      | SOUND project      | Music playlist for growing flowers with rhythm. | logo.png | banner.jpg | validated |
+    And the following collections:
+      | title                 | description                           | logo     | banner     | state     | affiliates         |
+      | Botanic E.D.E.N.      | European Deep Earth Nurturing project | logo.png | banner.jpg | validated | E.C.O. fertilizers |
+      | Ethic flower handling | Because even flowers have feelings.   | logo.png | banner.jpg | validated | SOUND project      |
+    And discussion content:
+      | title                  | author          | collection            | state     |
+      | Repopulating blue iris | Corwin Robert   | Botanic E.D.E.N.      | validated |
+      | title                  | Anise Edwardson | Ethic flower handling | validated |
+    And the following contact:
+      | name        | Wibo Verhoeven             |
+      | email       | wibo.verhoeven@example.com |
+      | Website URL | http://example.com         |
+      | author      | Corwin Robert              |
+    And the following owner:
+      | type                  | name                 | author        |
+      | Private Individual(s) | Somboon De Laurentis | Corwin Robert |
+    And the following collection user membership:
+      | user          | collection       |
+      | Corwin Robert | Botanic E.D.E.N. |
+    And the following solution user membership:
+      | user          | solution      |
+      | Corwin Robert | SOUND project |
+
+    When I am an anonymous user
+    And I go to the public profile of "Corwin Robert"
+    Then I should see the heading "Corwin Robert"
+    # Tiles should be shown for the groups the user is member of or author of.
+    And I should see the "Botanic E.D.E.N." tile
+    And I should see the "SOUND project" tile
+    And I should see the "Repopulating blue iris" tile
+
+    But I should not see the "Ethic flower handling" tile
+    And I should not see the "E.C.O. fertilizers" tile
+    # Contact information and owner tiles should never be shown.
+    And I should not see the "Wibo Verhoeven" tile
+    And I should not see the "Somboon De Laurentis" tile
