@@ -48,7 +48,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @throws \Exception;
    *   If a wrong type has been passed.
    *
-   * @Given (the following )owner/owners:
+   * @Given (the following )owner(s):
    */
   public function givenOwner(TableNode $owners_table) {
     foreach ($owners_table->getHash() as $row) {
