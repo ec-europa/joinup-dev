@@ -1,8 +1,7 @@
 <?php
 
-namespace Drupal\Tests\rdf_file\Functional;
+namespace Drupal\Tests\rdf_file;
 
-use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -79,23 +78,10 @@ class RdfFileFieldTest extends RdfWebTestBase {
   }
 
   /**
-   * Smokescreen test for CPHP.
-   */
-  public function testCphpSmokescreen() {
-    $original = drupal_get_path('module', 'simpletest') . '/files';
-    $this->pr("\nThe module filepath is: " . $original);
-    $this->pr("\nThe public directory for the test is: " . PublicStream::basePath());
-    $test_file = $this->getTestFile('text');
-    $this->pr("\nThe testfile's uri is: " . $test_file->getFileUri());
-    $this->pr("\nAbsolute path is: " . file_create_url($test_file->getFileUri()));
-    $this->assertTrue(is_file($test_file->getFileUri()), "The file exists.");
-  }
-
-  /**
    * Tests upload of a file to an rdf file field.
    */
   public function testSingleValuedWidgetLocalFile() {
-    $rdf_storage = $this->container->get('entity.manager')->getStorage('rdf_entity');
+    $this->rdfStorage = $this->container->get('entity.manager')->getStorage('rdf_entity');
     $type_name = 'rdf_file';
     $field_name = 'field_rdf_file';
     $settings = ['rid' => $type_name];
@@ -105,11 +91,9 @@ class RdfFileFieldTest extends RdfWebTestBase {
     // Test file for new entities.
     $id = $this->uploadRdfFile($test_file, $field_name, NULL, $settings);
     $this->rdfStorage->resetCache(array($id));
-    $rdf_entity = $rdf_storage->load($id);
-    $this->assertTrue($rdf_entity instanceof RdfInterface, "The entity was successfully loaded.");
-    $this->assertTrue(!empty($rdf_entity->{$field_name}->target_id), "The target ID is not empty");
+    $rdf_entity = $this->rdfStorage->load($id);
     $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
-    $this->assertTrue(is_file($rdf_entity_file->getFileUri()), "File {$rdf_entity_file->getFileUri()} exists.");
+    $this->assertTrue(is_file($rdf_entity_file->getFileUri()), 'New file saved to disk on rdf_entity creation.');
 
     // Test when the entity has a remote file and we upload a local one.
     // The widget should quietly overwrite the remote one as the select input
@@ -118,8 +102,8 @@ class RdfFileFieldTest extends RdfWebTestBase {
       $field_name => $this->getFileAbsoluteUri($rdf_entity_file),
     ]);
     $id = $this->uploadRdfFile($test_file, $field_name, $rdf_entity->id());
-    $rdf_storage->resetCache(array($id));
-    $rdf_entity = $rdf_storage->load($id);
+    $this->rdfStorage->resetCache(array($id));
+    $rdf_entity = $this->rdfStorage->load($id);
     $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue(is_file($rdf_entity_file->getFileUri()), 'New file saved to disk on rdf_entity creation.');
 
@@ -132,7 +116,7 @@ class RdfFileFieldTest extends RdfWebTestBase {
    * Tests setting a remote file for an rdf file field.
    */
   public function testSingleValuedWidgetRemoteFile() {
-    $rdf_storage = $this->container->get('entity.manager')->getStorage('rdf_entity');
+    $this->rdfStorage = $this->container->get('entity.manager')->getStorage('rdf_entity');
     $type_name = 'rdf_file';
     $field_name = 'field_rdf_file';
     $settings = ['rid' => $type_name];
@@ -140,12 +124,10 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $this->assertTrue($test_file instanceof FileInterface, "Test file created.");
 
     $id = $this->setRemoteFile($this->getFileAbsoluteUri($test_file), $field_name, NULL, $settings);
-    $rdf_storage->resetCache(array($id));
-    $rdf_entity = $rdf_storage->load($id);
-    $this->assertTrue($rdf_entity instanceof RdfInterface, "The entity was successfully loaded.");
-    $this->assertTrue(!empty($rdf_entity->{$field_name}->target_id), "The target ID is not empty");
+    $this->rdfStorage->resetCache(array($id));
+    $rdf_entity = $this->rdfStorage->load($id);
     $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
-    $this->assertTrue($rdf_entity_file instanceof RemoteFile, "File {$rdf_entity_file->getFileUri()} exists.");
+    $this->assertTrue($rdf_entity_file instanceof RemoteFile, 'The remote file entity was saved successfully.');
 
     // Ensure the file can be downloaded.
     $this->drupalGet($this->getFileAbsoluteUri($rdf_entity_file));
@@ -159,8 +141,8 @@ class RdfFileFieldTest extends RdfWebTestBase {
     ]);
 
     $id = $this->setRemoteFile($this->getFileAbsoluteUri($test_file), $field_name, $rdf_entity->id());
-    $rdf_storage->resetCache(array($id));
-    $rdf_entity = $rdf_storage->load($id);
+    $this->rdfStorage->resetCache(array($id));
+    $rdf_entity = $this->rdfStorage->load($id);
     $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue($rdf_entity_file instanceof RemoteFile, 'The remote file entity was saved successfully.');
 
@@ -235,8 +217,6 @@ class RdfFileFieldTest extends RdfWebTestBase {
    *    The id of the rdf entity.
    */
   protected function prepareAndPostForm($rdf_entity_id, $field_name, $select, $file_uri, $field_html_name) {
-    $this->pr("\nThe field name is \"{$field_name}[0][file-wrap][select]\"");
-    $this->pr("\nThe file uri is {$file_uri}");
     // Set that the file is local.
     $edit["{$field_name}[0][file-wrap][select]"] = $select;
     $edit[$field_html_name] = $file_uri;
@@ -244,9 +224,6 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $edit_url = Url::fromRoute('entity.rdf_entity.edit_form', ['rdf_entity' => $rdf_entity_id]);
     $internal_path = $edit_url->getInternalPath();
     $this->drupalPostForm($internal_path, $edit, t('Save'));
-    $html = $this->getSession()->getPage()->getHtml();
-    $this->pr("\n\n================\n" . $html . "\n================\n");
-    $this->assertResponse(200, 'Post form was submitted properly.');
 
     return $rdf_entity_id;
   }
@@ -276,6 +253,7 @@ class RdfFileFieldTest extends RdfWebTestBase {
    *    The loaded or created entity.
    */
   protected function getRdfEntity($id, array $extras = []) {
+    $this->rdfStorage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('rdf_entity');
     if (!empty($id)) {
       $this->rdfStorage->resetCache([$id]);
       $rdf_entity = $this->rdfStorage->load($id);
@@ -290,16 +268,6 @@ class RdfFileFieldTest extends RdfWebTestBase {
     }
 
     return $rdf_entity;
-  }
-
-  /**
-   * Prints a message to the console.
-   *
-   * @param string $message
-   *    The string message.
-   */
-  protected function pr($message) {
-    fwrite(STDOUT, print_r($message, TRUE));
   }
 
 }

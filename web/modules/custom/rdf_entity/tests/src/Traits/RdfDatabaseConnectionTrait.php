@@ -72,19 +72,21 @@ trait RdfDatabaseConnectionTrait {
    * The BrowserTestBase is creating a new copy of the settings.php file to the
    * test directory so the sparql entry needs to be inserted to the new
    * configuration.
-   *
-   * @todo: The settings should not be hardcoded.
    */
   protected function setUpSparqlForBrowser() {
+    // If the test is run with argument db url then use it.
+    // export SIMPLETEST_SPARQL_DB='sparql://127.0.0.1:8890/'.
+    $db_url = getenv('SIMPLETEST_SPARQL_DB');
+    if (empty($db_url)) {
+      return FALSE;
+    }
+
+    $database = Database::convertDbUrlToConnectionInfo($db_url, dirname(dirname(__FILE__)));
+    $database['namespace'] = 'Drupal\\rdf_entity\\Database\\Driver\\sparql';
+
     $key = 'sparql_default';
     $target = 'default';
-    $database = array(
-      'prefix' => '',
-      'host' => 'localhost',
-      'port' => '8890',
-      'namespace' => 'Drupal\\rdf_entity\\Database\\Driver\\sparql',
-      'driver' => 'sparql',
-    );
+
     $settings['databases'][$key][$target] = (object) array(
       'value' => $database,
       'required' => TRUE,
