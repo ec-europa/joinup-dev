@@ -7,9 +7,14 @@ dependencies:
     - field.field.node.document.field_comments
     - field.field.node.document.field_document_file
     - field.field.node.document.field_document_publication_date
-    - field.field.node.document.field_document_short_title
     - field.field.node.document.field_document_source_url
+    - field.field.node.document.field_keywords
+    - field.field.node.document.field_licence
+    - field.field.node.document.field_short_title
+    - field.field.node.document.field_spatial_coverage
     - field.field.node.document.field_state
+    - field.field.node.document.field_topic
+    - field.field.node.document.field_type
     - field.field.node.document.og_audience
     - node.type.document
   module:
@@ -30,6 +35,7 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_comments:
     weight: 5
     label: above
@@ -38,12 +44,14 @@ content:
       view_mode: default
     third_party_settings: {  }
     type: comment_default
+    region: content
   field_document_file:
     weight: 3
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
+    region: content
   field_document_publication_date:
     weight: 2
     label: above
@@ -52,13 +60,7 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
-  field_document_short_title:
-    weight: 0
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
+    region: content
   field_document_source_url:
     weight: 4
     label: above
@@ -70,7 +72,21 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
+  field_short_title:
+    weight: 0
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
 hidden:
+  field_keywords: true
+  field_licence: true
+  field_spatial_coverage: true
   field_state: true
+  field_topic: true
+  field_type: true
   links: true
   og_audience: true

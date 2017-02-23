@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - node
-id: node.field_document_short_title
-field_name: field_document_short_title
+id: node.field_short_title
+field_name: field_short_title
 entity_type: node
 type: string
 settings:

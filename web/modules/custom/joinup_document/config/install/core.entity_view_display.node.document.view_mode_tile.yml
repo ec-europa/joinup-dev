@@ -7,9 +7,14 @@ dependencies:
     - field.field.node.document.field_comments
     - field.field.node.document.field_document_file
     - field.field.node.document.field_document_publication_date
-    - field.field.node.document.field_document_short_title
     - field.field.node.document.field_document_source_url
+    - field.field.node.document.field_keywords
+    - field.field.node.document.field_licence
+    - field.field.node.document.field_short_title
+    - field.field.node.document.field_spatial_coverage
     - field.field.node.document.field_state
+    - field.field.node.document.field_topic
+    - field.field.node.document.field_type
     - field.field.node.document.og_audience
     - node.type.document
   module:
@@ -36,6 +41,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_document_file:
     weight: 2
     label: hidden
@@ -49,7 +55,8 @@ content:
             lb-col: false
             classes: {  }
     type: file_url_plain
-  field_document_short_title:
+    region: content
+  field_short_title:
     weight: 0
     label: hidden
     settings:
@@ -63,10 +70,16 @@ content:
             lb-col: false
             classes: {  }
     type: string
+    region: content
 hidden:
   field_comments: true
   field_document_publication_date: true
   field_document_source_url: true
+  field_keywords: true
+  field_licence: true
+  field_spatial_coverage: true
   field_state: true
+  field_topic: true
+  field_type: true
   links: true
   og_audience: true

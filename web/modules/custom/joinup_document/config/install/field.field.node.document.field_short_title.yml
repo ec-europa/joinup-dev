@@ -2,10 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_document_short_title
+    - field.storage.node.field_short_title
     - node.type.document
-id: node.document.field_document_short_title
-field_name: field_document_short_title
+id: node.document.field_short_title
+field_name: field_short_title
 entity_type: node
 bundle: document
 label: 'Short title'

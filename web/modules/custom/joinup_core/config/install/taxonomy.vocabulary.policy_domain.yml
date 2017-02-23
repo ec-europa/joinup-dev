@@ -3,6 +3,7 @@ status: true
 dependencies:
   module:
     - rdf_entity
+    - rdf_taxonomy
 third_party_settings:
   rdf_entity:
     mapping:
