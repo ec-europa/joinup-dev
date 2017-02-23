@@ -88,6 +88,8 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $test_file = $this->getTestFile('text');
     $test_file->save();
     $loaded_file = File::load($test_file->id());
+    $this->container->get('entity.manager')->getStorage('file')->resetCache(array($loaded_file->id()));
+    $loaded_file = File::load($test_file->id());
     $this->assertTrue($loaded_file instanceof FileInterface, "Test file created.");
 
     // Test file for new entities.
