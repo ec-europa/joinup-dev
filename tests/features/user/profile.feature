@@ -6,8 +6,8 @@ Feature: User profile
   @terms
   Scenario: A logged-in user can navigate to his own profile and edit it.
     Given users:
-      | name              | mail         | roles        |
-      | Leonardo Da Vinci | foo@bar.com  |              |
+      | name              | mail        | roles |
+      | Leonardo Da Vinci | foo@bar.com |       |
     When I am logged in as "Leonardo Da Vinci"
     And I am on the homepage
     Then I click "My account"
@@ -30,9 +30,9 @@ Feature: User profile
   @terms
   Scenario: A moderator can navigate to any users profile and edit it.
     Given users:
-      | name              | mail                   | roles        |
-      | Leonardo Da Vinci | leonardo@example.com   |              |
-      | Mighty mod        | moderator@example.com  | moderator    |
+      | name              | mail                  | roles     |
+      | Leonardo Da Vinci | leonardo@example.com  |           |
+      | Mighty mod        | moderator@example.com | moderator |
     When I am logged in as "Mighty mod"
     And I go to the homepage
     Then I click "People"
