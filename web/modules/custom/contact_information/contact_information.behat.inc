@@ -78,9 +78,9 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * Creates a number of contact information with data provided in a table.
    *
    * Table format:
-   * | email                            | name       |
-   * | foo@example.com, bar@example.com | John Irwin |
-   * | baz@example.com                  | Jack Smith |
+   * | email                            | name       | author      |
+   * | foo@example.com, bar@example.com | John Irwin | Author name |
+   * | baz@example.com                  | Jack Smith |             |
    *
    * @param TableNode $contact_table
    *   The contacts table.
@@ -156,10 +156,23 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
    *   A new contact information entity.
+   *
+   * @throws \Exception
+   *   When the author is specified but the related user doesn't exist.
    */
   protected function createContactInformation(array $values) {
     $values['rid'] = 'contact_information';
     $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
+
+    if (!empty($values['uid'])) {
+      $author = user_load_by_name($values['uid']);
+
+      if (!$author) {
+        throw new \Exception('Author user not found: ' . $values['uid']);
+      }
+
+      $values['uid'] = $author->id();
+    }
 
     $entity = Rdf::create($values);
     $entity->save();
@@ -181,6 +194,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
       'email' => 'field_ci_email',
       'name' => 'field_ci_name',
       'Website URL' => 'field_ci_webpage',
+      'author' => 'uid',
     ];
   }
 

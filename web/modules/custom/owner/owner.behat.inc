@@ -37,16 +37,18 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * Creates one or many owners with data provided in a table.
    *
    * Table format:
-   * | type                        | name        | id                      |
-   * | Company,Industry consortium | Acme Inc.   | http://example.com/path |
-   * | Local authority             | Gotham City |                         |
-   * | Private Individual(s)       | Jane Roe    |                         |
+   * @codingStandardsIgnoreStart
+   * | type                        | name        | id                      | state         |
+   * | Company,Industry consortium | Acme Inc.   | http://example.com/path | validated     |
+   * | Local authority             | Gotham City |                         | in_assessment |
+   * | Private Individual(s)       | Jane Roe    |                         |               |
+   * @codingStandardsIgnoreEnd
    *
    * @param TableNode $owners_table
    *   The owners table.
    *
    * @throws \Exception;
-   *   If a wrong type has been passed.
+   *   If a wrong type has been passed or if the author cannot be loaded.
    *
    * @Given (the following )owner(s):
    */
@@ -66,15 +68,27 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
       }, Term::loadMultiple($tids));
 
       if ($not_found = array_diff($types, $found)) {
-        throw new \Exception("Non-existent owner types: " . implode(', ', $not_found));
+        throw new \Exception('Non-existent owner types: ' . implode(', ', $not_found));
       }
 
-      $owner = Rdf::create([
+      $values = [
         'rid' => 'owner',
         'id' => !empty($row['id']) ? $row['id'] : $this->getRandomUri(),
         'field_owner_type' => $tids,
         'field_owner_name' => !empty($row['name']) ? $row['name'] : $this->getRandom()->name(8, TRUE),
-      ]);
+      ];
+
+      if (!empty($row['author'])) {
+        $author = user_load_by_name($row['author']);
+
+        if (!$author) {
+          throw new \Exception('Author user not found: ' . $row['author']);
+        }
+
+        $values['uid'] = $author->id();
+      }
+
+      $owner = Rdf::create($values);
       $owner->save();
 
       $this->owners[$owner->id()] = $owner;
