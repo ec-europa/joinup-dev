@@ -4,6 +4,7 @@ namespace Drupal\Tests\rdf_file\Functional;
 
 use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\Core\Url;
+use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\Tests\rdf_entity\Functional\RdfWebTestBase;
@@ -79,12 +80,15 @@ class RdfFileFieldTest extends RdfWebTestBase {
    * Tests upload of a file to an rdf file field.
    */
   public function testSingleValuedWidgetLocalFile() {
+    $this->assertEquals($this->loggedInUser->id(), \Drupal::currentUser()->id(), "The user is logged in.");
     $rdf_storage = $this->container->get('entity.manager')->getStorage('rdf_entity');
     $type_name = 'rdf_file';
     $field_name = 'field_rdf_file';
     $settings = ['rid' => $type_name];
     $test_file = $this->getTestFile('text');
-    $this->assertTrue($test_file instanceof FileInterface, "Test file created.");
+    $test_file->save();
+    $loaded_file = File::load($test_file->id());
+    $this->assertTrue($loaded_file instanceof FileInterface, "Test file created.");
 
     // Test file for new entities.
     $id = $this->uploadRdfFile($test_file, $field_name, NULL, $settings);
