@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\rdf_file\Entity;
+namespace Drupal\file_url\Entity;
 
 use Drupal\file\Entity\File;
 
 /**
- * Defines the file entity class.
+ * Defines the remote file entity class.
  *
  * @ingroup file
  *

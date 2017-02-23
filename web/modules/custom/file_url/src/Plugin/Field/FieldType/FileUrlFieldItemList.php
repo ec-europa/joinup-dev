@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\rdf_file\Plugin\Field\FieldType;
+namespace Drupal\file_url\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\rdf_file\RdfFileHandler;
+use Drupal\file_url\FileUrlHandler;
 
 /**
- * Represents a configurable entity file field.
+ * Represents a configurable entity file URL field.
  */
-class RdfFileFieldItemList extends EntityReferenceFieldItemList {
+class FileUrlFieldItemList extends EntityReferenceFieldItemList {
 
   /**
    * {@inheritdoc}
@@ -20,8 +20,8 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
    * {@inheritdoc}
    */
   public function postSave($update) {
-    /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
-    $file_handler = \Drupal::service('rdf_file.handler');
+    /** @var \Drupal\file_url\FileUrlHandler $file_handler */
+    $file_handler = \Drupal::service('file_url.handler');
     $entity = $this->getEntity();
 
     if (!$update) {
@@ -86,10 +86,10 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
    * {@inheritdoc}
    */
   public function referencedEntities() {
-    /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
-    $file_handler = \Drupal::service('rdf_file.handler');
+    /** @var \Drupal\file_url\FileUrlHandler $file_handler */
+    $file_handler = \Drupal::service('file_url.handler');
     if (empty($this->list)) {
-      return array();
+      return [];
     }
 
     // Collect the IDs of existing entities to load, and directly grab the
@@ -123,7 +123,7 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
     // default translation is deleted remove all file usages within this entity.
     $count = $entity->isDefaultTranslation() ? 0 : 1;
     foreach ($this->referencedEntities() as $file) {
-      if (!RdfFileHandler::isRemote($file)) {
+      if (!FileUrlHandler::isRemote($file)) {
         \Drupal::service('file.usage')->delete($file, 'file', $entity->getEntityTypeId(), $entity->id(), $count);
       }
     }
@@ -138,7 +138,7 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
 
     // Decrement the file usage by 1.
     foreach ($this->referencedEntities() as $file) {
-      if (!RdfFileHandler::isRemote($file)) {
+      if (!FileUrlHandler::isRemote($file)) {
         \Drupal::service('file.usage')->delete($file, 'file', $entity->getEntityTypeId(), $entity->id());
       }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\rdf_file\Plugin\Field\FieldWidget;
+namespace Drupal\file_url\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -9,20 +9,20 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\file\Entity\File;
 use Drupal\file\Plugin\Field\FieldWidget\FileWidget;
-use Drupal\rdf_file\Entity\RemoteFile;
+use Drupal\file_url\Entity\RemoteFile;
 
 /**
- * Plugin implementation of the 'file_generic' widget.
+ * Plugin implementation of the 'file_url_generic' widget.
  *
  * @FieldWidget(
- *   id = "rdf_file_generic",
- *   label = @Translation("File"),
+ *   id = "file_url_generic",
+ *   label = @Translation("File URL"),
  *   field_types = {
- *     "rdf_file"
+ *     "file_url"
  *   }
  * )
  */
-class RdfFileWidget extends FileWidget {
+class FileUrlWidget extends FileWidget {
 
   /**
    * Overrides \Drupal\Core\Field\WidgetBase::formMultipleElements().
@@ -116,7 +116,7 @@ class RdfFileWidget extends FileWidget {
       $elements['#file_upload_delta'] = $delta;
       $elements['#type'] = 'details';
       $elements['#open'] = TRUE;
-      $elements['#theme'] = 'rdf_file_widget_multiple';
+      $elements['#theme'] = 'file_url_widget_multiple';
       $elements['#theme_wrappers'] = array('details');
       $elements['#process'] = array(array(get_class($this), 'processMultiple'));
       $elements['#title'] = $title;
@@ -200,7 +200,7 @@ class RdfFileWidget extends FileWidget {
     // Essentially we use the managed_file type, extended with some
     // enhancements.
     $element_info = $this->elementInfo->getInfo('managed_file');
-    $element['#type'] = 'rdf_file';
+    $element['#type'] = 'file_url';
     $element['#theme_wrappers'] = array('form_element');
     $element['file-wrap']['#type'] = 'container';
     $element['file-wrap']['select'] = [
@@ -263,8 +263,8 @@ class RdfFileWidget extends FileWidget {
     // Field stores FID value in a single mode, so we need to transform it for
     // form element to recognize it correctly.
     if (!isset($items[$delta]->fids) && isset($items[$delta]->target_id)) {
-      /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
-      $file_handler = \Drupal::service('rdf_file.handler');
+      /** @var \Drupal\file_url\FileUrlHandler $file_handler */
+      $file_handler = \Drupal::service('file_url.handler');
       $target_id = $items[$delta]->target_id;
       $file = $file_handler::urlToFile($target_id);
       if ($file) {
@@ -313,8 +313,8 @@ class RdfFileWidget extends FileWidget {
     // Since file upload widget now supports uploads of more than one file at a
     // time it always returns an array of fids. We have to translate this to a
     // single fid, as field expects single value.
-    /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
-    $file_handler = \Drupal::service('rdf_file.handler');
+    /** @var \Drupal\file_url\FileUrlHandler $file_handler */
+    $file_handler = \Drupal::service('file_url.handler');
     $new_values = array();
     foreach ($values as $delta => &$value) {
       // Skip when element is deleted.

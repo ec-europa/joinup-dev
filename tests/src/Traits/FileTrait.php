@@ -3,7 +3,7 @@
 namespace Drupal\joinup\Traits;
 
 use Drupal\file\Entity\File;
-use Drupal\rdf_file\RdfFileHandler;
+use Drupal\file_url\FileUrlHandler;
 
 /**
  * Helper methods for dealing with files.
@@ -62,9 +62,9 @@ trait FileTrait {
    * @throws \Exception
    *   Throws an exception when the file is not found.
    */
-  protected function uploadRdfFile($filename, $files_path) {
+  protected function uploadFileUrl($filename, $files_path) {
     $id = $this->createFile($filename, $files_path);
-    return RdfFileHandler::fileToUrl($this->files[$id]);
+    return FileUrlHandler::fileToUrl($this->files[$id]);
   }
 
   /**

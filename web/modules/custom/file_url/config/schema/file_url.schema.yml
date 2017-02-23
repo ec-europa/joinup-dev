@@ -1,15 +1,15 @@
-field.storage_settings.rdf_file:
+field.storage_settings.file_url:
   type: field.storage_settings.file
-  label: 'Rdf file settings'
+  label: 'File URL settings'
   mapping:
     target_type:
       type: string
       label: 'Type of item to reference'
 
-field.field_settings.rdf_file:
+field.field_settings.file_url:
   type: field.field_settings.file
-  label: 'RDF file settings'
+  label: 'File URL settings'
 
-field.widget.settings.rdf_file_generic:
+field.widget.settings.file_url_generic:
   type: field.widget.settings.file_generic
-  label: 'RDF file generic widget'
+  label: 'File URL generic widget'

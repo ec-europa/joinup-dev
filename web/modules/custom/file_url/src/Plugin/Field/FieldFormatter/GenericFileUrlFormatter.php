@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\rdf_file\Plugin\Field\FieldFormatter;
+namespace Drupal\file_url\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\file\Plugin\Field\FieldFormatter\FileFormatterBase;
@@ -9,20 +9,20 @@ use Drupal\file\Plugin\Field\FieldFormatter\FileFormatterBase;
  * Plugin implementation of the 'file_default' formatter.
  *
  * @FieldFormatter(
- *   id = "rdf_file_default",
+ *   id = "file_url_default",
  *   label = @Translation("Generic file"),
  *   field_types = {
- *     "rdf_file"
+ *     "file_url"
  *   }
  * )
  */
-class GenericRdfFileFormatter extends FileFormatterBase {
+class GenericFileUrlFormatter extends FileFormatterBase {
 
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = array();
+    $elements = [];
 
     foreach ($this->getEntitiesToView($items, $langcode) as $delta => $file) {
       $item = $file->_referringItem;
@@ -59,13 +59,12 @@ class GenericRdfFileFormatter extends FileFormatterBase {
    * viewed.
    */
   public function prepareView(array $entities_items) {
-    /** @var \Drupal\rdf_file\RdfFileHandler $file_handler */
-    $file_handler = \Drupal::service('rdf_file.handler');
+    /** @var \Drupal\file_url\FileUrlHandler $file_handler */
+    $file_handler = \Drupal::service('file_url.handler');
     // Collect entity IDs to load. For performance, we want to use a single
     // "multiple entity load" to load all the entities for the multiple
     // "entity reference item lists" being displayed. We thus cannot use
     // \Drupal\Core\Field\EntityReferenceFieldItemList::referencedEntities().
-    $ids = array();
     foreach ($entities_items as $items) {
       foreach ($items as $item) {
         // To avoid trying to reload non-existent entities in

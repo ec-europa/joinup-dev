@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\rdf_file\Controller;
+namespace Drupal\file_url\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\file\FileInterface;
@@ -9,10 +9,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Redirects to the file location.
  *
- * This makes sure that when the SPARQL endpoint is used externally;
- * that the files can be dereferenced.
+ * This makes sure that, when URL is used externally, the files can be
+ * dereferenced.
  */
-class RdfFileRedirect extends ControllerBase {
+class FileUrlRedirect extends ControllerBase {
 
   /**
    * Redirect to the actual file.
@@ -24,7 +24,7 @@ class RdfFileRedirect extends ControllerBase {
    *   The redirect object.
    */
   public function redirectToFile(FileInterface $file) {
-    $url = $file->url();
+    $url = $file->toUrl()->toString();
     return new RedirectResponse($url);
   }
 

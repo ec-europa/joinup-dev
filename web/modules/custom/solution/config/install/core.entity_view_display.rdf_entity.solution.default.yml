@@ -44,7 +44,7 @@ dependencies:
     - link
     - og
     - options
-    - rdf_file
+    - file_url
     - text
     - user
 id: rdf_entity.solution.default
@@ -114,7 +114,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: rdf_file_default
+    type: file_url_default
     region: content
   field_is_elibrary_creation:
     weight: 16

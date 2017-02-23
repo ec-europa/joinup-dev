@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\rdf_file;
+namespace Drupal\file_url;
 
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
-use Drupal\rdf_file\Entity\RemoteFile;
+use Drupal\file_url\Entity\RemoteFile;
 
 /**
  * Helper class for turning files into public URLs and back.
  */
-class RdfFileHandler {
+class FileUrlHandler {
 
   /**
    * Get public dereferenceable URL from file.
@@ -28,7 +28,7 @@ class RdfFileHandler {
     if ($file instanceof RemoteFile) {
       throw new \Exception('Only regular files can be converted.');
     }
-    // @see rdf_file.routing.yml for dereference redirect.
+    // @see file_url.routing.yml for dereference redirect.
     return $base_url . '/file-dereference/' . $file->id();
   }
 
@@ -38,12 +38,12 @@ class RdfFileHandler {
    * @param string $url
    *   URL.
    *
-   * @return \Drupal\Core\Entity\EntityInterface
+   * @return \Drupal\file\FileInterface
    *   The file object.
    */
   public static function urlToFile($url) {
-    // Not a url, but a normal file id.
-    // This can occurs when an object is created in code (not through a form).
+    // Not a url, but a normal file ID. This can occurs when an object is
+    // created in code (not through a form).
     if (is_numeric($url)) {
       return File::load($url);
     }
@@ -62,7 +62,7 @@ class RdfFileHandler {
    *   The file being checked.
    *
    * @return bool
-   *   TRUE id it's a remote file.
+   *   TRUE if it's a remote file.
    */
   public static function isRemote(FileInterface $file) {
     return $file instanceof RemoteFile;

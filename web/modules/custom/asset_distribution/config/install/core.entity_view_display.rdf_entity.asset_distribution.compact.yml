@@ -25,7 +25,7 @@ bundle: asset_distribution
 mode: compact
 content:
   field_ad_access_url:
-    type: rdf_file_default
+    type: file_url_default
     weight: 1
     region: content
     label: hidden

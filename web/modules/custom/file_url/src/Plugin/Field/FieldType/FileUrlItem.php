@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\rdf_file\Plugin\Field\FieldType;
+namespace Drupal\file_url\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -11,17 +11,17 @@ use Drupal\file\Plugin\Field\FieldType\FileItem;
  * Plugin implementation of the 'file' field type.
  *
  * @FieldType(
- *   id = "rdf_file",
- *   label = @Translation("RDF File"),
+ *   id = "file_url",
+ *   label = @Translation("File URL"),
  *   description = @Translation("This field stores the ID of a file as an URI."),
  *   category = @Translation("Reference"),
- *   default_widget = "rdf_file_generic",
- *   default_formatter = "rdf_file_default",
- *   list_class = "\Drupal\rdf_file\Plugin\Field\FieldType\RdfFileFieldItemList",
+ *   default_widget = "file_url_generic",
+ *   default_formatter = "file_url_default",
+ *   list_class = "\Drupal\file_url\Plugin\Field\FieldType\FileUrlFieldItemList",
  *
  * )
  */
-class RdfFileItem extends FileItem {
+class FileUrlItem extends FileItem {
 
   /**
    * {@inheritdoc}
@@ -61,7 +61,7 @@ class RdfFileItem extends FileItem {
     // order to allow pointing to 0 (integer zero) or '' (empty string). That
     // makes sense if you think that a user reference can point to Anonymous
     // user (uid === 0) or a taxonomy term points to the root (tid === 0). But
-    // an rdf_file item is empty when the target ID is '' (empty string).
+    // an file_url item is empty when the target ID is '' (empty string).
     if (!$is_empty && is_string($this->target_id)) {
       $target_id = trim($this->target_id);
       if ($target_id === '') {
