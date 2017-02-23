@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\rdf_file\Functional;
 
+use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -59,6 +60,19 @@ class RdfFileFieldTest extends RdfWebTestBase {
       'edit own rdf_file rdf entity',
     ]);
     $this->drupalLogin($this->adminUser);
+  }
+
+  /**
+   * Smokescreen test for CPHP.
+   */
+  public function testCphpSmokescreen() {
+    $original = drupal_get_path('module', 'simpletest') . '/files';
+    $this->pr("\nThe module filepath is: " . $original);
+    $this->pr("\nThe public directory for the test is: " . PublicStream::basePath());
+    $test_file = $this->getTestFile('text');
+    $this->pr("\nThe testfile's uri is: " . $test_file->getFileUri());
+    $this->pr("\nAbsolute path is: " . file_create_url($test_file->getFileUri()));
+    $this->assertTrue(is_file($test_file->getFileUri()), "The file exists.");
   }
 
   /**
@@ -262,6 +276,16 @@ class RdfFileFieldTest extends RdfWebTestBase {
     }
 
     return $rdf_entity;
+  }
+
+  /**
+   * Prints a message to the console.
+   *
+   * @param string $message
+   *    The string message.
+   */
+  protected function pr($message) {
+    fwrite(STDOUT, print_r($message, TRUE));
   }
 
 }
