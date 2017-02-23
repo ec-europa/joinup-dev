@@ -1,0 +1,46 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.rdf_entity.inline
+    - field.field.rdf_entity.contact_information.field_ci_email
+    - field.field.rdf_entity.contact_information.field_ci_name
+    - field.field.rdf_entity.contact_information.field_ci_state
+    - field.field.rdf_entity.contact_information.field_ci_webpage
+    - rdf_entity.rdfentity.contact_information
+  module:
+    - link
+id: rdf_entity.contact_information.inline
+targetEntityType: rdf_entity
+bundle: contact_information
+mode: inline
+content:
+  field_ci_email:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+    region: content
+  field_ci_name:
+    type: string_textfield
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  field_ci_webpage:
+    weight: 2
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+hidden:
+  current_workflow_state: true
+  field_ci_state: true
+  label: true
+  uid: true

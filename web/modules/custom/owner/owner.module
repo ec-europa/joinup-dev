@@ -14,6 +14,27 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
+ * Implements hook_ENTITY_TYPE_create().
+ *
+ * Sets the initial workflow state of an owner to 'validated'.
+ */
+function owner_rdf_entity_create(RdfInterface $entity) {
+  if ($entity->bundle() !== 'owner') {
+    return;
+  }
+
+  // The initial state of an owner is validated. The owner is created as part of
+  // proposing a collection, and in the collection propose form the workflow
+  // state is hidden from the user, so it would remain in the "__new__" state
+  // after submission.
+  // We can safely set the initial state to "validated" because a newly created
+  // owner doesn't need to be validated by a third party.
+  if ($entity->field_owner_state->value === '__new__') {
+    $entity->set('field_owner_state', 'validated');
+  }
+}
+
+/**
  * Implements hook_ENTITY_TYPE_presave().
  */
 function owner_rdf_entity_presave(EntityInterface $entity) {

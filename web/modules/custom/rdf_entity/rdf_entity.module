@@ -33,6 +33,16 @@ function rdf_entity_entity_base_field_info_alter(&$fields, EntityTypeInterface $
 }
 
 /**
+ * Implements hook_entity_type_alter().
+ */
+function rdf_entity_entity_type_alter(array &$entity_types) {
+  if (isset($entity_types['field_storage_config'])) {
+    // Swap out the field storage settings form.
+    $entity_types['field_storage_config']->setFormClass('edit', '\Drupal\rdf_entity\Form\RdfFieldStorageConfigEditForm');
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
