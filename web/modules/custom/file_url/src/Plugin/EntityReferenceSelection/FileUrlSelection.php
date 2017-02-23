@@ -15,7 +15,7 @@ use Drupal\Core\Entity\Plugin\EntityReferenceSelection\DefaultSelection;
  *   deriver = "Drupal\Core\Entity\Plugin\Derivative\DefaultSelectionDeriver"
  * )
  */
-class RdfFileSelection extends DefaultSelection {
+class FileUrlSelection extends DefaultSelection {
 
   /**
    * {@inheritdoc}

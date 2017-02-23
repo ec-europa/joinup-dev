@@ -3,6 +3,7 @@
 namespace Drupal\file_url\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Plugin\Field\FieldFormatter\FileFormatterBase;
 
 /**
@@ -16,7 +17,53 @@ use Drupal\file\Plugin\Field\FieldFormatter\FileFormatterBase;
  *   }
  * )
  */
-class GenericFileUrlFormatter extends FileFormatterBase {
+class FileUrlFormatter extends FileFormatterBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return [
+      'mode' => 'link',
+    ] + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $elements = parent::settingsForm($form, $form_state);
+
+    $elements['mode'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Mode'),
+      '#options' => [
+        'link' => $this->t('Link (file and extension as link text)'),
+        'plain' => $this->t('Plain URL'),
+      ],
+      '#default_value' => $this->getSetting('mode'),
+    ];
+
+    return $elements;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = parent::settingsSummary();
+
+    switch ($this->getSetting('mode')) {
+      case 'link':
+        $summary[] = $this->t('Link to file with file name and extension as text');
+        break;
+
+      case 'plain':
+        $summary[] = $this->t('Plain URL');
+    }
+
+    return $summary;
+  }
 
   /**
    * {@inheritdoc}
@@ -26,14 +73,27 @@ class GenericFileUrlFormatter extends FileFormatterBase {
 
     foreach ($this->getEntitiesToView($items, $langcode) as $delta => $file) {
       $item = $file->_referringItem;
-      $elements[$delta] = array(
-        '#theme' => 'file_link',
-        '#file' => $file,
-        '#description' => $item->description,
-        '#cache' => array(
-          'tags' => $file->getCacheTags(),
-        ),
-      );
+      if ($this->getSetting('mode') === 'plain') {
+        $elements['delta'] = [
+          $elements[$delta] = [
+            '#markup' => file_url_transform_relative(file_create_url($file->getFileUri())),
+            '#cache' => [
+              'tags' => $file->getCacheTags(),
+            ],
+          ],
+        ];
+      }
+      else {
+        $elements[$delta] = [
+          '#theme' => 'file_link',
+          '#file' => $file,
+          '#description' => $item->description,
+          '#cache' => [
+            'tags' => $file->getCacheTags(),
+          ],
+        ];
+      }
+
       // Pass field item attributes to the theme function.
       if (isset($item->_attributes)) {
         $elements[$delta] += array('#attributes' => array());

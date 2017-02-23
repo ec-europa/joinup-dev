@@ -3,17 +3,18 @@ status: true
 dependencies:
   module:
     - file
+    - file_url
     - node
-id: node.field_document_file
-field_name: field_document_file
+id: node.field_file
+field_name: field_file
 entity_type: node
-type: file
+type: file_url
 settings:
   display_field: false
   display_default: false
   uri_scheme: public
   target_type: file
-module: file
+module: file_url
 locked: false
 cardinality: 1
 translatable: true

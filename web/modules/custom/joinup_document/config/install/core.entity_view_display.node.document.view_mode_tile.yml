@@ -5,9 +5,8 @@ dependencies:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.document.body
     - field.field.node.document.field_comments
-    - field.field.node.document.field_document_file
     - field.field.node.document.field_document_publication_date
-    - field.field.node.document.field_document_source_url
+    - field.field.node.document.field_file
     - field.field.node.document.field_keywords
     - field.field.node.document.field_licence
     - field.field.node.document.field_short_title
@@ -19,7 +18,7 @@ dependencies:
     - node.type.document
   module:
     - ds
-    - file
+    - file_url
     - text
     - user
 id: node.document.view_mode_tile
@@ -42,20 +41,13 @@ content:
             lb-col: false
             classes: {  }
     region: content
-  field_document_file:
+  field_file:
+    type: file_url_default
     weight: 2
+    region: content
     label: hidden
     settings: {  }
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: file_url_plain
-    region: content
+    third_party_settings: {  }
   field_short_title:
     weight: 0
     label: hidden
@@ -74,7 +66,6 @@ content:
 hidden:
   field_comments: true
   field_document_publication_date: true
-  field_document_source_url: true
   field_keywords: true
   field_licence: true
   field_spatial_coverage: true

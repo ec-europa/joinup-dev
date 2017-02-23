@@ -200,7 +200,7 @@ class FileUrlWidget extends FileWidget {
     // Essentially we use the managed_file type, extended with some
     // enhancements.
     $element_info = $this->elementInfo->getInfo('managed_file');
-    $element['#type'] = 'file_url';
+    $element['#type'] = 'file_url_type';
     $element['#theme_wrappers'] = array('form_element');
     $element['file-wrap']['#type'] = 'container';
     $element['file-wrap']['select'] = [

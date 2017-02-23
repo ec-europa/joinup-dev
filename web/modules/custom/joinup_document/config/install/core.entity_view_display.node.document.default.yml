@@ -5,9 +5,8 @@ dependencies:
     - core.entity_view_display.comment.comment.default
     - field.field.node.document.body
     - field.field.node.document.field_comments
-    - field.field.node.document.field_document_file
     - field.field.node.document.field_document_publication_date
-    - field.field.node.document.field_document_source_url
+    - field.field.node.document.field_file
     - field.field.node.document.field_keywords
     - field.field.node.document.field_licence
     - field.field.node.document.field_short_title
@@ -20,8 +19,7 @@ dependencies:
   module:
     - comment
     - datetime
-    - file
-    - link
+    - file_url
     - text
     - user
 id: node.document.default
@@ -37,20 +35,13 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 5
+    weight: 6
     label: above
     settings:
       pager_id: 0
       view_mode: default
     third_party_settings: {  }
     type: comment_default
-    region: content
-  field_document_file:
-    weight: 3
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: file_default
     region: content
   field_document_publication_date:
     weight: 2
@@ -61,17 +52,12 @@ content:
     third_party_settings: {  }
     type: datetime_default
     region: content
-  field_document_source_url:
-    weight: 4
+  field_file:
+    weight: 3
     label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
+    settings: {  }
     third_party_settings: {  }
-    type: link
+    type: file_url_default
     region: content
   field_short_title:
     weight: 0
