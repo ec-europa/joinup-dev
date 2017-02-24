@@ -161,6 +161,7 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
       $build = $this->entityTypeManager->getViewBuilder('node')->view($custom_page, 'view_mode_tile');
       $items[$link->getWeight()] = [
         '#type' => 'container',
+        '#weight' => $link->getWeight(),
         '#attributes' => [
           'class' => [
             'listing__item',
