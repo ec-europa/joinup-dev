@@ -167,7 +167,7 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
             'listing__item',
             'listing__item--tile',
             'mdl-cell',
-            'mdl-cell--3-col',
+            'mdl-cell--4-col',
           ],
         ],
         $custom_page->id() => $build,
