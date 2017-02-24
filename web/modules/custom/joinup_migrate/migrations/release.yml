@@ -1,5 +1,5 @@
 id: release
-label: 'Release migration'
+label: 'Release'
 migration_tags:
   - release
 source:
@@ -14,10 +14,7 @@ process:
     source: distribution
     migration: distribution
     no_stub: true
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
-  # field_isr_documentation:
-
+  field_isr_documentation: documentation
   field_isr_is_version_of:
     plugin: migration
     source: solution
