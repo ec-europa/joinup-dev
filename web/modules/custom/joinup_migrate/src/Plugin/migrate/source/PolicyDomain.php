@@ -4,6 +4,8 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Core\Database\Database;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
+use Drupal\migrate\Row;
+use Drupal\migrate_spreadsheet\Plugin\migrate\source\Spreadsheet;
 
 /**
  * Migrates policy domain terms.
@@ -12,7 +14,7 @@ use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
  *   id = "policy_domain"
  * )
  */
-class PolicyDomain extends SourcePluginBase {
+class PolicyDomain extends Spreadsheet {
 
   /**
    * {@inheritdoc}
@@ -31,55 +33,27 @@ class PolicyDomain extends SourcePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function fields() {
-    return [
-      'tid' => $this->t('Term ID'),
-      'name' => $this->t('Name'),
-      'parent' => $this->t('Parent'),
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function initializeIterator() {
-    $db = Database::getConnection('default', 'migrate');
+    /** @var \Drupal\migrate_spreadsheet\SpreadsheetIteratorInterface $iterator */
+    $iterator = parent::initializeIterator();
 
-    $query = $db->select('d8_solution', 's')
-      ->fields('s', ['policy', 'policy2'])
-      ->union(
-        $db->select('d8_collection', 'c')
-          ->fields('c', ['policy', 'policy2'])
-      );
-
+    $iterator->rewind();
     $terms = [];
-    foreach ($query->execute()->fetchAll() as $row) {
-      $parent = $row->policy;
-      $name = $row->policy2;
-
-      // Terms lacking a parent will go temporary under a 'UNCLASSIFIED' term
-      // and will be logged as inconsistency, to be fixed in the .xlsx file.
-      if (empty($parent)) {
-        $parent = 'UNCLASSIFIED';
-        if (!isset($terms["$parent:$name"])) {
-          $this->migration->getIdMap()->saveMessage(['parent' => '', 'name' => $name], "Term '$name' lacks a parent.");
-        }
-      }
+    $parent = NULL;
+    while ($iterator->valid()) {
+      $row = $iterator->current();
+      $parent = $row['A'] ?: $parent;
+      $name = $row['B'];
 
       // Store the parent term.
       static::addTerm($terms, $parent);
       // Store the term itself.
       static::addTerm($terms, $name, $parent);
+
+      $iterator->next();
     }
 
-    return new \ArrayIterator(array_values($terms));
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __toString() {
-    return 'Policy domain';
+    return new \ArrayIterator($terms);
   }
 
   /**
