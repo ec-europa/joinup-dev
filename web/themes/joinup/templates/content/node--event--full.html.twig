@@ -1,0 +1,32 @@
+{#
+/**
+ * @file
+ * Theme override to display a node of bundle event.
+ *
+ * Available variables:
+ * - node: the node entity.
+ */
+#}
+<article{{ attributes }}>
+  <div class="page__content">
+    {{ content.body }}
+    {{ content.field_event_agenda }}
+    <div class="action-link__wrapper right">
+      {# todo: It is only placeholder #}
+      <a href="/" class="action-link is-only-placeholder">
+        <span class="action-link__icon icon icon--share"></span>
+        <span class="action-link__link">{{ 'Share'|t }}</a>
+      </a>
+    </div>
+  </div>
+  <div id="event-location--{{ node.id }}" class="fieldset--separated">
+    <img src="/themes/joinup/images/location-image.jpg">
+    <div class="page__content">
+      <h3 class="fieldset__header">{{ content.field_event_location }}</h3>
+        {{ content.field_event_adtl_address_info }}
+        {{ content.field_event_web_url }}
+        {{ content.field_event_contact_email }}
+    </div>
+  </div>
+  {{ content.field_comments }}
+</article>
