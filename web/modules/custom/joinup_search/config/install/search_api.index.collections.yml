@@ -150,6 +150,13 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_isr_description
+processor_settings:
+  add_url: { }
+  rendered_item: { }
+  aggregated_field: { }
+options:
+  index_directly: true
+  cron_limit: 50
 datasource_settings:
   'entity:node':
     bundles:
@@ -162,19 +169,6 @@ datasource_settings:
     bundles:
       default: true
       selected: {  }
-processor_settings:
-  add_url:
-    plugin_id: add_url
-    settings: {  }
-  aggregated_field:
-    plugin_id: aggregated_field
-    settings: {  }
-  rendered_item:
-    plugin_id: rendered_item
-    settings: {  }
 tracker_settings:
-  default: {  }
-options:
-  index_directly: true
-  cron_limit: 50
+  default: { }
 server: solr
