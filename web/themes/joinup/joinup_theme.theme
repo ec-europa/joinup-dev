@@ -487,11 +487,11 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
 
   // Get dates and location fields.
   $field_event_end_date = $viewBuilder->viewField($node->get('field_event_end_date'), 'default');
-  $field_event_location = $viewBuilder->viewField($node->get('field_event_location'), 'default');
+  $field_event_location = $viewBuilder->viewField($node->get('field_location'), 'default');
 
   $variables['additional_content']['field_event_start_date'] = $field_event_start_date;
   $variables['additional_content']['field_event_end_date'] = $field_event_end_date;
-  $variables['additional_content']['field_event_location'] = $field_event_location;
+  $variables['additional_content']['field_location'] = $field_event_location;
 }
 
 /**

@@ -3,13 +3,12 @@ status: true
 dependencies:
   module:
     - node
-    - rdf_entity
-id: node.field_event_organisation
-field_name: field_event_organisation
+id: node.field_location
+field_name: field_location
 entity_type: node
-type: entity_reference
+type: string_long
 settings:
-  target_type: rdf_entity
+  case_sensitive: false
 module: core
 locked: false
 cardinality: 1

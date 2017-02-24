@@ -9,11 +9,10 @@ dependencies:
     - field.field.node.event.field_event_agenda
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_end_date
-    - field.field.node.event.field_event_location
     - field.field.node.event.field_event_logo
-    - field.field.node.event.field_event_organisation
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
+    - field.field.node.event.field_location
     - field.field.node.event.field_short_title
     - field.field.node.event.field_state
     - field.field.node.event.og_audience
@@ -91,9 +90,8 @@ hidden:
   field_event_agenda: true
   field_event_contact_email: true
   field_event_end_date: true
-  field_event_location: true
-  field_event_organisation: true
   field_event_web_url: true
+  field_location: true
   field_state: true
   links: true
   og_audience: true

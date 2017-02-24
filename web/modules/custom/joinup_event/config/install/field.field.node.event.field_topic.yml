@@ -2,26 +2,26 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_event_organisation
+    - field.storage.node.field_topic
     - node.type.event
-    - rdf_entity.rdfentity.owner
-id: node.event.field_event_organisation
-field_name: field_event_organisation
+    - taxonomy.vocabulary.themes
+id: node.event.field_topic
+field_name: field_topic
 entity_type: node
 bundle: event
-label: Organisation
+label: Topic
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:rdf_entity'
+  handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      owner: owner
+      themes: themes
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: organisation
+    auto_create_bundle: ''
 field_type: entity_reference

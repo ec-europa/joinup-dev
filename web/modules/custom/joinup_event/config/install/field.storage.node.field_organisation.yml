@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - node
-id: node.field_event_location
-field_name: field_event_location
+id: node.field_organisation
+field_name: field_organisation
 entity_type: node
 type: string
 settings:
