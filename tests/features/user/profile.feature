@@ -24,8 +24,10 @@ Feature: User profile
     Then I click 'View'
     And I should see the text "Leoke"
     And I should see the text "di ser Piero da Vinci"
-    And I should see the link "Supplier exchange"
-    And I should see the link "Italy"
+    And I should see the text "Supplier exchange"
+    # @todo The nationality will be rendered as flag image.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3175
+    # And I should see the link "Italy"
 
   @terms
   Scenario: A moderator can navigate to any users profile and edit it.
