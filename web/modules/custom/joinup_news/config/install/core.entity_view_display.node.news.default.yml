@@ -5,11 +5,12 @@ dependencies:
     - core.entity_view_display.comment.comment.default
     - field.field.node.news.body
     - field.field.node.news.field_comments
+    - field.field.node.news.field_keywords
     - field.field.node.news.field_news_headline
     - field.field.node.news.field_news_shared_in
     - field.field.node.news.field_news_source_url
-    - field.field.node.news.field_state
     - field.field.node.news.field_spatial_coverage
+    - field.field.node.news.field_state
     - field.field.node.news.field_topic
     - field.field.node.news.og_audience
     - node.type.news
@@ -31,23 +32,26 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_comments:
-    weight: 9
+    weight: 8
     label: hidden
     settings:
       pager_id: 0
       view_mode: default
     third_party_settings: {  }
     type: comment_default
+    region: content
   field_news_headline:
-    weight: 3
+    weight: 2
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_news_shared_in:
-    weight: 10
+    weight: 9
     label: above
     settings:
       view_mode: view_mode_tile
@@ -64,8 +68,9 @@ content:
       joinup:
         template_suggestion: ''
     type: entity_reference_entity_view
+    region: content
   field_news_source_url:
-    weight: 4
+    weight: 3
     label: hidden
     settings:
       trim_length: 80
@@ -75,14 +80,9 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
-  field_state:
-    weight: 6
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
+    region: content
   field_spatial_coverage:
-    weight: 7
+    weight: 6
     label: hidden
     settings:
       link: true
@@ -97,8 +97,16 @@ content:
       joinup:
         template_suggestion: no_wrappers
     type: entity_reference_label
+    region: content
+  field_state:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_topic:
-    weight: 8
+    weight: 7
     label: hidden
     settings:
       link: true
@@ -114,13 +122,15 @@ content:
       joinup:
         template_suggestion: entity_reference__listing_tag
     type: entity_reference_label
+    region: content
   links:
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
   og_audience:
     type: entity_reference_label
-    weight: 5
+    weight: 4
     label: hidden
     settings:
       link: true
@@ -135,4 +145,6 @@ content:
             classes: {  }
       joinup:
         template_suggestion: no_wrappers
-hidden: {  }
+    region: content
+hidden:
+  field_keywords: true
