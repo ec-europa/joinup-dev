@@ -16,15 +16,19 @@ Feature: User subscription settings
     # Check "Notify me on updates".
     And I check "field_user_subscription_events[value]"
     And I press "Save"
-    Then I should see the following success messages:
-     | The changes have been saved |
+    Then I should see the success message "The changes have been saved"
 
-    # Check that the settings have been saved and are visible.
+    # Check that the settings have been saved.
     When I am on the homepage
     And I click "My account"
-    Then I should see the text "Notification frequency"
-    And I should see the text "Monthly"
-    And I should see the text "Receive notifications for"
-    And I should see the text "Solution"
-    And I should see the text "News"
-    And I should see the text "Notify me on updates"
+    And I click "Subscription Settings"
+    #Then the option "monthly" should be selected
+    Then the radio "Monthly" from field "Notification frequency" should be checked
+    And the "Solution" checkbox should be checked
+    And the "News" checkbox should be checked
+    And the "Notify me on updates" checkbox should be checked
+    But the "Release" checkbox should not be checked
+    And the "Distribution" checkbox should not be checked
+    And the "Document" checkbox should not be checked
+    And the "Event" checkbox should not be checked
+    And the "Custom page" checkbox should not be checked
