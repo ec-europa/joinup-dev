@@ -8,6 +8,7 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -21,6 +22,7 @@ use Drupal\taxonomy\TermInterface;
  */
 class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use EntityTrait;
   use MaterialDesignTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
@@ -79,13 +81,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
       ];
 
       if (!empty($row['author'])) {
-        $author = user_load_by_name($row['author']);
-
-        if (!$author) {
-          throw new \Exception('Author user not found: ' . $row['author']);
-        }
-
-        $values['uid'] = $author->id();
+        $values['uid'] = $this->getUserByName($row['author'])->id();
       }
 
       $owner = Rdf::create($values);

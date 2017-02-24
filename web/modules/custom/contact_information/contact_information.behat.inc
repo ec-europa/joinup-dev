@@ -8,6 +8,7 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -17,6 +18,7 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class ContactInformationSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use EntityTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
 
@@ -164,14 +166,9 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
     $values['rid'] = 'contact_information';
     $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
 
+    // The 'author' key was replaced by 'uid' in the calling function.
     if (!empty($values['uid'])) {
-      $author = user_load_by_name($values['uid']);
-
-      if (!$author) {
-        throw new \Exception('Author user not found: ' . $values['uid']);
-      }
-
-      $values['uid'] = $author->id();
+      $values['uid'] = $this->getUserByName($values['uid'])->id();
     }
 
     $entity = Rdf::create($values);

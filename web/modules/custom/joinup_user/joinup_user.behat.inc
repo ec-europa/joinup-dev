@@ -7,11 +7,14 @@
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityTrait;
 
 /**
  * Behat step definitions for testing users.
  */
 class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
+  use EntityTrait;
 
   /**
    * Navigates to the canonical page display of a collection.
@@ -23,30 +26,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When (I )visit the (public )profile of :user
    */
   public function visitUserPublicProfile($user) {
-    $this->visitPath($this->loadUserByName($user)->url());
-  }
-
-  /**
-   * Loads a user by its name.
-   *
-   * @param string $name
-   *   The name of the user.
-   *
-   * @return \Drupal\user\Entity\User
-   *   The loaded user entity.
-   *
-   * @throws \Exception
-   *   Thrown when a user with the provided name cannot be found.
-   */
-  protected function loadUserByName($name) {
-    $user = user_load_by_name($name);
-
-    if (!$user) {
-      throw new \Exception("The user with name '$name' was not found.");
-    }
-
-    /** @var \Drupal\user\Entity\User $user */
-    return $user;
+    $this->visitPath($this->getUserByName($user)->url());
   }
 
 }
