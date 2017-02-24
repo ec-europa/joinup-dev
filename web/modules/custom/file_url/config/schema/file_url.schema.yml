@@ -13,3 +13,11 @@ field.field_settings.file_url:
 field.widget.settings.file_url_generic:
   type: field.widget.settings.file_generic
   label: 'File URL generic widget'
+
+field.formatter.settings.file_url:
+  type: field.formatter.settings.file_default
+  label: 'File URL generic formatter'
+  mapping:
+    mode:
+      type: string
+      labe: 'File display mode'
