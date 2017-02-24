@@ -11,9 +11,9 @@ dependencies:
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_logo
     - field.field.node.event.field_event_organisation
-    - field.field.node.event.field_event_short_title
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
+    - field.field.node.event.field_short_title
     - field.field.node.event.field_state
     - field.field.node.event.og_audience
     - image.style.thumbnail
@@ -75,6 +75,7 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
+    region: content
   field_event_location:
     weight: 7
     settings:
@@ -82,6 +83,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_event_logo:
     weight: 5
     settings:
@@ -105,14 +107,6 @@ content:
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
-  field_event_short_title:
-    weight: 1
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_event_start_date:
     type: datetime_default
     weight: 3
@@ -127,9 +121,17 @@ content:
     third_party_settings: {  }
     type: link_default
     region: content
+  field_short_title:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_state:
     type: state_machine_buttons
-    weight: 12
+    weight: 13
     region: content
     settings:
       use_transition_label: 1

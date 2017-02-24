@@ -599,7 +599,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'licence' => 'field_licence',
       ],
       'event' => [
-        'short title' => 'field_event_short_title',
+        'short title' => 'field_short_title',
         'start date' => 'field_start_date',
         'state' => 'field_state',
       ],

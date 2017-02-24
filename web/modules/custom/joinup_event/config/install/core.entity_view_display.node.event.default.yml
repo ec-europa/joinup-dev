@@ -12,9 +12,9 @@ dependencies:
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_logo
     - field.field.node.event.field_event_organisation
-    - field.field.node.event.field_event_short_title
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
+    - field.field.node.event.field_short_title
     - field.field.node.event.field_state
     - field.field.node.event.og_audience
     - image.style.image_style_event_logo
@@ -25,7 +25,6 @@ dependencies:
     - ds
     - image
     - link
-    - options
     - text
     - user
 id: node.event.default
@@ -170,5 +169,6 @@ content:
     third_party_settings: {  }
 hidden:
   field_event_organisation: true
-  field_event_short_title: true
+  field_short_title: true
+  field_state: true
   og_audience: true
