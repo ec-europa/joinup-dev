@@ -21,7 +21,7 @@
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_report": "~1.0-alpha1",
         "drupal/migrate_run": "~1.0-alpha1",
-        "drupal/migrate_spreadsheet": "1.x-dev",
+        "drupal/migrate_spreadsheet": "~1.0-beta1",
         "drupal/og": "dev-1.x#34a9425ffeeb267ceeba21261f4719d0ced36e58",
         "drupal/og_menu": "~1.0@alpha",
         "drupal/phingdrushtask": "dev-7.x-2.x#13428ee7a229da3b7e6be4687587048150b1fd25",
