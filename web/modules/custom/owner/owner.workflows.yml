@@ -4,18 +4,21 @@ owner_workflow:
   label: "Default"
   group: owner
   states:
-    # The first state is used as the initial state when creating a new entity.
-    validated:
-      label: Validated
+    # The state used as initial.
+    __new__:
+      label: New
     # State used to flag content that is being reviewed.
     in_assessment:
       label: In assessment
+    validated:
+      label: Validated
+      published: true
     deletion_request:
       label: Deletion request
   transitions:
     validate:
       label: Publish
-      from: [deletion_request]
+      from: [__new__, deletion_request]
       to: validated
     update_published:
       label: Update

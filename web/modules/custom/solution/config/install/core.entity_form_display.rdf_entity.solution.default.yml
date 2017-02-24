@@ -64,7 +64,7 @@ content:
     type: inline_entity_form_complex
     weight: 4
     settings:
-      form_mode: default
+      form_mode: inline
       override_labels: true
       label_singular: 'contact information'
       label_plural: 'contact information'

@@ -167,7 +167,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    */
   public function visitOwner($owner) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $owner */
-    $owner = $this->getRdfEntityByLabel($owner);
+    $owner = $this->getRdfEntityByLabel($owner, 'owner');
     $this->visitPath($owner->url());
   }
 

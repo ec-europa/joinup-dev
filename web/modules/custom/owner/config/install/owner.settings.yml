@@ -1,6 +1,9 @@
 # The array of allowed conditions for the owner workflow transitions.
 transitions:
   validate:
+    __new__:
+      - authenticated
+      - moderator
     deletion_request:
       - moderator
   update_published:

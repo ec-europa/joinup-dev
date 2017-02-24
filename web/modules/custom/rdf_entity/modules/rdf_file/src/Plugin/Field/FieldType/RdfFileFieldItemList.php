@@ -4,6 +4,7 @@ namespace Drupal\rdf_file\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\rdf_file\RdfFileHandler;
 
 /**
  * Represents a configurable entity file field.
@@ -26,7 +27,9 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
     if (!$update) {
       // Add a new usage for newly uploaded files.
       foreach ($this->referencedEntities() as $file) {
-        \Drupal::service('file.usage')->add($file, 'file', $entity->getEntityTypeId(), $entity->id());
+        if (!$file_handler->isRemote($file)) {
+          \Drupal::service('file.usage')->add($file, 'file', $entity->getEntityTypeId(), $entity->id());
+        }
       }
     }
     else {
@@ -57,7 +60,9 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
         $original_items = $original->getTranslation($langcode)->{$field_name};
         foreach ($original_items as $item) {
           $file = $file_handler::urlToFile($item->target_id);
-          $original_ids[] = $file->id();
+          if (!$file_handler->isRemote($file)) {
+            $original_ids[] = $file->id();
+          }
         }
       }
 
@@ -70,7 +75,7 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
 
       // Add new usage entries for newly added files.
       foreach ($files as $file) {
-        if (!in_array($file->id(), $original_ids)) {
+        if (!in_array($file->id(), $original_ids) && !$file_handler->isRemote($file)) {
           \Drupal::service('file.usage')->add($file, 'file', $entity->getEntityTypeId(), $entity->id());
         }
       }
@@ -93,7 +98,9 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
     foreach ($this->list as $delta => $item) {
       if ($item->target_id !== NULL) {
         $file = $file_handler::urlToFile($item->target_id);
-        $target_entities[$delta] = $file;
+        if (!$file_handler->isRemote($file)) {
+          $target_entities[$delta] = $file;
+        }
       }
       elseif ($item->hasNewEntity()) {
         $target_entities[$delta] = $item->entity;
@@ -116,7 +123,9 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
     // default translation is deleted remove all file usages within this entity.
     $count = $entity->isDefaultTranslation() ? 0 : 1;
     foreach ($this->referencedEntities() as $file) {
-      \Drupal::service('file.usage')->delete($file, 'file', $entity->getEntityTypeId(), $entity->id(), $count);
+      if (!RdfFileHandler::isRemote($file)) {
+        \Drupal::service('file.usage')->delete($file, 'file', $entity->getEntityTypeId(), $entity->id(), $count);
+      }
     }
   }
 
@@ -129,7 +138,9 @@ class RdfFileFieldItemList extends EntityReferenceFieldItemList {
 
     // Decrement the file usage by 1.
     foreach ($this->referencedEntities() as $file) {
-      \Drupal::service('file.usage')->delete($file, 'file', $entity->getEntityTypeId(), $entity->id());
+      if (!RdfFileHandler::isRemote($file)) {
+        \Drupal::service('file.usage')->delete($file, 'file', $entity->getEntityTypeId(), $entity->id());
+      }
     }
   }
 
