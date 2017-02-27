@@ -9,9 +9,9 @@ use Drupal\migrate\Row;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Computes the RDF file field target_id given a migrated file or remote URI.
+ * Computes the file URL field target_id given a migrated file or remote URI.
  */
-trait RdfFileFieldTrait {
+trait FileUrlFieldTrait {
 
   /**
    * The migration plugin manager service.
@@ -63,9 +63,9 @@ trait RdfFileFieldTrait {
   }
 
   /**
-   * Gets the RDF file field target ID.
+   * Gets the file URL field target ID.
    *
-   * This method builds the target_id value of a RDF file field. If the row file
+   * This method builds the target_id value of a file URL field. If the row file
    * property ($file_property) indicates an incoming uploaded file, the method
    * will lookup in the file migration ($file_migration_id), using the source
    * IDs provided in $file_source_ids, and will build a URI based on the
@@ -74,8 +74,8 @@ trait RdfFileFieldTrait {
    *
    * @param \Drupal\migrate\Row $row
    *   The migrate row to be altered.
-   * @param string $rdf_file_field_property
-   *   The source property corresponding to the RDF file field to be set.
+   * @param string $file_url_field_property
+   *   The source property corresponding to the file URL field to be set.
    * @param array $file_source_ids
    *   The file migration source IDs values. Example ['nid' => 123].
    * @param string $file_property
@@ -85,7 +85,7 @@ trait RdfFileFieldTrait {
    * @param string $url_property
    *   The source property of the remote URL to be set.
    */
-  protected function setRdfFileTargetId(Row $row, $rdf_file_field_property, array $file_source_ids, $file_property, $file_migration_id, $url_property) {
+  protected function setFileUrlTargetId(Row $row, $file_url_field_property, array $file_source_ids, $file_property, $file_migration_id, $url_property) {
     if ($row->getSourceProperty($file_property)) {
       $uri = NULL;
       // The target ID points to an uploaded file. Lookup in the file migration,
@@ -101,7 +101,7 @@ trait RdfFileFieldTrait {
       // The URI might be a reference to a remote file or NULL.
       $uri = $this->normalizeUri($row->getSourceProperty($url_property));
     }
-    $row->setSourceProperty($rdf_file_field_property, $uri);
+    $row->setSourceProperty($file_url_field_property, $uri);
   }
 
   /**
