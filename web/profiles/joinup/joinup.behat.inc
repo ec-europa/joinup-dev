@@ -747,7 +747,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I (should )not see the :heading tile
    */
   public function assertTileNotPresent($heading) {
-    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2');
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {
