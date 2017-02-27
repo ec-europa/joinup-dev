@@ -150,25 +150,25 @@ Feature: Navigation menu for custom pages
 
   Scenario: The menu sub pages should be shown in a separate block.
     Given the following collection:
-      | title  | ChangeMe1  |
-      | logo   | logo.png   |
-      | banner | banner.jpg |
-      | state  | validated  |
+      | title  | Hidden Ship |
+      | logo   | logo.png    |
+      | banner | banner.jpg  |
+      | state  | validated   |
     And custom_page content:
-      | title     | body      | collection |
-      | ChangeMe2 | Test body | ChangeMe1  |
-      | ChangeMe3 | Test body | ChangeMe1  |
-      | ChangeMe4 | Test body | ChangeMe1  |
+      | title                    | body      | collection  |
+      | The Burning Angel        | Test body | Hidden Ship |
+      | Snake of Pleasure        | Test body | Hidden Ship |
+      | The Slaves of the Shores | Test body | Hidden Ship |
     # The custom page menu items were created automatically in the above step.
     And the following custom page menu structure:
-      | title     | parent    | weight |
-      | ChangeMe3 | ChangeMe2 | 2      |
-      | ChangeMe4 | ChangeMe2 | 1      |
-    And I go to the "ChangeMe1" collection
-    When I click "ChangeMe2" in the "Navigation menu block" region
-    Then I should see the link "ChangeMe2" in the "Navigation menu block" region
-    But I should not see the link "ChangeMe3" in the "Navigation menu block" region
-    And I should not see the link "ChangeMe4" in the "Navigation menu block" region
+      | title                    | parent            | weight |
+      | Snake of Pleasure        | The Burning Angel | 2      |
+      | The Slaves of the Shores | The Burning Angel | 1      |
+    And I go to the "Hidden Ship" collection
+    When I click "The Burning Angel" in the "Navigation menu block" region
+    Then I should see the link "The Burning Angel" in the "Navigation menu block" region
+    But I should not see the link "Snake of Pleasure" in the "Navigation menu block" region
+    And I should not see the link "The Slaves of the Shores" in the "Navigation menu block" region
     Then I should see the following tiles in the "Subpages menu" region:
-      | ChangeMe4 |
-      | ChangeMe3 |
+      | The Slaves of the Shores |
+      | Snake of Pleasure        |
