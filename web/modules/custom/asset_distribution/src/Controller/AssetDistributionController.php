@@ -56,8 +56,8 @@ class AssetDistributionController extends ControllerBase {
    * Controller for the base form.
    *
    * We need to override the functionality of the create form for pages
-   * that include the rdf_entity id in the url so that the the asset release
-   * refers to this asset distribution or solution.
+   * that include the rdf_entity id in the url so that the asset release or the
+   * solution refers to this asset distribution.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The asset release or solution rdf entity.
