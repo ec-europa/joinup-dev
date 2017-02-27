@@ -15,7 +15,7 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
-    - file
+    - file_url
     - link
     - rdf_entity
     - text
