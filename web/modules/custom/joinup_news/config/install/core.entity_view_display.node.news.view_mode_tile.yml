@@ -8,8 +8,8 @@ dependencies:
     - field.field.node.news.field_news_headline
     - field.field.node.news.field_news_shared_in
     - field.field.node.news.field_news_source_url
-    - field.field.node.news.field_state
     - field.field.node.news.field_spatial_coverage
+    - field.field.node.news.field_state
     - field.field.node.news.field_topic
     - field.field.node.news.og_audience
     - node.type.news
@@ -75,6 +75,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_topic:
     type: entity_reference_label
     weight: 1
@@ -92,12 +93,13 @@ content:
             classes: {  }
       joinup:
         template_suggestion: entity_reference__listing_tag
+    region: content
 hidden:
   field_comments: true
   field_news_headline: true
   field_news_shared_in: true
   field_news_source_url: true
-  field_state: true
   field_spatial_coverage: true
+  field_state: true
   links: true
   og_audience: true

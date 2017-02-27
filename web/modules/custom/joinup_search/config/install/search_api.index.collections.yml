@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.body
-    - field.storage.node.field_document_short_title
+    - field.storage.node.field_short_title
     - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_policy_domain
     - field.storage.rdf_entity.field_spatial_coverage
@@ -54,14 +54,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.body
-  field_document_short_title:
+  field_short_title:
     label: 'Short title'
     datasource_id: 'entity:node'
-    property_path: field_document_short_title
+    property_path: field_short_title
     type: string
     dependencies:
       config:
-        - field.storage.node.field_document_short_title
+        - field.storage.node.field_short_title
   nid:
     label: ID
     datasource_id: 'entity:node'

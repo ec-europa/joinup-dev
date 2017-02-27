@@ -4,6 +4,10 @@ description: A document content type
 core: 8.x
 package: Joinup
 
+dependencies:
+  - file_url
+  - joinup_licence
+
 config_devel:
   - core.base_field_override.node.document.title
   - core.entity_form_display.node.document.default
@@ -12,14 +16,18 @@ config_devel:
   - core.entity_view_display.node.document.view_mode_tile
   - field.field.node.document.body
   - field.field.node.document.field_comments
-  - field.field.node.document.field_document_file
   - field.field.node.document.field_document_publication_date
-  - field.field.node.document.field_document_short_title
-  - field.field.node.document.field_document_source_url
+  - field.field.node.document.field_file
+  - field.field.node.document.field_keywords
+  - field.field.node.document.field_licence
+  - field.field.node.document.field_short_title
+  - field.field.node.document.field_spatial_coverage
   - field.field.node.document.field_state
+  - field.field.node.document.field_topic
+  - field.field.node.document.field_type
   - field.field.node.document.og_audience
-  - field.storage.node.field_document_file
   - field.storage.node.field_document_publication_date
-  - field.storage.node.field_document_short_title
-  - field.storage.node.field_document_source_url
+  - field.storage.node.field_file
+  - field.storage.node.field_licence
+  - field.storage.node.field_type
   - node.type.document

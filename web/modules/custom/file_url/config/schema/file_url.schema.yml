@@ -1,0 +1,23 @@
+field.storage_settings.file_url:
+  type: field.storage_settings.file
+  label: 'File URL settings'
+  mapping:
+    target_type:
+      type: string
+      label: 'Type of item to reference'
+
+field.field_settings.file_url:
+  type: field.field_settings.file
+  label: 'File URL settings'
+
+field.widget.settings.file_url_generic:
+  type: field.widget.settings.file_generic
+  label: 'File URL generic widget'
+
+field.formatter.settings.file_url:
+  type: field.formatter.settings.file_default
+  label: 'File URL generic formatter'
+  mapping:
+    mode:
+      type: string
+      labe: 'File display mode'
