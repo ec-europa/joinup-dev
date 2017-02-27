@@ -8,6 +8,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
+    - field.field.rdf_entity.solution.field_is_content
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
@@ -125,6 +126,7 @@ hidden:
   field_is_affiliations_requests: true
   field_is_business_process: true
   field_is_contact_information: true
+  field_is_content: true
   field_is_creation_date: true
   field_is_description: true
   field_is_distribution: true
@@ -156,4 +158,5 @@ hidden:
   field_spatial_coverage: true
   field_status: true
   og_group: true
+  rdf_entity_field_is_content_top: true
   related_solutions: true
