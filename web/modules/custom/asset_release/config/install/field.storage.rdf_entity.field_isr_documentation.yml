@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies:
   module:
+    - file_url
     - rdf_entity
-    - rdf_file
 third_party_settings:
   rdf_entity:
     mapping:
@@ -13,13 +13,13 @@ third_party_settings:
 id: rdf_entity.field_isr_documentation
 field_name: field_isr_documentation
 entity_type: rdf_entity
-type: rdf_file
+type: file_url
 settings:
   display_field: false
   display_default: false
   uri_scheme: public
   target_type: file
-module: rdf_file
+module: file_url
 locked: false
 cardinality: 1
 translatable: true

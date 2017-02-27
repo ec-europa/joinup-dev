@@ -8,6 +8,7 @@ dependencies:
   - contact_information
   - datetime
   - ds
+  - file_url
   - image
   - inline_entity_form
   - joinup_core
@@ -17,7 +18,6 @@ dependencies:
   - options
   - owner
   - rdf_entity
-  - rdf_file
   - state_machine
   - text
 

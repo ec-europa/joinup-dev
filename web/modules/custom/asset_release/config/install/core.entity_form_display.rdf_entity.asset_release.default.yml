@@ -27,10 +27,10 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_status
     - rdf_entity.rdfentity.asset_release
   module:
+    - file_url
     - inline_entity_form
     - joinup_core
     - rdf_entity
-    - rdf_file
     - text
 id: rdf_entity.asset_release.default
 targetEntityType: rdf_entity
@@ -64,7 +64,7 @@ content:
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-    type: rdf_file_generic
+    type: file_url_generic
     region: content
   field_isr_language:
     type: entity_reference_autocomplete

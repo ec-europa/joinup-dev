@@ -18,7 +18,7 @@ dependencies:
   module:
     - digital_size_formatter
     - ds
-    - rdf_file
+    - file_url
 id: rdf_entity.asset_distribution.view_mode_tile
 targetEntityType: rdf_entity
 bundle: asset_distribution

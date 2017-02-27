@@ -14,7 +14,7 @@ use Drupal\migrate\Row;
 class Solution extends SolutionBase {
 
   use CountryTrait;
-  use RdfFileFieldTrait;
+  use FileUrlFieldTrait;
 
   /**
    * {@inheritdoc}
@@ -92,7 +92,7 @@ class Solution extends SolutionBase {
     $row->setSourceProperty('keywords', array_unique($keywords));
 
     // Resolve documentation.
-    $this->setRdfFileTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
+    $this->setFileUrlTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));

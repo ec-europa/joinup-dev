@@ -14,7 +14,7 @@ use Drupal\migrate\Row;
 class Release extends JoinupSqlBase {
 
   use CountryTrait;
-  use RdfFileFieldTrait;
+  use FileUrlFieldTrait;
 
   /**
    * {@inheritdoc}
@@ -126,7 +126,7 @@ class Release extends JoinupSqlBase {
     $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Resolve documentation.
-    $this->setRdfFileTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
+    $this->setFileUrlTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
 
     return parent::prepareRow($row);
   }
