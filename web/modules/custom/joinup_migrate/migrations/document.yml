@@ -1,0 +1,33 @@
+id: document
+label: Document
+migration_tags:
+  - node
+  - og
+  - document
+source:
+  plugin: document
+  track_changes: true
+process:
+  title: title
+  created: created
+  changed: changed
+  body/value: body
+  body/format:
+    plugin: default_value
+    default_value: content_editor
+  uid:
+    - plugin: migration
+      migration: user
+      source: file_uid
+      no_stub: true
+    - plugin: default_value
+      default_value: 1
+  field_type: document_type
+  field_document_publication_date: publication_date
+destination:
+  plugin: entity:node
+  default_bundle: document
+migration_dependencies:
+ required:
+   - prepare
+   - user
