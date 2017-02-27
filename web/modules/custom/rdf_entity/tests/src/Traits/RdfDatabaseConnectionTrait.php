@@ -37,10 +37,7 @@ trait RdfDatabaseConnectionTrait {
     $client->setMethod('GET');
     $response = $client->request();
     $server_header = $response->getHeader('Server');
-    if (strpos($server_header, "Virtuoso/06") === FALSE) {
-      return FALSE;
-    }
-    return TRUE;
+    return strpos($server_header, "Virtuoso/06") !== FALSE;
   }
 
   /**
