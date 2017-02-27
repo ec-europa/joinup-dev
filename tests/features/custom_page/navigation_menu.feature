@@ -165,10 +165,10 @@ Feature: Navigation menu for custom pages
       | ChangeMe3 | ChangeMe2 | 2      |
       | ChangeMe4 | ChangeMe2 | 1      |
     And I go to the "ChangeMe1" collection
+    When I click "ChangeMe2" in the "Navigation menu block" region
     Then I should see the link "ChangeMe2" in the "Navigation menu block" region
     But I should not see the link "ChangeMe3" in the "Navigation menu block" region
     And I should not see the link "ChangeMe4" in the "Navigation menu block" region
-    When I click "ChangeMe2" in the "Navigation menu block" region
     Then I should see the following tiles in the "Subpages menu" region:
       | ChangeMe4 |
       | ChangeMe3 |
