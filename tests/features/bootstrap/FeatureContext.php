@@ -386,7 +386,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Checks that a certain radio input is checked in a specific field.
+   * Checks that a certain radio input is selected in a specific field.
    *
    * @param string $radio
    *   The label of the radio input to find.
@@ -395,9 +395,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @throws \Exception
    *   Thrown when the field or the radio is not found, or if the radio is not
-   *   checked.
+   *   selected.
    *
-   * @Then the radio :radio from field :field should be checked
+   * @Then the radio button :radio from field :field should be selected
    */
   public function assertFieldRadioSelected($radio, $field) {
     // Find the grouping fieldset that contains the radios field.
@@ -417,7 +417,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
 
     if (!$input->isChecked()) {
-      throw new \Exception("The radio '$radio' is not checked.");
+      throw new \Exception("The radio '$radio' is not selected.");
     }
   }
 

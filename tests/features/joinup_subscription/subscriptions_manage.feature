@@ -23,7 +23,7 @@ Feature: User subscription settings
     And I click "My account"
     And I click "Subscription Settings"
     #Then the option "monthly" should be selected
-    Then the radio "Monthly" from field "Notification frequency" should be checked
+    Then the radio button "Monthly" from field "Notification frequency" should be selected
     And the "Solution" checkbox should be checked
     And the "News" checkbox should be checked
     And the "Notify me on updates" checkbox should be checked
