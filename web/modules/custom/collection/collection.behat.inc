@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
+use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -27,6 +28,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 class CollectionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use EntityReferenceTrait;
+  use EntityTrait;
   use FileTrait;
   use NodeTrait;
   use OgMenuTrait;
@@ -525,6 +527,36 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       ];
 
       $this->createOgMenuItem($menu_item_data);
+    }
+  }
+
+  /**
+   * Alters relationships between menu items for the custom pages menu.
+   *
+   * It does not create the menu items as they are created automatically when
+   * the custom pages are created.
+   *
+   * Table format:
+   * | title              | parent              | weight |
+   * | Custom page parent | Custom page child 1 |      1 |
+   * | Custom page parent | Custom page child 2 |      3 |
+   * | Custom page parent | Custom page child 3 |      2 |
+   *
+   * @param TableNode $menu_table
+   *   The menu table.
+   *
+   * @throws \Exception
+   *    Throws an exception if the parent item is not found.
+   *
+   * @Given (the following )custom page(s) menu structure:
+   */
+  public function givenCollectionMenuStructure(TableNode $menu_table) {
+    foreach ($menu_table->getColumnsHash() as $values) {
+      $parent_link = $this->getMenuLinkByTitle($values['parent']);
+      $child_link = $this->getMenuLinkByTitle($values['title']);
+      $child_link->set('parent', $parent_link->getPluginId());
+      $child_link->set('weight', $values['weight']);
+      $child_link->save();
     }
   }
 

@@ -10,7 +10,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
-use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Query\QueryInterface;
@@ -60,16 +59,12 @@ function custom_page_og_membership_insert(OgMembership $og_membership) {
  * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2369
  */
 function custom_page_entity_insert(EntityInterface $entity) {
-  if (!$entity instanceof Node) {
+  if ($entity->getEntityTypeId() !== 'node' || $entity->bundle() !== 'custom_page') {
     return;
   }
-  /** @var \Drupal\node\Entity\Node $node */
-  $node = $entity;
-  if ($node->getType() != 'custom_page') {
-    return;
-  }
+
   /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-  $group = $node->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->first();
+  $group = $entity->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->first();
   if (!$group) {
     return;
   }
@@ -87,9 +82,9 @@ function custom_page_entity_insert(EntityInterface $entity) {
   /** @var \Drupal\og_menu\Entity\OgMenuInstance $instance */
   $instance = array_pop($instances);
   $menu_link_content = MenuLinkContent::create([
-    'title' => $node->getTitle(),
+    'title' => $entity->getTitle(),
     'menu_name' => 'ogmenu-' . $instance->id(),
-    'link' => ['uri' => 'internal:/node/' . $node->id()],
+    'link' => ['uri' => 'internal:/node/' . $entity->id()],
   ]);
   $menu_link_content->save();
 }

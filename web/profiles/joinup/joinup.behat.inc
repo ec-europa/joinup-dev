@@ -633,7 +633,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // Fixes a step argument (with \\" replaced back to ")
     // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
     $button = str_replace('\\"', '"', $button);
-    $this->getSession()->getPage()->find('named', ['fieldset', $fieldset])->pressButton($button);
+    $this->getSession()->getPage()->find('named', [
+      'fieldset',
+      $fieldset,
+    ])->pressButton($button);
   }
 
   /**
@@ -751,6 +754,37 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       if ($result->getText() === $heading) {
         throw new \Exception("The tile '$heading' was found on the page");
       }
+    }
+  }
+
+  /**
+   * Checks that the given tiles are found in the given block.
+   *
+   * The weight of the tiles are also taken into account.
+   *
+   * Table format:
+   * | title        |
+   * | Tile title 1 |
+   * | Tile title 2 |
+   *
+   * @Then I( should) see the( following) tiles in the :region region:
+   */
+  public function assertTilesInBlock(TableNode $titles_table, $region) {
+    $session = $this->getSession();
+    $regionObj = $session->getPage()->find('region', $region);
+    if (!$regionObj) {
+      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+    }
+
+    $results = $regionObj->findAll('css', '.listing__item--tile h2');
+    $headings_in_page = array_map(function ($result) {
+      return $result->getText();
+    }, $results);
+    $headings_expected = array_map(function ($row) {
+      return reset($row);
+    }, $titles_table->getRows());
+    if ($headings_in_page !== $headings_expected) {
+      throw new \Exception("The expected tiles are not in the page or not in the proper order.");
     }
   }
 

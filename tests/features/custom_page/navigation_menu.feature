@@ -28,7 +28,7 @@ Feature: Navigation menu for custom pages
     When I click "Add a new page"
     Then I should see the heading "Add custom page"
     When I fill in the following:
-      | Title | About us              |
+      | Title | About us |
     And I enter "A short introduction." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the success message "Custom page About us has been created."
@@ -147,3 +147,28 @@ Feature: Navigation menu for custom pages
     When I click the contextual links button in the "Navigation menu block"
     Then the "Edit menu" link in the "Navigation menu block" should not be visible
     And the "Add new page" link in the "Navigation menu block" should not be visible
+
+  Scenario: The menu sub pages should be shown in a separate block.
+    Given the following collection:
+      | title  | ChangeMe1  |
+      | logo   | logo.png   |
+      | banner | banner.jpg |
+      | state  | validated  |
+    And custom_page content:
+      | title     | body      | collection |
+      | ChangeMe2 | Test body | ChangeMe1  |
+      | ChangeMe3 | Test body | ChangeMe1  |
+      | ChangeMe4 | Test body | ChangeMe1  |
+    # The custom page menu items were created automatically in the above step.
+    And the following custom page menu structure:
+      | title     | parent    | weight |
+      | ChangeMe3 | ChangeMe2 | 2      |
+      | ChangeMe4 | ChangeMe2 | 1      |
+    And I go to the "ChangeMe1" collection
+    Then I should see the link "ChangeMe2" in the "Navigation menu block" region
+    But I should not see the link "ChangeMe3" in the "Navigation menu block" region
+    And I should not see the link "ChangeMe4" in the "Navigation menu block" region
+    When I click "ChangeMe2" in the "Navigation menu block" region
+    Then I should see the following tiles in the "Subpages menu" region:
+      | ChangeMe4 |
+      | ChangeMe3 |
