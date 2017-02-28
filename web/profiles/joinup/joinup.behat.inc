@@ -775,12 +775,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $headings_in_page = array_map(function ($result) {
       return $result->getText();
     }, $results);
-    $headings_expected = array_map(function ($row) {
-      return reset($row);
-    }, $titles_table->getRows());
-    if ($headings_in_page !== $headings_expected) {
-      throw new \Exception("The expected tiles are not in the page or not in the proper order.");
-    }
+    $headings_expected = $titles_table->getColumn(0);
+    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, "The expected tiles are not in the page or not in the proper order.");
   }
 
   /**

@@ -14,7 +14,6 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\og\MembershipManagerInterface;
-use Drupal\og_menu\OgMenuInstanceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
