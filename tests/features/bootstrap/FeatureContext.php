@@ -6,6 +6,7 @@
  */
 
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
@@ -666,6 +667,80 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     if (!$element->hasClass('is-selected')) {
       throw new \Exception("The tab '$tab' is not active.");
+    }
+  }
+
+  /**
+   * Creates testing terms for scenarios tagged with @terms tag.
+   *
+   * Limitation: It creates terms with maximum 2 level hierarchy.
+   *
+   * @beforeScenario @terms
+   */
+  public function provideTestingTerms() {
+    $fixture = file_get_contents(__DIR__ . '/../../fixtures/testing_terms.yml');
+    $hierarchy = Yaml::decode($fixture);
+    foreach ($hierarchy as $vid => $terms) {
+      foreach ($terms as $key => $data) {
+        $has_children = is_array($terms);
+        $name = $has_children ? $key : $data;
+        $term = (object) [
+          'vocabulary_machine_name' => $vid,
+          'name' => $name,
+        ];
+        $this->termCreate($term);
+        $parent_tid = $term->tid;
+        if ($has_children) {
+          foreach ($data as $name) {
+            $term = (object) [
+              'vocabulary_machine_name' => $vid,
+              'name' => $name,
+              'parent' => $parent_tid,
+            ];
+            $this->termCreate($term);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Fills a multi-value field.
+   *
+   * In Drupal a field can have a cardinality bigger than one. In that case,
+   * the field widget will be rendered multiple times. This method will fill
+   * each item with the corresponding value.
+   * This doesn't handle widgets with multiple inputs and it relies on the
+   * number of items to match the number of values. Clicking the
+   * button to add more items is left to the user.
+   *
+   * @param string $field
+   *   The name of the field.
+   * @param string $values
+   *   A comma separated list of values.
+   *
+   * @throws \Exception
+   *   When the field cannot be found or the number of values is different from
+   *   the number of elements found.
+   *
+   * @When I fill in :field with values :values
+   */
+  public function fillFieldWithValues($field, $values) {
+    $values = $this->explodeCommaSeparatedStepArgument($values);
+
+    /** @var \Behat\Mink\Element\NodeElement[] $items */
+    $items = $this->getSession()->getPage()->findAll('named', array('field', $field));
+
+    if (empty($items)) {
+      throw new \Exception("Cannot find field $field.");
+    }
+
+    if (count($items) !== count($values)) {
+      throw new \Exception('Expected ' . count($values) . ' items for field ' . $field . ', found ' . count($items));
+    }
+
+    foreach ($items as $delta => $item) {
+      $item->setValue($values[$delta]);
     }
   }
 

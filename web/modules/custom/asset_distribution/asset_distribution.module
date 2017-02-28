@@ -5,14 +5,13 @@
  * Contains asset_distribution.module.
  */
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\rdf_file\RdfFileHandler;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -32,7 +31,7 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
   // release, there is no field provided for it. Without a solution or a release
   // the asset distribution will be dangling and won't be reachable.
   if (!$rdf || !$rdf instanceof RdfInterface || !in_array($rdf->bundle(), ['asset_release', 'solution'])) {
-    throw new AccessDeniedHttpException("Distributions can only be created in context of a '{$rdf->bundle()}'.");
+    throw new AccessDeniedHttpException('Distributions can only be created in context of a solution or an asset release.');
   }
 
   $form_state->set('context_rdf_entity_id', $rdf->id());
@@ -135,41 +134,25 @@ function asset_distribution_rdf_entity_view(array &$build, EntityInterface $enti
  * Implements hook_ENTITY_TYPE_presave().
  */
 function asset_distribution_rdf_entity_presave(RdfInterface $distribution) {
-  global $base_url;
-  if ($distribution->bundle() != 'asset_distribution') {
+  if ($distribution->bundle() !== 'asset_distribution') {
     return;
   }
-  $file_urls = [];
-  $file_size = 0;
-  $access_urls = $distribution->get('field_ad_access_url')->getValue();
 
-  // Get all file urls.
-  /** @var \Drupal\field\FieldConfigInterface $file_field */
-  foreach ($distribution->get('field_ad_file') as $file_field) {
-    $file = File::load($file_field->get('target_id')->getValue());
-    if ($file) {
-      $file_urls[] = $file->url();
-      $file_size += $file->getSize();
+  if (!empty($file_id = $distribution->field_ad_access_url->target_id)) {
+    /** @var \Drupal\file\FileInterface $file */
+    if ($file = RdfFileHandler::urlToFile($file_id)) {
+      if (!RdfFileHandler::isRemote($file)) {
+        // Set the file size field.
+        $distribution->get('field_ad_file_size')->setValue($file->getSize());
+
+        // Set the file format field.
+        $tid = asset_distribution_get_file_type_term_by_mime($file->getMimeType());
+        if ($tid) {
+          $distribution->get('field_ad_format')->setValue($tid);
+        }
+      }
     }
   }
-
-  // Remove removed files from access urls.
-  foreach ($access_urls as $delta => $access_url) {
-    if (UrlHelper::isExternal($access_url['uri']) && UrlHelper::externalIsLocal($access_url['uri'], $base_url) && !in_array($access_url['uri'], $file_urls)) {
-      unset($access_urls[$delta]);
-    }
-  }
-
-  // Add new or updated files to the access urls.
-  foreach ($file_urls as $file_url) {
-    if (!array_search($file_url, array_column($access_urls, 'uri'))) {
-      $access_urls[]['uri'] = $file_url;
-    }
-  }
-
-  // Set the values.
-  $distribution->get('field_ad_access_url')->setValue($access_urls);
-  $distribution->get('field_ad_file_size')->setValue($file_size);
 }
 
 /**
@@ -231,4 +214,35 @@ function asset_distribution_add_parent_relation(RdfInterface $distribution, RdfI
   $related_distributions[]['target_id'] = $distribution->id();
   $parent->set($field_name, $related_distributions);
   $parent->save();
+}
+
+/**
+ * Returns the ID of the 'file_type' term given a mime type.
+ *
+ * @param string $mime_type
+ *   The mime type for which to locate the 'file_type' term.
+ *
+ * @return string|null
+ *   The term ID as URI or NULL, if the term doesn't exists.
+ */
+function asset_distribution_get_file_type_term_by_mime($mime_type) {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
+  $sparql = \Drupal::service('sparql_endpoint');
+
+  $query = <<<QUERY
+SELECT ?entity_id
+WHERE {
+  ?entity_id <http://publications.europa.eu/ontology/authority/op-mapped-code> ?op_mime_type .
+  ?op_mime_type <http://purl.org/dc/elements/1.1/source> "manifestation-type-cellar" .
+  ?op_mime_type <http://publications.europa.eu/ontology/authority/legacy-code> "$mime_type" .
+}
+QUERY;
+
+  $results = $sparql->query($query);
+  if ($results->count()) {
+    $result = &$results[0];
+    return $result->entity_id->getUri();
+  }
+
+  return NULL;
 }

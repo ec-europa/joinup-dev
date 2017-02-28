@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.event.field_event_agenda
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_end_date
+    - field.field.node.event.field_event_location
     - field.field.node.event.field_event_logo
     - field.field.node.event.field_event_organisation
     - field.field.node.event.field_event_short_title
@@ -42,6 +43,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_event_logo:
     weight: 1
     label: hidden
@@ -57,6 +59,7 @@ content:
             lb-col: false
             classes: {  }
     type: image
+    region: content
   field_event_short_title:
     weight: 0
     label: hidden
@@ -64,6 +67,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_event_start_date:
     weight: 3
     label: hidden
@@ -79,12 +83,14 @@ content:
             lb-col: false
             classes: {  }
     type: datetime_default
+    region: content
 hidden:
   field_comments: true
   field_event_adtl_address_info: true
   field_event_agenda: true
   field_event_contact_email: true
   field_event_end_date: true
+  field_event_location: true
   field_event_organisation: true
   field_event_web_url: true
   links: true

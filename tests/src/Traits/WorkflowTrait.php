@@ -60,7 +60,7 @@ trait WorkflowTrait {
 
     // Set the user to the workflow user provider so that states available are
     // retrieved for the specific account.
-    \Drupal::service('joinup_user.workflow.user_provider')->setUser($user);
+    \Drupal::service('joinup_core.workflow.user_provider')->setUser($user);
 
     $field = $this->getEntityStateField($entity);
     $allowed_transitions = $field->getTransitions();
@@ -93,7 +93,7 @@ trait WorkflowTrait {
 
     // Set the user to the workflow user provider so that states available are
     // retrieved for the specific account.
-    \Drupal::service('joinup_user.workflow.user_provider')->setUser($user);
+    \Drupal::service('joinup_core.workflow.user_provider')->setUser($user);
 
     $field = $this->getEntityStateField($entity);
 

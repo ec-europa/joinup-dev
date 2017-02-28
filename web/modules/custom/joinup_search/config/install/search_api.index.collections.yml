@@ -21,7 +21,7 @@ name: 'Search index'
 description: ''
 read_only: false
 field_settings:
-  aggregated_field:
+  entity_bundle:
     label: Bundle
     property_path: aggregated_field
     type: string
@@ -30,16 +30,17 @@ field_settings:
       fields:
         - 'entity:node/type'
         - 'entity:rdf_entity/rid'
-  aggregated_field_1:
-    label: 'Aggregated field'
+  entity_groups:
+    label: Groups
     property_path: aggregated_field
     type: string
     configuration:
       type: union
       fields:
         - 'entity:node/og_audience'
-        - 'entity:rdf_entity/og_audience'
         - 'entity:rdf_entity/collection'
+        - 'entity:rdf_entity/og_audience'
+        - 'entity:rdf_entity/field_isr_is_version_of'
   title:
     label: Title
     datasource_id: 'entity:node'

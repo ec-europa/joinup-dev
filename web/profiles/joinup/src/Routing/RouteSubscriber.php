@@ -24,9 +24,12 @@ class RouteSubscriber extends RouteSubscriberBase {
     // routes.
     // To prevent this we're adding our own access handler to those routes here.
     $routes = [
-      'rdf_entity.rdf_add_page',
       'node.add',
       'node.add_page',
+      'rdf_entity.rdf_add',
+      'rdf_entity.rdf_add_page',
+      'view.frontpage.feed_1',
+      'view.frontpage.page_1',
     ];
     foreach ($routes as $route) {
       if ($route = $collection->get($route)) {

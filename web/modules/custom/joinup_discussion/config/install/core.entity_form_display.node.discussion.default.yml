@@ -3,9 +3,8 @@ status: true
 dependencies:
   config:
     - field.field.node.discussion.field_comments
-    - field.field.node.discussion.field_discussion_active
     - field.field.node.discussion.field_discussion_content
-    - field.field.node.discussion.field_discussion_state
+    - field.field.node.discussion.field_state
     - field.field.node.discussion.field_topic
     - field.field.node.discussion.og_audience
     - node.type.discussion
@@ -24,16 +23,13 @@ content:
     weight: 5
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_comments:
     weight: 26
     settings: {  }
     third_party_settings: {  }
     type: comment_default
-  field_discussion_active:
-    type: options_buttons
-    weight: 2
-    settings: {  }
-    third_party_settings: {  }
+    region: content
   field_discussion_content:
     type: text_textarea
     weight: 1
@@ -41,12 +37,14 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-  field_discussion_state:
+    region: content
+  field_state:
     weight: 27
     settings:
       use_transition_label: 1
     third_party_settings: {  }
     type: state_machine_buttons
+    region: content
   field_topic:
     type: entity_reference_autocomplete
     weight: 3
@@ -55,23 +53,27 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   path:
     type: path
     weight: 8
     settings: {  }
     third_party_settings: {  }
+    region: content
   promote:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 6
     third_party_settings: {  }
+    region: content
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 7
     third_party_settings: {  }
+    region: content
   title:
     type: string_textfield
     weight: 0
@@ -79,6 +81,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   uid:
     type: entity_reference_autocomplete
     weight: 4
@@ -87,5 +90,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden:
+  current_workflow_state: true
   og_audience: true

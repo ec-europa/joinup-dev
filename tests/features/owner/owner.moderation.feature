@@ -1,9 +1,10 @@
-@api
+@api @terms
 Feature: Owner moderation
   In order to manage owners
   As a user of the website
   I need to be able to transit the owners from one state to another.
 
+  @terms
   Scenario: Publish, update, request changes, publish again and ask to delete an owner.
     Given users:
       | name            |
@@ -20,7 +21,7 @@ Feature: Owner moderation
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I click the 'Categorisation' tab
-    And I select "European Policies" from "Policy domain"
+    And I select "EU and European Policies" from "Policy domain"
 
     # An authenticated user can create an owner in published state.
     When I click the 'Description' tab

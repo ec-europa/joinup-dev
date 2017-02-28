@@ -4,9 +4,8 @@ dependencies:
   config:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.discussion.field_comments
-    - field.field.node.discussion.field_discussion_active
     - field.field.node.discussion.field_discussion_content
-    - field.field.node.discussion.field_discussion_state
+    - field.field.node.discussion.field_state
     - field.field.node.discussion.field_topic
     - field.field.node.discussion.og_audience
     - node.type.discussion
@@ -33,6 +32,7 @@ content:
             lb-col: false
             classes: {  }
     type: text_trimmed
+    region: content
   field_topic:
     weight: 0
     label: hidden
@@ -50,9 +50,9 @@ content:
       joinup:
         template_suggestion: entity_reference__listing_tag
     type: entity_reference_label
+    region: content
 hidden:
   field_comments: true
-  field_discussion_active: true
-  field_discussion_state: true
+  field_state: true
   links: true
   og_audience: true

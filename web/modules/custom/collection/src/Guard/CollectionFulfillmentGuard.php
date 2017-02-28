@@ -5,8 +5,8 @@ namespace Drupal\collection\Guard;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\joinup_core\WorkflowUserProvider;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_user\WorkflowUserProvider;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
@@ -38,7 +38,7 @@ class CollectionFulfillmentGuard implements GuardInterface {
    * This will almost always return the logged in users but in case a check is
    * needed to be done on a different account, it should be possible.
    *
-   * @var \Drupal\joinup_user\WorkflowUserProvider
+   * @var \Drupal\joinup_core\WorkflowUserProvider
    */
   protected $workflowUserProvider;
 
@@ -61,7 +61,7 @@ class CollectionFulfillmentGuard implements GuardInterface {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *    The WorkflowUserProvider service.
-   * @param \Drupal\joinup_user\WorkflowUserProvider $workflow_user_provider
+   * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
    *    The WorkflowUserProvider service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.

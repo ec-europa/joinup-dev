@@ -33,6 +33,16 @@ function rdf_entity_entity_base_field_info_alter(&$fields, EntityTypeInterface $
 }
 
 /**
+ * Implements hook_entity_type_alter().
+ */
+function rdf_entity_entity_type_alter(array &$entity_types) {
+  if (isset($entity_types['field_storage_config'])) {
+    // Swap out the field storage settings form.
+    $entity_types['field_storage_config']->setFormClass('edit', '\Drupal\rdf_entity\Form\RdfFieldStorageConfigEditForm');
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -114,9 +124,9 @@ function rdf_entity_entity_create(EntityInterface $entity) {
 }
 
 /**
- * Configure RDF mappings for the entities base fields.
- *
  * Implements hook_form_alter().
+ *
+ * Configurations for the RDF entity bundle.
  */
 function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
   $form_obj = $form_state->getFormObject();
@@ -137,31 +147,49 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
   $base_fields = \Drupal::entityManager()->getBaseFieldDefinitions($entity_name);
   $idKey = $storage->getEntityType()->getKey('id');
 
-  $form['rdf_graph'] = array(
+  $form['rdf_entity'] = [
     '#type' => 'details',
-    '#title' => t('Rdf graphs'),
-    '#description' => t('Graph URI mapping'),
-    '#weight' => 99,
+    '#title' => t('RDF Entity'),
+    '#description' => t('RDF entity configurations.'),
     '#open' => TRUE,
-  );
+    '#weight' => 99,
+  ];
+
+  /** @var \Drupal\rdf_entity\RdfEntityIdPluginManager $id_plugin_manager */
+  $id_plugin_manager = \Drupal::service('plugin.manager.rdf_entity.id');
+  $plugins = array_map(function (array $definition) use ($id_plugin_manager) {
+    return $definition['name'];
+  }, $id_plugin_manager->getDefinitions());
+
+  $form['rdf_entity']['entity_id_plugin'] = [
+    '#type' => 'select',
+    '#title' => t('Entity ID generator'),
+    '#description' => t("The generator used to create IDs for new entities."),
+    '#options' => $plugins,
+    '#default_value' => $entity->getThirdPartySetting('rdf_entity', 'entity_id_plugin') ?: $id_plugin_manager->getFallbackPluginId(NULL),
+  ];
+
+  $form['rdf_entity']['rdf_graph'] = [
+    '#type' => 'details',
+    '#title' => t('Graphs'),
+    '#description' => t('Graph URI mapping'),
+  ];
   foreach ($storage->getGraphDefinitions() as $definedGraphName => $definedGraph) {
     $default_value = rdf_entity_get_third_party_property($entity, 'graph', $definedGraphName, FALSE);
-    $form['rdf_graph']['graph_' . $definedGraphName] = array(
+    $form['rdf_entity']['rdf_graph']['graph_' . $definedGraphName] = [
       '#type' => 'url',
       '#title' => $definedGraph['title'],
       '#description' => $definedGraph['description'],
       '#default_value' => $default_value,
       '#required' => TRUE,
-
-    );
+    ];
   }
-  $form['rdf_mapping'] = array(
+
+  $form['rdf_entity']['rdf_mapping'] = [
     '#type' => 'details',
-    '#title' => t('Rdf field mapping'),
-    '#description' => t('This field uses a Sparql backend. Please map the fields to their corresponding rdf properties.'),
-    '#weight' => 99,
-    '#open' => TRUE,
-  );
+    '#title' => t('Field mapping'),
+    '#description' => t('This entity type uses a Sparql backend. Please map the bundle base fields to their corresponding RDF properties.'),
+  ];
 
   /** @var \Drupal\Core\Field\BaseFieldDefinition $base_field */
   foreach ($base_fields as $id => $base_field) {
@@ -177,15 +205,14 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
       if (count($columns) > 1) {
         $title .= ' (' . $column_name . ')';
       }
-      $form['rdf_mapping']['mapping_' . $id . '_' . $column_name] = array(
+      $form['rdf_entity']['rdf_mapping']['mapping_' . $id . '_' . $column_name] = [
         '#type' => 'url',
         '#title' => $title,
         '#description' => $base_field->getDescription(),
         '#weight' => 150,
         '#default_value' => isset($settings[$column_name]) ? $settings[$column_name] : NULL,
-      );
+      ];
     }
-
   }
   $form['#entity_builders'][] = 'rdf_entity_bundle_config';
 }
@@ -198,6 +225,7 @@ function rdf_entity_bundle_config($entity_type, ConfigEntityInterface $entity, a
   $base_fields = \Drupal::entityManager()->getBaseFieldDefinitions($entity_name);
   $storage = \Drupal::entityManager()->getStorage($entity_name);
   $idKey = $storage->getEntityType()->getKey('id');
+  $entity->setThirdPartySetting('rdf_entity', 'entity_id_plugin', $form_state->getValue('entity_id_plugin'));
   $third_party_settings = [];
   /** @var \Drupal\Core\Field\BaseFieldDefinition $base_field */
   foreach ($base_fields as $id => $base_field) {

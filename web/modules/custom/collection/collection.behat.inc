@@ -298,6 +298,21 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $collection->save();
     $this->collections[$collection->id()] = $collection;
 
+    // We have to force reindex of affiliated solutions so the relationship
+    // with this collection will be indexed in Solr.
+    if (!$collection->get('field_ar_affiliates')->isEmpty()) {
+      foreach ($collection->get('field_ar_affiliates')->referencedEntities() as $solution) {
+        // Reset the cached entity in the storage, so the "collection" computed
+        // field will be populated correctly when the solution gets loaded.
+        \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache([$solution->id()]);
+        // In order to avoid copying code from search_api_entity_update(), we
+        // need to fake an update event. Said function requires the "original"
+        // property to be populated, so just fill it with the entity itself.
+        $solution->original = $solution;
+        search_api_entity_update($solution);
+      }
+    }
+
     return $collection;
   }
 

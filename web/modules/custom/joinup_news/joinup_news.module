@@ -5,12 +5,9 @@
  * Provides functionality for the news content entity.
  */
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_news\Guard\JoinupNewsFulfillmentGuard;
-use Drupal\og\Og;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -19,54 +16,68 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
   // @todo Add test coverage for these constraints.
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2500
   if ($entity_type->id() == 'node' && $bundle == 'news') {
-    if (!empty($fields['field_news_short_title'])) {
-      $fields['field_news_short_title']->addConstraint('UniqueField');
+    if (!empty($fields['field_news_headline'])) {
+      $fields['field_news_headline']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
     }
-    if (!empty($fields['title'])) {
-      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
+
+    if (!empty($fields['field_news_shared_in'])) {
+      $fields['field_news_shared_in']->addConstraint('UniqueFieldValue');
+      $fields['field_news_shared_in']->addConstraint('ParentReference', [
+        'service' => 'joinup_core.relations_manager',
+        'method' => 'getParent',
+      ]);
+      $fields['field_news_shared_in']->addConstraint('NewsSharedInValidReference');
     }
   }
 }
 
 /**
- * Implements hook_node_access().
+ * Returns the appropriate workflow to use for the news entity.
  *
- * Interrupts the permissions for updating a node. The permission is not
- * granted if there are no transitions allowed for the current state of the
- * node.
+ * The callback ensures that even if the parent is updated and the moderation
+ * status changes, it will still use the proper workflow.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *    The news entity.
+ *
+ * @return string
+ *    The id of the workflow to use.
+ *
+ * @throws Exception
+ *    Thrown when the function is called for a different bundle.
  */
-function joinup_news_node_access(EntityInterface $node, $op, AccountInterface $account) {
-  if ($node->bundle() != 'news') {
-    return AccessResult::neutral();
+function joinup_news_workflow_selector(EntityInterface $entity) {
+  if ($entity->bundle() != 'news') {
+    throw new Exception('This method can only be called for document entities.');
+  }
+  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
+  $relation_manager = \Drupal::service('joinup_core.relations_manager');
+  $moderation = $relation_manager->getParentModeration($entity);
+  return $moderation == 1 ? 'node:news:pre_moderated' : 'node:news:post_moderated';
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function joinup_news_field_widget_entity_reference_autocomplete_form_alter(&$element, FormStateInterface $form_state, $context) {
+  /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $items */
+  $items = $context['items'];
+
+  // Handle only the specific field.
+  $field_name = $items->getFieldDefinition()->getName();
+  if ($field_name !== 'field_news_shared_in') {
+    return;
   }
 
-  switch ($op) {
-    case 'view';
-      $parent = JoinupNewsFulfillmentGuard::getParent($node);
+  $entity = $items->getEntity();
+  /** @var \Drupal\rdf_entity\RdfInterface $parent */
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
 
-      /** @var \Drupal\Core\Entity\EntityAccessControlHandlerInterface $access_handler */
-      $access_handler = \Drupal::service('entity_type.manager')->getAccessControlHandler('rdf_entity');
-      if (!$access_handler->access($parent, 'view', $account)) {
-        return AccessResult::forbidden();
-      }
-
-      $membership = Og::getMembership($parent, $account);
-      if (empty($membership)) {
-        return AccessResult::neutral();
-      }
-
-      if (!$node->isPublished() && $membership->hasPermission('view any unpublished content')) {
-        return AccessResult::allowed();
-      }
-      break;
-
-    case 'update':
-      $allowed_transitions = $node->get('field_news_state')->first()->getTransitions();
-      if (empty($allowed_transitions)) {
-        return AccessResult::forbidden();
-      }
-      break;
+  if (!empty($parent)) {
+    // Limit the referenceable entities to be of the same bundle of the parent
+    // of the news.
+    $element['target_id']['#selection_settings']['target_bundles'] = [
+      $parent->bundle() => $parent->bundle(),
+    ];
   }
-
-  return AccessResult::neutral();
 }

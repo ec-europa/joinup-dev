@@ -20,6 +20,7 @@ use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\search_api\Query\QueryInterface;
 
 /**
  * Implements hook_entity_access().
@@ -192,7 +193,7 @@ function solution_add_form_parent_submit(array &$form, FormStateInterface $form_
  * node.
  */
 function solution_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if (\Drupal::currentUser()->hasPermission('bypass node access')) {
+  if ($account->hasPermission($entity->getEntityType()->getAdminPermission())) {
     return AccessResult::neutral();
   }
   if ($entity->bundle() != 'solution') {
@@ -469,4 +470,57 @@ function solution_get_latest_release(RdfInterface $solution) {
 
   $latest_release = reset($releases);
   return $latest_release;
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ *
+ * Alters the Search API queries for the solution content:
+ * - only show content that belongs to the solution;
+ * - do not show the solution itself in the search results.
+ */
+function solution_search_api_query_search_api_field_field_is_content_alter(QueryInterface &$query) {
+  /** @var EntityInterface $entity */
+  $entity = $query->getOption('search_api_field entity');
+
+  // Show only content that belongs to this solution through the aggregated
+  // field. This makes sure that other related entities (such as the solution
+  // owner) do not show up as solution content tiles.
+  $query->addCondition('entity_groups', [$entity->id()], 'IN');
+
+  // Remove the solution itself from the results.
+  $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+
+  // If we don't have any releases associated to this solution, it also means
+  // that any distribution available is directly associated. We don't need any
+  // further filtering on the results.
+  if (!$entity->get('field_is_has_version')->count()) {
+    return;
+  }
+
+  // Get the ids of the distributions directly associated to the solution.
+  $distributions = array_map(function ($entity) {
+    return $entity->id();
+  }, $entity->get('field_is_distribution')->referencedEntities());
+
+  if (!empty($distributions)) {
+    // We need to filter out all the distributions except the ones that are
+    // directly associated to the solution.
+    $or = $query->createConditionGroup('OR');
+    // The next line might seem crazy but I am not drunk. It's needed to bypass
+    // Solr problems with negated queries. To fix this, we need to use the
+    // '(*:* NOT entity_bundle:"asset_distribution")' format. Unfortunately
+    // SearchApiSolrBackend::createFilterQuery() uses that syntax only when
+    // multiple values are provided. While ugly, nothing is really wrong about
+    // passing twice the same bundle.
+    // @see \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend::createFilterQuery()
+    // @see http://stackoverflow.com/a/635109
+    $or->addCondition('entity_bundle', ['asset_distribution', 'asset_distribution'], 'NOT IN');
+    $or->addCondition($entity->getEntityType()->getKey('id'), $distributions, 'IN');
+    $query->addConditionGroup($or);
+  }
+  else {
+    // Exclude all the distributions.
+    $query->addCondition('entity_bundle', 'asset_distribution', '<>');
+  }
 }

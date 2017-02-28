@@ -5,6 +5,7 @@ core: 8.x
 package: Joinup
 dependencies:
   - joinup_core
+  - joinup_user
 
 config_devel:
   - core.base_field_override.node.discussion.status
@@ -14,12 +15,9 @@ config_devel:
   - core.entity_view_display.node.discussion.view_mode_featured
   - core.entity_view_display.node.discussion.view_mode_tile
   - field.field.node.discussion.field_comments
-  - field.field.node.discussion.field_discussion_active
   - field.field.node.discussion.field_discussion_content
-  - field.field.node.discussion.field_discussion_state
+  - field.field.node.discussion.field_state
   - field.field.node.discussion.field_topic
   - field.field.node.discussion.og_audience
-  - field.storage.node.field_discussion_active
   - field.storage.node.field_discussion_content
-  - field.storage.node.field_discussion_state
   - node.type.discussion

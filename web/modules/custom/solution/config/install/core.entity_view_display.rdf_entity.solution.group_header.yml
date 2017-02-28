@@ -8,6 +8,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
+    - field.field.rdf_entity.solution.field_is_content
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
@@ -66,6 +67,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_is_logo:
     type: image
     weight: 1
@@ -83,6 +85,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
+    region: content
   field_is_solution_category:
     weight: 3
     label: above
@@ -90,6 +93,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   label:
     label: hidden
     type: string
@@ -106,19 +110,23 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
+    region: content
   licence:
     weight: 3
     settings: {  }
     third_party_settings: {  }
+    region: content
   releases_overview:
     weight: 4
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden:
   field_is_actor: true
   field_is_affiliations_requests: true
   field_is_business_process: true
   field_is_contact_information: true
+  field_is_content: true
   field_is_creation_date: true
   field_is_description: true
   field_is_distribution: true
@@ -150,3 +158,5 @@ hidden:
   field_spatial_coverage: true
   field_status: true
   og_group: true
+  rdf_entity_field_is_content_top: true
+  related_solutions: true
