@@ -78,4 +78,22 @@ trait TraversingTrait {
     return $element;
   }
 
+  /**
+   * Retrieves a region container from the page.
+   *
+   * @param string $region
+   *    The region label as defined in the behat.yml.
+   *
+   * @throws \Exception
+   *    Thrown when the region is not found.
+   */
+  protected function getRegion($region) {
+    $session = $this->getSession();
+    $regionObj = $session->getPage()->find('region', $region);
+    if (!$regionObj) {
+      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+    }
+    return $regionObj;
+  }
+
 }

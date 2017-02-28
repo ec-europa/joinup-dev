@@ -77,7 +77,6 @@ trait EntityTrait {
 
     /** @var \Drupal\menu_link_content\MenuLinkContentInterface $parent_link */
     return reset($menu_links);
-
   }
 
 }
