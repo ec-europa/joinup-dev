@@ -24,6 +24,24 @@ process:
       default_value: 1
   field_type: document_type
   field_document_publication_date: publication_date
+  field_file: field_file
+  field_keywords: keywords
+  field_spatial_coverage: country
+
+  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3185
+  # field_licence
+
+  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3186
+  # field_type
+
+  og_audience:
+    plugin: migration
+    source: collection
+    migration: collection
+
+  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
+  # field_state
+
 destination:
   plugin: entity:node
   default_bundle: document

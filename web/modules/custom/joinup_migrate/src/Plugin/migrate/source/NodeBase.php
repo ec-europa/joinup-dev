@@ -43,6 +43,7 @@ abstract class NodeBase extends JoinupSqlBase {
 
     // Add the node common fields.
     $this->query->fields('n', [
+      'collection',
       'nid',
       'vid',
       'type',
