@@ -14,6 +14,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\og_menu\OgMenuInstanceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -21,10 +22,24 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @Block(
  *  id = "menu_sub_pages",
- *  admin_label = @Translation("Menu sub pages"),
+ *  admin_label = @Translation("Menu subpages"),
  * )
  */
 class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The parent entity derived from the collection context.
+   *
+   * @var \Drupal\rdf_entity\RdfInterface
+   */
+  protected $collection;
+
+  /**
+   * The current route match service.
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface
+   */
+  protected $currentRouteMatch;
 
   /**
    * The entity type manager.
@@ -55,13 +70,6 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
   protected $menuLinkManager;
 
   /**
-   * The current route match service.
-   *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
-   */
-  protected $currentRouteMatch;
-
-  /**
    * The og membership manager service.
    *
    * @var \Drupal\og\MembershipManagerInterface
@@ -69,21 +77,14 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
   protected $membershipManager;
 
   /**
-   * The parent entity derived from the collection context.
+   * The ogmenu instance.
    *
-   * @var \Drupal\rdf_entity\RdfInterface
+   * @var \Drupal\og_menu\OgMenuInstanceInterface
    */
-  protected $collection;
+  protected $ogMenuInstance;
 
   /**
-   * The ogmenu instance id.
-   *
-   * @var string
-   */
-  protected $ogMenuInstanceId;
-
-  /**
-   * Construct.
+   * Constructs a new MenuSubPages object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -96,9 +97,9 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
    * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
    *   The entity repository service.
    * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
-   *   The joinup relation manager service.
+   *   The Joinup relation manager service.
    * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $collection_context
-   *   The collection context.
+   *   The collection route context.
    * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager
    *   The menu link tree service.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
@@ -115,13 +116,16 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
     $this->currentRouteMatch = $route_match;
     $this->membershipManager = $membership_manager;
 
+    // Retrieve the og group from the context handled by og. The context value
+    // is offered by the collection route context.
+    // @see \Drupal\collection\ContextProvider\CollectionRouteContext.
     $collection_contexts = $collection_context->getRuntimeContexts(['og']);
     if ($collection_contexts && $collection_contexts['og']->hasContextValue()) {
       $this->collection = $collection_contexts['og']->getContextValue();
       $results = $this->membershipManager->getGroupContentIds($this->collection, ['ogmenu_instance']);
 
       if (!empty($results)) {
-        $this->ogMenuInstanceId = reset($results['ogmenu_instance']);
+        $this->ogMenuInstance = $this->entityTypeManager->getStorage('ogmenu_instance')->load(reset($results['ogmenu_instance']));
       }
     }
   }
@@ -151,6 +155,11 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
     $build = [];
     $items = [];
     $child_links = $this->getChildLinks();
+
+    // Normally, this should be handled by blockAccess method but blockAccess is
+    // being called every time and is not cached. It is faster to cache it by
+    // returning an empty array here and using proper cache context and tags to
+    // invalidate it.
     if (empty($child_links)) {
       return $build;
     }
@@ -195,10 +204,10 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
    *    An array of menu links.
    */
   protected function getChildLinks() {
-    $links = $this->menuLinkManager->loadLinksByRoute($this->currentRouteMatch->getRouteName(), $this->currentRouteMatch->getRawParameters()->all(), 'ogmenu-' . $this->ogMenuInstanceId);
+    $links = $this->menuLinkManager->loadLinksByRoute($this->currentRouteMatch->getRouteName(), $this->currentRouteMatch->getRawParameters()->all(), 'ogmenu-' . $this->ogMenuInstance->id());
     $link = reset($links);
     $child_ids = $this->menuLinkManager->getChildIds($link->getPluginId());
-    $return = [];
+    $links = [];
 
     foreach ($child_ids as $child_plugin_id) {
       // Pull the path from the menu link content.
@@ -206,18 +215,23 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
         list(, $uuid) = explode(':', $child_plugin_id, 2);
         /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
         $menu_link_content = $this->entityRepository->loadEntityByUuid('menu_link_content', $uuid);
-        $return[$menu_link_content->getWeight()] = $menu_link_content;
+        $links[$menu_link_content->getWeight()] = $menu_link_content;
       }
     }
 
-    return $return;
+    return $links;
   }
 
   /**
    * {@inheritdoc}
+   *
+   * The block should not be shown if there is no collection context or if the
+   * collection does not have an ogMenuInstance created. The second case should
+   * not normally occur as the ogMenuInstance is being created automatically for
+   * the collection so it is merely to ensure that the page will not break.
    */
   protected function blockAccess(AccountInterface $account) {
-    if (empty($this->collection) || empty($this->ogMenuInstanceId)) {
+    if (empty($this->collection) || empty($this->ogMenuInstance)) {
       return AccessResult::forbidden();
     }
     return parent::blockAccess($account);
@@ -236,7 +250,7 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
    */
   public function getCacheTags() {
     $tags = parent::getCacheTags();
-    return Cache::mergeTags($tags, ['ogmenu_instance:' . $this->ogMenuInstanceId]);
+    return Cache::mergeTags($tags, $this->ogMenuInstance->getCacheTags());
   }
 
 }
