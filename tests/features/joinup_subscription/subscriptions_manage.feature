@@ -9,6 +9,7 @@ Feature: User subscription settings
     Then I should see the link "My subscriptions"
     When I click "My subscriptions"
     And I select "monthly" from "field_user_frequency"
+    # Todo: rewrite these steps in proper domain specific language.
     # Check "Receive notifications for": Solution.
     Then I check "field_user_group_types[rdf_entity:solution]"
     # Check "Receive notifications for": News.
