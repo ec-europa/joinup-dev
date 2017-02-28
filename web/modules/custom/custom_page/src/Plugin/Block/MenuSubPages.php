@@ -184,15 +184,17 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
     }
 
     $build = [
-      '#type' => 'item',
-      0 => [
-        '#type' => 'item',
-        '#wrapper_attributes' => [
+      // The 'listing' child key is needed to avoid copying the #attributes to
+      // the parent block.
+      // @see \Drupal\block\BlockViewBuilder::preRender()
+      'listing' => [
+        '#type' => 'container',
+        '#attributes' => [
           'class' => ['listing', 'listing--grid', 'mdl-grid'],
         ],
       ],
     ];
-    $build[0] += $items;
+    $build['listing'] += $items;
 
     return $build;
   }
