@@ -96,4 +96,25 @@ trait TraversingTrait {
     return $regionObj;
   }
 
+  /**
+   * Returns the tiles found in the page or a region of it.
+   *
+   * @param string|null $region
+   *    The region label. If no region is provided, the search will be on the
+   *    whole page.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]|null
+   *    An array of node elements matching the search.
+   */
+  protected function getTiles($region = NULL) {
+    if ($region === NULL) {
+      /** @var \Behat\Mink\Element\DocumentElement $regionObj */
+      $regionObj = $this->getSession()->getPage();
+    }
+    else {
+      $regionObj = $this->getRegion($region);
+    }
+    return $regionObj->findAll('css', '.listing__item--tile .listing__title');
+  }
+
 }
