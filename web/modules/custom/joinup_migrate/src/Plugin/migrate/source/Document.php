@@ -47,6 +47,18 @@ class Document extends NodeBase {
       'publication_date',
       'original_url',
       'file_path',
+      'policy_context',
+      'desc_target_users_groups',
+      'desc_implementation',
+      'tech_solution',
+      'main_results',
+      'roi_desc',
+      'track_record_sharing',
+      'lessons_learnt',
+      'scope',
+      'return_investment',
+      'case_sector',
+      'target_users_or_group',
     ]);
   }
 
@@ -62,11 +74,91 @@ class Document extends NodeBase {
 
     // Keywords.
     $this->setKeywords($row, 'keywords', $nid, $vid);
+    // Append keywords additions.
+    $keywords = $row->getSourceProperty('keywords') ?: [];
+    foreach (static::$keywordsAdditions as $property) {
+      $addition = $row->getSourceProperty($property);
+      if (!empty($addition)) {
+        $addition = array_diff(explode(',', $addition), $keywords);
+        $keywords = array_merge($keywords, $addition);
+      }
+    }
+    if ($keywords) {
+      $row->setSourceProperty('keywords', $keywords);
+    }
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));
 
+    // Append body additions.
+    $body = trim($row->getSourceProperty('body')) . "\n";
+    foreach (static::$bodyAdditions as $section => $data) {
+      $value = [];
+      $pattern = $data['pattern'];
+      foreach ($data['fields'] as $field_name) {
+        $field = trim($row->getSourceProperty($field_name));
+        if (!empty($field)) {
+          $value[] = $field;
+        }
+      }
+      $body .= str_replace(['@title', '@value'], [
+        $section,
+        implode("\n", $value),
+      ], $pattern);
+    }
+    $row->setSourceProperty('body', trim($body));
+
     return parent::prepareRow($row);
   }
+
+  /**
+   * Body additions structure.
+   *
+   * @var array
+   */
+  protected static $bodyAdditions = [
+    'Policy Context' => [
+      'pattern' => "<h2>@title</h2>\n@value\n",
+      'fields' => ['policy_context'],
+    ],
+    'Description of target users and groups' => [
+      'pattern' => "<h2>@title</h2>\n@value\n",
+      'fields' => ['desc_target_users_groups'],
+    ],
+    'Description of the way to implement the initiative' => [
+      'pattern' => "<h2>@title</h2>\n@value\n",
+      'fields' => ['desc_implementation'],
+    ],
+    'Technology solution' => [
+      'pattern' => "<h2>@title</h2>\n@value\n",
+      'fields' => ['tech_solution', 'technology_choice'],
+    ],
+    'Main results, benefits and impacts' => [
+      'pattern' => "<h2>@title</h2>\n@value\n",
+      'fields' => ['main_results'],
+    ],
+    'Return on investment' => [
+      'pattern' => "<h2>@title</h2>\n@value\n",
+      'fields' => ['roi_desc', 'return_investment'],
+    ],
+    'Track record of sharing' => [
+      'pattern' => "<h2>@title</h2>\n@value\n",
+      'fields' => ['track_record_sharing'],
+    ],
+    'Lessons learnt' => [
+      'pattern' => "<h2>@title</h2>\n@value\n",
+      'fields' => ['lessons_learnt', 'scope'],
+    ],
+  ];
+
+  /**
+   * Keywords additional fields.
+   *
+   * @var array
+   */
+  protected static $keywordsAdditions = [
+    'case_sector',
+    'target_users_or_group',
+  ];
 
 }
