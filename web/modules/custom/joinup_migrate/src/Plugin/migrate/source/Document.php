@@ -79,8 +79,9 @@ class Document extends NodeBase {
     foreach (static::$keywordsAdditions as $property) {
       $addition = $row->getSourceProperty($property);
       if (!empty($addition)) {
-        $addition = array_diff(explode(',', $addition), $keywords);
-        $keywords = array_merge($keywords, $addition);
+        $addition = array_map('trim', explode(',', $addition));
+        // Add only new terms.
+        $keywords = array_merge($keywords, array_diff($addition, $keywords));
       }
     }
     if ($keywords) {
@@ -159,6 +160,7 @@ class Document extends NodeBase {
   protected static $keywordsAdditions = [
     'case_sector',
     'target_users_or_group',
+    'factsheet_topic',
   ];
 
 }
