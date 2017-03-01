@@ -770,8 +770,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I( should) see the( following) tiles in the :region region:
    */
   public function assertTilesInBlock(TableNode $titles_table, $region) {
-    $regionObj = $this->getRegion($region);
-    $results = $this->getTiles($regionObj);
+    $results = $this->getTiles($region);
     $headings_in_page = array_map(function ($result) {
       return $result->getText();
     }, $results);
