@@ -6,8 +6,9 @@ Feature: User profile
   @terms
   Scenario: A logged-in user can navigate to his own profile and edit it.
     Given users:
-      | name              | mail        | roles |
-      | Leonardo Da Vinci | foo@bar.com |       |
+      | name                 | mail                | roles |
+      | Leonardo Da Vinci    | foo@bar.com         |       |
+      | Domenico Ghirlandaio | domedome@firenze.it |       |
     When I am logged in as "Leonardo Da Vinci"
     And I am on the homepage
     Then I click "My account"
@@ -28,6 +29,9 @@ Feature: User profile
     # @todo The nationality will be rendered as flag image.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3175
     # And I should see the link "Italy"
+    # A user should not be able to edit the profile page of another user.
+    When I go to the public profile of "Domenico Ghirlandaio"
+    Then I should not see the link "Edit"
 
   @terms
   Scenario: A moderator can navigate to any users profile and edit it.
