@@ -771,7 +771,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertTilesInBlock(TableNode $titles_table, $region) {
     $regionObj = $this->getRegion($region);
-    $results = $regionObj->findAll('css', '.listing__item--tile .listing__title');
+    $results = $this->getTiles($regionObj);
     $headings_in_page = array_map(function ($result) {
       return $result->getText();
     }, $results);
