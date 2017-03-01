@@ -24,6 +24,7 @@ CREATE OR REPLACE VIEW d8_document (
   case_sector,
   target_users_or_group,
   factsheet_topic,
+  presentation_nature_of_doc,
   original_url,
   file_id,
   file_path,
@@ -44,7 +45,7 @@ SELECT
     n.body,
     IF(ctd.field_isbn_value IS NOT NULL AND TRIM(ctd.field_isbn_value) <> '', CONCAT('\n<p>ISBN Number: ', TRIM(ctd.field_isbn_value), '</p>\n'), ''),
     IF(ctd.field_description_of_license_value IS NOT NULL AND TRIM(ctd.field_description_of_license_value) <> '', CONCAT('<p>Description of license: ', TRIM(ctd.field_description_of_license_value), '</p>\n'), ''),
-    IFNULL((SELECT CONCAT('<p>Nature of documentation: ', td.name, '</p>\n') FROM term_node tn INNER JOIN term_data td ON tn.tid = td.tid AND td.vid = 55 WHERE tn.vid = n.vid), '')
+    IFNULL((SELECT CONCAT('<p>Nature of documentation: ', td.name, '</p>\n') FROM term_node tn INNER JOIN term_data td ON tn.tid = td.tid AND td.vid = 55 WHERE tn.vid = n.vid AND n.type = 'document'), '')
   ),
   ctce.field_policy_context_value,
   ctce.field_desc_target_users_groups_value,
@@ -61,6 +62,7 @@ SELECT
   (SELECT GROUP_CONCAT(DISTINCT td.name) FROM content_field_case_sector s INNER JOIN term_data td ON s.field_case_sector_value = td.tid WHERE s.vid = n.vid AND td.name <> 'Other'),
   (SELECT GROUP_CONCAT(DISTINCT td.name) FROM term_node tn INNER JOIN term_data td ON tn.tid = td.tid AND td.vid = 85 WHERE tn.vid = n.vid AND td.name <> 'Other'),
   (SELECT GROUP_CONCAT(DISTINCT td.name) FROM term_node tn INNER JOIN term_data td ON tn.tid = td.tid AND td.vid = 57 WHERE tn.vid = n.vid),
+  (SELECT GROUP_CONCAT(DISTINCT td.name) FROM term_node tn INNER JOIN term_data td ON tn.tid = td.tid AND td.vid = 55 WHERE tn.vid = n.vid AND n.type = 'presentation'),
   CASE n.type
     WHEN 'document' THEN IF(ctd.field_original_url_url = 'N/A', NULL, ctd.field_original_url_url)
     WHEN 'case_epractice' THEN IF(cfcd.field_case_documentation_fid IS NULL, ctce.field_website_url_url, NULL)
@@ -69,21 +71,25 @@ SELECT
     WHEN 'document' THEN cfadf.field_additional_doc_file_fid
     WHEN 'case_epractice' THEN cfcd.field_case_documentation_fid
     WHEN 'factsheet' THEN d8ff.fid
+    WHEN 'presentation' THEN d8pf.fid
   END,
   CASE n.type
     WHEN 'document' THEN IF(f.filepath IS NOT NULL AND TRIM(f.filepath) <> '', TRIM(f.filepath), NULL)
     WHEN 'case_epractice' THEN IF(f1.filepath IS NOT NULL AND TRIM(f1.filepath) <> '', TRIM(f1.filepath), NULL)
     WHEN 'factsheet' THEN d8ff.path
+    WHEN 'presentation' THEN d8pf.path
   END,
   CASE n.type
     WHEN 'document' THEN IF(f.timestamp > 0, f.timestamp, NULL)
     WHEN 'case_epractice' THEN IF(f1.timestamp > 0, f1.timestamp, NULL)
     WHEN 'factsheet' THEN d8ff.timestamp
+    WHEN 'presentation' THEN d8pf.timestamp
   END,
   CASE n.type
     WHEN 'document' THEN IF(f.uid IS NOT NULL, IF(f.uid > 0, f.uid, -1), NULL)
     WHEN 'case_epractice' THEN IF(f1.uid IS NOT NULL, IF(f1.uid > 0, f1.uid, -1), NULL)
     WHEN 'factsheet' THEN d8ff.uid
+    WHEN 'presentation' THEN d8pf.uid
   END
 FROM d8_node n
 LEFT JOIN content_field_publication_date cfpd ON n.vid = cfpd.vid
@@ -94,4 +100,5 @@ LEFT JOIN content_type_case_epractice ctce ON n.vid = ctce.vid
 LEFT JOIN content_field_case_documentation cfcd ON n.vid = cfcd.vid
 LEFT JOIN files f1 ON cfcd.field_case_documentation_fid = f1.fid
 LEFT JOIN d8_factsheet_file d8ff ON n.vid = d8ff.vid
+LEFT JOIN d8_presentation_file d8pf ON n.vid = d8pf.vid
 WHERE n.type IN('case_epractice', 'document', 'factsheet', 'legaldocument', 'presentation')

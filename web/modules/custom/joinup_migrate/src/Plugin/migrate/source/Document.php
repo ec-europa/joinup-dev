@@ -51,6 +51,7 @@ class Document extends NodeBase {
       'desc_target_users_groups',
       'desc_implementation',
       'tech_solution',
+      'technology_choice',
       'main_results',
       'roi_desc',
       'track_record_sharing',
@@ -59,6 +60,8 @@ class Document extends NodeBase {
       'return_investment',
       'case_sector',
       'target_users_or_group',
+      'factsheet_topic',
+      'presentation_nature_of_doc',
     ]);
   }
 
@@ -102,10 +105,12 @@ class Document extends NodeBase {
           $value[] = $field;
         }
       }
-      $body .= str_replace(['@title', '@value'], [
-        $section,
-        implode("\n", $value),
-      ], $pattern);
+      if ($value) {
+        $body .= str_replace(['@title', '@value'], [
+          $section,
+          implode("\n", $value),
+        ], $pattern);
+      }
     }
     $row->setSourceProperty('body', trim($body));
 
@@ -161,6 +166,7 @@ class Document extends NodeBase {
     'case_sector',
     'target_users_or_group',
     'factsheet_topic',
+    'presentation_nature_of_doc',
   ];
 
 }
