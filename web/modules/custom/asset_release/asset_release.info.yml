@@ -17,6 +17,7 @@ dependencies:
   - options
   - owner
   - rdf_entity
+  - rdf_file
   - state_machine
   - text
 

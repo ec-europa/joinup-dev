@@ -15,9 +15,8 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
-    - file
-    - link
     - rdf_entity
+    - rdf_file
     - text
 id: rdf_entity.asset_distribution.default
 targetEntityType: rdf_entity
