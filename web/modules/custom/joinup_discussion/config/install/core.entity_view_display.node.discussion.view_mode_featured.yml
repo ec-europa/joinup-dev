@@ -5,12 +5,13 @@ dependencies:
     - core.entity_view_mode.node.view_mode_featured
     - field.field.node.discussion.body
     - field.field.node.discussion.field_comments
+    - field.field.node.discussion.field_policy_domain
     - field.field.node.discussion.field_state
-    - field.field.node.discussion.field_topic
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
     - ds
+    - joinup
     - text
     - user
 id: node.discussion.view_mode_featured
@@ -19,7 +20,7 @@ bundle: discussion
 mode: view_mode_featured
 content:
   body:
-    weight: 1
+    weight: 2
     label: hidden
     settings:
       trim_length: 200
@@ -33,8 +34,10 @@ content:
             classes: {  }
     type: text_trimmed
     region: content
-  field_topic:
+  field_policy_domain:
+    type: entity_reference_label
     weight: 0
+    region: content
     label: hidden
     settings:
       link: false
@@ -48,9 +51,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: entity_reference__listing_tag
-    type: entity_reference_label
-    region: content
+        template_suggestion: ''
 hidden:
   field_comments: true
   field_state: true

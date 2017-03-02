@@ -15,10 +15,10 @@ dependencies:
     - field.field.node.event.field_location
     - field.field.node.event.field_organisation
     - field.field.node.event.field_organisation_type
+    - field.field.node.event.field_policy_domain
     - field.field.node.event.field_scope
     - field.field.node.event.field_short_title
     - field.field.node.event.field_state
-    - field.field.node.event.field_topic
     - field.field.node.event.og_audience
     - image.style.thumbnail
     - node.type.event
@@ -44,7 +44,7 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 16
+    weight: 17
     settings: {  }
     third_party_settings: {  }
     type: comment_default
@@ -102,7 +102,7 @@ content:
     type: link_default
     region: content
   field_keywords:
-    weight: 15
+    weight: 16
     settings:
       size: 60
       placeholder: ''
@@ -134,6 +134,12 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_policy_domain:
+    weight: 14
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_scope:
     weight: 13
     settings: {  }
@@ -150,20 +156,11 @@ content:
     region: content
   field_state:
     type: state_machine_buttons
-    weight: 17
+    weight: 18
     region: content
     settings:
       use_transition_label: 1
     third_party_settings: {  }
-  field_topic:
-    weight: 14
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   title:
     type: string_textfield
     weight: 0

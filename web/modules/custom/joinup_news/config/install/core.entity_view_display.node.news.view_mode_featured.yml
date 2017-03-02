@@ -10,8 +10,8 @@ dependencies:
     - field.field.node.news.field_news_shared_in
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_spatial_coverage
+    - field.field.node.news.field_policy_domain
     - field.field.node.news.field_state
-    - field.field.node.news.field_topic
     - field.field.node.news.og_audience
     - node.type.news
   module:
@@ -32,9 +32,10 @@ content:
       trim_length: 600
     third_party_settings: {  }
     region: content
-  field_topic:
+  field_policy_domain:
     type: entity_reference_label
     weight: 1
+    region: content
     label: hidden
     settings:
       link: false
@@ -48,8 +49,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: entity_reference__listing_tag
-    region: content
+        template_suggestion: ''
 hidden:
   field_comments: true
   field_keywords: true

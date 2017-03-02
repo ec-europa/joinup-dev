@@ -9,9 +9,9 @@ dependencies:
     - field.field.node.document.field_file
     - field.field.node.document.field_keywords
     - field.field.node.document.field_licence
+    - field.field.node.document.field_policy_domain
     - field.field.node.document.field_short_title
     - field.field.node.document.field_state
-    - field.field.node.document.field_topic
     - field.field.node.document.field_type
     - field.field.node.document.og_audience
     - node.type.document
@@ -64,7 +64,7 @@ content:
     type: file_url_generic
     region: content
   field_keywords:
-    weight: 7
+    weight: 8
     settings:
       size: 60
       placeholder: ''
@@ -80,6 +80,12 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_policy_domain:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_short_title:
     weight: 1
     settings:
@@ -94,15 +100,6 @@ content:
     settings:
       use_transition_label: 1
     third_party_settings: {  }
-    region: content
-  field_topic:
-    weight: 6
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
     region: content
   field_type:
     type: options_select
