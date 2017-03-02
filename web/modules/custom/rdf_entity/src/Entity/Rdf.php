@@ -375,7 +375,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    * Returns whether the bundle of the entity has a mapping for the uid key.
    *
    * @return bool
-   *    Whether the entity bundle has a value for the uid key mapping.
+   *   Whether the entity bundle has a value for the uid key mapping.
    */
   protected function hasUidMapping() {
     if (empty($this->bundle())) {

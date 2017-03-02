@@ -77,7 +77,7 @@ function contact_information_inline_entity_form_entity_form_alter(&$entity_form,
  *
  * @param string $entity_type
  *   The type of the entity being created.
- * @param EntityInterface $entity
+ * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity being built.
  */
 function contact_information_inline_entity_form_entity_builder($entity_type, EntityInterface $entity) {
@@ -95,7 +95,7 @@ function contact_information_inline_entity_form_entity_builder($entity_type, Ent
  * and entity label does not support this. For this reason,
  * the label actually concatenates all values from field_ci_name field.
  *
- * @param EntityInterface $entity
+ * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity to process.
  */
 function contact_information_entity_auto_label(EntityInterface $entity) {

@@ -67,7 +67,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   /**
    * Creates a number of asset distributions with data provided in a table.
    *
-   * @param TableNode $asset_distribution_table
+   * @param \Behat\Gherkin\Node\TableNode $asset_distribution_table
    *   The asset distribution data.
    *
    * @codingStandardsIgnoreStart
@@ -104,7 +104,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Fields 'title' and 'description' are required. Field 'access url' can be
    * either an external valid URL or a local file to be uploaded.
    *
-   * @param TableNode $asset_distribution_table
+   * @param \Behat\Gherkin\Node\TableNode $asset_distribution_table
    *   The asset distribution data.
    *
    * @throws \Exception
@@ -318,10 +318,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Converts values from user friendly to normal machine values.
    *
    * @param array $fields
-   *    An array of fields keyed by field name.
+   *   An array of fields keyed by field name.
    *
    * @return array
-   *    The array with the values converted.
+   *   The array with the values converted.
    */
   protected function convertValueAliases(array $fields) {
     if (!empty($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD])) {
@@ -339,7 +339,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * This currently only checks the first download link.
    *
    * @param string $distribution
-   *    The name of the distribution.
+   *   The name of the distribution.
    *
    * @throws \Exception
    *   Thrown if the download link cannot be found.
@@ -365,7 +365,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * The compact view is used for example in the "Downloads" page.
    *
    * @param string $distribution
-   *    The name of the distribution.
+   *   The name of the distribution.
    *
    * @throws \Exception
    *   Thrown if the link was found.
@@ -383,9 +383,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Asserts that a file is attached to a distribution.
    *
    * @param string $distribution
-   *    The distribution title.
+   *   The distribution title.
    * @param string $file_name
-   *    The file name.
+   *   The file name.
    *
    * @throws \Exception
    *    Thrown when the file or the link is not found.

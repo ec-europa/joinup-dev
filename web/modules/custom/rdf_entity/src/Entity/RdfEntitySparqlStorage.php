@@ -93,23 +93,23 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * Initialize the storage backend.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
-   *    The entity type this storage is about.
+   *   The entity type this storage is about.
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
-   *    The connection object.
+   *   The connection object.
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *    The entity manager service.
+   *   The entity manager service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *    The entity type manager service.
+   *   The entity type manager service.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
-   *    The cache backend service.
+   *   The cache backend service.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
-   *    The language manager service.
+   *   The language manager service.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
-   *    The module handler service.
+   *   The module handler service.
    * @param \Drupal\rdf_entity\RdfGraphHandler $rdf_graph_handler
-   *    The rdf graph helper service.
+   *   The rdf graph helper service.
    * @param \Drupal\rdf_entity\RdfMappingHandler $rdf_mapping_handler
-   *    The rdf mapping helper service.
+   *   The rdf mapping helper service.
    * @param \Drupal\rdf_entity\RdfEntityIdPluginManager $entity_id_plugin_manager
    *   The RDF entity ID generator plugin manager.
    */
@@ -178,7 +178,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * @see \Drupal\rdf_entity\RdfGraphHandler::getGraphDefinitions
    *
    * @return array
-   *    A structured array of graph definitions containing a title and a
+   *   A structured array of graph definitions containing a title and a
    *   description. The array keys are the machine names of the graphs.
    */
   public function getGraphDefinitions() {
@@ -189,9 +189,9 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * Set the graph type to use when interacting with entities.
    *
    * @param string $entity_id
-   *    The entity id associated with the requested graphs.
+   *   The entity id associated with the requested graphs.
    * @param array $graph_types
-   *    An array of graph machine names.
+   *   An array of graph machine names.
    *
    * @see \Drupal\rdf_entity\RdfGraphHandler::setRequestGraphs
    */
@@ -203,10 +203,10 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * Returns the active graphs.
    *
    * @param string $entity_id
-   *    The entity id associated with the requested graphs.
+   *   The entity id associated with the requested graphs.
    *
    * @return array
-   *    An array of graph ids related to the passed entity id.
+   *   An array of graph ids related to the passed entity id.
    *
    * @see \Drupal\rdf_entity\RdfGraphHandler::getRequestGraphs
    */
@@ -225,7 +225,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * Set the save graph.
    *
    * @param string $graph
-   *    The graph to use.
+   *   The graph to use.
    */
   public function setSaveGraph($graph) {
     $this->getGraphHandler()->setTargetGraph($graph);
@@ -235,11 +235,11 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    * Get the graph URIs for each bundle.
    *
    * @param array $graph_types
-   *    Optionally filter the retrieved graphs. If empty, all available graphs
+   *   Optionally filter the retrieved graphs. If empty, all available graphs
    *   will be loaded.
    *
    * @return array
-   *    An array with the graph uris as keys and the corresponding bundles as
+   *   An array with the graph uris as keys and the corresponding bundles as
    *   values.
    *
    * @see \Drupal\rdf_entity\GraphHandler::getEntityTypeGraphUris
@@ -360,10 +360,10 @@ QUERY;
    * @code
    *
    * @param \EasyRdf\Sparql\Result|\EasyRdf\Graph $results
-   *    A set of query results indexed per graph and entity id.
+   *   A set of query results indexed per graph and entity id.
    *
    * @return array
-   *    The entity values indexed by the field mapping id.
+   *   The entity values indexed by the field mapping id.
    *
    * @throws \Exception
    *    Thrown when the entity graph is empty.
@@ -441,7 +441,7 @@ QUERY;
             foreach ($field as $lang => $items) {
               foreach ($items as $item) {
                 if (isset($mapping[$bundle->id()][$predicate]['storage_definition'])) {
-                  /** @var FieldStorageConfig $field_storage_definition */
+                  /** @var \Drupal\field\Entity\FieldStorageConfig $field_storage_definition */
                   $field_storage_definition = $mapping[$bundle->id()][$predicate]['storage_definition'];
                   $field_storage_schema = $field_storage_definition->getSchema()['columns'];
                   // Inflate value back into a normal item.
@@ -630,7 +630,7 @@ QUERY;
   protected function doDelete($entities) {
     $entities_by_graph = [];
     /** @var string $id */
-    /** @var ContentEntityInterface $entity */
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     foreach ($entities as $id => $entity) {
       $graph_uri = $this->getGraphHandler()->getGraphUriFromEntity($entity);
       $entities_by_graph[$graph_uri][$id] = $entity;
@@ -936,7 +936,7 @@ QUERY;
   /**
    * Allow overrides for some field types.
    *
-   * @param FieldStorageConfig $storage
+   * @param \Drupal\field\Entity\FieldStorageConfig $storage
    *   Field storage configuration.
    * @param array $values
    *   The field values.
@@ -1086,7 +1086,7 @@ QUERY;
   /**
    * Determines if a field is an entity reference.
    *
-   * @param FieldItemInterface $item
+   * @param \Drupal\Core\Field\FieldItemInterface $item
    *   The field.
    *
    * @return bool
@@ -1102,7 +1102,7 @@ QUERY;
     if (empty($target) || $target->isEmpty()) {
       return FALSE;
     }
-    /** @var EntityInterface $target_entity */
+    /** @var \Drupal\Core\Entity\EntityInterface $target_entity */
     $target_entity = $target->getValue();
     $target_entity_type = $target_entity->getEntityType();
     $target_entity_storage_class = trim($target_entity_type->getStorageClass(), "\\");
@@ -1118,11 +1118,11 @@ QUERY;
    * external repository are not lost during an entity update.
    *
    * @param string $id
-   *    The entity uri.
+   *   The entity uri.
    * @param string $graph_uri
-   *    The graph uri.
+   *   The graph uri.
    * @param string $properties_list
-   *    A string resulting after a conversion of an array to the SPARQL uri
+   *   A string resulting after a conversion of an array to the SPARQL uri
    *    array format.
    */
   protected function deleteBeforeInsert($id, $graph_uri, $properties_list) {

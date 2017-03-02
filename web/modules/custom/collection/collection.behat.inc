@@ -142,7 +142,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * Only the title field is required.
    *
-   * @param TableNode $collection_table
+   * @param \Behat\Gherkin\Node\TableNode $collection_table
    *   The collection data.
    *
    * @throws \Exception
@@ -179,7 +179,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Returns the field alias mapping.
    *
    * @return array
-   *    The field alias mapping.
+   *   The field alias mapping.
    */
   protected static function collectionFieldAliases() {
     // Mapping alias - field name.
@@ -209,10 +209,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Enriches the provided field values with defaults for missing values.
    *
    * @param array $fields
-   *    An array of fields keyed by field name.
+   *   An array of fields keyed by field name.
    *
    * @return array
-   *    The array with default values added.
+   *   The array with default values added.
    */
   protected function provideDefaultValues(array $fields) {
     $default_values = [
@@ -232,10 +232,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Converts values from user friendly to normal machine values.
    *
    * @param array $fields
-   *    An array of fields keyed by field name.
+   *   An array of fields keyed by field name.
    *
    * @return mixed
-   *    The array with the values converted.
+   *   The array with the values converted.
    *
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
@@ -333,7 +333,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * Only the title field is required.
    *
-   * @param TableNode $collection_table
+   * @param \Behat\Gherkin\Node\TableNode $collection_table
    *   The collection data.
    *
    * @throws \Exception
@@ -433,7 +433,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * | Interoperability Friends | Verence II    | facilitator, administrator |
    * | Electronic Surveillance  | Letice Earwig |                            |
    *
-   * @param TableNode $membership_table
+   * @param \Behat\Gherkin\Node\TableNode $membership_table
    *   The membership table.
    *
    * @throws \Exception
@@ -482,7 +482,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @param string $bundle
    *   The bundle of the content entity.
-   * @param TableNode $membership_table
+   * @param \Behat\Gherkin\Node\TableNode $membership_table
    *   The membership table.
    *
    * @Given (the following ):bundle content belong to the corresponding collections:
@@ -516,7 +516,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @param string $bundle
    *   The bundle of the content entity.
-   * @param TableNode $menu_table
+   * @param \Behat\Gherkin\Node\TableNode $menu_table
    *   The menu table.
    *
    * @Given (the following ):bundle content menu items for the corresponding collections:
@@ -550,9 +550,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * a facilitator and a member.
    *
    * @param string $username
-   *    The name of the user.
+   *   The name of the user.
    * @param string $rdf_entity
-   *    The label of the group entity.
+   *   The label of the group entity.
    *
    * @throws \Exception
    *    Throws an exception when the user is not found.
@@ -579,7 +579,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Asserts that the current user is an owner of the given collection.
    *
    * @param string $rdf_entity
-   *    The label of the group entity.
+   *   The label of the group entity.
    *
    * @throws \Exception
    *    Throws an exception when the user is not found.
@@ -617,7 +617,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * | Collection A | John | Status1          |
    * | Collection B | Jack | Status1, Status2 |
    *
-   * @param TableNode $check_table
+   * @param \Behat\Gherkin\Node\TableNode $check_table
    *   The table with the triplets collection-user-options.
    *
    * @throws \Exception
@@ -652,11 +652,11 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Applies a transition to a collection.
    *
    * @param string $username
-   *    The username applying the transition.
+   *   The username applying the transition.
    * @param string $entity_name
-   *    The title of the collection.
+   *   The title of the collection.
    * @param string $to_state
-   *    The state that the collection transits to.
+   *   The state that the collection transits to.
    *
    * @throws \Exception
    *    An exception is thrown if the user is not found or the transition is not

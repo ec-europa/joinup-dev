@@ -13,9 +13,9 @@ use Drupal\Core\Entity\EntityInterface;
  * This method skips all entity keys except from the label.
  *
  * @param \Drupal\Core\Entity\EntityInterface $entity
- *    The entity to edit.
+ *   The entity to edit.
  * @param array $keys_to_skip
- *    A list of keys to skip and not randomise.
+ *   A list of keys to skip and not randomise.
  *
  * @todo Check if we still need this.
  */

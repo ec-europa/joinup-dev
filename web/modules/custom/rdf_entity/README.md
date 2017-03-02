@@ -45,4 +45,3 @@ To connect Drupal to the endpoint, the db connection should be added to the sett
       'namespace' => 'Drupal\\rdf_entity\\Database\\Driver\\sparql',
       'driver' => 'sparql',
     );
-
