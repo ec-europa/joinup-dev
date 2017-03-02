@@ -78,4 +78,43 @@ trait TraversingTrait {
     return $element;
   }
 
+  /**
+   * Retrieves a region container from the page.
+   *
+   * @param string $region
+   *    The region label as defined in the behat.yml.
+   *
+   * @throws \Exception
+   *    Thrown when the region is not found.
+   */
+  protected function getRegion($region) {
+    $session = $this->getSession();
+    $regionObj = $session->getPage()->find('region', $region);
+    if (!$regionObj) {
+      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+    }
+    return $regionObj;
+  }
+
+  /**
+   * Returns the tiles found in the page or a region of it.
+   *
+   * @param string|null $region
+   *    The region label. If no region is provided, the search will be on the
+   *    whole page.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]|null
+   *    An array of node elements matching the search.
+   */
+  protected function getTiles($region = NULL) {
+    if ($region === NULL) {
+      /** @var \Behat\Mink\Element\DocumentElement $regionObj */
+      $regionObj = $this->getSession()->getPage();
+    }
+    else {
+      $regionObj = $this->getRegion($region);
+    }
+    return $regionObj->findAll('css', '.listing__item--tile .listing__title');
+  }
+
 }
