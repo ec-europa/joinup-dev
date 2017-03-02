@@ -76,15 +76,18 @@ display:
         options:
           view_modes:
             'entity:node':
-              custom_page: default
-              document: default
+              custom_page: view_mode_tile
+              discussion: view_mode_tile
+              document: view_mode_tile
               event: view_mode_tile
-              news: default
+              news: view_mode_tile
             'entity:rdf_entity':
               asset_distribution: default
               asset_release: default
               collection: view_mode_tile
+              contact_information: default
               licence: default
+              owner: ''
               solution: view_mode_tile
       fields:
         search_api_language:
