@@ -32,10 +32,7 @@ config_devel:
   - field.field.taxonomy_term.file_type.extension
   - field.field.taxonomy_term.file_type.mime_type
   - field.storage.comment.field_body
-  - field.storage.node.field_comments
-  - field.storage.node.field_spatial_coverage
-  - field.storage.node.field_state
-  - field.storage.node.field_topic
+  - field.storage.node.og_audience
   - field.storage.rdf_entity.field_keywords
   - field.storage.rdf_entity.field_policy_domain
   - field.storage.rdf_entity.field_spatial_coverage

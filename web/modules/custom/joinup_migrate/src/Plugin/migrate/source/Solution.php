@@ -14,7 +14,8 @@ use Drupal\migrate\Row;
 class Solution extends SolutionBase {
 
   use CountryTrait;
-  use RdfFileFieldTrait;
+  use FileUrlFieldTrait;
+  use KeywordsTrait;
 
   /**
    * {@inheritdoc}
@@ -79,20 +80,10 @@ class Solution extends SolutionBase {
     $vid = $row->getSourceProperty('vid');
 
     // Keywords.
-    $query = $this->select('term_node', 'tn');
-    $query->join('term_data', 'td', 'tn.tid = td.tid');
-    $keywords = $query
-      ->fields('td', ['name'])
-      ->condition('tn.nid', $nid)
-      ->condition('tn.vid', $vid)
-      // The keywords vocabulary vid is 28.
-      ->condition('td.vid', 28)
-      ->execute()
-      ->fetchCol();
-    $row->setSourceProperty('keywords', array_unique($keywords));
+    $this->setKeywords($row, 'keywords', $nid, $vid);
 
     // Resolve documentation.
-    $this->setRdfFileTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
+    $this->setFileUrlTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));

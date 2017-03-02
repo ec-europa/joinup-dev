@@ -11,7 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\rdf_file\RdfFileHandler;
+use Drupal\file_url\FileUrlHandler;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -140,8 +140,8 @@ function asset_distribution_rdf_entity_presave(RdfInterface $distribution) {
 
   if (!empty($file_id = $distribution->field_ad_access_url->target_id)) {
     /** @var \Drupal\file\FileInterface $file */
-    if ($file = RdfFileHandler::urlToFile($file_id)) {
-      if (!RdfFileHandler::isRemote($file)) {
+    if ($file = FileUrlHandler::urlToFile($file_id)) {
+      if (!FileUrlHandler::isRemote($file)) {
         // Set the file size field.
         $distribution->get('field_ad_file_size')->setValue($file->getSize());
 
