@@ -1,0 +1,60 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Contology%5Cpolicy-domain%23whales-protection?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/taxonomy_term\/policy_domain\/parent": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Contology%5Cpolicy-domain%5Ccategory%23agriculture-food-and-environment?_format=hal_json"
+            }
+        ]
+    },
+    "tid": [
+        {
+            "value": "http:\/\/joinup.eu\/ontology\/policy-domain#whales-protection"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/joinup.eu\/ontology\/policy-domain#whales-protection"
+        }
+    ],
+    "vid": [
+        {
+            "target_id": "policy_domain"
+        }
+    ],
+    "name": [
+        {
+            "value": "Whales protection",
+            "lang": "en"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/taxonomy_term\/policy_domain\/parent": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Contology%5Cpolicy-domain%5Ccategory%23agriculture-food-and-environment?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/joinup.eu\/ontology\/policy-domain\/category#agriculture-food-and-environment"
+                    }
+                ]
+            }
+        ]
+    },
+    "graph": [
+        {
+            "value": "default"
+        }
+    ]
+}
