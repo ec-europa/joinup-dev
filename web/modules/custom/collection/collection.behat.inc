@@ -557,7 +557,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * | Custom page parent | Custom page child 2 |      3 |
    * | Custom page parent | Custom page child 3 |      2 |
    *
-   * @param TableNode $menu_table
+   * @param \Behat\Gherkin\Node\TableNode $menu_table
    *   The menu table.
    *
    * @throws \Exception
