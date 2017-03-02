@@ -3,15 +3,14 @@ status: true
 dependencies:
   module:
     - node
-    - og
-    - rdf_entity
-id: node.og_audience
-field_name: og_audience
+    - taxonomy
+id: node.field_policy_domain
+field_name: field_policy_domain
 entity_type: node
-type: og_standard_reference
+type: entity_reference
 settings:
-  target_type: rdf_entity
-module: og
+  target_type: taxonomy_term
+module: core
 locked: false
 cardinality: -1
 translatable: true

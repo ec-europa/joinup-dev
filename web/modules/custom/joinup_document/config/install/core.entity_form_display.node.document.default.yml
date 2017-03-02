@@ -5,13 +5,13 @@ dependencies:
     - field.field.node.document.body
     - field.field.node.document.field_comments
     - field.field.node.document.field_document_publication_date
+    - field.field.node.document.field_document_spatial_coverage
     - field.field.node.document.field_file
     - field.field.node.document.field_keywords
     - field.field.node.document.field_licence
+    - field.field.node.document.field_policy_domain
     - field.field.node.document.field_short_title
-    - field.field.node.document.field_spatial_coverage
     - field.field.node.document.field_state
-    - field.field.node.document.field_topic
     - field.field.node.document.field_type
     - field.field.node.document.og_audience
     - node.type.document
@@ -36,7 +36,7 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 12
+    weight: 11
     settings: {  }
     third_party_settings: {  }
     type: comment_default
@@ -47,6 +47,15 @@ content:
     third_party_settings: {  }
     type: datetime_default
     region: content
+  field_document_spatial_coverage:
+    weight: 9
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_file:
     weight: 5
     settings:
@@ -55,7 +64,7 @@ content:
     type: file_url_generic
     region: content
   field_keywords:
-    weight: 9
+    weight: 8
     settings:
       size: 60
       placeholder: ''
@@ -63,13 +72,19 @@ content:
     type: string_textfield
     region: content
   field_licence:
-    weight: 11
+    weight: 10
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_policy_domain:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_short_title:
     weight: 1
@@ -79,30 +94,12 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_spatial_coverage:
-    weight: 10
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_state:
     type: state_machine_buttons
-    weight: 13
+    weight: 12
     settings:
       use_transition_label: 1
     third_party_settings: {  }
-    region: content
-  field_topic:
-    weight: 8
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
     region: content
   field_type:
     type: options_select

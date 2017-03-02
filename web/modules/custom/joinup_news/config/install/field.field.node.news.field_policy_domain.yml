@@ -2,24 +2,24 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_topic
+    - field.storage.node.field_policy_domain
     - node.type.news
-    - taxonomy.vocabulary.themes
-id: node.news.field_topic
-field_name: field_topic
+    - taxonomy.vocabulary.policy_domain
+id: node.news.field_policy_domain
+field_name: field_policy_domain
 entity_type: node
 bundle: news
-label: Topic
+label: 'Policy domain'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:taxonomy_term'
+  handler: grouped_rdf_taxonomy_term_selection
   handler_settings:
     target_bundles:
-      themes: themes
+      policy_domain: policy_domain
     sort:
       field: _none
     auto_create: false

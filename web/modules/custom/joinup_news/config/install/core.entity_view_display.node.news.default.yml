@@ -9,14 +9,15 @@ dependencies:
     - field.field.node.news.field_news_headline
     - field.field.node.news.field_news_shared_in
     - field.field.node.news.field_news_source_url
-    - field.field.node.news.field_spatial_coverage
+    - field.field.node.news.field_news_spatial_coverage
+    - field.field.node.news.field_policy_domain
     - field.field.node.news.field_state
-    - field.field.node.news.field_topic
     - field.field.node.news.og_audience
     - node.type.news
   module:
     - comment
     - ds
+    - joinup
     - link
     - options
     - text
@@ -34,7 +35,7 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 8
+    weight: 9
     label: hidden
     settings:
       pager_id: 0
@@ -51,7 +52,7 @@ content:
     type: string
     region: content
   field_news_shared_in:
-    weight: 9
+    weight: 10
     label: above
     settings:
       view_mode: view_mode_tile
@@ -81,21 +82,20 @@ content:
     third_party_settings: {  }
     type: link
     region: content
-  field_spatial_coverage:
+  field_news_spatial_coverage:
     weight: 6
     label: hidden
     settings:
       link: true
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
-        template_suggestion: no_wrappers
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_policy_domain:
+    weight: 7
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
     type: entity_reference_label
     region: content
   field_state:
@@ -104,24 +104,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
-    region: content
-  field_topic:
-    weight: 7
-    label: hidden
-    settings:
-      link: true
-    third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
-        template_suggestion: entity_reference__listing_tag
-    type: entity_reference_label
     region: content
   links:
     weight: 0

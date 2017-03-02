@@ -6,6 +6,7 @@ package: Joinup
 
 dependencies:
   - file_url
+  - joinup_community_content
   - joinup_licence
 
 config_devel:
@@ -17,16 +18,17 @@ config_devel:
   - field.field.node.document.body
   - field.field.node.document.field_comments
   - field.field.node.document.field_document_publication_date
+  - field.field.node.document.field_document_spatial_coverage
   - field.field.node.document.field_file
   - field.field.node.document.field_keywords
   - field.field.node.document.field_licence
+  - field.field.node.document.field_policy_domain
   - field.field.node.document.field_short_title
-  - field.field.node.document.field_spatial_coverage
   - field.field.node.document.field_state
-  - field.field.node.document.field_topic
   - field.field.node.document.field_type
   - field.field.node.document.og_audience
   - field.storage.node.field_document_publication_date
+  - field.storage.node.field_document_spatial_coverage
   - field.storage.node.field_file
   - field.storage.node.field_licence
   - field.storage.node.field_type

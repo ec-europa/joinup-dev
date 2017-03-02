@@ -4,8 +4,8 @@ dependencies:
   module:
     - node
     - taxonomy
-id: node.field_topic
-field_name: field_topic
+id: node.field_document_spatial_coverage
+field_name: field_document_spatial_coverage
 entity_type: node
 type: entity_reference
 settings:

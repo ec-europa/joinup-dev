@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_spatial_coverage
+    - field.storage.node.field_news_spatial_coverage
     - node.type.news
     - taxonomy.vocabulary.spatial
-id: node.news.field_spatial_coverage
-field_name: field_spatial_coverage
+id: node.news.field_news_spatial_coverage
+field_name: field_news_spatial_coverage
 entity_type: node
 bundle: news
 label: 'Spatial coverage'

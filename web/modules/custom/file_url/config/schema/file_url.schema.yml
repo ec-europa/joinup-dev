@@ -14,7 +14,7 @@ field.widget.settings.file_url_generic:
   type: field.widget.settings.file_generic
   label: 'File URL generic widget'
 
-field.formatter.settings.file_url:
+field.formatter.settings.file_url_default:
   type: field.formatter.settings.file_default
   label: 'File URL generic formatter'
   mapping:

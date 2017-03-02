@@ -16,10 +16,10 @@ dependencies:
     - field.field.node.event.field_location
     - field.field.node.event.field_organisation
     - field.field.node.event.field_organisation_type
+    - field.field.node.event.field_policy_domain
     - field.field.node.event.field_scope
     - field.field.node.event.field_short_title
     - field.field.node.event.field_state
-    - field.field.node.event.field_topic
     - field.field.node.event.og_audience
     - image.style.image_style_event_logo
     - node.type.event
@@ -28,6 +28,7 @@ dependencies:
     - datetime
     - ds
     - image
+    - joinup
     - link
     - text
     - user
@@ -174,8 +175,8 @@ hidden:
   field_keywords: true
   field_organisation: true
   field_organisation_type: true
+  field_policy_domain: true
   field_scope: true
   field_short_title: true
   field_state: true
-  field_topic: true
   og_audience: true
