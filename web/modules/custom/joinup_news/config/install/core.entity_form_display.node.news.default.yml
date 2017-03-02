@@ -8,7 +8,7 @@ dependencies:
     - field.field.node.news.field_news_headline
     - field.field.node.news.field_news_shared_in
     - field.field.node.news.field_news_source_url
-    - field.field.node.news.field_spatial_coverage
+    - field.field.node.news.field_news_spatial_coverage
     - field.field.node.news.field_state
     - field.field.node.news.field_topic
     - field.field.node.news.og_audience
@@ -33,13 +33,13 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 8
+    weight: 9
     settings: {  }
     third_party_settings: {  }
     type: comment_default
     region: content
   field_keywords:
-    weight: 7
+    weight: 8
     settings:
       size: 60
       placeholder: ''
@@ -55,7 +55,7 @@ content:
     type: string_textfield
     region: content
   field_news_shared_in:
-    weight: 9
+    weight: 10
     settings:
       match_operator: CONTAINS
       size: 60
@@ -71,8 +71,8 @@ content:
     third_party_settings: {  }
     type: link_default
     region: content
-  field_spatial_coverage:
-    weight: 4
+  field_news_spatial_coverage:
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: 60
@@ -81,14 +81,14 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_state:
-    weight: 6
+    weight: 7
     settings:
       use_transition_label: 1
     third_party_settings: {  }
     type: state_machine_buttons
     region: content
   field_topic:
-    weight: 5
+    weight: 6
     settings:
       match_operator: CONTAINS
       size: 60

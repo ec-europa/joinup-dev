@@ -2,17 +2,17 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_spatial_coverage
+    - field.storage.node.field_document_spatial_coverage
     - node.type.document
     - taxonomy.vocabulary.spatial
-id: node.document.field_spatial_coverage
-field_name: field_spatial_coverage
+id: node.document.field_document_spatial_coverage
+field_name: field_document_spatial_coverage
 entity_type: node
 bundle: document
 label: 'Spatial coverage'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

@@ -5,16 +5,18 @@ dependencies:
     - core.entity_view_mode.node.view_mode_featured
     - field.field.node.news.body
     - field.field.node.news.field_comments
+    - field.field.node.news.field_keywords
     - field.field.node.news.field_news_headline
     - field.field.node.news.field_news_shared_in
     - field.field.node.news.field_news_source_url
-    - field.field.node.news.field_spatial_coverage
+    - field.field.node.news.field_news_spatial_coverage
     - field.field.node.news.field_state
     - field.field.node.news.field_topic
     - field.field.node.news.og_audience
     - node.type.news
   module:
     - ds
+    - joinup
     - text
     - user
 id: node.news.view_mode_featured
@@ -50,10 +52,11 @@ content:
     region: content
 hidden:
   field_comments: true
+  field_keywords: true
   field_news_headline: true
   field_news_shared_in: true
   field_news_source_url: true
-  field_spatial_coverage: true
+  field_news_spatial_coverage: true
   field_state: true
   links: true
   og_audience: true

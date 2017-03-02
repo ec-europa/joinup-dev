@@ -35,7 +35,6 @@ config_devel:
   - field.storage.node.field_comments
   - field.storage.node.field_keywords
   - field.storage.node.field_short_title
-  - field.storage.node.field_spatial_coverage
   - field.storage.node.field_state
   - field.storage.node.field_topic
   - field.storage.rdf_entity.field_keywords

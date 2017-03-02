@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9499cdc82ea6cd7182920fd5e82a3991",
+    "content-hash": "b520d677982772b7346e4c447d40eb7d",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1641,16 +1641,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.3.0-beta1",
+            "version": "8.3.0-rc1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "7b628e88038c32482a5f9552ca400c8cbdef8c1c"
+                "reference": "f9f055385da1f94bb255179f7335ed3a5dbdf28f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/7b628e88038c32482a5f9552ca400c8cbdef8c1c",
-                "reference": "7b628e88038c32482a5f9552ca400c8cbdef8c1c",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/f9f055385da1f94bb255179f7335ed3a5dbdf28f",
+                "reference": "f9f055385da1f94bb255179f7335ed3a5dbdf28f",
                 "shasum": ""
             },
             "require": {
@@ -1804,6 +1804,7 @@
                     "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-17.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194.patch",
+                    "Dependency on configuration provided by install profile is throwing exception @see https://www.drupal.org/node/2850875": "https://www.drupal.org/files/issues/2850875-5.patch",
                     "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch"
                 }
             },
@@ -1828,7 +1829,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2017-02-15T16:16:18+00:00"
+            "time": "2017-03-01T15:35:49+00:00"
         },
         {
             "name": "drupal/digital_size_formatter",
@@ -2152,7 +2153,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-alpha6.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha6",
                 "shasum": "200a964ff3db621ce25137218912760dc6ea0b3d"
             },
             "require": {
@@ -2215,7 +2216,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/message_notify-8.x-1.0-alpha4.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha4",
                 "shasum": "8274460178c0f27ea18aa3d0f30d4f77d12d863f"
             },
             "require": {
