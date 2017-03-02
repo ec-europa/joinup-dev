@@ -17,7 +17,6 @@ dependencies:
   module:
     - comment
     - ds
-    - joinup
     - link
     - options
     - text
