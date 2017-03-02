@@ -45,6 +45,11 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
 
   /**
+   * The maximum depth of a menu links tree.
+   */
+  const MAX_DEPTH = 2;
+
+  /**
    * The Symfony route matcher.
    *
    * @var \Symfony\Component\Routing\Matcher\UrlMatcherInterface
@@ -160,7 +165,7 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
           'subgroup' => 'menu-parent',
           'source' => 'menu-id',
           'hidden' => TRUE,
-          'limit' => \Drupal::menuTree()->maxDepth() - 1,
+          'limit' => self::MAX_DEPTH - 1,
         ],
         [
           'action' => 'order',
