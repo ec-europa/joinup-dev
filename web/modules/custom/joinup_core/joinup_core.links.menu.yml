@@ -1,0 +1,5 @@
+joinup_core.content_overview:
+  title: 'Content'
+  weight: 0
+  url: 'internal:/content'
+  menu_name: main
