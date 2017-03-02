@@ -4,6 +4,7 @@ description: A discussion content bundle for the Joinup project.
 core: 8.x
 package: Joinup
 dependencies:
+  - joinup_community_content
   - joinup_core
   - joinup_user
 

@@ -4,6 +4,7 @@ description: Events content type for joinup.
 core: 8.x
 package: Joinup
 dependencies:
+  - joinup_community_content
   - joinup_core
 
 config_devel:

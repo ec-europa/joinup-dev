@@ -6,6 +6,7 @@ package: Joinup
 
 dependencies:
   - file_url
+  - joinup_community_content
   - joinup_licence
 
 config_devel:

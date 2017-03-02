@@ -7,9 +7,9 @@ dependencies:
   - collection
   - ds
   - joinup_comment
+  - joinup_community_content
   - og
   - solution
-  - state_machine
   - view_unpublished
 
 config_devel:
