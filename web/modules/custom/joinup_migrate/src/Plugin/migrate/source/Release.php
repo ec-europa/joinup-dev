@@ -14,6 +14,13 @@ use Drupal\migrate\Row;
 class Release extends JoinupSqlBase {
 
   use CountryTrait;
+  use FileUrlFieldTrait;
+  use KeywordsTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $reservedUriTables = ['collection', 'solution'];
 
   /**
    * {@inheritdoc}
@@ -22,7 +29,7 @@ class Release extends JoinupSqlBase {
     return [
       'nid' => [
         'type' => 'integer',
-        'alias' => 'n',
+        'alias' => 'r',
       ],
     ];
   }
@@ -45,6 +52,7 @@ class Release extends JoinupSqlBase {
       'version_number' => $this->t('Version number'),
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
+      'documentation' => $this->t('Documentation'),
     ] + parent::fields();
   }
 
@@ -52,87 +60,31 @@ class Release extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    $this->alias['node'] = 'n';
-    /** @var \Drupal\Core\Database\Query\SelectInterface $query */
-    $query = $this->select('node', $this->alias['node'])
-      ->condition("{$this->alias['node']}.type", 'asset_release');
-
-    $this->alias['content_type_asset_release'] = $query->join('content_type_asset_release', 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['content_field_asset_version'] = $query->join('content_field_asset_version', 'content_field_asset_version', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['og_ancestry'] = $query->join('og_ancestry', 'og_ancestry', "{$this->alias['node']}.nid = %alias.nid");
-    $this->alias['group_node'] = $query->join('node', 'group_node', "{$this->alias['og_ancestry']}.group_nid = %alias.nid AND %alias.type = 'project_project'");
-    $this->alias['mapping'] = $query->join('joinup_migrate_mapping', 'mapping', "{$this->alias['group_node']}.nid = %alias.nid AND %alias.migrate = 1");
-
-    $query->addExpression("{$this->alias['content_type_asset_release']}.field_language_multiple_value", 'language');
-    $query->addExpression("{$this->alias['content_type_asset_release']}.field_asset_version_note_value", 'version_notes');
-    $query->addExpression("{$this->alias['content_field_asset_version']}.field_asset_version_value", 'version_number');
-    // The parent 'project_project' (which is a D8 solution').
-    $query->addExpression("{$this->alias['group_node']}.nid", 'solution');
-
-    return $query
-      ->fields($this->alias['node'], [
-        'nid',
-        'vid',
-        'title',
-        'created',
-        'changed',
-      ])
-      ->fields('mapping', ['policy2'])
-      // Assure the URI field.
-      ->addTag('uri');
+    return $this->select('d8_release', 'r')->fields('r', [
+      'nid',
+      'vid',
+      'title',
+      'created_time',
+      'changed_time',
+      'uri',
+      'solution',
+      'language',
+      'version_notes',
+      'version_number',
+      'docs_path',
+      'docs_url',
+    ]);
   }
 
   /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    if (!$row->getSourceProperty('solution')) {
-      // Don't migrate orphans.
-      return FALSE;
-    }
-
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
 
-    // Destroy self lookup URIs.
-    $uri = $row->getSourceProperty('uri');
-    if ($uri == "https://joinup.ec.europa.eu/node/$nid") {
-      $row->setSourceProperty('uri', NULL);
-    }
-    else {
-      $alias = $this->select('url_alias', 'a')
-        ->fields('a', ['dst'])
-        ->condition('a.src', "node/$nid")
-        ->orderBy('a.pid', 'DESC')
-        ->range(0, 1)
-        ->execute()
-        ->fetchField();
-      if ($alias && ($uri === $alias)) {
-        $row->setSourceProperty('uri', NULL);
-      }
-    }
-
-    // Assure a created date.
-    if (!$row->getSourceProperty('created_time')) {
-      $row->setSourceProperty('created_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
-    }
-    // Assure a changed date.
-    if (!$row->getSourceProperty('changed_time')) {
-      $row->setSourceProperty('changed_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
-    }
-
     // Keywords.
-    $query = $this->select('term_node', 'tn');
-    $query->join('term_data', 'td', 'tn.tid = td.tid');
-    $keywords = $query
-      ->fields('td', ['name'])
-      ->condition('tn.nid', $nid)
-      ->condition('tn.vid', $vid)
-      // The keywords vocabulary vid is 28.
-      ->condition('td.vid', 28)
-      ->execute()
-      ->fetchCol();
-    $row->setSourceProperty('keywords', array_unique($keywords));
+    $this->setKeywords($row, 'keywords', $nid, $vid);
 
     // Distributions.
     $query = $this->select('content_field_asset_distribution', 'd')
@@ -163,6 +115,9 @@ class Release extends JoinupSqlBase {
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));
+
+    // Resolve documentation.
+    $this->setFileUrlTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
 
     return parent::prepareRow($row);
   }

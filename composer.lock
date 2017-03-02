@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9499cdc82ea6cd7182920fd5e82a3991",
+    "content-hash": "3dbef67f438a1748ea4c2ca822f35674",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1641,16 +1641,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.3.0-beta1",
+            "version": "8.3.0-rc1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "7b628e88038c32482a5f9552ca400c8cbdef8c1c"
+                "reference": "f9f055385da1f94bb255179f7335ed3a5dbdf28f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/7b628e88038c32482a5f9552ca400c8cbdef8c1c",
-                "reference": "7b628e88038c32482a5f9552ca400c8cbdef8c1c",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/f9f055385da1f94bb255179f7335ed3a5dbdf28f",
+                "reference": "f9f055385da1f94bb255179f7335ed3a5dbdf28f",
                 "shasum": ""
             },
             "require": {
@@ -1804,7 +1804,9 @@
                     "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-17.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194.patch",
-                    "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch"
+                    "Dependency on configuration provided by install profile is throwing exception @see https://www.drupal.org/node/2850875": "https://www.drupal.org/files/issues/2850875-5.patch",
+                    "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
+                    "Explode processor is too strict @see https://www.drupal.org/node/2853823": "https://www.drupal.org/files/issues/2853823-7.patch"
                 }
             },
             "autoload": {
@@ -1828,7 +1830,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2017-02-15T16:16:18+00:00"
+            "time": "2017-03-01T15:35:49+00:00"
         },
         {
             "name": "drupal/digital_size_formatter",
@@ -2033,7 +2035,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/field_group-8.x-1.0-rc6.zip",
-                "reference": null,
+                "reference": "8.x-1.0-rc6",
                 "shasum": "1ce3c6387e745a04a1099956a5bf39bb50096d44"
             },
             "require": {
@@ -2045,8 +2047,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc6+5-dev",
-                    "datestamp": "1484436184"
+                    "version": "8.x-1.0-rc6",
+                    "datestamp": "1480365484"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2152,7 +2154,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-alpha6.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha6",
                 "shasum": "200a964ff3db621ce25137218912760dc6ea0b3d"
             },
             "require": {
@@ -2215,7 +2217,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/message_notify-8.x-1.0-alpha4.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha4",
                 "shasum": "8274460178c0f27ea18aa3d0f30d4f77d12d863f"
             },
             "require": {
@@ -2291,6 +2293,14 @@
             ],
             "authors": [
                 {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -2299,6 +2309,49 @@
             "homepage": "https://www.drupal.org/project/migrate_drush",
             "support": {
                 "source": "http://cgit.drupalcode.org/migrate_drush"
+            }
+        },
+        {
+            "name": "drupal/migrate_report",
+            "version": "1.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/migrate_report",
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/migrate_report-8.x-1.0-alpha1.zip",
+                "reference": "8.x-1.0-alpha1",
+                "shasum": "9d365bf9e0abae1b469d501a3ec77f876ab6acac"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1487106486"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                }
+            ],
+            "description": "Provides raw report on last migration",
+            "homepage": "https://www.drupal.org/project/migrate_report",
+            "support": {
+                "source": "http://cgit.drupalcode.org/migrate_report"
             }
         },
         {
@@ -2349,11 +2402,17 @@
         },
         {
             "name": "drupal/migrate_spreadsheet",
-            "version": "dev-1.x",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/migrate_spreadsheet",
-                "reference": "9270797be9d950c6d8569b73a7679a02d76c7395"
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/migrate_spreadsheet-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "65d126a76403fc309f57b13177f0d15667855c48"
             },
             "require": {
                 "drupal/core": "*",
@@ -2365,7 +2424,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1+0-dev",
+                    "version": "8.x-1.0-beta1",
                     "datestamp": "1487973484"
                 }
             },
@@ -2394,8 +2453,7 @@
             "support": {
                 "source": "https://www.drupal.org/project/migrate_spreadsheet",
                 "issues": "https://www.drupal.org/project/issues/migrate_spreadsheet"
-            },
-            "time": "2017-02-24 21:54:30"
+            }
         },
         {
             "name": "drupal/og",
@@ -2483,7 +2541,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/og_menu-8.x-1.0-alpha1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha1",
                 "shasum": "109bdabd75984bcea3aadccacf1c7d2c14b49fd4"
             },
             "require": {
@@ -2725,7 +2783,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-beta4.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta4",
                 "shasum": "77e79980b56ca722080477e5b3e9aa8fffa87fb1"
             },
             "require": {
@@ -2786,7 +2844,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-beta1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta1",
                 "shasum": "2b8c127d5da0124f61aab80979b3313ae22d9b82"
             },
             "require": {
@@ -3016,7 +3074,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/view_unpublished-8.x-1.0-alpha1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha1",
                 "shasum": "6c5928295162027cd4da8f45aba6111d11e899f0"
             },
             "require": {
@@ -3918,16 +3976,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.4",
+            "version": "v2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e"
+                "reference": "2bccb674209ed6f08412637b0c49456566c135d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
-                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/2bccb674209ed6f08412637b0c49456566c135d4",
+                "reference": "2bccb674209ed6f08412637b0c49456566c135d4",
                 "shasum": ""
             },
             "require": {
@@ -3962,7 +4020,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-11-07T23:38:38+00:00"
+            "time": "2017-02-27T17:05:44+00:00"
         },
         {
             "name": "pear/archive_tar",
@@ -7565,7 +7623,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.3.zip",
-                "reference": null,
+                "reference": "8.x-1.3",
                 "shasum": "4fc57add91c090ea3c9ed4848579b450253b1eed"
             },
             "require": {
@@ -7618,8 +7676,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+4-dev",
-                    "datestamp": "1486595584"
+                    "version": "8.x-1.0-alpha3+5-dev",
+                    "datestamp": "1486947184"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7678,7 +7736,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-rc1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-rc1",
                 "shasum": "04a01f50d508eca70e065b7eba38cd6c83a436c0"
             },
             "require": {
@@ -9233,7 +9291,6 @@
         "drupal/core": 10,
         "drupal/facets": 15,
         "drupal/inline_entity_form": 20,
-        "drupal/migrate_spreadsheet": 20,
         "drupal/og": 20,
         "drupal/og_menu": 15,
         "drupal/phingdrushtask": 20,

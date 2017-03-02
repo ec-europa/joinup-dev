@@ -49,7 +49,7 @@ Feature: "Add event" visibility options.
     When I go to the homepage of the "The Luscious Bridges" solution
     And I click "Add event"
     Then I should see the heading "Add event"
-    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website"
+    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website, Policy domain"
 
     # The sections about managing revisions and groups should not be visible.
     And I should not see the text "Revision information"

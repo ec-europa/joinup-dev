@@ -1,5 +1,5 @@
 id: mapping
-label: 'Mapping table migration'
+label: 'Mapping'
 migration_tags:
   - excel
 source:
