@@ -156,4 +156,6 @@ config_devel:
   - user.role.authenticated
   - user.settings
   - views.view.collections
+  - views.view.content_overview
+  - views.view.solutions
   - views.view.user_admin_people
