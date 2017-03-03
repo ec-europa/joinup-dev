@@ -243,7 +243,7 @@ function collection_field_widget_form_alter(&$element, FormStateInterface $form_
  * - Do not show the collection itself in the search results.
  */
 function collection_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
-  /** @var EntityInterface $entity */
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = $query->getOption('search_api_field entity');
 
   // Show only content that is related to this collection through the aggregated

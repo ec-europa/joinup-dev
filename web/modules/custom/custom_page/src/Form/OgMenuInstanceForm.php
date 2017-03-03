@@ -59,6 +59,8 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
   /**
    * Constructs a MenuForm object.
    *
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   *   The entity manager.
    * @param \Drupal\Core\Entity\Query\QueryFactory $entity_query_factory
    *   The factory for entity queries.
    * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager

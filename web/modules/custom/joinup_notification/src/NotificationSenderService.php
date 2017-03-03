@@ -34,9 +34,9 @@ class NotificationSenderService {
    * Constructs the event object.
    *
    * @param \Drupal\Core\Entity\EntityManager $entity_manager
-   *    The entity manager service.
+   *   The entity manager service.
    * @param \Drupal\message_notify\MessageNotifier $message_notify_sender
-   *    The message notify sender service.
+   *   The message notify sender service.
    */
   public function __construct(EntityManager $entity_manager, MessageNotifier $message_notify_sender) {
     $this->entityManager = $entity_manager;
@@ -87,7 +87,7 @@ class NotificationSenderService {
       $recipients = array_filter($user_ids);
     }
 
-    /** @var OgMembership $membership */
+    /** @var \Drupal\og\Entity\OgMembership $membership */
     foreach ($recipients as $user_id) {
       foreach ($message_ids as $message_id) {
         // Create the actual message and save it to the db.

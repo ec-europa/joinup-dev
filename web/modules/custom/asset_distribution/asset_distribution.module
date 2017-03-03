@@ -52,7 +52,7 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
  */
 function asset_distribution_form_rdf_entity_asset_distribution_form_submit(&$form, FormStateInterface $form_state) {
   $parent = Rdf::load($form_state->get('context_rdf_entity_id'));
-  /** @var RdfInterface $distribution */
+  /** @var \Drupal\rdf_entity\Entity\RdfInterface $distribution */
   $distribution = $form_state->getFormObject()->getEntity();
 
   asset_distribution_add_parent_relation($distribution, $parent);
