@@ -33,7 +33,7 @@ class WorkflowUserProvider {
    * Returns the saved user.
    *
    * @return \Drupal\Core\Session\AccountInterface
-   *    A user object.
+   *   A user object.
    */
   public function getUser() {
     return $this->account;
@@ -43,7 +43,7 @@ class WorkflowUserProvider {
    * Overrides the default user account which is the logged in user.
    *
    * @param \Drupal\Core\Session\AccountInterface $account
-   *    A user object.
+   *   A user object.
    */
   public function setUser(AccountInterface $account) {
     $this->account = $account;

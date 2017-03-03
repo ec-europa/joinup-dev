@@ -213,7 +213,7 @@ class SearchItem extends FieldItemBase {
    * @param array $element
    *   An associative array containing the properties and children of the
    *   generic form element.
-   * @param FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form for the form this element belongs to.
    *
    * @see \Drupal\options\Plugin\Field\FieldType\ListItemBase::validateAllowedValues()
@@ -341,7 +341,7 @@ class SearchItem extends FieldItemBase {
    * Description for the allowed values.
    *
    * @return string
-   *    Field description.
+   *   Field description.
    */
   protected function allowedValuesDescription() {
     $description = '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.');

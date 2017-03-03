@@ -56,10 +56,10 @@ class AssetDistributionRelations implements ContainerInjectionInterface {
    * Returns the solution that a release belongs to.
    *
    * @param \Drupal\rdf_entity\RdfInterface $asset_release
-   *    The asset release rdf entity.
+   *   The asset release rdf entity.
    *
    * @return \Drupal\rdf_entity\RdfInterface
-   *    The solution rdf entity that the release is version of.
+   *   The solution rdf entity that the release is version of.
    */
   public function getReleaseSolution(RdfInterface $asset_release) {
     if ($asset_release->bundle() != 'asset_release') {
@@ -88,7 +88,7 @@ class AssetDistributionRelations implements ContainerInjectionInterface {
     /** @var array $group_content */
     $group_content = $this->entityTypeManager->getStorage('rdf_entity')
       ->loadMultiple($group_content_ids['rdf_entity']);
-    /** @var RdfInterface[] $distributions */
+    /** @var \Drupal\rdf_entity\RdfInterface[] $distributions */
     $distributions = array_filter($group_content, function (RdfInterface $entity) {
       return ($entity->bundle() === 'asset_distribution');
     });

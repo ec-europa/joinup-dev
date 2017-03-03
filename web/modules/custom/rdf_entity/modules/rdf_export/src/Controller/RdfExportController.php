@@ -20,15 +20,15 @@ class RdfExportController extends ControllerBase {
    * Build an list of possible download links to RDF serialization methods.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *    The RouteMatch object.
+   *   The RouteMatch object.
    *
    * @return array
-   *    Render array with list of download links.
+   *   Render array with list of download links.
    */
   public function downloadLinks(RouteMatchInterface $route_match) {
     $parameter_name = $route_match->getRouteObject()
       ->getOption('entity_type_id');
-    /** @var EntityInterface $entity */
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = $route_match->getParameter($parameter_name);
     $list = array('#theme' => 'item_list');
     foreach ($this->getSerializerFormats() as $format_type => $format) {
@@ -50,12 +50,12 @@ class RdfExportController extends ControllerBase {
    * Download callback for the exported RDF.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *    The RouteMatch object.
+   *   The RouteMatch object.
    * @param string $export_format
-   *    The serialization format (e.g. turtle, rdfxml, ...).
+   *   The serialization format (e.g. turtle, rdfxml, ...).
    *
    * @return \Symfony\Component\HttpFoundation\Response
-   *    Response object with correct headers set.
+   *   Response object with correct headers set.
    */
   public function download(RouteMatchInterface $route_match, $export_format) {
     $formats = $this->getSerializerFormats();

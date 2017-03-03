@@ -54,10 +54,10 @@ class SubscriptionSettings extends ControllerBase {
    * his own subscriptions.
    *
    * @param \Drupal\Core\Entity\EntityInterface $user
-   *    The user object from the route.
+   *   The user object from the route.
    *
    * @return \Drupal\Core\Access\AccessResult
-   *    An access result object carrying the result of the check.
+   *   An access result object carrying the result of the check.
    */
   public function access(EntityInterface $user) {
     if ($this->currentUser->hasPermission('manage all subscriptions')) {
