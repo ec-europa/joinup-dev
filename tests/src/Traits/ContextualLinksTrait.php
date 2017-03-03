@@ -29,11 +29,7 @@ trait ContextualLinksTrait {
 
     /** @var \Drupal\Core\Menu\ContextualLinkManager $contextual_links_manager */
     $contextual_links_manager = \Drupal::service('plugin.manager.menu.contextual_link');
-    $session = $this->getSession();
-    $regionObj = $session->getPage()->find('region', $region);
-    if (!$regionObj) {
-      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
-    }
+    $regionObj = $this->getRegion($region);
 
     /** @var \Behat\Mink\Element\NodeElement $item */
     foreach ($regionObj->findAll('xpath', '//*[@data-contextual-id]') as $item) {

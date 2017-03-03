@@ -635,7 +635,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // Fixes a step argument (with \\" replaced back to ")
     // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
     $button = str_replace('\\"', '"', $button);
-    $this->getSession()->getPage()->find('named', ['fieldset', $fieldset])->pressButton($button);
+    $this->getSession()->getPage()->find('named', [
+      'fieldset',
+      $fieldset,
+    ])->pressButton($button);
   }
 
   /**
@@ -754,6 +757,27 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         throw new \Exception("The tile '$heading' was found on the page");
       }
     }
+  }
+
+  /**
+   * Checks that the given tiles are found in the given block.
+   *
+   * The weight of the tiles are also taken into account.
+   *
+   * Table format:
+   * | title        |
+   * | Tile title 1 |
+   * | Tile title 2 |
+   *
+   * @Then I( should) see the( following) tiles in the :region region:
+   */
+  public function assertTilesInBlock(TableNode $titles_table, $region) {
+    $results = $this->getTiles($region);
+    $headings_in_page = array_map(function ($result) {
+      return $result->getText();
+    }, $results);
+    $headings_expected = $titles_table->getColumn(0);
+    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, "The expected tiles are not in the page or not in the proper order.");
   }
 
   /**
