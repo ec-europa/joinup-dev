@@ -480,7 +480,7 @@ function solution_get_latest_release(RdfInterface $solution) {
  * - do not show the solution itself in the search results.
  */
 function solution_search_api_query_search_api_field_field_is_content_alter(QueryInterface &$query) {
-  /** @var EntityInterface $entity */
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = $query->getOption('search_api_field entity');
 
   // Show only content that belongs to this solution through the aggregated

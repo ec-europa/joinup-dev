@@ -57,10 +57,10 @@ trait EntityTrait {
    * title so it returns the first of the results.
    *
    * @param string $title
-   *    The label of the menu item.
+   *   The label of the menu item.
    *
    * @return \Drupal\menu_link_content\MenuLinkContentInterface
-   *    The MenuLinkContent entity.
+   *   The MenuLinkContent entity.
    *
    * @throws \Exception
    *    Thrown when the menu item is not found.

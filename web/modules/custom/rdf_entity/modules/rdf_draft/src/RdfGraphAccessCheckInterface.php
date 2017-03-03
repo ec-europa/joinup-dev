@@ -26,16 +26,16 @@ interface RdfGraphAccessCheckInterface extends AccessInterface {
    * A custom access check.
    *
    * @param \Symfony\Component\Routing\Route $route
-   *    The current route.
+   *   The current route.
    * @param \Drupal\Core\Session\AccountInterface $account
-   *    Run access checks for this account.
+   *   Run access checks for this account.
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *    The entity object.
+   *   The entity object.
    * @param string $operation
-   *    The operation to check.
+   *   The operation to check.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
-   *    The result of the access check.
+   *   The result of the access check.
    */
   public function access(Route $route, AccountInterface $account, RdfInterface $rdf_entity, $operation);
 
@@ -43,18 +43,18 @@ interface RdfGraphAccessCheckInterface extends AccessInterface {
    * Performs further checking if required by the access method.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The entity object.
+   *   The entity object.
    * @param \Symfony\Component\Routing\Route $route
-   *    The current route.
+   *   The current route.
    * @param \Drupal\Core\Session\AccountInterface $account
-   *    Run access checks for this account.
+   *   Run access checks for this account.
    * @param string $operation
-   *    The operation to check.
+   *   The operation to check.
    * @param string $graph_name
-   *    The graph name.
+   *   The graph name.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
-   *    The result of the access check.
+   *   The result of the access check.
    */
   public function checkAccess(EntityInterface $entity, Route $route, AccountInterface $account, $operation, $graph_name);
 

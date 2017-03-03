@@ -21,7 +21,7 @@ trait MaterialDesignTrait {
    *
    * @param string $label
    *   The label of the field to check.
-   * @param TraversableElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   Element in which to search for the field label.
    *
    * @throws \Exception
@@ -51,7 +51,7 @@ trait MaterialDesignTrait {
    *
    * @param string $label
    *   The label of the field to uncheck.
-   * @param TraversableElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   Element in which to search for the field label.
    *
    * @throws \Exception
@@ -79,7 +79,7 @@ trait MaterialDesignTrait {
    *
    * @param string $label
    *   The label of the animated checkbox to toggle.
-   * @param TraversableElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   Element in which to search for the field label.
    *
    * @throws \Exception
@@ -108,7 +108,7 @@ trait MaterialDesignTrait {
    *
    * @param string $label
    *   The label of the animated checkbox to toggle.
-   * @param TraversableElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   Element in which to search for the field label.
    *
    * @return \Behat\Mink\Element\NodeElement
