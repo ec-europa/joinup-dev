@@ -9,7 +9,7 @@ dependencies:
   - joinup_core
   - link
   - rdf_entity
-  - rdf_file
+  - file_url
   - text
 
 config_devel:

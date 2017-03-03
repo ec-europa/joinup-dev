@@ -45,7 +45,7 @@ dependencies:
     - inline_entity_form
     - joinup_core
     - link
-    - rdf_file
+    - file_url
     - text
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
@@ -88,7 +88,7 @@ content:
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-    type: rdf_file_generic
+    type: file_url_generic
     region: content
   field_is_elibrary_creation:
     weight: 12

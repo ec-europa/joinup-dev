@@ -16,6 +16,6 @@ Feature: Document API
       | elibrary creation | facilitators         |
       | state             | validated            |
     And document content:
-      | title    | short title | body               | collection           |
-      | JD title | Short       | Dummy description. | Joinup document name |
+      | title    | type     | short title | body               | collection           |
+      | JD title | Document | Short       | Dummy description. | Joinup document name |
     Then I should have a "Document" page titled "JD title"

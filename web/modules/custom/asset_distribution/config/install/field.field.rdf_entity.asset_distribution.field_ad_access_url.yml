@@ -5,7 +5,7 @@ dependencies:
     - field.storage.rdf_entity.field_ad_access_url
     - rdf_entity.rdfentity.asset_distribution
   module:
-    - rdf_file
+    - file_url
 id: rdf_entity.asset_distribution.field_ad_access_url
 field_name: field_ad_access_url
 entity_type: rdf_entity
@@ -21,6 +21,6 @@ settings:
   file_extensions: 'zip tar tar.gz'
   max_filesize: ''
   description_field: false
-  handler: 'rdf_file_default:file'
+  handler: 'file_url_default:file'
   handler_settings: {  }
-field_type: rdf_file
+field_type: file_url

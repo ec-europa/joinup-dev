@@ -527,7 +527,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * This allows us to:
    * - use human readable labels like 'short title' in test scenarios, and map
-   *   them to the actual field names like 'field_document_short_title'.
+   *   them to the actual field names like 'field_short_title'.
    * - use human readable values such as a collection name instead of the URL
    *   that is actually used in the OG reference field.
    *
@@ -591,13 +591,15 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $aliases = [
       'discussion' => [
         'state' => 'field_state',
-        'content' => 'field_discussion_content',
+        'content' => 'body',
       ],
       'document' => [
-        'short title' => 'field_document_short_title',
+        'short title' => 'field_short_title',
+        'type' => 'field_type',
+        'licence' => 'field_licence',
       ],
       'event' => [
-        'short title' => 'field_event_short_title',
+        'short title' => 'field_short_title',
         'start date' => 'field_start_date',
         'state' => 'field_state',
       ],
