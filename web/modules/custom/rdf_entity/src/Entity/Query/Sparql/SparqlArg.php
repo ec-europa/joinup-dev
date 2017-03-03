@@ -18,10 +18,10 @@ class SparqlArg {
    * URI Query argument.
    *
    * @param string $uri
-   *    A valid URI to use as a query parameter.
+   *   A valid URI to use as a query parameter.
    *
    * @return string
-   *    Sparql validated URI.
+   *   Sparql validated URI.
    *
    * @throws \Exception
    *    Inform the user that $uri variable is not a URI.
@@ -37,10 +37,10 @@ class SparqlArg {
    * Literal Query argument.
    *
    * @param string $value
-   *    An unescaped text string to use as a Sparql query.
+   *   An unescaped text string to use as a Sparql query.
    *
    * @return string
-   *    Sparql escaped string literal.
+   *   Sparql escaped string literal.
    */
   public static function literal($value) {
     // @todo Support all xml data types, as well as language extensions.
