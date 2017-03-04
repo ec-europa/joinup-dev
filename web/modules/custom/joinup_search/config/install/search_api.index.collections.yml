@@ -50,7 +50,7 @@ field_settings:
     label: 'Body » Processed text'
     datasource_id: 'entity:node'
     property_path: 'body:processed'
-    type: string
+    type: text
     dependencies:
       config:
         - field.storage.node.body
@@ -141,13 +141,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_isr_description
-processor_settings:
-  add_url: { }
-  rendered_item: { }
-  aggregated_field: { }
-options:
-  index_directly: true
-  cron_limit: 50
 datasource_settings:
   'entity:node':
     bundles:
@@ -160,6 +153,13 @@ datasource_settings:
     bundles:
       default: true
       selected: {  }
+processor_settings:
+  add_url: {  }
+  rendered_item: {  }
+  aggregated_field: {  }
 tracker_settings:
-  default: { }
+  default: {  }
+options:
+  index_directly: true
+  cron_limit: 50
 server: solr
