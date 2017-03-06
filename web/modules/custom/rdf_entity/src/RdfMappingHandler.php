@@ -30,7 +30,7 @@ class RdfMappingHandler {
    * Constructs a QueryFactory object.
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *    The entity type manager.
+   *   The entity type manager.
    */
   public function __construct(EntityManagerInterface $entity_manager) {
     $this->entityManager = $entity_manager;
@@ -41,10 +41,10 @@ class RdfMappingHandler {
    * Returns a list of label predicates of the passed entity type.
    *
    * @param string $entity_type_id
-   *    The entity type machine name.
+   *   The entity type machine name.
    *
    * @return array
-   *    An array of label predicates indexed by their respective entity bundles.
+   *   An array of label predicates indexed by their respective entity bundles.
    *
    * @throws \Exception
    *    Thrown when an rdf mapping has not been set for a label in one of the
@@ -79,12 +79,12 @@ class RdfMappingHandler {
    * URI. This is not the predicate but the object.
    *
    * @param string $entity_type_bundle_key
-   *    The machine name of the entity type.
+   *   The machine name of the entity type.
    * @param string $bundle
-   *    Optionally filter the mappings by bundle.
+   *   Optionally filter the mappings by bundle.
    *
    * @return array
-   *    A list of bundle key mappings from all bundles of the passed entity
+   *   A list of bundle key mappings from all bundles of the passed entity
    *    type. The returned array is indexed by the bundle key.
    *
    * @throws \Exception
@@ -116,15 +116,15 @@ class RdfMappingHandler {
    * Returns a list of bundle uris ready to be passed to a query as an array.
    *
    * @param string $entity_type_id
-   *    The entity type of the bundles e.g. 'node_type'.
+   *   The entity type of the bundles e.g. 'node_type'.
    * @param array|null $bundles
-   *    Optionally filter and return only a subset of bundles.
+   *   Optionally filter and return only a subset of bundles.
    *
    * @todo: This should return a simple array. A query helper method can convert
    * it later on.
    *
    * @return string
-   *    A string including the converted array of bundle uris to a string value
+   *   A string including the converted array of bundle uris to a string value
    *    of a sparql array filter.
    */
   public function getBundleUriList($entity_type_id, $bundles = []) {
@@ -152,7 +152,7 @@ class RdfMappingHandler {
    * Get the mapping between drupal properties and rdf predicates.
    *
    * @param string $entity_type_id
-   *    The entity type for which the mappings are retrieved.
+   *   The entity type for which the mappings are retrieved.
    *
    * @todo: We should have a better more generic way of generating these
    *    mappings. E.g., when nothing is set, we can generate automatically for
@@ -162,7 +162,7 @@ class RdfMappingHandler {
    * /<property>
    *
    * @return array
-   *    An array of mappings indexed by bundle.
+   *   An array of mappings indexed by bundle.
    */
   public function getEntityPredicates($entity_type_id) {
     $mapping = &drupal_static(__FUNCTION__);
@@ -227,7 +227,7 @@ class RdfMappingHandler {
    *   A content entity.
    *
    * @return array
-   *    An array of mappings between predicates and field properties. All
+   *   An array of mappings between predicates and field properties. All
    *    fields, and properties of the entity and the fields, that are available
    *    will be returned.
    */

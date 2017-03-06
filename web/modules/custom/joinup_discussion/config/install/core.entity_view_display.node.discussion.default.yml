@@ -3,10 +3,10 @@ status: true
 dependencies:
   config:
     - core.entity_view_display.comment.comment.default
+    - field.field.node.discussion.body
     - field.field.node.discussion.field_comments
-    - field.field.node.discussion.field_discussion_content
+    - field.field.node.discussion.field_policy_domain
     - field.field.node.discussion.field_state
-    - field.field.node.discussion.field_topic
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
@@ -19,6 +19,13 @@ targetEntityType: node
 bundle: discussion
 mode: default
 content:
+  body:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_comments:
     type: comment_default
     weight: 5
@@ -28,12 +35,13 @@ content:
       view_mode: default
     third_party_settings: {  }
     region: content
-  field_discussion_content:
-    weight: 1
+  field_policy_domain:
+    weight: 0
     label: above
-    settings: {  }
+    settings:
+      link: true
     third_party_settings: {  }
-    type: text_default
+    type: entity_reference_label
     region: content
   field_state:
     weight: 6
@@ -42,25 +50,17 @@ content:
     third_party_settings: {  }
     type: list_default
     region: content
-  field_topic:
-    weight: 0
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   links:
     weight: 4
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   og_audience:
     label: above
     type: entity_reference_label
     settings:
       link: true
-    weight: 2
+    weight: 3
     third_party_settings: {  }
     region: content
 hidden: {  }

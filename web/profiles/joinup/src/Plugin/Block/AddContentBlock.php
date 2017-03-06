@@ -53,6 +53,8 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
    *   The collection context.
    * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $solution_context
    *   The solution context.
+   * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $asset_release_context
+   *   The asset release route context service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextProviderInterface $collection_context, ContextProviderInterface $solution_context, ContextProviderInterface $asset_release_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);

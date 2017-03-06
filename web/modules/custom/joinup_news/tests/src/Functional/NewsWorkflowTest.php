@@ -447,7 +447,7 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
    *    The moderation settings for the parent.
    *
    * @return array
-   *    An array with users as keys and allowed transitions as values.
+   *   An array with users as keys and allowed transitions as values.
    */
   protected function getWorkflowElibraryCreationRoles($e_library, $moderation) {
     $allowed_roles = [

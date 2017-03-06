@@ -42,7 +42,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * | Local authority             | Gotham City |                         |
    * | Private Individual(s)       | Jane Roe    |                         |
    *
-   * @param TableNode $owners_table
+   * @param \Behat\Gherkin\Node\TableNode $owners_table
    *   The owners table.
    *
    * @throws \Exception;
@@ -124,7 +124,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * Sets type(s) of the owner field.
    *
    * @param string $options
-   *    A comma delimited list of options to be checked.
+   *   A comma delimited list of options to be checked.
    *
    * @throws \Exception
    *   Thrown when the owner field appears empty in the page.

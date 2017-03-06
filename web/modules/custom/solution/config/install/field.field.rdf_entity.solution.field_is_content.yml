@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_content
+    - rdf_entity.rdfentity.solution
+  module:
+    - search_api_field
+id: rdf_entity.solution.field_is_content
+field_name: field_is_content
+entity_type: rdf_entity
+bundle: solution
+label: 'Solution content'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value:
+      fields:
+        solution_content_bundle:
+          weight: 0
+          region: top
+        solution_policy_domain:
+          weight: 1
+          region: top
+        solution_spatial_coverage:
+          weight: 2
+          region: top
+      enabled: 1
+      query_presets: ''
+      limit: 12
+default_value_callback: ''
+settings: {  }
+field_type: search_api_field
