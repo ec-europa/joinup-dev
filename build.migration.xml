@@ -17,6 +17,13 @@
             <option name="feedback" value="1000" />
             <option name="force" />
         </drush>
+        <drush
+            command="migrate-report-generate"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+        </drush>
     </target>
 
     <target name="import-legacy-db"
