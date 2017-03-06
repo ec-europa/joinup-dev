@@ -7,6 +7,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
+    - field.field.rdf_entity.solution.field_is_content
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
@@ -41,11 +42,11 @@ dependencies:
     - image.style.thumbnail
     - rdf_entity.rdfentity.solution
   module:
+    - file_url
     - image
     - inline_entity_form
     - joinup_core
     - link
-    - file_url
     - text
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
@@ -211,6 +212,7 @@ hidden:
   field_is_actor: true
   field_is_affiliations_requests: true
   field_is_business_process: true
+  field_is_content: true
   field_is_creation_date: true
   field_is_distribution: true
   field_is_has_version: true
