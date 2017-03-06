@@ -102,6 +102,7 @@ config_devel:
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
+  - core.date_format.date_only_text_month
   - core.entity_form_display.ogmenu_instance.navigation.default
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
@@ -129,7 +130,6 @@ config_devel:
   - field.field.user.user.field_user_professional_domain
   - field.field.user.user.field_user_business_title
   - field.storage.node.body
-  - field.storage.node.og_audience
   - field.storage.ogmenu_instance.og_audience
   - field.storage.user.field_user_family_name
   - field.storage.user.field_user_first_name

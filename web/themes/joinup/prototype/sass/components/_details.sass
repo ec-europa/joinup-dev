@@ -6,33 +6,39 @@
 .details__element
   font-size: $font-size-xsmall
   display: inline-block
-  margin-left: 10px
-  padding-left: 10px
-  vertical-align: middle
-  border-left: 1px solid $color-grey-medium
-  &:first-of-type
-    margin-left: 0
-    padding-left: 0
-    border-left: none
+  margin-right: 10px
+  margin-top: 5px
+  padding-right: 10px
+  vertical-align: top
+  border-right: 1px solid $color-grey-medium
+  &:last-of-type
+    margin-right: 0
+    padding-right: 0
+    border-right: none
   *
     display: inline
 
 .details__element-item a
-  font-weight: $font-weight-bold
   color: $color-blue-dark
+  font-weight: $font-weight-bold
 
 .details__user
+  margin: 5px 0 0 0
   display: inline-block
-  margin: 10px 0 0 0
 
 .details__avatar
-  margin-right: 8px
-    
+  margin-right: 10px
+  img
+    width: 40px
+    height: 40px
+    background-color: #fff
+    +border-radius(50%)
+
 .details__user-item
   display: inline-block
   a
-    text-decoration: none
     color: $color-grey-medium
+    text-decoration: none
 
 .details__element-headline span
   font-size: $font-size-small
@@ -54,6 +60,12 @@
 
 // Modifiers
 // --------------------------------------------------
+.details__element--block
+  display: block
+  border: none
+  a
+    color: $color-grey-medium
+    font-weight: $font-weight-medium
 
 // Dependiencies
 // --------------------------------------------------
@@ -69,5 +81,3 @@
       margin-right: 0
       padding-right: 0
       border-right: none
-
-

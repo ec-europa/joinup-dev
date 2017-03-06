@@ -153,7 +153,7 @@ Feature: News moderation.
     And I go to the homepage of the "Justice League" collection
     And I click "Add news"
     Then I should see the heading "Add news"
-    And the following fields should be present "Headline, Kicker, Content"
+    And the following fields should be present "Headline, Kicker, Content, Policy domain, Keywords, Spatial coverage"
 
     # The sections about managing revisions and groups should not be visible.
     And I should not see the text "Revision information"

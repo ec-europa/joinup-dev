@@ -10,10 +10,15 @@ dependencies:
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_logo
-    - field.field.node.event.field_event_organisation
-    - field.field.node.event.field_event_short_title
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
+    - field.field.node.event.field_keywords
+    - field.field.node.event.field_location
+    - field.field.node.event.field_organisation
+    - field.field.node.event.field_organisation_type
+    - field.field.node.event.field_policy_domain
+    - field.field.node.event.field_scope
+    - field.field.node.event.field_short_title
     - field.field.node.event.field_state
     - field.field.node.event.og_audience
     - image.style.image_style_event_logo
@@ -21,9 +26,10 @@ dependencies:
   module:
     - comment
     - datetime
+    - ds
     - image
+    - joinup
     - link
-    - options
     - text
     - user
 id: node.event.default
@@ -39,7 +45,7 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 11
+    weight: 10
     label: above
     settings:
       pager_id: 0
@@ -48,92 +54,129 @@ content:
     type: comment_default
     region: content
   field_event_adtl_address_info:
-    weight: 7
-    label: above
+    weight: 6
+    label: hidden
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
     type: basic_string
     region: content
   field_event_agenda:
-    weight: 3
-    label: above
+    weight: 2
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_event_contact_email:
-    weight: 8
+    weight: 7
     label: above
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: true
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
     type: basic_string
     region: content
   field_event_end_date:
-    weight: 6
-    label: above
+    weight: 5
+    label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
-    third_party_settings: {  }
+      format_type: date_only_text_month
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
     type: datetime_default
     region: content
   field_event_logo:
-    weight: 4
-    label: above
+    weight: 3
+    label: hidden
     settings:
       image_style: image_style_event_logo
       image_link: content
     third_party_settings: {  }
     type: image
     region: content
-  field_event_organisation:
-    weight: 10
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_event_short_title:
-    weight: 2
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   field_event_start_date:
-    weight: 5
-    label: above
+    weight: 4
+    label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
-    third_party_settings: {  }
+      format_type: date_only_text_month
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
     type: datetime_default
     region: content
   field_event_web_url:
-    weight: 9
+    weight: 8
     label: above
     settings:
       trim_length: 80
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
+      rel: '0'
+      target: '0'
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: true
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
     type: link
     region: content
-  field_state:
-    type: list_default
-    weight: 12
-    region: content
+  field_location:
+    weight: 9
     label: above
     settings: {  }
     third_party_settings: {  }
+    type: basic_string
+    region: content
   links:
     weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_keywords: true
+  field_organisation: true
+  field_organisation_type: true
+  field_policy_domain: true
+  field_scope: true
+  field_short_title: true
+  field_state: true
   og_audience: true

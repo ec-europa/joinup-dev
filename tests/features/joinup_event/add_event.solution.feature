@@ -49,7 +49,7 @@ Feature: "Add event" visibility options.
     When I go to the homepage of the "The Luscious Bridges" solution
     And I click "Add event"
     Then I should see the heading "Add event"
-    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website"
+    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website, Policy domain"
 
     # The sections about managing revisions and groups should not be visible.
     And I should not see the text "Revision information"
@@ -59,6 +59,7 @@ Feature: "Add event" visibility options.
       | Title       | An amazing event                      |
       | Short title | Amazing event                         |
       | Description | This is going to be an amazing event. |
+      | Location    | Rue Belliard, 28                      |
     And I fill in "Start date" with the date "2018-08-29"
     And I fill in "Start date" with the time "23:59:00"
     And I press "Save as draft"

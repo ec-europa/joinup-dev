@@ -50,7 +50,7 @@ Feature: "Add discussion" visibility options.
     When I go to the homepage of the "Emerald in the Luck" solution
     And I click "Add discussion"
     Then I should see the heading "Add discussion"
-    And the following fields should be present "Title, Content, Topic"
+    And the following fields should be present "Title, Content, Policy domain"
 
     # The sections about managing revisions and groups should not be visible.
     And I should not see the text "Revision information"

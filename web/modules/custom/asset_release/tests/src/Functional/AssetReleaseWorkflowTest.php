@@ -9,7 +9,7 @@ use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\Tests\joinup_core\JoinupWorkflowTestBase;
+use Drupal\Tests\joinup_core\Functional\JoinupWorkflowTestBase;
 
 /**
  * Tests crud operations and the workflow for the asset release rdf entity.
@@ -94,10 +94,10 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * Creates a user with roles.
    *
    * @param array $roles
-   *    An array of roles to initialize the user with.
+   *   An array of roles to initialize the user with.
    *
    * @return \Drupal\Core\Session\AccountInterface
-   *    The created user object.
+   *   The created user object.
    */
   public function createUserWithRoles(array $roles = []) {
     $user = $this->createUser();
@@ -208,10 +208,10 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * Generates a solution entity and initializes default memberships.
    *
    * @param string $state
-   *    The state of the entity.
+   *   The state of the entity.
    *
    * @return \Drupal\Core\Entity\EntityInterface
-   *    The created solution entity.
+   *   The created solution entity.
    */
   protected function createDefaultParent($state) {
     $parent = Rdf::create([
@@ -230,11 +230,11 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * Creates and asserts an Og membership.
    *
    * @param \Drupal\Core\Entity\EntityInterface $group
-   *    The Og group.
+   *   The Og group.
    * @param \Drupal\Core\Session\AccountInterface $user
-   *    The user this membership refers to.
+   *   The user this membership refers to.
    * @param array $roles
-   *    An array of role objects.
+   *   An array of role objects.
    */
   public function createOgMembership(EntityInterface $group, AccountInterface $user, array $roles = []) {
     $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);

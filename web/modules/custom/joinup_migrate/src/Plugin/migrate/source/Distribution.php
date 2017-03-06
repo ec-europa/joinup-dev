@@ -13,7 +13,12 @@ use Drupal\migrate\Row;
  */
 class Distribution extends DistributionBase {
 
-  use UriTrait;
+  use FileUrlFieldTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $reservedUriTables = ['collection', 'solution', 'release'];
 
   /**
    * {@inheritdoc}
@@ -22,6 +27,7 @@ class Distribution extends DistributionBase {
     return [
       'uri' => $this->t('URI'),
       'title' => $this->t('Name'),
+      'access_url' => $this->t('Access URL'),
       'created_time' => $this->t('Created time'),
       'body' => $this->t('Description'),
       'licence' => $this->t('Licence'),
@@ -34,23 +40,17 @@ class Distribution extends DistributionBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = parent::query();
-
-    $this->alias['node_revision'] = $query->join('node_revisions', 'node_revision', "{$this->alias['node']}.vid = %alias.vid");
-
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created_time');
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed_time');
-
-    $this->alias['content_field_distribution_licence'] = $query->leftJoin('content_field_distribution_licence', 'content_field_distribution_licence', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_licence'] = $query->leftJoin('node', 'node_licence', "{$this->alias['content_field_distribution_licence']}.field_distribution_licence_nid = %alias.nid AND %alias.type = 'licence'");
-
-    $query->addExpression("{$this->alias['node_licence']}.nid", 'licence');
-
-    return $query
-      ->fields($this->alias['node'], ['title', 'vid'])
-      ->fields($this->alias['node_revision'], ['body'])
-      // Assure the URI field.
-      ->addTag('uri');
+    return parent::query()->fields('d', [
+      'uri',
+      'vid',
+      'title',
+      'body',
+      'created_time',
+      'changed_time',
+      'licence',
+      'file_id',
+      'access_url',
+    ]);
   }
 
   /**
@@ -59,9 +59,6 @@ class Distribution extends DistributionBase {
   public function prepareRow(Row $row) {
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
-
-    // Normalize URI.
-    $this->normalizeUri('uri', $row, FALSE);
 
     // Representation technique.
     $query = $this->select('term_node', 'tn');
@@ -75,6 +72,9 @@ class Distribution extends DistributionBase {
       ->execute()
       ->fetchCol();
     $row->setSourceProperty('technique', $representation_technique);
+
+    // Resolve 'access_url'.
+    $this->setFileUrlTargetId($row, 'access_url', ['nid' => $nid], 'file_id', 'distribution_file', 'access_url');
 
     return parent::prepareRow($row);
   }

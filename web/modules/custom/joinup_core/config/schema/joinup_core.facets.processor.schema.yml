@@ -1,0 +1,5 @@
+plugin.plugin_configuration.facets_processor.aggregated_entity_bundle_label:
+  type: sequence
+  label: 'Aggregated entity label'
+  sequence:
+    type: string

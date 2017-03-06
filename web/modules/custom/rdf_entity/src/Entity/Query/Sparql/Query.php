@@ -99,9 +99,9 @@ class Query extends QueryBase implements QueryInterface {
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service object.
    * @param \Drupal\rdf_entity\RdfGraphHandler $rdf_graph_handler
-   *    The rdf graph handler service.
+   *   The rdf graph handler service.
    * @param \Drupal\rdf_entity\RdfMappingHandler $rdf_mapping_handler
-   *    The rdf mapping handler service.
+   *   The rdf mapping handler service.
    *
    * @throws \Exception
    *   Thrown when the storage passed is not an RdfEntitySparqlStorage.
@@ -156,7 +156,7 @@ class Query extends QueryBase implements QueryInterface {
    * results based on the request graphs set for the entities.
    *
    * @param array $graph_types
-   *    An array of graphs ids to be passed into the query.
+   *   An array of graphs ids to be passed into the query.
    *
    * @todo: When a condition is set on the bundle, this graphs should be
    * filtered accordingly.

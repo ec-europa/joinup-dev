@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\joinup_document\Functional;
 
-use Drupal\Tests\joinup_core\NodeWorkflowTestBase;
+use Drupal\Tests\joinup_core\Functional\NodeWorkflowTestBase;
 
 /**
  * Tests CRUD operations and workflow transitions for the document node.
@@ -430,7 +430,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
    *    The moderation settings for the parent.
    *
    * @return array
-   *    An array with users as keys and allowed transitions as values.
+   *   An array with users as keys and allowed transitions as values.
    */
   protected function getWorkflowElibraryCreationRoles($e_library, $moderation) {
     $allowed_roles = [

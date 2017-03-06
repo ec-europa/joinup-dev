@@ -28,13 +28,28 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
   protected $contactInformations = [];
 
   /**
+   * Navigates to the canonical page display of a contact information entity.
+   *
+   * @param string $label
+   *   The label of the contact information entity.
+   *
+   * @When (I )go to the :label contact information page
+   * @When (I )visit the :label contact information page
+   */
+  public function visitContactInformationPage($label) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getRdfEntityByLabel($label, 'contact_information');
+    $this->visitPath($entity->url());
+  }
+
+  /**
    * Creates a contact information entity with data provided in a table.
    *
    * Table format:
    * | email | foo@bar.com, baz@qux.com |
    * | name  | Jack Smith               |
    *
-   * @param TableNode $contact_table
+   * @param \Behat\Gherkin\Node\TableNode $contact_table
    *   The contact table.
    *
    * @throws \Exception
@@ -67,7 +82,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * | foo@example.com, bar@example.com | John Irwin |
    * | baz@example.com                  | Jack Smith |
    *
-   * @param TableNode $contact_table
+   * @param \Behat\Gherkin\Node\TableNode $contact_table
    *   The contacts table.
    *
    * @throws \Exception
@@ -157,7 +172,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * Field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *   Mapping.
    */
   protected static function contactInformationFieldAliases() {
     // Mapping alias - field name.

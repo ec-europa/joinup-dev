@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.rdf_entity.inline
     - field.field.rdf_entity.asset_release.field_isr_banner
     - field.field.rdf_entity.asset_release.field_isr_contact_information
     - field.field.rdf_entity.asset_release.field_isr_creation_date
@@ -26,7 +27,7 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_status
     - rdf_entity.rdfentity.asset_release
   module:
-    - file
+    - file_url
     - inline_entity_form
     - joinup_core
     - rdf_entity
@@ -40,7 +41,7 @@ content:
     type: inline_entity_form_complex
     weight: 9
     settings:
-      form_mode: default
+      form_mode: inline
       override_labels: true
       label_singular: 'contact information'
       label_plural: 'contact information'
@@ -50,18 +51,21 @@ content:
       collapsible: false
       collapsed: false
     third_party_settings: {  }
+    region: content
   field_isr_creation_date:
     type: datetime_create_update
     weight: 4
     settings:
       behaviour: create
     third_party_settings: {  }
+    region: content
   field_isr_documentation:
     weight: 3
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-    type: file_generic
+    type: file_url_generic
+    region: content
   field_isr_language:
     type: entity_reference_autocomplete
     weight: 10
@@ -70,12 +74,14 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   field_isr_modification_date:
     type: datetime_create_update
     weight: 5
     settings:
       behaviour: create
     third_party_settings: {  }
+    region: content
   field_isr_release_notes:
     type: text_textarea
     weight: 2
@@ -83,6 +89,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
+    region: content
   field_isr_release_number:
     type: string_textfield
     weight: 1
@@ -90,12 +97,14 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   field_isr_state:
     type: state_machine_buttons
     weight: 11
     settings:
       use_transition_label: 1
     third_party_settings: {  }
+    region: content
   field_keywords:
     type: entity_reference_autocomplete
     weight: 7
@@ -104,6 +113,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   field_spatial_coverage:
     type: entity_reference_autocomplete
     weight: 6
@@ -112,6 +122,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   field_status:
     type: entity_reference_autocomplete
     weight: 8
@@ -120,6 +131,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   label:
     type: string_textfield
     weight: 0
@@ -127,7 +139,9 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden:
+  current_workflow_state: true
   field_isr_banner: true
   field_isr_description: true
   field_isr_distribution: true
@@ -139,3 +153,4 @@ hidden:
   field_isr_solution_type: true
   field_isr_translation: true
   field_policy_domain: true
+  uid: true
