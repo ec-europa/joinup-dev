@@ -442,6 +442,32 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_comment().
+ */
+function joinup_theme_preprocess_comment(&$variables) {
+  $body = $variables['comment']->field_body->getValue();
+  $body = $body[0]['value'];
+  $variables['body'] = $body;
+  $timestamp = $variables['new_indicator_timestamp'];
+  /** @var \Drupal\Core\Datetime\DateFormatterInterface $formatter */
+  $date_formatter = \Drupal::service('date.formatter');
+
+  $variables['time_ago'] = $date_formatter->formatDiff($timestamp, REQUEST_TIME, [
+    'granularity' => 2,
+  ]);
+
+  $photo_target = $variables['user_picture']['#user']->field_user_photo->getValue();
+  $photo_target = $photo_target[0]['target_id'];
+
+  /** @var \Drupal\file\Entity\File $file */
+  $file = File::load($photo_target);
+  $uri = $file->getFileUri();
+  $url = ImageStyle::load('image_style_collection_logo')->buildUrl($uri);
+  $variables['profile_icon'] = $url;
+
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK_alter() for input.html.twig.
  *
  * Add theme suggestions so we can provide different styling on some form
