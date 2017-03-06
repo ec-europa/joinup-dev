@@ -71,12 +71,14 @@
         <a href="#" class="value gray">{{ author }}</a>
       </div>
       <div class="details__element">
-        <div class="value gray">{{ time_ago }}</div>
+        <div class="value gray">{% trans %}{{ time_ago }} ago{% endtrans %}</div>
       </div>
     </div>
-    <div class="comment-item__avatar center mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
-      <img class="avatar avatar--70" src="{{ profile_icon }}">
-    </div>
+    {% if profile_icon %}
+      <div class="comment-item__avatar center mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
+        <img class="avatar avatar--70" src="{{ profile_icon }}">
+      </div>
+    {% endif %}
     <div class="comment-item__content mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
       <div class="comment-item__field">
         <p class="comment-item__teaser">{{ body|striptags }}</p>

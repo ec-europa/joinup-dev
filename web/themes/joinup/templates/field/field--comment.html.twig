@@ -27,9 +27,11 @@
  */
 #}
 <section{{ attributes.addClass('comments-section') }}>
+  {% if comments|render %}
     {{ title_prefix }}
     <h3{{ title_attributes }}>{{ label }}</h3>
     {{ title_suffix }}
+  {% endif %}
 
   {{ comments }}
 
