@@ -1,0 +1,49 @@
+id: news
+label: 'News'
+migration_tags:
+  - node
+  - news
+  - og
+source:
+  plugin: news
+  track_changes: true
+process:
+  title: title
+  created: created
+  changed: changed
+  body/value: body
+  body/format:
+    plugin: default_value
+    default_value: content_editor
+  uid:
+    - plugin: migration
+      migration: user
+      source: file_uid
+      no_stub: true
+    - plugin: default_value
+      default_value: 1
+  field_news_source_url: source_url
+  field_keywords: keywords
+  field_keywords: keywords
+  field_news_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
+
+  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
+  # Revisit this mapping in ISAICP-3068.
+  field_state:
+    plugin: default_value
+    default_value: validated
+
+  og_audience:
+    plugin: migration
+    source: collection
+    migration: collection
+destination:
+  plugin: entity:node
+  default_bundle: news
+migration_dependencies:
+ required:
+   - user
+   - prepare
