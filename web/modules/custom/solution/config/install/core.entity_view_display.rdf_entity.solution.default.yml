@@ -45,7 +45,7 @@ dependencies:
     - link
     - og
     - options
-    - rdf_file
+    - file_url
     - search_api_field
     - text
     - user
@@ -121,7 +121,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: rdf_file_default
+    type: file_url_default
     region: content
   field_is_elibrary_creation:
     weight: 16

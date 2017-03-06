@@ -1,3 +1,0 @@
-services:
-  rdf_file.handler:
-    class: \Drupal\rdf_file\RdfFileHandler
