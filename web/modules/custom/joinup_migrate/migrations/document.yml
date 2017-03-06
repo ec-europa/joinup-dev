@@ -26,21 +26,27 @@ process:
   field_document_publication_date: publication_date
   field_file: field_file
   field_keywords: keywords
-  field_spatial_coverage: country
+  field_document_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
 
   # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3185
   # field_licence
 
   # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3186
-  # field_type
+  # field_policy_domain
 
   og_audience:
     plugin: migration
     source: collection
     migration: collection
 
-  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
-  # field_state
+  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
+  # Revisit this mapping in ISAICP-3068.
+  field_state:
+    plugin: default_value
+    default_value: validated
 
 destination:
   plugin: entity:node
