@@ -32,6 +32,10 @@ process:
     plugin: term_reference
     source: country
     vocabulary: spatial
+  # Revisit this mapping in ISAICP-3068.
+  field_isr_state:
+    plugin: default_value
+    default_value: validated
 
   # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
   # field_status:
