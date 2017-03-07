@@ -64,9 +64,10 @@
  * @see template_preprocess_comment()
  */
 #}
-<div class="js-comment comment-item comment-item--default mdl-cell mdl-cell--12-col">
+<div class="js-comment comment-item comment-item--default mdl-cell mdl-cell--12-col contextual-region">
   <div class="mdl-grid">
     <div class="comment-item__details details mdl-cell mdl-cell--12-col">
+      {{ title_prefix }}{{ title_suffix }}
       <div class="details__element">
         <a href="#" class="value gray">{{ author }}</a>
       </div>
