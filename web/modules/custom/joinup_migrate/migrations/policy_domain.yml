@@ -19,6 +19,7 @@ process:
     plugin: term_reference
     source: parent
     vocabulary: policy_domain
+    top_level_only: true
 destination:
   plugin: entity:taxonomy_term
   default_bundle: policy_domain
