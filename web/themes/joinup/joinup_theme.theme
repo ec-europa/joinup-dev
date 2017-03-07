@@ -567,11 +567,11 @@ function joinup_theme_theme_suggestions_form_element_alter(array &$suggestions, 
  */
 function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array $variables) {
   // Array contains all select elements ids, which are displayed as slider.
-  $slider_ids = [
-    'edit-field-ar-elibrary-creation',
+  $slider_field_names = [
+    'field_ar_elibrary_creation',
   ];
 
-  if (in_array($variables['element']['#id'], $slider_ids)) {
+  if (in_array($variables['element']['#name'], $slider_field_names)) {
     $suggestions[] = 'select__slider';
   }
 }

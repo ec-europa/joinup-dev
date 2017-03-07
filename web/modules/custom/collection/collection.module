@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
@@ -27,6 +28,98 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
   // Hide the 'negation' option for collection block visibility. There are no
   // good use cases to show a block on all pages, except on collection pages.
   $form['visibility']['collection']['negate']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * Alters the RDF entity form for Collections:
+ * - Changes the available options for the eLibrary creation field depending on
+ *   whether a collection is closed or open:
+ *   - Open collection: eLibrary content can be created either only by
+ *     collection facilitators, or by all registered users.
+ *   - Closed collection: eLibrary content can be created either only by
+ *     collection facilitators, or by members of the collection.
+ *   When the collection changes between closed and open we will use AJAX to
+ *   update the eLibrary creation field to contain the correct options.
+ */
+function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Only alter collection forms.
+  if ($form_state->getFormObject()->getEntity()->bundle() !== 'collection') {
+    return;
+  }
+
+  // Retrieve the entity from the form.
+  $entity = $form_state->getFormObject()->getEntity();
+
+  // Get the current values for the 'Closed collection' and 'eLibrary creation'
+  // fields. If the form has not yet been submitted, use the defaults from the
+  // loaded or newly created entity.
+  $closed = $form_state->isValueEmpty('field_ar_closed') ? $entity->field_ar_closed->value : $form_state->getValue('field_ar_closed')['value'];
+  $elibrary = !$form_state->isProcessingInput() ? $entity->field_ar_elibrary_creation->value : (int) $form_state->getUserInput()['field_ar_elibrary_creation'];
+
+  // Define the allowed options.
+  $allowed_options = [
+    // In open collections content can be made by members (option 1) and
+    // authenticated users (option 2).
+    0 => [1 => 1, 2 => 2],
+    // In closed collections content can be made by facilitators (option 0) and
+    // members (option 1).
+    1 => [0 => 0, 1 => 1],
+  ];
+  // Take the options as defined in the field storage, and filter them using the
+  // allowed options.
+  $elibrary_creation_options = array_intersect_key(FieldStorageConfig::load('rdf_entity.field_ar_elibrary_creation')->getSetting('allowed_values'), $allowed_options[$closed]);
+
+  // According to specification, the 'member' option (option 1) should always
+  // appear as the first option, at the left.
+  if (array_key_exists(1, $elibrary_creation_options)) {
+    // Since this is a numerically ordered array we cannot use array_unshift().
+    $member_options = $elibrary_creation_options[1];
+    unset($elibrary_creation_options[1]);
+    $elibrary_creation_options = [1 => $member_options] + $elibrary_creation_options;
+  }
+
+  // Define the option that should be taken in case the originally selected
+  // option is no longer available.
+  // This can be hardcoded as `$default = 1` but using a transition table makes
+  // it easier to maintain and understand.
+  $option_transitions = [
+    // If the option 'Only collection facilitators' was selected before, then
+    // take the option 'Only members'.
+    0 => 1,
+    // If the option 'Any registered user' was selected before, then take the
+    // option 'Only members'.
+    2 => 1,
+  ];
+
+  $elibrary_creation_default_value = array_key_exists($elibrary, $elibrary_creation_options) ? $elibrary : $option_transitions[$elibrary];
+  $form_state->setValue('field_ar_elibrary_creation', [0 => ['value' => $elibrary_creation_default_value]]);
+
+  // Provide an identifier on the wrapper for the eLibrary Creation field so we
+  // can target it with AJAX.
+  $form['field_ar_elibrary_creation']['#id'] = 'field-ar-elibrary-creation-wrapper';
+  $form['field_ar_elibrary_creation']['widget']['#options'] = $elibrary_creation_options;
+  $form['field_ar_elibrary_creation']['widget']['#default_value'][0] = $elibrary_creation_default_value;
+  if (!$form_state->isValueEmpty('field_ar_elibrary_creation')) {
+    $form['field_ar_elibrary_creation']['widget']['#value'][0] = $elibrary_creation_default_value;
+  }
+
+  // Add an AJAX callback that refreshes the eLibrary field when the Closed
+  // collection field changes.
+  $form['field_ar_closed']['widget']['value']['#ajax'] = [
+    'callback' => 'collection_form_elibrary_creation_callback',
+    'wrapper' => 'field-ar-elibrary-creation-wrapper',
+  ];
+}
+
+/**
+ * AJAX callback that returns the eLibrary creation field.
+ *
+ * @see collection_form_rdf_entity_form_alter()
+ */
+function collection_form_elibrary_creation_callback($form, FormStateInterface $form_state) {
+  return $form['field_ar_elibrary_creation'];
 }
 
 /**
@@ -221,16 +314,6 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
       // applicable cache context.
       '#cache' => ['contexts' => ['og_role']],
     ];
-  }
-}
-
-/**
- * Implements hook_field_widget_form_alter().
- */
-function collection_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
-  $field_name = $context['items']->getFieldDefinition()->getName();
-  if ($field_name == 'field_ar_closed') {
-    $element['#attached']['library'][] = 'collection/collection_form';
   }
 }
 

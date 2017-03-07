@@ -1,5 +1,0 @@
-collection_form:
-  js:
-    js/collection-form.js: {}
-  dependencies:
-    - core/jquery
