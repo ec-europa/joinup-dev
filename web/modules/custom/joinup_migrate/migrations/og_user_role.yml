@@ -1,5 +1,5 @@
 id: og_user_role
-label: 'Organic Groups user-role'
+label: 'OG user-roles'
 migration_tags:
   - og
   - collection

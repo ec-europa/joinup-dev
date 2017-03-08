@@ -49,7 +49,7 @@ trait FileTrait {
   }
 
   /**
-   * Uploads a RDF file for an entity and returns the file's ID.
+   * Uploads a file URL for an entity and returns the file's ID.
    *
    * @param string $filename
    *   The file name given by the user.

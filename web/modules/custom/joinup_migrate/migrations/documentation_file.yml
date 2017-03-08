@@ -1,21 +1,25 @@
-id: user_photo
-label: 'User photo'
+id: documentation_file
+label: 'Documentation file'
 migration_tags:
-  - user
   - file
+  - release
+  - solution
 source:
-  plugin: user_photo
+  plugin: documentation_file
+  track_changes: true
 process:
   uid:
-    - plugin: migration
+    -
+      plugin: migration
       migration: user
-      source: photo_uid
+      source: uid
       no_stub: true
-    - plugin: default_value
+    -
+      plugin: default_value
       default_value: 1
   source_path_encoded:
     plugin: urlencode
-    source: source_path
+    source: path
   uri:
     plugin: file_copy
     source:
@@ -24,6 +28,10 @@ process:
   status:
     plugin: default_value
     default_value: 1
-  created: photo_timestamp
+  created: timestamp
 destination:
   plugin: entity:file
+migration_dependencies:
+ required:
+   - prepare
+   - user

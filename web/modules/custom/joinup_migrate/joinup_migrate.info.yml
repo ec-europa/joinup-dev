@@ -6,3 +6,4 @@ package: Joinup
 dependencies:
   - migrate_spreadsheet
   - migrate_run
+  - migrate_report

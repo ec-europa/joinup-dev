@@ -1,5 +1,5 @@
 id: solution_banner
-label: 'Solution banner file migration'
+label: 'Solution banner'
 migration_tags:
   - solution
   - file
