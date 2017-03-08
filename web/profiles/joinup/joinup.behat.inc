@@ -869,8 +869,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
   /**
    * Opens the plus button menu on JS-enabled browsers.
+   *
+   * @When I open the plus button menu
    */
-  protected function openPlusButtonMenu() {
+  public function openPlusButtonMenu() {
     if ($this->browserSupportsJavascript()) {
       $driver = $this->getSession()->getDriver();
       $this->getSession()->getDriver()->click('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//button');
