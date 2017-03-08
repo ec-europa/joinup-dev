@@ -213,5 +213,6 @@ Feature: Collection moderation
     And I click the "Description" tab
     Then the option "Any registered user can create new content." should be selected
 
-    # Clean up the collection that was created.
+    # Clean up the entities that were created.
     Then I delete the "Spectres in fog" collection
+    Then I delete the "Katsumoto" owner
