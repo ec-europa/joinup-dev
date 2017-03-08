@@ -62,7 +62,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * | Password   | Bond007            |
    * | E-mail     | james.bond@mi5.org |
    *
-   * @param TableNode $user_table
+   * @param \Behat\Gherkin\Node\TableNode $user_table
    *   The user data.
    *
    * @throws \Exception
@@ -310,7 +310,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Mapping of human readable names to machine names.
    *
    * @return array
-   *    Field mapping.
+   *   Field mapping.
    */
   private static function userFieldAliases() {
     return [
@@ -333,9 +333,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks that the given select field has the given options.
    *
    * @param string $select
-   *    The name of the field element.
+   *   The name of the field element.
    * @param string $options
-   *    The options to be checked separated by comma. Only labels are accepted.
+   *   The options to be checked separated by comma. Only labels are accepted.
    *
    * @Then (the ):select field should contain the :options option(s)
    */
@@ -351,9 +351,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks if the given select field does not contain any of the given values.
    *
    * @param string $select
-   *    The name of the field element.
+   *   The name of the field element.
    * @param string $options
-   *    The options to be checked separated by comma.
+   *   The options to be checked separated by comma.
    *
    * @throws Exception
    *    Throws an exception when a value exists.
@@ -527,7 +527,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * This allows us to:
    * - use human readable labels like 'short title' in test scenarios, and map
-   *   them to the actual field names like 'field_document_short_title'.
+   *   them to the actual field names like 'field_short_title'.
    * - use human readable values such as a collection name instead of the URL
    *   that is actually used in the OG reference field.
    *
@@ -591,13 +591,15 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $aliases = [
       'discussion' => [
         'state' => 'field_state',
-        'content' => 'field_discussion_content',
+        'content' => 'body',
       ],
       'document' => [
-        'short title' => 'field_document_short_title',
+        'short title' => 'field_short_title',
+        'type' => 'field_type',
+        'licence' => 'field_licence',
       ],
       'event' => [
-        'short title' => 'field_event_short_title',
+        'short title' => 'field_short_title',
         'start date' => 'field_start_date',
         'state' => 'field_state',
       ],
@@ -633,7 +635,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // Fixes a step argument (with \\" replaced back to ")
     // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
     $button = str_replace('\\"', '"', $button);
-    $this->getSession()->getPage()->find('named', ['fieldset', $fieldset])->pressButton($button);
+    $this->getSession()->getPage()->find('named', [
+      'fieldset',
+      $fieldset,
+    ])->pressButton($button);
   }
 
   /**
@@ -643,11 +648,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Example: When I fill in "Start date" with the time "26:59:00".
    *
    * @param string $field_group
-   *    The field component's label.
+   *   The field component's label.
    * @param string $field_name
-   *    The field to be filled.
+   *   The field to be filled.
    * @param string $value
-   *    The value of the field.
+   *   The value of the field.
    *
    * @throws \Exception
    *    Thrown when more than one elements match the given field in the given
@@ -757,6 +762,27 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks that the given tiles are found in the given block.
+   *
+   * The weight of the tiles are also taken into account.
+   *
+   * Table format:
+   * | title        |
+   * | Tile title 1 |
+   * | Tile title 2 |
+   *
+   * @Then I( should) see the( following) tiles in the :region region:
+   */
+  public function assertTilesInBlock(TableNode $titles_table, $region) {
+    $results = $this->getTiles($region);
+    $headings_in_page = array_map(function ($result) {
+      return $result->getText();
+    }, $results);
+    $headings_expected = $titles_table->getColumn(0);
+    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, "The expected tiles are not in the page or not in the proper order.");
+  }
+
+  /**
    * Assert that the given form submission buttons are present on the page.
    *
    * @param string $buttons
@@ -801,7 +827,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Assert that certain buttons are not present on the page.
    *
    * @param string $buttons
-   *    A comma separated list of button labels.
+   *   A comma separated list of button labels.
    *
    * @throws \Exception
    *   Thrown when an unexpected button is present.
@@ -900,7 +926,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * If author is filled, mail and name are not required.
    *
-   * @param TableNode $table
+   * @param \Behat\Gherkin\Node\TableNode $table
    *   The comment data.
    *
    * @throws \Exception

@@ -2,10 +2,8 @@ name: Rdf taxonomy
 type: module
 description: 'Replace the taxonomy sql storage backend with rdf storage.'
 package: Custom
-# core: 8.x
+core: 8.x
+
 # These modules are required by the tests, must be available at bootstrap time
 dependencies:
   - taxonomy
-
-version: '8.x-1.x-dev'
-core: '8.x'

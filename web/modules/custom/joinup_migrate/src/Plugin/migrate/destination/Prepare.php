@@ -112,7 +112,7 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
     if ($insert) {
       // There's no primary key in the destination table. We need to manually
       // check the uniqueness.
-      $found = (bool) $this->database->select('joinup_migrate_collection', 'c')
+      $found = (bool) $this->database->select('d8_prepare', 'c')
         ->fields('c', ['collection'])
         ->condition('c.collection', $collection)
         ->execute()
@@ -125,7 +125,7 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
     try {
       // Inserting.
       if ($insert) {
-        $this->database->insert('joinup_migrate_collection')
+        $this->database->insert('d8_prepare')
           ->fields(array_keys($this->fields()))
           ->values($values)
           ->execute();
@@ -133,7 +133,7 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
       // Updating.
       else {
         unset($values['collection']);
-        $this->database->update('joinup_migrate_collection')
+        $this->database->update('d8_prepare')
           ->fields($values)
           ->condition('collection', $collection)
           ->execute();
@@ -150,7 +150,7 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
    */
   public function rollback(array $destination_identifier) {
     parent::rollback($destination_identifier);
-    $this->database->delete('joinup_migrate_collection')
+    $this->database->delete('d8_prepare')
       ->condition('collection', $destination_identifier['collection'])
       ->execute();
   }
@@ -162,7 +162,7 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
     $collections = array_map(function (array $item) {
       return $item['collection'];
     }, $destination_ids);
-    $this->database->delete('joinup_migrate_collection')
+    $this->database->delete('d8_prepare')
       ->condition('collection', $collections, 'IN')
       ->execute();
   }
@@ -171,7 +171,7 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
    * {@inheritdoc}
    */
   public function rollbackAll() {
-    $this->database->truncate('joinup_migrate_collection')->execute();
+    $this->database->truncate('d8_prepare')->execute();
   }
 
 }

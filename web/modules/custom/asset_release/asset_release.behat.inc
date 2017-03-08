@@ -58,7 +58,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * Fields title, release number and release notes are required.
    *
-   * @param TableNode $asset_release_table
+   * @param \Behat\Gherkin\Node\TableNode $asset_release_table
    *   The asset_release data.
    *
    * @throws \Exception
@@ -101,7 +101,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * Fields title, release number and release notes required.
    *
-   * @param TableNode $asset_release_table
+   * @param \Behat\Gherkin\Node\TableNode $asset_release_table
    *   The asset_release data.
    *
    * @throws \Exception
@@ -226,7 +226,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * Field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *   Mapping.
    */
   protected static function assetReleaseFieldAliases() {
     // Mapping alias - field name.
@@ -259,10 +259,10 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * Converts values from user friendly to normal machine values.
    *
    * @param array $fields
-   *    An array of fields keyed by field name.
+   *   An array of fields keyed by field name.
    *
    * @return mixed
-   *    The array with the values converted.
+   *   The array with the values converted.
    *
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
@@ -287,8 +287,8 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * This step is meant for the releases overview page within a solution.
    *
-   * @param TableNode $asset_release_table
-   *    The asset release titles.
+   * @param \Behat\Gherkin\Node\TableNode $asset_release_table
+   *   The asset release titles.
    *
    * @throws \Exception
    *    Thrown when a wrong number of releases is found or the releases are not
@@ -321,7 +321,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * This step is meant for the releases overview page within a solution.
    *
    * @param string $release
-   *    The name of the release.
+   *   The name of the release.
    *
    * @throws \Exception
    *    Thrown if the release is not marked as latest in the page or not found.

@@ -42,10 +42,10 @@ class JoinupRelationManager implements ContainerInjectionInterface {
    * Retrieves the parent of the entity.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The group content entity.
+   *   The group content entity.
    *
    * @return \Drupal\rdf_entity\RdfInterface|null
-   *    The rdf entity the passed entity belongs to, or NULL when no group is
+   *   The rdf entity the passed entity belongs to, or NULL when no group is
    *    found.
    */
   public function getParent(EntityInterface $entity) {
@@ -61,10 +61,10 @@ class JoinupRelationManager implements ContainerInjectionInterface {
    * Retrieves the moderation state of the parent.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The group content entity.
+   *   The group content entity.
    *
    * @return int
-   *    The moderation status.
+   *   The moderation status.
    */
   public function getParentModeration(EntityInterface $entity) {
     $parent = $this->getParent($entity);

@@ -1,5 +1,5 @@
 id: solution
-label: 'Solutions migration'
+label: 'Solutions'
 migration_tags:
   - solution
   - og
@@ -32,11 +32,7 @@ process:
     source: distribution
     migration: distribution
     no_stub: true
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
-  # field_is_documentation:
-
-  field_is_elibrary_creation: elibrary
+  field_is_documentation: documentation
   field_keywords: keywords
   field_is_landing_page: landing_page
   field_is_logo:

@@ -57,11 +57,13 @@ class RouteSubscriber extends RouteSubscriberBase {
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
    *   The entity type.
+   * @param array $graph_definition
+   *   The graph definition.
    *
    * @return \Symfony\Component\Routing\Route|null
    *   The generated route, if available.
    */
-  protected function getRdfGraphRoute(EntityTypeInterface $entity_type, $graph_definition) {
+  protected function getRdfGraphRoute(EntityTypeInterface $entity_type, array $graph_definition) {
     if ($rdf_draft = $entity_type->getLinkTemplate('rdf-draft-' . $graph_definition['name'])) {
       $entity_type_id = $entity_type->id();
 

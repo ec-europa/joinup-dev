@@ -1,5 +1,5 @@
 id: policy_domain
-label: 'Policy Domain terms migration'
+label: 'Policy domain'
 migration_tags:
   - taxonomy_term
 source:

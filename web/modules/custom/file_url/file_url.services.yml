@@ -1,0 +1,3 @@
+services:
+  file_url.handler:
+    class: Drupal\file_url\FileUrlHandler

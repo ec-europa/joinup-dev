@@ -51,7 +51,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * | email | foo@bar.com, baz@qux.com |
    * | name  | Jack Smith               |
    *
-   * @param TableNode $contact_table
+   * @param \Behat\Gherkin\Node\TableNode $contact_table
    *   The contact table.
    *
    * @throws \Exception
@@ -84,7 +84,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * | foo@example.com, bar@example.com | John Irwin | Author name |
    * | baz@example.com                  | Jack Smith |             |
    *
-   * @param TableNode $contact_table
+   * @param \Behat\Gherkin\Node\TableNode $contact_table
    *   The contacts table.
    *
    * @throws \Exception
@@ -182,7 +182,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * Field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *   Mapping.
    */
   protected static function contactInformationFieldAliases() {
     // Mapping alias - field name.

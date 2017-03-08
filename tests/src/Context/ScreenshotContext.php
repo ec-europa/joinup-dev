@@ -45,7 +45,7 @@ class ScreenshotContext extends RawMinkContext {
   /**
    * Make sure there is no PHP notice on the screen during tests.
    *
-   * @param AfterStepScope $event
+   * @param \Behat\Behat\Hook\Scope\AfterStepScope $event
    *   The event.
    *
    * @AfterStep
@@ -86,7 +86,7 @@ class ScreenshotContext extends RawMinkContext {
   /**
    * Takes a screen-shot after failed steps (image or html).
    *
-   * @param AfterStepScope $event
+   * @param \Behat\Behat\Hook\Scope\AfterStepScope $event
    *   The event.
    *
    * @AfterStep

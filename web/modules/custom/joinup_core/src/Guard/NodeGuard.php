@@ -159,10 +159,10 @@ abstract class NodeGuard implements GuardInterface {
    * Retrieve the initial state value of the entity.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The discussion entity.
+   *   The discussion entity.
    *
    * @return string
-   *    The machine name value of the state.
+   *   The machine name value of the state.
    *
    * @see https://www.drupal.org/node/2745673
    */
@@ -174,10 +174,10 @@ abstract class NodeGuard implements GuardInterface {
    * Returns allowed roles according to the eLibrary creation field.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The group content entity.
+   *   The group content entity.
    *
    * @return array
-   *    An array of roles that are allowed.
+   *   An array of roles that are allowed.
    */
   protected function getElibraryAllowedRoles(EntityInterface $entity) {
     $roles_array = [
@@ -217,10 +217,10 @@ abstract class NodeGuard implements GuardInterface {
    * Returns the eLibrary creation machine name.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The parent entity.
+   *   The parent entity.
    *
    * @return string
-   *    The machine name of the eLibrary creation field.
+   *   The machine name of the eLibrary creation field.
    */
   protected function getParentElibraryName(EntityInterface $entity) {
     $field_array = [
