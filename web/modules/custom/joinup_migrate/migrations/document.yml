@@ -47,5 +47,4 @@ destination:
   default_bundle: document
 migration_dependencies:
  required:
-   - prepare
-   - user
+   - document_file

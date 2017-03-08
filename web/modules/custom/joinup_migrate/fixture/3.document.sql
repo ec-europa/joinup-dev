@@ -65,40 +65,15 @@ SELECT
   (SELECT GROUP_CONCAT(DISTINCT td.name) FROM term_node tn INNER JOIN term_data td ON tn.tid = td.tid AND td.vid = 55 WHERE tn.vid = n.vid AND n.type = 'presentation'),
   CASE n.type
     WHEN 'document' THEN IF(ctd.field_original_url_url = 'N/A', NULL, ctd.field_original_url_url)
-    WHEN 'case_epractice' THEN IF(cfcd.field_case_documentation_fid IS NULL, ctce.field_website_url_url, NULL)
+    WHEN 'case_epractice' THEN IF(d8df.fid IS NULL, ctce.field_website_url_url, NULL)
   END,
-  CASE n.type
-    WHEN 'document' THEN cfadf.field_additional_doc_file_fid
-    WHEN 'case_epractice' THEN cfcd.field_case_documentation_fid
-    WHEN 'factsheet' THEN d8ff.fid
-    WHEN 'presentation' THEN d8pf.fid
-  END,
-  CASE n.type
-    WHEN 'document' THEN IF(f.filepath IS NOT NULL AND TRIM(f.filepath) <> '', TRIM(f.filepath), NULL)
-    WHEN 'case_epractice' THEN IF(f1.filepath IS NOT NULL AND TRIM(f1.filepath) <> '', TRIM(f1.filepath), NULL)
-    WHEN 'factsheet' THEN d8ff.path
-    WHEN 'presentation' THEN d8pf.path
-  END,
-  CASE n.type
-    WHEN 'document' THEN IF(f.timestamp > 0, f.timestamp, NULL)
-    WHEN 'case_epractice' THEN IF(f1.timestamp > 0, f1.timestamp, NULL)
-    WHEN 'factsheet' THEN d8ff.timestamp
-    WHEN 'presentation' THEN d8pf.timestamp
-  END,
-  CASE n.type
-    WHEN 'document' THEN IF(f.uid IS NOT NULL, IF(f.uid > 0, f.uid, -1), NULL)
-    WHEN 'case_epractice' THEN IF(f1.uid IS NOT NULL, IF(f1.uid > 0, f1.uid, -1), NULL)
-    WHEN 'factsheet' THEN d8ff.uid
-    WHEN 'presentation' THEN d8pf.uid
-  END
+  d8df.fid,
+  d8df.path,
+  d8df.timestamp,
+  d8df.uid
 FROM d8_node n
 LEFT JOIN content_field_publication_date cfpd ON n.vid = cfpd.vid
 LEFT JOIN content_type_document ctd ON n.vid = ctd.vid
-LEFT JOIN content_field_additional_doc_file cfadf ON n.vid = cfadf.vid
-LEFT JOIN files f ON cfadf.field_additional_doc_file_fid = f.fid
 LEFT JOIN content_type_case_epractice ctce ON n.vid = ctce.vid
-LEFT JOIN content_field_case_documentation cfcd ON n.vid = cfcd.vid
-LEFT JOIN files f1 ON cfcd.field_case_documentation_fid = f1.fid
-LEFT JOIN d8_factsheet_file d8ff ON n.vid = d8ff.vid
-LEFT JOIN d8_presentation_file d8pf ON n.vid = d8pf.vid
+LEFT JOIN  d8_document_file d8df ON d8df.vid = n.vid AND d8df.delta = 0
 WHERE n.type IN('case_epractice', 'document', 'factsheet', 'legaldocument', 'presentation')
