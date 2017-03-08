@@ -38,10 +38,10 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
  * status changes, it will still use the proper workflow.
  *
  * @param \Drupal\Core\Entity\EntityInterface $entity
- *    The news entity.
+ *   The news entity.
  *
  * @return string
- *    The id of the workflow to use.
+ *   The id of the workflow to use.
  *
  * @throws Exception
  *    Thrown when the function is called for a different bundle.

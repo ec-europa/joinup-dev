@@ -66,7 +66,7 @@ class Prepare extends SourcePluginBase {
     $db = Database::getConnection('default', 'migrate');
 
     // Build a list of collections that have at least 1 row with 'migrate' == 1.
-    $allowed = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
+    $allowed = $db->select('d8_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
       ->fields('m', ['collection'])
       ->condition('m.migrate', 1)
       ->condition('m.collection', ['', '#N/A'], 'NOT IN')
@@ -77,8 +77,8 @@ class Prepare extends SourcePluginBase {
       ->fetchCol();
 
     $fields = $this->fields();
-    unset($fields['status']);
-    $query = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
+    unset($fields['status'], $fields['elibrary']);
+    $query = $db->select('d8_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
       ->fields('m', array_keys($fields))
       ->fields('n', ['vid'])
       ->orderBy('m.collection', 'ASC');
@@ -99,6 +99,7 @@ class Prepare extends SourcePluginBase {
       if (!isset($collections[$collection])) {
         $collections[$collection] = [
           'collection' => $collection,
+          'elibrary' => NULL,
         ];
       }
 
@@ -128,6 +129,22 @@ class Prepare extends SourcePluginBase {
           }
           $collections[$collection]['nid'] = $row['nid'];
           $collections[$collection]['type'] = $row['type'];
+
+          // Elibrary on community should be computed.
+          if ($row['type'] === 'community') {
+            $deactivated = (bool) $db->select('content_type_community', 'c')
+              ->fields('c', ['vid'])
+              ->condition('c.vid', (int) $row['vid'])
+              ->condition('c.field_community_forum_creation_value', 'Deactivated')
+              ->condition('c.field_community_wiki_creation_value', 'Deactivated')
+              ->condition('c.field_community_news_creation_value', 'Deactivated')
+              ->condition('c.field_community_documents_creati_value', 'Deactivated')
+              ->execute()
+              ->fetchField();
+            if ($deactivated) {
+              $collections[$collection]['elibrary'] = 0;
+            }
+          }
         }
       }
 
@@ -145,9 +162,8 @@ class Prepare extends SourcePluginBase {
         ->condition('ur.gid', (int) $row['nid'])
         ->orderBy('ur.uid');
       $query->join('og_uid', 'u', 'ur.gid = u.nid AND ur.uid = u.uid');
-      $query->join('users', 'users', 'ur.uid = users.uid');
       // Only migrated users are allowed.
-      $query->addTag('user_migrate');
+      $query->join('d8_user', 'users', 'ur.uid = users.uid');
 
       foreach ($query->execute()->fetchAll() as $item) {
         $uid = (int) $item->uid;
@@ -187,7 +203,7 @@ class Prepare extends SourcePluginBase {
           ->execute()
           ->fetchCol();
         if ($publishers) {
-          $collections[$collection]['publisher'] = '|' . implode('|', $publishers) . '|';
+          $collections[$collection]['publisher'] = implode(',', $publishers);
         }
         $contacts = $db
           ->select($contact[$row['type']][0])
@@ -196,7 +212,7 @@ class Prepare extends SourcePluginBase {
           ->execute()
           ->fetchCol();
         if ($contacts) {
-          $collections[$collection]['contact'] = '|' . implode('|', $contacts) . '|';
+          $collections[$collection]['contact'] = implode(',', $contacts);
         }
       }
     }

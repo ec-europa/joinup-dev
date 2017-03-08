@@ -7,7 +7,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\ParamConverter\EntityConverter;
 use Drupal\Core\TypedData\TranslatableInterface;
 use Symfony\Component\Routing\Route;
-use \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 
 /**
  * Converts the escaped URI's in the path into valid URI's.

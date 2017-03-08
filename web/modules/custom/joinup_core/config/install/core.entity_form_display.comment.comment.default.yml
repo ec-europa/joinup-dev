@@ -13,6 +13,7 @@ content:
     weight: 0
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_body:
     weight: 1
     settings:
@@ -20,5 +21,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
+    region: content
 hidden:
   subject: true

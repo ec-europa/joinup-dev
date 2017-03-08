@@ -76,7 +76,7 @@ function owner_inline_entity_form_entity_form_alter(&$entity_form, &$form_state)
  *
  * @param string $entity_type
  *   The type of the entity being created.
- * @param EntityInterface $entity
+ * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity being built.
  */
 function owner_inline_entity_form_entity_builder($entity_type, EntityInterface $entity) {
@@ -133,7 +133,7 @@ function owner_form_alter_validate(&$form, FormStateInterface $form_state) {
 /**
  * Generates the entity label from the name field for owner entities.
  *
- * @param EntityInterface $entity
+ * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity to process.
  */
 function owner_entity_auto_label(EntityInterface $entity) {

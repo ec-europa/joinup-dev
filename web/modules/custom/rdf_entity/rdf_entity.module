@@ -58,7 +58,7 @@ function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateI
   }
 
   $form_obj = $form_state->getFormObject();
-  /** @var FieldStorageConfig $entity */
+  /** @var \Drupal\field\Entity\FieldStorageConfig $entity */
   $entity = $form_obj->getEntity();
   $schema = $entity->getSchema();
   $form['rdf_mapping'] = array(

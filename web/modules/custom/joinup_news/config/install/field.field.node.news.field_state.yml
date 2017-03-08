@@ -17,6 +17,7 @@ translatable: false
 default_value:
   -
     value: __new__
+default_value_callback: ''
 settings:
   workflow: ''
   workflow_callback: joinup_news_workflow_selector

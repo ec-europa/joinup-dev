@@ -14,4 +14,3 @@ rdf_draft.settings:
       type: string
   default_save_graph_taxonomy_term:
     type: string
-
