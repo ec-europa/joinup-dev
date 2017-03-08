@@ -9,6 +9,8 @@ Feature: Creation of contact information
     When I click "Propose collection" in the plus button menu
     And I click the "Description" tab
     And I press "Add new" at the "Contact information" field
+    # Also check that the help text for the website field is visible.
+    Then I should see the description "This must be an external URL such as http://example.com." for the "Website URL" field
     When I fill in the following:
       | E-mail | foo@bar                     |
       | Name   | Contact information example |
