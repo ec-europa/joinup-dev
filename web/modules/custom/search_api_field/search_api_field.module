@@ -135,6 +135,9 @@ function search_api_field_theme() {
         'search_help' => NULL,
         'results' => NULL,
         'pager' => NULL,
+        'entity_type' => NULL,
+        'bundle' => NULL,
+        'field_name' => NULL,
       ],
     ],
     'search_api_field_result' => [
@@ -144,4 +147,22 @@ function search_api_field_theme() {
       ],
     ],
   ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ *
+ * Adds suggestions to the search_api_field theme implementation.
+ * Loosely based on the field theme suggestions.
+ *
+ * @see system_theme_suggestions_field()
+ */
+function search_api_field_theme_suggestions_search_api_field(array $variables) {
+  $suggestions = [];
+
+  $suggestions[] = 'search_api_field__' . $variables['field_name'];
+  $suggestions[] = 'search_api_field__' . $variables['entity_type'] . '__' . $variables['field_name'];
+  $suggestions[] = 'search_api_field__' . $variables['entity_type'] . '__' . $variables['field_name'] . '__' . $variables['bundle'];
+
+  return $suggestions;
 }
