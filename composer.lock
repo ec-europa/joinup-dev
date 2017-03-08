@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "322c7000d05ac7d3632c731ec0709773",
+    "content-hash": "70d61d0b499d6f3dd9a5c5760fb13157",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1706,7 +1706,8 @@
                     "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194.patch",
                     "Dependency on configuration provided by install profile is throwing exception @see https://www.drupal.org/node/2850875": "https://www.drupal.org/files/issues/2850875-5.patch",
                     "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
-                    "Explode processor is too strict @see https://www.drupal.org/node/2853823": "https://www.drupal.org/files/issues/2853823-7.patch"
+                    "Explode processor is too strict @see https://www.drupal.org/node/2853823": "https://www.drupal.org/files/issues/2853823-7.patch",
+                    "Contextual links button is always rendered even when no links are available (with warm client-side cache) @see https://www.drupal.org/node/2650910": "https://www.drupal.org/files/issues/2650910-42.patch"
                 }
             },
             "autoload": {
@@ -2193,14 +2194,6 @@
             ],
             "authors": [
                 {
-                    "name": "Eli-T",
-                    "homepage": "https://www.drupal.org/user/516878"
-                },
-                {
-                    "name": "benjy",
-                    "homepage": "https://www.drupal.org/user/1852732"
-                },
-                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -2595,7 +2588,7 @@
                 "issues": "https://www.drupal.org/project/issues/phingdrushtask",
                 "source": "https://github.com/pfrenssen/phingdrushtask/tree/7.x-2.x"
             },
-            "time": "2016-10-12T12:47:47+00:00"
+            "time": "2016-10-12 12:47:47"
         },
         {
             "name": "drupal/r4032login",
@@ -3761,7 +3754,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-01-20 06:45:09"
+            "time": "2016-04-20 05:45:29"
         },
         {
             "name": "mtdowling/jmespath.php",
