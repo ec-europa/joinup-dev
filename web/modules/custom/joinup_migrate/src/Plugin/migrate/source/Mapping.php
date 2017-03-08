@@ -5,6 +5,7 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
 use Drupal\Core\Site\Settings;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\migrate\Row;
 use Drupal\migrate_spreadsheet\Plugin\migrate\source\Spreadsheet;
 
 /**
@@ -38,6 +39,22 @@ class Mapping extends Spreadsheet {
     $configuration['file'] = "../resources/migrate/mapping-$mode.xlsx";
 
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function prepareRow(Row $row) {
+    $collection = $row->getSourceProperty('Collection_Name');
+
+    if (empty($collection) || $collection === '#N/A') {
+      $row_index = $row->getSourceProperty('row_index');
+      $nid = $row->getSourceProperty('Nid');
+
+      $this->migration->getIdMap()->saveMessage(['Nid' => $nid], "Row #$row_index: Collection name empty or invalid.");
+    }
+
+    return parent::prepareRow($row);
   }
 
 }
