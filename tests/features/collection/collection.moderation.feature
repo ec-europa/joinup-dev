@@ -212,3 +212,6 @@ Feature: Collection moderation
     And I click "Edit" in the "Entity actions" region
     And I click the "Description" tab
     Then the option "Any registered user can create new content." should be selected
+
+    # Clean up the collection that was created.
+    Then I delete the "Spectres in fog" collection
