@@ -629,16 +629,28 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Example: When I press "Log In" at "Fieldset"
    * Example: And I press "Log In" at "Custom widget".
    *
-   * @When I press :button at( the) :fieldset( field)
+   * @When I press :button at( the) :field( field)
    */
-  public function pressButtonInFieldset($button, $fieldset) {
+  public function pressButtonInWidget($button, $field) {
     // Fixes a step argument (with \\" replaced back to ")
     // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
     $button = str_replace('\\"', '"', $button);
-    $this->getSession()->getPage()->find('named', [
+
+    // First check if a fieldset exists containing the given field name. This
+    // is used for inline entity forms.
+    $element = $this->getSession()->getPage()->find('named', [
       'fieldset',
-      $fieldset,
-    ])->pressButton($button);
+      $field,
+    ]);
+
+    // If this doesn't exist, search for a multivalue entity reference field
+    // containing a label for the given field name.
+    if (empty($element)) {
+      $xpath = '//table[contains(concat(" ", normalize-space(@class), " "), " field-multiple-table ") and //label[text()="' . $field . '"]]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-wrapper ")]';
+      $element = $this->getSession()->getPage()->find('xpath', $xpath);
+    }
+
+    $element->pressButton($button);
   }
 
   /**

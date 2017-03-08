@@ -167,3 +167,48 @@ Feature: Collection moderation
     And I click "Collections"
     Then I should see the text "No berry pie"
     And I should not see the text "Some berry pie"
+
+  @terms @javascript
+  Scenario: Moderate an open collection
+    # Regression test for a bug that caused the slider that controls the
+    # eLibrary creation setting to revert to default state when the form is
+    # resubmitted, as happens during moderation. Ref. ISAICP-3200.
+    Given I am logged in as a user with the "authenticated" role
+    # Propose a collection, filling in the required fields.
+    When I click "Propose collection" in the plus button menu
+    And I fill in "Title" with "Spectres in fog"
+    And I enter "The samurai are attacking the railroads" in the "Description" wysiwyg editor
+    And I select "Employment and Support Allowance" from "Policy domain"
+    And I press "Add new" at the "Owner" field
+    And I wait for AJAX to finish
+    And I fill in "Name" with "Katsumoto"
+    And I check the box "Academia/Scientific organisation"
+    And I click the "Description" tab
+    And I attach the file "logo.png" to "Logo"
+    And I attach the file "banner.jpg" to "Banner"
+
+    # Configure eLibrary creation for all registered users.
+    When I move the "eLibrary creation" slider to the right
+    Then the option "Any registered user can create new content." should be selected
+
+    # Regression test for a bug that caused the eLibrary creation setting to be
+    # lost when adding an item to a multivalue field. Ref. ISAICP-3200.
+    When I press "Add another item" at the "Spatial coverage" field
+    And I wait for AJAX to finish
+    Then the option "Any registered user can create new content." should be selected
+
+    # Submit the form and approve it as a moderator. This should not cause the
+    # eLibrary creation option to change.
+    When I press "Propose"
+    Then I should see the heading "Spectres in fog"
+    When I am logged in as a user with the "moderator" role
+    And I go to the homepage of the "Spectres in fog" collection
+    And I click "Edit" in the "Entity actions" region
+    And I click the "Description" tab
+    Then the option "Any registered user can create new content." should be selected
+    # Also when saving and reopening the edit form the eLibrary creation option
+    # should remain unchanged.
+    When I press "Publish"
+    And I click "Edit" in the "Entity actions" region
+    And I click the "Description" tab
+    Then the option "Any registered user can create new content." should be selected
