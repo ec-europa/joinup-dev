@@ -43,8 +43,7 @@ class FileUrlWidget extends FileWidget {
     }
 
     // Determine the number of widgets to display.
-    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()
-      ->getCardinality();
+    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
     switch ($cardinality) {
       case FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED:
         $max = count($items);
@@ -142,8 +141,7 @@ class FileUrlWidget extends FileWidget {
         '#theme' => 'field_multiple_value_form',
         '#field_name' => $field_name,
         '#cardinality' => $cardinality,
-        '#cardinality_multiple' => $this->fieldDefinition->getFieldStorageDefinition()
-          ->isMultiple(),
+        '#cardinality_multiple' => $this->fieldDefinition->getFieldStorageDefinition()->isMultiple(),
         '#required' => $this->fieldDefinition->isRequired(),
         '#title' => $title,
         '#description' => $description,
@@ -189,8 +187,7 @@ class FileUrlWidget extends FileWidget {
       'description_field' => NULL,
     );
 
-    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()
-      ->getCardinality();
+    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
     $field_name = $this->fieldDefinition->getName();
     $defaults = array(
       'fids' => array(),
