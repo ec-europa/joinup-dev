@@ -29,7 +29,7 @@
     <target name="import-legacy-db"
             description="Import the legacy D6 database."
             depends="create-d6-db">
-        <pdosqlexec url="${migration.db.type}:host=localhost;dbname=${migration.db.name}"
+        <pdosqlexec url="${migration.db.type}:host=${migration.db.host};dbname=${migration.db.name}"
                     userid="${migration.db.user}"
                     password="${migration.db.password}">
             <transaction src="${migration.db.import_path}"/>
