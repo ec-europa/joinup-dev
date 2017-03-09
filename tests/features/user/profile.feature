@@ -63,9 +63,11 @@ Feature: User profile
 
   Scenario: The user public profile page shows the content he's author of or is member of.
     Given users:
-      | name            | mail                        |
-      | Corwin Robert   | corwin.robert@example.com   |
-      | Anise Edwardson | anise.edwardson@example.com |
+      | name              | mail                          | first name | family name |
+      | Corwin Robert     | corwin.robert@example.com     |            |             |
+      | Anise Edwardson   | anise.edwardson@example.com   |            |             |
+      | Jayson Granger    | jayson.granger@example.com    |            |             |
+      | Clarette Fairburn | clarette.fairburn@example.com | Clarette   | Fairburn    |
     And the following solutions:
       | title              | description                                     | logo     | banner     | state     |
       | E.C.O. fertilizers | Ecologic cool organic fertilizers production.   | logo.png | banner.jpg | validated |
@@ -106,3 +108,12 @@ Feature: User profile
     # Contact information and owner tiles should never be shown.
     And I should not see the "Wibo Verhoeven" tile
     And I should not see the "Somboon De Laurentis" tile
+
+    # A message should be shown when visiting a profile of a user without
+    # content.
+    When I go to the public profile of "Clarette Fairburn"
+    Then I should see the text "Clarette does not have any content yet."
+
+    When I go to the public profile of "Jayson Granger"
+    # This user has no first name inserted, so the message is generic.
+    Then I should see the text "This user does not have any content yet."
