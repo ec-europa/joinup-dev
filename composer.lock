@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c8c26bb31f953fa06617de57540db60",
+    "content-hash": "9809a0928ca898c0e3192788d27c12d3",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -115,20 +115,20 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.23.2",
+            "version": "3.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "e22280859c36396f07000b9bc54fb9ae56f4c744"
+                "reference": "3aacac064f40fcfdf8ecde2102a73d18b8b744d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e22280859c36396f07000b9bc54fb9ae56f4c744",
-                "reference": "e22280859c36396f07000b9bc54fb9ae56f4c744",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3aacac064f40fcfdf8ecde2102a73d18b8b744d0",
+                "reference": "3aacac064f40fcfdf8ecde2102a73d18b8b744d0",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/guzzle": "~5.3|~6.0.1|~6.1",
+                "guzzlehttp/guzzle": "^5.3.1|^6.2.1",
                 "guzzlehttp/promises": "~1.0",
                 "guzzlehttp/psr7": "^1.3.1, !=1.4.0",
                 "mtdowling/jmespath.php": "~2.2",
@@ -191,7 +191,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-03-06T23:37:57+00:00"
+            "time": "2017-03-08T23:57:18+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -254,23 +254,23 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.3.2",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "e7569edb4a5eadcbb2e4ad5ed753282260f281df"
+                "reference": "b19655f1304a3365213204bcf9a9b84476d0d265"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/e7569edb4a5eadcbb2e4ad5ed753282260f281df",
-                "reference": "e7569edb4a5eadcbb2e4ad5ed753282260f281df",
+                "url": "https://api.github.com/repos/composer/composer/zipball/b19655f1304a3365213204bcf9a9b84476d0d265",
+                "reference": "b19655f1304a3365213204bcf9a9b84476d0d265",
                 "shasum": ""
             },
             "require": {
                 "composer/ca-bundle": "^1.0",
                 "composer/semver": "^1.0",
                 "composer/spdx-licenses": "^1.0",
-                "justinrainbow/json-schema": "^1.6 || ^2.0 || ^3.0 || ^4.0",
+                "justinrainbow/json-schema": "^3.0 || ^4.0 || ^5.0",
                 "php": "^5.3.2 || ^7.0",
                 "psr/log": "^1.0",
                 "seld/cli-prompt": "^1.0",
@@ -296,7 +296,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -327,7 +327,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2017-01-27T17:23:42+00:00"
+            "time": "2017-03-08T16:51:24+00:00"
         },
         {
             "name": "composer/installers",
@@ -1892,7 +1892,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/ds",
-                "reference": "c6baa300d326a5ffde39be51820f377ab82b4a08"
+                "reference": "184e8ff34953639f6ddd2464b54b0642e0e28951"
             },
             "require": {
                 "drupal/core": "^8.3"
@@ -1948,7 +1948,7 @@
                 "issues": "https://www.drupal.org/project/issues/ds",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
             },
-            "time": "2017-02-18 12:42:36"
+            "time": "2017-03-08 10:33:03"
         },
         {
             "name": "drupal/facets",
@@ -2316,7 +2316,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/migrate_report-8.x-1.0-alpha1.zip",
-                "reference": "8.x-1.0-alpha1",
+                "reference": null,
                 "shasum": "9d365bf9e0abae1b469d501a3ec77f876ab6acac"
             },
             "require": {
@@ -2652,44 +2652,85 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/phingdrushtask.git",
-                "reference": "13428ee7a229da3b7e6be4687587048150b1fd25"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/phingdrushtask/zipball/13428ee7a229da3b7e6be4687587048150b1fd25",
-                "reference": "13428ee7a229da3b7e6be4687587048150b1fd25",
-                "shasum": ""
+                "reference": "6737f3d6c28c6c830f58d5fa09327b65acbda0a9"
             },
             "require": {
                 "drush/drush": "6 - 8",
                 "phing/phing": "~2.9"
             },
+            "require-dev": {
+                "bovigo/assert": "^1.7",
+                "drupal/coder": "^8.2",
+                "mockery/mockery": "^0.9",
+                "phpunit/php-code-coverage": "^4.0",
+                "phpunit/phpunit": "^5.6",
+                "satooshi/php-coveralls": "^1.0"
+            },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Drush\\": "src/"
+                "psr-4": {
+                    "Phing\\Drush\\": "src/",
+                    "Phing\\Drush\\Tests\\": "./tests/"
                 }
+            },
+            "scripts": {
+                "post-install-cmd": [
+                    "vendor/bin/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer",
+                    "vendor/bin/phpcs --config-set show_progress 1",
+                    "cp scripts/pre-push.sh .git/hooks/pre-push && chmod +x .git/hooks/pre-push"
+                ],
+                "post-update-cmd": [
+                    "vendor/bin/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer",
+                    "vendor/bin/phpcs --config-set show_progress 1",
+                    "cp scripts/pre-push.sh .git/hooks/pre-push && chmod +x .git/hooks/pre-push"
+                ],
+                "phpcs": [
+                    "./vendor/bin/phpcs --standard=Drupal,DrupalPractice --ignore=vendor ."
+                ],
+                "phpcbf": [
+                    "./vendor/bin/phpcbf --standard=Drupal,DrupalPractice --ignore=vendor ."
+                ],
+                "phpunit": [
+                    "./vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c tests/phpunit.xml tests"
+                ],
+                "coveralls": [
+                    "./vendor/bin/coveralls"
+                ]
             },
             "license": [
                 "GPL-2.0+"
             ],
             "authors": [
                 {
-                    "name": "Frederic Dewinne",
-                    "email": "frederic@continuousphp.com"
+                    "name": "Pierre Buyle",
+                    "email": "pierre@buyle.org",
+                    "role": "Author"
                 },
                 {
-                    "name": "Pierre Buyle",
-                    "email": "pierre@buyle.org"
+                    "name": "Frederic Dewinne",
+                    "email": "frederic@continuousphp.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Pol Dellaiera",
+                    "email": "pol.dellaiera@protonmail.com",
+                    "role": "Developer"
                 }
             ],
-            "description": "Drush task for Phing",
+            "description": "Drush task for Phing.",
             "homepage": "https://www.drupal.org/project/phingdrushtask",
+            "keywords": [
+                "ci",
+                "continuous integration",
+                "drupal",
+                "drush",
+                "phing"
+            ],
             "support": {
                 "issues": "https://www.drupal.org/project/issues/phingdrushtask",
-                "source": "https://github.com/pfrenssen/phingdrushtask/tree/7.x-2.x"
+                "source": "http://cgit.drupalcode.org/phingdrushtask"
             },
-            "time": "2016-10-12T12:47:47+00:00"
+            "time": "2016-12-02 20:39:55"
         },
         {
             "name": "drupal/r4032login",
@@ -3724,16 +3765,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "4.1.0",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "d39c56a46b3ebe1f3696479966cd2b9f50aaa24f"
+                "reference": "48817e5f95c9d29e11513f12e43cc0223fa5eb6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/d39c56a46b3ebe1f3696479966cd2b9f50aaa24f",
-                "reference": "d39c56a46b3ebe1f3696479966cd2b9f50aaa24f",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/48817e5f95c9d29e11513f12e43cc0223fa5eb6c",
+                "reference": "48817e5f95c9d29e11513f12e43cc0223fa5eb6c",
                 "shasum": ""
             },
             "require": {
@@ -3750,7 +3791,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0.x-dev"
+                    "dev-master": "5.0.x-dev"
                 }
             },
             "autoload": {
@@ -3786,7 +3827,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2016-12-22T16:43:46+00:00"
+            "time": "2017-02-22T03:28:16+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -9224,16 +9265,16 @@
         },
         {
             "name": "symfony/browser-kit",
-            "version": "v3.2.4",
+            "version": "v3.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/browser-kit.git",
-                "reference": "394a2475a3a89089353fde5714a7f402fbb83880"
+                "reference": "2fe0caa60c1a1dfeefd0425741182687a9b382b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/394a2475a3a89089353fde5714a7f402fbb83880",
-                "reference": "394a2475a3a89089353fde5714a7f402fbb83880",
+                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/2fe0caa60c1a1dfeefd0425741182687a9b382b8",
+                "reference": "2fe0caa60c1a1dfeefd0425741182687a9b382b8",
                 "shasum": ""
             },
             "require": {
@@ -9277,7 +9318,7 @@
             ],
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-31T21:49:23+00:00"
+            "time": "2017-02-21T09:12:04+00:00"
         }
     ],
     "aliases": [
