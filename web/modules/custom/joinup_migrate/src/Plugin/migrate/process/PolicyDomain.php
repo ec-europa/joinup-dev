@@ -39,7 +39,7 @@ class PolicyDomain extends ProcessPluginBase {
       ]);
       foreach ($terms as $tid => $term) {
         if ($storage->loadParents($tid)) {
-          // We stop on the first term with parents (AKA 'is 2nd level term').
+          // We stop on the first term with parents (AKA is 2nd level term').
           static::$cache[$value] = $tid;
           break;
         }
