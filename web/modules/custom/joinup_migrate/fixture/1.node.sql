@@ -24,5 +24,5 @@ INNER JOIN node_revisions nr ON n.vid = nr.vid
 LEFT JOIN d8_user u ON n.uid = u.uid
 INNER JOIN d8_mapping m ON n.nid = m.nid AND m.migrate = 1
 INNER JOIN d8_prepare p ON m.collection = p.collection
-WHERE n.type IN('project_issue', 'og_page', 'case_epractice', 'document', 'factsheet', 'legaldocument', 'presentation', 'newsletter', 'news')
+WHERE n.type IN('project_issue', 'og_page', 'case_epractice', 'document', 'factsheet', 'legaldocument', 'presentation', 'newsletter', 'news', 'event')
 ORDER BY n.nid ASC

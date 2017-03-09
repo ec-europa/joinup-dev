@@ -1,11 +1,11 @@
-id: news
-label: 'News'
+id: event
+label: 'Event'
 migration_tags:
   - node
-  - news
+  - event
   - og
 source:
-  plugin: news
+  plugin: event
   track_changes: true
 process:
   title: title
@@ -22,12 +22,26 @@ process:
       no_stub: true
     - plugin: default_value
       default_value: 1
-  field_news_source_url: source_url
   field_keywords: keywords
-  field_news_spatial_coverage:
-    plugin: term_reference
-    source: country
-    vocabulary: spatial
+  field_event_logo:
+    plugin: migration
+    source: nid
+    migration: event_logo
+    no_stub: true
+  field_event_start_date: start_date
+  field_event_end_date: end_date
+  field_location: location
+  field_organisation: organisation
+  field_event_web_url: website
+  field_event_contact_email: mail
+  field_event_agenda/value: agenda
+  field_event_agenda/format:
+    plugin: default_value
+    default_value: content_editor
+
+  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3207
+  # field_scope
+  # field_organisation_type:
 
   # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
   # Revisit this mapping in ISAICP-3068.
@@ -41,8 +55,7 @@ process:
     migration: collection
 destination:
   plugin: entity:node
-  default_bundle: news
+  default_bundle: event
 migration_dependencies:
  required:
-   - user
-   - prepare
+   - event_logo

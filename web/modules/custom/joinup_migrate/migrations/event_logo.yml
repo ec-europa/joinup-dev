@@ -1,0 +1,35 @@
+id: event_logo
+label: 'Event logo'
+migration_tags:
+  - file
+  - event
+  - node
+source:
+  plugin: event_logo
+  track_changes: true
+process:
+  uid:
+    - plugin: migration
+      migration: user
+      source: file_uid
+      no_stub: true
+    - plugin: default_value
+      default_value: 1
+  source_path_encoded:
+    plugin: urlencode
+    source: file_path
+  uri:
+    plugin: file_copy
+    source:
+      - '@source_path_encoded'
+      - destination_uri
+  status:
+    plugin: default_value
+    default_value: 1
+  created: file_timestamp
+destination:
+  plugin: entity:file
+migration_dependencies:
+ required:
+   - prepare
+   - user
