@@ -45,6 +45,9 @@
             <param>install_settings_form.sparql.host=${sparql.host}</param>
             <param>install_settings_form.sparql.port=${sparql.port}</param>
         </drush>
+
+        <!-- Make sure persistent session cookies are disabled. -->
+        <phingcall target="disable-persistent-session-cookies" />
     </target>
 
     <target name="setup-virtuoso-permissions">
@@ -94,9 +97,6 @@
         <!-- Create the directory and file for browsertest output. -->
         <mkdir dir="${phpunit.browsertest_output_dir}" />
         <touch file="${phpunit.browsertest_output_file}" />
-
-        <!-- Make sure persistent session cookies are disabled. -->
-        <phingcall target="disable-persistent-session-cookies" />
     </target>
 
     <!-- Enable modules for user acceptance testing. These are different from the
