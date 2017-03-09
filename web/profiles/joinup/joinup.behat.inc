@@ -1030,8 +1030,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
       // Replace labels with the real field name.
       $field_label = strtolower($field_label);
-      if (isset($user->{$field_label})) {
-        $user->{$definition->getName()} = $user->{$field_label};
+      $field_name = $definition->getName();
+      if ($field_label !== $field_name && isset($user->{$field_label})) {
+        $user->{$field_name} = $user->{$field_label};
         unset($user->{$field_label});
       }
     }
