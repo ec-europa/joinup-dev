@@ -12,6 +12,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
+use Drupal\field\FieldConfigInterface;
 use Drupal\file\Entity\File;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\NodeTrait;
@@ -999,6 +1001,40 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       throw new \Exception('The current workflow state field is not present on the page.');
     }
     \PHPUnit_Framework_Assert::assertEquals($state, trim($element->getText()));
+  }
+
+  /**
+   * Replaces human readable labels with field machine name when creating users.
+   *
+   * @param \Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope $scope
+   *   An object containing the entity properties and fields that are to be used
+   *   for creating the node as properties on the object.
+   *
+   * @BeforeUserCreate
+   */
+  public function massageFieldsBeforeUserCreate(BeforeUserCreateScope $scope) {
+    $user = $scope->getEntity();
+
+    /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $field_definitions */
+    $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions('user', 'user');
+    foreach ($field_definitions as $definition) {
+      // Skip base fields.
+      if (!$definition instanceof FieldConfigInterface) {
+        continue;
+      }
+
+      $field_label = $definition->getLabel();
+      if (!$field_label) {
+        continue;
+      }
+
+      // Replace labels with the real field name.
+      $field_label = strtolower($field_label);
+      if (isset($user->{$field_label})) {
+        $user->{$definition->getName()} = $user->{$field_label};
+        unset($user->{$field_label});
+      }
+    }
   }
 
 }
