@@ -182,6 +182,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       '#entity_type' => $entity->getEntityTypeId(),
       '#bundle' => $entity->bundle(),
       '#field_name' => $this->fieldDefinition->getName(),
+      '#entity' => $entity,
     ];
 
     return $render;

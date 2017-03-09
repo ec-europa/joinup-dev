@@ -138,6 +138,7 @@ function search_api_field_theme() {
         'entity_type' => NULL,
         'bundle' => NULL,
         'field_name' => NULL,
+        'entity' => NULL,
       ],
     ],
     'search_api_field_result' => [
@@ -152,7 +153,7 @@ function search_api_field_theme() {
 /**
  * Implements hook_theme_suggestions_HOOK().
  *
- * Adds suggestions to the search_api_field theme implementation.
+ * Adds suggestions to the search_api_field theme hook.
  * Loosely based on the field theme suggestions.
  *
  * @see system_theme_suggestions_field()
