@@ -12,7 +12,7 @@ website.site.name = MyDrupalProject
 
 # Database settings.
 drupal.db.type = mysql
-drupal.db.name = myproject
+drupal.db.name = ${project.name}
 drupal.db.user = root
 drupal.db.password =
 drupal.db.host = 127.0.0.1
@@ -25,7 +25,8 @@ drupal.admin.password = admin
 drupal.admin.email = admin@example.com
 
 # Comma-separated list of demo users to create. The username and password will
-# be taken from the role.
+# be taken from the role. A normal authenticated user with username and password
+# 'user' will also be created.
 drupal.demo.users = administrator
 
 # The base URL. This is used for doing functional tests in Behat and PHPUnit.
