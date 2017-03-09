@@ -68,6 +68,12 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
               command="gem install sass"
               checkreturn="true"
               passthru="true" />
+        <echo message="Copy CPHP pipeline variables to local properties file" />
+        <echoproperties prefix="cphp." destfile="build.properties.local" />
+        <exec dir="${project.basedir}"
+              command="sed -i 's/^cphp\.//' build.properties.local"
+              checkreturn="true"
+              passthru="true" />
     </target>
 
     <!-- Remove all packages that are patched with cweagans/composer-patches. -->
