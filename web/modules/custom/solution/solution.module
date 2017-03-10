@@ -531,7 +531,7 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
  * Remove non-collection related actions (adding/removing roles)
  * from member overview page.
  */
-function solution_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function solution_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Bulk operation form ids vary on entity id.
   if (strstr($form_id, 'views_form_og_members_overview_default') === FALSE) {
     return;
