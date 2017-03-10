@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.rdf_entity.rdf_file.field_rdf_file
-    - rdf_entity.rdfentity.rdf_file
+    - field.field.rdf_entity.file_url.field_file_url
+    - rdf_entity.rdfentity.file_url
   module:
     - rdf_entity
-id: rdf_entity.rdf_file.default
+id: rdf_entity.file_url.default
 targetEntityType: rdf_entity
-bundle: rdf_file
+bundle: file_url
 mode: default
 content:
   label:
@@ -18,11 +18,11 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_rdf_file:
+  field_file_url:
     weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: rdf_file_default
+    type: file_url_default
     region: content
 hidden: { }

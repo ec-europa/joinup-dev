@@ -2,22 +2,22 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.rdf_entity.rdf_file.field_rdf_file
-    - rdf_entity.rdfentity.rdf_file
+    - field.field.rdf_entity.file_url.field_file_url
+    - rdf_entity.rdfentity.file_url
   module:
     - rdf_entity
 third_party_settings: { }
-id: rdf_entity.rdf_file.default
+id: rdf_entity.file_url.default
 targetEntityType: rdf_entity
-bundle: rdf_file
+bundle: file_url
 mode: default
 content:
-  field_rdf_file:
+  field_file_url:
     weight: 7
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-    type: rdf_file_generic
+    type: file_url_generic
   field_ar_creation_date:
     weight: 12
     settings:

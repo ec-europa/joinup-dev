@@ -1,14 +1,14 @@
 <?php
 
-namespace Drupal\Tests\rdf_file;
+namespace Drupal\Tests\file_url;
 
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\Tests\rdf_entity\Functional\RdfWebTestBase;
-use Drupal\rdf_file\Entity\RemoteFile;
-use Drupal\rdf_file\RdfFileHandler;
-use Drupal\Tests\rdf_file\Traits\RdfFileTrait;
+use Drupal\file_url\Entity\RemoteFile;
+use Drupal\file_url\RdfFileHandler;
+use Drupal\Tests\file_url\Traits\RdfFileTrait;
 
 /**
  * Provides methods specifically for testing File module's field handling.
@@ -24,9 +24,9 @@ class RdfFileFieldTest extends RdfWebTestBase {
    */
   public static $modules = [
     'rdf_entity',
-    'rdf_file',
+    'file_url',
     'file',
-    'rdf_file_entity_test',
+    'file_url_entity_test',
     'field_ui',
   ];
 
@@ -36,8 +36,8 @@ class RdfFileFieldTest extends RdfWebTestBase {
    * @var array
    */
   protected $usedGraphs = [
-    'http://example.com/rdf_file/draft',
-    'http://example.com/rdf_file/published',
+    'http://example.com/file_url/draft',
+    'http://example.com/file_url/published',
   ];
 
   /**
@@ -71,8 +71,8 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $this->adminUser = $this->drupalCreateUser([
       'administer rdf entity',
       'view rdf entity',
-      'edit rdf_file rdf entity',
-      'edit own rdf_file rdf entity',
+      'edit file_url rdf entity',
+      'edit own file_url rdf entity',
     ]);
     $this->drupalLogin($this->adminUser);
   }
@@ -82,8 +82,8 @@ class RdfFileFieldTest extends RdfWebTestBase {
    */
   public function testSingleValuedWidgetLocalFile() {
     $this->rdfStorage = $this->container->get('entity.manager')->getStorage('rdf_entity');
-    $type_name = 'rdf_file';
-    $field_name = 'field_rdf_file';
+    $type_name = 'file_url';
+    $field_name = 'field_file_url';
     $settings = ['rid' => $type_name];
     $test_file = $this->getTestFile('text');
     $this->assertTrue($test_file instanceof FileInterface, "Test file created.");
@@ -117,8 +117,8 @@ class RdfFileFieldTest extends RdfWebTestBase {
    */
   public function testSingleValuedWidgetRemoteFile() {
     $this->rdfStorage = $this->container->get('entity.manager')->getStorage('rdf_entity');
-    $type_name = 'rdf_file';
-    $field_name = 'field_rdf_file';
+    $type_name = 'file_url';
+    $field_name = 'field_file_url';
     $settings = ['rid' => $type_name];
     $test_file = $this->getTestFile('text');
     $this->assertTrue($test_file instanceof FileInterface, "Test file created.");

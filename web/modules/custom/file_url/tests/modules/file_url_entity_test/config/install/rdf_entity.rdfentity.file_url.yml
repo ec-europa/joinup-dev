@@ -5,18 +5,18 @@ third_party_settings:
   rdf_entity:
     mapping:
       rid:
-        target_id: 'http://example.com/rdf_file'
+        target_id: 'http://example.com/file_url'
       uid:
         target_id: ''
       label:
-        value: 'http://example.com/rdf_file_label'
+        value: 'http://example.com/file_url_label'
       uuid:
         value: ''
       graph:
         value: ''
     graph:
-      default: 'http://example.com/rdf_file/published'
-      draft: 'http://example.com/rdf_file/draft'
+      default: 'http://example.com/file_url/published'
+      draft: 'http://example.com/file_url/draft'
 name: Rdf file
-rid: rdf_file
+rid: file_url
 description: ''
