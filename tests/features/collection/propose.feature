@@ -150,6 +150,8 @@ Feature: Proposing a collection
     And the following field widgets should not be visible "Owner"
     And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Affiliates, Spatial coverage"
     And the following field widgets should be visible "Contact information"
+    # There should be a help text for the 'Access URL' field.
+    Then I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
 
   @javascript @terms
   # This is a regression test for a bug where nothing was happening when
