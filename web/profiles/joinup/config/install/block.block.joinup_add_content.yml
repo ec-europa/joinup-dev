@@ -8,7 +8,7 @@ dependencies:
 id: joinup_add_content
 theme: joinup_theme
 region: featured
-weight: -8
+weight: -7
 provider: null
 plugin: add_content_block
 settings:

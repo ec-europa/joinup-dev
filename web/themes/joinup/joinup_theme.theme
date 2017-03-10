@@ -132,7 +132,6 @@ function joinup_theme_preprocess_block(&$variables) {
     // Indicate if page contains listing
     // and should not have white background.
     $is_listing = FALSE;
-
     switch ($route_name) {
       case 'entity.rdf_entity.canonical':
         $entities = [
@@ -170,6 +169,10 @@ function joinup_theme_preprocess_block(&$variables) {
         break;
 
       case 'view.collections.page_1':
+        $is_listing = TRUE;
+        break;
+
+      case 'entity.user.canonical':
         $is_listing = TRUE;
         break;
     }
