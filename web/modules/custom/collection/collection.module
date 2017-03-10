@@ -254,3 +254,25 @@ function collection_search_api_query_search_api_field_field_collection_content_a
   // Remove the collection itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
 }
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Remove non-collection related actions (adding/removing roles)
+ * from member overview page.
+ */
+function collection_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // Bulk operation form ids vary on entity id.
+  if (strstr($form_id, 'views_form_og_members_overview_default') === FALSE) {
+    return;
+  }
+  $entity = \Drupal::request()->get('rdf_entity');
+  if (empty($entity) || $entity->getType() != 'collection') {
+    return;
+  }
+  foreach ($form['header']['og_membership_bulk_form']['action']['#options'] as $key => $option) {
+    if (strstr($key, 'rdf_entity-collection') === FALSE) {
+      unset($form['header']['og_membership_bulk_form']['action']['#options'][$key]);
+    }
+  }
+}
