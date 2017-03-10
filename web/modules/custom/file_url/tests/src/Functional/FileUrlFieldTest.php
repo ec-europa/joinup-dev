@@ -109,7 +109,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
 
     // Ensure the file can be downloaded.
     $this->drupalGet(file_create_url($rdf_entity_file->getFileUri()));
-    $this->assertResponse(200, 'Confirmed that the generated URL is correct by downloading the shipped file.');
+    $this->assertSession()->statusCodeEquals(200, 'Confirmed that the generated URL is correct by downloading the shipped file.');
   }
 
   /**
@@ -131,7 +131,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
 
     // Ensure the file can be downloaded.
     $this->drupalGet($this->getFileAbsoluteUri($rdf_entity_file));
-    $this->assertResponse(200, 'Confirmed that the generated URL is correct by downloading the shipped file.');
+    $this->assertSession()->statusCodeEquals(200, 'Confirmed that the generated URL is correct by downloading the shipped file.');
 
     // Test when the entity has a local file and we set a remote one.
     // The widget should quietly overwrite the remote one as the select input
@@ -148,7 +148,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
 
     // Ensure the file can be downloaded.
     $this->drupalGet($this->getFileAbsoluteUri($rdf_entity_file));
-    $this->assertResponse(200, 'Confirmed that the generated URL is correct by downloading the shipped file.');
+    $this->assertSession()->statusCodeEquals(200, 'Confirmed that the generated URL is correct by downloading the shipped file.');
   }
 
   /**
