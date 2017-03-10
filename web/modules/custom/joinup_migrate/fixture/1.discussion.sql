@@ -7,7 +7,8 @@ CREATE OR REPLACE VIEW d8_discussion (
   body,
   created,
   changed,
-  uid
+  uid,
+  status
 ) AS
 SELECT
   p.collection,
@@ -23,7 +24,8 @@ SELECT
   ),
   n.created,
   n.changed,
-  IF(n.uid > 0, n.uid, -1)
+  IF(n.uid > 0, n.uid, -1),
+  IF(i.sid IN(1, 4, 8, 13, 14), 1, 0)
 FROM node n
 INNER JOIN node_revisions nr ON n.vid = nr.vid
 INNER JOIN project_issues i ON n.nid = i.nid
