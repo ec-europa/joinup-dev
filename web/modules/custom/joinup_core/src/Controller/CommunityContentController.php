@@ -93,10 +93,10 @@ abstract class CommunityContentController extends ControllerBase {
    * Returns a community content entity.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *    The parent that the community content entity belongs to.
+   *   The parent that the community content entity belongs to.
    *
    * @return \Drupal\Core\Entity\EntityInterface
-   *    A node entity.
+   *   A node entity.
    */
   protected function createContentEntity(RdfInterface $rdf_entity) {
     return $this->entityTypeManager()->getStorage('node')->create([
@@ -109,8 +109,8 @@ abstract class CommunityContentController extends ControllerBase {
    * Returns the bundle of the entity this controller is about.
    *
    * @return string
-   *    The bundle machine name.
+   *   The bundle machine name.
    */
-  protected abstract function getBundle();
+  abstract protected function getBundle();
 
 }

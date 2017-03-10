@@ -15,8 +15,8 @@ function joinup_document_entity_bundle_field_info_alter(&$fields, EntityTypeInte
   // @todo Add test coverage for these constraints.
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2499
   if ($entity_type->id() == 'node' && $bundle == 'document') {
-    if (!empty($fields['field_document_short_title'])) {
-      $fields['field_document_short_title']->addConstraint('UniqueField');
+    if (!empty($fields['field_short_title'])) {
+      $fields['field_short_title']->addConstraint('UniqueField');
     }
     if (!empty($fields['title'])) {
       $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['document']]);
@@ -34,10 +34,10 @@ function joinup_document_entity_bundle_field_info_alter(&$fields, EntityTypeInte
  * transitions.
  *
  * @param \Drupal\Core\Entity\EntityInterface $entity
- *    The document entity.
+ *   The document entity.
  *
  * @return string
- *    The id of the workflow to use.
+ *   The id of the workflow to use.
  *
  * @throws Exception
  *    Thrown when the function is called for a different bundle.

@@ -113,10 +113,10 @@ class SolutionFulfillmentGuard implements GuardInterface {
    * Retrieve the initial state value of the entity.
    *
    * @param \Drupal\rdf_entity\RdfInterface $entity
-   *    The solution entity.
+   *   The solution entity.
    *
    * @return string
-   *    The machine name value of the state.
+   *   The machine name value of the state.
    *
    * @see https://www.drupal.org/node/2745673
    */

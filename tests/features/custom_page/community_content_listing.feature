@@ -39,7 +39,7 @@ Feature:
         | Title | Latest news                        |
         | Body  | Shows all news for this collection |
       And I check "Display a community content listing"
-      And I fill in "Query presets" with "aggregated_field|news"
+      And I fill in "Query presets" with "entity_bundle|news"
       And I press "Save"
       Then I should see the heading "Latest news"
       And I should see the "Rare Nintendo64 disk drive discovered" tile

@@ -7,6 +7,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
+    - field.field.rdf_entity.solution.field_is_content
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
@@ -44,7 +45,8 @@ dependencies:
     - link
     - og
     - options
-    - rdf_file
+    - file_url
+    - search_api_field
     - text
     - user
 id: rdf_entity.solution.default
@@ -83,7 +85,12 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-    region: content
+  field_is_content:
+    weight: 39
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: search_api_field
   field_is_creation_date:
     weight: 4
     label: above
@@ -114,7 +121,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: rdf_file_default
+    type: file_url_default
     region: content
   field_is_elibrary_creation:
     weight: 16
@@ -376,6 +383,10 @@ content:
     weight: 0
     type: og_group_subscribe
     label: above
+    settings: {  }
+    third_party_settings: {  }
+  rdf_entity_field_is_content_top:
+    weight: 38
     settings: {  }
     third_party_settings: {  }
     region: content

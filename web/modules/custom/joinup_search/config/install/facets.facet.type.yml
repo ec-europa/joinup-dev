@@ -11,7 +11,7 @@ url_alias: type
 weight: 0
 min_count: 1
 show_only_one_result: false
-field_identifier: aggregated_field
+field_identifier: entity_bundle
 facet_source_id: 'views_page:search__page_1'
 widget:
   type: links
