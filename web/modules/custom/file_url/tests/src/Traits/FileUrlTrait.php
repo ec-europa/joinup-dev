@@ -20,7 +20,7 @@ trait FileUrlTrait {
    * Retrieves a sample file of the specified type.
    *
    * @return \Drupal\file\FileInterface
-   *    The created file.
+   *   The created file.
    */
   public function getTestFile($type_name, $size = NULL) {
     // Get a file to upload.

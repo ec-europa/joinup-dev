@@ -202,19 +202,19 @@ class FileUrlFieldTest extends RdfWebTestBase {
    * Prepares the values on a form and posts it.
    *
    * @param string $rdf_entity_id
-   *    The rdf entity uri.
+   *   The rdf entity uri.
    * @param string $field_name
-   *    The machine name of the field.
+   *   The machine name of the field.
    * @param string $select
-   *    The machine name of the select option for the file URL field. Available
-   *    options are 'file' and 'remote-file'.
+   *   The machine name of the select option for the file URL field. Available
+   *   options are 'file' and 'remote-file'.
    * @param string $file_uri
-   *    The file uri.
+   *   The file uri.
    * @param string $field_html_name
-   *    The html name selector for the field to fill.
+   *   The html name selector for the field to fill.
    *
    * @return string
-   *    The id of the rdf entity.
+   *   The id of the rdf entity.
    */
   protected function prepareAndPostForm($rdf_entity_id, $field_name, $select, $file_uri, $field_html_name) {
     // Set that the file is local.
@@ -245,12 +245,12 @@ class FileUrlFieldTest extends RdfWebTestBase {
    * Loads or creates a new rdf entity and returns it.
    *
    * @param string|null $id
-   *    The id of the rdf entity. If null, a new entity will be created.
+   *   The id of the rdf entity. If null, a new entity will be created.
    * @param array $extras
-   *    Optional values to pass if an entity is created.
+   *   Optional values to pass if an entity is created.
    *
    * @return \Drupal\rdf_entity\RdfInterface
-   *    The loaded or created entity.
+   *   The loaded or created entity.
    */
   protected function getRdfEntity($id, array $extras = []) {
     $this->rdfStorage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('rdf_entity');
