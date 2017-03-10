@@ -89,7 +89,7 @@ class RequestRouteCondition extends ConditionPluginBase implements ContainerFact
   public function summary() {
     $routes = $this->getRoutes();
     $routes = implode(', ', $routes);
-    if (!empty($this->configuration['negate'])) {
+    if (!empty($this->isNegated())) {
       return $this->t('Do not return true on the following routes: @routes', array('@routes' => $routes));
     }
     return $this->t('Return true on the following routes: @routes', array('@routes' => $routes));
