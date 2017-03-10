@@ -17,6 +17,6 @@ third_party_settings:
     graph:
       default: 'http://example.com/file_url/published'
       draft: 'http://example.com/file_url/draft'
-name: Rdf file
+name: File URL
 rid: file_url
 description: ''

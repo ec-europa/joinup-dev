@@ -7,15 +7,15 @@ use Drupal\file\FileInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\Tests\rdf_entity\Functional\RdfWebTestBase;
 use Drupal\file_url\Entity\RemoteFile;
-use Drupal\file_url\RdfFileHandler;
-use Drupal\Tests\file_url\Traits\RdfFileTrait;
+use Drupal\file_url\FileUrlHandler;
+use Drupal\Tests\file_url\Traits\FileUrlTrait;
 
 /**
  * Provides methods specifically for testing File module's field handling.
  */
-class RdfFileFieldTest extends RdfWebTestBase {
+class FileUrlFieldTest extends RdfWebTestBase {
 
-  use RdfFileTrait;
+  use FileUrlTrait;
 
   /**
    * Modules to enable.
@@ -78,7 +78,7 @@ class RdfFileFieldTest extends RdfWebTestBase {
   }
 
   /**
-   * Tests upload of a file to an rdf file field.
+   * Tests upload of a file to an file URL field.
    */
   public function testSingleValuedWidgetLocalFile() {
     $this->rdfStorage = $this->container->get('entity.manager')->getStorage('rdf_entity');
@@ -89,10 +89,10 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $this->assertTrue($test_file instanceof FileInterface, "Test file created.");
 
     // Test file for new entities.
-    $id = $this->uploadRdfFile($test_file, $field_name, NULL, $settings);
+    $id = $this->uploadFileUrl($test_file, $field_name, NULL, $settings);
     $this->rdfStorage->resetCache(array($id));
     $rdf_entity = $this->rdfStorage->load($id);
-    $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
+    $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue(is_file($rdf_entity_file->getFileUri()), 'New file saved to disk on rdf_entity creation.');
 
     // Test when the entity has a remote file and we upload a local one.
@@ -101,10 +101,10 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $rdf_entity = $this->createRdfEntity($settings + [
       $field_name => $this->getFileAbsoluteUri($rdf_entity_file),
     ]);
-    $id = $this->uploadRdfFile($test_file, $field_name, $rdf_entity->id());
+    $id = $this->uploadFileUrl($test_file, $field_name, $rdf_entity->id());
     $this->rdfStorage->resetCache(array($id));
     $rdf_entity = $this->rdfStorage->load($id);
-    $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
+    $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue(is_file($rdf_entity_file->getFileUri()), 'New file saved to disk on rdf_entity creation.');
 
     // Ensure the file can be downloaded.
@@ -113,7 +113,7 @@ class RdfFileFieldTest extends RdfWebTestBase {
   }
 
   /**
-   * Tests setting a remote file for an rdf file field.
+   * Tests setting a remote file for an file URL field.
    */
   public function testSingleValuedWidgetRemoteFile() {
     $this->rdfStorage = $this->container->get('entity.manager')->getStorage('rdf_entity');
@@ -126,7 +126,7 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $id = $this->setRemoteFile($this->getFileAbsoluteUri($test_file), $field_name, NULL, $settings);
     $this->rdfStorage->resetCache(array($id));
     $rdf_entity = $this->rdfStorage->load($id);
-    $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
+    $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue($rdf_entity_file instanceof RemoteFile, 'The remote file entity was saved successfully.');
 
     // Ensure the file can be downloaded.
@@ -143,7 +143,7 @@ class RdfFileFieldTest extends RdfWebTestBase {
     $id = $this->setRemoteFile($this->getFileAbsoluteUri($test_file), $field_name, $rdf_entity->id());
     $this->rdfStorage->resetCache(array($id));
     $rdf_entity = $this->rdfStorage->load($id);
-    $rdf_entity_file = RdfFileHandler::urlToFile($rdf_entity->{$field_name}->target_id);
+    $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue($rdf_entity_file instanceof RemoteFile, 'The remote file entity was saved successfully.');
 
     // Ensure the file can be downloaded.
@@ -152,7 +152,7 @@ class RdfFileFieldTest extends RdfWebTestBase {
   }
 
   /**
-   * Uploads a file to an rdf file field of an rdf entity.
+   * Uploads a file to an file URL field of an rdf entity.
    *
    * @param \Drupal\file\FileInterface $file
    *   The file to be uploaded.
@@ -166,7 +166,7 @@ class RdfFileFieldTest extends RdfWebTestBase {
    * @return int
    *   The rdf entity id.
    */
-  public function uploadRdfFile(FileInterface $file, $field_name, $id, array $extras = []) {
+  public function uploadFileUrl(FileInterface $file, $field_name, $id, array $extras = []) {
     $rdf_entity = $this->getRdfEntity($id, $extras);
     $select = 'file';
     $file_uri = $this->fileSystem->realpath($file->getFileUri());
@@ -176,7 +176,7 @@ class RdfFileFieldTest extends RdfWebTestBase {
   }
 
   /**
-   * Sets a remote to an rdf file field of an rdf entity.
+   * Sets a remote to an file URL field of an rdf entity.
    *
    * @param string $uri
    *   The absolute path of the remote file.
@@ -206,7 +206,7 @@ class RdfFileFieldTest extends RdfWebTestBase {
    * @param string $field_name
    *    The machine name of the field.
    * @param string $select
-   *    The machine name of the select option for the rdf file field. Available
+   *    The machine name of the select option for the file URL field. Available
    *    options are 'file' and 'remote-file'.
    * @param string $file_uri
    *    The file uri.

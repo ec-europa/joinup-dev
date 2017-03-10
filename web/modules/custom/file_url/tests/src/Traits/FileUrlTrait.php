@@ -7,9 +7,9 @@ use Drupal\Tests\rdf_entity\Traits\RdfEntityCreationTrait;
 use Drupal\Tests\TestFileCreationTrait;
 
 /**
- * Functions regarding the rdf file manipulation.
+ * Functions regarding the file URL manipulation.
  */
-trait RdfFileTrait {
+trait FileUrlTrait {
 
   use RdfEntityCreationTrait;
   use TestFileCreationTrait {

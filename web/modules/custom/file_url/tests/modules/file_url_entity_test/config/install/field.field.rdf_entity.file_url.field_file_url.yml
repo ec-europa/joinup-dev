@@ -10,7 +10,7 @@ id: rdf_entity.file_url.field_file_url
 field_name: field_file_url
 entity_type: rdf_entity
 bundle: file_url
-label: Rdf file field
+label: File URL field
 description: ''
 required: false
 translatable: false
