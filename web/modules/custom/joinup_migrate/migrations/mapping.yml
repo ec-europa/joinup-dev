@@ -28,9 +28,7 @@ source:
     Nid:
       type: integer
 process:
-  nid:
-    plugin: mapping_nid
-    source: Nid
+  nid: Nid
   type:
     plugin: static_map
     source: 'Type of content item'
