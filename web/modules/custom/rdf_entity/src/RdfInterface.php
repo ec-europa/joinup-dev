@@ -40,7 +40,7 @@ interface RdfInterface extends ContentEntityInterface, EntityPublishedInterface,
    * hooks.
    *
    * @param string $graph
-   *    The graph machine name.
+   *   The graph machine name.
    */
   public function deleteFromGraph($graph);
 

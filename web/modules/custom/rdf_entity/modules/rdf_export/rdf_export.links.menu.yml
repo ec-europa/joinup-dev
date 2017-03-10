@@ -4,4 +4,3 @@ rdf_export.settings_form:
   description: 'Settings regarding rdf export module.'
   parent: rdf_entity.admin_index
   weight: 99
-

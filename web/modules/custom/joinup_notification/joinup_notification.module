@@ -6,7 +6,7 @@
  */
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use \Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Implements hook_entity_predelete().

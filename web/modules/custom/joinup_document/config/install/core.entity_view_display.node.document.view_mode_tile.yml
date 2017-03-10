@@ -5,16 +5,20 @@ dependencies:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.document.body
     - field.field.node.document.field_comments
-    - field.field.node.document.field_document_file
     - field.field.node.document.field_document_publication_date
-    - field.field.node.document.field_document_short_title
-    - field.field.node.document.field_document_source_url
+    - field.field.node.document.field_document_spatial_coverage
+    - field.field.node.document.field_file
+    - field.field.node.document.field_keywords
+    - field.field.node.document.field_licence
+    - field.field.node.document.field_policy_domain
+    - field.field.node.document.field_short_title
     - field.field.node.document.field_state
+    - field.field.node.document.field_type
     - field.field.node.document.og_audience
     - node.type.document
   module:
     - ds
-    - file
+    - file_url
     - text
     - user
 id: node.document.view_mode_tile
@@ -36,20 +40,16 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
-  field_document_file:
+    region: content
+  field_file:
+    type: file_url_default
     weight: 2
+    region: content
     label: hidden
-    settings: {  }
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: file_url_plain
-  field_document_short_title:
+    settings:
+      mode: link
+    third_party_settings: {  }
+  field_short_title:
     weight: 0
     label: hidden
     settings:
@@ -63,10 +63,15 @@ content:
             lb-col: false
             classes: {  }
     type: string
+    region: content
 hidden:
   field_comments: true
   field_document_publication_date: true
-  field_document_source_url: true
+  field_document_spatial_coverage: true
+  field_keywords: true
+  field_licence: true
+  field_policy_domain: true
   field_state: true
+  field_type: true
   links: true
   og_audience: true

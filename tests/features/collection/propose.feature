@@ -92,6 +92,7 @@ Feature: Proposing a collection
   Scenario: E-library options should not vanish after AJAX request.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
+    And I click the "Description" tab
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
     Then I should see the link "banner.jpg"
@@ -102,6 +103,7 @@ Feature: Proposing a collection
   Scenario: eLibrary creation options should adapt to the state of the 'closed collection' option
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
+    And I click the "Description" tab
 
     # Initially the collection is open, check if the eLibrary options are OK.
     Then the option "Only members can create new content." should be selected
@@ -114,9 +116,7 @@ Feature: Proposing a collection
 
     # When toggling to closed, the option 'any registered user' should disappear
     # and the option for facilitators should appear.
-    # When I check "Closed collection"
-    # Workaround, fixed in ISAICP-2703
-    When I click on element ".js-form-item-field-ar-closed-value label"
+    When I check "Closed collection"
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected
     And I should not see the text "Any registered user can create new content."
@@ -131,32 +131,27 @@ Feature: Proposing a collection
     # and the default option were selected after cycling the collection
     # checkbox status open-closed-open-closed.
     # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
-    # When I uncheck "Closed collection"
-    # Workaround, fixed in ISAICP-2703
-    When I click on element ".js-form-item-field-ar-closed-value label"
-    # And I check "Closed collection"
-    # Workaround, fixed in ISAICP-2703
-    When I click on element ".js-form-item-field-ar-closed-value label"
+    When I uncheck "Closed collection"
+    And I check "Closed collection"
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected
 
   @javascript
-  Scenario: Propose collection form fields should be organized in groups.
+  Scenario: Propose collection form fields should be organized in tabs.
     Given I am logged in as an "authenticated user"
     When I go to the propose collection form
-    Then the following fields should be visible "Title, Description,  Closed collection, eLibrary creation, Moderated"
-    And the following fields should not be visible "Abstract, Affiliates, Policy domain, Spatial coverage"
-    And the following field widgets should not be visible "Contact information, Owner"
+    Then the following fields should be visible "Title, Description, Policy domain"
+    And the following field widgets should be visible "Owner"
+    And the following fields should not be visible "Closed collection, eLibrary creation, Moderated, Abstract, Affiliates, Spatial coverage"
+    And the following field widgets should not be visible "Contact information"
 
     When I click "Description" tab
-    Then the following fields should be visible "Abstract, Affiliates"
-    And the following field widgets should be visible "Contact information, Owner"
-    And the following fields should not be visible "Title, Description, Closed collection, eLibrary creation, Moderated, Policy domain, Spatial coverage"
-
-    When I click "Categorisation" tab
-    Then the following fields should be visible "Policy domain, Spatial coverage"
-    And the following fields should not be visible "Title, Description, Closed collection, eLibrary creation, Moderated, Abstract, Affiliates"
-    And the following field widgets should not be visible "Contact information, Owner"
+    Then the following fields should not be visible "Title, Description, Policy domain"
+    And the following field widgets should not be visible "Owner"
+    And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Affiliates, Spatial coverage"
+    And the following field widgets should be visible "Contact information"
+    # There should be a help text for the 'Access URL' field.
+    Then I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
 
   @javascript @terms
   # This is a regression test for a bug where nothing was happening when
@@ -170,10 +165,11 @@ Feature: Proposing a collection
     Then the "Main" tab should be active
     # This form has two elements only that have browser-side validation.
     When I fill in "Title" with "Constraint validation API"
+    And I click the "Description" tab
     And I press "Propose"
     # Our code should have changed the active tab now. A browser message will
     # be shown to the user.
-    Then the "Categorisation" tab should be active
+    Then the "Main" tab should be active
     # Fill the required field.
     When I select "HR" from "Policy domain"
     And I press "Propose"

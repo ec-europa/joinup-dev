@@ -29,38 +29,29 @@ class DistributionFile extends DistributionBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = parent::query();
-
-    $this->alias['content_type_distribution'] = $query->join('content_type_distribution', 'content_type_distribution', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['files'] = $query->join('files', 'files', "{$this->alias['content_type_distribution']}.field_distribution_access_url_fid = %alias.fid AND %alias.filepath <> ''");
-
-    $query->addExpression("{$this->alias['files']}.filepath", 'source_path');
-    $query->addExpression("{$this->alias['files']}.timestamp", 'created');
-    $query->addExpression("{$this->alias['files']}.uid", 'file_uid');
-
-    return $query;
+    return parent::query()
+      ->fields('d', ['file_path', 'file_timestamp', 'file_uid'])
+      ->isNotNull('d.file_path')
+      ->condition('d.file_path', '', '<>');
   }
 
   /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    if (!$source_path = $row->getSourceProperty('source_path')) {
-      // Skip this row if there's no file.
-      return FALSE;
-    }
-
     // Assure a full-qualified path.
-    $row->setSourceProperty('source_path', "{$this->getLegacySiteWebRoot()}/$source_path");
+    $source_path = $this->getLegacySiteWebRoot() . '/' . $row->getSourceProperty('file_path');
+    $row->setSourceProperty('source_path', $source_path);
 
     // Build the destination URI.
-    $created = $row->getSourceProperty('created') ?: REQUEST_TIME;
+    $created = $row->getSourceProperty('file_timestamp') ?: REQUEST_TIME;
     $year = date('Y', $created);
     $month = date('m', $created);
     $basename = basename($source_path);
     $destination_uri = "public://distribution/$year-$month/$basename";
-
     $row->setSourceProperty('destination_uri', $destination_uri);
+
+    // The file creation timestamp.
     $row->setSourceProperty('created', $created);
 
     // Don't let files belong to anonymous.

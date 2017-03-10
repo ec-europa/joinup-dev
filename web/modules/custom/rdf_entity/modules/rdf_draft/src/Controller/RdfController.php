@@ -86,10 +86,10 @@ class RdfController extends ControllerBase {
    * Build the page title.
    *
    * @param array $page
-   *    Render array.
+   *   Render array.
    *
    * @return array
-   *    Render array.
+   *   Render array.
    */
   public function buildTitle(array $page) {
     $entity_type = $page['#entity_type'];

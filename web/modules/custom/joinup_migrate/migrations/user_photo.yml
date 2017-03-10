@@ -1,5 +1,5 @@
 id: user_photo
-label: 'Users photos'
+label: 'User photo'
 migration_tags:
   - user
   - file
@@ -7,13 +7,11 @@ source:
   plugin: user_photo
 process:
   uid:
-    -
-      plugin: migration
+    - plugin: migration
       migration: user
-      source: file_uid
+      source: photo_uid
       no_stub: true
-    -
-      plugin: default_value
+    - plugin: default_value
       default_value: 1
   source_path_encoded:
     plugin: urlencode
@@ -26,6 +24,6 @@ process:
   status:
     plugin: default_value
     default_value: 1
-  created: created
+  created: photo_timestamp
 destination:
   plugin: entity:file

@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_page
+    - node
+  theme:
+    - joinup_theme
+id: menusubpages
+theme: joinup_theme
+region: content_bottom
+weight: 0
+provider: null
+plugin: menu_sub_pages
+settings:
+  id: menu_sub_pages
+  label: 'Sub pages'
+  provider: custom_page
+  label_display: visible
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      custom_page: custom_page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

@@ -62,9 +62,9 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
    * Constructs an AssetReleaseFulfillmentGuard service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *    The entity type manager service.
+   *   The entity type manager service.
    * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
-   *    The workflow user provider service.
+   *   The workflow user provider service.
    * @param \Drupal\asset_release\AssetReleaseRelations $asset_release_relations
    *   The asset release relation service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -112,21 +112,15 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
    * Retrieve the initial state value of the entity.
    *
    * @param \Drupal\rdf_entity\RdfInterface $entity
-   *    The asset release entity.
+   *   The asset release entity.
    *
    * @return string
-   *    The machine name value of the state.
+   *   The machine name value of the state.
    *
    * @see https://www.drupal.org/node/2745673
    */
   protected function getState(RdfInterface $entity) {
-    if ($entity->isNew()) {
-      return $entity->field_isr_state->first()->value;
-    }
-    else {
-      $unchanged_entity = $this->entityTypeManager->getStorage('rdf_entity')->loadUnchanged($entity->id());
-      return $unchanged_entity->field_isr_state->first()->value;
-    }
+    return $entity->field_isr_state->first()->value;
   }
 
 }

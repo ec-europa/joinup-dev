@@ -31,25 +31,18 @@ class UserProfile extends UserBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = parent::query();
-
-    $this->alias['node'] = $query->leftJoin('node', 'node', "u.uid = %alias.uid AND %alias.type = 'profile'");
-    $this->alias['profile'] = $query->leftJoin('content_type_profile', 'profile', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['profile'] = $query->leftJoin('content_type_profile', 'profile', "{$this->alias['node']}.vid = %alias.vid");
-
-    $query->addExpression("{$this->alias['profile']}.vid", 'profile_vid');
-    $query->addExpression("{$this->alias['profile']}.field_lastname_value", 'last_name');
-    $query->addExpression("{$this->alias['profile']}.field_firstname_value", 'first_name');
-    $query->addExpression("{$this->alias['profile']}.field_company_name_value", 'company_name');
-
-    return $query;
+    return parent::query()->fields('u', [
+      'last_name',
+      'first_name',
+      'company_name',
+    ]);
   }
 
   /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    $countries = $this->getCountries([$row->getSourceProperty('profile_vid')], FALSE);
+    $countries = $this->getCountries([$row->getSourceProperty('vid')], FALSE);
     // We don't migrate nationality in the case when the source user has more
     // than one country set. The user will have to manually update its profile.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2960

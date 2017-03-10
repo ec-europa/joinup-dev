@@ -65,10 +65,10 @@ abstract class JoinupWorkflowTestBase extends RdfWebTestBase {
    * Creates a user with roles.
    *
    * @param array $roles
-   *    An array of roles to initialize the user with.
+   *   An array of roles to initialize the user with.
    *
    * @return \Drupal\Core\Session\AccountInterface
-   *    The created user object.
+   *   The created user object.
    */
   protected function createUserWithRoles(array $roles = []) {
     $user = $this->createUser();
@@ -84,11 +84,11 @@ abstract class JoinupWorkflowTestBase extends RdfWebTestBase {
    * Creates and asserts an Og membership.
    *
    * @param \Drupal\Core\Entity\EntityInterface $group
-   *    The Og group.
+   *   The Og group.
    * @param \Drupal\Core\Session\AccountInterface $user
-   *    The user this membership refers to.
+   *   The user this membership refers to.
    * @param array $roles
-   *    An array of role objects.
+   *   An array of role objects.
    */
   protected function createOgMembership(EntityInterface $group, AccountInterface $user, array $roles = []) {
     $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
@@ -103,13 +103,13 @@ abstract class JoinupWorkflowTestBase extends RdfWebTestBase {
    * @return string
    *   The entity type.
    */
-  protected abstract function getEntityType();
+  abstract protected function getEntityType();
 
   /**
    * Returns the entity bundle for the tested node type.
    *
    * @return string
-   *    The entity bundle machine name.
+   *   The entity bundle machine name.
    */
   abstract protected function getEntityBundle();
 

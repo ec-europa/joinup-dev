@@ -7,4 +7,3 @@ id: rdf_entity.view_mode_tile
 label: Tile
 targetEntityType: rdf_entity
 cache: true
-

@@ -306,7 +306,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * Returns a list of users to be used for the tests.
    *
    * @return array
-   *    A list of user variables.
+   *   A list of user variables.
    */
   protected function getAvailableUsers() {
     return [
@@ -326,14 +326,14 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * @param string $bundle
    *   The bundle of the entity to create.
    * @param string $state
-   *    The state of the entity.
+   *   The state of the entity.
    * @param string $moderation
-   *    Whether the parent is pre or post moderated.
+   *   Whether the parent is pre or post moderated.
    * @param string $e_library
-   *    The 'eLibrary_creation' value of the parent entity.
+   *   The 'eLibrary_creation' value of the parent entity.
    *
    * @return \Drupal\Core\Entity\EntityInterface
-   *    The created entity.
+   *   The created entity.
    */
   protected function createParent($bundle, $state = 'validated', $moderation = NULL, $e_library = NULL) {
     $field_identifier = [
@@ -372,7 +372,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * Returns an array of the available eLibrary states.
    *
    * @return array
-   *    An array of the available eLibrary states.
+   *   An array of the available eLibrary states.
    */
   protected function getElibraryStates() {
     return [
