@@ -298,11 +298,10 @@ class FileUrlWidget extends FileWidget {
         '#upload_validators' => $element['file-wrap']['file']['#upload_validators'],
         '#cardinality' => $cardinality,
       ];
-      $element['#description'] = \Drupal::service('renderer')
-        ->renderPlain($file_upload_help);
-      $element['#multiple'] = $cardinality != 1 ? TRUE : FALSE;
+      $element['file-wrap']['file']['#description'] = \Drupal::service('renderer')->renderPlain($file_upload_help);
+      $element['file-wrap']['file']['#multiple'] = $cardinality != 1 ? TRUE : FALSE;
       if ($cardinality != 1 && $cardinality != -1) {
-        $element['#element_validate'] = [
+        $element['file-wrap']['file']['#element_validate'] = [
           [
             get_class($this),
             'validateMultipleCount',
