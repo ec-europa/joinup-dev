@@ -29,6 +29,10 @@ class FileUrlWidget extends FileWidget {
    * Overrides \Drupal\Core\Field\WidgetBase::formMultipleElements().
    *
    * Special handling for draggable multiple widgets and 'add more' button.
+   *
+   * @todo Multivalue fields are untested and probably need work to be
+   *   usable. This was left unfinished since we have no use for them at the
+   *   moment.
    */
   protected function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
     $field_name = $this->fieldDefinition->getName();
