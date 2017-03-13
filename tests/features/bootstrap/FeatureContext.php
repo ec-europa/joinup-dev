@@ -799,4 +799,31 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
   }
 
+  /**
+   * Asserts that the page title tag contains text.
+   *
+   * @param string $text
+   *   The text to search for.
+   *
+   * @throws \Exception
+   *   Thrown when the title tag is not found or the text doesn't match.
+   *
+   * @Then I should see the text :text in the page title
+   */
+  public function assertPageTitleTagContainsText($text) {
+    $session = $this->getSession();
+    $page_title = $session->getPage()->find('xpath', '//head/title');
+    if (!$page_title) {
+      throw new \Exception(sprintf('Page title tag not found on the page ', $session, $session->getCurrentUrl()));
+    }
+
+    list($title, $site_name) = explode(' | ', $page_title->getText());
+
+    $title = trim($title);
+    if ($title !== $text) {
+      throw new \Exception(sprintf('Expected page title is "%s", but "%s" found.', $text, $title));
+    }
+
+  }
+
 }
