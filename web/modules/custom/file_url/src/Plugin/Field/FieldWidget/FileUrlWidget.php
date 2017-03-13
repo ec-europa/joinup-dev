@@ -230,7 +230,7 @@ class FileUrlWidget extends FileWidget {
     $element['file-wrap']['file'] = [
       '#type' => 'managed_file',
       '#title_display' => 'invisible',
-      '#title' => $this->fieldDefinition->getLabel(),
+      '#title' => $this->t('Upload file'),
       '#upload_location' => $items[$delta]->getUploadLocation(),
       '#upload_validators' => $items[$delta]->getUploadValidators(),
       '#value_callback' => [get_class($this), 'value'],

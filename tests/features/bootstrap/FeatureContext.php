@@ -97,7 +97,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when an expected field is not present or is not visible.
    *
-   * @Then (the following )fields should be visible :fields
+   * @Then (the following )field(s) should be visible :fields
    */
   public function assertFieldsVisible($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
@@ -139,7 +139,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when a field is not present or is visible.
    *
-   * @Then (the following )fields should not be visible :fields
+   * @Then (the following )field(s) should not be visible :fields
    */
   public function assertFieldsNotVisible($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
