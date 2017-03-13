@@ -7,4 +7,3 @@ rdf_export.settings_form:
     _permission: 'administer rdf metadata settings'
   options:
     _admin_route: TRUE
-

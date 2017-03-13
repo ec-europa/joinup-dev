@@ -118,7 +118,7 @@ class CollectionRouteContext implements ContextProviderInterface {
    * Returns an array of allowed routes that the context should be available at.
    *
    * @return array
-   *    An array of routes.
+   *   An array of routes.
    */
   protected function getSupportedRoutes() {
     return [

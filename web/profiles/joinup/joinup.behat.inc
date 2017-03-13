@@ -27,7 +27,7 @@ use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
 
 /**
- * Behat step definitions for testing users.
+ * Behat step definitions that are generally useful for the Joinup project.
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
@@ -62,7 +62,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * | Password   | Bond007            |
    * | E-mail     | james.bond@mi5.org |
    *
-   * @param TableNode $user_table
+   * @param \Behat\Gherkin\Node\TableNode $user_table
    *   The user data.
    *
    * @throws \Exception
@@ -310,7 +310,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Mapping of human readable names to machine names.
    *
    * @return array
-   *    Field mapping.
+   *   Field mapping.
    */
   private static function userFieldAliases() {
     return [
@@ -333,9 +333,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks that the given select field has the given options.
    *
    * @param string $select
-   *    The name of the field element.
+   *   The name of the field element.
    * @param string $options
-   *    The options to be checked separated by comma. Only labels are accepted.
+   *   The options to be checked separated by comma. Only labels are accepted.
    *
    * @Then (the ):select field should contain the :options option(s)
    */
@@ -351,9 +351,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks if the given select field does not contain any of the given values.
    *
    * @param string $select
-   *    The name of the field element.
+   *   The name of the field element.
    * @param string $options
-   *    The options to be checked separated by comma.
+   *   The options to be checked separated by comma.
    *
    * @throws Exception
    *    Throws an exception when a value exists.
@@ -648,11 +648,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Example: When I fill in "Start date" with the time "26:59:00".
    *
    * @param string $field_group
-   *    The field component's label.
+   *   The field component's label.
    * @param string $field_name
-   *    The field to be filled.
+   *   The field to be filled.
    * @param string $value
-   *    The value of the field.
+   *   The value of the field.
    *
    * @throws \Exception
    *    Thrown when more than one elements match the given field in the given
@@ -825,7 +825,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Assert that certain buttons are not present on the page.
    *
    * @param string $buttons
-   *    A comma separated list of button labels.
+   *   A comma separated list of button labels.
    *
    * @throws \Exception
    *   Thrown when an unexpected button is present.
@@ -924,7 +924,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * If author is filled, mail and name are not required.
    *
-   * @param TableNode $table
+   * @param \Behat\Gherkin\Node\TableNode $table
    *   The comment data.
    *
    * @throws \Exception
@@ -997,6 +997,28 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       throw new \Exception('The current workflow state field is not present on the page.');
     }
     \PHPUnit_Framework_Assert::assertEquals($state, trim($element->getText()));
+  }
+
+  /**
+   * Checks that the description of the field with given label is as expected.
+   *
+   * @param string $label
+   *   The label of the field to check.
+   * @param string $description
+   *   The expected description.
+   *
+   * @throws \Exception
+   *   Thrown when the field does not have a description.
+   *
+   * @Then I should see the description :description for (the ):label( field)
+   */
+  public function assertFieldDescription($label, $description) {
+    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]/div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
+    $element = $this->getSession()->getPage()->find('xpath', $xpath);
+    if (empty($element)) {
+      throw new \Exception("The $label field does not have a description.");
+    }
+    \PHPUnit_Framework_Assert::assertEquals($description, trim($element->getText()));
   }
 
 }

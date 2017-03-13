@@ -47,7 +47,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
   /**
    * Creates a number of licences with data provided in a table.
    *
-   * @param TableNode $licence_table
+   * @param \Behat\Gherkin\Node\TableNode $licence_table
    *   The licence data.
    *
    * @codingStandardsIgnoreStart
@@ -96,7 +96,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    *
    * Fields title and description are required.
    *
-   * @param TableNode $licence_table
+   * @param \Behat\Gherkin\Node\TableNode $licence_table
    *   The licence data.
    *
    * @throws \Exception
@@ -199,7 +199,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    * Field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *   Mapping.
    */
   protected static function licenceFieldAliases() {
     // Mapping alias - field name.

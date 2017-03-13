@@ -32,9 +32,9 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
    * Constructs the event object.
    *
    * @param \Drupal\Core\Entity\EntityManager $entity_manager
-   *    The entity manager service.
+   *   The entity manager service.
    * @param \Drupal\joinup_notification\NotificationSenderService $notification_sender
-   *    The message notify sender service.
+   *   The message notify sender service.
    */
   public function __construct(EntityManager $entity_manager, NotificationSenderService $notification_sender) {
     $this->entityManager = $entity_manager;

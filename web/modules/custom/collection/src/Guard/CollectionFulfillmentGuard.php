@@ -60,9 +60,9 @@ class CollectionFulfillmentGuard implements GuardInterface {
    * Instantiates a CollectionFulfillmentGuard service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *    The WorkflowUserProvider service.
+   *   The WorkflowUserProvider service.
    * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
-   *    The WorkflowUserProvider service.
+   *   The WorkflowUserProvider service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
@@ -113,21 +113,15 @@ class CollectionFulfillmentGuard implements GuardInterface {
    * Retrieve the initial state value of the entity.
    *
    * @param \Drupal\rdf_entity\RdfInterface $entity
-   *    The collection entity.
+   *   The collection entity.
    *
    * @return string
-   *    The machine name value of the state.
+   *   The machine name value of the state.
    *
    * @see https://www.drupal.org/node/2745673
    */
   protected function getState(RdfInterface $entity) {
-    if ($entity->isNew()) {
-      return $entity->field_ar_state->first()->value;
-    }
-    else {
-      $unchanged_entity = $this->entityTypeManager->getStorage('rdf_entity')->loadUnchanged($entity->id());
-      return $unchanged_entity->field_ar_state->first()->value;
-    }
+    return $entity->field_ar_state->first()->value;
   }
 
 }

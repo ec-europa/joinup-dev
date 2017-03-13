@@ -202,7 +202,7 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
    * Returns all child links of the current page's link in the ogmenu.
    *
    * @return \Drupal\menu_link_content\Entity\MenuLinkContent[]
-   *    An array of menu links.
+   *   An array of menu links.
    */
   protected function getChildLinks() {
     $links = $this->menuLinkManager->loadLinksByRoute($this->currentRouteMatch->getRouteName(), $this->currentRouteMatch->getRawParameters()->all(), 'ogmenu-' . $this->ogMenuInstance->id());

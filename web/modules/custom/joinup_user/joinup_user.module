@@ -5,10 +5,10 @@
  * Main functions and hook implementations of the Joinup user module.
  */
 
-use \Drupal\Core\Form\FormStateInterface;
-use \Drupal\Core\Session\AccountInterface;
-use \Drupal\Component\Render\PlainTextOutput;
-use \Drupal\user\UserInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Component\Render\PlainTextOutput;
+use Drupal\user\UserInterface;
 
 /**
  * Implements hook_ENTITY_TYPE_update().

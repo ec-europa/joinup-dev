@@ -77,7 +77,7 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
    * Get database connection options.
    *
    * @return array
-   *    Database connection options.
+   *   Database connection options.
    */
   public function getDatabase() {
     return $this->data['database'];
@@ -87,7 +87,7 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
    * Return amount of queries ran.
    *
    * @return int
-   *    Number of queries.
+   *   Number of queries.
    */
   public function getQueryCount() {
     return count($this->data['queries']);
