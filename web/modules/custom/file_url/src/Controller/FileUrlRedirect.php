@@ -24,7 +24,7 @@ class FileUrlRedirect extends ControllerBase {
    *   The redirect object.
    */
   public function redirectToFile(FileInterface $file) {
-    $url = $file->toUrl();
+    $url = $file->toUrl()->toString();
     return new RedirectResponse($url);
   }
 
