@@ -435,8 +435,8 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
 function joinup_theme_preprocess_user__group_header(&$variables) {
   // Create customizable 'member for' field.
   // It creates a timespan without label and with lower granularity.
-  $member_for = \Drupal::service('date.formatter')->formatTimeDiffSince($variables['user']->getCreatedTime(), ['granularity' => 1]);
-  $variables['member_for'] = $member_for;
+  $variables['member_for'] = \Drupal::service('date.formatter')->formatTimeDiffSince($variables['user']->getCreatedTime(), ['granularity' => 1]);
+  $variables['full_name'] = $variables['user']->get('full_name')->value;
 }
 
 /**
