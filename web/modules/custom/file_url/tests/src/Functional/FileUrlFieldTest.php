@@ -166,7 +166,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
    * @return int
    *   The rdf entity id.
    */
-  public function uploadFileUrl(FileInterface $file, $field_name, $id, array $extras = []) {
+  protected function uploadFileUrl(FileInterface $file, $field_name, $id, array $extras = []) {
     $rdf_entity = $this->getRdfEntity($id, $extras);
     $select = 'file';
     $file_uri = $this->fileSystem->realpath($file->getFileUri());
@@ -190,7 +190,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
    * @return int
    *   The rdf entity id.
    */
-  public function setRemoteFile($uri, $field_name, $id, array $extras = []) {
+  protected function setRemoteFile($uri, $field_name, $id, array $extras = []) {
     $rdf_entity = $this->getRdfEntity($id, $extras);
     $select = 'remote-file';
     $field_html_name = "{$field_name}[0][file-wrap][remote-file]";
