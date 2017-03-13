@@ -780,4 +780,23 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
   }
 
+  /**
+   * Asserts that a whole region is not present in the page.
+   *
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when the region is found in the page.
+   *
+   * @Then I should not see the :region region
+   */
+  public function assertRegionNotPresent($region) {
+    $session = $this->getSession();
+    $regionObj = $session->getPage()->find('region', $region);
+    if ($regionObj) {
+      throw new \Exception(sprintf('Region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+    }
+  }
+
 }
