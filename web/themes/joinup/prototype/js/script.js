@@ -6,7 +6,7 @@
 var loadMore = loadMore || {};
 
  function itemWidth() {
-   var itemsCounter = $('.listing--load-more').children('.listing__item').length;
+   var itemsCounter = $('.listing--load-more .row .mdl-grid').children('.listing__item').length;
 
    switch (itemsCounter % 3) {
      case 0:
