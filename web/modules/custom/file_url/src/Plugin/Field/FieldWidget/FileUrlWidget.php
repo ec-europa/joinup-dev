@@ -283,6 +283,11 @@ class FileUrlWidget extends FileWidget {
         }
       }
     }
+    // If no file is stored yet, select the first option by default.
+    else {
+      reset($element['file-wrap']['select']['#options']);
+      $element['file-wrap']['select']['#default_value'] = key($element['file-wrap']['select']['#options']);
+    }
 
     $default_fids = $element['file-wrap']['file']['#default_value']['fids'];
     if (empty($default_fids)) {
