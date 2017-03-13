@@ -28,6 +28,7 @@ default:
         Left sidebar: '.section--sidebar-left'
         Navigation menu block: '#block-navigation'
         Navigation menu: 'div.navigation-menu ul'
+        Page title: 'div.page__title-wrapper'
         Plus button menu: 'div.add-content-menu ul'
         Primary menu: '.region-primary-menu'
         Subpages menu: '.block-menu-sub-pages'
