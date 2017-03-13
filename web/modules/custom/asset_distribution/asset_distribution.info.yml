@@ -5,19 +5,23 @@ core: 8.x
 package: Joinup
 dependencies:
   - datetime
+  - digital_size_formatter
   - joinup_core
   - link
   - rdf_entity
+  - file_url
   - text
 
 config_devel:
   - core.entity_form_display.rdf_entity.asset_distribution.default
   - core.entity_view_display.rdf_entity.asset_distribution.default
+  - core.entity_view_display.rdf_entity.asset_distribution.compact
+  - core.entity_view_display.rdf_entity.asset_distribution.view_mode_featured
+  - core.entity_view_display.rdf_entity.asset_distribution.view_mode_tile
   - field.field.rdf_entity.asset_distribution.field_ad_access_url
   - field.field.rdf_entity.asset_distribution.field_ad_creation_date
   - field.field.rdf_entity.asset_distribution.field_ad_description
   - field.field.rdf_entity.asset_distribution.field_ad_file_size
-  - field.field.rdf_entity.asset_distribution.field_ad_file
   - field.field.rdf_entity.asset_distribution.field_ad_format
   - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
   - field.field.rdf_entity.asset_distribution.field_ad_licence
@@ -29,7 +33,6 @@ config_devel:
   - field.storage.rdf_entity.field_ad_creation_date
   - field.storage.rdf_entity.field_ad_description
   - field.storage.rdf_entity.field_ad_file_size
-  - field.storage.rdf_entity.field_ad_file
   - field.storage.rdf_entity.field_ad_format
   - field.storage.rdf_entity.field_ad_gitb_compliant
   - field.storage.rdf_entity.field_ad_licence

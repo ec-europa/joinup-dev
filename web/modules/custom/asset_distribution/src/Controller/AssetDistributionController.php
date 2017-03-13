@@ -3,9 +3,10 @@
 namespace Drupal\asset_distribution\Controller;
 
 use Drupal\asset_distribution\AssetDistributionRelations;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\OgAccessInterface;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AssetDistributionController extends ControllerBase {
 
   /**
-   * Drupal\asset_distribution\AssetDistributionRelations definition.
+   * The asset distribution relation manager.
    *
    * @var \Drupal\asset_distribution\AssetDistributionRelations
    */
@@ -55,11 +56,11 @@ class AssetDistributionController extends ControllerBase {
    * Controller for the base form.
    *
    * We need to override the functionality of the create form for pages
-   * that include the rdf_entity id in the url so that the the asset release
-   * refers to this asset distribution.
+   * that include the rdf_entity id in the url so that the asset release or the
+   * solution refers to this asset distribution.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The asset release rdf entity.
+   *   The asset release or solution rdf entity.
    *
    * @return array
    *   Return the form array to be rendered.
@@ -67,17 +68,15 @@ class AssetDistributionController extends ControllerBase {
   public function add(RdfInterface $rdf_entity) {
     $distribution = $this->createNewAssetDistribution($rdf_entity);
 
-    /** @var \Drupal\Core\Form\FormBuilderInterface $form_builder */
-    $form = $this->entityFormBuilder()->getForm($distribution);
-
-    return $form;
+    return $this->entityFormBuilder()->getForm($distribution);
   }
 
   /**
-   * Handles access to the distribution add form through solution pages.
+   * Handles access to the distribution add form.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The asset release RDF entity for which the distribution is created.
+   *   The asset release or solution RDF entity for which the distribution
+   *   is created.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
@@ -86,24 +85,37 @@ class AssetDistributionController extends ControllerBase {
     // Create a new distribution entity in order to check permissions on it.
     $distribution = $this->createNewAssetDistribution($rdf_entity);
 
+    // If the distribution entity isn't created correctly, forbid access to the
+    // page.
+    if (!$distribution) {
+      return AccessResult::forbidden();
+    }
+
     return $this->ogAccess->userAccessEntity('create', $distribution);
   }
 
   /**
    * Creates a new asset_distribution entity.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $asset_release
-   *   The asset release that the distribution is associated with.
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The RDF entity that the distribution is associated with. Can be either an
+   *   'asset_release' or a 'solution'.
    *
    * @return \Drupal\Core\Entity\EntityInterface
    *   The unsaved asset_distribution entity.
    */
-  protected function createNewAssetDistribution(RdfInterface $asset_release) {
-    $solution = $this->assetDistributionRelations->getReleaseSolution($asset_release);
+  protected function createNewAssetDistribution(RdfInterface $rdf_entity) {
+    $solution = $rdf_entity->bundle() === 'solution' ? $rdf_entity : $this->assetDistributionRelations->getReleaseSolution($rdf_entity);
+
+    // A solution is needed to create a distribution. If the rdf entity
+    // parameter is neither a solution or a release, the variable will be empty.
+    if (empty($solution)) {
+      return NULL;
+    }
 
     return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'asset_distribution',
-      OgGroupAudienceHelper::DEFAULT_FIELD => $solution->id(),
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $solution->id(),
     ]);
   }
 

@@ -1,0 +1,43 @@
+field.formatter.third_party.joinup:
+  type: mapping
+  label: 'Theme settings for Joinup project.'
+  mapping:
+    template_suggestion:
+      type: string
+
+field.formatter.settings.image_url_formatter:
+  type: mapping
+  label: 'Image field display format settings'
+  mapping:
+    image_link:
+      type: string
+      label: 'Link image to'
+    image_style:
+      type: string
+      label: 'Image style'
+
+field.widget.settings.current_workflow_state_widget:
+  type: mapping
+  label: 'Field widget format settings for the current workflow state field.'
+  mapping:
+    title:
+      type: string
+      label: 'The title to use for the field widget.'
+    title_display:
+      type: string
+      label: 'The setting that determines how the field widget title is displayed.'
+
+field.widget.settings.state_machine_buttons:
+  type: mapping
+  label: 'Theme settings for Joinup project.'
+  mapping:
+    use_transition_label:
+      type: integer
+
+facet.widget.config.type:
+  type: facet.widget.default_config
+  label: 'Search API content listing'
+  mapping:
+    tabs:
+      type: integer
+      label: 'Number of tabs'

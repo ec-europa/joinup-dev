@@ -2,32 +2,22 @@
 # --------------------
 
 # The project name.
-project.name = joinup
+project.name = myproject
 
 # The install profile to use.
-website.profile.name = ${project.name}
+website.profile.name = standard
 
 # The site name.
-website.site.name = Joinup
+website.site.name = MyDrupalProject
 
-# The site type ( Infrastructure stack )
-infra.type = ${project.name}
-
-# SQL database settings.
+# Database settings.
 drupal.db.type = mysql
-drupal.db.name = db_name
-drupal.db.user = db_user
-drupal.db.password = db_pass
+drupal.db.name = ${project.name}
+drupal.db.user = root
+drupal.db.password =
 drupal.db.host = 127.0.0.1
 drupal.db.port = 3306
 drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${drupal.db.name}
-
-# SPARQL database settings.
-sparql.host = localhost
-sparql.port = 8890
-sparql.dsn = localhost
-sparql.user = dba
-sparql.password = dba
 
 # Admin user.
 drupal.admin.username = admin
@@ -37,7 +27,7 @@ drupal.admin.email = admin@example.com
 # Comma-separated list of demo users to create. The username and password will
 # be taken from the role. A normal authenticated user with username and password
 # 'user' will also be created.
-drupal.demo.users = administrator, moderator
+drupal.demo.users = administrator
 
 # The base URL. This is used for doing functional tests in Behat and PHPUnit.
 drupal.base_url = http://localhost
@@ -49,13 +39,10 @@ drupal.base_url = http://localhost
 # Paths to executables.
 composer.bin = ${project.basedir}/vendor/bin/composer
 drush.bin = ${project.basedir}/vendor/bin/drush
-isql.bin = /usr/bin/isql-vt
 phing.bin = ${project.basedir}/vendor/bin/phing
-solr.bin = ${project.basedir}/vendor/bin/solr
 
 # Files and directories inside the Drupal installation.
-documentroot.path = web
-website.drupal.dir = ${project.basedir}/${documentroot.path}
+website.drupal.dir = ${project.basedir}/web
 
 website.sites.dir = ${website.drupal.dir}/sites
 website.site.dir = ${website.drupal.sites.dir}/all
@@ -69,12 +56,6 @@ website.files.dir = ${website.settings.dir}/files
 website.modules.dir = ${website.drupal.dir}/modules
 website.profiles.dir = ${website.drupal.dir}/profiles
 website.themes.dir = ${website.drupal.dir}/themes
-
-# Composer related paths.
-composer.json = ${project.basedir}/composer.json
-
-# Temporary files.
-tmp.dir = ${project.basedir}/tmp
 
 
 # Behat configuration
@@ -95,8 +76,14 @@ behat.yml.path = ${behat.dir}/behat.yml
 # The base URL to use in Behat tests.
 behat.base_url = ${drupal.base_url}
 
-# The URL of the webdriver host (PhantomJS or Selenium):
-behat.webdriver_url = http://localhost:4444/wd/hub
+# The browser to use for testing, either 'firefox' or 'chrome'.
+behat.browser_name = chrome
+
+# The port of the webdriver host (e.g. Selenium or PhantomJS).
+behat.webdriver_port = 4444
+
+# The URL of the webdriver host (e.g. Selenium or PhantomJS).
+behat.webdriver_url = http://localhost:${behat.webdriver_port}/wd/hub
 
 # The location to search for Behat subcontexts.
 behat.subcontexts.path = ${website.modules.dir}
@@ -106,14 +93,6 @@ behat.formatter.name = progress
 
 # The location of the test files.
 behat.files.path = ${behat.dir}/fixtures/files
-
-# Enable strict mode in Behat tests. Will only pass if all tests are explicitly
-# passing.
-behat.options.strict = false
-
-# Set verbosity for Behat tests. 0 is completely silent, 1 is normal output, 2
-# shows exception backtraces, 3 shows debugging information.
-behat.options.verbosity = 2
 
 
 # PHP CodeSniffer configuration
@@ -184,31 +163,11 @@ phpunit.base_url = ${drupal.base_url}
 # The database URL to use in kernel tests and functional tests.
 phpunit.db_url = ${drupal.db.url}
 
+# The path to the directory where HTML output from browsertests is stored.
+phpunit.browsertest_output_dir = ${website.sites.dir}/simpletest/browser_output
 
-# Apache Solr configuration
-# -------------------------
-
-# Apache Solr version to use.
-solr.version = 6.1.0
-
-# Filename of the download.
-solr.tarball.filename = solr-${solr.version}.tgz
-
-# Download URL.
-solr.download.url = http://www-eu.apache.org/dist/lucene/solr/${solr.version}/${solr.tarball.filename}
-
-# Installation path.
-solr.vendor.dir = ${project.basedir}/vendor/apache
-solr.dir = ${solr.vendor.dir}/solr-${solr.version}
-
-# Search API configuration path.
-solr.config.dir = ${website.modules.dir}/contrib/search_api_solr/solr-conf/6.x
-
-# The name of our Solr core.
-solr.core = drupal
-
-# The path to the data files of our Solr core.
-solr.core.dir = ${solr.dir}/server/solr/${solr.core}
+# The path to the file that lists HTML output from browsertests.
+phpunit.browsertest_output_file = ${phpunit.browsertest_output_dir}/outputfile.txt
 
 
 # Development options
@@ -217,25 +176,5 @@ solr.core.dir = ${solr.dir}/server/solr/${solr.core}
 # Development modules to enable.
 drupal.modules.dev = config_update field_ui menu_ui views_ui
 
-# Modules to enable for doing user acceptance testing.
-drupal.modules.uat = demo_content
-
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = no
-
-
-# AWS SDK
-# -------
-aws.profile = default
-aws.region = eu-west-1
-
-
-# AWS CodeDeploy
-# --------------
-deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
-
-
-# Packer configuration
-# --------------------
-packer.path = /usr/bin/env packer
-application.name = ${project.name}

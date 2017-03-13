@@ -5,8 +5,16 @@
  * Main functions and hook implementations of the Joinup core module.
  */
 
-use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
+use Drupal\og\Og;
 
 /**
  * Implements hook_theme().
@@ -29,7 +37,7 @@ function joinup_core_theme($existing, $type, $theme, $path) {
  *   - view: The view object.
  *   - rows: An array of row items. Each row is an array of content.
  */
-function template_preprocess_joinup_tiles(&$variables) {
+function template_preprocess_joinup_tiles(array &$variables) {
   template_preprocess_views_view_unformatted($variables);
 }
 
@@ -51,7 +59,17 @@ function joinup_core_field_widget_form_alter(&$element, FormStateInterface $form
   if ($fieldType != 'state' || empty($form_state->getBuildInfo()['callback_object'])) {
     return;
   }
-  $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
+
+  $form = $context['form'];
+  // Inline entity forms have the related entity directly in the form, as the
+  // form state is the one of the main form.
+  if (isset($form['#type']) && $form['#type'] === 'inline_entity_form') {
+    $entity = $form['#entity'];
+  }
+  else {
+    $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
+  }
+
   if (!($entity instanceof ContentEntityInterface)) {
     return;
   }
@@ -69,5 +87,122 @@ function joinup_core_field_widget_form_alter(&$element, FormStateInterface $form
     // Re-set a default because otherwise the 'empty' value will be available.
     $default_value = array_keys($allowed_transitions);
     $element['#default_value'] = reset($default_value);
+  }
+}
+
+/**
+ * Implements hook_entity_graph_access().
+ *
+ * The same procedure as the global access check is followed here. The purpose
+ * is to override the results of the global access check if the user has the
+ * appropriate OG permissions.
+ *
+ * @todo: hook api definition is needed.
+ */
+function joinup_core_entity_graph_access(EntityInterface $entity, $operation, AccountInterface $account, $graph_name) {
+  if (!$entity || (!in_array($entity->bundle(), ['collection', 'solution'])) || $operation != 'view' || $graph_name == 'default') {
+    return AccessResult::neutral();
+  }
+
+  $membership = Og::getMembership($entity, $account);
+  if (empty($membership)) {
+    return AccessResult::neutral();
+  }
+
+  // Following the same logic as the global access check.
+  $map = ['view' => 'view all graphs'];
+  $entity_type_id = $entity->getEntityTypeId();
+  $type_map = ['view' => "view $entity_type_id $graph_name graph"];
+
+  // If the operation is not supported, do not allow access.
+  if (!isset($map[$operation]) || !isset($type_map[$operation])) {
+    return FALSE;
+  }
+
+  $has_permission = $membership->hasPermission($map[$operation]) || $membership->hasPermission($type_map[$operation]);
+  return $has_permission ? AccessResult::allowed() : AccessResult::neutral();
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function joinup_core_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  // @todo: when all bundles are in, remove the first check.
+  if (!in_array($entity->bundle(), ['document', 'discussion', 'news'])) {
+    return AccessResult::neutral();
+  }
+  return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($entity, $operation, $account);
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ *
+ * Provides a base field that displays the current workflow state on nodes and
+ * RDF entities. This field is intended to be used on edit forms which use the
+ * set of buttons to perform the workflow state transitions. When these buttons
+ * are used the current workflow state is not indicated, so this field can be
+ * used to expose this information.
+ */
+function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'rdf_entity' || $entity_type->id() === 'node') {
+    $fields['current_workflow_state'] = BaseFieldDefinition::create('current_workflow_state')
+      ->setLabel(new TranslatableMarkup('Current workflow state'))
+      ->setDisplayOptions('form', ['type' => 'hidden'])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setComputed(TRUE);
+
+    return $fields;
+  }
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_core_entity_type_alter(array &$entity_types) {
+  // Provides a workaround for asset_release and solution RDF entity bundles.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
+  // @todo Remove when ISAICP-3126 gets in.
+  $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_storage_load().
+ *
+ * Fill $term->extension and $term->mime_type fields from 'file_type' vocabulary
+ * by a direct query as, due to their RDF representation, this cannot be done by
+ * a simple RDF field mapping. Because we do this at storage level, the values
+ * get cached in the 'cache_entity' bin, avoiding performance issues.
+ */
+function joinup_core_taxonomy_term_storage_load(array $terms) {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
+  $sparql = \Drupal::service('sparql_endpoint');
+
+  $query = <<<QUERY
+SELECT ?extension ?mime_type
+WHERE {
+  <%s> <http://publications.europa.eu/ontology/authority/op-mapped-code> ?op_extension .
+  ?op_extension <http://purl.org/dc/elements/1.1/source> "file-extension" .
+  ?op_extension <http://publications.europa.eu/ontology/authority/legacy-code> ?extension .
+  <%s> <http://publications.europa.eu/ontology/authority/op-mapped-code> ?op_mime_type .
+  ?op_mime_type <http://purl.org/dc/elements/1.1/source> "manifestation-type-cellar" .
+  ?op_mime_type <http://publications.europa.eu/ontology/authority/legacy-code> ?mime_type .
+}
+QUERY;
+
+  /** @var \Drupal\taxonomy\TermInterface[] $terms */
+  foreach ($terms as $term) {
+    if ($term->bundle() === 'file_type') {
+      $term_id = $term->id();
+      $results = $sparql->query(sprintf($query, $term_id, $term_id));
+      if ($results->count()) {
+        $result = &$results[0];
+        // A file type might have more than one extension separated by space.
+        $extensions = array_filter(explode(' ', trim($result->extension->getValue())));
+        foreach ($extensions as $extension) {
+          $term->get('extension')->appendItem(['value' => $extension]);
+        }
+        $term->set('mime_type', trim($result->mime_type->getValue()));
+      }
+    }
   }
 }

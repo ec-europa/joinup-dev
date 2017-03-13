@@ -4,4 +4,4 @@ dependencies: {  }
 id: html_yearless_date
 label: 'HTML Yearless date'
 locked: true
-pattern: d-m
+pattern: m-d

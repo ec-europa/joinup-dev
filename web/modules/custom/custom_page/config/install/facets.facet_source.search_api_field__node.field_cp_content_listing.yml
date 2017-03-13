@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: search_api_field__node.field_cp_content_listing
+name: 'search_api_field:node.field_cp_content_listing'
+filter_key: null
+url_processor: query_string

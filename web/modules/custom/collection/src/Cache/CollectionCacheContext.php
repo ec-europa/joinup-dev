@@ -53,7 +53,7 @@ class CollectionCacheContext extends ContainerAware implements CacheContextInter
    * {@inheritdoc}
    */
   public function getCacheableMetadata() {
-    $meta_data = CacheableMetadata();
+    $meta_data = new CacheableMetadata();
     $meta_data->setCacheMaxAge(0);
     return $meta_data;
   }

@@ -1,0 +1,28 @@
+id: prepare
+label: 'Prepare'
+source:
+  plugin: prepare
+  track_changes: true
+process:
+  collection: collection
+  type: type
+  nid: nid
+  policy: policy
+  policy2: policy2
+  abstract: abstract
+  logo: logo
+  banner: banner
+  elibrary: elibrary
+  publisher: publisher
+  contact: contact
+  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068.
+  # status: status
+  roles: roles
+destination:
+  plugin: prepare
+  fast_rollback: true
+  fast_rollback_batch_size: 0
+migration_dependencies:
+ required:
+   - user
+   - mapping

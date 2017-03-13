@@ -1,0 +1,43 @@
+langcode: en
+status: true
+dependencies: {  }
+id: moderator
+label: Moderator
+weight: 3
+is_admin: false
+permissions:
+  - 'access contextual links'
+  - 'access toolbar'
+  - 'access user profiles'
+  - 'administer comments'
+  - 'administer group'
+  - 'administer nodes'
+  - 'administer search fields'
+  - 'administer users'
+  - 'administer views'
+  - 'create asset_distribution rdf entity'
+  - 'create asset_release rdf entity'
+  - 'create custom collection page'
+  - 'create discussion content'
+  - 'create document content'
+  - 'create licence rdf entity'
+  - 'create rdf entity news'
+  - 'create solution releases'
+  - 'delete any document content'
+  - 'delete contact_information rdf entity'
+  - 'delete licence rdf entity'
+  - 'delete owner rdf entity'
+  - 'edit any custom_page content'
+  - 'edit any discussion content'
+  - 'edit contact_information rdf entity'
+  - 'edit licence rdf entity'
+  - 'edit own document content'
+  - 'edit owner rdf entity'
+  - 'moderate entity parents'
+  - 'propose solution rdf entity'
+  - 'skip comment approval'
+  - 'view any unpublished content'
+  - 'view licence overview page'
+  - 'view rdf_entity draft graph'
+  - 'view rdf entity overview'
+  - 'view unpublished rdf entity'

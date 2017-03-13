@@ -3,10 +3,16 @@ status: true
 dependencies: {  }
 third_party_settings:
   rdf_entity:
-    mapping_rid:
-      target_id: 'http://www.w3.org/2006/vcard/ns#Kind'
-    mapping_label:
-      value: 'http://purl.org/dc/terms/title'
+    mapping:
+      rid:
+        target_id: 'http://www.w3.org/2006/vcard/ns#Kind'
+      uid:
+        target_id: 'http://joinup.eu/owner/uid'
+      label:
+        value: 'http://purl.org/dc/terms/title'
+    graph:
+      default: 'http://joinup.eu/contact-information/published'
+      draft: 'http://joinup.eu/contact-information/draft'
 name: 'Contact information'
 rid: contact_information
 description: ''

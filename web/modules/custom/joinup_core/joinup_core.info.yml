@@ -2,27 +2,55 @@ name: Joinup core
 type: module
 description: Contains field storage configuration.
 core: 8.x
-package: Custom
+package: Joinup
 
 dependencies:
+  - facets
+  - comment
+  - ds
+  - image
   - og
+  - rdf_draft
   - rdf_entity
   - rdf_taxonomy
+  - message
+  - message_notify
+  - search_api
+  - search_api_solr
+  - state_machine
 
 config_devel:
-  - field.storage.node.field_spatial_coverage
-  - field.storage.node.field_topic
+  - comment.type.comment
+  - core.entity_form_display.comment.comment.default
+  - core.entity_form_mode.rdf_entity.inline
+  - core.entity_view_display.comment.comment.default
+  - core.entity_view_mode.node.view_mode_tile
+  - core.entity_view_mode.rdf_entity.group_header
+  - core.entity_view_mode.rdf_entity.view_mode_featured
+  - core.entity_view_mode.rdf_entity.view_mode_tile
+  - field.field.comment.comment.field_body
+  - field.field.taxonomy_term.file_type.extension
+  - field.field.taxonomy_term.file_type.mime_type
+  - field.storage.comment.field_body
+  - field.storage.node.og_audience
   - field.storage.rdf_entity.field_keywords
   - field.storage.rdf_entity.field_policy_domain
   - field.storage.rdf_entity.field_spatial_coverage
   - field.storage.rdf_entity.field_status
   - field.storage.rdf_entity.field_topic
   - field.storage.rdf_entity.og_audience
+  - field.storage.taxonomy_term.extension
+  - field.storage.taxonomy_term.mime_type
+  - image.style.banner
+  - rdf_draft.settings
   - taxonomy.vocabulary.eira
   - taxonomy.vocabulary.eurovoc
+  - taxonomy.vocabulary.file_type
+  - taxonomy.vocabulary.language
   - taxonomy.vocabulary.licence_type
+  - taxonomy.vocabulary.owner_type
   - taxonomy.vocabulary.policy_domain
+  - taxonomy.vocabulary.representation_technique
   - taxonomy.vocabulary.spatial
   - taxonomy.vocabulary.status
   - taxonomy.vocabulary.themes
-  - taxonomy.vocabulary.language

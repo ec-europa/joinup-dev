@@ -5,7 +5,8 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_value: 'vcard:fn'
+    mapping:
+      value: 'http://www.w3.org/2006/vcard/ns#fn'
 id: rdf_entity.field_ci_name
 field_name: field_ci_name
 entity_type: rdf_entity

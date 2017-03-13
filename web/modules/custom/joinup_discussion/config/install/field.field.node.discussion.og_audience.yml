@@ -5,6 +5,7 @@ dependencies:
     - field.storage.node.og_audience
     - node.type.discussion
     - rdf_entity.rdfentity.collection
+    - rdf_entity.rdfentity.solution
   module:
     - og
 id: node.discussion.og_audience
@@ -25,6 +26,5 @@ settings:
       solution: solution
     sort:
       field: _none
-    target_type: rdf_entity
   access_override: false
 field_type: og_standard_reference

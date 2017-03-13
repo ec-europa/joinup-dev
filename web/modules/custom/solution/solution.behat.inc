@@ -14,8 +14,9 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -31,6 +32,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use RandomGeneratorTrait;
   use RdfEntityTrait;
   use WorkflowTrait;
+  use UtilityTrait;
 
   /**
    * Test solutions.
@@ -92,7 +94,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Fields title, description and elibrary creation are mandatory.
    *
-   * @param TableNode $solution_table
+   * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
    *
    * @throws \Exception
@@ -138,7 +140,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Fields title, description and elibrary creation are required.
    *
-   * @param TableNode $solution_table
+   * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
    *
    * @throws \Exception
@@ -176,17 +178,21 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @param string $bundle
    *   The bundle of the content entity.
-   * @param TableNode $membership_table
+   * @param \Behat\Gherkin\Node\TableNode $membership_table
    *   The membership table.
    *
    * @Given (the following ):bundle content belong to the corresponding solutions:
    */
   public function givenContentMemberships($bundle, TableNode $membership_table) {
+    // As each given step is executed in the same request
+    // we need to reset the mapping.
+    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage->getGraphHandler()->resetRequestGraphs();
     foreach ($membership_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
       $content = $this->getNodeByTitle($values['content'], $bundle);
-      $content->get(OgGroupAudienceHelper::DEFAULT_FIELD)->set(0, $group->id());
+      $content->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->set(0, $group->id());
       $content->save();
     }
   }
@@ -198,9 +204,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * a facilitator.
    *
    * @param string $username
-   *    The name of the user.
+   *   The name of the user.
    * @param string $solution
-   *    The label of the group entity.
+   *   The label of the group entity.
    *
    * @throws \Exception
    *    Throws an exception when the user is not found.
@@ -343,33 +349,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Checks the number of available releases.
-   *
-   * @param int $number
-   *   The expected number of releases.
-   *
-   * @throws \Exception
-   *   Thrown when the number of release entities do not
-   *   match the expectation.
-   *
-   * @Then I should have :number release(s)
-   */
-  public function assertReleaseCount($number) {
-    // We cannot rely on $this->assertRdfEntityCount() because a release shares
-    // the same bundle with a solution. We need to distinguish them by the
-    // presence of the 'is_version_of' field - if this field is missing it is a
-    // solution, if it is present it is a release.
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'asset_release')
-      ->exists('field_isr_is_version_of')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
-    }
-  }
-
-  /**
    * Subscribes the given users to the given solution.
    *
    * The role Id of organic group roles are consisting of 3 parts, the entity
@@ -382,13 +361,13 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * | Sample solution A | John | facilitator, administrator |
    * | Sample solution B | Jack |                            |
    *
-   * @param TableNode $membership_table
+   * @param \Behat\Gherkin\Node\TableNode $membership_table
    *   The membership table.
    *
    * @throws \Exception
    *   Thrown when a solution is not found.
    *
-   * @Given (the following )solution user memberships:
+   * @Given (the following )solution user membership(s):
    */
   public function givenSolutionUserMemberships(TableNode $membership_table) {
     foreach ($membership_table->getColumnsHash() as $values) {
@@ -404,7 +383,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       // Convert role names to role IDs.
       $roles = [];
       if (!empty($values['roles'])) {
-        $roles = $this->getOgRoles(explode(', ', $values['roles']), $group);
+        $role_names = $this->explodeCommaSeparatedStepArgument($values['roles']);
+        // Every owner is also a facilitator. In Joinup the facilitator role is
+        // assigned to the owner when they create the solution. Since in this
+        // step the solutions are already created, mimick this behaviour by
+        // making sure every owner also has the 'facilitator' role.
+        if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
+          $role_names[] = 'facilitator';
+        }
+        $roles = $this->getOgRoles($role_names, $group);
       }
 
       $this->subscribeUserToGroup($member, $group, $roles);
@@ -417,6 +404,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @AfterScenario
    */
   public function cleanSolutions() {
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    $storage = \Drupal::service('entity_type.manager')->getStorage('rdf_entity');
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
       $solution->delete();
@@ -427,7 +416,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *   Mapping.
    */
   protected static function solutionFieldAliases() {
     // Mapping alias - field name.
@@ -439,7 +428,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'contact information' => 'field_is_contact_information',
       'creation date' => 'field_is_creation_date',
       'description' => 'field_is_description',
-      'distribution' => 'field_is_distribution',
       'documentation' => 'field_is_documentation',
       'elibrary creation' => 'field_is_elibrary_creation',
       'keywords' => 'field_keywords',
@@ -451,6 +439,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'moderation' => 'field_is_moderation',
       'modification date' => 'field_is_modification_date',
       'owner' => 'field_is_owner',
+      'policy domain' => 'field_policy_domain',
       'related solutions' => 'field_is_related_solutions',
       'solution type' => 'field_is_solution_type',
       'source code repository' => 'field_is_source_code_repository',
@@ -462,7 +451,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
       'state' => 'field_is_state',
-      'collection' => OgGroupAudienceHelper::DEFAULT_FIELD,
+      'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
     ];
   }
 
@@ -470,15 +459,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Converts values from user friendly to normal machine values.
    *
    * @param array $fields
-   *    An array of fields keyed by field name.
+   *   An array of fields keyed by field name.
    *
    * @return mixed
-   *    The array with the values converted.
+   *   The array with the values converted.
    *
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
-  protected function convertValueAliases($fields) {
+  protected function convertValueAliases(array $fields) {
     $mapped_values = [
       'field_is_moderation' => ['no' => 0, 'yes' => 1],
       'field_is_elibrary_creation' =>
@@ -512,13 +501,17 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * | Solution A | John | Status1          |
    * | Solution B | Jack | Status1, Status2 |
    *
-   * @param TableNode $check_table
+   * @param \Behat\Gherkin\Node\TableNode $check_table
    *   The table with the triplets solution-user-options.
    *
    * @throws \Exception
    *    Thrown when the user does not exist.
    *
-   * @Given for the following solution, the corresponding user should have the corresponding (available )options:
+   * @todo: Maybe there is a better definition available here like 'The
+   * following state buttons should be available for the user on the
+   * collection'.
+   *
+   * @Given for the following solution, the corresponding user should have the corresponding (available )state buttons:
    */
   public function verifyWorkflowStates(TableNode $check_table) {
     foreach ($check_table->getColumnsHash() as $values) {
@@ -532,10 +525,42 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
 
       // Convert states to an array.
-      $states = empty($values['states']) ? [] : explode(', ', $values['states']);
+      $states = empty($values['states']) ? [] : explode(',', $values['states']);
+      $states = array_map('trim', $states);
 
-      $this->assertAvailableStates($solution, $user, $states);
+      $this->assertAvailableTransitions($solution, $states, $user);
     }
+  }
+
+  /**
+   * Applies a transition to a solution.
+   *
+   * @param string $username
+   *   The username applying the transition.
+   * @param string $entity_name
+   *   The title of the solution.
+   * @param string $to_state
+   *   The state that the solution transits to.
+   *
+   * @throws \Exception
+   *    An exception is thrown if the user is not found or the transition is not
+   *    allowed for this user.
+   *
+   * @Given the user :username changes the state of the :entity_name solution to :to_state
+   */
+  public function applySolutionWorkflowTransition($username, $entity_name, $to_state) {
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      throw new \Exception("User {$username} was not found.");
+    }
+    $solution = $this->getSolutionByName($entity_name);
+    $available_states = $this->getAvailableStates($solution, $user);
+    if (($transition_id = array_search($to_state, $available_states)) === FALSE) {
+      throw new \Exception("The given user does not have permission to apply the specific transition.");
+    }
+    $transition = $solution->get('field_is_state')->first()->getWorkflow()->getTransition($transition_id);
+    $solution->get('field_is_state')->first()->applyTransition($transition);
+    $solution->save();
   }
 
 }

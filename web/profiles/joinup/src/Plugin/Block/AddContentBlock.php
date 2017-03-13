@@ -53,6 +53,8 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
    *   The collection context.
    * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $solution_context
    *   The solution context.
+   * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $asset_release_context
+   *   The asset release route context service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextProviderInterface $collection_context, ContextProviderInterface $solution_context, ContextProviderInterface $asset_release_context) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -108,7 +110,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           '#type' => 'link',
           '#title' => $this->t('Add custom page'),
           '#url' => $page_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
+          '#attributes' => ['class' => ['circle-menu__link']],
         ];
       }
 
@@ -120,33 +122,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           '#type' => 'link',
           '#title' => $this->t('Add solution'),
           '#url' => $solution_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
-        ];
-      }
-
-      // 'Add discussion' link.
-      $discussion_url = Url::fromRoute('joinup_discussion.rdf_entity_discussion.add', [
-        'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
-      ]);
-      if ($discussion_url->access()) {
-        $links['discussion'] = [
-          '#type' => 'link',
-          '#title' => $this->t('Add discussion'),
-          '#url' => $discussion_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
-        ];
-      }
-
-      // 'Add event' link.
-      $event_url = Url::fromRoute('joinup_event.rdf_entity_event.add', [
-        'rdf_entity' => $collection_contexts['og']->getContextValue()->id(),
-      ]);
-      if ($event_url->access()) {
-        $links['event'] = [
-          '#type' => 'link',
-          '#title' => $this->t('Add event'),
-          '#url' => $event_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
+          '#attributes' => ['class' => ['circle-menu__link']],
         ];
       }
     }
@@ -154,8 +130,9 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     /** @var \Drupal\Core\Plugin\Context\Context[] $solution_contexts */
     $solution_contexts = $this->solutionContext->getRuntimeContexts(['solution']);
     if ($solution_contexts && $solution_contexts['solution']->hasContextValue()) {
+      $solution_context_value_id = $solution_contexts['solution']->getContextValue()->id();
       $release_url = Url::fromRoute('asset_release.solution_asset_release.add', [
-        'rdf_entity' => $solution_contexts['solution']->getContextValue()->id(),
+        'rdf_entity' => $solution_context_value_id,
       ]);
 
       if ($release_url->access()) {
@@ -163,7 +140,19 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
           '#type' => 'link',
           '#title' => $this->t('Add release'),
           '#url' => $release_url,
-          '#attributes' => ['class' => ['button', 'button--small']],
+          '#attributes' => ['class' => ['circle-menu__link']],
+        ];
+      }
+
+      $distribution_url = Url::fromRoute('asset_distribution.asset_release_asset_distribution.add', [
+        'rdf_entity' => $solution_context_value_id,
+      ]);
+      if ($distribution_url->access()) {
+        $links['asset_distribution'] = [
+          '#type' => 'link',
+          '#title' => $this->t('Add distribution'),
+          '#url' => $distribution_url,
+          '#attributes' => ['class' => ['circle-menu__link']],
         ];
       }
     }
@@ -179,6 +168,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
         $id = $solution_contexts['solution']->getContextValue()->id();
       }
       if ($id) {
+        // 'Add news' link.
         $news_url = Url::fromRoute('joinup_news.rdf_entity_news.add', [
           'rdf_entity' => $id,
         ]);
@@ -187,7 +177,20 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
             '#type' => 'link',
             '#title' => $this->t('Add news'),
             '#url' => $news_url,
-            '#attributes' => ['class' => ['button', 'button--small']],
+            '#attributes' => ['class' => ['circle-menu__link']],
+          ];
+        }
+
+        // 'Add discussion' link.
+        $discussion_url = Url::fromRoute('joinup_discussion.rdf_entity_discussion.add', [
+          'rdf_entity' => $id,
+        ]);
+        if ($discussion_url->access()) {
+          $links['discussion'] = [
+            '#type' => 'link',
+            '#title' => $this->t('Add discussion'),
+            '#url' => $discussion_url,
+            '#attributes' => ['class' => ['circle-menu__link']],
           ];
         }
 
@@ -200,7 +203,20 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
             '#type' => 'link',
             '#title' => $this->t('Add document'),
             '#url' => $document_url,
-            '#attributes' => ['class' => ['button', 'button--small']],
+            '#attributes' => ['class' => ['circle-menu__link']],
+          ];
+        }
+
+        // 'Add event' link.
+        $event_url = Url::fromRoute('joinup_event.rdf_entity_event.add', [
+          'rdf_entity' => $id,
+        ]);
+        if ($event_url->access()) {
+          $links['event'] = [
+            '#type' => 'link',
+            '#title' => $this->t('Add event'),
+            '#url' => $event_url,
+            '#attributes' => ['class' => ['circle-menu__link']],
           ];
         }
       }
@@ -218,7 +234,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
             '#type' => 'link',
             '#title' => $this->t('Add distribution'),
             '#url' => $distribution_url,
-            '#attributes' => ['class' => ['button', 'button--small']],
+            '#attributes' => ['class' => ['circle-menu__link']],
           ];
         }
       }
@@ -241,12 +257,22 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     foreach ($links as $key => $link) {
       $link += [
         '#type' => 'link',
-        '#attributes' => ['class' => ['button', 'button--small']],
+        '#attributes' => ['class' => ['circle-menu__link']],
       ];
       $build['#items'][$key] = $link;
     }
 
     return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @todo: Temporary workaround for wrong caching.
+   * @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3133
+   */
+  public function getCacheMaxAge() {
+    return 0;
   }
 
   /**
@@ -258,27 +284,16 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // Normally cache contexts are added automatically but these links depend on
     // an optional context which we manage ourselves.
     return Cache::mergeContexts($context, [
-      // @todo Change 'user' to the OG Roles per group type cache context when
-      //   this exists.
-      // @see https://github.com/amitaibu/og/issues/219
-      'user',
-      'user.roles',
-      'collection',
+      // We vary by the RDF entity type that is in the current context (asset
+      // release, collection or solution) because the options shown in the menu
+      // are different for each of these bundles.
       'asset_release',
-      'solution',
-      'url.path',
+      'og_group_context',
+      // We vary by OG role since a non-member is not allowed to add content.
+      'og_role',
+      // We vary by user role since a moderator has the ability to add licenses.
+      'user.roles',
     ]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheTags() {
-    // @todo: This is a temporary workaround for the lack of og cache
-    // contexts/tags. Remove this when Og provides proper cache context and
-    // instead add the proper context to the getCacheContexts method.
-    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2628
-    return Cache::mergeContexts(parent::getCacheTags(), ['user.roles']);
   }
 
 }

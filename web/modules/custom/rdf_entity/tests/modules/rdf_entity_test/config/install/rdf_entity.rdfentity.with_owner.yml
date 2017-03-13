@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings:
+  rdf_entity:
+    mapping:
+      rid:
+        target_id: 'http://example.com/dummy_with_owner'
+      uid:
+        target_id: 'http://example.com/dummy_with_owner/uid'
+      label:
+        value: 'http://example.com/dummy_with_owner_label'
+      uuid:
+        value: ''
+      graph:
+        value: ''
+    graph:
+      default: 'http://example.com/dummy/published'
+      draft: 'http://example.com/dummy/draft'
+name: 'With Owner'
+rid: with_owner
+description: ''

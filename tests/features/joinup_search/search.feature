@@ -4,9 +4,9 @@ Feature: Global search
 
   Scenario: Anonymous user can find items
     Given the following solutions:
-      | title          | description                                                                                                                        |
-      | Spherification | Spherification is the culinary process of shaping a liquid into spheres                                                            |
-      | Foam           | The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams |
+      | title          | description                                                                                                                        | state     |
+      | Spherification | Spherification is the culinary process of shaping a liquid into spheres                                                            | validated |
+      | Foam           | The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams | validated |
       # Taxonomies are not yet implemented, so uncomment this after #ISAICP-2545 is done
       # | spatial coverage | http://publications.europa.eu/resource/authority/country/EUR            |
     And the following collection:
@@ -14,10 +14,10 @@ Feature: Global search
       | logo       | logo.png                     |
       | moderation | no                           |
       | affiliates | Spherification, Foam         |
+      | state      | validated                    |
     And news content:
-      | title                 | body             | collection                   |
-      | El Celler de Can Roca | The best in town | Molecular cooking collection |
-    And I commit the solr index
+      | title                 | body             | collection                   | status    |
+      | El Celler de Can Roca | The best in town | Molecular cooking collection | published |
 
     Given I am logged in as a user with the "authenticated" role
     When I am at "/search"

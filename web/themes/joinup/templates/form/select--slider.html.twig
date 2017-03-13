@@ -11,25 +11,27 @@
  */
 #}
 {% spaceless %}
-  <div class="slider__labels">
-    {% for option in options %}
-      {% if option.type == 'option' %}
-        <div class="slider__label">{{ option.label }}</div>
-      {% endif %}
-    {% endfor %}
-  </div>
+  <div class="slider">
+    <div class="slider__labels">
+      {% for option in options %}
+        {% if option.type == 'option' %}
+          <div class="slider__label">{{ option.label }}</div>
+        {% endif %}
+      {% endfor %}
+    </div>
 
-  <select{{ attributes.addClass('slider__select') }}>
-    {% for option in options %}
-      {% if option.type == 'optgroup' %}
-        <optgroup label="{{ option.label }}">
-          {% for sub_option in option.options %}
-            <option value="{{ sub_option.value }}"{{ sub_option.selected ? ' selected="selected"' }}>{{ sub_option.label }}</option>
-          {% endfor %}
-        </optgroup>
-      {% elseif option.type == 'option' %}
-        <option value="{{ option.value }}"{{ option.selected ? ' selected="selected"' }}>{{ option.label }}</option>
-      {% endif %}
-    {% endfor %}
-  </select>
+    <select{{ attributes.addClass('slider__select') }}>
+      {% for option in options %}
+        {% if option.type == 'optgroup' %}
+          <optgroup label="{{ option.label }}">
+            {% for sub_option in option.options %}
+              <option value="{{ sub_option.value }}"{{ sub_option.selected ? ' selected="selected"' }}>{{ sub_option.label }}</option>
+            {% endfor %}
+          </optgroup>
+        {% elseif option.type == 'option' %}
+          <option value="{{ option.value }}"{{ option.selected ? ' selected="selected"' }}>{{ option.label }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+  </div>
 {% endspaceless %}

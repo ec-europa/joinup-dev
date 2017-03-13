@@ -10,7 +10,7 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_professional_profile
+    - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_subscription_events
     - image.style.thumbnail
   module:
@@ -70,7 +70,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-  field_user_professional_profile:
+  field_user_business_title:
     weight: 6
     settings:
       rows: 5

@@ -1,0 +1,25 @@
+id: licence
+label: 'Licence'
+migration_tags:
+  - distribution
+  - licence
+source:
+  plugin: licence
+  track_changes: true
+process:
+  id: uri
+  label: title
+  field_licence_description/value: body
+  field_licence_description/format:
+    plugin: default_value
+    default_value: content_editor
+  field_licence_type:
+    plugin: term_reference
+    source: type
+    vocabulary: licence_type
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: licence
+migration_dependencies:
+ required:
+   - prepare

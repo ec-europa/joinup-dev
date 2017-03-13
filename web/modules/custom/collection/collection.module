@@ -5,19 +5,20 @@
  * Main functions and hook implementations of the Collection module.
  */
 
-use Drupal\Core\Cache\Cache;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\views\Views;
+use Drupal\search_api\Query\QueryInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -52,7 +53,7 @@ function collection_entity_insert(EntityInterface $entity) {
   if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && $entity->bundle() === 'collection') {
     $values = [
       'type' => 'navigation',
-      OgGroupAudienceHelper::DEFAULT_FIELD => $entity->id(),
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $entity->id(),
     ];
     $og_menu_instance = OgMenuInstance::create($values);
     $og_menu_instance->save();
@@ -81,24 +82,89 @@ function collection_entity_insert(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_entity_update().
+ * Implements hook_ENTITY_TYPE_access().
  *
- * Invalidate the og_content cache tag of the groups this entity belongs to.
+ * Interrupts the permissions for updating a collection. The permission is not
+ * granted if there are no transitions allowed for the current state of the
+ * node.
  */
-function collection_entity_update(EntityInterface $entity) {
-  // @todo Fix cache invalidating.
-  // @see ISAICP-2475.
-  if (TRUE) {
+function collection_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->bundle() != 'collection' || $account->isAnonymous() || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
+    return AccessResult::neutral();
+  }
+
+  switch ($operation) {
+    case 'view':
+      $membership = Og::getMembership($entity, $account);
+      if (empty($membership)) {
+        return AccessResult::neutral();
+      }
+      if (!$entity->isPublished() && $membership->hasPermission('view unpublished rdf entity')) {
+        return AccessResult::allowed();
+      }
+      if ($entity->isPublished() && $membership->hasPermission('view rdf entity')) {
+        return AccessResult::allowed();
+      }
+      break;
+
+    case 'edit':
+      $allowed_transitions = $entity->field_ar_state->first()->getTransitions();
+      return AccessResult::forbiddenIf(empty($allowed_transitions));
+
+    default:
+      break;
+
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Default graph is published. Draft graph is draft.
+ */
+function collection_rdf_entity_presave(EntityInterface $entity) {
+  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
+  if (empty($enabled_bundles) || $entity->bundle() != 'collection' || !in_array($entity->bundle(), $enabled_bundles)) {
     return;
   }
-  $entity_type_id = $entity->getEntityTypeId();
-  $bundle = $entity->bundle();
-  if (Og::isGroupContent($entity_type_id, $bundle)) {
-    foreach (Og::getGroupIds($entity) as $entity_type => $ids) {
-      foreach ($ids as $id) {
-        Cache::invalidateTags(['og_group_content:' . $id]);
-      }
-    }
+
+  $state = $entity->field_ar_state->value;
+  if (in_array($state, ['draft', 'proposed'])) {
+    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
+  }
+  elseif (in_array($state, [
+    'validated',
+    'archival_request',
+    'deletion_request',
+    'archived',
+  ])) {
+    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
+  }
+  elseif (empty($state)) {
+    throw new \Exception("State field not found while trying to get the appropriate graph.");
+  }
+  else {
+    throw new \Exception("State field value is invalid. Current value found: " . $state);
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ *
+ * Performs the following actions:
+ * - Invalidates group content cache tags for the entity that is being changed.
+ * - When the entity is saved into the default graph, the draft must be deleted.
+ */
+function collection_entity_update(EntityInterface $entity) {
+  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
+  if (empty($enabled_bundles) || $entity->bundle() != 'collection' || !in_array($entity->bundle(), $enabled_bundles)) {
+    return;
+  }
+
+  if ($entity->field_ar_state->value === 'validated') {
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
   }
 }
 
@@ -122,13 +188,13 @@ function collection_module_implements_alter(&$implementations, $hook) {
  */
 function collection_entity_extra_field_info() {
   $fields = [];
-  // Create a 'collection content' field, available on the collection display.
   $collection = RdfEntityType::load('collection');
-  $fields['rdf_entity'][$collection->id()]['display']['collection_content'] = [
-    'label' => t('Collection content'),
-    'description' => t('Content in this collection'),
-    'weight' => 100,
-    'visible' => TRUE,
+  // Add the join/leave collection form as field.
+  // @todo will be removed in ISAICP-2743
+  $fields['rdf_entity'][$collection->id()]['display']['join_collection'] = [
+    'label' => t('Join collection'),
+    'description' => t('Shows the join/leave collection form'),
+    'visible' => FALSE,
   ];
 
   return $fields;
@@ -137,27 +203,25 @@ function collection_entity_extra_field_info() {
 /**
  * Implements hook_ENTITY_TYPE_view().
  *
- * Attach the 'collection content' as a field to the collection entity.
+ * Populates the extra field 'join_collection'.
  */
 function collection_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if (!$display->getComponent('collection_content')) {
+  if ($entity->bundle() != 'collection') {
     return;
   }
-  $view_name = 'collection_content';
-  $display_id = 'default';
-  $view = Views::getView($view_name);
-  if (!$view || !$view->access($display_id)) {
-    return;
+
+  if ($display->getComponent('join_collection')) {
+    $build['join_collection'] = [
+      '#lazy_builder' => [
+        'collection.lazy_builders:renderJoinCollectionForm',
+        [$entity->id()],
+      ],
+      '#create_placeholder' => TRUE,
+      // This form varies by the role a user has inside the collection. Set the
+      // applicable cache context.
+      '#cache' => ['contexts' => ['og_role']],
+    ];
   }
-  $build['collection_content'] = [
-    '#type' => 'view',
-    '#name' => $view_name,
-    '#display_id' => $display_id,
-    '#arguments' => [
-      // Use the entity id as a contextual filter.
-      $entity->id(),
-    ],
-  ];
 }
 
 /**
@@ -168,4 +232,25 @@ function collection_field_widget_form_alter(&$element, FormStateInterface $form_
   if ($field_name == 'field_ar_closed') {
     $element['#attached']['library'][] = 'collection/collection_form';
   }
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ *
+ * Alters the Search API queries for the collection content on the collection
+ * homepage:
+ * - Only show content related to the collection.
+ * - Do not show the collection itself in the search results.
+ */
+function collection_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $query->getOption('search_api_field entity');
+
+  // Show only content that is related to this collection through the aggregated
+  // field. This makes sure that other related entities (such as the collection
+  // owner) do not show up as collection content tiles.
+  $query->addCondition('entity_groups', [$entity->id()], 'IN');
+
+  // Remove the collection itself from the results.
+  $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
 }

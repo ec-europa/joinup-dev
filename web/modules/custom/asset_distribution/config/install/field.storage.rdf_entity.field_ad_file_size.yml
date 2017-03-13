@@ -5,12 +5,15 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_value: 'schema:fileSize'
+    mapping:
+      value: 'https://schema.org/fileSize'
 id: rdf_entity.field_ad_file_size
 field_name: field_ad_file_size
 entity_type: rdf_entity
-type: float
-settings: {  }
+type: integer
+settings:
+  unsigned: false
+  size: big
 module: core
 locked: false
 cardinality: 1

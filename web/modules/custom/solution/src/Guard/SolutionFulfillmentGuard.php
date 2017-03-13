@@ -2,7 +2,10 @@
 
 namespace Drupal\solution\Guard;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\WorkflowUserProvider;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
@@ -23,6 +26,13 @@ class SolutionFulfillmentGuard implements GuardInterface {
   const NON_STATE = '__new__';
 
   /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Holds the workflow user object needed for the checks.
    *
    * This will almost always return the logged in users but in case a check is
@@ -30,16 +40,39 @@ class SolutionFulfillmentGuard implements GuardInterface {
    *
    * @var \Drupal\joinup_core\WorkflowUserProvider
    */
-  private $workflowUserProvider;
+  protected $workflowUserProvider;
+
+  /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * The current logged in user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
 
   /**
    * Instantiates a SolutionFulfillmentGuard service.
    *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
-   *    The WorkflowUserProvider service.
+   *   The workflow user provider service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory service.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current logged in user.
    */
-  public function __construct(WorkflowUserProvider $workflow_user_provider) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider, ConfigFactoryInterface $config_factory, AccountInterface $current_user) {
+    $this->entityTypeManager = $entity_type_manager;
     $this->workflowUserProvider = $workflow_user_provider;
+    $this->configFactory = $config_factory;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -58,7 +91,11 @@ class SolutionFulfillmentGuard implements GuardInterface {
     // for the transitions defined in the settings if they include a role the
     // user has.
     // @see: solution.settings.yml
-    $allowed_conditions = \Drupal::config('solution.settings')->get('transitions');
+    $allowed_conditions = $this->configFactory->get('solution.settings')->get('transitions');
+
+    if ($this->currentUser->hasPermission('bypass node access')) {
+      return TRUE;
+    }
 
     // Check if the user has one of the allowed system roles.
     $authorized_roles = isset($allowed_conditions[$to_state][$from_state]) ? $allowed_conditions[$to_state][$from_state] : [];
@@ -76,21 +113,15 @@ class SolutionFulfillmentGuard implements GuardInterface {
    * Retrieve the initial state value of the entity.
    *
    * @param \Drupal\rdf_entity\RdfInterface $entity
-   *    The solution entity.
+   *   The solution entity.
    *
    * @return string
-   *    The machine name value of the state.
+   *   The machine name value of the state.
    *
    * @see https://www.drupal.org/node/2745673
    */
   protected function getState(RdfInterface $entity) {
-    if ($entity->isNew()) {
-      return $entity->field_is_state->first()->value;
-    }
-    else {
-      $unchanged_entity = \Drupal::entityTypeManager()->getStorage('rdf_entity')->loadUnchanged($entity->id());
-      return $unchanged_entity->field_is_state->first()->value;
-    }
+    return $entity->field_is_state->first()->value;
   }
 
 }

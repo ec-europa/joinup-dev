@@ -3,8 +3,6 @@
 namespace Drupal\collection\Form;
 
 use Drupal\Component\Serialization\Json;
-use Drupal\Core\Cache\Cache;
-use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -36,6 +34,8 @@ class JoinCollectionForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, AccountProxyInterface $user = NULL, RdfInterface $collection = NULL) {
+    $form['#access'] = $this->access();
+
     $user = User::load($user->id());
     $form['collection_id'] = [
       '#type' => 'hidden',
@@ -63,7 +63,6 @@ class JoinCollectionForm extends FormBase {
             'use-ajax',
             'button',
             'button--small',
-            'button--default',
             'button--blue-light',
             'mdl-button',
             'mdl-js-button',
@@ -83,7 +82,7 @@ class JoinCollectionForm extends FormBase {
       $form['join'] = [
         '#attributes' => [
           'class' => [
-            'button--default',
+            'button',
             'button--blue-light',
             'mdl-button',
             'mdl-js-button',
@@ -97,12 +96,6 @@ class JoinCollectionForm extends FormBase {
       ];
     }
 
-    // This form varies by user and collection.
-    $metadata = new CacheableMetadata();
-    $metadata
-      ->merge(CacheableMetadata::createFromObject($user))
-      ->merge(CacheableMetadata::createFromObject($collection))
-      ->applyTo($form);
     return $form;
   }
 
@@ -134,7 +127,7 @@ class JoinCollectionForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    /** @var RdfInterface $collection */
+    /** @var \Drupal\rdf_entity\Entity\RdfInterface $collection */
     $collection = Rdf::load($form_state->getValue('collection_id'));
     /** @var \Drupal\user\UserInterface $user */
     $user = User::load($form_state->getValue('user_id'));
@@ -151,11 +144,16 @@ class JoinCollectionForm extends FormBase {
     drupal_set_message($this->t('You are now a member of %collection.', [
       '%collection' => $collection->getName(),
     ]));
+  }
 
-    // @todo: This is a temporary workaround for the lack of og cache
-    // contexts/tags. Remove this when Og provides proper cache context.
-    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2628
-    Cache::invalidateTags(['user.roles']);
+  /**
+   * Access check for the form.
+   *
+   * @return bool
+   *   True if the form can be access, false otherwise.
+   */
+  public function access() {
+    return $this->currentUser()->isAuthenticated() && $this->getRouteMatch()->getRouteName() !== 'collection.leave_confirm_form';
   }
 
 }

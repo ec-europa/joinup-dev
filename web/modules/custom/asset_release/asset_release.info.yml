@@ -1,6 +1,6 @@
-name: Interoperability AssetRelease
+name: Release
 type: module
-description: The interoperability asset_release RDF entity.
+description: The release RDF entity.
 core: 8.x
 package: Joinup
 
@@ -8,26 +8,31 @@ dependencies:
   - contact_information
   - datetime
   - ds
+  - file_url
   - image
   - inline_entity_form
   - joinup_core
+  - joinup_user
   - link
   - og
   - options
   - owner
   - rdf_entity
+  - state_machine
   - text
 
 config_devel:
   - core.entity_form_display.rdf_entity.asset_release.default
+  - core.entity_view_display.rdf_entity.asset_release.compact
   - core.entity_view_display.rdf_entity.asset_release.default
+  - core.entity_view_display.rdf_entity.asset_release.view_mode_featured
+  - core.entity_view_display.rdf_entity.asset_release.view_mode_tile
   - field.field.rdf_entity.asset_release.field_isr_banner
   - field.field.rdf_entity.asset_release.field_isr_contact_information
   - field.field.rdf_entity.asset_release.field_isr_creation_date
   - field.field.rdf_entity.asset_release.field_isr_description
   - field.field.rdf_entity.asset_release.field_isr_distribution
   - field.field.rdf_entity.asset_release.field_isr_documentation
-  - field.field.rdf_entity.asset_release.field_isr_has_version
   - field.field.rdf_entity.asset_release.field_isr_included_asset
   - field.field.rdf_entity.asset_release.field_isr_is_version_of
   - field.field.rdf_entity.asset_release.field_keywords
@@ -40,6 +45,7 @@ config_devel:
   - field.field.rdf_entity.asset_release.field_isr_release_notes
   - field.field.rdf_entity.asset_release.field_isr_related_solutions
   - field.field.rdf_entity.asset_release.field_isr_solution_type
+  - field.field.rdf_entity.asset_release.field_isr_state
   - field.field.rdf_entity.asset_release.field_spatial_coverage
   - field.field.rdf_entity.asset_release.field_status
   - field.field.rdf_entity.asset_release.field_isr_translation
@@ -49,7 +55,6 @@ config_devel:
   - field.storage.rdf_entity.field_isr_description
   - field.storage.rdf_entity.field_isr_distribution
   - field.storage.rdf_entity.field_isr_documentation
-  - field.storage.rdf_entity.field_isr_has_version
   - field.storage.rdf_entity.field_isr_included_asset
   - field.storage.rdf_entity.field_isr_is_version_of
   - field.storage.rdf_entity.field_isr_language
@@ -60,5 +65,6 @@ config_devel:
   - field.storage.rdf_entity.field_isr_release_notes
   - field.storage.rdf_entity.field_isr_related_solutions
   - field.storage.rdf_entity.field_isr_solution_type
+  - field.storage.rdf_entity.field_isr_state
   - field.storage.rdf_entity.field_isr_translation
   - rdf_entity.rdfentity.asset_release

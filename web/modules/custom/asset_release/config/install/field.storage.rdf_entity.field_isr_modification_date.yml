@@ -6,7 +6,8 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_value: 'http://purl.org/dc/terms/modified'
+    mapping:
+      value: 'http://purl.org/dc/terms/modified'
 id: rdf_entity.field_isr_modification_date
 field_name: field_isr_modification_date
 entity_type: rdf_entity

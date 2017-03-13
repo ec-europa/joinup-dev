@@ -1,0 +1,54 @@
+# The workflow of the discussion entity.
+node:discussion:post_moderated:
+  id: post_moderated
+  label: "Post moderated"
+  group: discussion
+  states:
+    # The state used as initial.
+    __new__:
+      label: New
+    # State used to flag content that is being reviewed.
+    in_assessment:
+      label: In assessment
+    proposed:
+      label: Proposed
+    validated:
+      label: Validated
+      published: true
+    archived:
+      label: Archived
+      published: true
+  transitions:
+    validate:
+      label: Publish
+      from: [__new__]
+      to: validated
+    update_published:
+      label: Update
+      from: [validated]
+      to: validated
+    request_changes:
+      label: Request changes
+      from: [validated]
+      to: proposed
+    report:
+      label: Report
+      from: [validated]
+      to: in_assessment
+    approve_report:
+      label: Approve report
+      from: [in_assessment]
+      to: proposed
+    update_proposed:
+      label: Update proposed
+      from: [proposed]
+      to: proposed
+    # Approve the proposed version and publish it.
+    approve_proposed:
+      label: Approve proposed
+      from: [proposed]
+      to: validated
+    disable:
+      label: Disable
+      from: [validated]
+      to: archived

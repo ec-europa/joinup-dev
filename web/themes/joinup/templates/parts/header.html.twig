@@ -1,34 +1,31 @@
-<div class="container-fluid">
-  <div class="region region--header mdl-layout__header-row">
+<header class="section section--header" role="banner">
+  <div class="mdl-layout__header-row">
     <a href="{{ base_path }}" class="header-logo mdl-layout-title" title="Home">
       <img src="{{ base_path ~ directory }}/images/logo.png">
     </a>
     <div class="mdl-layout-spacer"></div>
 
-    {{ page.header_central_menu }}
+    {{ page.header_central_menu.joinup_theme_main_menu }}
 
     <div class="mdl-layout-spacer"></div>
     <div class="search-bar search-bar--header mdl-textfield mdl-js-textfield mdl-textfield--expandable
     mdl-textfield--floating-label mdl-textfield--align-right">
-      <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon"
-      for="search-bar__input">
-        <span class="search-bar__icon icon icon--search"></span>
-      </label>
-      {# @todo Create search form - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2637 #}
-      <form action="{{ path("view.search.page_1") }}" class="search-bar__input-container mdl-textfield__expandable-holder">
-        <input class="search-bar__input mdl-textfield__input" type="text" name="q"
-        id="search-bar__input">
-      </form>
-    </div>
-
-      {{ page.header_profile_menu }}
-
-  </div>
+    <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon"
+    for="search-bar__input">
+    <span class="search-bar__icon icon icon--search"></span>
+  </label>
+  {# @todo Create search form - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2637 #}
+  <form action="{{ path("view.search.page_1") }}" class="search-bar__input-container mdl-textfield__expandable-holder">
+    <input class="search-bar__input mdl-textfield__input" type="text" name="q"
+    id="search-bar__input">
+  </form>
 </div>
+
+{{ page.header_profile_menu }}
+
+</div>
+{{ page.header }}
+</header>
 <div class="mdl-layout__drawer">
-  <nav class="mdl-navigation">
-    <a class="mdl-navigation__link" href="">Solutions</a>
-    <a class="mdl-navigation__link" href="/collections">Collections</a>
-    <a class="mdl-navigation__link" href="">Events</a>
-  </nav>
+  {{ page.header_central_menu.joinup_theme_main_menu_mobile }}
 </div>

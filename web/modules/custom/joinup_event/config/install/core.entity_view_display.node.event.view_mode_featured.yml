@@ -1,0 +1,107 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_featured
+    - field.field.node.event.body
+    - field.field.node.event.field_comments
+    - field.field.node.event.field_event_adtl_address_info
+    - field.field.node.event.field_event_agenda
+    - field.field.node.event.field_event_contact_email
+    - field.field.node.event.field_event_end_date
+    - field.field.node.event.field_event_logo
+    - field.field.node.event.field_event_start_date
+    - field.field.node.event.field_event_web_url
+    - field.field.node.event.field_keywords
+    - field.field.node.event.field_location
+    - field.field.node.event.field_organisation
+    - field.field.node.event.field_organisation_type
+    - field.field.node.event.field_policy_domain
+    - field.field.node.event.field_scope
+    - field.field.node.event.field_short_title
+    - field.field.node.event.field_state
+    - field.field.node.event.og_audience
+    - image.style.vertical_medium_image
+    - node.type.event
+  module:
+    - datetime
+    - ds
+    - image
+    - text
+    - user
+id: node.event.view_mode_featured
+targetEntityType: node
+bundle: event
+mode: view_mode_featured
+content:
+  body:
+    type: text_trimmed
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: 50
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    region: content
+  field_event_logo:
+    weight: 1
+    label: hidden
+    settings:
+      image_style: vertical_medium_image
+      image_link: content
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: image
+    region: content
+  field_event_start_date:
+    weight: 3
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: date_only
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: datetime_default
+    region: content
+  field_short_title:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  field_comments: true
+  field_event_adtl_address_info: true
+  field_event_agenda: true
+  field_event_contact_email: true
+  field_event_end_date: true
+  field_event_web_url: true
+  field_keywords: true
+  field_location: true
+  field_organisation: true
+  field_organisation_type: true
+  field_policy_domain: true
+  field_scope: true
+  field_state: true
+  links: true
+  og_audience: true

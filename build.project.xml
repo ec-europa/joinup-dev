@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="Joinup" default="help">
+
+    <!-- Import Phing targets related to the D6 migration. -->
+    <import file="${project.basedir}/build.migration.xml" optional="true" />
+
+    <!-- Import Phing targets related to ContinuousPHP. -->
+    <import file="${project.basedir}/build.continuousphp.xml" optional="true" />
+
+    <!-- Import Phing targets related to Apache Solr. -->
+    <import file="${project.basedir}/build.solr.xml" optional="true" />
+
+    <echo msg="Loading Behat task." />
+    <taskdef name="behat" classname="BehatTask" />
+
+    <echo msg="Loading Remove Patched Packages task." />
+    <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
+
+    <echo msg="Loading Virtuoso Sparql Permissions task." />
+    <taskdef name="setvirtuososparqlpermissions" classname="\DrupalProject\Phing\SetVirtuosoSparqlPermissions" />
+
+    <echo msg="Loading Import RDF fixtures task." />
+    <taskdef name="importrdffixtures" classname="\DrupalProject\Phing\ImportRdfFixtures" />
+
+    <echo msg="Loading After Import RDF fixtures task." />
+    <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup" />
+
+    <!-- Install the website. -->
+    <target name="install" depends="writable-settings-folder, writable-settings-php">
+        <drush
+            command="site-install"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <option name="db-url" value="${drupal.db.url}" />
+            <option name="site-name" value="${website.site.name}" />
+            <option name="account-name" value="${drupal.admin.username}" />
+            <option name="account-pass" value="${drupal.admin.password}" />
+            <option name="account-mail" value="${drupal.admin.email}" />
+            <param>${website.profile.name}</param>
+            <!-- Disable sending of e-mails during installation. -->
+            <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
+            <param>install_settings_form.sparql.host=${sparql.host}</param>
+            <param>install_settings_form.sparql.port=${sparql.port}</param>
+        </drush>
+    </target>
+
+    <target name="setup-virtuoso-permissions">
+        <setvirtuososparqlpermissions
+            IsqlPath="${isql.bin}"
+            DataSourceName="${sparql.dsn}"
+            Username="${sparql.user}"
+            Password="${sparql.password}" />
+    </target>
+
+    <target name="import-rdf-fixtures">
+        <importrdffixtures
+            IsqlPath="${isql.bin}"
+            DataSourceName="${sparql.dsn}"
+            Username="${sparql.user}"
+            Password="${sparql.password}"
+            SharedDirectory="${sparql.shareddirectory}" />
+
+        <afterrdffixturesimport
+            IsqlPath="${isql.bin}"
+            DataSourceName="${sparql.dsn}"
+            Username="${sparql.user}"
+            Password="${sparql.password}" />
+    </target>
+
+    <!-- Set up PHPUnit. -->
+    <target name="setup-phpunit" description="Generate the configuration file for PHPUnit.">
+        <if>
+            <available file="${phpunit.config}" type="file" property="phpunit.config.available" />
+            <then>
+                <echo message="Deleting existing PHPUnit configuration file." />
+                <delete file="${phpunit.config}" failonerror="false" />
+            </then>
+        </if>
+        <phpunitconfiguration
+                configFile="${phpunit.config}"
+                distFile="${phpunit.dist}"
+                files="${phpunit.files}"
+                directories="${phpunit.directories}"
+                testsuiteName="${phpunit.testsuite.name}"
+                baseUrl="${phpunit.base_url}"
+                dbUrl="${phpunit.db_url}"
+                sparqlUrl="${phpunit.sparql_url}"
+                browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
+                browsertestOutputFile="${phpunit.browsertest_output_file}" />
+
+        <!-- Create the directory and file for browsertest output. -->
+        <mkdir dir="${phpunit.browsertest_output_dir}" />
+        <touch file="${phpunit.browsertest_output_file}" />
+    </target>
+
+    <!-- Enable modules for user acceptance testing. These are different from the
+      ones in enable-dev-modules as it can contain modules not needed for development
+      like demo content modules. -->
+    <target name="enable-uat-modules">
+        <foreach list="${drupal.modules.uat}" param="module" target="enable-module" delimiter=" " />
+    </target>
+
+    <target name="purge-rdf-content">
+        <drush
+            command="rdf-entity-purge"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+        </drush>
+    </target>
+
+    <!-- Compile SASS to CSS. -->
+    <target name="compile-sass"
+            description="Compile the SASS to CSS.">
+        <!-- Make sure the CSS directory exists. -->
+        <mkdir dir="${sass.output.dir}" />
+        <sass
+            executable="${sass.bin}"
+            style="${sass.style}"
+            input="${sass.input}"
+            output="${sass.output.dir}/${sass.output.file}" />
+    </target>
+
+    <target
+        name="build-dist"
+        description="Build a distribution package."
+        depends="compile-sass" />
+
+    <target
+        name="build-dev"
+        description="Build a development environment."
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, compile-sass" />
+
+    <target
+        name="setup-acceptance"
+        description="Set up an acceptance environment."
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures" />
+
+    <target
+        name="install-dev"
+        description="Install the website and set up the development environment."
+        depends="setup-virtuoso-permissions, install, purge-rdf-content, import-rdf-fixtures, setup-dev, create-demo-users" />
+
+</project>

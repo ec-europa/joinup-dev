@@ -3,7 +3,9 @@ groups:
   rdf_entity:
     - collection
     - solution
-node_access_strict: true
-use_queue: null
+node_access_strict: false
 delete_orphans: true
 delete_orphans_plugin_id: simple
+group_resolvers:
+  - route_group
+  - route_group_content

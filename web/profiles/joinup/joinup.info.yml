@@ -18,15 +18,19 @@ dependencies:
   - ds
   - dynamic_page_cache
   - editor
+  - field_group
   - file
   - help
   - image
   - inline_entity_form
+  - joinup_core
   - joinup_discussion
   - joinup_document
   - joinup_event
   - joinup_licence
   - joinup_news
+  - joinup_newsletter
+  - joinup_notification
   - joinup_search
   - joinup_subscription
   - joinup_user
@@ -39,6 +43,7 @@ dependencies:
   - page_cache
   - path
   - r4032login
+  - rdf_draft
   - rdf_entity
   - rdf_export
   - rdf_taxonomy
@@ -46,8 +51,10 @@ dependencies:
   - search_api_db
   - solution
   - state_machine
+  - state_machine_revisions
   - text
   - toolbar
+  - user
   - view_unpublished
   - views
 
@@ -57,10 +64,9 @@ themes:
 
 config_devel:
   - block.block.addcontent
-  - block.block.joincollectionblock
+  - block.block.groupheader
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
-  - block.block.joinup_theme_collectioncontent
   - block.block.joinup_theme_content
   - block.block.joinup_theme_footer
   - block.block.joinup_theme_help
@@ -93,9 +99,11 @@ config_devel:
   - core.date_format.html_week
   - core.date_format.html_year
   - core.date_format.html_yearless_date
+  - core.date_format.date_only
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
+  - core.date_format.date_only_text_month
   - core.entity_form_display.ogmenu_instance.navigation.default
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
@@ -104,9 +112,14 @@ config_devel:
   - core.entity_form_mode.rdf_entity.propose
   - core.entity_form_mode.user.register
   - core.entity_view_display.ogmenu_instance.navigation.default
+  - core.entity_view_display.user.user.compact
   - core.entity_view_display.user.user.default
+  - core.entity_view_display.user.user.view_mode_featured
+  - core.entity_view_display.user.user.view_mode_tile
   - core.entity_view_mode.node.full
   - core.entity_view_mode.user.full
+  - core.entity_view_mode.user.view_mode_featured
+  - core.entity_view_mode.user.view_mode_tile
   - ds.settings
   - editor.editor.content_editor
   - field.field.ogmenu_instance.navigation.og_audience
@@ -116,9 +129,8 @@ config_devel:
   - field.field.user.user.field_user_organisation
   - field.field.user.user.field_user_photo
   - field.field.user.user.field_user_professional_domain
-  - field.field.user.user.field_user_professional_profile
+  - field.field.user.user.field_user_business_title
   - field.storage.node.body
-  - field.storage.node.og_audience
   - field.storage.ogmenu_instance.og_audience
   - field.storage.user.field_user_family_name
   - field.storage.user.field_user_first_name
@@ -126,29 +138,22 @@ config_devel:
   - field.storage.user.field_user_organisation
   - field.storage.user.field_user_photo
   - field.storage.user.field_user_professional_domain
-  - field.storage.user.field_user_professional_profile
+  - field.storage.user.field_user_business_title
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
-  - image.style.banner
   - image.style.profile_icon
-  - og.og_membership_type.og_membership_type
-  - og.og_role.rdf_entity-collection-administrator
-  - og.og_role.rdf_entity-collection-facilitator
-  - og.og_role.rdf_entity-collection-member
-  - og.og_role.rdf_entity-collection-non-member
-  - og.settings
   - og_menu.ogmenu.navigation
+  - og.settings
   - system.theme
-  - user.flood
-  - user.mail
-  - user.role.administrator
-  - user.role.anonymous
-  - user.role.authenticated
-  - user.role.moderator
-  - user.settings
   - views.view.collection_content
   - views.view.collections
-  - views.view.search
+  - views.view.user_admin_people
+  - user.flood
+  - user.mail
+  - user.role.anonymous
+  - user.role.authenticated
+  - user.settings
+  - views.view.collections
   - views.view.user_admin_people

@@ -3,3 +3,19 @@ type: module
 description: User profile fields, user notifications, ...
 core: 8.x
 package: Joinup
+dependencies:
+  - og
+  - user
+
+config_devel:
+  - og.og_membership_type.og_membership_type
+  - og.og_role.rdf_entity-collection-administrator
+  - og.og_role.rdf_entity-collection-facilitator
+  - og.og_role.rdf_entity-collection-member
+  - og.og_role.rdf_entity-collection-non-member
+  - og.og_role.rdf_entity-solution-administrator
+  - og.og_role.rdf_entity-solution-facilitator
+  - og.og_role.rdf_entity-solution-member
+  - og.og_role.rdf_entity-solution-non-member
+  - user.role.administrator
+  - user.role.authenticated

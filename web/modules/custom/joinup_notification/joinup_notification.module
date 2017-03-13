@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * Module handling notifications in joinup.
+ */
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_predelete().
+ *
+ * Handles the notifications for the entity types rdf_entity and node the same
+ * way as the WorkflowTransitionEventSubscriber does but since we do not have a
+ * transition when an entity is deleted, there is no event fired.
+ * Thus, this is handled separately.
+ *
+ * This notification functionality is currently applying if the two following
+ * criteria are met:
+ *  - The entity has a state field and the state is 'deletion_request'.
+ *  - There is configuration set for the entity type and the bundle.
+ *
+ * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
+ */
+function joinup_notification_entity_predelete(EntityInterface $entity) {
+  if (!($entity instanceof ContentEntityInterface) || !in_array($entity->getEntityTypeId(), ['rdf_entity', 'node'])) {
+    return;
+  }
+
+  $entity_type = $entity->getEntityTypeId();
+  $bundle = $entity->bundle();
+  $field_definitions = array_filter(\Drupal::entityManager()->getFieldDefinitions($entity_type, $bundle), function ($field_definition) {
+    return $field_definition->getType() == 'state';
+  });
+
+  if (empty($field_definitions)) {
+    return;
+  }
+
+  $field_definition = array_pop($field_definitions);
+  $state_field = $entity->{$field_definition->getName()}->first();
+  if (empty($state_field->value) || $state_field->value != 'deletion_request') {
+    return;
+  }
+
+  $configuration = \Drupal::config('joinup_notification.settings')->get('delete_notifications');
+  if (empty($configuration[$entity_type][$bundle])) {
+    return;
+  }
+  foreach ($configuration[$entity_type][$bundle] as $role_id => $messages) {
+    \Drupal::service('joinup_notification.notification_sender')->send($entity, $role_id, $messages);
+  }
+}

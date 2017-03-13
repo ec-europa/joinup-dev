@@ -16,12 +16,14 @@ Feature: Solution API
       | webdav creation   | no                                   |
       | webdav url        | http://joinup.eu/solution/foo/webdav |
       | wiki              | http://example.wiki/foobar/wiki      |
+      | state             | validated                            |
     And the following collection:
       | title             | Solution API foo  |
       | logo              | logo.png          |
       | moderation        | yes               |
       | elibrary creation | facilitators      |
       | affiliates        | My first solution |
+      | state             | validated         |
     Then I should have 1 solution
 
   Scenario: Programmatically create a solution using only the mandatory fields
@@ -29,17 +31,21 @@ Feature: Solution API
       | title             | My first solution mandatory |
       | description       | Another sample solution     |
       | elibrary creation | members                     |
+      | state             | validated                   |
     And the following collection:
       | title             | Solution API bar            |
       | logo              | logo.png                    |
       | moderation        | yes                         |
       | elibrary creation | facilitators                |
       | affiliates        | My first solution mandatory |
+      | state             | validated                   |
     Then I should have 1 solution
 
+  @terms
   Scenario: Assign ownership during creation of solutions through UI
-    Given the following organisation:
-      | name | Leechidna |
+    Given the following owner:
+      | name      | type            |
+      | Leechidna | Local Authority |
     And the following contact:
       | name  | Gopheadow               |
       | email | solutionAPI@example.com |
@@ -53,6 +59,7 @@ Feature: Solution API
       | moderation        | no                       |
       | closed            | no                       |
       | elibrary creation | facilitators             |
+      | state             | validated                |
     And the following collection user memberships:
       | user              | collection               | roles       |
       | Solution API user | This is a klm collection | facilitator |
@@ -70,11 +77,11 @@ Feature: Solution API
     # Then I wait for AJAX to finish
     And I fill in "Contact information" with "Gopheadow"
     And I press "Add contact information"
-    And I press "Add existing owner" at the "Owner" field
+    And I press "Add existing" at the "Owner" field
     # Then I wait for AJAX to finish
     And I fill in "Owner" with "Leechidna"
     And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
-    And I fill in "Policy Domain" with "Health"
+    And I select "EU and European Policies" from "Policy domain"
     And I select "[ABB8] Citizen" from "Solution type"
     And I press "Add owner"
     And I press "Save"

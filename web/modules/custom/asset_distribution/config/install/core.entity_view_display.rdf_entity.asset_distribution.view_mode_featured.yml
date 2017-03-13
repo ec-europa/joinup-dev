@@ -1,0 +1,69 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.view_mode_featured
+    - field.field.rdf_entity.asset_distribution.field_ad_access_url
+    - field.field.rdf_entity.asset_distribution.field_ad_creation_date
+    - field.field.rdf_entity.asset_distribution.field_ad_description
+    - field.field.rdf_entity.asset_distribution.field_ad_file_size
+    - field.field.rdf_entity.asset_distribution.field_ad_format
+    - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
+    - field.field.rdf_entity.asset_distribution.field_ad_licence
+    - field.field.rdf_entity.asset_distribution.field_ad_modification_date
+    - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
+    - field.field.rdf_entity.asset_distribution.field_status
+    - field.field.rdf_entity.asset_distribution.og_audience
+    - rdf_entity.rdfentity.asset_distribution
+  module:
+    - digital_size_formatter
+    - ds
+    - file_url
+id: rdf_entity.asset_distribution.view_mode_featured
+targetEntityType: rdf_entity
+bundle: asset_distribution
+mode: view_mode_featured
+content:
+  field_ad_access_url:
+    type: file_url_default
+    weight: 9
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_ad_file_size:
+    type: digital_size
+    weight: 10
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_ad_licence:
+    weight: 5
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  label:
+    label: hidden
+    type: string
+    weight: 0
+    settings:
+      link_to_entity: true
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+hidden:
+  field_ad_creation_date: true
+  field_ad_description: true
+  field_ad_format: true
+  field_ad_gitb_compliant: true
+  field_ad_modification_date: true
+  field_ad_repr_technique: true
+  field_status: true
+  og_audience: true

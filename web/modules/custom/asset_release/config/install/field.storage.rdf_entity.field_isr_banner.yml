@@ -7,11 +7,12 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_target_id: 'http://xmlns.com/foaf/0.1/#term_Image'
-    mapping_alt: ''
-    mapping_title: ''
-    mapping_width: ''
-    mapping_height: ''
+    mapping:
+      target_id: 'http://xmlns.com/foaf/0.1/#term_Image'
+      alt: ''
+      title: ''
+      width: ''
+      height: ''
 id: rdf_entity.field_isr_banner
 field_name: field_isr_banner
 entity_type: rdf_entity

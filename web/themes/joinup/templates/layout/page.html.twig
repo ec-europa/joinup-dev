@@ -40,70 +40,66 @@
  * @see html.html.twig
  */
 #}
-<div class="layout-container mdl-layout mdl-js-layout mdl-layout--fixed-header">
+<div class="mdl-layout mdl-js-layout">
 
   {# @todo The small header, which contains collections link, should be removed for anonymous users on the homepage - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639. #}
-  <header class="section section--header" role="banner">
-    <div class="container-fluid">
-      {% include directory ~ '/templates/parts/header.html.twig' %}
-      {{ page.header }}
-    </div>
-  </header>
+  {% include directory ~ '/templates/parts/header.html.twig' %}
 
   {% if is_front and not logged_in %}
     {% include directory ~ '/templates/parts/featured--anonymous.html.twig' %}
   {% endif %}
 
   {% if page.featured %}
-    {% if is_collection %}
-      {% include directory ~ '/templates/parts/featured--collection.html.twig' %}
-    {% elseif is_blue_header %}
-      {% include directory ~ '/templates/parts/featured--title.html.twig' %}
-    {% endif %}
+    <div class="section section--featured">
+      {% if is_blue_header %}
+        {% include directory ~ '/templates/parts/featured--title.html.twig' %}
+      {% else %}
+        {{ page.featured }}
+      {% endif %}
+    </div>
   {% endif %}
 
-  <main class="main-container mdl-grid" role="main">
-    <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+  {%
+  set main_classes = [
+    'main-container',
+    'mdl-grid',
+    not page.sidebar_left ? 'main-container--center',
+  ]
+  %}
+  <div class="section section--content">
+    <main class="{{ main_classes|join(' ') }}" role="main">
+      <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
-    {% if page.sidebar_left %}
-      <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col" role="complementary">
-        <div class="container-fluid">
+      {% if page.sidebar_left and not is_propose_collection %}
+        <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col" role="complementary">
           {{ page.sidebar_left }}
-        </div>
-      </aside>
-    {% endif %}
+        </aside>
+      {% endif %}
 
-    <div class="content-container mdl-cell--8-col">
-      {% if page.content_top %}
-        <div class="section section--content-top">
-          <div class="container-fluid">
+      <div class="section section--main mdl-cell {{ is_propose_collection ? 'mdl-cell--12-col mdl-grid--no-spacing content-container--form' : 'mdl-cell--8-col content-container' }}">
+        {% if page.content_top %}
+          <div class="section section--content-top {{ is_propose_collection ? 'mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop form__cell'}}">
             {{ page.content_top }}
           </div>
-        </div>
-      {% endif %}
+        {% endif %}
 
-      <div class="section section--content">
-        <div class="container-fluid">
+        <div class="section section--content-middle {{ is_propose_collection ? 'mdl-cell mdl-cell--12-col form__cell' }}">
           {{ page.content }}
         </div>
-      </div>
 
-      {% if page.content_bottom %}
-        <div class="section section--content-bottom">
-          <div class="container-fluid">
+        {% if page.content_bottom %}
+          <div class="section section--content-bottom">
             {{ page.content_bottom }}
           </div>
-        </div>
-      {% endif %}
-    </div>{# /.content-container #}
+        {% endif %}
+      </div>{# /.content-container #}
 
-  </main>{# /.main-container #}
+    </main>{# /.main-container #}
+  </div>
 
   {% if page.footer %}
     <footer class="section section--footer" role="contentinfo">
-      <div class="container-fluid">
-        {{ page.footer }}
-      </div>
+      {{ page.footer }}
     </footer>
   {% endif %}
 

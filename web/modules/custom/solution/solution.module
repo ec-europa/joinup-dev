@@ -6,19 +6,61 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
+use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfInterface;
+use Drupal\search_api\Query\QueryInterface;
+
+/**
+ * Implements hook_entity_access().
+ */
+function solution_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->getEntityTypeId() != 'rdf_entity' || $entity->bundle() != 'solution' || $account->isAnonymous() || $operation != 'view') {
+    return AccessResult::neutral();
+  }
+
+  $membership = Og::getMembership($entity, $account);
+  if (empty($membership)) {
+    return AccessResult::neutral();
+  }
+  if (!$entity->isPublished() && $membership->hasPermission('view unpublished rdf entity')) {
+    return AccessResult::allowed();
+  }
+  if ($entity->isPublished() && $membership->hasPermission('view rdf entity')) {
+    return AccessResult::allowed();
+  }
+
+  return AccessResult::neutral();
+}
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
 function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
-  if ($entity_type->id() == 'rdf_entity' && $bundle == 'solution' && !empty($fields['label'])) {
+  if ($entity_type->id() != 'rdf_entity' || $bundle != 'solution') {
+    return;
+  }
+  // Add a computed field, that represents the collections a solution is part
+  // of.
+  // @see solution_rdf_entity_load().
+  $fields['collection'] = BaseFieldDefinition::create('entity_reference')
+    ->setLabel(t('Collection'))
+    ->setDescription(t('The collections this solution belongs to.'))
+    ->setReadOnly(TRUE)
+    ->setSetting('target_type', 'rdf_type');
+
+  if (!empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueSolutionTitle', []);
   }
 }
@@ -26,22 +68,8 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
 /**
  * Implements hook_ENTITY_TYPE_insert().
  *
- * This performs the following actions when a solution is created:
- *   - Grants the 'owner' and 'facilitator' roles to the user that creates the
- *     solution.
- *   - Links the solution to the collection to which it belongs.
- *     According to the ADMS model, the linked solutions of a collection are
- *     stored as a property of the collection itself, called affiliates.
- *     The process of linking a solution to a collection is:
- *      - Request an affiliation. This request is registered by adding the
- *        collection to the affiliation_request field of the solution.
- *      - Accept the affiliation. The collection is removed from the affiliation
- *        request of the solution and the solution is added to the affiliates
- *        field of the collection.
- *     In order for a solution to be affiliated with a collection when it is
- *     created, the collection should be passed to the affiliate_request field
- *     before it is saved. The hook below will take care of automatically
- *     linking it.
+ * This function grants the 'owner' and 'facilitator' roles to the user that
+ * creates the solution.
  *
  * @see https://www.w3.org/TR/vocab-adms/#the-adms-domain-model
  */
@@ -68,24 +96,92 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
       ->setRoles(array_values(OgRole::loadMultiple($roles)))
       ->save();
   }
+}
 
-  // Check if a reference to a collection is present in the affiliation field.
-  /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $affiliate_request */
-  if (($affiliate_request = $entity->get('field_is_affiliations_requests')->first()) && !$affiliate_request->isEmpty()) {
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    $collection = Rdf::load($affiliate_request->getValue()['target_id']);
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function solution_form_rdf_entity_solution_form_alter(array &$form, FormStateInterface $form_state) {
+  $entity = $form_state->getFormObject()->getEntity();
+  if (!empty($form_state->getStorage()['collection']) && $entity->bundle() == 'solution' && $entity->isNew()) {
+    $form['actions']['submit']['#submit'][] = 'solution_add_form_parent_submit';
+    $form['#entity_builders'][] = 'solution_add_form_set_collection';
+  }
+}
 
-    // If any entity other than a collection has been referenced there is a
-    // problem with our field definition.
-    if (empty($collection) || $collection->bundle() !== 'collection') {
+/**
+ * Keep a reference to the collection being saved.
+ *
+ * @param string $entity_type_id
+ *   The entity type identifier.
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity updated with the submitted values.
+ * @param array $form
+ *   The complete form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ */
+function solution_add_form_set_collection($entity_type_id, EntityInterface $entity, array &$form, FormStateInterface $form_state) {
+  $collection_id = $form_state->getStorage()['collection'];
+  solution_relate_collection_id($collection_id);
+}
+
+/**
+ * Keep track of the collection the solution is related to.
+ *
+ * This works around a race condition in the indexing process to Solr.
+ *
+ * @param string|null $collection_id
+ *   The collection the solution is being related to.
+ *
+ * @return string|null
+ *   The collection the solution is being related to.
+ */
+function solution_relate_collection_id($collection_id = NULL) {
+  static $id;
+  if ($collection_id) {
+    $id = $collection_id;
+  }
+  return $id;
+}
+
+/**
+ * Links the solution to the collection to which it belongs.
+ *
+ * According to the ADMS model, the linked solutions of a collection are
+ * stored as a property of the collection itself, called affiliates.
+ * The process of linking a solution to a collection is:
+ * - Request an affiliation. This request is registered by adding the
+ *   collection to the affiliation_request field of the solution.
+ * - Accept the affiliation. The collection is removed from the affiliation
+ *   request of the solution and the solution is added to the affiliates
+ *   field of the collection.
+ * In order for a solution to be affiliated with a collection when it is
+ * created, the collection should be passed to the form_state object.
+ */
+function solution_add_form_parent_submit(array &$form, FormStateInterface $form_state) {
+  $collection_id = $form_state->getStorage()['collection'];
+
+  /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+  $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+
+  // Add the reference field both to the published and the draft collection.
+  foreach (['default', 'draft'] as $graph) {
+    $storage->setRequestGraphs($collection_id, [$graph]);
+    $collection = $storage->load($collection_id);
+    if (empty($collection)) {
+      continue;
+    }
+    if ($collection->bundle() !== 'collection') {
       throw new \Exception('Only collections can be referenced in affiliation requests.');
     }
+    $storage->setSaveGraph($graph);
 
-    // Move the reference to the collection. The ADMS specification requires the
-    // relation to be in the inverse direction.
-    $collection->set('field_ar_affiliates', $entity->id());
+    $entity_id = $form_state->getFormObject()->getEntity()->id();
+    $values = $collection->get('field_ar_affiliates')->getValue();
+    $values[] = ['target_id' => $entity_id];
+    $collection->set('field_ar_affiliates', $values);
     $collection->save();
-    $entity->set('field_is_affiliations_requests', NULL);
   }
 }
 
@@ -97,16 +193,334 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
  * node.
  */
 function solution_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($account->hasPermission($entity->getEntityType()->getAdminPermission())) {
+    return AccessResult::neutral();
+  }
   if ($entity->bundle() != 'solution') {
     return AccessResult::neutral();
   }
 
   if ($operation == 'edit') {
-    $allowed_transitions = $entity->get('field_is_state')->first()->getTransitions();
+    $allowed_transitions = $entity->field_is_state->first()->getTransitions();
     if (empty($allowed_transitions)) {
       return AccessResult::forbidden();
     }
   }
 
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function solution_entity_extra_field_info() {
+  $fields = [];
+
+  $solution = RdfEntityType::load('solution');
+  if ($solution) {
+    $fields['rdf_entity'][$solution->id()]['display']['releases_overview'] = [
+      'label' => t('Releases overview'),
+      'description' => t('A link to the releases overview page'),
+      'visible' => FALSE,
+    ];
+    $fields['rdf_entity'][$solution->id()]['display']['related_solutions'] = [
+      'label' => t('Related solutions: explicit + EIRA'),
+      'description' => t('Solutions either explicitly or referenced through EIRA.'),
+      'visible' => FALSE,
+    ];
+  }
+  return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_load().
+ */
+function solution_rdf_entity_load($entities) {
+  /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+  foreach ($entities as $entity) {
+    if ($entity->bundle() != 'solution') {
+      continue;
+    }
+    // In ADMS-AP collections point to solutions.
+    // The reverse relation would have been more logical,
+    // and this is quite inconvenient, especially for the search index.
+    // To work around this, we add a computed field here.
+    $ids = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'collection')
+      ->condition('field_ar_affiliates', $entity->id())
+      ->execute();
+    // This will only be set when submitting a new solution form.
+    $pending_collection_id = solution_relate_collection_id();
+    if ($pending_collection_id) {
+      $ids[$pending_collection_id] = $pending_collection_id;
+    }
+    if ($ids) {
+      $entity->set('collection', array_keys($ids));
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function solution_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() != 'solution') {
+    return;
+  }
+
+  if ($display->getComponent('releases_overview')) {
+    $build['releases_overview'] = [
+      '#type' => 'link',
+      '#title' => t('Download releases'),
+      '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
+        'rdf_entity' => $entity->id(),
+      ]),
+      '#attributes' => array('class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'),
+    ];
+  }
+
+  // Attach the related solutions component.
+  if ($display->getComponent('related_solutions')) {
+    $ids = solution_get_related_solutions_ids($entity);
+    $build['related_solutions'] = solution_build_related_solutions_list($ids);
+  }
+}
+
+/**
+ * Builds a list of entity ids of related solutions.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The solution.
+ *
+ * @return array|int
+ *   List of entity ids of related solutions.
+ */
+function solution_get_related_solutions_ids(EntityInterface $entity) {
+  $ids = [];
+  static $recurse = FALSE;
+  if ($recurse) {
+    // Don't collapse the universe.
+    return $ids;
+  }
+  $recurse = TRUE;
+
+  // Get all solutions that reference the same EIRA building block.
+  $eira = [];
+  foreach ($entity->get('field_is_solution_type')->getValue() as $field) {
+    $eira[] = $field['target_id'];
+  }
+  $eira_ids = [];
+  if ($eira) {
+    $query = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'solution')
+      ->condition('field_is_solution_type', $eira, 'IN');
+    $eira_ids = $query->execute();
+  }
+
+  // Get all solutions that are reference directly.
+  $related_ids = [];
+  foreach ($entity->get('field_is_related_solutions')->getValue() as $field) {
+    $related_ids[$field['target_id']] = $field['target_id'];
+  }
+
+  // Combine the two lists.
+  $ids = $eira_ids + $related_ids;
+
+  // Exclude ourselves.
+  unset($ids[$entity->id()]);
+
+  return $ids;
+}
+
+/**
+ * Builds the render array of related solutions.
+ *
+ * @param int[] $ids
+ *   The list of solution ids.
+ *
+ * @return array
+ *   The render array of related solutions.
+ */
+function solution_build_related_solutions_list(array $ids) {
+  $build = [];
+  $entities = Rdf::loadMultiple($ids);
+  $delta = 0;
+  $elements = [];
+  foreach ($entities as $id => $referenced_solution) {
+    $view_builder = Drupal::entityTypeManager()->getViewBuilder($referenced_solution->getEntityTypeId());
+    $element = $view_builder->view($referenced_solution, 'view_mode_tile', $referenced_solution->language()->getId());
+    $elements[$delta] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'listing__item',
+          'listing__item--tile',
+          'mdl-cell',
+          'mdl-cell--4-col',
+        ],
+      ],
+      $id => $element,
+    ];
+    $delta++;
+  }
+  if ($elements) {
+    $build = [
+      '#type' => 'item',
+      '#title' => t('Related solutions'),
+    ];
+    $build[0] = [
+      '#type' => 'item',
+      '#wrapper_attributes' => [
+        'class' => ['listing', 'listing--grid', 'mdl-grid'],
+      ],
+    ];
+    $build[0] += $elements;
+  }
+  return $build;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Default graph is published. Draft graph is draft.
+ */
+function solution_rdf_entity_presave(EntityInterface $entity) {
+  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
+  if (empty($enabled_bundles) || $entity->bundle() != 'solution' || !in_array($entity->bundle(), $enabled_bundles)) {
+    return;
+  }
+
+  $state = $entity->field_is_state->value;
+  if (in_array($state, ['draft', 'proposed', 'needs_update', 'blacklisted'])) {
+    \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
+  }
+  elseif (in_array($state, ['validated', 'deletion_request'])) {
+    \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
+  }
+  elseif (empty($state)) {
+    throw new \Exception("State field not found while trying to get the appropriate graph.");
+  }
+  else {
+    throw new \Exception("State field value is invalid. Current value found: " . $state);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * When the entity is saved into the default graph, the draft must be deleted.
+ * Also, when the entity is blacklisted, the published version is removed
+ * (the entity becomes unpublished).
+ */
+function solution_rdf_entity_update(EntityInterface $entity) {
+  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
+  if (empty($enabled_bundles) || $entity->bundle() != 'solution' || !in_array($entity->bundle(), $enabled_bundles)) {
+    return;
+  }
+
+  // @todo: Maybe we can avoid the attempt to delete from graph if there is no
+  // transition made. This should move to an event subscriber.
+  $state = $entity->field_is_state->value;
+  if (in_array($state, ['validated', 'deletion_request'])) {
+    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
+  }
+  if ($state == 'blacklisted') {
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'default');
+  }
+}
+
+/**
+ * Gets the latest release of a solution.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $solution
+ *   The 'solution' RDF entity.
+ *
+ * @return \Drupal\rdf_entity\RdfInterface|null
+ *   The latest release entity or NULL if there are no releases.
+ */
+function solution_get_latest_release(RdfInterface $solution) {
+  if ($solution->bundle() !== 'solution') {
+    throw new \InvalidArgumentException('Passed argument is not a solution RDF entity.');
+  }
+
+  $ids = \Drupal::entityQuery('rdf_entity')
+    ->condition('rid', 'asset_release')
+    ->condition('field_isr_is_version_of', $solution->id())
+    ->sort('field_isr_creation_date', 'DESC')
+    ->execute();
+
+  if (empty($ids)) {
+    return NULL;
+  }
+
+  // @todo: Sorting is not yet working in SPARQL, we're fetching all results and
+  // doing the sorting in PHP right now. Once sorting is working we should limit
+  // the result set to 1 item.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
+  $releases = Rdf::loadMultiple($ids);
+  usort($releases, function ($release1, $release2) {
+    $ct1 = $release1->field_isr_creation_date->value;
+    $ct2 = $release2->field_isr_creation_date->value;
+    if (empty($ct1) || empty($ct2) || $ct1 == $ct2) {
+      return 0;
+    }
+    return ($ct1 < $ct2) ? 1 : -1;
+  });
+
+  $latest_release = reset($releases);
+  return $latest_release;
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ *
+ * Alters the Search API queries for the solution content:
+ * - only show content that belongs to the solution;
+ * - do not show the solution itself in the search results.
+ */
+function solution_search_api_query_search_api_field_field_is_content_alter(QueryInterface &$query) {
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $query->getOption('search_api_field entity');
+
+  // Show only content that belongs to this solution through the aggregated
+  // field. This makes sure that other related entities (such as the solution
+  // owner) do not show up as solution content tiles.
+  $query->addCondition('entity_groups', [$entity->id()], 'IN');
+
+  // Remove the solution itself from the results.
+  $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+
+  // If we don't have any releases associated to this solution, it also means
+  // that any distribution available is directly associated. We don't need any
+  // further filtering on the results.
+  if (!$entity->get('field_is_has_version')->count()) {
+    return;
+  }
+
+  // Get the ids of the distributions directly associated to the solution.
+  $distributions = array_map(function ($entity) {
+    return $entity->id();
+  }, $entity->get('field_is_distribution')->referencedEntities());
+
+  if (!empty($distributions)) {
+    // We need to filter out all the distributions except the ones that are
+    // directly associated to the solution.
+    $or = $query->createConditionGroup('OR');
+    // The next line might seem crazy but I am not drunk. It's needed to bypass
+    // Solr problems with negated queries. To fix this, we need to use the
+    // '(*:* NOT entity_bundle:"asset_distribution")' format. Unfortunately
+    // SearchApiSolrBackend::createFilterQuery() uses that syntax only when
+    // multiple values are provided. While ugly, nothing is really wrong about
+    // passing twice the same bundle.
+    // @see \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend::createFilterQuery()
+    // @see http://stackoverflow.com/a/635109
+    $or->addCondition('entity_bundle', ['asset_distribution', 'asset_distribution'], 'NOT IN');
+    $or->addCondition($entity->getEntityType()->getKey('id'), $distributions, 'IN');
+    $query->addConditionGroup($or);
+  }
+  else {
+    // Exclude all the distributions.
+    $query->addCondition('entity_bundle', 'asset_distribution', '<>');
+  }
 }

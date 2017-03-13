@@ -1,11 +1,14 @@
 <div class="region region--featured">
   <div class="bg--blue">
-    <div class="main-container mdl-grid">
-      <div class="mdl-cell mdl-cell--2-col"></div>
-      <div class="mdl-cell mdl-cell--10-col">
-        <h1 class="page__title">{{ title }}</h1>
+    <div class="main-container mdl-grid main-container--center">
+      <div class="mdl-cell mdl-cell--8-col">
+        <div class="page__title-wrapper">
+          {% if is_create_page %}
+            <span class="icon icon--plus"></span>
+          {% endif %}
+          {{ title }}
+        </div>
       </div>
-      <div class="mdl-cell mdl-cell--2-col"></div>
     </div>
   </div>
 </div>

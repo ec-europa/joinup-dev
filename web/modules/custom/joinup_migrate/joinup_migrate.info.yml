@@ -1,0 +1,9 @@
+name: Joinup migrate
+type: module
+description: Handles migration from the previous version of the Joinup platform
+core: '8.x'
+package: Joinup
+dependencies:
+  - migrate_spreadsheet
+  - migrate_run
+  - migrate_report

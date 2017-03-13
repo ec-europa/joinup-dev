@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Themeing for group header.
+ */
+#}
+<div class="featured__outer-wrapper" style="background-image: url('{{ content.field_ar_banner }}');">
+  <div class="featured__overlay"></div>
+  <div class="featured__inner-wrapper">
+    {# @todo This is temporary, once all fields are available, it will be replaced. #}
+    <a href="{{ path('entity.rdf_entity.canonical',{'rdf_entity': rdf_entity.id()}) }}">
+      <div class="featured__logo">{{ content.field_ar_logo }}</div>
+      <h1 class="featured__text">{{ label }}</h1>
+    </a>
+    <div class="featured__stats is-only-placeholder">
+      <div class="stats__column stats__column--border stats__column--wide">
+        <div class="stats__wrapper stats__wrapper--centered">
+          <span class="stats__text">Activity</span>
+        </div>
+        <div class="stats__wrapper stats__wrapper--centered">
+          <span class="stats__text bold">Medium</span>
+        </div>
+      </div>
+      <div class="stats__column stats__column--wide stats__column--icons">
+        <div class="stats__wrapper">
+          <span class="stats__icon icon icon--user"></span>
+          <span class="stats__text">13 Members</span>
+        </div>
+        <div class="stats__wrapper">
+          <span class="stats__icon icon icon--solutions"></span>
+          <span class="stats__text">124 Solutions</span>
+        </div>
+      </div>
+    </div>
+    {{ content.join_collection }}
+  </div>
+</div>

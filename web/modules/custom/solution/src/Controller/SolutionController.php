@@ -33,8 +33,10 @@ class SolutionController extends ControllerBase {
   public function add(RdfInterface $rdf_entity) {
     $solution = $this->createNewSolution($rdf_entity);
 
-    $form = $this->entityFormBuilder()->getForm($solution);
-
+    // Pass the collection to the form state so that the parent connection is
+    // established.
+    // @see: solution_add_form_parent_submit
+    $form = $this->entityFormBuilder()->getForm($solution, 'default', ['collection' => $rdf_entity->id()]);
     return $form;
   }
 
@@ -68,7 +70,6 @@ class SolutionController extends ControllerBase {
   protected function createNewSolution(RdfInterface $rdf_entity) {
     return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'solution',
-      'field_is_affiliations_requests' => $rdf_entity->id(),
     ]);
   }
 

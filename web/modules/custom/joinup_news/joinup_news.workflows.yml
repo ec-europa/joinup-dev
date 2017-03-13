@@ -1,17 +1,7 @@
 # The workflow of the news entity.
-#
-# In the following workflow we have added one 'virtual' state called new.
-# This state will be used when the entity is being created.
-# In order for the state_machine module to ensure that
-# there is at least one option for the field, it forces
-# the first available state and checks its available transitions.
-# Since we are implementing our own permission schema,
-# we are removing the default value and we are only allowing our
-# desired target states.
-# The virtual state allowes to handle the initial values during a node create.
-news_workflow:
-  id: news_workflow
-  label: "Default"
+node:news:pre_moderated:
+  id: pre_moderated
+  label: "Pre moderated"
   group: news
   states:
     __new__:
@@ -22,28 +12,90 @@ news_workflow:
       label: Proposed
     validated:
       label: Validated
+      published: true
     deletion_request:
       label: Request deletion
-    in_assessment:
-      label: In assessment
+    needs_update:
+      label: Needs update
   transitions:
-    draft:
-      label: Create
-      from: [__new__]
+    save_as_draft:
+      label: Save as draft
+      from: [__new__, draft]
+      to: draft
+    save_new_draft:
+      label: Save new draft
+      from: [validated]
       to: draft
     propose:
       label: Propose
-      from: [__new__, draft, validated, in_assessment, proposed]
+      from: [__new__, draft, needs_update]
+      to: proposed
+    update_proposed:
+      label: Update
+      from: [proposed]
       to: proposed
     validate:
-      label: Validate
-      from: [__new__, draft, validated, proposed, deletion_request]
+      label: Publish
+      from: [__new__, draft, proposed, deletion_request]
       to: validated
-    report:
-      label: Report
+    update_validated:
+      label: Update
       from: [validated]
-      to: in_assessment
+      to: validated
+    needs_update:
+      label: Request changes
+      from: [proposed, validated]
+      to: needs_update
     request_deletion:
       label: Request deletion
       from: [validated]
       to: deletion_request
+    reject_deletion:
+      label: Reject deletion
+      from: [deletion_request]
+      to: validated
+node:news:post_moderated:
+  id: post_moderated
+  label: "Post moderated"
+  group: news
+  states:
+    __new__:
+      label: New
+    draft:
+      label: Draft
+    proposed:
+      label: Proposed
+    validated:
+      label: Validated
+      published: true
+    needs_update:
+      label: Needs update
+  transitions:
+    save_as_draft:
+      label: Save as draft
+      from: [__new__, draft]
+      to: draft
+    save_new_draft:
+      label: Save new draft
+      from: [validated]
+      to: draft
+    propose:
+      label: Propose
+      from: [validated, needs_update]
+      to: proposed
+    update_proposed:
+      label: Update
+      from: [proposed]
+      to: proposed
+    validate:
+      label: Publish
+      from: [__new__, draft, proposed]
+      to: validated
+    update_validated:
+      label: Update
+      from: [validated]
+      to: validated
+    needs_update:
+      label: Request changes
+      from: [proposed, validated]
+      to: needs_update

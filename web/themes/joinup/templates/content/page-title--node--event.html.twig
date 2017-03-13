@@ -1,0 +1,36 @@
+{#
+/**
+ * @file
+ * Theme override for page title when the route is the canonical view of an event node.
+ *
+ * Available variables:
+ * - entity: the node entity.
+ * - additional_content: extra elements to be rendered. It has the properties:
+ *     * field_event_start_date: the start date of the event.
+ *     * field_event_end_date: the end date of the event.
+ *     * field_location: the event location.
+ */
+#}
+{{ title_prefix }}
+{% if title %}
+  <div class="page__title-wrapper">
+      <h1 class="page__title">{{ title }}</h1>
+      <div class="details">
+        <div class="details__element details__element--block">
+          <div class="value gray">
+            {% set start_date = additional_content.field_event_start_date|render %}
+            {% set end_date = additional_content.field_event_end_date|render %}
+            {% if end_date %}
+              {% trans %}{{ start_date }} to {{ end_date }}{% endtrans %}
+            {% else %}
+              {{ start_date }}
+            {% endif %}
+          </div>
+        </div>
+        <div class="details__element details__element--block">
+          <div class="value gray"><a href="#event-location--{{ entity.id }}">{{ additional_content.field_location }}</a></div>
+        </div>
+      </div>
+  </div>
+{% endif %}
+{{ title_suffix }}

@@ -3,20 +3,26 @@ status: true
 dependencies:
   config:
     - views.view.search
+  module:
+    - views
 id: policy_domain
 name: 'Policy Domain'
 url_alias: policy_domain
 weight: 0
+min_count: 1
 show_only_one_result: false
 field_identifier: tid
-query_type_name: null
-facet_source_id: 'search_api_views:search:page_1'
+facet_source_id: 'views_page:search__page_1'
 widget:
   type: links
   config:
     show_numbers: false
     soft_limit: 0
 query_operator: or
+use_hierarchy: false
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+hard_limit: null
 exclude: false
 only_visible_when_facet_source_is_visible: true
 processor_configs:
@@ -42,7 +48,6 @@ processor_configs:
     processor_id: translate_taxonomy
     weights:
       build: 5
-    settings: {  }
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
@@ -51,4 +56,3 @@ processor_configs:
     settings: {  }
 empty_behavior:
   behavior: none
-facet_configs: {  }

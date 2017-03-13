@@ -1,14 +1,20 @@
+// Tab
+//
+// Markup: html/tab.html
+//
+// Styleguide 2.11
+
 // Component
 // --------------------------------------------------
 .tab
-  background-color: $color-grey-ligher
+  background-color: $color-grey-light
 
 .tabs
   border-bottom: 1px solid $color-grey-light
 
 // Elements
 // --------------------------------------------------
-.tab 
+.tab
   a
     color: $color-base
     text-decoration: none
@@ -28,7 +34,7 @@
   @media (min-width: 600px)
     display: flex
     flex-wrap: nowrap
-    justify-content: space-between
+    justify-content: flex-start
     align-items: flex-start
     text-align: center
     border-bottom: none
@@ -37,6 +43,8 @@
 
 .tab--content-type
   position: relative
+  color: $color-base
+  text-decoration: none
   +breakpoint(sm-mobile, mobile)
     margin-bottom: 30px
     &:last-of-type
@@ -69,6 +77,7 @@
   text-align: center
   margin-top: 25px
   text-decoration: none
+  cursor: pointer
   +breakpoint(sm-mobile, tablet)
     margin-bottom: 25px
   @media (min-width: 600px)
@@ -85,6 +94,10 @@
     font-weight: $font-weight-bold
   .tab__icon
     +icon-size(25px)
+
+.tabs--content-type .tab--more
+  height: auto
+  padding-bottom: 10px
 
 // Dependiencies
 // --------------------------------------------------

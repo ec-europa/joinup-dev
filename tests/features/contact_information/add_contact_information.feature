@@ -1,21 +1,22 @@
 @api
-Feature: Creation of contact information through UI
-  In order to manage contact information
-  As a user
-  I need to be able to create contact information through the UI.
+Feature: Creation of contact information
+  In order to add contact information
+  As a facilitator
+  I need to be able to enter contact information
 
   Scenario: Create a contact information
     Given I am logged in as an "authenticated user"
-    When I visit "rdf_entity/add/contact_information"
-    Then I should see the heading "Add Contact information"
+    When I click "Propose collection" in the plus button menu
+    And I click the "Description" tab
+    And I press "Add new" at the "Contact information" field
+    # Also check that the help text for the website field is visible.
+    Then I should see the description "This must be an external URL such as http://example.com." for the "Website URL" field
     When I fill in the following:
       | E-mail | foo@bar                     |
       | Name   | Contact information example |
       | URL    | http://www.example.org      |
-    And I press "Save"
+    And I press "Create contact information"
     Then I should see the error message "The e-mail foo@bar is not valid."
-    When I fill in "E-mail" with "foo@bar.com"
-    And I press "Save"
-    Then I should see the heading "Contact information example"
-    # Cleanup created contact information.
-    Then I delete the "Contact information example" contact information
+    When I fill in "E-mail address" with "foo@bar.com"
+    And I press "Create contact information"
+    Then I should see the text "Contact information example"

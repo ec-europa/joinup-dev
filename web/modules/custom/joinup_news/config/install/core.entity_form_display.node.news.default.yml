@@ -3,14 +3,19 @@ status: true
 dependencies:
   config:
     - field.field.node.news.body
-    - field.field.node.news.field_news_kicker
+    - field.field.node.news.field_comments
+    - field.field.node.news.field_keywords
+    - field.field.node.news.field_news_headline
+    - field.field.node.news.field_news_shared_in
     - field.field.node.news.field_news_source_url
-    - field.field.node.news.field_news_state
-    - field.field.node.news.field_spatial_coverage
-    - field.field.node.news.field_topic
+    - field.field.node.news.field_news_spatial_coverage
+    - field.field.node.news.field_policy_domain
+    - field.field.node.news.field_state
     - field.field.node.news.og_audience
     - node.type.news
   module:
+    - comment
+    - joinup_core
     - link
     - text
 id: node.news.default
@@ -26,13 +31,38 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
-  field_news_kicker:
-    weight: 1
+    region: content
+  field_comments:
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+    type: comment_default
+    region: content
+  field_keywords:
+    weight: 8
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_news_headline:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_news_shared_in:
+    weight: 10
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_news_source_url:
     weight: 3
     settings:
@@ -40,36 +70,40 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
-  field_news_state:
-    weight: 26
+    region: content
+  field_news_spatial_coverage:
+    weight: 4
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_policy_domain:
+    weight: 5
     settings: {  }
     third_party_settings: {  }
     type: options_select
-  field_spatial_coverage:
-    weight: 27
+    region: content
+  field_state:
+    weight: 7
     settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+      use_transition_label: 1
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-  field_topic:
-    weight: 28
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: state_machine_buttons
+    region: content
   title:
     type: string_textfield
-    weight: 0
+    weight: 1
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden:
   created: true
+  current_workflow_state: true
   og_audience: true
   path: true
   promote: true

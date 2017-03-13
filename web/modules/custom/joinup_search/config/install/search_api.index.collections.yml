@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.body
+    - field.storage.node.field_short_title
     - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_policy_domain
     - field.storage.rdf_entity.field_spatial_coverage
     - field.storage.rdf_entity.field_status
-    - field.storage.node.body
-    - field.storage.node.field_document_short_title
     - field.storage.rdf_entity.field_ad_description
     - field.storage.rdf_entity.field_isr_description
     - search_api.server.solr
@@ -21,6 +21,52 @@ name: 'Search index'
 description: ''
 read_only: false
 field_settings:
+  entity_bundle:
+    label: Bundle
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/type'
+        - 'entity:rdf_entity/rid'
+  entity_groups:
+    label: Groups
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/og_audience'
+        - 'entity:rdf_entity/collection'
+        - 'entity:rdf_entity/og_audience'
+        - 'entity:rdf_entity/field_isr_is_version_of'
+  title:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: string
+  processed:
+    label: 'Body » Processed text'
+    datasource_id: 'entity:node'
+    property_path: 'body:processed'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.body
+  field_short_title:
+    label: 'Short title'
+    datasource_id: 'entity:node'
+    property_path: field_short_title
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_short_title
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
   id:
     label: ID
     datasource_id: 'entity:rdf_entity'
@@ -69,27 +115,6 @@ field_settings:
         - field.storage.rdf_entity.field_status
       module:
         - taxonomy
-  title:
-    label: Title
-    datasource_id: 'entity:node'
-    property_path: title
-    type: string
-  processed:
-    label: 'Body » Processed text'
-    datasource_id: 'entity:node'
-    property_path: 'body:processed'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.body
-  field_document_short_title:
-    label: 'Short title'
-    datasource_id: 'entity:node'
-    property_path: field_document_short_title
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_document_short_title
   rid:
     label: 'Rdf Type'
     datasource_id: 'entity:rdf_entity'
@@ -116,59 +141,25 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_isr_description
-  aggregated_field:
-    label: 'Aggregated field'
-    datasource_id: null
-    property_path: aggregated_field
-    type: string
-    configuration:
-      type: union
-      fields:
-        - 'entity:node/type'
-        - 'entity:rdf_entity/rid'
-  aggregated_field_1:
-    label: 'Aggregated field'
-    datasource_id: null
-    property_path: aggregated_field
-    type: string
-    configuration:
-      type: union
-      fields:
-        - 'entity:node/og_audience'
-        - 'entity:rdf_entity/og_audience'
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: true
+      selected: {  }
+    languages:
+      default: true
+      selected: {  }
+  'entity:rdf_entity':
+    bundles:
+      default: true
+      selected: {  }
 processor_settings:
-  add_url:
-    plugin_id: add_url
-    settings:
-      weights:
-        preprocess_index: -30
-  rendered_item:
-    plugin_id: rendered_item
-    settings: {  }
-  aggregated_field:
-    plugin_id: aggregated_field
-    settings: {  }
+  add_url: {  }
+  rendered_item: {  }
+  aggregated_field: {  }
+tracker_settings:
+  default: {  }
 options:
   index_directly: true
   cron_limit: 50
-datasource_settings:
-  'entity:node':
-    plugin_id: 'entity:node'
-    settings:
-      bundles:
-        default: true
-        selected: {  }
-      languages:
-        default: true
-        selected: {  }
-  'entity:rdf_entity':
-    plugin_id: 'entity:rdf_entity'
-    settings:
-      bundles:
-        default: true
-        selected: {  }
-tracker_settings:
-  default:
-    plugin_id: default
-    settings: {  }
 server: solr

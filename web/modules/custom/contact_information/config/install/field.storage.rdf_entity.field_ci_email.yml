@@ -5,7 +5,8 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_value: 'vcard:hasEmail'
+    mapping:
+      value: 'http://www.w3.org/2006/vcard/ns#hasEmail'
 id: rdf_entity.field_ci_email
 field_name: field_ci_email
 entity_type: rdf_entity

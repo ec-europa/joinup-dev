@@ -1,0 +1,318 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_banner": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/solution\/2016-09\/generateImage_QK7RDo.png"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_contact_information": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3b29d231-fe88-493b-94a0-86567f920b6a?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C9e243b03-567e-4fce-a5bd-173142d6c5b6?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_has_version": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Ca855b552-3e65-455c-9cc9-095c851449bf?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C1aaaf2ea-eefb-45a4-aa4c-4841475881c2?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_logo": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/solution\/2016-09\/generateImage_S4Qgwy.jpeg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_owner": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Cef3ef74d-28f3-4a1b-9ce8-15c03555b328?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C81bb275e-bb89-4249-b1ca-1082d146b0ed?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3e9231e3-14d9-430c-91f0-626d1e3381e0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_solution_type": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cdata.europa.eu%5Ceira%5CConfigurationAndCartographyServiceComponent?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_policy_domain": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Cpolicy-domain%5Chealth?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/www.w3.org\/ns\/person#"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "solution"
+        }
+    ],
+    "label": [
+        {
+            "value": "Core Person Vocabulary",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/www.w3.org\/ns\/person#"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_banner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/solution\/2016-09\/generateImage_QK7RDo.png"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "fdf405bf-dae4-4307-b35b-5344c2dd43cd"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/solution\/2016-09\/generateImage_QK7RDo.png"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_contact_information": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3b29d231-fe88-493b-94a0-86567f920b6a?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/contact_information"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/3b29d231-fe88-493b-94a0-86567f920b6a"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C9e243b03-567e-4fce-a5bd-173142d6c5b6?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/contact_information"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/9e243b03-567e-4fce-a5bd-173142d6c5b6"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_has_version": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Ca855b552-3e65-455c-9cc9-095c851449bf?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/asset_release"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/a855b552-3e65-455c-9cc9-095c851449bf"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C1aaaf2ea-eefb-45a4-aa4c-4841475881c2?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/asset_release"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/1aaaf2ea-eefb-45a4-aa4c-4841475881c2"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_logo": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/solution\/2016-09\/generateImage_S4Qgwy.jpeg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "7bd5a81d-5391-4ea9-ae7d-0e1d4d05a575"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/solution\/2016-09\/generateImage_S4Qgwy.jpeg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_owner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Cef3ef74d-28f3-4a1b-9ce8-15c03555b328?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/ef3ef74d-28f3-4a1b-9ce8-15c03555b328"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C68ff887e-f3d7-4f10-b4cc-86350697b2a9?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/68ff887e-f3d7-4f10-b4cc-86350697b2a9"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3e9231e3-14d9-430c-91f0-626d1e3381e0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/3e9231e3-14d9-430c-91f0-626d1e3381e0"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_solution_type": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cdata.europa.eu%5Ceira%5CConfigurationAndCartographyServiceComponent?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/eira"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/eira\/ConfigurationAndCartographyServiceComponent"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_policy_domain": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Cpolicy-domain%5Chealth?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/joinup.eu\/policy-domain\/health"
+                    }
+                ]
+            }
+        ]
+    },
+    "field_is_creation_date": [
+        {
+            "value": "2012-05-07T10:35:24"
+        },
+        {
+            "value": "2012-05-07T10:35:24"
+        }
+    ],
+    "field_is_description": [
+        {
+            "value": "<h3>\n<span style=\"line-height: 1.5; color: rgb(0,0,0); font-size: 12px\">The Person Core Vocabulary provides a minimum set of classes and properties for describing a natural person, i.e. the individual as opposed to any role they may play in society or the relationships they have to other people, organisations and property; all of which contribute significantly to the broader concept of identity. The vocabulary is closely integrated with the Location and Business Core Vocabularies.<\/span><\/h3>\n<p><span style=\"line-height: 1.5; color: rgb(0,0,0); font-size: 12px\"><strong><em>The latest version of the Core Vocabularies can be downloaded from<\/em><\/strong><br \/>\n<a href=\"https:\/\/joinup.ec.europa.eu\/asset\/core_vocabularies\/description\"><strong><em>https:\/\/joinup.ec.europa.eu\/asset\/core_vocabularies\/description.<\/em><\/strong><\/a><br \/>\n<strong><em>(direct link to <\/em><\/strong><a href=\"https:\/\/joinup.ec.europa.eu\/asset\/core_vocabularies\/asset_release\/core-vocabularies-v11#download\"><strong><em>version 1.1<\/em><\/strong><\/a><strong><em>)<\/em><\/strong><\/span><\/p>\n<p>&nbsp;<\/p><p><span style=\"line-height: 1.5; color: rgb(0,0,0); font-size: 12px\">\n<strong>Namespace<\/strong>:&nbsp;<\/span><a href=\"http:\/\/www.w3.org\/ns\/person#\"><span style=\"line-height: 1.5\">http:\/\/www.w3.org\/ns\/person#<\/span><span style=\"line-height: 1.5\">&nbsp;<\/span><\/a><\/p>\n<p><span style=\"line-height: 1.5\"><strong>Prefix<\/strong>: person<\/span><\/p><h3>Status<\/h3><p><strong>Final draft<\/strong>: Version 1.00 07 May 2012<\/p>\n<p>This specification was produced by the <a href=\"https:\/\/joinup.ec.europa.eu\/asset\/core_business\/document\/core-vocabularies-working-group-members\">Core Vocabularies Working Group (Person Task Force)<\/a>, following the <a href=\"https:\/\/joinup.ec.europa.eu\/node\/43160\">Process and Methodology for Developing Core Vocabularies<\/a>.&nbsp;It has been reviewed by representatives of the Member States of the European Union, <abbr title=\"Public Sector Information\">PSI<\/abbr> publishers, and by other interested parties.&nbsp;<span style=\"line-height: 1.5; font-size: 13px\">On 23 May 2012, the Member State representatives in the ISA Coordination Group have <a href=\"https:\/\/joinup.ec.europa.eu\/node\/48837\">endorsed<\/a> the Core Person vocabulary v1.00, acknowledging the work and promising to further disseminate it at national level.&nbsp;<\/span><\/p>\n<section id=\"status\"><p>&nbsp;<\/p><p><span style=\"font-size: 13px\">Copyright &copy; 2012 European Union. This vocabulary is published under the&nbsp;<\/span><span style=\"font-size: 13px\"><a href=\"https:\/\/joinup.ec.europa.eu\/category\/licence\/isa-open-metadata-licence-v11\" rel=\"license\" style=\"font-size: 13px\">ISA Open Metadata Licence v1.1<\/a><\/span><\/p>\n<\/section>",
+            "format": "content_editor"
+        }
+    ],
+    "field_is_elibrary_creation": [
+        {
+            "value": "1"
+        }
+    ],
+    "field_is_landing_page": [
+        {
+            "uri": "http:\/\/www.w3.org\/ns\/person#",
+            "title": null,
+            "options": []
+        }
+    ],
+    "field_is_moderation": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_is_modification_date": [
+        {
+            "value": "2014-12-05T15:02:24"
+        },
+        {
+            "value": "2014-12-05T15:02:24"
+        }
+    ],
+    "field_is_state": [
+        {
+            "value": "validated"
+        }
+    ],
+    "field_is_webdav_creation": [
+        {
+            "value": "1"
+        }
+    ]
+}

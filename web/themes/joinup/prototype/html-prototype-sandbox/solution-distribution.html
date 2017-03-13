@@ -1,0 +1,93 @@
+{{> partials/head }}
+  
+  <div class="mdl-layout mdl-js-layout">
+    
+    {{> partials/header }}
+
+    <!-- Section featured start -->
+    <div class="section section--featured">
+
+      {{> partials/featured--solutions }}
+
+    </div>
+    <!-- Section featured end -->
+    <!-- Section content start -->
+    <div class="section section--content">
+      <div class="main-container mdl-grid">  
+        <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
+            
+          {{> partials/sidebar-menu--solutions }}
+
+        </div>
+        <div class="section section--main mdl-cell mdl-cell--8-col">       
+          <div class="page__title">
+            <h1>Oasis UBL v2.1</h1>
+            <div class="details details--solution">
+              <div class="details__element">
+                <div class="value gray">24MB</div>
+              </div>
+              <div class="details__element">
+                <div class="value underline bold">Linux</div>
+              </div>
+              <div class="details__element">
+                <div class="label gray">licence:</div>
+                <div class="value underline bold">EUPL</div>
+              </div>
+            </div>
+          </div>
+          <div class="page__content">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae nisi augue. Vestibulum rhoncus augue neque, a iaculis augue fermentum aliquam. Nullam nulla nunc, luctus finibus elementum sit amet, lobortis a nisl. Donec rhoncus tincidunt vulputate.
+            </p>
+            <p>
+              Suspendisse a metus nec est gravida eleifend sed eget enim. Mauris semper, ligula at iaculis tristique, magna felis dapibus nunc, vel tristique sem arcu sed eros. Fusce mattis urna malesuada lorem congue molestie.
+            </p>
+            <div class="action-link__wrapper right">
+              <a href="/" class="listing__action-link action-link">Download</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Section content end -->
+    <!-- Section post-content start -->
+    <div class="section section--post-content">
+      <div class="main-container mdl-grid">
+        <div class="listing listing--grid mdl-cell--8-col mdl-cell--2-offset-desktop">
+          <div class="row">
+            <div class="mdl-grid">
+              <div class="listing__header mdl-cell mdl-cell--12-col">
+                <h3 class="listing__block-title">Other distributions in</h3>
+                <div class="listing__etiquette etiquette etiquette--blue">Oasis UBL v2.1</div>
+              </div>
+
+              {{> partials/listing-item--distribution }}
+              {{> partials/listing-item--distribution }}
+              {{> partials/listing-item--distribution }}
+
+            </div>
+          </div>
+        </div>
+        <div class="listing listing--grid listing--separated mdl-cell--8-col mdl-cell--2-offset-desktop">
+          <div class="row">
+            <div class="mdl-grid">
+              <div class="listing__header mdl-cell mdl-cell--12-col">
+                <h3 class="listing__block-title">Shared in</h3>
+              </div>
+
+              {{> partials/listing-item--default }}
+              {{> partials/listing-item--default }}
+              {{> partials/listing-item--default }}
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Section post-content end -->
+
+    {{> partials/footer }}
+    
+  </div>
+
+{{> partials/scripts }}

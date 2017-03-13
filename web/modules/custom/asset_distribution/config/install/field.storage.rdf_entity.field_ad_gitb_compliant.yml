@@ -6,7 +6,8 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_value: 'http://joinup.eu/asset_distribution/gitb_compliant'
+    mapping:
+      value: 'http://joinup.eu/asset_distribution/gitb_compliant'
 id: rdf_entity.field_ad_gitb_compliant
 field_name: field_ad_gitb_compliant
 entity_type: rdf_entity
@@ -15,7 +16,7 @@ settings:
   allowed_values:
     -
       value: 0
-      label: 'No GITB compliant'
+      label: 'Not GITB compliant'
     -
       value: 1
       label: 'GITB compliant'

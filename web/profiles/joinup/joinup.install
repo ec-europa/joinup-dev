@@ -24,4 +24,10 @@ function joinup_install() {
     ->getEditable('user.settings')
     ->set('register', USER_REGISTER_VISITORS)
     ->save(TRUE);
+
+  // Disable the warning about rebuilding node access. This is needlessly set
+  // in the install hook of the View Unpublished module.
+  // @todo Remove this once the bug is fixed.
+  // @see https://www.drupal.org/node/2837685
+  node_access_needs_rebuild(FALSE);
 }

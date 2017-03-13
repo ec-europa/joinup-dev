@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   module:
-    - rdf_entity
+    - taxonomy
     - user
 id: user.field_user_professional_domain
 field_name: field_user_professional_domain
 entity_type: user
 type: entity_reference
 settings:
-  target_type: rdf_entity
+  target_type: taxonomy_term
 module: core
 locked: false
 cardinality: -1

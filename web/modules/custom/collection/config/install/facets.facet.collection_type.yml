@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies: {  }
+id: collection_type
+name: Type
+url_alias: collection_type
+weight: 0
+show_only_one_result: true
+field_identifier: entity_bundle
+query_type_name: null
+facet_source_id: 'search_api_field:rdf_entity.field_collection_content'
+widget:
+  type: type
+  config:
+    show_numbers: true
+    tabs: 3
+query_operator: or
+exclude: false
+only_visible_when_facet_source_is_visible: true
+processor_configs:
+  count_limit:
+    processor_id: count_limit
+    weights:
+      build: -10
+    settings:
+      minimum_items: 1
+      maximum_items: null
+  display_value_widget_order:
+    processor_id: display_value_widget_order
+    weights:
+      sort: -9
+    settings:
+      sort: ASC
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: -10
+      build: -10
+    settings: {  }
+empty_behavior:
+  behavior: none
+facet_configs: {  }

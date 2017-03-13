@@ -5,6 +5,7 @@
  * Contains joinup_event.module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
@@ -12,11 +13,39 @@ use Drupal\Core\Entity\EntityTypeInterface;
  */
 function joinup_event_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
   if ($entity_type->id() == 'node' && $bundle == 'event') {
-    if (!empty($fields['field_event_short_title'])) {
-      $fields['field_event_short_title']->addConstraint('UniqueField');
+    if (!empty($fields['field_short_title'])) {
+      $fields['field_short_title']->addConstraint('UniqueField');
     }
     if (!empty($fields['title'])) {
       $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['event']]);
     }
   }
+}
+
+/**
+ * Returns the appropriate workflow to use for the event entity.
+ *
+ * The callback ensures that even if the parent is updated and the moderation
+ * status changes, it will still use the proper workflow.
+ * The fact that both pre and post moderated workflow use the same states
+ * ensures that there are not going to be any issues as we only change
+ * transitions.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The event entity.
+ *
+ * @return string
+ *   The id of the workflow to use.
+ *
+ * @throws Exception
+ *    Thrown when the function is called for a different bundle.
+ */
+function joinup_event_workflow_selector(EntityInterface $entity) {
+  if ($entity->bundle() != 'event') {
+    throw new Exception('This method can only be called for event entities.');
+  }
+  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
+  $relation_manager = \Drupal::service('joinup_core.relations_manager');
+  $moderation = $relation_manager->getParentModeration($entity);
+  return $moderation == 1 ? 'node:event:pre_moderated' : 'node:event:post_moderated';
 }

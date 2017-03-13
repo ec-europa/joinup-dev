@@ -2,14 +2,16 @@ name: Joinup Theme
 description: Joinup theme based on Material design lite.
 package: Custom
 type: theme
-version: 8.1.1
 core: 8.x
-#Libraries
+
 libraries:
   - joinup_theme/icons
   - joinup_theme/fonts
   - joinup_theme/material-design-lite
   - joinup_theme/global-components
+
+stylesheets-remove:
+  - core/themes/stable/css/core/vertical-tabs.css
 
 regions:
   header: Header

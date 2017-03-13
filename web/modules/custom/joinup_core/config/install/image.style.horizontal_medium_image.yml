@@ -1,0 +1,15 @@
+uuid: 4084800b-13af-4dd3-bae1-db1e6c59c61f
+langcode: en
+status: true
+dependencies: {  }
+name: horizontal_medium_image
+label: 'Horizontal medium image'
+effects:
+  140b06c1-d27f-4068-91ea-c82ac131f5c6:
+    uuid: 140b06c1-d27f-4068-91ea-c82ac131f5c6
+    id: image_scale
+    weight: 1
+    data:
+      width: 491
+      height: 280
+      upscale: false

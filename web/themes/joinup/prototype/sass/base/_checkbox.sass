@@ -1,0 +1,38 @@
+// Checkbox
+//
+// Markup: html/checkbox.html
+//
+// Styleguide 1.10
+
+// Component
+// --------------------------------------------------
+.checkbox
+  display: block
+  margin: 15px 0
+
+// Elements
+// --------------------------------------------------
+.mdl-checkbox__ripple-container
+  .mdl-ripple
+    background-color: $color-blue-medium
+
+// Modifiers
+// --------------------------------------------------
+.checkbox--inline
+  display: inline-block
+  width: auto
+  margin-right: 15px
+  vertical-align: middle
+  &:last-of-type
+    margin-right: 0
+
+// Dependiencies
+// --------------------------------------------------
+
+// States
+// --------------------------------------------------
+.mdl-checkbox.is-checked
+  .mdl-checkbox__box-outline
+    border-color: $color-blue-medium
+  .mdl-checkbox__tick-outline
+    background-color: $color-blue-medium

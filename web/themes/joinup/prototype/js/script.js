@@ -32,9 +32,9 @@ var loadMore = loadMore || {};
  (function ($, loadMore) {
    'use strict';
 
-   var pageMore = 'load-more',
+   var pageMore = 'load-more.html',
    button = '.listing__item--load-more',
-   container = '.listing--load-more';
+   container = '.listing--load-more .row .mdl-grid';
 
    loadMore.load = function () {
      var url = './' + pageMore;
@@ -68,7 +68,7 @@ var loadMore = loadMore || {};
     $(this).siblings('.filter__dropdown').toggleClass('is-active');
   });
 
-  $('.listing__item--load-more .load-more').click(function () {
+  $('.listing__item--load-more').click(function () {
     loadMore.load();
   });
 

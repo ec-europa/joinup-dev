@@ -1,0 +1,14 @@
+entity_comment_edit_form:
+  title: 'Edit comment'
+  route_name: 'entity.comment.edit_form'
+  group: comment
+
+entity_comment_delete_form:
+  title: 'Delete comment'
+  route_name: 'entity.comment.delete_form'
+  group: comment
+
+comment_approve:
+  title: 'Approve comment'
+  route_name: 'comment.approve'
+  group: comment

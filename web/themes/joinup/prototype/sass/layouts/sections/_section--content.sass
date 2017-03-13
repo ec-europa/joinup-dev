@@ -8,7 +8,8 @@
 
 // Elements
 // --------------------------------------------------
-.page__title
+.page__title, .page__title-wrapper
+  position: relative
   margin: 0
   letter-spacing: 1px
   +breakpoint(mobile)
@@ -18,15 +19,28 @@
   min-height: min-content
   padding: 20px
   background-color: #fff
-  +breakpoint(mobile)
+  +breakpoint(tablet)
+    padding: 40px 30px
+  +breakpoint(desktop)
     padding: 40px 60px
+
+.page__content-image
+  img
+    max-width: 100%
+    height: auto
 
 // Modifiers
 // --------------------------------------------------
 
 // Dependiencies
 // --------------------------------------------------
-.page__title
+.page__title, .page__title-wrapper
+  .icon
+    position: absolute
+    top: 50%
+    left: -55px
+    transform: translateY(-50%)
+    +icon-size(50px)
   h1
     margin: 0
     display: inline-block

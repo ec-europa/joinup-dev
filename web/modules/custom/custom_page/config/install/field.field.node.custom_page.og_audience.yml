@@ -6,6 +6,7 @@ dependencies:
     - node.type.custom_page
     - rdf_entity.rdfentity.collection
   module:
+    - joinup_core
     - og
 id: node.custom_page.og_audience
 field_name: og_audience
@@ -24,6 +25,5 @@ settings:
       collection: collection
     sort:
       field: _none
-    target_type: rdf_entity
   access_override: false
 field_type: og_standard_reference

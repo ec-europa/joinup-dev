@@ -1,7 +1,9 @@
-body
-  background: $color-grey-bg
-
-h1, h2, h3, span, a, div
+h1,
+h2,
+h3,
+span,
+a,
+div
   font-family: 'Open Sans', sans-serif
   line-height: normal
 
@@ -9,9 +11,22 @@ div
   box-sizing: border-box
 
 .main-container
+  box-sizing: border-box
+  width: 100%
   max-width: $container-desktop
-  width: 100%
+  padding: 0
 
-.content-container
-  max-width: 784px
+.main-container--center
+  justify-content: center
+
+.content-container--form
   width: 100%
+  .page__content
+    width: 100%
+    padding: 0
+    background-color: transparent
+    +breakpoint(tablet)
+      padding: 0
+    +breakpoint(desktop)
+      padding: 0
+

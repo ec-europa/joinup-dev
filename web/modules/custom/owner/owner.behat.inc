@@ -8,17 +8,23 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\TermInterface;
 
 /**
  * Behat step definitions for testing owners.
  */
 class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use MaterialDesignTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
+  use UtilityTrait;
 
   /**
    * Test owner rdf entities.
@@ -28,137 +34,78 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   protected $owners = [];
 
   /**
-   * Creates a person owner with data provided in a table.
+   * Creates one or many owners with data provided in a table.
    *
    * Table format:
-   * | name | Mightily Oats |
+   * | type                        | name        | id                      |
+   * | Company,Industry consortium | Acme Inc.   | http://example.com/path |
+   * | Local authority             | Gotham City |                         |
+   * | Private Individual(s)       | Jane Roe    |                         |
    *
-   * @param TableNode $person_table
-   *   The person table.
+   * @param \Behat\Gherkin\Node\TableNode $owners_table
+   *   The owners table.
    *
-   * @Given (the following )person:
+   * @throws \Exception;
+   *   If a wrong type has been passed.
+   *
+   * @Given (the following )owner/owners:
    */
-  public function givenPerson(TableNode $person_table) {
-    // Convert aliased field names.
-    $values = $this->convertFieldAliases('person', $person_table->getRowsHash());
+  public function givenOwner(TableNode $owners_table) {
+    foreach ($owners_table->getHash() as $row) {
+      // If no type was specified, fallback to 'Private Individual(s)'.
+      $types = isset($row['type']) ? array_map('trim', explode(',', $row['type'])) : ['Private Individual(s)'];
 
-    $this->createOwner('person', $values);
-  }
+      $query = \Drupal::entityQuery('taxonomy_term');
+      $tids = $query
+        ->condition('vid', 'owner_type')
+        ->condition('name', $types, 'IN')
+        ->execute();
 
-  /**
-   * Creates a number of person owners with data provided in a table.
-   *
-   * Table format:
-   * | name          |
-   * | Mightily Oats |
-   * | John Irwin    |
-   *
-   * @param TableNode $person_table
-   *   The person table.
-   *
-   * @Given (the following )people:
-   */
-  public function givenPeople(TableNode $person_table) {
-    foreach ($person_table->getColumnsHash() as $person) {
-      // Convert aliased field names.
-      $values = $this->convertFieldAliases('person', $person);
+      $found = array_map(function (TermInterface $term) {
+        return $term->label();
+      }, Term::loadMultiple($tids));
 
-      $this->createOwner('person', $values);
+      if ($not_found = array_diff($types, $found)) {
+        throw new \Exception("Non-existent owner types: " . implode(', ', $not_found));
+      }
+
+      $owner = Rdf::create([
+        'rid' => 'owner',
+        'id' => !empty($row['id']) ? $row['id'] : $this->getRandomUri(),
+        'field_owner_type' => $tids,
+        'field_owner_name' => !empty($row['name']) ? $row['name'] : $this->getRandom()->name(8, TRUE),
+      ]);
+      $owner->save();
+
+      $this->owners[$owner->id()] = $owner;
     }
   }
 
   /**
-   * Creates a organisation owner with data provided in a table.
-   *
-   * Table format:
-   * | name | Red birds |
-   *
-   * @param TableNode $organisation_table
-   *   The organisation table.
-   *
-   * @Given (the following )organisation:
-   */
-  public function givenOrganisation(TableNode $organisation_table) {
-    // Convert aliased field names.
-    $values = $this->convertFieldAliases('organisation', $organisation_table->getRowsHash());
-
-    $this->createOwner('organisation', $values);
-  }
-
-  /**
-   * Creates a number of organisation owners with data provided in a table.
-   *
-   * Table format:
-   * | name      |
-   * | Red birds |
-   * | Acme Inc. |
-   *
-   * @param TableNode $organisation_table
-   *   The organisation table.
-   *
-   * @Given (the following )organisations:
-   */
-  public function givenOrganisations(TableNode $organisation_table) {
-    foreach ($organisation_table->getColumnsHash() as $organisation) {
-      // Convert aliased field names.
-      $values = $this->convertFieldAliases('person', $organisation);
-
-      $this->createOwner('organization', $values);
-    }
-  }
-
-  /**
-   * Checks the number of available persons.
+   * Checks the number of available owners.
    *
    * @param int $number
-   *   The expected number of persons.
+   *   The expected number of owners.
    *
    * @throws \Exception
    *   Throws an exception when the expected number is not equal to the given.
    *
-   * @Then I should have :number person(s)
+   * @Then I should have :number owner/owners
    */
-  public function assertPersonCount($number) {
-    $this->assertRdfEntityCount($number, 'person');
+  public function assertOwnerCount($number) {
+    $this->assertRdfEntityCount($number, 'owner');
   }
 
   /**
-   * Checks the number of available organisations.
-   *
-   * @param int $number
-   *   The expected number of organisations.
-   *
-   * @throws \Exception
-   *   Throws an exception when the expected number is not equal to the given.
-   *
-   * @Then I should have :number organisation(s)
-   */
-  public function assertOrganisationCount($number) {
-    $this->assertRdfEntityCount($number, 'organisation');
-  }
-
-  /**
-   * Deletes an owner entity of type person.
+   * Deletes an owner entity.
    *
    * @param string $name
-   *   The name of the person to delete.
+   *   The name of the owner to delete.
    *
-   * @When I delete the :owner person
+   * @When I delete the :owner owner
    */
-  public function deletePerson($name) {
-    $this->getRdfEntityByLabel($name, 'person')->delete();
-  }
-
-  /**
-   * Deletes an owner entity of type organisation.
-   *
-   * @param string $name
-   *   The name of the organisation to delete.
-   *
-   * @When I delete the :owner organisation
-   */
-  public function deleteOrganisation($name) {
-    $this->getRdfEntityByLabel($name, 'organisation')->delete();
+  public function deleteOwner($name) {
+    $this->getRdfEntityByLabel($name, 'owner')->delete();
   }
 
   /**
@@ -174,103 +121,54 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   }
 
   /**
-   * Converts aliased to real field names.
+   * Sets type(s) of the owner field.
    *
-   * @param string $type
-   *   The type of the owner.
-   * @param array $aliased_values
-   *   An array of values keyed by field alias.
-   *
-   * @return array
-   *   The field values keyed by real field name.
+   * @param string $options
+   *   A comma delimited list of options to be checked.
    *
    * @throws \Exception
-   *   Thrown when a column name is incorrect.
+   *   Thrown when the owner field appears empty in the page.
+   *
+   * @When (I )set the Owner type(s) to :option
    */
-  protected function convertFieldAliases($type, array $aliased_values) {
-    $aliases = self::ownerFieldAliases($type);
+  public function setOwnerType($options) {
+    // Explode into an array.
+    $options = $this->explodeCommaSeparatedStepArgument($options);
 
-    $values = [];
-    // Replace the column aliases with the actual field names.
-    foreach ($aliased_values as $key => $value) {
-      if (array_key_exists($key, $aliases)) {
-        $values[$aliases[$key]] = $value;
+    /** @var \Behat\Mink\Element\NodeElement $owner_fieldset */
+    $owner_fieldset = $this->getSession()->getPage()->find('named', ['fieldset', 'Type']);
+
+    /** @var \Behat\Mink\Element\NodeElement[] $labels */
+    $labels = $owner_fieldset->findAll('xpath', '//label//label');
+
+    if (empty($labels)) {
+      throw new \Exception('No options found in the owner field.');
+    }
+
+    foreach ($labels as $label) {
+      $option = $label->getText();
+      if (in_array($option, $options)) {
+        $this->checkMaterialDesignField($option, $owner_fieldset);
       }
       else {
-        throw new \Exception("Unknown column '$key' in $type table.");
+        $this->uncheckMaterialDesignField($option, $owner_fieldset);
       }
     }
-
-    return $values;
   }
 
   /**
-   * Creates an owner from the given property and field data.
+   * Navigates to the canonical page display of an owner.
    *
-   * @param string $type
-   *   The type of the owner.
-   * @param array $values
-   *   An optional associative array of values, keyed by property name.
+   * @param string $owner
+   *   The label of the owner.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
-   *   A new owner entity of the specified type.
+   * @When (I )go to (the homepage of )the :owner owner
+   * @When (I )visit (the homepage of )the :owner owner
    */
-  protected function createOwner($type, array $values) {
-    $values['rid'] = $type;
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
-
-    $owner = Rdf::create($values);
-    $owner->save();
-    $this->owners[$owner->id()] = $owner;
-
-    return $owner;
-  }
-
-  /**
-   * Selects option in select field at a Owner inline entity widget.
-   *
-   * @param string $option
-   *    The option to choose from the dropdown list.
-   *
-   * @When (I )select :option in the dropdown( list) of the "Owner"( field)
-   */
-  public function selectOption($option) {
-    // Fixes a step argument (with \\" replaced back to ")
-    // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
-    $option = str_replace('\\"', '"', $option);
-    $this->getSession()->getPage()->find('named', array('fieldset', 'Owner'))->selectFieldOption('field_ar_owner[actions][bundle]', $option);
-  }
-
-  /**
-   * Field alias mapping.
-   *
-   * @param string $bundle
-   *   The bundle for which to retrieve the mappings.
-   *
-   * @return array
-   *    Mapping.
-   *
-   * @throws \Exception
-   *   Thrown the bundle is unknown.
-   */
-  protected static function ownerFieldAliases($bundle) {
-    // Mapping alias - field name.
-    $map = [
-      'organisation' => [
-        'uri' => 'id',
-        'name' => 'field_oo_name',
-      ],
-      'person' => [
-        'uri' => 'id',
-        'name' => 'field_op_name',
-      ],
-    ];
-
-    if (!isset($map[$bundle])) {
-      throw new \Exception("Unknown field aliases for bundle $bundle.");
-    }
-
-    return $map[$bundle];
+  public function visitOwner($owner) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $owner */
+    $owner = $this->getRdfEntityByLabel($owner, 'owner');
+    $this->visitPath($owner->url());
   }
 
 }

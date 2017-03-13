@@ -16,33 +16,30 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_shared_content
+    - field.field.rdf_entity.collection.field_ar_state
+    - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
-    - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
     - datetime
-    - image
     - link
     - options
+    - search_api_field
     - text
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection
 mode: default
 content:
-  collection_content:
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
   field_ar_abstract:
-    weight: 13
+    weight: 10
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_ar_access_url:
-    weight: 3
+    weight: 2
     label: above
     settings:
       trim_length: 80
@@ -53,29 +50,14 @@ content:
     third_party_settings: {  }
     type: link
   field_ar_affiliates:
-    weight: 10
+    weight: 9
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_ar_banner:
-    weight: 12
-    label: above
-    settings:
-      image_style: banner
-      image_link: ''
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: image
   field_ar_closed:
-    weight: 14
+    weight: 11
     label: above
     settings:
       format: default
@@ -84,14 +66,14 @@ content:
     third_party_settings: {  }
     type: boolean
   field_ar_contact_information:
-    weight: 6
+    weight: 5
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_ar_creation_date:
-    weight: 4
+    weight: 3
     label: above
     settings:
       format_type: medium
@@ -99,27 +81,19 @@ content:
     third_party_settings: {  }
     type: datetime_default
   field_ar_description:
-    weight: 2
+    weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_ar_elibrary_creation:
-    weight: 15
+    weight: 12
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
-  field_ar_logo:
-    weight: 11
-    label: above
-    settings:
-      image_style: image_style_collection_logo
-      image_link: content
-    third_party_settings: {  }
-    type: image
   field_ar_moderation:
-    weight: 16
+    weight: 13
     label: above
     settings:
       format: default
@@ -128,7 +102,7 @@ content:
     third_party_settings: {  }
     type: boolean
   field_ar_modification_date:
-    weight: 5
+    weight: 4
     label: above
     settings:
       format_type: medium
@@ -136,21 +110,33 @@ content:
     third_party_settings: {  }
     type: datetime_default
   field_ar_owner:
+    weight: 6
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_ar_state:
+    type: list_default
+    weight: 14
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_collection_content:
+    weight: 16
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: search_api_field
+  field_policy_domain:
     weight: 7
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_policy_domain:
-    weight: 8
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
   field_spatial_coverage:
-    weight: 9
+    weight: 8
     label: above
     settings:
       link: true
@@ -163,5 +149,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  rdf_entity_field_collection_content_top:
+    weight: 15
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  field_ar_banner: true
+  field_ar_logo: true
   field_ar_shared_content: true
+  join_collection: true
+  og_group: true

@@ -6,13 +6,16 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ElementNotFoundException;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\file_url\FileUrlHandler;
 
 /**
  * Behat step definitions for testing asset distributions.
@@ -64,41 +67,27 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   /**
    * Creates a number of asset distributions with data provided in a table.
    *
-   * @param TableNode $asset_distribution_table
+   * @param \Behat\Gherkin\Node\TableNode $asset_distribution_table
    *   The asset distribution data.
    *
    * @codingStandardsIgnoreStart
    *   Table format:
-   *   uri                                     | title            | description                | access url                               | file     | creation date     | modification date
-   *   http://joinup.eu/asset_distribution/foo | Foo distribution | This is a foo distribution | http://base_url.com/path-to-file.zip     | test.zip | 28-01-1995 12:05  |
-   *   http://joinup.eu/asset_distribution/bar | Bar distribution | This is a bar distribution | http://external_url.com/path-to-file.zip | test.zip | 28-01-1995 12:06  |
+   *   | uri                                     | title            | description                | access url                               | creation date     | modification date | parent        |
+   *   | http://joinup.eu/asset_distribution/foo | Foo distribution | This is a foo distribution | test.zip                                 | 28-01-1995 12:05  | 30-01-1995 10:44  | Solution name |
+   *   | http://joinup.eu/asset_distribution/bar | Bar distribution | This is a bar distribution | http://external_url.com/path-to-file.zip | 28-01-1995 12:06  |                   | Release name  |
    * @codingStandardsIgnoreEnd
    *
-   * Fields title and description are mandatory.
+   * Fields title and description are mandatory. Field 'access url' can be
+   * either an external valid URL or a local file to be uploaded.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )asset distributions:
+   * @Given (the following )(asset )distributions:
    */
   public function givenAssetDistributions(TableNode $asset_distribution_table) {
-    $aliases = self::assetDistributionFieldAliases();
-
-    foreach ($asset_distribution_table->getColumnsHash() as $asset_distribution) {
-      $values = [];
-      // Replace the column aliases with the actual field names.
-      foreach ($asset_distribution as $key => $value) {
-        if (array_key_exists($key, $aliases)) {
-          $values[$aliases[$key]] = $value;
-        }
-        else {
-          throw new \Exception("Unknown column '$key' in asset distribution table.");
-        }
-      };
-
-      $values = $this->convertValueAliases($values);
-
-      $this->createAssetDistribution($values);
+    foreach ($asset_distribution_table->getColumnsHash() as $values) {
+      $this->createAssetDistributionFromAliasedTableValues($values);
     }
   }
 
@@ -106,39 +95,26 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Creates an asset distribution with data provided in a table.
    *
    * Table format:
-   * | title             | Sample distribution                          |
-   * | uri               | http://joinup.eu/distribution/foobar         |
-   * | description       | A sample distribution                        |
-   * | access url        | http://internal-or-external.path/to/file.zip |
-   * | file              | test.zip                                     |
+   * | title       | Sample distribution                             |
+   * | uri         | http://joinup.eu/distribution/foobar            |
+   * | description | A sample distribution                           |
+   * | access url  | http://external.path/to/file.zip  (or test.zip) |
+   * | parent      | Release or solution name                        |
    *
-   * Fields title and description are required.
+   * Fields 'title' and 'description' are required. Field 'access url' can be
+   * either an external valid URL or a local file to be uploaded.
    *
-   * @param TableNode $asset_distribution_table
+   * @param \Behat\Gherkin\Node\TableNode $asset_distribution_table
    *   The asset distribution data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )asset distribution:
+   * @Given (the following )(asset )distribution:
    */
   public function givenAssetDistribution(TableNode $asset_distribution_table) {
-    $aliases = self::assetDistributionFieldAliases();
-
-    $values = [];
-    // Replace the column aliases with the actual field names.
-    foreach ($asset_distribution_table->getRowsHash() as $key => $value) {
-      if (array_key_exists($key, $aliases)) {
-        $values[$aliases[$key]] = $value;
-      }
-      else {
-        throw new \Exception("Unknown column '$key' in solution table.");
-      }
-    };
-
-    $values = $this->convertValueAliases($values);
-
-    $this->createAssetDistribution($values);
+    $values = $asset_distribution_table->getRowsHash();
+    $this->createAssetDistributionFromAliasedTableValues($values);
   }
 
   /**
@@ -154,9 +130,13 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *   Thrown when a given file is not found.
    */
   protected function createAssetDistribution(array $values) {
-    // Add image.
-    if (!empty($values['field_ad_file'])) {
-      $values['field_ad_file'] = [$this->createFile($values['field_ad_file'], $this->getMinkParameter('files_path'))];
+    // The Access URL field is either an external URI, or file upload.
+    if (!empty($url = $values['field_ad_access_url'])) {
+      global $base_url;
+      if (!UrlHelper::isValid($url, TRUE) || !UrlHelper::isExternal($url) || UrlHelper::externalIsLocal($url, $base_url)) {
+        // It's a local file to be uploaded.
+        $values['field_ad_access_url'] = $this->uploadFileUrl($url, $this->getMinkParameter('files_path'));
+      }
     }
 
     $values['rid'] = 'asset_distribution';
@@ -166,6 +146,60 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
 
     return $asset_distribution;
+  }
+
+  /**
+   * Creates an asset distribution using the provided aliases table values.
+   *
+   * @param array $aliased_values
+   *   An associative array of values used to create the distribuion, with keys
+   *   using the aliases from self::assetDistributionFieldAliases(). If the key
+   *   'parent' is present, a relation with a parent solution or release with
+   *   a label matching this value will be created.
+   *
+   * @throws \Exception
+   *   Thrown when an unknown key alias is present in the list of values.
+   */
+  protected function createAssetDistributionFromAliasedTableValues(array $aliased_values) {
+    $aliases = self::assetDistributionFieldAliases();
+
+    $values = [];
+    // Replace the column aliases with the actual field names.
+    foreach ($aliased_values as $key => $value) {
+      if (array_key_exists($key, $aliases)) {
+        $values[$aliases[$key]] = $value;
+      }
+      // If the 'parent' key is present we will have to create a relation to the
+      // parent entity, which is either a release or a solution.
+      elseif ($key === 'parent') {
+        $parent_entity = self::getRdfEntityByLabel($value);
+
+        // If we know the parent then we can transparently populate the group
+        // reference to the solution.
+        if (!array_key_exists('solution', $aliased_values)) {
+          $solution_label = NULL;
+          if ($parent_entity->bundle() === 'solution') {
+            $solution_label = $parent_entity->label();
+          }
+          elseif ($solution_entity_id = $parent_entity->field_isr_is_version_of->value) {
+            $solution_label = Rdf::load($solution_entity_id)->label();
+          }
+          $values[OgGroupAudienceHelperInterface::DEFAULT_FIELD] = $solution_label;
+        }
+      }
+      else {
+        throw new \Exception("Unknown key '$key' in asset distribution table.");
+      }
+    };
+
+    $values = $this->convertValueAliases($values);
+
+    $asset_distribution_entity = $this->createAssetDistribution($values);
+
+    // Create the relation with the parent entity if requested.
+    if (!empty($parent_entity)) {
+      asset_distribution_add_parent_relation($asset_distribution_entity, $parent_entity);
+    }
   }
 
   /**
@@ -224,14 +258,14 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param int $number
    *   The expected number of asset distributions.
    *
-   * @Then I should have :number asset distribution(s)
+   * @Then I should have :number distribution(s)
    */
   public function assertAssetDistributionCount($number) {
     $this->assertRdfEntityCount($number, 'asset_distribution');
   }
 
   /**
-   * Navigates to the canonical page display of an asset release.
+   * Navigates to the canonical page display of an asset distribution.
    *
    * @param string $title
    *   The title of the asset distribution.
@@ -260,7 +294,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *   Mapping.
    */
   protected static function assetDistributionFieldAliases() {
     // Mapping alias - field name.
@@ -270,13 +304,12 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       'access url' => 'field_ad_access_url',
       'creation date' => 'field_ad_creation_date',
       'description' => 'field_ad_description',
-      'file' => 'field_ad_file',
       'file size' => 'field_ad_file_size',
       'format' => 'field_ad_format',
       'licence' => 'field_ad_licence',
       'modification date' => 'field_ad_modification_date',
       'representation technique' => 'field_ad_repr_technique',
-      'solution' => OgGroupAudienceHelper::DEFAULT_FIELD,
+      'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
       'status' => 'field_status',
     ];
   }
@@ -285,18 +318,202 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Converts values from user friendly to normal machine values.
    *
    * @param array $fields
-   *    An array of fields keyed by field name.
+   *   An array of fields keyed by field name.
    *
    * @return array
-   *    The array with the values converted.
+   *   The array with the values converted.
    */
-  protected function convertValueAliases($fields) {
-    if (isset($fields[OgGroupAudienceHelper::DEFAULT_FIELD])) {
-      $solution = $this->getRdfEntityByLabel($fields[OgGroupAudienceHelper::DEFAULT_FIELD], 'solution');
-      $fields[OgGroupAudienceHelper::DEFAULT_FIELD] = $solution->id();
+  protected function convertValueAliases(array $fields) {
+    if (!empty($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD])) {
+      $solution = $this->getRdfEntityByLabel($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD], 'solution');
+      $fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD] = $solution->id();
     }
 
     return $fields;
+  }
+
+  /**
+   * Checks if a distribution in compact view contains download links.
+   *
+   * The compact view is used for example in the "Downloads" page.
+   * This currently only checks the first download link.
+   *
+   * @param string $distribution
+   *   The name of the distribution.
+   *
+   * @throws \Exception
+   *   Thrown if the download link cannot be found.
+   *
+   * @Then I should see the download link in the :distribution( asset) distribution
+   */
+  public function assertLinkDistribution($distribution) {
+    $distribution = $this->getAssetDistributionByName($distribution);
+    if (empty($distribution->field_ad_access_url->first())) {
+      throw new \Exception(sprintf('Asset distribution "%s" does not contain any download links.', $distribution->label()));
+    }
+    $file = FileUrlHandler::urlToFile($distribution->field_ad_access_url->target_id);
+    $promoted_link = FileUrlHandler::isRemote($file) ? $distribution->field_ad_access_url->target_id : file_create_url($file->getFileUri());
+    $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$promoted_link}']");
+    if (empty($result)) {
+      throw new \Exception(sprintf('No link was found in the "%s" distribution on the page %s', $distribution->label(), $this->getSession()->getCurrentUrl()));
+    }
+  }
+
+  /**
+   * Checks that a distribution in compact view does not contain download links.
+   *
+   * The compact view is used for example in the "Downloads" page.
+   *
+   * @param string $distribution
+   *   The name of the distribution.
+   *
+   * @throws \Exception
+   *   Thrown if the link was found.
+   *
+   * @Then the :distribution( asset) distribution should not have any download urls
+   */
+  public function assertNotLinkDistribution($distribution) {
+    $link = $this->getSession()->getPage()->find('xpath', "//a[contains(text(), '$distribution')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//span[contains(concat(' ', @class, ' '), ' file ')]/a");
+    if (!empty($link)) {
+      throw new \Exception(sprintf('Asset distribution "%s" contains download link(s).', $distribution));
+    }
+  }
+
+  /**
+   * Asserts that a file is attached to a distribution.
+   *
+   * @param string $distribution
+   *   The distribution title.
+   * @param string $file_name
+   *   The file name.
+   *
+   * @throws \Exception
+   *    Thrown when the file or the link is not found.
+   *
+   * @Then the :distribution distribution should have the link of the :file_name in the access URL field
+   */
+  public function assertLinkSynchronized($distribution, $file_name) {
+    $distribution = $this->getAssetDistributionByName($distribution);
+    $file = FileUrlHandler::urlToFile($distribution->field_ad_access_url->target_id);
+    if (($file->getFilename() !== $file_name) || !file_create_url($file->getFileUri())) {
+      throw new \Exception("The file {$file_name} was not found in the '{$distribution->label()}' distribution'");
+    }
+
+    $files_path = $this->getMinkParameter('files_path');
+    $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file_name;
+    if (!is_file($path)) {
+      throw new \Exception("File '$file_name' was not found in file path '$files_path'.");
+    }
+
+    /** @var \Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesserInterface $mime_guesser */
+    $mime_guesser = \Drupal::service('file.mime_type.guesser');
+    $mime_type = $mime_guesser->guess($path);
+    $expected_file_type = asset_distribution_get_file_type_term_by_mime($mime_type);
+    $expected_file_size = filesize($path);
+
+    // Test the file format.
+    if ($expected_file_type !== $distribution->field_ad_format->target_id) {
+      throw new \Exception("File '$file_name' has the format '{$distribution->field_ad_format->target_id}'. Expected '$expected_file_type'.");
+    }
+
+    // Test the file size.
+    if ($expected_file_size !== (int) $distribution->field_ad_file_size->value) {
+      throw new \Exception("File '$file_name' has the size '{$distribution->field_ad_file_size->value}'. Expected '$expected_file_size'.");
+    }
+  }
+
+  /**
+   * Upload a file to a 'file_url' field.
+   *
+   * @param string $filename
+   *   The file name ti be uplaoded.
+   * @param string $file_url_field
+   *   The file URL field label.
+   *
+   * @throws \Exception
+   *   The file to be uploaded doesn't exists.
+   *
+   * @Given I upload the file :filename to :file_url_field
+   */
+  public function uploadFileToFileUrlField($filename, $file_url_field) {
+    $id = $this->fileUrlFieldHelper($file_url_field, 'file');
+
+    // Qualify the file path.
+    $files_path = $this->getMinkParameter('files_path');
+    $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
+    if (!is_file($path)) {
+      throw new \Exception("File '$filename' was not found in file path '$files_path'.");
+    }
+
+    // Attach the file.
+    $this->getSession()->getPage()->attachFileToField($id, $path);
+  }
+
+  /**
+   * Sets an URI as remote file to a 'file_url' field.
+   *
+   * @param string $uri
+   *   The URI string to be set.
+   * @param string $file_url_field
+   *   The file URL field label.
+   *
+   * @Given I set the URI :uri to :file_url_field
+   */
+  public function setUriToFileUrlField($uri, $file_url_field) {
+    $id = $this->fileUrlFieldHelper($file_url_field, 'remote-file');
+    // Fill in the text.
+    $this->getSession()->getPage()->fillField($id, $uri);
+  }
+
+  /**
+   * Provides a helper for file URL field steps.
+   *
+   * @param string $file_url_field
+   *   The file URL field label.
+   * @param string $option
+   *   What option to use: 'file' or 'remote-file'.
+   *
+   * @return string
+   *   The id attribute of the field being changed.
+   *
+   * @throws \Exception
+   *   When parts of the widget cannot be found.
+   */
+  protected function fileUrlFieldHelper($file_url_field, $option) {
+    $session = $this->getSession();
+    $page = $session->getPage();
+
+    // Locate the file URL field widget wrapper.
+    $wrapper = $page->find('xpath', "//label[text()='$file_url_field']/ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' field--type-file-url ')][1]");
+    if (!$wrapper) {
+      throw new ElementNotFoundException($session->getDriver(), "Cannot find the file URL field '$file_url_field'.");
+    }
+    // Get the data selector but trim the '-wrapper' suffix.
+    $data_selector_base = substr($wrapper->getAttribute('data-drupal-selector'), 0, -8);
+
+    // Select the option for file upload or remote file.
+    $data_selector_radio = "$data_selector_base-0-file-wrap-select-$option";
+    $radio = $page->find('xpath', "//input[@type='radio' and @data-drupal-selector='$data_selector_radio']");
+    if (!$radio) {
+      throw new \Exception($session->getDriver(), "Malformed file URL field '$file_url_field': Can't find the inner '$option' radio option.");
+    }
+    $page->selectFieldOption($radio->getAttribute('name'), $option);
+
+    // Find the field to be updated.
+    if ($option === 'file') {
+      $data_selector = "$data_selector_base-0-file-wrap-file-upload";
+      $type = 'file';
+    }
+    else {
+      $data_selector = "$data_selector_base-0-file-wrap-remote-file";
+      $type = 'url';
+    }
+    $field = $page->find('xpath', "//input[@type='$type' and @data-drupal-selector='$data_selector']");
+    if (!$field) {
+      throw new \Exception($session->getDriver(), "Malformed file URL field '$file_url_field': Can't find the inner field '$data_selector'.");
+    }
+
+    return $field->getAttribute('id');
   }
 
 }

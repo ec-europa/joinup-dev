@@ -27,7 +27,8 @@ See our [contributors guide](.github/CONTRIBUTING.md).
 
 ### Requirements
 * A regular LAMP stack
-* Virtuoso (Triplestore database)
+* Virtuoso 7 (Triplestore database)
+* SASS compiler
 * Apache Solr
 
 ### Dependency management and builds
@@ -64,13 +65,30 @@ run the Behat test, please refer directly to the documention of
     ```
 
 * Install Virtuoso. For basic instructions, see [setting up
-  Virtuoso](/web/modules/custom/rdf_entity/README.md). During installation some
-  RDF based taxonomies will be imported from the `resources/fixtures` folder.
+  Virtuoso](/web/modules/custom/rdf_entity/README.md).
+  Due to [a bug in Virtuoso 6](https://github.com/openlink/virtuoso-opensource/issues/303) it is recommended to use Virtuoso 7.
+  During installation some RDF based taxonomies will be imported from the `resources/fixtures` folder.
   Make sure Virtuoso can read from this folder by adding it to the `DirsAllowed`
   setting in your `virtuoso.ini`. For example:
 
     ```
     DirsAllowed = /var/www/joinup/resources/fixtures, /usr/share/virtuoso-opensource-7/vad
+    ```
+
+* Install the official [SASS compiler](https://github.com/sass/sass). This
+  depends on Ruby being installed on your system.
+
+    ```
+    $ gem install sass
+    ```
+
+* Install [Selenium](https://github.com/SeleniumHQ/docker-selenium/blob/master/README.md).
+  The simplest way of doing this is using Docker to install and run it with a
+  single command. This will download all necessary files and start the browser
+  in the background in headless mode:
+
+    ```
+    $ docker run -d -p 4444:4444 --network=host selenium/standalone-chrome
     ```
 
 * Point the document root of your webserver to the 'web/' directory.
@@ -105,7 +123,7 @@ composer.bin = /usr/bin/composer
 isql.bin = /usr/bin/virtuoso-isql
 # The location of the Virtuoso console (Arch Linux).
 isql.bin = /usr/bin/virtuoso-isql
-# The location of the Virtuoso console (Redhat / Fedora).
+# The location of the Virtuoso console (Redhat / Fedora / OSX with Homebrew).
 isql.bin = /usr/local/bin/isql
 
 # SQL database settings.
@@ -114,6 +132,7 @@ drupal.db.user = root
 drupal.db.password = hunter2
 
 # SPARQL database settings.
+sparql.dsn = localhost
 sparql.user = my_username
 sparql.password = qwerty123
 
@@ -149,9 +168,37 @@ $ cd tests
 $ ./behat
 ```
 
+During development you can enable Behat test screen-shots by uncomment this line in `tests/features/bootstrap/FeatureContext.php`:
+
+```php
+  // use \Drupal\joinup\Traits\ScreenShotTrait;
+```
+
+and use the `pretty` formatter instead of `progress`, in `tests/behat.yml`:
+
+```yaml
+  formatters:
+    pretty: ~
+```
+
 Also run the PHPUnit tests, from the web root.
 
 ```
 $ cd web
 $ ../vendor/bin/phpunit
 ```
+
+
+### Frontend development
+
+See the [readme](web/themes/joinup/README.md) in the theme folder.
+
+
+### Technical details
+
+* In [Rdf draft module](web/modules/custom/rdf_entity/rdf_draft/README.md)
+there is information on handling draft in CRUD operations for rdf entities.
+* In [Joinup notification module](web/modules/custom/joinup_notification/README.md)
+there is information on how to handle notifications in Joinup.
+* In [Joinup core module](web/modules/custom/joinup_core/README.md) there is
+information on how to handle and create workflows.

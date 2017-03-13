@@ -6,7 +6,8 @@ dependencies:
     - taxonomy
 third_party_settings:
   rdf_entity:
-    mapping_target_id: 'http://purl.org/dc/terms/type'
+    mapping:
+      target_id: 'http://purl.org/dc/terms/type'
 id: rdf_entity.field_licence_type
 field_name: field_licence_type
 entity_type: rdf_entity

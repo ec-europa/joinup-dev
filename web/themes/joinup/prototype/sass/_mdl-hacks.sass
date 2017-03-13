@@ -4,33 +4,42 @@
 .mdl-layout__header-row
   height: 64px !important
 
-.mdl-textfield--floating-label.is-invalid .mdl-textfield__label
-  color: #a0a1a2
-  font-size: 20px
-
-.mdl-textfield--floating-label.is-invalid .mdl-textfield__input
-  border-color: #a0a1a2
-
 .mdl-cell--12-col-tablet
   +breakpoint(mobile, tablet)
     width: 100%
 
 .form-wrapper
   margin-bottom: 25px
+  &.form__actions-wrapper
+    margin-bottom: 0
 
 .section--sidebar-left #edit-join
   margin-left: -100px
 
 form .description
-  color: #a0a1a2
   font-size: 12px
+  color: #a0a1a2
 
 .messages
   background-image: none
 
 .mdl-menu
   .mdl-menu__item
+    height: auto
     padding: 0
     a
       display: block
       padding: 16px
+      white-space: normal
+
+.mdl-layout__drawer-button
+  top: 4px
+  .material-icons
+    font-size: 40px
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    color: #fff
+  +breakpoint(tablet)
+    display: none

@@ -5,9 +5,9 @@
  * Purge the triple store from the CLI.
  */
 
-use \Drush\Log\LogLevel;
-use \Drupal\search_api\Entity\Server;
-use \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
+use Drush\Log\LogLevel;
+use Drupal\search_api\Entity\Server;
+use Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
 
 /**
  * Implements hook_drush_command().
@@ -19,7 +19,7 @@ function rdf_entity_drush_command() {
     'description' => 'Delete the whole index at the Sparql endpoint.',
     'examples' => array(
       'drush rdf-entity-purge' => dt('Purge the triple store.'),
-      'drush repl' => dt('Alias to purge the triple store.'),
+      'drush rep' => dt('Alias to purge the triple store.'),
     ),
     'aliases' => array('rep'),
   );
@@ -56,7 +56,7 @@ QUERY;
     $endpoint->query($query);
 
     $backend = Server::load('solr')->getBackend();
-    if ($backend instanceof SearchApiSolrBackend && $backend->getSolrHelper()->pingCore()) {
+    if ($backend instanceof SearchApiSolrBackend && $backend->getSolrConnector()->pingCore()) {
       $index = $backend->getServer()->getIndexes()['collections'];
       $backend->deleteAllIndexItems($index);
     }

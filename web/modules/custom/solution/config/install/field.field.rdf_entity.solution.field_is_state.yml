@@ -14,9 +14,7 @@ label: State
 description: ''
 required: true
 translatable: false
-default_value:
-  -
-    value: __new__
+default_value: {  }
 default_value_callback: ''
 settings:
   workflow: solution_workflow

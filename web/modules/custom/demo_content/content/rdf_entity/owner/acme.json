@@ -1,0 +1,57 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3e9231e3-14d9-430c-91f0-626d1e3381e0?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/owner\/field_owner_type": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpurl.org%5Cadms%5Cpublishertype%5CCompany?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpurl.org%5Cadms%5Cpublishertype%5CIndustryConsortium?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/3e9231e3-14d9-430c-91f0-626d1e3381e0"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "owner"
+        }
+    ],
+    "label": [
+        {
+            "value": "Acme Inc.",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/3e9231e3-14d9-430c-91f0-626d1e3381e0"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ],
+    "field_owner_name": [
+        {
+            "value": "Acme Inc."
+        }
+    ],
+    "field_owner_type": [
+        {
+            "target_id": "http:\/\/purl.org\/adms\/publishertype\/Company"
+        },
+        {
+            "target_id": "http:\/\/purl.org\/adms\/publishertype\/IndustryConsortium"
+        }
+    ]
+}

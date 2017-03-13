@@ -9,7 +9,8 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @Block(
  *  id = "solution_content_block",
- *  admin_label = @Translation("Solution content"),
+ *  admin_label = @Translation("Solution relations"),
  * )
  */
 class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginInterface {
@@ -106,18 +107,32 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
     // Get news referencing to this solution.
     // @todo EntityManager is deprecated. Use EntityTypeManager instead.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2669
-    $entities = $this->entityManager->getStorage('node')->loadByProperties([OgGroupAudienceHelper::DEFAULT_FIELD => $this->solution->id()]);
+    $entities = $this->entityManager->getStorage('node')->loadByProperties([OgGroupAudienceHelperInterface::DEFAULT_FIELD => $this->solution->id()]);
     $items = [];
     foreach ($entities as $entity) {
       $items[] = ['#markup' => $entity->link()];
     }
+
+    // Also retrieve related collections.
+    $ids = $this->entityManager->getStorage('rdf_entity')->getQuery()
+      ->condition('field_ar_affiliates', $this->solution->id())
+      ->execute();
+    $entities = Rdf::loadMultiple($ids);
+    foreach ($entities as $entity) {
+      $items[] = ['#markup' => $entity->link()];
+    }
+
+    // Build the array output.
     if ($items) {
       return [
         'list' => [
           '#theme' => 'item_list',
           '#items' => $items,
           '#cache' => [
-            'tags' => ['entity:node:news'],
+            'tags' => [
+              'entity:node:news',
+              'entity:rdf_entity:collection',
+            ],
           ],
         ],
       ];

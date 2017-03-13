@@ -1,7 +1,18 @@
+// Filters
+//
+// Filters used in the collection/solution listings.
+//
+// Markup: html/filters.html
+//
+// Styleguide 2.6
+
 // Component
 // --------------------------------------------------
 .filter
   margin-bottom: 15px
+  padding-left: 0
+  &:before
+    display: none
   +breakpoint(mobile)
     display: inline-block
     margin-right: 8px
@@ -10,6 +21,7 @@
       margin-right: 0
 
 .filters
+  padding-left: 0
   +breakpoint(sm-mobile, mobile)
     text-align: left
 
@@ -46,6 +58,11 @@
   .filters
     margin-bottom: 0
 
+.filters--more
+  .facet-item
+    margin-bottom: 0
+    width: 100%
+
 // Modifiers
 // --------------------------------------------------
 .filters--solutions
@@ -65,19 +82,19 @@
 .filter__dropdown-toggle
   &.is-active
     &:before
-      position: absolute
       bottom: -30px
-      left: 50%
       display: block
       width: 0
       height: 0
       content: ''
-      transform: translateX(-50%)
       border-right: 12px solid transparent
       border-bottom: 12px solid #fff
       border-left: 12px solid transparent
+      +centered($horizontal: true, $vertical: false)
 
 .filter__dropdown
   &.is-active
     display: block
 
+.filters--more
+  margin-top: 0

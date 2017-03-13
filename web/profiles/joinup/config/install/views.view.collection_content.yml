@@ -4,7 +4,7 @@ dependencies:
   config:
     - search_api.index.collections
   module:
-    - joinup
+    - joinup_core
     - search_api
 id: collection_content
 label: 'Collection content'
@@ -28,11 +28,10 @@ display:
         type: none
         options: {  }
       query:
-        type: views_query
+        type: search_api_query
         options:
           bypass_access: false
           skip_access: false
-          parse_mode: terms
       exposed_form:
         type: basic
         options:
@@ -73,7 +72,8 @@ display:
           view_modes:
             'entity:node':
               custom_page: view_mode_tile
-              document: default
+              discussion: view_mode_tile
+              document: view_mode_tile
               event: view_mode_tile
               news: view_mode_tile
             'entity:rdf_entity':
@@ -159,10 +159,10 @@ display:
       empty: {  }
       relationships: {  }
       arguments:
-        aggregated_field_1:
-          id: aggregated_field_1
+        entity_groups:
+          id: entity_groups
           table: search_api_index_collections
-          field: aggregated_field_1
+          field: entity_groups
           relationship: none
           group_type: group
           admin_label: ''
@@ -177,7 +177,7 @@ display:
           default_argument_options:
             argument: ''
           default_argument_skip_url: false
-          summary_options: null
+          summary_options: { }
           summary:
             sort_order: asc
             number_of_records: 0
@@ -191,6 +191,7 @@ display:
           not: false
           plugin_id: search_api
       display_extenders: {  }
+      display_comment: 'The collection content as displayed on the collection overview. This is displayed as an extra field on the Collection entity. See collection_entity_extra_field_info() and collection_rdf_entity_view().'
     cache_metadata:
       max-age: 0
       contexts:

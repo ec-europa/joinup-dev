@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.rdf_entity.inline
     - field.field.rdf_entity.collection.field_ar_abstract
     - field.field.rdf_entity.collection.field_ar_access_url
     - field.field.rdf_entity.collection.field_ar_affiliates
@@ -16,74 +17,144 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_shared_content
+    - field.field.rdf_entity.collection.field_ar_state
+    - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
     - image.style.thumbnail
     - rdf_entity.rdfentity.collection
   module:
+    - field_group
     - image
     - inline_entity_form
+    - joinup_core
     - link
     - rdf_entity
+    - search_api_field
     - text
+third_party_settings:
+  field_group:
+    group_general:
+      children:
+        - group_main
+        - group_description
+        - group_categorisation
+        - field_ar_state
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: General
+    group_main:
+      children:
+        - label
+        - field_ar_description
+        - field_policy_domain
+        - field_ar_owner
+      parent_name: group_general
+      weight: 6
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: open
+        description: ''
+        required_fields: true
+      label: Main
+    group_description:
+      children:
+        - field_ar_abstract
+        - field_ar_access_url
+        - field_ar_logo
+        - field_ar_banner
+        - field_ar_contact_information
+        - field_ar_affiliates
+        - field_spatial_coverage
+        - field_ar_closed
+        - field_ar_elibrary_creation
+        - field_ar_moderation
+        - field_ar_creation_date
+        - field_ar_modification_date
+      parent_name: group_general
+      weight: 7
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: open
+        description: 'Describe the collection.'
+        required_fields: true
+      label: Description
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection
 mode: default
 content:
   field_ar_abstract:
-    weight: 3
+    weight: 10
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
   field_ar_access_url:
-    weight: 6
+    weight: 11
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+    region: content
   field_ar_affiliates:
-    weight: 13
+    weight: 15
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_ar_banner:
-    weight: 5
+    weight: 13
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
+    region: content
   field_ar_closed:
-    weight: 14
+    weight: 17
     settings:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
+    region: content
   field_ar_contact_information:
-    weight: 9
+    weight: 14
     settings:
-      form_mode: default
+      form_mode: inline
       override_labels: true
       label_singular: 'contact information'
       label_plural: 'contact information'
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      collapsible: false
+      collapsed: false
     third_party_settings: {  }
     type: inline_entity_form_complex
+    region: content
   field_ar_creation_date:
-    weight: 7
+    weight: 20
     settings:
       behaviour: create
     third_party_settings: {  }
     type: datetime_create_update
+    region: content
   field_ar_description:
     weight: 2
     settings:
@@ -91,72 +162,85 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
   field_ar_elibrary_creation:
-    weight: 15
+    weight: 18
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
   field_ar_logo:
-    weight: 4
+    weight: 12
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
+    region: content
   field_ar_moderation:
-    weight: 16
+    weight: 19
     settings:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
+    region: content
   field_ar_modification_date:
-    weight: 8
+    weight: 21
     settings:
       behaviour: modified
     third_party_settings: {  }
     type: datetime_create_update
+    region: content
   field_ar_owner:
-    weight: 10
+    weight: 4
     settings:
-      form_mode: default
+      form_mode: inline
       override_labels: true
       label_singular: owner
       label_plural: owners
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      collapsible: false
+      collapsed: false
     third_party_settings: {  }
     type: inline_entity_form_complex
-  field_ar_shared_content:
-    weight: 17
+    region: content
+  field_ar_state:
+    type: state_machine_buttons
+    weight: 9
     settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+      use_transition_label: 1
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    region: content
+  field_collection_content:
+    weight: 18
+    settings: {  }
+    third_party_settings: {  }
+    type: search_api_field_default
+    region: content
   field_policy_domain:
-    weight: 11
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    weight: 3
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_select
+    region: content
   field_spatial_coverage:
-    weight: 12
+    weight: 16
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   id:
     type: auto_uri
     weight: 0
     settings:
       prefix: 'http://joinup.eu/adms/asset-repository'
     third_party_settings: {  }
+    region: content
   label:
     type: string_textfield
     weight: 1
@@ -164,4 +248,8 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden: {  }
+    region: content
+hidden:
+  current_workflow_state: true
+  field_ar_shared_content: true
+  uid: true

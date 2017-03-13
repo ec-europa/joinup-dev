@@ -8,6 +8,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
+    - field.field.rdf_entity.solution.field_is_content
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
@@ -39,75 +40,49 @@ dependencies:
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
+    - image.style.horizontal_medium_image
     - rdf_entity.rdfentity.solution
   module:
     - ds
+    - image
     - text
-third_party_settings:
-  ds:
-    layout:
-      id: ds_1col_wrapper
-      path: modules/contrib/ds
-      library: ''
-      disable_css: false
-      entity_classes: all_classes
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class:
-            listing__card: listing__card
-            mdl-card: mdl-card
-          ds_content:
-            listing__metadata: listing__metadata
-    regions:
-      ds_content:
-        - label
-        - field_is_description
+    - user
 id: rdf_entity.solution.view_mode_tile
 targetEntityType: rdf_entity
 bundle: solution
 mode: view_mode_tile
 content:
   field_is_description:
-    weight: 1
+    weight: 26
     label: hidden
     settings:
       trim_length: 200
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: h2
-            fi-cl: listing__teaser
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
+            classes: {  }
     type: text_trimmed
+    region: content
+  field_is_logo:
+    type: image
+    weight: 25
+    label: hidden
+    settings:
+      image_style: horizontal_medium_image
+      image_link: content
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    region: content
   field_is_solution_category:
     weight: 3
     label: above
@@ -115,47 +90,29 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   label:
-    label: hidden
     type: string
-    weight: 0
+    weight: 24
+    label: hidden
     settings:
       link_to_entity: true
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: div
-            fi-cl: listing__title
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
+            classes: {  }
+    region: content
 hidden:
   field_is_actor: true
   field_is_affiliations_requests: true
   field_is_banner: true
   field_is_business_process: true
   field_is_contact_information: true
+  field_is_content: true
   field_is_creation_date: true
   field_is_distribution: true
   field_is_documentation: true
@@ -165,7 +122,6 @@ hidden:
   field_is_issue_tracker: true
   field_is_landing_page: true
   field_is_language: true
-  field_is_logo: true
   field_is_metrics_page: true
   field_is_moderation: true
   field_is_modification_date: true
@@ -175,6 +131,7 @@ hidden:
   field_is_solution_type: true
   field_is_source_code_repository: true
   field_is_standardization_level: true
+  field_is_state: true
   field_is_test_resource_type: true
   field_is_translation: true
   field_is_version: true
@@ -185,4 +142,8 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
-  field_is_state: true
+  licence: true
+  og_group: true
+  rdf_entity_field_is_content_top: true
+  related_solutions: true
+  releases_overview: true
