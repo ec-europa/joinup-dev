@@ -117,3 +117,24 @@ Feature: User profile
     When I go to the public profile of "Jayson Granger"
     # This user has no first name inserted, so the message is generic.
     Then I should see the text "This user does not have any content yet."
+
+  Scenario: The user profile page title should show the full name of the user.
+    Given users:
+      | name       | mail                         | first name | family name |
+      | cgarnett67 | callista.garnett@example.com | Callista   | Garnett     |
+      | delwin999  | deforest.elwin@example.com   |            |             |
+
+    # When the user has filled first and family name, the profile should show
+    # the full name as header title and in the page title tag.
+    When I go to the public profile of cgarnett67
+    Then I should see the heading "Callista Garnett" in the "Header" region
+    And I should see the text "Callista Garnett" in the page title
+    # The title should not be duplicated.
+    And I should not see the "Page title" region
+    And I should not see the heading "cgarnett67"
+
+    # The full name fall backs to the user name when the fields are not filled.
+    When I go to the public profile of delwin999
+    Then I should see the heading delwin999 in the "Header" region
+    And I should see the text delwin999 in the page title
+    And I should not see the "Page title" region
