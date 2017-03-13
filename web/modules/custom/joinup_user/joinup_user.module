@@ -5,6 +5,9 @@
  * Main functions and hook implementations of the Joinup user module.
  */
 
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Component\Render\PlainTextOutput;
@@ -246,4 +249,41 @@ function joinup_user_search_api_query_search_api_field_field_user_content_alter(
     // Show only content the user is author of.
     $query->addCondition('entity_author', $user->id());
   }
+}
+
+/**
+ * User canonical route title callback.
+ *
+ * @param \Drupal\user\UserInterface|null $user
+ *   The user account.
+ *
+ * @return string|array
+ *   The user full name as a render array or an empty string if $user is
+ *   NULL.
+ *
+ * @see \Drupal\user\Controller\UserController::userTitle()
+ */
+function joinup_user_canonical_title(UserInterface $user = NULL) {
+  return $user ? ['#markup' => $user->get('full_name')->value, '#allowed_tags' => Xss::getHtmlTagList()] : '';
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ *
+ * Adds a computed field to easily retrieve the full name of a user.
+ */
+function joinup_user_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
+  if ($entity_type->id() === 'user') {
+    $fields['full_name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Full name'))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('display', FALSE)
+      ->setComputed(TRUE)
+      ->setCardinality(1)
+      ->setClass('\Drupal\joinup_user\UserFullNameFieldItemList');
+  }
+
+  return $fields;
 }
