@@ -53,7 +53,7 @@ Feature: "Add document" visibility options.
       | Short title | Amazing document                         |
       | Description | This is going to be an amazing document. |
     And I select "Document" from "Type"
-    And I attach the file "test.zip" to "File"
+    And I attach the file "test.zip" to "Upload file"
     And I press "Save as draft"
     Then I should see the heading "An amazing document"
     And I should see the success message "Document An amazing document has been created."
