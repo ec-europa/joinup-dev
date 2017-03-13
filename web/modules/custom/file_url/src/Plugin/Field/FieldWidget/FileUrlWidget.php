@@ -215,6 +215,7 @@ class FileUrlWidget extends FileWidget {
     $element['file-wrap']['remote-file'] = [
       '#type' => 'url',
       '#title' => $this->t('Remote file'),
+      '#description' => $this->t('This must be an external URL such as <em>http://example.com</em>.'),
       '#states' => [
         // Only show this field when the 'remote file' radio is selected.
         'visible' => [
