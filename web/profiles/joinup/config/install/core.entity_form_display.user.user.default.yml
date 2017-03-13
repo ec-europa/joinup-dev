@@ -26,9 +26,9 @@ mode: default
 content:
   account:
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_user_business_title:
     weight: 6
     settings:
@@ -99,4 +99,5 @@ hidden:
   field_user_subscription_events: true
   language: true
   og_audience: true
+  simplenews: true
   timezone: true
