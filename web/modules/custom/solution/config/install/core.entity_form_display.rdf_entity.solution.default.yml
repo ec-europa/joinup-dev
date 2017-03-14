@@ -41,11 +41,11 @@ dependencies:
     - image.style.thumbnail
     - rdf_entity.rdfentity.solution
   module:
+    - file_url
     - image
     - inline_entity_form
     - joinup_core
     - link
-    - file_url
     - text
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity

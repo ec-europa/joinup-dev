@@ -5,6 +5,7 @@
  * Contains install, update, uninstall functionality for Joinup Migrate module.
  */
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Database\Database;
 
 /**
@@ -13,19 +14,44 @@ use Drupal\Core\Database\Database;
 function joinup_migrate_install() {
   // Create intermediary tables we need for migration. The tables will be
   // created on the source database because they will provide source data.
-  $schema = Database::getConnection('default', 'migrate')->schema();
-  foreach (['joinup_migrate_mapping', 'joinup_migrate_collection'] as $table) {
-    $schema->dropTable($table);
-    $schema->createTable($table, joinup_migrate_source_db_schema($table));
+  $db = Database::getConnection('default', 'migrate');
+  foreach (['d8_mapping', 'd8_prepare'] as $table) {
+    $db->schema()->dropTable($table);
+    $db->schema()->createTable($table, joinup_migrate_source_db_schema($table));
   }
+
+  // Install MySQL helper views.
+  $views = file_scan_directory(__DIR__ . '/fixture', '/\.sql$/', ['key' => 'name']);
+  // Sort by priority. Some MySQL views depend on others, meaning that the
+  // install order matters. The priority is an ASCII character, followed by a
+  // dot character, that prefixes the file name. For example files 0.*.sql will
+  // be installed before 1.*.sql.
+  ksort($views);
+  foreach ($views as $view) {
+    $db->query(file_get_contents($view->uri))->execute();
+  }
+
+  // Fix the migrate_report path.
+  \Drupal::configFactory()->getEditable('migrate_report.config')
+    ->set('report_dir', 'public://migration')
+    ->save();
 }
 
 /**
  * Implements hook_uninstall().
  */
 function joinup_migrate_uninstall() {
-  foreach (['joinup_migrate_mapping', 'joinup_migrate_collection'] as $table) {
-    Database::getConnection('default', 'migrate')->schema()->dropTable($table);
+  $db = Database::getConnection('default', 'migrate');
+  foreach (['d8_mapping', 'd8_prepare'] as $table) {
+    $db->schema()->dropTable($table);
+  }
+
+  // Remove MySQL helper views.
+  foreach (file_scan_directory(__DIR__ . '/fixture', '/\.sql$/') as $file) {
+    // Replace the priority prefix the 'd8_' prefix. Each file is prefixed with
+    // a single ASCII character representing the priority and a dot.
+    $view = 'd8_' . Unicode::substr($file->name, 2);
+    $db->query("DROP VIEW IF EXISTS $view")->execute();
   }
 }
 
@@ -40,7 +66,7 @@ function joinup_migrate_uninstall() {
  */
 function joinup_migrate_source_db_schema($table) {
   $schema = [
-    'joinup_migrate_mapping' => [
+    'd8_mapping' => [
       'description' => 'Keeps migration mapping data',
       'fields' => [
         'nid' => [
@@ -141,7 +167,7 @@ function joinup_migrate_source_db_schema($table) {
         'migrate' => ['migrate'],
       ],
     ],
-    'joinup_migrate_collection' => [
+    'd8_prepare' => [
       'fields' => [
         'collection' => [
           'description' => 'Collection',

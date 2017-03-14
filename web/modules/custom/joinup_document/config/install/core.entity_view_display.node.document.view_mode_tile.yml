@@ -47,8 +47,17 @@ content:
     region: content
     label: hidden
     settings:
-      mode: link
-    third_party_settings: {  }
+      mode: plain
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_short_title:
     weight: 0
     label: hidden

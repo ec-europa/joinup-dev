@@ -19,14 +19,17 @@
         "drupal/message": "~1.0",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
+        "drupal/migrate_report": "~1.0-alpha1",
         "drupal/migrate_run": "~1.0-alpha1",
-        "drupal/migrate_spreadsheet": "1.x-dev",
+        "drupal/migrate_spreadsheet": "~1.0-beta1",
         "drupal/og": "dev-1.x#34a9425ffeeb267ceeba21261f4719d0ced36e58",
         "drupal/og_menu": "~1.0@alpha",
-        "drupal/phingdrushtask": "dev-7.x-2.x#13428ee7a229da3b7e6be4687587048150b1fd25",
+        "drupal/persistent_login": "dev-1.x#1320f841da3c",
+        "drupal/phingdrushtask": "dev-7.x-2.x#6737f3d6c28c6c830f58d5fa09327b65acbda0a9",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
         "drupal/search_api": "~1.0@beta",
         "drupal/search_api_solr": "~1.0@beta",
+        "drupal/simplenews": "~1.0-alpha3",
         "drupal/state_machine": "~1.0-beta3",
         "drupal/token": "~1.0",
         "drupal/view_unpublished": "~1.0@alpha",
@@ -108,7 +111,9 @@
                 "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-17.patch",
                 "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194.patch",
                 "Dependency on configuration provided by install profile is throwing exception @see https://www.drupal.org/node/2850875": "https://www.drupal.org/files/issues/2850875-5.patch",
-                "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch"
+                "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
+                "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-82.patch",
+                "Explode processor is too strict @see https://www.drupal.org/node/2853823": "https://www.drupal.org/files/issues/2853823-7.patch"
             },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
@@ -134,7 +139,6 @@
             "url": "https://packages.drupal.org/8"
         },
         {
-            "_comment": "The PhingDrushTask module does not currently have a D8 release and is not available on https://packages.drupal.org/8. See https://www.drupal.org/node/2817131.",
             "type": "vcs",
             "url": "https://git.drupal.org/project/phingdrushtask.git"
         },
