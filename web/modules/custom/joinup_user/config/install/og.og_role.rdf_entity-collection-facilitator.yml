@@ -11,6 +11,7 @@ group_id: null
 permissions:
   - 'add user'
   - 'administer comments'
+  - 'administer group'
   - 'approve and deny subscription'
   - 'create asset_distribution rdf_entity'
   - 'create asset_release rdf_entity'
