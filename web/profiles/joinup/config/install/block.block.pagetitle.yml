@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - facets
+    - joinup_core
   theme:
     - joinup_theme
 id: pagetitle
@@ -17,9 +17,8 @@ settings:
   provider: core
   label_display: '0'
 visibility:
-  other_facet:
-    id: other_facet
-    facets: ''
-    facet_value: ''
-    negate: false
+  request_route:
+    id: request_route
+    routes: entity.rdf_entity.canonical
+    negate: true
     context_mapping: {  }
