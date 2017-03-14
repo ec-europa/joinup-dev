@@ -73,6 +73,6 @@ Feature:
       # Some unwanted facets were showing after selecting one of the tabs.
       And I should not see the following facet items "asset distribution, asset release, collection, contact information, custom page, licence, owner, solution"
       # Filter on events.
-      When I click the event content tab
+      When I click the Event content tab
       Then I should see the heading "20 year anniversary"
       Then I should not see the heading "Rare Nintendo64 disk drive discovered"
