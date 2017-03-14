@@ -22,7 +22,7 @@
         "drupal/migrate_report": "~1.0-alpha1",
         "drupal/migrate_run": "~1.0-alpha1",
         "drupal/migrate_spreadsheet": "~1.0-beta1",
-        "drupal/og": "dev-1.x#34a9425ffeeb267ceeba21261f4719d0ced36e58",
+        "drupal/og": "dev-ISAICP-2709 as dev-1.x",
         "drupal/og_menu": "~1.0@alpha",
         "drupal/phingdrushtask": "dev-7.x-2.x#6737f3d6c28c6c830f58d5fa09327b65acbda0a9",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
@@ -133,6 +133,10 @@
         }
     },
     "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ec-europa/og.git"
+        },
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
