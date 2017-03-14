@@ -47,4 +47,16 @@ class UserFullNameFieldItemList extends FieldItemList {
     return parent::getValue($include_computed);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getIterator() {
+    // Ensure that there is always one item created.
+    if ($this->isEmpty()) {
+      $this->list[] = $this->createItem();
+    }
+
+    return parent::getIterator();
+  }
+
 }
