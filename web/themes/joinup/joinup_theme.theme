@@ -165,6 +165,15 @@ function joinup_theme_preprocess_block(&$variables) {
       case 'view.collections.page_1':
         $is_listing = TRUE;
         break;
+
+      case 'view.solutions.page_1':
+        $is_listing = TRUE;
+        break;
+
+      case 'view.content_overview.page_1':
+        $is_listing = TRUE;
+        break;
+
     }
     $variables['is_listing'] = $is_listing;
   }

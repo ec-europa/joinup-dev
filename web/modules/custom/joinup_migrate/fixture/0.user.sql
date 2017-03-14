@@ -26,7 +26,7 @@ SELECT
   u.name,
   u.pass,
   u.mail,
-  u.created,
+  LEAST(u.created, n.created),
   u.access,
   u.login,
   u.timezone,

@@ -14,6 +14,7 @@ use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\joinup\JoinupCustomInstallTasks;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -288,4 +289,13 @@ function joinup_views_pre_view(ViewExecutable $view) {
     $view->display_handler->display['cache_metadata']['contexts'][] = 'og_role';
     $view->display_handler->display['cache_metadata']['contexts'][] = 'user.roles';
   }
+}
+
+/**
+ * Implements hook_install_tasks_alter().
+ */
+function joinup_install_tasks_alter(&$tasks, $install_state) {
+  $tasks['joinup_remove_simplenews_defaults'] = [
+    'function' => [JoinupCustomInstallTasks::class, 'removeSimpleNewsDefaults'],
+  ];
 }
