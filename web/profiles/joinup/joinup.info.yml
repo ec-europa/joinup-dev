@@ -29,6 +29,7 @@ dependencies:
   - joinup_event
   - joinup_licence
   - joinup_news
+  - joinup_newsletter
   - joinup_notification
   - joinup_search
   - joinup_subscription

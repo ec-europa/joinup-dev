@@ -15,6 +15,7 @@ class Release extends JoinupSqlBase {
 
   use CountryTrait;
   use FileUrlFieldTrait;
+  use KeywordsTrait;
 
   /**
    * {@inheritdoc}
@@ -83,17 +84,7 @@ class Release extends JoinupSqlBase {
     $vid = $row->getSourceProperty('vid');
 
     // Keywords.
-    $query = $this->select('term_node', 'tn');
-    $query->join('term_data', 'td', 'tn.tid = td.tid');
-    $keywords = $query
-      ->fields('td', ['name'])
-      ->condition('tn.nid', $nid)
-      ->condition('tn.vid', $vid)
-      // The keywords vocabulary vid is 28.
-      ->condition('td.vid', 28)
-      ->execute()
-      ->fetchCol();
-    $row->setSourceProperty('keywords', array_unique($keywords));
+    $this->setKeywords($row, 'keywords', $nid, $vid);
 
     // Distributions.
     $query = $this->select('content_field_asset_distribution', 'd')
