@@ -1004,6 +1004,35 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Emulates closing and re-opening of the browser.
+   *
+   * @When I close and reopen the browser
+   */
+  public function restartSession() {
+    /** @var \Symfony\Component\BrowserKit\CookieJar $cookie_jar */
+    $cookie_jar = $this->getSession()->getDriver()->getClient()->getCookieJar();
+
+    // We are going to keep all the cookies with a valid expire time. The
+    // \Symfony\Component\BrowserKit\CookieJar::all() method already removes
+    // expired cookies, so we need to strip the ones with a null expire time.
+    // A null expire time means that the cookie is going to be deleted when the
+    // browser is closed.
+    $persistent = [];
+    foreach ($cookie_jar->all() as $cookie) {
+      if (!is_null($cookie->getExpiresTime())) {
+        $persistent[] = $cookie;
+      }
+    }
+
+    $this->getSession()->restart();
+    $cookie_jar = $this->getSession()->getDriver()->getClient()->getCookieJar();
+
+    foreach ($persistent as $cookie) {
+      $cookie_jar->set($cookie);
+    }
+  }
+
+  /**
    * Checks that the description of the field with given label is as expected.
    *
    * @param string $label

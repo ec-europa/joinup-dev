@@ -27,5 +27,4 @@ config_devel:
   - field.field.node.custom_page.field_cp_content_listing
   - field.field.node.custom_page.og_audience
   - field.storage.node.field_cp_content_listing
-  - field.storage.node.og_audience
   - node.type.custom_page

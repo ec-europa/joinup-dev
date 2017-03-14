@@ -42,6 +42,7 @@ dependencies:
   - owner
   - page_cache
   - path
+  - persistent_login
   - r4032login
   - rdf_draft
   - rdf_entity

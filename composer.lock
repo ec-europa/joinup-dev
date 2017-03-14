@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3cc7502f80086174626450c449659d7",
+    "content-hash": "bc2d724e655d3ce86d163338a446d697",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1802,7 +1802,6 @@
             "extra": {
                 "patches_applied": {
                     "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-2.patch",
-                    "Contextual links button is always rendered even when no links are available (with warm client-side cache) @see https://www.drupal.org/node/2650910": "https://www.drupal.org/files/issues/2650910-42.patch",
                     "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-17.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194.patch",
@@ -2646,6 +2645,60 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/og"
             }
+        },
+        {
+            "name": "drupal/persistent_login",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/persistent_login",
+                "reference": "1320f841da3c"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha3+1-dev",
+                    "datestamp": "1488538684"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "bjaspan",
+                    "homepage": "https://www.drupal.org/user/46413"
+                },
+                {
+                    "name": "gapple",
+                    "homepage": "https://www.drupal.org/user/490940"
+                },
+                {
+                    "name": "markus_petrux",
+                    "homepage": "https://www.drupal.org/user/39593"
+                },
+                {
+                    "name": "moshe weitzman",
+                    "homepage": "https://www.drupal.org/user/23"
+                }
+            ],
+            "description": "Provides a \"Remember Me\" feature on the login form.",
+            "homepage": "https://www.drupal.org/project/persistent_login",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/persistent_login",
+                "issues": "http://drupal.org/project/issues/persistent_login"
+            },
+            "time": "2017-03-03 10:53:37"
         },
         {
             "name": "drupal/phingdrushtask",
@@ -9400,6 +9453,7 @@
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,
         "drupal/og_menu": 15,
+        "drupal/persistent_login": 20,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
         "drupal/search_api": 10,

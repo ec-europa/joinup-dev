@@ -69,6 +69,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
 hidden:
   field_cp_content_listing: true
   links: true
