@@ -172,6 +172,14 @@ function joinup_theme_preprocess_block(&$variables) {
         $is_listing = TRUE;
         break;
 
+      case 'view.solutions.page_1':
+        $is_listing = TRUE;
+        break;
+
+      case 'view.content_overview.page_1':
+        $is_listing = TRUE;
+        break;
+
       case 'entity.user.canonical':
         $is_listing = TRUE;
         break;
