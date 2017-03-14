@@ -23,7 +23,7 @@ default_value:
           region: top
         collection_policy_domain:
           weight: 1
-          region: hidden
+          region: top
       enabled: 1
       query_presets: ''
       limit: 12
