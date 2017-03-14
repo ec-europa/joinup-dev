@@ -2,8 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Core\Database\Database;
-use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
+use Drupal\migrate_spreadsheet\Plugin\migrate\source\Spreadsheet;
 
 /**
  * Migrates policy domain terms.
@@ -12,7 +11,7 @@ use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
  *   id = "policy_domain"
  * )
  */
-class PolicyDomain extends SourcePluginBase {
+class PolicyDomain extends Spreadsheet {
 
   /**
    * {@inheritdoc}
@@ -31,59 +30,27 @@ class PolicyDomain extends SourcePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function fields() {
-    return [
-      'tid' => $this->t('Term ID'),
-      'name' => $this->t('Name'),
-      'parent' => $this->t('Parent'),
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function initializeIterator() {
-    $db = Database::getConnection('default', 'migrate');
-    /** @var \Drupal\Core\Database\Query\SelectInterface $query */
-    $query = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
-      ->condition('m.type', 'asset_release')
-      ->condition('m.migrate', 1);
-    $query->join('joinup_migrate_collection', 'c', 'm.collection = c.collection');
-    $query->addExpression('c.policy', 'collection_parent');
-    $query->addExpression('c.policy2', 'collection_name');
-    $query->addExpression('m.policy', 'solution_parent');
-    $query->addExpression('m.policy2', 'solution_name');
+    /** @var \Drupal\migrate_spreadsheet\SpreadsheetIteratorInterface $iterator */
+    $iterator = parent::initializeIterator();
 
+    $iterator->rewind();
     $terms = [];
-    foreach ($query->execute()->fetchAll() as $row) {
-      foreach (['collection', 'solution'] as $type) {
-        $parent = $row["{$type}_parent"];
-        $name = $row["{$type}_name"];
+    $parent = NULL;
+    while ($iterator->valid()) {
+      $row = $iterator->current();
+      $parent = $row['A'] ?: $parent;
+      $name = $row['B'];
 
-        // Terms lacking a parent will go temporary under a 'UNCLASSIFIED' term
-        // and will be logged as inconsistency, to be fixed in the .xlsx file.
-        if (empty($parent)) {
-          $parent = 'UNCLASSIFIED';
-          if (!isset($terms["$parent:$name"])) {
-            $this->migration->getIdMap()->saveMessage(['parent' => '', 'name' => $name], "Term '$name' lacks a parent.");
-          }
-        }
+      // Store the parent term.
+      static::addTerm($terms, $parent);
+      // Store the term itself.
+      static::addTerm($terms, $name, $parent);
 
-        // Store the parent term.
-        static::addTerm($terms, $parent);
-        // Store the term itself.
-        static::addTerm($terms, $name, $parent);
-      }
+      $iterator->next();
     }
 
-    return new \ArrayIterator(array_values($terms));
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __toString() {
-    return 'Policy domain';
+    return new \ArrayIterator($terms);
   }
 
   /**

@@ -239,7 +239,7 @@ function solution_rdf_entity_load($entities) {
   /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
   foreach ($entities as $entity) {
     if ($entity->bundle() != 'solution') {
-      return;
+      continue;
     }
     // In ADMS-AP collections point to solutions.
     // The reverse relation would have been more logical,
@@ -480,7 +480,7 @@ function solution_get_latest_release(RdfInterface $solution) {
  * - do not show the solution itself in the search results.
  */
 function solution_search_api_query_search_api_field_field_is_content_alter(QueryInterface &$query) {
-  /** @var EntityInterface $entity */
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = $query->getOption('search_api_field entity');
 
   // Show only content that belongs to this solution through the aggregated

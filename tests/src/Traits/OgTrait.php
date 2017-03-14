@@ -20,11 +20,11 @@ trait OgTrait {
    * Creates an Og membership to a group optionally assigning roles as well.
    *
    * @param \Drupal\Core\Session\AccountInterface $user
-   *    The user to be assigned as a group member.
+   *   The user to be assigned as a group member.
    * @param \Drupal\Core\Entity\EntityInterface $group
-   *    The organic group entity.
+   *   The organic group entity.
    * @param \Drupal\og\Entity\OgRole[] $roles
-   *    An array of OgRoles to be passed to the membership.
+   *   An array of OgRoles to be passed to the membership.
    *
    * @throws \Exception
    *    Throws an exception when the user is anonymous or the entity is not a
@@ -54,12 +54,12 @@ trait OgTrait {
    * a name conversion method.
    *
    * @param array $roles
-   *    An array of roles to convert names.
+   *   An array of roles to convert names.
    * @param \Drupal\Core\Entity\EntityInterface $group
-   *    The group entity.
+   *   The group entity.
    *
    * @return array
-   *    An array with the converted names.
+   *   An array with the converted names.
    */
   protected function convertOgRoleNamesToIds(array $roles, EntityInterface $group) {
     $role_prefix = $group->getEntityTypeId() . '-' . $group->bundle() . '-';
@@ -78,12 +78,12 @@ trait OgTrait {
    *
    * An ownership is defined as having a specific set of roles in that group.
    *
-   * @param AccountInterface $user
-   *    The user to be checked.
-   * @param RdfInterface $group
-   *    The group entity. In this project, only rdf entities are groups.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The user to be checked.
+   * @param \Drupal\rdf_entity\RdfInterface $group
+   *   The group entity. In this project, only rdf entities are groups.
    * @param array $roles
-   *    An array of roles to be checked. Roles must be passed as simple names
+   *   An array of roles to be checked. Roles must be passed as simple names
    *    and not as full IDs. Names will be converted accordingly to IDs.
    *
    * @throws \Exception
@@ -105,12 +105,12 @@ trait OgTrait {
    * Returns the OgRole objects identified by the given role names.
    *
    * @param array $roles
-   *    An array of role names for which to return the roles.
+   *   An array of role names for which to return the roles.
    * @param \Drupal\Core\Entity\EntityInterface $group
-   *    The group entity to which the roles belong.
+   *   The group entity to which the roles belong.
    *
    * @return \Drupal\og\Entity\OgRole[]
-   *    The OgRole objects.
+   *   The OgRole objects.
    */
   protected function getOgRoles(array $roles, EntityInterface $group) {
     $ids = $this->convertOgRoleNamesToIds($roles, $group);

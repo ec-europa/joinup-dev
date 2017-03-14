@@ -45,9 +45,9 @@ class ContactInformationFulfillmentGuard implements GuardInterface {
    * Constructs an instance of the ContactInformationFulfillmentGuard service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *    The entity type manager service.
+   *   The entity type manager service.
    * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
-   *    The workflow user provider service.
+   *   The workflow user provider service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.
    */
@@ -83,10 +83,10 @@ class ContactInformationFulfillmentGuard implements GuardInterface {
    * Retrieve the initial state value of the entity.
    *
    * @param \Drupal\rdf_entity\RdfInterface $entity
-   *    The contact_information entity.
+   *   The contact_information entity.
    *
    * @return string
-   *    The machine name value of the state.
+   *   The machine name value of the state.
    *
    * @see https://www.drupal.org/node/2745673
    */

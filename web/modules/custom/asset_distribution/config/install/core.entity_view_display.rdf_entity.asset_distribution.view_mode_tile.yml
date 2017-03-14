@@ -18,14 +18,14 @@ dependencies:
   module:
     - digital_size_formatter
     - ds
-    - file
+    - file_url
 id: rdf_entity.asset_distribution.view_mode_tile
 targetEntityType: rdf_entity
 bundle: asset_distribution
 mode: view_mode_tile
 content:
   field_ad_access_url:
-    type: rdf_file_default
+    type: file_url_default
     weight: 3
     region: content
     label: hidden

@@ -1,5 +1,5 @@
 id: contact
-label: 'Contact information migration'
+label: 'Contact information'
 migration_tags:
   - contact
 source:
@@ -15,4 +15,4 @@ destination:
   default_bundle: contact_information
 migration_dependencies:
  required:
-   - mapping
+   - prepare

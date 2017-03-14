@@ -82,7 +82,7 @@ trait TraversingTrait {
    * Retrieves a region container from the page.
    *
    * @param string $region
-   *    The region label as defined in the behat.yml.
+   *   The region label as defined in the behat.yml.
    *
    * @throws \Exception
    *    Thrown when the region is not found.
@@ -100,11 +100,11 @@ trait TraversingTrait {
    * Returns the tiles found in the page or a region of it.
    *
    * @param string|null $region
-   *    The region label. If no region is provided, the search will be on the
+   *   The region label. If no region is provided, the search will be on the
    *    whole page.
    *
    * @return \Behat\Mink\Element\NodeElement[]|null
-   *    An array of node elements matching the search.
+   *   An array of node elements matching the search.
    */
   protected function getTiles($region = NULL) {
     if ($region === NULL) {

@@ -1,5 +1,5 @@
 id: release
-label: 'Release migration'
+label: 'Release'
 migration_tags:
   - release
 source:
@@ -14,10 +14,7 @@ process:
     source: distribution
     migration: distribution
     no_stub: true
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
-  # field_isr_documentation:
-
+  field_isr_documentation: documentation
   field_isr_is_version_of:
     plugin: migration
     source: solution
@@ -35,6 +32,10 @@ process:
     plugin: term_reference
     source: country
     vocabulary: spatial
+  # Revisit this mapping in ISAICP-3068.
+  field_isr_state:
+    plugin: default_value
+    default_value: validated
 
   # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
   # field_status:

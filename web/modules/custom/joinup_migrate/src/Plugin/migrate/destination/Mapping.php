@@ -112,14 +112,14 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
     $nid = $values['nid'];
     try {
       if (empty($old_destination_id_values)) {
-        $this->database->insert('joinup_migrate_mapping')
+        $this->database->insert('d8_mapping')
           ->fields(array_keys($this->fields()))
           ->values($values)
           ->execute();
       }
       else {
         unset($values['nid']);
-        $this->database->update('joinup_migrate_mapping')
+        $this->database->update('d8_mapping')
           ->fields($values)
           ->condition('nid', $nid)
           ->execute();
@@ -136,7 +136,7 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
    */
   public function rollback(array $destination_identifier) {
     parent::rollback($destination_identifier);
-    $this->database->delete('joinup_migrate_mapping')
+    $this->database->delete('d8_mapping')
       ->condition('nid', $destination_identifier['nid'])
       ->execute();
   }
@@ -148,7 +148,7 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
     $nids = array_map(function (array $item) {
       return $item['nid'];
     }, $destination_ids);
-    $this->database->delete('joinup_migrate_mapping')
+    $this->database->delete('d8_mapping')
       ->condition('nid', $nids, 'IN')
       ->execute();
   }
@@ -157,7 +157,7 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
    * {@inheritdoc}
    */
   public function rollbackAll() {
-    $this->database->truncate('joinup_migrate_mapping')->execute();
+    $this->database->truncate('d8_mapping')->execute();
   }
 
 }

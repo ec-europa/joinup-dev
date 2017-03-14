@@ -1,0 +1,20 @@
+type: module
+name: Joinup Community Content
+description: Joinup Community Content base module
+core: 8.x
+package: Joinup
+
+dependencies:
+  - comment
+  - field
+  - node
+  - state_machine
+  - taxonomy
+  - text
+
+config_devel:
+  - field.storage.node.field_comments
+  - field.storage.node.field_keywords
+  - field.storage.node.field_policy_domain
+  - field.storage.node.field_short_title
+  - field.storage.node.field_state
