@@ -27,7 +27,7 @@ use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
 
 /**
- * Behat step definitions for testing users.
+ * Behat step definitions that are generally useful for the Joinup project.
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
@@ -997,6 +997,57 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       throw new \Exception('The current workflow state field is not present on the page.');
     }
     \PHPUnit_Framework_Assert::assertEquals($state, trim($element->getText()));
+  }
+
+  /**
+   * Emulates closing and re-opening of the browser.
+   *
+   * @When I close and reopen the browser
+   */
+  public function restartSession() {
+    /** @var \Symfony\Component\BrowserKit\CookieJar $cookie_jar */
+    $cookie_jar = $this->getSession()->getDriver()->getClient()->getCookieJar();
+
+    // We are going to keep all the cookies with a valid expire time. The
+    // \Symfony\Component\BrowserKit\CookieJar::all() method already removes
+    // expired cookies, so we need to strip the ones with a null expire time.
+    // A null expire time means that the cookie is going to be deleted when the
+    // browser is closed.
+    $persistent = [];
+    foreach ($cookie_jar->all() as $cookie) {
+      if (!is_null($cookie->getExpiresTime())) {
+        $persistent[] = $cookie;
+      }
+    }
+
+    $this->getSession()->restart();
+    $cookie_jar = $this->getSession()->getDriver()->getClient()->getCookieJar();
+
+    foreach ($persistent as $cookie) {
+      $cookie_jar->set($cookie);
+    }
+  }
+
+  /**
+   * Checks that the description of the field with given label is as expected.
+   *
+   * @param string $label
+   *   The label of the field to check.
+   * @param string $description
+   *   The expected description.
+   *
+   * @throws \Exception
+   *   Thrown when the field does not have a description.
+   *
+   * @Then I should see the description :description for (the ):label( field)
+   */
+  public function assertFieldDescription($label, $description) {
+    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]/div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
+    $element = $this->getSession()->getPage()->find('xpath', $xpath);
+    if (empty($element)) {
+      throw new \Exception("The $label field does not have a description.");
+    }
+    \PHPUnit_Framework_Assert::assertEquals($description, trim($element->getText()));
   }
 
 }

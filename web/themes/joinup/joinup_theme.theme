@@ -155,15 +155,14 @@ function joinup_theme_preprocess_block(&$variables) {
         // Get node type.
         $node = $route_match->getParameter('node');
         if (!empty($node)) {
+          $node_types = [
+            'news',
+            'event',
+            'discussion',
+            'custom_page',
+          ];
           $node_type = $node->getType();
-          if ($node_type == 'custom_page') {
-            // Check if page contains community listing.
-            $community = $node->get('field_cp_content_listing')->getValue();
-            if ($community[0]['value']['enabled']) {
-              $is_listing = TRUE;
-            }
-          }
-          elseif ($node_type == 'news' || $node_type == 'event' || $node_type == 'discussion') {
+          if (in_array($node_type, $node_types)) {
             $is_listing = TRUE;
           }
         }
@@ -172,6 +171,15 @@ function joinup_theme_preprocess_block(&$variables) {
       case 'view.collections.page_1':
         $is_listing = TRUE;
         break;
+
+      case 'view.solutions.page_1':
+        $is_listing = TRUE;
+        break;
+
+      case 'view.content_overview.page_1':
+        $is_listing = TRUE;
+        break;
+
     }
     $variables['is_listing'] = $is_listing;
   }
