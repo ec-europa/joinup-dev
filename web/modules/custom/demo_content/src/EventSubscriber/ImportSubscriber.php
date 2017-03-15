@@ -34,20 +34,19 @@ class ImportSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  static function getSubscribedEvents() {
-    $events['default_content.import'] = ['entities_import'];
+  public static function getSubscribedEvents() {
+    $events['default_content.import'] = ['entitiesImport'];
 
     return $events;
   }
 
   /**
-   * This method is called whenever the og.default_role event is
-   * dispatched.
+   * Called whenever the default_content.import event is dispatched.
    *
    * @param \Symfony\Component\EventDispatcher\Event $event
-   *    The event element. Contains the entities and the module.
+   *   The event element. Contains the entities and the module.
    */
-  public function entities_import(Event $event) {
+  public function entitiesImport(Event $event) {
     $file_mapping = $this->configFactory->get('demo_content.settings')->get('file_mappings');
     $imported = $event->getImportedEntities();
     $directory = drupal_get_path('module', 'demo_content') . '/fixtures/files/';
