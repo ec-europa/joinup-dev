@@ -50,4 +50,33 @@ trait EntityTrait {
     throw new \Exception("The entity with label '$label' was not found.");
   }
 
+  /**
+   * Returns a MenuLinkContent entity from the database.
+   *
+   * The function assumes that there are not duplicate entries with the same
+   * title so it returns the first of the results.
+   *
+   * @param string $title
+   *   The label of the menu item.
+   *
+   * @return \Drupal\menu_link_content\MenuLinkContentInterface
+   *   The MenuLinkContent entity.
+   *
+   * @throws \Exception
+   *    Thrown when the menu item is not found.
+   */
+  public function getMenuLinkByTitle($title) {
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = \Drupal::service('entity_type.manager');
+    $menu_links = $entity_type_manager->getStorage('menu_link_content')->loadByProperties(
+      ['title' => $title]
+    );
+    if (empty($menu_links)) {
+      throw new \Exception("The menu parent with title '{$title}' was not found.");
+    }
+
+    /** @var \Drupal\menu_link_content\MenuLinkContentInterface $parent_link */
+    return reset($menu_links);
+  }
+
 }

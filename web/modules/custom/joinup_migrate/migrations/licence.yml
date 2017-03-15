@@ -1,5 +1,5 @@
 id: licence
-label: 'Licence migration'
+label: 'Licence'
 migration_tags:
   - distribution
   - licence
@@ -20,3 +20,6 @@ process:
 destination:
   plugin: entity:rdf_entity
   default_bundle: licence
+migration_dependencies:
+ required:
+   - prepare

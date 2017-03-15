@@ -20,5 +20,5 @@ default_value:
 default_value_callback: ''
 settings:
   workflow: ''
-  workflow_callback: 'joinup_event_workflow_selector'
+  workflow_callback: joinup_event_workflow_selector
 field_type: state

@@ -5,8 +5,8 @@
  * Export entities using the rdf storage in RDF.
  */
 
-use \Drupal\Core\Entity\EntityInterface;
-use \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 
 /**
  * Implements hook_entity_type_alter().

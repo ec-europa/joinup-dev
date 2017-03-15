@@ -4,9 +4,9 @@ default:
       contexts:
         - FeatureContext
         - Drupal\joinup\Context\DrupalContext
+        - Drupal\joinup\Context\MinkContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
-        - Drupal\DrupalExtension\Context\MinkContext
       filters:
         tags: '~@wip'
   extensions:
@@ -30,6 +30,7 @@ default:
         Navigation menu: 'div.navigation-menu ul'
         Plus button menu: 'div.add-content-menu ul'
         Primary menu: '.region-primary-menu'
+        Subpages menu: '.block-menu-sub-pages'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:

@@ -1,5 +1,5 @@
 id: collection_logo
-label: 'Collection logo file migration'
+label: 'Collection logo'
 migration_tags:
   - collection
   - file

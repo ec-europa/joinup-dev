@@ -54,13 +54,13 @@ class QueryFactory implements QueryFactoryInterface {
    * Constructs a QueryFactory object.
    *
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection
-   *    The connection object.
+   *   The connection object.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *    The entity type manager.
+   *   The entity type manager.
    * @param \Drupal\rdf_entity\RdfGraphHandler $rdf_graph_handler
-   *    The rdf graph helper service.
+   *   The rdf graph helper service.
    * @param \Drupal\rdf_entity\RdfMappingHandler $rdf_mapping_handler
-   *    The rdf mapping helper service.
+   *   The rdf mapping helper service.
    */
   public function __construct(Connection $connection, EntityTypeManagerInterface $entity_type_manager, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
     $this->connection = $connection;

@@ -54,7 +54,7 @@ class OgUserRole extends SourcePluginBase {
     ];
 
     $query = Database::getConnection('default', 'migrate')
-      ->select('joinup_migrate_collection', 'c')
+      ->select('d8_prepare', 'c')
       ->fields('c', ['collection', 'roles']);
 
     $info = [];
