@@ -94,7 +94,6 @@ function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_
   ];
 
   $elibrary_creation_default_value = array_key_exists($elibrary, $elibrary_creation_options) ? $elibrary : $option_transitions[$elibrary];
-  $form_state->setValue('field_ar_elibrary_creation', [0 => ['value' => $elibrary_creation_default_value]]);
 
   // Provide an identifier on the wrapper for the eLibrary Creation field so we
   // can target it with AJAX.

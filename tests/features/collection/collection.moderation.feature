@@ -213,10 +213,17 @@ Feature: Collection moderation
     And I click the "Description" tab
     Then the option "Any registered user can create new content." should be selected
 
+    # Clean up the entities that were created.
+    Then I delete the "Spectres in fog" collection
+    Then I delete the "Katsumoto" owner
+
+  @terms @javascript
+  Scenario: Moderate an open collection
     # Regression test for a bug that happens when a change on the eLibrary
     # creation setting happens after an ajax callback.
+    Given I am logged in as a user with the "authenticated" role
     When I go to the homepage
-    When I click "Propose collection" in the plus button menu
+    And I click "Propose collection" in the plus button menu
     And I fill in "Title" with "Domestic bovins"
     And I enter "Yaks and goats are friendly pets." in the "Description" wysiwyg editor
     And I select "Statistics and Analysis" from "Policy domain"
@@ -242,6 +249,5 @@ Feature: Collection moderation
     Then the option "Any registered user can create new content." should be selected
 
     # Clean up the entities that were created.
-    Then I delete the "Spectres in fog" collection
-    Then I delete the "Katsumoto" owner
-    Then I delete the "Domestic bovins" owner
+    Then I delete the "Domestic bovins" collection
+    Then I delete the "Garnett Clifton" owner
