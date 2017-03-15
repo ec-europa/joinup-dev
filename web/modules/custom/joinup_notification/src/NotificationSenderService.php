@@ -4,6 +4,8 @@ namespace Drupal\joinup_notification;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\message\Entity\Message;
 use Drupal\message_notify\MessageNotifier;
 use Drupal\og\Entity\OgMembership;
@@ -17,11 +19,11 @@ use Drupal\user\Entity\Role;
 class NotificationSenderService {
 
   /**
-   * Drupal\Core\Entity\EntityManager definition.
+   * The entity type manager service.
    *
-   * @var \Drupal\Core\Entity\EntityManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityManager;
+  protected $entityTypeManager;
 
   /**
    * Drupal\message_notify\MessageNotifier definition.
@@ -31,16 +33,26 @@ class NotificationSenderService {
   protected $messageNotifySender;
 
   /**
+   * The discussions relation manager.
+   *
+   * @var \Drupal\joinup_core\JoinupRelationManager
+   */
+  protected $relationManager;
+
+  /**
    * Constructs the event object.
    *
-   * @param \Drupal\Core\Entity\EntityManager $entity_manager
-   *   The entity manager service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    * @param \Drupal\message_notify\MessageNotifier $message_notify_sender
    *   The message notify sender service.
+   * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
+   *   The relation manager service.
    */
-  public function __construct(EntityManager $entity_manager, MessageNotifier $message_notify_sender) {
-    $this->entityManager = $entity_manager;
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MessageNotifier $message_notify_sender, JoinupRelationManager $relation_manager) {
+    $this->entityTypeManager = $entity_type_manager;
     $this->messageNotifySender = $message_notify_sender;
+    $this->relationManager = $relation_manager;
   }
 
   /**
@@ -60,14 +72,14 @@ class NotificationSenderService {
   public function send(EntityInterface $entity, $role_id, array $message_ids) {
     $role = Role::load($role_id);
     if (!empty($role)) {
-      $user_ids = \Drupal::service('entity.manager')->getStorage('user')->getQuery()
+      $user_ids = $this->entityTypeManager->getStorage('user')->getQuery()
         ->condition('status', 1)
         ->condition('roles', $role_id)
         ->execute();
       $recipients = $user_ids;
     }
     else {
-      $membership_query = \Drupal::service('entity.manager')->getStorage('og_membership')->getQuery()
+      $membership_query = $this->entityTypeManager->getStorage('og_membership')->getQuery()
         ->condition('state', 'active')
         ->condition('entity_id', $entity->id());
       $memberships_ids = $membership_query->execute();
