@@ -7,4 +7,4 @@ services:
 
   joinup_notification.notification_sender:
     class: Drupal\joinup_notification\NotificationSenderService
-    arguments: ['@entity_type.manager', '@message_notify.sender', '@joinup_core.relations_manager']
+    arguments: ['@entity_type.manager', '@message_notify.sender', '@joinup_core.relations_manager', '@og.group_type_manager', 'og.membership_manager']

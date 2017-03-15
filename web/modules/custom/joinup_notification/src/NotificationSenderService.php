@@ -9,6 +9,9 @@ use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\message\Entity\Message;
 use Drupal\message_notify\MessageNotifier;
 use Drupal\og\Entity\OgMembership;
+use Drupal\og\GroupTypeManager;
+use Drupal\og\MembershipManagerInterface;
+use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\Role;
 
 /**
@@ -40,6 +43,20 @@ class NotificationSenderService {
   protected $relationManager;
 
   /**
+   * The OG group type manager.
+   *
+   * @var \Drupal\og\GroupTypeManager
+   */
+  protected $groupTypeManager;
+
+  /**
+   * The OG membership manager service.
+   *
+   * @var \Drupal\og\MembershipManagerInterface
+   */
+  protected $ogMembershipManager;
+
+  /**
    * Constructs the event object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -48,11 +65,17 @@ class NotificationSenderService {
    *   The message notify sender service.
    * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
    *   The relation manager service.
+   * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
+   *   The OG membership manager service.
+   * @var \Drupal\og\GroupTypeManager
+   *   The OG group type manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MessageNotifier $message_notify_sender, JoinupRelationManager $relation_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MessageNotifier $message_notify_sender, JoinupRelationManager $relation_manager, MembershipManagerInterface $og_membership_manager, GroupTypeManager $group_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
     $this->messageNotifySender = $message_notify_sender;
     $this->relationManager = $relation_manager;
+    $this->groupTypeManager = $group_type_manager;
+    $this->ogMembershipManager = $og_membership_manager;
   }
 
   /**
@@ -72,31 +95,10 @@ class NotificationSenderService {
   public function send(EntityInterface $entity, $role_id, array $message_ids) {
     $role = Role::load($role_id);
     if (!empty($role)) {
-      $user_ids = $this->entityTypeManager->getStorage('user')->getQuery()
-        ->condition('status', 1)
-        ->condition('roles', $role_id)
-        ->execute();
-      $recipients = $user_ids;
+      $recipients = $this->getRecipientsByRole($role_id);
     }
     else {
-      $membership_query = $this->entityTypeManager->getStorage('og_membership')->getQuery()
-        ->condition('state', 'active')
-        ->condition('entity_id', $entity->id());
-      $memberships_ids = $membership_query->execute();
-      $memberships = OgMembership::loadMultiple($memberships_ids);
-      $memberships = array_filter($memberships, function ($membership) use ($role_id) {
-        $role_ids = array_map(function ($og_role) {
-          return $og_role->id();
-        }, $membership->getRoles());
-        return in_array($role_id, $role_ids);
-      });
-      // We need to handle possible broken relationships or memberships that
-      // are not removed yet.
-      $user_ids = array_map(function ($membership) {
-        $user = $membership->getUser();
-        return empty($user) ? NULL : $user->id();
-      }, $memberships);
-      $recipients = array_filter($user_ids);
+      $recipients = $this->getRecipientsByOgRole($entity, $role_id);
     }
 
     /** @var \Drupal\og\Entity\OgMembership $membership */
@@ -113,6 +115,62 @@ class NotificationSenderService {
         $this->messageNotifySender->send($message, [], 'email');
       }
     }
+  }
+
+  /**
+   * Returns the users with a given role.
+   *
+   * @param string $role_id
+   *    The role id.
+   *
+   * @return array
+   *    An array of user ids.
+   */
+  protected function getRecipientsByRole($role_id){
+    return $this->entityTypeManager->getStorage('user')->getQuery()
+      ->condition('status', 1)
+      ->condition('roles', $role_id)
+      ->execute();
+  }
+
+  /**
+   * Returns the users with a given og role.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *    The entity object.
+   * @param string $role_id
+   *    The role id.
+   *
+   * @return array
+   *    An array of user ids.
+   */
+  protected function getRecipientsByOgRole(EntityInterface $entity, $role_id){
+    if (!$this->groupTypeManager->isGroup($entity->getEntityTypeId(), $entity->bundle())) {
+      $entity = $this->relationManager->getParent($entity);
+    }
+    if (empty($entity)) {
+      return [];
+    }
+
+    $memberships = $this->entityTypeManager->getStorage('og_membership')->loadByProperties([
+      'state' => OgMembershipInterface::STATE_ACTIVE,
+      'entity_id' => $entity->id(),
+    ]);
+
+    $memberships = array_filter($memberships, function ($membership) use ($role_id) {
+      $role_ids = array_map(function ($og_role) {
+        return $og_role->id();
+      }, $membership->getRoles());
+      return in_array($role_id, $role_ids);
+    });
+
+    // We need to handle possible broken relationships or memberships that
+    // are not removed yet.
+    $user_ids = array_map(function ($membership) {
+      $user = $membership->getUser();
+      return empty($user) ? NULL : $user->id();
+    }, $memberships);
+    return array_filter($user_ids);
   }
 
   /**
