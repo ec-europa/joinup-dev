@@ -45,7 +45,7 @@ class RdfEntityConverter extends EntityConverter {
   public function convert($value, $definition, $name, array $defaults) {
     // Here the escaped uri is transformed into a valid uri.
     // @see \Drupal\rdf_entity\Entity\Rdf::urlRouteParameters
-    $value = str_replace('\\', '/', $value);
+    $value = str_replace(['\\', '%23'], ['/', '#'], $value);
     $entity_type_id = $this->getEntityTypeFromDefaults($definition, $name, $defaults);
     if ($storage = $this->entityManager->getStorage($entity_type_id)) {
       /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher */
