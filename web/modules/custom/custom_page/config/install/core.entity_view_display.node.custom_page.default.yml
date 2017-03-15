@@ -7,7 +7,6 @@ dependencies:
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
-    - ds
     - search_api_field
     - text
     - user
@@ -22,32 +21,23 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_cp_content_listing:
-    weight: 4
+    type: search_api_field
+    weight: 3
+    region: content
     label: hidden
     settings: {  }
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: search_api_field
+    third_party_settings: {  }
   links:
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
   node_field_cp_content_listing_top:
-    weight: 3
+    weight: 2
+    region: content
     settings: {  }
     third_party_settings: {  }
-  og_audience:
-    type: entity_reference_label
-    weight: 2
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-hidden: {  }
+hidden:
+  og_audience: true

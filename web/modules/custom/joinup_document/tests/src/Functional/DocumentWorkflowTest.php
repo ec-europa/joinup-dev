@@ -6,6 +6,8 @@ use Drupal\Tests\joinup_core\Functional\NodeWorkflowTestBase;
 
 /**
  * Tests CRUD operations and workflow transitions for the document node.
+ *
+ * @group workflow
  */
 class DocumentWorkflowTest extends NodeWorkflowTestBase {
 
