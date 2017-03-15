@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.message.field_message_content
-    - message.template.rdf_entity_asset_distribution_delete
+    - message.template.rdf_entity_distribution_delete
     - rdf_entity.rdfentity.asset_distribution
 id: message.rdf_entity_asset_distribution_delete.field_message_content
 field_name: field_message_content

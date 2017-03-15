@@ -1,9 +1,9 @@
 langcode: en
 status: true
 dependencies: {  }
-template: rdf_entity_asset_distribution_delete
+template: rdf_entity_distribution_delete
 label: 'Rdf entity - asset distribution - delete'
-description: 'Message to the owner when a asset_distribution is deleted'
+description: 'Message to the owner when a distribution is deleted'
 text:
   -
     value: "<p>Joinup - Content has been deleted</p>\r\n"

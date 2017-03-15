@@ -3,11 +3,11 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_subject
-    - field.field.message.rdf_entity_asset_distribution_delete.field_message_content
-    - message.template.rdf_entity_asset_distribution_delete
-id: message.rdf_entity_asset_distribution_delete.mail_subject
+    - field.field.message.rdf_entity_distribution_delete.field_message_content
+    - message.template.rdf_entity_distribution_delete
+id: message.rdf_entity_distribution_delete.mail_subject
 targetEntityType: message
-bundle: rdf_entity_asset_distribution_delete
+bundle: rdf_entity_distribution_delete
 mode: mail_subject
 content:
   partial_0:
