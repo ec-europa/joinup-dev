@@ -199,7 +199,7 @@ class RdfGraphHandler {
 
     sort($graph_names);
     $cache_key = implode(':', $graph_names);
-    if (!isset($this->entityTypeGraphUris[$cache_key])) {
+    if (!isset($this->entityTypeGraphUris[$entity_type_bundle_key][$cache_key])) {
       $bundle_entities = $this->entityTypeManager->getStorage($entity_type_bundle_key)->loadMultiple();
       $graphs = [];
       foreach ($bundle_entities as $bundle_entity) {
@@ -209,10 +209,10 @@ class RdfGraphHandler {
         }
       }
 
-      $this->entityTypeGraphUris[$cache_key] = $graphs;
+      $this->entityTypeGraphUris[$entity_type_bundle_key][$cache_key] = $graphs;
     }
 
-    return $this->entityTypeGraphUris[$cache_key];
+    return $this->entityTypeGraphUris[$entity_type_bundle_key][$cache_key];
   }
 
   /**
