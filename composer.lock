@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cc9ad0398af03dc98d75cd42750b676c",
-    "content-hash": "2caaea4e734bea8ba513d6acaf66c82b",
+    "hash": "6ebae35ec11e5a4eb2384a473784a289",
+    "content-hash": "50e69af396b7691f3c5d475017baee14",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1810,6 +1810,7 @@
                     "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
                     "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-85.patch",
                     "Explode processor is too strict @see https://www.drupal.org/node/2853823": "https://www.drupal.org/files/issues/2853823-29.patch",
+                    "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
                     "Optionally log messages for skip_on_empty and skip_row_if_not_set @see https://www.drupal.org/node/2655154": "https://www.drupal.org/files/issues/2655154-27.patch"
                 }
             },
@@ -7889,8 +7890,7 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            },
-            "time": "2017-03-03 01:18:28"
+            }
         },
         {
             "name": "drupal/devel",
