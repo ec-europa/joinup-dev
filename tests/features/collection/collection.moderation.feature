@@ -213,6 +213,35 @@ Feature: Collection moderation
     And I click the "Description" tab
     Then the option "Any registered user can create new content." should be selected
 
+    # Regression test for a bug that happens when a change on the eLibrary
+    # creation setting happens after an ajax callback.
+    When I go to the homepage
+    When I click "Propose collection" in the plus button menu
+    And I fill in "Title" with "Domestic bovins"
+    And I enter "Yaks and goats are friendly pets." in the "Description" wysiwyg editor
+    And I select "Statistics and Analysis" from "Policy domain"
+    # An ajax callback is executed now.
+    And I press "Add new" at the "Owner" field
+    And I wait for AJAX to finish
+    And I fill in "Name" with "Garnett Clifton"
+    And I check the box "Supra-national authority"
+    And I click the "Description" tab
+    And I attach the file "logo.png" to "Logo"
+    And I attach the file "banner.jpg" to "Banner"
+
+    # Configure eLibrary creation for all registered users.
+    When I move the "eLibrary creation" slider to the right
+    Then the option "Any registered user can create new content." should be selected
+
+    # Save the collection.
+    When I press "Propose"
+    Then I should see the heading "Domestic bovins"
+    # Edit again.
+    When I click "Edit" in the "Entity actions" region
+    And I click the "Description" tab
+    Then the option "Any registered user can create new content." should be selected
+
     # Clean up the entities that were created.
     Then I delete the "Spectres in fog" collection
     Then I delete the "Katsumoto" owner
+    Then I delete the "Domestic bovins" owner
