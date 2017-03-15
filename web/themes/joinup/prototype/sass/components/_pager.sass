@@ -1,0 +1,66 @@
+// Component
+// --------------------------------------------------
+.pager
+  font-size: 0 // display inline-block gap fix
+  min-height: 30px
+  margin: 30px 0 0 0
+  padding: 0
+  text-align: center
+
+
+// Elements
+// --------------------------------------------------
+.pager__item
+  display: none
+  padding-bottom: 0
+  +breakpoint(tablet)
+    display: inline-block
+    vertical-align: middle
+  > a,
+  > span
+    font-weight: 500
+    line-height: 30px
+    float: left
+    height: 30px
+    padding: 0 9px
+    text-decoration: none
+    color: $color-base
+
+.pager__items
+  padding-left: 0
+
+// Modifiers
+// --------------------------------------------------
+
+// States
+// --------------------------------------------------
+.pager__item
+  > a,
+  > span
+    &:hover,
+    &:focus,
+    &:active
+      color: $color-base
+      background-color: $color-grey-ligher
+
+.pager__item--active, .pager__item.is-active
+  display: inline-block
+  > span, a
+    &,
+    &:hover,
+    &:focus,
+    &:active
+      cursor: default
+      color: #fff
+      background-color: $color-blue-default
+
+.pager__item--ellipsis
+  > span
+    &:hover,
+    &:focus,
+    &:active
+      cursor: default
+      background-color: transparent
+
+// Dependencies
+// --------------------------------------------------
