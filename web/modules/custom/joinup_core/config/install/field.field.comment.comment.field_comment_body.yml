@@ -3,9 +3,9 @@ status: true
 dependencies:
   config:
     - comment.type.comment
-    - field.storage.comment.field_body
-id: comment.comment.field_body
-field_name: field_body
+    - field.storage.comment.field_comment_body
+id: comment.comment.field_comment_body
+field_name: field_comment_body
 entity_type: comment
 bundle: comment
 label: Comment

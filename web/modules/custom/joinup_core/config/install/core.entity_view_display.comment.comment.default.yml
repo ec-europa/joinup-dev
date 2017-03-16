@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - comment.type.comment
-    - field.field.comment.comment.field_body
+    - field.field.comment.comment.field_comment_body
   module:
     - ds
 third_party_settings:
@@ -29,8 +29,8 @@ targetEntityType: comment
 bundle: comment
 mode: default
 content:
-  field_body:
-    weight: 3
+  field_comment_body:
+    weight: 4
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }

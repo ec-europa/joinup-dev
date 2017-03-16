@@ -334,7 +334,6 @@ function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
  */
 function joinup_theme_preprocess_field__comment(&$variables) {
   // Get entity url needed for login and register routes.
-  //kint($variables);
   $entity = $variables['element']['#object'];
   $variables['entity_url'] = $entity->url();
   $variables['entity_bundle'] = Unicode::strtolower($entity->type->entity->label());
@@ -345,9 +344,11 @@ function joinup_theme_preprocess_field__comment(&$variables) {
     case CommentItemInterface::OPEN:
       $variables['comments_status'] = 'open';
       break;
+
     case CommentItemInterface::CLOSED:
       $variables['comments_status'] = 'closed';
       break;
+
     case CommentItemInterface::HIDDEN:
       $variables['comments_status'] = 'hidden';
       break;
@@ -667,7 +668,7 @@ function joinup_theme_theme_suggestions_textarea_alter(array &$suggestions, arra
 function joinup_theme_theme_suggestions_form_element_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'form_element__' . str_replace('-', '_', $variables['element']['#type']);
   // Check if textarea is a comment.
-  if ($variables['element']['#id'] == 'edit-field-comment-body-0-value') {
+  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-field-comment-body-0-value') {
     $suggestions[] = 'form_element__textarea__comment';
   }
 }
