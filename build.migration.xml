@@ -75,5 +75,27 @@
         </pdosqlexec>
     </target>
 
-</project>
+    <!-- Import the legacy database testing data -->
+    <target name="import-legacy-test-db"
+            description="Import the legacy D6 testing database."
+            depends="create-d6-test-db">
+        <pdosqlexec
+                url="${drupal.db.type}:host=${drupal.db.host};dbname=${phpunit.migrate.legacy_db.name}"
+                userid="${drupal.db.user}"
+                password="${drupal.db.password}">
+            <transaction src="${phpunit.migrate.legacy_db.dump}"/>
+        </pdosqlexec>
+    </target>
 
+    <!-- Create the legacy testing database -->
+    <target name="create-d6-test-db">
+        <pdosqlexec url="${drupal.db.type}:host=${drupal.db.host}"
+                    userid="${drupal.db.user}" password="${drupal.db.password}">
+            DROP DATABASE IF EXISTS ${phpunit.migrate.legacy_db.name};
+        </pdosqlexec>
+        <pdosqlexec url="${drupal.db.type}:host=${drupal.db.host}"
+                    userid="${drupal.db.user}" password="${drupal.db.password}">
+            CREATE DATABASE ${phpunit.migrate.legacy_db.name};
+        </pdosqlexec>
+    </target>
+</project>
