@@ -3,7 +3,6 @@
 namespace Drupal\Tests\joinup_core\Kernel;
 
 use Drupal\Tests\rdf_entity\Kernel\RdfKernelTestBase;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 
 /**
  * Provides a base class for Joinup kernel tests.
@@ -23,15 +22,10 @@ use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
  */
 abstract class JoinupKernelTestBase extends RdfKernelTestBase {
 
-  use RdfDatabaseConnectionTrait;
-
   /**
    * {@inheritdoc}
    */
   public static $modules = [
-    'field',
-    'system',
-    'user',
     'rdf_entity_test',
   ];
 
@@ -39,14 +33,6 @@ abstract class JoinupKernelTestBase extends RdfKernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    if (!$this->setUpSparql()) {
-      $this->markTestSkipped('No Sparql connection available.');
-    }
-    // Test is not compatible with Virtuoso 6.
-    if ($this->detectVirtuoso6()) {
-      $this->markTestSkipped('Skipping: Not running on Virtuoso 6.');
-    }
-
     parent::setUp();
     $this->installEntitySchema('user');
     $this->installConfig(['rdf_entity_test']);
