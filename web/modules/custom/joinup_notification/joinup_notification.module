@@ -31,6 +31,8 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
 
   $entity_type = $entity->getEntityTypeId();
   $bundle = $entity->bundle();
+  // The asset distribution rdf entity does not have a workflow so it is
+  // excluded from the following check.
   if ($entity_type !== 'rdf_entity' || $bundle !== 'asset_distribution') {
     $field_definitions = array_filter(\Drupal::entityManager()->getFieldDefinitions($entity_type, $bundle), function ($field_definition) {
       return $field_definition->getType() == 'state';

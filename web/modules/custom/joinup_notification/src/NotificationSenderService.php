@@ -33,7 +33,7 @@ class NotificationSenderService {
   protected $messageNotifySender;
 
   /**
-   * The discussions relation manager.
+   * The relation manager.
    *
    * @var \Drupal\joinup_core\JoinupRelationManager
    */
