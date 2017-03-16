@@ -27,7 +27,7 @@ Feature: Asset distribution deleting.
     When I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | template  | Message to the owner when a distribution is deleted          |
-      | recipient | Papa Roach                                                   |
-      | subject   | Joinup - Content has been deleted                            |
-      | body      | The content "Francesco's cats" has been deleted from Joinup. |
+      | template  | Message to the owner when a distribution is deleted                     |
+      | recipient | Papa Roach                                                              |
+      | subject   | Joinup - Content has been deleted                                       |
+      | body      | The asset distribution "Francesco's cats" has been deleted from Joinup. |
