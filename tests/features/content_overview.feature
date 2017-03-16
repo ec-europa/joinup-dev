@@ -12,7 +12,8 @@ Feature: Content Overview
     When I click "Content"
     Then I should see the heading "Content"
 
-  # @todo The small header, which contains content link, should be removed for anonymous users on the homepage - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639.
+  # @todo: The small header, which contains content link, should be removed for anonymous users on the homepage.
+  # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639.
   @terms
   Scenario: View content overview as an anonymous user
     Given the following collections:
