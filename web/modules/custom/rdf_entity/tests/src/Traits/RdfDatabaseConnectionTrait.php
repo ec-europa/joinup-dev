@@ -37,10 +37,7 @@ trait RdfDatabaseConnectionTrait {
     $client->setMethod('GET');
     $response = $client->request();
     $server_header = $response->getHeader('Server');
-    if (strpos($server_header, "Virtuoso/06") === FALSE) {
-      return FALSE;
-    }
-    return TRUE;
+    return strpos($server_header, "Virtuoso/06") !== FALSE;
   }
 
   /**
@@ -64,6 +61,42 @@ trait RdfDatabaseConnectionTrait {
     $this->sparql = Database::getConnection('default', 'sparql_default');
 
     return TRUE;
+  }
+
+  /**
+   * Sets the connection details to the settings.php file.
+   *
+   * The BrowserTestBase is creating a new copy of the settings.php file to the
+   * test directory so the sparql entry needs to be inserted to the new
+   * configuration.
+   */
+  protected function setUpSparqlForBrowser() {
+    // If the test is run with argument db url then use it.
+    // export SIMPLETEST_SPARQL_DB='sparql://127.0.0.1:8890/'.
+    $db_url = getenv('SIMPLETEST_SPARQL_DB');
+    if (empty($db_url)) {
+      return FALSE;
+    }
+
+    $database = Database::convertDbUrlToConnectionInfo($db_url, dirname(dirname(__FILE__)));
+    $database['namespace'] = 'Drupal\\rdf_entity\\Database\\Driver\\sparql';
+
+    $key = 'sparql_default';
+    $target = 'default';
+
+    $settings['databases'][$key][$target] = (object) array(
+      'value' => $database,
+      'required' => TRUE,
+    );
+    if (!isset($settings_file)) {
+      $settings_file = \Drupal::service('site.path') . '/settings.php';
+    }
+
+    // Settings file is readonly at the moment.
+    chmod($settings_file, 0666);
+    drupal_rewrite_settings($settings);
+    // Restore original permissions to the settings file.
+    chmod($settings_file, 0444);
   }
 
 }
