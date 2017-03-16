@@ -65,27 +65,22 @@
  *
  * @see template_preprocess_node()
  *
+ * @todo Remove the id attribute (or make it a class), because if that gets
+ *   rendered twice on a page this is invalid CSS for example: two lists
+ *   in different view modes.
  */
 #}
-{%
-  set classes = [
-    'listing__card',
-    'mdl-card',
-    'listing__card--stats-container',
-    view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
-  ]
-%}
-<div class="{{ classes|join(' ') }}">
-  <div class="listing__metadata">
-    <div class="listing__field">
-      <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
+{% if content.body|render %}
+{% set listing_class = 'listing--separated' %}
+{% endif %}
+<article{{ attributes }}>
+  {% if content.body|render %}
+    <div class="page__content">
+      {{ content.body }}
     </div>
-    <div class="listing__field">
-      <p class="listing__teaser">{{ content.body }}</p>
-    </div>
-    <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">
-      <a href="{{ url }}" class="listing__action-link action-link">{{ 'Details'|t }}</a>
-      <a href="{{ content.field_file|render|striptags|trim }}" class="listing__action-link action-link">{{ 'Download'|t }}</a>
-    </div>
+  {% endif %}
+  <div class="listing--facets {{ listing_class }}">
+    {{ content.node_field_cp_content_listing_top }}
+    {{ content.field_cp_content_listing }}
   </div>
-</div>
+</article>

@@ -46,8 +46,18 @@ content:
     weight: 2
     region: content
     label: hidden
-    settings: {  }
-    third_party_settings: {  }
+    settings:
+      mode: plain
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_short_title:
     weight: 0
     label: hidden
