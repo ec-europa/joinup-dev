@@ -2,6 +2,7 @@
 
 namespace Drupal\file_url\Plugin\Field\FieldWidget;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -28,6 +29,10 @@ class FileUrlWidget extends FileWidget {
    * Overrides \Drupal\Core\Field\WidgetBase::formMultipleElements().
    *
    * Special handling for draggable multiple widgets and 'add more' button.
+   *
+   * @todo Multivalue fields are untested and probably need work to be
+   *   usable. This was left unfinished since we have no use for them at the
+   *   moment.
    */
   protected function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
     $field_name = $this->fieldDefinition->getName();
@@ -42,8 +47,7 @@ class FileUrlWidget extends FileWidget {
     }
 
     // Determine the number of widgets to display.
-    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()
-      ->getCardinality();
+    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
     switch ($cardinality) {
       case FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED:
         $max = count($items);
@@ -59,15 +63,15 @@ class FileUrlWidget extends FileWidget {
     $title = $this->fieldDefinition->getLabel();
     $description = $this->getFilteredDescription();
 
-    $elements = array();
+    $elements = [];
 
     $delta = 0;
     // Add an element for every existing item.
     foreach ($items as $item) {
-      $element = array(
+      $element = [
         '#title' => $title,
         '#description' => $description,
-      );
+      ];
       $element = $this->formSingleElement($items, $delta, $element, $form, $form_state);
 
       if ($element) {
@@ -75,15 +79,15 @@ class FileUrlWidget extends FileWidget {
         if ($is_multiple) {
           // We name the element '_weight' to avoid clashing with elements
           // defined by widget.
-          $element['_weight'] = array(
+          $element['_weight'] = [
             '#type' => 'weight',
-            '#title' => t('Weight for row @number', array('@number' => $delta + 1)),
+            '#title' => t('Weight for row @number', ['@number' => $delta + 1]),
             '#title_display' => 'invisible',
             // Note: this 'delta' is the FAPI #type 'weight' element's property.
             '#delta' => $max,
             '#default_value' => $item->_weight ?: $delta,
             '#weight' => 100,
-          );
+          ];
         }
 
         $elements[$delta] = $element;
@@ -99,10 +103,10 @@ class FileUrlWidget extends FileWidget {
     if ($empty_single_allowed || $empty_multiple_allowed) {
       // Create a new empty item.
       $items->appendItem();
-      $element = array(
+      $element = [
         '#title' => $title,
         '#description' => $description,
-      );
+      ];
       $element = $this->formSingleElement($items, $delta, $element, $form, $form_state);
       if ($element) {
         $element['#required'] = ($element['#required'] && $delta == 0);
@@ -117,8 +121,8 @@ class FileUrlWidget extends FileWidget {
       $elements['#type'] = 'details';
       $elements['#open'] = TRUE;
       $elements['#theme'] = 'file_url_widget_multiple';
-      $elements['#theme_wrappers'] = array('details');
-      $elements['#process'] = array(array(get_class($this), 'processMultiple'));
+      $elements['#theme_wrappers'] = ['details'];
+      $elements['#process'] = [[get_class($this), 'processMultiple']];
       $elements['#title'] = $title;
 
       $elements['#description'] = $description;
@@ -127,7 +131,7 @@ class FileUrlWidget extends FileWidget {
       // The field settings include defaults for the field type. However, this
       // widget is a base class for other widgets (e.g., ImageWidget) that may
       // act on field types without these expected settings.
-      $field_settings = $this->getFieldSettings() + array('display_field' => NULL);
+      $field_settings = $this->getFieldSettings() + ['display_field' => NULL];
       $elements['#display_field'] = (bool) $field_settings['display_field'];
 
       // Add some properties that will eventually be added to the file upload
@@ -137,37 +141,36 @@ class FileUrlWidget extends FileWidget {
     }
 
     if ($elements) {
-      $elements += array(
+      $elements += [
         '#theme' => 'field_multiple_value_form',
         '#field_name' => $field_name,
         '#cardinality' => $cardinality,
-        '#cardinality_multiple' => $this->fieldDefinition->getFieldStorageDefinition()
-          ->isMultiple(),
+        '#cardinality_multiple' => $this->fieldDefinition->getFieldStorageDefinition()->isMultiple(),
         '#required' => $this->fieldDefinition->isRequired(),
         '#title' => $title,
         '#description' => $description,
         '#max_delta' => $max,
-      );
+      ];
       // Add 'add more' button, if not working with a programmed form.
       if ($cardinality == FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED && !$form_state->isProgrammed()) {
-        $id_prefix = implode('-', array_merge($parents, array($field_name)));
+        $id_prefix = implode('-', array_merge($parents, [$field_name]));
         $wrapper_id = Html::getUniqueId($id_prefix . '-add-more-wrapper');
         $elements['#prefix'] = '<div id="' . $wrapper_id . '">';
         $elements['#suffix'] = '</div>';
 
-        $elements['add_more'] = array(
+        $elements['add_more'] = [
           '#type' => 'submit',
           '#name' => strtr($id_prefix, '-', '_') . '_add_more',
           '#value' => t('Add another item'),
-          '#attributes' => array('class' => array('field-add-more-submit')),
-          '#limit_validation_errors' => array(array_merge($parents, array($field_name))),
-          '#submit' => array(array(get_class($this), 'addMoreSubmit')),
-          '#ajax' => array(
-            'callback' => array(get_class($this), 'addMoreAjax'),
+          '#attributes' => ['class' => ['field-add-more-submit']],
+          '#limit_validation_errors' => [array_merge($parents, [$field_name])],
+          '#submit' => [[get_class($this), 'addMoreSubmit']],
+          '#ajax' => [
+            'callback' => [get_class($this), 'addMoreAjax'],
             'wrapper' => $wrapper_id,
             'effect' => 'fade',
-          ),
-        );
+          ],
+        ];
       }
     }
     return $elements;
@@ -182,26 +185,25 @@ class FileUrlWidget extends FileWidget {
     // The field settings include defaults for the field type. However, this
     // widget is a base class for other widgets (e.g., ImageWidget) that may act
     // on field types without these expected settings.
-    $field_settings += array(
+    $field_settings += [
       'display_default' => NULL,
       'display_field' => NULL,
       'description_field' => NULL,
-    );
+    ];
 
-    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()
-      ->getCardinality();
+    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
     $field_name = $this->fieldDefinition->getName();
-    $defaults = array(
-      'fids' => array(),
+    $defaults = [
+      'fids' => [],
       'display' => (bool) $field_settings['display_default'],
       'description' => '',
-    );
+    ];
 
     // Essentially we use the managed_file type, extended with some
     // enhancements.
     $element_info = $this->elementInfo->getInfo('managed_file');
     $element['#type'] = 'file_url_type';
-    $element['#theme_wrappers'] = array('form_element');
+    $element['#theme_wrappers'] = ['form_element'];
     $element['file-wrap']['#type'] = 'container';
     $element['file-wrap']['select'] = [
       '#type' => 'radios',
@@ -213,30 +215,31 @@ class FileUrlWidget extends FileWidget {
     $element['file-wrap']['remote-file'] = [
       '#type' => 'url',
       '#title' => $this->t('Remote file'),
-      '#states' => array(
+      '#description' => $this->t('This must be an external URL such as <em>http://example.com</em>.'),
+      '#states' => [
         // Only show this field when the 'remote file' radio is selected.
-        'visible' => array(
-          ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => array('value' => 'remote-file'),
-        ),
-        'enabled' => array(
-          ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => array('value' => 'remote-file'),
-        ),
-      ),
+        'visible' => [
+          ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => ['value' => 'remote-file'],
+        ],
+        'enabled' => [
+          ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => ['value' => 'remote-file'],
+        ],
+      ],
     ];
     $element['#cardinality'] = $cardinality;
-    $element['file-wrap']['file'] = array(
+    $element['file-wrap']['file'] = [
       '#type' => 'managed_file',
       '#title_display' => 'invisible',
-      '#title' => $this->fieldDefinition->getLabel(),
+      '#title' => $this->t('File'),
       '#upload_location' => $items[$delta]->getUploadLocation(),
       '#upload_validators' => $items[$delta]->getUploadValidators(),
-      '#value_callback' => array(get_class($this), 'value'),
-      '#process' => array_merge($element_info['#process'], array(
-        array(
+      '#value_callback' => [get_class($this), 'value'],
+      '#process' => array_merge($element_info['#process'], [
+        [
           get_class($this),
           'process',
-        ),
-      )),
+        ],
+      ]),
       '#progress_indicator' => $this->getSetting('progress_indicator'),
       // Allows this field to return an array instead of a single value.
       '#extended' => TRUE,
@@ -247,16 +250,16 @@ class FileUrlWidget extends FileWidget {
       '#display_default' => $field_settings['display_default'],
       '#description_field' => $field_settings['description_field'],
       '#cardinality' => $cardinality,
-      '#states' => array(
+      '#states' => [
         // Only show this field when the 'file' radio is selected.
-        'visible' => array(
-          ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => array('value' => 'file'),
-        ),
-        'enabled' => array(
-          ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => array('value' => 'file'),
-        ),
-      ),
-    );
+        'visible' => [
+          ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => ['value' => 'file'],
+        ],
+        'enabled' => [
+          ':input[name="' . $field_name . '[' . $delta . '][file-wrap][select]"]' => ['value' => 'file'],
+        ],
+      ],
+    ];
 
     $element['#weight'] = $delta;
     $element['file-wrap']['file']['#default_value'] = $defaults;
@@ -281,25 +284,29 @@ class FileUrlWidget extends FileWidget {
         }
       }
     }
+    // If no file is stored yet, select the first option by default.
+    else {
+      reset($element['file-wrap']['select']['#options']);
+      $element['file-wrap']['select']['#default_value'] = key($element['file-wrap']['select']['#options']);
+    }
 
     $default_fids = $element['file-wrap']['file']['#default_value']['fids'];
     if (empty($default_fids)) {
-      $file_upload_help = array(
+      $file_upload_help = [
         '#theme' => 'file_upload_help',
         '#description' => $element['#description'],
         '#upload_validators' => $element['file-wrap']['file']['#upload_validators'],
         '#cardinality' => $cardinality,
-      );
-      $element['#description'] = \Drupal::service('renderer')
-        ->renderPlain($file_upload_help);
-      $element['#multiple'] = $cardinality != 1 ? TRUE : FALSE;
+      ];
+      $element['file-wrap']['file']['#description'] = \Drupal::service('renderer')->renderPlain($file_upload_help);
+      $element['file-wrap']['file']['#multiple'] = $cardinality != 1 ? TRUE : FALSE;
       if ($cardinality != 1 && $cardinality != -1) {
-        $element['#element_validate'] = array(
-          array(
+        $element['file-wrap']['file']['#element_validate'] = [
+          [
             get_class($this),
             'validateMultipleCount',
-          ),
-        );
+          ],
+        ];
       }
     }
 
@@ -315,7 +322,7 @@ class FileUrlWidget extends FileWidget {
     // single fid, as field expects single value.
     /** @var \Drupal\file_url\FileUrlHandler $file_handler */
     $file_handler = \Drupal::service('file_url.handler');
-    $new_values = array();
+    $new_values = [];
     foreach ($values as $delta => &$value) {
       // Skip when element is deleted.
       $trigger = $form_state->getTriggeringElement();
@@ -361,11 +368,11 @@ class FileUrlWidget extends FileWidget {
 
     // Add the display field if enabled.
     if ($element['#display_field']) {
-      $element['display'] = array(
+      $element['display'] = [
         '#type' => empty($item['fids']) ? 'hidden' : 'checkbox',
         '#title' => t('Include file in display'),
-        '#attributes' => array('class' => array('file-display')),
-      );
+        '#attributes' => ['class' => ['file-display']],
+      ];
       if (isset($item['display'])) {
         $element['display']['#value'] = $item['display'] ? '1' : '';
       }
@@ -374,33 +381,33 @@ class FileUrlWidget extends FileWidget {
       }
     }
     else {
-      $element['display'] = array(
+      $element['display'] = [
         '#type' => 'hidden',
         '#value' => '1',
-      );
+      ];
     }
 
     // Add the description field if enabled.
     if ($element['#description_field'] && $item['fids']) {
       $config = \Drupal::config('file.settings');
-      $element['description'] = array(
+      $element['description'] = [
         '#type' => $config->get('description.type'),
         '#title' => t('Description'),
         '#value' => isset($item['description']) ? $item['description'] : '',
         '#maxlength' => $config->get('description.length'),
         '#description' => t('The description may be used as the label of the link to the file.'),
-      );
+      ];
     }
 
     // Adjust the Ajax settings so that on upload and remove of any individual
     // file, the entire group of file fields is updated together.
     if ($element['#cardinality'] != 1) {
       $parents = array_slice($element['#array_parents'], 0, -3);
-      $new_options = array(
-        'query' => array(
+      $new_options = [
+        'query' => [
           'element_parents' => implode('/', $parents),
-        ),
-      );
+        ],
+      ];
       $field_element = NestedArray::getValue($form, $parents);
       $new_wrapper = $field_element['#id'] . '-ajax-wrapper';
       foreach (Element::children($element) as $key) {
@@ -416,9 +423,9 @@ class FileUrlWidget extends FileWidget {
     // functionality needed by the field widget. This submit handler, along with
     // the rebuild logic in file_field_widget_form() requires the entire field,
     // not just the individual item, to be valid.
-    foreach (array('upload_button', 'remove_button') as $key) {
-      $element[$key]['#submit'][] = array(get_called_class(), 'submit');
-      $parent = array(array_slice($element['#parents'], 0, -1));
+    foreach (['upload_button', 'remove_button'] as $key) {
+      $element[$key]['#submit'][] = [get_called_class(), 'submit'];
+      $parent = [array_slice($element['#parents'], 0, -1)];
       $element[$key]['#limit_validation_errors'] = $parent;
     }
 
@@ -452,12 +459,12 @@ class FileUrlWidget extends FileWidget {
 
     // If there are more files uploaded via the same widget, we have to separate
     // them, as we display each file in it's own widget.
-    $new_values = array();
+    $new_values = [];
     foreach ($submitted_values as $delta => $submitted_value) {
       if (is_array($submitted_value['file-wrap']['file']['fids'])) {
         foreach ($submitted_value['file-wrap']['file']['fids'] as $fid) {
           $new_value = $submitted_value;
-          $new_value['file-wrap']['file']['fids'] = array($fid);
+          $new_value['file-wrap']['file']['fids'] = [$fid];
           $new_values[] = $new_value;
         }
       }

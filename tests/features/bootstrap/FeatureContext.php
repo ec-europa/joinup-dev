@@ -56,7 +56,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $page = $this->getSession()->getPage();
     $not_found = [];
     foreach ($fields as $field) {
-      $is_found = $page->findField($field);
+      // Complex fields in Drupal might not be directly linked to actual field
+      // elements such as 'select' and 'input', so try both the standard
+      // findField() as well as an XPath expression that finds the given label
+      // inside any element marked as a form item.
+      $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " form-item ") and .//label[text() = "' . $field . '"]]';
+      $is_found = (bool) $page->findField($field) || (bool) $page->find('xpath', $xpath);
       if (!$is_found) {
         $not_found[] = $field;
       }
@@ -97,7 +102,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when an expected field is not present or is not visible.
    *
-   * @Then (the following )fields should be visible :fields
+   * @Then (the following )field(s) should be visible :fields
    */
   public function assertFieldsVisible($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
@@ -139,7 +144,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when a field is not present or is visible.
    *
-   * @Then (the following )fields should not be visible :fields
+   * @Then (the following )field(s) should not be visible :fields
    */
   public function assertFieldsNotVisible($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
