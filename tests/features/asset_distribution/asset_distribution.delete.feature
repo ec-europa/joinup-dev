@@ -29,5 +29,5 @@ Feature: Asset distribution deleting.
     Then the following email should have been sent:
       | template  | Message to the owner when a distribution is deleted                     |
       | recipient | Papa Roach                                                              |
-      | subject   | Joinup - Content has been deleted                                       |
+      | subject   | Joinup - Distribution has been deleted                                       |
       | body      | The asset distribution "Francesco's cats" has been deleted from Joinup. |
