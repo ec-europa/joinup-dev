@@ -4,4 +4,3 @@ services:
     arguments: ['@config.factory']
     tags:
       - { name: event_subscriber }
-
