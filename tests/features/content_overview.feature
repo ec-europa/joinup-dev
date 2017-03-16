@@ -31,11 +31,17 @@ Feature: Content Overview
     And "discussion" content:
       | title            | collection        | state     |
       | The Men's Female | Rumble collection | validated |
-    # Check that visiting as an anonymous does not create cache for all users.
-    When I am an anonymous user
+
+    # Check that visiting as a moderator does not create cache for all users.
+    When I am logged in as a user with the "moderator" role
     And I am on the homepage
-    Then I should see the link "Content"
     And I click "Content"
+    Then I should see the "Seventh Windows" tile
+    And I should see the "The Playful Tale" tile
+    And I should see the "History of Flight" tile
+    And I should see the "The Men's Female" tile
+    And I should not see the "Rumble collection" tile
+    And I should see the "Night of Shadow" tile
 
     # Check page for authenticated users.
     When I am logged in as a user with the "authenticated" role
@@ -48,6 +54,7 @@ Feature: Content Overview
     But I should not see the "Rumble collection" tile
     And I should not see the "Night of Shadow" tile
 
+    # Check the page for anonymous users.
     When I am an anonymous user
     And I am on the homepage
     Then I should see the link "Content"
