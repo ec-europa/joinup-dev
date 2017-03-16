@@ -21,8 +21,12 @@
           <div class="value gray">{{ additional_content.field_news_headline }}</div>
         </div>
       </div>
-      {{ additional_content.author }}
-      - <div class="details__element details__element-created"><span class="value gray">{{ additional_content.created }}</span></div>
+      <div class="details">
+        {{ additional_content.author }}
+        <div class="details__element">
+          <div class="value gray">{{ additional_content.created }}</div>
+        </div>
+      </div>
   </div>
 {% endif %}
 {{ title_suffix }}

@@ -21,11 +21,14 @@
  * - field_name: The name of the field.
  * - field_type: The type of the field.
  * - label_display: The display settings for the label.
+ * - comments_status: Indicates if comments are open, closed or hidden.
  *
  * @see template_preprocess_field()
  * @see comment_preprocess_field()
  */
 #}
+{% set login_path = path('user.login', {'destination': entity_url }) %}
+{% set register_path = path('user.register', {'destination': entity_url }) %}
 <section{{ attributes.addClass('comments-section') }}>
   {% if comments|render %}
     {{ title_prefix }}
@@ -37,6 +40,16 @@
 
   {% if comment_form %}
     {{ comment_form }}
+  {% elseif comments_status == 'closed' %}
+    <div class="comment-form comment-form--unavailable center mdl-cell mdl-cell--12-col">
+      <div class="comment">{% trans %}Comments are disabled for this {{ entity_bundle }}.{% endtrans %}</div>
+    </div>
+  {% else %}
+    <div class="comment-form comment-form--unavailable center mdl-cell mdl-cell--12-col">
+      <div class="comment">
+        {% trans %}<a href="{{ login_path }}">Login</a> or <a href="{{ register_path }}">create an account</a> to comment.{% endtrans %}
+      </div>
+    </div>
   {% endif %}
 
 </section>

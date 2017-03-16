@@ -12,6 +12,8 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\Component\Utility\Unicode;
+use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 
 /**
  * Implements hook_preprocess_page().
@@ -328,6 +330,31 @@ function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for field--comment.html.twig.
+ */
+function joinup_theme_preprocess_field__comment(&$variables) {
+  // Get entity url needed for login and register routes.
+  //kint($variables);
+  $entity = $variables['element']['#object'];
+  $variables['entity_url'] = $entity->url();
+  $variables['entity_bundle'] = Unicode::strtolower($entity->type->entity->label());
+
+  // Get comments status.
+  $comments_status = $variables['element']['#items']->status;
+  switch ($comments_status) {
+    case CommentItemInterface::OPEN:
+      $variables['comments_status'] = 'open';
+      break;
+    case CommentItemInterface::CLOSED:
+      $variables['comments_status'] = 'closed';
+      break;
+    case CommentItemInterface::HIDDEN:
+      $variables['comments_status'] = 'hidden';
+      break;
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for form-element.html.twig.
  */
 function joinup_theme_preprocess_form_element(&$variables) {
@@ -456,9 +483,11 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
  */
 function joinup_theme_preprocess_comment(&$variables) {
   // Create body variable without title.
-  $body = $variables['comment']->field_body->getValue();
-  $body = $body[0]['value'];
-  $variables['body'] = $body;
+  $body = $variables['comment']->field_comment_body->getValue();
+  if (isset($body[0]['value'])) {
+    $body = $body[0]['value'];
+    $variables['body'] = $body;
+  }
 
   // Create time ago variable.
   $timestamp = $variables['new_indicator_timestamp'];
@@ -479,6 +508,17 @@ function joinup_theme_preprocess_comment(&$variables) {
     $uri = $file->getFileUri();
     $url = ImageStyle::load('profile_icon_big')->buildUrl($uri);
     $variables['profile_icon'] = $url;
+  }
+}
+
+/**
+ * Implements hook_preprocess_image().
+ */
+function joinup_theme_preprocess_image(&$variables) {
+  if ($variables['style_name'] == 'profile_icon') {
+    $variables['attributes']['class'][] = 'details__avatar';
+    $variables['attributes']['class'][] = 'avatar';
+    $variables['attributes']['class'][] = 'avatar--25';
   }
 }
 
@@ -615,11 +655,9 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
  * Implements hook_theme_suggestions_HOOK_alter() for textarea.html.twig.
  */
 function joinup_theme_theme_suggestions_textarea_alter(array &$suggestions, array $variables) {
-  // Check if textarea is a comment on a node page.
-  $route_match = \Drupal::routeMatch();
-  $route_name = $route_match->getRouteName();
-  if ($route_name == 'entity.node.canonical') {
-    $suggestions[] = 'textarea__without_format';
+  // Check if textarea is a comment.
+  if ($variables['element']['#id'] == 'edit-field-comment-body-0-value') {
+    $suggestions[] = 'textarea__comment';
   }
 }
 
@@ -628,11 +666,9 @@ function joinup_theme_theme_suggestions_textarea_alter(array &$suggestions, arra
  */
 function joinup_theme_theme_suggestions_form_element_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'form_element__' . str_replace('-', '_', $variables['element']['#type']);
-  // Check if textarea is a comment on a node page.
-  $route_match = \Drupal::routeMatch();
-  $route_name = $route_match->getRouteName();
-  if ($route_name == 'entity.node.canonical' && $variables['element']['#type'] == 'textarea') {
-    $suggestions[] = 'form_element__textarea__without_format';
+  // Check if textarea is a comment.
+  if ($variables['element']['#id'] == 'edit-field-comment-body-0-value') {
+    $suggestions[] = 'form_element__textarea__comment';
   }
 }
 
