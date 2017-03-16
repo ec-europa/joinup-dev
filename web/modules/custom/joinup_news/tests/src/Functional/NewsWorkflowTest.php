@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\joinup_news\Functional;
 
+use Drupal\joinup_core\ELibraryCreationOptions;
 use Drupal\Tests\joinup_core\Functional\NodeWorkflowTestBase;
 
 /**
@@ -17,17 +18,17 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
   protected function createAccessProvider() {
     return [
       'collection' => [
-        self::ELIBRARY_ONLY_FACILITATORS => [
+        ELibraryCreationOptions::FACILITATORS => [
           'userModerator',
           'userOgFacilitator',
         ],
-        self::ELIBRARY_MEMBERS_FACILITATORS => [
+        ELibraryCreationOptions::MEMBERS => [
           'userModerator',
           'userOgMember',
           'userOgFacilitator',
           'userOgAdministrator',
         ],
-        self::ELIBRARY_REGISTERED_USERS => [
+        ELibraryCreationOptions::REGISTERED_USERS => [
           'userAuthenticated',
           'userModerator',
           'userOgMember',
@@ -36,15 +37,15 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
         ],
       ],
       'solution' => [
-        self::ELIBRARY_ONLY_FACILITATORS => [
+        ELibraryCreationOptions::FACILITATORS => [
           'userModerator',
           'userOgFacilitator',
         ],
-        self::ELIBRARY_MEMBERS_FACILITATORS => [
+        ELibraryCreationOptions::MEMBERS => [
           'userModerator',
           'userOgFacilitator',
         ],
-        self::ELIBRARY_REGISTERED_USERS => [
+        ELibraryCreationOptions::REGISTERED_USERS => [
           'userAuthenticated',
           'userModerator',
           'userOgFacilitator',
@@ -453,7 +454,7 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
    */
   protected function getWorkflowElibraryCreationRoles($e_library, $moderation) {
     $allowed_roles = [
-      self::ELIBRARY_ONLY_FACILITATORS => [
+      ELibraryCreationOptions::FACILITATORS => [
         self::PRE_MODERATION => [
           'userOgFacilitator' => [
             'save_as_draft',
@@ -477,7 +478,7 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
           ],
         ],
       ],
-      self::ELIBRARY_MEMBERS_FACILITATORS => [
+      ELibraryCreationOptions::MEMBERS => [
         self::PRE_MODERATION => [
           'userOgMember' => [
             'save_as_draft',
@@ -509,7 +510,7 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
           ],
         ],
       ],
-      self::ELIBRARY_REGISTERED_USERS => [
+      ELibraryCreationOptions::REGISTERED_USERS => [
         self::PRE_MODERATION => [
           'userAuthenticated' => [
             'save_as_draft',

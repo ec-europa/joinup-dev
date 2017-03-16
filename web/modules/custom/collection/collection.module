@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\joinup_core\ELibraryCreationOptions;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
@@ -62,10 +63,16 @@ function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_
   $allowed_options = [
     // In open collections content can be made by members (option 1) and
     // authenticated users (option 2).
-    0 => [1 => 1, 2 => 2],
+    0 => [
+      ELibraryCreationOptions::MEMBERS => ELibraryCreationOptions::MEMBERS,
+      ELibraryCreationOptions::REGISTERED_USERS => ELibraryCreationOptions::REGISTERED_USERS,
+    ],
     // In closed collections content can be made by facilitators (option 0) and
     // members (option 1).
-    1 => [0 => 0, 1 => 1],
+    1 => [
+      ELibraryCreationOptions::FACILITATORS => ELibraryCreationOptions::FACILITATORS,
+      ELibraryCreationOptions::MEMBERS => ELibraryCreationOptions::MEMBERS,
+    ],
   ];
   // Take the options as defined in the field storage, and filter them using the
   // allowed options.
@@ -75,9 +82,9 @@ function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_
   // appear as the first option, at the left.
   if (array_key_exists(1, $elibrary_creation_options)) {
     // Since this is a numerically ordered array we cannot use array_unshift().
-    $member_options = $elibrary_creation_options[1];
-    unset($elibrary_creation_options[1]);
-    $elibrary_creation_options = [1 => $member_options] + $elibrary_creation_options;
+    $member_options = $elibrary_creation_options[ELibraryCreationOptions::MEMBERS];
+    unset($elibrary_creation_options[ELibraryCreationOptions::MEMBERS]);
+    $elibrary_creation_options = [ELibraryCreationOptions::MEMBERS => $member_options] + $elibrary_creation_options;
   }
 
   // Define the option that should be taken in case the originally selected
@@ -87,10 +94,10 @@ function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_
   $option_transitions = [
     // If the option 'Only collection facilitators' was selected before, then
     // take the option 'Only members'.
-    0 => 1,
+    ELibraryCreationOptions::MEMBERS => ELibraryCreationOptions::MEMBERS,
     // If the option 'Any registered user' was selected before, then take the
     // option 'Only members'.
-    2 => 1,
+    ELibraryCreationOptions::REGISTERED_USERS => ELibraryCreationOptions::MEMBERS,
   ];
 
   $elibrary_creation_default_value = array_key_exists($elibrary, $elibrary_creation_options) ? $elibrary : $option_transitions[$elibrary];
