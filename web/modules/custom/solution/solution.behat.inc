@@ -400,20 +400,32 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Tracks solutions that are manually deleted and don't need cleaning up.
+   *
+   * @param string $solution
+   *   The name of the solution.
+   *
+   * @Given the :solution solution will be deleted manually
+   */
+  public function skipCleaningOfSolution($solution) {
+    unset($this->solutions[$this->getSolutionByName($solution)->id()]);
+  }
+
+  /**
    * Remove any created solutions.
    *
    * @AfterScenario
    */
   public function cleanSolutions(AfterScenarioScope $event) {
-    $feature = $event->getFeature();
-    $scenario = $event->getScenario();
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
+      $name = $solution->getName();
       try {
         $solution->delete();
       }
       catch (Throwable $e) {
-        throw new \Exception('Feature: ' . $feature->getTitle() . ' - Scenario: ' . $scenario->getTitle());
+        // Throw a more helpful error if something goes wrong during cleanup.
+        throw new \Exception(sprintf('Error while cleaning up solution "%s" after completing scenario "%s" of feature "%s": "%s"', $name, $event->getFeature()->getTitle(), $event->getScenario()->getTitle(), $e->getMessage()));
       }
     }
   }
