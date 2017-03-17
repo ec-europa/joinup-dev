@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc2d724e655d3ce86d163338a446d697",
+    "content-hash": "50e69af396b7691f3c5d475017baee14",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -115,16 +115,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.24.2",
+            "version": "3.24.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2b252f300de442cdb5cde18ddc118c2477972e30"
+                "reference": "2823e0a0742505f655b0cb3bcdb10844f60e6078"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2b252f300de442cdb5cde18ddc118c2477972e30",
-                "reference": "2b252f300de442cdb5cde18ddc118c2477972e30",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2823e0a0742505f655b0cb3bcdb10844f60e6078",
+                "reference": "2823e0a0742505f655b0cb3bcdb10844f60e6078",
                 "shasum": ""
             },
             "require": {
@@ -191,7 +191,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-03-10T21:09:41+00:00"
+            "time": "2017-03-14T00:56:44+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -327,7 +327,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2017-03-08T16:51:24+00:00"
+            "time": "2017-03-10T08:29:45+00:00"
         },
         {
             "name": "composer/installers",
@@ -1642,16 +1642,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.3.0-rc1",
+            "version": "8.3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "f9f055385da1f94bb255179f7335ed3a5dbdf28f"
+                "reference": "076f41fa03bca938b4ccbed21c0289a514336863"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/f9f055385da1f94bb255179f7335ed3a5dbdf28f",
-                "reference": "f9f055385da1f94bb255179f7335ed3a5dbdf28f",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/076f41fa03bca938b4ccbed21c0289a514336863",
+                "reference": "076f41fa03bca938b4ccbed21c0289a514336863",
                 "shasum": ""
             },
             "require": {
@@ -1791,7 +1791,7 @@
             "require-dev": {
                 "behat/mink": "1.7.x-dev",
                 "behat/mink-goutte-driver": "~1.2",
-                "drupal/coder": "8.2.10",
+                "drupal/coder": "8.2.11",
                 "jcalderonzumba/gastonjs": "~1.0.2",
                 "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
                 "mikey179/vfsstream": "~1.2",
@@ -1801,14 +1801,16 @@
             "type": "drupal-core",
             "extra": {
                 "patches_applied": {
-                    "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-2.patch",
+                    "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-6_0.patch",
                     "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
-                    "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-17.patch",
-                    "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194.patch",
+                    "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-19.patch",
+                    "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
                     "Dependency on configuration provided by install profile is throwing exception @see https://www.drupal.org/node/2850875": "https://www.drupal.org/files/issues/2850875-5.patch",
                     "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
-                    "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-82.patch",
-                    "Explode processor is too strict @see https://www.drupal.org/node/2853823": "https://www.drupal.org/files/issues/2853823-7.patch"
+                    "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-85.patch",
+                    "Explode processor is too strict @see https://www.drupal.org/node/2853823": "https://www.drupal.org/files/issues/2853823-29.patch",
+                    "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
+                    "Optionally log messages for skip_on_empty and skip_row_if_not_set @see https://www.drupal.org/node/2655154": "https://www.drupal.org/files/issues/2655154-27.patch"
                 }
             },
             "autoload": {
@@ -1832,7 +1834,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2017-03-01T15:35:49+00:00"
+            "time": "2017-03-14 16:10:18"
         },
         {
             "name": "drupal/digital_size_formatter",
@@ -1892,7 +1894,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/ds",
-                "reference": "184e8ff34953639f6ddd2464b54b0642e0e28951"
+                "reference": "4aae0b5fe41178db8539e530d325372f1e1c5795"
             },
             "require": {
                 "drupal/core": "^8.3"
@@ -1908,7 +1910,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.x-dev",
-                    "datestamp": "1487421784"
+                    "datestamp": "1488969483"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -1948,7 +1950,7 @@
                 "issues": "https://www.drupal.org/project/issues/ds",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
             },
-            "time": "2017-03-08 10:33:03"
+            "time": "2017-03-13 21:17:28"
         },
         {
             "name": "drupal/facets",
@@ -2156,7 +2158,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-alpha6.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha6",
                 "shasum": "200a964ff3db621ce25137218912760dc6ea0b3d"
             },
             "require": {
@@ -2219,7 +2221,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/message_notify-8.x-1.0-alpha4.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha4",
                 "shasum": "8274460178c0f27ea18aa3d0f30d4f77d12d863f"
             },
             "require": {
@@ -2396,11 +2398,17 @@
         },
         {
             "name": "drupal/migrate_spreadsheet",
-            "version": "dev-1.x",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/migrate_spreadsheet",
-                "reference": "9270797be9d950c6d8569b73a7679a02d76c7395"
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/migrate_spreadsheet-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "65d126a76403fc309f57b13177f0d15667855c48"
             },
             "require": {
                 "drupal/core": "*",
@@ -2412,7 +2420,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1+0-dev",
+                    "version": "8.x-1.0-beta1",
                     "datestamp": "1487973484"
                 }
             },
@@ -2441,8 +2449,7 @@
             "support": {
                 "source": "https://www.drupal.org/project/migrate_spreadsheet",
                 "issues": "https://www.drupal.org/project/issues/migrate_spreadsheet"
-            },
-            "time": "2017-02-24 21:54:30"
+            }
         },
         {
             "name": "drupal/og",
@@ -2784,7 +2791,7 @@
                 "issues": "https://www.drupal.org/project/issues/phingdrushtask",
                 "source": "http://cgit.drupalcode.org/phingdrushtask"
             },
-            "time": "2016-10-12 12:47:47"
+            "time": "2016-12-02 20:39:55"
         },
         {
             "name": "drupal/r4032login",
@@ -2867,7 +2874,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-beta4.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta4",
                 "shasum": "77e79980b56ca722080477e5b3e9aa8fffa87fb1"
             },
             "require": {
@@ -2928,7 +2935,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-beta1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta1",
                 "shasum": "2b8c127d5da0124f61aab80979b3313ae22d9b82"
             },
             "require": {
@@ -4130,16 +4137,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.9",
+            "version": "v2.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "6968531206671f94377b01dc7888d5d1b858a01b"
+                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/6968531206671f94377b01dc7888d5d1b858a01b",
-                "reference": "6968531206671f94377b01dc7888d5d1b858a01b",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/634bae8e911eefa89c1abfbf1b66da679ac8f54d",
+                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d",
                 "shasum": ""
             },
             "require": {
@@ -4174,7 +4181,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-03-03T20:43:42+00:00"
+            "time": "2017-03-13T16:27:32+00:00"
         },
         {
             "name": "pear/archive_tar",
@@ -9448,7 +9455,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "drupal/core": 10,
+        "drupal/core": 20,
         "drupal/facets": 15,
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,

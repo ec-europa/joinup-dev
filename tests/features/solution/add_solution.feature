@@ -85,12 +85,12 @@ Feature: "Add solution" visibility options.
     When I fill in the following:
       | Title            | Espresso is the solution                                               |
       | Description      | This is a test text                                                    |
-      | Documentation    | text.pdf                                                               |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "Demography" from "Policy domain"
-    And I attach the file "text.pdf" to "Documentation"
+    # Attach a PDF to the documentation, this has a hidden label "File".
+    And I attach the file "text.pdf" to "File"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing contact information.
@@ -124,12 +124,12 @@ Feature: "Add solution" visibility options.
     When I fill in the following:
       | Title            | V60 filter coffee solution                                             |
       | Description      | This is a test text                                                    |
-      | Documentation    | text.pdf                                                               |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "E-inclusion" from "Policy domain"
-    And I attach the file "text.pdf" to "Documentation"
+    # Attach a PDF to the documentation, this has a hidden label "File".
+    And I attach the file "text.pdf" to "File"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing contact information.

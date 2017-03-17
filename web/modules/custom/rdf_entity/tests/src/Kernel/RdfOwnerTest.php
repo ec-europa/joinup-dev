@@ -1,9 +1,8 @@
 <?php
 
-namespace Drupal\Tests\rdf\Kernel;
+namespace Drupal\Tests\rdf_entity\Kernel;
 
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\simpletest\UserCreationTrait;
 use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 
 /**
@@ -12,7 +11,6 @@ use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
  * @group rdf_entity
  */
 class RdfOwnerTest extends JoinupKernelTestBase {
-  use UserCreationTrait;
 
   /**
    * Tests rdf_entity owner functionality.
@@ -20,7 +18,7 @@ class RdfOwnerTest extends JoinupKernelTestBase {
   public function testOwner() {
     $owner = $this->createUser();
     $another_owner = $this->createUser();
-    $this->setCurrentUser($owner);
+    \Drupal::currentUser()->setAccount($owner);
 
     // The 'dummy' bundle does not have the owner mapping. The 'with_owner'
     // does.
