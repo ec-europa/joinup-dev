@@ -524,25 +524,3 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
     $query->addCondition('entity_bundle', 'asset_distribution', '<>');
   }
 }
-
-/**
- * Implements hook_form_alter().
- *
- * Remove non-collection related actions (adding/removing roles)
- * from member overview page.
- */
-function solution_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Bulk operation form ids vary on entity id.
-  if (strstr($form_id, 'views_form_og_members_overview_default') === FALSE) {
-    return;
-  }
-  $entity = \Drupal::request()->get('rdf_entity');
-  if (empty($entity) || $entity->getType() != 'solution') {
-    return;
-  }
-  foreach ($form['header']['og_membership_bulk_form']['action']['#options'] as $key => $option) {
-    if (strstr($key, 'rdf_entity-solution') === FALSE) {
-      unset($form['header']['og_membership_bulk_form']['action']['#options'][$key]);
-    }
-  }
-}
