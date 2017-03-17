@@ -5,6 +5,7 @@
  * Contains Drupal\solution\solution.behat.inc.
  */
 
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -403,12 +404,17 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @AfterScenario
    */
-  public function cleanSolutions() {
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
-    $storage = \Drupal::service('entity_type.manager')->getStorage('rdf_entity');
+  public function cleanSolutions(AfterScenarioScope $event) {
+    $feature = $event->getFeature();
+    $scenario = $event->getScenario();
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
-      $solution->delete();
+      try {
+        $solution->delete();
+      }
+      catch (Throwable $e) {
+        throw new \Exception('Feature: ' . $feature->getTitle() . ' - Scenario: ' . $scenario->getTitle());
+      }
     }
   }
 
