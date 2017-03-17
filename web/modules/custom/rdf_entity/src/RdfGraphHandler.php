@@ -13,7 +13,15 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  * @package Drupal\rdf_entity
  */
 class RdfGraphHandler {
+
   use StringTranslationTrait;
+
+  /**
+   * Static cache of bundle entity graph URIs.
+   *
+   * @var array
+   */
+  protected $bundleGraphUris = [];
 
   /**
    * The entity type manager service.
@@ -37,6 +45,13 @@ class RdfGraphHandler {
    * @var array
    */
   protected $enabledGraphs = ['default'];
+
+  /**
+   * Static cache of entity type graph URIs.
+   *
+   * @var array
+   */
+  protected $entityTypeGraphUris = [];
 
   /**
    * The request graphs are the graphs that will be used for the request.
@@ -181,15 +196,23 @@ class RdfGraphHandler {
     if (empty($graph_names)) {
       $graph_names = $this->getEntityTypeEnabledGraphs();
     }
-    $bundle_entities = $this->entityTypeManager->getStorage($entity_type_bundle_key)->loadMultiple();
-    $graphs = [];
-    foreach ($bundle_entities as $bundle_entity) {
-      foreach ($graph_names as $graph_name) {
-        $graph = $this->getBundleGraphUriFromSettings($entity_type_bundle_key, $bundle_entity->id(), $graph_name);
-        $graphs[$bundle_entity->id()][$graph_name] = $graph;
+
+    sort($graph_names);
+    $cache_key = implode(':', $graph_names);
+    if (!isset($this->entityTypeGraphUris[$entity_type_bundle_key][$cache_key])) {
+      $bundle_entities = $this->entityTypeManager->getStorage($entity_type_bundle_key)->loadMultiple();
+      $graphs = [];
+      foreach ($bundle_entities as $bundle_entity) {
+        foreach ($graph_names as $graph_name) {
+          $graph = $this->getBundleGraphUriFromSettings($entity_type_bundle_key, $bundle_entity->id(), $graph_name);
+          $graphs[$bundle_entity->id()][$graph_name] = $graph;
+        }
       }
+
+      $this->entityTypeGraphUris[$entity_type_bundle_key][$cache_key] = $graphs;
     }
-    return $graphs;
+
+    return $this->entityTypeGraphUris[$entity_type_bundle_key][$cache_key];
   }
 
   /**
@@ -407,6 +430,20 @@ class RdfGraphHandler {
   }
 
   /**
+   * Clears the entity type graph URIs static cache.
+   */
+  public function clearEntityTypeGraphUrisCache() {
+    $this->entityTypeGraphUris = [];
+  }
+
+  /**
+   * Clears the bundle graph URIs static cache.
+   */
+  public function clearBundleGraphUrisCache() {
+    $this->bundleGraphUris = [];
+  }
+
+  /**
    * Retrieves the uri of a bundle's graph from the settings.
    *
    * @param string $bundle_type_key
@@ -423,16 +460,21 @@ class RdfGraphHandler {
    *    Thrown if the graph is not found.
    */
   protected function getBundleGraphUriFromSettings($bundle_type_key, $bundle_id, $graph_name) {
-    /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $bundle */
-    $bundle = $this->entityTypeManager->getStorage($bundle_type_key)->load($bundle_id);
-    $graph = rdf_entity_get_third_party_property($bundle, 'graph', $graph_name, FALSE);
-    if (!$graph) {
-      throw new \Exception(format_string('Unable to determine graph %graph for bundle %bundle', [
-        '%graph' => $graph_name,
-        '%bundle' => $bundle->id(),
-      ]));
+    if (!isset($this->bundleGraphUris[$bundle_type_key][$bundle_id][$graph_name])) {
+      /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $bundle */
+      $bundle = $this->entityTypeManager->getStorage($bundle_type_key)->load($bundle_id);
+      $graph_uri = rdf_entity_get_third_party_property($bundle, 'graph', $graph_name, FALSE);
+      if (!$graph_uri) {
+        throw new \Exception(format_string('Unable to determine graph %graph for bundle %bundle', [
+          '%graph' => $graph_name,
+          '%bundle' => $bundle->id(),
+        ]));
+      }
+
+      $this->bundleGraphUris[$bundle_type_key][$bundle_id][$graph_name] = $graph_uri;
     }
-    return $graph;
+
+    return $this->bundleGraphUris[$bundle_type_key][$bundle_id][$graph_name];
   }
 
 }

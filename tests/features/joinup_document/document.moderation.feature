@@ -73,11 +73,11 @@ Feature: Document moderation
   Scenario: Transit documents from one state to another.
     When I am logged in as "Gretchen Greene"
     And I go to the homepage of the "The Naked Ashes" collection
-    And I click "Add document"
+    And I click "Add document" in the plus button menu
     When I fill in the following:
       | Title       | An amazing document                      |
       | Short title | Amazing document                         |
-      | Description | This is going to be an amazing document. |
+    And I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
     And I select "Document" from "Type"
     And I attach the file "test.zip" to "File"
     And I press "Save as draft"
