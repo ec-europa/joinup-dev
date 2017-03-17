@@ -1,0 +1,9 @@
+name: 'File URL test entity'
+type: module
+description: 'Support module for file URL tests.'
+core: 8.x
+package: Testing
+
+dependencies:
+  - rdf_entity
+  - rdf_entity_test

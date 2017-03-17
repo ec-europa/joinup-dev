@@ -17,9 +17,11 @@ class RdfDeleteForm extends ContentEntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
+    $label = $this->entity->label();
+    $graph = $this->entity->get('graph')->first()->getValue()['value'];
     return $this->t('Are you sure you want to delete entity %name from the graph %graph?', array(
-      '%name' => $this->entity->label(),
-      '%graph' => $this->entity->graph->value,
+      '%name' => $label,
+      '%graph' => $graph,
     ));
   }
 

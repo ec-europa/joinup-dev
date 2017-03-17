@@ -1052,16 +1052,49 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @throws \Exception
    *   Thrown when the field does not have a description.
+   * @throws \PHPUnit_Framework_ExpectationFailedException
+   *   Thrown when none of the field's descriptions match the given text.
    *
    * @Then I should see the description :description for (the ):label( field)
    */
   public function assertFieldDescription($label, $description) {
-    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]/div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
-    $element = $this->getSession()->getPage()->find('xpath', $xpath);
-    if (empty($element)) {
+    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]//div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    if (empty($elements)) {
       throw new \Exception("The $label field does not have a description.");
     }
-    \PHPUnit_Framework_Assert::assertEquals($description, trim($element->getText()));
+    foreach ($elements as $element) {
+      try {
+        \PHPUnit_Framework_Assert::assertEquals($description, trim($element->getText()));
+        // The description was found, stop searching.
+        return;
+      }
+      catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+        // The description did not match the expected string, keep searching.
+      }
+    }
+    throw new \PHPUnit_Framework_ExpectationFailedException("The description $description was not found for the $label field.");
+  }
+
+  /**
+   * Checks that the description of the field with given label is not present.
+   *
+   * @param string $label
+   *   The label of the field to check.
+   * @param string $description
+   *   The description that is expected to be absent.
+   *
+   * @throws \Exception
+   *   Thrown when the field does not have a description.
+   *
+   * @Then I should not see the description :description for (the ):label( field)
+   */
+  public function assertNoFieldDescription($label, $description) {
+    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]//div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    foreach ($elements as $element) {
+      \PHPUnit_Framework_Assert::assertNotEquals($description, trim($element->getText()));
+    }
   }
 
 }
