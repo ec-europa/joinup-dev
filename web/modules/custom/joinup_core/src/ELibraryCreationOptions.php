@@ -10,6 +10,7 @@ final class ELibraryCreationOptions extends \SplEnum {
   /**
    * Default option.
    */
+  // @codingStandardsIgnoreLine
   const __default = self::FACILITATORS;
 
   /**
