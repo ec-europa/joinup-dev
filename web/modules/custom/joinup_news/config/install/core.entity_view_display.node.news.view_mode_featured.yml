@@ -16,7 +16,7 @@ dependencies:
     - node.type.news
   module:
     - ds
-    - joinup
+    - joinup_core
     - text
     - user
 id: node.news.view_mode_featured
