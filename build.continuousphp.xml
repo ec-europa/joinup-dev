@@ -47,6 +47,12 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
               checkreturn="true"
               passthru="true"
               spawn="true" />
+        <exec dir="${website.drupal.dir}"
+              command="cat phpunit.xml"
+              passthru="true" />
+        <exec dir="${behat.dir}"
+              command="cat behat.yml"
+              passthru="true" />
     </target>
 
     <target name="check-continuousphp">
