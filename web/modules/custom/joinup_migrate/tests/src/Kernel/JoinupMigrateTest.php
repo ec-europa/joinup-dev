@@ -71,6 +71,9 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
       $this->assertTrue(TRUE, $message);
     }
 
+    // Check that the migration was clean.
+    $this->assertEmpty($this->messages);
+
     // Assertions for each migrations are defined under assert/ directory.
     foreach (file_scan_directory(__DIR__ . '/assert', '|\.php$|') as $file) {
       require __DIR__ . '/assert/' . $file->filename;
@@ -158,7 +161,6 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
     }
     $database = Database::convertDbUrlToConnectionInfo($db_url, $this->root);
     Database::addConnectionInfo('migrate', 'default', $database);
-
     $this->legacyDb = Database::getConnection('default', 'migrate');
   }
 
@@ -215,7 +217,7 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
   }
 
   /**
-   * Asserts number of migrated items with a give status.
+   * Asserts number of migrated items with a given status.
    *
    * @param string $migration_id
    *   The migration.

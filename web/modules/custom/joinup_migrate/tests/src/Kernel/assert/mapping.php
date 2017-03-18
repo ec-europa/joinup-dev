@@ -6,8 +6,8 @@
  */
 
 // Migration counts.
-$this->assertTotalCount('mapping', 3);
-$this->assertSuccessCount('mapping', 3);
+$this->assertTotalCount('mapping', 5);
+$this->assertSuccessCount('mapping', 5);
 
 // Expected logged messages.
 $this->assertMessage('mapping', "Row: 4, Nid: 99999999: This node doesn't exist in the source database");
@@ -26,7 +26,7 @@ $imported = $this->legacyDb->select('d8_mapping')
 $this->assertSame([
   'nid' => '60735',
   'type' => 'asset_release',
-  'collection' => '"New collection == No" but lacks a Repository or a Community',
+  'collection' => 'No Repository or Community',
   'policy' => NULL,
   'policy2' => 'Defence',
   'new_collection' => 'No',
@@ -44,7 +44,7 @@ $this->assertSame([
 $this->assertSame([
   'nid' => '105945',
   'type' => 'repository',
-  'collection' => 'A collection with more than one Community or Repository',
+  'collection' => 'More than one Community or Repository',
   'policy' => NULL,
   'policy2' => 'Defence',
   'new_collection' => 'No',
@@ -62,7 +62,7 @@ $this->assertSame([
 $this->assertSame([
   'nid' => '145807',
   'type' => 'community',
-  'collection' => 'A collection with more than one Community or Repository',
+  'collection' => 'More than one Community or Repository',
   'policy' => NULL,
   'policy2' => 'Defence',
   'new_collection' => 'No',
@@ -76,3 +76,39 @@ $this->assertSame([
   'content_item_status' => NULL,
   'row_index' => '10',
 ], $imported['145807']);
+
+$this->assertSame([
+  'nid' => '58694',
+  'type' => 'asset_release',
+  'collection' => 'New collection',
+  'policy' => NULL,
+  'policy2' => 'eProcurement',
+  'new_collection' => 'Yes',
+  'migrate' => '1',
+  'abstract' => NULL,
+  'logo' => NULL,
+  'banner' => NULL,
+  'owner' => NULL,
+  'elibrary' => NULL,
+  'collection_status' => NULL,
+  'content_item_status' => NULL,
+  'row_index' => '12',
+], $imported['58694']);
+
+$this->assertSame([
+  'nid' => '26863',
+  'type' => 'project_project',
+  'collection' => 'New collection',
+  'policy' => NULL,
+  'policy2' => 'eProcurement',
+  'new_collection' => 'Yes',
+  'migrate' => '1',
+  'abstract' => NULL,
+  'logo' => NULL,
+  'banner' => NULL,
+  'owner' => NULL,
+  'elibrary' => NULL,
+  'collection_status' => NULL,
+  'content_item_status' => NULL,
+  'row_index' => '13',
+], $imported['26863']);
