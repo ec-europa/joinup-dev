@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "20ec940b1148bb26da1e14b68c674ed3",
+    "content-hash": "e250982c3cb694c6475627af8fb79423",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1978,7 +1978,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha7",
-                    "datestamp": "1490003883"
+                    "datestamp": "1482263583"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2296,14 +2296,6 @@
             ],
             "authors": [
                 {
-                    "name": "Eli-T",
-                    "homepage": "https://www.drupal.org/user/516878"
-                },
-                {
-                    "name": "benjy",
-                    "homepage": "https://www.drupal.org/user/1852732"
-                },
-                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -2324,9 +2316,9 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/migrate_report-8.x-1.0-alpha1.zip",
-                "reference": "8.x-1.0-alpha1",
-                "shasum": "9d365bf9e0abae1b469d501a3ec77f876ab6acac"
+                "url": "https://ftp.drupal.org/files/projects/migrate_report-8.x-1.0-alpha2.zip",
+                "reference": "8.x-1.0-alpha2",
+                "shasum": "9be73e11e748eb9234a2900efad887015277334e"
             },
             "require": {
                 "drupal/core": "*"
@@ -7424,7 +7416,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-02-06T08:22:23+00:00"
+            "time": "2017-02-06 08:22:23"
         },
         {
             "name": "behat/transliterator",
