@@ -29,6 +29,8 @@ Feature: As a user of the website
     And I go to the homepage of the "Willing Fairy" collection
     Then I should see the heading "Willing Fairy"
     And I should see the link "View draft"
+    But I should not see the following warning messages:
+      | You are viewing the published version. To view the latest version, click here. |
     # @todo: Fix the visibility issue.
     But I should see the link "View"
     And I should see the link "Edit" in the "Entity actions" region
@@ -43,6 +45,9 @@ Feature: As a user of the website
     # Since it's validated, the normal view is the published view and the
     # "View draft" should not be shown.
     And I should not see the link "View Draft"
+    And I should not see the following warning messages:
+      | You are viewing the published version. To view the latest version, click here. |
+
 
     # Edit as facilitator and save as draft.
     When I click "Edit"
@@ -53,10 +58,18 @@ Feature: As a user of the website
     Then I should see the heading "Destruction of Scent"
     And I should not see the heading "Construction of Scent"
     And I should see the link "View draft"
+    And I should see the following warning messages:
+      | You are viewing the published version. To view the latest version, click here. |
     When I click "View draft"
     # The header still shows the published title but the draft title is included
     # in the page.
     Then I should see the heading "Construction of Scent"
+
+    # Ensure that the message is not shown to non privileged users.
+    When I am an anonymous user
+    And I go to the homepage of the "Construction of Scent" collection
+    And I should not see the following warning messages:
+      | You are viewing the published version. To view the latest version, click here. |
 
     # Publish draft version of the collection.
     When I am logged in as a moderator
