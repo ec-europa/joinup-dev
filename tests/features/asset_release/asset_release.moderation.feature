@@ -33,10 +33,14 @@ Feature: Asset release moderation
       | Release notes  | We go live.              |
     And I press "Save as draft"
     Then I should see the heading "Release of the dark ship 1"
+    Then I should not see the following warning messages:
+      | You are viewing the published version. To view the latest version, click here. |
     When I click "Edit" in the "Entity actions" region
     And I fill in "Release number" with "v1"
     And I press "Publish"
     Then I should see the heading "Release of the dark ship v1"
+    And I should not see the following warning messages:
+      | You are viewing the published version. To view the latest version, click here. |
 
     # Request changes as a moderator.
     When I am logged in as a moderator
@@ -46,6 +50,8 @@ Feature: Asset release moderation
     And I press "Request changes"
     # The published version does not change.
     Then I should see the heading "Release of the dark ship v1"
+    And I should see the following warning messages:
+      | You are viewing the published version. To view the latest version, click here. |
 
     # Implement changes as a facilitator.
     When I am logged in as "Bonnie Holloway"
@@ -65,3 +71,5 @@ Feature: Asset release moderation
     And I press "Publish"
     # The published is updated.
     Then I should see the heading "Release fix v1"
+    And I should not see the following warning messages:
+      | You are viewing the published version. To view the latest version, click here. |

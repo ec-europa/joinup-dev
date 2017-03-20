@@ -29,10 +29,10 @@ Feature: As a user of the website
     And I go to the homepage of the "Willing Fairy" collection
     Then I should see the heading "Willing Fairy"
     And I should see the link "View draft"
+    And I should see the link "View"
     But I should not see the following warning messages:
       | You are viewing the published version. To view the latest version, click here. |
     # @todo: Fix the visibility issue.
-    But I should see the link "View"
     And I should see the link "Edit" in the "Entity actions" region
 
     # I should not be able to view draft collections I'm not a facilitator of.
@@ -65,9 +65,9 @@ Feature: As a user of the website
     # in the page.
     Then I should see the heading "Construction of Scent"
 
-    # Ensure that the message is not shown to non privileged users.
+    # Ensure that the message is not shown to non privileged users.3
     When I am an anonymous user
-    And I go to the homepage of the "Construction of Scent" collection
+    And I go to the homepage of the "Destruction of Scent" collection
     And I should not see the following warning messages:
       | You are viewing the published version. To view the latest version, click here. |
 
