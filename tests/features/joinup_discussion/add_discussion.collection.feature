@@ -42,7 +42,7 @@ Feature: "Add discussion" visibility options.
     When I go to the homepage of the "The World of the Waves" collection
     And I click "Add discussion"
     Then I should see the heading "Add discussion"
-    And the following fields should be present "Title, Content, Policy domain"
+    And the following fields should be present "Title, Content, Policy domain, Current workflow state"
 
     # The section about managing revisions should not be visible.
     And I should not see the text "Revision information"

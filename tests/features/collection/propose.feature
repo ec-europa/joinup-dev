@@ -34,6 +34,7 @@ Feature: Proposing a collection
     When I am on the homepage
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
+    And the following fields should be present "Current workflow state"
     And the following field widgets should be present "Contact information, Owner"
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |

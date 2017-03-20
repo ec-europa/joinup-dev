@@ -80,7 +80,7 @@ Feature: "Add solution" visibility options.
     When I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
     Then I should see the heading "Add Solution"
-    And the following fields should be present "Title, Description, Documentation, Logo, Banner"
+    And the following fields should be present "Title, Description, Documentation, Logo, Banner, Current workflow state"
     And the following fields should not be present "Groups audience, Other groups"
     When I fill in the following:
       | Title            | Espresso is the solution                                               |
