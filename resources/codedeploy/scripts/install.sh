@@ -8,4 +8,4 @@ done
 
 aws s3 cp s3://ec-europa-db-dump/joinup/joinup_prod_cleaned.sql ./tmp/d6-joinup.sql --region=eu-west-1
 chown -R www-data:www-data /srv/project
-sudo -u www-data "vendor/bin/phing -propertyfile /usr/local/etc/subsite/subsite.ini install setup-acceptance  >> /var/log/subsite-install.log 2>&1"
+sudo -u www-data vendor/bin/phing -propertyfile /usr/local/etc/subsite/subsite.ini install setup-acceptance  >> /var/log/subsite-install.log 2>&1
