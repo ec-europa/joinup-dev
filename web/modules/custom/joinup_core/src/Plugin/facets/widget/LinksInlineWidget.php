@@ -11,11 +11,11 @@ use Drupal\facets\Plugin\facets\widget\LinksWidget;
  *
  * @FacetsWidget(
  *   id = "links_inline",
- *   label = @Translation("Render a list of links with wrapper text"),
+ *   label = @Translation("List of links with wrapper text"),
  *   description = @Translation("A widget that shows some of the results with prefix and suffix text"),
  * )
  */
-class InlineTypeWidget extends LinksWidget {
+class LinksInlineWidget extends LinksWidget {
 
   /**
    * {@inheritdoc}
