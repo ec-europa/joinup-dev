@@ -27,6 +27,7 @@ dependencies:
   module:
     - ds
     - image
+    - joinup
     - joinup_core
     - user
 id: rdf_entity.collection.group_header

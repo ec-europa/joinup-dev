@@ -10,15 +10,17 @@ show_only_one_result: false
 field_identifier: tid
 facet_source_id: 'search_api_field:rdf_entity.field_collection_content'
 widget:
-  type: links
+  type: links_inline
   config:
     show_numbers: true
-    soft_limit: 0
+    soft_limit: '0'
+    prefix_text: 'Sample prefix'
+    suffix_text: 'Sample suffix'
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
-hard_limit: null
+hard_limit: 0
 exclude: false
 only_visible_when_facet_source_is_visible: true
 processor_configs:
