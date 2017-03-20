@@ -10,8 +10,8 @@ use Drupal\facets\Plugin\facets\widget\LinksWidget;
  * The links widget.
  *
  * @FacetsWidget(
- *   id = "type_inline",
- *   label = @Translation("Render the type facet as inline"),
+ *   id = "links_inline",
+ *   label = @Translation("Render a list of links with wrapper text"),
  *   description = @Translation("A widget that shows some of the results with prefix and suffix text"),
  * )
  */
