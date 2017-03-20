@@ -2,10 +2,6 @@
 
 <project name="My Drupal Project" default="help">
 
-    <target name="delete-stack-only" depends="setup-aws">
-        <aws-cf-deletestack name="${deploy.applicationName}-${cf.stackName}" />
-    </target>
-
     <!-- Import local Phing targets. -->
     <import file="${project.basedir}/build.local.xml" optional="true" />
 
