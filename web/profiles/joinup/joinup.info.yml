@@ -69,10 +69,8 @@ config_devel:
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
   - block.block.joinup_theme_content
-  - block.block.joinup_theme_footer
   - block.block.joinup_theme_help
   - block.block.joinup_theme_local_actions
-  - block.block.joinup_theme_local_tasks
   - block.block.joinup_theme_main_menu
   - block.block.joinup_theme_messages
   - block.block.joinup_theme_solutioncontent
@@ -153,8 +151,6 @@ config_devel:
   - views.view.user_admin_people
   - user.flood
   - user.mail
-  - user.role.anonymous
-  - user.role.authenticated
   - user.settings
   - views.view.collections
   - views.view.user_admin_people
