@@ -253,14 +253,14 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
   }
 
   // The draft link is already set in the list of the link templates of the rdf
-  // entity as 'rdf-draft-{$graph_name}'
+  // entity as 'rdf-draft-{$graph_name}'.
   $url = $entity->toUrl('rdf-draft-draft');
   if (!$url->access()) {
     return;
   }
 
-  $message = 'You are viewing the published version. To view the latest version, click @here.';
-  drupal_set_message(t($message, [
-    '@here' => Link::fromTextAndUrl('here', $url)->toString(),
+  $link = Link::fromTextAndUrl('here', $url)->toString();
+  drupal_set_message(t('You are viewing the published version. To view the latest version, click @here.', [
+    '@here' => $link,
   ]), 'warning');
 }
