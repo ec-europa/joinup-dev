@@ -41,10 +41,14 @@
             <option name="account-mail" value="${drupal.admin.email}" />
             <param>${website.profile.name}</param>
             <!-- Disable sending of e-mails during installation. -->
-            <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
+            <param>install_configure_form.enable_update_status_module=NULL</param>
+            <param>install_configure_form.enable_update_status_emails='NULL'</param>
             <param>install_settings_form.sparql.host=${sparql.host}</param>
             <param>install_settings_form.sparql.port=${sparql.port}</param>
         </drush>
+
+        <!-- Make sure persistent session cookies are disabled. -->
+        <phingcall target="disable-persistent-session-cookies" />
     </target>
 
     <target name="setup-virtuoso-permissions">
@@ -123,6 +127,36 @@
             style="${sass.style}"
             input="${sass.input}"
             output="${sass.output.dir}/${sass.output.file}" />
+    </target>
+
+    <!-- Make services.yml writeable. -->
+    <target name="writable-services-yml">
+        <if>
+            <available file="${website.services.yml}" type="file" property="website.services.yml.available" />
+            <then>
+                <chmod mode="0644" failonerror="false" verbose="true" quiet="false" file="${website.services.yml}" />
+            </then>
+        </if>
+    </target>
+
+    <!-- Disable persistent session cookies, this is necessary for the "Remember
+      me" option at user log in. -->
+    <target name="disable-persistent-session-cookies">
+        <phingcall target="writable-settings-folder" />
+        <phingcall target="writable-services-yml" />
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="services.yml" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                        pattern="(cookie_lifetime: )\d+(0$)"
+                        replace="\1\2"
+                        modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
     </target>
 
     <target
