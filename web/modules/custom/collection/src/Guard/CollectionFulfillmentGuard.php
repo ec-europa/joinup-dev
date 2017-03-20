@@ -93,7 +93,7 @@ class CollectionFulfillmentGuard implements GuardInterface {
     // @see: collection.settings.yml
     $allowed_conditions = $this->configFactory->get('collection.settings')->get('transitions');
 
-    if ($this->currentUser->hasPermission('bypass node access')) {
+    if ($this->currentUser->hasPermission($entity->getEntityType()->getAdminPermission())) {
       return TRUE;
     }
 
