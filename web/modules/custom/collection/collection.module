@@ -56,7 +56,13 @@ function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_
   // Get the current values for the 'Closed collection' and 'eLibrary creation'
   // fields. If the form has not yet been submitted, use the defaults from the
   // loaded or newly created entity.
-  $closed = $form_state->isValueEmpty('field_ar_closed') ? $entity->field_ar_closed->value : $form_state->getValue('field_ar_closed')['value'];
+  // We are accessing directly the raw, unvalidated user input because when
+  // "#limit_validation_errors" is set on the triggering element (for example
+  // when an "add_more" button is clicked) the full form state values are not
+  // present.
+  // @see \Drupal\Core\Form\FormValidator::handleErrorsWithLimitedValidation()
+  // @todo Maybe check the triggering element and use the default values instead?
+  $closed = !$form_state->isProcessingInput() ? $entity->field_ar_closed->value : (int) $form_state->getUserInput()['field_ar_closed']['value'];
   $elibrary = !$form_state->isProcessingInput() ? $entity->field_ar_elibrary_creation->value : (int) $form_state->getUserInput()['field_ar_elibrary_creation'];
 
   // Define the allowed options.
@@ -80,7 +86,7 @@ function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_
 
   // According to specification, the 'member' option (option 1) should always
   // appear as the first option, at the left.
-  if (array_key_exists(1, $elibrary_creation_options)) {
+  if (array_key_exists(ELibraryCreationOptions::MEMBERS, $elibrary_creation_options)) {
     // Since this is a numerically ordered array we cannot use array_unshift().
     $member_options = $elibrary_creation_options[ELibraryCreationOptions::MEMBERS];
     unset($elibrary_creation_options[ELibraryCreationOptions::MEMBERS]);
@@ -107,9 +113,6 @@ function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_
   $form['field_ar_elibrary_creation']['#id'] = 'field-ar-elibrary-creation-wrapper';
   $form['field_ar_elibrary_creation']['widget']['#options'] = $elibrary_creation_options;
   $form['field_ar_elibrary_creation']['widget']['#default_value'][0] = $elibrary_creation_default_value;
-  if (!$form_state->isValueEmpty('field_ar_elibrary_creation')) {
-    $form['field_ar_elibrary_creation']['widget']['#value'][0] = $elibrary_creation_default_value;
-  }
 
   // Add an AJAX callback that refreshes the eLibrary field when the Closed
   // collection field changes.
