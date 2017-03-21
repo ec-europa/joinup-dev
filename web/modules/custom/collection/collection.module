@@ -208,7 +208,7 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
 
     case 'edit':
       $allowed_transitions = $entity->field_ar_state->first()->getTransitions();
-      return AccessResult::forbiddenIf(empty($allowed_transitions));
+      return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
 
     default:
       break;
