@@ -29,7 +29,7 @@ Feature: Add distribution through the UI
 
       When I click "Add distribution"
       Then I should see the heading "Add Distribution"
-      And the following fields should be present "Title, Description, License, Format, Representation technique, GITB compliant, Current workflow state"
+      And the following fields should be present "Title, Description, License, Format, Representation technique, GITB compliant"
       # Field labels are implemented not consistently, so we are
       # forced to check for the widget heading.
       # @todo to be handled in ISAICP-2655
