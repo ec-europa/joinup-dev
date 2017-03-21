@@ -46,7 +46,8 @@ Feature: As a user of the website
 
     # Edit as facilitator and save as draft.
     When I click "Edit"
-    And I fill in "Title" with "Construction of Scent"
+    Then the following fields should be present "Current workflow state"
+    When I fill in "Title" with "Construction of Scent"
     And I press "Save as draft"
 
     # The page redirects to the canonical view after editing.
