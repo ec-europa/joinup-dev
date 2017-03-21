@@ -75,18 +75,15 @@ trait RdfDatabaseConnectionTrait {
    * configuration.
    */
   protected function setUpSparqlForBrowser() {
-    $this->setUpSparql();
-
     $key = 'sparql_default';
     $target = 'default';
 
-    $settings['databases'][$key][$target] = (object) array(
+    $settings['databases'][$key][$target] = (object) [
       'value' => Database::getConnectionInfo($key)[$target],
       'required' => TRUE,
-    );
-    if (!isset($settings_file)) {
-      $settings_file = \Drupal::service('site.path') . '/settings.php';
-    }
+    ];
+
+    $settings_file = \Drupal::service('site.path') . '/settings.php';
 
     // Settings file is readonly at the moment.
     chmod($settings_file, 0666);

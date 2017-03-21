@@ -23,8 +23,9 @@ abstract class RdfWebTestBase extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    $this->setUpSparqlForBrowser();
+    $this->setUpSparql();
     parent::setUp();
+    $this->setUpSparqlForBrowser();
   }
 
   /**
