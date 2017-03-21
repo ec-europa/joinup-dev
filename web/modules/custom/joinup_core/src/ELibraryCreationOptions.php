@@ -5,7 +5,7 @@ namespace Drupal\joinup_core;
 /**
  * Stores various options related to the creation of eLibrary content.
  */
-final class ELibraryCreationOptions extends \SplEnum {
+final class ELibraryCreationOptions {
 
   /**
    * Default option.
