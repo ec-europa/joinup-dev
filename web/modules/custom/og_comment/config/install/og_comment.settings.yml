@@ -1,0 +1,2 @@
+# By default, global permissions can override group permissions.
+comment_access_strict: false
