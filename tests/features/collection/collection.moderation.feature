@@ -185,7 +185,9 @@ Feature: Collection moderation
     And I check the box "Academia/Scientific organisation"
     And I click the "Description" tab
     And I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
+    And I wait for AJAX to finish
 
     # Configure eLibrary creation for all registered users.
     When I move the "eLibrary creation" slider to the right
@@ -218,7 +220,7 @@ Feature: Collection moderation
     Then I delete the "Katsumoto" owner
 
   @terms @javascript
-  Scenario: Moderate an open collection
+  Scenario: Changing eLibrary creation value - regression #1
     # Regression test for a bug that happens when a change on the eLibrary
     # creation setting happens after an ajax callback.
     Given I am logged in as a user with the "authenticated" role
@@ -234,7 +236,9 @@ Feature: Collection moderation
     And I check the box "Supra-national authority"
     And I click the "Description" tab
     And I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
+    And I wait for AJAX to finish
 
     # Configure eLibrary creation for all registered users.
     When I move the "eLibrary creation" slider to the right
@@ -251,3 +255,131 @@ Feature: Collection moderation
     # Clean up the entities that were created.
     Then I delete the "Domestic bovins" collection
     Then I delete the "Garnett Clifton" owner
+
+  @terms @javascript
+  Scenario: Changing eLibrary creation value - regression #2
+    # Regression test for a bug that causes the wrong eLibrary creation value
+    # to be saved after the "Closed collection" checkbox is checked.
+    Given I am logged in as a user with the "authenticated" role
+    When I go to the homepage
+    And I click "Propose collection" in the plus button menu
+    And I fill in "Title" with "Theft of Body"
+    And I enter "Kleptomaniac to the bone." in the "Description" wysiwyg editor
+    And I select "Supplier exchange" from "Policy domain"
+    # An ajax callback is executed now.
+    And I press "Add new" at the "Owner" field
+    And I wait for AJAX to finish
+    And I fill in "Name" with "Coretta Simonson"
+    And I check the box "Private Individual(s)"
+    And I click the "Description" tab
+    And I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
+    And I attach the file "banner.jpg" to "Banner"
+    And I wait for AJAX to finish
+
+    When I check "Closed collection"
+    And I wait for AJAX to finish
+
+    # Configure eLibrary creation for all registered users.
+    When I move the "eLibrary creation" slider to the right
+    Then the option "Only collection facilitators can create new content." should be selected
+
+    # Save the collection.
+    When I press "Propose"
+    Then I should see the heading "Theft of Body"
+    # Edit again.
+    When I click "Edit" in the "Entity actions" region
+    And I click the "Description" tab
+    Then the option "Only collection facilitators can create new content." should be selected
+
+    # Clean up the entities that were created.
+    Then I delete the "Theft of Body" collection
+    Then I delete the "Coretta Simonson" owner
+
+  @terms @javascript
+  Scenario: Changing eLibrary creation value - regression #3
+    # Regression test for a bug that happens when an "Add more" button on a
+    # multi-value widget is clicked and then the "Closed collection" checkbox
+    # is checked.
+    # @see collection_form_rdf_entity_form_alter()
+    Given I am logged in as a user with the "authenticated" role
+    When I go to the homepage
+    And I click "Propose collection" in the plus button menu
+    And I fill in "Title" with "Silken Emperor"
+    And I enter "So smooth." in the "Description" wysiwyg editor
+    And I select "Data gathering, data processing" from "Policy domain"
+    # An ajax callback is executed now.
+    And I press "Add new" at the "Owner" field
+    And I wait for AJAX to finish
+    And I fill in "Name" with "Terrance Nash"
+    And I check the box "Regional authority"
+    And I click the "Description" tab
+    And I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
+    And I attach the file "banner.jpg" to "Banner"
+    And I wait for AJAX to finish
+    When I press "Add another item" at the "Spatial coverage" field
+    And I wait for AJAX to finish
+
+    When I check "Closed collection"
+    And I wait for AJAX to finish
+
+    # Configure eLibrary creation for all registered users.
+    When I move the "eLibrary creation" slider to the right
+    Then the option "Only collection facilitators can create new content." should be selected
+
+    # Save the collection.
+    When I press "Propose"
+    Then I should see the heading "Silken Emperor"
+    # Edit again.
+    When I click "Edit" in the "Entity actions" region
+    And I click the "Description" tab
+    Then the option "Only collection facilitators can create new content." should be selected
+
+    # Clean up the entities that were created.
+    Then I delete the "Silken Emperor" collection
+    Then I delete the "Terrance Nash" owner
+
+  @terms @javascript
+  Scenario: Changing eLibrary creation value - regression #4
+    # Regression test for a bug that happens when the "Closed collection" checkbox
+    # is checked and then an "Add more" button on a multi-value widget is clicked.
+    # @see collection_form_rdf_entity_form_alter()
+    Given I am logged in as a user with the "authenticated" role
+    When I go to the homepage
+    And I click "Propose collection" in the plus button menu
+    And I fill in "Title" with "The blue ships"
+    And I enter "Invisible ships on deep sea." in the "Description" wysiwyg editor
+    And I select "Employment and Support Allowance" from "Policy domain"
+    # An ajax callback is executed now.
+    And I press "Add new" at the "Owner" field
+    And I wait for AJAX to finish
+    And I fill in "Name" with "Mable Pelley"
+    And I check the box "National authority"
+    And I click the "Description" tab
+    And I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
+    And I attach the file "banner.jpg" to "Banner"
+    And I wait for AJAX to finish
+
+    When I check "Closed collection"
+    And I wait for AJAX to finish
+
+    # Configure eLibrary creation for all registered users.
+    When I move the "eLibrary creation" slider to the right
+    Then the option "Only collection facilitators can create new content." should be selected
+
+    When I press "Add another item" at the "Spatial coverage" field
+    And I wait for AJAX to finish
+
+    # Save the collection.
+    When I press "Propose"
+    Then I should see the heading "The blue ships"
+    # Edit again.
+    When I click "Edit" in the "Entity actions" region
+    And I click the "Description" tab
+    Then the option "Only collection facilitators can create new content." should be selected
+
+    # Clean up the entities that were created.
+    Then I delete the "The blue ships" collection
+    Then I delete the "Mable Pelley" owner
