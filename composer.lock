@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "50e69af396b7691f3c5d475017baee14",
+    "content-hash": "20ec940b1148bb26da1e14b68c674ed3",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2453,78 +2453,33 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-1.x",
+            "version": "dev-ISAICP-2709",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/og",
-                "reference": "34a9425ffeeb267ceeba21261f4719d0ced36e58"
+                "url": "https://github.com/ec-europa/og.git",
+                "reference": "7dcbb29b46641910a13b61ea668a124cdbfcab69"
             },
-            "require": {
-                "drupal/core": "*"
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/7dcbb29b46641910a13b61ea668a124cdbfcab69",
+                "reference": "7dcbb29b46641910a13b61ea668a124cdbfcab69",
+                "shasum": ""
             },
             "require-dev": {
-                "drupal/coder": "~2.0"
+                "drupal/coder": "~8.2"
             },
             "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1484311683"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Dries",
-                    "homepage": "https://www.drupal.org/user/1"
-                },
-                {
-                    "name": "Grayside",
-                    "homepage": "https://www.drupal.org/user/346868"
-                },
-                {
-                    "name": "Zen",
-                    "homepage": "https://www.drupal.org/user/21209"
-                },
-                {
-                    "name": "amitaibu",
-                    "homepage": "https://www.drupal.org/user/57511"
-                },
-                {
-                    "name": "dww",
-                    "homepage": "https://www.drupal.org/user/46549"
-                },
-                {
-                    "name": "merlinofchaos",
-                    "homepage": "https://www.drupal.org/user/26979"
-                },
-                {
-                    "name": "moshe weitzman",
-                    "homepage": "https://www.drupal.org/user/23"
-                },
-                {
-                    "name": "pfrenssen",
-                    "homepage": "https://www.drupal.org/user/382067"
-                },
-                {
-                    "name": "sethcohn",
-                    "homepage": "https://www.drupal.org/user/14944"
-                }
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
             "support": {
-                "source": "https://cgit.drupalcode.org/og",
                 "issues": "https://drupal.org/project/issues/og",
-                "irc": "irc://irc.freenode.org/drupal-og"
+                "irc": "irc://irc.freenode.org/drupal-og",
+                "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-01-13 12:41:23"
+            "time": "2017-03-14 16:17:37"
         },
         {
             "name": "drupal/og_menu",
@@ -9446,6 +9401,12 @@
         }
     ],
     "aliases": [
+        {
+            "alias": "dev-1.x",
+            "alias_normalized": "dev-1.x",
+            "version": "dev-ISAICP-2709",
+            "package": "drupal/og"
+        },
         {
             "alias": "0.9.2",
             "alias_normalized": "0.9.2.0",
