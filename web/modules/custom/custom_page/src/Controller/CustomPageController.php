@@ -4,13 +4,9 @@ namespace Drupal\custom_page\Controller;
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Controller\ControllerBase;
 use Drupal\joinup_core\Controller\CommunityContentController;
-use Drupal\og\OgAccessInterface;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class CustomPageController.

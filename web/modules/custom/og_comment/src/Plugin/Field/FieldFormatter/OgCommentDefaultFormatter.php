@@ -8,7 +8,6 @@ use Drupal\comment\CommentInterface;
 use Drupal\comment\CommentManagerInterface;
 use Drupal\comment\Plugin\Field\FieldFormatter\CommentDefaultFormatter;
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
-use Drupal\Core\Access\AccessResultAllowed;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityFormBuilderInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -17,8 +16,6 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManagerInterface;
-use Drupal\og\OgAccessInterface;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

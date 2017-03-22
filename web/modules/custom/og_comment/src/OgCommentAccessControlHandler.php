@@ -3,21 +3,13 @@
 namespace Drupal\og_comment;
 
 use Drupal\comment\CommentAccessControlHandler;
-use Drupal\comment\CommentInterface;
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultAllowed;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityHandlerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Plugin\views\filter\Access;
-use Drupal\og\GroupTypeManager;
-use Drupal\og\MembershipManagerInterface;
-use Drupal\og\Og;
-use Drupal\og\OgAccessInterface;
-use Drupal\og\OgContextInterface;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -38,9 +30,9 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler implemen
    * Constructs the access handler class for the og comment.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
-   *    The comment entity type object.
+   *   The comment entity type object.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *    The config factory service.
+   *   The config factory service.
    */
   public function __construct(EntityTypeInterface $entity_type, ConfigFactoryInterface $config_factory) {
     parent::__construct($entity_type);
@@ -118,14 +110,14 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler implemen
    * The 'comment_access_strict' setting is taken into account.
    *
    * @param string $permission
-   *    The permission to check.
+   *   The permission to check.
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The og group or group content object.
+   *   The og group or group content object.
    * @param \Drupal\Core\Session\AccountInterface $account
-   *    The account object.
+   *   The account object.
    *
    * @return bool
-   *    Whether the user has the given permission.
+   *   Whether the user has the given permission.
    */
   protected function hasPermission($permission, EntityInterface $entity, AccountInterface $account) {
     $comment_access_strict = $this->configFactory->get('og_comment.settings')->get('entity_access_strict');
