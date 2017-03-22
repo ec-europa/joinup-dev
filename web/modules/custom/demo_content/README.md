@@ -1,5 +1,6 @@
 # Demo content module
 This module provides demo entities to the joinup project.
+
 **To be removed after release 1**
 
 ## Export entities
