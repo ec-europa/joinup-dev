@@ -39,6 +39,7 @@ function joinup_user_install() {
   user_role_grant_permissions(UserInterface::AUTHENTICATED_ROLE, $authenticated_permissions);
 
   $anonymous_permissions = [
+    'access comments',
     'access content',
     'use text format restricted_html',
     'view rdf entity',
