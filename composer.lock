@@ -1894,7 +1894,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/ds",
-                "reference": "4aae0b5fe41178db8539e530d325372f1e1c5795"
+                "reference": "07fa80c238f789afc055f7299abb603a09f76b1d"
             },
             "require": {
                 "drupal/core": "^8.3"
@@ -1909,8 +1909,8 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.x-dev",
-                    "datestamp": "1488969483"
+                    "version": "8.x-3.0-alpha1+11-dev",
+                    "datestamp": "1490105282"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -1950,7 +1950,7 @@
                 "issues": "https://www.drupal.org/project/issues/ds",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
             },
-            "time": "2017-03-13 21:17:28"
+            "time": "2017-03-21 15:13:51"
         },
         {
             "name": "drupal/facets",
@@ -1979,7 +1979,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha7",
-                    "datestamp": "1482263583"
+                    "datestamp": "1490003883"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2331,7 +2331,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha1",
-                    "datestamp": "1487106486"
+                    "datestamp": "1489608482"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2497,8 +2497,7 @@
             },
             "require": {
                 "drupal/core": "*",
-                "drupal/og": "*",
-                "drupal/og_ui": "*"
+                "drupal/og": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -2541,71 +2540,6 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/og_menu",
                 "issues": "https://drupal.org/project/issues/og_menu"
-            }
-        },
-        {
-            "name": "drupal/og_ui",
-            "version": "dev-1.x",
-            "require": {
-                "drupal/core": "~8.0",
-                "drupal/og": "self.version"
-            },
-            "type": "metapackage",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1484311683"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Dries",
-                    "homepage": "https://www.drupal.org/user/1"
-                },
-                {
-                    "name": "Grayside",
-                    "homepage": "https://www.drupal.org/user/346868"
-                },
-                {
-                    "name": "Zen",
-                    "homepage": "https://www.drupal.org/user/21209"
-                },
-                {
-                    "name": "amitaibu",
-                    "homepage": "https://www.drupal.org/user/57511"
-                },
-                {
-                    "name": "dww",
-                    "homepage": "https://www.drupal.org/user/46549"
-                },
-                {
-                    "name": "merlinofchaos",
-                    "homepage": "https://www.drupal.org/user/26979"
-                },
-                {
-                    "name": "moshe weitzman",
-                    "homepage": "https://www.drupal.org/user/23"
-                },
-                {
-                    "name": "pfrenssen",
-                    "homepage": "https://www.drupal.org/user/382067"
-                },
-                {
-                    "name": "sethcohn",
-                    "homepage": "https://www.drupal.org/user/14944"
-                }
-            ],
-            "description": "User interface for Organic Groups.",
-            "homepage": "https://www.drupal.org/project/og",
-            "support": {
-                "source": "http://cgit.drupalcode.org/og"
             }
         },
         {
@@ -7483,7 +7417,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-02-06 08:22:23"
+            "time": "2017-02-06T08:22:23+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -7845,7 +7779,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
             },
-            "time": "2017-03-03 01:18:28"
+            "time": "2017-03-03T01:18:28+00:00"
         },
         {
             "name": "drupal/devel",
