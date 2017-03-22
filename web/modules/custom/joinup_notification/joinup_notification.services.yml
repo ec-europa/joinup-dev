@@ -1,10 +1,10 @@
 services:
   joinup_notification.workflow_notification:
     class: Drupal\joinup_notification\EventSubscriber\WorkflowTransitionEventSubscriber
-    arguments: ["@entity.manager", "@joinup_notification.notification_sender"]
+    arguments: ['@entity.manager', '@joinup_notification.notification_sender']
     tags:
       - { name: event_subscriber }
 
   joinup_notification.notification_sender:
     class: Drupal\joinup_notification\NotificationSenderService
-    arguments: ["@entity.manager", "@message_notify.sender"]
+    arguments: ['@entity_type.manager', '@message_notify.sender', '@joinup_core.relations_manager', '@og.group_type_manager']
