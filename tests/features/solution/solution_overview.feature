@@ -76,7 +76,6 @@ Feature: Solutions Overview
     When I fill in the following:
       | Title            | Colonies in Earth                                                      |
       | Description      | Some space mumbo jumbo description.                                    |
-      | Documentation    | text.pdf                                                               |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
@@ -84,6 +83,8 @@ Feature: Solutions Overview
     And I attach the file "text.pdf" to "Documentation"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
+    # The "Documentation" file field has an hidden label that we can target.
+    And I attach the file "text.pdf" to "File"
     # Click the button to select an existing contact information.
     And I press "Add existing" at the "Contact information" field
     And I fill in "Contact information" with "Information example"
