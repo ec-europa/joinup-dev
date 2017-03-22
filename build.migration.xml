@@ -8,6 +8,15 @@
             depends="enable-migration-modules">
         <echo message="Run migration" />
         <drush
+             command="cset"
+             assume="yes"
+             root="${website.drupal.dir}"
+             bin="${drush.bin}"
+             verbose="${drush.verbose}">
+            <param>search_api.index.collections</param>
+            <param>options.index_directly 0</param>
+        </drush>
+        <drush
             command="migrate-import"
             assume="yes"
             root="${website.drupal.dir}"
@@ -16,6 +25,22 @@
             <param>${migration.ids}</param>
             <option name="feedback" value="1000" />
             <option name="force" />
+        </drush>
+        <drush
+            command="cfr"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <param>search_api.index.collections</param>
+        </drush>
+        <drush
+                command="sapi-i"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="batch-size" value="500" />
         </drush>
         <drush
             command="migrate-report-generate"
