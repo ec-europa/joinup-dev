@@ -1,0 +1,13 @@
+demo_content.settings:
+  type: config_object
+  label: 'Demo content image settings'
+  mapping:
+    file_mappings:
+      type: sequence
+      label: 'Entity id'
+      sequence:
+        type: sequence
+        label: 'Field machine name'
+        sequence:
+          type: string
+          label: 'Fixtures file name'
