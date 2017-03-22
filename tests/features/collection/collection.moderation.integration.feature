@@ -47,6 +47,7 @@ Feature: As a user of the website
     # Edit as facilitator and save as draft.
     When I click "Edit"
     Then the following fields should be present "Current workflow state"
+    And the current workflow state should be "Validated"
     When I fill in "Title" with "Construction of Scent"
     And I press "Save as draft"
 
@@ -63,7 +64,8 @@ Feature: As a user of the website
     When I am logged in as a moderator
     And I go to the homepage of the "Construction of Scent" collection
     And I click "Edit"
-    And I press "Publish"
+    Then the current workflow state should be "Draft"
+    When I press "Publish"
     Then I should see the heading "Construction of Scent"
     And I should not see the link "View draft"
     But I should see the link "View"
