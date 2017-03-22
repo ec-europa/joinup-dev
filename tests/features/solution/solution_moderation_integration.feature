@@ -65,7 +65,7 @@ Feature: As a user of the website
     # in the page.
     Then I should see the heading "Flight of Day"
 
-    # Ensure that the message is not shown to non privileged users.3
+    # Ensure that the message is not shown to non privileged users.
     When I am an anonymous user
     And I go to the homepage of the "Flight of Night" solution
     And I should not see the following warning messages:
