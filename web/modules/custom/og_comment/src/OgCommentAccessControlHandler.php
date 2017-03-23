@@ -74,11 +74,11 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler implemen
         break;
 
       case 'update':
-        $return = AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission('edit own comments', $entity, $account)->isAllowed())->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
+        $return = AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission('edit own comments', $host_entity, $account)->isAllowed())->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
         break;
 
       case 'delete':
-        $return = AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission('delete own comments', $entity, $account)->isAllowed())->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
+        $return = AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission('delete own comments', $host_entity, $account)->isAllowed())->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
         break;
 
       default:

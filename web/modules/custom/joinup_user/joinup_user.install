@@ -19,6 +19,7 @@ function joinup_user_install() {
     'create contact_information rdf entity',
     'create owner rdf entity',
     'create document content',
+    'delete own comments',
     'delete own document content',
     'edit own comments',
     'edit own contact_information rdf entity',
