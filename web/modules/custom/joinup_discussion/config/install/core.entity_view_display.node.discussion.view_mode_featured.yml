@@ -11,7 +11,6 @@ dependencies:
     - node.type.discussion
   module:
     - ds
-    - joinup
     - text
     - user
 id: node.discussion.view_mode_featured

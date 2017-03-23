@@ -92,7 +92,8 @@ Feature: Document moderation
 
     # Publish the content.
     When I click "Edit" in the "Entity actions" region
-    And I fill in "Title" with "A not so amazing document"
+    Then the current workflow state should be "Draft"
+    When I fill in "Title" with "A not so amazing document"
     And I press "Publish"
     Then I should see the heading "A not so amazing document"
 
@@ -101,15 +102,17 @@ Feature: Document moderation
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "A not so amazing document"
     And I click "Edit" in the "Entity actions" region
-    Then I should see the button "Request changes"
-    And I press "Request changes"
+    Then the current workflow state should be "Validated"
+    And I should see the button "Request changes"
+    Then I press "Request changes"
 
     # Implement changes as owner of the document.
     When I am logged in as "Gretchen Greene"
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "A not so amazing document"
     And I click "Edit" in the "Entity actions" region
-    And I fill in "Title" with "The document is amazing"
+    Then the current workflow state should be "Proposed"
+    When I fill in "Title" with "The document is amazing"
     And I press "Update proposed"
     Then I should see the heading "A not so amazing document"
 
@@ -118,6 +121,7 @@ Feature: Document moderation
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "A not so amazing document"
     And I click "Edit" in the "Entity actions" region
-    Then I should see the button "Approve proposed"
-    And I press "Approve proposed"
+    Then the current workflow state should be "Proposed"
+    And I should see the button "Approve proposed"
+    When I press "Approve proposed"
     Then I should see the heading "The document is amazing"
