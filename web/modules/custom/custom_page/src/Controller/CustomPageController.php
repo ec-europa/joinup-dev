@@ -27,6 +27,12 @@ class CustomPageController extends CommunityContentController {
     if ($rdf_entity->bundle() !== 'collection') {
       return AccessResult::forbidden();
     }
+
+    // The user is not allowed to create custom pages for archived collections.
+    if ($rdf_entity->field_ar_state->first()->value === 'archived') {
+      return AccessResult::forbidden();
+    }
+
     // Grant access depending on whether the user has permission to create a
     // custom page according to their OG role.
     return $this->ogAccess->userAccessGroupContentEntityOperation('create', $rdf_entity, $this->createContentEntity($rdf_entity));

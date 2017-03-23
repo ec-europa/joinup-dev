@@ -70,12 +70,10 @@ class OgCommentFieldItemList extends CommentFieldItemList {
   /**
    * Returns whether the account has the given permission.
    *
-   * The 'comment_access_strict' setting is taken into account.
-   *
    * @param string $permission
    *   The permission to check.
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The og group or group content object.
+   *   The commented entity.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account object.
    *
@@ -83,14 +81,13 @@ class OgCommentFieldItemList extends CommentFieldItemList {
    *   The access result object.
    */
   protected function hasPermission($permission, EntityInterface $entity, AccountInterface $account) {
-    $comment_access_strict = $this->configFactory->get('og_comment.settings')->get('comment_access_strict');
     $access = $entity->access($permission, $account, TRUE);
-    if (!$access->isNeutral() || $comment_access_strict) {
+
+    if (!$access->isNeutral()) {
       return $access;
     }
 
-    // At this point, the 'comment_access_strict' flag is false and the group
-    // result is neutral.
+    // At this point and the group result is neutral.
     return AccessResult::allowedIf($account->hasPermission($permission));
   }
 
