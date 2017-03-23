@@ -34,11 +34,11 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
  *
- * Alters the RDF entity form for Collections:
+ * Alters the RDF entity form for collections:
  * - Changes the available options for the eLibrary creation field depending on
  *   whether a collection is closed or open:
  *   - Open collection: eLibrary content can be created either only by
- *     collection facilitators, or by all registered users.
+ *     collection members, or by all registered users.
  *   - Closed collection: eLibrary content can be created either only by
  *     collection facilitators, or by members of the collection.
  *   When the collection changes between closed and open we will use AJAX to
