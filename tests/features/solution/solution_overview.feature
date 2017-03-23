@@ -80,7 +80,6 @@ Feature: Solutions Overview
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "Demography" from "Policy domain"
-    And I attach the file "text.pdf" to "Documentation"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # The "Documentation" file field has an hidden label that we can target.
