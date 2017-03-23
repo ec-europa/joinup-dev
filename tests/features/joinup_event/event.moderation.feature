@@ -28,6 +28,7 @@ Feature: Event moderation
       | Wet Lords  | Rosa Vaughn    | member      |
       | Wet Lords  | Patricia Lynch | facilitator |
 
+  @javascript
   Scenario: Available transitions change per eLibrary and moderation settings.
     # For post-moderated collections with eLibrary set to allow all users to
     # create content, authenticated users that are not members can create
@@ -42,6 +43,7 @@ Feature: Event moderation
     When I am logged in as a moderator
     And I go to the homepage of the "Wet Lords" collection
     And I click "Edit" in the "Entity actions" region
+    And I click the "Description" tab
     And I check the box "Moderated"
     Then I press "Publish"
     And I should see the heading "Wet Lords"
@@ -60,14 +62,19 @@ Feature: Event moderation
     When I am logged in as a moderator
     And I go to the homepage of the "Wet Lords" collection
     And I click "Edit" in the "Entity actions" region
+    And I click the "Description" tab
     And I check "Closed collection"
+    And I wait for AJAX to finish
     And I select "Only members can create new content." from "eLibrary creation"
-    Then I press "Publish"
-    And I should see the link "Add event"
+    And I press "Publish"
+    # I should now have the possibility to add events.
+    When I open the plus button menu
+    Then I should see the link "Add event"
 
     # Non-members should not be able to create events anymore.
     When I am logged in as "Salvador Thomas"
     And I go to the homepage of the "Wet Lords" collection
+    And I open the plus button menu
     Then I should not see the link "Add event"
 
   Scenario: Transit events from one state to another.
