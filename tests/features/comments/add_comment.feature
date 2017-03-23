@@ -18,7 +18,6 @@ Feature: Add comments
       | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <status> |
     Given I am an anonymous user
     When I go to the content page of the type "<content type>" with the title "<title>"
-    Then I should see text matching "Add new comment"
     And I fill in "Your name" with "Mr Scandal"
     And I fill in "Email" with "mrscandal@example.com"
     And I fill in "Comment" with "I've heard this story..."
@@ -40,7 +39,6 @@ Feature: Add comments
       | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <status> |
     Given I am logged in as "Miss tell tales"
     When I go to the content page of the type "<content type>" with the title "<title>"
-    Then I should see text matching "Add new comment"
     And I fill in "Comment" with "Mr scandal was doing something weird the other day."
     Then I press "Post comment"
     Then I should not see the following success messages:
