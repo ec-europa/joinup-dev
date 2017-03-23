@@ -77,4 +77,24 @@ class JoinupRelationManager implements ContainerInjectionInterface {
     return $moderation;
   }
 
+  /**
+   * Retrieves the state of the parent.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group content entity.
+   *
+   * @return string
+   *   The state of the parent entity.
+   */
+  public function getParentState(EntityInterface $entity) {
+    $parent = $this->getParent($entity);
+    $field_array = [
+      'collection' => 'field_ar_state',
+      'solution' => 'field_is_state',
+    ];
+
+    $state = $parent->{$field_array[$parent->bundle()]}->first()->value;
+    return $state;
+  }
+
 }
