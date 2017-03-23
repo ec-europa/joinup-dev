@@ -31,15 +31,18 @@ class OgCommentFieldItemList extends CommentFieldItemList {
    */
   public function access($operation = 'view', AccountInterface $account = NULL, $return_as_object = FALSE) {
     $host_entity = $this->getEntity();
+    // We cannot inject services in this plugin as it extends TypedData and it
+    // does not support dependency injection.
+    // @see https://www.drupal.org/node/2053415
     $this->configFactory = \Drupal::service('config.factory');
     $this->ogAccess = \Drupal::service('og.access');
     $account = $account ?: \Drupal::currentUser();
-    $comment_access_strict = $this->configFactory->get('og_comment.settings')->get('entity_access_strict');
+    $comment_access_strict = $this->configFactory->get('og_comment.settings')->get('comment_access_strict');
 
     if ($operation === 'edit') {
       // Only users with administer comments permission can edit the comment
       // status field.
-      $result = AccessResult::allowedIf($this->hasPermission('administer comments', $host_entity, $account));
+      $result = $this->hasPermission('administer comments', $host_entity, $account);
       return $return_as_object ? $result : $result->isAllowed();
     }
     if ($operation === 'view') {
@@ -49,14 +52,18 @@ class OgCommentFieldItemList extends CommentFieldItemList {
       // takes care of showing the thread and form based on individual
       // permissions, so if a user only has ‘post comments’ access, only the
       // form will be shown and not the comments.
-      $result = AccessResult::allowedIf($this->hasPermission('access comments', $host_entity, $account))
-        ->orIf(AccessResult::allowedIf($this->hasPermission('post comments', $host_entity, $account)));
+      $result = $this->hasPermission('access comments', $host_entity, $account)
+        ->orIf($this->hasPermission('post comments', $host_entity, $account));
       return $return_as_object ? $result : $result->isAllowed();
     }
 
-    if ($comment_access_strict) {
-      return $return_as_object ? AccessResult::forbidden() : AccessResult::forbidden()->isAllowed();
+    $result = $this->hasPermission($operation, $host_entity, $account);
+    if (!$result->isNeutral() || $comment_access_strict) {
+      return $return_as_object ? $result : $result->isAllowed();
     }
+
+    // At this point the 'comment_access_strict' is false and the result is
+    // neutral.
     return parent::access($operation, $account, $return_as_object);
   }
 
@@ -72,14 +79,19 @@ class OgCommentFieldItemList extends CommentFieldItemList {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account object.
    *
-   * @return bool
-   *   Whether the user has the given permission.
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result object.
    */
   protected function hasPermission($permission, EntityInterface $entity, AccountInterface $account) {
-    $comment_access_strict = $this->configFactory->get('og_comment.settings')->get('entity_access_strict');
-    $access = $entity->access($permission, $account);
+    $comment_access_strict = $this->configFactory->get('og_comment.settings')->get('comment_access_strict');
+    $access = $entity->access($permission, $account, TRUE);
+    if (!$access->isNeutral() || $comment_access_strict) {
+      return $access;
+    }
 
-    return $access || ($comment_access_strict && $account->hasPermission($permission));
+    // At this point, the 'comment_access_strict' flag is false and the group
+    // result is neutral.
+    return AccessResult::allowedIf($account->hasPermission($permission));
   }
 
 }

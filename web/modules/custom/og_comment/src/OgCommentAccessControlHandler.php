@@ -55,7 +55,7 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler implemen
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
     $comment_access_strict = $this->configFactory->get('og_comment.settings')->get('entity_access_strict');
     $host_entity = $entity->getCommentedEntity();
-    $comment_admin = $this->hasPermission('administer comments', $host_entity, $account);
+    $comment_admin = $this->hasPermission('administer comments', $host_entity, $account)->isAllowed();
     if ($operation == 'approve') {
       return AccessResult::allowedIf($comment_admin && !$entity->isPublished())
         ->cachePerPermissions()
@@ -69,16 +69,16 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler implemen
 
     switch ($operation) {
       case 'view':
-        $user_permission = $this->hasPermission('access comments', $host_entity, $account);
+        $user_permission = $this->hasPermission('access comments', $host_entity, $account)->isAllowed();
         $return = AccessResult::allowedIf($user_permission && $entity->isPublished())->cachePerPermissions()->addCacheableDependency($entity);
         break;
 
       case 'update':
-        $return = AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission('edit own comments', $entity, $account))->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
+        $return = AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission('edit own comments', $entity, $account)->isAllowed())->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
         break;
 
       case 'delete':
-        $return = AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission('delete own comments', $entity, $account))->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
+        $return = AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission('delete own comments', $entity, $account)->isAllowed())->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
         break;
 
       default:
@@ -101,7 +101,7 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler implemen
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
     $commented_entity = !empty($context['commented_entity']) ? $context['commented_entity'] : NULL;
     $has_permission = $this->hasPermission('post comment', $commented_entity, $account);
-    return $has_permission ? AccessResult::allowed() : AccessResult::forbidden();
+    return $has_permission->isAllowed() ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
   /**
@@ -116,14 +116,19 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler implemen
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account object.
    *
-   * @return bool
-   *   Whether the user has the given permission.
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result object.
    */
   protected function hasPermission($permission, EntityInterface $entity, AccountInterface $account) {
     $comment_access_strict = $this->configFactory->get('og_comment.settings')->get('entity_access_strict');
-    $og_admin = $entity->access($permission, $account);
+    $access = $entity->access($permission, $account, TRUE);
+    if (!$access->isNeutral() || $comment_access_strict) {
+      return $access;
+    }
 
-    return $og_admin || ($comment_access_strict && $account->hasPermission($permission));
+    // At this point, the 'comment_access_strict' flag is false and the group
+    // result is neutral.
+    return AccessResult::allowedIf($account->hasPermission($permission));
   }
 
 }
