@@ -137,7 +137,7 @@ content:
     type: inline_entity_form_complex
     weight: 6
     settings:
-      form_mode: default
+      form_mode: inline
       override_labels: true
       label_singular: owner
       label_plural: owners
