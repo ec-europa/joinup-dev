@@ -14,11 +14,11 @@ trait WorkflowTrait {
    * Asserts available transitions of an entity for a user.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The entity with the states.
+   *   The entity with the states.
    * @param array $available_transitions
-   *    The transitions to check for availability.
+   *   The transitions to check for availability.
    * @param object|null $user
-   *    The account interface object. Can be left empty.
+   *   The account interface object. Can be left empty.
    *
    * @throws \Exception
    *    Thrown when the expected transitions array does not exactly match the
@@ -46,12 +46,12 @@ trait WorkflowTrait {
    * in, an anonymous account is passed.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The entity with the states.
+   *   The entity with the states.
    * @param object|null $user
-   *    The account interface object. Can be left empty.
+   *   The account interface object. Can be left empty.
    *
    * @return array
-   *    An array of transition state labels.
+   *   An array of transition state labels.
    */
   protected function getAvailableStates(EntityInterface $entity, $user) {
     if ($user == NULL) {
@@ -79,12 +79,12 @@ trait WorkflowTrait {
    * in, an anonymous account is passed.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The entity with the states.
+   *   The entity with the states.
    * @param object|null $user
-   *    The account interface object. Can be left empty.
+   *   The account interface object. Can be left empty.
    *
    * @return array
-   *    An array of transition labels.
+   *   An array of transition labels.
    */
   protected function getAvailableTransitions(EntityInterface $entity, $user) {
     if ($user == NULL) {
@@ -110,10 +110,10 @@ trait WorkflowTrait {
    * entity's field definitions otherwise it returns NULL.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The entity that has the state field.
+   *   The entity that has the state field.
    *
    * @return \Drupal\Core\Field\FieldDefinitionInterface|null
-   *    Returns the state field definition of the entity or NULL if none is
+   *   Returns the state field definition of the entity or NULL if none is
    *    found.
    */
   protected function getEntityStateFieldDefinition(EntityInterface $entity) {

@@ -13,8 +13,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
  */
 function joinup_event_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
   if ($entity_type->id() == 'node' && $bundle == 'event') {
-    if (!empty($fields['field_event_short_title'])) {
-      $fields['field_event_short_title']->addConstraint('UniqueField');
+    if (!empty($fields['field_short_title'])) {
+      $fields['field_short_title']->addConstraint('UniqueField');
     }
     if (!empty($fields['title'])) {
       $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['event']]);
@@ -32,10 +32,10 @@ function joinup_event_entity_bundle_field_info_alter(&$fields, EntityTypeInterfa
  * transitions.
  *
  * @param \Drupal\Core\Entity\EntityInterface $entity
- *    The event entity.
+ *   The event entity.
  *
  * @return string
- *    The id of the workflow to use.
+ *   The id of the workflow to use.
  *
  * @throws Exception
  *    Thrown when the function is called for a different bundle.

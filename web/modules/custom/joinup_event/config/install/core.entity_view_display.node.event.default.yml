@@ -9,12 +9,16 @@ dependencies:
     - field.field.node.event.field_event_agenda
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_end_date
-    - field.field.node.event.field_event_location
     - field.field.node.event.field_event_logo
-    - field.field.node.event.field_event_organisation
-    - field.field.node.event.field_event_short_title
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
+    - field.field.node.event.field_keywords
+    - field.field.node.event.field_location
+    - field.field.node.event.field_organisation
+    - field.field.node.event.field_organisation_type
+    - field.field.node.event.field_policy_domain
+    - field.field.node.event.field_scope
+    - field.field.node.event.field_short_title
     - field.field.node.event.field_state
     - field.field.node.event.og_audience
     - image.style.image_style_event_logo
@@ -25,7 +29,6 @@ dependencies:
     - ds
     - image
     - link
-    - options
     - text
     - user
 id: node.event.default
@@ -41,7 +44,7 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 6
+    weight: 10
     label: above
     settings:
       pager_id: 0
@@ -50,7 +53,7 @@ content:
     type: comment_default
     region: content
   field_event_adtl_address_info:
-    weight: 8
+    weight: 6
     label: hidden
     settings: {  }
     third_party_settings:
@@ -73,7 +76,7 @@ content:
     type: text_default
     region: content
   field_event_contact_email:
-    weight: 9
+    weight: 7
     label: above
     settings: {  }
     third_party_settings:
@@ -107,14 +110,6 @@ content:
         template_suggestion: ''
     type: datetime_default
     region: content
-  field_event_location:
-    weight: 7
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   field_event_logo:
     weight: 3
     label: hidden
@@ -143,7 +138,7 @@ content:
     type: datetime_default
     region: content
   field_event_web_url:
-    weight: 10
+    weight: 8
     label: above
     settings:
       trim_length: 80
@@ -163,12 +158,24 @@ content:
         template_suggestion: fieldset
     type: link
     region: content
+  field_location:
+    weight: 9
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
   links:
     weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_event_organisation: true
-  field_event_short_title: true
+  field_keywords: true
+  field_organisation: true
+  field_organisation_type: true
+  field_policy_domain: true
+  field_scope: true
+  field_short_title: true
+  field_state: true
   og_audience: true

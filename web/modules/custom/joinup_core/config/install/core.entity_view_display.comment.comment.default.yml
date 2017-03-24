@@ -10,8 +10,7 @@ third_party_settings:
   ds:
     layout:
       id: ds_1col
-      path: modules/contrib/ds
-      library: ''
+      library: null
       disable_css: false
       entity_classes: all_classes
       settings:
@@ -31,9 +30,9 @@ third_party_settings:
         - comment_post_date
         - field_body
     fields:
-      comment_title:
-        plugin_id: comment_title
-        weight: 0
+      comment_author:
+        plugin_id: comment_author
+        weight: 1
         label: hidden
         formatter: default
       comment_post_date:
@@ -41,9 +40,9 @@ third_party_settings:
         weight: 2
         label: hidden
         formatter: ds_post_date_long
-      comment_author:
-        plugin_id: comment_author
-        weight: 1
+      comment_title:
+        plugin_id: comment_title
+        weight: 0
         label: hidden
         formatter: default
 id: comment.comment.default
@@ -57,5 +56,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: ds_content
 hidden:
   links: true

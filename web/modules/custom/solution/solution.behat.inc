@@ -5,6 +5,7 @@
  * Contains Drupal\solution\solution.behat.inc.
  */
 
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -94,7 +95,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Fields title, description and elibrary creation are mandatory.
    *
-   * @param TableNode $solution_table
+   * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
    *
    * @throws \Exception
@@ -140,7 +141,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Fields title, description and elibrary creation are required.
    *
-   * @param TableNode $solution_table
+   * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
    *
    * @throws \Exception
@@ -178,7 +179,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @param string $bundle
    *   The bundle of the content entity.
-   * @param TableNode $membership_table
+   * @param \Behat\Gherkin\Node\TableNode $membership_table
    *   The membership table.
    *
    * @Given (the following ):bundle content belong to the corresponding solutions:
@@ -204,9 +205,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * a facilitator.
    *
    * @param string $username
-   *    The name of the user.
+   *   The name of the user.
    * @param string $solution
-   *    The label of the group entity.
+   *   The label of the group entity.
    *
    * @throws \Exception
    *    Throws an exception when the user is not found.
@@ -361,7 +362,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * | Sample solution A | John | facilitator, administrator |
    * | Sample solution B | Jack |                            |
    *
-   * @param TableNode $membership_table
+   * @param \Behat\Gherkin\Node\TableNode $membership_table
    *   The membership table.
    *
    * @throws \Exception
@@ -399,16 +400,33 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Tracks solutions that are manually deleted and don't need cleaning up.
+   *
+   * @param string $solution
+   *   The name of the solution.
+   *
+   * @Given the :solution solution will be deleted manually
+   */
+  public function skipCleaningOfSolution($solution) {
+    unset($this->solutions[$this->getSolutionByName($solution)->id()]);
+  }
+
+  /**
    * Remove any created solutions.
    *
    * @AfterScenario
    */
-  public function cleanSolutions() {
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
-    $storage = \Drupal::service('entity_type.manager')->getStorage('rdf_entity');
+  public function cleanSolutions(AfterScenarioScope $event) {
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
-      $solution->delete();
+      $name = $solution->getName();
+      try {
+        $solution->delete();
+      }
+      catch (Throwable $e) {
+        // Throw a more helpful error if something goes wrong during cleanup.
+        throw new \Exception(sprintf('Error while cleaning up solution "%s" after completing scenario "%s" of feature "%s": "%s"', $name, $event->getFeature()->getTitle(), $event->getScenario()->getTitle(), $e->getMessage()));
+      }
     }
   }
 
@@ -416,7 +434,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *   Mapping.
    */
   protected static function solutionFieldAliases() {
     // Mapping alias - field name.
@@ -459,10 +477,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Converts values from user friendly to normal machine values.
    *
    * @param array $fields
-   *    An array of fields keyed by field name.
+   *   An array of fields keyed by field name.
    *
    * @return mixed
-   *    The array with the values converted.
+   *   The array with the values converted.
    *
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
@@ -501,7 +519,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * | Solution A | John | Status1          |
    * | Solution B | Jack | Status1, Status2 |
    *
-   * @param TableNode $check_table
+   * @param \Behat\Gherkin\Node\TableNode $check_table
    *   The table with the triplets solution-user-options.
    *
    * @throws \Exception
@@ -536,11 +554,11 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Applies a transition to a solution.
    *
    * @param string $username
-   *    The username applying the transition.
+   *   The username applying the transition.
    * @param string $entity_name
-   *    The title of the solution.
+   *   The title of the solution.
    * @param string $to_state
-   *    The state that the solution transits to.
+   *   The state that the solution transits to.
    *
    * @throws \Exception
    *    An exception is thrown if the user is not found or the transition is not

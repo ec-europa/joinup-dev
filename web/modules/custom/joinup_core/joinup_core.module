@@ -7,10 +7,12 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
@@ -205,4 +207,60 @@ QUERY;
       }
     }
   }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Remove non-related actions (adding/removing roles) for other group types
+ * from member overview page.
+ */
+function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // The form id will contain the entity id of the group, so we have to fall
+  // back to strstr to see if the generic part matches.
+  if (strstr($form_id, 'views_form_og_members_overview_default') === FALSE) {
+    return;
+  }
+  $entity = \Drupal::request()->get('rdf_entity');
+  if (empty($entity) || !in_array($entity->getType(), ['solution', 'collection'])) {
+    return;
+  }
+  // Header not set if the view is empty (no members).
+  if (empty($form['header'])) {
+    return;
+  }
+  foreach ($form['header']['og_membership_bulk_form']['action']['#options'] as $key => $option) {
+    if (strstr($key, 'rdf_entity-' . $entity->getType()) === FALSE) {
+      unset($form['header']['og_membership_bulk_form']['action']['#options'][$key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ *
+ * Shows an information message to users who have access to the draft version
+ * of the rdf entity if the user is viewing the published version.
+ */
+function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  // Show only in full mode views.
+  if ($view_mode !== 'full') {
+    return;
+  }
+  $graph = $entity->get('graph')->first()->value;
+  if ($graph !== 'default' || !$entity->hasGraph('draft')) {
+    return;
+  }
+
+  // The draft link is already set in the list of the link templates of the rdf
+  // entity as 'rdf-draft-{$graph_name}'.
+  $url = $entity->toUrl('rdf-draft-draft');
+  if (!$url->access()) {
+    return;
+  }
+
+  $link = Link::fromTextAndUrl(t('here'), $url)->toString();
+  drupal_set_message(t('You are viewing the published version. To view the latest draft version, click @here.', [
+    '@here' => $link,
+  ]), 'warning');
 }

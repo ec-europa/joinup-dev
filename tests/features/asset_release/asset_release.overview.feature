@@ -27,7 +27,7 @@ Feature: Asset distribution overview on solution.
       | state      | validated        |
 
     When I go to the homepage of the "Lovely Butterfly" solution
-    And I click "Download"
+    And I click "Download releases"
     Then I should see the heading "Releases for Lovely Butterfly solution"
     # The release titles include the version as a suffix.
     And I should see the following releases in the exact order:

@@ -27,7 +27,7 @@ use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
 
 /**
- * Behat step definitions for testing users.
+ * Behat step definitions that are generally useful for the Joinup project.
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
@@ -62,7 +62,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * | Password   | Bond007            |
    * | E-mail     | james.bond@mi5.org |
    *
-   * @param TableNode $user_table
+   * @param \Behat\Gherkin\Node\TableNode $user_table
    *   The user data.
    *
    * @throws \Exception
@@ -310,7 +310,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Mapping of human readable names to machine names.
    *
    * @return array
-   *    Field mapping.
+   *   Field mapping.
    */
   private static function userFieldAliases() {
     return [
@@ -333,9 +333,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks that the given select field has the given options.
    *
    * @param string $select
-   *    The name of the field element.
+   *   The name of the field element.
    * @param string $options
-   *    The options to be checked separated by comma. Only labels are accepted.
+   *   The options to be checked separated by comma. Only labels are accepted.
    *
    * @Then (the ):select field should contain the :options option(s)
    */
@@ -351,9 +351,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks if the given select field does not contain any of the given values.
    *
    * @param string $select
-   *    The name of the field element.
+   *   The name of the field element.
    * @param string $options
-   *    The options to be checked separated by comma.
+   *   The options to be checked separated by comma.
    *
    * @throws Exception
    *    Throws an exception when a value exists.
@@ -527,7 +527,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * This allows us to:
    * - use human readable labels like 'short title' in test scenarios, and map
-   *   them to the actual field names like 'field_document_short_title'.
+   *   them to the actual field names like 'field_short_title'.
    * - use human readable values such as a collection name instead of the URL
    *   that is actually used in the OG reference field.
    *
@@ -591,13 +591,15 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $aliases = [
       'discussion' => [
         'state' => 'field_state',
-        'content' => 'field_discussion_content',
+        'content' => 'body',
       ],
       'document' => [
-        'short title' => 'field_document_short_title',
+        'short title' => 'field_short_title',
+        'type' => 'field_type',
+        'licence' => 'field_licence',
       ],
       'event' => [
-        'short title' => 'field_event_short_title',
+        'short title' => 'field_short_title',
         'start date' => 'field_start_date',
         'state' => 'field_state',
       ],
@@ -627,13 +629,28 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Example: When I press "Log In" at "Fieldset"
    * Example: And I press "Log In" at "Custom widget".
    *
-   * @When I press :button at( the) :fieldset( field)
+   * @When I press :button at( the) :field( field)
    */
-  public function pressButtonInFieldset($button, $fieldset) {
+  public function pressButtonInWidget($button, $field) {
     // Fixes a step argument (with \\" replaced back to ")
     // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
     $button = str_replace('\\"', '"', $button);
-    $this->getSession()->getPage()->find('named', ['fieldset', $fieldset])->pressButton($button);
+
+    // First check if a fieldset exists containing the given field name. This
+    // is used for inline entity forms.
+    $element = $this->getSession()->getPage()->find('named', [
+      'fieldset',
+      $field,
+    ]);
+
+    // If this doesn't exist, search for a multivalue entity reference field
+    // containing a label for the given field name.
+    if (empty($element)) {
+      $xpath = '//table[contains(concat(" ", normalize-space(@class), " "), " field-multiple-table ") and //label[text()="' . $field . '"]]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-wrapper ")]';
+      $element = $this->getSession()->getPage()->find('xpath', $xpath);
+    }
+
+    $element->pressButton($button);
   }
 
   /**
@@ -643,11 +660,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Example: When I fill in "Start date" with the time "26:59:00".
    *
    * @param string $field_group
-   *    The field component's label.
+   *   The field component's label.
    * @param string $field_name
-   *    The field to be filled.
+   *   The field to be filled.
    * @param string $value
-   *    The value of the field.
+   *   The value of the field.
    *
    * @throws \Exception
    *    Thrown when more than one elements match the given field in the given
@@ -745,13 +762,34 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I (should )not see the :heading tile
    */
   public function assertTileNotPresent($heading) {
-    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2');
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {
         throw new \Exception("The tile '$heading' was found on the page");
       }
     }
+  }
+
+  /**
+   * Checks that the given tiles are found in the given block.
+   *
+   * The weight of the tiles are also taken into account.
+   *
+   * Table format:
+   * | title        |
+   * | Tile title 1 |
+   * | Tile title 2 |
+   *
+   * @Then I( should) see the( following) tiles in the :region region:
+   */
+  public function assertTilesInBlock(TableNode $titles_table, $region) {
+    $results = $this->getTiles($region);
+    $headings_in_page = array_map(function ($result) {
+      return $result->getText();
+    }, $results);
+    $headings_expected = $titles_table->getColumn(0);
+    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, "The expected tiles are not in the page or not in the proper order.");
   }
 
   /**
@@ -799,7 +837,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Assert that certain buttons are not present on the page.
    *
    * @param string $buttons
-   *    A comma separated list of button labels.
+   *   A comma separated list of button labels.
    *
    * @throws \Exception
    *   Thrown when an unexpected button is present.
@@ -843,8 +881,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
   /**
    * Opens the plus button menu on JS-enabled browsers.
+   *
+   * @When I open the plus button menu
    */
-  protected function openPlusButtonMenu() {
+  public function openPlusButtonMenu() {
     if ($this->browserSupportsJavascript()) {
       $driver = $this->getSession()->getDriver();
       $this->getSession()->getDriver()->click('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//button');
@@ -898,7 +938,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * If author is filled, mail and name are not required.
    *
-   * @param TableNode $table
+   * @param \Behat\Gherkin\Node\TableNode $table
    *   The comment data.
    *
    * @throws \Exception
@@ -971,6 +1011,90 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       throw new \Exception('The current workflow state field is not present on the page.');
     }
     \PHPUnit_Framework_Assert::assertEquals($state, trim($element->getText()));
+  }
+
+  /**
+   * Emulates closing and re-opening of the browser.
+   *
+   * @When I close and reopen the browser
+   */
+  public function restartSession() {
+    /** @var \Symfony\Component\BrowserKit\CookieJar $cookie_jar */
+    $cookie_jar = $this->getSession()->getDriver()->getClient()->getCookieJar();
+
+    // We are going to keep all the cookies with a valid expire time. The
+    // \Symfony\Component\BrowserKit\CookieJar::all() method already removes
+    // expired cookies, so we need to strip the ones with a null expire time.
+    // A null expire time means that the cookie is going to be deleted when the
+    // browser is closed.
+    $persistent = [];
+    foreach ($cookie_jar->all() as $cookie) {
+      if (!is_null($cookie->getExpiresTime())) {
+        $persistent[] = $cookie;
+      }
+    }
+
+    $this->getSession()->restart();
+    $cookie_jar = $this->getSession()->getDriver()->getClient()->getCookieJar();
+
+    foreach ($persistent as $cookie) {
+      $cookie_jar->set($cookie);
+    }
+  }
+
+  /**
+   * Checks that the description of the field with given label is as expected.
+   *
+   * @param string $label
+   *   The label of the field to check.
+   * @param string $description
+   *   The expected description.
+   *
+   * @throws \Exception
+   *   Thrown when the field does not have a description.
+   * @throws \PHPUnit_Framework_ExpectationFailedException
+   *   Thrown when none of the field's descriptions match the given text.
+   *
+   * @Then I should see the description :description for (the ):label( field)
+   */
+  public function assertFieldDescription($label, $description) {
+    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]//div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    if (empty($elements)) {
+      throw new \Exception("The $label field does not have a description.");
+    }
+    foreach ($elements as $element) {
+      try {
+        \PHPUnit_Framework_Assert::assertEquals($description, trim($element->getText()));
+        // The description was found, stop searching.
+        return;
+      }
+      catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+        // The description did not match the expected string, keep searching.
+      }
+    }
+    throw new \PHPUnit_Framework_ExpectationFailedException("The description $description was not found for the $label field.");
+  }
+
+  /**
+   * Checks that the description of the field with given label is not present.
+   *
+   * @param string $label
+   *   The label of the field to check.
+   * @param string $description
+   *   The description that is expected to be absent.
+   *
+   * @throws \Exception
+   *   Thrown when the field does not have a description.
+   *
+   * @Then I should not see the description :description for (the ):label( field)
+   */
+  public function assertNoFieldDescription($label, $description) {
+    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]//div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    foreach ($elements as $element) {
+      \PHPUnit_Framework_Assert::assertNotEquals($description, trim($element->getText()));
+    }
   }
 
 }

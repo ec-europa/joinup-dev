@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Site\Settings;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\MigrationInterface;
@@ -26,9 +27,18 @@ use Drupal\migrate_spreadsheet\Plugin\migrate\source\Spreadsheet;
 class Mapping extends Spreadsheet {
 
   /**
+   * Connection to source database.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $db;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration) {
+    $this->db = Database::getConnection('default', 'migrate');
+
     // Allow switching between 'production' and 'test' mode.
     $mode = Settings::get('joinup_migrate.mode');
     if (!$mode || !in_array($mode, ['production', 'test'])) {
@@ -38,6 +48,85 @@ class Mapping extends Spreadsheet {
     $configuration['file'] = "../resources/migrate/mapping-$mode.xlsx";
 
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function initializeIterator() {
+    /** @var \Drupal\migrate_spreadsheet\SpreadsheetIteratorInterface $iterator */
+    $iterator = parent::initializeIterator();
+
+    $iterator->rewind();
+    $rows = [];
+    while ($iterator->valid()) {
+      $row = $iterator->current();
+      if ($this->rowIsValid($row)) {
+        $rows[] = $row;
+      }
+      $iterator->next();
+    }
+
+    return new \ArrayIterator($rows);
+  }
+
+  /**
+   * Checks if a row is valid and logs all inconsistencies.
+   *
+   * @param array $row
+   *   The row to be checked.
+   *
+   * @return bool
+   *   If the row is valid.
+   */
+  protected function rowIsValid(array $row) {
+    $messages = [];
+
+    $nid = $row['Nid'];
+    if (empty($row['Collection_Name']) || $row['Collection_Name'] === '#N/A') {
+      $messages[] = 'Collection name empty or invalid';
+    }
+    if (!is_numeric($nid)) {
+      $messages[] = "Invalid Nid '$nid'";
+    }
+
+    $title = $this->db->select('node')
+      ->fields('node', ['title'])
+      ->condition('nid', $nid)
+      ->execute()
+      ->fetchField();
+    if (!$title) {
+      $messages[] = "This node doesn't exist in the source database";
+    }
+
+    if ($row['Type of content item'] === 'Interoperability Solution') {
+      // Check for 'asset_release' acting as 'release'.
+      /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+      $query = $this->db->select('og_ancestry', 'o')
+        ->fields('o', ['nid'])
+        ->condition('o.nid', (int) $nid)
+        ->condition('g.type', 'project_project');
+      $query->join('node', 'g', 'o.group_nid = g.nid');
+      // Is release.
+      if ($query->execute()->fetchField()) {
+        $messages[] = "'$title' is a release and shouldn't be in the Excel file. Releases are computed";
+      }
+    }
+
+    if (!in_array($row['New collection'], ['Yes', 'No'])) {
+      $messages[] = "Invalid 'New Collection': '{$row['New collection']}'";
+    }
+
+    // Register inconsistencies.
+    if ($messages) {
+      $row_index = $row['row_index'];
+      $source_ids = ['Nid' => $row['Nid']];
+      foreach ($messages as $message) {
+        $this->migration->getIdMap()->saveMessage($source_ids, "Row: $row_index, Nid: $nid: $message");
+      }
+    }
+
+    return empty($messages);
   }
 
 }

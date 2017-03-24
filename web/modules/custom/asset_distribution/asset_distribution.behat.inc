@@ -15,7 +15,7 @@ use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_file\RdfFileHandler;
+use Drupal\file_url\FileUrlHandler;
 
 /**
  * Behat step definitions for testing asset distributions.
@@ -67,7 +67,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   /**
    * Creates a number of asset distributions with data provided in a table.
    *
-   * @param TableNode $asset_distribution_table
+   * @param \Behat\Gherkin\Node\TableNode $asset_distribution_table
    *   The asset distribution data.
    *
    * @codingStandardsIgnoreStart
@@ -104,7 +104,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Fields 'title' and 'description' are required. Field 'access url' can be
    * either an external valid URL or a local file to be uploaded.
    *
-   * @param TableNode $asset_distribution_table
+   * @param \Behat\Gherkin\Node\TableNode $asset_distribution_table
    *   The asset distribution data.
    *
    * @throws \Exception
@@ -135,7 +135,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       global $base_url;
       if (!UrlHelper::isValid($url, TRUE) || !UrlHelper::isExternal($url) || UrlHelper::externalIsLocal($url, $base_url)) {
         // It's a local file to be uploaded.
-        $values['field_ad_access_url'] = $this->uploadRdfFile($url, $this->getMinkParameter('files_path'));
+        $values['field_ad_access_url'] = $this->uploadFileUrl($url, $this->getMinkParameter('files_path'));
       }
     }
 
@@ -318,10 +318,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Converts values from user friendly to normal machine values.
    *
    * @param array $fields
-   *    An array of fields keyed by field name.
+   *   An array of fields keyed by field name.
    *
    * @return array
-   *    The array with the values converted.
+   *   The array with the values converted.
    */
   protected function convertValueAliases(array $fields) {
     if (!empty($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD])) {
@@ -339,7 +339,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * This currently only checks the first download link.
    *
    * @param string $distribution
-   *    The name of the distribution.
+   *   The name of the distribution.
    *
    * @throws \Exception
    *   Thrown if the download link cannot be found.
@@ -351,8 +351,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     if (empty($distribution->field_ad_access_url->first())) {
       throw new \Exception(sprintf('Asset distribution "%s" does not contain any download links.', $distribution->label()));
     }
-    $file = RdfFileHandler::urlToFile($distribution->field_ad_access_url->target_id);
-    $promoted_link = RdfFileHandler::isRemote($file) ? $distribution->field_ad_access_url->target_id : file_create_url($file->getFileUri());
+    $file = FileUrlHandler::urlToFile($distribution->field_ad_access_url->target_id);
+    $promoted_link = FileUrlHandler::isRemote($file) ? $distribution->field_ad_access_url->target_id : file_create_url($file->getFileUri());
     $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$promoted_link}']");
     if (empty($result)) {
       throw new \Exception(sprintf('No link was found in the "%s" distribution on the page %s', $distribution->label(), $this->getSession()->getCurrentUrl()));
@@ -365,7 +365,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * The compact view is used for example in the "Downloads" page.
    *
    * @param string $distribution
-   *    The name of the distribution.
+   *   The name of the distribution.
    *
    * @throws \Exception
    *   Thrown if the link was found.
@@ -383,9 +383,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * Asserts that a file is attached to a distribution.
    *
    * @param string $distribution
-   *    The distribution title.
+   *   The distribution title.
    * @param string $file_name
-   *    The file name.
+   *   The file name.
    *
    * @throws \Exception
    *    Thrown when the file or the link is not found.
@@ -394,7 +394,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    */
   public function assertLinkSynchronized($distribution, $file_name) {
     $distribution = $this->getAssetDistributionByName($distribution);
-    $file = RdfFileHandler::urlToFile($distribution->field_ad_access_url->target_id);
+    $file = FileUrlHandler::urlToFile($distribution->field_ad_access_url->target_id);
     if (($file->getFilename() !== $file_name) || !file_create_url($file->getFileUri())) {
       throw new \Exception("The file {$file_name} was not found in the '{$distribution->label()}' distribution'");
     }
@@ -423,20 +423,20 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Upload a file to a 'rdf_file' field.
+   * Upload a file to a 'file_url' field.
    *
    * @param string $filename
    *   The file name ti be uplaoded.
-   * @param string $rdf_file_field
-   *   The RDF field label.
+   * @param string $file_url_field
+   *   The file URL field label.
    *
    * @throws \Exception
    *   The file to be uploaded doesn't exists.
    *
-   * @Given I upload the file :filename to :rdf_file_field
+   * @Given I upload the file :filename to :file_url_field
    */
-  public function uploadFileToRdfFileField($filename, $rdf_file_field) {
-    $id = $this->rdfFileFieldHelper($rdf_file_field, 'file');
+  public function uploadFileToFileUrlField($filename, $file_url_field) {
+    $id = $this->fileUrlFieldHelper($file_url_field, 'file');
 
     // Qualify the file path.
     $files_path = $this->getMinkParameter('files_path');
@@ -450,26 +450,26 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Sets an URI as remote file to a 'rdf_file' field.
+   * Sets an URI as remote file to a 'file_url' field.
    *
    * @param string $uri
    *   The URI string to be set.
-   * @param string $rdf_file_field
-   *   The RDF field label.
+   * @param string $file_url_field
+   *   The file URL field label.
    *
-   * @Given I set the URI :uri to :rdf_file_field
+   * @Given I set the URI :uri to :file_url_field
    */
-  public function setUriToRdfFileField($uri, $rdf_file_field) {
-    $id = $this->rdfFileFieldHelper($rdf_file_field, 'remote-file');
+  public function setUriToFileUrlField($uri, $file_url_field) {
+    $id = $this->fileUrlFieldHelper($file_url_field, 'remote-file');
     // Fill in the text.
     $this->getSession()->getPage()->fillField($id, $uri);
   }
 
   /**
-   * Provides a helper for RDF file field steps.
+   * Provides a helper for file URL field steps.
    *
-   * @param string $rdf_file_field
-   *   The RDF file field label.
+   * @param string $file_url_field
+   *   The file URL field label.
    * @param string $option
    *   What option to use: 'file' or 'remote-file'.
    *
@@ -479,14 +479,14 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \Exception
    *   When parts of the widget cannot be found.
    */
-  protected function rdfFileFieldHelper($rdf_file_field, $option) {
+  protected function fileUrlFieldHelper($file_url_field, $option) {
     $session = $this->getSession();
     $page = $session->getPage();
 
-    // Locate the RDF file field widget wrapper.
-    $wrapper = $page->find('xpath', "//label[text()='$rdf_file_field']/ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' field--type-rdf-file ')][1]");
+    // Locate the file URL field widget wrapper.
+    $wrapper = $page->find('xpath', "//label[text()='$file_url_field']/ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' field--type-file-url ')][1]");
     if (!$wrapper) {
-      throw new ElementNotFoundException($session->getDriver(), "Cannot find RDF file field '$rdf_file_field'.");
+      throw new ElementNotFoundException($session->getDriver(), "Cannot find the file URL field '$file_url_field'.");
     }
     // Get the data selector but trim the '-wrapper' suffix.
     $data_selector_base = substr($wrapper->getAttribute('data-drupal-selector'), 0, -8);
@@ -495,7 +495,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     $data_selector_radio = "$data_selector_base-0-file-wrap-select-$option";
     $radio = $page->find('xpath', "//input[@type='radio' and @data-drupal-selector='$data_selector_radio']");
     if (!$radio) {
-      throw new \Exception($session->getDriver(), "Malformed RDF file field '$rdf_file_field': Can't find the inner '$option' radio option.");
+      throw new \Exception($session->getDriver(), "Malformed file URL field '$file_url_field': Can't find the inner '$option' radio option.");
     }
     $page->selectFieldOption($radio->getAttribute('name'), $option);
 
@@ -510,7 +510,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     }
     $field = $page->find('xpath', "//input[@type='$type' and @data-drupal-selector='$data_selector']");
     if (!$field) {
-      throw new \Exception($session->getDriver(), "Malformed RDF file field '$rdf_file_field': Can't find the inner field '$data_selector'.");
+      throw new \Exception($session->getDriver(), "Malformed file URL field '$file_url_field': Can't find the inner field '$data_selector'.");
     }
 
     return $field->getAttribute('id');

@@ -6,13 +6,11 @@ package: Joinup
 
 dependencies:
   - ds
-  - field
+  - joinup_community_content
   - joinup_core
   - menu_ui
-  - node
   - og
   - path
-  - text
   - search_api_field
   - user
 
@@ -29,5 +27,4 @@ config_devel:
   - field.field.node.custom_page.field_cp_content_listing
   - field.field.node.custom_page.og_audience
   - field.storage.node.field_cp_content_listing
-  - field.storage.node.og_audience
   - node.type.custom_page

@@ -37,27 +37,6 @@ class NodeWorkflowAccessControlHandler {
   const POST_MODERATION = 0;
 
   /**
-   * Flag for option for the eLibrary creation field.
-   *
-   * Only facilitators are allowed to create content.
-   */
-  const ELIBRARY_ONLY_FACILITATORS = 0;
-
-  /**
-   * Flag for option for the eLibrary creation field.
-   *
-   * Only users that are subscribed to the group are allowed to create content.
-   */
-  const ELIBRARY_MEMBERS_FACILITATORS = 1;
-
-  /**
-   * Flag for option for the eLibrary creation field.
-   *
-   * All registered users can create content.
-   */
-  const ELIBRARY_REGISTERED_USERS = 2;
-
-  /**
    * The machine name of the default workflow for groups.
    *
    * @todo: Change the group workflows to 'default'.
@@ -129,14 +108,14 @@ class NodeWorkflowAccessControlHandler {
    * Main handler for access checks for group content in joinup.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The group content entity object.
+   *   The group content entity object.
    * @param string $operation
-   *    The CRUD operation.
+   *   The CRUD operation.
    * @param \Drupal\Core\Session\AccountInterface $account
-   *    The user account.
+   *   The user account.
    *
    * @return \Drupal\Core\Access\AccessResult
-   *    The result of the access check.
+   *   The result of the access check.
    */
   public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account = NULL) {
     if ($account === NULL) {
@@ -179,12 +158,12 @@ class NodeWorkflowAccessControlHandler {
    * take care of the user being able to view his own unpublished content.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The group content entity.
+   *   The group content entity.
    * @param \Drupal\Core\Session\AccountInterface $account
-   *    The user account.
+   *   The user account.
    *
    * @return \Drupal\Core\Access\AccessResult
-   *    The access result check.
+   *   The access result check.
    */
   protected function entityViewAccess(EntityInterface $entity, AccountInterface $account) {
     $parent = $this->getEntityParent($entity);
@@ -222,12 +201,12 @@ class NodeWorkflowAccessControlHandler {
    * In all other cases, we allow entity access handler to decide.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The entity object.
+   *   The entity object.
    * @param \Drupal\Core\Session\AccountInterface $account
-   *    The user account.
+   *   The user account.
    *
    * @return \Drupal\Core\Access\AccessResult
-   *    The access result.
+   *   The access result.
    */
   protected function entityDeleteAccess(EntityInterface $entity, AccountInterface $account) {
     $entity_type = ($entity->getEntityTypeId() === 'node') ? 'content' : 'rdf_entity';
@@ -277,10 +256,10 @@ class NodeWorkflowAccessControlHandler {
    * Returns the appropriate workflow to use for the passed entity.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *    The group content entity.
+   *   The group content entity.
    *
    * @return string
-   *    The id of the workflow to use.
+   *   The id of the workflow to use.
    */
   protected function getEntityWorkflow(EntityInterface $entity) {
     $workflow = $entity->field_state->first()->getWorkflow();

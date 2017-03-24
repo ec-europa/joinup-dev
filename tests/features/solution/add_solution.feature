@@ -81,16 +81,16 @@ Feature: "Add solution" visibility options.
     And I click "Add solution"
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
-    And the following fields should not be present "Groups audience, Other groups"
+    And the following fields should not be present "Groups audience, Other groups, Current workflow state"
     When I fill in the following:
       | Title            | Espresso is the solution                                               |
       | Description      | This is a test text                                                    |
-      | Documentation    | text.pdf                                                               |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "Demography" from "Policy domain"
-    And I attach the file "text.pdf" to "Documentation"
+    # Attach a PDF to the documentation, this has a hidden label "File".
+    And I attach the file "text.pdf" to "File"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing contact information.
@@ -124,12 +124,12 @@ Feature: "Add solution" visibility options.
     When I fill in the following:
       | Title            | V60 filter coffee solution                                             |
       | Description      | This is a test text                                                    |
-      | Documentation    | text.pdf                                                               |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "E-inclusion" from "Policy domain"
-    And I attach the file "text.pdf" to "Documentation"
+    # Attach a PDF to the documentation, this has a hidden label "File".
+    And I attach the file "text.pdf" to "File"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing contact information.
@@ -151,3 +151,40 @@ Feature: "Add solution" visibility options.
     # Clean up the solution that was created through the UI.
     Then I delete the "V60 filter coffee solution" solution
     Then I delete the "Espresso is the solution" solution
+
+  @terms
+  Scenario: Correct transition buttons are shown after a partial filled form is submitted.
+    # This is a regression test for a bug that was causing the owner state
+    # buttons to leak into the solution create form, causing critical errors
+    # when an invalid state button was pressed.
+    # @see issue ISAICP-3209
+    Given the following collection:
+      | title | Language parsers |
+      | state | validated        |
+    When I am logged in as a facilitator of the "Language parsers" collection
+    And I go to the homepage of the "Language parsers" collection
+    And I click "Add solution"
+    And I fill in the following:
+      | Title       | PHP comments parser                             |
+      | Description | A simple parser that goes through PHP comments. |
+    And I select "Data gathering, data processing" from "Policy domain"
+    And I select "[ABB117] Implementing Guideline" from "Solution type"
+
+    # Fill the owner inline form, but don't submit it.
+    And I press "Add new" at the "Owner" field
+    And I fill in "Name" with "Azure Tennison"
+
+    # Submit the incomplete form, so error messages about missing fields will
+    # be shown.
+    When I press "Propose"
+    Then I should see the following error messages:
+      | error messages                         |
+      | Banner field is required.              |
+      | Contact information field is required. |
+      | Logo field is required.                |
+    # Buttons should be shown for the allowed solution transitions.
+    And I should see the button "Save as draft"
+    And I should see the button "Propose"
+    # The owner entity state buttons should not be shown.
+    But I should not see the button "Request deletion"
+    And I should not see the button "Update"

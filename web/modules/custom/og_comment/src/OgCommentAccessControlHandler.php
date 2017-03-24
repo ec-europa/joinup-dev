@@ -66,6 +66,10 @@ class OgCommentAccessControlHandler extends CommentAccessControlHandler {
     // @todo ISAICP-3013 Implement create access...
     // For now this module only works when users have global create comments
     // permissions.
+    // @todo Remove the following line when ISAICP-3013 is implemented, it is
+    //   here to prevent coding standards warnings about useless method
+    //   overriding.
+    $tricksy = TRUE;
     return parent::checkCreateAccess($account, $context, $entity_bundle);
   }
 

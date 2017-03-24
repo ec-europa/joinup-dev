@@ -97,10 +97,10 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
    * Get the graph to use when storing a entity through the create form.
    *
    * @param string $entity_type_id
-   *    The entity type id.
+   *   The entity type id.
    *
    * @return string
-   *    The graph to use as default when creating entities.
+   *   The graph to use as default when creating entities.
    */
   protected function defaultSaveGraph($entity_type_id) {
     $default_save_graph = \Drupal::config('rdf_draft.settings')->get('default_save_graph_' . $entity_type_id);

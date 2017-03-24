@@ -127,7 +127,7 @@ class JoinCollectionForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    /** @var RdfInterface $collection */
+    /** @var \Drupal\rdf_entity\Entity\RdfInterface $collection */
     $collection = Rdf::load($form_state->getValue('collection_id'));
     /** @var \Drupal\user\UserInterface $user */
     $user = User::load($form_state->getValue('user_id'));
