@@ -39,6 +39,8 @@ Feature: "Add release" visibility options.
     And I click "Add release"
     Then I should see the heading "Add Release"
     And the following fields should be present "Name, Release number, Release notes, Documentation, Spatial coverage, Keyword, Status, Contact information, Language"
+    # The entity is new, so the current workflow state should not be shown.
+    And the following fields should not be present "Current workflow state"
     When I fill in "Name" with "Release Test 2"
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."

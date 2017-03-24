@@ -5,3 +5,43 @@ core: 8.x
 package: Joinup
 dependencies:
   - default_content
+
+default_content:
+  rdf_entity:
+    # Asset Distribution
+    - 51794c8d-9691-472a-8072-862812ba8bfe
+    - 177a01da-800a-4519-84f1-f4b5ac20734e
+    - dd2a39a2-5470-4dbf-9b8a-53482198c74d
+    # Asset Release
+    - 7a51fc04-e0c6-4934-bd18-a77086a75984
+    # Collection
+    - e682a47c-4fa3-49c7-9d42-416379751111
+    - 4e56d06c-c8c3-40fd-b2a0-773301ebe9b8
+    - 4d0a6736-b28a-4cf4-aefd-d7c4f5af70bb
+    - 11c81d8f-1527-4044-a694-b847d66362e1
+    # Contact information
+    - 8b672838-7d24-4050-9983-f1eba5e988a8
+    - 882aec35-389b-46af-ab39-c6d834f9a457
+    # Licence
+    - 8c3e0162-ec2a-4de6-abf7-d014034d0350
+    - 3bac70f9-dd21-42dc-b669-cee3d5823ec3
+    # Owner
+    - 3e9231e3-14d9-430c-91f0-626d1e3381e0
+    - ed27d607-aa54-4533-b53f-6fb4ab73e5be
+    - ef3ef74d-28f3-4a1b-9ce8-15c03555b328
+    - 234b585f-e065-4678-9195-48f1ba78e1d5
+    - 68ff887e-f3d7-4f10-b4cc-86350697b2a9
+    # Solution
+    - "http://www.w3.org/ns/person#"
+    - 51b16fc2-464c-4dbf-ac61-1c44111925fc
+    - a3e28554-6104-4e4e-a1f5-e23265e3bca7
+    - eb8a23ce-121f-438b-8ccf-a2f3bfb63268
+    - 903a3914-7333-4aa8-8799-064dc70a711c
+    - c64ac7c9-48b2-4c64-abbd-b7fc0e9c24c7
+  taxonomy_term:
+    # Policy domain
+    - "http://joinup.eu/ontology/policy-domain/category#agriculture-food-and-environment"
+    - "http://joinup.eu/ontology/policy-domain/category#e-govenment"
+    - "http://joinup.eu/ontology/policy-domain#e-identity"
+    - "http://joinup.eu/ontology/policy-domain#social-polices"
+    - "http://joinup.eu/ontology/policy-domain#whales-protection"

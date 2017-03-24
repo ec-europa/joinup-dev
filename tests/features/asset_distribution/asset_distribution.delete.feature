@@ -1,4 +1,4 @@
-@api
+@api @email
 Feature: Asset distribution deleting.
   In order to manage asset distributions
   As a solution owner or solution facilitator
@@ -8,6 +8,12 @@ Feature: Asset distribution deleting.
     Given the following solutions:
       | title                 | description        | state     |
       | Rough valentine's day | Sample description | validated |
+    And users:
+      | name       | mail                  |
+      | Papa Roach | paparoach@example.com |
+    And the following solution user memberships:
+      | solution              | user       | roles                      |
+      | Rough valentine's day | Papa roach | administrator, facilitator |
     And the following distribution:
       | title       | Francesco's cats      |
       | description | Sample description    |
@@ -19,4 +25,9 @@ Feature: Asset distribution deleting.
     And I click "Edit"
     Then I should see the link "Delete"
     When I click "Delete"
-    Then I should see the button "Delete"
+    And I press "Delete"
+    Then the following email should have been sent:
+      | template  | Message to the owner when a distribution is deleted                     |
+      | recipient | Papa Roach                                                              |
+      | subject   | Joinup - Distribution has been deleted                                       |
+      | body      | The asset distribution "Francesco's cats" has been deleted from Joinup. |
