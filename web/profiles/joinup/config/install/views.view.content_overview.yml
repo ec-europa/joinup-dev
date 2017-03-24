@@ -8,8 +8,8 @@ dependencies:
     - joinup_core
     - search_api
     - text
-id: collections
-label: Collections
+id: content_overview
+label: Content
 module: views
 description: ''
 tag: ''
@@ -47,15 +47,10 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 12
+          items_per_page: 10
           offset: 0
           id: 0
           total_pages: null
-          tags:
-            previous: '‹ Previous'
-            next: 'Next ›'
-            first: '« First'
-            last: 'Last »'
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -64,6 +59,11 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
           quantity: 9
       style:
         type: tiles
@@ -76,15 +76,18 @@ display:
         options:
           view_modes:
             'entity:node':
-              custom_page: default
-              document: default
+              custom_page: view_mode_tile
+              discussion: view_mode_tile
+              document: view_mode_tile
               event: view_mode_tile
-              news: default
+              news: view_mode_tile
             'entity:rdf_entity':
               asset_distribution: default
               asset_release: default
               collection: view_mode_tile
+              contact_information: default
               licence: default
+              owner: ''
               solution: view_mode_tile
       fields:
         search_api_language:
@@ -431,10 +434,10 @@ display:
             multi_separator: ', '
           plugin_id: search_api_field
       filters:
-        rid:
-          id: rid
+        entity_bundle:
+          id: entity_bundle
           table: search_api_index_collections
-          field: rid
+          field: entity_bundle
           relationship: none
           group_type: group
           admin_label: ''
@@ -442,24 +445,138 @@ display:
           value:
             min: ''
             max: ''
-            value: collection
+            value: news
           group: 1
           exposed: false
           expose:
-            operator_id: rid_op
-            label: 'Rdf Type'
+            operator_id: ''
+            label: ''
             description: ''
             use_operator: false
-            operator: rid_op
-            identifier: rid
+            operator: ''
+            identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              moderator: '0'
-              administrator: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: search_api_string
+        entity_bundle_1:
+          id: entity_bundle_1
+          table: search_api_index_collections
+          field: entity_bundle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: document
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: search_api_string
+        entity_bundle_2:
+          id: entity_bundle_2
+          table: search_api_index_collections
+          field: entity_bundle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: discussion
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: search_api_string
+        entity_bundle_3:
+          id: entity_bundle_3
+          table: search_api_index_collections
+          field: entity_bundle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: event
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
           is_grouped: false
           group_info:
             label: ''
@@ -474,7 +591,7 @@ display:
             group_items: {  }
           plugin_id: search_api_string
       sorts: {  }
-      title: Collections
+      title: Content
       header: {  }
       footer: {  }
       empty: {  }
@@ -482,12 +599,17 @@ display:
       arguments: {  }
       display_extenders: {  }
       show_admin_links: false
+      filter_groups:
+        operator: AND
+        groups:
+          1: OR
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
       tags:
         - 'config:field.storage.rdf_entity.field_ar_description'
   page_1:
@@ -497,12 +619,13 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: collections
+      path: content
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
       tags:
         - 'config:field.storage.rdf_entity.field_ar_description'

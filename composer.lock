@@ -1894,7 +1894,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/ds",
-                "reference": "4aae0b5fe41178db8539e530d325372f1e1c5795"
+                "reference": "07fa80c238f789afc055f7299abb603a09f76b1d"
             },
             "require": {
                 "drupal/core": "^8.3"
@@ -1909,8 +1909,8 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.x-dev",
-                    "datestamp": "1488969483"
+                    "version": "8.x-3.0-alpha1+11-dev",
+                    "datestamp": "1490105282"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -1950,7 +1950,7 @@
                 "issues": "https://www.drupal.org/project/issues/ds",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
             },
-            "time": "2017-03-13 21:17:28"
+            "time": "2017-03-21 15:13:51"
         },
         {
             "name": "drupal/facets",
@@ -1979,7 +1979,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha7",
-                    "datestamp": "1482263583"
+                    "datestamp": "1490003883"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2339,7 +2339,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha1",
-                    "datestamp": "1487106486"
+                    "datestamp": "1489608482"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7431,7 +7431,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-02-06 08:22:23"
+            "time": "2017-02-06T08:22:23+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -7793,7 +7793,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
             },
-            "time": "2017-03-03 01:18:28"
+            "time": "2017-03-03T01:18:28+00:00"
         },
         {
             "name": "drupal/devel",

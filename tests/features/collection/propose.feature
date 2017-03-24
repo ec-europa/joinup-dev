@@ -34,6 +34,7 @@ Feature: Proposing a collection
     When I am on the homepage
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
+    And the following fields should not be present "Current workflow state"
     And the following field widgets should be present "Contact information, Owner"
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
@@ -117,6 +118,7 @@ Feature: Proposing a collection
     # When toggling to closed, the option 'any registered user' should disappear
     # and the option for facilitators should appear.
     When I check "Closed collection"
+    And I wait for AJAX to finish
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected
     And I should not see the text "Any registered user can create new content."
@@ -132,7 +134,9 @@ Feature: Proposing a collection
     # checkbox status open-closed-open-closed.
     # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
     When I uncheck "Closed collection"
+    And I wait for AJAX to finish
     And I check "Closed collection"
+    And I wait for AJAX to finish
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected
 

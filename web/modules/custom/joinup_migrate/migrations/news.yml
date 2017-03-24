@@ -1,11 +1,11 @@
-id: document
-label: Document
+id: news
+label: 'News'
 migration_tags:
   - node
+  - news
   - og
-  - document
 source:
-  plugin: document
+  plugin: news
   track_changes: true
 process:
   title: title
@@ -22,25 +22,12 @@ process:
       no_stub: true
     - plugin: default_value
       default_value: 1
-  field_type: document_type
-  field_document_publication_date: publication_date
-  field_file: field_file
+  field_news_source_url: source_url
   field_keywords: keywords
-  field_document_spatial_coverage:
+  field_news_spatial_coverage:
     plugin: term_reference
     source: country
     vocabulary: spatial
-
-  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3185
-  # field_licence
-
-  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3186
-  # field_policy_domain
-
-  og_audience:
-    plugin: migration
-    source: collection
-    migration: collection
 
   # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
   # Revisit this mapping in ISAICP-3068.
@@ -48,9 +35,14 @@ process:
     plugin: default_value
     default_value: validated
 
+  og_audience:
+    plugin: migration
+    source: collection
+    migration: collection
 destination:
   plugin: entity:node
-  default_bundle: document
+  default_bundle: news
 migration_dependencies:
  required:
-   - document_file
+   - user
+   - prepare

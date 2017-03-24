@@ -36,7 +36,11 @@ SELECT
   n.nid,
   n.vid,
   n.type,
-  IF(n.type = 'case_epractice', 'case', n.type),
+  CASE n.type
+    WHEN 'case_epractice' THEN 'case'
+    WHEN 'legaldocument' THEN 'legal'
+    ELSE n.type
+  END,
   CONCAT(n.title, IF(ctce.field_acronym_value IS NOT NULL AND TRIM(ctce.field_acronym_value) <> '', CONCAT(' (', TRIM(ctce.field_acronym_value), ')'), '')),
   n.created,
   n.changed,
