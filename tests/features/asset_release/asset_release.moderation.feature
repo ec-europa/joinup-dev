@@ -34,7 +34,8 @@ Feature: Asset release moderation
     And I press "Save as draft"
     Then I should see the heading "Release of the dark ship 1"
     When I click "Edit" in the "Entity actions" region
-    And I fill in "Release number" with "v1"
+    Then the current workflow state should be "Draft"
+    When I fill in "Release number" with "v1"
     And I press "Publish"
     Then I should see the heading "Release of the dark ship v1"
 
@@ -42,7 +43,8 @@ Feature: Asset release moderation
     When I am logged in as a moderator
     And I go to the "Release of the dark ship" release
     And I click "Edit" in the "Entity actions" region
-    And I fill in "Name" with "Release"
+    Then the current workflow state should be "Validated"
+    When I fill in "Name" with "Release"
     And I press "Request changes"
     # The published version does not change.
     Then I should see the heading "Release of the dark ship v1"
@@ -53,6 +55,7 @@ Feature: Asset release moderation
     Then I should see the heading "Release of the dark ship v1"
     When I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Release Release"
+    And the current workflow state should be "In assessment"
     When I fill in "Name" with "Release fix"
     And I press "Update"
     # The updated version is still not published.
