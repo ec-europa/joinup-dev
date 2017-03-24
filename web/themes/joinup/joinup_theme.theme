@@ -716,3 +716,27 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
   $form['#attached']['library'][] = 'joinup_theme/form-components';
   $form['#attached']['drupalSettings']['widthBreakpoint'] = 100;
 }
+
+/**
+ * Implements hook_preprocess_node().
+ *
+ * Adds extension and file size to the available variables when rendering a
+ * document node.
+ */
+function joinup_theme_preprocess_node(&$variables) {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+
+  if ($node->bundle() !== 'document' || $node->get('field_file')->isEmpty()) {
+    return;
+  }
+
+  /** @var \Drupal\file\FileInterface $file */
+  $file = $node->get('field_file')->first()->entity;
+  $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+
+  // Do not render file size for remote files.
+  if (!\Drupal::service('file_url.handler')->isRemote($file) && $file->getSize()) {
+    $variables['file_size'] = format_size(round($file->getSize()));
+  }
+}

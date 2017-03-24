@@ -76,10 +76,25 @@
   ]
 %}
 <div class="{{ classes|join(' ') }}">
+  {% if view_mode == 'view_mode_featured' %}
+    <div class="listing__image listing__image--default">
+      <span class="icon icon--mime-{{ extension }}"></span>
+    </div>
+  {% endif %}
   <div class="listing__metadata">
     <div class="listing__field">
       <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
     </div>
+    <div class="listing__field">
+      <div class="label gray">{{ 'Type'|t }}:</div>
+      <div class="value bold">{{ extension|upper }}</div>
+    </div>
+    {% if file_size %}
+    <div class="listing__field">
+      <div class="label gray">{{ 'Weight'|t }}:</div>
+      <div class="value bold">{{ file_size }}</div>
+    </div>
+    {% endif %}
     <div class="listing__field">
       <p class="listing__teaser">{{ content.body }}</p>
     </div>
