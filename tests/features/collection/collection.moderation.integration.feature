@@ -29,8 +29,10 @@ Feature: As a user of the website
     And I go to the homepage of the "Willing Fairy" collection
     Then I should see the heading "Willing Fairy"
     And I should see the link "View draft"
+    And I should see the link "View"
+    But I should not see the following warning messages:
+      | You are viewing the published version. To view the latest draft version, click here. |
     # @todo: Fix the visibility issue.
-    But I should see the link "View"
     And I should see the link "Edit" in the "Entity actions" region
 
     # I should not be able to view draft collections I'm not a facilitator of.
@@ -43,26 +45,40 @@ Feature: As a user of the website
     # Since it's validated, the normal view is the published view and the
     # "View draft" should not be shown.
     And I should not see the link "View Draft"
+    And I should not see the following warning messages:
+      | You are viewing the published version. To view the latest draft version, click here. |
+
 
     # Edit as facilitator and save as draft.
     When I click "Edit"
-    And I fill in "Title" with "Construction of Scent"
+    Then the following fields should be present "Current workflow state"
+    And the current workflow state should be "Validated"
+    When I fill in "Title" with "Construction of Scent"
     And I press "Save as draft"
 
     # The page redirects to the canonical view after editing.
     Then I should see the heading "Destruction of Scent"
     And I should not see the heading "Construction of Scent"
     And I should see the link "View draft"
+    And I should see the following warning messages:
+      | You are viewing the published version. To view the latest draft version, click here. |
     When I click "View draft"
     # The header still shows the published title but the draft title is included
     # in the page.
     Then I should see the heading "Construction of Scent"
 
+    # Ensure that the message is not shown to non privileged users.
+    When I am an anonymous user
+    And I go to the homepage of the "Destruction of Scent" collection
+    And I should not see the following warning messages:
+      | You are viewing the published version. To view the latest draft version, click here. |
+
     # Publish draft version of the collection.
     When I am logged in as a moderator
     And I go to the homepage of the "Construction of Scent" collection
     And I click "Edit"
-    And I press "Publish"
+    Then the current workflow state should be "Draft"
+    When I press "Publish"
     Then I should see the heading "Construction of Scent"
     And I should not see the link "View draft"
     But I should see the link "View"

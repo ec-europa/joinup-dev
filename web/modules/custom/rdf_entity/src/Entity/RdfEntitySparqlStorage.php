@@ -563,8 +563,12 @@ QUERY;
    */
   public function hasGraph($entity_id, $graph) {
     $this->getGraphHandler()->setRequestGraphs($entity_id, $this->entityTypeId, [$graph]);
+    $has_graph = (bool) $this->load($entity_id);
+    // Reset the graphs so that it does not interfere with other loadings in
+    // the current request.
+    $this->getGraphHandler()->resetRequestGraphs([$entity_id]);
     // @todo Find a cheaper way to do this, without a full entity load.
-    return (bool) $this->load($entity_id);
+    return $has_graph;
   }
 
   /**

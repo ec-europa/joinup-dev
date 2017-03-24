@@ -28,6 +28,9 @@ function joinup_migrate_install() {
   // be installed before 1.*.sql.
   ksort($views);
   foreach ($views as $view) {
+    $name = 'd8_' . Unicode::substr($view->name, 2);
+    $db->query("DROP VIEW IF EXISTS $name")->execute();
+    $db->query("DROP TABLE IF EXISTS $name")->execute();
     $db->query(file_get_contents($view->uri))->execute();
   }
 
