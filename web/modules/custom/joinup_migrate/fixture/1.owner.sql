@@ -1,5 +1,3 @@
-# DROP VIEW IF EXISTS d8_owner;
-# DROP TABLE IF EXISTS d8_owner;
 CREATE TABLE IF NOT EXISTS d8_owner (
     nid INT NOT NULL,
     vid INT NOT NULL,
