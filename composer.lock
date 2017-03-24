@@ -2297,6 +2297,14 @@
             ],
             "authors": [
                 {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -3335,24 +3343,30 @@
         },
         {
             "name": "ec-europa/infra",
-            "version": "0.5.4",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "c83cf644894c1cf95c0b7b55e8d10785f8da94a0"
+                "reference": "996b387770df94d1a327de619ca5924245823307"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/c83cf644894c1cf95c0b7b55e8d10785f8da94a0",
-                "reference": "c83cf644894c1cf95c0b7b55e8d10785f8da94a0",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/996b387770df94d1a327de619ca5924245823307",
+                "reference": "996b387770df94d1a327de619ca5924245823307",
                 "shasum": ""
             },
             "require": {
+                "continuousphp/aws-sdk-phing": "~0.2",
                 "pear/archive_tar": "^1.4",
                 "pear/versioncontrol_git": "dev-master",
                 "phing/phing": "2.*"
             },
             "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Aws\\": "src/Aws"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPLv3"
@@ -3363,7 +3377,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-01-03T11:12:48+00:00"
+            "time": "2017-03-21T10:33:35+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -3916,7 +3930,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2016-04-20 05:45:29"
+            "time": "2017-01-20 06:45:09"
         },
         {
             "name": "mtdowling/jmespath.php",

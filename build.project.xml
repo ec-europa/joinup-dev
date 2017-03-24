@@ -117,6 +117,16 @@
         </drush>
     </target>
 
+    <target name="clear-cache">
+        <drush
+                command="cr"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+        </drush>
+    </target>
+
     <!-- Compile SASS to CSS. -->
     <target name="compile-sass"
             description="Compile the SASS to CSS.">
@@ -172,7 +182,7 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures" />
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, acceptance-migration, clear-cache" />
 
     <target
         name="install-dev"
