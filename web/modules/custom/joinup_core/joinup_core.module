@@ -259,7 +259,7 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
     return;
   }
 
-  $link = Link::fromTextAndUrl('here', $url)->toString();
+  $link = Link::fromTextAndUrl(t('here'), $url)->toString();
   drupal_set_message(t('You are viewing the published version. To view the latest draft version, click @here.', [
     '@here' => $link,
   ]), 'warning');
