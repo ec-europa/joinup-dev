@@ -51,7 +51,8 @@ Feature: As a user of the website
 
     # Edit as facilitator and save as draft.
     When I click "Edit"
-    And I fill in "Title" with "Flight of Day"
+    Then the current workflow state should be "Validated"
+    When I fill in "Title" with "Flight of Day"
     And I press "Save as draft"
 
     # The page redirects to the canonical view after editing.
@@ -75,7 +76,8 @@ Feature: As a user of the website
     When I am logged in as a moderator
     And I go to the homepage of the "Flight of Day" solution
     And I click "Edit"
-    And I press "Publish"
+    Then the current workflow state should be "Draft"
+    When I press "Publish"
     Then I should see the heading "Flight of Day"
     And I should not see the link "View draft"
     But I should see the link "View"

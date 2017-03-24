@@ -3,6 +3,7 @@
 namespace Drupal\Tests\joinup_core\Functional;
 
 use Drupal\Core\Session\AnonymousUserSession;
+use Drupal\joinup_core\ELibraryCreationOptions;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
@@ -18,9 +19,6 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
 
   const PRE_MODERATION = 1;
   const POST_MODERATION = 0;
-  const ELIBRARY_ONLY_FACILITATORS = 0;
-  const ELIBRARY_MEMBERS_FACILITATORS = 1;
-  const ELIBRARY_REGISTERED_USERS = 2;
 
   /**
    * A user assigned as an owner to document entities.
@@ -376,9 +374,9 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    */
   protected function getElibraryStates() {
     return [
-      self::ELIBRARY_ONLY_FACILITATORS,
-      self::ELIBRARY_MEMBERS_FACILITATORS,
-      self::ELIBRARY_REGISTERED_USERS,
+      ELibraryCreationOptions::FACILITATORS,
+      ELibraryCreationOptions::MEMBERS,
+      ELibraryCreationOptions::REGISTERED_USERS,
     ];
   }
 

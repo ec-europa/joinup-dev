@@ -18,7 +18,8 @@ use Drupal\Core\Entity\EntityInterface;
  *
  * This notification functionality is currently applying if the two following
  * criteria are met:
- *  - The entity has a state field and the state is 'deletion_request'.
+ *  - If the entity is a node and has a state field and the state is
+ * 'deletion_request'.
  *  - There is configuration set for the entity type and the bundle.
  *
  * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
@@ -30,18 +31,22 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
 
   $entity_type = $entity->getEntityTypeId();
   $bundle = $entity->bundle();
-  $field_definitions = array_filter(\Drupal::entityManager()->getFieldDefinitions($entity_type, $bundle), function ($field_definition) {
-    return $field_definition->getType() == 'state';
-  });
+  // The asset distribution rdf entity does not have a workflow so it is
+  // excluded from the following check.
+  if ($entity_type !== 'rdf_entity' || $bundle !== 'asset_distribution') {
+    $field_definitions = array_filter(\Drupal::entityManager()->getFieldDefinitions($entity_type, $bundle), function ($field_definition) {
+      return $field_definition->getType() == 'state';
+    });
 
-  if (empty($field_definitions)) {
-    return;
-  }
+    if (empty($field_definitions)) {
+      return;
+    }
 
-  $field_definition = array_pop($field_definitions);
-  $state_field = $entity->{$field_definition->getName()}->first();
-  if (empty($state_field->value) || $state_field->value != 'deletion_request') {
-    return;
+    $field_definition = array_pop($field_definitions);
+    $state_field = $entity->{$field_definition->getName()}->first();
+    if (empty($state_field->value) || $state_field->value !== 'deletion_request') {
+      return;
+    }
   }
 
   $configuration = \Drupal::config('joinup_notification.settings')->get('delete_notifications');

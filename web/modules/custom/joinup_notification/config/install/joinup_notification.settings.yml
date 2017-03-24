@@ -11,3 +11,6 @@ delete_notifications:
     solution:
       rdf_entity-solution-administrator:
         - rdf_entity_solution_delete
+    asset_distribution:
+      rdf_entity-solution-administrator:
+        - rdf_entity_distribution_delete

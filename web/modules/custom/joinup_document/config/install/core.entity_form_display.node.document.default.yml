@@ -35,8 +35,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
-  field_comments:
+  current_workflow_state:
+    type: current_workflow_state_widget
     weight: 11
+    region: content
+    settings:
+      title: 'Current workflow state'
+      title_display: before
+    third_party_settings: {  }
+  field_comments:
+    weight: 10
     settings: {  }
     third_party_settings: {  }
     type: comment_default
@@ -48,7 +56,7 @@ content:
     type: datetime_default
     region: content
   field_document_spatial_coverage:
-    weight: 9
+    weight: 8
     settings:
       match_operator: CONTAINS
       size: 60
@@ -64,7 +72,7 @@ content:
     type: file_url_generic
     region: content
   field_keywords:
-    weight: 8
+    weight: 7
     settings:
       size: 60
       placeholder: ''
@@ -72,7 +80,7 @@ content:
     type: string_textfield
     region: content
   field_licence:
-    weight: 10
+    weight: 9
     settings:
       match_operator: CONTAINS
       size: 60
@@ -117,7 +125,6 @@ content:
     region: content
 hidden:
   created: true
-  current_workflow_state: true
   og_audience: true
   path: true
   promote: true
