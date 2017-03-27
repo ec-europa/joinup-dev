@@ -31,7 +31,9 @@ Feature: As a user of the website
     Then I should see the heading "Professional Dreams"
     And I should see the link "View draft"
     # @todo: Fix the visibility issue.
-    But I should see the link "View"
+    And I should see the link "View"
+    But I should not see the following warning messages:
+      | You are viewing the published version. To view the latest draft version, click here. |
     And I should see the link "Edit" in the "Entity actions" region
 
     # I should not be able to view draft solutions I'm not a facilitator of.
@@ -44,6 +46,8 @@ Feature: As a user of the website
     # Since it's validated, the normal view is the published view and the
     # "View draft" should not be shown.
     And I should not see the link "View Draft"
+    And I should not see the following warning messages:
+      | You are viewing the published version. To view the latest draft version, click here. |
 
     # Edit as facilitator and save as draft.
     When I click "Edit"
@@ -56,9 +60,17 @@ Feature: As a user of the website
     And I should not see the heading "Flight of Day"
     And I should see the link "View draft"
     When I click "View draft"
+    And I should see the following warning messages:
+      | You are viewing the published version. To view the latest draft version, click here. |
     # The header still shows the published title but the draft title is included
     # in the page.
     Then I should see the heading "Flight of Day"
+
+    # Ensure that the message is not shown to non privileged users.
+    When I am an anonymous user
+    And I go to the homepage of the "Flight of Night" solution
+    And I should not see the following warning messages:
+      | You are viewing the published version. To view the latest draft version, click here. |
 
     # Publish draft version of the solution.
     When I am logged in as a moderator
