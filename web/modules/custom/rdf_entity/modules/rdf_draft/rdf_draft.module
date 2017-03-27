@@ -66,17 +66,17 @@ function rdf_draft_entity_type_alter(array &$entity_types) {
  * Implements hook_entity_operation().
  */
 function rdf_draft_entity_operation(EntityInterface $entity) {
-  $operations = array();
+  $operations = [];
   $storage = \Drupal::service('entity.manager')->getStorage($entity->getEntityTypeId());
   if ($storage  instanceof RdfEntitySparqlStorage) {
     $definitions = $storage->getGraphDefinitions();
     foreach ($definitions as $name => $definition) {
       if ($entity->hasLinkTemplate('rdf-draft-' . $name) && $entity->hasGraph($name)) {
-        $operations[$name] = array(
+        $operations[$name] = [
           'title' => t('View @graph', ['@graph' => $name]),
           'weight' => 100,
           'url' => $entity->toUrl('rdf-draft-' . $name),
-        );
+        ];
       }
     }
   }

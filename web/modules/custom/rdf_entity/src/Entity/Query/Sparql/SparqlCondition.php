@@ -14,11 +14,11 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    * {@inheritdoc}
    */
   public function condition($subject = NULL, $predicate = NULL, $object = NULL, $operator = NULL, $langcode = NULL) {
-    $this->conditions[] = array(
+    $this->conditions[] = [
       'subject' => $subject,
       'predicate' => $predicate,
       'object' => $object,
-    );
+    ];
 
     return $this;
   }

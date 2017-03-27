@@ -26,7 +26,7 @@ function joinup_theme_preprocess_page(&$variables) {
   // We need to show the header in a blue variant on certain routes:
   // node and rdf entity forms, user forms.
   $route_name = $route_match->getRouteName();
-  $blue_header_routes = array(
+  $blue_header_routes = [
     'collection.propose_form',
     'entity.node.edit_form',
     'entity.rdf_entity.edit_form',
@@ -38,14 +38,14 @@ function joinup_theme_preprocess_page(&$variables) {
     'user.login',
     'user.pass',
     'user.register',
-  );
+  ];
 
   // Check if page is collection propose form.
   // It is needed for proper display of vertical tabs.
-  $tabs_routes = array(
+  $tabs_routes = [
     'rdf_entity.propose_form',
     'entity.rdf_entity.edit_form',
-  );
+  ];
 
   if (!empty($route_name) && in_array($route_name, $tabs_routes)) {
     // Get entity type on edit form.
@@ -82,14 +82,14 @@ function joinup_theme_preprocess_page_title(&$variables) {
   $route_name = $route_match->getRouteName();
 
   // Array contains create pages.
-  $create_content_routes = array(
+  $create_content_routes = [
     'node.add',
     'node.add_page',
     'rdf_entity.propose_form',
     'rdf_entity.rdf_add',
     'rdf_entity.rdf_add_page',
     'collection.propose_form',
-  );
+  ];
 
   // Set a flag when we are on content creation routes
   // in order to customise some templates.
@@ -226,7 +226,7 @@ function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $v
   // Block ID is provided in the preprocess function.
   // @see joinup_theme_preprocess_block().
   if (isset($variables['attributes']['block'])) {
-    $hook = str_replace(array('block-', '-'), array('', '_'), $variables['attributes']['block']);
+    $hook = str_replace(['block-', '-'], ['', '_'], $variables['attributes']['block']);
     $suggestions[] = $variables['theme_hook_original'] . '__' . $hook;
   }
 }
@@ -237,14 +237,14 @@ function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $v
 function joinup_theme_preprocess_container(&$variables) {
   $route_match = \Drupal::routeMatch();
   $route_name = $route_match->getRouteName();
-  $form_routes = array(
+  $form_routes = [
     'node.add',
     'rdf_entity.propose_form',
     'rdf_entity.rdf_add',
     'entity.node.edit_form',
     'collection.propose_form',
     'entity.rdf_entity.edit_form',
-  );
+  ];
 
   // Check if container is field element - it has only one parent.
   if (!empty($route_name) && in_array($route_name, $form_routes)
@@ -258,10 +258,10 @@ function joinup_theme_preprocess_container(&$variables) {
   // Check if page is collection propose form.
   // It is needed for proper display buttons
   // on forms with vertical tabs.
-  $tabs_routes = array(
+  $tabs_routes = [
     'rdf_entity.propose_form',
     'entity.rdf_entity.edit_form',
-  );
+  ];
 
   $rdf_type = '';
   if (!empty($route_name) && in_array($route_name, $tabs_routes)) {
@@ -295,11 +295,11 @@ function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
     $label = $variables['element']['#title'];
     $variables['label']['content'] = $label;
     // Lists of element types.
-    $elements = array(
+    $elements = [
       'target_id',
       'value',
       'uri',
-    );
+    ];
 
     // Fixes link form element title,.
     // @see joinup_theme_preprocess_form_element().

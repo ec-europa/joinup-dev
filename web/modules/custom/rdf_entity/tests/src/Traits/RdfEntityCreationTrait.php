@@ -62,12 +62,12 @@ trait RdfEntityCreationTrait {
    * @return \Drupal\rdf_entity\RdfInterface
    *   The created entity.
    */
-  protected function createRdfEntity(array $settings = array()) {
+  protected function createRdfEntity(array $settings = []) {
     // Populate defaults array.
-    $settings += array(
+    $settings += [
       'label'     => $this->randomMachineName(8),
       'rid'      => 'dummy',
-    );
+    ];
     $rdf_entity = Rdf::create($settings);
     $rdf_entity->save();
 

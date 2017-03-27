@@ -102,7 +102,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     $this->mailConfig = \Drupal::configFactory()->getEditable('system.mail');
     $this->savedMailDefaults = $this->mailConfig->get('interface.default');
     $this->mailConfig->set('interface.default', 'test_mail_collector')->save();
-    \Drupal::state()->set('system.test_mail_collector', array());
+    \Drupal::state()->set('system.test_mail_collector', []);
   }
 
   /**

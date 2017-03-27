@@ -30,18 +30,18 @@ class RdfExportController extends ControllerBase {
       ->getOption('entity_type_id');
     /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = $route_match->getParameter($parameter_name);
-    $list = array('#theme' => 'item_list');
+    $list = ['#theme' => 'item_list'];
     foreach ($this->getSerializerFormats() as $format_type => $format) {
       $link = Url::fromRoute("entity.$parameter_name.rdf_export_download", [
         'export_format' => $format_type,
         $parameter_name => $entity->id(),
       ]);
-      $list['#items'][] = array('#markup' => $this->l($format->getLabel(), $link));
+      $list['#items'][] = ['#markup' => $this->l($format->getLabel(), $link)];
     }
 
-    $output = array(
+    $output = [
       'list' => $list,
-    );
+    ];
 
     return $output;
   }
