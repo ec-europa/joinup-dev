@@ -4,7 +4,7 @@ Feature: "Document" overview.
   As a user of the website
   I need to be able to interact with them.
 
-  Scenario: Document type and size should be visible.
+  Scenario: File type and size should be visible in the document tiles.
     Given the following collection:
       | title | Traveller tools |
       | state | validated       |
