@@ -285,7 +285,7 @@ function joinup_views_pre_view(ViewExecutable $view) {
   //   created in PathPluginBase::getRoute(). We can then use this to output the
   //   correct cache contexts in ViewPageController::handle().
   // @see https://www.drupal.org/node/2839058
-  if ($view->id() === 'collections') {
+  if (in_array($view->id(), ['collections', 'solutions', 'content_overview'])) {
     $view->display_handler->display['cache_metadata']['contexts'][] = 'og_role';
     $view->display_handler->display['cache_metadata']['contexts'][] = 'user.roles';
   }

@@ -43,8 +43,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
-  field_comments:
+  current_workflow_state:
+    type: current_workflow_state_widget
     weight: 17
+    region: content
+    settings:
+      title: 'Current workflow state'
+      title_display: before
+    third_party_settings: {  }
+  field_comments:
+    weight: 16
     settings: {  }
     third_party_settings: {  }
     type: comment_default
@@ -102,7 +110,7 @@ content:
     type: link_default
     region: content
   field_keywords:
-    weight: 16
+    weight: 15
     settings:
       size: 60
       placeholder: ''
@@ -171,7 +179,6 @@ content:
     region: content
 hidden:
   created: true
-  current_workflow_state: true
   og_audience: true
   path: true
   promote: true

@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\joinup_core\Kernel;
 
-use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\rdf_entity\Kernel\RdfKernelTestBase;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 
 /**
@@ -21,7 +21,7 @@ use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
  * cleaning it after the test. You can extend the tearDown() method for this
  * purpose.
  */
-abstract class JoinupKernelTestBase extends KernelTestBase {
+abstract class JoinupKernelTestBase extends RdfKernelTestBase {
 
   use RdfDatabaseConnectionTrait;
 
@@ -29,7 +29,6 @@ abstract class JoinupKernelTestBase extends KernelTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
-    'rdf_entity',
     'field',
     'system',
     'user',
@@ -40,8 +39,6 @@ abstract class JoinupKernelTestBase extends KernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    parent::setUp();
-
     if (!$this->setUpSparql()) {
       $this->markTestSkipped('No Sparql connection available.');
     }
@@ -49,10 +46,9 @@ abstract class JoinupKernelTestBase extends KernelTestBase {
     if ($this->detectVirtuoso6()) {
       $this->markTestSkipped('Skipping: Not running on Virtuoso 6.');
     }
-    $this->installSchema('system', 'sequences');
+
+    parent::setUp();
     $this->installEntitySchema('user');
-    $this->installConfig(['rdf_entity']);
-    $this->installEntitySchema('rdf_entity');
     $this->installConfig(['rdf_entity_test']);
   }
 

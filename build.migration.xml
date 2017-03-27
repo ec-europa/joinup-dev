@@ -3,10 +3,19 @@
 <project name="Joinup migration" default="help">
 
     <!-- Run the migration IDs specified in the configuration. -->
-    <target name="run-migration"
-            description="Run the migration."
+    <target name="run-migrations"
+            description="Run the migrations."
             depends="enable-migration-modules">
-        <echo message="Run migration" />
+        <echo message="Running migration IDs" />
+        <drush
+             command="cset"
+             assume="yes"
+             root="${website.drupal.dir}"
+             bin="${drush.bin}"
+             verbose="${drush.verbose}">
+            <param>search_api.index.collections</param>
+            <param>options.index_directly 0</param>
+        </drush>
         <drush
             command="migrate-import"
             assume="yes"
@@ -16,6 +25,22 @@
             <param>${migration.ids}</param>
             <option name="feedback" value="1000" />
             <option name="force" />
+        </drush>
+        <drush
+            command="cfr"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <param>search_api.index.collections</param>
+        </drush>
+        <drush
+                command="sapi-i"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="batch-size" value="500" />
         </drush>
         <drush
             command="migrate-report-generate"
@@ -74,6 +99,17 @@
             CREATE DATABASE ${migration.db.name};
         </pdosqlexec>
     </target>
+
+    <target name="acceptance-migration"
+            description="Wrapper around execute-migration that gets executed only when the related property is set."
+            if="migration.acceptance">
+        <phingcall target="execute-migration" />
+    </target>
+
+    <target
+        name="execute-migration"
+        description="Configure and import the migration database, run the migration tasks."
+        depends="setup-migration, import-legacy-db, run-migrations" />
 
 </project>
 

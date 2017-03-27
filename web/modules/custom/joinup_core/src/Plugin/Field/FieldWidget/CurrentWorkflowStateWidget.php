@@ -29,6 +29,7 @@ class CurrentWorkflowStateWidget extends WidgetBase {
     return [
       'title' => 'Current workflow state',
       'title_display' => 'before',
+      'show_for_new_entities' => FALSE,
     ] + parent::defaultSettings();
   }
 
@@ -54,6 +55,12 @@ class CurrentWorkflowStateWidget extends WidgetBase {
         'attribute' => $this->t('Make it the title attribute (hover tooltip)'),
       ],
     ];
+    $elements['show_for_new_entities'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show when creating a new entity'),
+      '#description' => $this->t('If unchecked, the widget is shown only on forms where an existing entity is being edited.'),
+      '#default_value' => $this->getSetting('show_for_new_entities'),
+    ];
 
     return $elements;
   }
@@ -62,7 +69,7 @@ class CurrentWorkflowStateWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    return [
+    $summary = [
       $this->t('Label: @title', [
         '@title' => $this->getSetting('title'),
       ]),
@@ -70,6 +77,12 @@ class CurrentWorkflowStateWidget extends WidgetBase {
         '@title_display' => $this->getSetting('title_display'),
       ]),
     ];
+
+    if ($this->getSetting('show_for_new_entities')) {
+      $summary[] = $this->t('Show when creating a new entity');
+    }
+
+    return $summary;
   }
 
   /**
@@ -90,6 +103,10 @@ class CurrentWorkflowStateWidget extends WidgetBase {
     $element['current_workflow_state']['label'] = [
       '#plain_text' => $field->getWorkflow()->getState($state_id)->getLabel(),
     ];
+
+    // Show the widget only when the entity is not new, or when the specific
+    // setting is turned on.
+    $element['#access'] = !$entity->isNew() || $this->getSetting('show_for_new_entities');
 
     return $element;
   }

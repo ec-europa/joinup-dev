@@ -629,16 +629,28 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Example: When I press "Log In" at "Fieldset"
    * Example: And I press "Log In" at "Custom widget".
    *
-   * @When I press :button at( the) :fieldset( field)
+   * @When I press :button at( the) :field( field)
    */
-  public function pressButtonInFieldset($button, $fieldset) {
+  public function pressButtonInWidget($button, $field) {
     // Fixes a step argument (with \\" replaced back to ")
     // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
     $button = str_replace('\\"', '"', $button);
-    $this->getSession()->getPage()->find('named', [
+
+    // First check if a fieldset exists containing the given field name. This
+    // is used for inline entity forms.
+    $element = $this->getSession()->getPage()->find('named', [
       'fieldset',
-      $fieldset,
-    ])->pressButton($button);
+      $field,
+    ]);
+
+    // If this doesn't exist, search for a multivalue entity reference field
+    // containing a label for the given field name.
+    if (empty($element)) {
+      $xpath = '//table[contains(concat(" ", normalize-space(@class), " "), " field-multiple-table ") and //label[text()="' . $field . '"]]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-wrapper ")]';
+      $element = $this->getSession()->getPage()->find('xpath', $xpath);
+    }
+
+    $element->pressButton($button);
   }
 
   /**
@@ -869,8 +881,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
   /**
    * Opens the plus button menu on JS-enabled browsers.
+   *
+   * @When I open the plus button menu
    */
-  protected function openPlusButtonMenu() {
+  public function openPlusButtonMenu() {
     if ($this->browserSupportsJavascript()) {
       $driver = $this->getSession()->getDriver();
       $this->getSession()->getDriver()->click('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//button');
@@ -1038,16 +1052,49 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @throws \Exception
    *   Thrown when the field does not have a description.
+   * @throws \PHPUnit_Framework_ExpectationFailedException
+   *   Thrown when none of the field's descriptions match the given text.
    *
    * @Then I should see the description :description for (the ):label( field)
    */
   public function assertFieldDescription($label, $description) {
-    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]/div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
-    $element = $this->getSession()->getPage()->find('xpath', $xpath);
-    if (empty($element)) {
+    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]//div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    if (empty($elements)) {
       throw new \Exception("The $label field does not have a description.");
     }
-    \PHPUnit_Framework_Assert::assertEquals($description, trim($element->getText()));
+    foreach ($elements as $element) {
+      try {
+        \PHPUnit_Framework_Assert::assertEquals($description, trim($element->getText()));
+        // The description was found, stop searching.
+        return;
+      }
+      catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+        // The description did not match the expected string, keep searching.
+      }
+    }
+    throw new \PHPUnit_Framework_ExpectationFailedException("The description $description was not found for the $label field.");
+  }
+
+  /**
+   * Checks that the description of the field with given label is not present.
+   *
+   * @param string $label
+   *   The label of the field to check.
+   * @param string $description
+   *   The description that is expected to be absent.
+   *
+   * @throws \Exception
+   *   Thrown when the field does not have a description.
+   *
+   * @Then I should not see the description :description for (the ):label( field)
+   */
+  public function assertNoFieldDescription($label, $description) {
+    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]//div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    foreach ($elements as $element) {
+      \PHPUnit_Framework_Assert::assertNotEquals($description, trim($element->getText()));
+    }
   }
 
 }
