@@ -276,7 +276,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       return [];
     }
     $remaining_ids = $ids;
-    $entities = array();
+    $entities = [];
     while (count($remaining_ids)) {
       $operation_ids = array_slice($remaining_ids, 0, 50, TRUE);
       foreach ($operation_ids as $k => $v) {
@@ -502,7 +502,7 @@ QUERY;
    * {@inheritdoc}
    */
   public function load($id) {
-    $entities = $this->loadMultiple(array($id));
+    $entities = $this->loadMultiple([$id]);
     return array_shift($entities);
   }
 
@@ -734,7 +734,7 @@ QUERY;
    * {@inheritdoc}
    */
   protected function readFieldItemsToPurge(FieldDefinitionInterface $field_definition, $batch_size) {
-    return array();
+    return [];
   }
 
   /**
@@ -1009,11 +1009,11 @@ QUERY;
    */
   protected function getFromPersistentCache(array &$ids = NULL) {
     if (!$this->entityType->isPersistentlyCacheable() || empty($ids)) {
-      return array();
+      return [];
     }
-    $entities = array();
+    $entities = [];
     // Build the list of cache entries to retrieve.
-    $cid_map = array();
+    $cid_map = [];
     foreach ($ids as $id) {
       $request_graphs = $this->getGraphHandler()->getRequestGraphs($id);
       $graph = reset($request_graphs);
@@ -1041,10 +1041,10 @@ QUERY;
       return;
     }
 
-    $cache_tags = array(
+    $cache_tags = [
       $this->entityTypeId . '_values',
       'entity_field_info',
-    );
+    ];
     foreach ($entities as $id => $entity) {
       $graph = $this->getGraphHandler()->getTargetGraphFromEntity($entity);
       $cid = "{$this->buildCacheId($id)}:{$graph}";
@@ -1061,7 +1061,7 @@ QUERY;
   public function resetCache(array $ids = NULL) {
     $graphs = $this->getGraphHandler()->getEntityTypeEnabledGraphs();
     if ($ids) {
-      $cids = array();
+      $cids = [];
       foreach ($ids as $id) {
         foreach ($graphs as $graph) {
           unset($this->entities[$id][$graph]);

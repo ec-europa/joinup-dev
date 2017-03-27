@@ -82,7 +82,7 @@ class Connection {
       // This will most likely break in PHP7 (incorrect type hinting).
       // Replace array($query) with the placeholder version.
       // I should probably implement the statement interface...
-      $this->logger->log($this, array($query), $query_end - $query_start);
+      $this->logger->log($this, [$query], $query_end - $query_start);
     }
 
     return $results;
@@ -110,7 +110,7 @@ class Connection {
       // This will most likely break in PHP7 (incorrect type hinting).
       // Replace array($query) with the placeholder version.
       // I should probably implement the statement interface...
-      $this->logger->log($this, array($query), $query_end - $query_start);
+      $this->logger->log($this, [$query], $query_end - $query_start);
     }
 
     return $results;
@@ -163,7 +163,7 @@ class Connection {
    * @return \EasyRdf\Sparql\Client
    *   The EasyRdf connection.
    */
-  public static function open(array &$connection_options = array()) {
+  public static function open(array &$connection_options = []) {
     // @todo Get endpoint string from settings file.
     $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql';
     return new Client($connect_string);

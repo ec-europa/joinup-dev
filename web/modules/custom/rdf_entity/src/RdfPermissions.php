@@ -21,7 +21,7 @@ class RdfPermissions {
    *   The RdfEntity type permissions.
    */
   public function rdfTypePermissions() {
-    $perms = array();
+    $perms = [];
     // Generate node permissions for all node types.
     foreach (RdfEntityType::loadMultiple() as $type) {
       $perms += $this->buildPermissions($type);

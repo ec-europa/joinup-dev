@@ -73,7 +73,7 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    $events['rdf_graph.entity_convert'][] = array('graphForEntityConvert');
+    $events['rdf_graph.entity_convert'][] = ['graphForEntityConvert'];
     return $events;
   }
 
