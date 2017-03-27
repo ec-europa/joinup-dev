@@ -2,6 +2,7 @@
 
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
+use Drupal\Component\Utility\UrlHelper;
 use EasyRdf\Serialiser\Ntriples;
 
 /**
@@ -24,9 +25,6 @@ class SparqlArg {
    *
    * @return string
    *   Sparql serialized URIs.
-   *
-   * @throws \Exception
-   *    Inform the user that $uri variable is not a URI.
    */
   public static function serializeUris(array $uris) {
     foreach ($uris as $index => $uri) {
@@ -43,9 +41,6 @@ class SparqlArg {
    *
    * @return string
    *   Sparql validated URI.
-   *
-   * @throws \Exception
-   *    Inform the user that $uri variable is not a URI.
    */
   public static function uri($uri) {
     // If the uri is already encapsulated with the '<>' symbols, remove these
@@ -54,6 +49,20 @@ class SparqlArg {
       $uri = trim($uri, '<>');
     }
     return self::serialize($uri, 'uri');
+  }
+
+  /**
+   * URI Query argument.
+   *
+   * @param string $uri
+   *   A string to be checked.
+   *
+   * @return bool
+   *   Whether it is a valid SPARQL URI or not. The URI is a valid URI whether
+   *   or not it is encapsulated with '<>'.
+   */
+  public static function isValidResource($uri) {
+    return UrlHelper::isValid(trim($uri, '<>'), TRUE);
   }
 
   /**

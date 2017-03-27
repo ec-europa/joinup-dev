@@ -382,7 +382,7 @@ class Query extends QueryBase implements QueryInterface {
 
       $field_rdf_name = $this->getFieldRdfPropertyName($field_name, $field_storage_definitions);
 
-      if (!UrlHelper::isValid($value, TRUE) === FALSE) {
+      if (SparqlArg::isValidResource($value)) {
         $value = SparqlArg::uri($value);
       }
       else {
