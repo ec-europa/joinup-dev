@@ -750,6 +750,20 @@ QUERY;
   /**
    * {@inheritdoc}
    */
+  protected function doPreSave(EntityInterface $entity) {
+    // In case entities are not created through the API (like an import), handle
+    // the Id explicitly. Otherwise there will be an exception thrown if the id
+    // is different from the one in the database.
+    // @see: \Drupal\Core\Entity\ContentEntityStorageBase::doPreSave.
+    if (!empty($entity->id())) {
+      $entity->{$this->idKey} = SparqlArg::uri($entity->id());
+    }
+    return parent::doPreSave($entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function doSave($id, EntityInterface $entity) {
     $bundle = $entity->bundle();
     // Generate an ID before saving, if none is available. If the ID generation
