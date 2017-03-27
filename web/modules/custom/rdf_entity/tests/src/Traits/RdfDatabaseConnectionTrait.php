@@ -84,10 +84,10 @@ trait RdfDatabaseConnectionTrait {
     $key = 'sparql_default';
     $target = 'default';
 
-    $settings['databases'][$key][$target] = (object) array(
+    $settings['databases'][$key][$target] = (object) [
       'value' => $database,
       'required' => TRUE,
-    );
+    ];
     if (!isset($settings_file)) {
       $settings_file = \Drupal::service('site.path') . '/settings.php';
     }

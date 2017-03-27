@@ -90,7 +90,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
 
     // Test file for new entities.
     $id = $this->uploadFileUrl($test_file, $field_name, NULL, $settings);
-    $this->rdfStorage->resetCache(array($id));
+    $this->rdfStorage->resetCache([$id]);
     $rdf_entity = $this->rdfStorage->load($id);
     $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue(is_file($rdf_entity_file->getFileUri()), 'New file saved to disk on rdf_entity creation.');
@@ -102,7 +102,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
       $field_name => $this->getFileAbsoluteUri($rdf_entity_file),
     ]);
     $id = $this->uploadFileUrl($test_file, $field_name, $rdf_entity->id());
-    $this->rdfStorage->resetCache(array($id));
+    $this->rdfStorage->resetCache([$id]);
     $rdf_entity = $this->rdfStorage->load($id);
     $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue(is_file($rdf_entity_file->getFileUri()), 'New file saved to disk on rdf_entity creation.');
@@ -124,7 +124,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
     $this->assertTrue($test_file instanceof FileInterface, "Test file created.");
 
     $id = $this->setRemoteFile($this->getFileAbsoluteUri($test_file), $field_name, NULL, $settings);
-    $this->rdfStorage->resetCache(array($id));
+    $this->rdfStorage->resetCache([$id]);
     $rdf_entity = $this->rdfStorage->load($id);
     $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue($rdf_entity_file instanceof RemoteFile, 'The remote file entity was saved successfully.');
@@ -141,7 +141,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
     ]);
 
     $id = $this->setRemoteFile($this->getFileAbsoluteUri($test_file), $field_name, $rdf_entity->id());
-    $this->rdfStorage->resetCache(array($id));
+    $this->rdfStorage->resetCache([$id]);
     $rdf_entity = $this->rdfStorage->load($id);
     $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
     $this->assertTrue($rdf_entity_file instanceof RemoteFile, 'The remote file entity was saved successfully.');
