@@ -22,23 +22,14 @@ abstract class RdfKernelTestBase extends EntityKernelTestBase {
   public static $modules = [
     'ds',
     'comment',
-    'field',
-    'system',
   ];
 
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
+    $this->setUpSparql();
     parent::setUp();
-
-    if (!$this->setUpSparql()) {
-      $this->markTestSkipped('No Sparql connection available.');
-    }
-    // Test is not compatible with Virtuoso 6.
-    if ($this->detectVirtuoso6()) {
-      $this->markTestSkipped('Skipping: Not running on Virtuoso 6.');
-    }
 
     $this->installModule('rdf_entity');
     $this->installModule('rdf_draft');
