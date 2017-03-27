@@ -96,7 +96,7 @@ class FileUrlFormatter extends FileFormatterBase {
 
       // Pass field item attributes to the theme function.
       if (isset($item->_attributes)) {
-        $elements[$delta] += array('#attributes' => array());
+        $elements[$delta] += ['#attributes' => []];
         $elements[$delta]['#attributes'] += $item->_attributes;
         // Unset field item attributes since they have been included in the
         // formatter output and should not be rendered in the field template.
