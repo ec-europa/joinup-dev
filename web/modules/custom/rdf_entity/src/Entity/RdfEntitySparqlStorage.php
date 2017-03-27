@@ -18,6 +18,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Exception\DuplicatedIdException;
 use Drupal\rdf_entity\RdfEntityIdPluginManager;
 use Drupal\rdf_entity\RdfGraphHandler;
@@ -306,11 +307,13 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
     // @todo: We should filter per entity per graph and not load the whole
     // database only to filter later on.
-    $ids_string = "<" . implode(">, <", $ids) . ">";
+    $ids_string = SparqlArg::serializeUris($ids);
+    // @todo: Duplicated entry.
+    // $ids_string = "<" . implode(">, <", $ids) . ">";
     $graphs = $this->getGraphHandler()->getEntityTypeGraphUrisList($this->getEntityType()->getBundleEntityType());
     $named_graph = '';
     foreach ($graphs as $graph) {
-      $named_graph .= 'FROM NAMED <' . $graph . '>' . "\n";
+      $named_graph .= 'FROM NAMED ' . SparqlArg::uri($graph) . "\n";
     }
 
     // @todo Get rid of the language filter. It's here because of eurovoc:
@@ -374,7 +377,7 @@ QUERY;
     // results.
     $values_per_entity = [];
     foreach ($results as $result) {
-      $entity_id = (string) $result->entity_id;
+      $entity_id = SparqlArg::uri($result->entity_id);
       $entity_graphs[$entity_id] = (string) $result->graph;
 
       $lang = LanguageInterface::LANGCODE_DEFAULT;
@@ -653,7 +656,8 @@ QUERY;
    *   The graph uri to delete from.
    */
   protected function doDeleteFromGraph(array $entities, $graph) {
-    $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";
+    // $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";.
+    $entity_list = SparqlArg::serializeUris(array_keys($entities));
 
     $query = <<<QUERY
 DELETE FROM <$graph>
@@ -768,7 +772,9 @@ QUERY;
     $graph = self::getGraph($graph_uri);
 
     $properties = $this->mappingHandler->getEntityTypeMappedProperties($entity);
-    $properties_list = "<" . implode(">, <", $properties['flat']) . ">";
+    // $properties_list = "<" . implode(">, <", $properties['flat']) . ">";.
+    // @todo: Duplicated entry.
+    $properties_list = SparqlArg::serializeUris($properties['flat']);
     foreach ($entity->toArray() as $field_name => $field) {
       foreach ($field as $field_item) {
         foreach ($field_item as $column => $value) {
@@ -1130,15 +1136,17 @@ QUERY;
    *    array format.
    */
   protected function deleteBeforeInsert($id, $graph_uri, $properties_list) {
+    $id = SparqlArg::uri($id);
+    $graph_uri = SparqlArg::uri($graph_uri);
     $query = <<<QUERY
 DELETE {
-  GRAPH <$graph_uri> {
-    <$id> ?field ?value
+  GRAPH $graph_uri {
+    $id ?field ?value
   }
 }
 WHERE {
-  GRAPH <$graph_uri> {
-    <$id> ?field ?value .
+  GRAPH $graph_uri {
+    $id ?field ?value .
     FILTER (?field IN ($properties_list))
   }
 }
@@ -1156,9 +1164,10 @@ QUERY;
    *   TRUE if this entity ID already exists, FALSE otherwise.
    */
   public function idExists($id) {
+    $id = SparqlArg::uri($id);
     $query = <<<QUERY
 ASK {
-  <$id> ?field ?value
+  $id ?field ?value
 }
 QUERY;
     return $this->sparql->query($query)->isTrue();

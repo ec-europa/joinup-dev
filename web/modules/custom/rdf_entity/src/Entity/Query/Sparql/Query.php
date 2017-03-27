@@ -240,7 +240,7 @@ class Query extends QueryBase implements QueryInterface {
         if ($rdf_bundles) {
           $this->condition->condition('?entity', '?bundlepredicate', '?type');
           $this->filterAdded = TRUE;
-          $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
+          $predicates = '(' . SparqlArg::serializeUris($this->entityStorage->bundlePredicate()) . ')';
           $this->filter->filter('?bundlepredicate IN ' . $predicates);
           $this->filter->filter('?type IN ' . $rdf_bundles);
         }
@@ -251,7 +251,7 @@ class Query extends QueryBase implements QueryInterface {
         $bundle = $mapping[$value];
         if ($bundle) {
           $this->condition->condition('?entity', '?bundlepredicate', SparqlArg::uri($bundle));
-          $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
+          $predicates = '(' . SparqlArg::serializeUris($this->entityStorage->bundlePredicate()) . ')';
           $this->filter->filter('?bundlepredicate IN ' . $predicates);
           $this->filterAdded = TRUE;
         }
@@ -259,10 +259,12 @@ class Query extends QueryBase implements QueryInterface {
 
       case $id . '-IN':
         if ($value) {
-          $ids_list = "(<" . implode(">, <", $value) . ">)";
+          $ids_list = '(' . SparqlArg::serializeUris($value) . ')';
+          // @todo: Duplicated entry.
+          // $ids_list = "(<" . implode(">, <", $value) . ">)";
           if (!$this->filterAdded) {
             $this->condition->condition('?entity', '?bundlepredicate', '?type');
-            $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
+            $predicates = '(' . SparqlArg::serializeUris($this->entityStorage->bundlePredicate()) . ')';
             $this->filter->filter('?bundlepredicate IN ' . $predicates);
             $this->filterAdded = TRUE;
           }
@@ -274,15 +276,15 @@ class Query extends QueryBase implements QueryInterface {
       case $id . '-<>':
         if ($value) {
           if (is_array($value)) {
-            $ids_list = "(<" . implode(">, <", $value) . ">)";
+            $ids_list = '(' . SparqlArg::serializeUris($value) . ')';
           }
           else {
-            $ids_list = "(<" . $value . ">)";
+            $ids_list = '(' . SparqlArg::uri($value) . ')';
           }
 
           if (!$this->filterAdded) {
             $this->condition->condition('?entity', '?bundlepredicate', '?type');
-            $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
+            $predicates = '(' . SparqlArg::serializeUris($this->entityStorage->bundlePredicate()) . ')';
             $this->filter->filter('?bundlepredicate IN ' . $predicates);
             $this->filterAdded = TRUE;
           }
@@ -297,7 +299,7 @@ class Query extends QueryBase implements QueryInterface {
         $id = '<' . $value . '>';
         if (!$this->filterAdded) {
           $this->condition->condition('?entity', '?bundlepredicate', '?type');
-          $predicates = "(<" . implode(">, <", $this->entityStorage->bundlePredicate()) . ">)";
+          $predicates = '(' . SparqlArg::serializeUris($this->entityStorage->bundlePredicate()) . ')';
           $this->filter->filter('?bundlepredicate IN ' . $predicates);
           $this->filterAdded = TRUE;
         }
@@ -308,7 +310,7 @@ class Query extends QueryBase implements QueryInterface {
         $labels = is_array($value) ? $value : [$value];
         $mapping = $this->mappingHandler->getEntityTypeLabelPredicates($this->entityTypeId);
 
-        $label_types = "(<" . implode(">, <", array_unique(array_keys($mapping))) . ">)";
+        $label_types = '(' . SparqlArg::serializeUris(array_unique(array_keys($mapping))) . ')';
         $this->condition->condition('?entity', '?label_type', '?label');
         $this->filter->filter('?label_type IN ' . $label_types);
         $labels = array_map(function ($label) {
@@ -332,7 +334,7 @@ class Query extends QueryBase implements QueryInterface {
           }
           else {
             $mapping = $this->mappingHandler->getEntityTypeLabelPredicates($this->entityTypeId);
-            $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping))) . ">)";
+            $label_list = '(' . SparqlArg::serializeUris(array_unique(array_keys($mapping))) . ')';
             $this->condition->condition('?entity', '?label_type', '?label');
             $this->filter->filter('?label_type IN ' . $label_list);
             $this->filter->filter('str(?label) = "' . $value . '"');
@@ -343,7 +345,7 @@ class Query extends QueryBase implements QueryInterface {
 
       case $label . '-CONTAINS':
         $mapping = $this->mappingHandler->getEntityTypeLabelPredicates($this->entityTypeId);
-        $label_list = "(<" . implode(">, <", array_unique(array_keys($mapping))) . ">)";
+        $label_list = '(' . SparqlArg::serializeUris(array_unique(array_keys($mapping))) . ')';
         $this->condition->condition('?entity', '?label_type', '?label');
         $this->filter->filter('?label_type IN ' . $label_list);
         if ($value) {
@@ -402,7 +404,7 @@ class Query extends QueryBase implements QueryInterface {
       }
       $field_rdf_name = $this->getFieldRdfPropertyName($field_name, $field_storage_definitions);
       $this->condition->condition('?entity', SparqlArg::uri($field_rdf_name), '?' . $field_name);
-      $ids_list = "(<" . implode(">, <", $value) . ">)";
+      $ids_list = '(' . SparqlArg::serializeUris($value) . ')';
       $this->filter->filter('?' . $field_name . ' IN ' . $ids_list);
       return $this;
     }

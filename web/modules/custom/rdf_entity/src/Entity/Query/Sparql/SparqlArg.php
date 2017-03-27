@@ -2,6 +2,8 @@
 
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
+use EasyRdf\Serialiser\Ntriples;
+
 /**
  * Class SparqlArg.
  *
@@ -17,6 +19,25 @@ class SparqlArg {
   /**
    * URI Query argument.
    *
+   * @param array $uris
+   *   An array of URIs to serialize.
+   *
+   * @return string
+   *   Sparql serialized URIs.
+   *
+   * @throws \Exception
+   *    Inform the user that $uri variable is not a URI.
+   */
+  public static function serializeUris(array $uris) {
+    foreach ($uris as $index => $uri) {
+      $uris[$index] = self::uri($uri);
+    }
+    return implode(', ', $uris);
+  }
+
+  /**
+   * URI Query argument.
+   *
    * @param string $uri
    *   A valid URI to use as a query parameter.
    *
@@ -27,10 +48,12 @@ class SparqlArg {
    *    Inform the user that $uri variable is not a URI.
    */
   public static function uri($uri) {
-    if (!filter_var($uri, FILTER_VALIDATE_URL)) {
-      throw new \Exception('Provided value is not a URI.');
+    // If the uri is already encapsulated with the '<>' symbols, remove these
+    // and re-serialize the uri.
+    if (preg_match('/^<(.+)>$/', $uri) !== NULL) {
+      $uri = trim($uri, '<>');
     }
-    return '<' . $uri . '>';
+    return self::serialize($uri, 'uri');
   }
 
   /**
@@ -43,14 +66,26 @@ class SparqlArg {
    *   Sparql escaped string literal.
    */
   public static function literal($value) {
-    // @todo Support all xml data types, as well as language extensions.
-    $matches = 1;
-    while ($matches) {
-      $matches = 0;
-      $value = str_replace('"""', '', $value, $matches);
-    }
+    return self::serialize($value, 'literal');
+  }
 
-    return '"""' . $value . '"""';
+  /**
+   * Returns a serialized version of the given value of the given format.
+   *
+   * @param string $value
+   *   The value to be serialized.
+   * @param string $format
+   *   One of the formats used in \EasyRdf\Serialiser\Ntriples::serializeValue.
+   *
+   * @return string
+   *   The outcome of the serialization.
+   */
+  public static function serialize($value, $format) {
+    $serializer = new Ntriples();
+    return $serializer->serialiseValue([
+      'value' => $value,
+      'type' => $format,
+    ]);
   }
 
 }
