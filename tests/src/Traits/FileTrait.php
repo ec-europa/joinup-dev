@@ -53,6 +53,45 @@ trait FileTrait {
   }
 
   /**
+   * Handles file fields when creating entities in step definitions.
+   *
+   * This allows to use the filenames of the files in the fixtures folder (e.g.
+   * "logo.png") in step definitions. It will import the file into Drupal, and
+   * replace the filename with the ID of the file entity.
+   *
+   * @param array $values
+   *   An associative array, keyed by field name, containing field values of the
+   *   entity that is being saved. Any file fields in this array will have their
+   *   values changed into File IDs by reference.
+   * @param string $entity_type
+   *   The entity type of the entity that is being saved.
+   * @param string $bundle
+   *   The bundle of the entity that is being saved.
+   *
+   * @throws \Exception
+   *   Thrown when a field name is present in the $values array which does not
+   *   exist on the specified entity bundle.
+   */
+  protected function handleFileFields(array &$values, $entity_type, $bundle) {
+    $entity_field_manager = \Drupal::service('entity_field.manager');
+    $fields = $entity_field_manager->getFieldDefinitions($entity_type, $bundle);
+
+    foreach ($values as $field_name => $value) {
+      if (!isset($fields[$field_name])) {
+        throw new \Exception("Field $field_name is not set on entity $entity_type  : $bundle");
+      }
+      if (empty($value)) {
+        continue;
+      }
+      /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_info */
+      $field_info = $fields[$field_name];
+      if (in_array($field_info->getType(), ['image', 'file'])) {
+        $values[$field_name] = $this->createFile($value)->get('uri')->value;
+      }
+    }
+  }
+
+  /**
    * Remove any created files.
    *
    * @AfterScenario

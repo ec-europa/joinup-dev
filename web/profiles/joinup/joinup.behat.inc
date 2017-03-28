@@ -205,29 +205,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Save files and change filename into a file ID.
-   */
-  private function handleFileFields(&$values, $entity_type, $bundle) {
-    $entity_manager = \Drupal::entityManager();
-    /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $fields */
-    $fields = $entity_manager->getFieldDefinitions($entity_type, $bundle);
-
-    foreach ($values as $field_name => $value) {
-      if (!isset($fields[$field_name])) {
-        throw new \Exception("Field $field_name is not set on entity $entity_type  : $bundle");
-      }
-      if (empty($value)) {
-        continue;
-      }
-      /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_info */
-      $field_info = $fields[$field_name];
-      if (in_array($field_info->getType(), ['image', 'file'])) {
-        $values[$field_name] = $this->createFile($value)->get('uri')->value;
-      }
-    }
-  }
-
-  /**
    * Register a user.
    *
    * @Given the following user registration at :location:
