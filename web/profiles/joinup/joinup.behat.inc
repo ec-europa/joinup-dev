@@ -18,6 +18,7 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
+use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
@@ -37,6 +38,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use OgTrait;
   use RdfEntityTrait;
   use TraversingTrait;
+  use UserTrait;
   use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
@@ -65,17 +67,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Given (the following )user:
    */
   public function givenUser(TableNode $user_table) {
-    $values = [];
-    $aliases = self::userFieldAliases();
     // Replace the column aliases with the actual field names.
-    foreach ($user_table->getRowsHash() as $key => $value) {
-      if (array_key_exists($key, $aliases)) {
-        $values[$aliases[$key]] = $value;
-      }
-      else {
-        throw new \Exception("Unknown column '$key' in user table.");
-      }
-    }
+    $values = $this->translateUserFieldAliases($user_table->getRowsHash());
     $this->handleFileFields($values, 'user', 'user');
 
     // Login method needs a password.
@@ -262,29 +255,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     /** @var RdfEntitySparqlStorage $storage */
     $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
     $storage->getGraphHandler()->resetRequestGraphs();
-  }
-
-  /**
-   * Mapping of human readable names to machine names.
-   *
-   * @return array
-   *   Field mapping.
-   */
-  private static function userFieldAliases() {
-    return [
-      'Username' => 'name',
-      'Password' => 'pass',
-      'E-mail' => 'mail',
-      'Status' => 'status',
-      'First name' => 'field_user_first_name',
-      'Family name' => 'field_user_family_name',
-      'Photo' => 'field_user_photo',
-      'Business title' => 'field_user_business_title',
-      'Organisation' => 'field_user_organisation',
-      'Nationality' => 'field_user_nationality',
-      'Professional domain' => 'field_user_professional_domain',
-      // @todo Social network
-    ];
   }
 
   /**
