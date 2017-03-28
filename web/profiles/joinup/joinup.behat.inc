@@ -44,13 +44,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use WysiwygTrait;
 
   /**
-   * Test users.
-   *
-   * @var \Drupal\user\Entity\User[]
-   */
-  protected $registeredUsers = [];
-
-  /**
    * Creates a user with data provided in a table.
    *
    * Table format:
@@ -222,25 +215,13 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     if ($user) {
       // Track user for auto delete in tear-down.
-      $this->registeredUsers[$user->id()] = $user;
+      $this->getUserManager()->addUser((object) [
+        'name' => $username,
+        'uid' => $user->id(),
+      ]);
     }
     else {
       throw new Exception('User not registered.');
-    }
-  }
-
-  /**
-   * Remove any created registered users.
-   *
-   * @AfterScenario
-   */
-  public function cleanRegisteredUsers() {
-    // Remove any users that were created.
-    if (!empty($this->registeredUsers)) {
-      /** @var \Drupal\user\Entity\User $user */
-      foreach ($this->registeredUsers as $user) {
-        $user->delete();
-      }
     }
   }
 
