@@ -12,8 +12,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
-use Drupal\file\Entity\File;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
+use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -32,6 +32,7 @@ use Drupal\User\Entity\User;
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use BrowserCapabilityDetectionTrait;
+  use FileTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
@@ -39,13 +40,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
-
-  /**
-   * Test files.
-   *
-   * @var \Drupal\file\Entity\File[]
-   */
-  protected $files = [];
 
   /**
    * Test users.
@@ -228,20 +222,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_info */
       $field_info = $fields[$field_name];
       if (in_array($field_info->getType(), ['image', 'file'])) {
-        $files_path = $this->getMinkParameter('files_path');
-        $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $value;
-        if (!is_file($path)) {
-          throw new \Exception("File '$value' was not found in file path '$files_path'.");
-        }
-        // Copy the image into the public files folder and turn it into a File
-        // entity before linking it.
-        $uri = 'public://' . $value;
-        file_unmanaged_copy($path, $uri);
-        $file = File::create(['uri' => $uri]);
-        $file->save();
-        $values[$field_name] = $file->get('uri')->value;
-
-        $this->files[$file->id()] = $file;
+        $values[$field_name] = $this->createFile($value)->get('uri')->value;
       }
     }
   }
