@@ -12,6 +12,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\file\Entity\File;
+use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
@@ -1004,6 +1006,26 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     foreach ($elements as $element) {
       \PHPUnit_Framework_Assert::assertNotEquals($description, trim($element->getText()));
     }
+  }
+
+  /**
+   * Asserts that the current user's profile picture is shown in the header.
+   *
+   * @Then my user profile picture should be shown in the page header
+   */
+  public function assertCurrentUserProfilePictureVisible() {
+    if ($this->getUserManager()->currentUserIsAnonymous()) {
+      throw new \PHPUnit_Framework_ExpectationFailedException('No user is currently logged in.');
+    }
+    $user = User::load($this->getUserManager()->getCurrentUser()->uid);
+    if ($user->field_user_photo->isEmpty()) {
+      throw new \PHPUnit_Framework_ExpectationFailedException('The currently logged in user does not have a profile picture.');
+    }
+    /** @var \Drupal\file\FileInterface $photo */
+    $photo = File::load($user->field_user_photo->target_id);
+    $url = ImageStyle::load('profile_icon')->buildUrl($photo->getFileUri());
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " login-menu ")]//img[@src="' . $url . '"]';
+    $this->assertSession()->elementsCount('xpath', $xpath, 1);
   }
 
 }

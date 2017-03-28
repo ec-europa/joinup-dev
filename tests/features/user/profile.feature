@@ -54,3 +54,15 @@ Feature: User profile
     # This message is typical shown when the mail server is not responding. This is just a smoke test
     # to see that all is fine and dandy, and mails are being delivered.
     Then I should not see the error message "Unable to send email. Contact the site administrator if the problem persists."
+
+  # Regression test: the wrong profile picture was showing due to a caching problem.
+  Scenario: The user's profile picture should be shown in the page header.
+    Given users:
+      | Username          | E-mail                 | Photo        |
+      | Leonardo Da Vinci | leonardo@example.com   | leonardo.jpg |
+      | Ada Lovelace      | moderator@example.com  | ada.png      |
+
+    When I am logged in as "Leonardo Da Vinci"
+    Then my user profile picture should be shown in the page header
+    When I am logged in as "Ada Lovelace"
+    Then my user profile picture should be shown in the page header
