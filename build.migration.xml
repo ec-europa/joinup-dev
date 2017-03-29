@@ -105,6 +105,7 @@
     <target name="import-legacy-test-db"
             description="Import the legacy D6 testing database."
             depends="create-d6-test-db">
+        <mkdir dir="tmp" />
         <s3dl
                 object="${phpunit.migrate.legacy_db.s3.object}"
                 target="${phpunit.migrate.legacy_db.dump}"
