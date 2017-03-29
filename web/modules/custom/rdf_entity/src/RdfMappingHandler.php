@@ -2,8 +2,9 @@
 
 namespace Drupal\rdf_entity;
 
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 
 /**
@@ -12,12 +13,20 @@ use Drupal\field\Entity\FieldStorageConfig;
  * @package Drupal\rdf_entity
  */
 class RdfMappingHandler {
+
   /**
    * The entity type manager service.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityManager;
+  protected $entityTypeManager;
+
+  /**
+   * The entity field manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
 
   /**
    * The entity type manager service.
@@ -29,11 +38,14 @@ class RdfMappingHandler {
   /**
    * Constructs a QueryFactory object.
    *
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager.
    */
-  public function __construct(EntityManagerInterface $entity_manager) {
-    $this->entityManager = $entity_manager;
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager) {
+    $this->entityTypeManager = $entity_type_manager;
+    $this->entityFieldManager = $entity_field_manager;
     $this->moduleHandler = $this->getModuleHandlerService();
   }
 
@@ -53,16 +65,15 @@ class RdfMappingHandler {
    * @todo: Especially for properties like label, we can generate it if missing.
    */
   public function getEntityTypeLabelPredicates($entity_type_id) {
-    $entity_type = $this->entityManager->getStorage($entity_type_id)->getEntityType();
+    $entity_type = $this->entityTypeManager->getStorage($entity_type_id)->getEntityType();
     $bundle_type = $entity_type->getBundleEntityType();
     $label = $entity_type->getKey('label');
     $bundle_label_mapping = [];
     /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface[] $bundle_entities */
-    $bundle_entities = $this->entityManager->getStorage($bundle_type)->loadMultiple();
+    $bundle_entities = $this->entityTypeManager->getStorage($bundle_type)->loadMultiple();
     foreach ($bundle_entities as $bundle_entity) {
       $settings = rdf_entity_get_third_party_property($bundle_entity, 'mapping', $label, FALSE);
       if (!is_array($settings)) {
-        $settings = rdf_entity_get_third_party_property($bundle_entity, 'mapping', $label, FALSE);
         throw new \Exception('No label predicate mapping set for bundle ' . $bundle_entity->label());
       }
       $type = array_pop($settings);
@@ -92,7 +103,7 @@ class RdfMappingHandler {
    */
   public function getRdfBundleMappedUri($entity_type_bundle_key, $bundle = NULL) {
     $bundle_rdf_bundle_mapping = [];
-    $storage = $this->entityManager->getStorage($entity_type_bundle_key);
+    $storage = $this->entityTypeManager->getStorage($entity_type_bundle_key);
 
     $bundle_entities = empty($bundle) ? $storage->loadMultiple() : [$storage->load($bundle)];
     foreach ($bundle_entities as $bundle_entity) {
@@ -162,23 +173,24 @@ class RdfMappingHandler {
    * /<property>
    *
    * @return array
-   *   An array of mappings indexed by bundle.
+   *   An array of mappings indexed by bundle. The mappings include the base
+   *   fields and the additional fields.
    */
   public function getEntityPredicates($entity_type_id) {
     $mapping = &drupal_static(__FUNCTION__);
-    $storage = $this->entityManager->getStorage($entity_type_id);
+    $storage = $this->entityTypeManager->getStorage($entity_type_id);
     $bundle_type = $storage->getEntityType()->getBundleEntityType();
     // @todo: We can probably get rid of the $entity_type_id index here.
     if (empty($mapping[$entity_type_id])) {
       // Collect entities ids, bundles and languages.
-      $rdf_bundle_entities = $this->entityManager->getStorage($bundle_type)->loadMultiple();
+      $rdf_bundle_entities = $this->entityTypeManager->getStorage($bundle_type)->loadMultiple();
 
       // Collect impacted fields.
       // @todo: remove the entity type id index. Not needed.
       $mapping[$entity_type_id] = [];
       foreach ($rdf_bundle_entities as $rdf_bundle_entity) {
-        $base_field_definitions = $this->entityManager->getBaseFieldDefinitions($entity_type_id);
-        $field_definitions = $this->entityManager->getFieldDefinitions($entity_type_id, $rdf_bundle_entity->id());
+        $base_field_definitions = $this->entityFieldManager->getBaseFieldDefinitions($entity_type_id);
+        $field_definitions = $this->entityFieldManager->getFieldDefinitions($entity_type_id, $rdf_bundle_entity->id());
         if (!$base_field_definitions) {
           continue;
         }
@@ -235,10 +247,10 @@ class RdfMappingHandler {
     $bundle = $entity->bundle();
     $properties = [];
     // Collect impacted fields.
-    $definitions = $this->entityManager->getFieldDefinitions($entity->getEntityTypeId(), $bundle);
-    $base_field_definitions = $this->entityManager->getBaseFieldDefinitions($entity->getEntityTypeId());
+    $definitions = $this->entityFieldManager->getFieldDefinitions($entity->getEntityTypeId(), $bundle);
+    $base_field_definitions = $this->entityFieldManager->getBaseFieldDefinitions($entity->getEntityTypeId());
     /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $rdf_bundle_entity */
-    $rdf_bundle_entity = $this->entityManager->getStorage($entity->getEntityType()->getBundleEntityType())->load($bundle);
+    $rdf_bundle_entity = $this->entityTypeManager->getStorage($entity->getEntityType()->getBundleEntityType())->load($bundle);
     /** @var \Drupal\Core\Field\BaseFieldDefinition $field_definition */
     foreach ($definitions as $field_name => $field_definition) {
       /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
