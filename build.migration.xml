@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <project name="Joinup migration" default="help">
+    <taskdef name="s3dl" classname="\DrupalProject\Phing\AwsS3Get" />
 
     <!-- Run the migration IDs specified in the configuration. -->
     <target name="run-migrations"
@@ -104,6 +105,13 @@
     <target name="import-legacy-test-db"
             description="Import the legacy D6 testing database."
             depends="create-d6-test-db">
+        <s3dl
+                object="${phpunit.migrate.legacy_db.s3.object}"
+                target="${phpunit.migrate.legacy_db.dump}"
+                bucket="${phpunit.migrate.legacy_db.s3.bucket}"
+                key=""
+                secret=""
+        />
         <pdosqlexec
                 url="${drupal.db.type}:host=${drupal.db.host};dbname=${phpunit.migrate.legacy_db.name}"
                 userid="${drupal.db.user}"
