@@ -20,7 +20,7 @@ class RdfTypeDeleteForm extends EntityDeleteForm {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Are you sure you want to delete the RDF type %title?', array('%title' => $this->entity->label()));
+    return $this->t('Are you sure you want to delete the RDF type %title?', ['%title' => $this->entity->label()]);
   }
 
   /**
@@ -34,7 +34,7 @@ class RdfTypeDeleteForm extends EntityDeleteForm {
    * {@inheritdoc}
    */
   protected function getDeletionMessage() {
-    return $this->t('Deleted RDF type %name.', array('%name' => $this->entity->label()));
+    return $this->t('Deleted RDF type %name.', ['%name' => $this->entity->label()]);
   }
 
 }

@@ -51,28 +51,28 @@ class RdfTypeForm extends BundleEntityFormBase {
       $form['#title'] = $this->t('Edit rdf type');
     }
 
-    $form['name'] = array(
+    $form['name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Name'),
       '#default_value' => $rdf_type->label(),
       '#maxlength' => 255,
       '#required' => TRUE,
 
-    );
-    $form['rid'] = array(
+    ];
+    $form['rid'] = [
       '#type' => 'machine_name',
       '#default_value' => $rdf_type->id(),
       '#maxlength' => EntityTypeInterface::BUNDLE_MAX_LENGTH,
-      '#machine_name' => array(
-        'exists' => array($this, 'exists'),
-        'source' => array('name'),
-      ),
-    );
-    $form['description'] = array(
+      '#machine_name' => [
+        'exists' => [$this, 'exists'],
+        'source' => ['name'],
+      ],
+    ];
+    $form['description'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Description'),
       '#default_value' => isset($rdf_type->description) ? $rdf_type->description : '',
-    );
+    ];
     $form = parent::form($form, $form_state);
     return $this->protectBundleIdElement($form);
   }
@@ -90,14 +90,14 @@ class RdfTypeForm extends BundleEntityFormBase {
     $edit_link = $this->entity->link($this->t('Edit'));
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created new rdf type %name.', array('%name' => $rdf_type->label())));
-        $this->logger('taxonomy')->notice('Created new rdf type %name.', array('%name' => $rdf_type->label(), 'link' => $edit_link));
+        drupal_set_message($this->t('Created new rdf type %name.', ['%name' => $rdf_type->label()]));
+        $this->logger('taxonomy')->notice('Created new rdf type %name.', ['%name' => $rdf_type->label(), 'link' => $edit_link]);
         $form_state->setRedirectUrl($rdf_type->urlInfo('overview-form'));
         break;
 
       case SAVED_UPDATED:
-        drupal_set_message($this->t('Updated rdf type %name.', array('%name' => $rdf_type->label())));
-        $this->logger('taxonomy')->notice('Updated rdf type %name.', array('%name' => $rdf_type->label(), 'link' => $edit_link));
+        drupal_set_message($this->t('Updated rdf type %name.', ['%name' => $rdf_type->label()]));
+        $this->logger('taxonomy')->notice('Updated rdf type %name.', ['%name' => $rdf_type->label(), 'link' => $edit_link]);
         $form_state->setRedirectUrl($rdf_type->urlInfo('collection'));
         break;
     }

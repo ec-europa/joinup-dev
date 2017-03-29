@@ -33,13 +33,13 @@ function rdf_export_entity_type_alter(array &$entity_types) {
  * Implements hook_entity_operation().
  */
 function rdf_export_entity_operation(EntityInterface $entity) {
-  $operations = array();
+  $operations = [];
   if ($entity->hasLinkTemplate('rdf-export')) {
-    $operations['export'] = array(
+    $operations['export'] = [
       'title' => t('Export RDF'),
       'weight' => 100,
       'url' => $entity->toUrl('rdf-export'),
-    );
+    ];
   }
   return $operations;
 }

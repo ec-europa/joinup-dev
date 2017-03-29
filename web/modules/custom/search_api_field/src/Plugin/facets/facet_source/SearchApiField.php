@@ -139,11 +139,11 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
       // type.
       foreach ($facets as $facet) {
         if (isset($facet_results[$facet->getFieldIdentifier()])) {
-          $configuration = array(
+          $configuration = [
             'query' => NULL,
             'facet' => $facet,
             'results' => $facet_results[$facet->getFieldIdentifier()],
-          );
+          ];
 
           // Get the Facet Specific Query Type so we can process the results
           // using the build() function of the query type.
