@@ -72,7 +72,12 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
     }
 
     // Check that the migration was clean.
-    $this->assertEmpty($this->messages);
+    if (!empty($this->messages)) {
+      $messages = array_map(function ($message) {
+        return "- $message";
+      }, $this->messages);
+      $this->fail("Error messages received during migrations:\n" . implode("\n", $messages));
+    }
 
     // Assertions for each migrations are defined under assert/ directory.
     foreach (file_scan_directory(__DIR__ . '/assert', '|\.php$|') as $file) {

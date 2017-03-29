@@ -36,6 +36,15 @@ class Mapping extends Spreadsheet {
   /**
    * {@inheritdoc}
    */
+  public function fields() {
+    return [
+      'type' => $this->t('Node type'),
+    ] + parent::fields();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration) {
     $this->db = Database::getConnection('default', 'migrate');
 
@@ -74,7 +83,7 @@ class Mapping extends Spreadsheet {
    * Checks if a row is valid and logs all inconsistencies.
    *
    * @param array $row
-   *   The row to be checked.
+   *   The row to be checked. The $row array can be altered.
    *
    * @return bool
    *   If the row is valid.
@@ -82,27 +91,34 @@ class Mapping extends Spreadsheet {
   protected function rowIsValid(array &$row) {
     $messages = [];
 
-    $nid = $row['Nid'];
+    $nid = $row['nid'];
     $row['Collection_Name'] = trim((string) $row['Collection_Name']);
 
+    $title = $type = NULL;
     if (in_array($row['Collection_Name'], ['', '#N/A'], TRUE)) {
       $messages[] = 'Collection name empty or invalid';
     }
     if (!is_numeric($nid)) {
-      $messages[] = "Invalid Nid '$nid'";
+      $messages[] = "Invalid nid '$nid'";
     }
     else {
-      $title = $this->db->select('node')
-        ->fields('node', ['title'])
+      $node = $this->db->select('node')
+        ->fields('node', ['title', 'type'])
         ->condition('nid', $nid)
         ->execute()
-        ->fetchField();
-      if (!$title) {
+        ->fetch();
+      if (!$node) {
         $messages[] = "This node doesn't exist in the source database";
+      }
+      else {
+        $title = $node->title;
+        $type = $node->type;
       }
     }
 
-    if ($row['Type of content item'] === 'Interoperability Solution') {
+    $row['type'] = $type;
+
+    if ($row['type'] === 'asset_release') {
       // Check for 'asset_release' acting as 'release'.
       /** @var \Drupal\Core\Database\Query\SelectInterface $query */
       $query = $this->db->select('og_ancestry', 'o')
@@ -123,7 +139,7 @@ class Mapping extends Spreadsheet {
     // Register inconsistencies.
     if ($messages) {
       $row_index = $row['row_index'];
-      $source_ids = ['Nid' => $row['Nid']];
+      $source_ids = ['nid' => $row['nid']];
       foreach ($messages as $message) {
         $this->migration->getIdMap()->saveMessage($source_ids, "Row: $row_index, Nid: $nid: $message");
       }

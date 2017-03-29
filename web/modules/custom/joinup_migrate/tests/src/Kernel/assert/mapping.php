@@ -35,29 +35,12 @@ $this->assertSame([
   'logo' => NULL,
   'banner' => NULL,
   'owner' => NULL,
+  'collection_owner' => NULL,
   'elibrary' => NULL,
   'collection_status' => NULL,
   'content_item_status' => NULL,
-  'row_index' => '3',
+  'row_index' => '2',
 ], $imported['60735']);
-
-$this->assertSame([
-  'nid' => '105945',
-  'type' => 'repository',
-  'collection' => 'More than one Community or Repository',
-  'policy' => NULL,
-  'policy2' => 'Defence',
-  'new_collection' => 'No',
-  'migrate' => '1',
-  'abstract' => NULL,
-  'logo' => NULL,
-  'banner' => NULL,
-  'owner' => NULL,
-  'elibrary' => NULL,
-  'collection_status' => NULL,
-  'content_item_status' => NULL,
-  'row_index' => '11',
-], $imported['105945']);
 
 $this->assertSame([
   'nid' => '145807',
@@ -71,11 +54,31 @@ $this->assertSame([
   'logo' => NULL,
   'banner' => NULL,
   'owner' => NULL,
+  'collection_owner' => 'joeroe@example.com',
+  'elibrary' => NULL,
+  'collection_status' => NULL,
+  'content_item_status' => NULL,
+  'row_index' => '9',
+], $imported['145807']);
+
+$this->assertSame([
+  'nid' => '105945',
+  'type' => 'repository',
+  'collection' => 'More than one Community or Repository',
+  'policy' => NULL,
+  'policy2' => 'Defence',
+  'new_collection' => 'No',
+  'migrate' => '1',
+  'abstract' => NULL,
+  'logo' => NULL,
+  'banner' => NULL,
+  'owner' => NULL,
+  'collection_owner' => 'joeroe@example.com',
   'elibrary' => NULL,
   'collection_status' => NULL,
   'content_item_status' => NULL,
   'row_index' => '10',
-], $imported['145807']);
+], $imported['105945']);
 
 $this->assertSame([
   'nid' => '58694',
@@ -89,10 +92,11 @@ $this->assertSame([
   'logo' => NULL,
   'banner' => NULL,
   'owner' => NULL,
+  'collection_owner' => 'doe@example.com',
   'elibrary' => NULL,
   'collection_status' => NULL,
   'content_item_status' => NULL,
-  'row_index' => '12',
+  'row_index' => '11',
 ], $imported['58694']);
 
 $this->assertSame([
@@ -101,14 +105,15 @@ $this->assertSame([
   'collection' => 'New collection',
   'policy' => NULL,
   'policy2' => 'eProcurement',
-  'new_collection' => 'Yes',
+  'new_collection' => 'No',
   'migrate' => '1',
   'abstract' => NULL,
   'logo' => NULL,
   'banner' => NULL,
   'owner' => NULL,
+  'collection_owner' => 'doe@example.com',
   'elibrary' => NULL,
   'collection_status' => NULL,
   'content_item_status' => NULL,
-  'row_index' => '13',
+  'row_index' => '12',
 ], $imported['26863']);
