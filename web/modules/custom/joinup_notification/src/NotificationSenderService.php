@@ -82,14 +82,14 @@ class NotificationSenderService {
   public function sendStateTransitionMessage(EntityInterface $entity, $role_id, array $template_ids) {
     $role = Role::load($role_id);
     if (!empty($role)) {
-      $recipients = $this->getRecipientsByRole($role_id);
+      $recipient_ids = $this->getRecipientIdsByRole($role_id);
     }
     else {
-      $recipients = $this->getRecipientsByOgRole($entity, $role_id);
+      $recipient_ids = $this->getRecipientIdsByOgRole($entity, $role_id);
     }
 
     /** @var \Drupal\og\Entity\OgMembership $membership */
-    foreach ($recipients as $user_id) {
+    foreach ($recipient_ids as $user_id) {
       foreach ($template_ids as $template_id) {
         // Create the actual message and save it to the db.
         $message = Message::create([
@@ -113,7 +113,7 @@ class NotificationSenderService {
    * @return array
    *   An array of user ids.
    */
-  protected function getRecipientsByRole($role_id) {
+  protected function getRecipientIdsByRole($role_id) {
     return $this->entityTypeManager->getStorage('user')->getQuery()
       ->condition('status', 1)
       ->condition('roles', $role_id)
@@ -131,7 +131,7 @@ class NotificationSenderService {
    * @return array
    *   An array of user ids.
    */
-  protected function getRecipientsByOgRole(EntityInterface $entity, $role_id) {
+  protected function getRecipientIdsByOgRole(EntityInterface $entity, $role_id) {
     if (!$this->groupTypeManager->isGroup($entity->getEntityTypeId(), $entity->bundle())) {
       $entity = $this->relationManager->getParent($entity);
     }
