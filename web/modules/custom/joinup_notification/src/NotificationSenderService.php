@@ -72,14 +72,14 @@ class NotificationSenderService {
    *   The state change event.
    * @param string $role_id
    *   The id of the role. The role can be site-wide or organic group.
-   * @param array $message_ids
-   *   An array of Message template ids.
+   * @param array $template_ids
+   *   An array of Message template IDs.
    *
    * @throws \Drupal\message_notify\Exception\MessageNotifyException
    *
    * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
    */
-  public function sendStateTransitionMessage(EntityInterface $entity, $role_id, array $message_ids) {
+  public function sendStateTransitionMessage(EntityInterface $entity, $role_id, array $template_ids) {
     $role = Role::load($role_id);
     if (!empty($role)) {
       $recipients = $this->getRecipientsByRole($role_id);
@@ -90,10 +90,10 @@ class NotificationSenderService {
 
     /** @var \Drupal\og\Entity\OgMembership $membership */
     foreach ($recipients as $user_id) {
-      foreach ($message_ids as $message_id) {
+      foreach ($template_ids as $template_id) {
         // Create the actual message and save it to the db.
         $message = Message::create([
-          'template' => $message_id,
+          'template' => $template_id,
           'uid' => $user_id,
           'field_message_content' => $entity->id(),
         ]);
