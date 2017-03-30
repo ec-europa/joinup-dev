@@ -63,3 +63,17 @@ joinup_notification.settings:
             label: 'Message ID'
             sequence:
               type: string
+    update_notifications:
+      type: sequence
+      label: 'Entity type'
+      sequence:
+        type: sequence
+        label: 'Bundle'
+        sequence:
+          type: sequence
+          label: 'Roles'
+          sequence:
+            type: sequence
+            label: 'Message ID'
+            sequence:
+              type: string

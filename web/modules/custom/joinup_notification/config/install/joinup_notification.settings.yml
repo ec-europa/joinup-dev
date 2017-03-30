@@ -14,3 +14,11 @@ delete_notifications:
     asset_distribution:
       rdf_entity-solution-administrator:
         - rdf_entity_distribution_delete
+update_notifications:
+  rdf_entity:
+    collection:
+      rdf_entity-collection-facilitator:
+        - rdf_collection_node_updated
+    solution:
+      rdf_entity-solution-facilitator:
+        - rdf_entity_solution_node_updated
