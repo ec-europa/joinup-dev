@@ -131,6 +131,9 @@ class Mapping extends Spreadsheet {
         $messages[] = "'$title' is a release and shouldn't be in the Excel file. Releases are computed";
       }
     }
+    elseif ($row['type'] === 'project') {
+      $messages[] = "Software (project) content should not be in the Excel file. Replace with Project (project_project)";
+    }
 
     if (!in_array($row['New collection'], ['Yes', 'No'])) {
       $messages[] = "Invalid 'New Collection': '{$row['New collection']}'";

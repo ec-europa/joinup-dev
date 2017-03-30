@@ -16,6 +16,7 @@ $this->assertMessage('mapping', "Row: 6, Nid: 157729: 'MOA-ID 3.2.1' is a releas
 $this->assertMessage('mapping', "Row: 7, Nid: 58729: Collection name empty or invalid");
 $this->assertMessage('mapping', "Row: 8, Nid: 60736: Collection name empty or invalid");
 $this->assertMessage('mapping', "Row: 9, Nid: 156207: Invalid 'New Collection': '#N/A'");
+$this->assertMessage('mapping', "Row: 13, Nid: 87737: Software (project) content should not be in the Excel file. Replace with Project (project_project)");
 
 // Imported content check.
 $imported = $this->legacyDb->select('d8_mapping')
