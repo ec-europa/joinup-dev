@@ -105,14 +105,10 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
 
     $map = [
       'view' => 'view all revisions',
-      'update' => 'revert all revisions',
-      'delete' => 'delete all revisions',
     ];
     $bundle = $node->bundle();
     $type_map = [
       'view' => "view $bundle revisions",
-      'update' => "revert $bundle revisions",
-      'delete' => "delete $bundle revisions",
     ];
 
     // If the operation is not supported, we return a neutral access result
