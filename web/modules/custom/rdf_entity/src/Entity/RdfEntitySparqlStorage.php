@@ -276,6 +276,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     if (empty($ids)) {
       return [];
     }
+    $ids = SparqlArg::toResourceUris($ids);
     $remaining_ids = $ids;
     $entities = array();
     while (count($remaining_ids)) {
@@ -308,8 +309,6 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
     // @todo: We should filter per entity per graph and not load the whole
     // database only to filter later on.
     $ids_string = SparqlArg::serializeUris($ids);
-    // @todo: Duplicated entry.
-    // $ids_string = "<" . implode(">, <", $ids) . ">";
     $graphs = $this->getGraphHandler()->getEntityTypeGraphUrisList($this->getEntityType()->getBundleEntityType());
     $named_graph = '';
     foreach ($graphs as $graph) {
@@ -377,7 +376,8 @@ QUERY;
     // results.
     $values_per_entity = [];
     foreach ($results as $result) {
-      $entity_id = SparqlArg::uri($result->entity_id);
+      $entity_id = SparqlArg::uri((string) $result->entity_id);
+      // $entity_id = (string) $result->entity_id;.
       $entity_graphs[$entity_id] = (string) $result->graph;
 
       $lang = LanguageInterface::LANGCODE_DEFAULT;
@@ -656,7 +656,6 @@ QUERY;
    *   The graph uri to delete from.
    */
   protected function doDeleteFromGraph(array $entities, $graph) {
-    // $entity_list = "<" . implode(">, <", array_keys($entities)) . ">";.
     $entity_list = SparqlArg::serializeUris(array_keys($entities));
 
     $query = <<<QUERY
@@ -688,8 +687,7 @@ QUERY;
   public function getQuery($conjunction = 'AND') {
     // Access the service directly rather than entity.query factory so the
     // storage's current entity type is used.
-    $query = \Drupal::service($this->getQueryServiceName())
-      ->get($this->entityType, $conjunction);
+    $query = \Drupal::service($this->getQueryServiceName())->get($this->entityType, $conjunction, $this->graphHandler, $this->mappingHandler);
 
     /*
      * Hold on tight this ain't easy...
@@ -745,20 +743,6 @@ QUERY;
    * {@inheritdoc}
    */
   protected function purgeFieldItems(ContentEntityInterface $entity, FieldDefinitionInterface $field_definition) {
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function doPreSave(EntityInterface $entity) {
-    // In case entities are not created through the API (like an import), handle
-    // the Id explicitly. Otherwise there will be an exception thrown if the id
-    // is different from the one in the database.
-    // @see: \Drupal\Core\Entity\ContentEntityStorageBase::doPreSave.
-    if (!empty($entity->id())) {
-      $entity->{$this->idKey} = SparqlArg::uri($entity->id());
-    }
-    return parent::doPreSave($entity);
   }
 
   /**

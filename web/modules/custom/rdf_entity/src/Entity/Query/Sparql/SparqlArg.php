@@ -27,10 +27,23 @@ class SparqlArg {
    *   Sparql serialized URIs.
    */
   public static function serializeUris(array $uris) {
+    return implode(', ', self::toResourceUris($uris));
+  }
+
+  /**
+   * URI Query arguments.
+   *
+   * @param array $uris
+   *   An array of URIs to serialize.
+   *
+   * @return array
+   *   The encoded uris.
+   */
+  public static function toResourceUris(array $uris) {
     foreach ($uris as $index => $uri) {
       $uris[$index] = self::uri($uri);
     }
-    return implode(', ', $uris);
+    return $uris;
   }
 
   /**

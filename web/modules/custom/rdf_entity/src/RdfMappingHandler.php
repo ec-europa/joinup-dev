@@ -6,6 +6,8 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
+use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 
 /**
  * Contains helper methods that help with the uri mappings of Drupal elements.
@@ -230,6 +232,87 @@ class RdfMappingHandler {
       }
     }
     return $mapping[$entity_type_id];
+  }
+
+  /**
+   * Returns the rdf mapping of the given property in an entity type.
+   *
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param string $field_name
+   *   The field machine name.
+   *
+   * @return array
+   *   An array of resource IDs indexed by bundle id.
+   *
+   * @throws \Exception
+   *    Throws an exception when a mapped ID is not found because it means that
+   *    either the field name is not part of the entity or that the map has not
+   *    been set.
+   */
+  public function getFieldRdfMapping($entity_type_id, $field_name) {
+    $field_mapping = &drupal_static(__FUNCTION__);
+    $mapping = $this->getEntityPredicates($entity_type_id);
+    // In case the field name includes the column, explode it.
+    // @see \Drupal\og\MembershipManager::getGroupContentIds
+    $field_name_parts = explode('.', $field_name);
+    $field_name = reset($field_name_parts);
+    if (!isset($field_mapping[$field_name])) {
+      $found = FALSE;
+      foreach ($mapping as $bundle_id => $data) {
+        foreach ($data as $mapping_id => $field_data) {
+          if ($field_data['field_name'] === $field_name) {
+            $field_mapping[$field_name][$bundle_id] = SparqlArg::uri($mapping_id);
+            $found = TRUE;
+          }
+        }
+      }
+      if (!$found) {
+        throw new \Exception("The field $field_name does not appear to have a resource id in the entity type $entity_type_id.");
+      }
+    }
+
+    return $field_mapping[$field_name];
+  }
+
+  /**
+   * Determines if a field is an entity reference.
+   *
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param string $field_name
+   *   The field machine name.
+   *
+   * @return bool
+   *   Whether the field is referencing an rdf resource.
+   */
+  public function fieldIsRdfReference($entity_type_id, $field_name) {
+    // @todo: This needs a static cache.
+    $field_definitions = $this->entityTypeManager->getStorage('field_storage_config')->loadByProperties([
+      'type' => 'entity_reference',
+      'entity_type' => 'rdf_entity',
+    ]);
+    $field_id = $entity_type_id . '.' . $field_name;
+    if (isset($field_definitions[$field_id])) {
+      $target_type = $field_definitions[$field_id]->getSetting('target_type');
+      if (empty($target_type)) {
+        return FALSE;
+      }
+      $target_entity_storage_class = $this->entityTypeManager->getStorage($target_type);
+      return ($target_entity_storage_class instanceof RdfEntitySparqlStorage) || is_subclass_of($target_entity_storage_class, RdfEntitySparqlStorage::class);
+    }
+
+    $base_field_definitions = $this->entityFieldManager->getBaseFieldDefinitions($entity_type_id);
+    if (isset($base_field_definitions[$field_name])) {
+      $target_type = $base_field_definitions[$field_name]->getSetting('target_type');
+      if (empty($target_type)) {
+        return FALSE;
+      }
+      $target_entity_storage_class = $this->entityTypeManager->getStorage($target_type);
+      return ($target_entity_storage_class instanceof RdfEntitySparqlStorage) || is_subclass_of($target_entity_storage_class, RdfEntitySparqlStorage::class);
+    }
+
+    return FALSE;
   }
 
   /**

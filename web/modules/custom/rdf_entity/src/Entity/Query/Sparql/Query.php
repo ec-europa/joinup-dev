@@ -2,7 +2,6 @@
 
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Query\QueryBase;
@@ -17,16 +16,16 @@ use Drupal\rdf_entity\RdfMappingHandler;
  * The base entity query class for Rdf entities.
  */
 class Query extends QueryBase implements QueryInterface {
-  protected $sortQuery = NULL;
-
-  public $query = '';
 
   /**
-   * Filters.
+   * The connection object.
    *
-   * @var \Drupal\Core\Entity\Query\ConditionInterface
+   * @var \Drupal\Core\Database\Connection
    */
-  protected $filter;
+  protected $connection;
+
+  protected $sortQuery = NULL;
+  public $query = '';
 
   /**
    * The graphs from where the query is going to try and load entities from.
@@ -45,16 +44,6 @@ class Query extends QueryBase implements QueryInterface {
    * @var array
    */
   protected $results = NULL;
-
-  /**
-   * True if a type filter has been already added to the query.
-   *
-   * Currently there is no easy method to avoid multiple conditions on rdf type,
-   * so we keep track if a condition has already added such filter.
-   *
-   * @var bool
-   */
-  protected $filterAdded = FALSE;
 
   /**
    * Entity storage.
@@ -109,17 +98,56 @@ class Query extends QueryBase implements QueryInterface {
    * @todo: Is this exception check needed?
    */
   public function __construct(EntityTypeInterface $entity_type, $conjunction, Connection $connection, array $namespaces, EntityTypeManagerInterface $entity_type_manager, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
+    // Assign the handlers before calling the parent so that they can be passed
+    // to the condition class properly.
+    $this->graphHandler = $rdf_graph_handler;
+    $this->mappingHandler = $rdf_mapping_handler;
     parent::__construct($entity_type, $conjunction, $namespaces);
-    $this->filter = new SparqlFilter();
+
     $this->connection = $connection;
     $this->entityTypeManager = $entity_type_manager;
     $this->entityStorage = $this->entityTypeManager->getStorage($this->entityTypeId);
-    $this->graphHandler = $rdf_graph_handler;
-    $this->mappingHandler = $rdf_mapping_handler;
 
     if (!$this->entityStorage instanceof RdfEntitySparqlStorage) {
       throw new \Exception('Sparql storage is required for this query.');
     }
+  }
+
+  /**
+   * Returns the graph handler service.
+   *
+   * @return \Drupal\rdf_entity\RdfGraphHandler
+   *   The graph handler service.
+   */
+  public function getGraphHandler() {
+    return $this->graphHandler;
+  }
+
+  /**
+   * Returns the mapping handler service.
+   *
+   * @return \Drupal\rdf_entity\RdfMappingHandler
+   *   The mapping handler service.
+   */
+  public function getMappingHandler() {
+    return $this->mappingHandler;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEntityTypeId() {
+    return $this->entityTypeId;
+  }
+
+  /**
+   * Returns the entity type.
+   *
+   * @return \Drupal\Core\Entity\EntityTypeInterface
+   *   The entity type object.
+   */
+  public function getEntityType() {
+    return $this->entityType;
   }
 
   /**
@@ -202,245 +230,8 @@ class Query extends QueryBase implements QueryInterface {
    * @return $this
    */
   protected function addConditions() {
-    $this->query .=
-      "WHERE{\n";
-    $this->condition->compile($this);
-    $this->filter->compile($this);
-    $this->query .= "}\n";
-
+    $this->query .= "WHERE {" . $this->condition->toString() . '}';
     return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function filter($filter, $type = 'FILTER') {
-    $this->filter->filter($filter, $type);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function condition($property, $value = NULL, $operator = '=', $langcode = NULL) {
-    $key = $property . '-' . $operator;
-    $field_storage_definitions = \Drupal::service('entity.manager')
-      ->getFieldStorageDefinitions($this->entityTypeId);
-    /*
-     * Ok, so what is all this:
-     * We need to convert our conditions into some sparql compatible conditions.
-     */
-    $bundle = $this->entityType->getKey('bundle');
-    $id = $this->entityType->getKey('id');
-    $label = $this->entityType->getKey('label');
-    switch ($key) {
-      // @todo Limit the graphs here to the set bundles.
-      case $bundle . '-IN':
-        $rdf_bundles = $this->mappingHandler->getBundleUriList($this->entityType->getBundleEntityType(), $value);
-        if ($rdf_bundles) {
-          $this->condition->condition('?entity', '?bundlepredicate', '?type');
-          $this->filterAdded = TRUE;
-          $predicates = '(' . SparqlArg::serializeUris($this->entityStorage->bundlePredicate()) . ')';
-          $this->filter->filter('?bundlepredicate IN ' . $predicates);
-          $this->filter->filter('?type IN ' . $rdf_bundles);
-        }
-        return $this;
-
-      case $bundle . '-=':
-        $mapping = $this->mappingHandler->getRdfBundleMappedUri($this->entityType->getBundleEntityType(), $value);
-        $bundle = $mapping[$value];
-        if ($bundle) {
-          $this->condition->condition('?entity', '?bundlepredicate', SparqlArg::uri($bundle));
-          $predicates = '(' . SparqlArg::serializeUris($this->entityStorage->bundlePredicate()) . ')';
-          $this->filter->filter('?bundlepredicate IN ' . $predicates);
-          $this->filterAdded = TRUE;
-        }
-        return $this;
-
-      case $id . '-IN':
-        if ($value) {
-          $ids_list = '(' . SparqlArg::serializeUris($value) . ')';
-          // @todo: Duplicated entry.
-          // $ids_list = "(<" . implode(">, <", $value) . ">)";
-          if (!$this->filterAdded) {
-            $this->condition->condition('?entity', '?bundlepredicate', '?type');
-            $predicates = '(' . SparqlArg::serializeUris($this->entityStorage->bundlePredicate()) . ')';
-            $this->filter->filter('?bundlepredicate IN ' . $predicates);
-            $this->filterAdded = TRUE;
-          }
-          $this->filter->filter('?entity IN ' . $ids_list);
-        }
-        return $this;
-
-      case $id . '-NOT IN':
-      case $id . '-<>':
-        if ($value) {
-          if (is_array($value)) {
-            $ids_list = '(' . SparqlArg::serializeUris($value) . ')';
-          }
-          else {
-            $ids_list = '(' . SparqlArg::uri($value) . ')';
-          }
-
-          if (!$this->filterAdded) {
-            $this->condition->condition('?entity', '?bundlepredicate', '?type');
-            $predicates = '(' . SparqlArg::serializeUris($this->entityStorage->bundlePredicate()) . ')';
-            $this->filter->filter('?bundlepredicate IN ' . $predicates);
-            $this->filterAdded = TRUE;
-          }
-          $this->filter->filter('!(?entity IN ' . $ids_list . ')');
-        }
-        return $this;
-
-      case $id . '-=':
-        if (!$value) {
-          return $this;
-        }
-        $id = '<' . $value . '>';
-        if (!$this->filterAdded) {
-          $this->condition->condition('?entity', '?bundlepredicate', '?type');
-          $predicates = '(' . SparqlArg::serializeUris($this->entityStorage->bundlePredicate()) . ')';
-          $this->filter->filter('?bundlepredicate IN ' . $predicates);
-          $this->filterAdded = TRUE;
-        }
-        $this->filter->filter('?entity IN ' . SparqlArg::literal($id));
-        break;
-
-      case "$label-IN":
-        $labels = is_array($value) ? $value : [$value];
-        $mapping = $this->mappingHandler->getEntityTypeLabelPredicates($this->entityTypeId);
-
-        $label_types = '(' . SparqlArg::serializeUris(array_unique(array_keys($mapping))) . ')';
-        $this->condition->condition('?entity', '?label_type', '?label');
-        $this->filter->filter('?label_type IN ' . $label_types);
-        $labels = array_map(function ($label) {
-          return 'str(?label) = "' . $label . '"';
-        }, $labels);
-        $this->filter->filter(implode(' || ', $labels));
-
-        return $this;
-
-      case $label . '-=':
-        preg_match('/\((.*?)\)/', $value, $matches);
-        $matching = array_pop($matches);
-        if ($matching) {
-          $ids = "(<$matching>)";
-          $this->filter->filter('?entity IN ' . $ids);
-        }
-        else {
-          if (file_valid_uri($value)) {
-            $ids = "(<$value>)";
-            $this->filter->filter('?entity IN ' . $ids);
-          }
-          else {
-            $mapping = $this->mappingHandler->getEntityTypeLabelPredicates($this->entityTypeId);
-            $label_list = '(' . SparqlArg::serializeUris(array_unique(array_keys($mapping))) . ')';
-            $this->condition->condition('?entity', '?label_type', '?label');
-            $this->filter->filter('?label_type IN ' . $label_list);
-            $this->filter->filter('str(?label) = "' . $value . '"');
-          }
-        }
-
-        return $this;
-
-      case $label . '-CONTAINS':
-        $mapping = $this->mappingHandler->getEntityTypeLabelPredicates($this->entityTypeId);
-        $label_list = '(' . SparqlArg::serializeUris(array_unique(array_keys($mapping))) . ')';
-        $this->condition->condition('?entity', '?label_type', '?label');
-        $this->filter->filter('?label_type IN ' . $label_list);
-        if ($value) {
-          $this->filter->filter('regex(?label, "' . $value . '", "i")');
-          $this->filter->filter('(lang(?label) = "" || langMatches(lang(?label), "EN"))');
-        }
-        return $this;
-
-      case '_field_exists-EXISTS':
-      case '_field_exists-NOT EXISTS':
-        $field_rdf_name = $this->getFieldRdfPropertyName($value, $field_storage_definitions);
-
-        if (!UrlHelper::isValid($field_rdf_name, TRUE) === FALSE) {
-          $field_rdf_name = SparqlArg::uri($field_rdf_name);
-        }
-        if ($field_rdf_name) {
-          $this->filter('?entity ' . $field_rdf_name . ' ?c', 'FILTER ' . $operator);
-        }
-        return $this;
-
-    }
-    if ($operator == '=') {
-      if (!$value) {
-        return $this;
-      }
-
-      // @todo this code will be handled in ISAICP-2631
-      if (strpos($property, '.') !== FALSE) {
-        list ($field_name, $column) = explode('.', $property);
-      }
-      else {
-        $field_name = $property;
-      }
-
-      $field_rdf_name = $this->getFieldRdfPropertyName($field_name, $field_storage_definitions);
-
-      if (SparqlArg::isValidResource($value)) {
-        $value = SparqlArg::uri($value);
-      }
-      else {
-        $value = SparqlArg::literal($value);
-      }
-      $this->condition->condition('?entity', SparqlArg::uri($field_rdf_name), $value);
-    }
-
-    if ($operator == 'IN') {
-      if (!$value) {
-        return $this;
-      }
-      // @todo this code will be handled in ISAICP-2631
-      if (strpos($property, '.') !== FALSE) {
-        list ($field_name, $column) = explode('.', $property);
-      }
-      else {
-        $field_name = $property;
-      }
-      $field_rdf_name = $this->getFieldRdfPropertyName($field_name, $field_storage_definitions);
-      $this->condition->condition('?entity', SparqlArg::uri($field_rdf_name), '?' . $field_name);
-      $ids_list = '(' . SparqlArg::serializeUris($value) . ')';
-      $this->filter->filter('?' . $field_name . ' IN ' . $ids_list);
-      return $this;
-    }
-
-    return $this;
-  }
-
-  /**
-   * Returns an rdf property name for the given field.
-   *
-   * @param string $field_name
-   *   The machine name of the field.
-   * @param array $field_storage_definitions
-   *   The field storage definition Item.
-   *
-   * @return string
-   *   The property name of the field. If it is a uri, wrap it with '<', '>'.
-   *
-   * @throws \Exception
-   *   Thrown when the field has not a valid rdf property name.
-   */
-  public function getFieldRdfPropertyName($field_name, array $field_storage_definitions) {
-    if (empty($field_storage_definitions[$field_name])) {
-      throw new \Exception('Unknown field ' . $field_name);
-    }
-    /** @var \Drupal\field\Entity\FieldStorageConfig $field_storage */
-    $field_storage = $field_storage_definitions[$field_name];
-    if (empty($column)) {
-      $column = $field_storage->getMainPropertyName();
-    }
-    $field_rdf_name = rdf_entity_get_third_party_property($field_storage, 'mapping', $column, FALSE);
-    if (empty($field_rdf_name)) {
-      throw new \Exception('No 3rd party field settings for ' . $field_name);
-    }
-
-    return $field_rdf_name;
   }
 
   /**
@@ -544,7 +335,7 @@ class Query extends QueryBase implements QueryInterface {
    */
   protected function conditionGroupFactory($conjunction = 'AND') {
     $class = static::getClass($this->namespaces, 'SparqlCondition');
-    return new $class($conjunction, $this, $this->namespaces);
+    return new $class($conjunction, $this, $this->namespaces, $this->graphHandler, $this->mappingHandler);
   }
 
   /**
