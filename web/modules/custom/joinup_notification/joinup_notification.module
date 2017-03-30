@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\og\Og;
 
 /**
  * Implements hook_entity_predelete().
@@ -55,5 +56,60 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
   }
   foreach ($configuration[$entity_type][$bundle] as $role_id => $messages) {
     \Drupal::service('joinup_notification.notification_sender')->send($entity, $role_id, $messages);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Sends an e-mail to facilitators of collection/solutions when a moderator
+ * updates a community content node.
+ */
+function joinup_notification_node_update(EntityInterface $entity) {
+  $user = \Drupal::currentUser();
+
+  // Send this notification only when a moderator triggered it.
+  if (!in_array('moderator', $user->getRoles())) {
+    return;
+  }
+
+  if (!Og::isGroupContent('node', $entity->bundle())) {
+    return;
+  }
+
+  /** @var \Drupal\Og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  $groups = $membership_manager->getGroups($entity);
+
+  // In Joinup all the nodes that are group content should have groups, but
+  // check for safety.
+  if (empty($groups['rdf_entity'])) {
+    \Drupal::logger('joinup_notification')->alert('%title @bundle node has no groups associated.', [
+      '%title' => $entity->label(),
+      '@bundle' => $entity->bundle(),
+    ]);
+
+    return;
+  }
+
+  $configuration = \Drupal::config('joinup_notification.settings')->get('update_notifications');
+  /** @var \Drupal\joinup_notification\NotificationSenderService $sender */
+  $sender = \Drupal::service('joinup_notification.notification_sender');
+
+  foreach ($groups['rdf_entity'] as $group) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $group */
+    $bundle = $group->bundle();
+
+    if (empty($configuration['rdf_entity'][$bundle])) {
+      continue;
+    }
+
+    foreach ($configuration['rdf_entity'][$bundle] as $role_id => $messages) {
+      $sender->send($group, $role_id, $messages, [
+        'field_message_actor' => $user->id(),
+        'field_message_node' => $entity->id(),
+      ]);
+    }
+
   }
 }
