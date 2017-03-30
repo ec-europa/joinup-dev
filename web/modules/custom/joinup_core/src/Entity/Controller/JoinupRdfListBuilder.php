@@ -37,11 +37,11 @@ class JoinupRdfListBuilder extends RdfListBuilder {
       $query->setGraphType($rdf_storage->getGraphHandler()->getEntityTypeEnabledGraphs());
     }
 
-    if ($rid = $request->get('rid') ?: NULL) {
-      $rid = in_array($rid, array_keys($bundle_info->getBundleInfo('rdf_entity'))) ? [$rid] : NULL;
+    if ($rid = $request->get('rid')) {
+      if (in_array($rid, array_keys($bundle_info->getBundleInfo('rdf_entity')))) {
+        $query->condition('rid', $rid, 'IN');
+      }
     }
-
-    $query->condition('rid', $rid, 'IN');
     // Special treatment for 'solution' and 'asset_release'.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
     if ($rid[0] === 'asset_release') {
