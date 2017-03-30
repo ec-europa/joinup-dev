@@ -19,6 +19,8 @@ config_devel:
   - field.field.message.rdf_entity_solution_request_del.field_message_content
   - field.field.message.rdf_entity_solution_validate.field_message_content
   - field.storage.message.field_message_content
+  - field.storage.message.field_message_node
+  - field.storage.message.field_message_actor
   - message.template.rdf_entity_solution_delete
   - message.template.rdf_entity_solution_request_del
   - message.template.rdf_entity_solution_validate

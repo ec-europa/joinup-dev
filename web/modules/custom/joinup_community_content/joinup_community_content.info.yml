@@ -8,14 +8,23 @@ dependencies:
   - comment
   - diff
   - field
+  - joinup_notifications
   - node
   - state_machine
   - taxonomy
   - text
 
 config_devel:
+  - field.field.message.rdf_collection_node_updated.field_message_content
+  - field.field.message.rdf_collection_node_updated.field_message_node
+  - field.field.message.rdf_collection_node_updated.field_message_actor
+  - field.field.message.rdf_entity_solution_node_updated.field_message_content
+  - field.field.message.rdf_entity_solution_node_updated.field_message_node
+  - field.field.message.rdf_entity_solution_node_updated.field_message_actor
   - field.storage.node.field_comments
   - field.storage.node.field_keywords
   - field.storage.node.field_policy_domain
   - field.storage.node.field_short_title
   - field.storage.node.field_state
+  - message.template.rdf_collection_node_updated
+  - message.template.rdf_entity_solution_node_updated
