@@ -3,6 +3,7 @@
 namespace Drupal\joinup_community_content\Access;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Access\NodeRevisionAccessCheck as CoreNodeRevisionAccessCheck;
@@ -15,6 +16,13 @@ use Symfony\Component\Routing\Route;
  * Extends the core node revision access check by taking into account og roles.
  */
 class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
+
+  /**
+   * The configuration factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
 
   /**
    * The OG group manager.
@@ -46,12 +54,15 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
    *   The OG group manager.
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory service.
    */
-  public function __construct(EntityManagerInterface $entity_manager, GroupTypeManager $group_type_manager, OgAccessInterface $og_access) {
+  public function __construct(EntityManagerInterface $entity_manager, GroupTypeManager $group_type_manager, OgAccessInterface $og_access, ConfigFactoryInterface $config_factory) {
     parent::__construct($entity_manager);
 
     $this->groupTypeManager = $group_type_manager;
     $this->ogAccess = $og_access;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -63,16 +74,14 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
     }
     $operation = $route->getRequirement('_access_node_revision');
 
-    // Check og access.
-    // fallback.
     $og_access = $this->checkOgAccess($node, $account, $operation);
-
+    // If we have already an opinion, return it.
     if (!$og_access->isNeutral()) {
       return $og_access;
     }
 
-    // Verify caching.
-    return AccessResult::allowedIf($node && $this->checkAccess($node, $account, $operation))->cachePerPermissions()->addCacheableDependency($node);
+    $global_access = AccessResult::allowedIf($node && $this->checkAccess($node, $account, $operation));
+    return $global_access->cachePerPermissions()->addCacheableDependency($node)->inheritCacheability($og_access);
   }
 
   /**
@@ -122,20 +131,30 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
       return AccessResult::forbidden()->addCacheableDependency($node);
     }
 
-    // Check that the user has either:
-    // - the global ("<operation> all permissions") permission;
-    // - the bundle specific permission;
-    // - the "administer nodes" permission.
-    /** @var \Drupal\Core\Access\AccessResultInterface $result */
-    $result = $this->nodeAccess->access($node, $map[$operation], $account, TRUE)
-      ->orIf($this->nodeAccess->access($node, $type_map[$operation], $account, TRUE))
-      ->orIf(AccessResult::allowedIf($account->hasPermission('administer nodes')));
-
-    // If the result is either neutral or forbidden, the user doesn't have the
-    // needed permissions so quit.
-    if (!$result->isAllowed()) {
-      return $result;
+    // The global "administer nodes" permissions gives full access to revisions.
+    // @see parent::checkAccess()
+    if ($account->hasPermission('administer nodes')) {
+      return AccessResult::allowed()->cachePerPermissions()->addCacheableDependency($node);
     }
+
+    // Check if the user has either the "all" or the type-specific permission.
+    // We cannot use orIf() to join them, as Og returns denied when the
+    // permission is not present for the user in a group, and orIf() returns
+    // forbidden if any of the parameters is forbidden.
+    $all_access = $this->ogAccess->userAccessEntity($map[$operation], $node, $account);
+    $type_access = $this->ogAccess->userAccessEntity($type_map[$operation], $node, $account);
+    // If neither of the access checks are allowed, check the node_access_strict
+    // configuration and return either neutral or forbidden.
+    // @see og_entity_access()
+    if (!$all_access->isAllowed() && !$type_access->isAllowed()) {
+      $node_access_strict = $this->configFactory->get('og.settings')->get('node_access_strict');
+
+      return AccessResult::forbiddenIf($node_access_strict)->inheritCacheability($all_access)->inheritCacheability($type_access);
+    }
+
+    // Merge all the cacheability of the two permissions checked, as they might
+    // differ.
+    $result = AccessResult::allowed()->inheritCacheability($all_access)->inheritCacheability($type_access);
 
     // First check the access to the default revision and finally, if the
     // node passed in is not the default revision then access to that, too.
