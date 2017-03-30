@@ -28,8 +28,8 @@ abstract class RdfKernelTestBase extends EntityKernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    $this->setUpSparql();
     parent::setUp();
+    $this->setUpSparql();
 
     $this->installModule('rdf_entity');
     $this->installModule('rdf_draft');
