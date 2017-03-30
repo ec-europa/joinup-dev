@@ -25,6 +25,10 @@
     <env name="SIMPLETEST_DB" value=""/>
     <!-- Example SIMPLETEST_SPARQL_DB value: sparql://127.0.0.1:8890/ -->
     <env name="SIMPLETEST_SPARQL_DB" value=""/>
+    <!-- Example SIMPLETEST_LEGACY_DB value: mysql://username:password@localhost/d6_databasename -->
+    <env name="SIMPLETEST_LEGACY_DB" value=""/>
+    <!-- Example SIMPLETEST_LEGACY_WEBROOT value: /path/to/drupal6 -->
+    <env name="SIMPLETEST_LEGACY_WEBROOT" value=""/>
     <!-- Example BROWSERTEST_OUTPUT_DIRECTORY value: /path/to/webroot/sites/simpletest/browser_output -->
     <env name="BROWSERTEST_OUTPUT_DIRECTORY" value=""/>
     <!-- Example BROWSERTEST_OUTPUT_FILE value: /path/to/webroot/sites/simpletest/browser_output/outputfile.txt -->
