@@ -74,12 +74,14 @@ class NotificationSenderService {
    *   The id of the role. The role can be site-wide or organic group.
    * @param array $message_ids
    *   An array of Message template ids.
+   * @param array $message_values
+   *   Additional values to pass to the message creation.
    *
    * @throws \Drupal\message_notify\Exception\MessageNotifyException
    *
    * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
    */
-  public function send(EntityInterface $entity, $role_id, array $message_ids) {
+  public function send(EntityInterface $entity, $role_id, array $message_ids, array $message_values = []) {
     $role = Role::load($role_id);
     if (!empty($role)) {
       $recipients = $this->getRecipientsByRole($role_id);
@@ -96,7 +98,7 @@ class NotificationSenderService {
           'template' => $message_id,
           'uid' => $user_id,
           'field_message_content' => $entity->id(),
-        ]);
+        ] + $message_values);
         $message->save();
         // Send the saved message as an e-mail.
         $this->messageNotifySender->send($message, [], 'email');
