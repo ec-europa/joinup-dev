@@ -66,7 +66,7 @@ class NotificationSenderService {
   }
 
   /**
-   * Sends notifications to users with the passed role.
+   * Sends notifications about a state transition to users with the passed role.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The state change event.
@@ -79,7 +79,7 @@ class NotificationSenderService {
    *
    * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
    */
-  public function send(EntityInterface $entity, $role_id, array $message_ids) {
+  public function sendStateTransitionMessage(EntityInterface $entity, $role_id, array $message_ids) {
     $role = Role::load($role_id);
     if (!empty($role)) {
       $recipients = $this->getRecipientsByRole($role_id);
