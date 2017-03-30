@@ -1795,6 +1795,7 @@
                 "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
                 "mikey179/vfsstream": "~1.2",
                 "phpunit/phpunit": ">=4.8.28 <5",
+                "symfony/browser-kit": ">=2.8.13 <3.0",
                 "symfony/css-selector": "~2.8"
             },
             "type": "drupal-core",
@@ -1957,17 +1958,17 @@
         },
         {
             "name": "drupal/facets",
-            "version": "1.0.0-alpha8",
+            "version": "1.0.0-alpha7",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/facets",
-                "reference": "8.x-1.0-alpha8"
+                "reference": "8.x-1.0-alpha7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha8.zip",
-                "reference": "8.x-1.0-alpha8",
-                "shasum": "6cb469fdf9e5d924e5ed910cbe062f4a1fa995a2"
+                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha7.zip",
+                "reference": "8.x-1.0-alpha7",
+                "shasum": "a7286f02c28c3c82959e123654fc557d20531f05"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -1981,8 +1982,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha8",
-                    "datestamp": "1490003883"
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1482263583"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2299,6 +2300,14 @@
                 "GPL-2.0+"
             ],
             "authors": [
+                {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
                 {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
@@ -3921,7 +3930,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2016-04-20 05:45:29"
+            "time": "2017-01-20 06:45:09"
         },
         {
             "name": "mtdowling/jmespath.php",
