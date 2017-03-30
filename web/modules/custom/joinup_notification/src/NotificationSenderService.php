@@ -66,6 +66,30 @@ class NotificationSenderService {
   }
 
   /**
+   * Creates a message with the given template and sends it to the recipients.
+   *
+   * @param string $template_id
+   *   The template ID.
+   * @param array $values
+   *   The values to use in the template.
+   * @param array $recipient_ids
+   *   An array of user IDs to which the messages will be sent.
+   */
+  public function sendMessage($template_id, array $values, array $recipient_ids) {
+    foreach ($recipient_ids as $recipient_id) {
+      // Create the actual message and save it to the db.
+      $values += [
+        'template' => $template_id,
+        'uid' => $recipient_id,
+      ];
+      $message = Message::create($values);
+      $message->save();
+      // Send the saved message as an e-mail.
+      $this->messageNotifySender->send($message);
+    }
+  }
+
+  /**
    * Sends notifications about a state transition to users with the passed role.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
@@ -87,20 +111,9 @@ class NotificationSenderService {
     else {
       $recipient_ids = $this->getRecipientIdsByOgRole($entity, $role_id);
     }
-
-    /** @var \Drupal\og\Entity\OgMembership $membership */
-    foreach ($recipient_ids as $user_id) {
-      foreach ($template_ids as $template_id) {
-        // Create the actual message and save it to the db.
-        $message = Message::create([
-          'template' => $template_id,
-          'uid' => $user_id,
-          'field_message_content' => $entity->id(),
-        ]);
-        $message->save();
-        // Send the saved message as an e-mail.
-        $this->messageNotifySender->send($message, [], 'email');
-      }
+    foreach ($template_ids as $template_id) {
+      $values = ['field_message_content' => $entity->id()];
+      $this->sendMessage($template_id, $values, $recipient_ids);
     }
   }
 
