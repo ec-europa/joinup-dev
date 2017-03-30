@@ -6,10 +6,10 @@ label: 'Rdf entity - collection - node updated'
 description: 'Message to collection facilitators when a community content is updated by a moderator'
 text:
   -
-    value: "<p>Joinup: User &lt;FirstName&gt; updated a custom page of your collection</p>\r\n"
+    value: "<p>Joinup: user [message:field_message_actor:entity:display-name] updated a [message:field_message_node:entity:content-type] of your collection</p>\r\n"
     format: content_editor
   -
-    value: "<p>Dear &lt;Firstname&gt;,</p>\r\n\r\n<p>&lt;UserName&gt; updated a custom page in your &lt;CollectionName&gt; collection.</p>\r\n\r\n<p>Kinds regards,</p>\r\n\r\n<p>The Joinup Moderation Team.</p>\r\n"
+    value: "<p>Dear [message:author:display-name],</p>\r\n\r\n<p>[message:field_message_actor:entity:display-name] updated a [message:field_message_node:entity:content-type] in your [message:field_message_content:entity:label] collection.</p>\r\n\r\n<p>Kinds regards,</p>\r\n\r\n<p>The Joinup Moderation Team.</p>\r\n"
     format: content_editor
 settings:
   'token options':
