@@ -3,6 +3,8 @@ type: module
 description: Handles subscription settings for each user.
 core: 8.x
 package: Joinup
+dependencies:
+  - options
 
 config_devel:
  - core.entity_form_display.user.user.subscription_settings

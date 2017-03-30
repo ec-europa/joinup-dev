@@ -3,7 +3,7 @@ status: true
 dependencies:
   module:
     - facets
-    - joinup
+    - joinup_core
   theme:
     - joinup_theme
 id: groupheader
