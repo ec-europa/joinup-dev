@@ -57,16 +57,16 @@ class DateTimeCreateUpdateWidget extends DateTimeWidgetBase implements Container
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return array(
+    return [
       'behaviour' => 'create',
-    ) + parent::defaultSettings();
+    ] + parent::defaultSettings();
   }
 
   /**
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    $element['behaviour'] = array(
+    $element['behaviour'] = [
       '#type' => 'select',
       '#options' => [
         'create' => t('Create'),
@@ -75,7 +75,7 @@ class DateTimeCreateUpdateWidget extends DateTimeWidgetBase implements Container
       '#title' => $this->t('Behave like the created or modified field'),
       '#default_value' => $this->getSetting('behaviour'),
       '#required' => TRUE,
-    );
+    ];
     return $element;
   }
 
@@ -83,9 +83,9 @@ class DateTimeCreateUpdateWidget extends DateTimeWidgetBase implements Container
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = array();
+    $summary = [];
 
-    $summary[] = $this->t('Behave like a @type field.', array('@type' => $this->getSetting('behaviour')));
+    $summary[] = $this->t('Behave like a @type field.', ['@type' => $this->getSetting('behaviour')]);
     return $summary;
   }
 

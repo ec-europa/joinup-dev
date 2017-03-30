@@ -28,9 +28,9 @@ class JoinupController extends ControllerBase {
    *   solution or a collection.
    */
   public function proposeRdfEntity(RdfEntityTypeInterface $rdf_type) {
-    $rdf_entity = $this->entityTypeManager()->getStorage('rdf_entity')->create(array(
+    $rdf_entity = $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => $rdf_type->id(),
-    ));
+    ]);
 
     $form = $this->entityFormBuilder()->getForm($rdf_entity, 'propose');
     $form['#title'] = $this->t('Propose @type', [
@@ -62,7 +62,7 @@ class JoinupController extends ControllerBase {
    *   A render array for the homepage.
    */
   public function homepageContent() {
-    $build = array();
+    $build = [];
     return $build;
   }
 

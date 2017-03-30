@@ -79,7 +79,7 @@ class EntityRevisionConverter extends EntityConverter {
       // translation object for the current context.
       // @see parent::convert()
       if ($latest_revision instanceof EntityInterface && $entity instanceof TranslatableInterface) {
-        $latest_revision = $this->entityManager->getTranslationFromContext($latest_revision, NULL, array('operation' => 'entity_upcast'));
+        $latest_revision = $this->entityManager->getTranslationFromContext($latest_revision, NULL, ['operation' => 'entity_upcast']);
       }
 
       if ($latest_revision->isRevisionTranslationAffected()) {

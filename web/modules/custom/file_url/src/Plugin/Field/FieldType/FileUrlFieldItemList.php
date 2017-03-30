@@ -35,7 +35,7 @@ class FileUrlFieldItemList extends EntityReferenceFieldItemList {
     else {
       // Get current target file entities and file IDs.
       $files = $this->referencedEntities();
-      $ids = array();
+      $ids = [];
 
       /** @var \Drupal\file\FileInterface $file */
       foreach ($files as $file) {
@@ -53,7 +53,7 @@ class FileUrlFieldItemList extends EntityReferenceFieldItemList {
 
       // Get the file IDs attached to the field before this update.
       $field_name = $this->getFieldDefinition()->getName();
-      $original_ids = array();
+      $original_ids = [];
       $langcode = $this->getLangcode();
       $original = $entity->original;
       if ($original->hasTranslation($langcode)) {
@@ -94,7 +94,7 @@ class FileUrlFieldItemList extends EntityReferenceFieldItemList {
 
     // Collect the IDs of existing entities to load, and directly grab the
     // "autocreate" entities that are already populated in $item->entity.
-    $target_entities = $ids = array();
+    $target_entities = $ids = [];
     foreach ($this->list as $delta => $item) {
       if ($item->target_id !== NULL) {
         $file = $file_handler::urlToFile($item->target_id);
