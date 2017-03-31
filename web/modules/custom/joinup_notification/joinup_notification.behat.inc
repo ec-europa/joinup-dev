@@ -94,6 +94,38 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
   }
 
   /**
+   * Clears the collected e-mails.
+   *
+   * This step is useful to test that after a certain action, only the expected
+   * mails are sent.
+   *
+   * @Then all (the )e-mails have been sent
+   */
+  public function clearMailCollector() {
+    \Drupal::state()->set('system.test_mail_collector', []);
+    \Drupal::state()->resetCache();
+  }
+
+  /**
+   * Asserts that a certain amount of e-mails have been sent.
+   *
+   * @param int $count
+   *   The expected count of e-mails sent.
+   *
+   * @throws \Exception
+   *   Thrown when the count doesn't match the actual number.
+   *
+   * @Then :count e-mail(s) should have been sent
+   */
+  public function assertNumberOfEmailSent($count) {
+    $mails = \Drupal::state()->get('system.test_mail_collector');
+
+    if (count($mails) != $count) {
+      throw new \Exception("Invalid number of e-mail sent. Expected $count, sent " . count($mails));
+    }
+  }
+
+  /**
    * Swaps the mailing system settings with a test one.
    *
    * @BeforeScenario @email
