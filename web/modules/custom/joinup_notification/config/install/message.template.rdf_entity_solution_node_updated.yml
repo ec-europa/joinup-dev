@@ -3,7 +3,7 @@ status: true
 dependencies: {  }
 template: rdf_entity_solution_node_updated
 label: 'Rdf entity - solution - node updated'
-description: 'Message to collection facilitators when a community content is updated by a moderator'
+description: 'Message to solution facilitators when a community content is updated by a moderator'
 text:
   -
     value: "<p>Joinup: user [message:field_message_actor:entity:display-name] updated a [message:field_message_node:entity:content-type:name] of your solution</p>\r\n"
