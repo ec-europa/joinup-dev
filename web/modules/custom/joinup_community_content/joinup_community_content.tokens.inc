@@ -12,9 +12,9 @@ use Drupal\Core\Url;
  * Implements hook_token_info_alter().
  */
 function joinup_community_content_token_info_alter(&$info) {
-  $info['tokens']['node']['diff-latest-url'] = [
-    'name' => t('The url to the diff page between the latest two revisions.'),
-    'description' => t('Renders a link to the page that compares the last two revisions of the content.'),
+  $info['tokens']['node']['diff-url-latest'] = [
+    'name' => t('Diff from previous revision'),
+    'description' => t('A link to the revision comparison page between the last two revisions of the content.'),
   ];
 }
 
@@ -30,7 +30,7 @@ function joinup_community_content_tokens($type, array $tokens, array $data = [],
 
     foreach ($tokens as $name => $original) {
       switch ($name) {
-        case 'diff-latest-url':
+        case 'diff-url-latest':
           // A link to the latest diff can be rendered only if we have at least
           // two revisions.
           /** @var \Drupal\node\NodeStorageInterface $node_storage */
