@@ -12,6 +12,7 @@ dependencies:
   - block
   - ckeditor
   - collection
+  - contact_form
   - contextual
   - custom_page
   - dashboard
