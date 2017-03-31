@@ -22,12 +22,14 @@ class SparqlArg {
    *
    * @param array $uris
    *   An array of URIs to serialize.
+   * @param string $delimiter
+   *   The delimiter to use.
    *
    * @return string
    *   Sparql serialized URIs.
    */
-  public static function serializeUris(array $uris) {
-    return implode(', ', self::toResourceUris($uris));
+  public static function serializeUris(array $uris, $delimiter = ', ') {
+    return implode($delimiter, self::toResourceUris($uris));
   }
 
   /**

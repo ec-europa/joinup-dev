@@ -308,7 +308,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
 
     // @todo: We should filter per entity per graph and not load the whole
     // database only to filter later on.
-    $ids_string = SparqlArg::serializeUris($ids);
+    $ids_string = SparqlArg::serializeUris($ids, ' ');
     $graphs = $this->getGraphHandler()->getEntityTypeGraphUrisList($this->getEntityType()->getBundleEntityType());
     $named_graph = '';
     foreach ($graphs as $graph) {
@@ -323,8 +323,8 @@ SELECT ?graph ?entity_id ?predicate ?field_value
 $named_graph
 WHERE{
   GRAPH ?graph {
-    ?entity_id ?predicate ?field_value
-    FILTER (?entity_id IN ( $ids_string ) )
+    ?entity_id ?predicate ?field_value .
+    VALUES ?entity_id { $ids_string } .
     FILTER(!isLiteral(?field_value) || (lang(?field_value) = "" || langMatches(lang(?field_value), "EN")))
   }
 }
@@ -748,6 +748,20 @@ QUERY;
   /**
    * {@inheritdoc}
    */
+  protected function doPreSave(EntityInterface $entity) {
+    // In case entities are not created through the API (like an import), handle
+    // the Id explicitly. Otherwise there will be an exception thrown if the id
+    // is different from the one in the database.
+    // @see: \Drupal\Core\Entity\ContentEntityStorageBase::doPreSave.
+    if (!empty($entity->id())) {
+      $entity->{$this->idKey} = SparqlArg::uri($entity->id());
+    }
+    return parent::doPreSave($entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function doSave($id, EntityInterface $entity) {
     $bundle = $entity->bundle();
     // Generate an ID before saving, if none is available. If the ID generation
@@ -770,8 +784,6 @@ QUERY;
     $graph = self::getGraph($graph_uri);
 
     $properties = $this->mappingHandler->getEntityTypeMappedProperties($entity);
-    // $properties_list = "<" . implode(">, <", $properties['flat']) . ">";.
-    // @todo: Duplicated entry.
     $properties_list = SparqlArg::serializeUris($properties['flat']);
     foreach ($entity->toArray() as $field_name => $field) {
       foreach ($field as $field_item) {

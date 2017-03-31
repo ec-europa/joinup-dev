@@ -252,27 +252,19 @@ class RdfMappingHandler {
    */
   public function getFieldRdfMapping($entity_type_id, $field_name) {
     $field_mapping = &drupal_static(__FUNCTION__);
-    $mapping = $this->getEntityPredicates($entity_type_id);
-    // In case the field name includes the column, explode it.
-    // @see \Drupal\og\MembershipManager::getGroupContentIds
-    $field_name_parts = explode('.', $field_name);
-    $field_name = reset($field_name_parts);
-    if (!isset($field_mapping[$field_name])) {
-      $found = FALSE;
+    if (!isset($field_mapping[$entity_type_id])) {
+      $mapping = $this->getEntityPredicates($entity_type_id);
       foreach ($mapping as $bundle_id => $data) {
         foreach ($data as $mapping_id => $field_data) {
-          if ($field_data['field_name'] === $field_name) {
-            $field_mapping[$field_name][$bundle_id] = SparqlArg::uri($mapping_id);
-            $found = TRUE;
-          }
+          $field_mapping[$entity_type_id][$field_data['field_name']][$bundle_id] = SparqlArg::uri($mapping_id);
         }
-      }
-      if (!$found) {
-        throw new \Exception("The field $field_name does not appear to have a resource id in the entity type $entity_type_id.");
       }
     }
 
-    return $field_mapping[$field_name];
+    if (!isset($field_mapping[$entity_type_id][$field_name])) {
+      throw new \Exception("The field $field_name does not appear to have a resource id in the entity type $entity_type_id.");
+    }
+    return $field_mapping[$entity_type_id][$field_name];
   }
 
   /**

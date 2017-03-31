@@ -164,7 +164,7 @@ class Query extends QueryBase implements QueryInterface {
   public function execute() {
     return $this
       ->prepare()
-      ->addConditions()
+      ->compile()
       ->addSort()
       ->addPager()
       ->run()
@@ -229,7 +229,10 @@ class Query extends QueryBase implements QueryInterface {
    *
    * @return $this
    */
-  protected function addConditions() {
+  protected function compile() {
+    // @todo: Add the 'changed' parameter to recompile if changes are done after
+    // a query alter.
+    $this->condition->compile($this);
     $this->query .= "WHERE {" . $this->condition->toString() . '}';
     return $this;
   }

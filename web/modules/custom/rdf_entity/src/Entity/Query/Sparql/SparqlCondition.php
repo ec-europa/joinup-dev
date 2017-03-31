@@ -16,17 +16,6 @@ use Drupal\rdf_entity\RdfMappingHandler;
 class SparqlCondition extends ConditionFundamentals implements ConditionInterface {
 
   /**
-   * Array of filters.
-   *
-   * This is similar to the conditions but for SPARQL performance, the filters
-   * need to be placed after the triples in the 'where' clause because it makes
-   * the query faster.
-   *
-   * @var array
-   */
-  protected $filters = [];
-
-  /**
    * The rdf graph handler service object.
    *
    * @var \Drupal\rdf_entity\RdfGraphHandler
@@ -46,20 +35,11 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    * @var array
    */
   protected static $filterOperatorMap = [
-    // @todo: remove the comments here.
-    // Filter.
-    'IN' => ['delimiter' => ', ', 'prefix' => '', 'suffix' => ''],
-    // Filter.
+    'IN' => ['delimiter' => ' ', 'prefix' => '', 'suffix' => ''],
     'NOT IN' => ['delimiter' => ', ', 'prefix' => '', 'suffix' => ''],
-    // @todo: We are not saving empty values. Do we need this?
-    // @todo: If we support empty values, all other queries should be converted
-    // to optional.
     'IS NULL' => ['use_value' => FALSE],
-    // Normal triple with mapped predicate.
     'IS NOT NULL' => ['use_value' => FALSE],
-    // Filter with regex.
     'LIKE' => ['prefix' => 'regex(', 'suffix' => ')'],
-    // Filter with inverse regex?
     'NOT LIKE' => ['prefix' => '!regex(', 'suffix' => ')'],
     'EXISTS' => ['prefix' => 'EXISTS {', 'suffix' => '}'],
     'NOT EXISTS' => ['prefix' => 'NOT EXISTS {', 'suffix' => '}'],
@@ -68,6 +48,26 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     '>=' => ['prefix' => '', 'suffix' => ''],
     '<=' => ['prefix' => '', 'suffix' => ''],
   ];
+
+  /**
+   * Whether the conditions have been changed.
+   *
+   * TRUE if the condition has been changed since the last compile.
+   * FALSE if the condition has been compiled and not changed.
+   *
+   * @var bool
+   */
+  protected $changed = TRUE;
+
+  /**
+   * Whether the conditions do not have a triple.
+   *
+   * This will be turned to false if there is at least one condition that does
+   * not involve the id.
+   *
+   * @var bool
+   */
+  protected $needsDefault = TRUE;
 
   /**
    * The default bundle predicate.
@@ -85,16 +85,6 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    * @var string[]
    */
   protected $conditionFragments;
-
-  /**
-   * An array of field names.
-   *
-   * These will be used to add the conditions of the fields that are not direct
-   * e.g. adding a field that needs its value to be filtered.
-   *
-   * @var string[]
-   */
-  protected $fields;
 
   /**
    * An array of field names and their corresponding mapping.
@@ -186,168 +176,117 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    * @todo: handle the langcode.
    */
   public function condition($field = NULL, $value = NULL, $operator = NULL, $langcode = NULL) {
-    if ($operator === NULL) {
-      $operator = '=';
-    }
-
+    // In case the field name includes the column, explode it.
+    // @see \Drupal\og\MembershipManager::getGroupContentIds
+    $field_name_parts = explode('.', $field);
+    $field = reset($field_name_parts);
     if ($this->conjunction == 'OR') {
       $sub_condition = $this->query->andConditionGroup();
       $sub_condition->condition($field, $value, $operator, $langcode);
       $this->conditions[] = ['field' => $sub_condition];
+      return $this;
     }
-    else {
-      // The id directly pre-compiled as it is only a filter.
-      if ($field === $this->idKey) {
-        if (!is_array($value)) {
-          $operator = $operator === '=' ? 'IN' : 'NOT IN';
-          $value = [$value];
-        }
-        // Handle the resource Ids.
-        $value = SparqlArg::toResourceUris($value);
-        $this->fieldMappings[$field] = self::ID_KEY;
-        $this->fieldMappingConditions[] = [
-          'field' => self::ID_KEY,
-          'value' => $value,
-          'operator' => $operator,
-        ];
-        return $this;
-      }
-      // If the operator is not '=', it is compiled as a filter, thus, the field
-      // name must be added in the 'where' clause as a variable.
-      if ($operator !== '=' && !($field instanceof ConditionInterface)) {
-        // 'EXISTS' and 'NOT EXISTS' do not need the fields to be bound. They
-        // are handled separately.
-        if (!in_array($operator, ['EXISTS', 'NOT EXISTS'])) {
-          $this->fields[] = $field;
-        }
-        $this->filters[] = [
-          'field' => $field,
-          'value' => $value,
-          'operator' => $operator,
-          'langcode' => $langcode,
-        ];
-      }
-      else {
+
+    if ($operator === NULL) {
+      $operator = '=';
+    }
+
+    switch ($field) {
+      case $this->bundleKey:
+        // If a bundle filter is passed, then there is no need for a default
+        // condition.
+        $this->needsDefault = FALSE;
+
+      case $this->idKey:
+        $this->keyCondition($field, $value, $operator);
+        break;
+
+      default:
+        $this->needsDefault = FALSE;
         $this->conditions[] = [
           'field' => $field,
           'value' => $value,
           'operator' => $operator,
           'langcode' => $langcode,
         ];
-      }
+    }
+
+    return $this;
+  }
+
+  /**
+   * Handle the id and bundle keys.
+   *
+   * @param string $field
+   *   The field name. Should be either the id or the bundle key.
+   * @param string|array $value
+   *   A string or an array of strings.
+   * @param string $operator
+   *   The operator.
+   *
+   * @return \Drupal\Core\Entity\Query\ConditionInterface
+   *   The current object.
+   *
+   * @throws \Exception
+   *    Thrown if the value is NULL or the operator is not allowed.
+   */
+  public function keyCondition($field, $value, $operator) {
+    // @todo: Add support for loadMultiple with empty Id (load all).
+    if ($value == NULL) {
+      throw new \Exception('The value cannot be NULL for conditions related to the Id and bundle keys.');
+    }
+    if (!in_array($operator, ['=', '!=', 'IN', 'NOT IN'])) {
+      throw new \Exception("Only '=', '!=', 'IN', 'NOT IN' operators are allowed for the Id and bundle keys.");
+    }
+
+    switch ($operator) {
+      case '=':
+        $value = [$value];
+        $operator = 'IN';
+
+      case 'IN':
+        $this->fieldMappingConditions[] = [
+          'field' => $field,
+          'value' => $value,
+          'operator' => $operator,
+        ];
+
+        break;
+
+      case '!=':
+        $value = [$value];
+        $operator = 'NOT IN';
+
+      case 'NOT IN':
+        $this->conditions[] = [
+          'field' => $field,
+          'value' => $value,
+          'operator' => $operator,
+        ];
     }
     return $this;
   }
 
   /**
    * {@inheritdoc}
-   */
-  public function compile($query) {
-    // Fetch all mappings required for the query.
-    $this->preCompile($query);
-    $filter_fragments = [];
-
-    // Before the compilation, if there are no conditions, add a default
-    // condition.
-    if (empty($this->conditions)) {
-      $this->addConditionFragment(self::ID_KEY . ' ' . $this->typePredicate . ' ' . $this->toVar($this->bundleKey, TRUE));
-    }
-
-    foreach ($this->conditions() as $condition) {
-      // @todo: Change this to the SparqlCondition interface when it is created.
-      if ($condition['field'] instanceof ConditionInterface) {
-        $condition['field']->compile($query);
-        $condition_fragments[] = $condition['field']->toString();
-      }
-      else {
-        // If it is not a direct triple, it is a filter so a variable is being
-        // added for the value.
-        if ($condition['operator'] !== '=' && $condition['field'] !== $this->idKey) {
-          $this->addConditionFragment(self::ID_KEY . ' ' . $this->fieldMappings[$condition['field']] . ' ' . $this->toVar($condition['field']));
-        }
-        switch ($condition['operator']) {
-          case '=':
-            $this->addConditionFragment(self::ID_KEY . ' ' . $this->fieldMappings[$condition['field']] . ' ' . $condition['value']);
-            break;
-
-          case 'EXISTS':
-          case 'NOT EXISTS':
-            $this->addConditionFragment($this->compileExists($condition));
-            break;
-
-          case 'LIKE':
-          case 'NOT LIKE':
-            $this->addConditionFragment($this->compileLike($condition));
-            break;
-
-          default:
-            $this->addConditionFragment($this->compileFilter($condition));
-
-        }
-      }
-    }
-
-    // Compile the field mapping filters. All of them are 'IN' filter types.
-    foreach ($this->fieldMappingConditions as $condition) {
-      $filter_fragments[] = $this->compileFilter($condition);
-    }
-
-    // Finally, bring the filters together.
-    if (!empty($filter_fragments)) {
-      $this->addConditionFragment($this->compileFilters($filter_fragments));
-    }
-
-    // Put together everything.
-    $this->stringVersion = implode(self::$conjunctionMap[$this->conjunction]['delimeter'], array_unique($this->conditionFragments));
-    $this->isCompiled = TRUE;
-  }
-
-  /**
-   * Adds a condition string to the condition fragments.
    *
-   * The encapsulation of the condition according to the conjunction is taking
-   * place here.
-   *
-   * @param string $condition_string
-   *   A string version of the condition.
-   */
-  protected function addConditionFragment($condition_string) {
-    $prefix = self::$conjunctionMap[$this->conjunction]['prefix'];
-    $suffix = self::$conjunctionMap[$this->conjunction]['suffix'];
-    $this->conditionFragments[] = $prefix . $condition_string . $suffix;
-  }
-
-  /**
-   * Pre compiles the conditions.
-   *
-   * @param \Drupal\Core\Entity\Query\QueryInterface $query
-   *   The query object.
-   */
-  protected function preCompile(QueryInterface $query) {
-    $this->preCompileConditions($query, $this->conditions);
-    $this->preCompileConditions($query, $this->filters);
-  }
-
-  /**
    * Map the field names with the corresponding resource IDs.
-   *
    * The predicate mapping can not added as a direct filter. It is being
    * loaded from the database. There is no way that in a single request, the
    * same predicate is found with a single and multiple mappings.
    * There is no filter per bundle in the query. That makes it safe to not check
    * on the predicate mappings that are already in the query.
-   *
-   * @param \Drupal\Core\Entity\Query\QueryInterface $query
-   *   The query class.
-   * @param array $conditions
-   *   The condition array.
    */
-  protected function preCompileConditions(QueryInterface $query, array &$conditions) {
+  public function compile($query) {
     $entity_type = $query->getEntityType();
-    // The triples come before the filter related fields.
-    foreach ($conditions as $index => $condition) {
+    $condition_stack = array_merge($this->conditions, $this->fieldMappingConditions);
+    foreach ($condition_stack as $index => $condition) {
       if ($condition['field'] instanceof ConditionInterface) {
+        $condition['field']->compile($query);
         continue;
+      }
+      elseif ($condition['field'] === $this->idKey) {
+        $mappings = [self::ID_KEY];
       }
       elseif ($condition['field'] === $this->bundleKey) {
         $mappings = [$this->typePredicate];
@@ -374,12 +313,102 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
       }
 
       // Finally, handle the case where the field is a reference field.
-      $conditions[$index]['value'] = $this->escapeValue($condition['field'], $condition['value']);
+      // @todo: Should this be moved to the pre execute phase?
+      // $conditions[$index]['value'] = $this->escapeValue(
+      // $condition['field'], $condition['value']);.
     }
   }
 
   /**
-   * Compiles a filter exists condition.
+   * Returns the string version of the conditions.
+   *
+   * @return string
+   *   The string version of the conditions.
+   */
+  public function toString() {
+    $filter_fragments = [];
+
+    if ($this->needsDefault) {
+      $this->addConditionFragment(self::ID_KEY . ' ' . $this->typePredicate . ' ' . $this->toVar($this->bundleKey, TRUE));
+      $this->fieldMappings[$this->bundleKey] = $this->typePredicate;
+    }
+
+    // Add first the field mapping conditions. These conditions include the
+    // bundle and the id filter and 'IN' clauses are converted into SPARQL
+    // 'VALUES' clauses so it improves performance.
+    foreach ($this->fieldMappingConditions as $condition) {
+      if ($condition['field'] === $this->idKey) {
+        $condition['field'] = $this->fieldMappings[$condition['field']];
+      }
+      else {
+        $this->addConditionFragment(self::ID_KEY . ' ' . $this->fieldMappings[$condition['field']] . ' ' . $this->toVar($condition['field']));
+      }
+      $this->addConditionFragment($this->compileValuesFilter($condition));
+    }
+
+    foreach ($this->conditions() as $condition) {
+      // @todo: Change this to the SparqlCondition interface when it is created.
+      if ($condition['field'] instanceof ConditionInterface) {
+        $this->addConditionFragment($condition['field']->toString());
+      }
+      else {
+        // If it is not a direct triple, it is a filter so a variable is being
+        // added for the value.
+        if ($condition['operator'] !== '=' && $condition['field'] !== $this->idKey) {
+          $this->addConditionFragment(self::ID_KEY . ' ' . $this->fieldMappings[$condition['field']] . ' ' . $this->toVar($condition['field']));
+        }
+        switch ($condition['operator']) {
+          case '=':
+            $this->addConditionFragment(self::ID_KEY . ' ' . $this->fieldMappings[$condition['field']] . ' ' . $condition['value']);
+            break;
+
+          case 'EXISTS':
+          case 'NOT EXISTS':
+            $this->addConditionFragment($this->compileExists($condition));
+            break;
+
+          case 'LIKE':
+          case 'NOT LIKE':
+            $this->addConditionFragment($this->compileLike($condition));
+            break;
+
+          case 'IN':
+            $this->addConditionFragment($this->compileValuesFilter($condition));
+
+          default:
+            $filter_fragments[] = $this->compileFilter($condition);
+
+        }
+      }
+    }
+
+    // Finally, bring the filters together.
+    if (!empty($filter_fragments)) {
+      $this->addConditionFragment($this->compileFilters($filter_fragments));
+    }
+
+    // Put together everything.
+    $this->stringVersion = implode(self::$conjunctionMap[$this->conjunction]['delimeter'], array_unique($this->conditionFragments));
+    return $this->stringVersion;
+  }
+
+  /**
+   * Adds a condition string to the condition fragments.
+   *
+   * The encapsulation of the condition according to the conjunction is taking
+   * place here.
+   *
+   * @param string $condition_string
+   *   A string version of the condition.
+   */
+  protected function addConditionFragment($condition_string) {
+    $prefix = self::$conjunctionMap[$this->conjunction]['prefix'];
+    $suffix = self::$conjunctionMap[$this->conjunction]['suffix'];
+    $this->conditionFragments[] = $prefix . $condition_string . $suffix;
+  }
+
+  /**
+   * Compiles a filter exists (or not exists) condition.
    *
    * @param array $condition
    *   An array that contains the 'field', 'value', 'operator' values.
@@ -435,6 +464,30 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
   }
 
   /**
+   * Compiles an 'IN' condition as a SPARQL 'VALUES'.
+   *
+   * 'VALUES' is preferred over 'FILTER IN' for performance.
+   * This should only be called for subject and predicate filter as it considers
+   * values to be resources.
+   *
+   * @param array $condition
+   *   The condition array.
+   *
+   * @return string
+   *   The string version of the condition.
+   */
+  protected function compileValuesFilter(array $condition) {
+    if (is_string($condition['value'])) {
+      $value = [$condition['value']];
+    }
+    else {
+      $value = $condition['value'];
+    }
+    // $value = SparqlArg::toResourceUris($value);
+    return 'VALUES ' . $this->toVar($condition['field']) . ' {' . implode(' ', $value) . '}';
+  }
+
+  /**
    * Compiles a filter condition.
    *
    * @param array $filter_fragments
@@ -444,7 +497,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    *   A condition fragment string.
    */
   protected function compileFilters(array $filter_fragments) {
-    // The delimeter is always a '&&' because otherwise it would be a separate
+    // The delimiter is always a '&&' because otherwise it would be a separate
     // condition class.
     $delimiter = '&&';
     if (count($filter_fragments) > 1) {
@@ -529,19 +582,5 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    * {@inheritdoc}
    */
   public function __clone() {}
-
-  /**
-   * Returns the string version of the conditions.
-   *
-   * @return string
-   *   The string version of the conditions.
-   */
-  public function toString() {
-    if (!$this->isCompiled()) {
-      $this->compile($this->query);
-    }
-
-    return $this->stringVersion;
-  }
 
 }
