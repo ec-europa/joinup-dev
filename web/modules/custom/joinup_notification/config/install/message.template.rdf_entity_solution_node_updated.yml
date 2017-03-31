@@ -9,7 +9,7 @@ text:
     value: "<p>Joinup: user [message:field_message_actor:entity:display-name] updated a [message:field_message_node:entity:content-type:name] of your solution</p>\r\n"
     format: content_editor
   -
-    value: "<p>Dear [message:author:display-name],</p>\r\n\r\n<p>[message:field_message_actor:entity:display-name] updated a [message:field_message_node:entity:content-type:name] in your [message:field_message_content:entity:label] solution.</p>\r\n\r\n<p>You can see the changes at&nbsp;[message:field_message_node:entity:diff-url-latest] .</p>\r\n\r\n<p>Kinds regards,</p>\r\n\r\n<p>The Joinup Moderation Team.</p>\r\n"
+    value: "<p>Dear [message:author:display-name],</p>\r\n\r\n<p>[message:field_message_actor:entity:display-name] updated the&nbsp;[message:field_message_node:entity:content-type:name] \"[message:field_message_content:entity:label]\" in your [message:field_message_content:entity:label] solution.</p>\r\n\r\n<p>You can see the changes at&nbsp;[message:field_message_node:entity:diff-url-latest] .</p>\r\n\r\n<p>Kinds regards,</p>\r\n\r\n<p>The Joinup Moderation Team.</p>\r\n"
     format: content_editor
 settings:
   'token options':
