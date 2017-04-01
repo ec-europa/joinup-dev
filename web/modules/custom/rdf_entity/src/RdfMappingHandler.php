@@ -104,61 +104,26 @@ class RdfMappingHandler {
    *    Thrown when the rdf entity bundle has no mapped type uri.
    */
   public function getRdfBundleMappedUri($entity_type_bundle_key, $bundle = NULL) {
-    $bundle_rdf_bundle_mapping = [];
-    $storage = $this->entityTypeManager->getStorage($entity_type_bundle_key);
-
-    $bundle_entities = empty($bundle) ? $storage->loadMultiple() : [$storage->load($bundle)];
-    foreach ($bundle_entities as $bundle_entity) {
-      // The id of the entity type is 'rdf_type' but the key ('id') is the
-      // bundle key.
-      $bundle_type = $bundle_entity->getEntityType()->getKey('id');
-      $settings = rdf_entity_get_third_party_property($bundle_entity, 'mapping', $bundle_type, FALSE);
-      if (!is_array($settings)) {
-        throw new \Exception('No rdf:type mapping set for bundle ' . $bundle_entity->label());
-      }
-      $type = array_pop($settings);
-      $bundle_rdf_bundle_mapping[$bundle_entity->id()] = $type;
-    }
-
-    // Allow modules to interact and tamper with the passed list.
-    $this->moduleHandler->alter('bundle_mapping', $bundle_rdf_bundle_mapping);
-    return $bundle_rdf_bundle_mapping;
-  }
-
-  /**
-   * Returns a list of bundle uris ready to be passed to a query as an array.
-   *
-   * @param string $entity_type_id
-   *   The entity type of the bundles e.g. 'node_type'.
-   * @param array|null $bundles
-   *   Optionally filter and return only a subset of bundles.
-   *
-   * @todo: This should return a simple array. A query helper method can convert
-   * it later on.
-   *
-   * @return string
-   *   A string including the converted array of bundle uris to a string value
-   *    of a sparql array filter.
-   */
-  public function getBundleUriList($entity_type_id, $bundles = []) {
-    $bundle_mapping = $this->getRdfBundleMappedUri($entity_type_id);
-    if (empty($bundle_mapping)) {
-      return NULL;
-    }
-
-    $rdf_bundles = [];
-    if (empty($bundles)) {
-      $rdf_bundles = array_unique(array_values($bundle_mapping));
-    }
-    else {
-      foreach ($bundles as $bundle) {
-        if (isset($bundle_mapping[$bundle])) {
-          $rdf_bundles[] = $bundle_mapping[$bundle];
+    $bundle_rdf_bundle_mapping = &drupal_static(__FUNCTION__);
+    if (empty($bundle_rdf_bundle_mapping[$bundle])) {
+      $storage = $this->entityTypeManager->getStorage($entity_type_bundle_key);
+      $bundle_entities = empty($bundle) ? $storage->loadMultiple() : [$storage->load($bundle)];
+      foreach ($bundle_entities as $bundle_entity) {
+        // The id of the entity type is 'rdf_type' but the key ('id') is the
+        // bundle key.
+        $bundle_type = $bundle_entity->getEntityType()->getKey('id');
+        $settings = rdf_entity_get_third_party_property($bundle_entity, 'mapping', $bundle_type, FALSE);
+        if (!is_array($settings)) {
+          throw new \Exception('No rdf:type mapping set for bundle ' . $bundle_entity->label());
         }
+        $type = array_pop($settings);
+        $bundle_rdf_bundle_mapping[$bundle_entity->id()] = $type;
       }
-    }
 
-    return "(<" . implode(">, <", $rdf_bundles) . ">)";
+      // Allow modules to interact and tamper with the passed list.
+      $this->moduleHandler->alter('bundle_mapping', $bundle_rdf_bundle_mapping);
+    }
+    return $bundle_rdf_bundle_mapping;
   }
 
   /**
@@ -235,6 +200,30 @@ class RdfMappingHandler {
   }
 
   /**
+   * Converts a list of bundle Ids to their corresponding Uris.
+   *
+   * @param string $entity_type_id
+   *    The entity type id.
+   * @param array $values
+   *    An array of bundle machine names.
+   * @param bool $to_resource_uris
+   *    If true, the Ids will be transformed into resource Ids instead.
+   *
+   * @throws \Exception
+   *    Thrown when the bundle does not have a mapping.
+   */
+  public function bundlesToUris($entity_type_id, array &$values, $to_resource_uris = FALSE) {
+    $bundle_type = $this->entityTypeManager->getStorage($entity_type_id)->getEntityType()->getBundleEntityType();
+    $bundle_mappings = $this->getRdfBundleMappedUri($bundle_type);
+    foreach ($values as $index => $bundle) {
+      if (!isset($bundle_mappings[$bundle])) {
+        throw new \Exception("The $bundle bundle does not have a mapping.");
+      }
+      $values[$index] = $to_resource_uris ? SparqlArg::uri($bundle_mappings[$bundle]) : $bundle_mappings[$bundle];
+    }
+  }
+
+  /**
    * Returns the rdf mapping of the given property in an entity type.
    *
    * @param string $entity_type_id
@@ -279,32 +268,23 @@ class RdfMappingHandler {
    *   Whether the field is referencing an rdf resource.
    */
   public function fieldIsRdfReference($entity_type_id, $field_name) {
-    // @todo: This needs a static cache.
-    $field_definitions = $this->entityTypeManager->getStorage('field_storage_config')->loadByProperties([
-      'type' => 'entity_reference',
-      'entity_type' => 'rdf_entity',
-    ]);
-    $field_id = $entity_type_id . '.' . $field_name;
-    if (isset($field_definitions[$field_id])) {
-      $target_type = $field_definitions[$field_id]->getSetting('target_type');
-      if (empty($target_type)) {
-        return FALSE;
-      }
-      $target_entity_storage_class = $this->entityTypeManager->getStorage($target_type);
-      return ($target_entity_storage_class instanceof RdfEntitySparqlStorage) || is_subclass_of($target_entity_storage_class, RdfEntitySparqlStorage::class);
-    }
-
     $base_field_definitions = $this->entityFieldManager->getBaseFieldDefinitions($entity_type_id);
     if (isset($base_field_definitions[$field_name])) {
-      $target_type = $base_field_definitions[$field_name]->getSetting('target_type');
-      if (empty($target_type)) {
-        return FALSE;
-      }
-      $target_entity_storage_class = $this->entityTypeManager->getStorage($target_type);
-      return ($target_entity_storage_class instanceof RdfEntitySparqlStorage) || is_subclass_of($target_entity_storage_class, RdfEntitySparqlStorage::class);
+      $field_definition = $base_field_definitions[$field_name]->getItemDefinition();
+    }
+    else {
+      $field_definition = $this->entityTypeManager->getStorage('field_storage_config')->load($entity_type_id . '.' . $field_name);
     }
 
-    return FALSE;
+    if (empty($field_definition)) {
+      throw new \Exception("The field $field_name was not found.");
+    }
+    $target_type = $field_definition->getSetting('target_type');
+    if (empty($target_type)) {
+      return FALSE;
+    }
+    $target_entity_storage_class = $this->entityTypeManager->getStorage($target_type);
+    return ($target_entity_storage_class instanceof RdfEntitySparqlStorage) || is_subclass_of($target_entity_storage_class, RdfEntitySparqlStorage::class);
   }
 
   /**
