@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the Contact Form module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * This changes the contact form which is provided by the
+ * 'contact_form_submission' message template:
+ *  - Only show the 'Page URL' field when the 'bug' or 'report' category is
+ *    chosen.
+ *  - Change the text of the submit button to "Submit".
+ *  - Add a submit handler that shows a success message informing the user that
+ *    their message has been successfully sent.
+ */
+function contact_form_form_message_contact_form_submission_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Only show the 'Page URL' field when the 'bug' or 'report' category is
+  // chosen.
+  $form['field_contact_url']['#states'] = [
+    'visible' => [
+      [
+        [':input[name="field_contact_category"]' => ['value' => 'bug']],
+        [':input[name="field_contact_category"]' => ['value' => 'report']],
+      ],
+    ],
+  ];
+
+  // Change the text of the submit button to "Submit".
+  $form['actions']['submit']['#value'] = t('Submit');
+
+  // Add a submit handler that shows a success message informing the user that
+  // their message has been successfully sent.
+  $form['actions']['submit']['#submit'][] = 'contact_form_form_message_contact_form_submission_submit';
+}
+
+/**
+ * Form submission handler for the contact form.
+ */
+function contact_form_form_message_contact_form_submission_submit(&$form, FormStateInterface $form_state) {
+  drupal_set_message(t('Your message has been submitted. Thanks for your feedback.'));
+}
