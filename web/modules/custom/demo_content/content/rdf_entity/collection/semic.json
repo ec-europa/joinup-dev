@@ -8,7 +8,7 @@
         },
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_affiliates": [
             {
-                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json"
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson?_format=hal_json"
             },
             {
                 "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5Ca3e28554-6104-4e4e-a1f5-e23265e3bca7?_format=hal_json"
@@ -78,7 +78,7 @@
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json"
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
@@ -86,7 +86,7 @@
                 },
                 "uuid": [
                     {
-                        "value": "http:\/\/www.w3.org\/ns\/person#"
+                        "value": "http:\/\/www.w3.org\/ns\/person"
                     }
                 ]
             },
