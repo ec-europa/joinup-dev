@@ -381,13 +381,13 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         $this->addConditionFragment($condition['field']->toString());
         continue;
       }
-      else if ($condition['field'] === $this->idKey) {
+      elseif ($condition['field'] === $this->idKey) {
         $condition['field'] = $this->fieldMappings[$condition['field']];
       }
-      else if ($condition['field'] === $this->bundleKey) {
+      elseif ($condition['field'] === $this->bundleKey) {
         $this->compileBundleCondition($condition);
       }
-      else if (in_array($condition['operator'], $this->requiresTriple)) {
+      elseif (in_array($condition['operator'], $this->requiresTriple)) {
         $this->addConditionFragment(self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$condition['field']]) . ' ' . $this->toVar($condition['field']));
       }
 
@@ -669,7 +669,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     }
 
     // @todo: Handle more formats. For now, escape as literal every other case.
-    return SparqlArg::literal($value);
+    return is_array($value) ? SparqlArg::literals($value) : SparqlArg::literal($value);
   }
 
   /**

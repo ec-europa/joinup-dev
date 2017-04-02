@@ -555,7 +555,7 @@ QUERY;
   /**
    * Checks if a RDF entity has a specific graph.
    *
-   * @param EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity object.
    * @param string $graph
    *   The graph to be checked ('draft', etc).
@@ -563,7 +563,7 @@ QUERY;
    * @return bool
    *   TRUE if this entity has the specified graph.
    */
-  public function hasGraph($entity, $graph) {
+  public function hasGraph(EntityInterface $entity, $graph) {
     $graph_uri = $this->graphHandler->getBundleGraphUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle(), $graph);
     return $this->idExists($entity->id(), $graph_uri);
   }

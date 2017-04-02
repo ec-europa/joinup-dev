@@ -114,6 +114,23 @@ class SparqlArg {
   }
 
   /**
+   * Array of Literals Query argument.
+   *
+   * @param array $values
+   *   An array of strings to be escaped.
+   *
+   * @return string
+   *   Sparql escaped string literal.
+   */
+  public static function literals(array $values) {
+    foreach ($values as $index => $value) {
+      // @todo: Avoid recreating the class?
+      $values[$index] = self::serialize($value, 'literal');
+    }
+    return $values;
+  }
+
+  /**
    * Returns a serialized version of the given value of the given format.
    *
    * @param string $value
@@ -129,6 +146,7 @@ class SparqlArg {
     return $serializer->serialiseValue([
       'value' => $value,
       'type' => $format,
+      'lang' => 'en',
     ]);
   }
 

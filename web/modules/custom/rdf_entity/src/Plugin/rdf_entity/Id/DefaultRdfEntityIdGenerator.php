@@ -4,7 +4,6 @@ namespace Drupal\rdf_entity\Plugin\rdf_entity\Id;
 
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\RdfEntityIdPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

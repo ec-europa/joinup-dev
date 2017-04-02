@@ -203,11 +203,11 @@ class RdfMappingHandler {
    * Converts a list of bundle Ids to their corresponding Uris.
    *
    * @param string $entity_type_id
-   *    The entity type id.
+   *   The entity type id.
    * @param array $values
-   *    An array of bundle machine names.
+   *   An array of bundle machine names.
    * @param bool $to_resource_uris
-   *    If true, the Ids will be transformed into resource Ids instead.
+   *   If true, the Ids will be transformed into resource Ids instead.
    *
    * @throws \Exception
    *    Thrown when the bundle does not have a mapping.

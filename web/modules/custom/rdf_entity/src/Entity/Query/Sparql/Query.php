@@ -153,7 +153,7 @@ class Query extends QueryBase implements QueryInterface {
    * Returns the entity type storage.
    *
    * @return \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage
-   *    The entity type storage.
+   *   The entity type storage.
    */
   public function getEntityStorage() {
     return $this->entityStorage;
