@@ -364,6 +364,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
 
         case 'IN':
           $this->addConditionFragment($this->compileValuesFilter($condition));
+          break;
 
         default:
           $filter_fragments[] = $this->compileFilter($condition);

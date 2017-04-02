@@ -279,7 +279,7 @@ class RdfMappingHandler {
     if (empty($field_definition)) {
       throw new \Exception("The field $field_name was not found.");
     }
-    $target_type = $field_definition->getSetting('target_type');
+    $target_type = $field_definition->getTargetEntityTypeId();
     if (empty($target_type)) {
       return FALSE;
     }
