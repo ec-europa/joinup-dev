@@ -213,6 +213,9 @@ class RdfMappingHandler {
    *    Thrown when the bundle does not have a mapping.
    */
   public function bundlesToUris($entity_type_id, array &$values, $to_resource_uris = FALSE) {
+    if (SparqlArg::isValidResources($values)) {
+      return;
+    }
     $bundle_type = $this->entityTypeManager->getStorage($entity_type_id)->getEntityType()->getBundleEntityType();
     $bundle_mappings = $this->getRdfBundleMappedUri($bundle_type);
     foreach ($values as $index => $bundle) {
@@ -266,6 +269,9 @@ class RdfMappingHandler {
    *
    * @return bool
    *   Whether the field is referencing an rdf resource.
+   *
+   * @throws \Exception
+   *   Thrown when the field is not found.
    */
   public function fieldIsRdfReference($entity_type_id, $field_name) {
     $base_field_definitions = $this->entityFieldManager->getBaseFieldDefinitions($entity_type_id);
@@ -279,7 +285,7 @@ class RdfMappingHandler {
     if (empty($field_definition)) {
       throw new \Exception("The field $field_name was not found.");
     }
-    $target_type = $field_definition->getTargetEntityTypeId();
+    $target_type = $field_definition->getSetting('target_type');
     if (empty($target_type)) {
       return FALSE;
     }

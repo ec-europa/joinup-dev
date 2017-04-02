@@ -81,6 +81,26 @@ class SparqlArg {
   }
 
   /**
+   * URI Query argument.
+   *
+   * @param array $uris
+   *   An array string to be checked.
+   *
+   * @return bool
+   *   Whether the items in the array are valid SPARQL URI or not. The URI is a
+   *   valid URI whether or not it is encapsulated with '<>'. If at least one
+   *   URI is not a valid resource, FALSE will be returned.
+   */
+  public static function isValidResources(array $uris) {
+    foreach ($uris as $uri) {
+      if (!SparqlArg::isValidResource($uri)) {
+        return FALSE;
+      }
+    }
+    return TRUE;
+  }
+
+  /**
    * Literal Query argument.
    *
    * @param string $value

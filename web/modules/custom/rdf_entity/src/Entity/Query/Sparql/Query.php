@@ -102,11 +102,10 @@ class Query extends QueryBase implements QueryInterface {
     // to the condition class properly.
     $this->graphHandler = $rdf_graph_handler;
     $this->mappingHandler = $rdf_mapping_handler;
-    parent::__construct($entity_type, $conjunction, $namespaces);
-
-    $this->connection = $connection;
     $this->entityTypeManager = $entity_type_manager;
-    $this->entityStorage = $this->entityTypeManager->getStorage($this->entityTypeId);
+    $this->entityStorage = $this->entityTypeManager->getStorage($entity_type->id());
+    $this->connection = $connection;
+    parent::__construct($entity_type, $conjunction, $namespaces);
 
     if (!$this->entityStorage instanceof RdfEntitySparqlStorage) {
       throw new \Exception('Sparql storage is required for this query.');
@@ -148,6 +147,16 @@ class Query extends QueryBase implements QueryInterface {
    */
   public function getEntityType() {
     return $this->entityType;
+  }
+
+  /**
+   * Returns the entity type storage.
+   *
+   * @return \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage
+   *    The entity type storage.
+   */
+  public function getEntityStorage() {
+    return $this->entityStorage;
   }
 
   /**
@@ -233,7 +242,7 @@ class Query extends QueryBase implements QueryInterface {
     // @todo: Add the 'changed' parameter to recompile if changes are done after
     // a query alter.
     $this->condition->compile($this);
-    $this->query .= "WHERE {" . $this->condition->toString() . '}';
+    $this->query .= "WHERE {\n" . $this->condition->toString() . "\n}";
     return $this;
   }
 
