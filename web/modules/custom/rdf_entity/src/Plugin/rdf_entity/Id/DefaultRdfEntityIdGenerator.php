@@ -67,8 +67,7 @@ class DefaultRdfEntityIdGenerator extends RdfEntityIdPluginBase {
     $bundle = $this->getEntity()->bundle();
     $uuid = $this->uuid->generate();
 
-    $id = "$base_url/$entity_type_id/$bundle/$uuid";
-    return SparqlArg::uri($id);
+    return "$base_url/$entity_type_id/$bundle/$uuid";
   }
 
 }
