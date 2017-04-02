@@ -376,7 +376,7 @@ QUERY;
     // results.
     $values_per_entity = [];
     foreach ($results as $result) {
-      $entity_id = (string) $result->entity_id;
+      $entity_id = SparqlArg::uri((string) $result->entity_id);
       // $entity_id = (string) $result->entity_id;.
       $entity_graphs[$entity_id] = (string) $result->graph;
 
@@ -743,6 +743,17 @@ QUERY;
    * {@inheritdoc}
    */
   protected function purgeFieldItems(ContentEntityInterface $entity, FieldDefinitionInterface $field_definition) {
+  }
+
+  protected function doPreSave(EntityInterface $entity) {
+    // In case entities are not created through the API (like an import
+    // the Id explicitly. Otherwise there will be an exception thrown i
+    // is different from the one in the database.
+    // @see: \Drupal\Core\Entity\ContentEntityStorageBase::doPreSave.
+    if (!empty($entity->id())) {
+      $entity->{$this->idKey} = SparqlArg::uri($entity->id());
+    }
+    return parent::doPreSave($entity);
   }
 
   /**
