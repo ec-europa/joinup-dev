@@ -556,22 +556,17 @@ QUERY;
   /**
    * Checks if a RDF entity has a specific graph.
    *
-   * @param mixed $entity_id
-   *   The entity ID.
+   * @param EntityInterface $entity
+   *   The entity object.
    * @param string $graph
    *   The graph to be checked ('draft', etc).
    *
    * @return bool
    *   TRUE if this entity has the specified graph.
    */
-  public function hasGraph($entity_id, $graph) {
-    $this->getGraphHandler()->setRequestGraphs($entity_id, $this->entityTypeId, [$graph]);
-    $has_graph = (bool) $this->load($entity_id);
-    // Reset the graphs so that it does not interfere with other loadings in
-    // the current request.
-    $this->getGraphHandler()->resetRequestGraphs([$entity_id]);
-    // @todo Find a cheaper way to do this, without a full entity load.
-    return $has_graph;
+  public function hasGraph($entity, $graph) {
+    $graph_uri = $this->graphHandler->getBundleGraphUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle(), $graph);
+    return $this->idExists($entity->id(), $graph_uri);
   }
 
   /**
@@ -1166,17 +1161,23 @@ QUERY;
    *
    * @param string $id
    *   The ID to be checked.
+   * @param string $graph
+   *   The bundle resource uri. If passed, the id will be checked only against
+   *   this graph.
    *
    * @return bool
    *   TRUE if this entity ID already exists, FALSE otherwise.
    */
-  public function idExists($id) {
+  public function idExists($id, $graph = NULL) {
     $id = SparqlArg::uri($id);
-    $query = <<<QUERY
-ASK {
-  $id ?field ?value
-}
-QUERY;
+    if ($graph) {
+      $graph = SparqlArg::uri($graph);
+      $query = "ASK WHERE { GRAPH $graph { $id ?p ?o }}";
+    }
+    else {
+      $query = "ASK { $id ?field ?value }";
+    }
+
     return $this->sparql->query($query)->isTrue();
   }
 

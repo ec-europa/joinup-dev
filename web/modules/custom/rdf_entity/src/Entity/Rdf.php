@@ -413,7 +413,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    * {@inheritdoc}
    */
   public function hasGraph($graph) {
-    return $this->entityTypeManager()->getStorage($this->getEntityTypeId())->hasGraph($this->id(), $graph);
+    return $this->entityTypeManager()->getStorage($this->getEntityTypeId())->hasGraph($this, $graph);
   }
 
 }
