@@ -26,20 +26,20 @@ class RdfForm extends ContentEntityForm {
     if ($type->label()) {
       // Add.
       if ($entity->isNew()) {
-        $form['#title'] = $this->t('<em>Add @type</em>', array('@type' => $type->label()));
+        $form['#title'] = $this->t('<em>Add @type</em>', ['@type' => $type->label()]);
       }
       // Edit.
       else {
-        $form['#title'] = $this->t('<em>Edit @type</em> @title', array('@type' => $type->label(), '@title' => $entity->label()));
+        $form['#title'] = $this->t('<em>Edit @type</em> @title', ['@type' => $type->label(), '@title' => $entity->label()]);
       }
     }
 
-    $form['langcode'] = array(
+    $form['langcode'] = [
       '#title' => $this->t('Language'),
       '#type' => 'language_select',
       '#default_value' => $entity->getUntranslated()->language()->getId(),
       '#languages' => Language::STATE_ALL,
-    );
+    ];
     return $form;
   }
 

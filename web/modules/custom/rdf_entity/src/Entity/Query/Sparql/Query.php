@@ -257,7 +257,7 @@ class Query extends QueryBase implements QueryInterface {
       return $this;
     }
     if ($this->count) {
-      $this->sort = array();
+      $this->sort = [];
     }
     // Simple sorting. For the POC, only uri's and bundles are supported.
     // @todo Implement sorting on bundle fields?

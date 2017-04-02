@@ -51,7 +51,7 @@ class RdfDraftLocalTask extends DeriverBase implements ContainerDeriverInterface
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
-    $this->derivatives = array();
+    $this->derivatives = [];
     foreach ($this->entityManager->getDefinitions() as $entity_type_id => $entity_type) {
       $storage = $this->entityManager->getStorage($entity_type_id);
       if (!$storage instanceof RdfEntitySparqlStorage) {
@@ -62,12 +62,12 @@ class RdfDraftLocalTask extends DeriverBase implements ContainerDeriverInterface
       foreach ($definitions as $name => $definition) {
         $has_export_path = $entity_type->hasLinkTemplate('rdf-draft-' . $name);
         if ($has_export_path) {
-          $this->derivatives["entity.$entity_type_id.rdf_draft_$name"] = array(
+          $this->derivatives["entity.$entity_type_id.rdf_draft_$name"] = [
             'route_name' => "entity.$entity_type_id.rdf_draft_$name",
             'title' => $this->t('View @graph', ['@graph' => $name]),
             'base_route' => "entity.$entity_type_id.canonical",
             'weight' => 100,
-          );
+          ];
         }
       }
     }

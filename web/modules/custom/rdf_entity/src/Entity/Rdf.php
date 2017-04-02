@@ -153,9 +153,9 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    */
   public static function preCreate(EntityStorageInterface $storage_controller, array &$values) {
     parent::preCreate($storage_controller, $values);
-    $values += array(
+    $values += [
       'user_id' => \Drupal::currentUser()->id(),
-    );
+    ];
   }
 
   /**
@@ -216,11 +216,11 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setSetting('target_type', 'user')
       ->setDefaultValueCallback('Drupal\rdf_entity\Entity\Rdf::getCurrentUserId')
       ->setTranslatable(TRUE)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'author',
         'weight' => 0,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['label'] = BaseFieldDefinition::create('string')
@@ -229,15 +229,15 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSetting('max_length', 255)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'string',
         'weight' => -5,
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'string_textfield',
         'weight' => -5,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -406,7 +406,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    *   An array of default values.
    */
   public static function getCurrentUserId() {
-    return array(\Drupal::currentUser()->id());
+    return [\Drupal::currentUser()->id()];
   }
 
   /**

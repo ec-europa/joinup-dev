@@ -42,10 +42,10 @@ class CollectionMenuBlock extends OgMenuBlock {
     }
 
     $tree = $this->menuTree->load($menu_name, $parameters);
-    $manipulators = array(
-      array('callable' => 'menu.default_tree_manipulators:checkAccess'),
-      array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
-    );
+    $manipulators = [
+      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+    ];
     $tree = $this->menuTree->transform($tree, $manipulators);
     $build = $this->menuTree->build($tree);
 

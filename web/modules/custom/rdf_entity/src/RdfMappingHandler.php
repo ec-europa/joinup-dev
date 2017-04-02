@@ -170,10 +170,10 @@ class RdfMappingHandler {
             if (empty($predicate)) {
               continue;
             }
-            $mapping[$entity_type_id][$rdf_bundle_entity->id()][$predicate] = array(
+            $mapping[$entity_type_id][$rdf_bundle_entity->id()][$predicate] = [
               'field_name' => $id,
               'column' => $column,
-            );
+            ];
           }
         }
         foreach ($field_definitions as $field_name => $field_definition) {
@@ -186,11 +186,11 @@ class RdfMappingHandler {
               if (empty($predicate)) {
                 continue;
               }
-              $mapping[$entity_type_id][$rdf_bundle_entity->id()][$predicate] = array(
+              $mapping[$entity_type_id][$rdf_bundle_entity->id()][$predicate] = [
                 'column' => $column,
                 'field_name' => $field_name,
                 'storage_definition' => $storage_definition,
-              );
+              ];
             }
           }
         }

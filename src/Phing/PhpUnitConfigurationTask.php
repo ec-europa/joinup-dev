@@ -71,6 +71,20 @@ class PhpUnitConfigurationTask extends \Task {
   private $sparqlUrl = 'sparql://localhost:8890/';
 
   /**
+   * The legacy database URL to use in kernel tests and functional tests.
+   *
+   * @var string
+   */
+  private $legacyDbUrl = 'mysql://root@localhost/d6_db';
+
+  /**
+   * The path to legacy site webroot to use in kernel tests.
+   *
+   * @var string
+   */
+  private $legacyWebroot = '/mnt/joinup2';
+
+  /**
    * The path to the directory where HTML output from browsertests is stored.
    *
    * @var string
@@ -105,6 +119,12 @@ class PhpUnitConfigurationTask extends \Task {
 
     // Set the database URL.
     $this->setEnvironmentVariable('SIMPLETEST_SPARQL_DB', $this->sparqlUrl, $document);
+
+    // Set the legacy database URL.
+    $this->setEnvironmentVariable('SIMPLETEST_LEGACY_DB', $this->legacyDbUrl, $document);
+
+    // Set the legacy site webroot path.
+    $this->setEnvironmentVariable('SIMPLETEST_LEGACY_WEBROOT', $this->legacyWebroot, $document);
 
     // Set the path to the browsertest output directory.
     $this->setEnvironmentVariable('BROWSERTEST_OUTPUT_DIRECTORY', $this->browsertestOutputDirectory, $document);
@@ -261,6 +281,26 @@ class PhpUnitConfigurationTask extends \Task {
    */
   public function setSparqlUrl($dbUrl) {
     $this->sparqlUrl = $dbUrl;
+  }
+
+  /**
+   * Sets the legacy DB URL.
+   *
+   * @param string $legacyDbUrl
+   *   The legacy database URL.
+   */
+  public function setLegacyDbUrl($legacyDbUrl) {
+    $this->legacyDbUrl = $legacyDbUrl;
+  }
+
+  /**
+   * Sets the path to legacy site webroot.
+   *
+   * @param string $legacyWebroot
+   *   The the path legacy DB dump.
+   */
+  public function setLegacyWebroot($legacyWebroot) {
+    $this->legacyWebroot = $legacyWebroot;
   }
 
   /**

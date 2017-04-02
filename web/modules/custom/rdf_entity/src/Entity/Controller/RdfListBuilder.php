@@ -116,23 +116,23 @@ class RdfListBuilder extends EntityListBuilder {
    * and inserts the 'edit' and 'delete' links as defined for the entity type.
    */
   public function buildHeader() {
-    $header = array(
-      'id' => array(
+    $header = [
+      'id' => [
         'data' => $this->t('URI'),
         'field' => 'id',
         'specifier' => 'id',
-      ),
-      'rid' => array(
+      ],
+      'rid' => [
         'data' => $this->t('Bundle'),
         'field' => 'rid',
         'specifier' => 'rid',
-      ),
-      'status' => array(
+      ],
+      'status' => [
         'data' => $this->t('Status'),
         'field' => 'status',
         'specifier' => 'status',
-      ),
-    );
+      ],
+    ];
     return $header + parent::buildHeader();
   }
 
