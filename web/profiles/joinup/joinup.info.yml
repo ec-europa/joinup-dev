@@ -125,6 +125,7 @@ config_devel:
   - ds.settings
   - editor.editor.basic_html
   - editor.editor.content_editor
+  - editor.editor.restricted_html
   - field.field.ogmenu_instance.navigation.og_audience
   - field.field.user.user.field_user_business_title
   - field.field.user.user.field_user_family_name
