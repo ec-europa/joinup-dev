@@ -79,24 +79,27 @@ class Mapping extends Spreadsheet {
    * @return bool
    *   If the row is valid.
    */
-  protected function rowIsValid(array $row) {
+  protected function rowIsValid(array &$row) {
     $messages = [];
 
     $nid = $row['Nid'];
-    if (empty($row['Collection_Name']) || $row['Collection_Name'] === '#N/A') {
+    $row['Collection_Name'] = trim((string) $row['Collection_Name']);
+
+    if (in_array($row['Collection_Name'], ['', '#N/A'], TRUE)) {
       $messages[] = 'Collection name empty or invalid';
     }
     if (!is_numeric($nid)) {
       $messages[] = "Invalid Nid '$nid'";
     }
-
-    $title = $this->db->select('node')
-      ->fields('node', ['title'])
-      ->condition('nid', $nid)
-      ->execute()
-      ->fetchField();
-    if (!$title) {
-      $messages[] = "This node doesn't exist in the source database";
+    else {
+      $title = $this->db->select('node')
+        ->fields('node', ['title'])
+        ->condition('nid', $nid)
+        ->execute()
+        ->fetchField();
+      if (!$title) {
+        $messages[] = "This node doesn't exist in the source database";
+      }
     }
 
     if ($row['Type of content item'] === 'Interoperability Solution') {
