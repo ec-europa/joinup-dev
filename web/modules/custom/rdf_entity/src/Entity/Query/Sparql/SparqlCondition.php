@@ -479,7 +479,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     }
     else {
       $this->addConditionFragment(self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$condition['field']]) . ' ' . $this->toVar($this->bundleKey));
-      $this->fieldMappings[$this->bundleKey] = $this->typePredicate;
+      $this->fieldMappings[$this->bundleKey] = reset($this->typePredicate);
     }
   }
 
