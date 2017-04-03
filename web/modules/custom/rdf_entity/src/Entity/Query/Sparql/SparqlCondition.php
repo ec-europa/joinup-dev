@@ -406,6 +406,9 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         case 'LIKE':
         case 'NOT LIKE':
           $this->addConditionFragment($this->compileLike($condition));
+          // Set the default language to the fields.
+          // @todo: Remove this when proper language handling is set up.
+          $this->addConditionFragment("FILTER(lang({$this->toVar($condition['field'])}) = 'en')");
           break;
 
         case 'IN':
@@ -670,7 +673,6 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
 
     // @todo: Handle more formats. For now, escape as literal every other case.
     $value = is_array($value) ? SparqlArg::literals($value) : SparqlArg::literal($value);
-    $this->addConditionFragment("FILTER(lang({$this->toVar($field_name)}) = 'en')");
     return $value;
   }
 
