@@ -34,11 +34,16 @@ class CoreController extends ControllerBase {
   /**
    * Renders the "about" view mode of a rdf entity.
    *
+   * We cannot use the default entity view controller, as they force the entity
+   * title as the page title.
+   *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The rdf entity to be rendered.
    *
    * @return array
    *   The "about" view mode render array.
+   *
+   * @see \Drupal\Core\Entity\Controller\EntityViewController::buildTitle()
    */
   public function aboutPage(RdfInterface $rdf_entity) {
     $page = $this->entityTypeManager->getViewBuilder('rdf_entity')->view($rdf_entity, 'about');
