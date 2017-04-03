@@ -11,3 +11,14 @@ joinup_core.members:
         type: entity:rdf_entity
     _og_entity_type_id: rdf_entity
     _admin_route: TRUE
+joinup_core.rdf_entity_about:
+  path: 'rdf_entity/{rdf_entity}/about'
+  defaults:
+    _controller: '\Drupal\joinup_core\Controller\CoreController::aboutPage'
+    _title_callback: '\Drupal\joinup_core\Controller\CoreController::aboutPageTitle'
+  requirements:
+    _entity_access: 'rdf_entity.view'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
