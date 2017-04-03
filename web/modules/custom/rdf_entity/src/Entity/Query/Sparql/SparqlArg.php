@@ -137,16 +137,18 @@ class SparqlArg {
    *   The value to be serialized.
    * @param string $format
    *   One of the formats used in \EasyRdf\Serialiser\Ntriples::serializeValue.
+   * @param string $lang
+   *   The lang code.
    *
    * @return string
    *   The outcome of the serialization.
    */
-  public static function serialize($value, $format) {
+  public static function serialize($value, $format, $lang = 'en') {
     $serializer = new Ntriples();
     return $serializer->serialiseValue([
       'value' => $value,
       'type' => $format,
-      'lang' => 'en',
+      'lang' => $lang,
     ]);
   }
 

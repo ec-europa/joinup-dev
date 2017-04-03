@@ -669,7 +669,9 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     }
 
     // @todo: Handle more formats. For now, escape as literal every other case.
-    return is_array($value) ? SparqlArg::literals($value) : SparqlArg::literal($value);
+    $value = is_array($value) ? SparqlArg::literals($value) : SparqlArg::literal($value);
+    $this->addConditionFragment("FILTER(lang({$this->toVar($field_name)}) = 'en')");
+    return $value;
   }
 
   /**
