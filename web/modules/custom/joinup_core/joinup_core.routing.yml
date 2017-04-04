@@ -11,7 +11,7 @@ joinup_core.members:
         type: entity:rdf_entity
     _og_entity_type_id: rdf_entity
     _admin_route: TRUE
-joinup_core.rdf_entity_about:
+entity.rdf_entity.about_page:
   path: 'rdf_entity/{rdf_entity}/about'
   defaults:
     _controller: '\Drupal\joinup_core\Controller\CoreController::aboutPage'

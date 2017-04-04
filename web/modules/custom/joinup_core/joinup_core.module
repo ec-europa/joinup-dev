@@ -165,6 +165,10 @@ function joinup_core_entity_type_alter(array &$entity_types) {
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
   // @todo Remove when ISAICP-3126 gets in.
   $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
+
+  // Add the about page as link template, so the og context will be
+  // automatically solved.
+  $entity_types['rdf_entity']->setLinkTemplate('about-page', '/rdf_entity/{rdf_entity}/about');
 }
 
 /**

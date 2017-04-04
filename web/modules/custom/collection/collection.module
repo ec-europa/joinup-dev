@@ -173,11 +173,10 @@ function collection_entity_insert(EntityInterface $entity) {
     ]);
     $link->save();
 
-    $about_url = Url::fromRoute('joinup_core.rdf_entity_about', ['rdf_entity' => $entity->id()]);
     $link = MenuLinkContent::create([
       'title' => t('About'),
       'menu_name' => $menu_name,
-      'link' => ['uri' => 'internal:' . $about_url->toString()],
+      'link' => ['uri' => 'internal:' . $entity->toUrl('about-page')->toString()],
       'weight' => -9,
     ]);
     $link->save();
