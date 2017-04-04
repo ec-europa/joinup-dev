@@ -55,10 +55,16 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
     }
 
     $query = \Drupal::entityQuery($entity_type_id)
-      ->condition($field_name, $item->value)
-      ->condition('rid', $entity->bundle());
+      ->condition($field_name, $item->value);
     if (!empty($entity->id())) {
       $query->condition($id_key, $items->getEntity()->id(), '<>');
+    }
+    // If this is a solution, ignore releases.
+    if ($entity->bundle() === 'solution') {
+      $query->condition('rid', $entity->bundle());
+    }
+    elseif ($entity->bundle() === 'asset_release') {
+      $query->condition('rid', ['solution', 'asset_release'], 'IN');
     }
 
     $value_taken = (bool) $query->range(0, 1)
