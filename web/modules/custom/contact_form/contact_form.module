@@ -6,12 +6,14 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\user\Entity\User;
 
 /**
  * Implements hook_form_FORM_ID_alter().
  *
  * This changes the contact form which is provided by the
  * 'contact_form_submission' message template:
+ *  - Prefill the user's name and e-mail address if the user is logged in.
  *  - Only show the 'Page URL' field when the 'bug' or 'report' category is
  *    chosen.
  *  - Change the text of the submit button to "Submit".
@@ -19,6 +21,15 @@ use Drupal\Core\Form\FormStateInterface;
  *    their message has been successfully sent.
  */
 function contact_form_form_message_contact_form_submission_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Fill in the credentials if the user is logged in.
+  $user = \Drupal::currentUser();
+  if ($user->isAuthenticated()) {
+    $user = User::load($user->id());
+    $form['field_contact_first_name']['widget'][0]['value']['#default_value'] = $user->get('field_user_first_name')->value;
+    $form['field_contact_last_name']['widget'][0]['value']['#default_value'] = $user->get('field_user_family_name')->value;
+    $form['field_contact_email']['widget'][0]['value']['#default_value'] = $user->getEmail();
+  }
+
   // Only show the 'Page URL' field when the 'bug' or 'report' category is
   // chosen.
   $form['field_contact_url']['#states'] = [
