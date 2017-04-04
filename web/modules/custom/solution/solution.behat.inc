@@ -335,13 +335,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @Then I should have :number solution(s)
    */
   public function assertSolutionCount($number) {
-    // We cannot rely on $this->assertRdfEntityCount() because a solution shares
-    // the same bundle with a release. We need to distinguish them by the
-    // presence of the 'is_version_of' field - if this field is missing it is a
-    // solution, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'solution')
-      ->notExists('field_is_has_version')
       ->count()
       ->execute();
     if ($actual != $number) {

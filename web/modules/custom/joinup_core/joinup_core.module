@@ -311,6 +311,6 @@ function joinup_core_query_rdf_entity_alter(AlterableInterface $query) {
     $query->notExists('field_isr_is_version_of');
   }
   elseif (!$solution && $release) {
-    $query->Exists('field_isr_is_version_of');
+    $query->exists('field_isr_is_version_of');
   }
 }
