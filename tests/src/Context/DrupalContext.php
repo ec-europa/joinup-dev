@@ -30,37 +30,13 @@ class DrupalContext extends DrupalExtensionDrupalContext {
   /**
    * {@inheritdoc}
    *
-   * Identical to the parent method, but allows to use human readable column
+   * Similar to the parent method, but allows to use human readable column
    * names, and translates filenames of images in the fixtures folder for the
    * user profile pictures.
    */
   public function createUsers(TableNode $usersTable) {
     foreach ($usersTable->getHash() as $userHash) {
-      // Replace the column aliases with the actual field names.
-      $userHash = $this->translateUserFieldAliases($userHash);
-
-      // Handle the user profile picture.
-      $this->handleFileFields($userHash, 'user', 'user');
-
-      // Split out roles to process after user is created.
-      $roles = [];
-      if (isset($userHash['roles'])) {
-        $roles = explode(',', $userHash['roles']);
-        $roles = array_filter(array_map('trim', $roles));
-        unset($userHash['roles']);
-      }
-
-      $user = (object) $userHash;
-      // Set a password.
-      if (!isset($user->pass)) {
-        $user->pass = $this->getRandom()->name();
-      }
-      $this->userCreate($user);
-
-      // Assign roles.
-      foreach ($roles as $role) {
-        $this->getDriver()->userAddRole($user, $role);
-      }
+      $this->createUser($userHash);
     }
   }
 
