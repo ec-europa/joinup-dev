@@ -60,10 +60,6 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
     if (!empty($entity->id())) {
       $query->condition($id_key, $items->getEntity()->id(), '<>');
     }
-    // If this is a solution, ignore releases.
-    if ($entity->bundle() == 'solution') {
-      $query->notExists('field_isr_is_version_of');
-    }
 
     $value_taken = (bool) $query->range(0, 1)
       ->count()

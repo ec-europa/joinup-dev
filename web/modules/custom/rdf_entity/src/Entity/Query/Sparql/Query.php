@@ -28,6 +28,13 @@ class Query extends QueryBase implements QueryInterface {
   public $query = '';
 
   /**
+   * Indicates if preExecute() has already been called.
+   *
+   * @var bool
+   */
+  protected $prepared = FALSE;
+
+  /**
    * The graphs from where the query is going to try and load entities from.
    *
    * The variable holds a plain array of graph uris.
@@ -110,6 +117,10 @@ class Query extends QueryBase implements QueryInterface {
     if (!$this->entityStorage instanceof RdfEntitySparqlStorage) {
       throw new \Exception('Sparql storage is required for this query.');
     }
+
+    // Set a unique tag for the rdf_entity queries.
+    $this->addTag('rdf_entity');
+    $this->addMetaData('entity_type', $this->getEntityType());
   }
 
   /**
@@ -239,8 +250,23 @@ class Query extends QueryBase implements QueryInterface {
    * @return $this
    */
   protected function compile() {
-    // @todo: Add the 'changed' parameter to recompile if changes are done after
-    // a query alter.
+    // Modules may alter all queries or only those having a particular tag.
+    if (isset($this->alterTags)) {
+      // Remap the entity reference default tag to the rdf_entity reference
+      // because the first one requires that the query is an instance of the
+      // SelectInterface.
+      // @todo: Maybe overwrite the default selection class?
+      if (isset($this->alterTags['entity_reference'])) {
+        $this->alterTags['rdf_entity_reference'] = $this->alterTags['entity_reference'];
+        unset($this->alterTags['entity_reference']);
+      }
+      $hooks = ['query'];
+      foreach ($this->alterTags as $tag => $value) {
+        $hooks[] = 'query_' . $tag;
+      }
+      \Drupal::moduleHandler()->alter($hooks, $this);
+    }
+
     $this->condition->compile($this);
     $this->query .= "WHERE {\n" . $this->condition->toString() . "\n}";
     return $this;
@@ -319,6 +345,16 @@ class Query extends QueryBase implements QueryInterface {
       }
     }
     return $uris;
+  }
+
+  /**
+   * Returns the array of conditions.
+   *
+   * @return array
+   *   The array of conditions.
+   */
+  public function &conditions() {
+    return $this->condition->conditions();
   }
 
   /**

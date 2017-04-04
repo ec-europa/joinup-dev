@@ -285,7 +285,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         $operator = 'IN';
 
       case 'IN':
-        $this->fieldMappingConditions[] = [
+        $this->conditions[] = [
           'field' => $field,
           'value' => $value,
           'operator' => $operator,

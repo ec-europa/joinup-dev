@@ -42,14 +42,6 @@ class JoinupRdfListBuilder extends RdfListBuilder {
         $query->condition('rid', $rid, 'IN');
       }
     }
-    // Special treatment for 'solution' and 'asset_release'.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
-    if ($rid[0] === 'asset_release') {
-      $query->exists('field_isr_is_version_of');
-    }
-    elseif ($rid[0] === 'solution') {
-      $query->notExists('field_isr_is_version_of');
-    }
 
     // Only add the pager if a limit is specified.
     if ($this->limit) {
