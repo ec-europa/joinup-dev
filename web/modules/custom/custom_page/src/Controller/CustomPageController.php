@@ -5,6 +5,7 @@ namespace Drupal\custom_page\Controller;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\og\OgAccessInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\OgMenuInstanceInterface;
@@ -76,19 +77,20 @@ class CustomPageController extends ControllerBase {
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the custom page is created.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The currently logged in account.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createCustomPageAccess(RdfInterface $rdf_entity) {
-    $user = $this->currentUser();
+  public function createCustomPageAccess(RdfInterface $rdf_entity, AccountInterface $account) {
     // Grant access if the user is a moderator.
-    if (in_array('moderator', $user->getRoles())) {
+    if (in_array('moderator', $account->getRoles())) {
       return AccessResult::allowed()->addCacheContexts(['user.roles']);
     }
     // Grant access depending on whether the user has permission to create a
     // custom page according to their OG role.
-    return $this->ogAccess->userAccessGroupContentEntityOperation('create', $rdf_entity, $this->createNewCustomPage($rdf_entity), $user);
+    return $this->ogAccess->userAccessGroupContentEntityOperation('create', $rdf_entity, $this->createNewCustomPage($rdf_entity), $account);
   }
 
   /**
