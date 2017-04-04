@@ -24,13 +24,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class OgCommentDefaultFormatter extends CommentDefaultFormatter {
 
   /**
-   * The og comment access control handler.
-   *
-   * @var \Drupal\og_comment\OgCommentAccessControlHandler
-   */
-  protected $accessHandler;
-
-  /**
    * A list of og group entities.
    *
    * @var \Drupal\Core\Entity\EntityInterface[]
@@ -88,7 +81,6 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
     $this->database = $database;
     $this->groupTypeManager = $group_type_manager;
     $this->membershipManager = $membership_manager;
-    $this->accessHandler = $this->entityManager->getAccessControlHandler($field_definition->getSetting('comment_type'));
   }
 
   /**
