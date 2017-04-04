@@ -387,11 +387,20 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
       elseif ($condition['field'] === $this->bundleKey) {
         $this->compileBundleCondition($condition);
       }
-      elseif (in_array($condition['operator'], $this->requiresTriple)) {
+      elseif (in_array($condition['operator'], $this->requiresTriple) && isset($this->fieldMappings[$condition['field']])) {
         $this->addConditionFragment(self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$condition['field']]) . ' ' . $this->toVar($condition['field']));
       }
 
-      $condition['value'] = $this->escapeValue($condition['field'], $condition['value']);
+      // For the field mappings that require a filter, the $condition['field']
+      // parameter is set to '<field_name>_predicate'. Reverse search it from
+      // the mappings.
+      if ($field_name = array_search($condition['field'], $this->fieldMappings)) {
+        $condition['value'] = SparqlArg::toResourceUris($condition['value']);
+      }
+      else {
+        $condition['value'] = $this->escapeValue($condition['field'], $condition['value']);
+      }
+
       switch ($condition['operator']) {
         case '=':
           $this->tripleFragments[] = self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$condition['field']]) . ' ' . $condition['value'];
