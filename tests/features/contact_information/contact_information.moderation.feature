@@ -6,7 +6,7 @@ Feature: Contact Information moderation
 
   Scenario: Publish, update, request changes, publish again and ask to delete contact information.
     Given users:
-      | name            |
+      | Username        |
       | Sæwine Cynebald |
     And owner:
       | type                          | name               |

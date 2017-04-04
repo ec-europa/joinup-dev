@@ -6,7 +6,7 @@ Feature: Discussion moderation
 
   Scenario: Publish, request changes, propose, publish again and archive a discussion.
     Given users:
-      | name            |
+      | Username        |
       | Gabe Rogers     |
       | Brigham Salvage |
     And the following collection:
@@ -93,7 +93,7 @@ Feature: Discussion moderation
 
   Scenario: Disabling a discussion prevents additional comments to be created.
     Given users:
-      | name          | mail                      |
+      | Username      | E-mail                    |
       | Vince Rome    | vince.rome@example.com    |
       | Lance Rustici | lance.rustici@example.com |
       | Denny Winslow | denny.winslow@example.com |

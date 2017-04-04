@@ -6,7 +6,7 @@ Feature: Document moderation
 
   Background:
     Given users:
-      | name            |
+      | Username        |
       | Crab y Patties  |
       | Gretchen Greene |
       | Kirk Collier    |
