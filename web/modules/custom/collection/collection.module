@@ -162,14 +162,25 @@ function collection_entity_insert(EntityInterface $entity) {
     $og_menu_instance = OgMenuInstance::create($values);
     $og_menu_instance->save();
 
-    // Automatically add a link to the about page of the collection entity.
-    $about_url = Url::fromRoute('joinup_core.rdf_entity_about', ['rdf_entity' => $entity->id()]);
-    $about_link = MenuLinkContent::create([
-      'title' => t('About'),
-      'menu_name' => 'ogmenu-' . $og_menu_instance->id(),
-      'link' => ['uri' => 'internal:/' . $about_url->getInternalPath()],
+    // Automatically add a link to the overview and about pages of the
+    // collection entity.
+    $menu_name = 'ogmenu-' . $og_menu_instance->id();
+    $link = MenuLinkContent::create([
+      'title' => t('Overview'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl()->toString()],
+      'weight' => -10,
     ]);
-    $about_link->save();
+    $link->save();
+
+    $about_url = Url::fromRoute('joinup_core.rdf_entity_about', ['rdf_entity' => $entity->id()]);
+    $link = MenuLinkContent::create([
+      'title' => t('About'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $about_url->toString()],
+      'weight' => -9,
+    ]);
+    $link->save();
   }
 
   // When a new collection is proposed, give the user the 'group owner' role.
