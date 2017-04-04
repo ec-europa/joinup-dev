@@ -57,10 +57,10 @@ Feature: Proposing a collection
 
     # The user that proposed the collection should be auto-subscribed.
     And the "Ancient and Classical Mythology" collection should have 1 member
-    # There should not be any custom pages in the menu yet, so I should see a
-    # button to create a custom page, with accompanying help text.
-    And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
-    When I click "Add custom page"
+    # The overview and about links should be added automatically in the menu.
+    And I should see the link "Overview" in the "Left sidebar" region
+    And I should see the link "About" in the "Left sidebar" region
+    When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"
     When I fill in the following:
       | Title | About                                       |
