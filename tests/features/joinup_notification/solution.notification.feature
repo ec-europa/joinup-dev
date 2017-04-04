@@ -12,7 +12,7 @@ Feature: Solution notification system
       | name  | Jody Buchanan            |
       | email | JodyBuchanan@example.com |
     And users:
-      | name             | mail                        | roles     |
+      | Username         | E-mail                      | Roles     |
       | Benjamin Stevens | BenjaminStevens@example.com |           |
       | Cecelia Kim      | CeceliaKim@example.com      | moderator |
     And the following solutions:

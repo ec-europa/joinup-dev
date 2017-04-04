@@ -26,7 +26,7 @@ Feature: Collection moderation
       | name  | Francis             |
       | email | Francis@example.com |
     And users:
-      | name            | roles     |
+      | Username        | Roles     |
       # Authenticated user.
       | Velma Smith     |           |
       # Moderator.

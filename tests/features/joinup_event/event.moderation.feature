@@ -6,7 +6,7 @@ Feature: Event moderation
 
   Background:
     Given users:
-      | name            |
+      | Username        |
       | Salvador Thomas |
       | Rosa Vaughn     |
       | Patricia Lynch  |
