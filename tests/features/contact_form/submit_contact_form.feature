@@ -63,5 +63,3 @@ Feature: Submit the contact form
     Then the "First name" field should contain "Wally"
     And the "Last name" field should contain "Papamichael"
     And the "E-mail address" field should contain "w.papamichael@schiffmann.de"
-
-
