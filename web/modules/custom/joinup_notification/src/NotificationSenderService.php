@@ -75,7 +75,7 @@ class NotificationSenderService {
    * @param array $recipient_ids
    *   An array of user IDs to which the messages will be sent.
    */
-  public function sendMessage($template_id, array $values, array $recipient_ids) {
+  public function sendMessageTemplate($template_id, array $values, array $recipient_ids) {
     foreach ($recipient_ids as $recipient_id) {
       // Create the actual message and save it to the db.
       $values += [
@@ -113,7 +113,7 @@ class NotificationSenderService {
     }
     foreach ($template_ids as $template_id) {
       $values = ['field_message_content' => $entity->id()];
-      $this->sendMessage($template_id, $values, $recipient_ids);
+      $this->sendMessageTemplate($template_id, $values, $recipient_ids);
     }
   }
 
