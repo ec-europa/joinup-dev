@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\message\Entity\Message;
+use Drupal\message\MessageInterface;
 use Drupal\message_notify\MessageNotifier;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\OgMembershipInterface;
@@ -66,6 +67,21 @@ class NotificationSenderService {
   }
 
   /**
+   * Sends a message to a list of recipients.
+   *
+   * @param \Drupal\message\MessageInterface $message
+   *   The message to send.
+   * @param array $recipient_ids
+   *   A list of user IDs that should be notified via e-mail.
+   */
+  public function sendMessage(MessageInterface $message, array $recipient_ids) {
+    foreach ($recipient_ids as $recipient_id) {
+      $message->setOwnerId($recipient_id);
+      $this->messageNotifySender->send($message, ['save_on_success' => FALSE]);
+    }
+  }
+
+  /**
    * Creates a message with the given template and sends it to the recipients.
    *
    * @param string $template_id
@@ -76,16 +92,12 @@ class NotificationSenderService {
    *   An array of user IDs to which the messages will be sent.
    */
   public function sendMessageTemplate($template_id, array $values, array $recipient_ids) {
-    // Create the actual message and save it to the db.
+    // Create the actual message and save it to the database.
     $values += ['template' => $template_id];
     $message = Message::create($values);
     $message->save();
 
-    foreach ($recipient_ids as $recipient_id) {
-      // Send the saved message as an e-mail.
-      $message->setOwnerId($recipient_id);
-      $this->messageNotifySender->send($message);
-    }
+    $this->sendMessage($message, $recipient_ids);
   }
 
   /**
