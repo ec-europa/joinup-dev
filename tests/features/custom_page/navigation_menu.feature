@@ -10,42 +10,42 @@ Feature: Navigation menu for custom pages
       | Rainbow tables   | logo.png | validated |
       | Cripple Mr Onion | logo.png | validated |
 
-    # Initially there are no items in the navigation menu, instead we see a help
-    # text inviting the user to add a page to the menu.
+    # By default, a link to the collection canonical page and a link to the
+    # about page are added to the menu.
     When I am logged in as a facilitator of the "Rainbow tables" collection
     And I go to the homepage of the "Rainbow tables" collection
-    Then the navigation menu of the "Rainbow tables" collection should have 0 visible items
-    And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
-    And I should see the link "Add a new page"
-    # Check that the 'Edit menu' local action is not present.
-    But I should not see the contextual link "Edit menu" in the "Left sidebar" region
+    Then the navigation menu of the "Rainbow tables" collection should have 2 visible items
+    And I should see the link "Overview" in the "Left sidebar" region
+    And I should see the link "About" in the "Left sidebar" region
+    # Check that the 'Edit menu' local action is present.
+    And I should see the contextual link "Edit menu" in the "Left sidebar" region
     # The 'Add link' local action that is present in the default implementation
     # of OG Menu should not be visible. We are managing the menu links behind
     # the scenes. The end user should not be able to interact with these.
-    And I should not see the contextual link "Add link" in the "Left sidebar" region
+    But I should not see the contextual link "Add link" in the "Left sidebar" region
 
     # When we create a custom page it should automatically show up in the menu.
-    When I click "Add a new page"
+    When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"
     When I fill in the following:
       | Title | About us |
     And I enter "A short introduction." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the success message "Custom page About us has been created."
-    And the navigation menu of the "Rainbow tables" collection should have 1 visible item
-    And I should not see the text "There are no custom pages yet."
+    And the navigation menu of the "Rainbow tables" collection should have 3 visible item
 
     When I click the contextual link "Edit menu" in the "Left sidebar" region
-    Then the navigation menu of the "Rainbow tables" collection should have 1 item
-    But I should not see the text "There are no custom pages yet."
+    Then the navigation menu of the "Rainbow tables" collection should have 3 item
 
     # It should be possible to hide an item from the menu by disabling it.
     When I disable "About us" in the navigation menu of the "Rainbow tables" collection
-    Then the navigation menu of the "Rainbow tables" collection should have 0 visible items
+    Then the navigation menu of the "Rainbow tables" collection should have 2 visible items
 
     # When all the pages are disabled in the navigation menu, a message should
     # be shown to the user.
-    When I go to the homepage of the "Rainbow tables" collection
+    When I disable "Overview" in the navigation menu of the "Rainbow tables" collection
+    And I disable "About" in the navigation menu of the "Rainbow tables" collection
+    And I go to the homepage of the "Rainbow tables" collection
     Then I should see the text "All the pages have been disabled for this collection. You can edit the menu configuration or add a new page."
     And I should see the contextual link "Edit menu" in the "Left sidebar" region
 
