@@ -36,7 +36,6 @@
     {%- if items -%}
       <{{ list_type }}{{ attributes.addClass('mdl-menu mdl-menu--bottom-left mdl-js-menu').setAttribute('for', 'filter-button') }}>
         {%- for item in items -%}
-        {{ kint(item) }}
           <li{{ item.attributes.addClass('mdl-menu__item') }}>{{ item.value }}</li>
         {%- endfor -%}
       </{{ list_type }}>
