@@ -31,6 +31,13 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
   protected $messages = [];
 
   /**
+   * Main database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $db;
+
+  /**
    * Legacy database connection.
    *
    * @var \Drupal\Core\Database\Connection
@@ -50,7 +57,8 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
   protected function setUp() {
     parent::setUp();
 
-    // Setup connections to SPARQL backend and legacy DB.
+    // Setup the connections to main, legacy DB and SPARQL backend.
+    $this->db = Database::getConnection();
     $this->setUpLegacyDb();
     $this->setUpSparql();
 
@@ -67,10 +75,6 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
    * Tests Joinup migrate suite.
    */
   public function test() {
-    foreach ($this->messages as $message) {
-      $this->assertTrue(TRUE, $message);
-    }
-
     // Check that the migration was clean.
     if (!empty($this->messages)) {
       $messages = array_map(function ($message) {
@@ -103,9 +107,6 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
     new Settings($settings);
 
     foreach ($this->manager->createInstances([]) as $id => $migration) {
-      if ($id == 'newsletter_subscriber') {
-        continue;
-      }
       // Force running the migration, even the prior migrations were incomplete.
       $migration->set('requirements', []);
       try {
@@ -165,6 +166,11 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
       throw new \Exception('No migrate database connection. You must provide a SIMPLETEST_LEGACY_DB environment variable.');
     }
     $database = Database::convertDbUrlToConnectionInfo($db_url, $this->root);
+    // We set the timezone to UTC to force MySQL time functions to correctly
+    // convert timestamps into date/time.
+    $database['init_commands'] = [
+      'set_timezone_to_utc' => "SET time_zone='+00:00';",
+    ];
     Database::addConnectionInfo('migrate', 'default', $database);
     $this->legacyDb = Database::getConnection('default', 'migrate');
   }
@@ -187,13 +193,16 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
    *   The migration.
    * @param string $message
    *   The message to be checked.
+   * @param string $operator
+   *   (optional) The operator to be used for comparision. Defaults to '='.
    */
-  protected function assertMessage($migration_id, $message) {
+  protected function assertMessage($migration_id, $message, $operator = '=') {
     $table = "migrate_message_{$migration_id}";
-    $found = (bool) Database::getConnection()->select($table)
-      ->fields($table)
-      ->condition('message', $message)
-      ->execute();
+    $found = (bool) $this->db->select($table, 'm')
+      ->fields('m')
+      ->condition('m.message', $message, $operator)
+      ->execute()
+      ->fetchAll();
     $this->assertTrue($found);
   }
 
@@ -244,6 +253,43 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
       ->fetchField();
 
     $this->assertEquals($count, $actual_count);
+  }
+
+  /**
+   * Returns an entity by its label.
+   *
+   * Being used for testing, this method assumes that, within an entity type,
+   * all entities have unique labels.
+   *
+   * @param string $entity_type_id
+   *   The entity type ID.
+   * @param string $label
+   *   The entity label.
+   *
+   * @return \Drupal\Core\Entity\ContentEntityInterface
+   *   The content entity.
+   *
+   * @throws \InvalidArgumentException
+   *   When the entity type lacks a label key.
+   * @throws \Exception
+   *   When the entity with the specified label was not found.
+   */
+  protected function loadEntityByLabel($entity_type_id, $label) {
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = $this->container->get('entity_type.manager');
+    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+    if (!$entity_type->hasKey('label')) {
+      throw new \InvalidArgumentException("Entity type '$entity_type_id' doesn't have a label key.");
+    }
+
+    $label_key = $entity_type->getKey('label');
+    $storage = $entity_type_manager->getStorage($entity_type_id);
+
+    if (!$entities = $storage->loadByProperties([$label_key => $label])) {
+      throw new \Exception("No $entity_type_id entity with $label_key '$label' was found.");
+    }
+
+    return reset($entities);
   }
 
 }

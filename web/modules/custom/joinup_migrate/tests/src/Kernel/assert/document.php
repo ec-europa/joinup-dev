@@ -1,0 +1,130 @@
+<?php
+
+/**
+ * @file
+ * Assertions for 'document' migration.
+ */
+
+use Drupal\file_url\FileUrlHandler;
+
+// Migration counts.
+$this->assertTotalCount('document', 7);
+$this->assertSuccessCount('document', 7);
+
+// Expected logged messages.
+$this->assertMessage('document_file', "File '%" . $this->db->escapeLike("/sites/default/files/e-government_action_plan_2016-2020_-_opinion_of_the_european_committee_of_the_regions_-_martin_andreasson.pdf' does not exist"), 'LIKE');
+
+
+// Imported content check.
+/* @var \Drupal\node\NodeInterface $document */
+$document = $this->loadEntityByLabel('node', 'BAA');
+$this->assertEquals('BAA', $document->label());
+$this->assertEquals('document', $document->bundle());
+$this->assertEquals('document', $document->field_type->value);
+$this->assertEquals(1287568701, $document->created->value);
+$this->assertEquals(1426669226, $document->changed->value);
+$this->assertEquals(1, $document->uid->target_id);
+$this->assertEquals('2010-10-20T00:00:00', $document->field_document_publication_date->value);
+$this->assertEquals('http://www.baa.com/', $document->field_file->target_id);
+$this->assertStringEndsWith("<p>More information can be found on the <a href=\"http://www.baa.com/\">website</a>.</p>\r\n<p>Nature of documentation: Other</p>", $document->body->value);
+$this->assertTrue($document->get('field_keywords')->isEmpty());
+
+$document = $this->loadEntityByLabel('node', 'Good Practice Study');
+$this->assertEquals('Good Practice Study', $document->label());
+$this->assertEquals('document', $document->bundle());
+$this->assertEquals('document', $document->field_type->value);
+$this->assertEquals(1214179200, $document->created->value);
+$this->assertEquals(1323887628, $document->changed->value);
+$this->assertEquals(1, $document->uid->target_id);
+$this->assertEquals('2008-06-23T00:00:00', $document->field_document_publication_date->value);
+$file = FileUrlHandler::urlToFile($document->field_file->target_id);
+$this->assertEquals('public://document/2011-12/good-practice-study.pdf', $file->getFileUri());
+$this->assertStringEndsWith("interoperability and exchange of solutions.</div>\r\n<p>Nature of documentation: Guide</p>", $document->body->value);
+$this->assertTrue($document->get('field_keywords')->isEmpty());
+
+$document = $this->loadEntityByLabel('node', 'CAMSS method (v1.0) scenario 2 - SMEF');
+$this->assertEquals('CAMSS method (v1.0) scenario 2 - SMEF', $document->label());
+$this->assertEquals('document', $document->bundle());
+$this->assertEquals('document', $document->field_type->value);
+$this->assertEquals(1425914198, $document->created->value);
+$this->assertEquals(1425914198, $document->changed->value);
+$this->assertEquals(1, $document->uid->target_id);
+$this->assertEquals('2015-03-09T00:00:00', $document->field_document_publication_date->value);
+$file = FileUrlHandler::urlToFile($document->field_file->target_id);
+$this->assertEquals('public://document/2015-03/CAMSS method (v1.0) scenario 2 - SMEF.xlsm', $file->getFileUri());
+$this->assertStringEndsWith("v1.0 by the CAMSS team.</div>\r\n<p>Nature of documentation: CAMSS Assessment</p>", $document->body->value);
+$terms = array_map(function (array $item) {
+  return $item['value'];
+}, $document->get('field_keywords')->getValue());
+sort($terms, SORT_NATURAL | SORT_FLAG_CASE);
+$this->assertSame(['CAMSS', 'Netherlands', 'SMEF', 'standard'], $terms);
+
+$document = $this->loadEntityByLabel('node', 'The Irish ePassport');
+$this->assertEquals('The Irish ePassport', $document->label());
+$this->assertEquals('document', $document->bundle());
+$this->assertEquals('case', $document->field_type->value);
+$this->assertEquals(1170370800, $document->created->value);
+$this->assertEquals(1170751289, $document->changed->value);
+$this->assertEquals(1, $document->uid->target_id);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1170370800), $document->field_document_publication_date->value);
+$this->assertEquals('http://www.dfa.ie/home/index.aspx?id=265', $document->field_file->target_id);
+$this->assertStringEndsWith("ensure that the documents can be read by border control agencies.", $document->body->value);
+$terms = array_map(function (array $item) {
+  return $item['value'];
+}, $document->get('field_keywords')->getValue());
+sort($terms, SORT_NATURAL | SORT_FLAG_CASE);
+$this->assertSame([
+  'Administrative',
+  'biometric',
+  'Citizen',
+  'Crime, Justice and Law',
+  'Customs',
+  'ID',
+], $terms);
+
+$document = $this->loadEntityByLabel('node', 'National Interoperability Framework Observatory (NIFO) Factsheets');
+$this->assertEquals('National Interoperability Framework Observatory (NIFO) Factsheets', $document->label());
+$this->assertEquals('document', $document->bundle());
+$this->assertEquals('factsheet', $document->field_type->value);
+$this->assertEquals(1353062565, $document->created->value);
+$this->assertEquals(1453821476, $document->changed->value);
+$this->assertEquals(1, $document->uid->target_id);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1353062565), $document->field_document_publication_date->value);
+$file = FileUrlHandler::urlToFile($document->field_file->target_id);
+$this->assertEquals('public://document/2013-02/NIFO - Factsheet Austria 02-2013.pdf', $file->getFileUri());
+$this->assertStringEndsWith("interoperability in each of the Countries in scope.&nbsp;</div>\r\n</div>\r\n<p>&nbsp;</p>", $document->body->value);
+$terms = array_map(function (array $item) {
+  return $item['value'];
+}, $document->get('field_keywords')->getValue());
+sort($terms, SORT_NATURAL | SORT_FLAG_CASE);
+$this->assertSame([
+  'Country profile',
+  'Government Interoperability Frameworks',
+  'nifo',
+], $terms);
+
+$document = $this->loadEntityByLabel('node', 'ISA Contributor Agreement v1.1');
+$this->assertEquals('ISA Contributor Agreement v1.1', $document->label());
+$this->assertEquals('document', $document->bundle());
+$this->assertEquals('legal', $document->field_type->value);
+$this->assertEquals(1362756715, $document->created->value);
+$this->assertEquals(1362756715, $document->changed->value);
+$this->assertEquals(1, $document->uid->target_id);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1362756715), $document->field_document_publication_date->value);
+$this->assertStringEndsWith(", will be considered as a valid commitment.</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n<p>&nbsp;</p>", $document->body->value);
+$this->assertTrue($document->get('field_keywords')->isEmpty());
+
+$document = $this->loadEntityByLabel('node', 'E-government Action plan 2016-2020 - Opinion of the European Committee of the Regions - Martin Andreasson');
+$this->assertEquals('E-government Action plan 2016-2020 - Opinion of the European Committee of the Regions - Martin Andreasson', $document->label());
+$this->assertEquals('document', $document->bundle());
+$this->assertEquals('presentation', $document->field_type->value);
+$this->assertEquals(1474971682, $document->created->value);
+$this->assertEquals(1474971682, $document->changed->value);
+$this->assertGreaterThan(1, $document->uid->target_id);
+$this->assertEquals('2016-09-27T00:00:00', $document->field_document_publication_date->value);
+$this->assertStringEndsWith('took place on 20 September 2016 in Brussels.</span></p>', $document->body->value);
+$terms = array_map(function (array $item) {
+  return $item['value'];
+}, $document->get('field_keywords')->getValue());
+sort($terms, SORT_NATURAL | SORT_FLAG_CASE);
+$this->assertSame(['Other'], $terms);
