@@ -1,10 +1,10 @@
 @api @terms
-Feature: Commenting on archived collection
-  In order to prevent unwanted commenting
-  As a site moderator
-  I want to prevent people from commenting on content of an archived collection.
+Feature: Creating content and commenting on archived collection
+  In order to not waste time on maintaining legacy collections
+  As a collection owner
+  I want to be able to archive old collections
 
-  Scenario: Check access to the
+  Background: Check access to the Post comment form
     Given users:
       | name        | roles     |
       | Flora Hunt  | moderator |
@@ -22,10 +22,11 @@ Feature: Commenting on archived collection
     And the following collection user memberships:
       | collection          | user        | roles              |
       | The Willing Consort | Karl Fields | owner, facilitator |
-    And discussion content:
+
+  Scenario: 'Comment form' should not be accessible on an archived collection content.
+    Given discussion content:
       | title               | collection          | state     |
       | The Weeping's Stars | The Willing Consort | validated |
-
     When I am logged in as "Lee Reeves"
     And I go to the "The Weeping's Stars" discussion
     Then the following fields should be present "Comment"
@@ -45,7 +46,6 @@ Feature: Commenting on archived collection
     And I click "Edit"
     And I press "Archive"
     And I go to the "The Weeping's Stars" discussion
-    # 'Administer comments' permission give access even in archived collections.
     Then the following fields should not be present "Comment"
     And I should not see the button "Post comment"
 
@@ -58,3 +58,22 @@ Feature: Commenting on archived collection
     And I go to the "The Weeping's Stars" discussion
     Then the following fields should not be present "Your name, Email, Comment"
     And I should not see the button "Post comment"
+
+  Scenario: 'Add community content' menu items should not be visible in the archived connection.
+    When I am logged in as "Karl Fields"
+    And I go to the "The Willing Consort" collection
+    And I click "Edit"
+    And I press "Request archival"
+    And I am logged in as a moderator
+    And I go to the "The Willing Consort" collection
+    And I click "Edit"
+    And I press "Archive"
+
+    # We only need to check that privileged users do not have access anymore.
+    And I am logged in as a facilitator of the "The Willing Consort" collection
+    And I go to the "The Willing Consort" collection
+    Then I should not see the contextual link "Add event" in the "Plus button menu" region
+    And I should not see the contextual link "Add news" in the "Plus button menu" region
+    And I should not see the contextual link "Add document" in the "Plus button menu" region
+    And I should not see the contextual link "Add discussion" in the "Plus button menu" region
+    And I should not see the contextual link "Add custom page" in the "Navigation menu block" region
