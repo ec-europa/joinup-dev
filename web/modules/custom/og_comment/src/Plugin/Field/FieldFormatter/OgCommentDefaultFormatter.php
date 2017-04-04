@@ -120,7 +120,7 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
       // Comments are added to the search results and search index by
       // comment_node_update_index() instead of by this formatter, so don't
       // return anything if the view mode is search_index or search_result.
-      !in_array($this->viewMode, array('search_result', 'search_index'))) {
+      !in_array($this->viewMode, ['search_result', 'search_index'])) {
       $comment_settings = $this->getFieldSettings();
 
       // Only attempt to render comments if the entity has visible comments.
@@ -173,12 +173,12 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
         }
       }
 
-      $elements[] = $output + array(
+      $elements[] = $output + [
         '#comment_type' => $this->getFieldSetting('comment_type'),
         '#comment_display_mode' => $this->getFieldSetting('default_mode'),
-        'comments' => array(),
-        'comment_form' => array(),
-      );
+        'comments' => [],
+        'comment_form' => [],
+      ];
     }
 
     return $elements;
@@ -267,7 +267,7 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
 
     $cids = $query->execute()->fetchCol();
 
-    $comments = array();
+    $comments = [];
     if ($cids) {
       $comments = $this->storage->loadMultiple($cids);
     }

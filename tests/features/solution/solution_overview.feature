@@ -17,8 +17,8 @@ Feature: Solutions Overview
   @terms
   Scenario: View solution overview as an anonymous user
     Given users:
-      | name          | mail                              | roles |
-      | Madam Shirley | i.dont.see.the.future@example.com |       |
+      | Username      | E-mail                            |
+      | Madam Shirley | i.dont.see.the.future@example.com |
     And solutions:
       | title                 | description                    | state     |
       | Non electronic health | Supports health-related fields | validated |

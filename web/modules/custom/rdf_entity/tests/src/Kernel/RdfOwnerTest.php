@@ -22,21 +22,21 @@ class RdfOwnerTest extends JoinupKernelTestBase {
 
     // The 'dummy' bundle does not have the owner mapping. The 'with_owner'
     // does.
-    $not_owned = Rdf::create(array(
+    $not_owned = Rdf::create([
       'rid' => 'dummy',
       'label' => $this->randomMachineName(),
-    ));
+    ]);
     $not_owned->save();
-    $owned = Rdf::create(array(
+    $owned = Rdf::create([
       'rid' => 'with_owner',
       'label' => $this->randomMachineName(),
-    ));
+    ]);
     $owned->save();
-    $ownerless = Rdf::create(array(
+    $ownerless = Rdf::create([
       'rid' => 'with_owner',
       'label' => $this->randomMachineName(),
       'uid' => NULL,
-    ));
+    ]);
     $ownerless->save();
 
     $this->assertNull($not_owned->getOwnerId(), 'The entity with no mapping for uid does not have an owner.');

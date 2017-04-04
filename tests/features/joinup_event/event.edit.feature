@@ -6,8 +6,8 @@ Feature: "Event page" editing.
 
   Scenario Outline: Owners and moderators should be able to view the Edit link.
     Given users:
-      | name   |
-      | <user> |
+      | Username |
+      | <user>   |
     And the following collections:
       | title        | description        | state     | moderation |
       | <collection> | Sample description | validated | yes        |
@@ -32,7 +32,7 @@ Feature: "Event page" editing.
 
   Scenario: A solution facilitator can edit his content.
     Given users:
-      | name           |
+      | Username       |
       | Krista Garrett |
     And the following solutions:
       | title                | description        | state     | moderation |

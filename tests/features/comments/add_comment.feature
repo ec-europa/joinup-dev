@@ -9,7 +9,7 @@ Feature: Add comments
       | state | validated         |
 
     And users:
-      | name            | mail                   |
+      | Username        | E-mail                 |
       | Miss tell tales | tell.tales@example.com |
 
   Scenario Outline: Make an anonymous comment, needs moderation.

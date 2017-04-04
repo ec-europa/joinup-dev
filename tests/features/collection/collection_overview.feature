@@ -16,8 +16,8 @@ Feature: Collections Overview
   @terms
   Scenario: View collection overview as an anonymous user
     Given users:
-      | name          | mail                         | roles |
-      | Madam Shirley | i.see.the.future@example.com |       |
+      | Username      | E-mail                       |
+      | Madam Shirley | i.see.the.future@example.com |
     Given collections:
       | title             | description                    | state     |
       | E-health          | Supports health-related fields | validated |

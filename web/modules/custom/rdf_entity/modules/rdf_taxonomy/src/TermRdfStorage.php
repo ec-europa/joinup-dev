@@ -35,49 +35,49 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
    *
    * @var array
    */
-  protected $parents = array();
+  protected $parents = [];
 
   /**
    * Array of all loaded term ancestry keyed by ancestor term ID.
    *
    * @var array
    */
-  protected $parentsAll = array();
+  protected $parentsAll = [];
 
   /**
    * Array of child terms keyed by parent term ID.
    *
    * @var array
    */
-  protected $children = array();
+  protected $children = [];
 
   /**
    * Array of term parents keyed by vocabulary ID and child term ID.
    *
    * @var array
    */
-  protected $treeParents = array();
+  protected $treeParents = [];
 
   /**
    * Array of term ancestors keyed by vocabulary ID and parent term ID.
    *
    * @var array
    */
-  protected $treeChildren = array();
+  protected $treeChildren = [];
 
   /**
    * Array of terms in a tree keyed by vocabulary ID and term ID.
    *
    * @var array
    */
-  protected $treeTerms = array();
+  protected $treeTerms = [];
 
   /**
    * Array of loaded trees keyed by a cache id matching tree arguments.
    *
    * @var array
    */
-  protected $trees = array();
+  protected $trees = [];
 
   /**
    * {@inheritdoc}
@@ -120,13 +120,13 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
    */
   public function resetCache(array $ids = NULL) {
     drupal_static_reset('taxonomy_term_count_nodes');
-    $this->parents = array();
-    $this->parentsAll = array();
-    $this->children = array();
-    $this->treeChildren = array();
-    $this->treeParents = array();
-    $this->treeTerms = array();
-    $this->trees = array();
+    $this->parents = [];
+    $this->parentsAll = [];
+    $this->children = [];
+    $this->treeChildren = [];
+    $this->treeParents = [];
+    $this->treeTerms = [];
+    $this->trees = [];
     parent::resetCache($ids);
   }
 
@@ -145,7 +145,7 @@ class TermRdfStorage extends RdfEntitySparqlStorage implements TermStorageInterf
    */
   public function loadParents($tid) {
     if (empty($this->parents[$tid])) {
-      $parents = array();
+      $parents = [];
       $ids = [];
       $query = <<<QUERY
 SELECT ?parents
@@ -170,7 +170,7 @@ QUERY;
    */
   public function loadAllParents($tid) {
     if (!isset($this->parentsAll[$tid])) {
-      $parents = array();
+      $parents = [];
       if ($term = $this->load($tid)) {
         $parents[$term->id()] = $term;
         $terms_to_search[] = $term->id();
@@ -197,7 +197,7 @@ QUERY;
    */
   public function loadChildren($tid, $vid = NULL) {
     if (!isset($this->children[$tid])) {
-      $children = array();
+      $children = [];
       // Get terms whom refer to tid as being a parent.
       $query = <<<QUERY
 SELECT ?children
@@ -242,9 +242,9 @@ QUERY;
         $voc = entity_load('taxonomy_vocabulary', $vid);
         $settings = rdf_entity_get_third_party_property($voc, 'mapping', 'vid', FALSE);
         $concept_schema = array_pop($settings);
-        $this->treeChildren[$vid] = array();
-        $this->treeParents[$vid] = array();
-        $this->treeTerms[$vid] = array();
+        $this->treeChildren[$vid] = [];
+        $this->treeParents[$vid] = [];
+        $this->treeTerms[$vid] = [];
         $query = <<<QUERY
 SELECT DISTINCT ?tid ?label ?parent
 WHERE {
@@ -275,13 +275,13 @@ QUERY;
 
       // Load full entities, if necessary. The entity controller statically
       // caches the results.
-      $term_entities = array();
+      $term_entities = [];
       if ($load_entities) {
         $term_entities = $this->loadMultiple(array_keys($this->treeTerms[$vid]));
       }
 
       $max_depth = (!isset($max_depth)) ? count($this->treeChildren[$vid]) : $max_depth;
-      $tree = array();
+      $tree = [];
 
       // Keeps track of the parents we have to process, the last entry is used
       // for the next processing step.
@@ -356,22 +356,22 @@ QUERY;
   /**
    * {@inheritdoc}
    */
-  public function getNodeTerms(array $nids, array $vocabs = array(), $langcode = NULL) {
+  public function getNodeTerms(array $nids, array $vocabs = [], $langcode = NULL) {
     // @todo Test this.
     $query = db_select('taxonomy_index', 'tn');
-    $query->fields('tn', array('tid'));
+    $query->fields('tn', ['tid']);
     $query->addField('tn', 'nid', 'node_nid');
     $query->condition('tn.nid', $nids, 'IN');
 
-    $results = array();
-    $all_tids = array();
+    $results = [];
+    $all_tids = [];
     foreach ($query->execute() as $term_record) {
       $results[$term_record->node_nid][] = $term_record->tid;
       $all_tids[] = $term_record->tid;
     }
 
     $all_terms = $this->loadMultiple($all_tids);
-    $terms = array();
+    $terms = [];
     foreach ($results as $nid => $tids) {
       foreach ($tids as $tid) {
         $terms[$nid][$tid] = $all_terms[$tid];
@@ -396,13 +396,13 @@ QUERY;
   public function __wakeup() {
     parent::__wakeup();
     // Initialize static caches.
-    $this->parents = array();
-    $this->parentsAll = array();
-    $this->children = array();
-    $this->treeChildren = array();
-    $this->treeParents = array();
-    $this->treeTerms = array();
-    $this->trees = array();
+    $this->parents = [];
+    $this->parentsAll = [];
+    $this->children = [];
+    $this->treeChildren = [];
+    $this->treeParents = [];
+    $this->treeTerms = [];
+    $this->trees = [];
   }
 
 }

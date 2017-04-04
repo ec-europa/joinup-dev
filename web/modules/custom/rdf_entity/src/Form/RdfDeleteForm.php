@@ -19,10 +19,10 @@ class RdfDeleteForm extends ContentEntityConfirmFormBase {
   public function getQuestion() {
     $label = $this->entity->label();
     $graph = $this->entity->get('graph')->first()->getValue()['value'];
-    return $this->t('Are you sure you want to delete entity %name from the graph %graph?', array(
+    return $this->t('Are you sure you want to delete entity %name from the graph %graph?', [
       '%name' => $label,
       '%graph' => $graph,
-    ));
+    ]);
   }
 
   /**
@@ -51,10 +51,10 @@ class RdfDeleteForm extends ContentEntityConfirmFormBase {
     $entity->delete();
 
     \Drupal::logger('rdf_entity')->notice('@type: deleted %title.',
-      array(
+      [
         '@type' => $this->entity->bundle(),
         '%title' => $this->entity->label(),
-      ));
+      ]);
     $form_state->setRedirectUrl(Url::fromRoute('<front>'));
   }
 
