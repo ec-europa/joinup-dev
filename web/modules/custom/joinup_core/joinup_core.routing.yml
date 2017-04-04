@@ -18,6 +18,7 @@ entity.rdf_entity.about_page:
     _title_callback: '\Drupal\joinup_core\Controller\CoreController::aboutPageTitle'
   requirements:
     _entity_access: 'rdf_entity.view'
+    _custom_access: '\Drupal\joinup_core\Controller\CoreController::aboutPageAccess'
   options:
     parameters:
       rdf_entity:

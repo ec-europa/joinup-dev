@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_core\Controller;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -65,6 +66,19 @@ class CoreController extends ControllerBase {
    */
   public function aboutPageTitle(RdfInterface $rdf_entity) {
     return t('About @entity', ['@entity' => $rdf_entity->getName()]);
+  }
+
+  /**
+   * Access check for the rdf entity "about" page.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The rdf entity being checked.
+   *
+   * @return \Drupal\Core\Access\AccessResult
+   *   The access result.
+   */
+  public function aboutPageAccess(RdfInterface $rdf_entity) {
+    return AccessResult::allowedIf(in_array($rdf_entity->bundle(), ['collection']));
   }
 
 }
