@@ -14,8 +14,6 @@ widget:
   config:
     show_numbers: true
     soft_limit: '0'
-    prefix_text: 'Sample prefix'
-    suffix_text: 'Sample suffix'
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
