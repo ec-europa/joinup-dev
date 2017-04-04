@@ -3,6 +3,13 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_subject
+    - field.field.message.contact_form_submission.field_contact_attachment
+    - field.field.message.contact_form_submission.field_contact_email
+    - field.field.message.contact_form_submission.field_contact_first_name
+    - field.field.message.contact_form_submission.field_contact_last_name
+    - field.field.message.contact_form_submission.field_contact_organisation
+    - field.field.message.contact_form_submission.field_contact_subject
+    - field.field.message.contact_form_submission.field_contact_url
     - message.template.contact_form_submission
 id: message.contact_form_submission.mail_subject
 targetEntityType: message
@@ -13,4 +20,11 @@ content:
     weight: 0
     region: content
 hidden:
+  field_contact_attachment: true
+  field_contact_email: true
+  field_contact_first_name: true
+  field_contact_last_name: true
+  field_contact_organisation: true
+  field_contact_subject: true
+  field_contact_url: true
   partial_1: true
