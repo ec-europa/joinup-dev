@@ -76,15 +76,14 @@ class NotificationSenderService {
    *   An array of user IDs to which the messages will be sent.
    */
   public function sendMessageTemplate($template_id, array $values, array $recipient_ids) {
+    // Create the actual message and save it to the db.
+    $values += ['template' => $template_id];
+    $message = Message::create($values);
+    $message->save();
+
     foreach ($recipient_ids as $recipient_id) {
-      // Create the actual message and save it to the db.
-      $values += [
-        'template' => $template_id,
-        'uid' => $recipient_id,
-      ];
-      $message = Message::create($values);
-      $message->save();
       // Send the saved message as an e-mail.
+      $message->setOwnerId($recipient_id);
       $this->messageNotifySender->send($message);
     }
   }
