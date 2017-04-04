@@ -75,7 +75,12 @@
  'host' => '${migration.db.host}',${line.separator}
  'port' => '${migration.db.port}',${line.separator}
  'namespace' => 'Drupal\\Core\\Database\\Driver\\${migration.db.type}',${line.separator}
- 'driver' => '${migration.db.type}',${line.separator}];${line.separator}" />
+ 'driver' => '${migration.db.type}',${line.separator}
+ // We set the timezone to UTC to force MySQL time functions to correctly${line.separator}
+ // convert timestamps into date/time.${line.separator}
+ 'init_commands' => [${line.separator}
+   'set_timezone_to_utc' => &quot;SET time_zone='+00:00';&quot;,${line.separator}
+ ],${line.separator}];${line.separator}" />
         <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.source.root'] = '${migration.source.root}';${line.separator}" />
         <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.mode'] = '${migration.mode}';${line.separator}" />
     </target>
