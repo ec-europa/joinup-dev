@@ -198,12 +198,19 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
    */
   protected function assertMessage($migration_id, $message, $operator = '=') {
     $table = "migrate_message_{$migration_id}";
-    $found = (bool) $this->db->select($table, 'm')
+    $found = $this->db->select($table, 'm')
       ->fields('m')
       ->condition('m.message', $message, $operator)
       ->execute()
       ->fetchAll();
-    $this->assertTrue($found);
+    if ($migration_id === 'document_file') {
+      print_r("$migration_id\n");
+      print_r("$message\n");
+      print_r("$operator\n");
+      print_r(var_export($found, TRUE) . "\n");
+      print_r(var_export($this->db->select($table)->fields($table)->execute()->fetchAll(), TRUE) . "\n");
+    }
+    $this->assertTrue((bool) $found);
   }
 
   /**
