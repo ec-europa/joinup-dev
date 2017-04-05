@@ -44,6 +44,7 @@ Feature: Content notification system
       | subject   | Joinup: user Jerrard Verity updated a News of your collection                                                  |
       | body      | Devyn Queshire,  Jerrard Verity updated the News "Communication tools" in your Communication tools collection. |
 
+    Given all the e-mails have been sent
     When I go to the "Smoke signals pre-conference party" event
     And I click "Edit"
     And I fill in "Location" with "Somewhere with a clean sky"

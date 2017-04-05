@@ -113,21 +113,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * in the scenario.
    *
    * @Given the mail collector cache is empty
+   * @Given all (the )e-mails have been sent
    */
   public function clearMailCollectorCache() {
-    \Drupal::state()->set('system.test_mail_collector', []);
-    \Drupal::state()->resetCache();
-  }
-
-  /**
-   * Clears the collected e-mails.
-   *
-   * This step is useful to test that after a certain action, only the expected
-   * mails are sent.
-   *
-   * @Then all (the )e-mails have been sent
-   */
-  public function clearMailCollector() {
     \Drupal::state()->set('system.test_mail_collector', []);
     \Drupal::state()->resetCache();
   }

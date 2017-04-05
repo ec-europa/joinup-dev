@@ -112,11 +112,13 @@ function joinup_notification_node_update(EntityInterface $entity) {
       continue;
     }
 
+    $values = [
+      'field_message_actor' => $user->id(),
+      'field_message_content' => $group->id(),
+      'field_message_node' => $entity->id(),
+    ];
     foreach ($configuration[$bundle]['node'][$entity->bundle()] as $role_id => $messages) {
-      $sender->send($group, $role_id, $messages, [
-        'field_message_actor' => $user->id(),
-        'field_message_node' => $entity->id(),
-      ]);
+      $sender->sendMessageTemplateToRole($messages, $values, $role_id, $group);
     }
 
   }
