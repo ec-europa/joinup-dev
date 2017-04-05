@@ -15,8 +15,10 @@ Feature: Navigation menu for custom pages
     When I am logged in as a facilitator of the "Rainbow tables" collection
     And I go to the homepage of the "Rainbow tables" collection
     Then the navigation menu of the "Rainbow tables" collection should have 2 visible items
-    And I should see the link "Overview" in the "Left sidebar" region
-    And I should see the link "About" in the "Left sidebar" region
+    And I should see the following collection menu items in the specified order:
+      | text               |
+      | Overview           |
+      | About              |
     # Check that the 'Edit menu' local action is present.
     And I should see the contextual link "Edit menu" in the "Left sidebar" region
     # The 'Add link' local action that is present in the default implementation
