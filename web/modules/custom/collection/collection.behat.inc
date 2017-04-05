@@ -80,7 +80,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     foreach ($table->getHash() as $repeatedElement) {
       $child = $parent[$i];
       \PHPUnit_Framework_Assert::assertEquals(
-        $child->find('css', '.sidebar-menu__link')->getText(),
+        $child->find('css', 'a.sidebar-menu__link')->getText(),
         $repeatedElement['text']
       );
       $i++;
