@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies: {  }
+template: contact_form_submission
+label: 'Contact form submission'
+description: 'Message to the moderators when the contact form is submitted.'
+text:
+  -
+    value: "<p>Joinup - Contact form submission</p>\r\n"
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }
