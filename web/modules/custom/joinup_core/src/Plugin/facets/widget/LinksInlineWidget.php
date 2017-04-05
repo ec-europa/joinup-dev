@@ -4,7 +4,7 @@ namespace Drupal\joinup_core\Plugin\facets\widget;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\facets\FacetInterface;
-use Drupal\facets\Plugin\facets\widget\LinksWidget;
+use Drupal\facets\Widget\WidgetPluginBase;
 
 /**
  * The links widget.
@@ -15,7 +15,7 @@ use Drupal\facets\Plugin\facets\widget\LinksWidget;
  *   description = @Translation("A widget that shows some of the results with prefix and suffix text"),
  * )
  */
-class LinksInlineWidget extends LinksWidget {
+class LinksInlineWidget extends WidgetPluginBase {
 
   /**
    * {@inheritdoc}
