@@ -53,7 +53,8 @@ In order to start a migration we will need to do some preparation:
      ```
    * Mount the S3 Bucket files:
      ```bash
-     $ s3fs joinup2 /path/to/mount/point -o passwd_file=~/.passwd-s3fs -o use_cache=/tmp -o allow_other -o umask=0002
+     $ s3fs joinup2 /path/to/mount/point -o passwd_file=~/.passwd-s3fs \
+       -o use_cache=/tmp -o allow_other -o umask=0002
      ```
      You can use a dedicated directory for cache in `-o use_cache=`.
    * Test the mount. Legacy D6 files should be under `joinupv2.0/` directory:
