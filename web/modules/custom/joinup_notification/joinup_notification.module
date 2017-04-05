@@ -92,7 +92,12 @@ function joinup_notification_node_update(EntityInterface $entity) {
     return;
   }
 
-  $configuration = \Drupal::config('joinup_notification.settings')->get('update_notifications');
+  // The group can be either a collection or a solution, so retrieve the
+  // settings already here instead of doing it inside the loop.
+  $configuration = [
+    'collection' => \Drupal::config('joinup_notification.settings')->get('collection_content_update_notifications'),
+    'solution' => \Drupal::config('joinup_notification.settings')->get('solution_content_update_notifications'),
+  ];
   /** @var \Drupal\joinup_notification\NotificationSenderService $sender */
   $sender = \Drupal::service('joinup_notification.notification_sender');
 
@@ -100,11 +105,11 @@ function joinup_notification_node_update(EntityInterface $entity) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $group */
     $bundle = $group->bundle();
 
-    if (empty($configuration['rdf_entity'][$bundle])) {
+    if (empty($configuration[$bundle]['node'][$entity->bundle()])) {
       continue;
     }
 
-    foreach ($configuration['rdf_entity'][$bundle] as $role_id => $messages) {
+    foreach ($configuration[$bundle]['node'][$entity->bundle()] as $role_id => $messages) {
       $sender->send($group, $role_id, $messages, [
         'field_message_actor' => $user->id(),
         'field_message_node' => $entity->id(),
