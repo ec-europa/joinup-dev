@@ -4,9 +4,9 @@ Feature: Block users
 
   Scenario: A moderator can block a user.
     Given users:
-      | name         | roles          | mail                       |
-      | Mod Murielle | Moderator      | mod.murielle@example.com     |
-      | Liam Lego    |                | liam.lego@example.com     |
+      | Username     | Roles          | E-mail                   |
+      | Mod Murielle | Moderator      | mod.murielle@example.com |
+      | Liam Lego    |                | liam.lego@example.com    |
     # Search user
     And I am logged in as "Mod Murielle"
     Given I am on the homepage

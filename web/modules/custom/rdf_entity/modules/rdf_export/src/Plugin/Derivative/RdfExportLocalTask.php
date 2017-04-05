@@ -50,19 +50,19 @@ class RdfExportLocalTask extends DeriverBase implements ContainerDeriverInterfac
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
-    $this->derivatives = array();
+    $this->derivatives = [];
 
     foreach ($this->entityManager->getDefinitions() as $entity_type_id => $entity_type) {
 
       $has_export_path = $entity_type->hasLinkTemplate('rdf-export');
 
       if ($has_export_path) {
-        $this->derivatives["$entity_type_id.rdf_export_tab"] = array(
+        $this->derivatives["$entity_type_id.rdf_export_tab"] = [
           'route_name' => "entity.$entity_type_id.rdf_export",
           'title' => $this->t('Metadata'),
           'base_route' => "entity.$entity_type_id.canonical",
           'weight' => 100,
-        );
+        ];
       }
     }
 

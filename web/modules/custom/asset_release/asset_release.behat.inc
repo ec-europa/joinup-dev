@@ -142,7 +142,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    */
   protected function createAssetRelease(array $values) {
     if (!empty($values['field_isr_documentation'])) {
-      $values['field_isr_documentation'] = [$this->createFile($values['field_isr_documentation'], $this->getMinkParameter('files_path'))];
+      $values['field_isr_documentation'] = [$this->createFile($values['field_isr_documentation'])->id()];
     }
 
     $values['rid'] = 'asset_release';

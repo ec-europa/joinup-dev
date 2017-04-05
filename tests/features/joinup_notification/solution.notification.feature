@@ -12,7 +12,7 @@ Feature: Solution notification system
       | name  | Jody Buchanan            |
       | email | JodyBuchanan@example.com |
     And users:
-      | name             | mail                        | roles     |
+      | Username         | E-mail                      | Roles     |
       | Benjamin Stevens | BenjaminStevens@example.com |           |
       | Cecelia Kim      | CeceliaKim@example.com      | moderator |
     And the following solutions:
@@ -39,6 +39,11 @@ Feature: Solution notification system
       | recipient | Cecelia Kim                                                                                          |
       | subject   | Joinup - A request for deletion has been made                                                        |
       | body      | The owner of the "The Time of the Child" solution has requested that the solution should be deleted. |
+
+    # We are about to manually delete a solution that was created through the
+    # API. Announce that this doesn't need to be cleaned up automatically any
+    # more at the end of the test.
+    Given the "Some Scent" solution will be deleted manually
 
     # Test deletion email.
     When I am logged in as "Cecelia Kim"

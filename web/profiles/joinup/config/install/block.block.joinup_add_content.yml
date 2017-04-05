@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - joinup
+    - joinup_core
   theme:
     - joinup_theme
 id: joinup_add_content

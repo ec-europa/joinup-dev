@@ -13,16 +13,16 @@ use Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
  * Implements hook_drush_command().
  */
 function rdf_entity_drush_command() {
-  $items = array();
+  $items = [];
 
-  $items['rdf-entity-purge'] = array(
+  $items['rdf-entity-purge'] = [
     'description' => 'Delete the whole index at the Sparql endpoint.',
-    'examples' => array(
+    'examples' => [
       'drush rdf-entity-purge' => dt('Purge the triple store.'),
       'drush rep' => dt('Alias to purge the triple store.'),
-    ),
-    'aliases' => array('rep'),
-  );
+    ],
+    'aliases' => ['rep'],
+  ];
   return $items;
 }
 

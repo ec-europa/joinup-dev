@@ -1,9 +1,8 @@
 <?php
 
-namespace Drupal\Tests\rdf\Kernel;
+namespace Drupal\Tests\rdf_entity\Kernel;
 
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\simpletest\UserCreationTrait;
 use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 
 /**
@@ -12,7 +11,6 @@ use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
  * @group rdf_entity
  */
 class RdfOwnerTest extends JoinupKernelTestBase {
-  use UserCreationTrait;
 
   /**
    * Tests rdf_entity owner functionality.
@@ -20,25 +18,25 @@ class RdfOwnerTest extends JoinupKernelTestBase {
   public function testOwner() {
     $owner = $this->createUser();
     $another_owner = $this->createUser();
-    $this->setCurrentUser($owner);
+    \Drupal::currentUser()->setAccount($owner);
 
     // The 'dummy' bundle does not have the owner mapping. The 'with_owner'
     // does.
-    $not_owned = Rdf::create(array(
+    $not_owned = Rdf::create([
       'rid' => 'dummy',
       'label' => $this->randomMachineName(),
-    ));
+    ]);
     $not_owned->save();
-    $owned = Rdf::create(array(
+    $owned = Rdf::create([
       'rid' => 'with_owner',
       'label' => $this->randomMachineName(),
-    ));
+    ]);
     $owned->save();
-    $ownerless = Rdf::create(array(
+    $ownerless = Rdf::create([
       'rid' => 'with_owner',
       'label' => $this->randomMachineName(),
       'uid' => NULL,
-    ));
+    ]);
     $ownerless->save();
 
     $this->assertNull($not_owned->getOwnerId(), 'The entity with no mapping for uid does not have an owner.');

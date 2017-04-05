@@ -15,7 +15,7 @@ class RdfTaxonomyConfigOverrides implements ConfigFactoryOverrideInterface {
    * {@inheritdoc}
    */
   public function loadOverrides($names) {
-    $overrides = array();
+    $overrides = [];
     if (in_array('views.view.taxonomy_term', $names)) {
       $overrides['views.view.taxonomy_term'] = ['status' => FALSE];
     }

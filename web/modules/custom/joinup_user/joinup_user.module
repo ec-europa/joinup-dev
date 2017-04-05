@@ -59,10 +59,10 @@ function joinup_user_mail($key, &$message, $params) {
   $token_service = \Drupal::token();
   $language_manager = \Drupal::languageManager();
   $langcode = $message['langcode'];
-  $variables = array(
+  $variables = [
     'user' => $params['account'],
     'original' => $params['original'],
-  );
+  ];
 
   $language = \Drupal::languageManager()
     ->getLanguage($params['account']->getPreferredLangcode());
@@ -166,25 +166,25 @@ function joinup_user_form_user_admin_settings_alter(&$form, FormStateInterface $
   $form['#submit'][] = 'joinup_user_form_user_admin_settings_alter_submit';
   $mail_config = \Drupal::config('joinup_user.mail');
   $email_token_help = t('Available variables are: [site:name], [site:url], [user:display-name], [user:account-name], [user:mail], [site:login-url], [site:url-brief], [user:edit-url], [user:one-time-login-url], [user:cancel-url], [user:changes].');
-  $form['email_admin_update'] = array(
+  $form['email_admin_update'] = [
     '#type' => 'details',
     '#title' => t('Account changed by administrator'),
     '#description' => t('Edit the email messages sent to member accounts edited by an administrator.'),
     '#group' => 'email',
-  );
+  ];
   $form['email_admin_update']['#description'] .= ' ' . $email_token_help;
-  $form['email_admin_update']['user_mail_update_account_subject'] = array(
+  $form['email_admin_update']['user_mail_update_account_subject'] = [
     '#type' => 'textfield',
     '#title' => t('Subject'),
     '#default_value' => $mail_config->get('email_admin_update.subject'),
     '#maxlength' => 180,
-  );
-  $form['email_admin_update']['user_mail_update_account_body'] = array(
+  ];
+  $form['email_admin_update']['user_mail_update_account_body'] = [
     '#type' => 'textarea',
     '#title' => t('Body'),
     '#default_value' => $mail_config->get('email_admin_update.body'),
     '#rows' => 15,
-  );
+  ];
 }
 
 /**

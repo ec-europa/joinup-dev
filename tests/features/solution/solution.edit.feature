@@ -12,7 +12,7 @@ Feature: Solution editing.
       | name      | type    |
       | Acme inc. | Company |
     And users:
-      | name         | mail                     |
+      | Username     | E-mail                   |
       | Yancy Burton | yancy.burton@example.com |
     And collection:
       | title | Collection example |

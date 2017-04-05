@@ -135,7 +135,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       global $base_url;
       if (!UrlHelper::isValid($url, TRUE) || !UrlHelper::isExternal($url) || UrlHelper::externalIsLocal($url, $base_url)) {
         // It's a local file to be uploaded.
-        $values['field_ad_access_url'] = $this->uploadFileUrl($url, $this->getMinkParameter('files_path'));
+        $values['field_ad_access_url'] = FileUrlHandler::fileToUrl($this->createFile($url));
       }
     }
 

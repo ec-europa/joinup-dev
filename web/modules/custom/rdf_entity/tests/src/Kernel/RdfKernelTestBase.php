@@ -10,7 +10,7 @@ use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
  *
  * Sets up the SPARQL database connection.
  */
-class RdfTestBase extends EntityKernelTestBase {
+abstract class RdfKernelTestBase extends EntityKernelTestBase {
 
   use RdfDatabaseConnectionTrait;
 
@@ -22,23 +22,14 @@ class RdfTestBase extends EntityKernelTestBase {
   public static $modules = [
     'ds',
     'comment',
-    'field',
-    'system',
   ];
 
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  protected function setUp() {
     parent::setUp();
-
-    if (!$this->setUpSparql()) {
-      $this->markTestSkipped('No Sparql connection available.');
-    }
-    // Test is not compatible with Virtuoso 6.
-    if ($this->detectVirtuoso6()) {
-      $this->markTestSkipped('Skipping: Not running on Virtuoso 6.');
-    }
+    $this->setUpSparql();
 
     $this->installModule('rdf_entity');
     $this->installModule('rdf_draft');
