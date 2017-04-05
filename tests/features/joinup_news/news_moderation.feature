@@ -19,7 +19,7 @@ Feature: News moderation.
     # The complete permission matrix is stored in configuration.
     # @see: modules/custom/joinup_news/config/install/joinup_news.settings.yml.
     Given users:
-      | name          | pass             | mail                              | roles     |
+      | Username      | Password         | E-mail                            | Roles     |
       | Batman        | BatsEverywhere   | adminOfWayneINC@example.com       | moderator |
       | Superman      | PutYourGlassesOn | dailyPlanetEmployee23@example.com |           |
       | Hawkgirl      | IHaveWings       | hawkSounds@example.com            |           |

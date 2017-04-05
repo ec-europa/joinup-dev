@@ -21,8 +21,8 @@ Feature: User registration
 
   Scenario: A moderator can register a user
     Given users:
-      | name            | roles          |
-      | Mr. Moderator   | Moderator     |
+      | Username        | Roles     |
+      | Mr. Moderator   | Moderator |
     And I am logged in as "Mr. Moderator"
     When I am on the homepage
     Then I click "People"
