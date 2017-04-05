@@ -89,7 +89,7 @@ class Solution extends SolutionBase {
     $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Owners.
-    $owner = $this->select('d8_owner', 'o')
+    $owner = $this->select('d8_owner_solution', 'o')
       ->fields('o', ['nid'])
       ->condition('o.solution', $nid)
       ->execute()
@@ -97,7 +97,7 @@ class Solution extends SolutionBase {
     $row->setSourceProperty('owner', $owner);
 
     // Contacts.
-    $contact = $this->select('d8_contact', 'c')
+    $contact = $this->select('d8_contact_solution', 'c')
       ->fields('c', ['nid'])
       ->condition('c.solution', $nid)
       ->execute()
