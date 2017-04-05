@@ -28,7 +28,7 @@ dependencies:
     - datetime
     - ds
     - image
-    - joinup
+    - joinup_core
     - link
     - text
     - user

@@ -8,7 +8,7 @@ Feature: Delete comments
       | logo  | logo.png              |
       | state | validated             |
     And users:
-      | name                 | mail                          |
+      | Username             | E-mail                        |
       | Tim Berners Lee      | tim.berners-lee@example.com   |
       | Vicky visitor        | vicky.visitor@example.com     |
       | Do Re Mi Facilitator | doremifacilitator@example.com |

@@ -2,7 +2,8 @@ langcode: en
 status: true
 dependencies:
   module:
-    - joinup
+    - facets
+    - joinup_core
   theme:
     - joinup_theme
 id: groupheader

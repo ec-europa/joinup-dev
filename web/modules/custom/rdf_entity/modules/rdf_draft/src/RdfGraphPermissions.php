@@ -21,7 +21,7 @@ class RdfGraphPermissions {
    * @see \Drupal\user\PermissionHandlerInterface::getPermissions()
    */
   public function getRdfGraphPermissions() {
-    $perms = array();
+    $perms = [];
     foreach (\Drupal::entityTypeManager()->getDefinitions() as $entity_type_id => $entity_type) {
       $storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
       if ($storage instanceof RdfEntitySparqlStorage) {
@@ -49,16 +49,16 @@ class RdfGraphPermissions {
    */
   protected function buildPermissions(EntityTypeInterface $type, $graph) {
     $type_id = $type->id();
-    $type_params = array(
+    $type_params = [
       '%type_name' => $type->getLabel(),
       '%graph_name' => $graph,
-    );
+    ];
 
-    return array(
-      "view $type_id $graph graph" => array(
+    return [
+      "view $type_id $graph graph" => [
         'title' => $this->t('%type_name: View %graph_name graph', $type_params),
-      ),
-    );
+      ],
+    ];
   }
 
 }

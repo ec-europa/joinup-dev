@@ -9,8 +9,8 @@ Feature: "Discussion page" editing.
   # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2265
   Scenario Outline: Owners and moderators should be able to view the Edit link.
     Given users:
-      | name   |
-      | <user> |
+      | Username |
+      | <user>   |
     And the following collections:
       | title        | description        | state     |
       | <collection> | Sample description | validated |
@@ -34,7 +34,7 @@ Feature: "Discussion page" editing.
 
   Scenario: A solution facilitator can edit his content.
     Given users:
-      | name          |
+      | Username      |
       | Toni Holloway |
     And the following solutions:
       | title                | description        | state     |

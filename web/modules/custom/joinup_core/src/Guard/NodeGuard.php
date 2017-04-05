@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_core\ELibraryCreationOptions;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\joinup_core\WorkflowUserProvider;
 use Drupal\og\MembershipManagerInterface;
@@ -18,21 +19,6 @@ use Drupal\user\RoleInterface;
  * Class NodeGuard.
  */
 abstract class NodeGuard implements GuardInterface {
-
-  /**
-   * Elibrary option defining that only facilitators can create content.
-   */
-  const ELIBRARY_ONLY_FACILITATORS = 0;
-
-  /**
-   * Elibrary option defining that members and facilitators can create content.
-   */
-  const ELIBRARY_MEMBERS_FACILITATORS = 1;
-
-  /**
-   * Elibrary option defining that any registered user can create content.
-   */
-  const ELIBRARY_REGISTERED_USERS = 2;
 
   /**
    * The config factory.
@@ -181,18 +167,18 @@ abstract class NodeGuard implements GuardInterface {
    */
   protected function getElibraryAllowedRoles(EntityInterface $entity) {
     $roles_array = [
-      self::ELIBRARY_ONLY_FACILITATORS => [
+      ELibraryCreationOptions::FACILITATORS => [
         'rdf_entity-collection-facilitator',
         'rdf_entity-solution-facilitator',
         'moderator',
       ],
-      self::ELIBRARY_MEMBERS_FACILITATORS => [
+      ELibraryCreationOptions::MEMBERS => [
         'rdf_entity-collection-facilitator',
         'rdf_entity-solution-facilitator',
         'rdf_entity-collection-member',
         'moderator',
       ],
-      self::ELIBRARY_REGISTERED_USERS => [
+      ELibraryCreationOptions::REGISTERED_USERS => [
         'rdf_entity-collection-facilitator',
         'rdf_entity-solution-facilitator',
         'rdf_entity-collection-member',
@@ -205,7 +191,7 @@ abstract class NodeGuard implements GuardInterface {
     if (empty($parent)) {
       // For security reasons, if no parent is returned, return the strictest
       // option.
-      return $roles_array[self::ELIBRARY_ONLY_FACILITATORS];
+      return $roles_array[ELibraryCreationOptions::FACILITATORS];
     }
 
     $e_library_name = $this->getParentElibraryName($parent);

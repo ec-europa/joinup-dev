@@ -26,6 +26,9 @@ field.widget.settings.current_workflow_state_widget:
     title_display:
       type: string
       label: 'The setting that determines how the field widget title is displayed.'
+    show_for_new_entities:
+      type: boolean
+      label: 'The setting that allows to show the widget on entity creation forms.'
 
 field.widget.settings.state_machine_buttons:
   type: mapping

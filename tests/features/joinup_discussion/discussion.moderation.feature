@@ -6,7 +6,7 @@ Feature: Discussion moderation
 
   Scenario: Publish, request changes, propose, publish again and archive a discussion.
     Given users:
-      | name            |
+      | Username        |
       | Gabe Rogers     |
       | Brigham Salvage |
     And the following collection:
@@ -36,7 +36,8 @@ Feature: Discussion moderation
     And I go to the "Best method to cut logs" discussion
     And I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Discussion Best method to cut logs"
-    And I press "Report"
+    And the current workflow state should be "Validated"
+    When I press "Report"
     # The published version does not change.
     Then I should see the heading "Best method to cut logs"
 
@@ -49,7 +50,8 @@ Feature: Discussion moderation
     When I am logged in as "Brigham Salvage"
     And I go to the "Best method to cut logs" discussion
     And I click "Edit" in the "Entity actions" region
-    And I fill in "Title" with "Best method to cut wood logs"
+    Then the current workflow state should be "In assessment"
+    When I fill in "Title" with "Best method to cut wood logs"
     And I press "Approve report"
     # The published version does not change.
     Then I should see the heading "Best method to cut logs"
@@ -77,7 +79,8 @@ Feature: Discussion moderation
     When I am logged in as "Brigham Salvage"
     And I go to the "Best method to cut Eucalyptus wood logs" discussion
     And I click "Edit" in the "Entity actions" region
-    And I press "Disable"
+    Then the current workflow state should be "Validated"
+    When I press "Disable"
     # The discussion is kept published.
     Then I should see the heading "Best method to cut Eucalyptus wood logs"
     # But no further changes can be done.
@@ -90,7 +93,7 @@ Feature: Discussion moderation
 
   Scenario: Disabling a discussion prevents additional comments to be created.
     Given users:
-      | name          | mail                      |
+      | Username      | E-mail                    |
       | Vince Rome    | vince.rome@example.com    |
       | Lance Rustici | lance.rustici@example.com |
       | Denny Winslow | denny.winslow@example.com |

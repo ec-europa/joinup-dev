@@ -2,7 +2,7 @@ langcode: en
 status: false
 dependencies:
   module:
-    - joinup
+    - facets
   theme:
     - joinup_theme
 id: addcontent
