@@ -62,22 +62,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Given (the following )user:
    */
   public function givenUser(TableNode $user_table) {
-    // Replace the column aliases with the actual field names.
-    $values = $this->translateUserFieldAliases($user_table->getRowsHash());
-
-    // Handle the user profile picture.
-    $this->handleFileFields($values, 'user', 'user');
-
-    // Provide defaults for required fields.
-    if (!isset($values['pass'])) {
-      $values['pass'] = $values['name'];
-    }
-    if (!isset($values['mail'])) {
-      $values['mail'] = $values['name'] . '@example.com';
-    }
-
-    $user = (object) $values;
-    $this->userCreate($user);
+    $this->createUser($user_table->getRowsHash());
   }
 
   /**

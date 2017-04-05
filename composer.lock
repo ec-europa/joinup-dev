@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "34e81ca5021d4033d2157677a87105c8",
+    "content-hash": "ce86cd3f0ededb0813227c582716139e",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -115,16 +115,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.24.7",
+            "version": "3.25.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "f062d7ea2123fe2aefef91da855c10ef8ff3af1c"
+                "reference": "cd362e4dda55d6c3466e60070dad6527f6938d5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f062d7ea2123fe2aefef91da855c10ef8ff3af1c",
-                "reference": "f062d7ea2123fe2aefef91da855c10ef8ff3af1c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/cd362e4dda55d6c3466e60070dad6527f6938d5d",
+                "reference": "cd362e4dda55d6c3466e60070dad6527f6938d5d",
                 "shasum": ""
             },
             "require": {
@@ -191,7 +191,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-03-23T22:17:20+00:00"
+            "time": "2017-03-31T19:42:09+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -757,16 +757,16 @@
         },
         {
             "name": "cweagans/composer-patches",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cweagans/composer-patches.git",
-                "reference": "7cd5c6eb7e68b8f7436ce1a7b9fffa4418bf59c6"
+                "reference": "b3036f23b73570ab5d869e345277786c8eb248a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cweagans/composer-patches/zipball/7cd5c6eb7e68b8f7436ce1a7b9fffa4418bf59c6",
-                "reference": "7cd5c6eb7e68b8f7436ce1a7b9fffa4418bf59c6",
+                "url": "https://api.github.com/repos/cweagans/composer-patches/zipball/b3036f23b73570ab5d869e345277786c8eb248a9",
+                "reference": "b3036f23b73570ab5d869e345277786c8eb248a9",
                 "shasum": ""
             },
             "require": {
@@ -797,7 +797,7 @@
                 }
             ],
             "description": "Provides a way to patch Composer packages.",
-            "time": "2016-12-01T01:19:32+00:00"
+            "time": "2017-03-19T18:18:52+00:00"
         },
         {
             "name": "dflydev/dot-access-configuration",
@@ -2027,17 +2027,17 @@
         },
         {
             "name": "drupal/ds",
-            "version": "3.0.0-alpha1",
+            "version": "3.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/ds",
-                "reference": "8.x-3.0-alpha1"
+                "reference": "8.x-3.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/ds-8.x-3.0-alpha1.zip",
-                "reference": "8.x-3.0-alpha1",
-                "shasum": "786f922e31a0b8fad658d652952116ef7b363284"
+                "url": "https://ftp.drupal.org/files/projects/ds-8.x-3.0-beta1.zip",
+                "reference": "8.x-3.0-beta1",
+                "shasum": "88c84ea15c843d30bd3deb285dd5e7ff819c4a0a"
             },
             "require": {
                 "drupal/core": "^8.3"
@@ -2052,8 +2052,8 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-alpha1",
-                    "datestamp": "1490644382"
+                    "version": "8.x-3.0-beta1",
+                    "datestamp": "1490696214"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2291,80 +2291,44 @@
         },
         {
             "name": "drupal/message",
-            "version": "1.0.0-alpha6",
+            "version": "dev-message-ui",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/message",
-                "reference": "8.x-1.0-alpha6"
+                "url": "https://github.com/pfrenssen/message.git",
+                "reference": "170c02943bb2f14fe853ec7f1619dc19be6aa41d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-alpha6.zip",
-                "reference": "8.x-1.0-alpha6",
-                "shasum": "200a964ff3db621ce25137218912760dc6ea0b3d"
-            },
-            "require": {
-                "drupal/core": "*"
+                "url": "https://api.github.com/repos/pfrenssen/message/zipball/170c02943bb2f14fe853ec7f1619dc19be6aa41d",
+                "reference": "170c02943bb2f14fe853ec7f1619dc19be6aa41d",
+                "shasum": ""
             },
             "require-dev": {
-                "drupal/coder": "^2.0",
-                "drupal/token": "*"
+                "drupal/coder": "^8.2"
             },
             "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-alpha6",
-                    "datestamp": "1487977683"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
             ],
-            "authors": [
-                {
-                    "name": "Grayside",
-                    "homepage": "https://www.drupal.org/user/346868"
-                },
-                {
-                    "name": "RoySegall",
-                    "homepage": "https://www.drupal.org/user/1812910"
-                },
-                {
-                    "name": "amitaibu",
-                    "homepage": "https://www.drupal.org/user/57511"
-                },
-                {
-                    "name": "itamar",
-                    "homepage": "https://www.drupal.org/user/1757910"
-                },
-                {
-                    "name": "jhedstrom",
-                    "homepage": "https://www.drupal.org/user/208732"
-                }
-            ],
             "description": "Message",
-            "homepage": "https://www.drupal.org/project/message",
             "support": {
-                "source": "http://cgit.drupalcode.org/message"
-            }
+                "source": "https://github.com/pfrenssen/message/tree/message-ui"
+            },
+            "time": "2017-03-31T13:23:16+00:00"
         },
         {
             "name": "drupal/message_notify",
-            "version": "1.0.0-alpha4",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/message_notify",
-                "reference": "8.x-1.0-alpha4"
+                "reference": "8.x-1.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/message_notify-8.x-1.0-alpha4.zip",
-                "reference": "8.x-1.0-alpha4",
-                "shasum": "8274460178c0f27ea18aa3d0f30d4f77d12d863f"
+                "url": "https://ftp.drupal.org/files/projects/message_notify-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "085a628bd859b4fb861bb46a8c8a00d668a248ad"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -2376,8 +2340,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4",
-                    "datestamp": "1487977984"
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1490992382"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7898,7 +7862,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_devel",
-                "reference": "6f5be0cdb3c6439f7e11f06f21afa816cbf6e3a3"
+                "reference": "6da1321e168b236ac0e41f719b38aa14f14363d3"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -7909,8 +7873,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc1+8-dev",
-                    "datestamp": "1466497439"
+                    "version": "8.x-1.0+1-dev",
+                    "datestamp": "1490230684"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7948,7 +7912,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
             },
-            "time": "2017-03-22T12:27:34+00:00"
+            "time": "2017-03-28T23:54:52+00:00"
         },
         {
             "name": "drupal/config_update",
@@ -8061,7 +8025,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
             },
-            "time": "2017-03-03T01:18:28+00:00"
+            "time": "2017-03-17 12:16:00"
         },
         {
             "name": "drupal/devel",
@@ -9618,6 +9582,12 @@
     ],
     "aliases": [
         {
+            "alias": "1.0",
+            "alias_normalized": "1.0.0.0",
+            "version": "dev-message-ui",
+            "package": "drupal/message"
+        },
+        {
             "alias": "dev-1.x",
             "alias_normalized": "dev-1.x",
             "version": "dev-ISAICP-2709",
@@ -9634,8 +9604,8 @@
     "stability-flags": {
         "drupal/core": 20,
         "drupal/diff": 5,
-        "drupal/facets": 15,
         "drupal/inline_entity_form": 20,
+        "drupal/message": 20,
         "drupal/og": 20,
         "drupal/og_menu": 20,
         "drupal/persistent_login": 20,
