@@ -519,6 +519,8 @@ function joinup_theme_preprocess_search_api_field__user__field_user_content(&$va
     $markup = t('This user does not have any content yet.');
   }
   $variables['no_results_found'] = [
+    '#prefix' => '<div class="page__content">',
+    '#suffix' => '</div>',
     '#markup' => $markup,
   ];
 }

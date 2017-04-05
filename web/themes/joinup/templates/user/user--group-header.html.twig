@@ -55,7 +55,7 @@
               <span class="stats__text bold">{{ content.field_user_organisation }}</span>
             </div>
           {% endif %}
-          {% if content.field_user_professional_domain %}
+          {% if content.field_user_professional_domain|render %}
             <div class="stats__wrapper">
               <span class="stats__text">{{ 'Domains'|t }}:</span>
               <span class="stats__text bold">{{ content.field_user_professional_domain }}</span>
