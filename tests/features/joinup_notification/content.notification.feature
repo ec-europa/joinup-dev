@@ -6,7 +6,7 @@ Feature: Content notification system
 
   Scenario: Facilitators are notified of changes to content made by moderators.
     Given users:
-      | Name           | E-mail                     | Roles     |
+      | Username       | E-mail                     | Roles     |
       | Devyn Queshire | devyn.queshire@example.com |           |
       | Sylvester Toft | sylvester.toft@example.com |           |
       | Reed Mondy     | reed.mondy@example.com     |           |
