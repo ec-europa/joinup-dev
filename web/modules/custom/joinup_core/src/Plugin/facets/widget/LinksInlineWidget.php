@@ -67,8 +67,9 @@ class LinksInlineWidget extends LinksWidget {
           'url.query_args',
         ],
       ],
+      'children' => $content,
     ];
-    $build['children'] = $content;
+    $build['children']['#theme'] = 'item_list__links_inline';
     $build['children']['#prefix'] = '<span>' . $this->getConfiguration()['prefix_text'] . '</span>';
     $build['children']['#suffix'] = '<span>' . $this->getConfiguration()['suffix_text'] . '</span>';
 
