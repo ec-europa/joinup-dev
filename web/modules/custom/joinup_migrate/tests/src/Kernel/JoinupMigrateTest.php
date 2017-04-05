@@ -242,7 +242,7 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
    */
   protected function countHelper($migration_id, $count, $status = NULL) {
     $table = "migrate_map_{$migration_id}";
-    $query = Database::getConnection()->select($table)->fields($table);
+    $query = $this->db->select($table)->fields($table);
     if ($status !== NULL) {
       $query->condition('source_row_status', $status);
     }
