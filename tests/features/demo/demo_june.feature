@@ -18,7 +18,7 @@ Feature: June 2016 demo
       | Fantastic four | Based on Reed Richard's tower.       | logo.png | yes        |                                                                              | validated |
 
     And users:
-      | name      | pass                 | mail                    | roles     |
+      | Username  | Password             | E-mail                  | Roles     |
       | Stan lee  | cameoineverymovie    | stan.lee@example.com    | moderator |
       | Nick Fury | ihaveasecret         | nick.fury@example.com   |           |
       | Wolverine | smellslikemetalclaws | logan.x.men@example.com |           |

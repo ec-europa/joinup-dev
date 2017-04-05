@@ -11,7 +11,7 @@ Feature: Organic Groups integration
       | Überwaldean Land Eels       | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        | validated |
       | Folk Dance and Song Society | Cats are cool!                             | http://mashable.com/category/cats/     | no     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         | validated |
     And users:
-      | name           |
+      | Username       |
       | Madame Sharn   |
       | Goodie Whemper |
 
@@ -93,9 +93,9 @@ Feature: Organic Groups integration
       | title                 | logo     | banner     | abstract                                   | access url                             | closed | creation date    | description                               | elibrary creation | moderation | policy domain     | owner                | state |
       | Überwaldean Land Eels | logo.png | banner.jpg | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified. | facilitators      | yes        | Supplier exchange | Organisation example | draft |
     And users:
-      | name           | roles |
-      | Madame Sharn   |       |
-      | Goodie Whemper |       |
+      | Username       |
+      | Madame Sharn   |
+      | Goodie Whemper |
     Given I am logged in as a facilitator of the "Überwaldean Land Eels" collection
     When I go to the homepage of the "Überwaldean Land Eels" collection
     Then I should see the link "Edit"

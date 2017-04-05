@@ -9,7 +9,7 @@ Feature: Asset distribution deleting.
       | title                 | description        | state     |
       | Rough valentine's day | Sample description | validated |
     And users:
-      | name       | mail                  |
+      | Username   | E-mail                |
       | Papa Roach | paparoach@example.com |
     And the following solution user memberships:
       | solution              | user       | roles                      |

@@ -4,7 +4,7 @@ Feature: User role management
 
   Scenario: A moderator can assign a role to a user.
     Given users:
-      | name         | roles          | mail                       |
+      | Username     | Roles          | E-mail                     |
       | Rick Rolls   | Moderator      | rick.roles@example.com     |
       | Nibby Noob   |                | nicky.noob@example.com     |
     # Search user

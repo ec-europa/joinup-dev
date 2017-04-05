@@ -13,8 +13,8 @@ Feature: Proposing a collection
   # though you need to log in to do so.
   Scenario: Anonymous user needs to log in before creating a collection
     Given users:
-      | name          | pass  |
-      | Cecil Clapman | claps |
+      | Username      | Password |
+      | Cecil Clapman | claps    |
     Given I am an anonymous user
     When I am on the homepage
     And I click "Propose collection"

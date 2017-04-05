@@ -85,8 +85,8 @@ Feature: "Add custom page" visibility options.
 
   Scenario: Add custom page as a moderator.
     Given users:
-      | name    | roles     |
-      | Falstad | moderator |
+      | Username | Roles     |
+      | Falstad  | moderator |
     And collections:
       | title           | logo      | state     |
       | Open Collective | logo.png  | validated |

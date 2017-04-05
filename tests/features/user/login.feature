@@ -6,8 +6,8 @@ Feature: User login
 
   Scenario: Users can choose to keep their session open when they login.
     Given users:
-      | name           | pass    | mail                       |
-      | Garnett Tyrell | tyrellg | garnett.tyrell@example.com |
+      | Username       | Password | E-mail                     |
+      | Garnett Tyrell | tyrellg  | garnett.tyrell@example.com |
 
     # Login without keeping the session open.
     When I go to the homepage

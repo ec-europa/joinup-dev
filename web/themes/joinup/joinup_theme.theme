@@ -119,6 +119,7 @@ function joinup_theme_preprocess_menu(&$variables) {
     $url = ImageStyle::load('profile_icon')->buildUrl($uri);
     $variables['profile_icon'] = $url;
   }
+  $variables['#cache']['contexts'][] = 'user';
 }
 
 /**
