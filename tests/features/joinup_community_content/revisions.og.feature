@@ -6,7 +6,7 @@ Feature: Revision permissions support in OG
 
   Scenario: Facilitators can access the revision-related pages.
     Given users:
-      | name         | mail                     |
+      | Username     | E-mail                   |
       | Ainslee Hext | ainslee.hext@example.com |
       | Erik Quick   | erik.quick@example.com   |
     And the following collection:
