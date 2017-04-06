@@ -36,7 +36,7 @@ Feature: User profile
   @terms
   Scenario: A moderator can navigate to any users profile and edit it.
     Given users:
-      | Username          | E- mail               | Roles     |
+      | Username          | E-mail                | Roles     |
       | Leonardo Da Vinci | leonardo@example.com  |           |
       | Mighty mod        | moderator@example.com | moderator |
     When I am logged in as "Mighty mod"
@@ -75,7 +75,7 @@ Feature: User profile
 
   Scenario: The user public profile page shows the content he's author of or is member of.
     Given users:
-      | name              | mail                          | first name | family name |
+      | Username          | E-mail                        | First name | Family name |
       | Corwin Robert     | corwin.robert@example.com     |            |             |
       | Anise Edwardson   | anise.edwardson@example.com   |            |             |
       | Jayson Granger    | jayson.granger@example.com    |            |             |
@@ -132,7 +132,7 @@ Feature: User profile
 
   Scenario: The user profile page title should show the full name of the user.
     Given users:
-      | name       | mail                         | first name | family name |
+      | Username   | E-mail                       | First name | Family name |
       | cgarnett67 | callista.garnett@example.com | Callista   | Garnett     |
       | delwin999  | deforest.elwin@example.com   |            |             |
 
