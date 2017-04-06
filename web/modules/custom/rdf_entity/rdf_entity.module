@@ -83,23 +83,25 @@ function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateI
       '#description' => $description,
     ];
 
-    $form['rdf_mapping'][$column]['mapping'] = [
+    $form['rdf_mapping'][$column]['predicate_' . $column] = [
       '#type' => 'url',
       '#title' => t('Mapping'),
       '#weight' => 150,
-      '#default_value' => isset($settings['mapping']) ? $settings['mapping'] : '',
+      '#default_value' => isset($settings['predicate']) ? $settings['predicate'] : '',
     ];
 
-    $form['rdf_mapping'][$column]['format'] = [
+    $form['rdf_mapping'][$column]['format_' . $column] = [
       '#type' => 'select',
-      '#title' => t('Format'),
+      '#title' => t('Value format'),
       '#options' => [
         'literal' => t('Literal'),
         'resource' => t('Rdf resource'),
+        'date' => t('Date/Datetime'),
         'email' => t('Email'),
         'integer' => t('Integer'),
-        'bool' => t('Boolean'),
+        'boolean' => t('Boolean'),
       ],
+      '#empty_value' => 'no_format',
       '#weight' => 151,
       '#default_value' => isset($settings['format']) ? $settings['format'] : '',
     ];
@@ -126,7 +128,8 @@ function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity,
   $schema = $entity->getSchema();
   $data = [];
   foreach ($schema['columns'] as $column => $column_desc) {
-    $data[$column] = $form_state->getValue($column);
+    $data[$column]['predicate'] = $form_state->getValue('predicate_' . $column);
+    $data[$column]['format'] = $form_state->getValue('format_' . $column);
 
   }
   $entity->setThirdPartySetting('rdf_entity', 'mapping', $data);
@@ -233,25 +236,27 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
         '#description' => $base_field->getDescription(),
       ];
 
-      $form['rdf_entity']['rdf_mapping'][$id]['mapping_' . $id . '_' . $column_name] = [
+      $form['rdf_entity']['rdf_mapping'][$id]['predicate_' . $id . '_' . $column_name] = [
         '#type' => 'url',
         '#title' => t('Mapping'),
         '#description' => t('The rdf predicate.'),
         '#weight' => 150,
-        '#default_value' => isset($settings[$column_name]['mapping']) ? $settings[$column_name]['mapping'] : NULL,
+        '#default_value' => isset($settings[$column_name]['predicate']) ? $settings[$column_name]['predicate'] : NULL,
       ];
 
       $form['rdf_entity']['rdf_mapping'][$id]['format_' . $id . '_' . $column_name] = [
         '#type' => 'select',
-        '#title' => t('Format'),
+        '#title' => t('Value format'),
         '#description' => t('The rdf format. Required if format is filled.'),
         '#options' => [
           'literal' => t('Literal'),
           'resource' => t('Rdf resource'),
+          'date' => t('Date/Datetime'),
           'email' => t('Email'),
           'integer' => t('Integer'),
-          'bool' => t('Boolean'),
+          'boolean' => t('Boolean'),
         ],
+        '#empty_value' => '',
         '#weight' => 151,
         '#default_value' => isset($settings[$column_name]['format']) ? $settings[$column_name]['format'] : NULL,
       ];
@@ -277,7 +282,8 @@ function rdf_entity_bundle_config($entity_type, ConfigEntityInterface $entity, a
     }
     $columns = $base_field->getColumns();
     foreach ($columns as $column_name => $column) {
-      $third_party_settings[$id][$column_name] = $form_state->getValue('mapping_' . $id . '_' . $column_name);
+      $third_party_settings[$id][$column_name]['mapping'] = $form_state->getValue('predicate_' . $id . '_' . $column_name);
+      $third_party_settings[$id][$column_name]['format'] = $form_state->getValue('format_' . $id . '_' . $column_name);
     }
   }
   $entity->setThirdPartySetting('rdf_entity', 'mapping', $third_party_settings);

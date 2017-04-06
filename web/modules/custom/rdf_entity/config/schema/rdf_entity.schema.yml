@@ -29,10 +29,14 @@ rdf_entity.rdfentity.*.third_party.rdf_entity:
     mapping:
       type: sequence
       sequence:
-        type: sequence
-        sequence:
-          type: string
-          label: 'Mapping of field properies to their rdf counterpart.'
+        type: mapping
+        mapping:
+          predicate:
+            type: string
+            label: 'Predicate'
+          format:
+            type: string
+            label: 'Value format'
     entity_id_plugin:
       type: string
       label: 'The plugin that generates the entity ID'
