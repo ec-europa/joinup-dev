@@ -6,10 +6,10 @@ label: 'Rdf entity - solution - node delete'
 description: 'Message to solution facilitators when a community content is deleted by a moderator'
 text:
   -
-    value: "<p>Joinup: your [message:field_message_node:entity:content-type:name] \"[message:field_message_content:entity:label]\"&nbsp;was&nbsp;deleted</p>\r\n"
+    value: "<p>Joinup: your [message:field_message_node_bundle:value] \"[message:field_message_node_title:value]\"&nbsp;was&nbsp;deleted</p>\r\n"
     format: content_editor
   -
-    value: "<p>Dear [message:author:display-name],</p>\r\n\r\n<p>your [message:field_message_node:entity:content-type:name] \"[message:field_message_content:entity:label]\" was successfully deleted.</p>\r\n\r\n<p>Kinds regards,</p>\r\n\r\n<p>The Joinup Moderation Team.</p>\r\n"
+    value: "<p>Dear [message:author:display-name],</p>\r\n\r\n<p>your [message:field_message_node_bundle:value] \"[message:field_message_node_title:value]\" was successfully deleted.</p>\r\n\r\n<p>Kinds regards,</p>\r\n\r\n<p>The Joinup Moderation Team.</p>\r\n"
     format: content_editor
 settings:
   'token options':

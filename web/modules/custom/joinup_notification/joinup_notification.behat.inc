@@ -86,6 +86,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // Spaces are also removed.
       // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
       $mail_body = str_replace("\n", ' ', $mail['body']);
+      $mail_body = trim($mail_body);
       // Since the body field has url tokens, we cannot provide a full body text
       // because we don't have the url available. Because of this, we just
       // match partial text.

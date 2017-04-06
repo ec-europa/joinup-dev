@@ -30,6 +30,14 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
     return;
   }
 
+  if ($entity->getEntityTypeId() === 'node') {
+    $values = [
+      'field_message_node_title' => $entity->label(),
+      'field_message_node_bundle' => $entity->bundle(),
+    ];
+    joinup_notification_node_admin_action_notification($entity, 'delete_notifications', $values);
+  }
+
   $entity_type = $entity->getEntityTypeId();
   $bundle = $entity->bundle();
   // The asset distribution rdf entity does not have a workflow so it is
@@ -63,12 +71,21 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_update().
+ * Notification handler for actions taken by moderators on community content.
  *
  * Sends an e-mail to facilitators of collection/solutions when a moderator
- * updates a community content node.
+ * performs an action to a community content node.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The community content entity.
+ * @param string $notification_id
+ *   The id that is used to index the settings.
+ * @param array $values
+ *   Values to be passed to the message entity.
+ *
+ * @see web/modules/custom/joinup_notification/config/install/joinup_notification.settings.yml
  */
-function joinup_notification_node_update(EntityInterface $entity) {
+function joinup_notification_node_admin_action_notification(EntityInterface $entity, $notification_id, array $values = []) {
   $user = \Drupal::currentUser();
 
   // Send this notification only when a moderator triggered it.
@@ -95,31 +112,31 @@ function joinup_notification_node_update(EntityInterface $entity) {
     return;
   }
 
-  // The group can be either a collection or a solution, so retrieve the
-  // settings already here instead of doing it inside the loop.
-  $configuration = [
-    'collection' => \Drupal::config('joinup_notification.settings')->get('collection_content_update_notifications'),
-    'solution' => \Drupal::config('joinup_notification.settings')->get('solution_content_update_notifications'),
-  ];
-  /** @var \Drupal\joinup_notification\NotificationSenderService $sender */
+  $configuration = \Drupal::config('joinup_notification.settings')->get($notification_id);
   $sender = \Drupal::service('joinup_notification.notification_sender');
 
   foreach ($groups['rdf_entity'] as $group) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $group */
-    $bundle = $group->bundle();
-
-    if (empty($configuration[$bundle]['node'][$entity->bundle()])) {
+    if (empty($configuration['node'][$entity->bundle()])) {
       continue;
     }
 
-    $values = [
+    $values += [
       'field_message_actor' => $user->id(),
       'field_message_content' => $group->id(),
-      'field_message_node' => $entity->id(),
     ];
-    foreach ($configuration[$bundle]['node'][$entity->bundle()] as $role_id => $messages) {
+    foreach ($configuration['node'][$entity->bundle()] as $role_id => $messages) {
       $sender->sendMessageTemplateToRole($messages, $values, $role_id, $group);
     }
-
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Sends an e-mail to facilitators of collection/solutions when a moderator
+ * updates a community content node.
+ */
+function joinup_notification_node_update(EntityInterface $entity) {
+  $values = ['field_message_node' => $entity->id()];
+  joinup_notification_node_admin_action_notification($entity, 'content_update_notifications', $values);
 }

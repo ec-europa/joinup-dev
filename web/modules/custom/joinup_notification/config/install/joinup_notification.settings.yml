@@ -14,7 +14,31 @@ delete_notifications:
     asset_distribution:
       rdf_entity-solution-administrator:
         - rdf_entity_distribution_delete
-collection_content_update_notifications:
+  node:
+    custom_page:
+      rdf_entity-collection-facilitator:
+        - rdf_collection_node_delete
+    discussion:
+      rdf_entity-collection-facilitator:
+        - rdf_collection_node_delete
+      rdf_entity-solution-facilitator:
+        - rdf_entity_solution_node_delete
+    document:
+      rdf_entity-collection-facilitator:
+        - rdf_collection_node_delete
+      rdf_entity-solution-facilitator:
+        - rdf_entity_solution_node_delete
+    event:
+      rdf_entity-collection-facilitator:
+        - rdf_collection_node_delete
+      rdf_entity-solution-facilitator:
+        - rdf_entity_solution_node_delete
+    news:
+      rdf_entity-collection-facilitator:
+        - rdf_collection_node_delete
+      rdf_entity-solution-facilitator:
+        - rdf_entity_solution_node_delete
+content_update_notifications:
   node:
     custom_page:
       rdf_entity-collection-facilitator:
@@ -22,26 +46,20 @@ collection_content_update_notifications:
     discussion:
       rdf_entity-collection-facilitator:
         - rdf_collection_node_updated
-    document:
-      rdf_entity-collection-facilitator:
-        - rdf_collection_node_updated
-    event:
-      rdf_entity-collection-facilitator:
-        - rdf_collection_node_updated
-    news:
-      rdf_entity-collection-facilitator:
-        - rdf_collection_node_updated
-solution_content_update_notifications:
-  node:
-    discussion:
       rdf_entity-solution-facilitator:
         - rdf_entity_solution_node_updated
     document:
+      rdf_entity-collection-facilitator:
+        - rdf_collection_node_updated
       rdf_entity-solution-facilitator:
         - rdf_entity_solution_node_updated
     event:
+      rdf_entity-collection-facilitator:
+        - rdf_collection_node_updated
       rdf_entity-solution-facilitator:
         - rdf_entity_solution_node_updated
     news:
+      rdf_entity-collection-facilitator:
+        - rdf_collection_node_updated
       rdf_entity-solution-facilitator:
         - rdf_entity_solution_node_updated

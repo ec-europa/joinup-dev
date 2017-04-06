@@ -4,7 +4,7 @@ Feature: Content notification system
   In order to be up to date with the changes on my content
   I need to be able to receive notification when changes occur.
 
-  Scenario: Facilitators are notified of changes to content made by moderators.
+  Background: Facilitators are notified of changes to content made by moderators.
     Given users:
       | Username       | E-mail                     | Roles     |
       | Devyn Queshire | devyn.queshire@example.com |           |
@@ -32,6 +32,7 @@ Feature: Content notification system
       | Smoke signals pre-conference party | Smoke signals party | A party thrown before the conference. | Smoke signals code standard | 2017-03-31T16:43:13 |
     And all e-mails have been sent
 
+  Scenario: Send emails on content update.
     When I am logged in as "Jerrard Verity"
     And I go to the "Infrared long-range communications" news page
     And I click "Edit"
@@ -55,3 +56,27 @@ Feature: Content notification system
       | recipient | Reed Mondy                                                                                                                     |
       | subject   | Joinup: user Jerrard Verity updated a Event of your solution                                                                   |
       | body      | Dear Reed Mondy,  Jerrard Verity updated the Event "Smoke signals code standard" in your Smoke signals code standard solution. |
+
+  Scenario: Send emails on content delete:
+    Given I am logged in as "Jerrard Verity"
+    When I go to the "Infrared long-range communications" news page
+    And I click "Delete"
+    And I press "Delete"
+    Then 1 e-mail should have been sent
+    And the following email should have been sent:
+      | template  | Message to collection facilitators when a community content is deleted by a moderator                                                       |
+      | recipient | Devyn Queshire                                                                                                                              |
+      | subject   | Joinup: your news "Infrared long-range communications" was deleted                                                                          |
+      | body      | Dear Devyn Queshire,  your news "Infrared long-range communications" was successfully deleted.  Kinds regards,  The Joinup Moderation Team. |
+
+    When I am logged in as "Jerrard Verity"
+    And all the e-mails have been sent
+    When I go to the "Smoke signals pre-conference party" event
+    And I click "Delete"
+    And I press "Delete"
+    Then 2 e-mails should have been sent
+    And the following email should have been sent:
+      | template  | Message to solution facilitators when a community content is deleted by a moderator                                                      |
+      | recipient | Reed Mondy                                                                                                                               |
+      | subject   | Joinup: your event "Smoke signals pre-conference party" was deleted                                                                      |
+      | body      | Dear Reed Mondy,  your event "Smoke signals pre-conference party" was successfully deleted.  Kinds regards,  The Joinup Moderation Team. |
