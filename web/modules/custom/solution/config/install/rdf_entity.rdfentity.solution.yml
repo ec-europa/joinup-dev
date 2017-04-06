@@ -5,9 +5,13 @@ third_party_settings:
   rdf_entity:
     mapping:
       rid:
-        target_id: 'http://www.w3.org/ns/adms#Asset'
+        target_id:
+          predicate: 'http://www.w3.org/ns/adms#Asset'
+          format: resource
       label:
-        value: 'http://purl.org/dc/terms/title'
+        value:
+          predicate: 'http://purl.org/dc/terms/title'
+          format: literal
     graph:
       default: 'http://joinup.eu/solution/published'
       draft: 'http://joinup.eu/solution/draft'

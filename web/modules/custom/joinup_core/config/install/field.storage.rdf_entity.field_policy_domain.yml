@@ -7,7 +7,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://joinup.eu/voc/policy-domain'
+      target_id:
+        predicate: 'http://joinup.eu/voc/policy-domain'
+        format: resource
 id: rdf_entity.field_policy_domain
 field_name: field_policy_domain
 entity_type: rdf_entity

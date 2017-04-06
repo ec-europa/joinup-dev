@@ -7,7 +7,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://joinup.eu/is/workflow_status'
+      value:
+        predicate: 'http://joinup.eu/is/workflow_status'
+        format: literal
 id: rdf_entity.field_is_state
 field_name: field_is_state
 entity_type: rdf_entity

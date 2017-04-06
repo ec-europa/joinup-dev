@@ -5,15 +5,25 @@ third_party_settings:
   rdf_entity:
     mapping:
       rid:
-        target_id: 'http://xmlns.com/foaf/spec/#term_Agent'
+        target_id:
+          predicate: 'http://xmlns.com/foaf/spec/#term_Agent'
+          format: resource
       uid:
-        target_id: 'http://joinup.eu/owner/uid'
+        target_id:
+          predicate: 'http://joinup.eu/owner/uid'
+          format: integer
       label:
-        value: 'http://purl.org/dc/terms/title'
+        value:
+          predicate: 'http://purl.org/dc/terms/title'
+          format: literal
       uuid:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       graph:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
     graph:
       default: 'http://joinup.eu/owner/published'
       draft: 'http://joinup.eu/owner/draft'

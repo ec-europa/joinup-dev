@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://www.w3.org/2002/07/owl#versionInfo'
+      value:
+        predicate: 'http://www.w3.org/2002/07/owl#versionInfo'
+        format: literal
 id: rdf_entity.field_is_version
 field_name: field_is_version
 entity_type: rdf_entity

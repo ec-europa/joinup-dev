@@ -8,25 +8,45 @@ third_party_settings:
   rdf_entity:
     mapping:
       uuid:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       vid:
-        target_id: 'http://joinup.eu/policy-domain'
+        target_id:
+          predicate: 'http://joinup.eu/policy-domain'
+          format: resource
       langcode:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       name:
-        value: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+        value:
+          predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+          format: literal
       description:
-        value: 'http://www.w3.org/2004/02/skos/core#definition'
+        value:
+          predicate: 'http://www.w3.org/2004/02/skos/core#definition'
+          format: literal
       format:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       weight:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       parent:
-        target_id: 'http://www.w3.org/2004/02/skos/core#broaderTransitive'
+        target_id:
+          predicate: 'http://www.w3.org/2004/02/skos/core#broaderTransitive'
+          format: resource
       changed:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       default_langcode:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       path: {  }
     graph:
       default: 'http://policy_domain'

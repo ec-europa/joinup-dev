@@ -79,7 +79,6 @@ config_devel:
   - field.storage.rdf_entity.field_is_issue_tracker
   - field.storage.rdf_entity.field_is_landing_page
   - field.storage.rdf_entity.field_is_language
-  - field.storage.rdf_entity.field_is_latest_release
   - field.storage.rdf_entity.field_is_logo
   - field.storage.rdf_entity.field_is_metrics_page
   - field.storage.rdf_entity.field_is_moderation

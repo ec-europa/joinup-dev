@@ -7,25 +7,45 @@ third_party_settings:
   rdf_entity:
     mapping:
       uuid:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       vid:
-        target_id: 'http://publications.europa.eu/resource/authority/file-type'
+        target_id:
+          predicate: 'http://publications.europa.eu/resource/authority/file-type'
+          format: resource
       langcode:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       name:
-        value: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+        value:
+          predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+          format: literal
       description:
-        value: 'http://www.w3.org/2004/02/skos/core#altLabel'
+        value:
+          predicate: 'http://www.w3.org/2004/02/skos/core#altLabel'
+          format: literal
       format:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       weight:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       parent:
-        target_id: ''
+        target_id:
+          predicate: ''
+          format: ''
       changed:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       default_langcode:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       path: {  }
     graph:
       default: 'http://filetypes-skos'

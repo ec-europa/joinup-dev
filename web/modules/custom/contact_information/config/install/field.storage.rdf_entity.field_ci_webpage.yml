@@ -7,7 +7,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      uri: 'http://www.w3.org/2006/vcard/ns#hasURL'
+      uri:
+        predicate: 'http://www.w3.org/2006/vcard/ns#hasURL'
+        format: literal
       title: ''
       options: ''
 id: rdf_entity.field_ci_webpage

@@ -7,25 +7,45 @@ third_party_settings:
   rdf_entity:
     mapping:
       uuid:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       vid:
-        target_id: 'http://purl.org/adms/status/1.0'
+        target_id:
+          predicate: 'http://purl.org/adms/status/1.0'
+          format: resource
       langcode:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       name:
-        value: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+        value:
+          predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+          format: literal
       description:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       format:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       weight:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       parent:
-        target_id: 'http://www.w3.org/2004/02/skos/core#broader'
+        target_id:
+          predicate: 'http://www.w3.org/2004/02/skos/core#broader'
+          format: resource
       changed:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       default_langcode:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       path: {  }
     graph:
       default: 'http://adms_skos_v1.00'
