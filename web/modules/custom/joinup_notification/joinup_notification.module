@@ -53,7 +53,10 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
   if (empty($configuration[$entity_type][$bundle])) {
     return;
   }
+
+  /** @var \Drupal\joinup_notification\NotificationSenderService $notification_sender */
+  $notification_sender = \Drupal::service('joinup_notification.notification_sender');
   foreach ($configuration[$entity_type][$bundle] as $role_id => $messages) {
-    \Drupal::service('joinup_notification.notification_sender')->send($entity, $role_id, $messages);
+    $notification_sender->sendStateTransitionMessage($entity, $role_id, $messages);
   }
 }

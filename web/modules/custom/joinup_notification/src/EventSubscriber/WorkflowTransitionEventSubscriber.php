@@ -71,7 +71,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     $transition = $workflow->findTransition($event->getFromState()->getId(), $event->getToState()->getId());
 
     foreach ($configuration[$workflow->getGroup()][$transition->getId()] as $role_id => $messages) {
-      $this->notificationSender->send($entity, $role_id, $messages);
+      $this->notificationSender->sendStateTransitionMessage($entity, $role_id, $messages);
     }
   }
 
