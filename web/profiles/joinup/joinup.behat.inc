@@ -12,8 +12,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
-use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
-use Drupal\field\FieldConfigInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
@@ -1017,41 +1015,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $url = ImageStyle::load('profile_icon')->buildUrl($photo->getFileUri());
     $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " login-menu ")]//img[@src="' . $url . '"]';
     $this->assertSession()->elementsCount('xpath', $xpath, 1);
-  }
-
-  /**
-   * Replaces human readable labels with field machine name when creating users.
-   *
-   * @param \Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope $scope
-   *   An object containing the entity properties and fields that are to be used
-   *   for creating the node as properties on the object.
-   *
-   * @BeforeUserCreate
-   */
-  public function massageFieldsBeforeUserCreate(BeforeUserCreateScope $scope) {
-    $user = $scope->getEntity();
-
-    /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $field_definitions */
-    $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions('user', 'user');
-    foreach ($field_definitions as $definition) {
-      // Skip base fields.
-      if (!$definition instanceof FieldConfigInterface) {
-        continue;
-      }
-
-      $field_label = $definition->getLabel();
-      if (!$field_label) {
-        continue;
-      }
-
-      // Replace labels with the real field name.
-      $field_label = strtolower($field_label);
-      $field_name = $definition->getName();
-      if ($field_label !== $field_name && isset($user->{$field_label})) {
-        $user->{$field_name} = $user->{$field_label};
-        unset($user->{$field_label});
-      }
-    }
   }
 
 }
