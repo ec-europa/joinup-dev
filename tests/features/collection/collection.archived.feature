@@ -6,7 +6,7 @@ Feature: Creating content and commenting on archived collection
 
   Background: Check access to the Post comment form
     Given users:
-      | name        | roles     |
+      | Username    | Roles     |
       | Flora Hunt  | moderator |
       | Lee Reeves  |           |
       | Karl Fields |           |
