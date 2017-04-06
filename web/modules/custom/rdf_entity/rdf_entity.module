@@ -75,12 +75,33 @@ function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateI
       }
     }
 
+    $settings = rdf_entity_get_third_party_property($entity, 'mapping', $column);
+
     $form['rdf_mapping'][$column] = [
-      '#type' => 'textfield',
+      '#type' => 'details',
       '#title' => $column,
       '#description' => $description,
+    ];
+
+    $form['rdf_mapping'][$column]['mapping'] = [
+      '#type' => 'url',
+      '#title' => t('Mapping'),
       '#weight' => 150,
-      '#default_value' => rdf_entity_get_third_party_property($entity, 'mapping', $column, FALSE),
+      '#default_value' => isset($settings['mapping']) ? $settings['mapping'] : '',
+    ];
+
+    $form['rdf_mapping'][$column]['format'] = [
+      '#type' => 'select',
+      '#title' => t('Format'),
+      '#options' => [
+        'literal' => t('Literal'),
+        'resource' => t('Rdf resource'),
+        'email' => t('Email'),
+        'integer' => t('Integer'),
+        'bool' => t('Boolean'),
+      ],
+      '#weight' => 151,
+      '#default_value' => isset($settings['format']) ? $settings['format'] : '',
     ];
   }
 
@@ -205,12 +226,34 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
       if (count($columns) > 1) {
         $title .= ' (' . $column_name . ')';
       }
-      $form['rdf_entity']['rdf_mapping']['mapping_' . $id . '_' . $column_name] = [
-        '#type' => 'url',
+
+      $form['rdf_entity']['rdf_mapping'][$id] = [
+        '#type' => 'details',
         '#title' => $title,
         '#description' => $base_field->getDescription(),
+      ];
+
+      $form['rdf_entity']['rdf_mapping'][$id]['mapping_' . $id . '_' . $column_name] = [
+        '#type' => 'url',
+        '#title' => t('Mapping'),
+        '#description' => t('The rdf predicate.'),
         '#weight' => 150,
-        '#default_value' => isset($settings[$column_name]) ? $settings[$column_name] : NULL,
+        '#default_value' => isset($settings[$column_name]['mapping']) ? $settings[$column_name]['mapping'] : NULL,
+      ];
+
+      $form['rdf_entity']['rdf_mapping'][$id]['format_' . $id . '_' . $column_name] = [
+        '#type' => 'select',
+        '#title' => t('Format'),
+        '#description' => t('The rdf format. Required if format is filled.'),
+        '#options' => [
+          'literal' => t('Literal'),
+          'resource' => t('Rdf resource'),
+          'email' => t('Email'),
+          'integer' => t('Integer'),
+          'bool' => t('Boolean'),
+        ],
+        '#weight' => 151,
+        '#default_value' => isset($settings[$column_name]['format']) ? $settings[$column_name]['format'] : NULL,
       ];
     }
   }
