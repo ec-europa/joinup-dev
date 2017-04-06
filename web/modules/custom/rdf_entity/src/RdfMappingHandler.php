@@ -166,13 +166,14 @@ class RdfMappingHandler {
           if (!$field_data) {
             continue;
           }
-          foreach ($field_data as $column => $predicate) {
-            if (empty($predicate)) {
+          foreach ($field_data as $column => $mapping) {
+            if (empty($mapping['predicate'])) {
               continue;
             }
-            $mapping[$entity_type_id][$rdf_bundle_entity->id()][$predicate] = [
+            $mapping[$entity_type_id][$rdf_bundle_entity->id()][$mapping['predicate']] = [
               'field_name' => $id,
               'column' => $column,
+              'format' => $mapping['format'],
             ];
           }
         }
@@ -182,13 +183,14 @@ class RdfMappingHandler {
             continue;
           }
           foreach ($storage_definition->getColumns() as $column => $column_info) {
-            if ($predicate = rdf_entity_get_third_party_property($storage_definition, 'mapping', $column, FALSE)) {
-              if (empty($predicate)) {
+            if ($field_data = rdf_entity_get_third_party_property($storage_definition, 'mapping', $column, FALSE)) {
+              if (empty($field_data['predicate'])) {
                 continue;
               }
-              $mapping[$entity_type_id][$rdf_bundle_entity->id()][$predicate] = [
+              $mapping[$entity_type_id][$rdf_bundle_entity->id()][$field_data['predicate']] = [
                 'column' => $column,
                 'field_name' => $field_name,
+                'format' => $field_data['format'],
                 'storage_definition' => $storage_definition,
               ];
             }
@@ -321,8 +323,8 @@ class RdfMappingHandler {
       }
       foreach ($storage_definition->getColumns() as $column => $column_info) {
         if ($property = rdf_entity_get_third_party_property($storage_definition, 'mapping', $column, FALSE)) {
-          $properties['by_field'][$field_name][$column] = $property;
-          $properties['flat'][$property] = $property;
+          $properties['by_field'][$field_name][$column] = $property['predicate'];
+          $properties['flat'][$property['predicate']] = $property['predicate'];
         }
       }
     }
@@ -332,11 +334,11 @@ class RdfMappingHandler {
         continue;
       }
       foreach ($field_data as $column => $predicate) {
-        if (empty($predicate)) {
+        if (empty($property['predicate'])) {
           continue;
         }
-        $properties['by_field'][$field_name][$column] = $predicate;
-        $properties['flat'][$predicate] = $predicate;
+        $properties['by_field'][$field_name][$column] = $property['predicate'];
+        $properties['flat'][$property['predicate']] = $property['predicate'];
       }
 
     }
