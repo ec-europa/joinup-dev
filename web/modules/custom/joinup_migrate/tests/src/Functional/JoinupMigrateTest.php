@@ -3,6 +3,9 @@
 namespace Drupal\Tests\joinup_migrate\Functional;
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
@@ -61,12 +64,13 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    */
   protected function setUp() {
     $this->setUpSparql();
+    $this->setUpLegacyDb();
 
     parent::setUp();
 
     // Setup the connections to main and SPARQL backends.
-    $this->db = Database::getConnection();
     $this->setUpSparqlForBrowser();
+    $this->db = Database::getConnection();
 
     // Prepare migration environment.
     $this->setUpMigration();
@@ -144,8 +148,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    *   When the legacy site webroot is not specified.
    */
   protected function setUpMigration() {
-    $this->setUpLegacyDb();
-
     // Set the legacy site webroot.
     if (!$legacy_webroot = getenv('SIMPLETEST_LEGACY_WEBROOT')) {
       throw new \Exception('The legacy site webroot is not set. You must provide a SIMPLETEST_LEGACY_WEBROOT environment variable.');
@@ -291,5 +293,124 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
 
     return reset($entities);
   }
+
+  /**
+   * Asserts that an entity reference field refers.
+   *
+   * @param string[] $expected_labels
+   *   The expected entity labels.
+   * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field
+   *   The entity field.
+   *
+   * @throws \InvalidArgumentException
+   *   When the entity type lacks a label key.
+   */
+  protected function assertReferences(array $expected_labels, EntityReferenceFieldItemListInterface $field) {
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = $this->container->get('entity_type.manager');
+    $target_entity_type_id = $field->getFieldDefinition()->getSetting('target_type');
+    $target_entity_type = $entity_type_manager->getDefinition($target_entity_type_id);
+    if (!$target_entity_type->hasKey('label')) {
+      throw new \InvalidArgumentException("Entity type '$target_entity_type_id' doesn't have a label key.");
+    }
+
+    // Build a list of referenced entities labels.
+    $labels = array_map(function (EntityInterface $entity) {
+      return $entity->label();
+    }, $field->referencedEntities());
+
+    sort($expected_labels);
+    sort($labels);
+
+    $this->assertSame($expected_labels, $labels);
+  }
+
+  /**
+   * Asserts that an entity has the expected list of keywords.
+   *
+   * @param string[] $expected_keywords
+   *   A list of expected keywords.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   *
+   * @throws \InvalidArgumentException
+   *   When the entity is missing the 'field_keywords' field.
+   */
+  protected function assertKeywords(array $expected_keywords, ContentEntityInterface $entity) {
+    if (!$entity->hasField('field_keywords')) {
+      throw new \InvalidArgumentException("{$entity->getEntityType()->getLabel()} entity doesn't have a 'field_keywords' field.");
+    }
+
+    $keywords = array_map(function (array $item) {
+      return $item['value'];
+    }, $entity->get('field_keywords')->getValue());
+
+    sort($expected_keywords);
+    sort($keywords);
+
+    $this->assertSame($expected_keywords, $keywords);
+  }
+
+  /**
+   * List of Europe countries.
+   *
+   * Used to test spatial coverage from Drupal 6 'Europe' term.
+   *
+   * @var string[]
+   */
+  protected static $europeCountries = [
+    'Albania',
+    'Andorra',
+    'Austria',
+    'Belarus',
+    'Belgium',
+    'Bosnia and Herzegovina',
+    'Bulgaria',
+    'Croatia',
+    'Cyprus',
+    'Czech Republic',
+    'Denmark',
+    'Estonia',
+    'European Union',
+    'Faroes',
+    'Finland',
+    'France',
+    'Former Yugoslav Republic of Macedonia',
+    'Germany',
+    'Gibraltar',
+    'Gilbert and Ellice Islands',
+    'Greece',
+    'Guernsey',
+    'Hungary',
+    'Iceland',
+    'Ireland',
+    'Italy',
+    'Jersey',
+    'Kosovo',
+    'Latvia',
+    'Liechtenstein',
+    'Lithuania',
+    'Luxembourg',
+    'Malta',
+    'Moldova',
+    'Monaco',
+    'Montenegro',
+    'Netherlands',
+    'Norway',
+    'Poland',
+    'Portugal',
+    'Romania',
+    'Russia',
+    'San Marino',
+    'Serbia',
+    'Slovakia',
+    'Slovenia',
+    'Spain',
+    'Sweden',
+    'Switzerland',
+    'Ukraine',
+    'United Kingdom',
+    'Vatican City',
+  ];
 
 }
