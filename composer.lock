@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ade24d2719527383b23bd7dcf53c5d9",
+    "content-hash": "091deadc9599c8a948b2c4dc7c3c5455",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2153,66 +2153,31 @@
         },
         {
             "name": "drupal/message",
-            "version": "1.0.0-beta1",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/message",
-                "reference": "8.x-1.0-beta1"
+                "url": "https://github.com/Gizra/message.git",
+                "reference": "7d4c6039adae8afc09d37bc6be60709a3caa2e26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "092d3ec801cdf138c2e71b891794ce3e17ddd836"
-            },
-            "require": {
-                "drupal/core": "*"
+                "url": "https://api.github.com/repos/Gizra/message/zipball/7d4c6039adae8afc09d37bc6be60709a3caa2e26",
+                "reference": "7d4c6039adae8afc09d37bc6be60709a3caa2e26",
+                "shasum": ""
             },
             "require-dev": {
-                "drupal/coder": "^2.0",
-                "drupal/token": "*"
+                "drupal/coder": "^8.2"
             },
             "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1490916182"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
             ],
-            "authors": [
-                {
-                    "name": "Grayside",
-                    "homepage": "https://www.drupal.org/user/346868"
-                },
-                {
-                    "name": "RoySegall",
-                    "homepage": "https://www.drupal.org/user/1812910"
-                },
-                {
-                    "name": "amitaibu",
-                    "homepage": "https://www.drupal.org/user/57511"
-                },
-                {
-                    "name": "itamar",
-                    "homepage": "https://www.drupal.org/user/1757910"
-                },
-                {
-                    "name": "jhedstrom",
-                    "homepage": "https://www.drupal.org/user/208732"
-                }
-            ],
             "description": "Message",
-            "homepage": "https://www.drupal.org/project/message",
             "support": {
-                "source": "http://cgit.drupalcode.org/message"
-            }
+                "source": "https://github.com/Gizra/message/tree/8.x-1.x",
+                "issues": "https://github.com/Gizra/message/issues"
+            },
+            "time": "2017-04-03 16:46:18"
         },
         {
             "name": "drupal/message_notify",
@@ -7442,7 +7407,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-02-06T08:22:23+00:00"
+            "time": "2017-02-06 08:22:23"
         },
         {
             "name": "behat/transliterator",
@@ -7694,7 +7659,8 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            }
+            },
+            "time": "2017-03-28 23:54:52"
         },
         {
             "name": "drupal/config_update",
@@ -7806,7 +7772,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-03-17 12:16:00"
         },
         {
             "name": "drupal/devel",
@@ -8014,7 +7981,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-04T05:33:31+00:00"
+            "time": "2017-04-04 05:33:31"
         },
         {
             "name": "fabpot/goutte",
@@ -9363,6 +9330,12 @@
     ],
     "aliases": [
         {
+            "alias": "1.0",
+            "alias_normalized": "1.0.0.0",
+            "version": "dev-8.x-1.x",
+            "package": "drupal/message"
+        },
+        {
             "alias": "dev-1.x",
             "alias_normalized": "dev-1.x",
             "version": "dev-ISAICP-2709",
@@ -9379,6 +9352,7 @@
     "stability-flags": {
         "drupal/core": 20,
         "drupal/inline_entity_form": 20,
+        "drupal/message": 20,
         "drupal/og": 20,
         "drupal/og_menu": 15,
         "drupal/persistent_login": 20,
