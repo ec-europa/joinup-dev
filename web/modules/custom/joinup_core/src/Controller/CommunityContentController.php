@@ -85,6 +85,12 @@ abstract class CommunityContentController extends ControllerBase {
     if (!in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
       return AccessResult::forbidden();
     }
+
+    // If the collection is archived, content creation is not allowed.
+    if ($rdf_entity->bundle() === 'collection' && $rdf_entity->field_ar_state->first()->value === 'archived') {
+      return AccessResult::forbidden();
+    }
+
     $content = $this->createContentEntity($rdf_entity);
     return $this->workflowAccessControlHanlder->entityAccess($content, 'create');
   }

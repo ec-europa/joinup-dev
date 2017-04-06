@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
 
@@ -138,6 +139,19 @@ class NodeWorkflowAccessControlHandler {
       case 'delete':
         return $this->entityDeleteAccess($entity, $account);
 
+      case 'post comments':
+        $parent_state = $this->relationManager->getParentState($entity);
+        // Commenting on content of an archived group is not allowed.
+        if ($parent_state === 'archived') {
+          return AccessResult::forbidden();
+        }
+        else {
+          $parent = $this->relationManager->getParent($entity);
+          $membership = $this->membershipManager->getMembership($parent, $account);
+          if ($membership instanceof OgMembership) {
+            AccessResult::allowedIf($membership->hasPermission($operation));
+          }
+        }
     }
 
     return AccessResult::neutral();
