@@ -11,9 +11,6 @@ use Drupal\file_url\FileUrlHandler;
 $this->assertTotalCount('document', 7);
 $this->assertSuccessCount('document', 7);
 
-// Expected logged messages.
-$this->assertMessage('document_file', "File '%" . $this->db->escapeLike("/sites/default/files/e-government_action_plan_2016-2020_-_opinion_of_the_european_committee_of_the_regions_-_martin_andreasson.pdf' does not exist"), 'LIKE');
-
 // Imported content check.
 /* @var \Drupal\node\NodeInterface $document */
 $document = $this->loadEntityByLabel('node', 'BAA');
@@ -121,6 +118,8 @@ $this->assertEquals(1474971682, $document->created->value);
 $this->assertEquals(1474971682, $document->changed->value);
 $this->assertGreaterThan(1, $document->uid->target_id);
 $this->assertEquals('2016-09-27T00:00:00', $document->field_document_publication_date->value);
+$file = FileUrlHandler::urlToFile($document->field_file->target_id);
+$this->assertEquals('public://document/2016-09/e-government_action_plan_2016-2020_-_opinion_of_the_european_committee_of_the_regions_-_martin_andreasson.pdf', $file->getFileUri());
 $this->assertStringEndsWith('took place on 20 September 2016 in Brussels.</span></p>', $document->body->value);
 $terms = array_map(function (array $item) {
   return $item['value'];

@@ -1,27 +1,32 @@
 <?php
 
-namespace Drupal\Tests\joinup_migrate\Kernel;
+namespace Drupal\Tests\joinup_migrate\Functional;
 
-use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Database\Database;
-use Drupal\Core\Site\Settings;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
+use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 
 /**
  * Tests Joinup migration.
  *
- * Using KernelTestBase instead of BrowserTestBase, with 'joinup' profile,
- * because this is faster.
- *
  * @group joinup
  */
-class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterface {
+class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterface {
 
   use RdfDatabaseConnectionTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $profile = 'joinup';
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static $modules = ['joinup_migrate'];
 
   /**
    * Migration messages collector.
@@ -55,17 +60,16 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
    * {@inheritdoc}
    */
   protected function setUp() {
-    parent::setUp();
-
-    // Setup the connections to main, legacy DB and SPARQL backend.
-    $this->db = Database::getConnection();
-    $this->setUpLegacyDb();
     $this->setUpSparql();
 
-    // Install modules from the 'joinup' profile.
-    $this->installModules();
+    parent::setUp();
 
-    $this->manager = $this->container->get('plugin.manager.migration');
+    // Setup the connections to main and SPARQL backends.
+    $this->db = Database::getConnection();
+    $this->setUpSparqlForBrowser();
+
+    // Prepare migration environment.
+    $this->setUpMigration();
 
     // Run test migrations.
     $this->runMigrations();
@@ -87,25 +91,12 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
     foreach (file_scan_directory(__DIR__ . '/assert', '|\.php$|') as $file) {
       require __DIR__ . '/assert/' . $file->filename;
     }
-
-    // Uninstalling 'joinup_migrate' cleans-up the created tables and views.
-    \Drupal::service('module_installer')->uninstall(['joinup_migrate']);
   }
 
   /**
    * Runs all available migrations.
    */
   protected function runMigrations() {
-    $settings = Settings::getAll();
-    // Ensure we're always in testing mode.
-    $settings['joinup_migrate.mode'] = 'test';
-    // Set the legacy site webroot.
-    if (!$legacy_webroot = getenv('SIMPLETEST_LEGACY_WEBROOT')) {
-      throw new \Exception('The legacy site webroot is not set. You must provide a SIMPLETEST_LEGACY_WEBROOT environment variable.');
-    }
-    $settings['joinup_migrate.source.root'] = $legacy_webroot;
-    new Settings($settings);
-
     foreach ($this->manager->createInstances([]) as $id => $migration) {
       // Force running the migration, even the prior migrations were incomplete.
       $migration->set('requirements', []);
@@ -127,36 +118,7 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
   }
 
   /**
-   * Install all needed modules.
-   */
-  protected function installModules() {
-    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
-    $module_installer = $this->container->get('module_installer');
-
-    // Ensure that system.module is installed first.
-    drupal_get_filename('module', 'system', 'core/modules/system/system.info.yml');
-    drupal_get_filename('profile', 'joinup', 'profiles/joinup/joinup.info.yml');
-    drupal_install_system(['parameters' => ['profile' => 'joinup', 'langcode' => 'en']]);
-
-    // Install the profile dependencies.
-    $profile_info = Yaml::decode(file_get_contents($this->getDrupalRoot() . '/profiles/joinup/joinup.info.yml'));
-    $modules = $profile_info['dependencies'];
-    // Finally, add the migrate module.
-    $modules[] = 'joinup_migrate';
-    $module_installer->install($modules);
-
-    // Configuration from profile, like blocks, depend on themes.
-    $themes = $profile_info['themes'];
-    $this->container->get('theme_handler')->install($themes);
-    $this->container->get('theme.manager')->resetActiveTheme();
-
-    // Install the profile. Should be added to the list first.
-    $this->container->get('module_handler')->addProfile('joinup', 'profiles/joinup');
-    $module_installer->install(['joinup'], FALSE);
-  }
-
-  /**
-   * Creates a connection to legacy Drupal 6 database.
+   * Creates a connection to the legacy databases.
    *
    * @throws \Exception
    *   When environment variable SIMPLETEST_LEGACY_DB is not defined.
@@ -165,7 +127,7 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
     if (!$db_url = getenv('SIMPLETEST_LEGACY_DB')) {
       throw new \Exception('No migrate database connection. You must provide a SIMPLETEST_LEGACY_DB environment variable.');
     }
-    $database = Database::convertDbUrlToConnectionInfo($db_url, $this->root);
+    $database = Database::convertDbUrlToConnectionInfo($db_url, dirname(dirname(__FILE__)));
     // We set the timezone to UTC to force MySQL time functions to correctly
     // convert timestamps into date/time.
     $database['init_commands'] = [
@@ -176,10 +138,48 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
   }
 
   /**
+   * Prepares the environment to run the migrations.
+   *
+   * @throws \Exception
+   *   When the legacy site webroot is not specified.
+   */
+  protected function setUpMigration() {
+    $this->setUpLegacyDb();
+
+    // Set the legacy site webroot.
+    if (!$legacy_webroot = getenv('SIMPLETEST_LEGACY_WEBROOT')) {
+      throw new \Exception('The legacy site webroot is not set. You must provide a SIMPLETEST_LEGACY_WEBROOT environment variable.');
+    }
+
+    // Ensure settings.php settings.
+    $settings['settings'] = [
+      'joinup_migrate.mode' => (object) [
+        'value' => 'test',
+        'required' => TRUE,
+      ],
+      'joinup_migrate.source.root' => (object) [
+        'value' => $legacy_webroot,
+        'required' => TRUE,
+      ],
+    ];
+
+    $settings_file = \Drupal::service('site.path') . '/settings.php';
+
+    // Settings file is readonly at the moment.
+    chmod($settings_file, 0666);
+    drupal_rewrite_settings($settings, $settings_file);
+    // Restore original permissions to the settings file.
+    chmod($settings_file, 0444);
+
+    $this->manager = $this->container->get('plugin.manager.migration');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
     Database::removeConnection('migrate');
+    $this->db = NULL;
     $this->legacyDb = NULL;
     $this->manager = NULL;
     unset($this->messages);
@@ -198,19 +198,12 @@ class JoinupMigrateTest extends KernelTestBase implements MigrateMessageInterfac
    */
   protected function assertMessage($migration_id, $message, $operator = '=') {
     $table = "migrate_message_{$migration_id}";
-    $found = $this->db->select($table, 'm')
+    $found = (bool) $this->db->select($table, 'm')
       ->fields('m')
       ->condition('m.message', $message, $operator)
       ->execute()
       ->fetchAll();
-    if ($migration_id === 'document_file') {
-      print_r("$migration_id\n");
-      print_r("$message\n");
-      print_r("$operator\n");
-      print_r(var_export($found, TRUE) . "\n");
-      print_r(var_export($this->db->select($table)->fields($table)->execute()->fetchAll(), TRUE) . "\n");
-    }
-    $this->assertTrue((bool) $found);
+    $this->assertTrue($found);
   }
 
   /**
