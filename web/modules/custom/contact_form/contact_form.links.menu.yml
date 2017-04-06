@@ -1,0 +1,5 @@
+contact_form.contact:
+  title: 'Contact'
+  weight: 0
+  url: 'internal:/contact'
+  menu_name: footer

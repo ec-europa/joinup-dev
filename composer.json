@@ -13,10 +13,10 @@
         "drupal/core": "8.3.x-dev#076f41fa03bca938b4ccbed21c0289a514336863",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^3.0",
-        "drupal/facets": "~1.0@alpha",
+        "drupal/facets": "1.0-alpha7",
         "drupal/field_group": "~1.0-rc6",
         "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
-        "drupal/message": "~1.0",
+        "drupal/message": "dev-message-ui as 1.0",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_report": "~1.0-alpha2",
@@ -138,6 +138,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/ec-europa/og.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/pfrenssen/message.git"
         },
         {
             "type": "composer",

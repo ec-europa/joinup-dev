@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\message\Entity\Message;
+use Drupal\message\MessageInterface;
 use Drupal\message_notify\MessageNotifier;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\OgMembershipInterface;
@@ -66,41 +67,64 @@ class NotificationSenderService {
   }
 
   /**
-   * Sends notifications to users with the passed role.
+   * Sends a message to a list of recipients.
+   *
+   * @param \Drupal\message\MessageInterface $message
+   *   The message to send.
+   * @param array $recipient_ids
+   *   A list of user IDs that should be notified via e-mail.
+   */
+  public function sendMessage(MessageInterface $message, array $recipient_ids) {
+    foreach ($recipient_ids as $recipient_id) {
+      $message->setOwnerId($recipient_id);
+      $this->messageNotifySender->send($message, ['save_on_success' => FALSE]);
+    }
+  }
+
+  /**
+   * Creates a message with the given template and sends it to the recipients.
+   *
+   * @param string $template_id
+   *   The template ID.
+   * @param array $values
+   *   The values to use in the template.
+   * @param array $recipient_ids
+   *   An array of user IDs to which the messages will be sent.
+   */
+  public function sendMessageTemplate($template_id, array $values, array $recipient_ids) {
+    // Create the actual message and save it to the database.
+    $values += ['template' => $template_id];
+    $message = Message::create($values);
+    $message->save();
+
+    $this->sendMessage($message, $recipient_ids);
+  }
+
+  /**
+   * Sends notifications about a state transition to users with the passed role.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The state change event.
    * @param string $role_id
    *   The id of the role. The role can be site-wide or organic group.
-   * @param array $message_ids
-   *   An array of Message template ids.
+   * @param array $template_ids
+   *   An array of Message template IDs.
    *
    * @throws \Drupal\message_notify\Exception\MessageNotifyException
    *
    * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
    */
-  public function send(EntityInterface $entity, $role_id, array $message_ids) {
+  public function sendStateTransitionMessage(EntityInterface $entity, $role_id, array $template_ids) {
     $role = Role::load($role_id);
     if (!empty($role)) {
-      $recipients = $this->getRecipientsByRole($role_id);
+      $recipient_ids = $this->getRecipientIdsByRole($role_id);
     }
     else {
-      $recipients = $this->getRecipientsByOgRole($entity, $role_id);
+      $recipient_ids = $this->getRecipientIdsByOgRole($entity, $role_id);
     }
-
-    /** @var \Drupal\og\Entity\OgMembership $membership */
-    foreach ($recipients as $user_id) {
-      foreach ($message_ids as $message_id) {
-        // Create the actual message and save it to the db.
-        $message = Message::create([
-          'template' => $message_id,
-          'uid' => $user_id,
-          'field_message_content' => $entity->id(),
-        ]);
-        $message->save();
-        // Send the saved message as an e-mail.
-        $this->messageNotifySender->send($message, [], 'email');
-      }
+    foreach ($template_ids as $template_id) {
+      $values = ['field_message_content' => $entity->id()];
+      $this->sendMessageTemplate($template_id, $values, $recipient_ids);
     }
   }
 
@@ -113,7 +137,7 @@ class NotificationSenderService {
    * @return array
    *   An array of user ids.
    */
-  protected function getRecipientsByRole($role_id) {
+  protected function getRecipientIdsByRole($role_id) {
     return $this->entityTypeManager->getStorage('user')->getQuery()
       ->condition('status', 1)
       ->condition('roles', $role_id)
@@ -131,7 +155,7 @@ class NotificationSenderService {
    * @return array
    *   An array of user ids.
    */
-  protected function getRecipientsByOgRole(EntityInterface $entity, $role_id) {
+  protected function getRecipientIdsByOgRole(EntityInterface $entity, $role_id) {
     if (!$this->groupTypeManager->isGroup($entity->getEntityTypeId(), $entity->bundle())) {
       $entity = $this->relationManager->getParent($entity);
     }
