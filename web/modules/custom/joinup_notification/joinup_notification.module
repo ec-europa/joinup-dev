@@ -32,8 +32,8 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
 
   if ($entity->getEntityTypeId() === 'node') {
     $values = [
-      'field_message_node_title' => $entity->label(),
-      'field_message_node_bundle' => $entity->bundle(),
+      'field_message_entity_title' => $entity->label(),
+      'field_message_entity_bundle' => $entity->bundle(),
     ];
     joinup_notification_node_admin_action_notification($entity, 'delete_notifications', $values);
   }
