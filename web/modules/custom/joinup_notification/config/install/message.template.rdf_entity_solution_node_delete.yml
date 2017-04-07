@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: rdf_entity_solution_node_delete
+label: 'Rdf entity - solution - node delete'
+description: 'Message to solution facilitators when a community content is deleted by a moderator'
+text:
+  -
+    value: "<p>Joinup: your [message:field_message_entity_bundle:value] \"[message:field_message_entity_title:value]\"&nbsp;was&nbsp;deleted</p>\r\n"
+    format: content_editor
+  -
+    value: "<p>Dear [message:author:display-name],</p>\r\n\r\n<p>your [message:field_message_entity_bundle:value] \"[message:field_message_entity_title:value]\" was successfully deleted.</p>\r\n\r\n<p>Kinds regards,</p>\r\n\r\n<p>The Joinup Moderation Team.</p>\r\n"
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }

@@ -16,6 +16,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
+use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 
 /**
@@ -130,7 +131,7 @@ function joinup_core_entity_graph_access(EntityInterface $entity, $operation, Ac
  */
 function joinup_core_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
   // @todo: when all bundles are in, remove the first check.
-  if (!in_array($entity->bundle(), ['document', 'discussion', 'news'])) {
+  if (!in_array($entity->bundle(), ['document', 'discussion', 'news', 'event'])) {
     return AccessResult::neutral();
   }
   return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($entity, $operation, $account);
@@ -237,6 +238,15 @@ function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id
     if (strstr($key, 'rdf_entity-' . $entity->getType()) === FALSE) {
       unset($form['header']['og_membership_bulk_form']['action']['#options'][$key]);
     }
+  }
+}
+
+/**
+ * Implements hook_node_links_alter().
+ */
+function joinup_core_node_links_alter(array &$links, NodeInterface $entity, array &$context) {
+  if (isset($links['comment__field_comments']['#links']['comment-add'])) {
+    unset($links['comment__field_comments']['#links']['comment-add']);
   }
 }
 

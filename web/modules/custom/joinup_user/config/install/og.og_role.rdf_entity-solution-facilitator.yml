@@ -34,6 +34,7 @@ permissions:
   - 'update group'
   - 'update own asset_distribution rdf_entity'
   - 'update own asset_release rdf_entity'
+  - 'view all revisions'
   - 'view any unpublished content'
   - 'view rdf entity'
   - 'view rdf_entity default graph'

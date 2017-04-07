@@ -11,6 +11,7 @@
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/console": "~1.0",
         "drupal/core": "8.3.x-dev#076f41fa03bca938b4ccbed21c0289a514336863",
+        "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^3.0",
         "drupal/facets": "1.0-alpha7",
