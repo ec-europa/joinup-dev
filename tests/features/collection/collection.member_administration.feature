@@ -12,7 +12,7 @@ Feature: Collection membership administration
       | name  | Princeton-Plainsboro Teaching Hospital |
       | email | info@princeton-plainsboro.us           |
     And users:
-      | name          | roles |
+      | Username      | Roles |
       # Authenticated user.
       | Lisa Cuddy    |       |
       | Gregory House |       |

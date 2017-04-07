@@ -1,0 +1,100 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.contact_form_submission.field_contact_attachment
+    - field.field.message.contact_form_submission.field_contact_category
+    - field.field.message.contact_form_submission.field_contact_email
+    - field.field.message.contact_form_submission.field_contact_first_name
+    - field.field.message.contact_form_submission.field_contact_last_name
+    - field.field.message.contact_form_submission.field_contact_message
+    - field.field.message.contact_form_submission.field_contact_organisation
+    - field.field.message.contact_form_submission.field_contact_subject
+    - field.field.message.contact_form_submission.field_contact_url
+    - message.template.contact_form_submission
+  module:
+    - file
+    - link
+    - options
+    - text
+id: message.contact_form_submission.default
+targetEntityType: message
+bundle: contact_form_submission
+mode: default
+content:
+  field_contact_attachment:
+    weight: 9
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  field_contact_category:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_contact_email:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_contact_first_name:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_contact_last_name:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_contact_message:
+    weight: 8
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_contact_organisation:
+    weight: 3
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_contact_subject:
+    weight: 7
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_contact_url:
+    weight: 6
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+hidden: {  }

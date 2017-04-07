@@ -50,6 +50,11 @@ class SolutionController extends ControllerBase {
    *   The access result object.
    */
   public function createSolutionAccess(RdfInterface $rdf_entity) {
+    // If the collection is archived, content creation is not allowed.
+    if ($rdf_entity->bundle() === 'collection' && $rdf_entity->field_ar_state->first()->value === 'archived') {
+      return AccessResult::forbidden();
+    }
+
     $user = $this->currentUser();
     if (empty($rdf_entity) && !$user->isAnonymous()) {
       return AccessResult::neutral();

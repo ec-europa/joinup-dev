@@ -5,6 +5,7 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Database\Database;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
+use Drupal\migrate\Row;
 
 /**
  * Prepares the collection migration.
@@ -53,7 +54,6 @@ class Prepare extends SourcePluginBase {
    * {@inheritdoc}
    */
   public function initializeIterator() {
-    $map = $this->migration->getIdMap();
     $publisher = [
       'asset_release' => ['content_field_asset_publisher', 'field_asset_publisher_nid'],
       'repository' => ['content_field_repository_publisher', 'field_repository_publisher_nid'],
@@ -93,7 +93,7 @@ class Prepare extends SourcePluginBase {
 
     $query->leftJoin('node', 'n', 'm.nid = n.nid');
 
-    $collections = [];
+    $collections = $node_collections = [];
     foreach ($query->execute()->fetchAll() as $row) {
       $collection = $row['collection'];
       if (!isset($collections[$collection])) {
@@ -124,9 +124,10 @@ class Prepare extends SourcePluginBase {
       // Collections inheriting values from 'community' or 'repository'.
       else {
         if (in_array($row['type'], ['community', 'repository'])) {
-          if (isset($collections[$collection]['nid'])) {
-            $map->saveMessage(['collection' => $collection], "On collection '$collection' nid {$row['nid']} ({$row['type']}) is overriding existing value {$collections[$collection]['nid']} ({$collections[$collection]['type']}).");
+          if (isset($node_collections[$collection])) {
+            $collections[$collection]['messages'][] = "Collection '$collection' (nid {$row['nid']}, type {$row['type']}) is overriding existing value created by nid {$collections[$collection]['nid']} ({$collections[$collection]['type']}).";
           }
+          $node_collections[$collection] = $row['nid'];
           $collections[$collection]['nid'] = $row['nid'];
           $collections[$collection]['type'] = $row['type'];
 
@@ -228,12 +229,29 @@ class Prepare extends SourcePluginBase {
       // 'repository' but not containing any 'community' or 'repository'. Such
       // cases should not be migrated and the error should be logged.
       if (!isset($data['nid'])) {
-        $map->saveMessage(['collection' => $collection], "Collection '$collection' should inherit data from D6 but has no 'community' or 'repository' records defined.");
+        $collections[$collection]['messages'][] = "Collection '$collection' should inherit data from D6 but has no 'community' or 'repository' records defined.";
         unset($collections[$collection]);
       }
     }
 
     return new \ArrayIterator($collections);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function prepareRow(Row $row) {
+    $collection = $row->getSourceProperty('collection');
+
+    // Log messages collected during iteration.
+    if ($messages = $row->getSourceProperty('messages')) {
+      foreach ($messages as $message) {
+        $this->idMap->saveMessage(['collection' => $collection], $message);
+      }
+      $row->setSourceProperty('messages', NULL);
+    }
+
+    return parent::prepareRow($row);
   }
 
 }

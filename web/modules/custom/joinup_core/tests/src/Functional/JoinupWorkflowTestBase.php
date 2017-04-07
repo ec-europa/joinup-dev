@@ -6,7 +6,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\Tests\rdf_entity\Functional\RdfWebTestBase;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 
 /**
  * Base setup for a Joinup workflow test.
@@ -14,8 +13,6 @@ use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
  * @group rdf_entity
  */
 abstract class JoinupWorkflowTestBase extends RdfWebTestBase {
-
-  use RdfDatabaseConnectionTrait;
 
   /**
    * {@inheritdoc}

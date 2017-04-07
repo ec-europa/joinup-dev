@@ -31,35 +31,30 @@
 #
 # There can be multiple message ids and the roles are either site-wide or og
 # for both cases.
+#
+# Define a type for all the notification settings.
+joinup_notification.settings.default:
+  type: sequence
+  label: 'Workflow group'
+  sequence:
+    type: sequence
+    label: 'Transition'
+    sequence:
+      type: sequence
+      label: 'Roles'
+      sequence:
+        type: sequence
+        label: 'Message ID'
+        sequence:
+          type: string
+
 joinup_notification.settings:
   type: config_object
   label: 'Notification settings'
   mapping:
     transition_notifications:
-      type: sequence
-      label: 'Workflow group'
-      sequence:
-        type: sequence
-        label: 'Transition'
-        sequence:
-          type: sequence
-          label: 'Roles'
-          sequence:
-            type: sequence
-            label: 'Message ID'
-            sequence:
-              type: string
+      type: joinup_notification.settings.default
     delete_notifications:
-      type: sequence
-      label: 'Entity type'
-      sequence:
-        type: sequence
-        label: 'Bundle'
-        sequence:
-          type: sequence
-          label: 'Roles'
-          sequence:
-            type: sequence
-            label: 'Message ID'
-            sequence:
-              type: string
+      type: joinup_notification.settings.default
+    content_update_notifications:
+      type: joinup_notification.settings.default

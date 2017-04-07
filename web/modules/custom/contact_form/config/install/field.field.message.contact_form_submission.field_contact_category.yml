@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_contact_category
+    - message.template.contact_form_submission
+  module:
+    - options
+id: message.contact_form_submission.field_contact_category
+field_name: field_contact_category
+entity_type: message
+bundle: contact_form_submission
+label: Category
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

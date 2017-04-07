@@ -24,6 +24,7 @@ default:
       region_map:
         Comment: '.comment'
         Entity actions: '.block-local-tasks-block'
+        Footer: '.section--footer'
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'
         Navigation menu block: '#block-navigation'
