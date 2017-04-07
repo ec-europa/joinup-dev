@@ -9,6 +9,7 @@ group_type: rdf_entity
 group_bundle: collection
 group_id: null
 permissions:
+  - 'access comments'
   - 'accept facilitator invitation'
   - 'create discussion content'
   - 'create document content'
@@ -26,6 +27,7 @@ permissions:
   - 'edit own news content'
   - 'delete own news content'
   - 'delete own comments'
+  - 'post comments'
   - 'view own unpublished content'
   - unsubscribe
 role_type: required
