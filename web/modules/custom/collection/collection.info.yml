@@ -24,6 +24,7 @@ dependencies:
 
 config_devel:
   - core.entity_form_display.rdf_entity.collection.default
+  - core.entity_view_display.rdf_entity.collection.about
   - core.entity_view_display.rdf_entity.collection.default
   - core.entity_view_display.rdf_entity.collection.group_header
   - core.entity_view_display.rdf_entity.collection.view_mode_featured
