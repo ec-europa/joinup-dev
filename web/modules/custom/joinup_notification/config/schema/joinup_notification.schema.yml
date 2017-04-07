@@ -56,7 +56,5 @@ joinup_notification.settings:
       type: joinup_notification.settings.default
     delete_notifications:
       type: joinup_notification.settings.default
-    collection_content_update_notifications:
-      type: joinup_notification.settings.default
-    solution_content_update_notifications:
+    content_update_notifications:
       type: joinup_notification.settings.default
