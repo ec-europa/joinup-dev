@@ -34,10 +34,10 @@ Feature: Navigation menu for custom pages
     And I enter "A short introduction." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the success message "Custom page About us has been created."
-    And the navigation menu of the "Rainbow tables" collection should have 3 visible item
+    And the navigation menu of the "Rainbow tables" collection should have 3 visible items
 
     When I click the contextual link "Edit menu" in the "Left sidebar" region
-    Then the navigation menu of the "Rainbow tables" collection should have 3 item
+    Then the navigation menu of the "Rainbow tables" collection should have 3 items
 
     # It should be possible to hide an item from the menu by disabling it.
     When I disable "About us" in the navigation menu of the "Rainbow tables" collection
