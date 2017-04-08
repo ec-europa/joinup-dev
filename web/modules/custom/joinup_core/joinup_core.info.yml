@@ -5,16 +5,17 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - facets
   - comment
   - ds
+  - facets
   - image
+  - link
+  - message
+  - message_notify
   - og
   - rdf_draft
   - rdf_entity
   - rdf_taxonomy
-  - message
-  - message_notify
   - search_api
   - search_api_solr
   - state_machine

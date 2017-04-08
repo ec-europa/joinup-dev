@@ -140,22 +140,41 @@ function joinup_core_node_access(EntityInterface $entity, $operation, AccountInt
 /**
  * Implements hook_entity_base_field_info().
  *
- * Provides a base field that displays the current workflow state on nodes and
- * RDF entities. This field is intended to be used on edit forms which use the
- * set of buttons to perform the workflow state transitions. When these buttons
- * are used the current workflow state is not indicated, so this field can be
- * used to expose this information.
+ * - Provides a base field that displays the current workflow state on nodes and
+ *   RDF entities. This field is intended to be used on edit forms which use the
+ *   set of buttons to perform the workflow state transitions. When these
+ *   buttons are used the current workflow state is not indicated, so this field
+ *   can be used to expose this information.
+ * - Provides a 'report' field on community content pages that can be used to
+ *   report inappropriate content.
  */
 function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
   if ($entity_type->id() === 'rdf_entity' || $entity_type->id() === 'node') {
     $fields['current_workflow_state'] = BaseFieldDefinition::create('current_workflow_state')
       ->setLabel(new TranslatableMarkup('Current workflow state'))
       ->setDisplayOptions('form', ['type' => 'hidden'])
       ->setDisplayConfigurable('form', TRUE)
       ->setComputed(TRUE);
-
-    return $fields;
   }
+
+  // Add a 'report' field to community content entities. Currently all node
+  // types are community content.
+  if ($entity_type->id() === 'node') {
+    $fields['report'] = BaseFieldDefinition::create('report_link')
+      ->setName('report')
+      ->setLabel(t('Report'))
+      ->setComputed(TRUE)
+      ->setClass('\Drupal\joinup_core\ReportLinkFieldItemList')
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 50,
+      ]);
+  }
+
+  return $fields;
 }
 
 /**
@@ -277,4 +296,14 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
   drupal_set_message(t('You are viewing the published version. To view the latest draft version, click @here.', [
     '@here' => $link,
   ]), 'warning');
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ *
+ * - Make sure the standard formatter for links can be used for the link that is
+ *   used to report inappropriate content.
+ */
+function joinup_core_field_formatter_info_alter(array &$info) {
+  $info['link']['field_types'][] = 'report_link';
 }
