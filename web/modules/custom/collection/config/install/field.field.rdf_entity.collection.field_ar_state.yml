@@ -14,7 +14,7 @@ label: State
 description: ''
 required: true
 translatable: false
-default_value: { }
+default_value: {  }
 default_value_callback: ''
 settings:
   workflow: collection_workflow

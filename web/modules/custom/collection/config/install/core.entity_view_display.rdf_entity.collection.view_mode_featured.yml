@@ -27,6 +27,7 @@ dependencies:
     - ds
     - image
     - text
+    - user
 id: rdf_entity.collection.view_mode_featured
 targetEntityType: rdf_entity
 bundle: collection
@@ -46,6 +47,7 @@ content:
             lb-col: false
             classes: {  }
     type: text_trimmed
+    region: content
   field_ar_logo:
     weight: 0
     label: hidden
@@ -61,6 +63,7 @@ content:
             lb-col: false
             classes: {  }
     type: image
+    region: content
   label:
     label: hidden
     type: string
@@ -75,6 +78,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
 hidden:
   field_ar_abstract: true
   field_ar_access_url: true
