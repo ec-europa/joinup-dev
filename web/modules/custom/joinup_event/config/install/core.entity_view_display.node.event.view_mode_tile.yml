@@ -27,6 +27,7 @@ dependencies:
     - datetime
     - ds
     - image
+    - link
     - text
     - user
 id: node.event.view_mode_tile
@@ -105,3 +106,4 @@ hidden:
   field_state: true
   links: true
   og_audience: true
+  report: true

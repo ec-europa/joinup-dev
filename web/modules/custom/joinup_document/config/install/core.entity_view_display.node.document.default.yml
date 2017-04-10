@@ -20,6 +20,7 @@ dependencies:
     - comment
     - datetime
     - file_url
+    - link
     - text
     - user
 id: node.document.default
@@ -76,6 +77,18 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  report:
+    label: hidden
+    weight: 50
+    region: content
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
 hidden:
   field_keywords: true
   field_licence: true

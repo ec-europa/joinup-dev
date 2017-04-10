@@ -171,6 +171,13 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'weight' => 50,
+        'settings' => [
+          'trim_length' => 80,
+          'url_only' => FALSE,
+          'url_plain' => FALSE,
+          'rel' => '',
+          'target' => '',
+        ],
       ]);
   }
 
