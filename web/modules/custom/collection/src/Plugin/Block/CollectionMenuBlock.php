@@ -59,26 +59,10 @@ class CollectionMenuBlock extends OgMenuBlock {
       'ogmenu_instance' => $menu_instance->id(),
     ]);
 
-    // When the tree is empty, no pages have been added yet to it. Show an help
-    // text to point the user to take some action.
-    if (empty($tree)) {
-      $build['create']['info'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->t("There are no pages yet. Why don't you start by creating an <em>About</em> page?"),
-        '#access' => $create_custom_page_url->access(),
-      ];
-      $build['create']['link'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Add a new page'),
-        '#url' => $create_custom_page_url,
-        '#access' => $create_custom_page_url->access(),
-      ];
-    }
-    elseif (empty($build['#items'])) {
-      // If there are entries in the tree but none of those is in the build
-      // array, it means that all the available pages have been disabled inside
-      // the menu configuration.
+    // If there are entries in the tree but none of those is in the build
+    // array, it means that all the available pages have been disabled inside
+    // the menu configuration.
+    if (empty($build['menu']['#items'])) {
       $build['disabled'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',

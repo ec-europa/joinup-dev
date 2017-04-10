@@ -243,9 +243,9 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     $tree = $this->getOgMenuTreeByNameLabelAndType($menu, $label, $type);
 
     foreach ($tree as $item) {
+      /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $link */
       $link = $item->link;
-      $definition = $link->getPluginDefinition();
-      if ($definition['title'] === $title) {
+      if ((string) $link->getTitle() === $title) {
         $menu_link_manager_service->updateDefinition($link->getPluginId(), [
           'enabled' => (string) ($operation === 'enable'),
         ]);

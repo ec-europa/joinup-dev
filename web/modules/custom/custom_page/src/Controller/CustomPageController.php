@@ -4,6 +4,7 @@ namespace Drupal\custom_page\Controller;
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\Controller\CommunityContentController;
 use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -23,7 +24,11 @@ class CustomPageController extends CommunityContentController {
    *
    * The custom pages are only allowed to be created for collections.
    */
-  public function createAccess(RdfInterface $rdf_entity) {
+  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL) {
+    if (empty($account)) {
+      $account = $this->currentUser();
+    }
+
     if ($rdf_entity->bundle() !== 'collection') {
       return AccessResult::forbidden();
     }
@@ -35,7 +40,7 @@ class CustomPageController extends CommunityContentController {
 
     // Grant access depending on whether the user has permission to create a
     // custom page according to their OG role.
-    return $this->ogAccess->userAccessGroupContentEntityOperation('create', $rdf_entity, $this->createContentEntity($rdf_entity));
+    return $this->ogAccess->userAccessGroupContentEntityOperation('create', $rdf_entity, $this->createContentEntity($rdf_entity), $account);
   }
 
   /**
