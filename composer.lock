@@ -2064,7 +2064,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha8.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha8",
                 "shasum": "6cb469fdf9e5d924e5ed910cbe062f4a1fa995a2"
             },
             "require": {
