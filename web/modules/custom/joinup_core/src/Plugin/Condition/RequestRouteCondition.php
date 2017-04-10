@@ -59,19 +59,19 @@ class RequestRouteCondition extends ConditionPluginBase implements ContainerFact
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array('routes' => '') + parent::defaultConfiguration();
+    return ['routes' => ''] + parent::defaultConfiguration();
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['routes'] = array(
+    $form['routes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Routes'),
       '#default_value' => $this->configuration['routes'],
       '#description' => $this->t('Specify routes by their name. Enter one path per line.'),
-    );
+    ];
     return parent::buildConfigurationForm($form, $form_state);
   }
 
@@ -90,9 +90,9 @@ class RequestRouteCondition extends ConditionPluginBase implements ContainerFact
     $routes = $this->getRoutes();
     $routes = implode(', ', $routes);
     if (!empty($this->isNegated())) {
-      return $this->t('Do not return true on the following routes: @routes', array('@routes' => $routes));
+      return $this->t('Do not return true on the following routes: @routes', ['@routes' => $routes]);
     }
-    return $this->t('Return true on the following routes: @routes', array('@routes' => $routes));
+    return $this->t('Return true on the following routes: @routes', ['@routes' => $routes]);
   }
 
   /**
