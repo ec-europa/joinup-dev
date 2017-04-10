@@ -86,6 +86,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // Spaces are also removed.
       // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
       $mail_body = str_replace("\n", ' ', $mail['body']);
+      $mail_body = trim($mail_body);
       // Since the body field has url tokens, we cannot provide a full body text
       // because we don't have the url available. Because of this, we just
       // match partial text.
@@ -113,10 +114,30 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * in the scenario.
    *
    * @Given the mail collector cache is empty
+   * @Given all (the )e-mails have been sent
    */
   public function clearMailCollectorCache() {
     \Drupal::state()->set('system.test_mail_collector', []);
     \Drupal::state()->resetCache();
+  }
+
+  /**
+   * Asserts that a certain amount of e-mails have been sent.
+   *
+   * @param int $count
+   *   The expected count of e-mails sent.
+   *
+   * @throws \Exception
+   *   Thrown when the count doesn't match the actual number.
+   *
+   * @Then :count e-mail(s) should have been sent
+   */
+  public function assertNumberOfEmailSent($count) {
+    $mails = \Drupal::state()->get('system.test_mail_collector');
+
+    if (count($mails) != $count) {
+      throw new \Exception("Invalid number of e-mail sent. Expected $count, sent " . count($mails));
+    }
   }
 
   /**

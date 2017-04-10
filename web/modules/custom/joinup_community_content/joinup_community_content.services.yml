@@ -1,0 +1,6 @@
+services:
+  joinup_community_content.event_subscriber:
+    class: Drupal\joinup_community_content\EventSubscriber\EventSubscriber
+    arguments: ['@entity_type.bundle.info']
+    tags:
+      - { name: 'event_subscriber' }

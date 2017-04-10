@@ -17,6 +17,7 @@ dependencies:
   - custom_page
   - dashboard
   - ds
+  - diff
   - dynamic_page_cache
   - editor
   - field_group

@@ -115,6 +115,23 @@ class NotificationSenderService {
    * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
    */
   public function sendStateTransitionMessage(EntityInterface $entity, $role_id, array $template_ids) {
+    $values = ['field_message_content' => $entity->id()];
+    $this->sendMessageTemplateToRole($template_ids, $values, $role_id, $entity);
+  }
+
+  /**
+   * Sends a message template to a site-wide or group role.
+   *
+   * @param array $template_ids
+   *   An array of Message template IDs.
+   * @param array $values
+   *   The values to pass in the message creation.
+   * @param string $role_id
+   *   The id of the role. The role can be site-wide or organic group.
+   * @param \Drupal\Core\Entity\EntityInterface|null $entity
+   *   The group or group content entity if the role is related to a group.
+   */
+  public function sendMessageTemplateToRole(array $template_ids, array $values, $role_id, EntityInterface $entity = NULL) {
     $role = Role::load($role_id);
     if (!empty($role)) {
       $recipient_ids = $this->getRecipientIdsByRole($role_id);
@@ -122,8 +139,8 @@ class NotificationSenderService {
     else {
       $recipient_ids = $this->getRecipientIdsByOgRole($entity, $role_id);
     }
+
     foreach ($template_ids as $template_id) {
-      $values = ['field_message_content' => $entity->id()];
       $this->sendMessageTemplate($template_id, $values, $recipient_ids);
     }
   }
