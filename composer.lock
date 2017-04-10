@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "53181adb001a4481b6bba5f268f647de",
+    "content-hash": "3915f81eaff5fa53bcc0b60ede1124ce",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2923,22 +2923,16 @@
         },
         {
             "name": "drupal/search_api_solr",
-            "version": "1.0.0-beta1",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "8.x-1.0-beta1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-beta1.zip",
-                "reference": null,
-                "shasum": "2b8c127d5da0124f61aab80979b3313ae22d9b82"
+                "reference": "5a7e66cfaac8f9ff210204105c86eefb528aa2a3"
             },
             "require": {
                 "drupal/core": "~8.0",
                 "drupal/search_api": "*",
-                "solarium/solarium": "3.6.*"
+                "solarium/solarium": "3.7.*"
             },
             "type": "drupal-module",
             "extra": {
@@ -2946,12 +2940,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1477470239"
-                },
-                "patches_applied": {
-                    "Cannot subscribe to Solarium events. @see https://www.drupal.org/node/2835770": "https://www.drupal.org/files/issues/cannot_subscribe_to-2835770-2.patch",
-                    "Compatibility with the search_api rc1. @see https://www.drupal.org/node/2868209": "https://www.drupal.org/files/issues/search_api_solr_compatibility.patch"
+                    "version": "8.x-1.0-beta1+37-dev",
+                    "datestamp": "1490084884"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2990,7 +2980,8 @@
                 "source": "http://cgit.drupalcode.org/search_api_solr",
                 "issues": "https://www.drupal.org/project/issues/search_api_solr",
                 "irc": "irc://irc.freenode.org/drupal-search-api"
-            }
+            },
+            "time": "2017-04-10 13:38:59"
         },
         {
             "name": "drupal/simplenews",
@@ -5049,16 +5040,16 @@
         },
         {
             "name": "solarium/solarium",
-            "version": "3.6.0",
+            "version": "3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/solariumphp/solarium.git",
-                "reference": "b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5"
+                "reference": "0acdb2838ae551fe87e4e334e449a468973839f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5",
-                "reference": "b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5",
+                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/0acdb2838ae551fe87e4e334e449a468973839f2",
+                "reference": "0acdb2838ae551fe87e4e334e449a468973839f2",
                 "shasum": ""
             },
             "require": {
@@ -5070,6 +5061,9 @@
                 "satooshi/php-coveralls": "~1.0",
                 "squizlabs/php_codesniffer": "~1.4",
                 "zendframework/zendframework1": "~1.12"
+            },
+            "suggest": {
+                "minimalcode/search": "Query builder compatible with Solarium, allows simplified solr-query handling"
             },
             "type": "library",
             "extra": {
@@ -5099,7 +5093,7 @@
                 "search",
                 "solr"
             ],
-            "time": "2016-05-03T07:08:49+00:00"
+            "time": "2016-10-28T08:50:36+00:00"
         },
         {
             "name": "stack/builder",
@@ -7925,8 +7919,7 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            },
-            "time": "2017-03-28 23:54:52"
+            }
         },
         {
             "name": "drupal/config_update",
@@ -8038,8 +8031,7 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            },
-            "time": "2017-03-17 12:16:00"
+            }
         },
         {
             "name": "drupal/devel",
@@ -8247,7 +8239,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-04 05:33:31"
+            "time": "2017-04-04T05:33:31+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -9626,7 +9618,7 @@
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
         "drupal/search_api": 10,
-        "drupal/search_api_solr": 10,
+        "drupal/search_api_solr": 20,
         "drupal/view_unpublished": 15,
         "google/material-design-lite": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
