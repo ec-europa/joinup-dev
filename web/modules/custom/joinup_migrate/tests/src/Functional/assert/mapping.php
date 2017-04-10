@@ -11,7 +11,7 @@ $this->assertSuccessCount('mapping', 12);
 
 // Expected logged messages.
 $this->assertMessage('mapping', "Row: 3, Nid: 99999999: This node doesn't exist in the source database");
-$this->assertMessage('mapping', "Row: 4, Nid: ew56%43: Invalid Nid 'ew56%43'");
+$this->assertMessage('mapping', "Row: 4, Nid: ew56%43: Invalid nid 'ew56%43'");
 $this->assertMessage('mapping', "Row: 5, Nid: 157729: 'MOA-ID 3.2.1' is a release and shouldn't be in the Excel file. Releases are computed");
 $this->assertMessage('mapping', "Row: 6, Nid: 58729: Collection name empty or invalid");
 $this->assertMessage('mapping', "Row: 7, Nid: 60736: Collection name empty or invalid");
