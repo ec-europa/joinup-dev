@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc663286d140cb8d981d055d380fce20",
+    "content-hash": "53181adb001a4481b6bba5f268f647de",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2950,7 +2950,8 @@
                     "datestamp": "1477470239"
                 },
                 "patches_applied": {
-                    "Cannot subscribe to Solarium events. @see https://www.drupal.org/node/2835770": "https://www.drupal.org/files/issues/cannot_subscribe_to-2835770-2.patch"
+                    "Cannot subscribe to Solarium events. @see https://www.drupal.org/node/2835770": "https://www.drupal.org/files/issues/cannot_subscribe_to-2835770-2.patch",
+                    "Compatibility with the search_api rc1. @see https://www.drupal.org/node/2868209": "https://www.drupal.org/files/issues/search_api_solr_compatibility.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7924,7 +7925,8 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            }
+            },
+            "time": "2017-03-28 23:54:52"
         },
         {
             "name": "drupal/config_update",
@@ -8036,7 +8038,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-03-17 12:16:00"
         },
         {
             "name": "drupal/devel",
@@ -8244,7 +8247,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-04T05:33:31+00:00"
+            "time": "2017-04-04 05:33:31"
         },
         {
             "name": "fabpot/goutte",

@@ -125,7 +125,8 @@
                 "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch"
             },
             "drupal/search_api_solr": {
-                "Cannot subscribe to Solarium events. @see https://www.drupal.org/node/2835770": "https://www.drupal.org/files/issues/cannot_subscribe_to-2835770-2.patch"
+                "Cannot subscribe to Solarium events. @see https://www.drupal.org/node/2835770": "https://www.drupal.org/files/issues/cannot_subscribe_to-2835770-2.patch",
+                "Compatibility with the search_api rc1. @see https://www.drupal.org/node/2868209": "https://www.drupal.org/files/issues/search_api_solr_compatibility.patch"
             },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
