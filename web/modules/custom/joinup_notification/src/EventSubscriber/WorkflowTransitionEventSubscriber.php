@@ -2,7 +2,8 @@
 
 namespace Drupal\joinup_notification\EventSubscriber;
 
-use Drupal\Core\Entity\EntityManager;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\joinup_notification\NotificationSenderService;
 use Drupal\state_machine\Event\WorkflowTransitionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -15,11 +16,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
 
   /**
-   * The entity manager service.
+   * The entity field manager service.
    *
-   * @var \Drupal\Core\Entity\EntityManager
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
    */
-  protected $entityManager;
+  protected $entityFieldManager;
 
   /**
    * The notification sender service.
@@ -31,13 +32,13 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   /**
    * Constructs the event object.
    *
-   * @param \Drupal\Core\Entity\EntityManager $entity_manager
-   *   The entity manager service.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager service.
    * @param \Drupal\joinup_notification\NotificationSenderService $notification_sender
    *   The message notify sender service.
    */
-  public function __construct(EntityManager $entity_manager, NotificationSenderService $notification_sender) {
-    $this->entityManager = $entity_manager;
+  public function __construct(EntityFieldManagerInterface $entity_field_manager, NotificationSenderService $notification_sender) {
+    $this->entityFieldManager = $entity_field_manager;
     $this->notificationSender = $notification_sender;
   }
 
@@ -61,11 +62,12 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     $entity = $event->getEntity();
     $entity_type = $entity->getEntityTypeId();
     $bundle = $entity->bundle();
-    $field_definitions = array_filter($this->entityManager->getFieldDefinitions($entity_type, $bundle), function ($field_definition) {
+    $field_definitions = array_filter($this->entityFieldManager->getFieldDefinitions($entity_type, $bundle), function (FieldDefinitionInterface $field_definition) {
       return $field_definition->getType() == 'state';
     });
 
     $field_definition = array_pop($field_definitions);
+    /** @var \Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface $state_field */
     $state_field = $entity->{$field_definition->getName()}->first();
     $workflow = $state_field->getWorkflow();
     $transition = $workflow->findTransition($event->getFromState()->getId(), $event->getToState()->getId());
