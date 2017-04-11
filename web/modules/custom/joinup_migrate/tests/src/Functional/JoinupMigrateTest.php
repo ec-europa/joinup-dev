@@ -68,8 +68,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
 
     parent::setUp();
 
-    // Setup the connections to main and SPARQL backends.
-    $this->setUpSparqlForBrowser();
     $this->db = Database::getConnection();
 
     // Prepare migration environment.
@@ -90,6 +88,10 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
       }, $this->messages);
       $this->fail("Error messages received during migrations:\n" . implode("\n", $messages));
     }
+
+    // Common used objects.
+    /* @var \Drupal\rdf_entity\RdfInterface $collection */
+    $new_collection = $this->loadEntityByLabel('rdf_entity', 'New collection');
 
     // Assertions for each migrations are defined under assert/ directory.
     foreach (file_scan_directory(__DIR__ . '/assert', '|\.php$|') as $file) {
