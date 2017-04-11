@@ -157,6 +157,9 @@ function search_api_field_theme() {
 function search_api_field_search_api_query_alter(QueryInterface &$query) {
   if ($query->getIndex()->getServerInstance()->supportsFeature('search_api_facets')) {
     $facet_manager = \Drupal::service('facets.manager');
-    $facet_manager->alterQuery($query, $query->getSearchId());
+    $search_id = $query->getSearchId();
+    if (strpos($search_id, 'search_api_field:') === 0) {
+      $facet_manager->alterQuery($query, $query->getSearchId());
+    }
   }
 }
