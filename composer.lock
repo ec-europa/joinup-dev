@@ -2036,7 +2036,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/ds-8.x-3.0-beta2.zip",
-                "reference": null,
+                "reference": "8.x-3.0-beta2",
                 "shasum": "4e9ad1d29516fe1578912ff08cfc4e76ac665499"
             },
             "require": {
@@ -2863,17 +2863,17 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "1.0.0-rc1",
+            "version": "1.0.0-rc2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "8.x-1.0-rc1"
+                "reference": "8.x-1.0-rc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-rc1.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-rc2.zip",
                 "reference": null,
-                "shasum": "898d0d0891d1324ff72c1c4c7243f032d454bf80"
+                "shasum": "174a463535c6b77c4c9ec9481a7ab7989e661868"
             },
             "require": {
                 "drupal/core": "^8.2"
@@ -2887,8 +2887,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc1",
-                    "datestamp": "1491764883"
+                    "version": "8.x-1.0-rc2",
+                    "datestamp": "1491843242"
                 },
                 "patches_applied": {
                     "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
@@ -3057,7 +3057,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta3.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta3",
                 "shasum": "9ca0101738db00673f2511707a76d6ea0c9ce4db"
             },
             "require": {
@@ -7919,7 +7919,8 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            }
+            },
+            "time": "2017-03-28 23:54:52"
         },
         {
             "name": "drupal/config_update",
@@ -7974,7 +7975,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/default_content",
-                "reference": "2c9aad8531a15b0d0619e9da0f4ce46a216adf35"
+                "reference": "8ce6a8f9b37c3d2b98a327149572fd8a366cfe59"
             },
             "require": {
                 "drupal/core": "*"
@@ -7985,8 +7986,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4+1-dev",
-                    "datestamp": "1488504185"
+                    "version": "8.x-1.0-alpha5+2-dev",
+                    "datestamp": "1491863942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -8239,7 +8240,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-04T05:33:31+00:00"
+            "time": "2017-04-04 05:33:31"
         },
         {
             "name": "fabpot/goutte",
