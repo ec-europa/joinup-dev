@@ -3,6 +3,7 @@
 namespace Drupal\search_api_field\Plugin\facets\facet_source;
 
 use Drupal\Core\Path\CurrentPathStack;
+use Drupal\Core\Url;
 use Drupal\facets\FacetSource\SearchApiFacetSourceInterface;
 use Drupal\facets\Plugin\facets\facet_source\SearchApiBaseFacetSource;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -158,9 +159,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    * {@inheritdoc}
    */
   public function getPath() {
-    // @todo Is this always right?
-    $path = $this->currentPathStack->getPath();
-    return $path . '/?keys=' . \Drupal::request()->get('keys');
+    return Url::createFromRequest($this->requestStack->getCurrentRequest());
   }
 
   /**
