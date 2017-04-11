@@ -96,8 +96,9 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    * {@inheritdoc}
    */
   public function fillFacetsWithResults(array $facets) {
+    $plugin_definition_id = $this->getPluginDefinition()['display_id'];
     // Check if there are results in the static cache.
-    $results = $this->searchApiQueryHelper->getResults($this->pluginId);
+    $results = $this->searchApiQueryHelper->getResults($plugin_definition_id);
 
     // If there are no results, execute the search page and check for results
     // again. This happens when a page or block is cached, so Search API has
@@ -114,7 +115,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
         'offset' => isset($_GET['page']) ? $_GET['page'] : 0,
       ];
       $query = $search_api_index->query($options);
-      $query->setSearchId($this->pluginId);
+      $query->setSearchId($plugin_definition_id);
 
       // Keys.
       $keys = $this->requestStack->getCurrentRequest()->get('keys');
