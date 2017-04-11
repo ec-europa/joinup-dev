@@ -3,6 +3,7 @@
 namespace Drupal\joinup_core;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
@@ -83,12 +84,18 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
+  public static function getEntityStateFieldDefinitions(FieldableEntityInterface $entity) {
+    return array_filter($entity->getFieldDefinitions(), function (FieldDefinitionInterface $field_definition) {
+      return $field_definition->getType() == 'state';
+    });
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function getEntityStateFieldDefinition(FieldableEntityInterface $entity) {
-    $field_definitions = $entity->getFieldDefinitions();
-    foreach ($field_definitions as $field_definition) {
-      if ($field_definition->getType() == 'state') {
-        return $field_definition;
-      }
+    if ($field_definitions = static::getEntityStateFieldDefinitions($entity)) {
+      return reset($field_definitions);
     }
 
     return NULL;

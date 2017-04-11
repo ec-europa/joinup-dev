@@ -43,6 +43,17 @@ interface WorkflowHelperInterface {
   public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $user);
 
   /**
+   * Returns the state field definitions of an entity.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity that has the state field.
+   *
+   * @return \Drupal\Core\Field\FieldDefinitionInterface[]
+   *   Returns an array of state field definitions.
+   */
+  public static function getEntityStateFieldDefinitions(FieldableEntityInterface $entity);
+
+  /**
    * Returns the state field definition of an entity.
    *
    * In the current project every entity with a state has only one state field
