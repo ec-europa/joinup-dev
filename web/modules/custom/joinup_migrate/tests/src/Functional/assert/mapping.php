@@ -6,8 +6,8 @@
  */
 
 // Migration counts.
-$this->assertTotalCount('mapping', 14);
-$this->assertSuccessCount('mapping', 14);
+$this->assertTotalCount('mapping', 15);
+$this->assertSuccessCount('mapping', 15);
 
 // Expected logged messages.
 $this->assertMessage('mapping', "Row: 3, Nid: 99999999: This node doesn't exist in the source database");
@@ -289,3 +289,22 @@ $this->assertSame([
   'content_item_status' => NULL,
   'row_index' => '22',
 ], $imported['155894']);
+
+$this->assertSame([
+  'nid' => '152066',
+  'type' => 'newsletter',
+  'collection' => 'New collection',
+  'policy' => NULL,
+  'policy2' => 'eProcurement',
+  'new_collection' => 'Yes',
+  'migrate' => '1',
+  'abstract' => NULL,
+  'logo' => NULL,
+  'banner' => NULL,
+  'owner' => NULL,
+  'collection_owner' => 'doe@example.com',
+  'elibrary' => NULL,
+  'collection_status' => NULL,
+  'content_item_status' => NULL,
+  'row_index' => '23',
+], $imported['152066']);
