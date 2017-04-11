@@ -18,6 +18,7 @@ class Discussion extends NodeBase {
     return [
       'status' => $this->t('Status'),
       'collection' => $this->t('Collection'),
+      'solution' => $this->t('Solution'),
     ] + parent::fields();
   }
 
@@ -25,7 +26,7 @@ class Discussion extends NodeBase {
    * {@inheritdoc}
    */
   public function query() {
-    return $this->select('d8_discussion', 'n')->fields('n', ['status']);
+    return $this->select('d8_discussion', 'n')->fields('n', ['status', 'solution']);
   }
 
 }

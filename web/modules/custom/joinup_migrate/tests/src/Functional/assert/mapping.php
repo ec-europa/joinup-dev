@@ -101,7 +101,7 @@ $this->assertSame([
 ], $imported['58694']);
 
 $this->assertSame([
-  'nid' => '26863',
+  'nid' => '49860',
   'type' => 'project_project',
   'collection' => 'New collection',
   'policy' => NULL,
@@ -117,7 +117,7 @@ $this->assertSame([
   'collection_status' => NULL,
   'content_item_status' => NULL,
   'row_index' => '12',
-], $imported['26863']);
+], $imported['49860']);
 
 $this->assertSame([
   'nid' => '139528',

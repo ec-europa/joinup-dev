@@ -51,5 +51,5 @@ $this->assertSame([
   'contact' => NULL,
   'collection_owner' => 'doe@example.com',
   'status' => NULL,
-  'roles' => '{"admin":[],"facilitator":[],"member":{"6565":1323255883}}',
+  'roles' => '{"admin":[],"facilitator":[],"member":{"6842":1378476956}}',
 ], $imported['New collection']);
