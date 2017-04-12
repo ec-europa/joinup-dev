@@ -68,8 +68,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
 
     parent::setUp();
 
-    // Setup the connections to main and SPARQL backends.
-    $this->setUpSparqlForBrowser();
     $this->db = Database::getConnection();
 
     // Prepare migration environment.
