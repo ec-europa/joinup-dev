@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the community content module.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function joinup_community_content_entity_extra_field_info() {
+  $fields = [];
+
+  $bundles = ['document', 'discussion', 'event', 'news', 'custom_page'];
+
+  foreach ($bundles as $bundle) {
+    $fields['node'][$bundle]['display']['share_link'] = [
+      'label' => t('Share'),
+      'description' => t('A link to share the content'),
+      'visible' => FALSE,
+    ];
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function joinup_community_content_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if (!$display->getComponent('share_link')) {
+    return;
+  }
+
+  $build['share_link'] = [
+    '#type' => 'link',
+    '#title' => t('Share'),
+    '#url' => Url::fromRoute('joinup_community_content.share_content_form', [
+      'node' => $entity->id(),
+    ]),
+    '#attributes' => [
+      'class' => ['use-ajax'],
+      'data-dialog-type' => 'modal',
+    ],
+  ];
+}
