@@ -13,13 +13,23 @@ use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 class RdfQueryExceptionTest extends JoinupKernelTestBase {
 
   /**
-   * Test that the exception message contains the query itself (debugging).
+   * Exception with query in message thrown for selects.
    */
-  public function testQueryException() {
+  public function testQuerySelectException() {
     /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
     $sparql = $this->container->get('sparql_endpoint');
     $this->setExpectedException(SparqlQueryException::class, "Execution of query failed: SELECT ?o WHERE { ?s ?p }");
     $sparql->query('SELECT ?o WHERE { ?s ?p }');
+  }
+
+  /**
+   * Exception with query in message thrown for updates.
+   */
+  public function testQueryUpdateException() {
+    /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
+    $sparql = $this->container->get('sparql_endpoint');
+    $this->setExpectedException(SparqlQueryException::class, "Execution of query failed: INSERT DATA INTO <\malformed> {}");
+    $sparql->update('INSERT DATA INTO <\malformed> {}');
   }
 
 }
