@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa0e6c23b8eadfcddad7ecc4e96557b1",
+    "content-hash": "21f06faaefc99476ae7c0fc17a03d415",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1702,12 +1702,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "076f41fa03bca938b4ccbed21c0289a514336863"
+                "reference": "4c6a12eb9549d357cce88ad6a352187e456068c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/076f41fa03bca938b4ccbed21c0289a514336863",
-                "reference": "076f41fa03bca938b4ccbed21c0289a514336863",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/4c6a12eb9549d357cce88ad6a352187e456068c8",
+                "reference": "4c6a12eb9549d357cce88ad6a352187e456068c8",
                 "shasum": ""
             },
             "require": {
@@ -1740,6 +1740,9 @@
                 "twig/twig": "^1.23.1",
                 "zendframework/zend-diactoros": "~1.1",
                 "zendframework/zend-feed": "~2.4"
+            },
+            "conflict": {
+                "drush/drush": "<8.1.10"
             },
             "replace": {
                 "drupal/action": "self.version",
@@ -1863,9 +1866,7 @@
                     "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
                     "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
                     "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-85.patch",
-                    "Explode processor is too strict @see https://www.drupal.org/node/2853823": "https://www.drupal.org/files/issues/2853823-29.patch",
-                    "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
-                    "Optionally log messages for skip_on_empty and skip_row_if_not_set @see https://www.drupal.org/node/2655154": "https://www.drupal.org/files/issues/2655154-27.patch"
+                    "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch"
                 }
             },
             "autoload": {
@@ -1889,7 +1890,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2017-03-14 16:10:18"
+            "time": "2017-04-11 21:40:17"
         },
         {
             "name": "drupal/diff",
