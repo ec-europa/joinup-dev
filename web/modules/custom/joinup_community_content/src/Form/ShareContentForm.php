@@ -116,16 +116,19 @@ class ShareContentForm extends FormBase {
     $already_shared = $this->getSharedInCollections();
     foreach ($this->getShareableCollections() as $id => $collection) {
       $wrapper_id = Html::getId($id) . '--wrapper';
+      $is_shared = in_array($id, $already_shared);
+
       $form['collections'][$id] = [
         '#type' => 'container',
         '#id' => $wrapper_id,
+        'entity' => $this->rdfBuilder->view($collection, 'compact'),
         'checkbox' => [
           '#type' => 'checkbox',
-          '#title' => $collection->label() . (in_array($id, $already_shared) ? ' (shared)' : ''),
+          '#title' => $collection->label(),
           // Replicate the behaviour of the "checkboxes" element again.
           // @see \Drupal\Core\Render\Element\Checkboxes::processCheckboxes
           '#return_value' => $id,
-          '#default_value' => in_array($id, $already_shared) ? $id : NULL,
+          '#default_value' => $is_shared ? $id : NULL,
           '#ajax' => [
             'callback' => '::checkboxChange',
             'wrapper' => $wrapper_id,
@@ -135,8 +138,12 @@ class ShareContentForm extends FormBase {
           // Transform the checkbox into a submit-enabled input.
           '#executes_submit_callback' => TRUE,
         ],
-        'entity' => $this->rdfBuilder->view($collection, 'compact'),
       ];
+
+      // Add a class when the collection is already shared.
+      if ($is_shared) {
+        $form['collections'][$id]['#attributes']['class'][] = 'already-shared';
+      }
     }
 
     $form['actions'] = ['#type' => 'actions'];
