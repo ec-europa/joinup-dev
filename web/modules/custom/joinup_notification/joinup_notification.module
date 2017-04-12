@@ -40,9 +40,12 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
 
   $entity_type = $entity->getEntityTypeId();
   $bundle = $entity->bundle();
+  /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
+  $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+
   // The asset distribution rdf entity does not have a workflow so it is
   // excluded from the following check.
-  if ($entity_type !== 'rdf_entity' || $bundle !== 'asset_distribution') {
+  if ($workflow_helper->hasEntityStateField($entity)) {
     $state_field = \Drupal::service('joinup_core.workflow.helper')->getEntityStateField($entity);
     if (empty($state_field) || empty($state_field->value) || $state_field->value !== 'deletion_request') {
       return;
