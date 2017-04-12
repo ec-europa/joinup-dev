@@ -4,6 +4,7 @@ namespace Drupal\joinup_core;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 
 /**
  * Interface for services that provide workflow related helper methods.
@@ -86,5 +87,33 @@ interface WorkflowHelperInterface {
    *   Thrown when the entity does not have a state field.
    */
   public function getEntityStateField(FieldableEntityInterface $entity);
+
+  /**
+   * Returns whether the entity has a state field and supports workflow.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity to check.
+   *
+   * @return bool
+   *   TRUE if the entity has a state field. FALSE otherwise.
+   */
+  public function hasEntityStateField(FieldableEntityInterface $entity);
+
+  /**
+   * Checks if a state is set as published in a certain workflow.
+   *
+   * @param string $state_id
+   *   The ID of the state to check.
+   * @param \Drupal\state_machine\Plugin\Workflow\WorkflowInterface $workflow
+   *   The workflow the state belongs to.
+   *
+   * @return bool
+   *   TRUE if the state is set as published in the workflow, FALSE otherwise.
+   *
+   * @throwns \InvalidArgumentException
+   *   Thrown when the workflow is not plugin based, because this is required to
+   *   retrieve the publication state from the workflow states.
+   */
+  public function isWorkflowStatePublished($state_id, WorkflowInterface $workflow);
 
 }

@@ -2,10 +2,12 @@
 
 namespace Drupal\joinup_core;
 
+use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
@@ -123,6 +125,30 @@ class WorkflowHelper implements WorkflowHelperInterface {
       throw new \Exception('No state fields were found in the entity.');
     }
     return $entity->{$field_definition->getName()}->first();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasEntityStateField(FieldableEntityInterface $entity) {
+    return (bool) static::getEntityStateFieldDefinitions($entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isWorkflowStatePublished($state_id, WorkflowInterface $workflow) {
+    // We rely on being able to inspect the plugin definition. Throw an error if
+    // this is not the case.
+    if (!$workflow instanceof PluginInspectionInterface) {
+      $label = $workflow->getLabel();
+      throw new \InvalidArgumentException("The '$label' workflow is not plugin based.");
+    }
+
+    // Retrieve the raw plugin definition, as all additional plugin settings
+    // are stored there.
+    $raw_workflow_definition = $workflow->getPluginDefinition();
+    return !empty($raw_workflow_definition['states'][$state_id]['published']);
   }
 
 }
