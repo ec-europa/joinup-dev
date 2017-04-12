@@ -474,36 +474,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Makes group content part of a collection.
-   *
-   * Table format:
-   * | content                | collection          |
-   * | Content entity 1 title | Collection 1 title  |
-   * | Content entity 2 title | Collection 1 title  |
-   * | Content entity 3 title | Collection 2 title  |
-   *
-   * @param string $bundle
-   *   The bundle of the content entity.
-   * @param \Behat\Gherkin\Node\TableNode $membership_table
-   *   The membership table.
-   *
-   * @Given (the following ):bundle content belong to the corresponding collections:
-   */
-  public function givenContentMemberships($bundle, TableNode $membership_table) {
-    // As each given step is executed in the same request
-    // we need to reset the mapping.
-    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
-    $storage->getGraphHandler()->resetRequestGraphs();
-    foreach ($membership_table->getColumnsHash() as $values) {
-      $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
-      /** @var \Drupal\node\NodeInterface $content */
-      $content = $this->getNodeByTitle($values['content'], $bundle);
-      $content->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->set(0, $group->id());
-      $content->save();
-    }
-  }
-
-  /**
    * Creates menu items for an og group menu.
    *
    * This function uses only the navigation menu for the items.

@@ -38,29 +38,12 @@ Feature: June 2016 demo
       | Captain America & Avengers  | Captain America to lead the avengers?     | It is S.H.I.E.L.D.'s opinion that someone like Captain America can be a good leader for avengers.                                   | validated |              | Avengers initiative       |
       | Project Tahiti case 1       | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process.                                                                              | validated |              | Project Tahiti            |
       | Who is Winter soldier?      | Captain America's child friend is alive?  | As it turns out the Hydra's agent-Winter soldier-is no other than Bucky-Captain's America childhood friend.                         | validated |              | Project 'Captain America' |
-    And the following "news" content belong to the corresponding collections:
-      | content                     | collection   |
-      | Phil Coulson is down        | S.H.I.E.L.D. |
-      | Phoenix is down             | x-Men        |
-      | S.H.I.E.L.D. is infiltrated | S.H.I.E.L.D. |
-    And the following "news" content belong to the corresponding solutions:
-      | content                    | solution                  |
-      | Captain America not dead?  | Project 'Captain America' |
-      | Hellicarrier under attack  | Hellicarrier              |
-      | Captain America & Avengers | Avengers initiative       |
-      | Project Tahiti case 1      | Project Tahiti            |
-      | Who is Winter soldier?     | Project 'Captain America' |
 
     And custom_page content:
       | title              | body                                                                                                                              | collection   |
       | S.H.I.E.L.D. Home  | Welcome to S.H.I.E.L.D. webspace. <br />You can find anything about S.H.I.E.L.D. here.                                            | S.H.I.E.L.D. |
       | About S.H.I.E.L.D. | S.H.I.E.L.D. stands for Strategic Homeland Intervention Enforcement and Logistics Division. That's all you need to know about it. | S.H.I.E.L.D. |
       | List of members    | Here is a list of members known to the public: <br><ul><li>Nick Fury</li></ul>                                                    | S.H.I.E.L.D. |
-    And the following "custom_page" content belong to the corresponding collections:
-      | content            | collection   |
-      | S.H.I.E.L.D. Home  | S.H.I.E.L.D. |
-      | About S.H.I.E.L.D. | S.H.I.E.L.D. |
-      | List of members    | S.H.I.E.L.D. |
     And the following custom page menu structure:
       | title              | weight |
       | S.H.I.E.L.D. Home  | 1      |

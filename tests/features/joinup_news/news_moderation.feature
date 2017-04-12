@@ -56,19 +56,6 @@ Feature: News moderation.
       | Learn batman's secret         | Can I find batman's secret identity         | I have the opportunity to find out his identity.                        | proposed         | Mirror Master | Legion of Doom |
       | Stealing complete             | All data were copied                        | Now someone has to decrypt the data.                                    | needs_update     | Mirror Master | Legion of Doom |
       | Kill the sun                  | Savages plan                                | As it turns out Savage's plan is to cause a solar storm.                | deletion_request | Mirror Master | Legion of Doom |
-    And "news" content belong to the corresponding collections:
-      | content                       | collection     |
-      | Creating Justice League       | Justice League |
-      | Hawkgirl is a spy             | Justice League |
-      | Hawkgirl helped Green Lantern | Justice League |
-      | Space cannon fired            | Justice League |
-      | Eagle to join in season 4     | Justice League |
-      | Question joined JL            | Justice League |
-      | Creating Legion of Doom       | Legion of Doom |
-      | Stealing from Batman          | Legion of Doom |
-      | Learn batman's secret         | Legion of Doom |
-      | Stealing complete             | Legion of Doom |
-      | Kill the sun                  | Legion of Doom |
 
   Scenario: Draft state doesn't change when facilitator edits news.
     Given I am logged in as "Eagle"
