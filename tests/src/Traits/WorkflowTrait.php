@@ -123,4 +123,36 @@ trait WorkflowTrait {
     return \Drupal::service('joinup_core.workflow.helper');
   }
 
+  /**
+   * Mapping of human readable names to machine names.
+   *
+   * @return array
+   *   Field mapping.
+   */
+  protected static function workflowStateAliases() {
+    return [
+      'new' => '__new__',
+      'in assessment' => 'in_assessment',
+      'deletion request' => 'deletion_request',
+    ];
+  }
+
+  /**
+   * Translates human readable workflow states to machine names.
+   *
+   * @param string $state
+   *   The human readable workflow state. Case insensitive.
+   *
+   * @return string
+   *   The machine name of the workflow state.
+   */
+  protected static function translateWorkflowStateAlias($state) {
+    $state = strtolower($state);
+    $aliases = self::workflowStateAliases();
+    if (array_key_exists($state, $aliases)) {
+      $state = $aliases[$state];
+    }
+    return $state;
+  }
+
 }

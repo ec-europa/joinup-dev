@@ -490,6 +490,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // Replace the human readable value with the expected boolean.
       $node->status = $mapping[$node->status];
     }
+
+    // Replace human readable workflow states with machine names.
+    if (!empty($node->field_state)) {
+      $node->field_state = self::translateWorkflowStateAlias($node->field_state);
+    }
   }
 
   /**
