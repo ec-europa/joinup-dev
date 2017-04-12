@@ -358,10 +358,19 @@ function collection_search_api_query_search_api_field_field_collection_content_a
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = $query->getOption('search_api_field entity');
 
-  // Show only content that is related to this collection through the aggregated
+  $or = $query->createConditionGroup('OR');
+  // Show content that is related to this collection through the aggregated
   // field. This makes sure that other related entities (such as the collection
   // owner) do not show up as collection content tiles.
-  $query->addCondition('entity_groups', [$entity->id()], 'IN');
+  $or->addCondition('entity_groups', [$entity->id()], 'IN');
+  // Or show content that has been shared in this collection.
+  /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+  if (!$entity->get('field_ar_shared_content')->isEmpty()) {
+    $shared_content = array_column($entity->get('field_ar_shared_content')->getValue(), 'target_id');
+    $or->addCondition('nid', $shared_content, 'IN');
+  }
+
+  $query->addConditionGroup($or);
 
   // Remove the collection itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
