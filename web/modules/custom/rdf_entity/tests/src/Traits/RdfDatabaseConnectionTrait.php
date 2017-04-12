@@ -68,13 +68,12 @@ trait RdfDatabaseConnectionTrait {
   }
 
   /**
-   * Sets the connection details to the settings.php file.
-   *
-   * The BrowserTestBase is creating a new copy of the settings.php file to the
-   * test directory so the sparql entry needs to be inserted to the new
-   * configuration.
+   * {@inheritdoc}
    */
-  protected function setUpSparqlForBrowser() {
+  protected function writeSettings(array $settings) {
+    // The BrowserTestBase is creating a new copy of the settings.php file to
+    // the test directory so the SPARQL entry needs to be inserted into the new
+    // configuration.
     $key = 'sparql_default';
     $target = 'default';
 
@@ -83,13 +82,7 @@ trait RdfDatabaseConnectionTrait {
       'required' => TRUE,
     ];
 
-    $settings_file = \Drupal::service('site.path') . '/settings.php';
-
-    // Settings file is readonly at the moment.
-    chmod($settings_file, 0666);
-    drupal_rewrite_settings($settings);
-    // Restore original permissions to the settings file.
-    chmod($settings_file, 0444);
+    parent::writeSettings($settings);
   }
 
 }
