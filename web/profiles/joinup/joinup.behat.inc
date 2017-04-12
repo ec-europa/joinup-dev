@@ -15,6 +15,7 @@ use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
+use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -35,6 +36,7 @@ use Drupal\User\Entity\User;
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use BrowserCapabilityDetectionTrait;
+  use EntityTrait;
   use FileTrait;
   use NodeTrait;
   use OgTrait;
@@ -418,6 +420,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       ->execute();
 
     PHPUnit_Framework_Assert::assertEquals($count, $revision_count);
+  }
+
+  /**
+   * Checks if the given node has the correct publication state.
+   *
+   * @param string $title
+   *   The title of the node.
+   * @param string $state
+   *   The expected publication state, either 'published' or 'unpublished'.
+   *
+   * @Then the community content with title :title should have the publication state :state
+   */
+  public function assertPublicationState($title, $state) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getEntityByLabel('node', $title);
+    \PHPUnit_Framework_Assert::assertSame($node->isPublished(), $state === 'published');
   }
 
   /**
