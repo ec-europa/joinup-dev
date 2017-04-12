@@ -35,7 +35,7 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 9
+    weight: 8
     label: hidden
     settings:
       pager_id: 0
@@ -52,7 +52,7 @@ content:
     type: string
     region: content
   field_news_shared_in:
-    weight: 10
+    weight: 9
     label: above
     settings:
       view_mode: view_mode_tile
@@ -128,5 +128,10 @@ content:
       joinup:
         template_suggestion: no_wrappers
     region: content
+  share_link:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_keywords: true
