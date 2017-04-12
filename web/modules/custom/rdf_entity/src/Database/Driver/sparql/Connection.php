@@ -3,6 +3,7 @@
 namespace Drupal\rdf_entity\Database\Driver\sparql;
 
 use Drupal\Core\Database\Log as DatabaseLog;
+use Drupal\rdf_entity\Exception\SparqlQueryException;
 use EasyRdf\Sparql\Client;
 
 /**
@@ -73,7 +74,12 @@ class Connection {
       $query_start = microtime(TRUE);
     }
 
-    $results = $this->connection->query($query);
+    try {
+      $results = $this->connection->query($query);
+    }
+    catch (\Exception $e) {
+      throw new SparqlQueryException('Execution of query failed: ' . $query);
+    }
 
     if (!empty($this->logger)) {
       $query_end = microtime(TRUE);
