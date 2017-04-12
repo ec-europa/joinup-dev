@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 
 /**
@@ -36,15 +37,18 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
     return;
   }
 
+  $url = Url::fromRoute('joinup_community_content.share_content_form', [
+    'node' => $entity->id(),
+  ]);
   $build['share_link'] = [
     '#type' => 'link',
-    '#title' => t('Share'),
-    '#url' => Url::fromRoute('joinup_community_content.share_content_form', [
-      'node' => $entity->id(),
-    ]),
+    // Tech lead forced me to do this.
+    '#title' => Markup::create('<span class="action-link__icon icon icon--share"></span><span class="action-link__link">' . t('Share') . '</span>'),
+    '#url' => $url,
     '#attributes' => [
-      'class' => ['use-ajax'],
+      'class' => ['use-ajax', 'action-link'],
       'data-dialog-type' => 'modal',
     ],
+    '#access' => $url->access(),
   ];
 }
