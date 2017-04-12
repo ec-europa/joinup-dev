@@ -20,7 +20,7 @@ bundle: discussion
 mode: default
 content:
   body:
-    weight: 2
+    weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -28,7 +28,7 @@ content:
     region: content
   field_comments:
     type: comment_default
-    weight: 5
+    weight: 4
     label: above
     settings:
       pager_id: 0
@@ -44,14 +44,14 @@ content:
     type: entity_reference_label
     region: content
   field_state:
-    weight: 6
+    weight: 5
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   links:
-    weight: 4
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -60,7 +60,12 @@ content:
     type: entity_reference_label
     settings:
       link: true
-    weight: 3
+    weight: 2
     third_party_settings: {  }
     region: content
+  share_link:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden: {  }
