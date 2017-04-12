@@ -104,20 +104,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   }
 
   /**
-   * Returns the StateItem field for a given entity.
-   *
-   * In the current project every entity with a state has only one state field
-   * so this method returns the first available field definitions of the
-   * entity's field definitions.
-   *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity for which to return the state field.
-   *
-   * @return \Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface
-   *   The state field.
-   *
-   * @throws \Exception
-   *   Thrown when the entity does not have a state field.
+   * {@inheritdoc}
    */
   public function getEntityStateField(FieldableEntityInterface $entity) {
     $field_definition = $this->getEntityStateFieldDefinition($entity);
