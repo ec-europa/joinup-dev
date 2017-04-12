@@ -265,10 +265,12 @@ QUERY;
       }
     }
 
+    // @codingStandardsIgnoreStart
     /*$collections = $this->rdfStorage->loadByProperties([
       'rid' => 'collection',
       'field_ar_shared_content' => $this->node->id(),
     ]);*/
+    // @codingStandardsIgnoreEnd
 
     return $collections;
   }
