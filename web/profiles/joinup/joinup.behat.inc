@@ -461,7 +461,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $name = self::getNodeFieldNameFromAlias($node->type, $alias);
       if ($name !== $alias) {
         unset($node->alias);
-        $node->$name = $value;
+        // Don't set empty values, since we can have multiple aliases that point
+        // to the same field (e.g. 'collection' and 'solution' both use the same
+        // 'og_audience' field).
+        if (!empty($value)) {
+          $node->$name = $value;
+        }
       }
     }
 
