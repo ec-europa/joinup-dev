@@ -113,7 +113,7 @@ class ShareContentForm extends FormBase {
       '#tree' => TRUE,
     ];
 
-    $already_shared = $this->getSharedInCollections();
+    $already_shared = $this->getAlreadySharedCollections();
     foreach ($this->getShareableCollections() as $id => $collection) {
       $wrapper_id = Html::getId($id) . '--wrapper';
       $is_shared = in_array($id, $already_shared);
@@ -245,7 +245,7 @@ class ShareContentForm extends FormBase {
    * @return \Drupal\rdf_entity\RdfInterface[]
    *   A list of collections where the current node is already shared in.
    */
-  protected function getSharedInCollections() {
+  protected function getAlreadySharedCollections() {
     // @todo restore the commented-out code and remove this query when
     // @todo ISAICP-2503 is in.
     $nid = $this->node->id();
