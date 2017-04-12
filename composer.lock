@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3915f81eaff5fa53bcc0b60ede1124ce",
+    "content-hash": "7f22e987ee5c9e9ff368108fc082a071",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -72,27 +72,36 @@
         },
         {
             "name": "asm89/stack-cors",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asm89/stack-cors.git",
-                "reference": "3ae8ef219bb4c9a6caf857421719aa07fa7776cc"
+                "reference": "65ccbd455370f043c2e3b93482a3813603d68731"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asm89/stack-cors/zipball/3ae8ef219bb4c9a6caf857421719aa07fa7776cc",
-                "reference": "3ae8ef219bb4c9a6caf857421719aa07fa7776cc",
+                "url": "https://api.github.com/repos/asm89/stack-cors/zipball/65ccbd455370f043c2e3b93482a3813603d68731",
+                "reference": "65ccbd455370f043c2e3b93482a3813603d68731",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2",
-                "symfony/http-foundation": "~2.1|~3.0",
-                "symfony/http-kernel": "~2.1|~3.0"
+                "php": ">=5.5.9",
+                "symfony/http-foundation": "~2.7|~3.0",
+                "symfony/http-kernel": "~2.7|~3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0 || ^4.8.10",
+                "squizlabs/php_codesniffer": "^2.3"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
             "autoload": {
-                "psr-0": {
-                    "Asm89\\Stack": "src/"
+                "psr-4": {
+                    "Asm89\\Stack\\": "src/Asm89/Stack/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -111,20 +120,20 @@
                 "cors",
                 "stack"
             ],
-            "time": "2016-08-01T12:05:04+00:00"
+            "time": "2017-04-11T20:03:41+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.25.6",
+            "version": "3.25.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fe98140a4811abbe9104477b167dc3c7f9a8391b"
+                "reference": "d4f1104f5ac9c755875c5e6e9bade2c70708219a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fe98140a4811abbe9104477b167dc3c7f9a8391b",
-                "reference": "fe98140a4811abbe9104477b167dc3c7f9a8391b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d4f1104f5ac9c755875c5e6e9bade2c70708219a",
+                "reference": "d4f1104f5ac9c755875c5e6e9bade2c70708219a",
                 "shasum": ""
             },
             "require": {
@@ -191,7 +200,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-04-07T20:21:45+00:00"
+            "time": "2017-04-11T22:31:27+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -1740,6 +1749,9 @@
                 "twig/twig": "^1.23.1",
                 "zendframework/zend-diactoros": "~1.1",
                 "zendframework/zend-feed": "~2.4"
+            },
+            "conflict": {
+                "drush/drush": "<8.1.10"
             },
             "replace": {
                 "drupal/action": "self.version",
@@ -8032,7 +8044,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-04-10 22:44:14"
         },
         {
             "name": "drupal/devel",
@@ -9618,7 +9631,6 @@
         "drupal/persistent_login": 20,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
-        "drupal/search_api": 10,
         "drupal/search_api_solr": 20,
         "drupal/view_unpublished": 15,
         "google/material-design-lite": 20,
