@@ -8,10 +8,10 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\taxonomy\Entity\Term;
@@ -22,10 +22,10 @@ use Drupal\taxonomy\TermInterface;
  */
 class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
-  use EntityTrait;
   use MaterialDesignTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
+  use UserTrait;
   use UtilityTrait;
 
   /**

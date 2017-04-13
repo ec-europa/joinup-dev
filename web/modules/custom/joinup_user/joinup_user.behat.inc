@@ -7,14 +7,14 @@
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\UserTrait;
 
 /**
  * Behat step definitions for testing users.
  */
 class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
-  use EntityTrait;
+  use UserTrait;
 
   /**
    * Navigates to the canonical page display of a collection.
