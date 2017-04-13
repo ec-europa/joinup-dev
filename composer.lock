@@ -2303,16 +2303,16 @@
         },
         {
             "name": "drupal/message",
-            "version": "dev-message-ui",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pfrenssen/message.git",
-                "reference": "170c02943bb2f14fe853ec7f1619dc19be6aa41d"
+                "url": "https://github.com/Gizra/message.git",
+                "reference": "7d4c6039adae8afc09d37bc6be60709a3caa2e26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/message/zipball/170c02943bb2f14fe853ec7f1619dc19be6aa41d",
-                "reference": "170c02943bb2f14fe853ec7f1619dc19be6aa41d",
+                "url": "https://api.github.com/repos/Gizra/message/zipball/7d4c6039adae8afc09d37bc6be60709a3caa2e26",
+                "reference": "7d4c6039adae8afc09d37bc6be60709a3caa2e26",
                 "shasum": ""
             },
             "require-dev": {
@@ -2324,9 +2324,10 @@
             ],
             "description": "Message",
             "support": {
-                "source": "https://github.com/pfrenssen/message/tree/message-ui"
+                "source": "https://github.com/Gizra/message/tree/8.x-1.x",
+                "issues": "https://github.com/Gizra/message/issues"
             },
-            "time": "2017-03-31T13:23:16+00:00"
+            "time": "2017-04-03 16:46:18"
         },
         {
             "name": "drupal/message_notify",
@@ -2609,11 +2610,17 @@
         },
         {
             "name": "drupal/og_menu",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/og_menu",
-                "reference": "c2bb02decaac35c88d0c52871ffe41cd2bf9488c"
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/og_menu-8.x-1.0-alpha1.zip",
+                "reference": "8.x-1.0-alpha1",
+                "shasum": "109bdabd75984bcea3aadccacf1c7d2c14b49fd4"
             },
             "require": {
                 "drupal/core": "*",
@@ -2625,7 +2632,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1+0-dev",
+                    "version": "8.x-1.0-alpha1",
                     "datestamp": "1486119782"
                 }
             },
@@ -2660,8 +2667,7 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/og_menu",
                 "issues": "https://drupal.org/project/issues/og_menu"
-            },
-            "time": "2017-03-27 14:28:16"
+            }
         },
         {
             "name": "drupal/persistent_login",
@@ -9604,7 +9610,7 @@
         {
             "alias": "1.0",
             "alias_normalized": "1.0.0.0",
-            "version": "dev-message-ui",
+            "version": "dev-8.x-1.x",
             "package": "drupal/message"
         },
         {
@@ -9627,7 +9633,7 @@
         "drupal/inline_entity_form": 20,
         "drupal/message": 20,
         "drupal/og": 20,
-        "drupal/og_menu": 20,
+        "drupal/og_menu": 15,
         "drupal/persistent_login": 20,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
