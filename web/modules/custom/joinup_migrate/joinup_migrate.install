@@ -135,6 +135,12 @@ function joinup_migrate_source_db_schema($table) {
           'length' => 255,
           'not null' => FALSE,
         ],
+        'collection_owner' => [
+          'description' => 'Collection owner',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
         'elibrary' => [
           'description' => 'Elibrary Creation',
           'type' => 'varchar',
@@ -233,6 +239,12 @@ function joinup_migrate_source_db_schema($table) {
           'description' => 'Contact NIDs',
           'type' => 'varchar',
           'length' => 1024,
+          'not null' => FALSE,
+        ],
+        'collection_owner' => [
+          'description' => 'Collection owner',
+          'type' => 'varchar',
+          'length' => 255,
           'not null' => FALSE,
         ],
         'status' => [
