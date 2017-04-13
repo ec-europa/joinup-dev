@@ -16,7 +16,7 @@ use Drupal\Core\Url;
 function joinup_community_content_entity_extra_field_info() {
   $fields = [];
 
-  $bundles = ['document', 'discussion', 'event', 'news', 'custom_page'];
+  $bundles = ['document', 'discussion', 'event', 'news'];
 
   foreach ($bundles as $bundle) {
     $fields['node'][$bundle]['display']['share_link'] = [
