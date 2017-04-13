@@ -36,7 +36,6 @@ class ContactFormController extends ControllerBase {
       $uri = $request->query->get('uri');
       if ($this->isValidUri($uri)) {
         $values['field_contact_url']['uri'] = 'internal:/' . ltrim($uri, '/');
-        var_dump($values['field_contact_url']['uri']);
       }
     }
 
