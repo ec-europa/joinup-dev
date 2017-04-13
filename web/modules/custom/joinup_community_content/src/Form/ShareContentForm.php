@@ -114,7 +114,7 @@ class ShareContentForm extends FormBase {
       '#tree' => TRUE,
     ];
 
-    $already_shared = $this->getAlreadySharedCollections();
+    $already_shared = $this->getAlreadySharedCollectionIds();
     foreach ($this->getShareableCollections() as $id => $collection) {
       $wrapper_id = Html::getId($id) . '--wrapper';
       $is_shared = in_array($id, $already_shared);
@@ -248,46 +248,13 @@ class ShareContentForm extends FormBase {
   }
 
   /**
-   * Retrieves a list of collections where the current node is already shared.
+   * Gets a list of collection ids where the current node is already shared.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collections where the current node is already shared in.
+   *   A list of collection ids where the current node is already shared in.
    */
-  protected function getAlreadySharedCollections() {
-    // @todo restore the commented-out code and remove this query when
-    // @todo ISAICP-2503 is in.
-    $nid = $this->node->id();
-    $query = <<<QUERY
-SELECT ?entity
-FROM <http://joinup.eu/collection/draft>
-FROM <http://joinup.eu/collection/published>
-WHERE {
-  ?entity <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?rid .
-  VALUES ?rid {<http://www.w3.org/ns/adms#AssetRepository>} .
-  ?entity <http://joinup.eu/collection/shared-content> ?field_ar_shared_content .
-  VALUES ?field_ar_shared_content {"$nid"@en}
-}
-QUERY;
-
-    /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
-    $sparql = \Drupal::service('sparql_endpoint');
-    $results = $sparql->query($query);
-
-    $collections = [];
-    if ($results->count()) {
-      foreach ($results as $result) {
-        $collections[] = $result->entity->getUri();
-      }
-    }
-
-    // @codingStandardsIgnoreStart
-    /*$collections = $this->rdfStorage->loadByProperties([
-      'rid' => 'collection',
-      'field_ar_shared_content' => $this->node->id(),
-    ]);*/
-    // @codingStandardsIgnoreEnd
-
-    return $collections;
+  protected function getAlreadySharedCollectionIds() {
+    return array_column($this->node->get('field_shared_in')->getValue(), 'target_id');
   }
 
   /**
@@ -297,9 +264,14 @@ QUERY;
    *   The collection where to share the node.
    */
   protected function shareInCollection(RdfInterface $collection) {
-    // @todo ensure that no duplicate references are made.
-    $collection->get('field_ar_shared_content')->appendItem(['target_id' => $this->node->id()]);
-    $collection->save();
+    $current_ids = $this->getAlreadySharedCollectionIds();
+    $current_ids[] = $collection->id();
+
+    // Entity references do not ensure uniqueness.
+    $current_ids = array_unique($current_ids);
+
+    $this->node->get('field_shared_in')->setValue($current_ids);
+    $this->node->save();
   }
 
   /**
@@ -309,11 +281,11 @@ QUERY;
    *   The collection where to remove the node.
    */
   protected function removeFromCollection(RdfInterface $collection) {
-    $values = $collection->get('field_ar_shared_content')->getValue();
-    $node_ids = array_flip(array_column($values, 'target_id'));
-    unset($node_ids[$this->node->id()]);
-    $collection->get('field_ar_shared_content')->setValue(array_flip($node_ids));
-    $collection->save();
+    // Flipping is needed to easily unset the value.
+    $current_ids = array_flip($this->getAlreadySharedCollectionIds());
+    unset($current_ids[$collection->id()]);
+    $this->node->get('field_shared_in')->setValue(array_flip($current_ids));
+    $this->node->save();
   }
 
   /**
