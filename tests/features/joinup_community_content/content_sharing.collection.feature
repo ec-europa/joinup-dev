@@ -6,9 +6,10 @@ Feature: Sharing content between collections
 
   Scenario: Users can share content in the collections they are member of.
     Given users:
-      | Username    | E-mail                  |
-      | Sara Barber | sara.barber@example.com |
-      | Deryck Lynn | deryck.lynn@example.com |
+      | Username      | E-mail                    |
+      | Sara Barber   | sara.barber@example.com   |
+      | Deryck Lynn   | deryck.lynn@example.com   |
+      | Marjolein Rye | marjolein.rye@example.com |
     And the following collections:
       | title        | state     |
       | Classic Rock | validated |
@@ -20,22 +21,28 @@ Feature: Sharing content between collections
       | New D'n'B compilation released | New D'n'B compilation released | Classic Rock | published |
       | Old-school line-up concert     | Old-school line-up concert     | Hip-Hop      | published |
     And discussion content:
-      | title                       | body         | collection   | status    |
-      | Rockabilly is still rocking | Lorem ipsum. | Classic Rock | published |
-      | Best mic for MCs            | Lorem ipsum. | Hip-Hop      | published |
+      | title                       | collection   | status    |
+      | Rockabilly is still rocking | Classic Rock | published |
+      | Best mic for MCs            | Hip-Hop      | published |
     And the following collection user memberships:
-      | collection   | user        |
-      | Classic Rock | Sara Barber |
-      | Hip-Hop      | Sara Barber |
-      | Drum'n'Bass  | Sara Barber |
+      | collection   | user          |
+      | Hip-Hop      | Marjolein Rye |
+      | Classic Rock | Sara Barber   |
+      | Hip-Hop      | Sara Barber   |
+      | Drum'n'Bass  | Sara Barber   |
 
     # Anonymous users cannot share anything.
     When I am an anonymous user
-    And I go to the "Rockabilly is still rocking" discussion
+    And I go to the "Best mic for MCs" discussion
     Then I should not see the link "Share"
     # This "authenticated user" is not member of any collections.
     When I am logged in as an "authenticated user"
-    And I go to the "Rockabilly is still rocking" discussion
+    And I go to the "Best mic for MCs" discussion
+    Then I should not see the link "Share"
+
+    # A member of a single collection shouldn't see the link.
+    When I am logged in as "Marjolein Rye"
+    And I go to the "Best mic for MCs" discussion
     Then I should not see the link "Share"
 
     # A collection member should see the link.
