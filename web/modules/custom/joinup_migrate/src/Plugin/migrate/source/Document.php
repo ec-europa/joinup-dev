@@ -82,7 +82,7 @@ class Document extends NodeBase {
     foreach (static::$keywordsAdditions as $property) {
       $addition = $row->getSourceProperty($property);
       if (!empty($addition)) {
-        $addition = array_map('trim', explode(',', $addition));
+        $addition = array_map('trim', explode('|', $addition));
         // Add only new terms.
         $keywords = array_merge($keywords, array_diff($addition, $keywords));
       }

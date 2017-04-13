@@ -43,6 +43,7 @@ class Prepare extends SourcePluginBase {
       'policy2' => $this->t('Level2 policy domain'),
       'abstract' => $this->t('Abstract'),
       'owner' => $this->t('Owner'),
+      'collection_owner' => $this->t('Collection owner'),
       'logo' => $this->t('Logo'),
       'banner' => $this->t('Banner'),
       'elibrary' => $this->t('Elibrary creation'),
@@ -93,14 +94,32 @@ class Prepare extends SourcePluginBase {
 
     $query->leftJoin('node', 'n', 'm.nid = n.nid');
 
-    $collections = $node_collections = [];
+    $collections = [];
     foreach ($query->execute()->fetchAll() as $row) {
       $collection = $row['collection'];
       if (!isset($collections[$collection])) {
+        $node_collections = [];
         $collections[$collection] = [
           'collection' => $collection,
           'elibrary' => NULL,
         ];
+        $new_collection = $db->select('d8_mapping', 'm')
+          ->fields('m', ['new_collection'])
+          ->condition('m.collection', $collection)
+          ->condition('m.migrate', 1)
+          ->condition('m.collection', ['', '#N/A'], 'NOT IN')
+          ->isNotNull('m.policy2')
+          ->groupBy('m.new_collection')
+          ->execute()
+          ->fetchCol();
+        sort($new_collection);
+        if (count($new_collection) === 2 && $new_collection === ['No', 'Yes']) {
+          $collections[$collection]['messages'][] = "Collection '$collection' column 'New collection' should be either 'Yes' or 'No'. Both found.";
+        }
+
+        if (!empty($row['collection_owner'])) {
+          $collections[$collection]['collection_owner'] = $row['collection_owner'];
+        }
       }
 
       // New collections.
@@ -125,9 +144,9 @@ class Prepare extends SourcePluginBase {
       else {
         if (in_array($row['type'], ['community', 'repository'])) {
           if (isset($node_collections[$collection])) {
-            $collections[$collection]['messages'][] = "Collection '$collection' (nid {$row['nid']}, type {$row['type']}) is overriding existing value created by nid {$collections[$collection]['nid']} ({$collections[$collection]['type']}).";
+            $collections[$collection]['messages'][] = "Collection '$collection' (nid {$row['nid']}, type {$row['type']}) is overriding existing value created by nid {$node_collections[$collection][0]} ({$node_collections[$collection][1]}).";
           }
-          $node_collections[$collection] = $row['nid'];
+          $node_collections[$collection] = [$row['nid'], $row['type']];
           $collections[$collection]['nid'] = $row['nid'];
           $collections[$collection]['type'] = $row['type'];
 
@@ -227,10 +246,9 @@ class Prepare extends SourcePluginBase {
       // New collections's nid is 0. Collections with a NULL nid are collections
       // inheriting their data (abstract, etc.) from a Drupal 6 'community' or
       // 'repository' but not containing any 'community' or 'repository'. Such
-      // cases should not be migrated and the error should be logged.
+      // cases should be logged and this row will be rejected later, in process.
       if (!isset($data['nid'])) {
         $collections[$collection]['messages'][] = "Collection '$collection' should inherit data from D6 but has no 'community' or 'repository' records defined.";
-        unset($collections[$collection]);
       }
     }
 
@@ -249,6 +267,11 @@ class Prepare extends SourcePluginBase {
         $this->idMap->saveMessage(['collection' => $collection], $message);
       }
       $row->setSourceProperty('messages', NULL);
+    }
+
+    // Only collections with nid strictly equals a valid integers are migrated.
+    if ($row->getSourceProperty('nid') === NULL) {
+      return FALSE;
     }
 
     return parent::prepareRow($row);
