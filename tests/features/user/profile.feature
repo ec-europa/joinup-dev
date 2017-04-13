@@ -140,7 +140,7 @@ Feature: User profile
     # the full name as header title and in the page title tag.
     When I go to the public profile of cgarnett67
     Then I should see the heading "Callista Garnett" in the "Header" region
-    And I should see the text "Callista Garnett" in the page title
+    And the HTML title tag should contain the text "Callista Garnett"
     # The title should not be duplicated.
     And I should not see the "Page title" region
     And I should not see the heading "cgarnett67"
@@ -148,5 +148,5 @@ Feature: User profile
     # The full name fall backs to the user name when the fields are not filled.
     When I go to the public profile of delwin999
     Then I should see the heading delwin999 in the "Header" region
-    And I should see the text delwin999 in the page title
+    And the HTML title tag should contain the text delwin999
     And I should not see the "Page title" region

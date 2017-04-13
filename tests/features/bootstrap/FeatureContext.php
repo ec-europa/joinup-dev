@@ -813,7 +813,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when the title tag is not found or the text doesn't match.
    *
-   * @Then I should see the text :text in the page title
+   * @Then the HTML title tag should contain the text :text
    */
   public function assertPageTitleTagContainsText($text) {
     $session = $this->getSession();
