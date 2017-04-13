@@ -84,3 +84,4 @@ hidden:
   field_type: true
   links: true
   og_audience: true
+  share_link: true

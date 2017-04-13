@@ -76,6 +76,11 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  share_link:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_keywords: true
   field_licence: true
