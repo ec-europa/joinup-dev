@@ -10,16 +10,14 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Route;
 
 /**
- * Tests that the Request Route condition plugin.
+ * Tests that the Request Route condition plugin works as expected.
  *
  * @group Plugin
  */
 class RequestRouteConditionTest extends KernelTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   public static $modules = ['system', 'joinup_core', 'og'];
 

@@ -104,7 +104,7 @@ trait UserTrait {
    * @param string $name
    *   The name of the user.
    *
-   * @return \Drupal\user\Entity\User
+   * @return \Drupal\user\UserInterface
    *   The loaded user entity.
    *
    * @throws \Exception
