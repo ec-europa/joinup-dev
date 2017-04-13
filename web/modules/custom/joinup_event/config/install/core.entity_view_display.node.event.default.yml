@@ -171,6 +171,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  share_link:
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_keywords: true
   field_organisation: true
