@@ -7,6 +7,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -183,6 +184,13 @@ class ShareContentForm extends FormBase {
     }
 
     $form_state->setRebuild();
+
+    // Provide an extra visual clue that the options have been saved, but only
+    // when Javascript is disabled. The form will have visual clues that
+    // indicate that the content is already shared for the remaining cases.
+    if (!$this->isModal() && !$this->isAjaxForm()) {
+      drupal_set_message($this->t('Sharing updated.'));
+    }
   }
 
   /**
@@ -320,6 +328,16 @@ QUERY;
    */
   protected function isModal() {
     return $this->getRequest()->query->get(MainContentViewSubscriber::WRAPPER_FORMAT) === 'drupal_modal';
+  }
+
+  /**
+   * Returns whether the form is being handled with an ajax request.
+   *
+   * @return bool
+   *   TRUE if the form is being handled through an AJAX request.
+   */
+  protected function isAjaxForm() {
+    return $this->getRequest()->query->has(FormBuilderInterface::AJAX_FORM_REQUEST);
   }
 
 }
