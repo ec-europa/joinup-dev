@@ -798,8 +798,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertRegionNotPresent($region) {
     $session = $this->getSession();
-    $regionObj = $session->getPage()->find('region', $region);
-    if ($regionObj) {
+    $element = $session->getPage()->find('region', $region);
+    if ($element) {
       throw new \Exception(sprintf('Region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
     }
   }
