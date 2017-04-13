@@ -30,22 +30,22 @@ Feature: Sharing content between collections
       | Hip-Hop      | Sara Barber   |
       | Drum'n'Bass  | Sara Barber   |
     And <content type> content:
-      | title   | collection | status    |
-      | <title> | Hip-Hop    | published |
+      | title               | collection | status    |
+      | Interesting content | Hip-Hop    | published |
 
     # Anonymous users cannot share anything.
     When I am an anonymous user
-    And I go to the content page of the type "<content type>" with the title "<title>"
-    And I go to the content page of the type "<content type>" with the title "<title>"
+    And I go to the content page of the type "<content type>" with the title "Interesting content"
+    And I go to the content page of the type "<content type>" with the title "Interesting content"
     Then I should not see the link "Share"
     # This "authenticated user" is not member of any collections.
     When I am logged in as an "authenticated user"
-    And I go to the content page of the type "<content type>" with the title "<title>"
+    And I go to the content page of the type "<content type>" with the title "Interesting content"
     Then I should not see the link "Share"
 
     # A member of a single collection shouldn't see the link.
     When I am logged in as "Marjolein Rye"
-    And I go to the content page of the type "<content type>" with the title "<title>"
+    And I go to the content page of the type "<content type>" with the title "Interesting content"
     Then I should not see the link "Share"
 
     # A collection member should see the link.
@@ -61,7 +61,7 @@ Feature: Sharing content between collections
     But the following fields should not be present "Classic Rock, Power ballad"
 
     # Verify on another node the correctness of the share tool.
-    When I go to the content page of the type "<content type>" with the title "<title>"
+    When I go to the content page of the type "<content type>" with the title "Interesting content"
     And I click "Share"
     Then I should see the heading "Share"
     And the following fields should be present "Classic Rock, Drum'n'Bass"
@@ -78,14 +78,14 @@ Feature: Sharing content between collections
     When I go to the homepage of the "Classic Rock" collection
     Then I should see the "New D'n'B compilation released" tile
     And I should see the "Rockabilly is still rocking" tile
-    And I should see the "Best mic for MCs" tile
+    And I should see the "Interesting content" tile
 
     # It should not be shared in the other collection.
     When I go to the homepage of the "Drum'n'Bass" collection
-    Then I should not see the "Best mic for MCs" tile
+    Then I should not see the "Interesting content" tile
 
     # Un-share the content.
-    When I go to the content page of the type "<content type>" with the title "<title>"
+    When I go to the content page of the type "<content type>" with the title "Interesting content"
     And I click "Share"
     Then I should see the heading "Share"
     And I uncheck "Classic Rock"
@@ -96,12 +96,15 @@ Feature: Sharing content between collections
     When I go to the homepage of the "Classic Rock" collection
     Then I should see the "New D'n'B compilation released" tile
     And I should see the "Rockabilly is still rocking" tile
-    But I should not see the "Best mic for MCs" tile
+    But I should not see the "Interesting content" tile
 
     # The content should obviously not shared in the other collection too.
     When I go to the homepage of the "Drum'n'Bass" collection
-    Then I should not see the "Best mic for MCs" tile
+    Then I should not see the "Interesting content" tile
 
     Examples:
-      | content type | title            |
-      | discussion   | Best mic for MCs |
+      | content type |
+      | event        |
+      | document     |
+      | discussion   |
+      | news         |
