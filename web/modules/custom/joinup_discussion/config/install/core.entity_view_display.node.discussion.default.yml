@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.discussion.body
     - field.field.node.discussion.field_comments
     - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_state
     - field.field.node.discussion.og_audience
     - node.type.discussion
@@ -68,4 +69,5 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_shared_in: true

@@ -135,3 +135,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_keywords: true
+  field_shared_in: true
