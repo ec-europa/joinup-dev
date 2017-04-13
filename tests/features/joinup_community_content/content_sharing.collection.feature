@@ -4,7 +4,7 @@ Feature: Sharing content between collections
   I want to share content between collections
   So that useful information has more visibility
 
-  Scenario: Users can share content in the collections they are member of.
+  Scenario Outline: Users can share content in the collections they are member of.
     Given users:
       | Username      | E-mail                    |
       | Sara Barber   | sara.barber@example.com   |
@@ -23,26 +23,29 @@ Feature: Sharing content between collections
     And discussion content:
       | title                       | collection   | status    |
       | Rockabilly is still rocking | Classic Rock | published |
-      | Best mic for MCs            | Hip-Hop      | published |
     And the following collection user memberships:
       | collection   | user          |
       | Hip-Hop      | Marjolein Rye |
       | Classic Rock | Sara Barber   |
       | Hip-Hop      | Sara Barber   |
       | Drum'n'Bass  | Sara Barber   |
+    And <content type> content:
+      | title   | collection | status    |
+      | <title> | Hip-Hop    | published |
 
     # Anonymous users cannot share anything.
     When I am an anonymous user
-    And I go to the "Best mic for MCs" discussion
+    And I go to the content page of the type "<content type>" with the title "<title>"
+    And I go to the content page of the type "<content type>" with the title "<title>"
     Then I should not see the link "Share"
     # This "authenticated user" is not member of any collections.
     When I am logged in as an "authenticated user"
-    And I go to the "Best mic for MCs" discussion
+    And I go to the content page of the type "<content type>" with the title "<title>"
     Then I should not see the link "Share"
 
     # A member of a single collection shouldn't see the link.
     When I am logged in as "Marjolein Rye"
-    And I go to the "Best mic for MCs" discussion
+    And I go to the content page of the type "<content type>" with the title "<title>"
     Then I should not see the link "Share"
 
     # A collection member should see the link.
@@ -58,7 +61,7 @@ Feature: Sharing content between collections
     But the following fields should not be present "Classic Rock, Power ballad"
 
     # Verify on another node the correctness of the share tool.
-    When I go to the "Best mic for MCs" discussion
+    When I go to the content page of the type "<content type>" with the title "<title>"
     And I click "Share"
     Then I should see the heading "Share"
     And the following fields should be present "Classic Rock, Drum'n'Bass"
@@ -82,7 +85,7 @@ Feature: Sharing content between collections
     Then I should not see the "Best mic for MCs" tile
 
     # Un-share the content.
-    When I go to the "Best mic for MCs" discussion
+    When I go to the content page of the type "<content type>" with the title "<title>"
     And I click "Share"
     Then I should see the heading "Share"
     And I uncheck "Classic Rock"
@@ -98,3 +101,7 @@ Feature: Sharing content between collections
     # The content should obviously not shared in the other collection too.
     When I go to the homepage of the "Drum'n'Bass" collection
     Then I should not see the "Best mic for MCs" tile
+
+    Examples:
+      | content type | title            |
+      | discussion   | Best mic for MCs |
