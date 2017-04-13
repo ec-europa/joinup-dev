@@ -159,7 +159,7 @@ Feature: News moderation.
 
     # The sections about managing revisions and groups should not be visible.
     And I should not see the text "Revision information"
-    And the following fields should not be present "Groups audience, State, Other groups, Create new revision, Revision log message"
+    And the following fields should not be present "Groups audience, State, Other groups, Create new revision, Revision log message, Shared in"
 
     And the following buttons should be present "Save as draft, Publish"
     And the following buttons should not be present "Propose, Request changes, Request deletion, Preview"
