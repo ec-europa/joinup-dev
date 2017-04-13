@@ -6,6 +6,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\joinup_migrate\FileUtility;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
@@ -53,6 +54,13 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   protected $legacyDb;
 
   /**
+   * Legacy site webroot.
+   *
+   * @var string
+   */
+  protected $legacyWebroot;
+
+  /**
    * Migration plugin manager.
    *
    * @var \Drupal\migrate\Plugin\MigrationPluginManager
@@ -63,6 +71,11 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    * {@inheritdoc}
    */
   protected function setUp() {
+    $this->legacyWebroot = rtrim(getenv('SIMPLETEST_LEGACY_WEBROOT'), '/');
+
+    // Check if we're able to access the legacy site files.
+    FileUtility::checkLegacySiteWebRoot($this->legacyWebroot);
+
     $this->setUpSparql();
     $this->setUpLegacyDb();
 
