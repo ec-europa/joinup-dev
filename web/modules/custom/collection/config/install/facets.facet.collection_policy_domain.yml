@@ -7,7 +7,7 @@ url_alias: collection_policy_domain
 weight: 0
 min_count: 1
 show_only_one_result: false
-field_identifier: tid
+field_identifier: policy_domain
 facet_source_id: 'search_api_field:rdf_entity.field_collection_content'
 widget:
   type: links_inline
