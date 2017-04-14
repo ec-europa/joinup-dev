@@ -228,7 +228,8 @@ function joinup_user_search_api_query_search_api_field_field_user_content_alter(
   $user = $query->getOption('search_api_field entity');
 
   // Do not show contact information and owner entities as they are not
-  // relevant.
+  // relevant for the user content, and they are visualised in the related
+  // entity "about" page.
   $query->addCondition('entity_bundle', ['contact_information', 'owner'], 'NOT IN');
 
   $groups = [];
