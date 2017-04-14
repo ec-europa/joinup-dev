@@ -181,6 +181,13 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
   /**
    * {@inheritdoc}
    */
+  public function getDisplay() {
+    return $this->getPluginDefinition()['display_id'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function calculateDependencies() {
     return [];
   }
