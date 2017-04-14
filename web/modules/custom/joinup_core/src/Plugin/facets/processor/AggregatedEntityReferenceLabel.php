@@ -110,8 +110,7 @@ class AggregatedEntityReferenceLabel extends ProcessorPluginBase implements Buil
 
         // When the field is a entity reference, collect the target type.
         if ($property instanceof FieldDefinitionInterface && $property->getType() === 'entity_reference') {
-          $settings = $property->getSettings();
-          $target_type = $settings['target_type'];
+          $target_type = $property->getSetting('target_type');
 
           // Ensure that the entry exists in the array.
           $reference_types += [$target_type => 0];
