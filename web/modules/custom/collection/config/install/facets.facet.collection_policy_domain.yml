@@ -13,7 +13,8 @@ widget:
   type: links_inline
   config:
     show_numbers: true
-    soft_limit: '0'
+    prefix_text: ''
+    suffix_text: ''
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -28,6 +29,11 @@ processor_configs:
       sort: -10
     settings:
       sort: DESC
+  aggregated_entity_reference_label:
+    processor_id: aggregated_entity_reference_label
+    weights:
+      build: 5
+    settings: {  }
   count_limit:
     processor_id: count_limit
     weights:
