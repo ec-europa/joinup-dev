@@ -28,6 +28,7 @@ dependencies:
     - ds
     - image
     - joinup_core
+    - user
 id: rdf_entity.collection.group_header
 targetEntityType: rdf_entity
 bundle: collection
@@ -47,6 +48,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_ar_logo:
     type: image
     weight: 1
@@ -64,10 +66,12 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
+    region: content
   join_collection:
     weight: 3
     settings: {  }
     third_party_settings: {  }
+    region: content
   label:
     label: hidden
     type: string
@@ -84,6 +88,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
+    region: content
 hidden:
   field_ar_abstract: true
   field_ar_access_url: true

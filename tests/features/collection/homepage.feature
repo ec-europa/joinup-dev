@@ -33,11 +33,11 @@ Feature: Collection homepage
     And I should not see the "Middle earth daily" tile
 
     # Test the filtering by facets.
-    When I click the event content tab
+    When I click the Event content tab
     Then I should see text matching "Big hobbit feast - fireworks at midnight"
     Then I should not see text matching "Rohirrim make extraordinary deal"
     Then I should not see text matching "Breaking: Gandalf supposedly plans his retirement"
-    When I click the news content tab
+    When I click the News content tab
     Then I should not see text matching "Big hobbit feast - fireworks at midnight"
     Then I should see text matching "Rohirrim make extraordinary deal"
     Then I should see text matching "Breaking: Gandalf supposedly plans his retirement"
