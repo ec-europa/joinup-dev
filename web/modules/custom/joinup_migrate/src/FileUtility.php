@@ -2,7 +2,8 @@
 
 namespace Drupal\joinup_migrate;
 
-use GuzzleHttp\Client;
+use Drupal\Core\Http\ClientFactory;
+use GuzzleHttp\HandlerStack;
 
 /**
  * Provides utility methods for files import.
@@ -16,7 +17,8 @@ class FileUtility {
    *   The legacy site webroot.
    *
    * @throws \Exception
-   *   When the legacy site webroot or doesn't exist or is not readable.
+   *   When the legacy site webroot is not defined or doesn't exist or is not
+   *   readable.
    */
   public static function checkLegacySiteWebRoot($webroot) {
     if (empty($webroot)) {
@@ -26,11 +28,20 @@ class FileUtility {
     $files = "$webroot/sites/default/files";
     $valid = is_dir($files) && is_readable($files);
     if (!$valid && !is_dir($files)) {
-      // It might be a remote location, accessible via HTTP. We call directly
-      // the Guzzle client class as the container might not be in place yet.
-      $response = (new Client())->request('HEAD', "$files/.htaccess", ['http_errors' => FALSE]);
-      if ($response->getStatusCode() === 403) {
-        $valid = TRUE;
+      // It might be a remote location, accessible via HTTP.
+      $options = ['http_errors' => FALSE];
+      // We call directly the Guzzle client class because the container might
+      // not be in place yet.
+      $http_client_factory = new ClientFactory(HandlerStack::create());
+      $http_client = $http_client_factory->fromOptions();
+      // Do three tries to avoid false positives.
+      for ($i = 0; $i < 3; $i++) {
+        // logo_en.gif is well-known file used in the site.
+        $response = $http_client->request('HEAD', "$files/logo_en.gif", $options);
+        if ($response->getStatusCode() === 200) {
+          $valid = TRUE;
+          break;
+        }
       }
     }
 
