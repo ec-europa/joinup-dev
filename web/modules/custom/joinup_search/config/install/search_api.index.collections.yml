@@ -41,6 +41,15 @@ field_settings:
         - 'entity:rdf_entity/collection'
         - 'entity:rdf_entity/og_audience'
         - 'entity:rdf_entity/field_isr_is_version_of'
+  policy_domain:
+    label: 'Policy domain'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_policy_domain'
+        - 'entity:rdf_entity/field_policy_domain'
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -155,8 +164,8 @@ datasource_settings:
       selected: {  }
 processor_settings:
   add_url: {  }
-  rendered_item: {  }
   aggregated_field: {  }
+  rendered_item: {  }
 tracker_settings:
   default: {  }
 options:
