@@ -121,13 +121,7 @@ class SolutionFulfillmentGuard implements GuardInterface {
    * @see https://www.drupal.org/node/2745673
    */
   protected function getState(RdfInterface $entity) {
-    if ($entity->isNew()) {
-      return $entity->field_is_state->first()->value;
-    }
-    else {
-      $unchanged_entity = $this->entityTypeManager->getStorage('rdf_entity')->loadUnchanged($entity->id());
-      return $unchanged_entity->field_is_state->first()->value;
-    }
+    return $entity->field_is_state->first()->value;
   }
 
 }

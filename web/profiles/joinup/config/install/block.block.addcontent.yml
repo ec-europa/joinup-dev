@@ -3,7 +3,6 @@ status: false
 dependencies:
   module:
     - facets
-    - joinup
   theme:
     - joinup_theme
 id: addcontent

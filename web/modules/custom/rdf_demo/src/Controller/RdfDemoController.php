@@ -25,16 +25,16 @@ class RdfDemoController extends ControllerBase {
 
     $rids = $query->execute();
     $entities = $entity_storage->loadMultiple($rids);
-    $list = array('#theme' => 'item_list');
+    $list = ['#theme' => 'item_list'];
     /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     foreach ($entities as $entity) {
-      $list['#items'][] = array('#markup' => $entity->link());
+      $list['#items'][] = ['#markup' => $entity->link()];
     }
 
     // @todo Find out why paging is not working...
-    $build = array(
+    $build = [
       'list' => $list,
-    );
+    ];
     return $build;
   }
 

@@ -2,10 +2,13 @@
 
 namespace Drupal\Tests\joinup_discussion\Functional;
 
+use Drupal\joinup_core\ELibraryCreationOptions;
 use Drupal\Tests\joinup_core\Functional\NodeWorkflowTestBase;
 
 /**
  * Tests CRUD operations and workflow transitions for the discussion node.
+ *
+ * @group workflow
  */
 class DiscussionWorkflowTest extends NodeWorkflowTestBase {
 
@@ -15,11 +18,11 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
   protected function createAccessProvider() {
     return [
       'collection' => [
-        self::ELIBRARY_ONLY_FACILITATORS => [
+        ELibraryCreationOptions::FACILITATORS => [
           'userModerator',
           'userOgFacilitator',
         ],
-        self::ELIBRARY_MEMBERS_FACILITATORS => [
+        ELibraryCreationOptions::MEMBERS => [
           'userModerator',
           'userOgMember',
           'userOgFacilitator',
@@ -27,7 +30,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
           // @see: \Drupal\og\Entity\OgMembership::getRoles().
           'userOgAdministrator',
         ],
-        self::ELIBRARY_REGISTERED_USERS => [
+        ELibraryCreationOptions::REGISTERED_USERS => [
           'userAuthenticated',
           'userModerator',
           'userOgFacilitator',
@@ -37,15 +40,15 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
         ],
       ],
       'solution' => [
-        self::ELIBRARY_ONLY_FACILITATORS => [
+        ELibraryCreationOptions::FACILITATORS => [
           'userModerator',
           'userOgFacilitator',
         ],
-        self::ELIBRARY_MEMBERS_FACILITATORS => [
+        ELibraryCreationOptions::MEMBERS => [
           'userModerator',
           'userOgFacilitator',
         ],
-        self::ELIBRARY_REGISTERED_USERS => [
+        ELibraryCreationOptions::REGISTERED_USERS => [
           'userAuthenticated',
           'userModerator',
           'userOgFacilitator',
@@ -273,7 +276,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
    */
   protected function getWorkflowElibraryCreationRoles($e_library, $moderation) {
     $allowed_roles = [
-      self::ELIBRARY_ONLY_FACILITATORS => [
+      ELibraryCreationOptions::FACILITATORS => [
         self::POST_MODERATION => [
           'userOgFacilitator' => [
             'validate',
@@ -283,7 +286,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
           ],
         ],
       ],
-      self::ELIBRARY_MEMBERS_FACILITATORS => [
+      ELibraryCreationOptions::MEMBERS => [
         self::POST_MODERATION => [
           'userOgMember' => [
             'validate',
@@ -296,7 +299,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
           ],
         ],
       ],
-      self::ELIBRARY_REGISTERED_USERS => [
+      ELibraryCreationOptions::REGISTERED_USERS => [
         self::POST_MODERATION => [
           'userAuthenticated' => [
             'validate',

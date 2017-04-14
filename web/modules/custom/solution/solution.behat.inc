@@ -5,6 +5,7 @@
  * Contains Drupal\solution\solution.behat.inc.
  */
 
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -249,7 +250,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     foreach ($file_fields as $field_name) {
       if (!empty($values[$field_name])) {
-        $values[$field_name] = [$this->createFile($values[$field_name], $this->getMinkParameter('files_path'))];
+        $values[$field_name] = [$this->createFile($values[$field_name])->id()];
       }
     }
 
@@ -399,16 +400,33 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Tracks solutions that are manually deleted and don't need cleaning up.
+   *
+   * @param string $solution
+   *   The name of the solution.
+   *
+   * @Given the :solution solution will be deleted manually
+   */
+  public function skipCleaningOfSolution($solution) {
+    unset($this->solutions[$this->getSolutionByName($solution)->id()]);
+  }
+
+  /**
    * Remove any created solutions.
    *
    * @AfterScenario
    */
-  public function cleanSolutions() {
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
-    $storage = \Drupal::service('entity_type.manager')->getStorage('rdf_entity');
+  public function cleanSolutions(AfterScenarioScope $event) {
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
-      $solution->delete();
+      $name = $solution->getName();
+      try {
+        $solution->delete();
+      }
+      catch (Throwable $e) {
+        // Throw a more helpful error if something goes wrong during cleanup.
+        throw new \Exception(sprintf('Error while cleaning up solution "%s" after completing scenario "%s" of feature "%s": "%s"', $name, $event->getFeature()->getTitle(), $event->getScenario()->getTitle(), $e->getMessage()));
+      }
     }
   }
 

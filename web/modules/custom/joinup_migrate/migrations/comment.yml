@@ -1,0 +1,61 @@
+id: comment
+label: Comment
+migration_tags:
+  - node
+  - comment
+source:
+  plugin: comment
+  constants:
+    entity_type: node
+    comment_type: comment
+    field_name: field_comments
+process:
+  pid:
+    plugin: migration
+    migration: d6_comment
+    source: pid
+  entity_type: constants/entity_type
+  entity_id:
+    - plugin: migration
+      source: nid
+      migration:
+        - discussion
+        - document
+        - event
+        - news
+      no_stub: true
+    - plugin: skip_on_empty
+      method: row
+      message: 'No migrated parent node'
+  comment_type: constants/comment_type
+  field_name: constants/field_name
+  subject:
+    plugin: callback
+    source: subject
+    callable: trim
+  uid:
+    - plugin: migration
+      source: uid
+      migration: user
+    - plugin: default_value
+      default_value: 0
+  name: name
+  mail: mail
+  homepage: homepage
+  hostname: hostname
+  created: timestamp
+  changed: timestamp
+  status: status
+  thread: thread
+  field_body:
+    plugin: html_to_plain_text
+    source: comment
+destination:
+  plugin: entity:comment
+  default_bundle: comment
+migration_dependencies:
+  required:
+    - discussion
+    - document
+    - event
+    - news

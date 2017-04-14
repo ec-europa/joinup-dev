@@ -239,7 +239,7 @@ function solution_rdf_entity_load($entities) {
   /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
   foreach ($entities as $entity) {
     if ($entity->bundle() != 'solution') {
-      return;
+      continue;
     }
     // In ADMS-AP collections point to solutions.
     // The reverse relation would have been more logical,
@@ -275,7 +275,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
         'rdf_entity' => $entity->id(),
       ]),
-      '#attributes' => array('class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'),
+      '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
     ];
   }
 

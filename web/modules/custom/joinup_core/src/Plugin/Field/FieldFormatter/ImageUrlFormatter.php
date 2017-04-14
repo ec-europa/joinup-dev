@@ -53,7 +53,7 @@ class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPlugin
    * link part.
    */
   public function settingsSummary() {
-    $summary = array();
+    $summary = [];
 
     $image_styles = image_style_options(FALSE);
     // Unset possible 'No defined styles' option.
@@ -62,7 +62,7 @@ class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPlugin
     // their styles in code.
     $image_style_setting = $this->getSetting('image_style');
     if (isset($image_styles[$image_style_setting])) {
-      $summary[] = t('Image style: @style', array('@style' => $image_styles[$image_style_setting]));
+      $summary[] = t('Image style: @style', ['@style' => $image_styles[$image_style_setting]]);
     }
     else {
       $summary[] = t('Original image');
@@ -86,7 +86,7 @@ class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = array();
+    $elements = [];
     $files = $this->getEntitiesToView($items, $langcode);
 
     // Early opt-out if the field is empty.

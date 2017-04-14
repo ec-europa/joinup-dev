@@ -27,8 +27,8 @@ trait RdfDatabaseConnectionTrait {
   /**
    * Checks if the triple store is an Virtuoso 6 instance.
    *
-   * @return bool
-   *   TRUE if it's a Virtuoso 6 server.
+   * @throws \Exception
+   *   When Virtuoso version is 6.
    */
   protected function detectVirtuoso6() {
     $client = Http::getDefaultHttpClient();
@@ -37,33 +37,52 @@ trait RdfDatabaseConnectionTrait {
     $client->setMethod('GET');
     $response = $client->request();
     $server_header = $response->getHeader('Server');
-    if (strpos($server_header, "Virtuoso/06") === FALSE) {
-      return FALSE;
+    if (strpos($server_header, "Virtuoso/06") !== FALSE) {
+      throw new \Exception('Not running on Virtuoso 6.');
     }
-    return TRUE;
   }
 
   /**
    * Setup the db connection to the triple store.
    *
-   * @return bool
-   *   TRUE if the connection has been set correctly.
+   * @throws \LogicException
+   *   When SIMPLETEST_SPARQL_DB is not set.
    */
   protected function setUpSparql() {
     // If the test is run with argument db url then use it.
     // export SIMPLETEST_SPARQL_DB='sparql://127.0.0.1:8890/'.
     $db_url = getenv('SIMPLETEST_SPARQL_DB');
     if (empty($db_url)) {
-      return FALSE;
+      throw new \LogicException('No Sparql connection was defined. Set the SIMPLETEST_SPARQL_DB environment variable.');
     }
 
     $this->sparqlConnectionInfo = Database::convertDbUrlToConnectionInfo($db_url, dirname(dirname(__FILE__)));
     $this->sparqlConnectionInfo['namespace'] = 'Drupal\\rdf_entity\\Database\\Driver\\sparql';
+
+    // Do not allow Virtuoso 6.
+    $this->detectVirtuoso6();
+
     Database::addConnectionInfo('sparql_default', 'default', $this->sparqlConnectionInfo);
 
     $this->sparql = Database::getConnection('default', 'sparql_default');
+  }
 
-    return TRUE;
+  /**
+   * {@inheritdoc}
+   */
+  protected function writeSettings(array $settings) {
+    // The BrowserTestBase is creating a new copy of the settings.php file to
+    // the test directory so the SPARQL entry needs to be inserted into the new
+    // configuration.
+    $key = 'sparql_default';
+    $target = 'default';
+
+    $settings['databases'][$key][$target] = (object) [
+      'value' => Database::getConnectionInfo($key)[$target],
+      'required' => TRUE,
+    ];
+
+    parent::writeSettings($settings);
   }
 
 }

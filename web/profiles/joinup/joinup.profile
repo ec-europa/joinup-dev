@@ -14,6 +14,7 @@ use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\joinup\JoinupCustomInstallTasks;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -22,26 +23,26 @@ use Drupal\views\ViewExecutable;
  * Add the Sparql endpoint fields to the configure database install step.
  */
 function joinup_form_install_settings_form_alter(&$form, FormStateInterface $form_state) {
-  $form['sparql'] = array(
+  $form['sparql'] = [
     '#type' => 'fieldset',
     '#title' => 'Sparql endpoint',
     '#tree' => TRUE,
-  );
-  $form['sparql']['host'] = array(
+  ];
+  $form['sparql']['host'] = [
     '#type' => 'textfield',
     '#title' => 'Host',
     '#default_value' => 'localhost',
     '#size' => 45,
     '#required' => TRUE,
-  );
-  $form['sparql']['port'] = array(
+  ];
+  $form['sparql']['port'] = [
     '#type' => 'number',
     '#title' => 'Port',
     '#default_value' => '8890',
     '#min' => 0,
     '#max' => 65535,
     '#required' => TRUE,
-  );
+  ];
 
   $form['actions']['save']['#limit_validation_errors'][] = ['sparql'];
   $form['actions']['save']['#submit'][] = 'joinup_form_install_settings_form_save';
@@ -56,17 +57,17 @@ function joinup_form_install_settings_form_save($form, FormStateInterface $form_
   // @see rdf_entity.services.yml
   $key = 'sparql_default';
   $target = 'default';
-  $database = array(
+  $database = [
     'prefix' => '',
     'host' => $host,
     'port' => $port,
     'namespace' => 'Drupal\\rdf_entity\\Database\\Driver\\sparql',
     'driver' => 'sparql',
-  );
-  $settings['databases'][$key][$target] = (object) array(
+  ];
+  $settings['databases'][$key][$target] = (object) [
     'value' => $database,
     'required' => TRUE,
-  );
+  ];
   drupal_rewrite_settings($settings);
   // Load the database connection to make it available in the current request.
   Database::addConnectionInfo($key, $target, $database);
@@ -284,8 +285,17 @@ function joinup_views_pre_view(ViewExecutable $view) {
   //   created in PathPluginBase::getRoute(). We can then use this to output the
   //   correct cache contexts in ViewPageController::handle().
   // @see https://www.drupal.org/node/2839058
-  if ($view->id() === 'collections') {
+  if (in_array($view->id(), ['collections', 'solutions', 'content_overview'])) {
     $view->display_handler->display['cache_metadata']['contexts'][] = 'og_role';
     $view->display_handler->display['cache_metadata']['contexts'][] = 'user.roles';
   }
+}
+
+/**
+ * Implements hook_install_tasks_alter().
+ */
+function joinup_install_tasks_alter(&$tasks, $install_state) {
+  $tasks['joinup_remove_simplenews_defaults'] = [
+    'function' => [JoinupCustomInstallTasks::class, 'removeSimpleNewsDefaults'],
+  ];
 }

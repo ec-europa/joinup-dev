@@ -18,7 +18,7 @@ Feature: June 2016 demo
       | Fantastic four | Based on Reed Richard's tower.       | logo.png | yes        |                                                                              | validated |
 
     And users:
-      | name      | pass                 | mail                    | roles     |
+      | Username  | Password             | E-mail                  | Roles     |
       | Stan lee  | cameoineverymovie    | stan.lee@example.com    | moderator |
       | Nick Fury | ihaveasecret         | nick.fury@example.com   |           |
       | Wolverine | smellslikemetalclaws | logan.x.men@example.com |           |
@@ -106,6 +106,8 @@ Feature: June 2016 demo
     # See menu items.
     Then I should see the following collection menu items in the specified order:
       | text               |
+      | Overview           |
+      | About              |
       | S.H.I.E.L.D. Home  |
       | About S.H.I.E.L.D. |
       | List of members    |
@@ -130,6 +132,8 @@ Feature: June 2016 demo
     And I should see the text "You want to become a S.H.I.E.L.D. agent?"
     And  I should see the following collection menu items in the specified order:
       | text               |
+      | Overview           |
+      | About              |
     # @todo: When ISAICP-2369 is in, this menu item should be moved to the end of the list.
       | How to apply       |
       | S.H.I.E.L.D. Home  |
@@ -203,6 +207,8 @@ Feature: June 2016 demo
     # See menu items.
     Then I should see the following collection menu items in the specified order:
       | text               |
+      | Overview           |
+      | About              |
     # @todo: When ISAICP-2369 is in, this menu item should be moved to the end of the list.
       | How to apply       |
       | S.H.I.E.L.D. Home  |

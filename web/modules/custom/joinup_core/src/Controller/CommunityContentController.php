@@ -4,6 +4,7 @@ namespace Drupal\joinup_core\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\NodeWorkflowAccessControlHandler;
 use Drupal\og\OgAccessInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -77,16 +78,27 @@ abstract class CommunityContentController extends ControllerBase {
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the document entity is created.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account to check access for. The current user will be used if NULL.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createAccess(RdfInterface $rdf_entity) {
+  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL) {
+    if (empty($account)) {
+      $account = $this->currentUser();
+    }
     if (!in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
       return AccessResult::forbidden();
     }
+
+    // If the collection is archived, content creation is not allowed.
+    if ($rdf_entity->bundle() === 'collection' && $rdf_entity->field_ar_state->first()->value === 'archived') {
+      return AccessResult::forbidden();
+    }
+
     $content = $this->createContentEntity($rdf_entity);
-    return $this->workflowAccessControlHanlder->entityAccess($content, 'create');
+    return $this->workflowAccessControlHanlder->entityAccess($content, 'create', $account);
   }
 
   /**

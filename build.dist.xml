@@ -12,7 +12,7 @@
     <includepath classpath="src/Phing" />
 
     <echo msg="Loading Drush task." />
-    <taskdef name="drush" classname="\Drush\Task" />
+    <taskdef name="drush" classname="\Phing\Drush\Task" />
 
     <echo msg="Loading PHP Codesniffer Configuration task." />
     <taskdef name="phpcodesnifferconfiguration" classname="\DrupalProject\Phing\PhpCodeSnifferConfigurationTask" />
@@ -25,7 +25,7 @@
         <chmod mode="0755" failonerror="true" verbose="true" quiet="false" file="${website.settings.dir}" />
     </target>
 
-    <!-- Make settings.php writeable so that the installer save it. -->
+    <!-- Make settings.php writeable so that the installer can write to it. -->
     <target name="writable-settings-php">
         <if>
             <available file="${website.settings.php}" type="file" property="website.settings.php.available" />
@@ -128,6 +128,8 @@
                 testsuiteName="${phpunit.testsuite.name}"
                 baseUrl="${phpunit.base_url}"
                 dbUrl="${phpunit.db_url}"
+                legacyDbUrl="${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${phpunit.migrate.legacy_db.name}"
+                legacyWebroot="${migration.source.root}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
                 browsertestOutputFile="${phpunit.browsertest_output_file}" />
 
@@ -189,7 +191,7 @@
             <filterchain>
                 <replaceregexp>
                     <regexp
-                        pattern="^# (if \(file_exists\(__DIR__ \. '\/settings\.local\.php'\)\) \{\n)# (  include __DIR__ \. '\/settings\.local\.php';\n)# (\})"
+                        pattern="^# (if \(file_exists\(\$app_root \. '\/' \. \$site_path \. '\/settings\.local\.php'\)\) \{\n)# (  include \$app_root \. '\/' \. \$site_path \. '\/settings\.local\.php';\n)# (\})"
                         replace="\1\2\3"
                         modifiers="m" />
                 </replaceregexp>

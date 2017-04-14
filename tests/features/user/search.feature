@@ -7,7 +7,7 @@ Feature: User management
     # Newkid user created at 03/05/2016
     # Old guy user was created at 06/05/2012
     Given users:
-      | name               | roles         | created    | status |
+      | Username           | Roles         | Created    | Status |
       | Jolly user manager | Moderator     |            | 1      |
       | Trusty user        |               | 1388880000 | 0      |
       | Newkid             |               | 1457136000 | 1      |

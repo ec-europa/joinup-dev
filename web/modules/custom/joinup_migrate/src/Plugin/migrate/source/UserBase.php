@@ -8,13 +8,6 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
 abstract class UserBase extends JoinupSqlBase {
 
   /**
-   * Table aliases.
-   *
-   * @var string[]
-   */
-  protected $alias = [];
-
-  /**
    * {@inheritdoc}
    */
   public function getIds() {
@@ -39,11 +32,7 @@ abstract class UserBase extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    return $this->select('users', 'u')
-      ->fields('u', ['uid'])
-      ->orderBy('u.uid')
-      // Add user migrate filters.
-      ->addTag('user_migrate');
+    return $this->select('d8_user', 'u')->fields('u', ['uid']);
   }
 
 }

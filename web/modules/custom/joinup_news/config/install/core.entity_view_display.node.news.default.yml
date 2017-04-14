@@ -17,7 +17,7 @@ dependencies:
   module:
     - comment
     - ds
-    - joinup
+    - joinup_core
     - link
     - options
     - text
