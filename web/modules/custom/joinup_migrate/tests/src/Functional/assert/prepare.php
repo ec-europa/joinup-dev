@@ -14,6 +14,7 @@ $expected_values = [
   ],
   'New collection' => [
     'policy2' => 'eProcurement',
+    'abstract' => 'Abstract for a new collection',
     'collection_owner' => 'doe@example.com',
     'roles' => '{"admin":[],"facilitator":[],"member":{"6842":1378476956}}',
   ],
@@ -25,10 +26,10 @@ $expected_values = [
   ],
   'Collection from Community' => [
     'type' => 'community',
-    'nid' => '42436',
+    'nid' => '149141',
     'policy2' => 'Collaboration',
+    'elibrary' => '0',
     'collection_owner' => 'jbloggs@example.com',
-    'roles' => '{"admin":[],"facilitator":{"6363":1458898156,"6364":1369819022,"7355":1396525296},"member":{"6363":1458898156,"6364":1369819022,"6549":1452513538,"6822":1332526658,"7077":1323431755,"7090":1396525012,"7207":1415570449,"7355":1396525296}}',
   ],
 ];
 

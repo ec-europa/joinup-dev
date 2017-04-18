@@ -195,6 +195,17 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    * {@inheritdoc}
    */
   public function tearDown() {
+    // Rollback migrations to cleanup RDF data.
+    foreach ($this->manager->createInstances(static::$rdfMigrations) as $id => $migration) {
+      try {
+        (new MigrateExecutable($migration, $this))->rollback();
+      }
+      catch (\Exception $e) {
+        $class = get_class($e);
+        $this->display("$class: {$e->getMessage()} ({$e->getFile()}, {$e->getLine()})", 'error');
+      }
+    }
+
     Database::removeConnection('migrate');
     $this->db = NULL;
     $this->legacyDb = NULL;
@@ -426,6 +437,22 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     'Ukraine',
     'United Kingdom',
     'Vatican City',
+  ];
+
+  /**
+   * Migrations that are creating RDF objects.
+   *
+   * @var string[]
+   */
+  protected static $rdfMigrations = [
+    'collection',
+    'contact',
+    'distribution',
+    'licence',
+    'owner',
+    'policy_domain',
+    'release',
+    'solution',
   ];
 
 }
