@@ -9,6 +9,7 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\search_api\Query\QueryInterface;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -144,4 +145,19 @@ function search_api_field_theme() {
       ],
     ],
   ];
+}
+
+/**
+ * Implements hook_search_api_query_alter().
+ *
+ * Adds the search_api_field facets to the facet query.
+ *
+ * @see facets_search_api_query_alter()
+ */
+function search_api_field_search_api_query_alter(QueryInterface &$query) {
+  if ($query->getIndex()->getServerInstance()->supportsFeature('search_api_facets')) {
+    $facet_manager = \Drupal::service('facets.manager');
+    $facet_source = 'search_api_field:' . $query->getSearchId();
+    $facet_manager->alterQuery($query, $facet_source);
+  }
 }

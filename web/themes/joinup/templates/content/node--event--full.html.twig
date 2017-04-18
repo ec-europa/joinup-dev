@@ -13,11 +13,7 @@
     {{ content.field_event_agenda }}
     {{ content.report }}
     <div class="action-link__wrapper right">
-      {# todo: It is only placeholder #}
-      <a href="/" class="action-link is-only-placeholder">
-        <span class="action-link__icon icon icon--share"></span>
-        <span class="action-link__link">{{ 'Share'|t }}</a>
-      </a>
+      {{ content.share_link }}
     </div>
   </div>
   <div id="event-location--{{ node.id }}" class="fieldset--separated">

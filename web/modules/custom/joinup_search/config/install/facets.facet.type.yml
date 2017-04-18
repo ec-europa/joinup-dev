@@ -2,9 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
+    - search_api.index.collections
     - views.view.search
   module:
-    - views
+    - search_api
 id: type
 name: Type
 url_alias: type
@@ -12,7 +13,7 @@ weight: 0
 min_count: 1
 show_only_one_result: false
 field_identifier: entity_bundle
-facet_source_id: 'views_page:search__page_1'
+facet_source_id: 'search_api:views_page__search__page_1'
 widget:
   type: links
   config:

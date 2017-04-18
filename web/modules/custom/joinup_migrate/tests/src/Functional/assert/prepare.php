@@ -11,7 +11,8 @@ $this->assertSuccessCount('prepare', 2);
 
 // Expected logged messages.
 $this->assertMessage('prepare', "Collection 'No Repository or Community' should inherit data from D6 but has no 'community' or 'repository' records defined.");
-$this->assertMessage('prepare', "On collection 'More than one Community or Repository' nid 105945 (11) is overriding existing value 145807 (community).");
+$this->assertMessage('prepare', "Collection 'New collection' column 'New collection' should be either 'Yes' or 'No'. Both found.");
+$this->assertMessage('prepare', "Collection 'More than one Community or Repository' (nid 105945, type repository) is overriding existing value created by nid 145807 (community).");
 
 // Imported content check.
 $imported = $this->legacyDb->select('d8_prepare')
@@ -31,6 +32,7 @@ $this->assertSame([
   'elibrary' => NULL,
   'publisher' => NULL,
   'contact' => NULL,
+  'collection_owner' => 'joeroe@example.com',
   'status' => NULL,
   'roles' => NULL,
 ], $imported['More than one Community or Repository']);
@@ -47,6 +49,7 @@ $this->assertSame([
   'elibrary' => NULL,
   'publisher' => NULL,
   'contact' => NULL,
+  'collection_owner' => 'doe@example.com',
   'status' => NULL,
   'roles' => '{"admin":[],"facilitator":[],"member":{"6565":1323255883}}',
 ], $imported['New collection']);

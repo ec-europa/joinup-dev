@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.discussion.body
     - field.field.node.discussion.field_comments
     - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_state
     - field.field.node.discussion.og_audience
     - node.type.discussion
@@ -21,7 +22,7 @@ bundle: discussion
 mode: default
 content:
   body:
-    weight: 2
+    weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -29,7 +30,7 @@ content:
     region: content
   field_comments:
     type: comment_default
-    weight: 5
+    weight: 4
     label: above
     settings:
       pager_id: 0
@@ -45,14 +46,14 @@ content:
     type: entity_reference_label
     region: content
   field_state:
-    weight: 6
+    weight: 5
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   links:
-    weight: 4
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -61,7 +62,7 @@ content:
     type: entity_reference_label
     settings:
       link: true
-    weight: 3
+    weight: 2
     third_party_settings: {  }
     region: content
   report:
@@ -76,4 +77,10 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
-hidden: {  }
+  share_link:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_shared_in: true
