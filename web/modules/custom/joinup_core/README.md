@@ -20,10 +20,6 @@ will need to be defined for the field and the property 'workflow_callback' has
 to be set.
 * a settings file has to be provided for each entity type in order to define the
 roles that are allowed per transition.
-* in order to be able to perform checks in users other than the current logged
-in user, joinup_core also provides the `Drupal\joinup_core\WorkflowUserProvider`
-class that allows to set the user in stake for the access check. The default
-user remains the current logged in user.
 
 ## Content workflows
 The content workflows have a centralized handler and need to be defined in a
@@ -148,7 +144,6 @@ into the class. For example, in the joinup_news module, this is the constructor:
 ```
 public function __construct(
   EntityTypeManagerInterface $entityTypeManager,
-  WorkflowUserProvider $workflowUserProvider,
   JoinupRelationManager $relationManager,
   MembershipManagerInterface $ogMembershipManager,
   ConfigFactoryInterface $configFactory,
@@ -156,7 +151,6 @@ public function __construct(
   ) {
     parent::__construct(
       $entityTypeManager,
-      $workflowUserProvider,
       $relationManager,
       $ogMembershipManager,
       $configFactory,
