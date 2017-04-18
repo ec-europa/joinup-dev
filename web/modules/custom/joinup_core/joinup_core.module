@@ -9,6 +9,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
@@ -277,4 +278,26 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
   drupal_set_message(t('You are viewing the published version. To view the latest draft version, click @here.', [
     '@here' => $link,
   ]), 'warning');
+}
+
+/**
+ * Implements hook_entity_create().
+ */
+function joinup_core_entity_create(EntityInterface $entity) {
+  // Set the publication state when creating an entity that uses workflow.
+  if ($entity instanceof EntityPublishedInterface) {
+    /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
+    $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+    if ($workflow_helper->hasEntityStateField($entity)) {
+      $state_field = $workflow_helper->getEntityStateField($entity);
+      $workflow = $state_field->getWorkflow();
+      $state_id = $state_field->getValue()['value'];
+      if ($workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
+        $entity->setPublished();
+      }
+      else {
+        $entity->setUnpublished();
+      }
+    }
+  }
 }
