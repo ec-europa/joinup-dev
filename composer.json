@@ -108,6 +108,7 @@
         "patches": {
             "drupal/core": {
                 "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-6_0.patch",
+                "Contextual links button is always rendered even when no links are available (with warm client-side cache) @see https://www.drupal.org/node/2650910": "https://www.drupal.org/files/issues/2650910-42.patch",
                 "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                 "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-19.patch",
                 "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",

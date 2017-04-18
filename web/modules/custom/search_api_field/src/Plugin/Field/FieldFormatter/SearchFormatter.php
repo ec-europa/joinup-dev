@@ -174,6 +174,17 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       'tags' => $tags,
       'contexts' => ['url.path'],
     ];
+
+    // Add some information about the field.
+    // @see \Drupal\Core\Field\FormatterBase::view()
+    $entity = $items->getEntity();
+    $render += [
+      '#entity_type' => $entity->getEntityTypeId(),
+      '#bundle' => $entity->bundle(),
+      '#field_name' => $this->fieldDefinition->getName(),
+      '#entity' => $entity,
+    ];
+
     return $render;
   }
 

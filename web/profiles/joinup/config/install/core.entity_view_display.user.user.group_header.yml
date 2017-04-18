@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.user.compact
+    - core.entity_view_mode.user.group_header
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
@@ -14,19 +14,26 @@ dependencies:
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
     - field.field.user.user.field_user_subscription_events
-    - image.style.profile_icon
+    - image.style.image_style_collection_logo
   module:
     - ds
     - image
-    - joinup
+    - text
     - user
-id: user.user.compact
+id: user.user.group_header
 targetEntityType: user
 bundle: user
-mode: compact
+mode: group_header
 content:
+  field_user_business_title:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_user_family_name:
-    weight: 2
+    weight: 1
     label: hidden
     settings:
       link_to_entity: false
@@ -43,8 +50,7 @@ content:
     type: string
     region: content
   field_user_first_name:
-    type: string
-    weight: 1
+    weight: 0
     label: hidden
     settings:
       link_to_entity: false
@@ -58,12 +64,29 @@ content:
             classes: {  }
       joinup:
         template_suggestion: no_wrappers
+    type: string
     region: content
-  field_user_photo:
-    weight: 0
+  field_user_nationality:
+    weight: 3
     label: hidden
     settings:
-      image_style: profile_icon
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_user_organisation:
+    weight: 6
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_user_photo:
+    weight: 2
+    label: hidden
+    settings:
+      image_style: image_style_collection_logo
       image_link: ''
     third_party_settings:
       ds:
@@ -74,18 +97,36 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: no_wrappers
+        template_suggestion: ''
     type: image
     region: content
+  field_user_professional_domain:
+    weight: 4
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    type: entity_reference_label
+    region: content
+  member_for:
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
-  field_user_business_title: true
   field_user_content: true
   field_user_frequency: true
   field_user_group_types: true
-  field_user_nationality: true
-  field_user_organisation: true
-  field_user_professional_domain: true
   field_user_subscription_events: true
-  member_for: true
   simplenews: true
   user_field_user_content_top: true
