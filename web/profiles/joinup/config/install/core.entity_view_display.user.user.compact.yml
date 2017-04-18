@@ -18,6 +18,7 @@ dependencies:
   module:
     - ds
     - image
+    - joinup
     - user
 id: user.user.compact
 targetEntityType: user

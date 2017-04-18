@@ -140,7 +140,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       'search_api_field item' => $items->first(),
     ];
     $query = $search_api_index->query($options);
-    $query->setSearchId('search_api_field:' . $field_definition->getTargetEntityTypeId() . '.' . $field_definition->getName());
+    $query->setSearchId($field_definition->getTargetEntityTypeId() . '.' . $field_definition->getName());
     $query->setParseMode($this->parseModeManager->createInstance('direct'));
 
     if (!empty($settings['query_presets'])) {
