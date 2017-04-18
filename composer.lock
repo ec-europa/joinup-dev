@@ -124,16 +124,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.25.7",
+            "version": "3.25.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d4f1104f5ac9c755875c5e6e9bade2c70708219a"
+                "reference": "8c12f611bf5d89318141db7bc8dee644423957bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d4f1104f5ac9c755875c5e6e9bade2c70708219a",
-                "reference": "d4f1104f5ac9c755875c5e6e9bade2c70708219a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8c12f611bf5d89318141db7bc8dee644423957bd",
+                "reference": "8c12f611bf5d89318141db7bc8dee644423957bd",
                 "shasum": ""
             },
             "require": {
@@ -200,7 +200,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-04-11T22:31:27+00:00"
+            "time": "2017-04-18T18:47:31+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2868,7 +2868,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-rc2.zip",
-                "reference": "8.x-1.0-rc2",
+                "reference": null,
                 "shasum": "174a463535c6b77c4c9ec9481a7ab7989e661868"
             },
             "require": {
@@ -3053,7 +3053,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta3.zip",
-                "reference": "8.x-1.0-beta3",
+                "reference": null,
                 "shasum": "9ca0101738db00673f2511707a76d6ea0c9ce4db"
             },
             "require": {
@@ -7775,7 +7775,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/admin_toolbar-8.x-1.19.zip",
-                "reference": null,
+                "reference": "8.x-1.19",
                 "shasum": "87de41eab3c5cd49d4e1b5b764cb3b9d5ad683a0"
             },
             "require": {
@@ -7916,8 +7916,7 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            },
-            "time": "2017-03-28 23:54:52"
+            }
         },
         {
             "name": "drupal/config_update",
@@ -8184,12 +8183,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/drupalextension.git",
-                "reference": "0e12fbaea7d8c8f7fc00db7d2ce74d3fe2ed58c5"
+                "reference": "e49e1b1cbc68916ec35c0f72b69951a973c61dcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/0e12fbaea7d8c8f7fc00db7d2ce74d3fe2ed58c5",
-                "reference": "0e12fbaea7d8c8f7fc00db7d2ce74d3fe2ed58c5",
+                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/e49e1b1cbc68916ec35c0f72b69951a973c61dcf",
+                "reference": "e49e1b1cbc68916ec35c0f72b69951a973c61dcf",
                 "shasum": ""
             },
             "require": {
@@ -8237,7 +8236,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-13T06:48:13+00:00"
+            "time": "2017-04-15T08:54:07+00:00"
         },
         {
             "name": "fabpot/goutte",
