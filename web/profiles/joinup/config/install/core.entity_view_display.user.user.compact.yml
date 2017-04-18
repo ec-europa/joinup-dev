@@ -17,6 +17,7 @@ dependencies:
   module:
     - ds
     - image
+    - joinup
     - user
 id: user.user.compact
 targetEntityType: user
@@ -39,6 +40,7 @@ content:
       joinup:
         template_suggestion: no_wrappers
     type: string
+    region: content
   field_user_first_name:
     type: string
     weight: 1
@@ -55,6 +57,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: no_wrappers
+    region: content
   field_user_photo:
     weight: 0
     label: hidden
@@ -72,6 +75,7 @@ content:
       joinup:
         template_suggestion: no_wrappers
     type: image
+    region: content
 hidden:
   field_user_business_title: true
   field_user_frequency: true
@@ -81,3 +85,4 @@ hidden:
   field_user_professional_domain: true
   field_user_subscription_events: true
   member_for: true
+  simplenews: true

@@ -15,7 +15,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
-    - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
@@ -27,6 +26,7 @@ dependencies:
     - options
     - search_api_field
     - text
+    - user
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection
@@ -38,6 +38,7 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   field_ar_access_url:
     weight: 2
     label: above
@@ -49,6 +50,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_ar_affiliates:
     weight: 9
     label: above
@@ -56,6 +58,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_ar_closed:
     weight: 11
     label: above
@@ -65,6 +68,7 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    region: content
   field_ar_contact_information:
     weight: 5
     label: above
@@ -72,6 +76,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_ar_creation_date:
     weight: 3
     label: above
@@ -80,18 +85,21 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
+    region: content
   field_ar_description:
     weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   field_ar_elibrary_creation:
     weight: 12
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
   field_ar_moderation:
     weight: 13
     label: above
@@ -101,6 +109,7 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    region: content
   field_ar_modification_date:
     weight: 4
     label: above
@@ -109,6 +118,7 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
+    region: content
   field_ar_owner:
     weight: 6
     label: above
@@ -116,18 +126,21 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_ar_state:
     type: list_default
     weight: 14
     label: above
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_collection_content:
     weight: 16
     label: above
     settings: {  }
     third_party_settings: {  }
     type: search_api_field
+    region: content
   field_policy_domain:
     weight: 7
     label: above
@@ -135,6 +148,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_spatial_coverage:
     weight: 8
     label: above
@@ -142,6 +156,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   label:
     label: hidden
     type: string
@@ -149,13 +164,14 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    region: content
   rdf_entity_field_collection_content_top:
     weight: 15
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden:
   field_ar_banner: true
   field_ar_logo: true
-  field_ar_shared_content: true
   join_collection: true
   og_group: true

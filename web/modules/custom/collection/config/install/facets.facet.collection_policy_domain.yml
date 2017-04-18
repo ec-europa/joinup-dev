@@ -5,9 +5,9 @@ id: collection_policy_domain
 name: 'Policy Domain'
 url_alias: collection_policy_domain
 weight: 0
+min_count: 1
 show_only_one_result: false
 field_identifier: tid
-query_type_name: null
 facet_source_id: 'search_api_field:rdf_entity.field_collection_content'
 widget:
   type: links
@@ -15,6 +15,10 @@ widget:
     show_numbers: true
     soft_limit: 0
 query_operator: or
+use_hierarchy: false
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+hard_limit: null
 exclude: false
 only_visible_when_facet_source_is_visible: true
 processor_configs:
@@ -51,4 +55,3 @@ processor_configs:
     settings: {  }
 empty_behavior:
   behavior: none
-facet_configs: {  }

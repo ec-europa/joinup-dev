@@ -1,8 +1,6 @@
 langcode: en
 status: true
 dependencies:
-  module:
-    - facets
   theme:
     - joinup_theme
 id: pagetitle
@@ -16,10 +14,4 @@ settings:
   label: 'Page title'
   provider: core
   label_display: '0'
-visibility:
-  other_facet:
-    id: other_facet
-    facets: ''
-    facet_value: ''
-    negate: false
-    context_mapping: {  }
+visibility: {  }

@@ -17,7 +17,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
-    - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
@@ -240,6 +239,5 @@ content:
     region: content
 hidden:
   current_workflow_state: true
-  field_ar_shared_content: true
   field_collection_content: true
   uid: true

@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.storage.node.body
     - field.storage.node.field_short_title
+    - field.storage.node.field_shared_in
     - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_policy_domain
     - field.storage.rdf_entity.field_spatial_coverage
@@ -67,6 +68,14 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: nid
     type: integer
+  field_shared_in:
+    label: 'Shared in'
+    datasource_id: 'entity:node'
+    property_path: field_shared_in
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_shared_in
   id:
     label: ID
     datasource_id: 'entity:rdf_entity'
@@ -155,8 +164,8 @@ datasource_settings:
       selected: {  }
 processor_settings:
   add_url: {  }
-  rendered_item: {  }
   aggregated_field: {  }
+  rendered_item: {  }
 tracker_settings:
   default: {  }
 options:
