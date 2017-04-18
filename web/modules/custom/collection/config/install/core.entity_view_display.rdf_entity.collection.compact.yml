@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.rdf_entity.view_mode_featured
+    - core.entity_view_mode.rdf_entity.compact
     - field.field.rdf_entity.collection.field_ar_abstract
     - field.field.rdf_entity.collection.field_ar_access_url
     - field.field.rdf_entity.collection.field_ar_affiliates
@@ -20,39 +20,25 @@ dependencies:
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_spatial_coverage
-    - image.style.vertical_medium_image
+    - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
     - ds
     - image
-    - text
     - user
-id: rdf_entity.collection.view_mode_featured
+id: rdf_entity.collection.compact
 targetEntityType: rdf_entity
 bundle: collection
-mode: view_mode_featured
+mode: compact
 content:
-  field_ar_description:
-    weight: 2
-    label: hidden
-    settings:
-      trim_length: 200
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: text_trimmed
-    region: content
   field_ar_logo:
+    type: image
     weight: 0
+    region: content
     label: hidden
     settings:
-      image_style: vertical_medium_image
-      image_link: content
+      image_style: image_style_collection_logo
+      image_link: ''
     third_party_settings:
       ds:
         ft:
@@ -61,22 +47,15 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
-    type: image
-    region: content
+      joinup:
+        template_suggestion: ''
   label:
     label: hidden
     type: string
     weight: 1
     settings:
-      link_to_entity: true
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+      link_to_entity: false
+    third_party_settings: {  }
     region: content
 hidden:
   field_ar_abstract: true
@@ -86,6 +65,7 @@ hidden:
   field_ar_closed: true
   field_ar_contact_information: true
   field_ar_creation_date: true
+  field_ar_description: true
   field_ar_elibrary_creation: true
   field_ar_moderation: true
   field_ar_modification_date: true

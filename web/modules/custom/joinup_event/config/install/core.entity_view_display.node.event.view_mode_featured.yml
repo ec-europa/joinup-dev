@@ -105,3 +105,4 @@ hidden:
   field_state: true
   links: true
   og_audience: true
+  share_link: true
