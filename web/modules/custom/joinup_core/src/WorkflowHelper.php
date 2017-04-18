@@ -23,36 +23,24 @@ class WorkflowHelper implements WorkflowHelperInterface {
   protected $currentUser;
 
   /**
-   * The service that provides users to workflow guard classes.
-   *
-   * @var \Drupal\joinup_core\WorkflowUserProvider
-   */
-  protected $userProvider;
-
-  /**
    * Constructs a WorkflowHelper.
    *
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The service that contains the current user.
-   * @param \Drupal\joinup_core\WorkflowUserProvider $userProvider
-   *   The service that provides users to workflow guard classes.
    */
-  public function __construct(AccountProxyInterface $currentUser, WorkflowUserProvider $userProvider) {
+  public function __construct(AccountProxyInterface $currentUser) {
     $this->currentUser = $currentUser;
-    $this->userProvider = $userProvider;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $user = NULL) {
-    if ($user == NULL) {
-      $user = $this->currentUser;
+    // Set the current user so that states available are retrieved for the
+    // specific account.
+    if ($user !== NULL) {
+      \Drupal::currentUser()->setAccount($user);
     }
-
-    // Set the user to the workflow user provider so that states available are
-    // retrieved for the specific account.
-    $this->userProvider->setUser($user);
 
     $field = $this->getEntityStateField($entity);
     $allowed_transitions = $field->getTransitions();
@@ -68,13 +56,11 @@ class WorkflowHelper implements WorkflowHelperInterface {
    * {@inheritdoc}
    */
   public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $user) {
-    if ($user == NULL) {
-      $user = $this->currentUser;
+    // Set the current user so that states available are retrieved for the
+    // specific account.
+    if ($user !== NULL) {
+      \Drupal::currentUser()->setAccount($user);
     }
-
-    // Set the user to the workflow user provider so that states available are
-    // retrieved for the specific account.
-    $this->userProvider->setUser($user);
 
     $field = $this->getEntityStateField($entity);
 
