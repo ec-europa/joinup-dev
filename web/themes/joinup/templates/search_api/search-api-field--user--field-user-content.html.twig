@@ -1,4 +1,6 @@
-{% if results %}
+{% if no_results_found %}
+  {{ no_results_found }}
+{% else %}
   <div class="listing listing--grid mdl-grid">
     {{ results }}
   </div>

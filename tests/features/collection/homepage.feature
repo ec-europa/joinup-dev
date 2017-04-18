@@ -4,7 +4,7 @@ Feature: Collection homepage
   As a user of the website
   I need to be able see all content related to a collection on the collection homepage
 
-  Scenario: The collection homepage shows related content
+  Scenario: The collection homepage shows related content.
     Given the following owner:
       | name          |
       | Bilbo Baggins |
