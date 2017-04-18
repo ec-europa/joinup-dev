@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Installation hooks for the joinup_community_content module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function joinup_community_content_install() {
+  // Make sure that Visual Inline layout is disabled. The diff_install() hook
+  // always re-enables this layout when the library is found.
+  // @see diff_install()
+  $config = \Drupal::configFactory()->getEditable('diff.settings');
+  $config->set('general_settings.layout_plugins.visual_inline.enabled', FALSE)->save();
+}

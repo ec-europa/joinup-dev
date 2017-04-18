@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_actor
+    - message.template.rdf_collection_node_updated
+id: message.rdf_collection_node_updated.field_message_actor
+field_name: field_message_actor
+entity_type: message
+bundle: rdf_collection_node_updated
+label: Actor
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:user'
+  handler_settings:
+    include_anonymous: false
+    filter:
+      type: _none
+    target_bundles: null
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

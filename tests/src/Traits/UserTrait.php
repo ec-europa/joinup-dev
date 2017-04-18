@@ -59,4 +59,43 @@ trait UserTrait {
     return $translated_values;
   }
 
+  /**
+   * Creates a user with the given values.
+   *
+   * @param array $values
+   *   An associative array, keyed by field aliases, containing the field values
+   *   used to create the user.
+   */
+  protected function createUser(array $values) {
+    // Replace the column aliases with the actual field names.
+    $values = $this->translateUserFieldAliases($values);
+
+    // Handle the user profile picture.
+    $this->handleFileFields($values, 'user', 'user');
+
+    // Split out roles to process after user is created.
+    $roles = [];
+    if (isset($values['roles'])) {
+      $roles = explode(',', $values['roles']);
+      $roles = array_filter(array_map('trim', $roles));
+      unset($values['roles']);
+    }
+
+    // Provide defaults for required fields.
+    if (!isset($values['pass'])) {
+      $values['pass'] = $values['name'];
+    }
+    if (!isset($values['mail'])) {
+      $values['mail'] = $values['name'] . '@example.com';
+    }
+
+    $user = (object) $values;
+    $this->userCreate($user);
+
+    // Assign roles.
+    foreach ($roles as $role) {
+      $this->getDriver()->userAddRole($user, $role);
+    }
+  }
+
 }

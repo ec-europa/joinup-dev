@@ -62,22 +62,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Given (the following )user:
    */
   public function givenUser(TableNode $user_table) {
-    // Replace the column aliases with the actual field names.
-    $values = $this->translateUserFieldAliases($user_table->getRowsHash());
-
-    // Handle the user profile picture.
-    $this->handleFileFields($values, 'user', 'user');
-
-    // Provide defaults for required fields.
-    if (!isset($values['pass'])) {
-      $values['pass'] = $values['name'];
-    }
-    if (!isset($values['mail'])) {
-      $values['mail'] = $values['name'] . '@example.com';
-    }
-
-    $user = (object) $values;
-    $this->userCreate($user);
+    $this->createUser($user_table->getRowsHash());
   }
 
   /**
@@ -1028,6 +1013,56 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $url = ImageStyle::load('profile_icon')->buildUrl($photo->getFileUri());
     $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " login-menu ")]//img[@src="' . $url . '"]';
     $this->assertSession()->elementsCount('xpath', $xpath, 1);
+  }
+
+  /**
+   * Programmatically creates node revisions.
+   *
+   * Table format:
+   * | current title            | title            | body            |
+   * | <the current node title> | Revisioned title | Revisioned body |
+   *
+   * @param string $bundle
+   *   The bundle of the node.
+   * @param \Behat\Gherkin\Node\TableNode $updates_table
+   *   The table with the changes to insert in the revision.
+   *
+   * @Given (the following ):bundle (content )revisions:
+   */
+  public function createNodeRevisions($bundle, TableNode $updates_table) {
+    foreach ($updates_table->getColumnsHash() as $data) {
+      $node = $this->getNodeByTitle($data['current title'], $bundle);
+      unset($data['current title']);
+
+      // Crete a fake node object to be able to reuse hooks that help with
+      // preparing the field values.
+      $fake_node = (object) $data;
+      $fake_node->type = $bundle;
+      $this->dispatchHooks('BeforeNodeCreateScope', $fake_node);
+      $this->parseEntityFields('node', $fake_node);
+      // Remove the type property as we cannot change that.
+      unset($fake_node->type);
+
+      // The author is handled in \Drupal\Driver\Cores\Drupal8::nodeCreate(),
+      // so we have to do it manually.
+      if (isset($fake_node->author)) {
+        $user = user_load_by_name($fake_node->author);
+        if ($user) {
+          $node->uid = $user->id();
+        }
+        unset($fake_node->author);
+      }
+
+      // Update all fields. Magic setters will take care of everything.
+      foreach (get_object_vars($fake_node) as $name => $value) {
+        $node->{$name} = $value;
+      }
+
+      // Create a new revision.
+      $node->setNewRevision();
+      // Finally save the node.
+      $node->save();
+    }
   }
 
 }
