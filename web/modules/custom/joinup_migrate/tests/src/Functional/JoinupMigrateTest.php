@@ -293,6 +293,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    *   The entity type ID.
    * @param string $label
    *   The entity label.
+   * @param string|null $bundle
+   *   (optional) The search can be restricted to a specific bundle.
    *
    * @return \Drupal\Core\Entity\ContentEntityInterface
    *   The content entity.
@@ -302,7 +304,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    * @throws \Exception
    *   When the entity with the specified label was not found.
    */
-  protected function loadEntityByLabel($entity_type_id, $label) {
+  protected function loadEntityByLabel($entity_type_id, $label, $bundle = NULL) {
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
     $entity_type_manager = $this->container->get('entity_type.manager');
     $entity_type = $entity_type_manager->getDefinition($entity_type_id);
@@ -311,10 +313,24 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     }
 
     $label_key = $entity_type->getKey('label');
-    $storage = $entity_type_manager->getStorage($entity_type_id);
+    $conditions = [$label_key => $label];
 
-    if (!$entities = $storage->loadByProperties([$label_key => $label])) {
-      throw new \Exception("No $entity_type_id entity with $label_key '$label' was found.");
+    if ($bundle) {
+      if (!$entity_type->hasKey('bundle')) {
+        throw new \InvalidArgumentException("A bundle was passed but entity type '$entity_type_id' doesn't have a bundle key.");
+      }
+      $bundle_key = $entity_type->getKey('bundle');
+      $conditions[$bundle_key] = $bundle;
+    }
+
+    $storage = $entity_type_manager->getStorage($entity_type_id);
+    if (!$entities = $storage->loadByProperties($conditions)) {
+      $message = "No $entity_type_id entity";
+      if ($bundle) {
+        $message .= " ($bundle_key '$bundle') ";
+      }
+      $message = "entity with $label_key '$label' was found.";
+      throw new \Exception($message);
     }
 
     return reset($entities);
