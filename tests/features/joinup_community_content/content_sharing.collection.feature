@@ -17,12 +17,12 @@ Feature: Sharing content between collections
       | Power ballad | validated |
       | Drum'n'Bass  | validated |
     And news content:
-      | title                          | kicker                         | collection   | status    |
-      | New D'n'B compilation released | New D'n'B compilation released | Classic Rock | published |
-      | Old-school line-up concert     | Old-school line-up concert     | Hip-Hop      | published |
+      | title                          | kicker                         | collection   | state     |
+      | New D'n'B compilation released | New D'n'B compilation released | Classic Rock | validated |
+      | Old-school line-up concert     | Old-school line-up concert     | Hip-Hop      | validated |
     And discussion content:
-      | title                       | collection   | status    |
-      | Rockabilly is still rocking | Classic Rock | published |
+      | title                       | collection   | state     |
+      | Rockabilly is still rocking | Classic Rock | validated |
     And the following collection user memberships:
       | collection   | user          |
       | Hip-Hop      | Marjolein Rye |
@@ -30,8 +30,8 @@ Feature: Sharing content between collections
       | Hip-Hop      | Sara Barber   |
       | Drum'n'Bass  | Sara Barber   |
     And <content type> content:
-      | title               | collection | status    |
-      | Interesting content | Hip-Hop    | published |
+      | title               | collection | state     |
+      | Interesting content | Hip-Hop    | validated |
 
     # Anonymous users cannot share anything.
     When I am an anonymous user

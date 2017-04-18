@@ -391,6 +391,42 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Checks that a certain radio input is selected in a specific field.
+   *
+   * @param string $radio
+   *   The label of the radio input to find.
+   * @param string $field
+   *   The label of the field the radio is part of.
+   *
+   * @throws \Exception
+   *   Thrown when the field or the radio is not found, or if the radio is not
+   *   selected.
+   *
+   * @Then the radio button :radio from field :field should be selected
+   */
+  public function assertFieldRadioSelected($radio, $field) {
+    // Find the grouping fieldset that contains the radios field.
+    $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
+
+    if (!$field) {
+      throw new \Exception("The field '$field' was not found in the page.");
+    }
+
+    // Find the field inside the container itself. Use the findField() instead
+    // of custom xpath because we are trying to find the radio by label.
+    $input = $fieldset->findField($radio);
+
+    // Verify that we have found a valid '//input[@type="radio"]'.
+    if (!$input || $input->getTagName() !== 'input' || $input->getAttribute('type') !== 'radio') {
+      throw new \Exception("The radio '$radio' was not found in the page.");
+    }
+
+    if (!$input->isChecked()) {
+      throw new \Exception("The radio '$radio' is not selected.");
+    }
+  }
+
+  /**
    * Find the selected option of the select and check the text.
    *
    * @param string $option
@@ -747,6 +783,52 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     foreach ($items as $delta => $item) {
       $item->setValue($values[$delta]);
     }
+  }
+
+  /**
+   * Asserts that a whole region is not present in the page.
+   *
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when the region is found in the page.
+   *
+   * @Then I should not see the :region region
+   */
+  public function assertRegionNotPresent($region) {
+    $session = $this->getSession();
+    $element = $session->getPage()->find('region', $region);
+    if ($element) {
+      throw new \Exception(sprintf('Region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+    }
+  }
+
+  /**
+   * Asserts that the page title tag contains text.
+   *
+   * @param string $text
+   *   The text to search for.
+   *
+   * @throws \Exception
+   *   Thrown when the title tag is not found or the text doesn't match.
+   *
+   * @Then the HTML title tag should contain the text :text
+   */
+  public function assertPageTitleTagContainsText($text) {
+    $session = $this->getSession();
+    $page_title = $session->getPage()->find('xpath', '//head/title');
+    if (!$page_title) {
+      throw new \Exception(sprintf('Page title tag not found on the page ', $session, $session->getCurrentUrl()));
+    }
+
+    list($title, $site_name) = explode(' | ', $page_title->getText());
+
+    $title = trim($title);
+    if ($title !== $text) {
+      throw new \Exception(sprintf('Expected page title is "%s", but "%s" found.', $text, $title));
+    }
+
   }
 
 }

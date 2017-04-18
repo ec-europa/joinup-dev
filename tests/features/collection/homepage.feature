@@ -4,7 +4,7 @@ Feature: Collection homepage
   As a user of the website
   I need to be able see all content related to a collection on the collection homepage
 
-  Scenario: The collection homepage shows related content
+  Scenario: The collection homepage shows related content.
     Given the following owner:
       | name          |
       | Bilbo Baggins |
@@ -16,12 +16,12 @@ Feature: Collection homepage
       | elibrary creation | facilitators       |
       | state             | validated          |
     And news content:
-      | title                                             | body                | collection         | status    |
-      | Rohirrim make extraordinary deal                  | Horse prices drops  | Middle earth daily | published |
-      | Breaking: Gandalf supposedly plans his retirement | A new white wizard? | Middle earth daily | published |
+      | title                                             | body                | collection         | state     |
+      | Rohirrim make extraordinary deal                  | Horse prices drops  | Middle earth daily | validated |
+      | Breaking: Gandalf supposedly plans his retirement | A new white wizard? | Middle earth daily | validated |
     And event content:
-      | title                                    | short title      | body                                      | collection         | start date          |
-      | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 |
+      | title                                    | short title      | body                                      | collection         | start date          | state     |
+      | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 | validated |
     And I go to the homepage of the "Middle earth daily" collection
     Then I should see text matching "Rohirrim make extraordinary deal"
     Then I should see text matching "Breaking: Gandalf supposedly plans his retirement"

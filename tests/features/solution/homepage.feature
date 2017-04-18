@@ -4,7 +4,7 @@ Feature: Solution homepage
   As a user of the website
   I need to be able see all content related to a solution on the solution homepage
 
-  Scenario: The solution homepage shows related content
+  Scenario: The solution homepage shows related content.
     Given the following solutions:
       | title                        | description                           | logo     | banner     | state     |
       | Information sharing protocol | Handling information sharing securely | logo.png | banner.jpg | validated |
