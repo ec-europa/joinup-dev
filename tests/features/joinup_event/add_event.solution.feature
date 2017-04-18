@@ -53,7 +53,7 @@ Feature: "Add event" visibility options.
 
     # The sections about managing revisions and groups should not be visible.
     And I should not see the text "Revision information"
-    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
 
     When I fill in the following:
       | Title       | An amazing event                      |

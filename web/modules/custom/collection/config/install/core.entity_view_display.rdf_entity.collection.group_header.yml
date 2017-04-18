@@ -16,7 +16,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
-    - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
@@ -47,6 +46,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_ar_logo:
     type: image
     weight: 1
@@ -64,10 +64,12 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
+    region: content
   join_collection:
     weight: 3
     settings: {  }
     third_party_settings: {  }
+    region: content
   label:
     label: hidden
     type: string
@@ -84,6 +86,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
+    region: content
 hidden:
   field_ar_abstract: true
   field_ar_access_url: true
@@ -96,7 +99,6 @@ hidden:
   field_ar_moderation: true
   field_ar_modification_date: true
   field_ar_owner: true
-  field_ar_shared_content: true
   field_ar_state: true
   field_collection_content: true
   field_policy_domain: true

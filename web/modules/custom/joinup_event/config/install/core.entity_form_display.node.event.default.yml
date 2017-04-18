@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.event.field_organisation_type
     - field.field.node.event.field_policy_domain
     - field.field.node.event.field_scope
+    - field.field.node.event.field_shared_in
     - field.field.node.event.field_short_title
     - field.field.node.event.field_state
     - field.field.node.event.og_audience
@@ -50,6 +51,7 @@ content:
     settings:
       title: 'Current workflow state'
       title_display: before
+      show_for_new_entities: false
     third_party_settings: {  }
   field_comments:
     weight: 16
@@ -179,6 +181,7 @@ content:
     region: content
 hidden:
   created: true
+  field_shared_in: true
   og_audience: true
   path: true
   promote: true

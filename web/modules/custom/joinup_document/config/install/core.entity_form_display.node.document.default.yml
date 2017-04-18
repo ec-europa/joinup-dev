@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.document.field_keywords
     - field.field.node.document.field_licence
     - field.field.node.document.field_policy_domain
+    - field.field.node.document.field_shared_in
     - field.field.node.document.field_short_title
     - field.field.node.document.field_state
     - field.field.node.document.field_type
@@ -42,6 +43,7 @@ content:
     settings:
       title: 'Current workflow state'
       title_display: before
+      show_for_new_entities: false
     third_party_settings: {  }
   field_comments:
     weight: 10
@@ -125,6 +127,7 @@ content:
     region: content
 hidden:
   created: true
+  field_shared_in: true
   og_audience: true
   path: true
   promote: true
