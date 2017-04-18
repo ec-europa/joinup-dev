@@ -44,12 +44,6 @@
     <div class="comment-form comment-form--unavailable center mdl-cell mdl-cell--12-col">
       <div class="comment">{% trans %}Comments are disabled for this {{ entity_bundle }}.{% endtrans %}</div>
     </div>
-  {% else %}
-    <div class="comment-form comment-form--unavailable center mdl-cell mdl-cell--12-col">
-      <div class="comment">
-        {% trans %}<a href="{{ login_path }}">Login</a> or <a href="{{ register_path }}">create an account</a> to comment.{% endtrans %}
-      </div>
-    </div>
   {% endif %}
 
 </section>

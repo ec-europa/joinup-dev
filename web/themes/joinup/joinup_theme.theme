@@ -483,22 +483,6 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
  * Implements hook_preprocess_comment().
  */
 function joinup_theme_preprocess_comment(&$variables) {
-  // Create body variable without title.
-  $body = $variables['comment']->field_comment_body->getValue();
-  if (isset($body[0]['value'])) {
-    $body = $body[0]['value'];
-    $variables['body'] = $body;
-  }
-
-  // Create time ago variable.
-  $timestamp = $variables['new_indicator_timestamp'];
-  /** @var \Drupal\Core\Datetime\DateFormatterInterface $formatter */
-  $date_formatter = \Drupal::service('date.formatter');
-
-  $variables['time_ago'] = $date_formatter->formatDiff($timestamp, REQUEST_TIME, [
-    'granularity' => 2,
-  ]);
-
   // Create user image.
   $photo_target = $variables['user_picture']['#user']->field_user_photo->getValue();
 
