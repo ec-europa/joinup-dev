@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.user.view_mode_featured
+    - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_frequency
@@ -11,7 +12,6 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_subscription_events
     - image.style.vertical_medium_image
   module:
@@ -24,6 +24,21 @@ targetEntityType: user
 bundle: user
 mode: view_mode_featured
 content:
+  field_user_business_title:
+    type: text_trimmed
+    weight: 3
+    label: hidden
+    settings:
+      trim_length: 200
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    region: content
   field_user_family_name:
     weight: 1
     label: hidden
@@ -31,6 +46,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_user_first_name:
     weight: 2
     label: hidden
@@ -38,6 +54,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
   field_user_photo:
     weight: 0
     label: hidden
@@ -53,20 +70,7 @@ content:
             lb-col: false
             classes: {  }
     type: image
-  field_user_business_title:
-    type: text_trimmed
-    weight: 3
-    label: hidden
-    settings:
-      trim_length: 200
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    region: content
 hidden:
   field_user_frequency: true
   field_user_group_types: true
@@ -75,3 +79,4 @@ hidden:
   field_user_professional_domain: true
   field_user_subscription_events: true
   member_for: true
+  simplenews: true
