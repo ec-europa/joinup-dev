@@ -24,8 +24,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ShareContentForm extends FormBase {
 
-  use StringTranslationTrait;
-
   /**
    * The current user account.
    *
