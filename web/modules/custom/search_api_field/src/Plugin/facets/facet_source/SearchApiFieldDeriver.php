@@ -83,6 +83,7 @@ class SearchApiFieldDeriver extends FacetSourceDeriverBase {
             '%label' => $field_config->label(),
             '%id' => $id,
           ]),
+          'display_id' => $id,
           'description' => $this->t('Provides a facet source.'),
           'search_api_field' => $id,
         ] + $base_plugin_definition;
