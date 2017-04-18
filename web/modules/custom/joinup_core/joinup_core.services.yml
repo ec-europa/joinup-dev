@@ -1,13 +1,10 @@
 services:
   joinup_core.node_workflow_access:
     class: Drupal\joinup_core\NodeWorkflowAccessControlHandler
-    arguments: ['@entity_type.manager', '@og.membership_manager', '@joinup_core.relations_manager', '@joinup_core.workflow.user_provider']
+    arguments: ['@entity_type.manager', '@og.membership_manager', '@joinup_core.relations_manager', '@current_user']
   joinup_core.relations_manager:
     class: Drupal\joinup_core\JoinupRelationManager
     arguments: ['@og.membership_manager']
-  joinup_core.workflow.user_provider:
-    class: Drupal\joinup_core\WorkflowUserProvider
-    arguments: ['@current_user']
   joinup_core.fulfillment_guard:
     class: Drupal\joinup_core\Guard\NodeGuard
-    arguments: ['@entity_type.manager', '@joinup_core.workflow.user_provider', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user']
+    arguments: ['@entity_type.manager', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user']

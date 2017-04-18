@@ -54,13 +54,11 @@ trait WorkflowTrait {
    *   An array of transition state labels.
    */
   protected function getAvailableStates(EntityInterface $entity, $user) {
-    if ($user == NULL) {
-      $user = \Drupal::currentUser();
+    // Set the current user so that states available are retrieved for the
+    // specific account.
+    if ($user !== NULL) {
+      \Drupal::currentUser()->setAccount($user);
     }
-
-    // Set the user to the workflow user provider so that states available are
-    // retrieved for the specific account.
-    \Drupal::service('joinup_core.workflow.user_provider')->setUser($user);
 
     $field = $this->getEntityStateField($entity);
     $allowed_transitions = $field->getTransitions();
@@ -87,13 +85,11 @@ trait WorkflowTrait {
    *   An array of transition labels.
    */
   protected function getAvailableTransitions(EntityInterface $entity, $user) {
-    if ($user == NULL) {
-      $user = \Drupal::currentUser();
+    // Set the current user so that states available are retrieved for the
+    // specific account.
+    if ($user !== NULL) {
+      \Drupal::currentUser()->setAccount($user);
     }
-
-    // Set the user to the workflow user provider so that states available are
-    // retrieved for the specific account.
-    \Drupal::service('joinup_core.workflow.user_provider')->setUser($user);
 
     $field = $this->getEntityStateField($entity);
 

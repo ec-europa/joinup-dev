@@ -164,7 +164,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
           $user_var = $test_data_array[1];
           $expected_result = $test_data_array[2];
 
-          $this->userProvider->setUser($this->{$user_var});
+          $this->setCurrentUser($this->{$user_var});
           $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
           $result = $expected_result ? t('have') : t('not have');
           $message = "User {$user_var} should {$result} {$operation} access for entity {$content->label()} ({$content_state}) with the parent entity in {$parent_state} state.";
@@ -191,7 +191,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
         $content->save();
 
         // Override the user to be checked for the allowed transitions.
-        $this->userProvider->setUser($this->{$user_var});
+        $this->setCurrentUser($this->{$user_var});
         $actual_transitions = $content->field_isr_state->first()->getTransitions();
         $actual_transitions = array_map(function ($transition) {
           return $transition->getId();
@@ -214,6 +214,12 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    *   The created solution entity.
    */
   protected function createDefaultParent($state) {
+    // Make sure the current user is set to anonymous when creating solutions
+    // through the API so we can assign the administrator manually. If a user is
+    // logged in during creation of the solution they will automatically become
+    // the administrator.
+    $this->setCurrentUser($this->userAnonymous);
+
     $parent = Rdf::create([
       'rid' => 'solution',
       'field_is_state' => $state,
