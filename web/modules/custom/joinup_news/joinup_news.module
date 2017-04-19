@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\joinup_core\Exception\MissingRelationException;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -48,11 +49,18 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
  */
 function joinup_news_workflow_selector(EntityInterface $entity) {
   if ($entity->bundle() != 'news') {
-    throw new Exception('This method can only be called for document entities.');
+    throw new Exception('This method can only be called for news entities.');
   }
   /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
   $relation_manager = \Drupal::service('joinup_core.relations_manager');
-  $moderation = $relation_manager->getParentModeration($entity);
+  try {
+    $moderation = $relation_manager->getParentModeration($entity);
+  }
+  catch (MissingRelationException $e) {
+    // Throw a more helpful exception if the news article doesn't have a parent
+    // collection or solution.
+    throw new \Exception('Cannot determine the moderation workflow type on a news article that doesn\'t belong to a collection or solution.');
+  }
   return $moderation == 1 ? 'node:news:pre_moderated' : 'node:news:post_moderated';
 }
 

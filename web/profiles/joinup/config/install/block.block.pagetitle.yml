@@ -1,6 +1,8 @@
 langcode: en
 status: true
 dependencies:
+  module:
+    - joinup_core
   theme:
     - joinup_theme
 id: pagetitle
@@ -14,4 +16,9 @@ settings:
   label: 'Page title'
   provider: core
   label_display: '0'
-visibility: {  }
+visibility:
+  request_route:
+    id: request_route
+    routes: entity.user.canonical
+    negate: true
+    context_mapping: {  }

@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_user
+  theme:
+    - joinup_theme
+id: userheader
+theme: joinup_theme
+region: featured
+weight: -8
+provider: null
+plugin: user_header_block
+settings:
+  id: user_header_block
+  label: 'User header'
+  provider: joinup_user
+  label_display: '0'
+  context_mapping:
+    user_route: '@joinup_user.user_route_context:user_route'
+visibility: {  }

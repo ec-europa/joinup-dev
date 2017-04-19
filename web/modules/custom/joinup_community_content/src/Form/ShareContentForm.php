@@ -10,7 +10,6 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
@@ -23,8 +22,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Form to share a community content inside collections.
  */
 class ShareContentForm extends FormBase {
-
-  use StringTranslationTrait;
 
   /**
    * The current user account.

@@ -98,4 +98,27 @@ trait UserTrait {
     }
   }
 
+  /**
+   * Retrieves a user by name.
+   *
+   * @param string $name
+   *   The name of the user.
+   *
+   * @return \Drupal\user\UserInterface
+   *   The loaded user entity.
+   *
+   * @throws \Exception
+   *   Thrown when a user with the provided name is not found.
+   */
+  protected function getUserByName($name) {
+    $user = user_load_by_name($name);
+
+    if (!$user) {
+      throw new \Exception("The user with name '$name' was not found.");
+    }
+
+    /** @var \Drupal\user\Entity\User $user */
+    return $user;
+  }
+
 }
