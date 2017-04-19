@@ -5,8 +5,6 @@
  * Assertions for 'release' migration.
  */
 
-//use Drupal\file\Entity\File;
-
 // Migration counts.
 $this->assertTotalCount('release', 8);
 $this->assertSuccessCount('release', 8);
