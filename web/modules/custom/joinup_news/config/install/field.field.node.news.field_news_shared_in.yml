@@ -20,7 +20,6 @@ settings:
   handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
-      collection: collection
       solution: solution
     sort:
       field: _none
