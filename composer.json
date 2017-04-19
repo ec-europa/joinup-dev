@@ -22,7 +22,7 @@
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_report": "~1.0-alpha2",
         "drupal/migrate_run": "~1.0-alpha1",
-        "drupal/migrate_spreadsheet": "~1.0-beta1",
+        "drupal/migrate_spreadsheet": "~1.0-beta2",
         "drupal/og": "dev-ISAICP-2709 as dev-1.x",
         "drupal/og_menu": "~1.0@alpha",
         "drupal/persistent_login": "dev-1.x#1320f841da3c",
@@ -42,7 +42,6 @@
         "pear/console_table": "~1.3",
         "phing/phing": "^2.15.0",
         "php": ">=5.5.9",
-        "phpoffice/phpspreadsheet": "~0.0",
         "solarium/solarium": "~3.7",
         "typhonius/behattask": "1.0"
     },
@@ -173,17 +172,6 @@
                     "url": "https://gist.github.com/1ec87c25930861654cc94251da69f14b.git",
                     "type": "git",
                     "reference": "master"
-                }
-            }
-        },
-        {
-        "type": "package",
-            "package": {
-                "name": "phpoffice/phpspreadsheet",
-                "version": "0.0",
-                "dist": {
-                    "url": "https://github.com/PHPOffice/PhpSpreadsheet/archive/develop.zip",
-                    "type": "zip"
                 }
             }
         },

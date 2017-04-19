@@ -34,6 +34,7 @@ process:
     plugin: migration
     source: solution
     migration: solution
+    no_stub: true
 destination:
   plugin: entity:node
   default_bundle: discussion

@@ -11,7 +11,7 @@ $this->assertSuccessCount('discussion', 4);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
-$solution = $this->loadEntityByLabel('rdf_entity', 'CIPA e-Delivery');
+$solution = $this->loadEntityByLabel('rdf_entity', 'CIPA e-Delivery', 'solution');
 
 /* @var \Drupal\node\NodeInterface $discussion */
 $discussion = $this->loadEntityByLabel('node', 'URL for SML and SMK');
@@ -33,7 +33,7 @@ $this->assertEquals(1372268368, $discussion->changed->value);
 $this->assertEquals(1, $discussion->uid->target_id);
 $this->assertContains('<h2>Component</h2>', $discussion->body->value);
 $this->assertContains('<h2>Category</h2>', $discussion->body->value);
-$this->assertFalse($discussion->isPublished());
+$this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 
 $discussion = $this->loadEntityByLabel('node', 'cipa-smp-webapp is not thread safe');
@@ -44,7 +44,7 @@ $this->assertEquals(1373569684, $discussion->changed->value);
 $this->assertEquals(1, $discussion->uid->target_id);
 $this->assertContains('<h2>Component</h2>', $discussion->body->value);
 $this->assertContains('<h2>Category</h2>', $discussion->body->value);
-$this->assertFalse($discussion->isPublished());
+$this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 
 $discussion = $this->loadEntityByLabel('node', 'cipa-smp-client-console still only use START protocol');

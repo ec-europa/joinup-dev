@@ -329,7 +329,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
       if ($bundle) {
         $message .= " ($bundle_key '$bundle') ";
       }
-      $message = "entity with $label_key '$label' was found.";
+      $message .= "entity with $label_key '$label' was found.";
       throw new \Exception($message);
     }
 
