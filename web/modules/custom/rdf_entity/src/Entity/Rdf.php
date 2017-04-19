@@ -100,7 +100,7 @@ use Drupal\user\UserInterface;
  *   links = {
  *     "canonical" = "/rdf_entity/{rdf_entity}",
  *     "edit-form" = "/rdf_entity/{rdf_entity}/edit",
- *     "delete-form" = "/rdf_enity/{rdf_entity}/delete",
+ *     "delete-form" = "/rdf_entity/{rdf_entity}/delete",
  *     "collection" = "/rdf_entity/list"
  *   },
  *   field_ui_base_route = "entity.rdf_type.edit_form",
