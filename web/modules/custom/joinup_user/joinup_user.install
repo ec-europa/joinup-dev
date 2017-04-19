@@ -47,6 +47,7 @@ function joinup_user_install() {
     'use text format restricted_html',
     'view rdf entity',
     'export rdf metadata',
+    'post comments',
     'access comments',
   ];
   user_role_grant_permissions(UserInterface::ANONYMOUS_ROLE, $anonymous_permissions);
