@@ -10,7 +10,7 @@ id: node.news.field_news_referenced_solution
 field_name: field_news_referenced_solution
 entity_type: node
 bundle: news
-label: 'Shared in'
+label: 'Referenced solution'
 description: ''
 required: false
 translatable: false
