@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfac76ec717863ba968231d5e91a95e7",
+    "content-hash": "9f06beace80091f60b943e481423a2b6",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2135,6 +2135,9 @@
                 "drupal": {
                     "version": "8.x-1.0-alpha9",
                     "datestamp": "1491851643"
+                },
+                "patches_applied": {
+                    "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2515,7 +2518,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/migrate_spreadsheet-8.x-1.0-beta2.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta2",
                 "shasum": "6664530ba29fae747e293a7c8f4282e83bdcaf71"
             },
             "require": {
