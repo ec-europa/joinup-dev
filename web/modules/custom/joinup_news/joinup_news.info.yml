@@ -27,6 +27,7 @@ config_devel:
   - field.field.node.news.field_news_source_url
   - field.field.node.news.field_news_spatial_coverage
   - field.field.node.news.field_policy_domain
+  - field.field.node.news.field_shared_in
   - field.field.node.news.field_state
   - field.field.node.news.og_audience
   - field.storage.node.field_news_headline

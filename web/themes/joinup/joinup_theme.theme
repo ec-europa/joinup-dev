@@ -133,7 +133,6 @@ function joinup_theme_preprocess_block(&$variables) {
     // Indicate if page contains listing
     // and should not have white background.
     $is_listing = FALSE;
-
     switch ($route_name) {
       case 'entity.rdf_entity.canonical':
         $entities = [
@@ -164,17 +163,11 @@ function joinup_theme_preprocess_block(&$variables) {
         break;
 
       case 'view.collections.page_1':
-        $is_listing = TRUE;
-        break;
-
       case 'view.solutions.page_1':
-        $is_listing = TRUE;
-        break;
-
       case 'view.content_overview.page_1':
+      case 'entity.user.canonical':
         $is_listing = TRUE;
         break;
-
     }
     $variables['is_listing'] = $is_listing;
   }
@@ -430,6 +423,16 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_user__group_header().
+ */
+function joinup_theme_preprocess_user__group_header(&$variables) {
+  // Create customizable 'member for' field.
+  // It creates a timespan without label and with lower granularity.
+  $variables['member_for'] = \Drupal::service('date.formatter')->formatTimeDiffSince($variables['user']->getCreatedTime(), ['granularity' => 1]);
+  $variables['full_name'] = $variables['user']->get('full_name')->value;
+}
+
+/**
  * Implements hook_preprocess_page_title__node__event().
  */
 function joinup_theme_preprocess_page_title__node__event(&$variables) {
@@ -496,6 +499,31 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
   $variables['additional_content']['field_event_start_date'] = $field_event_start_date;
   $variables['additional_content']['field_event_end_date'] = $field_event_end_date;
   $variables['additional_content']['field_location'] = $field_event_location;
+}
+
+/**
+ * Implements hook_preprocess_search_api_field__user__field_user_content().
+ *
+ * Provides a nicer message when the user hasn't created any content.
+ */
+function joinup_theme_preprocess_search_api_field__user__field_user_content(&$variables) {
+  // The "no_results_found" render array is not there if there are results.
+  if (empty($variables['no_results_found'])) {
+    return;
+  }
+
+  $first_name = $variables['entity']->get('field_user_first_name')->value;
+  if (!empty($first_name)) {
+    $markup = t('@name does not have any content yet.', ['@name' => $first_name]);
+  }
+  else {
+    $markup = t('This user does not have any content yet.');
+  }
+  $variables['no_results_found'] = [
+    '#prefix' => '<div class="page__content">',
+    '#suffix' => '</div>',
+    '#markup' => $markup,
+  ];
 }
 
 /**

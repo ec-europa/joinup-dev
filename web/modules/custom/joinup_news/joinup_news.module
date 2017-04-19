@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\joinup_core\Exception\MissingRelationException;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -48,36 +49,31 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
  */
 function joinup_news_workflow_selector(EntityInterface $entity) {
   if ($entity->bundle() != 'news') {
-    throw new Exception('This method can only be called for document entities.');
+    throw new Exception('This method can only be called for news entities.');
   }
   /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
   $relation_manager = \Drupal::service('joinup_core.relations_manager');
-  $moderation = $relation_manager->getParentModeration($entity);
+  try {
+    $moderation = $relation_manager->getParentModeration($entity);
+  }
+  catch (MissingRelationException $e) {
+    // Throw a more helpful exception if the news article doesn't have a parent
+    // collection or solution.
+    throw new \Exception('Cannot determine the moderation workflow type on a news article that doesn\'t belong to a collection or solution.');
+  }
   return $moderation == 1 ? 'node:news:pre_moderated' : 'node:news:post_moderated';
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Disables access to the news-specific "Shared in" field when the parent entity
+ * is not a solution. Sharing into collections is handled by the share modal.
  */
-function joinup_news_field_widget_entity_reference_autocomplete_form_alter(&$element, FormStateInterface $form_state, $context) {
-  /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $items */
-  $items = $context['items'];
-
-  // Handle only the specific field.
-  $field_name = $items->getFieldDefinition()->getName();
-  if ($field_name !== 'field_news_shared_in') {
-    return;
-  }
-
-  $entity = $items->getEntity();
-  /** @var \Drupal\rdf_entity\RdfInterface $parent */
+function joinup_news_form_node_news_form_alter(&$form, FormStateInterface $form_state) {
+  $entity = $form_state->getFormObject()->getEntity();
   $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
-
-  if (!empty($parent)) {
-    // Limit the referenceable entities to be of the same bundle of the parent
-    // of the news.
-    $element['target_id']['#selection_settings']['target_bundles'] = [
-      $parent->bundle() => $parent->bundle(),
-    ];
+  if (!empty($parent) && $parent->bundle() !== 'solution') {
+    $form['field_news_shared_in']['#access'] = FALSE;
   }
 }

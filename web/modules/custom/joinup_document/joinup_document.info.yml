@@ -23,6 +23,7 @@ config_devel:
   - field.field.node.document.field_keywords
   - field.field.node.document.field_licence
   - field.field.node.document.field_policy_domain
+  - field.field.node.document.field_shared_in
   - field.field.node.document.field_short_title
   - field.field.node.document.field_state
   - field.field.node.document.field_type

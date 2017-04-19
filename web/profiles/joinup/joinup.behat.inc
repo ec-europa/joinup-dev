@@ -15,6 +15,7 @@ use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
+use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -35,6 +36,7 @@ use Drupal\User\Entity\User;
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use BrowserCapabilityDetectionTrait;
+  use EntityTrait;
   use FileTrait;
   use NodeTrait;
   use OgTrait;
@@ -421,6 +423,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks if the given node has the correct publication state.
+   *
+   * @param string $title
+   *   The title of the node.
+   * @param string $state
+   *   The expected publication state, either 'published' or 'unpublished'.
+   *
+   * @Then the community content with title :title should have the publication state :state
+   */
+  public function assertPublicationState($title, $state) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getEntityByLabel('node', $title);
+    \PHPUnit_Framework_Assert::assertSame($node->isPublished(), $state === 'published');
+  }
+
+  /**
    * Replaces human readable labels and values with their real counterparts.
    *
    * This allows us to:
@@ -443,7 +461,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $name = self::getNodeFieldNameFromAlias($node->type, $alias);
       if ($name !== $alias) {
         unset($node->alias);
-        $node->$name = $value;
+        // Don't set empty values, since we can have multiple aliases that point
+        // to the same field (e.g. 'collection' and 'solution' both use the same
+        // 'og_audience' field).
+        if (!empty($value)) {
+          $node->$name = $value;
+        }
       }
     }
 
@@ -472,6 +495,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // Replace the human readable value with the expected boolean.
       $node->status = $mapping[$node->status];
     }
+
+    // Replace human readable workflow states with machine names.
+    if (!empty($node->field_state)) {
+      $node->field_state = self::translateWorkflowStateAlias($node->field_state);
+    }
   }
 
   /**
@@ -492,9 +520,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'content' => 'body',
       ],
       'document' => [
-        'short title' => 'field_short_title',
-        'type' => 'field_type',
         'licence' => 'field_licence',
+        'short title' => 'field_short_title',
+        'state' => 'field_state',
+        'type' => 'field_type',
       ],
       'event' => [
         'short title' => 'field_short_title',
@@ -660,7 +689,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I (should )not see the :heading tile
    */
   public function assertTileNotPresent($heading) {
-    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
+    // We target the heading with "h2" instead of ".listing__title" because both
+    // unstyled and styled tiles use h2 as element for their titles.
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2');
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {
@@ -1063,6 +1094,23 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // Finally save the node.
       $node->save();
     }
+  }
+
+  /**
+   * Checks if a field contains a link to a community content page.
+   *
+   * @param string $field
+   *   The name of the field.
+   * @param string $title
+   *   The title of the community content page.
+   *
+   * @Then the :field field should contain the link to the :title page
+   */
+  public function assertFieldContainsLinkToPage($field, $title) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title);
+    $uri = '/' . $node->toUrl()->getInternalPath();
+    $this->assertSession()->fieldValueEquals($field, $uri);
   }
 
 }

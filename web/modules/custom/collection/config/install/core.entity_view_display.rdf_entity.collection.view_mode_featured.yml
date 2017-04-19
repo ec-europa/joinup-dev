@@ -16,7 +16,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
-    - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
@@ -91,7 +90,6 @@ hidden:
   field_ar_moderation: true
   field_ar_modification_date: true
   field_ar_owner: true
-  field_ar_shared_content: true
   field_ar_state: true
   field_collection_content: true
   field_policy_domain: true

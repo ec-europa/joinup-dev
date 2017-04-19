@@ -44,31 +44,18 @@ Feature: News moderation.
       | Legion of Doom | Mirror Master | member      |
       | Legion of Doom | Cheetah       | member      |
     And "news" content:
-      | title                         | headline                                    | body                                                                    | state            | author        |
-      | Creating Justice League       | 6 Members to start with                     | TBD                                                                     | draft            | Eagle         |
-      | Hawkgirl is a spy             | Her race lies in another part of the galaxy | Hawkgirl has been giving information about Earth to Thanagarians.       | proposed         | Eagle         |
-      | Hawkgirl helped Green Lantern | Hawkgirl went against Thanagarians?         | It was all of a sudden when Hawkgirl turned her back to her own people. | validated        | Eagle         |
-      | Space cannon fired            | Justice League fired at army facilities     | Justice league is now the enemy                                         | needs_update     | Eagle         |
-      | Eagle to join in season 4     | Will not start before S04E05                | The offer came when I helped defeating Iphestus armor.                  | proposed         | Eagle         |
-      | Question joined JL            | Justice league took in Question             | The famous detective is now part of JL.                                 | draft            | Question      |
-      | Creating Legion of Doom       | 7 Members to start with                     | We need equal number of members with the JL.                            | draft            | Mirror Master |
-      | Stealing from Batman          | Hide in his car's mirror                    | I need to steal from Batman.                                            | validated        | Mirror Master |
-      | Learn batman's secret         | Can I find batman's secret identity         | I have the opportunity to find out his identity.                        | proposed         | Mirror Master |
-      | Stealing complete             | All data were copied                        | Now someone has to decrypt the data.                                    | needs_update     | Mirror Master |
-      | Kill the sun                  | Savages plan                                | As it turns out Savage's plan is to cause a solar storm.                | deletion_request | Mirror Master |
-    And "news" content belong to the corresponding collections:
-      | content                       | collection     |
-      | Creating Justice League       | Justice League |
-      | Hawkgirl is a spy             | Justice League |
-      | Hawkgirl helped Green Lantern | Justice League |
-      | Space cannon fired            | Justice League |
-      | Eagle to join in season 4     | Justice League |
-      | Question joined JL            | Justice League |
-      | Creating Legion of Doom       | Legion of Doom |
-      | Stealing from Batman          | Legion of Doom |
-      | Learn batman's secret         | Legion of Doom |
-      | Stealing complete             | Legion of Doom |
-      | Kill the sun                  | Legion of Doom |
+      | title                         | headline                                    | body                                                                    | state            | author        | collection     |
+      | Creating Justice League       | 6 Members to start with                     | TBD                                                                     | draft            | Eagle         | Justice League |
+      | Hawkgirl is a spy             | Her race lies in another part of the galaxy | Hawkgirl has been giving information about Earth to Thanagarians.       | proposed         | Eagle         | Justice League |
+      | Hawkgirl helped Green Lantern | Hawkgirl went against Thanagarians?         | It was all of a sudden when Hawkgirl turned her back to her own people. | validated        | Eagle         | Justice League |
+      | Space cannon fired            | Justice League fired at army facilities     | Justice league is now the enemy                                         | needs_update     | Eagle         | Justice League |
+      | Eagle to join in season 4     | Will not start before S04E05                | The offer came when I helped defeating Iphestus armor.                  | proposed         | Eagle         | Justice League |
+      | Question joined JL            | Justice league took in Question             | The famous detective is now part of JL.                                 | draft            | Question      | Justice League |
+      | Creating Legion of Doom       | 7 Members to start with                     | We need equal number of members with the JL.                            | draft            | Mirror Master | Legion of Doom |
+      | Stealing from Batman          | Hide in his car's mirror                    | I need to steal from Batman.                                            | validated        | Mirror Master | Legion of Doom |
+      | Learn batman's secret         | Can I find batman's secret identity         | I have the opportunity to find out his identity.                        | proposed         | Mirror Master | Legion of Doom |
+      | Stealing complete             | All data were copied                        | Now someone has to decrypt the data.                                    | needs_update     | Mirror Master | Legion of Doom |
+      | Kill the sun                  | Savages plan                                | As it turns out Savage's plan is to cause a solar storm.                | deletion_request | Mirror Master | Legion of Doom |
 
   Scenario: Draft state doesn't change when facilitator edits news.
     Given I am logged in as "Eagle"

@@ -19,6 +19,6 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: entity.rdf_entity.canonical
+    routes: entity.user.canonical
     negate: true
     context_mapping: {  }
