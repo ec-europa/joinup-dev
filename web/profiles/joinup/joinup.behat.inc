@@ -674,6 +674,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       }
     }
 
+    foreach ($results as $result) {
+      /** @var \Behat\Mink\Element\Element $result */
+      var_dump($result->getText()); ob_flush();
+    }
+
     throw new \Exception("The tile '$heading' was not found on the page");
   }
 
