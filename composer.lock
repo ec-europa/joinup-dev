@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1747ac10367411996229c9f2f11213df",
+    "content-hash": "0d965ee84fd5d74e44f22ddcbde80493",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2132,6 +2132,9 @@
                 "drupal": {
                     "version": "8.x-1.0-alpha9",
                     "datestamp": "1491851643"
+                },
+                "patches_applied": {
+                    "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2526,7 +2529,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta1",
-                    "datestamp": "1487973484"
+                    "datestamp": "1492605543"
                 }
             },
             "autoload": {
@@ -2868,7 +2871,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-rc2.zip",
-                "reference": null,
+                "reference": "8.x-1.0-rc2",
                 "shasum": "174a463535c6b77c4c9ec9481a7ab7989e661868"
             },
             "require": {
@@ -3053,7 +3056,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta3.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta3",
                 "shasum": "9ca0101738db00673f2511707a76d6ea0c9ce4db"
             },
             "require": {
@@ -6823,16 +6826,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.33.0",
+            "version": "v1.33.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "05cf49921b13f6f01d3cfdf9018cfa7a8086fd5a"
+                "reference": "a87f959f4b691da66aada267a2dfdb260d0bb58a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/05cf49921b13f6f01d3cfdf9018cfa7a8086fd5a",
-                "reference": "05cf49921b13f6f01d3cfdf9018cfa7a8086fd5a",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/a87f959f4b691da66aada267a2dfdb260d0bb58a",
+                "reference": "a87f959f4b691da66aada267a2dfdb260d0bb58a",
                 "shasum": ""
             },
             "require": {
@@ -6881,7 +6884,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-03-22T15:40:09+00:00"
+            "time": "2017-04-18T21:43:11+00:00"
         },
         {
             "name": "typhonius/behattask",
@@ -7916,7 +7919,8 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            }
+            },
+            "time": "2017-03-28 23:54:52"
         },
         {
             "name": "drupal/config_update",
@@ -8028,7 +8032,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-04-10 22:44:14"
         },
         {
             "name": "drupal/devel",
@@ -8236,7 +8241,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-15T08:54:07+00:00"
+            "time": "2017-04-15 08:54:07"
         },
         {
             "name": "fabpot/goutte",
