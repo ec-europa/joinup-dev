@@ -4,26 +4,6 @@ dependencies:
   config:
     - comment.type.comment
     - field.field.comment.comment.field_comment_body
-  module:
-    - ds
-third_party_settings:
-  ds:
-    fields:
-      comment_author:
-        plugin_id: comment_author
-        weight: 1
-        label: hidden
-        formatter: default
-      comment_post_date:
-        plugin_id: comment_post_date
-        weight: 2
-        label: hidden
-        formatter: ds_post_date_long
-      comment_title:
-        plugin_id: comment_title
-        weight: 0
-        label: hidden
-        formatter: default
 id: comment.comment.default
 targetEntityType: comment
 bundle: comment
@@ -31,7 +11,7 @@ mode: default
 content:
   field_comment_body:
     weight: 4
-    label: visually_hidden
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
