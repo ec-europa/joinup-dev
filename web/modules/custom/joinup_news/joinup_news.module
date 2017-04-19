@@ -21,13 +21,13 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
       $fields['field_news_headline']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
     }
 
-    if (!empty($fields['field_news_shared_in'])) {
-      $fields['field_news_shared_in']->addConstraint('UniqueFieldValue');
-      $fields['field_news_shared_in']->addConstraint('ParentReference', [
+    if (!empty($fields['field_news_referenced_solution'])) {
+      $fields['field_news_referenced_solution']->addConstraint('UniqueFieldValue');
+      $fields['field_news_referenced_solution']->addConstraint('ParentReference', [
         'service' => 'joinup_core.relations_manager',
         'method' => 'getParent',
       ]);
-      $fields['field_news_shared_in']->addConstraint('NewsSharedInValidReference');
+      $fields['field_news_referenced_solution']->addConstraint('NewsSharedInValidReference');
     }
   }
 }
@@ -74,6 +74,6 @@ function joinup_news_form_node_news_form_alter(&$form, FormStateInterface $form_
   $entity = $form_state->getFormObject()->getEntity();
   $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
   if (!empty($parent) && $parent->bundle() !== 'solution') {
-    $form['field_news_shared_in']['#access'] = FALSE;
+    $form['field_news_referenced_solution']['#access'] = FALSE;
   }
 }
