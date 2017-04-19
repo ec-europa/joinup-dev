@@ -244,11 +244,19 @@ class RdfMappingHandler {
    */
   public function getFieldRdfMapping($entity_type_id, $field_name) {
     $field_mapping = &drupal_static(__FUNCTION__);
+    $field_name_parts = explode('.', $field_name);
+    $field_name = array_shift($field_name_parts);
+    if (!empty($field_name_parts)) {
+      $property = array_shift($field_name_parts);
+    }
+    if (!empty($field_name_parts)) {
+      throw new \Exception('SPARQL query: Complex field property selection in unsupported at the moment.');
+    }
     if (!isset($field_mapping[$entity_type_id])) {
       $mapping = $this->getEntityPredicates($entity_type_id);
       foreach ($mapping as $bundle_id => $data) {
         foreach ($data as $mapping_id => $field_data) {
-          $field_mapping[$entity_type_id][$field_data['field_name']][$bundle_id] = SparqlArg::uri($mapping_id);
+          $field_mapping[$entity_type_id][$field_data['field_name']][$field_data['column']][$bundle_id] = SparqlArg::uri($mapping_id);
         }
       }
     }
@@ -256,7 +264,13 @@ class RdfMappingHandler {
     if (!isset($field_mapping[$entity_type_id][$field_name])) {
       throw new \Exception("The field $field_name does not appear to have a resource id in the entity type $entity_type_id.");
     }
-    return $field_mapping[$entity_type_id][$field_name];
+    if (isset($property)) {
+      return $field_mapping[$entity_type_id][$field_name][$property];
+    }
+    // Fallback to main property.
+    $map = $this->entityFieldManager->getFieldStorageDefinitions($entity_type_id);
+    $main_property = $map[$field_name]->getMainPropertyName();
+    return $field_mapping[$entity_type_id][$field_name][$main_property];
   }
 
   /**
@@ -274,6 +288,8 @@ class RdfMappingHandler {
    *   Thrown when the field is not found.
    */
   public function fieldIsRdfReference($entity_type_id, $field_name) {
+    $parts = explode('.', $field_name);
+    $field_name = reset($parts);
     $base_field_definitions = $this->entityFieldManager->getBaseFieldDefinitions($entity_type_id);
     if (isset($base_field_definitions[$field_name])) {
       $field_definition = $base_field_definitions[$field_name]->getItemDefinition();

@@ -24,7 +24,7 @@ class Query extends QueryBase implements QueryInterface {
    */
   protected $connection;
 
-  protected $sortQuery = NULL;
+  // protected $sortQuery = NULL;
   public $query = '';
 
   /**
@@ -279,16 +279,22 @@ class Query extends QueryBase implements QueryInterface {
    *   Returns the called object.
    */
   protected function addSort() {
-    if (!$this->sortQuery) {
-      return $this;
-    }
+//    if (!$this->sortQuery) {
+//      return $this;
+//    }
+    // Sorting when counting? Get real!
     if ($this->count) {
       $this->sort = [];
     }
     // Simple sorting. For the POC, only uri's and bundles are supported.
     // @todo Implement sorting on bundle fields?
     if ($this->sort) {
+      // @todo Support multiple sort conditions.
       $sort = array_pop($this->sort);
+      // @todo Can we use the field mapper here as well?
+      // Consider looping over the sort criteria in both the compile step and here:
+      // We can add ?entity <pred> ?sort_1 in the condition, and
+      // ORDER BY ASC ?sort_1 here (I think).
       switch ($sort['field']) {
         case 'id':
           $this->query .= 'ORDER BY ' . $sort['direction'] . ' (?entity)';

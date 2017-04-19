@@ -185,6 +185,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    * {@inheritdoc}
    */
   public function __construct($conjunction, QueryInterface $query, array $namespaces, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
+    $conjunction = strtoupper($conjunction);
     parent::__construct($conjunction, $query, $namespaces);
     $this->graphHandler = $rdf_graph_handler;
     $this->mappingHandler = $rdf_mapping_handler;
@@ -218,8 +219,8 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
   public function condition($field = NULL, $value = NULL, $operator = NULL, $langcode = NULL) {
     // In case the field name includes the column, explode it.
     // @see \Drupal\og\MembershipManager::getGroupContentIds
-    $field_name_parts = explode('.', $field);
-    $field = reset($field_name_parts);
+    //$field_name_parts = explode('.', $field);
+    //$field = reset($field_name_parts);
     if ($this->conjunction == 'OR') {
       $sub_condition = $this->query->andConditionGroup();
       $sub_condition->condition($field, $value, $operator, $langcode);
@@ -403,7 +404,9 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
 
       switch ($condition['operator']) {
         case '=':
-          $this->tripleFragments[] = self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$condition['field']]) . ' ' . $condition['value'];
+          // @todo Remove the @en filter here, and replace it by a
+          // FILTER statement (taking the proper field language in to account).
+          $this->tripleFragments[] = self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$condition['field']]) . ' ' . $condition['value'] . '@en';
           break;
 
         case 'EXISTS':

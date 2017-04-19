@@ -143,7 +143,7 @@ class SparqlArg {
    * @return string
    *   The outcome of the serialization.
    */
-  public static function serialize($value, $format, $lang = 'en') {
+  public static function serialize($value, $format, $lang = NULL) {
     $serializer = new Ntriples();
     return $serializer->serialiseValue([
       'value' => $value,
