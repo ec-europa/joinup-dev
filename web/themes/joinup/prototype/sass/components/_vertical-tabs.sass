@@ -12,9 +12,10 @@
 .vertical-tabs__wrapper
   width: 100%
 
-.vertical-tabs__panes
+.vertical-tabs__pane
   padding: 20px
   background-color: #fff
+  margin-bottom: 0 !important
   +breakpoint(tablet)
     padding: 40px 30px
   +breakpoint(desktop)
@@ -28,6 +29,9 @@
 
 .vertical-tabs__menu
   padding-left: 0
+  display: none
+  +breakpoint(mobile)
+    display: block
 
 .vertical-tabs__menu-item
   display: block
@@ -53,6 +57,12 @@
   .button
     margin-bottom: 5px
 
+.vertical-tabs__menu-item--mobile
+  cursor: pointer
+  +breakpoint(mobile)
+    display: none
+
+
 // Modifiers
 // --------------------------------------------------
 
@@ -62,3 +72,9 @@
   background-color: #fff
   .vertical-tabs__menu-item-title
     font-weight: $font-weight-medium
+
+
+.vertical-tabs__pane.is-active
+  display: block !important
+  +breakpoint(mobile)
+    display: initial

@@ -71,6 +71,21 @@
     }
   };
 
+  // Fix vertical tabs on the form pages.
+  Drupal.behaviors.verticalTabsMobile = {
+    attach: function (context, settings) {
+      $(context).find('.vertical-tabs__menu-item--mobile').once('verticalTabsMobile').each(function () {
+          $(this).first().addClass('is-selected');
+          $(this).first().next('.vertical-tabs__pane').addClass('is-active');
+          $(this).on('click', function(e) {
+            e.preventDefault();
+            $(this).toggleClass('is-selected');
+            $(this).next('.vertical-tabs__pane').toggleClass('is-active');
+          });
+      });
+    }
+  };
+
   // Behaviors for tab validation.
   Drupal.behaviors.fieldGroupTabsValidation = {
     attach: function (context, settings) {
