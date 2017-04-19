@@ -1096,4 +1096,21 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
   }
 
+  /**
+   * Checks if a field contains a link to a community content page.
+   *
+   * @param string $field
+   *   The name of the field.
+   * @param string $title
+   *   The title of the community content page.
+   *
+   * @Then the :field field should contain the link to the :title page
+   */
+  public function assertFieldContainsLinkToPage($field, $title) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title);
+    $uri = '/' . $node->toUrl()->getInternalPath();
+    $this->assertSession()->fieldValueEquals($field, $uri);
+  }
+
 }
