@@ -12,6 +12,7 @@ dependencies:
     - node.type.discussion
   module:
     - comment
+    - link
     - options
     - text
     - user
@@ -64,6 +65,18 @@ content:
     weight: 2
     third_party_settings: {  }
     region: content
+  report:
+    label: hidden
+    weight: 50
+    region: content
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
   share_link:
     weight: 6
     region: content
