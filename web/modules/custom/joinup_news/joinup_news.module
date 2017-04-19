@@ -22,11 +22,6 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
 
     if (!empty($fields['field_news_referenced_solution'])) {
       $fields['field_news_referenced_solution']->addConstraint('UniqueFieldValue');
-      $fields['field_news_referenced_solution']->addConstraint('ParentReference', [
-        'service' => 'joinup_core.relations_manager',
-        'method' => 'getParent',
-      ]);
-      $fields['field_news_referenced_solution']->addConstraint('NewsSharedInValidReference');
     }
   }
 }

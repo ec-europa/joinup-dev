@@ -28,11 +28,6 @@ Feature: Creation of news through the UI.
       | Headline | Strong request for this rare metal that is on the mouth of everybody                          |
       | Content  | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
 
-    # Sharing into the news parent should not be possible.
-    When I fill in "Referenced solution" with "Density catalogue project"
-    And I press "Publish"
-    Then I should see the error message "You cannot reference the parent Density catalogue project in field Referenced solution."
-
     # Share the content in another solution.
     When I fill in "Referenced solution" with "Dig do's and don'ts"
     And I press "Publish"
