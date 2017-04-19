@@ -44,6 +44,8 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     'NOT LIKE' => ['prefix' => 'FILTER(!regex(', 'suffix' => ', "i"))'],
     'EXISTS' => ['prefix' => 'FILTER EXISTS {', 'suffix' => '}'],
     'NOT EXISTS' => ['prefix' => 'FILTER NOT EXISTS {', 'suffix' => '}'],
+    // @todo This is not starts with but contains...
+    'STARTS_WITH' => ['prefix' => 'FILTER(regex(', 'suffix' => ', "i"))'],
     '<' => ['prefix' => '', 'suffix' => ''],
     '>' => ['prefix' => '', 'suffix' => ''],
     '>=' => ['prefix' => '', 'suffix' => ''],
@@ -67,6 +69,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     'CONTAINS',
     'LIKE',
     'NOT LIKE',
+    'STARTS_WITH',
     '<',
     '>',
     '<=',
@@ -417,6 +420,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         case 'CONTAINS':
         case 'LIKE':
         case 'NOT LIKE':
+        case 'STARTS_WITH':
           $this->addConditionFragment($this->compileLike($condition));
           // Set the default language to the fields.
           // @todo: Remove this when proper language handling is set up.
@@ -604,7 +608,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    * Implements \Drupal\Core\Entity\Query\ConditionInterface::exists().
    */
   public function exists($field, $langcode = NULL) {
-    $this->condition($field, NULL, 'EXISTS');
+    return $this->condition($field, NULL, 'EXISTS');
   }
 
   /**
@@ -626,6 +630,8 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    *   The variable.
    */
   protected function toVar($key, $blank = FALSE) {
+    // Deal with field.property as dots are not allowed in var names.
+    $key = str_replace('.', '_', $key);
     if (strpos($key, '?') === FALSE && strpos($key, '_:') === FALSE) {
       return ($blank ? '_:' : '?') . $key;
     }
