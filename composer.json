@@ -118,6 +118,9 @@
                 "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
                 "Optionally log messages for skip_on_empty and skip_row_if_not_set @see https://www.drupal.org/node/2655154": "https://www.drupal.org/files/issues/2655154-27.patch"
             },
+            "drupal/facets": {
+                "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
+            },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
             },
