@@ -2,11 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.rdf_entity.inline
     - field.field.rdf_entity.solution.field_is_actor
     - field.field.rdf_entity.solution.field_is_affiliations_requests
     - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
+    - field.field.rdf_entity.solution.field_is_content
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
@@ -52,6 +54,14 @@ targetEntityType: rdf_entity
 bundle: solution
 mode: default
 content:
+  current_workflow_state:
+    type: current_workflow_state_widget
+    weight: 17
+    region: content
+    settings:
+      title: 'Current workflow state'
+      title_display: before
+    third_party_settings: {  }
   field_is_banner:
     weight: 3
     settings:
@@ -137,7 +147,7 @@ content:
     type: inline_entity_form_complex
     weight: 6
     settings:
-      form_mode: default
+      form_mode: inline
       override_labels: true
       label_singular: owner
       label_plural: owners
@@ -165,7 +175,7 @@ content:
     region: content
   field_is_state:
     type: state_machine_buttons
-    weight: 12
+    weight: 18
     settings:
       use_transition_label: 1
     third_party_settings: {  }
@@ -207,10 +217,10 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
-  current_workflow_state: true
   field_is_actor: true
   field_is_affiliations_requests: true
   field_is_business_process: true
+  field_is_content: true
   field_is_creation_date: true
   field_is_distribution: true
   field_is_has_version: true

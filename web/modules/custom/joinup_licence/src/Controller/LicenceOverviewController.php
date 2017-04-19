@@ -73,12 +73,12 @@ class LicenceOverviewController extends ControllerBase {
       $rows[] = $this->buildRow($licence);
     }
 
-    $build['table'] = array(
+    $build['table'] = [
       '#type' => 'table',
       '#header' => $this->buildHeader(),
-      '#rows' => array(),
+      '#rows' => [],
       '#empty' => $this->t('There are no licences yet.'),
-    );
+    ];
     foreach ($licences as $licence) {
       if ($row = $this->buildRow($licence)) {
         $build['table']['#rows'][$licence->id()] = $row;
@@ -92,18 +92,18 @@ class LicenceOverviewController extends ControllerBase {
    * Building the header and content lines for the Rdf list.
    */
   public function buildHeader() {
-    $header = array(
-      'id' => array(
+    $header = [
+      'id' => [
         'data' => $this->t('URI'),
         'field' => 'id',
         'specifier' => 'id',
-      ),
-      'rid' => array(
+      ],
+      'rid' => [
         'data' => $this->t('Bundle'),
         'field' => 'rid',
         'specifier' => 'rid',
-      ),
-    );
+      ],
+    ];
     return $header;
   }
 

@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.document.field_keywords
     - field.field.node.document.field_licence
     - field.field.node.document.field_policy_domain
+    - field.field.node.document.field_shared_in
     - field.field.node.document.field_short_title
     - field.field.node.document.field_state
     - field.field.node.document.field_type
@@ -20,6 +21,7 @@ dependencies:
     - comment
     - datetime
     - file_url
+    - link
     - text
     - user
 id: node.document.default
@@ -76,10 +78,28 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  report:
+    label: hidden
+    weight: 50
+    region: content
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+  share_link:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_keywords: true
   field_licence: true
   field_policy_domain: true
+  field_shared_in: true
   field_state: true
   field_type: true
   links: true

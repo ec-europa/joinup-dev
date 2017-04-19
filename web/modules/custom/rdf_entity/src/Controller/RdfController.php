@@ -56,9 +56,9 @@ class RdfController extends ControllerBase {
   public function add(RdfEntityTypeInterface $rdf_type) {
     $rdf_entity = $this->entityTypeManager()
       ->getStorage('rdf_entity')
-      ->create(array(
+      ->create([
         'rid' => $rdf_type->id(),
-      ));
+      ]);
 
     $form = $this->entityFormBuilder()->getForm($rdf_entity, 'add');
 
@@ -86,7 +86,7 @@ class RdfController extends ControllerBase {
       ],
     ];
 
-    $content = array();
+    $content = [];
 
     // Only use RDF types the user has access to.
     foreach ($this->entityTypeManager()->getStorage('rdf_type')->loadMultiple() as $type) {
@@ -100,7 +100,7 @@ class RdfController extends ControllerBase {
     // Bypass the rdf_entity/add listing if only one content type is available.
     if (count($content) == 1) {
       $type = array_shift($content);
-      return $this->redirect('rdf_entity.rdf_add', array('rdf_type' => $type->id()));
+      return $this->redirect('rdf_entity.rdf_add', ['rdf_type' => $type->id()]);
     }
 
     $build['#content'] = $content;

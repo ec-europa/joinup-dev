@@ -1,0 +1,11 @@
+joinup_community_content.share_content_form:
+  path: '/share/{node}'
+  defaults:
+    _form: '\Drupal\joinup_community_content\Form\ShareContentForm'
+    _title: 'Share'
+  requirements:
+    _custom_access: '\Drupal\joinup_community_content\Form\ShareContentForm::access'
+  options:
+    parameters:
+      node:
+        type: entity:node

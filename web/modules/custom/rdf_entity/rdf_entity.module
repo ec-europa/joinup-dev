@@ -61,27 +61,27 @@ function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateI
   /** @var \Drupal\field\Entity\FieldStorageConfig $entity */
   $entity = $form_obj->getEntity();
   $schema = $entity->getSchema();
-  $form['rdf_mapping'] = array(
+  $form['rdf_mapping'] = [
     '#type' => 'details',
     '#title' => t('Rdf field mapping'),
     '#description' => t('This field uses a Sparql backend. Please map the fields to their corresponding rdf properties.'),
     '#weight' => 99,
-  );
+  ];
   foreach ($schema['columns'] as $column => $column_desc) {
     $description = isset($column_desc['description']) ? $column_desc['description'] . "<br>" : '';
-    foreach (array('type', 'length', 'size', 'serialize') as $key) {
+    foreach (['type', 'length', 'size', 'serialize'] as $key) {
       if (!empty($column_desc[$key])) {
         $description .= '<strong>' . $key . "</strong>: " . $column_desc[$key] . ' ';
       }
     }
 
-    $form['rdf_mapping'][$column] = array(
+    $form['rdf_mapping'][$column] = [
       '#type' => 'textfield',
       '#title' => $column,
       '#description' => $description,
       '#weight' => 150,
       '#default_value' => rdf_entity_get_third_party_property($entity, 'mapping', $column, FALSE),
-    );
+    ];
   }
 
   $form['#entity_builders'][] = 'rdf_entity_form_alter_builder';
@@ -250,14 +250,14 @@ function rdf_entity_bundle_config($entity_type, ConfigEntityInterface $entity, a
  * Implements hook_theme().
  */
 function rdf_entity_theme() {
-  return array(
-    'rdf_entity' => array(
+  return [
+    'rdf_entity' => [
       'render element' => 'elements',
-    ),
-    'rdf_add_list' => array(
-      'variables' => array('content' => NULL),
-    ),
-  );
+    ],
+    'rdf_add_list' => [
+      'variables' => ['content' => NULL],
+    ],
+  ];
 }
 
 /**
@@ -286,16 +286,16 @@ function template_preprocess_rdf_entity(array &$variables) {
   $variables['author_name'] = drupal_render($variables['elements']['uid']);
   unset($variables['elements']['uid']);
 
-  $variables['url'] = $rdf_entity->url('canonical', array(
+  $variables['url'] = $rdf_entity->url('canonical', [
     'language' => $rdf_entity->language(),
-  ));
+  ]);
   $variables['label'] = !empty($variables['elements']['label']) ? $variables['elements']['label'] : ['#markup' => $rdf_entity->label()];
   unset($variables['elements']['label']);
   // The view mode is 'full' and we are on the 'rdf_entity.view' route.
   $variables['page'] = ($variables['view_mode'] == 'full' && (rdf_entity_is_page($rdf_entity)));
 
   // Helpful $content variable for templates.
-  $variables += array('content' => array());
+  $variables += ['content' => []];
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
@@ -314,16 +314,16 @@ function template_preprocess_rdf_entity(array &$variables) {
  *   - content: An array of rdf bundles.
  */
 function template_preprocess_rdf_add_list(array &$variables) {
-  $variables['types'] = array();
+  $variables['types'] = [];
   if (!empty($variables['content'])) {
     foreach ($variables['content'] as $type) {
-      $variables['types'][$type->id()] = array(
+      $variables['types'][$type->id()] = [
         'type' => $type->id(),
-        'add_link' => \Drupal::l($type->label(), new Url('rdf_entity.rdf_add', array('rdf_type' => $type->id()))),
-        'description' => array(
+        'add_link' => \Drupal::l($type->label(), new Url('rdf_entity.rdf_add', ['rdf_type' => $type->id()])),
+        'description' => [
           '#markup' => $type->getDescription(),
-        ),
-      );
+        ],
+      ];
     }
   }
 }
@@ -349,7 +349,7 @@ function rdf_entity_is_page(RdfInterface $rdf_entity) {
  * Implements hook_theme_suggestions_HOOK().
  */
 function rdf_entity_theme_suggestions_rdf_entity(array $variables) {
-  $suggestions = array();
+  $suggestions = [];
   $rdf_entity = $variables['elements']['#rdf_entity'];
   $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
 

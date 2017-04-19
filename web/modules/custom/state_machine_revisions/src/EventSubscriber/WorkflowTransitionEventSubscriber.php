@@ -2,10 +2,10 @@
 
 namespace Drupal\state_machine_revisions\EventSubscriber;
 
-use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\RevisionableInterface;
+use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\state_machine\Event\WorkflowTransitionEvent;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowState;
@@ -25,13 +25,23 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   protected $revisionManager;
 
   /**
+   * The workflow helper.
+   *
+   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   */
+  protected $workflowHelper;
+
+  /**
    * Constructs a new WorkflowTransitionEventSubscriber object.
    *
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revisionManager
    *   The revision manager.
+   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflowHelper
+   *   The workflow helper.
    */
-  public function __construct(RevisionManagerInterface $revisionManager) {
+  public function __construct(RevisionManagerInterface $revisionManager, WorkflowHelperInterface $workflowHelper) {
     $this->revisionManager = $revisionManager;
+    $this->workflowHelper = $workflowHelper;
   }
 
   /**
@@ -118,18 +128,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
    *   TRUE if the state is set as published in the workflow, FALSE otherwise.
    */
   protected function isPublishedState(WorkflowState $state, WorkflowInterface $workflow) {
-    // We rely on being able to inspect the plugin definition. Throw an error if
-    // this is not the case.
-    if (!$workflow instanceof PluginInspectionInterface) {
-      $label = $workflow->getLabel();
-      throw new \InvalidArgumentException("The '$label' workflow is not plugin based.");
-    }
-    // Retrieve the raw plugin definition, as all additional plugin settings
-    // are stored there.
-    $raw_workflow_definition = $workflow->getPluginDefinition();
-    $state_id = $state->getId();
-
-    return !empty($raw_workflow_definition['states'][$state_id]['published']);
+    return $this->workflowHelper->isWorkflowStatePublished($state->getId(), $workflow);
   }
 
 }

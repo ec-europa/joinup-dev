@@ -16,7 +16,7 @@ class SparqlFilter {
    *
    * @var array
    */
-  protected $filters = array();
+  protected $filters = [];
 
   /**
    * Add a filter.

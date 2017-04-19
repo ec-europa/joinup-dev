@@ -43,10 +43,12 @@ Feature: "Add event" visibility options.
     And I click "Add event"
     Then I should see the heading "Add event"
     And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website, Location, Organisation, Organisation type, Policy domain, Keywords, Scope"
+    # The entity is new, so the current workflow state should not be shown.
+    And the following fields should not be present "Current workflow state"
 
     # The sections about managing revisions and groups should not be visible.
     And I should not see the text "Revision information"
-    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
 
     When I fill in the following:
       | Title       | An amazing event                      |

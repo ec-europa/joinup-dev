@@ -7,24 +7,28 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
+use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 
 /**
  * Implements hook_theme().
  */
 function joinup_core_theme($existing, $type, $theme, $path) {
-  return array(
-    'joinup_tiles' => array(
+  return [
+    'joinup_tiles' => [
       'path' => drupal_get_path('module', 'joinup_core') . '/templates',
-    ),
-  );
+    ],
+  ];
 }
 
 /**
@@ -128,7 +132,7 @@ function joinup_core_entity_graph_access(EntityInterface $entity, $operation, Ac
  */
 function joinup_core_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
   // @todo: when all bundles are in, remove the first check.
-  if (!in_array($entity->bundle(), ['document', 'discussion', 'news'])) {
+  if (!in_array($entity->bundle(), ['document', 'discussion', 'news', 'event'])) {
     return AccessResult::neutral();
   }
   return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($entity, $operation, $account);
@@ -137,22 +141,48 @@ function joinup_core_node_access(EntityInterface $entity, $operation, AccountInt
 /**
  * Implements hook_entity_base_field_info().
  *
- * Provides a base field that displays the current workflow state on nodes and
- * RDF entities. This field is intended to be used on edit forms which use the
- * set of buttons to perform the workflow state transitions. When these buttons
- * are used the current workflow state is not indicated, so this field can be
- * used to expose this information.
+ * - Provides a base field that displays the current workflow state on nodes and
+ *   RDF entities. This field is intended to be used on edit forms which use the
+ *   set of buttons to perform the workflow state transitions. When these
+ *   buttons are used the current workflow state is not indicated, so this field
+ *   can be used to expose this information.
+ * - Provides a 'report' field on community content pages that can be used to
+ *   report inappropriate content.
  */
 function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
   if ($entity_type->id() === 'rdf_entity' || $entity_type->id() === 'node') {
     $fields['current_workflow_state'] = BaseFieldDefinition::create('current_workflow_state')
       ->setLabel(new TranslatableMarkup('Current workflow state'))
       ->setDisplayOptions('form', ['type' => 'hidden'])
       ->setDisplayConfigurable('form', TRUE)
       ->setComputed(TRUE);
-
-    return $fields;
   }
+
+  // Add a 'report' field to community content entities. Currently all node
+  // types are community content.
+  if ($entity_type->id() === 'node') {
+    $fields['report'] = BaseFieldDefinition::create('report_link')
+      ->setName('report')
+      ->setLabel(t('Report'))
+      ->setComputed(TRUE)
+      ->setClass('\Drupal\joinup_core\ReportLinkFieldItemList')
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 50,
+        'settings' => [
+          'trim_length' => 80,
+          'url_only' => FALSE,
+          'url_plain' => FALSE,
+          'rel' => '',
+          'target' => '',
+        ],
+      ]);
+  }
+
+  return $fields;
 }
 
 /**
@@ -163,6 +193,10 @@ function joinup_core_entity_type_alter(array &$entity_types) {
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
   // @todo Remove when ISAICP-3126 gets in.
   $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
+
+  // Add the about page as link template, so the og context will be
+  // automatically solved.
+  $entity_types['rdf_entity']->setLinkTemplate('about-page', '/rdf_entity/{rdf_entity}/about');
 }
 
 /**
@@ -202,6 +236,103 @@ QUERY;
           $term->get('extension')->appendItem(['value' => $extension]);
         }
         $term->set('mime_type', trim($result->mime_type->getValue()));
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Remove non-related actions (adding/removing roles) for other group types
+ * from member overview page.
+ */
+function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // The form id will contain the entity id of the group, so we have to fall
+  // back to strstr to see if the generic part matches.
+  if (strstr($form_id, 'views_form_og_members_overview_default') === FALSE) {
+    return;
+  }
+  $entity = \Drupal::request()->get('rdf_entity');
+  if (empty($entity) || !in_array($entity->getType(), ['solution', 'collection'])) {
+    return;
+  }
+  // Header not set if the view is empty (no members).
+  if (empty($form['header'])) {
+    return;
+  }
+  foreach ($form['header']['og_membership_bulk_form']['action']['#options'] as $key => $option) {
+    if (strstr($key, 'rdf_entity-' . $entity->getType()) === FALSE) {
+      unset($form['header']['og_membership_bulk_form']['action']['#options'][$key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_links_alter().
+ */
+function joinup_core_node_links_alter(array &$links, NodeInterface $entity, array &$context) {
+  if (isset($links['comment__field_comments']['#links']['comment-add'])) {
+    unset($links['comment__field_comments']['#links']['comment-add']);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ *
+ * Shows an information message to users who have access to the draft version
+ * of the rdf entity if the user is viewing the published version.
+ */
+function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  // Show only in full mode views.
+  if ($view_mode !== 'full') {
+    return;
+  }
+  $graph = $entity->get('graph')->first()->value;
+  if ($graph !== 'default' || !$entity->hasGraph('draft')) {
+    return;
+  }
+
+  // The draft link is already set in the list of the link templates of the rdf
+  // entity as 'rdf-draft-{$graph_name}'.
+  $url = $entity->toUrl('rdf-draft-draft');
+  if (!$url->access()) {
+    return;
+  }
+
+  $link = Link::fromTextAndUrl(t('here'), $url)->toString();
+  drupal_set_message(t('You are viewing the published version. To view the latest draft version, click @here.', [
+    '@here' => $link,
+  ]), 'warning');
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ *
+ * - Make sure the standard formatter for links can be used for the link that is
+ *   used to report inappropriate content.
+ */
+function joinup_core_field_formatter_info_alter(array &$info) {
+  $info['link']['field_types'][] = 'report_link';
+}
+
+/**
+ * Implements hook_entity_create().
+ */
+function joinup_core_entity_create(EntityInterface $entity) {
+  // Set the publication state when creating an entity that uses workflow.
+  if ($entity instanceof EntityPublishedInterface) {
+    /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
+    $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+    if ($workflow_helper->hasEntityStateField($entity)) {
+      $state_field = $workflow_helper->getEntityStateField($entity);
+      $workflow = $state_field->getWorkflow();
+      $state_id = $state_field->getValue()['value'];
+      if ($workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
+        $entity->setPublished();
+      }
+      else {
+        $entity->setUnpublished();
       }
     }
   }

@@ -11,7 +11,8 @@ dependencies:
     - node.type.discussion
   module:
     - ds
-    - joinup
+    - joinup_core
+    - link
     - text
     - user
 id: node.discussion.view_mode_featured
@@ -57,3 +58,5 @@ hidden:
   field_state: true
   links: true
   og_audience: true
+  report: true
+  share_link: true

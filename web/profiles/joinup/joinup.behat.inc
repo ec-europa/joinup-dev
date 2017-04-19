@@ -13,11 +13,15 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
+use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
+use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
+use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
@@ -32,27 +36,16 @@ use Drupal\User\Entity\User;
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use BrowserCapabilityDetectionTrait;
+  use EntityTrait;
+  use FileTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
   use TraversingTrait;
+  use UserTrait;
   use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
-
-  /**
-   * Test files.
-   *
-   * @var \Drupal\file\Entity\File[]
-   */
-  protected $files = [];
-
-  /**
-   * Test users.
-   *
-   * @var \Drupal\user\Entity\User[]
-   */
-  protected $registeredUsers = [];
 
   /**
    * Creates a user with data provided in a table.
@@ -71,29 +64,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Given (the following )user:
    */
   public function givenUser(TableNode $user_table) {
-    $values = [];
-    $aliases = self::userFieldAliases();
-    // Replace the column aliases with the actual field names.
-    foreach ($user_table->getRowsHash() as $key => $value) {
-      if (array_key_exists($key, $aliases)) {
-        $values[$aliases[$key]] = $value;
-      }
-      else {
-        throw new \Exception("Unknown column '$key' in user table.");
-      }
-    }
-    $this->handleFileFields($values, 'user', 'user');
-
-    // Login method needs a password.
-    if (!isset($values['pass'])) {
-      $values['pass'] = $values['name'];
-    }
-    if (!isset($values['mail'])) {
-      $values['mail'] = $values['name'] . '@example.com';
-    }
-
-    $user = (object) $values;
-    $this->userCreate($user);
+    $this->createUser($user_table->getRowsHash());
   }
 
   /**
@@ -211,42 +182,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Save files and change filename into a file ID.
-   */
-  private function handleFileFields(&$values, $entity_type, $bundle) {
-    $entity_manager = \Drupal::entityManager();
-    /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $fields */
-    $fields = $entity_manager->getFieldDefinitions($entity_type, $bundle);
-
-    foreach ($values as $field_name => $value) {
-      if (!isset($fields[$field_name])) {
-        throw new \Exception("Field $field_name is not set on entity $entity_type  : $bundle");
-      }
-      if (empty($value)) {
-        continue;
-      }
-      /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_info */
-      $field_info = $fields[$field_name];
-      if (in_array($field_info->getType(), ['image', 'file'])) {
-        $files_path = $this->getMinkParameter('files_path');
-        $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $value;
-        if (!is_file($path)) {
-          throw new \Exception("File '$value' was not found in file path '$files_path'.");
-        }
-        // Copy the image into the public files folder and turn it into a File
-        // entity before linking it.
-        $uri = 'public://' . $value;
-        file_unmanaged_copy($path, $uri);
-        $file = File::create(['uri' => $uri]);
-        $file->save();
-        $values[$field_name] = $file->get('uri')->value;
-
-        $this->files[$file->id()] = $file;
-      }
-    }
-  }
-
-  /**
    * Register a user.
    *
    * @Given the following user registration at :location:
@@ -271,25 +206,13 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     if ($user) {
       // Track user for auto delete in tear-down.
-      $this->registeredUsers[$user->id()] = $user;
+      $this->getUserManager()->addUser((object) [
+        'name' => $username,
+        'uid' => $user->id(),
+      ]);
     }
     else {
       throw new Exception('User not registered.');
-    }
-  }
-
-  /**
-   * Remove any created registered users.
-   *
-   * @AfterScenario
-   */
-  public function cleanRegisteredUsers() {
-    // Remove any users that were created.
-    if (!empty($this->registeredUsers)) {
-      /** @var \Drupal\user\Entity\User $user */
-      foreach ($this->registeredUsers as $user) {
-        $user->delete();
-      }
     }
   }
 
@@ -304,29 +227,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     /** @var RdfEntitySparqlStorage $storage */
     $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
     $storage->getGraphHandler()->resetRequestGraphs();
-  }
-
-  /**
-   * Mapping of human readable names to machine names.
-   *
-   * @return array
-   *   Field mapping.
-   */
-  private static function userFieldAliases() {
-    return [
-      'Username' => 'name',
-      'Password' => 'pass',
-      'E-mail' => 'mail',
-      'Status' => 'status',
-      'First name' => 'field_user_first_name',
-      'Family name' => 'field_user_family_name',
-      'Photo' => 'field_user_photo',
-      'Business title' => 'field_user_business_title',
-      'Organisation' => 'field_user_organisation',
-      'Nationality' => 'field_user_nationality',
-      'Professional domain' => 'field_user_professional_domain',
-      // @todo Social network
-    ];
   }
 
   /**
@@ -523,6 +423,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks if the given node has the correct publication state.
+   *
+   * @param string $title
+   *   The title of the node.
+   * @param string $state
+   *   The expected publication state, either 'published' or 'unpublished'.
+   *
+   * @Then the community content with title :title should have the publication state :state
+   */
+  public function assertPublicationState($title, $state) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getEntityByLabel('node', $title);
+    \PHPUnit_Framework_Assert::assertSame($node->isPublished(), $state === 'published');
+  }
+
+  /**
    * Replaces human readable labels and values with their real counterparts.
    *
    * This allows us to:
@@ -545,7 +461,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $name = self::getNodeFieldNameFromAlias($node->type, $alias);
       if ($name !== $alias) {
         unset($node->alias);
-        $node->$name = $value;
+        // Don't set empty values, since we can have multiple aliases that point
+        // to the same field (e.g. 'collection' and 'solution' both use the same
+        // 'og_audience' field).
+        if (!empty($value)) {
+          $node->$name = $value;
+        }
       }
     }
 
@@ -574,6 +495,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // Replace the human readable value with the expected boolean.
       $node->status = $mapping[$node->status];
     }
+
+    // Replace human readable workflow states with machine names.
+    if (!empty($node->field_state)) {
+      $node->field_state = self::translateWorkflowStateAlias($node->field_state);
+    }
   }
 
   /**
@@ -594,9 +520,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'content' => 'body',
       ],
       'document' => [
-        'short title' => 'field_short_title',
-        'type' => 'field_type',
         'licence' => 'field_licence',
+        'short title' => 'field_short_title',
+        'state' => 'field_state',
+        'type' => 'field_type',
       ],
       'event' => [
         'short title' => 'field_short_title',
@@ -629,16 +556,28 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Example: When I press "Log In" at "Fieldset"
    * Example: And I press "Log In" at "Custom widget".
    *
-   * @When I press :button at( the) :fieldset( field)
+   * @When I press :button at( the) :field( field)
    */
-  public function pressButtonInFieldset($button, $fieldset) {
+  public function pressButtonInWidget($button, $field) {
     // Fixes a step argument (with \\" replaced back to ")
     // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
     $button = str_replace('\\"', '"', $button);
-    $this->getSession()->getPage()->find('named', [
+
+    // First check if a fieldset exists containing the given field name. This
+    // is used for inline entity forms.
+    $element = $this->getSession()->getPage()->find('named', [
       'fieldset',
-      $fieldset,
-    ])->pressButton($button);
+      $field,
+    ]);
+
+    // If this doesn't exist, search for a multivalue entity reference field
+    // containing a label for the given field name.
+    if (empty($element)) {
+      $xpath = '//table[contains(concat(" ", normalize-space(@class), " "), " field-multiple-table ") and //label[text()="' . $field . '"]]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-wrapper ")]';
+      $element = $this->getSession()->getPage()->find('xpath', $xpath);
+    }
+
+    $element->pressButton($button);
   }
 
   /**
@@ -750,7 +689,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I (should )not see the :heading tile
    */
   public function assertTileNotPresent($heading) {
-    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
+    // We target the heading with "h2" instead of ".listing__title" because both
+    // unstyled and styled tiles use h2 as element for their titles.
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2');
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {
@@ -869,8 +810,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
   /**
    * Opens the plus button menu on JS-enabled browsers.
+   *
+   * @When I open the plus button menu
    */
-  protected function openPlusButtonMenu() {
+  public function openPlusButtonMenu() {
     if ($this->browserSupportsJavascript()) {
       $driver = $this->getSession()->getDriver();
       $this->getSession()->getDriver()->click('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//button');
@@ -1081,6 +1024,93 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     foreach ($elements as $element) {
       \PHPUnit_Framework_Assert::assertNotEquals($description, trim($element->getText()));
     }
+  }
+
+  /**
+   * Asserts that the current user's profile picture is shown in the header.
+   *
+   * @Then my user profile picture should be shown in the page header
+   */
+  public function assertCurrentUserProfilePictureVisible() {
+    if ($this->getUserManager()->currentUserIsAnonymous()) {
+      throw new \PHPUnit_Framework_ExpectationFailedException('No user is currently logged in.');
+    }
+    $user = User::load($this->getUserManager()->getCurrentUser()->uid);
+    if ($user->field_user_photo->isEmpty()) {
+      throw new \PHPUnit_Framework_ExpectationFailedException('The currently logged in user does not have a profile picture.');
+    }
+    /** @var \Drupal\file\FileInterface $photo */
+    $photo = File::load($user->field_user_photo->target_id);
+    $url = ImageStyle::load('profile_icon')->buildUrl($photo->getFileUri());
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " login-menu ")]//img[@src="' . $url . '"]';
+    $this->assertSession()->elementsCount('xpath', $xpath, 1);
+  }
+
+  /**
+   * Programmatically creates node revisions.
+   *
+   * Table format:
+   * | current title            | title            | body            |
+   * | <the current node title> | Revisioned title | Revisioned body |
+   *
+   * @param string $bundle
+   *   The bundle of the node.
+   * @param \Behat\Gherkin\Node\TableNode $updates_table
+   *   The table with the changes to insert in the revision.
+   *
+   * @Given (the following ):bundle (content )revisions:
+   */
+  public function createNodeRevisions($bundle, TableNode $updates_table) {
+    foreach ($updates_table->getColumnsHash() as $data) {
+      $node = $this->getNodeByTitle($data['current title'], $bundle);
+      unset($data['current title']);
+
+      // Crete a fake node object to be able to reuse hooks that help with
+      // preparing the field values.
+      $fake_node = (object) $data;
+      $fake_node->type = $bundle;
+      $this->dispatchHooks('BeforeNodeCreateScope', $fake_node);
+      $this->parseEntityFields('node', $fake_node);
+      // Remove the type property as we cannot change that.
+      unset($fake_node->type);
+
+      // The author is handled in \Drupal\Driver\Cores\Drupal8::nodeCreate(),
+      // so we have to do it manually.
+      if (isset($fake_node->author)) {
+        $user = user_load_by_name($fake_node->author);
+        if ($user) {
+          $node->uid = $user->id();
+        }
+        unset($fake_node->author);
+      }
+
+      // Update all fields. Magic setters will take care of everything.
+      foreach (get_object_vars($fake_node) as $name => $value) {
+        $node->{$name} = $value;
+      }
+
+      // Create a new revision.
+      $node->setNewRevision();
+      // Finally save the node.
+      $node->save();
+    }
+  }
+
+  /**
+   * Checks if a field contains a link to a community content page.
+   *
+   * @param string $field
+   *   The name of the field.
+   * @param string $title
+   *   The title of the community content page.
+   *
+   * @Then the :field field should contain the link to the :title page
+   */
+  public function assertFieldContainsLinkToPage($field, $title) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title);
+    $uri = '/' . $node->toUrl()->getInternalPath();
+    $this->assertSession()->fieldValueEquals($field, $uri);
   }
 
 }

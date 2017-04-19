@@ -21,12 +21,11 @@ dependencies:
 
 config_devel:
   - core.entity_form_display.rdf_entity.solution.default
+  - core.entity_view_display.rdf_entity.solution.about
   - core.entity_view_display.rdf_entity.solution.default
   - core.entity_view_display.rdf_entity.solution.group_header
   - core.entity_view_display.rdf_entity.solution.view_mode_featured
   - core.entity_view_display.rdf_entity.solution.view_mode_tile
-  - facets.facet.solution_policy_domain
-  - facets.facet.solution_spatial_coverage
   - facets.facet.solution_content_bundle
   - facets.facet_source.search_api_field__rdf_entity.field_is_content
   - field.field.rdf_entity.solution.field_is_actor

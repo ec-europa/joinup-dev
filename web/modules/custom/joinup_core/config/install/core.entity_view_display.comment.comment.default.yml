@@ -35,6 +35,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-    region: content
+    region: ds_content
 hidden:
   links: true

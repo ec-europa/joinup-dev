@@ -16,7 +16,8 @@ dependencies:
     - node.type.news
   module:
     - ds
-    - joinup
+    - joinup_core
+    - link
     - text
     - user
 third_party_settings:
@@ -106,3 +107,5 @@ hidden:
   field_state: true
   links: true
   og_audience: true
+  report: true
+  share_link: true

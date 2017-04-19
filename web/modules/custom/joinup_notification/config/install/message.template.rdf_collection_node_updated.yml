@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: rdf_collection_node_updated
+label: 'Rdf entity - collection - node updated'
+description: 'Message to collection facilitators when a community content is updated by a moderator'
+text:
+  -
+    value: "<p>Joinup: user [message:field_message_actor:entity:display-name] updated a [message:field_message_node:entity:content-type:name] of your collection</p>\r\n"
+    format: content_editor
+  -
+    value: "<p>Dear [message:author:display-name],</p>\r\n\r\n<p>[message:field_message_actor:entity:display-name] updated the&nbsp;[message:field_message_node:entity:content-type:name] \"[message:field_message_content:entity:label]\" in your [message:field_message_content:entity:label] collection.</p>\r\n\r\n<p>You can see the changes at&nbsp;[message:field_message_node:entity:diff-url-latest] .</p>\r\n\r\n<p>Kinds regards,</p>\r\n\r\n<p>The Joinup Moderation Team.</p>\r\n"
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }

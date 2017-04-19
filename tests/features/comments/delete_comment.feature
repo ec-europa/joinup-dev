@@ -8,13 +8,13 @@ Feature: Delete comments
       | logo  | logo.png              |
       | state | validated             |
     And users:
-      | name                 | mail                          |
+      | Username             | E-mail                        |
       | Tim Berners Lee      | tim.berners-lee@example.com   |
       | Vicky visitor        | vicky.visitor@example.com     |
       | Do Re Mi Facilitator | doremifacilitator@example.com |
     And news content:
-      | title                          | body                              | collection            | status    |
-      | RDF Schemas for government use | Home for DCAT, ADMS, and the like | Semantic web fanatics | published |
+      | title                          | body                              | collection            | state     |
+      | RDF Schemas for government use | Home for DCAT, ADMS, and the like | Semantic web fanatics | validated |
     And comments:
       | subject         | field_body       | author          | parent                         |
       | ADMS is awesome | Let's all use it | Tim Berners Lee | RDF Schemas for government use |

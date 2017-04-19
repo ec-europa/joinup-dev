@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
+    - link
     - search_api_field
     - text
     - user
@@ -39,5 +40,17 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  report:
+    label: hidden
+    weight: 50
+    region: content
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
 hidden:
   og_audience: true
