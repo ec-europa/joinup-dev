@@ -56,6 +56,8 @@ class SolutionLogo extends SolutionBase {
     // Set the source path.
     $row->setSourceProperty('source_path', $source_path);
 
+print_r(var_export($source_path, TRUE));
+print_r(var_export(file_exists($source_path), TRUE));
     // Build de destination URI.
     $basename = basename($source_path);
     $row->setSourceProperty('destination_uri', "public://solution/logo/$basename");
