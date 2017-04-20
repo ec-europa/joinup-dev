@@ -28,9 +28,6 @@ function joinup_migrate_install() {
   // be installed before 1.*.sql.
   ksort($views);
   foreach ($views as $view) {
-    $name = 'd8_' . Unicode::substr($view->name, 2);
-    $db->query("DROP VIEW IF EXISTS $name")->execute();
-    $db->query("DROP TABLE IF EXISTS $name")->execute();
     $db->query(file_get_contents($view->uri))->execute();
   }
 
@@ -138,6 +135,12 @@ function joinup_migrate_source_db_schema($table) {
           'length' => 255,
           'not null' => FALSE,
         ],
+        'collection_owner' => [
+          'description' => 'Collection owner',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
         'elibrary' => [
           'description' => 'Elibrary Creation',
           'type' => 'varchar',
@@ -236,6 +239,12 @@ function joinup_migrate_source_db_schema($table) {
           'description' => 'Contact NIDs',
           'type' => 'varchar',
           'length' => 1024,
+          'not null' => FALSE,
+        ],
+        'collection_owner' => [
+          'description' => 'Collection owner',
+          'type' => 'varchar',
+          'length' => 255,
           'not null' => FALSE,
         ],
         'status' => [

@@ -10,6 +10,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UserTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -19,6 +20,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
 
   use RandomGeneratorTrait;
   use RdfEntityTrait;
+  use UserTrait;
 
   /**
    * Test contact information rdf entities.
@@ -78,9 +80,9 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * Creates a number of contact information with data provided in a table.
    *
    * Table format:
-   * | email                            | name       |
-   * | foo@example.com, bar@example.com | John Irwin |
-   * | baz@example.com                  | Jack Smith |
+   * | email                            | name       | author      |
+   * | foo@example.com, bar@example.com | John Irwin | Author name |
+   * | baz@example.com                  | Jack Smith |             |
    *
    * @param \Behat\Gherkin\Node\TableNode $contact_table
    *   The contacts table.
@@ -156,10 +158,18 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
    *   A new contact information entity.
+   *
+   * @throws \Exception
+   *   When the author is specified but the related user doesn't exist.
    */
   protected function createContactInformation(array $values) {
     $values['rid'] = 'contact_information';
     $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
+
+    // The 'author' key was replaced by 'uid' in the calling function.
+    if (!empty($values['uid'])) {
+      $values['uid'] = $this->getUserByName($values['uid'])->id();
+    }
 
     $entity = Rdf::create($values);
     $entity->save();
@@ -181,6 +191,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
       'email' => 'field_ci_email',
       'name' => 'field_ci_name',
       'Website URL' => 'field_ci_webpage',
+      'author' => 'uid',
     ];
   }
 

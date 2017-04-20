@@ -24,10 +24,12 @@ default:
       region_map:
         Comment: '.comment'
         Entity actions: '.block-local-tasks-block'
+        Footer: '.section--footer'
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'
         Navigation menu block: '#block-navigation'
         Navigation menu: 'div.navigation-menu ul'
+        Page title: 'div.page__title-wrapper'
         Plus button menu: 'div.add-content-menu ul'
         Primary menu: '.region-primary-menu'
         Subpages menu: '.block-menu-sub-pages'

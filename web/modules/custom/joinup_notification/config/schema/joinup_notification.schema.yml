@@ -1,0 +1,60 @@
+# Config schema for the notification settings.
+#
+# There are two arrays in the config settings of joinup notification, the
+# transition_notifications and the delete_notifications.
+#
+# The transition notifications are message ids indexed by the role, transition
+# and workflow group as shown below.
+# @code
+# $config = [
+#   <workflow_group_id> => [
+#     <transition> => [
+#       <role> => [
+#         <message_id>
+#       ]
+#     ]
+#   ]
+# ]
+# The delete_notifications array is not depending on states so it is has the
+# same approach but uses the entity type id instead of the workflow group and
+# the bundle instead of the transition.
+# @code
+# $config = [
+#   <entity_type_id> => [
+#     <entity_bundle> => [
+#       <role> => [
+#         <message_id>
+#       ]
+#     ]
+#   ]
+# ]
+#
+# There can be multiple message ids and the roles are either site-wide or og
+# for both cases.
+#
+# Define a type for all the notification settings.
+joinup_notification.settings.default:
+  type: sequence
+  label: 'Workflow group'
+  sequence:
+    type: sequence
+    label: 'Transition'
+    sequence:
+      type: sequence
+      label: 'Roles'
+      sequence:
+        type: sequence
+        label: 'Message ID'
+        sequence:
+          type: string
+
+joinup_notification.settings:
+  type: config_object
+  label: 'Notification settings'
+  mapping:
+    transition_notifications:
+      type: joinup_notification.settings.default
+    delete_notifications:
+      type: joinup_notification.settings.default
+    content_update_notifications:
+      type: joinup_notification.settings.default

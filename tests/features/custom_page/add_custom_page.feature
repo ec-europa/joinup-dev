@@ -22,8 +22,7 @@ Feature: "Add custom page" visibility options.
     Given my role in the "Code Camp" collection changes to facilitator
     And I reload the page
     Then I should see the link "Add custom page" in the "Plus button menu"
-    And I should see the link "Add a new page" in the "Left sidebar"
-    And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
+    And I should see the contextual link "Add new page" in the "Left sidebar" region
 
     # An authenticated user which is not a member should also not see the links
     # and help text.
@@ -44,8 +43,7 @@ Feature: "Add custom page" visibility options.
     When I am logged in as a facilitator of the "Code Camp" collection
     And I go to the homepage of the "Code Camp" collection
     Then I should see the link "Add custom page" in the "Plus button menu"
-    And I should see the link "Add a new page" in the "Left sidebar"
-    And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
+    And I should see the contextual link "Add new page" in the "Left sidebar" region
 
   Scenario: Add custom page as a facilitator.
     Given collections:
@@ -58,9 +56,8 @@ Feature: "Add custom page" visibility options.
     # that it is possible to add custom pages.
     When I go to the homepage of the "Open Collective" collection
     Then the "Open Collective" collection should have 0 custom pages
-    And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
-    And I should see the link "Add a new page"
-    When I click "Add a new page"
+    And I should see the contextual link "Add new page" in the "Left sidebar" region
+    When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"
     And the following fields should be present "Title, Body"
 
@@ -88,8 +85,8 @@ Feature: "Add custom page" visibility options.
 
   Scenario: Add custom page as a moderator.
     Given users:
-      | name    | roles     |
-      | Falstad | moderator |
+      | Username | Roles     |
+      | Falstad  | moderator |
     And collections:
       | title           | logo      | state     |
       | Open Collective | logo.png  | validated |

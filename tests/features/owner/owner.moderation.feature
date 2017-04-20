@@ -7,7 +7,7 @@ Feature: Owner moderation
   @terms
   Scenario: Publish, update, request changes, publish again and ask to delete an owner.
     Given users:
-      | name            |
+      | Username        |
       | Raeburn Hibbert |
     And owner:
       | name             | type                    |

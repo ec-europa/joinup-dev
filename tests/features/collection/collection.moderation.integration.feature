@@ -5,7 +5,7 @@ Feature: As a user of the website
 
   Scenario: Check availability of actions depending on the state and the graph.
     Given users:
-      | name        | roles     |
+      | Username    | Roles     |
       | Cornelius   |           |
       | Tina Butler | moderator |
     And the following contact:

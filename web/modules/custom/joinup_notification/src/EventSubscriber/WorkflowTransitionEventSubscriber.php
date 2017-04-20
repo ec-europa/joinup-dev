@@ -2,7 +2,9 @@
 
 namespace Drupal\joinup_notification\EventSubscriber;
 
-use Drupal\Core\Entity\EntityManager;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\joinup_notification\NotificationSenderService;
 use Drupal\state_machine\Event\WorkflowTransitionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -15,11 +17,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
 
   /**
-   * The entity manager service.
+   * The entity field manager service.
    *
-   * @var \Drupal\Core\Entity\EntityManager
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
    */
-  protected $entityManager;
+  protected $entityFieldManager;
 
   /**
    * The notification sender service.
@@ -29,16 +31,36 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   protected $notificationSender;
 
   /**
+   * The config factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * The workflow helper service.
+   *
+   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   */
+  protected $workflowHelper;
+
+  /**
    * Constructs the event object.
    *
-   * @param \Drupal\Core\Entity\EntityManager $entity_manager
-   *   The entity manager service.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager service.
    * @param \Drupal\joinup_notification\NotificationSenderService $notification_sender
    *   The message notify sender service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config factory service.
+   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
+   *   The workflow helper service.
    */
-  public function __construct(EntityManager $entity_manager, NotificationSenderService $notification_sender) {
-    $this->entityManager = $entity_manager;
+  public function __construct(EntityFieldManagerInterface $entity_field_manager, NotificationSenderService $notification_sender, ConfigFactoryInterface $config_factory, WorkflowHelperInterface $workflow_helper) {
+    $this->entityFieldManager = $entity_field_manager;
     $this->notificationSender = $notification_sender;
+    $this->configFactory = $config_factory;
+    $this->workflowHelper = $workflow_helper;
   }
 
   /**
@@ -57,21 +79,13 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
    * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
    */
   public function messageSender(WorkflowTransitionEvent $event) {
-    $configuration = \Drupal::config('joinup_notification.settings')->get('transition_notifications');
+    $configuration = $this->configFactory->get('joinup_notification.settings')->get('transition_notifications');
     $entity = $event->getEntity();
-    $entity_type = $entity->getEntityTypeId();
-    $bundle = $entity->bundle();
-    $field_definitions = array_filter($this->entityManager->getFieldDefinitions($entity_type, $bundle), function ($field_definition) {
-      return $field_definition->getType() == 'state';
-    });
-
-    $field_definition = array_pop($field_definitions);
-    $state_field = $entity->{$field_definition->getName()}->first();
-    $workflow = $state_field->getWorkflow();
+    $workflow = $this->workflowHelper->getEntityStateField($entity)->getWorkflow();
     $transition = $workflow->findTransition($event->getFromState()->getId(), $event->getToState()->getId());
 
     foreach ($configuration[$workflow->getGroup()][$transition->getId()] as $role_id => $messages) {
-      $this->notificationSender->send($entity, $role_id, $messages);
+      $this->notificationSender->sendStateTransitionMessage($entity, $role_id, $messages);
     }
   }
 

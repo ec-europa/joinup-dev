@@ -50,8 +50,8 @@ Feature: Solution API
       | name  | Gopheadow               |
       | email | solutionAPI@example.com |
     And users:
-      | name              | pass |
-      | Solution API user | pass |
+      | Username          | Password |
+      | Solution API user | pass     |
     And the following collection:
       | title             | This is a klm collection |
       | logo              | logo.png                 |
