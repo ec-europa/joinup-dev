@@ -53,4 +53,3 @@ destination:
 migration_dependencies:
   required:
     - solution
-
