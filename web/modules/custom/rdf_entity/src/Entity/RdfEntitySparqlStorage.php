@@ -764,6 +764,9 @@ QUERY;
     $graph = self::getGraph($graph_uri);
 
     $properties = $this->mappingHandler->getEntityTypeMappedProperties($entity);
+    if (empty($properties)) {
+      throw new \Exception('No field predicates mapped for entity ' . $entity->label());
+    }
     $properties_list = SparqlArg::serializeUris($properties['flat']);
     foreach ($entity->toArray() as $field_name => $field) {
       foreach ($field as $field_item) {
