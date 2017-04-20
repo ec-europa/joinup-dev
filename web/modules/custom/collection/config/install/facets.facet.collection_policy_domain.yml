@@ -6,13 +6,14 @@ name: 'Policy Domain'
 url_alias: collection_policy_domain
 weight: 0
 min_count: 1
-show_only_one_result: false
+show_only_one_result: true
 field_identifier: policy_domain
 facet_source_id: 'search_api_field:rdf_entity.field_collection_content'
 widget:
   type: links_inline
   config:
     show_numbers: true
+    all_text: 'all policy domains'
     prefix_text: ''
     suffix_text: ''
 query_operator: or

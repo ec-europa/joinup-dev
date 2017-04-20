@@ -5,3 +5,4 @@ id: search_api_field__rdf_entity.field_collection_content
 name: 'search_api_field:rdf_entity.field_collection_content'
 filter_key: ''
 url_processor: query_string
+breadcrumb: {  }
