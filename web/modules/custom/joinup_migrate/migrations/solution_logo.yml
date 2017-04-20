@@ -7,13 +7,11 @@ source:
   plugin: solution_logo
 process:
   uid:
-    -
-      plugin: migration
+    - plugin: migration
       migration: user
       source: file_uid
       no_stub: true
-    -
-      plugin: default_value
+    - plugin: default_value
       default_value: 1
   source_path_encoded:
     plugin: urlencode
