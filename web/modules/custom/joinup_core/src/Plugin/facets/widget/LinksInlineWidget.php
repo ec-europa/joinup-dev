@@ -84,6 +84,8 @@ class LinksInlineWidget extends WidgetPluginBase {
       }
     }
 
+    // When there is no active items, add the reset link to it, otherwise move
+    // it to the end of all the inactive items.
     $all_link = $this->generateResetLink($facet);
     if (empty($active)) {
       $active[] = $all_link;
