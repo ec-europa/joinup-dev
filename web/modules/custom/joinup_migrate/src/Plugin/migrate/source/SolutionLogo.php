@@ -14,6 +14,21 @@ use Drupal\migrate\Row;
  */
 class SolutionLogo extends SolutionBase {
 
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, \Drupal\migrate\Plugin\MigrationInterface $migration, \Drupal\Core\State\StateInterface $state) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state);
+    print_r("SolutionLogo\n");
+    print_r(parent::query()
+      ->fields('s', [
+        'logo',
+        'logo_timestamp',
+        'logo_uid',
+      ])
+      ->isNotNull('s.logo')
+      ->execute()
+      ->fetchAll()
+    );
+  }
+
   /**
    * {@inheritdoc}
    */
