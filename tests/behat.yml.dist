@@ -8,7 +8,7 @@ default:
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
       filters:
-        tags: '~@wip'
+        tags: '~@javascript'
   extensions:
     Behat\MinkExtension:
       base-url: '${behat.base_url}'
