@@ -91,8 +91,16 @@ class LinksInlineWidget extends WidgetPluginBase {
       'children' => $content,
     ];
     $build['children']['#theme'] = 'item_list__links_inline';
-    $build['children']['#prefix'] = '<span>' . $this->getConfiguration()['prefix_text'] . '</span>';
-    $build['children']['#suffix'] = '<span>' . $this->getConfiguration()['suffix_text'] . '</span>';
+
+    $elements = [
+      'prefix_text' => '#prefix',
+      'suffix_text' => '#suffix',
+    ];
+    foreach ($elements as $key => $property) {
+      if (!empty($this->getConfiguration()[$key])) {
+        $build['children'][$property] = '<span>' . $this->getConfiguration()[$key] . '</span>';
+      }
+    }
 
     return $build;
   }
