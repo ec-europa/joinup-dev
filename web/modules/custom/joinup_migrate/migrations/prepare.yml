@@ -27,3 +27,4 @@ migration_dependencies:
   required:
     - user
     - mapping
+    - policy_domain

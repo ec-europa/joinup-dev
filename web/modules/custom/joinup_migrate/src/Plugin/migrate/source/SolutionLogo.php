@@ -19,24 +19,6 @@ class SolutionLogo extends SolutionBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state);
-    print_r("SolutionLogo\n");
-    print_r(parent::query()
-      ->fields('s', [
-        'logo',
-        'logo_timestamp',
-        'logo_uid',
-      ])
-      ->isNotNull('s.logo')
-      ->execute()
-      ->fetchAll()
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function fields() {
     return [
       'source_path' => $this->t('Source path'),
@@ -77,8 +59,9 @@ class SolutionLogo extends SolutionBase {
     $row->setSourceProperty('source_path', $source_path);
 
     print_r("prepareRow\n");
-    print_r(var_export($source_path, TRUE));
-    print_r(var_export(file_exists($source_path), TRUE));
+    var_export($source_path);print_r("\n");
+    var_export(\Drupal::httpClient()->request('GET', $source_path)->getStatusCode());print_r("\n");
+
     // Build de destination URI.
     $basename = basename($source_path);
     $row->setSourceProperty('destination_uri', "public://solution/logo/$basename");
