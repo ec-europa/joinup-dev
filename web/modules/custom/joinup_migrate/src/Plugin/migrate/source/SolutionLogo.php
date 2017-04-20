@@ -3,8 +3,6 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Unicode;
-use Drupal\Core\State\StateInterface;
-use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 
 /**
