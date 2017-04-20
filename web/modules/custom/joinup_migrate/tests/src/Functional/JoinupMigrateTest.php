@@ -117,6 +117,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    */
   protected function runMigrations() {
     foreach ($this->manager->createInstances([]) as $id => $migration) {
+      var_export("$id");print_r("\n");
       // Force running the migration, even the prior migrations were incomplete.
       $migration->set('requirements', []);
       try {
