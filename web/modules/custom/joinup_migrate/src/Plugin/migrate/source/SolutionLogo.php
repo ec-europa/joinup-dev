@@ -56,10 +56,6 @@ class SolutionLogo extends SolutionBase {
     // Set the source path.
     $row->setSourceProperty('source_path', $source_path);
 
-    print_r("prepareRow\n");
-    var_export($source_path);print_r("\n");
-    var_export(\Drupal::httpClient()->request('GET', $source_path)->getStatusCode());print_r("\n");
-
     // Build de destination URI.
     $basename = basename($source_path);
     $row->setSourceProperty('destination_uri', "public://solution/logo/$basename");
