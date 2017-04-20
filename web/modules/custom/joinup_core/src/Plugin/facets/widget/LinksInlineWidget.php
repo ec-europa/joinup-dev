@@ -68,6 +68,15 @@ class LinksInlineWidget extends WidgetPluginBase {
    */
   public function build(FacetInterface $facet) {
     $content = parent::build($facet);
+
+    $all_link = $this->generateResetLink($facet);
+    if (!empty($facet->getActiveItems())) {
+      $content['#items'][] = $all_link;
+    }
+    else {
+      array_unshift($content['#items'], $all_link);
+    }
+
     $build = [
       '#type' => 'container',
       '#attributes' => [
@@ -86,6 +95,55 @@ class LinksInlineWidget extends WidgetPluginBase {
     $build['children']['#suffix'] = '<span>' . $this->getConfiguration()['suffix_text'] . '</span>';
 
     return $build;
+  }
+
+  /**
+   * Generates a reset link for the facet.
+   *
+   * @param \Drupal\facets\FacetInterface $facet
+   *   The facet being build.
+   *
+   * @return array
+   *   The renderable array of the link.
+   */
+  protected function generateResetLink(FacetInterface $facet) {
+    $request = \Drupal::service('request_stack')->getMasterRequest();
+    /** @var \Symfony\Component\HttpFoundation\ParameterBag $get_params */
+    $get_params = clone $request->query;
+    if ($get_params->has('page')) {
+      $get_params->remove('page');
+    }
+
+    if ($facet->getFacetSource()->getPath()) {
+      $request = Request::create($facet->getFacetSource()->getPath());
+    }
+    $url = Url::createFromRequest($request);
+    $url->setOption('attributes', ['rel' => 'nofollow']);
+
+    // Retrieve the filter key from the url processor.
+    // @see \Drupal\facets_range_widget\Plugin\facets\processor\RangeSliderProcessor::build()
+    /** @var \Drupal\facets\Plugin\facets\processor\UrlProcessorHandler $url_processor_handler */
+    $url_processor_handler = $facet->getProcessors()['url_processor_handler'];
+    $url_processor = $url_processor_handler->getProcessor();
+    $filter_key = $url_processor->getFilterKey();
+
+    $filter_params = $get_params->get($filter_key, [], TRUE);
+    foreach ($facet->getResults() as $result) {
+      if ($result->isActive()) {
+        $active_filter_string = $facet->getUrlAlias() . $url_processor->getSeparator() . $result->getRawValue();
+        $filter_params = array_diff($filter_params, [$active_filter_string]);
+      }
+    }
+
+    $get_params->set($filter_key, array_values($filter_params));
+    // Add the get parameters when non-empty.
+    if ($get_params->all() !== [$filter_key => []]) {
+      $url->setOption('query', $get_params->all());
+    }
+
+    $link = new Link($this->getConfiguration()['all_text'], $url);
+
+    return $link->toRenderable();
   }
 
 }
