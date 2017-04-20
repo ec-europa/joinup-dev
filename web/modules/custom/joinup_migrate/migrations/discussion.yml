@@ -39,6 +39,5 @@ destination:
   plugin: entity:node
   default_bundle: discussion
 migration_dependencies:
- required:
-   - user
-   - solution
+  required:
+    - solution

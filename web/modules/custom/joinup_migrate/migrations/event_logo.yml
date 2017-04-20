@@ -30,6 +30,5 @@ process:
 destination:
   plugin: entity:file
 migration_dependencies:
- required:
-   - prepare
-   - user
+  required:
+    - prepare
