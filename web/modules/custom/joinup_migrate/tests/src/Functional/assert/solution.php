@@ -51,7 +51,8 @@ $this->assertStringEndsWith("and the <a href=\"http://www.esens.eu/technical-sol
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 print_r(db_query("SELECT * FROM migrate_map_solution_logo")->fetchAll());
-print_r(var_export($solution->toArray(), TRUE));
+print_r(db_query("SELECT * FROM migrate_message_solution_logo")->fetchAll());
+print_r($solution->toArray());
 $logo = File::load($solution->field_is_logo->target_id);
 $this->assertEquals('public://solution/logo/CIPA_e-Delivery_70x70.png', $logo->getFileUri());
 $this->assertFileExists('public://solution/logo/CIPA_e-Delivery_70x70.png');

@@ -79,7 +79,6 @@ class Solution extends SolutionBase {
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
 
-    print_r(var_export($nid, TRUE));
     // Keywords.
     $this->setKeywords($row, 'keywords', $nid, $vid);
 
