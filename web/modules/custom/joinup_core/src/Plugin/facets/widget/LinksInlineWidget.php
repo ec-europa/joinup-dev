@@ -67,20 +67,38 @@ class LinksInlineWidget extends WidgetPluginBase {
    * {@inheritdoc}
    */
   public function build(FacetInterface $facet) {
-    $content = parent::build($facet);
+    // Set the facet as it's done in the parent implementation, because the
+    // build methods use it.
+    $this->facet = $facet;
+
+    $active = [];
+    $inactive = [];
+    foreach ($facet->getResults() as $result) {
+      $item = empty($result->getUrl()) ? $this->buildResultItem($result) : $this->buildListItems($result);
+
+      if ($result->isActive()) {
+        $active[] = $item;
+      }
+      else {
+        $inactive[] = $item;
+      }
+    }
 
     $all_link = $this->generateResetLink($facet);
-    if (!empty($facet->getActiveItems())) {
-      $content['#items'][] = $all_link;
+    if (empty($active)) {
+      $active[] = $all_link;
     }
     else {
-      array_unshift($content['#items'], $all_link);
+      $inactive[] = $all_link;
     }
 
     $build = [
-      '#type' => 'container',
+      '#theme' => 'facet_widget_links_inline',
+      '#items' => $inactive,
+      '#active' => $active,
       '#attributes' => [
         'data-drupal-facet-id' => $facet->id(),
+        'data-drupal-facet-alias' => $facet->getUrlAlias(),
       ],
       '#cache' => [
         'contexts' => [
@@ -88,9 +106,7 @@ class LinksInlineWidget extends WidgetPluginBase {
           'url.query_args',
         ],
       ],
-      'children' => $content,
     ];
-    $build['children']['#theme'] = 'item_list__links_inline';
 
     $elements = [
       'prefix_text' => '#prefix',
@@ -98,7 +114,7 @@ class LinksInlineWidget extends WidgetPluginBase {
     ];
     foreach ($elements as $key => $property) {
       if (!empty($this->getConfiguration()[$key])) {
-        $build['children'][$property] = '<span>' . $this->getConfiguration()[$key] . '</span>';
+        $build[$property] = '<span>' . $this->getConfiguration()[$key] . '</span>';
       }
     }
 
