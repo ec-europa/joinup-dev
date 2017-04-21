@@ -10,7 +10,7 @@ use Drupal\Core\Entity\Query\Sql\ConditionAggregate;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 use Drupal\rdf_entity\RdfGraphHandler;
-use Drupal\rdf_entity\RdfMappingHandler;
+use Drupal\rdf_entity\RdfFieldHandler;
 
 /**
  * The base entity query class for Rdf entities.
@@ -76,9 +76,9 @@ class Query extends QueryBase implements QueryInterface {
   /**
    * The rdf mapping handler service object.
    *
-   * @var \Drupal\rdf_entity\RdfMappingHandler
+   * @var \Drupal\rdf_entity\RdfFieldHandler
    */
-  protected $mappingHandler;
+  protected $fieldHandler;
 
   /**
    * Constructs a query object.
@@ -96,7 +96,7 @@ class Query extends QueryBase implements QueryInterface {
    *   The entity type manager service object.
    * @param \Drupal\rdf_entity\RdfGraphHandler $rdf_graph_handler
    *   The rdf graph handler service.
-   * @param \Drupal\rdf_entity\RdfMappingHandler $rdf_mapping_handler
+   * @param \Drupal\rdf_entity\RdfFieldHandler $rdf_field_handler
    *   The rdf mapping handler service.
    *
    * @throws \Exception
@@ -104,11 +104,11 @@ class Query extends QueryBase implements QueryInterface {
    *
    * @todo: Is this exception check needed?
    */
-  public function __construct(EntityTypeInterface $entity_type, $conjunction, Connection $connection, array $namespaces, EntityTypeManagerInterface $entity_type_manager, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
+  public function __construct(EntityTypeInterface $entity_type, $conjunction, Connection $connection, array $namespaces, EntityTypeManagerInterface $entity_type_manager, RdfGraphHandler $rdf_graph_handler, RdfFieldHandler $rdf_field_handler) {
     // Assign the handlers before calling the parent so that they can be passed
     // to the condition class properly.
     $this->graphHandler = $rdf_graph_handler;
-    $this->mappingHandler = $rdf_mapping_handler;
+    $this->fieldHandler = $rdf_field_handler;
     $this->entityTypeManager = $entity_type_manager;
     $this->entityStorage = $this->entityTypeManager->getStorage($entity_type->id());
     $this->connection = $connection;
@@ -136,11 +136,11 @@ class Query extends QueryBase implements QueryInterface {
   /**
    * Returns the mapping handler service.
    *
-   * @return \Drupal\rdf_entity\RdfMappingHandler
+   * @return \Drupal\rdf_entity\RdfFieldHandler
    *   The mapping handler service.
    */
-  public function getMappingHandler() {
-    return $this->mappingHandler;
+  public function getfieldHandler() {
+    return $this->fieldHandler;
   }
 
   /**
@@ -389,7 +389,7 @@ class Query extends QueryBase implements QueryInterface {
    */
   protected function conditionGroupFactory($conjunction = 'AND') {
     $class = static::getClass($this->namespaces, 'SparqlCondition');
-    return new $class($conjunction, $this, $this->namespaces, $this->graphHandler, $this->mappingHandler);
+    return new $class($conjunction, $this, $this->namespaces, $this->graphHandler, $this->fieldHandler);
   }
 
   /**

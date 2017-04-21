@@ -16,6 +16,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+use Drupal\rdf_entity\RdfFieldHandler;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -93,17 +94,10 @@ function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateI
     $form['rdf_mapping'][$column]['format_' . $column] = [
       '#type' => 'select',
       '#title' => t('Value format'),
-      '#options' => [
-        'literal' => t('Literal'),
-        'resource' => t('Rdf resource'),
-        'date' => t('Date/Datetime'),
-        'email' => t('Email'),
-        'integer' => t('Integer'),
-        'boolean' => t('Boolean'),
-      ],
+      '#options' => RdfFieldHandler::getSupportedDatatypes(),
       '#empty_value' => 'no_format',
       '#weight' => 151,
-      '#default_value' => isset($settings['format']) ? $settings['format'] : '',
+      '#default_value' => isset($settings['format']) ? $settings['format'] : NULL,
     ];
   }
 
@@ -248,14 +242,7 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
         '#type' => 'select',
         '#title' => t('Value format'),
         '#description' => t('The rdf format. Required if format is filled.'),
-        '#options' => [
-          'literal' => t('Literal'),
-          'resource' => t('Rdf resource'),
-          'date' => t('Date/Datetime'),
-          'email' => t('Email'),
-          'integer' => t('Integer'),
-          'boolean' => t('Boolean'),
-        ],
+        '#options' => RdfFieldHandler::getSupportedDatatypes(),
         '#empty_value' => '',
         '#weight' => 151,
         '#default_value' => isset($settings[$column_name]['format']) ? $settings[$column_name]['format'] : NULL,

@@ -6,7 +6,7 @@ use Drupal\Core\Entity\Query\ConditionFundamentals;
 use Drupal\Core\Entity\Query\ConditionInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\rdf_entity\RdfGraphHandler;
-use Drupal\rdf_entity\RdfMappingHandler;
+use Drupal\rdf_entity\RdfFieldHandler;
 
 /**
  * Defines the condition class for the null entity query.
@@ -25,9 +25,9 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
   /**
    * The rdf mapping handler service object.
    *
-   * @var \Drupal\rdf_entity\RdfMappingHandler
+   * @var \Drupal\rdf_entity\RdfFieldHandler
    */
-  protected $mappingHandler;
+  protected $fieldHandler;
 
   /**
    * Provides a map of filter operators to operator options.
@@ -187,11 +187,11 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
   /**
    * {@inheritdoc}
    */
-  public function __construct($conjunction, QueryInterface $query, array $namespaces, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler) {
+  public function __construct($conjunction, QueryInterface $query, array $namespaces, RdfGraphHandler $rdf_graph_handler, RdfFieldHandler $rdf_field_handler) {
     $conjunction = strtoupper($conjunction);
     parent::__construct($conjunction, $query, $namespaces);
     $this->graphHandler = $rdf_graph_handler;
-    $this->mappingHandler = $rdf_mapping_handler;
+    $this->fieldHandler = $rdf_field_handler;
     $this->typePredicate = $query->getEntityStorage()->bundlePredicate();
     $this->bundleKey = $query->getEntityType()->getKey('bundle');
     $this->idKey = $query->getEntityType()->getKey('id');
@@ -217,16 +217,12 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
   /**
    * {@inheritdoc}
    *
-   * @todo: handle the langcode.
+   * @todo: handle the lang.
    */
-  public function condition($field = NULL, $value = NULL, $operator = NULL, $langcode = NULL) {
-    // In case the field name includes the column, explode it.
-    // @see \Drupal\og\MembershipManager::getGroupContentIds
-    //$field_name_parts = explode('.', $field);
-    //$field = reset($field_name_parts);
+  public function condition($field = NULL, $value = NULL, $operator = NULL, $lang = NULL) {
     if ($this->conjunction == 'OR') {
       $sub_condition = $this->query->andConditionGroup();
-      $sub_condition->condition($field, $value, $operator, $langcode);
+      $sub_condition->condition($field, $value, $operator, $lang);
       $this->conditions[] = ['field' => $sub_condition];
       return $this;
     }
@@ -246,12 +242,18 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         break;
 
       default:
+        // In case the field name includes the column, explode it.
+        // @see \Drupal\og\MembershipManager::getGroupContentIds
+        $field_name_parts = explode('.', $field);
+        $field = $field_name_parts[0];
+        $column = isset($field_name_parts[1]) ? $field_name_parts[1] : $this->fieldHandler->getFieldMainProperty($this->query->getEntityTypeId(), $field);
         $this->needsDefault = FALSE;
         $this->conditions[] = [
           'field' => $field,
           'value' => $value,
           'operator' => $operator,
-          'langcode' => $langcode,
+          'lang' => $lang,
+          'column' => $column,
         ];
     }
 
@@ -335,25 +337,27 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
       }
       // The id and bundle are set in the constructor.
       else {
-        $mappings = $this->mappingHandler->getFieldRdfMapping($entity_type->id(), $condition['field']);
+        $mappings = $this->fieldHandler->getFieldPredicates($entity_type->id(), $condition['field'], $condition['column']);
       }
+
+      $field_name = $condition['field'] . '__' . $condition['column'];
 
       // In case multiple bundles define the same resource id for the same
       // predicate, remove the duplicates.
       $mappings = array_unique($mappings);
       if (count($mappings) === 1) {
-        $this->fieldMappings[$condition['field']] = reset($mappings);
+        $this->fieldMappings[$field_name] = reset($mappings);
       }
       else {
-        if (!isset($this->fieldMappings[$condition['field']])) {
-          $this->fieldMappings[$condition['field']] = $condition['field'] . '_predicate';
+        if (!isset($this->fieldMappings[$field_name])) {
+          $this->fieldMappings[$field_name] = $field_name . '_predicate';
         }
         // The predicate mapping is not added as a direct filter. It is being
         // loaded by the database. There is no way that in a single request, the
         // same predicate is found with a single and multiple mappings.
         // There is no filter per bundle in the query.
         $this->fieldMappingConditions[] = [
-          'field' => $condition['field'] . '_predicate',
+          'field' => $field_name . '_predicate',
           'value' => array_values($mappings),
           'operator' => 'IN',
         ];
@@ -392,7 +396,8 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         $this->compileBundleCondition($condition);
       }
       elseif (in_array($condition['operator'], $this->requiresTriple) && isset($this->fieldMappings[$condition['field']])) {
-        $this->addConditionFragment(self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$condition['field']]) . ' ' . $this->toVar($condition['field']));
+        $field_name = isset($condition['column']) ? $condition['field'] . '__' . $condition['column'] : $condition['field'];
+        $this->addConditionFragment(self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$field_name]) . ' ' . $this->toVar($condition['field']));
       }
 
       // For the field mappings that require a filter, the $condition['field']
@@ -402,14 +407,12 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         $condition['value'] = SparqlArg::toResourceUris($condition['value']);
       }
       else {
-        $condition['value'] = $this->escapeValue($condition['field'], $condition['value']);
+        $condition['value'] = $this->escapeValue($condition);
       }
 
       switch ($condition['operator']) {
         case '=':
-          // @todo Remove the @en filter here, and replace it by a
-          // FILTER statement (taking the proper field language in to account).
-          $this->tripleFragments[] = self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$condition['field']]) . ' ' . $condition['value'] . '@en';
+          $this->tripleFragments[] = self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$field_name]) . ' ' . $condition['value'];
           break;
 
         case 'EXISTS':
@@ -422,9 +425,9 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         case 'NOT LIKE':
         case 'STARTS_WITH':
           $this->addConditionFragment($this->compileLike($condition));
-          // Set the default language to the fields.
-          // @todo: Remove this when proper language handling is set up.
-          $this->addConditionFragment("FILTER(lang({$this->toVar($condition['field'])}) = 'en')");
+          if (!empty($condition['lang'])) {
+            $this->addConditionFragment("FILTER(lang({$this->toVar($condition['field'])}) = '{$condition['lang']}')");
+          }
           break;
 
         case 'IN':
@@ -469,7 +472,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
   protected function addDefaultCondition() {
     if (count($this->typePredicate) > 1) {
       $field = $this->toVar($this->bundleKey . '_predicate');
-      $this->addConditionFragment(self::ID_KEY . ' ' . $field . ' ' . $this->toVar($this->bundleKey, TRUE));
+      $this->addConditionFragment(self::ID_KEY . ' ' . $field . ' ' . $this->toVar($this->bundleKey));
       $this->addConditionFragment($this->compileValuesFilter([
         'field' => $this->escapePredicate($this->fieldMappings[$this->bundleKey]),
         'value' => SparqlArg::toResourceUris($this->typePredicate),
@@ -479,7 +482,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     }
     else {
       $predicate = $this->escapePredicate(reset($this->typePredicate));
-      $this->addConditionFragment(self::ID_KEY . ' ' . $predicate . ' ' . $this->toVar($this->bundleKey, TRUE));
+      $this->addConditionFragment(self::ID_KEY . ' ' . $predicate . ' ' . $this->toVar($this->bundleKey));
       $this->fieldMappings[$this->bundleKey] = $predicate;
     }
   }
@@ -607,14 +610,14 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
   /**
    * Implements \Drupal\Core\Entity\Query\ConditionInterface::exists().
    */
-  public function exists($field, $langcode = NULL) {
+  public function exists($field, $lang = NULL) {
     return $this->condition($field, NULL, 'EXISTS');
   }
 
   /**
    * Implements \Drupal\Core\Entity\Query\ConditionInterface::notExists().
    */
-  public function notExists($field, $langcode = NULL) {
+  public function notExists($field, $lang = NULL) {
     $this->condition($field, NULL, 'NOT EXISTS');
   }
 
@@ -662,15 +665,16 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
   /**
    * Handle the value according to their type.
    *
-   * @param string $field_name
-   *   The field machine name.
-   * @param string|array $value
-   *   A value or an array of values.
+   * @param array $condition
+   *   The condition array.
    *
    * @return string|array
    *   The altered $value.
    */
-  protected function escapeValue($field_name, $value) {
+  protected function escapeValue($condition) {
+    $field_name = $condition['field'];
+    $value = $condition['value'];
+
     // If the field name is the id, escape the value. It has been already
     // converted and the value is an array.
     if ($field_name === $this->fieldMappings[$this->idKey]) {
@@ -680,17 +684,20 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     // If the field name is the bundle key, convert the values to their
     // corresponding mappings. The value is also an array.
     if ($field_name === $this->bundleKey) {
-      $this->mappingHandler->bundlesToUris($this->query->getEntityTypeId(), $value, TRUE);
+      $value = $this->fieldHandler->bundlesToUris($this->query->getEntityTypeId(), $value, TRUE);
       return $value;
     }
 
-    // @todo: The files will not work here probably.
-    if ($this->mappingHandler->fieldIsRdfReference($this->query->getEntityTypeId(), $field_name)) {
-      return is_array($value) ? SparqlArg::toResourceUris($value) : SparqlArg::uri($value);
+    $format = reset($this->fieldHandler->getFieldFormat($this->query->getEntityTypeId(), $field_name));
+    if (is_array($value)) {
+      foreach ($value as $i => $v) {
+        $value[$i] = SparqlArg::serialize($v, $format, $condition['lang']);
+      }
+    }
+    else {
+      $value = SparqlArg::serialize($value, $format, $condition['lang']);
     }
 
-    // @todo: Handle more formats. For now, escape as literal every other case.
-    $value = is_array($value) ? SparqlArg::literals($value) : SparqlArg::literal($value);
     return $value;
   }
 

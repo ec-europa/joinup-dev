@@ -3,6 +3,8 @@
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Language\Language;
+use Drupal\rdf_entity\RdfFieldHandler;
 use EasyRdf\Serialiser\Ntriples;
 
 /**
@@ -63,7 +65,7 @@ class SparqlArg {
     if (preg_match('/^<(.+)>$/', $uri) !== NULL) {
       $uri = trim($uri, '<>');
     }
-    return self::serialize($uri, 'uri');
+    return self::serialize($uri, RdfFieldHandler::RESOURCE);
   }
 
   /**
@@ -108,6 +110,8 @@ class SparqlArg {
    *
    * @return string
    *   Sparql escaped string literal.
+   *
+   * @deprecated To be replaced and include language or datatype format.
    */
   public static function literal($value) {
     return self::serialize($value, 'literal');
@@ -121,6 +125,8 @@ class SparqlArg {
    *
    * @return string
    *   Sparql escaped string literal.
+   *
+   * @deprecated To be replaced and include language or datatype format.
    */
   public static function literals(array $values) {
     foreach ($values as $index => $value) {
@@ -136,7 +142,8 @@ class SparqlArg {
    * @param string $value
    *   The value to be serialized.
    * @param string $format
-   *   One of the formats used in \EasyRdf\Serialiser\Ntriples::serializeValue.
+   *   One of the formats defined in
+   *   \Drupal\rdf_entity\RdfFieldHandler::getSupportedDatatypes().
    * @param string $lang
    *   The lang code.
    *
@@ -144,12 +151,24 @@ class SparqlArg {
    *   The outcome of the serialization.
    */
   public static function serialize($value, $format, $lang = NULL) {
+    $data['value'] = $value;
+    switch ($format) {
+      case RdfFieldHandler::RESOURCE:
+        $data['type'] = 'uri';
+        break;
+
+      case RdfFieldHandler::TRANSLATABLE_LITERAL:
+        $data['lang'] = $lang;
+        $data['type'] = 'literal';
+        break;
+
+      default:
+        $data['type'] = 'literal';
+        $data['datatype'] = $format;
+
+    }
     $serializer = new Ntriples();
-    return $serializer->serialiseValue([
-      'value' => $value,
-      'type' => $format,
-      'lang' => $lang,
-    ]);
+    return $serializer->serialiseValue($data);
   }
 
 }

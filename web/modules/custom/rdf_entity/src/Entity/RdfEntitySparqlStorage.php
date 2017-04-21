@@ -22,7 +22,7 @@ use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Exception\DuplicatedIdException;
 use Drupal\rdf_entity\RdfEntityIdPluginManager;
 use Drupal\rdf_entity\RdfGraphHandler;
-use Drupal\rdf_entity\RdfMappingHandler;
+use Drupal\rdf_entity\RdfFieldHandler;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -79,9 +79,9 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   /**
    * The rdf mapping helper service object.
    *
-   * @var \Drupal\rdf_entity\RdfMappingHandler
+   * @var \Drupal\rdf_entity\RdfFieldHandler
    */
-  protected $mappingHandler;
+  protected $fieldHandler;
 
   /**
    * The RDF entity ID generator plugin manager.
@@ -109,19 +109,19 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
    *   The module handler service.
    * @param \Drupal\rdf_entity\RdfGraphHandler $rdf_graph_handler
    *   The rdf graph helper service.
-   * @param \Drupal\rdf_entity\RdfMappingHandler $rdf_mapping_handler
+   * @param \Drupal\rdf_entity\RdfFieldHandler $rdf_field_handler
    *   The rdf mapping helper service.
    * @param \Drupal\rdf_entity\RdfEntityIdPluginManager $entity_id_plugin_manager
    *   The RDF entity ID generator plugin manager.
    */
-  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler, RdfGraphHandler $rdf_graph_handler, RdfMappingHandler $rdf_mapping_handler, RdfEntityIdPluginManager $entity_id_plugin_manager) {
+  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler, RdfGraphHandler $rdf_graph_handler, RdfFieldHandler $rdf_field_handler, RdfEntityIdPluginManager $entity_id_plugin_manager) {
     parent::__construct($entity_type, $entity_manager, $cache);
     $this->sparql = $sparql;
     $this->languageManager = $language_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->moduleHandler = $module_handler;
     $this->graphHandler = $rdf_graph_handler;
-    $this->mappingHandler = $rdf_mapping_handler;
+    $this->fieldHandler = $rdf_field_handler;
     $this->entityIdPluginManager = $entity_id_plugin_manager;
   }
 
@@ -138,7 +138,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       $container->get('language_manager'),
       $container->get('module_handler'),
       $container->get('sparql.graph_handler'),
-      $container->get('sparql.mapping_handler'),
+      $container->get('sparql.field_handler'),
       $container->get('plugin.manager.rdf_entity.id')
     );
   }
@@ -370,7 +370,7 @@ QUERY;
    *    Thrown when the entity graph is empty.
    */
   protected function processGraphResults($results) {
-    $mapping = $this->mappingHandler->getEntityPredicates($this->entityTypeId);
+    $mapping = $this->fieldHandler->getEntityPredicates($this->entityTypeId);
     // If no graphs are passed, fetch all available graphs derived from the
     // results.
     $values_per_entity = [];
@@ -681,7 +681,7 @@ QUERY;
   public function getQuery($conjunction = 'AND') {
     // Access the service directly rather than entity.query factory so the
     // storage's current entity type is used.
-    $query = \Drupal::service($this->getQueryServiceName())->get($this->entityType, $conjunction, $this->graphHandler, $this->mappingHandler);
+    $query = \Drupal::service($this->getQueryServiceName())->get($this->entityType, $conjunction, $this->graphHandler, $this->fieldHandler);
 
     /*
      * Hold on tight this ain't easy...
@@ -763,7 +763,7 @@ QUERY;
 
     $graph = self::getGraph($graph_uri);
 
-    $properties = $this->mappingHandler->getEntityTypeMappedProperties($entity);
+    $properties = $this->fieldHandler->getOutboundMap($entity->getEntityTypeId());
     if (empty($properties)) {
       throw new \Exception('No field predicates mapped for entity ' . $entity->label());
     }
@@ -813,7 +813,7 @@ QUERY;
     }
 
     // Save the bundle.
-    $rdf_bundle_mapping = $this->mappingHandler->getRdfBundleMappedUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle());
+    $rdf_bundle_mapping = $this->fieldHandler->getRdfBundleMappedUri($entity->getEntityType()->getBundleEntityType(), $entity->bundle());
     $rdf_bundle = $rdf_bundle_mapping[$entity->bundle()];
     $graph->addResource((string) $id, $this->rdfBundlePredicate, $rdf_bundle);
 
