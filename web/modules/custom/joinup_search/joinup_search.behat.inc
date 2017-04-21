@@ -7,11 +7,14 @@
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\UtilityTrait;
 
 /**
  * Behat step definitions for testing searches.
  */
 class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
+  use UtilityTrait;
 
   /**
    * Click a specific tab facet in the page.
@@ -51,10 +54,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When I should not see the following facet items :items
    */
   public function assertContentTypeFacetItemsNotPresent($labels) {
-    // @todo Replace with trait function when ISAICP-2755 is in.
-    $labels = explode(',', $labels);
-    $labels = array_map('trim', $labels);
-    $labels = array_filter($labels);
+    $labels = $this->explodeCommaSeparatedStepArgument($labels);
 
     $facet = $this->getSession()->getPage()->find('xpath', "//div[@data-drupal-facet-id='field_cp_content_listing_content_type']");
     $present = [];
