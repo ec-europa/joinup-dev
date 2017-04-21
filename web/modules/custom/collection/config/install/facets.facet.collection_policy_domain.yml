@@ -27,38 +27,38 @@ processor_configs:
   active_widget_order:
     processor_id: active_widget_order
     weights:
-      sort: -10
+      sort: -2
     settings:
       sort: DESC
   aggregated_entity_reference_label:
     processor_id: aggregated_entity_reference_label
     weights:
-      build: 5
+      build: 0
     settings: {  }
   count_limit:
     processor_id: count_limit
     weights:
-      build: -10
+      build: -2
     settings:
       minimum_items: 1
       maximum_items: null
   count_widget_order:
     processor_id: count_widget_order
     weights:
-      sort: -10
+      sort: -1
     settings:
       sort: DESC
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
-      sort: -10
+      sort: 0
     settings:
       sort: ASC
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
       pre_query: -10
-      build: -10
+      build: -1
     settings: {  }
 empty_behavior:
   behavior: none
