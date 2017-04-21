@@ -10,12 +10,13 @@ Feature: Collection homepage
       | name          |
       | Bilbo Baggins |
     And the following collection:
-      | title             | Middle earth daily |
-      | owner             | Bilbo Baggins      |
-      | logo              | logo.png           |
-      | moderation        | yes                |
-      | elibrary creation | facilitators       |
-      | state             | validated          |
+      | title             | Middle earth daily               |
+      | owner             | Bilbo Baggins                    |
+      | logo              | logo.png                         |
+      | moderation        | yes                              |
+      | elibrary creation | members                          |
+      | state             | validated                        |
+      | policy domain     | Employment and Support Allowance |
     And news content:
       | title                                             | body                | policy domain     | collection         | state     |
       | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated |
@@ -25,7 +26,14 @@ Feature: Collection homepage
       | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 | validated | Supplier exchange |
 
     When I go to the homepage of the "Middle earth daily" collection
-    Then I should see the "Rohirrim make extraordinary deal" tile
+    # The collection fields are shown in the about page.
+    Then I should not see the text "Only members can create new content"
+    And I should not see the text "Moderated"
+    And I should not see the text "Open collection"
+    And I should not see the text "Bilbo Baggins"
+    And I should not see the text "Employment and Support Allowance"
+    # The collection content is shown here.
+    And I should see the "Rohirrim make extraordinary deal" tile
     And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
     And I should see the "Big hobbit feast - fireworks at midnight" tile
 
