@@ -4,6 +4,7 @@ Feature: Collection homepage
   As a user of the website
   I need to be able see all content related to a collection on the collection homepage
 
+  @terms
   Scenario: The collection homepage shows related content.
     Given the following owner:
       | name          |
@@ -16,16 +17,17 @@ Feature: Collection homepage
       | elibrary creation | facilitators       |
       | state             | validated          |
     And news content:
-      | title                                             | body                | collection         | state     |
-      | Rohirrim make extraordinary deal                  | Horse prices drops  | Middle earth daily | validated |
-      | Breaking: Gandalf supposedly plans his retirement | A new white wizard? | Middle earth daily | validated |
+      | title                                             | body                | policy domain     | collection         | state     |
+      | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated |
+      | Breaking: Gandalf supposedly plans his retirement | A new white wizard? | Supplier exchange | Middle earth daily | validated |
     And event content:
-      | title                                    | short title      | body                                      | collection         | start date          | state     |
-      | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 | validated |
-    And I go to the homepage of the "Middle earth daily" collection
-    Then I should see text matching "Rohirrim make extraordinary deal"
-    Then I should see text matching "Breaking: Gandalf supposedly plans his retirement"
-    Then I should see text matching "Big hobbit feast - fireworks at midnight"
+      | title                                    | short title      | body                                      | collection         | start date          | state     | policy domain     |
+      | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 | validated | Supplier exchange |
+
+    When I go to the homepage of the "Middle earth daily" collection
+    Then I should see the "Rohirrim make extraordinary deal" tile
+    And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
+    And I should see the "Big hobbit feast - fireworks at midnight" tile
 
     # Test that unrelated content does not show up in the tiles.
     And I should not see the "Bilbo Baggins" tile
@@ -34,10 +36,15 @@ Feature: Collection homepage
 
     # Test the filtering by facets.
     When I click the Event content tab
-    Then I should see text matching "Big hobbit feast - fireworks at midnight"
-    Then I should not see text matching "Rohirrim make extraordinary deal"
-    Then I should not see text matching "Breaking: Gandalf supposedly plans his retirement"
+    Then I should see the "Big hobbit feast - fireworks at midnight" tile
+    But I should not see text matching "Rohirrim make extraordinary deal"
+    And I should not see text matching "Breaking: Gandalf supposedly plans his retirement"
     When I click the News content tab
     Then I should not see text matching "Big hobbit feast - fireworks at midnight"
-    Then I should see text matching "Rohirrim make extraordinary deal"
-    Then I should see text matching "Breaking: Gandalf supposedly plans his retirement"
+    But I should see the "Rohirrim make extraordinary deal" tile
+    And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
+
+    # Deselect the content type filter.
+    When I click the News content tab
+    # Verify the policy domain inline facet.
+    Then I should see the link "all policy domains"
