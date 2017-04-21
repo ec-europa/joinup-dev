@@ -9,9 +9,13 @@ third_party_settings:
     mapping:
       uri:
         predicate: 'http://www.w3.org/2006/vcard/ns#hasURL'
-        format: literal
-      title: ''
-      options: ''
+        format: 'xsd:string'
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_ci_webpage
 field_name: field_ci_webpage
 entity_type: rdf_entity

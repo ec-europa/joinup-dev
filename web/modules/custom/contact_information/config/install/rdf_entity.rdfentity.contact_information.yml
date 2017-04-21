@@ -15,7 +15,7 @@ third_party_settings:
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
-          format: literal
+          format: t_literal
     graph:
       default: 'http://joinup.eu/contact-information/published'
       draft: 'http://joinup.eu/contact-information/draft'

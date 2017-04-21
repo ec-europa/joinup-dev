@@ -10,7 +10,7 @@ third_party_settings:
     mapping:
       target_id:
         predicate: 'http://xmlns.com/foaf/0.1/#term_Image'
-        format: literal
+        format: 'xsd:string'
       alt: 
         predicate: ''
         format: ''

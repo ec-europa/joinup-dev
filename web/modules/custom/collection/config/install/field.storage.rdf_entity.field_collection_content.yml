@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'http://joinup.eu/search'
-        format: literal
+        format: 'xsd:string'
 id: rdf_entity.field_collection_content
 field_name: field_collection_content
 entity_type: rdf_entity

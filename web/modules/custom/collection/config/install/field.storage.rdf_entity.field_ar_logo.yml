@@ -10,7 +10,7 @@ third_party_settings:
     mapping:
       target_id:
         predicate: 'http://purl.org/dc/dcmitype/StillImage'
-        format: literal
+        format: 'xsd:string'
       alt:
         predicate: ''
         format: ''

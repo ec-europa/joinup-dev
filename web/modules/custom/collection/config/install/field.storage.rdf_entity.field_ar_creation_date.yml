@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'http://purl.org/dc/terms/issued'
-        format: date
+        format: 'xsd:dateTime'
 id: rdf_entity.field_ar_creation_date
 field_name: field_ar_creation_date
 entity_type: rdf_entity

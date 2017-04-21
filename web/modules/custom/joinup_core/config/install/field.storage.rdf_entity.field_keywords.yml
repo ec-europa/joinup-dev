@@ -8,7 +8,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'http://www.w3.org/ns/dcat#keyword'
-        format: literal
+        format: t_literal
 id: rdf_entity.field_keywords
 field_name: field_keywords
 entity_type: rdf_entity

@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       uri:
         predicate: 'http://joinup.eu/solution/issue_tracker'
-        format: literal
+        format: 'xsd:string'
       title: 
         predicate: ''
         format: ''

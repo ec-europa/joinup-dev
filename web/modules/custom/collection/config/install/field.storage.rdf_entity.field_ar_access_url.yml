@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       uri:
         predicate: 'http://xmlns.com/foaf/spec/#term_homepage'
-        format: literal
+        format: 'xsd:string'
       title:
         predicate: ''
         format: ''

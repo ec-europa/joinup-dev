@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'http://joinup.eu/owner/workflow_status'
-        format: literal
+        format: 'xsd:string'
 id: rdf_entity.field_owner_state
 field_name: field_owner_state
 entity_type: rdf_entity

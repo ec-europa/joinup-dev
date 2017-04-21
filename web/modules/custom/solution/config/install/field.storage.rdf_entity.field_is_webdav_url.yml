@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       uri:
         predicate: 'http://joinup.eu/solution/webdav_url'
-        format: literal
+        format: 'xsd:string'
       title: 
         predicate: ''
         format: ''

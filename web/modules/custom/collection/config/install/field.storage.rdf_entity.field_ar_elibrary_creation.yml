@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'http://joinup.eu/collection/elibrary_creation'
-        format: integer
+        format: 'xsd:integer'
 id: rdf_entity.field_ar_elibrary_creation
 field_name: field_ar_elibrary_creation
 entity_type: rdf_entity
