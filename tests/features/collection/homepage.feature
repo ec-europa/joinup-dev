@@ -47,4 +47,27 @@ Feature: Collection homepage
     # Deselect the content type filter.
     When I click the News content tab
     # Verify the policy domain inline facet.
-    Then I should see the link "all policy domains"
+    Then "all policy domains" should be selected in the "collection policy domain" inline facet
+    And the "collection policy domain" inline facet should allow selecting the following values "Supplier exchange (2), Finance in EU (1)"
+
+    When I click "Supplier exchange" in the "collection policy domain" inline facet
+    Then "Supplier exchange (2)" should be selected in the "collection policy domain" inline facet
+    And the "collection policy domain" inline facet should allow selecting the following values "Finance in EU (1), all policy domains"
+    And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
+    And I should see the "Big hobbit feast - fireworks at midnight" tile
+    But I should not see the "Rohirrim make extraordinary deal" tile
+
+    # Verify that the inline widget reset link doesn't break other active facets.
+    When I click the News content tab
+    Then "Supplier exchange (1)" should be selected in the "collection policy domain" inline facet
+    And the "collection policy domain" inline facet should allow selecting the following values "Finance in EU (1), all policy domains"
+    And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
+    But I should not see the "Big hobbit feast - fireworks at midnight" tile
+    And I should not see the "Rohirrim make extraordinary deal" tile
+    # Reset the policy domain selection.
+    When I click "all policy domains" in the "collection policy domain" inline facet
+    Then "all policy domains" should be selected in the "collection policy domain" inline facet
+    And the "collection policy domain" inline facet should allow selecting the following values "Finance in EU (1), Supplier exchange (1)"
+    And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
+    And I should see the "Rohirrim make extraordinary deal" tile
+    But I should not see the "Big hobbit feast - fireworks at midnight" tile
