@@ -167,7 +167,15 @@ class LinksInlineWidget extends WidgetPluginBase {
       $url->setOption('query', $get_params->all());
     }
 
-    $link = new Link($this->getConfiguration()['all_text'], $url);
+    // Re-use the same markup as the other facet items. The reset link is never
+    // active and it doesn't have any count.
+    $text = [
+      '#theme' => 'facets_result_item',
+      '#is_active' => FALSE,
+      '#value' => $this->getConfiguration()['all_text'],
+      '#show_count' => FALSE,
+    ];
+    $link = new Link($text, $url);
 
     return $link->toRenderable();
   }
