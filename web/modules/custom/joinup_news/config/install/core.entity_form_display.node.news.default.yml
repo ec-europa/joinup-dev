@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_spatial_coverage
     - field.field.node.news.field_policy_domain
+    - field.field.node.news.field_shared_in
     - field.field.node.news.field_state
     - field.field.node.news.og_audience
     - node.type.news
@@ -39,6 +40,7 @@ content:
     settings:
       title: 'Current workflow state'
       title_display: before
+      show_for_new_entities: false
     third_party_settings: {  }
   field_comments:
     weight: 7
@@ -111,6 +113,7 @@ content:
     region: content
 hidden:
   created: true
+  field_shared_in: true
   og_audience: true
   path: true
   promote: true

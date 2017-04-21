@@ -1,0 +1,18 @@
+
+<div{{ attributes.addClass('filter') }}>
+  {% if items or active %}
+    <div id="filter-button" class="filter__term">
+      {{ active|safe_join(', ') }}
+      <span class="filter__icon icon icon--arrow-down"></span>
+    </div>
+
+    {%- if items -%}
+      <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu" for="filter-button">
+        {%- for item in items -%}
+          {%- set item_attributes = create_attribute({'class': ['facet-item', 'mdl-menu__item']}) -%}
+          <li{{ item_attributes }}>{{ item }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  {%- endif %}
+</div>

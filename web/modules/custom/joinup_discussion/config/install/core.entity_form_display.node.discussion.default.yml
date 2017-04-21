@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.discussion.body
     - field.field.node.discussion.field_comments
     - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_state
     - field.field.node.discussion.og_audience
     - node.type.discussion
@@ -40,6 +41,7 @@ content:
     settings:
       title: 'Current workflow state'
       title_display: before
+      show_for_new_entities: false
     third_party_settings: {  }
   field_comments:
     weight: 8
@@ -98,4 +100,5 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_shared_in: true
   og_audience: true

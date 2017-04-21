@@ -14,8 +14,8 @@ Feature: Add comments
 
   Scenario Outline: Make an anonymous comment, needs moderation.
     Given <content type> content:
-      | title   | body                                                | collection        | status   |
-      | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <status> |
+      | title   | body                                                | collection        | state   |
+      | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <state> |
     Given I am an anonymous user
     When I go to the content page of the type "<content type>" with the title "<title>"
     And I fill in "Your name" with "Mr Scandal"
@@ -27,16 +27,16 @@ Feature: Add comments
     And I should not see "I've heard this story..."
 
     Examples:
-      | content type | title               | status    |
-      | news         | Scandalous news     | published |
-      | event        | Celebrity gathering | published |
-      | discussion   | Is gossip bad?      | published |
-      | document     | Wikileaks           | published |
+      | content type | title               | state     |
+      | news         | Scandalous news     | validated |
+      | event        | Celebrity gathering | validated |
+      | discussion   | Is gossip bad?      | validated |
+      | document     | Wikileaks           | validated |
 
   Scenario Outline: Make an authenticated comment, skips moderation.
     Given <content type> content:
-      | title   | body                                                | collection        | status   |
-      | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <status> |
+      | title   | body                                                | collection        | state   |
+      | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <state> |
     Given I am logged in as "Miss tell tales"
     When I go to the content page of the type "<content type>" with the title "<title>"
     And I fill in "Comment" with "Mr scandal was doing something weird the other day."
@@ -46,8 +46,8 @@ Feature: Add comments
     And I should see text matching "Mr scandal was doing something weird the other day."
 
     Examples:
-      | content type | title               | status    |
-      | news         | Scandalous news     | published |
-      | event        | Celebrity gathering | published |
-      | discussion   | Is gossip bad?      | published |
-      | document     | Wikileaks           | published |
+      | content type | title               | state     |
+      | news         | Scandalous news     | validated |
+      | event        | Celebrity gathering | validated |
+      | discussion   | Is gossip bad?      | validated |
+      | document     | Wikileaks           | validated |

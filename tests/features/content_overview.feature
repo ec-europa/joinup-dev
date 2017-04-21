@@ -23,9 +23,9 @@ Feature: Content Overview
       | title           | collection        | state     |
       | Seventh Windows | Rumble collection | validated |
     And "news" content:
-      | title            | collection        | state     | status      |
-      | The Playful Tale | Rumble collection | validated | published   |
-      | Night of Shadow  | Rumble collection | validated | unpublished |
+      | title            | collection        | state     |
+      | The Playful Tale | Rumble collection | validated |
+      | Night of Shadow  | Rumble collection | proposed  |
     And "document" content:
       | title             | collection        | state     |
       | History of Flight | Rumble collection | validated |

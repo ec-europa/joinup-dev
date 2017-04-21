@@ -3,8 +3,12 @@
 namespace Drupal\joinup_core\Plugin\facets\widget;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\facets\FacetInterface;
+use Drupal\facets\Result\ResultInterface;
 use Drupal\facets\Widget\WidgetPluginBase;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * The links widget.
@@ -22,6 +26,7 @@ class LinksInlineWidget extends WidgetPluginBase {
    */
   public function defaultConfiguration() {
     return [
+      'all_text' => 'All',
       'prefix_text' => '',
       'suffix_text' => '',
     ] + parent::defaultConfiguration();
@@ -33,6 +38,14 @@ class LinksInlineWidget extends WidgetPluginBase {
   public function buildConfigurationForm(array $form, FormStateInterface $form_state, FacetInterface $facet) {
     $form = parent::buildConfigurationForm($form, $form_state, $facet);
     $config = $this->getConfiguration();
+
+    $form['all_text'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('All text'),
+      '#description' => $this->t('Shown for the facet reset link.'),
+      '#default_value' => $config['all_text'] ?: 'All',
+      '#required' => TRUE,
+    ];
 
     $form['prefix_text'] = [
       '#type' => 'textfield',
@@ -55,11 +68,40 @@ class LinksInlineWidget extends WidgetPluginBase {
    * {@inheritdoc}
    */
   public function build(FacetInterface $facet) {
-    $content = parent::build($facet);
+    // Set the facet as it's done in the parent implementation, because the
+    // build methods use it.
+    $this->facet = $facet;
+
+    $active = [];
+    $inactive = [];
+    foreach ($facet->getResults() as $result) {
+      $item = empty($result->getUrl()) ? $this->buildResultItem($result) : $this->buildListItems($result);
+
+      if ($result->isActive()) {
+        $active[] = $item;
+      }
+      else {
+        $inactive[] = $item;
+      }
+    }
+
+    // When there is no active items, add the reset link to it, otherwise move
+    // it to the end of all the inactive items.
+    $all_link = $this->generateResetLink($facet);
+    if (empty($active)) {
+      $active[] = $all_link;
+    }
+    else {
+      $inactive[] = $all_link;
+    }
+
     $build = [
-      '#type' => 'container',
+      '#theme' => 'facet_widget_links_inline',
+      '#items' => $inactive,
+      '#active' => $active,
       '#attributes' => [
         'data-drupal-facet-id' => $facet->id(),
+        'data-drupal-facet-alias' => $facet->getUrlAlias(),
       ],
       '#cache' => [
         'contexts' => [
@@ -67,13 +109,92 @@ class LinksInlineWidget extends WidgetPluginBase {
           'url.query_args',
         ],
       ],
-      'children' => $content,
     ];
-    $build['children']['#theme'] = 'item_list__links_inline';
-    $build['children']['#prefix'] = '<span>' . $this->getConfiguration()['prefix_text'] . '</span>';
-    $build['children']['#suffix'] = '<span>' . $this->getConfiguration()['suffix_text'] . '</span>';
+
+    $elements = [
+      'prefix_text' => '#prefix',
+      'suffix_text' => '#suffix',
+    ];
+    foreach ($elements as $key => $property) {
+      if (!empty($this->getConfiguration()[$key])) {
+        $build[$property] = '<span>' . $this->getConfiguration()[$key] . '</span>';
+      }
+    }
 
     return $build;
+  }
+
+  /**
+   * Generates a reset link for the facet.
+   *
+   * @param \Drupal\facets\FacetInterface $facet
+   *   The facet being build.
+   *
+   * @return array
+   *   The renderable array of the link.
+   */
+  protected function generateResetLink(FacetInterface $facet) {
+    $request = \Drupal::service('request_stack')->getMasterRequest();
+    /** @var \Symfony\Component\HttpFoundation\ParameterBag $get_params */
+    $get_params = clone $request->query;
+    if ($get_params->has('page')) {
+      $get_params->remove('page');
+    }
+
+    if ($facet->getFacetSource()->getPath()) {
+      $request = Request::create($facet->getFacetSource()->getPath());
+    }
+    $url = Url::createFromRequest($request);
+    $url->setOption('attributes', ['rel' => 'nofollow']);
+
+    // Retrieve the filter key from the url processor.
+    // @see \Drupal\facets_range_widget\Plugin\facets\processor\RangeSliderProcessor::build()
+    /** @var \Drupal\facets\Plugin\facets\processor\UrlProcessorHandler $url_processor_handler */
+    $url_processor_handler = $facet->getProcessors()['url_processor_handler'];
+    $url_processor = $url_processor_handler->getProcessor();
+    $filter_key = $url_processor->getFilterKey();
+
+    $filter_params = $get_params->get($filter_key, [], TRUE);
+    foreach ($facet->getResults() as $result) {
+      if ($result->isActive()) {
+        $active_filter_string = $facet->getUrlAlias() . $url_processor->getSeparator() . $result->getRawValue();
+        $filter_params = array_diff($filter_params, [$active_filter_string]);
+      }
+    }
+
+    $get_params->set($filter_key, array_values($filter_params));
+    // Add the get parameters when non-empty.
+    if ($get_params->all() !== [$filter_key => []]) {
+      $url->setOption('query', $get_params->all());
+    }
+
+    // Re-use the same markup as the other facet items. The reset link is never
+    // active and it doesn't have any count.
+    $text = [
+      '#theme' => 'facets_result_item',
+      '#is_active' => FALSE,
+      '#value' => $this->getConfiguration()['all_text'],
+      '#show_count' => FALSE,
+    ];
+    $link = new Link($text, $url);
+
+    return $link->toRenderable();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function buildResultItem(ResultInterface $result) {
+    $count = $result->getCount();
+    return [
+      '#theme' => 'facets_result_item',
+      // Never render the activated indicator, as active facets are moved in the
+      // related area.
+      '#is_active' => FALSE,
+      '#value' => $result->getDisplayValue(),
+      '#show_count' => $this->getConfiguration()['show_numbers'] && ($count !== NULL),
+      '#count' => $count,
+    ];
   }
 
 }

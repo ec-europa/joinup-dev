@@ -69,10 +69,12 @@ config_devel:
   - block.block.addcontent
   - block.block.footer_menu
   - block.block.groupheader
+  - block.block.userheader
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
   - block.block.joinup_theme_content
   - block.block.joinup_theme_help
+  - block.block.joinup_theme_local_tasks
   - block.block.joinup_theme_main_menu
   - block.block.joinup_theme_messages
   - block.block.navigation
@@ -113,6 +115,7 @@ config_devel:
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.compact
   - core.entity_view_display.user.user.default
+  - core.entity_view_display.user.user.group_header
   - core.entity_view_display.user.user.view_mode_featured
   - core.entity_view_display.user.user.view_mode_tile
   - core.entity_view_mode.node.full

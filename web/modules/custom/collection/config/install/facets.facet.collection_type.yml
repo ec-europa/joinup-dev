@@ -27,9 +27,9 @@ processor_configs:
     weights:
       sort: -10
     settings:
-      sort: DESC
-  aggregated_entity_reference_label:
-    processor_id: aggregated_entity_reference_label
+      sort: ASC
+  aggregated_entity_bundle_label:
+    processor_id: aggregated_entity_bundle_label
     weights:
       build: 5
     settings: {  }
