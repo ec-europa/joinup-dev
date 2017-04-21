@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\facets\FacetInterface;
+use Drupal\facets\Result\ResultInterface;
 use Drupal\facets\Widget\WidgetPluginBase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -178,6 +179,22 @@ class LinksInlineWidget extends WidgetPluginBase {
     $link = new Link($text, $url);
 
     return $link->toRenderable();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function buildResultItem(ResultInterface $result) {
+    $count = $result->getCount();
+    return [
+      '#theme' => 'facets_result_item',
+      // Never render the activated indicator, as active facets are moved in the
+      // related area.
+      '#is_active' => FALSE,
+      '#value' => $result->getDisplayValue(),
+      '#show_count' => $this->getConfiguration()['show_numbers'] && ($count !== NULL),
+      '#count' => $count,
+    ];
   }
 
 }
