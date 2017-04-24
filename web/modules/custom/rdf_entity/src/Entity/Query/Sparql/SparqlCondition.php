@@ -5,6 +5,7 @@ namespace Drupal\rdf_entity\Entity\Query\Sparql;
 use Drupal\Core\Entity\Query\ConditionFundamentals;
 use Drupal\Core\Entity\Query\ConditionInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\rdf_entity\RdfGraphHandler;
 use Drupal\rdf_entity\RdfFieldHandler;
 
@@ -382,35 +383,45 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     // into a 'VALUES' clause which increases performance.
     $condition_stack = array_merge($this->fieldMappingConditions, $this->conditions);
     foreach ($condition_stack as $condition) {
-      $field_name = isset($condition['column']) ? $condition['field'] . '__' . $condition['column'] : $condition['field'];
-      if ($field_name instanceof ConditionInterface) {
-        $this->addConditionFragment($field_name->toString());
+      if ($condition['field'] instanceof ConditionInterface) {
+        $this->addConditionFragment($condition['field']->toString());
         continue;
       }
-      elseif ($field_name === $this->idKey) {
-        $condition['field'] = $this->fieldMappings[$field_name];
+      $field_name = isset($condition['column']) ? $condition['field'] . '__' . $condition['column'] : $condition['field'];
+      if ($condition['field'] === $this->idKey) {
+        $field_name = $this->fieldMappings[$condition['field']];
       }
-      elseif ($field_name === $this->bundleKey) {
+      elseif ($condition['field'] === $this->bundleKey) {
         $this->compileBundleCondition($condition);
       }
-      elseif (in_array($condition['operator'], $this->requiresTriple) && isset($this->fieldMappings[$field_name])) {
-        $this->addConditionFragment(self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$field_name]) . ' ' . $this->toVar($field_name));
+      else {
+        // Check if the field has a langcode.
+        $langcode = $this->getLangCode($condition);
+        $field_name = isset($condition['column']) ? $condition['field'] . '__' . $condition['column'] : $condition['field'];
+        if (in_array($condition['operator'], $this->requiresTriple) && isset($this->fieldMappings[$field_name])) {
+          $this->addConditionFragment(self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$field_name]) . ' ' . $this->toVar($field_name));
+        }
       }
 
       // For the field mappings that require a filter, the $field_name
       // parameter is set to '<field_name>_predicate'. Reverse search it from
       // the mappings.
-      if ($field_predicate = array_search($field_name, $this->fieldMappings)) {
+      if ($condition['field'] === $this->idKey) {
+        $condition['field'] = $field_name;
+        $condition['value'] = $this->escapeValue($condition);
+      }
+      elseif ($field_predicate = array_search($condition['field'], $this->fieldMappings)) {
         $condition['value'] = SparqlArg::toResourceUris($condition['value']);
-        $field_name = $field_predicate;
+        $condition['field'] = $field_predicate;
       }
       else {
         $condition['value'] = $this->escapeValue($condition);
+        $condition['field'] = $field_name;
       }
 
       switch ($condition['operator']) {
         case '=':
-          $this->tripleFragments[] = self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$field_name]) . ' ' . $condition['value'];
+          $this->tripleFragments[] = self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$condition['field']]) . ' ' . $condition['value'];
           break;
 
         case 'EXISTS':
@@ -423,8 +434,8 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         case 'NOT LIKE':
         case 'STARTS_WITH':
           $this->addConditionFragment($this->compileLike($condition));
-          if (!empty($condition['lang'])) {
-            $this->addConditionFragment("FILTER(lang({$this->toVar($field_name)}) = '{$condition['lang']}')");
+          if (!empty($langcode)) {
+            $this->addConditionFragment("FILTER(lang({$this->toVar($condition['field'])}) = '{$langcode}')");
           }
           break;
 
@@ -606,6 +617,39 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
   }
 
   /**
+   * Calculates the langcode of the field if one exists.
+   *
+   * @param array $condition
+   *   The condition array.
+   *
+   * @return string
+   *   The langcode to be used.
+   */
+  protected function getLangCode(array $condition) {
+    $field_name = $condition['field'];
+    $column = isset($condition['column']) ? $condition['column'] : NULL;
+    $format = $this->fieldHandler->getFieldFormat($this->query->getEntityTypeId(), $field_name, $column);
+    $format = reset($format);
+    if ($format !== RdfFieldHandler::TRANSLATABLE_LITERAL) {
+      return FALSE;
+    }
+
+    $non_languages = [
+      LanguageInterface::LANGCODE_NOT_SPECIFIED,
+      LanguageInterface::LANGCODE_DEFAULT,
+      LanguageInterface::LANGCODE_NOT_APPLICABLE,
+      LanguageInterface::LANGCODE_SITE_DEFAULT,
+      LanguageInterface::LANGCODE_SYSTEM,
+    ];
+
+    if (empty($condition['lang']) || in_array($condition['lang'], $non_languages)) {
+      return \Drupal::languageManager()->getCurrentLanguage()->getId();
+    }
+
+    return $condition['lang'];
+  }
+
+  /**
    * Implements \Drupal\Core\Entity\Query\ConditionInterface::exists().
    */
   public function exists($field, $lang = NULL) {
@@ -686,7 +730,8 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
       return $value;
     }
 
-    $format = reset($this->fieldHandler->getFieldFormat($this->query->getEntityTypeId(), $field_name));
+    $format = $this->fieldHandler->getFieldFormat($this->query->getEntityTypeId(), $field_name);
+    $format = reset($format);
     if (is_array($value)) {
       foreach ($value as $i => $v) {
         $value[$i] = SparqlArg::serialize($v, $format, $condition['lang']);

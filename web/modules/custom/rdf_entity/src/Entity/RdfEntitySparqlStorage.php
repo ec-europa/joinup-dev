@@ -440,7 +440,10 @@ QUERY;
                 $this->applyFieldDefaults($inbound_map['fields'][$predicate][$bundle]['type'], $return[$entity_id][$field_name][$lang]);
               }
               if (!isset($return[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT])) {
-                $return[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT] = $return[$entity_id][$field_name][$lang];
+                $langcode = $this->languageManager->getDefaultLanguage()->getId();
+                if (isset($langcode)) {
+                  $return[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT] = $return[$entity_id][$field_name][$langcode];
+                }
               }
             }
           }

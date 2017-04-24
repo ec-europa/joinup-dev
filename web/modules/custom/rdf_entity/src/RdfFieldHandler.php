@@ -204,7 +204,9 @@ class RdfFieldHandler {
     $bundles = $bundle ? [$bundle] : array_keys($drupal_to_sparql['bundles']);
     $return = [];
     foreach ($bundles as $bundle) {
-      $return[$bundle] = $field_mapping['columns'][$column][$bundle]['predicate'];
+      if (isset($field_mapping['columns'][$column][$bundle]['predicate'])) {
+        $return[$bundle] = $field_mapping['columns'][$column][$bundle]['predicate'];
+      }
     }
     return array_unique(array_filter($return));
   }
