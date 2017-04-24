@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_news_shared_in
+    - field.storage.node.field_news_referenced_solution
     - node.type.news
     - rdf_entity.rdfentity.collection
     - rdf_entity.rdfentity.solution
-id: node.news.field_news_shared_in
-field_name: field_news_shared_in
+id: node.news.field_news_referenced_solution
+field_name: field_news_referenced_solution
 entity_type: node
 bundle: news
-label: 'Shared in'
+label: 'Referenced solution'
 description: ''
 required: false
 translatable: false
@@ -20,7 +20,6 @@ settings:
   handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
-      collection: collection
       solution: solution
     sort:
       field: _none
