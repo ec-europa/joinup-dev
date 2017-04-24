@@ -744,6 +744,9 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    *   The altered $value.
    */
   protected function escapeValue($field, $value, $column = NULL, $lang = NULL) {
+    if (empty($value)) {
+      return $value;
+    }
     // If the field name is the id, escape the value. It has been already
     // converted and the value is an array.
     if ($field === $this->idKey) {
@@ -759,8 +762,16 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
 
     $serializer = new Ntriples();
     $lang = $this->getLangCode($field, $column, $lang);
-    $outbound_value = $this->fieldHandler->getOutboundValue($this->query->getEntityTypeId(), $field, $value, $lang, $column);
-    $value = $serializer->serialiseValue($outbound_value);
+    if (is_array($value)) {
+      foreach ($value as $i => $v) {
+        $outbound_value = $this->fieldHandler->getOutboundValue($this->query->getEntityTypeId(), $field, $v, $lang, $column);
+        $value[$i] = $serializer->serialiseValue($outbound_value);
+      }
+    }
+    else {
+      $outbound_value = $this->fieldHandler->getOutboundValue($this->query->getEntityTypeId(), $field, $value, $lang, $column);
+      $value = $serializer->serialiseValue($outbound_value);
+    }
     return $value;
   }
 

@@ -441,7 +441,7 @@ class RdfFieldHandler {
    *   The column for which to calculate the value. If null, the field's main
    *    column will be used.
    *
-   * @return string
+   * @return mixed
    *   The calculated value.
    */
   public function getOutboundValue($entity_type_id, $field, $value, $lang = NULL, $column = NULL) {

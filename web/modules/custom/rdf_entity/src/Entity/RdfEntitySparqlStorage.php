@@ -751,7 +751,6 @@ QUERY;
           $lang = $this->resolveFieldLangcode($entity, $entity->get($field_name)->first());
           $value = $this->fieldHandler->getOutboundValue($this->getEntityTypeId(), $field_name, $value, $lang, $column);
           $graph->add((string) $id, $predicate, $value);
-          // @todo: To be supported: Serialized, languages.
         }
       }
     }
@@ -907,7 +906,7 @@ QUERY;
           break;
       }
     }
-    $this->moduleHandler->alter('rdf_apply_default_fields', $storage, $values);
+    $this->moduleHandler->alter('rdf_apply_default_fields', $type, $values);
   }
 
   /**
