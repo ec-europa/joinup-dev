@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "95e6290ad41678bceb71b99b6f40e940",
+    "content-hash": "9f06beace80091f60b943e481423a2b6",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2135,6 +2135,9 @@
                 "drupal": {
                     "version": "8.x-1.0-alpha9",
                     "datestamp": "1491851643"
+                },
+                "patches_applied": {
+                    "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2506,21 +2509,21 @@
         },
         {
             "name": "drupal/migrate_spreadsheet",
-            "version": "1.0.0-beta1",
+            "version": "1.0.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/migrate_spreadsheet",
-                "reference": "8.x-1.0-beta1"
+                "reference": "8.x-1.0-beta2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/migrate_spreadsheet-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "65d126a76403fc309f57b13177f0d15667855c48"
+                "url": "https://ftp.drupal.org/files/projects/migrate_spreadsheet-8.x-1.0-beta2.zip",
+                "reference": "8.x-1.0-beta2",
+                "shasum": "6664530ba29fae747e293a7c8f4282e83bdcaf71"
             },
             "require": {
                 "drupal/core": "*",
-                "phpoffice/phpspreadsheet": "~0.0"
+                "phpoffice/phpspreadsheet": "dev-master"
             },
             "type": "drupal-module",
             "extra": {
@@ -2528,13 +2531,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1487973484"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PhpOffice\\PhpSpreadsheet\\": "vendor/phpoffice/phpspreadsheet/src/PhpSpreadsheet"
+                    "version": "8.x-1.0-beta2",
+                    "datestamp": "1492605543"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2871,7 +2869,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0-rc2.zip",
-                "reference": null,
+                "reference": "8.x-1.0-rc2",
                 "shasum": "174a463535c6b77c4c9ec9481a7ab7989e661868"
             },
             "require": {
@@ -3056,7 +3054,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta3.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta3",
                 "shasum": "9ca0101738db00673f2511707a76d6ea0c9ce4db"
             },
             "require": {
@@ -4717,14 +4715,80 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "0.0",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
+                "reference": "c94539c86c9e2790656947b87d1aa1ef211a4584"
+            },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/PHPOffice/PhpSpreadsheet/archive/develop.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/c94539c86c9e2790656947b87d1aa1ef211a4584",
+                "reference": "c94539c86c9e2790656947b87d1aa1ef211a4584",
+                "shasum": ""
             },
-            "type": "library"
+            "require": {
+                "ext-iconv": "*",
+                "ext-mbstring": "*",
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": "^5.5|^7.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.11",
+                "mikey179/vfsstream": "1.5.*",
+                "phpunit/phpunit": "4.6.*",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "suggest": {
+                "dompdf/dompdf": "Option for rendering PDF with PDF Writer",
+                "ext-dom": "Option to read and write HTML files",
+                "ext-gd": "*",
+                "ext-zip": "*",
+                "jpgraph/jpgraph": "Option for rendering charts, or including charts with PDF or HTML Writers",
+                "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
+                "tecnick.com/tcpdf": "Option for rendering PDF with PDF Writer"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpOffice\\PhpSpreadsheet\\": "src/PhpSpreadsheet"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Erik Tilt"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://rootslabs.net"
+                },
+                {
+                    "name": "Mark Baker",
+                    "homepage": "http://markbakeruk.net"
+                }
+            ],
+            "description": "PHPSpreadsheet - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "https://github.com/PHPOffice/PhpSpreadsheet",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "gnumeric",
+                "ods",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "time": "2016-10-03 08:18:38"
         },
         {
             "name": "psr/http-message",
@@ -8241,7 +8305,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-15T08:54:07+00:00"
+            "time": "2017-04-15 08:54:07"
         },
         {
             "name": "fabpot/goutte",

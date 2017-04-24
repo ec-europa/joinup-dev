@@ -4,8 +4,8 @@ dependencies:
   module:
     - node
     - rdf_entity
-id: node.field_news_shared_in
-field_name: field_news_shared_in
+id: node.field_news_referenced_solution
+field_name: field_news_referenced_solution
 entity_type: node
 type: entity_reference
 settings:
