@@ -743,7 +743,9 @@ QUERY;
     foreach ($entity->toArray() as $field_name => $field) {
       foreach ($field as $field_item) {
         foreach ($field_item as $column => $value) {
-          if (!$this->fieldHandler->hasFieldPredicate($this->getEntityTypeId(), $field_name, $column, $bundle)) {
+          // Filter out empty values or non mapped fields. The id is also
+          // excluded as it is not mapped.
+          if ($value === NULL || $value === '' || !$this->fieldHandler->hasFieldPredicate($this->getEntityTypeId(), $field_name, $column, $bundle)) {
             continue;
           }
           $predicate = $this->fieldHandler->getFieldPredicates($this->getEntityTypeId(), $field_name, $column, $bundle);
