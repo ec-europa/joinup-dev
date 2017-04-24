@@ -10,8 +10,8 @@ contact_information_workflow:
     validated:
       label: Validated
     # State used to flag content that is being reviewed.
-    in_assessment:
-      label: In assessment
+    needs_update:
+      label: Needs update
     deletion_request:
       label: Deletion request
   transitions:
@@ -26,14 +26,14 @@ contact_information_workflow:
     request_changes:
       label: Request changes
       from: [validated]
-      to: in_assessment
+      to: needs_update
     update_changes:
       label: Update
-      from: [in_assessment]
-      to: in_assessment
+      from: [needs_update]
+      to: needs_update
     approve_changes:
       label: Approve changes
-      from: [in_assessment]
+      from: [needs_update]
       to: validated
     request_deletion:
       label: Request deletion
