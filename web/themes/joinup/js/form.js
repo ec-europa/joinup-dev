@@ -109,31 +109,34 @@
   Drupal.behaviors.verticalTabsMobile = {
     attach: function (context, settings) {
       $(context).find('.vertical-tabs__menu-item--mobile').once('verticalTabsMobile').each(function () {
-          hrefSelected = $('.vertical-tabs__menu .vertical-tabs__menu-item.is-selected a').attr('href');
-          if ($(this).find('a').attr('href') == hrefSelected) {
-            $(this).addClass('is-selected');
-          }
+        var $this = $(this);
+        var hrefSelected = $('.vertical-tabs__menu .vertical-tabs__menu-item.is-selected a').attr('href');
 
-          $(this).on('click', function (e) {
-            e.preventDefault();
-            href = $(this).find('a').attr('href');
-            $('.vertical-tabs__menu .vertical-tabs__menu-item a[href="' + href + '"]').trigger('click');
-            isSelected = $(this).hasClass('is-selected');
-            if (!isSelected) {
-              $(this).addClass('is-selected');
-              $('.vertical-tabs__menu-item--mobile').not(this).removeClass('is-selected');
-            }
-          });
+        if ($this.find('a').attr('href') == hrefSelected) {
+          $this.addClass('is-selected');
+        }
+
+        $this.on('click', function (event) {
+          var $this = $(this);
+          var href = $this.find('a').attr('href');
+
+          event.preventDefault();
+
+          $('.vertical-tabs__menu .vertical-tabs__menu-item a[href="' + href + '"]').trigger('click');
+          if (!$this.hasClass('is-selected')) {
+            $this.addClass('is-selected');
+            $('.vertical-tabs__menu-item--mobile').not(this).removeClass('is-selected');
+          }
+        });
       });
 
-      $(context).find('.vertical-tabs__menu-item').once('verticalTabsDesktop').each(function () {
-        $(this).on('click', function (e) {
-          href = $(this).find('a').attr('href');
-          // Synchronize mobile and desktop tabs.
-          mobileTabSelected = $('.vertical-tabs__menu-item--mobile a[href="' + href + '"]').closest('div');
-          $(mobileTabSelected).addClass('is-selected');
-          $('.vertical-tabs__menu-item--mobile').not(mobileTabSelected).removeClass('is-selected');
-        });
+      $(context).find('.vertical-tabs__menu-item').once('verticalTabsDesktop').on('click', function () {
+        var href = $(this).find('a').attr('href');
+        var mobileTabSelected = $('.vertical-tabs__menu-item--mobile a[href="' + href + '"]').closest('div');
+
+        // Synchronize mobile and desktop tabs.
+        $(mobileTabSelected).addClass('is-selected');
+        $('.vertical-tabs__menu-item--mobile').not(mobileTabSelected).removeClass('is-selected');
       });
     }
   };
