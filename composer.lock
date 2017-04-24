@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f06beace80091f60b943e481423a2b6",
+    "content-hash": "bd9f53e31d92d8e82daf2d50322a4aed",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2134,7 +2134,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha9",
-                    "datestamp": "1491851643"
+                    "datestamp": "1492681579"
                 },
                 "patches_applied": {
                     "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
@@ -3432,16 +3432,16 @@
         },
         {
             "name": "ec-europa/infra",
-            "version": "0.6.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "996b387770df94d1a327de619ca5924245823307"
+                "reference": "d720b4b66afb4c3ca8c9582926d100e77f2bbe93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/996b387770df94d1a327de619ca5924245823307",
-                "reference": "996b387770df94d1a327de619ca5924245823307",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/d720b4b66afb4c3ca8c9582926d100e77f2bbe93",
+                "reference": "d720b4b66afb4c3ca8c9582926d100e77f2bbe93",
                 "shasum": ""
             },
             "require": {
@@ -3466,7 +3466,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-03-21T10:33:35+00:00"
+            "time": "2017-04-24 09:16:56"
         },
         {
             "name": "egulias/email-validator",
@@ -8305,7 +8305,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-15 08:54:07"
+            "time": "2017-04-15T08:54:07+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -9686,6 +9686,7 @@
         "drupal/r4032login": 20,
         "drupal/search_api_solr": 20,
         "drupal/view_unpublished": 15,
+        "ec-europa/infra": 20,
         "google/material-design-lite": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
         "behat/mink-selenium2-driver": 20,
