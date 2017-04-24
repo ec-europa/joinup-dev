@@ -2,6 +2,9 @@ taxonomy.vocabulary.*.third_party.rdf_entity:
   type: mapping
   label: 'RDF Entity third party settings'
   mapping:
+    rdf_type:
+      type: string
+      label: 'Rdf type mapping'
     graph:
       type: sequence
       sequence:
@@ -9,15 +12,19 @@ taxonomy.vocabulary.*.third_party.rdf_entity:
         label: 'The mapping of a graph definition to a graph uri.'
     mapping:
       type: sequence
+      label: 'Property'
       sequence:
-        type: mapping
-        mapping:
-          predicate:
-            type: string
-            label: 'Predicate'
-          format:
-            type: string
-            label: 'Value format'
+        type: sequence
+        label: 'Column'
+        sequence:
+          type: mapping
+          mapping:
+            predicate:
+              type: string
+              label: 'Predicate'
+            format:
+              type: string
+              label: 'Value format'
     entity_id_plugin:
       type: string
       label: 'The plugin that generates the entity ID'
