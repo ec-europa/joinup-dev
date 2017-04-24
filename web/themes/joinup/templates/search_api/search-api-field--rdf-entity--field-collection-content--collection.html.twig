@@ -5,5 +5,7 @@
 
   {{ pager }}
 {% else %}
-  {{ 'No content found.'|t }}
+  <div class="page__content">
+    {{ 'No content found.'|t }}
+  </div>
 {% endif %}
