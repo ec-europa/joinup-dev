@@ -45,6 +45,7 @@
 .vertical-tabs__menu-item-title
   color: $color-base
   display: block
+  font-weight: $font-weight
 
 .vertical-tabs__menu-item-summary
   font-size: $font-size-small - 1px
@@ -58,7 +59,7 @@
     margin-bottom: 5px
 
 .vertical-tabs__menu-item--mobile
-  cursor: pointer
+  display: block
   +breakpoint(mobile)
     display: none
 
@@ -72,9 +73,3 @@
   background-color: #fff
   .vertical-tabs__menu-item-title
     font-weight: $font-weight-medium
-
-
-.vertical-tabs__pane.is-active
-  display: block !important
-  +breakpoint(mobile)
-    display: initial

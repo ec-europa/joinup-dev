@@ -71,21 +71,6 @@
     }
   };
 
-  // Fix vertical tabs on the form pages.
-  Drupal.behaviors.verticalTabsMobile = {
-    attach: function (context, settings) {
-      $(context).find('.vertical-tabs__menu-item--mobile').once('verticalTabsMobile').each(function () {
-          $(this).first().addClass('is-selected');
-          $(this).first().next('.vertical-tabs__pane').addClass('is-active');
-          $(this).on('click', function(e) {
-            e.preventDefault();
-            $(this).toggleClass('is-selected');
-            $(this).next('.vertical-tabs__pane').toggleClass('is-active');
-          });
-      });
-    }
-  };
-
   // Behaviors for tab validation.
   Drupal.behaviors.fieldGroupTabsValidation = {
     attach: function (context, settings) {
@@ -100,6 +85,12 @@
             var $fieldGroup = $(this);
             if (!alreadyTriggered && $fieldGroup.data('verticalTab')) {
               $fieldGroup.data('verticalTab').tabShow();
+
+              // Handle validation for mobile tabs.
+              mobileTabSelected = $(this).prev('.vertical-tabs__menu-item--mobile');
+              $(mobileTabSelected).addClass('is-selected');
+              $('.vertical-tabs__menu-item--mobile').not(mobileTabSelected).removeClass('is-selected');
+
               alreadyTriggered = true;
             }
           });
@@ -109,6 +100,39 @@
       $('.field-group-tabs-wrapper', context).each(function () {
         $(this).siblings('.form-actions').find('.form-submit').on('click', function () {
           alreadyTriggered = false;
+        });
+      });
+    }
+  };
+
+  // Handle vertical tabs on mobile.
+  Drupal.behaviors.verticalTabsMobile = {
+    attach: function (context, settings) {
+      $(context).find('.vertical-tabs__menu-item--mobile').once('verticalTabsMobile').each(function () {
+          hrefSelected = $('.vertical-tabs__menu .vertical-tabs__menu-item.is-selected a').attr('href');
+          if ($(this).find('a').attr('href') == hrefSelected) {
+            $(this).addClass('is-selected');
+          }
+
+          $(this).on('click', function (e) {
+            e.preventDefault();
+            href = $(this).find('a').attr('href');
+            $('.vertical-tabs__menu .vertical-tabs__menu-item a[href="' + href + '"]').trigger('click');
+            isSelected = $(this).hasClass('is-selected');
+            if (!isSelected) {
+              $(this).addClass('is-selected');
+              $('.vertical-tabs__menu-item--mobile').not(this).removeClass('is-selected');
+            }
+          });
+      });
+
+      $(context).find('.vertical-tabs__menu-item').once('verticalTabsDesktop').each(function () {
+        $(this).on('click', function (e) {
+          href = $(this).find('a').attr('href');
+          // Synchronize mobile and desktop tabs.
+          mobileTabSelected = $('.vertical-tabs__menu-item--mobile a[href="' + href + '"]').closest('div');
+          $(mobileTabSelected).addClass('is-selected');
+          $('.vertical-tabs__menu-item--mobile').not(mobileTabSelected).removeClass('is-selected');
         });
       });
     }
