@@ -342,9 +342,6 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
 
       $field_name = $condition['field'] . '__' . $condition['column'];
 
-      // In case multiple bundles define the same resource id for the same
-      // predicate, remove the duplicates.
-      $mappings = array_unique($mappings);
       if (count($mappings) === 1) {
         $this->fieldMappings[$field_name] = reset($mappings);
       }
@@ -385,26 +382,27 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     // into a 'VALUES' clause which increases performance.
     $condition_stack = array_merge($this->fieldMappingConditions, $this->conditions);
     foreach ($condition_stack as $condition) {
-      if ($condition['field'] instanceof ConditionInterface) {
-        $this->addConditionFragment($condition['field']->toString());
+      $field_name = isset($condition['column']) ? $condition['field'] . '__' . $condition['column'] : $condition['field'];
+      if ($field_name instanceof ConditionInterface) {
+        $this->addConditionFragment($field_name->toString());
         continue;
       }
-      elseif ($condition['field'] === $this->idKey) {
-        $condition['field'] = $this->fieldMappings[$condition['field']];
+      elseif ($field_name === $this->idKey) {
+        $field_name = $this->fieldMappings[$field_name];
       }
-      elseif ($condition['field'] === $this->bundleKey) {
+      elseif ($field_name === $this->bundleKey) {
         $this->compileBundleCondition($condition);
       }
-      elseif (in_array($condition['operator'], $this->requiresTriple) && isset($this->fieldMappings[$condition['field']])) {
-        $field_name = isset($condition['column']) ? $condition['field'] . '__' . $condition['column'] : $condition['field'];
-        $this->addConditionFragment(self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$field_name]) . ' ' . $this->toVar($condition['field']));
+      elseif (in_array($condition['operator'], $this->requiresTriple) && isset($this->fieldMappings[$field_name])) {
+        $this->addConditionFragment(self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$field_name]) . ' ' . $this->toVar($field_name));
       }
 
-      // For the field mappings that require a filter, the $condition['field']
+      // For the field mappings that require a filter, the $field_name
       // parameter is set to '<field_name>_predicate'. Reverse search it from
       // the mappings.
-      if ($field_name = array_search($condition['field'], $this->fieldMappings)) {
+      if ($field_predicate = array_search($field_name, $this->fieldMappings)) {
         $condition['value'] = SparqlArg::toResourceUris($condition['value']);
+        $field_name = $field_predicate;
       }
       else {
         $condition['value'] = $this->escapeValue($condition);
@@ -426,7 +424,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         case 'STARTS_WITH':
           $this->addConditionFragment($this->compileLike($condition));
           if (!empty($condition['lang'])) {
-            $this->addConditionFragment("FILTER(lang({$this->toVar($condition['field'])}) = '{$condition['lang']}')");
+            $this->addConditionFragment("FILTER(lang({$this->toVar($field_name)}) = '{$condition['lang']}')");
           }
           break;
 
@@ -671,7 +669,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    * @return string|array
    *   The altered $value.
    */
-  protected function escapeValue($condition) {
+  protected function escapeValue(array $condition) {
     $field_name = $condition['field'];
     $value = $condition['value'];
 

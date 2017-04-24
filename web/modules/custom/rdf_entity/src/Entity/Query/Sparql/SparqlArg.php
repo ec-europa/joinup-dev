@@ -3,7 +3,6 @@
 namespace Drupal\rdf_entity\Entity\Query\Sparql;
 
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Language\Language;
 use Drupal\rdf_entity\RdfFieldHandler;
 use EasyRdf\Serialiser\Ntriples;
 
@@ -155,6 +154,10 @@ class SparqlArg {
     switch ($format) {
       case RdfFieldHandler::RESOURCE:
         $data['type'] = 'uri';
+        break;
+
+      case RdfFieldHandler::NON_TYPE:
+        $data['type'] = 'literal';
         break;
 
       case RdfFieldHandler::TRANSLATABLE_LITERAL:

@@ -68,9 +68,14 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_submit(&$for
  * that invokes this hook is also called for taxonomies and the bundle is
  * currently being skipped for the taxonomies.
  */
-function asset_distribution_rdf_load_bundle_alter($entity_values, &$bundle) {
-  if (!empty($bundle) && $bundle->id() == 'solution' && isset($entity_values['http://purl.org/dc/terms/isVersionOf'])) {
-    $bundle = \Drupal::entityTypeManager()->getStorage('rdf_type')->load('asset_release');
+function asset_distribution_rdf_load_bundle_alter($entity_values, &$bundles) {
+  if (count($bundles) > 1 && in_array('solution', $bundles)) {
+    if (isset($entity_values['http://purl.org/dc/terms/isVersionOf'])) {
+      $bundles = array_diff($bundles, ['solution']);
+    }
+    else {
+      $bundles = array_diff($bundles, ['asset_release']);
+    }
   }
 }
 

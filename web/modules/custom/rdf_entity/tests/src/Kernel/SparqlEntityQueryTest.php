@@ -2,12 +2,14 @@
 
 namespace Drupal\KernelTests\Core\Entity;
 
+use Drupal\Component\Utility\Random;
 use Drupal\Component\Utility\Unicode;
 use Drupal\entity_test\Entity\EntityTestMulRev;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 
 /**
@@ -66,104 +68,157 @@ class SparqlEntityQueryTest extends JoinupKernelTestBase {
 
     $this->installConfig(['language']);
 
-    $figures = Unicode::strtolower('figure' . $this->randomMachineName());
-    $greetings = Unicode::strtolower('greet' . $this->randomMachineName());
-    foreach ([$figures => 'shape', $greetings => 'text'] as $field_name => $field_type) {
-      $field_storage = FieldStorageConfig::create([
-        'field_name' => $field_name,
-        'entity_type' => 'rdf_entity',
-        'type' => $field_type,
-        'cardinality' => 2,
-      ]);
-      $props = [];
-      foreach ($field_storage->getPropertyNames() as $name) {
-        $props[$name] = 'http://' . $field_name . '.test/' . $name;
-      }
-      $field_storage->setThirdPartySetting('rdf_entity', 'mapping', $props);
-      $field_storage->save();
+//    $figures = Unicode::strtolower('figure' . $this->randomMachineName());
+//    $greetings = Unicode::strtolower('greet' . $this->randomMachineName());
+//    foreach ([$figures => 'shape', $greetings => 'text'] as $field_name => $field_type) {
+//      $field_storage = FieldStorageConfig::create([
+//        'field_name' => $field_name,
+//        'entity_type' => 'rdf_entity',
+//        'type' => $field_type,
+//        'cardinality' => 2,
+//      ]);
+//      $props = [];
+//      foreach ($field_storage->getPropertyNames() as $name) {
+//        $props[$name] = 'http://' . $field_name . '.test/' . $name;
+//      }
+//      $field_storage->setThirdPartySetting('rdf_entity', 'mapping', $props);
+//      $field_storage->save();
+//
+//      $field_storages[] = $field_storage;
+//    }
+//    $bundles = [];
+//    for ($i = 0; $i < 2; $i++) {
+//      // For the sake of tablesort, make sure the second bundle is higher than
+//      // the first one. Beware: MySQL is not case sensitive.
+//      do {
+//        $bundle = $this->randomMachineName();
+//      }
+//      while ($bundles && strtolower($bundles[0]) >= strtolower($bundle));
+//      $type = RdfEntityType::create(['name' => $bundle, 'rid' => $bundle]);
+//      $type->setThirdPartySetting('rdf_entity', 'graph', [
+//        'default' => 'http://example.com/dummy/published',
+//        'draft' => 'http://example.com/dummy/draft'
+//      ]);
+//      $type->setThirdPartySetting('rdf_entity', 'mapping', ['rid' => ['target_id' => 'http://' . $bundle . '.test/']]);
+//      $type->save();
+//      foreach ($field_storages as $field_storage) {
+//        FieldConfig::create([
+//          'field_storage' => $field_storage,
+//          'bundle' => $bundle,
+//        ])->save();
+//      }
+//      $bundles[] = $bundle;
+//    }
+//    // Each unit is a list of field name, langcode and a column-value array.
+//    $units[] = [$figures, 'en', [
+//      'color' => 'red',
+//      'shape' => 'triangle',
+//    ]];
+//    $units[] = [$figures, 'en', [
+//      'color' => 'blue',
+//      'shape' => 'circle',
+//    ]];
+//    // To make it easier to test sorting, the greetings get formats according
+//    // to their langcode.
+//    $units[] = [$greetings, 'tr', [
+//      'value' => 'merhaba',
+//      'format' => 'format-tr'
+//    ]];
+//    $units[] = [$greetings, 'pl', [
+//      'value' => 'siema',
+//      'format' => 'format-pl'
+//    ]];
+//    // Make these languages available to the greetings field.
+//    // @todo This is currently unsupported by rdf entity?
+//    //ConfigurableLanguage::createFromLangcode('tr')->save();
+//    //ConfigurableLanguage::createFromLangcode('pl')->save();
+//    // Calculate the cartesian product of the unit array by looking at the
+//    // bits of $i and add the unit at the bits that are 1. For example,
+//    // decimal 13 is binary 1101 so unit 3,2 and 0 will be added to the
+//    // entity.
+//    for ($i = 1; $i <= 15; $i++) {
+//      $id = str_pad($i, 3, "0", STR_PAD_LEFT);
+//      $entity = Rdf::create([
+//        'id' => 'http://entity/' . $id,
+//        'rid' => $bundles[$i & 1],
+//        'name' => $this->randomMachineName(),
+//        //'langcode' => 'en',
+//      ]);
+//      // Make sure the name is set for every language that we might create.
+//      foreach (['tr', 'pl'] as $langcode) {
+//        // @todo Once the translation can be added...
+//        //$entity->addTranslation($langcode)->name = $this->randomMachineName();
+//      }
+//      // I have no idea why you would obfuscate something like this.
+//      // Can we turn this into something that humans can read?
+//      foreach (array_reverse(str_split(decbin($i))) as $key => $bit) {
+//        if ($bit) {
+//          list($field_name, $langcode, $values) = $units[$key];
+//          // @todo Switch to translation aware version.
+//          // $entity->getTranslation($langcode)->{$field_name}[] = $values;
+//          $entity->set($field_name, $values);
+//        }
+//      }
+//      $entity->setPublished(TRUE);
+//      $entity->save();
+//    }
+//    $this->bundles = $bundles;
+//    $this->figures = $figures;
+//    $this->greetings = $greetings;
+//    $this->factory = \Drupal::service('entity.query');
+  }
 
-      $field_storages[] = $field_storage;
+  /**
+   * Test entity create.
+   * @dataProvider providerTestEntityInsertCallback
+   */
+  public function testEntityInsert($field_type, $field_format, $cardinality, $value) {
+    $bundle = 'dummy';
+    $field_name = Unicode::strtolower($this->randomMachineName());
+    $field_storage = FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'rdf_entity',
+      'type' => $field_type,
+      'cardinality' => $cardinality,
+    ]);
+    $props = [];
+    foreach ($field_storage->getPropertyNames() as $name) {
+      $props[$name]['predicate'] = 'http://' . $field_name . '.test/' . $name;
+      $props[$name]['format'] = $field_format;
     }
-    $bundles = [];
-    for ($i = 0; $i < 2; $i++) {
-      // For the sake of tablesort, make sure the second bundle is higher than
-      // the first one. Beware: MySQL is not case sensitive.
-      do {
-        $bundle = $this->randomMachineName();
-      }
-      while ($bundles && strtolower($bundles[0]) >= strtolower($bundle));
-      $type = RdfEntityType::create(['name' => $bundle, 'rid' => $bundle]);
-      $type->setThirdPartySetting('rdf_entity', 'graph', [
-        'default' => 'http://example.com/dummy/published',
-        'draft' => 'http://example.com/dummy/draft'
-      ]);
-      $type->setThirdPartySetting('rdf_entity', 'mapping', ['rid' => ['target_id' => 'http://' . $bundle . '.test/']]);
-      $type->save();
-      foreach ($field_storages as $field_storage) {
-        FieldConfig::create([
-          'field_storage' => $field_storage,
-          'bundle' => $bundle,
-        ])->save();
-      }
-      $bundles[] = $bundle;
-    }
-    // Each unit is a list of field name, langcode and a column-value array.
-    $units[] = [$figures, 'en', [
-      'color' => 'red',
-      'shape' => 'triangle',
-    ]];
-    $units[] = [$figures, 'en', [
-      'color' => 'blue',
-      'shape' => 'circle',
-    ]];
-    // To make it easier to test sorting, the greetings get formats according
-    // to their langcode.
-    $units[] = [$greetings, 'tr', [
-      'value' => 'merhaba',
-      'format' => 'format-tr'
-    ]];
-    $units[] = [$greetings, 'pl', [
-      'value' => 'siema',
-      'format' => 'format-pl'
-    ]];
-    // Make these languages available to the greetings field.
-    // @todo This is currently unsupported by rdf entity?
-    //ConfigurableLanguage::createFromLangcode('tr')->save();
-    //ConfigurableLanguage::createFromLangcode('pl')->save();
-    // Calculate the cartesian product of the unit array by looking at the
-    // bits of $i and add the unit at the bits that are 1. For example,
-    // decimal 13 is binary 1101 so unit 3,2 and 0 will be added to the
-    // entity.
-    for ($i = 1; $i <= 15; $i++) {
-      $id = str_pad($i, 3, "0", STR_PAD_LEFT);
-      $entity = Rdf::create([
-        'id' => 'http://entity/' . $id,
-        'rid' => $bundles[$i & 1],
-        'name' => $this->randomMachineName(),
-        //'langcode' => 'en',
-      ]);
-      // Make sure the name is set for every language that we might create.
-      foreach (['tr', 'pl'] as $langcode) {
-        // @todo Once the translation can be added...
-        //$entity->addTranslation($langcode)->name = $this->randomMachineName();
-      }
-      // I have no idea why you would obfuscate something like this.
-      // Can we turn this into something that humans can read?
-      foreach (array_reverse(str_split(decbin($i))) as $key => $bit) {
-        if ($bit) {
-          list($field_name, $langcode, $values) = $units[$key];
-          // @todo Switch to translation aware version.
-          // $entity->getTranslation($langcode)->{$field_name}[] = $values;
-          $entity->set($field_name, $values);
-        }
-      }
-      $entity->setPublished(TRUE);
-      $entity->save();
-    }
-    $this->bundles = $bundles;
-    $this->figures = $figures;
-    $this->greetings = $greetings;
-    $this->factory = \Drupal::service('entity.query');
+    $field_storage->setThirdPartySetting('rdf_entity', 'mapping', $props);
+    $field_storage->save();
+
+    $field_config = FieldConfig::create([
+      'field_storage' => $field_storage,
+      'bundle' => $bundle,
+    ]);
+    $field_config->save();
+
+    $entity = Rdf::create([
+      'label' => $this->randomMachineName(),
+      'rid' => $bundle,
+      $field_name => $value,
+    ]);
+    $entity->save();
+    $this->assertTrue($entity instanceof RdfInterface);
+
+    // Load the entity.
+    $loaded_entity = $this->entityManager->getStorage('rdf_entity')->loadUnchanged($entity->id());
+    $this->assertTrue($loaded_entity instanceof RdfInterface);
+    $this->assertEquals($entity->get($field_name)->getValue(), $loaded_entity->get($field_name)->getValue());
+  }
+
+  /**
+   * Data provider for testEntityInsert().
+   */
+  public static function providerTestEntityInsertCallback() {
+    $random = new Random();
+    return [
+      ['text', 'literal', -1, [$random->string(), $random->string()]],
+      ['text', 'literal', 1, $random->string()],
+      ['boolean', 'xsd:boolean', 1, 0],
+    ];
   }
 
   /**
