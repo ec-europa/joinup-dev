@@ -55,6 +55,32 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
   ];
 
   /**
+   * The operators that require a default triple to be added.
+   *
+   * In SPARQL, some of the SQL conditions might need more than one conditions
+   * combined. Below are the operators that need a secondary condition.
+   *
+   * @var array
+   *    An array of operators.
+   */
+  protected $requiresTriple = [
+    'IN',
+    'NOT IN',
+    'IS NULL',
+    'IS NOT NULL',
+    'CONTAINS',
+    'LIKE',
+    'NOT LIKE',
+    'STARTS_WITH',
+    '<',
+    '>',
+    '<=',
+    '>=',
+    '!=',
+    '<>',
+  ];
+
+  /**
    * Whether the conditions have been changed.
    *
    * TRUE if the condition has been changed since the last compile.
@@ -411,7 +437,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         $field_name = $condition['field'] . '__' . $condition['column'];
         $predicate = $this->fieldMappings[$field_name];
         $langcode = $this->getLangCode($condition['field'], $condition['column'], $condition['lang']);
-        if (($condition['operator'] !== '=') && isset($this->fieldMappings[$field_name])) {
+        if (in_array($condition['operator'], $this->requiresTriple) && isset($this->fieldMappings[$field_name])) {
           $this->addConditionFragment(self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$field_name]) . ' ' . $this->toVar($field_name));
         }
       }
