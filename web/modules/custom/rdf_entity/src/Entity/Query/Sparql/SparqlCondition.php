@@ -388,7 +388,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         continue;
       }
       elseif ($field_name === $this->idKey) {
-        $field_name = $this->fieldMappings[$field_name];
+        $condition['field'] = $this->fieldMappings[$field_name];
       }
       elseif ($field_name === $this->bundleKey) {
         $this->compileBundleCondition($condition);
