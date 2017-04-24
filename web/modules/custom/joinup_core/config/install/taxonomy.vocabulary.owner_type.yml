@@ -5,6 +5,7 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
+    rdf_type: 'http://purl.org/adms/publishertype/1.0'
     mapping:
       uuid:
         value: 
@@ -12,7 +13,7 @@ third_party_settings:
           format: ''
       vid:
         target_id:
-          predicate: 'http://purl.org/adms/publishertype/1.0'
+          predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
           format: resource
       langcode:
         value: 
@@ -21,11 +22,11 @@ third_party_settings:
       name:
         value:
           predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
-          format: t_literal
+          format: literal
       description:
         value:
           predicate: 'http://www.w3.org/2004/02/skos/core#definition'
-          format: t_literal
+          format: literal
       format:
         value: 
           predicate: ''

@@ -5,15 +5,25 @@ third_party_settings:
   rdf_entity:
     mapping:
       rid:
-        target_id: 'http://example.com/file_url'
+        target_id:
+          predicate: 'http://example.com/file_url'
+          format: 'resource'
       uid:
-        target_id: ''
+        target_id:
+          predicate: ''
+          format: ''
       label:
-        value: 'http://example.com/file_url_label'
+        value:
+          predicate: 'http://example.com/file_url_label'
+          format: 'literal'
       uuid:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       graph:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
     graph:
       default: 'http://example.com/file_url/published'
       draft: 'http://example.com/file_url/draft'

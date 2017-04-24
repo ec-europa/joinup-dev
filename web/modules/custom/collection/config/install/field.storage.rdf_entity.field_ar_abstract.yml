@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'http://purl.org/dc/terms/abstract'
-        format: t_literal
+        format: literal
       format:
         predicate: ''
         format: ''

@@ -3,15 +3,16 @@ status: true
 dependencies: {  }
 third_party_settings:
   rdf_entity:
+    rdf_type: 'http://www.w3.org/ns/adms#Asset'
     mapping:
       rid:
         target_id:
-          predicate: 'http://www.w3.org/ns/adms#Asset'
+          predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
           format: 'resource'
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
-          format: 't_literal'
+          format: 'literal'
     graph:
       default: 'http://joinup.eu/asset_release/published'
       draft: 'http://joinup.eu/asset_release/draft'

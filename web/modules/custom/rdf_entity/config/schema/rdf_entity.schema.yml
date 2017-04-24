@@ -21,12 +21,37 @@ rdf_entity.rdfentity.*.third_party.rdf_entity:
   type: mapping
   label: 'Third party settings'
   mapping:
+    rdf_type:
+      type: string
+      label: 'Rdf type mapping'
     graph:
       type: sequence
       sequence:
         type: string
         label: 'The mapping of a graph definition to a graph uri.'
     mapping:
+      type: sequence
+      label: 'Property'
+      sequence:
+        type: sequence
+        label: 'Column'
+        sequence:
+          type: mapping
+          mapping:
+            predicate:
+              type: string
+              label: 'Predicate'
+            format:
+              type: string
+              label: 'Value format'
+    entity_id_plugin:
+      type: string
+      label: 'The plugin that generates the entity ID'
+
+field.storage.*.*.third_party.rdf_entity:
+  type: mapping
+  mapping:
+    'mapping':
       type: sequence
       label: 'Column'
       sequence:
@@ -38,18 +63,6 @@ rdf_entity.rdfentity.*.third_party.rdf_entity:
           format:
             type: string
             label: 'Value format'
-    entity_id_plugin:
-      type: string
-      label: 'The plugin that generates the entity ID'
-
-field.storage.*.*.third_party.rdf_entity:
-  type: mapping
-  mapping:
-    mapping:
-      type: sequence
-      sequence:
-        type: string
-        label: 'Mapping of field properies to their rdf counterpart.'
 
 field.widget.settings.auto_uri:
   type: mapping

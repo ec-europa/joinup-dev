@@ -6,6 +6,7 @@ dependencies:
     - rdf_taxonomy
 third_party_settings:
   rdf_entity:
+    rdf_type: 'http://joinup.eu/policy-domain'
     mapping:
       uuid:
         value: 
@@ -13,7 +14,7 @@ third_party_settings:
           format: ''
       vid:
         target_id:
-          predicate: 'http://joinup.eu/policy-domain'
+          predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
           format: resource
       langcode:
         value: 
@@ -22,11 +23,11 @@ third_party_settings:
       name:
         value:
           predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
-          format: t_literal
+          format: literal
       description:
         value:
           predicate: 'http://www.w3.org/2004/02/skos/core#definition'
-          format: t_literal
+          format: literal
       format:
         value: 
           predicate: ''

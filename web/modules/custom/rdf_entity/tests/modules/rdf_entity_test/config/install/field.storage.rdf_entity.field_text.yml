@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://purl.org/dc/terms/description'
+      value:
+        predicate: 'http://purl.org/dc/terms/description'
+        format: 'literal'
 id: rdf_entity.field_text
 field_name: field_text
 entity_type: rdf_entity

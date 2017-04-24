@@ -8,7 +8,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'http://xmlns.com/foaf/0.1/name'
-        format: t_literal
+        format: literal
 id: rdf_entity.field_owner_name
 field_name: field_owner_name
 entity_type: rdf_entity

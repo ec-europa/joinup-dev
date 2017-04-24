@@ -8,7 +8,7 @@ third_party_settings:
   rdf_entity:
     mapping:
       value: 'http://purl.org/dc/terms/description'
-      format: ''
+      format: 'literal'
 id: rdf_entity.field_licence_description
 field_name: field_licence_description
 entity_type: rdf_entity

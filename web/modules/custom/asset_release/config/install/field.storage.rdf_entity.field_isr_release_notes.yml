@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'https://www.w3.org/TR/vocab-adms/#adms-versionnotes'
-        format: 't_literal'
+        format: 'literal'
       format:
         predicate: ''
         format: ''

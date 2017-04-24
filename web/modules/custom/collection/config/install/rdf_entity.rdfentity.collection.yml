@@ -3,10 +3,11 @@ status: true
 dependencies: {  }
 third_party_settings:
   rdf_entity:
+    rdf_type: 'http://www.w3.org/ns/adms#AssetRepository'
     mapping:
       rid:
         target_id:
-          predicate: 'http://www.w3.org/ns/adms#AssetRepository'
+          predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
           format: resource
       label:
         value:
