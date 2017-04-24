@@ -245,6 +245,39 @@ class RdfFieldHandler {
   }
 
   /**
+   * Returns whether the field is serializable.
+   *
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param string $field
+   *   The field name.
+   * @param string $column
+   *   The column name. If empty, the main property will be used instead.
+   *
+   * @return bool
+   *   Whether the field is serializable.
+   *
+   * @throws \Exception
+   *    Thrown when a non existing field is requested.
+   */
+  public function isFieldSerializable($entity_type_id, $field, $column = NULL) {
+    $drupal_to_sparql = $this->getOutboundMap($entity_type_id);
+    if (!isset($drupal_to_sparql['fields'][$field])) {
+      throw new \Exception("You are requesting the mapping for a non mapped field: $field.");
+    }
+    $field_mapping = $drupal_to_sparql['fields'][$field];
+    $column = $column ?: $field_mapping['main_property'];
+
+    $serialize_array = array_column($field_mapping['columns'][$column], 'serialize');
+    if (empty($serialize_array)) {
+      return FALSE;
+    }
+
+    $serialize = reset($serialize_array);
+    return $serialize;
+  }
+
+  /**
    * Returns a list of label predicates of the passed entity type.
    *
    * @param string $entity_type_id
@@ -448,6 +481,10 @@ class RdfFieldHandler {
     $outbound_map = $this->getOutboundMap($entity_type_id);
     $format = $this->getFieldFormat($entity_type_id, $field, $column);
     $format = reset($format);
+    $serialize = $this->isFieldSerializable($entity_type_id, $field, $column);
+    if ($serialize) {
+      $value = serialize($value);
+    }
 
     if ($field == $outbound_map['bundle_key']) {
       $value = $this->getOutboundBundleValue($entity_type_id, $value);

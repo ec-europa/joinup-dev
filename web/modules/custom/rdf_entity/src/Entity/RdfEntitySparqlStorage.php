@@ -429,7 +429,7 @@ QUERY;
             $column = $inbound_map['fields'][$predicate][$bundle]['column'];
             foreach ($field as $lang => $items) {
               foreach ($items as $item) {
-                if (isset($inbound_map['fields'][$predicate][$bundle]['serialize']) && $inbound_map['fields'][$predicate][$bundle]['serialize'] === TRUE) {
+                if ($this->fieldHandler->isFieldSerializable($this->getEntityTypeId(), $field_name, $column)) {
                   $item = unserialize($item);
                 }
                 if (!isset($return[$entity_id][$field_name]) || !is_string($return[$entity_id][$field_name][$lang])) {
