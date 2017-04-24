@@ -22,11 +22,11 @@ third_party_settings:
       name:
         value:
           predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
-          format: literal
+          format: t_literal
       description:
         value:
           predicate: 'http://www.w3.org/2004/02/skos/core#altLabel'
-          format: literal
+          format: t_literal
       format:
         value:
           predicate: ''
