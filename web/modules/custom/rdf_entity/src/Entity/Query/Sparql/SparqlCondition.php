@@ -249,7 +249,6 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         $field_name_parts = explode('.', $field);
         $field = $field_name_parts[0];
         $column = isset($field_name_parts[1]) ? $field_name_parts[1] : $this->fieldHandler->getFieldMainProperty($this->query->getEntityTypeId(), $field);
-        $this->needsDefault = FALSE;
         $this->conditions[] = [
           'field' => $field,
           'value' => $value,
@@ -257,6 +256,10 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
           'lang' => $lang,
           'column' => $column,
         ];
+
+        if (!in_array($operator, ['EXISTS', 'NOT EXISTS'])) {
+          $this->needsDefault = FALSE;
+        }
     }
 
     return $this;
