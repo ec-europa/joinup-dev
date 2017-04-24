@@ -28,13 +28,8 @@ Feature: Creation of news through the UI.
       | Headline | Strong request for this rare metal that is on the mouth of everybody                          |
       | Content  | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
 
-    # Sharing into the news parent should not be possible.
-    When I fill in "Shared in" with "Density catalogue project"
-    And I press "Publish"
-    Then I should see the error message "You cannot reference the parent Density catalogue project in field Shared in."
-
     # Share the content in another solution.
-    When I fill in "Shared in" with "Dig do's and don'ts"
+    When I fill in "Referenced solution" with "Dig do's and don'ts"
     And I press "Publish"
     Then I should see the success message "News Ytterbium metal of the year has been created."
     # Verify that the referenced collection is rendered as tile.
@@ -42,12 +37,12 @@ Feature: Creation of news through the UI.
 
     # Edit again and try to share into the same solution.
     When I click "Edit" in the "Entity actions" region
-    And I fill in "Shared in" with values "Dig do's and don'ts, Dig do's and don'ts"
+    And I fill in "Referenced solution" with values "Dig do's and don'ts, Dig do's and don'ts"
     And I press "Update"
-    Then I should see the error message "The value Dig do's and don'ts is already selected for field Shared in."
+    Then I should see the error message "The value Dig do's and don'ts is already selected for field Referenced solution."
 
     # Add another collection in the field.
-    When I fill in "Shared in" with values "Dig do's and don'ts, Anvil test routines"
+    When I fill in "Referenced solution" with values "Dig do's and don'ts, Anvil test routines"
     And I press "Update"
     Then I should see the success message "News Ytterbium metal of the year has been updated."
     # Verify that the tiles are shown.
