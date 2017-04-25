@@ -1,8 +1,8 @@
-<div class="filters filters--horizontal">
-  <div{{ attributes.addClass('filter') }}>
-    {% if items or active %}
+{% if items or active %}
+  <div class="filters filters--horizontal">
+    <div{{ attributes.addClass('filter') }}>
       <div class="filter__term">
-        {{ active|safe_join(', ') }}
+        {{ prefix_text }} {{ active|safe_join(', ') }} {{ suffix_text }}
         <span id="filter-button" class="filter__icon icon icon--arrow-down"></span>
       </div>
 
@@ -14,6 +14,6 @@
           {%- endfor -%}
         </ul>
       {%- endif -%}
-    {%- endif %}
+    </div>
   </div>
-</div>
+{%- endif %}

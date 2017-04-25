@@ -33,6 +33,8 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'active' => [],
         'items' => [],
         'attributes' => [],
+        'prefix_text' => '',
+        'suffix_text' => '',
       ],
     ],
   ];
