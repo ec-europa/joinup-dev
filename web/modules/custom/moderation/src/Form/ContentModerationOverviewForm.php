@@ -5,9 +5,11 @@ namespace Drupal\moderation\Form;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -24,13 +26,23 @@ class ContentModerationOverviewForm extends FormBase {
   protected $connection;
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Constructs a new ContentModerationOverviewForm object.
    *
    * @param \Drupal\Core\Database\Connection $connection
    *   The database connection.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    */
-  public function __construct(Connection $connection) {
+  public function __construct(Connection $connection, EntityTypeManagerInterface $entityTypeManager) {
     $this->connection = $connection;
+    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -38,7 +50,8 @@ class ContentModerationOverviewForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('database')
+      $container->get('database'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -53,6 +66,10 @@ class ContentModerationOverviewForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
+    $moderatable_types = CommunityContentHelper::getBundles();
+    $moderatable_states = CommunityContentHelper::getModeratorAttentionNeededStates();
+
+    // Retrieve the number of content items that need moderation.
     $sql = <<<SQL
       SELECT n.type, s.field_state_value as state, COUNT(1) as count
       FROM node n
@@ -63,9 +80,10 @@ class ContentModerationOverviewForm extends FormBase {
 SQL;
 
     $args = [
-      ':types[]' => ['discussion', 'document', 'event', 'news'],
-      ':states[]' => CommunityContentHelper::getModeratorAttentionNeededStates(),
+      ':types[]' => $moderatable_types,
+      ':states[]' => $moderatable_states,
     ];
+
     $query = $this->connection->query($sql, $args);
     $result = $query->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -76,22 +94,66 @@ SQL;
     }, []);
     ksort($count);
 
+    // Generate the filter form elements.
+    $type_filter = $form_state->getValue('type');
+    $state_filter = $form_state->getValue('state');
     $form = [
-      'filter' => [
+      'wrapper' => [
         '#type' => 'container',
-        '#attributes' => ['class' => 'filter'],
-        'type' => [
-          '#type' => 'select',
-          '#title' => 'Content of type',
-          '#options' => $this->getTypeFilterOptions($count),
-        ],
-        'state' => [
-          '#type' => 'select',
-          '#title' => 'in state',
-          '#options' => $this->getStateFilterOptions($count),
+        '#attributes' => ['id' => 'ajax-wrapper'],
+        'filter' => [
+          '#type' => 'container',
+          '#attributes' => ['class' => 'filter'],
+          'type' => [
+            '#type' => 'select',
+            '#title' => 'Content of type',
+            '#options' => $this->getTypeFilterOptions($count),
+            '#ajax' => [
+              'callback' => '::updateForm',
+              'wrapper' => 'ajax-wrapper',
+              'effect' => 'fade',
+            ],
+          ],
+          'state' => [
+            '#type' => 'select',
+            '#title' => 'in state',
+            '#options' => $this->getStateFilterOptions($count, $type_filter),
+            '#ajax' => [
+              'callback' => '::updateForm',
+              'wrapper' => 'ajax-wrapper',
+              'effect' => 'fade',
+            ],
+          ],
         ],
       ],
     ];
+
+    // Retrieve the entities that need moderation. Only execute this query when
+    // there actually are results to fetch.
+    if ($this->getFilteredItemsCount($count, $type_filter, $state_filter)) {
+      $query = $this->entityTypeManager->getStorage('node')->getQuery();
+      if ($type_filter && $type_filter !== 'all') {
+        $query->condition('type', $type_filter);
+      }
+      else {
+        $query->condition('type', $moderatable_types, 'IN');
+      }
+      if ($state_filter && $state_filter !== 'all') {
+        $query->condition('field_state', $state_filter);
+      }
+      else {
+        $query->condition('field_state', $moderatable_states, 'IN');
+      }
+      $entities = Node::loadMultiple($query->execute());
+      $form['wrapper']['content'][] = $this->entityTypeManager->getViewBuilder('node')->viewMultiple($entities, 'moderation');
+    }
+    else {
+      $form['wrapper']['content'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t('Nothing to moderate. Enjoy your day!'),
+      ];
+    }
 
     return $form;
   }
@@ -100,7 +162,15 @@ SQL;
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $todo = TRUE;
+  }
+
+  /**
+   * Ajax callback.
+   *
+   * This returns the updated form after changing the filter options.
+   */
+  public static function updateForm(array $form, FormStateInterface $form_state) {
+    return $form['wrapper'];
   }
 
   /**
@@ -168,21 +238,27 @@ SQL;
    * @param array $content_count
    *   An associative array keyed by content type, each value an associative
    *   array keyed by moderation state, with the number of items as value.
+   * @param string $content_type
+   *   Optional content type for which to return the select options. If this is
+   *   omitted or 'all', the select options for all content types will be
+   *   returned.
    *
    * @return array
    *   An associative array of select options, keyed by moderation state.
    */
-  protected function getStateFilterOptions(array $content_count) {
+  protected function getStateFilterOptions(array $content_count, $content_type = NULL) {
     $options = [];
     $total_count = 0;
 
     foreach ($content_count as $type => $states_count) {
       foreach ($states_count as $state => $state_count) {
-        if (empty($options[$state])) {
-          $options[$state] = 0;
+        if (in_array($content_type, [NULL, 'all', $type])) {
+          if (empty($options[$state])) {
+            $options[$state] = 0;
+          }
+          $options[$state] += $state_count;
+          $total_count += $state_count;
         }
-        $options[$state] += $state_count;
-        $total_count += $state_count;
       }
     }
     ksort($options);
@@ -194,6 +270,37 @@ SQL;
     });
 
     return ['all' => t("All (@count)", ['@count' => $total_count])] + $options;
+  }
+
+  /**
+   * Returns the number of items are matching the given filters.
+   *
+   * @param array $content_count
+   *   An associative array keyed by content type, each value an associative
+   *   array keyed by moderation state, with the number of items as value.
+   * @param string $type_filter
+   *   Optional content type for which to return the count. If this is omitted
+   *   or 'all', the count for all content types will be returned.
+   * @param string $state_filter
+   *   Optional workflow state for which to return the count. If this is omitted
+   *   or 'all', the count for all workflow states will be returned.
+   *
+   * @return int
+   *   The number of items that match the given filters.
+   */
+  protected function getFilteredItemsCount(array $content_count, $type_filter = NULL, $state_filter = NULL) {
+    $count = 0;
+    foreach ($content_count as $type => $states_count) {
+      foreach ($states_count as $state => $state_count) {
+        $valid_types = [NULL, 'all', $type];
+        $valid_states = [NULL, 'all', $state];
+        if (in_array($type_filter, $valid_types) && in_array($state_filter, $valid_states)) {
+          $count += $state_count;
+        }
+      }
+    }
+
+    return $count;
   }
 
 }

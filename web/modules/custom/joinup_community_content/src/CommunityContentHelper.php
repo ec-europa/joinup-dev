@@ -8,6 +8,16 @@ namespace Drupal\joinup_community_content;
 class CommunityContentHelper {
 
   /**
+   * Returns an array of node bundles that are considered community content.
+   *
+   * @return array
+   *   An array of node bundle IDs.
+   */
+  public static function getBundles() {
+    return ['discussion', 'document', 'event', 'news'];
+  }
+
+  /**
    * Returns the workflow states that require attention from a moderator.
    *
    * @param string $bundle
