@@ -70,7 +70,7 @@ function template_preprocess_joinup_tiles(array &$variables) {
 function template_preprocess_facet_widget_links_inline(array &$variables) {
   $variables['button_attributes'] = new Attribute([
     'id' => Html::getUniqueId('filter-button'),
-    'class' => ['filter__term'],
+    'class' => ['filter__icon', 'icon', 'icon--arrow-down'],
   ]);
 }
 
