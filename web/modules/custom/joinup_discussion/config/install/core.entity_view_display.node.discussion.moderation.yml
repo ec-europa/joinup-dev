@@ -1,0 +1,95 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.moderation
+    - field.field.node.discussion.body
+    - field.field.node.discussion.field_comments
+    - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_shared_in
+    - field.field.node.discussion.field_state
+    - field.field.node.discussion.og_audience
+    - node.type.discussion
+  module:
+    - ds
+    - joinup
+    - options
+    - text
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: ds_1col
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+          ds_content: {  }
+    regions:
+      ds_content:
+        - node_title
+        - field_state
+        - body
+        - node_links
+    fields:
+      node_links:
+        plugin_id: node_links
+        weight: 3
+        label: hidden
+        formatter: default
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      node_title:
+        plugin_id: node_title
+        weight: 0
+        label: hidden
+        formatter: default
+id: node.discussion.moderation
+targetEntityType: node
+bundle: discussion
+mode: moderation
+content:
+  body:
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    type: text_summary_or_trimmed
+    region: ds_content
+  field_state:
+    weight: 1
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: ds_content
+hidden:
+  field_comments: true
+  field_policy_domain: true
+  field_shared_in: true
+  links: true
+  og_audience: true
+  report: true
+  share_link: true
