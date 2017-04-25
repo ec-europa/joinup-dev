@@ -1,9 +1,11 @@
 {% if items or active %}
   <div class="filters filters--horizontal">
     <div{{ attributes.addClass('filter') }}>
-      <div class="filter__term">
-        {{ prefix_text }} {{ active|safe_join(', ') }} {{ suffix_text }}
-        <span id="filter-button" class="filter__icon icon icon--arrow-down"></span>
+      <div class="filter">
+        <div class="filter__label">{{ prefix_text }}</div>
+        <div class="filter__term">{{ active|safe_join(', ') }}</div>
+        {{ suffix_text }}
+        <div id="filter-button" class="filter__icon icon icon--arrow-down"></div>
       </div>
 
       {%- if items -%}
