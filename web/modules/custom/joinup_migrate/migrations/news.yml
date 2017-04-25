@@ -9,6 +9,7 @@ source:
   track_changes: true
 process:
   title: title
+  field_news_headline: title
   created: created
   changed: changed
   body/value: body

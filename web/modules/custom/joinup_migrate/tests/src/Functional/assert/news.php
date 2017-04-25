@@ -13,6 +13,7 @@ $this->assertSuccessCount('news', 2);
 /* @var \Drupal\node\NodeInterface $news */
 $news = $this->loadEntityByLabel('node', 'Mobile Age project: Co-created personalised mobile access to public services for senior citizens – 2nd Newsletter Issue now available!');
 $this->assertEquals('Mobile Age project: Co-created personalised mobile access to public services for senior citizens – 2nd Newsletter Issue now available!', $news->label());
+$this->assertEquals('Mobile Age project: Co-created personalised mobile access to public services for senior citizens – 2nd Newsletter Issue now available!', $news->field_news_headline->value);
 $this->assertEquals('news', $news->bundle());
 $this->assertEquals(1475759242, $news->created->value);
 $this->assertEquals(1475763134, $news->changed->value);
@@ -25,6 +26,7 @@ $this->assertEquals($new_collection->id(), $news->og_audience->target_id);
 
 $news = $this->loadEntityByLabel('node', 'BE, NL: governments will not use ISO OOXML');
 $this->assertEquals('BE, NL: governments will not use ISO OOXML', $news->label());
+$this->assertEquals('BE, NL: governments will not use ISO OOXML', $news->field_news_headline->value);
 $this->assertEquals('news', $news->bundle());
 $this->assertEquals(1207612800, $news->created->value);
 $this->assertEquals(1455199428, $news->changed->value);
