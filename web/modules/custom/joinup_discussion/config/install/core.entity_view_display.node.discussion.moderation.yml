@@ -16,46 +16,6 @@ dependencies:
     - options
     - text
     - user
-third_party_settings:
-  ds:
-    layout:
-      id: ds_1col
-      library: null
-      disable_css: false
-      entity_classes: all_classes
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class: {  }
-          ds_content: {  }
-    regions:
-      ds_content:
-        - node_title
-        - field_state
-        - body
-        - node_links
-    fields:
-      node_links:
-        plugin_id: node_links
-        weight: 3
-        label: hidden
-        formatter: default
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      node_title:
-        plugin_id: node_title
-        weight: 0
-        label: hidden
-        formatter: default
 id: node.discussion.moderation
 targetEntityType: node
 bundle: discussion
@@ -77,14 +37,23 @@ content:
       joinup:
         template_suggestion: ''
     type: text_summary_or_trimmed
-    region: ds_content
+    region: content
   field_state:
     weight: 1
     label: inline
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: 'Current state'
+            lb-col: true
+            classes: {  }
+      joinup:
+        template_suggestion: ''
     type: list_default
-    region: ds_content
+    region: content
 hidden:
   field_comments: true
   field_policy_domain: true

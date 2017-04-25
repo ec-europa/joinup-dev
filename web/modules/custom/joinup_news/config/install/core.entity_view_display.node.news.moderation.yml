@@ -17,38 +17,10 @@ dependencies:
     - node.type.news
   module:
     - ds
+    - joinup
     - options
     - text
     - user
-third_party_settings:
-  ds:
-    layout:
-      id: ds_1col
-      library: null
-      disable_css: false
-      entity_classes: all_classes
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class: {  }
-          ds_content: {  }
-    regions:
-      ds_content:
-        - node_title
-        - field_state
-        - body
-        - links
-    fields:
-      node_title:
-        plugin_id: node_title
-        weight: 0
-        label: hidden
-        formatter: default
 id: node.news.moderation
 targetEntityType: node
 bundle: news
@@ -61,19 +33,23 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
-    region: ds_content
+    region: content
   field_state:
     weight: 1
     label: inline
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: 'Current state'
+            lb-col: true
+            classes: {  }
+      joinup:
+        template_suggestion: ''
     type: list_default
-    region: ds_content
-  links:
-    weight: 3
-    region: ds_content
-    settings: {  }
-    third_party_settings: {  }
+    region: content
 hidden:
   field_comments: true
   field_keywords: true
@@ -83,6 +59,7 @@ hidden:
   field_news_spatial_coverage: true
   field_policy_domain: true
   field_shared_in: true
+  links: true
   og_audience: true
   report: true
   share_link: true
