@@ -11,8 +11,6 @@ dependencies:
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
-    - ds
-    - joinup
     - options
     - text
     - user
@@ -26,32 +24,14 @@ content:
     label: hidden
     settings:
       trim_length: 600
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
-        template_suggestion: ''
+    third_party_settings: {  }
     type: text_summary_or_trimmed
     region: content
   field_state:
     weight: 1
     label: inline
     settings: {  }
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: 'Current state'
-            lb-col: true
-            classes: {  }
-      joinup:
-        template_suggestion: ''
+    third_party_settings: {  }
     type: list_default
     region: content
 hidden:

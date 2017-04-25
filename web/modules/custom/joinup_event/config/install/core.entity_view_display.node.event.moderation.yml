@@ -24,8 +24,6 @@ dependencies:
     - field.field.node.event.og_audience
     - node.type.event
   module:
-    - ds
-    - joinup
     - options
     - text
     - user
@@ -48,16 +46,7 @@ content:
     region: content
     label: inline
     settings: {  }
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: 'Current state'
-            lb-col: true
-            classes: {  }
-      joinup:
-        template_suggestion: ''
+    third_party_settings: {  }
 hidden:
   field_comments: true
   field_event_adtl_address_info: true

@@ -7,7 +7,6 @@ dependencies:
     - field.field.node.news.field_comments
     - field.field.node.news.field_keywords
     - field.field.node.news.field_news_headline
-    - field.field.node.news.field_news_shared_in
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_spatial_coverage
     - field.field.node.news.field_policy_domain
@@ -16,8 +15,6 @@ dependencies:
     - field.field.node.news.og_audience
     - node.type.news
   module:
-    - ds
-    - joinup
     - options
     - text
     - user
@@ -38,23 +35,13 @@ content:
     weight: 1
     label: inline
     settings: {  }
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: 'Current state'
-            lb-col: true
-            classes: {  }
-      joinup:
-        template_suggestion: ''
+    third_party_settings: {  }
     type: list_default
     region: content
 hidden:
   field_comments: true
   field_keywords: true
   field_news_headline: true
-  field_news_shared_in: true
   field_news_source_url: true
   field_news_spatial_coverage: true
   field_policy_domain: true

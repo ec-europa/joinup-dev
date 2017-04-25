@@ -8,6 +8,7 @@ dependencies:
   - ds
   - joinup_comment
   - joinup_community_content
+  - joinup_core
   - og
   - solution
   - view_unpublished
