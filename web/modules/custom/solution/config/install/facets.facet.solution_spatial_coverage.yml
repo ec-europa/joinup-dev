@@ -14,7 +14,7 @@ widget:
   config:
     show_numbers: true
     all_text: everywhere
-    prefix_text: ''
+    prefix_text: 'Located in:'
     suffix_text: ''
 query_operator: or
 use_hierarchy: false
