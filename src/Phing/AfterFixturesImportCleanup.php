@@ -25,7 +25,14 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     // labeled 'Multilingual Code'.
     // @see http://publications.europa.eu/mdr/resource//documentation/schema/cat.html#element_languages
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2764
-    $this->execute('sparql DELETE FROM <http://languages-skos> { ?entity ?field ?value. } WHERE { ?entity ?field ?value. FILTER(isBlank(?entity)) };');
+    $this->execute('sparql DELETE FROM <http://languages-skos> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . FILTER(isBlank(?entity)) };');
+
+    // The licences are defined in both the adms-sw and the adms-skos files.
+    // In adms-sw the version 1.1 is included while the adms-skos has the
+    // version 1.0. As a bundle can have only one uri mapped, the 1.0 version
+    // has to be removed.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2503
+    $this->execute('sparql DELETE FROM <http://adms_skos_v1.00> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . ?entity <http://www.w3.org/2004/02/skos/core#inScheme> <http://purl.org/adms/licencetype/1.0>};');
 
   }
 
