@@ -235,6 +235,9 @@ class NodeWorkflowAccessControlHandler {
     }
 
     $moderation = $this->relationManager->getParentModeration($entity);
+    if ($moderation === NULL) {
+      return AccessResult::forbidden();
+    }
     // If the parent is in pre-moderated state, the user can only delete the
     // entity if he has the 'delete all' permission because owners are not
     // allowed to.
