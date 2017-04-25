@@ -2,7 +2,9 @@
   <div class="filters filters--horizontal">
     <div{{ attributes.addClass('filter') }}>
       <div class="filter">
-        <div class="filter__label">{{ prefix_text }}</div>
+        {% if prefix_text -%}
+          <div class="filter__label">{{ prefix_text }}</div>
+        {% endif -%}
         <div class="filter__term">{{ active|safe_join(', ') }}</div>
         {{ suffix_text }}
         <div{{ button_attributes }}></div>

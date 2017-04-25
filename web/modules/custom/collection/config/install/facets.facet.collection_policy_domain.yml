@@ -14,7 +14,7 @@ widget:
   config:
     show_numbers: true
     all_text: 'all policy domains'
-    prefix_text: About
+    prefix_text: 'About:'
     suffix_text: ''
 query_operator: or
 use_hierarchy: false
