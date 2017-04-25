@@ -1,18 +1,21 @@
+{% if items or active %}
+  <div class="filters filters--horizontal">
+    <div{{ attributes.addClass('filter') }}>
+      <div class="filter">
+        <div class="filter__label">{{ prefix_text }}</div>
+        <div class="filter__term">{{ active|safe_join(', ') }}</div>
+        {{ suffix_text }}
+        <div id="filter-button" class="filter__icon icon icon--arrow-down"></div>
+      </div>
 
-<div{{ attributes.addClass('filter') }}>
-  {% if items or active %}
-    <div{{ button_attributes }}>
-      {{ active|safe_join(', ') }}
-      <span class="filter__icon icon icon--arrow-down"></span>
+      {%- if items -%}
+        <ul class="filter__menu mdl-menu mdl-menu--bottom-right mdl-js-menu" for="filter-button">
+          {%- for item in items -%}
+            {%- set item_attributes = create_attribute({'class': ['facet-item', 'mdl-menu__item']}) -%}
+            <li{{ item_attributes }}>{{ item }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
     </div>
-
-    {%- if items -%}
-      <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu" for="{{ button_attributes.id }}">
-        {%- for item in items -%}
-          {%- set item_attributes = create_attribute({'class': ['facet-item', 'mdl-menu__item']}) -%}
-          <li{{ item_attributes }}>{{ item }}</li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
-  {%- endif %}
-</div>
+  </div>
+{%- endif %}

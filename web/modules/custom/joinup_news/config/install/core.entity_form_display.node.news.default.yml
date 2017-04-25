@@ -6,7 +6,7 @@ dependencies:
     - field.field.node.news.field_comments
     - field.field.node.news.field_keywords
     - field.field.node.news.field_news_headline
-    - field.field.node.news.field_news_shared_in
+    - field.field.node.news.field_news_referenced_solution
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_spatial_coverage
     - field.field.node.news.field_policy_domain
@@ -64,7 +64,7 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_news_shared_in:
+  field_news_referenced_solution:
     weight: 8
     settings:
       match_operator: CONTAINS

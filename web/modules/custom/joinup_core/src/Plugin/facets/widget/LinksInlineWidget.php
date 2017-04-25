@@ -99,6 +99,8 @@ class LinksInlineWidget extends WidgetPluginBase {
       '#theme' => 'facet_widget_links_inline',
       '#items' => $inactive,
       '#active' => $active,
+      '#prefix_text' => $this->getConfiguration()['prefix_text'],
+      '#suffix_text' => $this->getConfiguration()['suffix_text'],
       '#attributes' => [
         'data-drupal-facet-id' => $facet->id(),
         'data-drupal-facet-alias' => $facet->getUrlAlias(),
@@ -110,16 +112,6 @@ class LinksInlineWidget extends WidgetPluginBase {
         ],
       ],
     ];
-
-    $elements = [
-      'prefix_text' => '#prefix',
-      'suffix_text' => '#suffix',
-    ];
-    foreach ($elements as $key => $property) {
-      if (!empty($this->getConfiguration()[$key])) {
-        $build[$property] = '<span>' . $this->getConfiguration()[$key] . '</span>';
-      }
-    }
 
     return $build;
   }

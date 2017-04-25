@@ -14,6 +14,12 @@
  * @see template_preprocess_details()
  */
 #}
+<div class="vertical-tabs__menu-item vertical-tabs__menu-item--mobile">
+  <a href="#{{ element['#id'] }}">
+    <span class="vertical-tabs__menu-item-title">{{ title }}</span>
+    <span class="vertical-tabs__menu-item-summary">{{ description }}</span>
+  </a>
+</div>
 <details{{ attributes }}>
   {%- if title -%}
     <summary{{ summary_attributes }}>{{ title }}</summary>

@@ -11,6 +11,7 @@
 .filter
   margin-bottom: 15px
   padding-left: 0
+  position: relative
   &:before
     display: none
   +breakpoint(mobile)
@@ -33,12 +34,18 @@
   display: inline-block
   vertical-align: middle
 
-.filter__term
-  color: $color-orange
+.filter__label
+  &:after
+    content: ':'
+
+.filter__term a
+  text-decoration: none
 
 .filter__icon
   position: relative
+  cursor: pointer
   top: 1px
+  color: $color-base
   +icon-size(20px)
 
 .filter__dropdown-toggle
@@ -58,6 +65,9 @@
   .filters
     margin-bottom: 0
 
+.filter__menu
+  min-width: 200px
+
 .filters--more
   .facet-item
     margin-bottom: 0
@@ -68,6 +78,15 @@
 .filters--solutions
   margin-top: 30px
   margin-bottom: 10px
+
+.filters--horizontal
+  position: relative
+  .facet-item
+    &:before
+      content: none
+  .mdl-menu__container
+    margin-top: 5px
+
 
 // Dependiencies
 // --------------------------------------------------
