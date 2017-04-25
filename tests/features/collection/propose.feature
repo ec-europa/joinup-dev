@@ -41,8 +41,6 @@ Feature: Proposing a collection
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)                               |
     When I select "HR" from "Policy domain"
-    And I attach the file "logo.png" to "Logo"
-    And I attach the file "banner.jpg" to "Banner"
     And I check "Closed collection"
     And I select "Only members can create new content." from "eLibrary creation"
     And I check "Moderated"
@@ -50,7 +48,13 @@ Feature: Proposing a collection
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Save as draft"
-    Then I should see the heading "Ancient and Classical Mythology"
+    # Regression test for setting the Logo and Banner fields as optional.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3215
+    Then I should not see the following error messages:
+      | error messages           |
+      | Field Logo is required   |
+      | Field Banner is required |
+    And I should see the heading "Ancient and Classical Mythology"
     # Check that the policy domain is shown.
     And I should see the text "HR"
     And I should see the text "Belgium"
@@ -59,9 +63,9 @@ Feature: Proposing a collection
     And the "Ancient and Classical Mythology" collection should have 1 member
     # The overview and about links should be added automatically in the menu.
     And I should see the following collection menu items in the specified order:
-      | text               |
-      | Overview           |
-      | About              |
+      | text     |
+      | Overview |
+      | About    |
     When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"
     When I fill in the following:
