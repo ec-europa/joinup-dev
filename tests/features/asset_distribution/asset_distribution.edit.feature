@@ -14,9 +14,13 @@ Feature: Asset distribution editing.
       | title      | Collection example     |
       | affiliates | Solution A, Solution B |
       | state      | validated              |
+    And the following licence:
+      | title       | WTFPL-edit                                    |
+      | description | The WTFPL-edit is a rather permissive licence |
     And the following distribution:
       | title       | Asset distribution example |
       | description | Sample description         |
+      | licence     | WTFPL-edit                 |
       | access url  | test.zip                   |
       | solution    | Solution A                 |
     And the following release:
