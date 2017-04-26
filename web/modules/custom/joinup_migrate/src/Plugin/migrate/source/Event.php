@@ -28,6 +28,8 @@ class Event extends NodeBase {
       'website' => $this->t('Website'),
       'mail' => $this->t('Contact mail'),
       'agenda' => $this->t('Agenda'),
+      'scope' => $this->t('Scope'),
+      'organisation_type' => $this->t('Organisation type'),
     ] + parent::fields();
   }
 
@@ -80,6 +82,33 @@ class Event extends NodeBase {
 
     // Keywords.
     $this->setKeywords($row, 'keywords', $nid, $vid);
+
+    // Scope.
+    $query = $this->select('term_node', 'tn');
+    $query->join('term_data', 'td', 'tn.tid = td.tid');
+    $scope = $query
+      ->fields('td', ['name'])
+      ->condition('tn.nid', $nid)
+      ->condition('tn.vid', $vid)
+      // The scope vocabulary vid is 45.
+      ->condition('td.vid', 45)
+      ->orderBy('td.name', 'ASC')
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('scope', $scope);
+
+    // Organisation type.
+    $query = $this->select('term_node', 'tn');
+    $query->join('term_data', 'td', 'tn.tid = td.tid');
+    $organisation_type = $query
+      ->fields('td', ['name'])
+      ->condition('tn.nid', $nid)
+      ->condition('tn.vid', $vid)
+      // The organisation type vocabulary vid is 63.
+      ->condition('td.vid', 63)
+      ->execute()
+      ->fetchField();
+    $row->setSourceProperty('organisation_type', $organisation_type);
 
     return parent::prepareRow($row);
   }
