@@ -115,7 +115,6 @@ function search_api_field_entity_view(array &$build, EntityInterface $entity, En
             ],
           ],
         ],
-
       ];
     }
   }
