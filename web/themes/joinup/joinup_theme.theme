@@ -452,8 +452,8 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
   $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
   $author = $node->get('uid')->entity;
-  $author_compact = $viewBuilder->view($author, 'compact');
-  $variables['additional_content']['author'] = $author_compact;
+  $author_inline = $viewBuilder->view($author, 'inline');
+  $variables['additional_content']['author'] = $author_inline;
 }
 
 /**
@@ -469,8 +469,8 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
   /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
   $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
   $author = $node->get('uid')->entity;
-  $author_compact = $viewBuilder->view($author, 'compact');
-  $variables['additional_content']['author'] = $author_compact;
+  $author_inline = $viewBuilder->view($author, 'inline');
+  $variables['additional_content']['author'] = $author_inline;
 }
 
 /**

@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - comment.type.comment
-    - field.field.comment.comment.field_comment_body
+    - field.field.comment.comment.field_body
 id: comment.comment.default
 targetEntityType: comment
 bundle: comment
@@ -14,7 +14,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_comment_body:
+  field_body:
     weight: 3
     settings:
       rows: 5
