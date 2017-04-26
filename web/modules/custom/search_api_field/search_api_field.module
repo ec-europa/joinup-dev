@@ -5,6 +5,7 @@
  * The entity hooks needed to display facets in pseudo-fields.
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -88,6 +89,7 @@ function search_api_field_entity_view(array &$build, EntityInterface $entity, En
     // The facets available for the facet source offered by this field have been
     // organized into pseudo fields. Loop over the configuration to render them
     // in the correct place.
+    $regions = [];
     foreach ($settings['fields'] as $facet_name => $facet_data) {
       // If the facet is not found between the ones provided by the facet
       // source, skip it.
@@ -100,7 +102,21 @@ function search_api_field_entity_view(array &$build, EntityInterface $entity, En
       if ($display->getComponent($name)) {
         // Let the facet_manager build the facets.
         $build[$name][] = $facet_manager->build($facets[$facet_name]);
+        $regions[$name] = TRUE;
       }
+    }
+
+    foreach (array_keys($regions) as $region) {
+      $build[$region] += [
+        '#theme_wrappers' => [
+          'container__facet_region' => [
+            '#attributes' => [
+              'class' => ['facet-region', 'facet-region--' . Html::getClass($region)],
+            ],
+          ],
+        ],
+
+      ];
     }
   }
 }
