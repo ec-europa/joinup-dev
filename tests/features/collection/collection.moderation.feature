@@ -202,7 +202,7 @@ Feature: Collection moderation
     # Submit the form and approve it as a moderator. This should not cause the
     # eLibrary creation option to change.
     When I press "Propose"
-    Then I should see the heading "Spectres in fog"
+    Then I should see the capitalised heading "Spectres in fog"
     When I am logged in as a user with the "moderator" role
     And I go to the homepage of the "Spectres in fog" collection
     And I click "Edit" in the "Entity actions" region
@@ -246,7 +246,7 @@ Feature: Collection moderation
 
     # Save the collection.
     When I press "Propose"
-    Then I should see the heading "Domestic bovins"
+    Then I should see the capitalised heading "Domestic bovins"
     # Edit again.
     When I click "Edit" in the "Entity actions" region
     And I click the "Description" tab
@@ -286,7 +286,7 @@ Feature: Collection moderation
 
     # Save the collection.
     When I press "Propose"
-    Then I should see the heading "Theft of Body"
+    Then I should see the capitalised heading "Theft of Body"
     # Edit again.
     When I click "Edit" in the "Entity actions" region
     And I click the "Description" tab
@@ -330,7 +330,7 @@ Feature: Collection moderation
 
     # Save the collection.
     When I press "Propose"
-    Then I should see the heading "Silken Emperor"
+    Then I should see the capitalised heading "Silken Emperor"
     # Edit again.
     When I click "Edit" in the "Entity actions" region
     And I click the "Description" tab
@@ -374,7 +374,7 @@ Feature: Collection moderation
 
     # Save the collection.
     When I press "Propose"
-    Then I should see the heading "The blue ships"
+    Then I should see the capitalised heading "The blue ships"
     # Edit again.
     When I click "Edit" in the "Entity actions" region
     And I click the "Description" tab
