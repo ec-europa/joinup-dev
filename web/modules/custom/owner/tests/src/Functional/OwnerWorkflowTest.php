@@ -210,7 +210,7 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
           'userModerator',
         ],
       ],
-      'in_assessment' => [
+      'needs_update' => [
         'view' => [
           'userAnonymous',
           'userAuthenticated',
@@ -280,7 +280,7 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
           'request_deletion',
         ],
       ],
-      'in_assessment' => [
+      'needs_update' => [
         'userAuthenticated' => [
           'update_changes',
         ],
