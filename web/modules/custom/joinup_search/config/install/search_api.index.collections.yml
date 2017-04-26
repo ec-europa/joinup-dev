@@ -5,12 +5,20 @@ dependencies:
     - field.storage.node.body
     - field.storage.node.field_short_title
     - field.storage.node.field_shared_in
+    - field.storage.node.field_news_headline
+    - field.storage.node.field_event_agenda
+    - field.storage.node.field_location
+    - field.storage.node.field_event_adtl_address_info
+    - field.storage.node.field_organisation
+    - field.storage.node.field_scope
     - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_policy_domain
     - field.storage.rdf_entity.field_spatial_coverage
     - field.storage.rdf_entity.field_status
     - field.storage.rdf_entity.field_ad_description
     - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_ar_abstract
+    - field.storage.rdf_entity.field_isr_release_notes
     - search_api.server.solr
   module:
     - taxonomy
@@ -70,11 +78,21 @@ field_settings:
         - 'entity:node/field_news_spatial_coverage'
         - 'entity:node/field_document_spatial_coverage'
         - 'entity:rdf_entity/field_spatial_coverage'
+  keywords:
+    label: Keywords
+    property_path: aggregated_field
+    type: text
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_keywords'
+        - 'entity:rdf_entity/field_keywords'
   title:
     label: Title
     datasource_id: 'entity:node'
     property_path: title
-    type: string
+    type: text
+    boost: !!float 5
   processed:
     label: 'Body » Processed text'
     datasource_id: 'entity:node'
@@ -87,7 +105,7 @@ field_settings:
     label: 'Short title'
     datasource_id: 'entity:node'
     property_path: field_short_title
-    type: string
+    type: text
     dependencies:
       config:
         - field.storage.node.field_short_title
@@ -104,6 +122,55 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_shared_in
+  field_news_headline:
+    label: Headline
+    datasource_id: 'entity:node'
+    property_path: field_news_headline
+    type: text
+    boost: !!float 5
+    dependencies:
+      config:
+        - field.storage.node.field_news_headline
+  field_event_agenda:
+    label: 'Agenda » Processed text'
+    datasource_id: 'entity:node'
+    property_path: 'field_event_agenda:processed'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_event_agenda
+  field_location:
+    label: Location
+    datasource_id: 'entity:node'
+    property_path: field_location
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_location
+  field_event_adtl_address_info:
+    label: 'Additional address info'
+    datasource_id: 'entity:node'
+    property_path: field_event_adtl_address_info
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_event_adtl_address_info
+  field_organisation:
+    label: Organisation
+    datasource_id: 'entity:node'
+    property_path: field_organisation
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_organisation
+  field_scope:
+    label: Scope
+    datasource_id: 'entity:node'
+    property_path: field_scope
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_scope
   id:
     label: ID
     datasource_id: 'entity:rdf_entity'
@@ -113,7 +180,8 @@ field_settings:
     label: Title
     datasource_id: 'entity:rdf_entity'
     property_path: label
-    type: string
+    type: text
+    boost: !!float 5
   field_ar_description:
     label: Description
     datasource_id: 'entity:rdf_entity'
@@ -157,11 +225,6 @@ field_settings:
     datasource_id: 'entity:rdf_entity'
     property_path: rid
     type: string
-  label_1:
-    label: Title
-    datasource_id: 'entity:rdf_entity'
-    property_path: label
-    type: string
   field_ad_description:
     label: Description
     datasource_id: 'entity:rdf_entity'
@@ -178,6 +241,22 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_isr_description
+  field_ar_abstract:
+    label: 'Abstract » Processed text'
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_ar_abstract
+    type: text
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_ar_abstract
+  field_isr_release_notes:
+    label: 'Release notes » Processed text'
+    datasource_id: 'entity:rdf_entity'
+    property_path: 'field_isr_release_notes:processed'
+    type: text
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_isr_release_notes
 datasource_settings:
   'entity:node':
     bundles:
