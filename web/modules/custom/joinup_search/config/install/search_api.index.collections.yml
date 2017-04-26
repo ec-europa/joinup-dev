@@ -51,6 +51,15 @@ field_settings:
       fields:
         - 'entity:node/uid'
         - 'entity:rdf_entity/uid'
+  policy_domain:
+    label: 'Policy domain'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_policy_domain'
+        - 'entity:rdf_entity/field_policy_domain'
   title:
     label: Title
     datasource_id: 'entity:node'

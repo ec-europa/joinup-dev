@@ -13,7 +13,9 @@ label: Status
 description: ''
 required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    target_id: _none
 default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'
