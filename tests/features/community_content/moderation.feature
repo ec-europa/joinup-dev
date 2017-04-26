@@ -278,3 +278,73 @@ Feature: Moderate community content
     And I click the contextual link "Moderate content" in the "Header" region
     Then I should see the heading "Content moderation"
     And I should not see the text "Cataclysmic variables"
+
+  @javascript
+  Scenario: Filtering the content moderation overview
+
+    Given the following collection:
+      | title | Neutron stars |
+      | state | validated     |
+
+    And discussion content:
+      | title                       | body                  | collection    | state         |
+      | Rotation-powered pulsations | Millisecond pulsars   | Neutron stars | proposed      |
+      | The Recycling concept       | An epoch of accretion | Neutron stars | proposed      |
+    And document content:
+      | title          | body                          | collection    | state            |
+      | Donor star     | Spun up to millisecond period | Neutron stars | proposed         |
+      | High frequency | Slow 1.2 second spin          | Neutron stars | deletion request |
+      | Cluster        | Eddington luminosity          | Neutron stars | deletion request |
+    And event content:
+      | title      | body        | collection    | state            |
+      | Accelerate | Wide binary | Neutron stars | proposed         |
+    And news content:
+      | title                   | body                             | collection    | state            |
+      | Metal-rich star cluster | Standard pulsar recycling theory | Neutron stars | deletion request |
+
+    When I am logged in as a facilitator of the "Neutron stars" collection
+    And I go to the homepage of the "Neutron stars" collection
+    And I click the contextual link "Moderate content" in the "Header" region
+    Then I should see the heading "Content moderation"
+    And the available options in the "Content of type" select should be "All (7), Discussion (2), Document (3), Event (1), News (1)"
+    And the available options in the "in state" select should be "All (7), Deletion request (3), Proposed (4)"
+    And I should see the following headings:
+      | Rotation-powered pulsations |
+      | The Recycling concept       |
+      | Donor star                  |
+      | High frequency              |
+      | Cluster                     |
+      | Accelerate                  |
+      | Metal-rich star cluster     |
+
+    When I select "Document (3)" from "Content of type"
+    And I wait for AJAX to finish
+    Then the available options in the "Content of type" select should be "All (7), Discussion (2), Document (3), Event (1), News (1)"
+    And the option "Document (3)" should be selected
+    And the available options in the "in state" select should be "All (3), Deletion request (2), Proposed (1)"
+    And the option "All (3)" should be selected
+    And I should see the following headings:
+      | Donor star                  |
+      | High frequency              |
+      | Cluster                     |
+    And I should not see the following headings:
+      | Rotation-powered pulsations |
+      | The Recycling concept       |
+      | Accelerate                  |
+      | Metal-rich star cluster     |
+
+    When I select "Proposed (1)" from "in state"
+    And I wait for AJAX to finish
+    Then the available options in the "Content of type" select should be "All (7), Discussion (2), Document (3), Event (1), News (1)"
+    And the option "Document (3)" should be selected
+    And the available options in the "in state" select should be "All (3), Deletion request (2), Proposed (1)"
+    And the option "Proposed (1)" should be selected
+    And I should see the following headings:
+      | Donor star                  |
+    And I should not see the following headings:
+      | Rotation-powered pulsations |
+      | The Recycling concept       |
+      | Accelerate                  |
+      | Metal-rich star cluster     |
+      | High frequency              |
+      | Cluster                     |
