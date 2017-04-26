@@ -12,16 +12,12 @@ dependencies:
     - field.storage.node.field_organisation
     - field.storage.node.field_scope
     - field.storage.rdf_entity.field_ar_description
-    - field.storage.rdf_entity.field_policy_domain
-    - field.storage.rdf_entity.field_spatial_coverage
-    - field.storage.rdf_entity.field_status
     - field.storage.rdf_entity.field_ad_description
     - field.storage.rdf_entity.field_isr_description
     - field.storage.rdf_entity.field_ar_abstract
     - field.storage.rdf_entity.field_isr_release_notes
     - search_api.server.solr
   module:
-    - taxonomy
     - search_api
     - node
     - rdf_entity
@@ -190,36 +186,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_ar_description
-  tid:
-    label: 'Policy Domain » Taxonomy term » Term ID'
-    datasource_id: 'entity:rdf_entity'
-    property_path: 'field_policy_domain:entity:tid'
-    type: string
-    dependencies:
-      config:
-        - field.storage.rdf_entity.field_policy_domain
-      module:
-        - taxonomy
-  tid_1:
-    label: 'Spatial coverage » Taxonomy term » Term ID'
-    datasource_id: 'entity:rdf_entity'
-    property_path: 'field_spatial_coverage:entity:tid'
-    type: string
-    dependencies:
-      config:
-        - field.storage.rdf_entity.field_spatial_coverage
-      module:
-        - taxonomy
-  tid_2:
-    label: 'Status » Taxonomy term » Term ID'
-    datasource_id: 'entity:rdf_entity'
-    property_path: 'field_status:entity:tid'
-    type: string
-    dependencies:
-      config:
-        - field.storage.rdf_entity.field_status
-      module:
-        - taxonomy
   rid:
     label: 'Rdf Type'
     datasource_id: 'entity:rdf_entity'
