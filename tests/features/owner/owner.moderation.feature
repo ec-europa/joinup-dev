@@ -70,7 +70,7 @@ Feature: Owner moderation
     And I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Owner EU healthy group"
     And the following 1 button should be present "Update"
-    And the current workflow state should be "In assessment"
+    And the current workflow state should be "Needs update"
     And I should not see the link "Delete"
     # Do the changes.
     When I set the Owner type to "Non-Governmental Organisation"
@@ -82,7 +82,7 @@ Feature: Owner moderation
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
     And the following 2 buttons should be present "Update, Approve changes"
-    And the current workflow state should be "In assessment"
+    And the current workflow state should be "Needs update"
     And I press "Approve changes"
     Then I should see the heading "EU healthy group"
 
