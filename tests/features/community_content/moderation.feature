@@ -11,7 +11,18 @@ Feature: Moderate community content
     And the following solution:
       | title | Survey For Supernovae |
       | state | validated             |
-    And discussion content:
+
+    # Before adding content, check that the 'empty message' is displayed on the
+    # content moderation overview.
+    When I am logged in as a facilitator of the "Black hole research" collection
+    And I go to the homepage of the "Black hole research" collection
+    And I click the contextual link "Moderate content" in the "Header" region
+    Then I should see the heading "Content moderation"
+    And I should see the text "Nothing to moderate. Enjoy your day!"
+
+    # Add community content of all possible types in all possible states, to
+    # both the collection and solution.
+    Given discussion content:
       | title                         | body                 | collection          | solution              | state         |
       | The information paradox       | Info Paradox         | Black hole research |                       | needs update  |
       | Black-body spectrum radiation | Hawking radiation    | Black hole research |                       | proposed      |
@@ -57,3 +68,213 @@ Feature: Moderate community content
       | The Tarantula massive binary  | SB2 orbital solution        |                     | Survey For Supernovae | proposed         |
       | H-rich Wolf-Rayet star        | Polarimetric analysis       |                     | Survey For Supernovae | validated        |
       | Quasi-homogeneous evolution   | Mass-transfer was avoided   |                     | Survey For Supernovae | deletion request |
+
+    # Check if all content that requires moderation shows up for the collection.
+    When I reload the page
+    Then I should see the following headings:
+      | Black-body spectrum radiation           |
+      | K-band spectroscopy                     |
+      | Stellar atmosphere model                |
+      | Source of SXR plasma supply and heating |
+      | X-Shooter                               |
+      | Stellar wind charged particle           |
+      | Massive lensing galaxy                  |
+
+    And I should not see the following headings:
+      | The information paradox                 |
+      | The holographic principle               |
+      | Relation with host galaxies             |
+      | A multiwavelength study                 |
+      | X-Ray Transient V616                    |
+      | Spectral energy distribution            |
+      | Thick-target collisional bremsstrahlung |
+      | Conductive cooling losses               |
+      | Stars forming in material outflow       |
+      | Magnetosphere boundary                  |
+      | Ambient magnetized medium               |
+      | Super-Alfvenic plasma flow              |
+      | Tidal disruption events                 |
+      | Cataclysmic variables                   |
+      | Stellar flares                          |
+      | Upgrading CCD cameras                   |
+      | A Massive Secondary Star                |
+      | Created By Supernova Ejecta             |
+      | A spotted, nonspherical star            |
+      | J-band light curves                     |
+      | Physics of the Neupert effect           |
+      | Infant stellar population               |
+      | Give rise to galactic features          |
+      | Cosmic-infrared background radiation    |
+      | Evolution of dust-to-metals ratio       |
+      | Total V-band extinction                 |
+      | Planck's dusty gems                     |
+      | The optical morphology                  |
+      | The Tarantula massive binary            |
+      | H-rich Wolf-Rayet star                  |
+      | Quasi-homogeneous evolution             |
+
+    And I should see the following lines of text:
+      | Hawking radiation            |
+      | Small amount of flux         |
+      | Carbon abundance             |
+      | Fast electrons are not       |
+      | VLT spectroscopic instrument |
+      | Follow spiral paths          |
+      | Sub-millimeter sky           |
+
+    And I should not see the following lines of text:
+      | Info Paradox                  |
+      | String theory                 |
+      | Supermassive                  |
+      | Optical and infrared          |
+      | Weak ¹²CO absorption          |
+      | Accretion disk emission       |
+      | Chromospheric evaporation     |
+      | Single-loop geometry          |
+      | Colossal material winds       |
+      | Gas shock                     |
+      | Dust depletion level          |
+      | Magnetic draping              |
+      | Spaghettification             |
+      | Irregular brightness          |
+      | Dim red dwarfs                |
+      | Liquid cooled                 |
+      | Active CNO cycle              |
+      | The mass remains large        |
+      | Ellipsoidal variations        |
+      | Wilson-Devinney modeling      |
+      | Observed temporal correlation |
+      | Quarter of star formation     |
+      | Distended bulge of stars      |
+      | Coming from all directions    |
+      | Dust at high redshift         |
+      | Fitting the afterglow SED     |
+      | An Einstein Ring              |
+      | Turbulent gas fragmentation   |
+      | SB2 orbital solution          |
+      | Polarimetric analysis         |
+      | Mass-transfer was avoided     |
+
+    # Check that the moderation state is shown.
+    And the moderation preview of "Black-body spectrum radiation" should contain the text "Proposed"
+
+    # Check that the links work.
+    When I click the "View" link in the "Black-body spectrum radiation" moderation preview
+    Then I should see the heading "Black-body spectrum radiation"
+
+    When I move backward one page
+    And I click the "Edit" link in the "Black-body spectrum radiation" moderation preview
+    Then I should see the heading "Edit Discussion Black-body spectrum radiation"
+
+    # Approve the content, and check that it no longer shows up in the moderation overview.
+    When I press "Approve proposed"
+    Then I should see the success message "Discussion Black-body spectrum radiation has been updated."
+    And I click the contextual link "Moderate content" in the "Header" region
+    Then I should see the heading "Content moderation"
+    And I should not see the text "Black-body spectrum radiation"
+
+    # Now repeat this for the solution.
+    When I am logged in as a facilitator of the "Survey For Supernovae" solution
+    And I go to the homepage of the "Survey For Supernovae" solution
+    And I click the contextual link "Moderate content" in the "Header" region
+    Then I should see the heading "Content moderation"
+    Then I should see the following headings:
+      | Cataclysmic variables                |
+      | A spotted, nonspherical star         |
+      | Physics of the Neupert effect        |
+      | Cosmic-infrared background radiation |
+      | Total V-band extinction              |
+      | The Tarantula massive binary         |
+      | Quasi-homogeneous evolution          |
+
+    And I should not see the following headings:
+      | The information paradox                 |
+      | Black-body spectrum radiation           |
+      | The holographic principle               |
+      | Relation with host galaxies             |
+      | A multiwavelength study                 |
+      | X-Ray Transient V616                    |
+      | K-band spectroscopy                     |
+      | Spectral energy distribution            |
+      | Stellar atmosphere model                |
+      | Thick-target collisional bremsstrahlung |
+      | Conductive cooling losses               |
+      | Source of SXR plasma supply and heating |
+      | Stars forming in material outflow       |
+      | X-Shooter                               |
+      | Magnetosphere boundary                  |
+      | Ambient magnetized medium               |
+      | Stellar wind charged particle           |
+      | Super-Alfvenic plasma flow              |
+      | Massive lensing galaxy                  |
+      | Tidal disruption events                 |
+      | Stellar flares                          |
+      | Upgrading CCD cameras                   |
+      | A Massive Secondary Star                |
+      | Created By Supernova Ejecta             |
+      | J-band light curves                     |
+      | Infant stellar population               |
+      | Give rise to galactic features          |
+      | Evolution of dust-to-metals ratio       |
+      | Planck's dusty gems                     |
+      | The optical morphology                  |
+      | H-rich Wolf-Rayet star                  |
+
+    And I should see the following lines of text:
+      | Irregular brightness          |
+      | Ellipsoidal variations        |
+      | Observed temporal correlation |
+      | Coming from all directions    |
+      | Fitting the afterglow SED     |
+      | SB2 orbital solution          |
+      | Mass-transfer was avoided     |
+
+    And I should not see the following lines of text:
+      | Info Paradox                 |
+      | Hawking radiation            |
+      | String theory                |
+      | Supermassive                 |
+      | Optical and infrared         |
+      | Weak ¹²CO absorption         |
+      | Small amount of flux         |
+      | Accretion disk emission      |
+      | Carbon abundance             |
+      | Chromospheric evaporation    |
+      | Single-loop geometry         |
+      | Fast electrons are not       |
+      | Colossal material winds      |
+      | VLT spectroscopic instrument |
+      | Gas shock                    |
+      | Dust depletion level         |
+      | Follow spiral paths          |
+      | Magnetic draping             |
+      | Sub-millimeter sky           |
+      | Spaghettification            |
+      | Dim red dwarfs               |
+      | Liquid cooled                |
+      | Active CNO cycle             |
+      | The mass remains large       |
+      | Wilson-Devinney modeling     |
+      | Quarter of star formation    |
+      | Distended bulge of stars     |
+      | Dust at high redshift        |
+      | An Einstein Ring             |
+      | Turbulent gas fragmentation  |
+      | Polarimetric analysis        |
+
+    And the moderation preview of "Cataclysmic variables" should contain the text "Proposed"
+
+    # Check that the links work.
+    When I click the "View" link in the "Cataclysmic variables" moderation preview
+    Then I should see the heading "Cataclysmic variables"
+
+    When I move backward one page
+    And I click the "Edit" link in the "Cataclysmic variables" moderation preview
+    Then I should see the heading "Edit Discussion Cataclysmic variables"
+
+    # Approve the content, and check that it no longer shows up in the moderation overview.
+    When I press "Approve proposed"
+    Then I should see the success message "Discussion Cataclysmic variables has been updated."
+    And I click the contextual link "Moderate content" in the "Header" region
+    Then I should see the heading "Content moderation"
+    And I should not see the text "Cataclysmic variables"
