@@ -16,11 +16,15 @@ dependencies:
     - field.storage.rdf_entity.field_isr_description
     - field.storage.rdf_entity.field_ar_abstract
     - field.storage.rdf_entity.field_isr_release_notes
+    - field.storage.user.field_user_first_name
+    - field.storage.user.field_user_family_name
+    - field.storage.user.field_user_organisation
     - search_api.server.solr
   module:
     - search_api
     - node
     - rdf_entity
+    - user
 id: collections
 name: 'Search index'
 description: ''
@@ -223,6 +227,35 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_isr_release_notes
+  uid:
+    label: 'User ID'
+    datasource_id: 'entity:user'
+    property_path: uid
+    type: integer
+  field_user_first_name:
+    label: 'First name'
+    datasource_id: 'entity:user'
+    property_path: field_user_first_name
+    type: text
+    dependencies:
+      config:
+        - field.storage.user.field_user_first_name
+  field_user_family_name:
+    label: 'Family name'
+    datasource_id: 'entity:user'
+    property_path: field_user_family_name
+    type: text
+    dependencies:
+      config:
+        - field.storage.user.field_user_family_name
+  field_user_organisation:
+    label: Organisation
+    datasource_id: 'entity:user'
+    property_path: field_user_organisation
+    type: text
+    dependencies:
+      config:
+        - field.storage.user.field_user_organisation
 datasource_settings:
   'entity:node':
     bundles:
@@ -233,6 +266,10 @@ datasource_settings:
       selected: {  }
   'entity:rdf_entity':
     bundles:
+      default: true
+      selected: {  }
+  'entity:user':
+    languages:
       default: true
       selected: {  }
 processor_settings:
