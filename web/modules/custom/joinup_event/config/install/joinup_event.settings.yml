@@ -74,7 +74,7 @@ transitions:
         - rdf_entity-solution-facilitator
         - moderator
     approve_report:
-      in_assessment:
+      needs_update:
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
         - moderator
@@ -126,7 +126,7 @@ transitions:
         - rdf_entity-solution-facilitator
         - moderator
     approve_report:
-      in_assessment:
+      needs_update:
         - rdf_entity-collection-facilitator
         - rdf_entity-solution-facilitator
         - moderator

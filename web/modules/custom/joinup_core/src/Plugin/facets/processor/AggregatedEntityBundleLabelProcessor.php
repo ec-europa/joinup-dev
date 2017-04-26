@@ -71,12 +71,6 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
       return $results;
     }
 
-    $ids = [];
-    /** @var \Drupal\facets\Result\ResultInterface $result */
-    foreach ($results as $delta => $result) {
-      $ids[$delta] = $result->getRawValue();
-    }
-
     // Retrieve the configured datasources for the index.
     /** @var \Drupal\search_api\Plugin\search_api\datasource\ContentEntity[] $datasources */
     $datasources = $source->getIndex()->getDatasources();

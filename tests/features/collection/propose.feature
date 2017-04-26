@@ -55,9 +55,6 @@ Feature: Proposing a collection
       | Field Logo is required   |
       | Field Banner is required |
     And I should see the heading "Ancient and Classical Mythology"
-    # Check that the policy domain is shown.
-    And I should see the text "HR"
-    And I should see the text "Belgium"
 
     # The user that proposed the collection should be auto-subscribed.
     And the "Ancient and Classical Mythology" collection should have 1 member
