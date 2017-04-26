@@ -446,6 +446,9 @@ processor_settings:
       - field_isr_description
       - field_ar_abstract
       - field_isr_release_notes
+      - field_user_first_name
+      - field_user_family_name
+      - field_user_organisation
     weights:
       preprocess_index: -47
       preprocess_query: -47
