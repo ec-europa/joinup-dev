@@ -31,7 +31,7 @@ Feature: Discussion moderation
     Then I should see the heading "Best method to cut logs"
     And I should see the link "Edit" in the "Entity actions" region
 
-    # Mark the discussion as in assessment after a report.
+    # Mark the discussion as "Needs update" after a report.
     When I am logged in as a moderator
     And I go to the "Best method to cut logs" discussion
     And I click "Edit" in the "Entity actions" region
@@ -50,7 +50,7 @@ Feature: Discussion moderation
     When I am logged in as "Brigham Salvage"
     And I go to the "Best method to cut logs" discussion
     And I click "Edit" in the "Entity actions" region
-    Then the current workflow state should be "In assessment"
+    Then the current workflow state should be "Needs update"
     When I fill in "Title" with "Best method to cut wood logs"
     And I press "Approve report"
     # The published version does not change.

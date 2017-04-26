@@ -14,11 +14,11 @@ transitions:
     validated:
       - moderator
   update_changes:
-    in_assessment:
+    needs_update:
       - authenticated
       - moderator
   approve_changes:
-    in_assessment:
+    needs_update:
       - moderator
   request_deletion:
     validated:

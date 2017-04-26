@@ -81,7 +81,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
             'userOgFacilitator',
           ],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           'view' => [
             'userOwner',
             'userModerator',
@@ -195,7 +195,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
             'disable',
           ],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           'userAuthenticated' => [],
           'userOwner' => [],
           'userOgMember' => [],

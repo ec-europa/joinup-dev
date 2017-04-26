@@ -126,7 +126,7 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
             'userOgFacilitator',
           ],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           'view' => [
             'userOwner',
             'userModerator',
@@ -194,7 +194,7 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
             'userOgFacilitator',
           ],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           'view' => [
             'userOwner',
             'userModerator',
@@ -434,7 +434,7 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
   public function isPublishedState($state) {
     $states = [
       'validated',
-      'in_assessment',
+      'needs_update',
       'deletion_request',
     ];
 
