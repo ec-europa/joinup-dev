@@ -238,7 +238,180 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  html_filter:
+    fields:
+      - entity_bundle
+      - entity_groups
+      - policy_domain
+      - spatial_coverage
+      - keywords
+      - title
+      - body
+      - field_short_title
+      - field_shared_in
+      - field_news_headline
+      - field_event_agenda
+      - field_location
+      - field_event_adtl_address_info
+      - field_organisation
+      - field_scope
+      - id
+      - label
+      - field_ar_description
+      - rid
+      - field_ad_description
+      - field_isr_description
+      - field_ar_abstract
+      - field_isr_release_notes
+    title: true
+    alt: true
+    tags:
+      h1: 5
+      h2: 3
+      h3: 2
+      strong: 2
+      b: 2
+    weights:
+      preprocess_index: -46
+      preprocess_query: -46
+  ignorecase:
+    fields:
+      - entity_bundle
+      - entity_groups
+      - policy_domain
+      - spatial_coverage
+      - keywords
+      - title
+      - body
+      - field_short_title
+      - field_shared_in
+      - field_news_headline
+      - field_event_agenda
+      - field_location
+      - field_event_adtl_address_info
+      - field_organisation
+      - field_scope
+      - id
+      - label
+      - field_ar_description
+      - rid
+      - field_ad_description
+      - field_isr_description
+      - field_ar_abstract
+      - field_isr_release_notes
+    weights:
+      preprocess_index: -49
+      preprocess_query: -48
   rendered_item: {  }
+  stopwords:
+    fields:
+      - keywords
+      - title
+      - body
+      - field_short_title
+      - field_news_headline
+      - field_event_agenda
+      - field_location
+      - field_event_adtl_address_info
+      - field_organisation
+      - field_scope
+      - label
+      - field_ar_description
+      - field_ad_description
+      - field_isr_description
+      - field_ar_abstract
+      - field_isr_release_notes
+    stopwords:
+      - a
+      - an
+      - and
+      - are
+      - as
+      - at
+      - be
+      - but
+      - by
+      - for
+      - if
+      - in
+      - into
+      - is
+      - it
+      - 'no'
+      - not
+      - of
+      - 'on'
+      - or
+      - s
+      - such
+      - t
+      - that
+      - the
+      - their
+      - then
+      - there
+      - these
+      - they
+      - this
+      - to
+      - was
+      - will
+      - with
+    weights:
+      preprocess_index: -48
+      preprocess_query: -49
+  tokenizer:
+    fields:
+      - keywords
+      - title
+      - body
+      - field_short_title
+      - field_news_headline
+      - field_event_agenda
+      - field_location
+      - field_event_adtl_address_info
+      - field_organisation
+      - field_scope
+      - label
+      - field_ar_description
+      - field_ad_description
+      - field_isr_description
+      - field_ar_abstract
+      - field_isr_release_notes
+    spaces: ''
+    overlap_cjk: 1
+    minimum_word_size: '3'
+    weights:
+      preprocess_index: -44
+      preprocess_query: -44
+  transliteration:
+    fields:
+      - entity_bundle
+      - entity_groups
+      - policy_domain
+      - spatial_coverage
+      - keywords
+      - title
+      - body
+      - field_short_title
+      - field_shared_in
+      - field_news_headline
+      - field_event_agenda
+      - field_location
+      - field_event_adtl_address_info
+      - field_organisation
+      - field_scope
+      - id
+      - label
+      - field_ar_description
+      - rid
+      - field_ad_description
+      - field_isr_description
+      - field_ar_abstract
+      - field_isr_release_notes
+    weights:
+      preprocess_index: -47
+      preprocess_query: -47
 tracker_settings:
   default: {  }
 options:
