@@ -131,9 +131,9 @@ trait WorkflowTrait {
    */
   protected static function workflowStateAliases() {
     return [
-      'new' => '__new__',
-      'in assessment' => 'in_assessment',
       'deletion request' => 'deletion_request',
+      'needs update' => 'needs_update',
+      'new' => '__new__',
     ];
   }
 
