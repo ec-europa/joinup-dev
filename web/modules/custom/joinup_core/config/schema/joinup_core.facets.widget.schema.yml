@@ -1,0 +1,16 @@
+facet.widget.config.links_inline:
+  type: facet.widget.default_config
+  label: 'Inline links widget configuration'
+  mapping:
+    all_text:
+      type: label
+      translatable: true
+      label: 'All text'
+    prefix_text:
+      type: label
+      translatable: true
+      label: 'Prefix text'
+    suffix_text:
+      type: label
+      translatable: true
+      label: 'Suffix text'

@@ -7,11 +7,16 @@
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\TraversingTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 
 /**
  * Behat step definitions for testing searches.
  */
 class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
+  use TraversingTrait;
+  use UtilityTrait;
 
   /**
    * Click a specific tab facet in the page.
@@ -51,10 +56,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When I should not see the following facet items :items
    */
   public function assertContentTypeFacetItemsNotPresent($labels) {
-    // @todo Replace with trait function when ISAICP-2755 is in.
-    $labels = explode(',', $labels);
-    $labels = array_map('trim', $labels);
-    $labels = array_filter($labels);
+    $labels = $this->explodeCommaSeparatedStepArgument($labels);
 
     $facet = $this->getSession()->getPage()->find('xpath', "//div[@data-drupal-facet-id='field_cp_content_listing_content_type']");
     $present = [];
@@ -80,6 +82,70 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if ($found) {
       throw new \Exception('Facet item(s) found, but should not be present: ' . implode(', ', $found));
     }
+  }
+
+  /**
+   * Clicks a facet item in an inline facet.
+   *
+   * @param string $link
+   *   The link text of the link to click.
+   * @param string $facet
+   *   The facet alias.
+   *
+   * @When I click :link in the :facet inline facet
+   */
+  public function iClickAnInlineFacetItemLink($link, $facet) {
+    $this->findFacetByAlias($facet)->clickLink($link);
+  }
+
+  /**
+   * Asserts that an inline facet has a certain text (value) set as active.
+   *
+   * @param string $text
+   *   The text that should be in the active element of the facet.
+   * @param string $facet
+   *   The inline facet to test.
+   *
+   * @throws \Exception
+   *   Thrown when the active items element is not found.
+   *
+   * @Then :text should be selected in the :facet inline facet
+   */
+  public function assertInlineFacetActiveText($text, $facet) {
+    $element = $this->findFacetByAlias($facet);
+
+    $active = $element->find('css', '.filter__term');
+    if (!$active) {
+      throw new \Exception("Cannot find active items on the facet '$facet'.");
+    }
+
+    $active_text = trim($active->getText());
+    if ($text !== $active_text) {
+      throw new \Exception("Expected active elements to be '$text', but found '$active_text'.");
+    }
+  }
+
+  /**
+   * Asserts the inactive items on an inline facet.
+   *
+   * This function asserts also the order of the items.
+   *
+   * @param string $facet
+   *   The facet alias.
+   * @param string $values
+   *   A comma-separated list of items to be present.
+   *
+   * @Then the :facet inline facet should allow selecting the following values :value
+   */
+  public function assertInlineFacetInactiveItems($facet, $values) {
+    $element = $this->findFacetByAlias($facet);
+    $found = array_map(function ($item) {
+      /** @var \Behat\Mink\Element\NodeElement $item */
+      return $item->getText();
+    }, $element->findAll('css', 'ul.mdl-menu li.facet-item'));
+
+    $values = $this->explodeCommaSeparatedStepArgument($values);
+    \PHPUnit_Framework_Assert::assertEquals($values, $found, "The '{$facet}' values mismatch the expected ones.");
   }
 
 }
