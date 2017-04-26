@@ -89,7 +89,7 @@ field_settings:
     property_path: title
     type: text
     boost: !!float 5
-  processed:
+  body:
     label: 'Body » Processed text'
     datasource_id: 'entity:node'
     property_path: 'body:processed'
