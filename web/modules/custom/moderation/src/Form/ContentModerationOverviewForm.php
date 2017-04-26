@@ -74,14 +74,17 @@ class ContentModerationOverviewForm extends FormBase {
       SELECT n.type, s.field_state_value as state, COUNT(1) as count
       FROM node n
       LEFT JOIN node__field_state s ON n.nid = s.entity_id
+      LEFT JOIN node__og_audience o ON n.nid = o.entity_id
       WHERE n.type in (:types[])
       AND s.field_state_value in (:states[])
+      AND o.og_audience_target_id = :group
       GROUP BY s.field_state_value, n.type;
 SQL;
 
     $args = [
       ':types[]' => $moderatable_types,
       ':states[]' => $moderatable_states,
+      ':group' => $rdf_entity->id(),
     ];
 
     $query = $this->connection->query($sql, $args);
@@ -132,6 +135,7 @@ SQL;
     // there actually are results to fetch.
     if ($this->getFilteredItemsCount($count, $type_filter, $state_filter)) {
       $query = $this->entityTypeManager->getStorage('node')->getQuery();
+      $query->condition('og_audience', $rdf_entity->id());
       if ($type_filter && $type_filter !== 'all') {
         $query->condition('type', $type_filter);
       }
