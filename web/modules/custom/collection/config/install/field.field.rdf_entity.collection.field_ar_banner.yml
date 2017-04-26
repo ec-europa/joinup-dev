@@ -12,7 +12,7 @@ entity_type: rdf_entity
 bundle: collection
 label: Banner
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
