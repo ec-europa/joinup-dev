@@ -49,7 +49,7 @@ bundle: solution
 mode: default
 content:
   field_is_content:
-    weight: 35
+    weight: 2
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -63,13 +63,18 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  rdf_entity_field_is_content_inline_facets:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   rdf_entity_field_is_content_top:
-    weight: 34
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
   related_solutions:
-    weight: 36
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
