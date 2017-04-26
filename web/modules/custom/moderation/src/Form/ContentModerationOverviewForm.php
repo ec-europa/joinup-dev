@@ -177,7 +177,7 @@ SQL;
    * Access check for the content moderation overview.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection that is on the verge of losing a member.
+   *   The collection or solution that is being moderated.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
@@ -192,14 +192,14 @@ SQL;
 
     $access = FALSE;
 
-    // Only allow access if the current user is a moderator or a collection
-    // facilitator.
+    // Only allow access if the current user is a moderator or a facilitator.
     if (in_array('moderator', $user->getRoles())) {
       $access = TRUE;
     }
     elseif ($membership_manager->isMember($rdf_entity, $user)) {
       $membership = $membership_manager->getMembership($rdf_entity, $user);
-      if (in_array('rdf_entity-collection-facilitator', $membership->getRolesIds())) {
+      $role = $rdf_entity->bundle() === 'collection' ? 'rdf_entity-collection-facilitator' : 'rdf_entity-solution-facilitator';
+      if (in_array($role, $membership->getRolesIds())) {
         $access = TRUE;
       }
     }
