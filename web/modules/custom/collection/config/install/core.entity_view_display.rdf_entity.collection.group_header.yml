@@ -27,6 +27,7 @@ dependencies:
     - ds
     - image
     - joinup_core
+    - user
 id: rdf_entity.collection.group_header
 targetEntityType: rdf_entity
 bundle: collection

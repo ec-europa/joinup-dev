@@ -136,7 +136,7 @@ class ContactInformationWorkflowTest extends JoinupWorkflowTestBase {
           'request_deletion',
         ],
       ],
-      'in_assessment' => [
+      'needs_update' => [
         'userAuthenticated' => [
           'update_changes',
         ],
