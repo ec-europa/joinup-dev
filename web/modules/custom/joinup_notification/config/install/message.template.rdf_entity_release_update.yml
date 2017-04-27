@@ -3,13 +3,13 @@ status: true
 dependencies: {  }
 template: rdf_entity_release_update
 label: 'Rdf entity - asset release - update'
-description: 'Notification sent to solution facilitators when a release is updated.'
+description: 'Message to solution facilitators when a release is updated'
 text:
   -
-    value: "<p>Joinup: The release [message:field_message_content:entity:field_isr_release_number] of your solution [message:field_message_content:entity:field_isr_is_version_of:label] was successfully updated</p>\r\n"
+    value: "<p>Joinup: The release \"[message:field_message_content:entity:field_isr_release_number]\" of your solution \"[message:field_message_group:entity:label]\" was successfully updated</p>\r\n"
     format: content_editor
   -
-    value: "<p>Dear [message:author:display-name],</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>Your release [message:field_message_content:entity:field_isr_release_number] for the [message:field_message_content:entity:field_isr_is_version_of:label] solution was uploaded succesfully.</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>Kind regards,</p>\r\n\r\n<p>The Joinup Moderation Team.</p>\r\n"
+    value: "<p>Dear [message:author:display-name],</p><p>Your release \"[message:field_message_content:entity:field_isr_release_number]\" for the \"[message:field_message_group:entity:label]\" solution was uploaded succesfully.</p><p>Kind regards,</p><p>The Joinup Moderation Team.</p>"
     format: content_editor
 settings:
   'token options':

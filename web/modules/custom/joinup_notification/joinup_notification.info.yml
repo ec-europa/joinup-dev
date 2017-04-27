@@ -23,6 +23,7 @@ config_devel:
   - field.field.message.rdf_collection_node_updated.field_message_node
   - field.field.message.rdf_collection_node_updated.field_message_actor
   - field.field.message.rdf_entity_release_update.field_message_content
+  - field.field.message.rdf_entity_release_update.field_message_group
   - field.field.message.rdf_entity_solution_delete.field_message_content
   - field.field.message.rdf_entity_solution_node_delete.field_message_entity_title
   - field.field.message.rdf_entity_solution_node_delete.field_message_entity_bundle
@@ -32,6 +33,7 @@ config_devel:
   - field.field.message.rdf_entity_solution_request_del.field_message_content
   - field.field.message.rdf_entity_solution_validate.field_message_content
   - field.storage.message.field_message_content
+  - field.storage.message.field_message_group
   - field.storage.message.field_message_node
   - field.storage.message.field_message_entity_title
   - field.storage.message.field_message_entity_bundle

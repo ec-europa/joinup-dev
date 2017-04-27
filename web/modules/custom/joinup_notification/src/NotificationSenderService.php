@@ -116,6 +116,11 @@ class NotificationSenderService {
    */
   public function sendStateTransitionMessage(EntityInterface $entity, $role_id, array $template_ids) {
     $values = ['field_message_content' => $entity->id()];
+    if ($this->groupTypeManager->isGroupContent($entity->getEntityTypeId(), $entity->bundle())) {
+      $parent = $this->relationManager->getParent($entity);
+      // If the field does not exist, the value will be simply skipped.
+      $values += ['field_message_group' => $parent->id()];
+    }
     $this->sendMessageTemplateToRole($template_ids, $values, $role_id, $entity);
   }
 
