@@ -4,7 +4,8 @@ dependencies:
   config:
     - field.storage.node.field_organisation_type
     - node.type.event
-    - taxonomy.vocabulary.owner_type
+  module:
+    - options
 id: node.event.field_organisation_type
 field_name: field_organisation_type
 entity_type: node
@@ -15,13 +16,5 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings:
-  handler: 'default:taxonomy_term'
-  handler_settings:
-    target_bundles:
-      owner_type: owner_type
-    sort:
-      field: _none
-    auto_create: false
-    auto_create_bundle: ''
-field_type: entity_reference
+settings: {  }
+field_type: list_string
