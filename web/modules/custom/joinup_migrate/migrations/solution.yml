@@ -80,16 +80,7 @@ process:
       9: validated
       10: needs_update
     default_value: draft
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
-  # field_status:
-  #   plugin: static_map
-  #   source: status
-  #   map:
-  #     11646: http://purl.org/adms/status/Completed
-  #     11647: http://purl.org/adms/status/Deprecated
-  #     11648: http://purl.org/adms/status/UnderDevelopment
-  #     11649: http://purl.org/adms/status/Withdrawn
+  field_status: status
 
   # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
   # field_is_translation:

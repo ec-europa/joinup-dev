@@ -16,6 +16,7 @@ class Release extends JoinupSqlBase {
   use CountryTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
+  use StatusTrait;
 
   /**
    * {@inheritdoc}
@@ -118,6 +119,9 @@ class Release extends JoinupSqlBase {
 
     // Resolve documentation.
     $this->setFileUrlTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
+
+    // Status.
+    $this->setStatus($vid, $row);
 
     return parent::prepareRow($row);
   }

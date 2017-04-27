@@ -29,6 +29,7 @@ $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 /* @var \Drupal\rdf_entity\RdfInterface $owner */
 $owner = $this->loadEntityByLabel('rdf_entity', 'Ordnance Survey', 'owner');
 $this->assertEquals($owner->id(), $solution->field_is_owner->target_id);
+$this->assertReferences(['Completed'], $release->get('field_status'));
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'CIPA e-Delivery', 'solution');
 $this->assertEquals('CIPA e-Delivery', $solution->label());
@@ -54,3 +55,4 @@ $logo = File::load($solution->field_is_logo->target_id);
 $this->assertEquals('public://solution/logo/CIPA_e-Delivery_70x70.png', $logo->getFileUri());
 $this->assertFileExists('public://solution/logo/CIPA_e-Delivery_70x70.png');
 $this->assertEquals(1435, filesize('public://solution/logo/CIPA_e-Delivery_70x70.png'));
+$this->assertTrue($release->get('field_status')->isEmpty());

@@ -16,6 +16,7 @@ class Solution extends SolutionBase {
   use CountryTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
+  use StatusTrait;
 
   /**
    * {@inheritdoc}
@@ -111,6 +112,9 @@ class Solution extends SolutionBase {
     $query->join('node', 'n', 'd.field_asset_distribution_nid = n.nid');
     $distributions = $query->execute()->fetchCol();
     $row->setSourceProperty('distribution', $distributions);
+
+    // Status.
+    $this->setStatus($vid, $row);
 
     return parent::prepareRow($row);
   }
