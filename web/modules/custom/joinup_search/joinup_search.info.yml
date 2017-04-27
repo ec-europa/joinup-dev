@@ -7,6 +7,7 @@ package: Joinup
 dependencies:
   - facets
   - joinup_core
+  - joinup_user
   - node
   - rdf_entity
   - search_api
