@@ -239,7 +239,7 @@ display:
         type: none
       defaults:
         cache: false
-      exposed_block: false
+      exposed_block: true
     cache_metadata:
       max-age: -1
       contexts:
