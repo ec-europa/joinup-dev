@@ -186,8 +186,8 @@ foreach ($expected_values as $nid => $expected_value) {
     'owner' => NULL,
     'collection_owner' => NULL,
     'elibrary' => NULL,
-    'collection_status' => NULL,
-    'content_item_status' => NULL,
+    'collection_state' => NULL,
+    'content_item_state' => NULL,
   ];
   ksort($expected_value);
   ksort($imported[$nid]);

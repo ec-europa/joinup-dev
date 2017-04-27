@@ -147,14 +147,14 @@ function joinup_migrate_source_db_schema($table) {
           'length' => 255,
           'not null' => FALSE,
         ],
-        'collection_status' => [
-          'description' => 'Collection status',
+        'collection_state' => [
+          'description' => 'Collection state',
           'type' => 'varchar',
           'length' => 32,
           'not null' => FALSE,
         ],
-        'content_item_status' => [
-          'description' => 'Content item status',
+        'content_item_state' => [
+          'description' => 'Content item state',
           'type' => 'varchar',
           'length' => 32,
           'not null' => FALSE,

@@ -21,8 +21,8 @@ source:
     - Owner
     - 'Collection Owner'
     - 'Elibrary Creation'
-    - 'Collection status'
-    - 'Content item status'
+    - 'Collection state'
+    - 'Content item state'
   row_index_column: row_index
   keys:
     nid:
@@ -47,8 +47,8 @@ process:
   owner: Owner
   collection_owner: 'Collection Owner'
   elibrary: 'Elibrary Creation'
-  collection_status: 'Collection status'
-  content_item_status: 'Content item status'
+  collection_state: 'Collection state'
+  content_item_state: 'Content item state'
   row_index: row_index
 destination:
   plugin: mapping
