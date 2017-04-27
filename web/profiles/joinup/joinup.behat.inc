@@ -537,6 +537,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+        'policy domain' => 'field_policy_domain',
       ],
     ];
 

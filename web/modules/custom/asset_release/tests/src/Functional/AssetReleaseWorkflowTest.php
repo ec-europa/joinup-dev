@@ -346,7 +346,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgFacilitator', FALSE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
@@ -400,7 +400,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgFacilitator', FALSE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
@@ -465,7 +465,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
         ],
         'userOgAdministrator' => [],
       ],
-      'in_assessment' => [
+      'needs_update' => [
         'userAuthenticated' => [],
         'userModerator' => [
           'update_changes',

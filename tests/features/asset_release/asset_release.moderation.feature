@@ -61,7 +61,7 @@ Feature: Asset release moderation
     Then I should see the heading "Release of the dark ship v1"
     When I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Release Release"
-    And the current workflow state should be "In assessment"
+    And the current workflow state should be "Needs update"
     When I fill in "Name" with "Release fix"
     And I press "Update"
     # The updated version is still not published.
