@@ -303,25 +303,9 @@ processor_settings:
   aggregated_field: {  }
   html_filter:
     fields:
-      - entity_bundle
-      - entity_groups
-      - policy_domain
-      - spatial_coverage
-      - keywords
-      - title
       - body
-      - field_short_title
-      - field_shared_in
-      - field_news_headline
       - field_event_agenda
-      - field_location
-      - field_event_adtl_address_info
-      - field_organisation
-      - field_scope
-      - id
-      - label
       - field_ar_description
-      - rid
       - field_ad_description
       - field_isr_description
       - field_ar_abstract
@@ -362,6 +346,11 @@ processor_settings:
       - field_isr_description
       - field_ar_abstract
       - field_isr_release_notes
+      - field_ci_name
+      - field_owner_name
+      - field_user_first_name
+      - field_user_family_name
+      - field_user_organisation
     weights:
       preprocess_index: -50
       preprocess_query: -50
@@ -376,7 +365,6 @@ processor_settings:
       - field_event_agenda
       - field_location
       - field_event_adtl_address_info
-      - field_organisation
       - field_scope
       - label
       - field_ar_description
@@ -441,6 +429,11 @@ processor_settings:
       - field_isr_description
       - field_ar_abstract
       - field_isr_release_notes
+      - field_ci_name
+      - field_owner_name
+      - field_user_first_name
+      - field_user_family_name
+      - field_user_organisation
     spaces: ''
     overlap_cjk: 1
     minimum_word_size: '3'
