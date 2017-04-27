@@ -363,8 +363,8 @@ processor_settings:
       - field_ar_abstract
       - field_isr_release_notes
     weights:
-      preprocess_index: -49
-      preprocess_query: -48
+      preprocess_index: -50
+      preprocess_query: -50
   rendered_item: {  }
   stopwords:
     fields:
@@ -421,8 +421,8 @@ processor_settings:
       - will
       - with
     weights:
-      preprocess_index: -48
-      preprocess_query: -49
+      preprocess_index: -47
+      preprocess_query: -47
   tokenizer:
     fields:
       - keywords
@@ -445,8 +445,8 @@ processor_settings:
     overlap_cjk: 1
     minimum_word_size: '3'
     weights:
-      preprocess_index: -44
-      preprocess_query: -44
+      preprocess_index: -49
+      preprocess_query: -49
   transliteration:
     fields:
       - entity_bundle
@@ -478,8 +478,8 @@ processor_settings:
       - field_user_family_name
       - field_user_organisation
     weights:
-      preprocess_index: -47
-      preprocess_query: -47
+      preprocess_index: -48
+      preprocess_query: -48
 tracker_settings:
   default: {  }
 options:
