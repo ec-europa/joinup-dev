@@ -286,14 +286,17 @@ datasource_settings:
   'entity:node':
     bundles:
       default: true
-      selected: {  }
+      selected:
+        - newsletter
     languages:
       default: true
       selected: {  }
   'entity:rdf_entity':
     bundles:
       default: true
-      selected: {  }
+      selected:
+        - contact_information
+        - owner
   'entity:user':
     languages:
       default: true
