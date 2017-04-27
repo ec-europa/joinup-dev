@@ -286,8 +286,7 @@ datasource_settings:
   'entity:node':
     bundles:
       default: true
-      selected:
-        - newsletter
+      selected: {  }
     languages:
       default: true
       selected: {  }
