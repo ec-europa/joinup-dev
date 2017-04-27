@@ -34,7 +34,13 @@ $this->assertKeywords([
   'IT in public sector',
   'Public Administration',
 ], $event);
-$this->assertKeywords(['Cross-border'], $event, 'field_scope');
+$this->assertKeywords([
+  'Cross-border',
+  'European',
+  'Local (city or municipality)',
+  'National',
+  'Pan-European',
+], $event, 'field_scope');
 $this->assertEquals("Rome\nSpazio Europa\nVia IV Novembre, 149\n00187 Rome, Italy", $event->field_location->value);
 $image = File::load($event->field_event_logo->target_id);
 $this->assertEquals('public://event/logo/logo_euritas_rgb.jpg', $image->getFileUri());
