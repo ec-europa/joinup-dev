@@ -71,16 +71,22 @@ display:
         options:
           view_modes:
             'entity:node':
-              custom_page: default
-              document: default
+              custom_page: view_mode_tile
+              discussion: view_mode_tile
+              document: view_mode_tile
               event: view_mode_tile
-              news: default
+              news: view_mode_tile
+              newsletter: default
             'entity:rdf_entity':
-              asset_distribution: default
-              asset_release: default
+              asset_distribution: view_mode_tile
+              asset_release: view_mode_tile
               collection: view_mode_tile
+              contact_information: default
               licence: default
-              solution: default
+              owner: ''
+              solution: view_mode_tile
+            'entity:user':
+              user: view_mode_tile
       fields:
         id:
           table: search_api_index_collections
@@ -151,7 +157,49 @@ display:
           fallback_options:
             link_to_item: false
             multi_separator: ', '
-      filters: {  }
+      filters:
+        search_api_fulltext:
+          id: search_api_fulltext
+          table: search_api_index_collections
+          field: search_api_fulltext
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: and
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: search_api_fulltext_op
+            label: Search
+            description: ''
+            use_operator: false
+            operator: search_api_fulltext_op
+            identifier: keys
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              moderator: '0'
+              administrator: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          parse_mode: terms
+          min_length: 3
+          fields: {  }
+          plugin_id: search_api_fulltext
       sorts: {  }
       title: Search
       header: {  }
@@ -165,6 +213,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
       tags: {  }
   page_1:
@@ -179,10 +228,12 @@ display:
         type: none
       defaults:
         cache: false
+      exposed_block: false
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
       tags: {  }
