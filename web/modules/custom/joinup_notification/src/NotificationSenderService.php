@@ -201,21 +201,4 @@ class NotificationSenderService {
     return array_filter($user_ids);
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function getSubscribedEvents() {
-    $events = [];
-    $keys = [
-      'solution.validate.post_transition',
-      'solution.request_deletion.post_transition',
-    ];
-
-    foreach ($keys as $key) {
-      $events[$key][] = ['messageSender'];
-    }
-
-    return $events;
-  }
-
 }
