@@ -126,7 +126,7 @@ class EventWorkflowTest extends NodeWorkflowTestBase {
             'userOgFacilitator',
           ],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           'view' => [
             'userOwner',
             'userModerator',
@@ -194,7 +194,7 @@ class EventWorkflowTest extends NodeWorkflowTestBase {
             'userOgFacilitator',
           ],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           'view' => [
             'userOwner',
             'userModerator',
@@ -297,7 +297,7 @@ class EventWorkflowTest extends NodeWorkflowTestBase {
             'request_changes',
           ],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           'userAuthenticated' => [],
           'userOwner' => [],
           'userOgMember' => [],
@@ -367,7 +367,7 @@ class EventWorkflowTest extends NodeWorkflowTestBase {
             'request_changes',
           ],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           'userAuthenticated' => [],
           'userOwner' => [],
           'userOgMember' => [],
@@ -417,7 +417,7 @@ class EventWorkflowTest extends NodeWorkflowTestBase {
   public function isPublishedState($state) {
     $states = [
       'validated',
-      'in_assessment',
+      'needs_update',
       'request_deletion',
     ];
 
