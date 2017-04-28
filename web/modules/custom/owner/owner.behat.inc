@@ -40,10 +40,10 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | type                        | name        | id                      | state         |
-   * | Company,Industry consortium | Acme Inc.   | http://example.com/path | validated     |
-   * | Local authority             | Gotham City |                         | in_assessment |
-   * | Private Individual(s)       | Jane Roe    |                         |               |
+   * | type                        | name        | id                      | state        |
+   * | Company,Industry consortium | Acme Inc.   | http://example.com/path | validated    |
+   * | Local authority             | Gotham City |                         | needs_update |
+   * | Private Individual(s)       | Jane Roe    |                         |              |
    * @codingStandardsIgnoreEnd
    *
    * @param \Behat\Gherkin\Node\TableNode $owners_table

@@ -43,6 +43,5 @@ destination:
   plugin: entity:node
   default_bundle: news
 migration_dependencies:
- required:
-   - user
-   - prepare
+  required:
+    - collection

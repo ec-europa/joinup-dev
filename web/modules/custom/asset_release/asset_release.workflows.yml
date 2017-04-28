@@ -6,18 +6,18 @@ asset_release_workflow:
   states:
     draft:
       label: Draft
-    in_assessment:
-      label: In assessment
+    needs_update:
+      label: Needs update
     validated:
       label: Validated
   transitions:
     draft:
       label: Save as draft
-      from: [draft, in_assessment, validated]
+      from: [draft, needs_update, validated]
       to: draft
     validate:
       label: Publish
-      from: [draft, in_assessment]
+      from: [draft, needs_update]
       to: validated
     update_published:
       label: Update
@@ -26,8 +26,8 @@ asset_release_workflow:
     request_changes:
       label: Request changes
       from: [validated]
-      to: in_assessment
+      to: needs_update
     update_changes:
       label: Update
-      from: [in_assessment]
-      to: in_assessment
+      from: [needs_update]
+      to: needs_update

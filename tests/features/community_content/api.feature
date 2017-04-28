@@ -15,22 +15,22 @@ Feature: Create community content through the API
 
     Examples:
       | type       | workflow state   | publication state | title                    |
-      | discussion | in_assessment    | unpublished       | discussion-in-assessment |
+      | discussion | needs_update     | unpublished       | discussion-needs-update  |
       | discussion | proposed         | unpublished       | discussion-proposed      |
       | discussion | validated        | published         | discussion-validated     |
       | discussion | archived         | published         | discussion-archived      |
       | document   | draft            | unpublished       | document-draft           |
-      | document   | in_assessment    | unpublished       | document-in-assessment   |
+      | document   | needs_update     | unpublished       | document-needs-update    |
       | document   | proposed         | unpublished       | document-proposed        |
       | document   | validated        | published         | document-validated       |
       | document   | deletion_request | unpublished       | document-archived        |
       | event      | draft            | unpublished       | event-draft              |
-      | event      | in_assessment    | unpublished       | event-in-assessment      |
+      | event      | needs_update     | unpublished       | event-needs-update       |
       | event      | proposed         | unpublished       | event-proposed           |
       | event      | validated        | published         | event-validated          |
       | event      | deletion_request | unpublished       | event-archived           |
       | news       | draft            | unpublished       | news-draft               |
-      | news       | in_assessment    | unpublished       | news-in-assessment       |
+      | news       | needs_update     | unpublished       | news-needs-update        |
       | news       | proposed         | unpublished       | news-proposed            |
       | news       | validated        | published         | news-validated           |
       | news       | deletion_request | unpublished       | news-archived            |

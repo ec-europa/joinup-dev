@@ -2,8 +2,9 @@ langcode: en
 status: true
 dependencies:
   module:
-    - rdf_entity
+    - file
     - file_url
+    - rdf_entity
 third_party_settings:
   rdf_entity:
     mapping:

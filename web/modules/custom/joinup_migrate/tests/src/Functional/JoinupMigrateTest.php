@@ -6,6 +6,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\joinup_migrate\FileUtility;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
@@ -53,6 +54,13 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   protected $legacyDb;
 
   /**
+   * Legacy site webroot.
+   *
+   * @var string
+   */
+  protected $legacyWebroot;
+
+  /**
    * Migration plugin manager.
    *
    * @var \Drupal\migrate\Plugin\MigrationPluginManager
@@ -63,6 +71,11 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    * {@inheritdoc}
    */
   protected function setUp() {
+    $this->legacyWebroot = rtrim(getenv('SIMPLETEST_LEGACY_WEBROOT'), '/');
+
+    // Check if we're able to access the legacy site files.
+    FileUtility::checkLegacySiteWebRoot($this->legacyWebroot);
+
     $this->setUpSparql();
     $this->setUpLegacyDb();
 
@@ -88,6 +101,10 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
       }, $this->messages);
       $this->fail("Error messages received during migrations:\n" . implode("\n", $messages));
     }
+
+    // Common used objects.
+    /* @var \Drupal\rdf_entity\RdfInterface $collection */
+    $new_collection = $this->loadEntityByLabel('rdf_entity', 'New collection');
 
     // Assertions for each migrations are defined under assert/ directory.
     foreach (file_scan_directory(__DIR__ . '/assert', '|\.php$|') as $file) {
@@ -178,6 +195,17 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    * {@inheritdoc}
    */
   public function tearDown() {
+    // Rollback migrations to cleanup RDF data.
+    foreach ($this->manager->createInstances(static::$rdfMigrations) as $id => $migration) {
+      try {
+        (new MigrateExecutable($migration, $this))->rollback();
+      }
+      catch (\Exception $e) {
+        $class = get_class($e);
+        $this->display("$class: {$e->getMessage()} ({$e->getFile()}, {$e->getLine()})", 'error');
+      }
+    }
+
     Database::removeConnection('migrate');
     $this->db = NULL;
     $this->legacyDb = NULL;
@@ -265,6 +293,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    *   The entity type ID.
    * @param string $label
    *   The entity label.
+   * @param string|null $bundle
+   *   (optional) The search can be restricted to a specific bundle.
    *
    * @return \Drupal\Core\Entity\ContentEntityInterface
    *   The content entity.
@@ -274,7 +304,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    * @throws \Exception
    *   When the entity with the specified label was not found.
    */
-  protected function loadEntityByLabel($entity_type_id, $label) {
+  protected function loadEntityByLabel($entity_type_id, $label, $bundle = NULL) {
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
     $entity_type_manager = $this->container->get('entity_type.manager');
     $entity_type = $entity_type_manager->getDefinition($entity_type_id);
@@ -283,10 +313,24 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     }
 
     $label_key = $entity_type->getKey('label');
-    $storage = $entity_type_manager->getStorage($entity_type_id);
+    $conditions = [$label_key => $label];
 
-    if (!$entities = $storage->loadByProperties([$label_key => $label])) {
-      throw new \Exception("No $entity_type_id entity with $label_key '$label' was found.");
+    if ($bundle) {
+      if (!$entity_type->hasKey('bundle')) {
+        throw new \InvalidArgumentException("A bundle was passed but entity type '$entity_type_id' doesn't have a bundle key.");
+      }
+      $bundle_key = $entity_type->getKey('bundle');
+      $conditions[$bundle_key] = $bundle;
+    }
+
+    $storage = $entity_type_manager->getStorage($entity_type_id);
+    if (!$entities = $storage->loadByProperties($conditions)) {
+      $message = "No $entity_type_id entity";
+      if ($bundle) {
+        $message .= " ($bundle_key '$bundle') ";
+      }
+      $message .= "entity with $label_key '$label' was found.";
+      throw new \Exception($message);
     }
 
     return reset($entities);
@@ -409,6 +453,22 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     'Ukraine',
     'United Kingdom',
     'Vatican City',
+  ];
+
+  /**
+   * Migrations that are creating RDF objects.
+   *
+   * @var string[]
+   */
+  protected static $rdfMigrations = [
+    'collection',
+    'contact',
+    'distribution',
+    'licence',
+    'owner',
+    'policy_domain',
+    'release',
+    'solution',
   ];
 
 }

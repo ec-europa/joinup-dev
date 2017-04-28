@@ -29,6 +29,15 @@ function joinup_core_theme($existing, $type, $theme, $path) {
     'joinup_tiles' => [
       'path' => drupal_get_path('module', 'joinup_core') . '/templates',
     ],
+    'facet_widget_links_inline' => [
+      'variables' => [
+        'active' => [],
+        'items' => [],
+        'attributes' => [],
+        'prefix_text' => '',
+        'suffix_text' => '',
+      ],
+    ],
   ];
 }
 
