@@ -38,15 +38,21 @@ Feature: Global search
 
   @terms @javascript
   Scenario: Content can be found with a full-text search.
-    Given the following collections:
+    Given the following owner:
+      | name              | type    |
+      | Responsible owner | Company |
+    And the following contact:
+      | name  | Go-to contact     |
+      | email | go-to@example.com |
+    And the following collections:
       | title            | description                                                  | abstract                       | state     |
       | Collection alpha | <p>This is the collection <strong>beta</strong> description. | The collection gamma abstract. | validated |
     And the following solutions:
-      | title          | description                                                | keywords | state     |
-      | Solution alpha | <p>This is the solution <strong>beta</strong> description. | Alphabet | validated |
+      | title          | description                                                | keywords | owner             | contact information | state     |
+      | Solution alpha | <p>This is the solution <strong>beta</strong> description. | Alphabet | Responsible owner | Go-to contact       | validated |
     And the following releases:
-      | title         | release notes                               | keywords | is version of  | state     |
-      | Release Alpha | <p>Release notes for <em>beta</em> changes. | Alphabet | Solution alpha | validated |
+      | title         | release notes                               | keywords | is version of  | owner             | contact information | state     |
+      | Release Alpha | <p>Release notes for <em>beta</em> changes. | Alphabet | Solution alpha | Responsible owner | Go-to contact       | validated |
     And the following distributions:
       | title              | description                                    | parent        | access url |
       | Distribution alpha | <p>A simple beta distribution description.</p> | Release Alpha | test.zip   |
@@ -54,26 +60,30 @@ Feature: Global search
       | title         | description                         |
       | Licence Alpha | A beta description for the licence. |
     And news content:
-      | title      | kicker            | content                | keywords | collection       | state     |
-      | News omega | News kicker delta | The beta news content. | Alphabet | Collection alpha | validated |
+      | title      | headline            | body                      | keywords | collection       | state     |
+      | News omega | News headline delta | The epsilon news content. | Alphabet | Collection alpha | validated |
     And event content:
-      | title       | short title       | content                 | agenda        | location       | additional info address | organisation         | scope         | keywords | solution       | state     |
-      | Event Omega | Event short delta | The beta event content. | Event agenda. | Event location | Event address           | Epsilon organisation | International | Alphabet | Solution alpha | validated |
+      | title             | short title       | body                                | agenda         | location       | additional info address | organisation        | scope         | keywords | solution         | state     |
+      | Event Omega       | Event short delta | The epsilon event content.          | Event agenda.  | Some place     | Event address           | European Commission | International | Alphabet | Solution alpha   | validated |
+      | Alternative event | Alt event         | This event stays in the background. | To be planned. | Event location | Rue de events           | Event organisation  |               |          | Collection alpha | validated |
     And document content:
-      | title          | type     | short title          | content                              | keywords | collection       | state     |
-      | Document omega | Document | Document short delta | A document consists of beta strings. | Alphabet | Collection alpha | validated |
+      | title          | type     | short title          | body                                    | keywords | collection       | state     |
+      | Document omega | Document | Document short delta | A document consists of epsilon strings. | Alphabet | Collection alpha | validated |
     And discussion content:
-      | title            | content                                                        | collection     | state     |
-      | Discussion omega | <p>Does anybody has idea why this <em>beta</em> is everywhere? | Solution alpha | validated |
+      | title            | body                                                              | collection     | state     |
+      | Discussion omega | <p>Does anybody has idea why this <em>epsilon</em> is everywhere? | Solution alpha | validated |
     And newsletter content:
-      | title            | content                            |
-      | Newsletter omega | Talking about these beta contents. |
+      | title            | body                                  |
+      | Newsletter omega | Talking about these epsilon contents. |
     And custom_page content:
-      | title      | content                              | collection       |
-      | Page omega | This is just a beta but should work. | Collection alpha |
-    #And users:
-    #  | Username | E-mail | First name | Family name | Organisation |
+      | title      | body                                    | collection       |
+      | Page omega | This is just a epsilon but should work. | Collection alpha |
+    And users:
+      | Username     | E-mail                      | First name | Family name | Organisation |
+      | jenlyle      | jenessa.carlyle@example.com | Jenessa    | Carlyle     | Clyffco      |
+      | ulyssesfrees | ulysses.freeman@example.com | Ulysses    | Freeman     | Omero snc    |
 
+    # "Alpha" is used in all the rdf entities titles.
     When I am at "/search?keys=Alpha"
     Then I should see the "Collection alpha" tile
     And I should see the "Solution alpha" tile
@@ -87,6 +97,7 @@ Feature: Global search
     And I should not see the "Page omega" tile
     And I should not see the text "Newsletter omega"
 
+    # "Omega" is used in all the node entities titles.
     When I am at "/search?keys=omega"
     Then I should see the "News omega" tile
     And I should see the "Event Omega" tile
@@ -100,6 +111,35 @@ Feature: Global search
     And I should not see the "Distribution alpha" tile
     And I should not see the text "Licence Alpha"
 
+    # "Beta" is used in all the rdf entities body fields.
+    When I am at "/search?keys=beta"
+    Then I should see the "Collection alpha" tile
+    And I should see the "Solution alpha" tile
+    And I should see the "Release Alpha" tile
+    And I should see the "Distribution alpha" tile
+    And I should see the text "Licence Alpha"
+    But I should not see the "News omega" tile
+    And I should not see the "Event Omega" tile
+    And I should not see the "Document omega" tile
+    And I should not see the "Discussion omega" tile
+    And I should not see the "Page omega" tile
+    And I should not see the text "Newsletter omega"
+
+    # "Epsilon" is used in all the node entities body fields.
+    When I am at "/search?keys=epsilon"
+    Then I should see the "News omega" tile
+    And I should see the "Event Omega" tile
+    And I should see the "Document omega" tile
+    And I should see the "Discussion omega" tile
+    And I should see the "Page omega" tile
+    And I should see the text "Newsletter omega"
+    But I should not see the "Collection alpha" tile
+    And I should not see the "Solution alpha" tile
+    And I should not see the "Release Alpha" tile
+    And I should not see the "Distribution alpha" tile
+    And I should not see the text "Licence Alpha"
+
+    # "Alphabet" is used in all the keywords fields.
     When I am at "/search?keys=Alphabet"
     Then I should see the "Solution alpha" tile
     And I should see the "Release Alpha" tile
@@ -112,3 +152,61 @@ Feature: Global search
     And I should not see the "Discussion omega" tile
     And I should not see the "Page omega" tile
     And I should not see the text "Newsletter omega"
+
+    # "Gamma" is used in the collection abstract.
+    When I am at "/search?keys=gamma"
+    Then I should see the "Collection alpha" tile
+    But I should not see the "Solution alpha" tile
+    And I should not see the "Release Alpha" tile
+    And I should not see the "Distribution alpha" tile
+    And I should not see the text "Licence Alpha"
+    And I should not see the "News omega" tile
+    And I should not see the "Event Omega" tile
+    And I should not see the "Document omega" tile
+    And I should not see the "Discussion omega" tile
+    And I should not see the "Page omega" tile
+    And I should not see the text "Newsletter omega"
+
+    # "Delta" is used in headline and short titles.
+    When I am at "/search?keys=delta"
+    Then I should see the "News omega" tile
+    And I should see the "Event Omega" tile
+    And I should see the "Document omega" tile
+    But I should not see the "Discussion omega" tile
+    And I should not see the "Page omega" tile
+    And I should not see the text "Newsletter omega"
+    And I should not see the "Collection alpha" tile
+    And I should not see the "Solution alpha" tile
+    And I should not see the "Release Alpha" tile
+    And I should not see the "Distribution alpha" tile
+    And I should not see the text "Licence Alpha"
+
+    # Search for the event fields: agenda, location, address, organisation, scope.
+    When I am at "/search?keys=agenda"
+    Then I should see the "Event Omega" tile
+    When I am at "/search?keys=location"
+    Then I should see the "Alternative event" tile
+    When I am at "/search?keys=address"
+    Then I should see the "Event Omega" tile
+    When I am at "/search?keys=organisation"
+    Then I should see the "Alternative event" tile
+    When I am at "/search?keys=international"
+    Then I should see the "Event Omega" tile
+
+    # The owner and contact information names should be indexed inside the solutions/releases they are linked to.
+    When I am at "/search?keys=responsible"
+    Then I should see the "Solution alpha" tile
+    And I should see the "Release Alpha" tile
+    When I am at "/search?keys=contact"
+    Then I should see the "Solution alpha" tile
+    And I should see the "Release Alpha" tile
+
+    # Users should be found by first name, family name and organisation.
+    When I am at "/search?keys=Jenessa"
+    Then I should see the "Carlyle Jenessa" tile
+    When I am at "/search?keys=freeman"
+    Then I should see the "Freeman Ulysses" tile
+    When I am at "/search?keys=clyffco"
+    Then I should see the "Carlyle Jenessa" tile
+    When I am at "/search?keys=Omero+snc"
+    Then I should see the "Freeman Ulysses" tile
