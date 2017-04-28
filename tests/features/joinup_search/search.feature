@@ -84,7 +84,7 @@ Feature: Global search
       | ulyssesfrees | ulysses.freeman@example.com | Ulysses    | Freeman     | Omero snc    |
 
     # "Alpha" is used in all the rdf entities titles.
-    When I am at "/search?keys=Alpha"
+    When I enter "Alpha" in the header search bar and hit enter
     Then I should see the "Collection alpha" tile
     And I should see the "Solution alpha" tile
     And I should see the "Release Alpha" tile
@@ -98,7 +98,7 @@ Feature: Global search
     And I should not see the text "Newsletter omega"
 
     # "Omega" is used in all the node entities titles.
-    When I am at "/search?keys=omega"
+    When I enter "omega" in the header search bar and hit enter
     Then I should see the "News omega" tile
     And I should see the "Event Omega" tile
     And I should see the "Document omega" tile
@@ -112,7 +112,7 @@ Feature: Global search
     And I should not see the text "Licence Alpha"
 
     # "Beta" is used in all the rdf entities body fields.
-    When I am at "/search?keys=beta"
+    When I enter "beta" in the header search bar and hit enter
     Then I should see the "Collection alpha" tile
     And I should see the "Solution alpha" tile
     And I should see the "Release Alpha" tile
@@ -126,7 +126,7 @@ Feature: Global search
     And I should not see the text "Newsletter omega"
 
     # "Epsilon" is used in all the node entities body fields.
-    When I am at "/search?keys=epsilon"
+    When I enter "epsilon" in the header search bar and hit enter
     Then I should see the "News omega" tile
     And I should see the "Event Omega" tile
     And I should see the "Document omega" tile
@@ -140,7 +140,7 @@ Feature: Global search
     And I should not see the text "Licence Alpha"
 
     # "Alphabet" is used in all the keywords fields.
-    When I am at "/search?keys=Alphabet"
+    When I enter "Alphabet" in the header search bar and hit enter
     Then I should see the "Solution alpha" tile
     And I should see the "Release Alpha" tile
     And I should see the "News omega" tile
@@ -154,7 +154,7 @@ Feature: Global search
     And I should not see the text "Newsletter omega"
 
     # "Gamma" is used in the collection abstract.
-    When I am at "/search?keys=gamma"
+    When I enter "gamma" in the header search bar and hit enter
     Then I should see the "Collection alpha" tile
     But I should not see the "Solution alpha" tile
     And I should not see the "Release Alpha" tile
@@ -168,7 +168,7 @@ Feature: Global search
     And I should not see the text "Newsletter omega"
 
     # "Delta" is used in headline and short titles.
-    When I am at "/search?keys=delta"
+    When I enter "delta" in the header search bar and hit enter
     Then I should see the "News omega" tile
     And I should see the "Event Omega" tile
     And I should see the "Document omega" tile
@@ -182,31 +182,31 @@ Feature: Global search
     And I should not see the text "Licence Alpha"
 
     # Search for the event fields: agenda, location, address, organisation, scope.
-    When I am at "/search?keys=agenda"
+    When I enter "agenda" in the header search bar and hit enter
     Then I should see the "Event Omega" tile
-    When I am at "/search?keys=location"
+    When I enter "location" in the header search bar and hit enter
     Then I should see the "Alternative event" tile
-    When I am at "/search?keys=address"
+    When I enter "address" in the header search bar and hit enter
     Then I should see the "Event Omega" tile
-    When I am at "/search?keys=organisation"
+    When I enter "organisation" in the header search bar and hit enter
     Then I should see the "Alternative event" tile
-    When I am at "/search?keys=international"
+    When I enter "international" in the header search bar and hit enter
     Then I should see the "Event Omega" tile
 
     # The owner and contact information names should be indexed inside the solutions/releases they are linked to.
-    When I am at "/search?keys=responsible"
+    When I enter "responsible" in the header search bar and hit enter
     Then I should see the "Solution alpha" tile
     And I should see the "Release Alpha" tile
-    When I am at "/search?keys=contact"
+    When I enter "contact" in the header search bar and hit enter
     Then I should see the "Solution alpha" tile
     And I should see the "Release Alpha" tile
 
     # Users should be found by first name, family name and organisation.
-    When I am at "/search?keys=Jenessa"
+    When I enter "Jenessa" in the header search bar and hit enter
     Then I should see the "Carlyle Jenessa" tile
-    When I am at "/search?keys=freeman"
+    When I enter "freeman" in the header search bar and hit enter
     Then I should see the "Freeman Ulysses" tile
-    When I am at "/search?keys=clyffco"
+    When I enter "clyffco" in the header search bar and hit enter
     Then I should see the "Carlyle Jenessa" tile
-    When I am at "/search?keys=Omero+snc"
+    When I enter "Omero+snc" in the header search bar and hit enter
     Then I should see the "Freeman Ulysses" tile
