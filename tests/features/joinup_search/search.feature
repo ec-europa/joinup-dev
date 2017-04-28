@@ -85,128 +85,72 @@ Feature: Global search
 
     # "Alpha" is used in all the rdf entities titles.
     When I enter "Alpha" in the header search bar and hit enter
-    Then I should see the "Collection alpha" tile
-    And I should see the "Solution alpha" tile
-    And I should see the "Release Alpha" tile
-    And I should see the "Distribution alpha" tile
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha"
     And I should see the text "Licence Alpha"
-    But I should not see the "News omega" tile
-    And I should not see the "Event Omega" tile
-    And I should not see the "Document omega" tile
-    And I should not see the "Discussion omega" tile
-    And I should not see the "Page omega" tile
     And I should not see the text "Newsletter omega"
 
     # "Omega" is used in all the node entities titles.
     When I enter "omega" in the header search bar and hit enter
-    Then I should see the "News omega" tile
-    And I should see the "Event Omega" tile
-    And I should see the "Document omega" tile
-    And I should see the "Discussion omega" tile
-    And I should see the "Page omega" tile
+    Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
     And I should see the text "Newsletter omega"
-    But I should not see the "Collection alpha" tile
-    And I should not see the "Solution alpha" tile
-    And I should not see the "Release Alpha" tile
-    And I should not see the "Distribution alpha" tile
     And I should not see the text "Licence Alpha"
 
     # "Beta" is used in all the rdf entities body fields.
     When I enter "beta" in the header search bar and hit enter
-    Then I should see the "Collection alpha" tile
-    And I should see the "Solution alpha" tile
-    And I should see the "Release Alpha" tile
-    And I should see the "Distribution alpha" tile
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha"
     And I should see the text "Licence Alpha"
-    But I should not see the "News omega" tile
-    And I should not see the "Event Omega" tile
-    And I should not see the "Document omega" tile
-    And I should not see the "Discussion omega" tile
-    And I should not see the "Page omega" tile
     And I should not see the text "Newsletter omega"
 
     # "Epsilon" is used in all the node entities body fields.
     When I enter "epsilon" in the header search bar and hit enter
-    Then I should see the "News omega" tile
-    And I should see the "Event Omega" tile
-    And I should see the "Document omega" tile
-    And I should see the "Discussion omega" tile
-    And I should see the "Page omega" tile
+    Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
     And I should see the text "Newsletter omega"
-    But I should not see the "Collection alpha" tile
-    And I should not see the "Solution alpha" tile
-    And I should not see the "Release Alpha" tile
-    And I should not see the "Distribution alpha" tile
     And I should not see the text "Licence Alpha"
 
     # "Alphabet" is used in all the keywords fields.
     When I enter "Alphabet" in the header search bar and hit enter
-    Then I should see the "Solution alpha" tile
-    And I should see the "Release Alpha" tile
-    And I should see the "News omega" tile
-    And I should see the "Document omega" tile
-    And I should see the "Event Omega" tile
-    But I should not see the "Collection alpha" tile
-    And I should not see the "Distribution alpha" tile
+    Then the page should show the tiles "Solution alpha, Release Alpha, News omega, Event Omega, Document omega"
     And I should not see the text "Licence Alpha"
-    And I should not see the "Discussion omega" tile
-    And I should not see the "Page omega" tile
     And I should not see the text "Newsletter omega"
 
     # "Gamma" is used in the collection abstract.
     When I enter "gamma" in the header search bar and hit enter
-    Then I should see the "Collection alpha" tile
-    But I should not see the "Solution alpha" tile
-    And I should not see the "Release Alpha" tile
-    And I should not see the "Distribution alpha" tile
+    Then the page should show the tiles "Collection alpha"
     And I should not see the text "Licence Alpha"
-    And I should not see the "News omega" tile
-    And I should not see the "Event Omega" tile
-    And I should not see the "Document omega" tile
-    And I should not see the "Discussion omega" tile
-    And I should not see the "Page omega" tile
     And I should not see the text "Newsletter omega"
 
     # "Delta" is used in headline and short titles.
     When I enter "delta" in the header search bar and hit enter
-    Then I should see the "News omega" tile
-    And I should see the "Event Omega" tile
-    And I should see the "Document omega" tile
-    But I should not see the "Discussion omega" tile
-    And I should not see the "Page omega" tile
+    Then the page should show the tiles "News omega, Event Omega, Document omega"
     And I should not see the text "Newsletter omega"
-    And I should not see the "Collection alpha" tile
-    And I should not see the "Solution alpha" tile
-    And I should not see the "Release Alpha" tile
-    And I should not see the "Distribution alpha" tile
     And I should not see the text "Licence Alpha"
 
     # Search for the event fields: agenda, location, address, organisation, scope.
     When I enter "agenda" in the header search bar and hit enter
-    Then I should see the "Event Omega" tile
+    Then the page should show the tiles "Event Omega"
     When I enter "location" in the header search bar and hit enter
-    Then I should see the "Alternative event" tile
+    Then the page should show the tiles "Alternative event"
     When I enter "address" in the header search bar and hit enter
-    Then I should see the "Event Omega" tile
+    Then the page should show the tiles "Event Omega"
     When I enter "organisation" in the header search bar and hit enter
-    Then I should see the "Alternative event" tile
+    Then the page should show the tiles "Alternative event"
     When I enter "international" in the header search bar and hit enter
-    Then I should see the "Event Omega" tile
+    Then the page should show the tiles "Event Omega"
 
     # The owner and contact information names should be indexed inside the solutions/releases they are linked to.
     When I enter "responsible" in the header search bar and hit enter
-    Then I should see the "Solution alpha" tile
-    And I should see the "Release Alpha" tile
-    When I enter "contact" in the header search bar and hit enter
-    Then I should see the "Solution alpha" tile
-    And I should see the "Release Alpha" tile
+    Then the page should show the tiles "Solution alpha, Release Alpha"
+    # Visit the homepage to be sure that the test fetches the correct updated page.
+    When I go to the homepage
+    And I enter "contact" in the header search bar and hit enter
+    Then the page should show the tiles "Solution alpha, Release Alpha"
 
     # Users should be found by first name, family name and organisation.
     When I enter "Jenessa" in the header search bar and hit enter
-    Then I should see the "Carlyle Jenessa" tile
+    Then the page should show the tiles "Carlyle Jenessa"
     When I enter "freeman" in the header search bar and hit enter
-    Then I should see the "Freeman Ulysses" tile
+    Then the page should show the tiles "Freeman Ulysses"
     When I enter "clyffco" in the header search bar and hit enter
-    Then I should see the "Carlyle Jenessa" tile
+    Then the page should show the tiles "Carlyle Jenessa"
     When I enter "Omero+snc" in the header search bar and hit enter
-    Then I should see the "Freeman Ulysses" tile
+    Then the page should show the tiles "Freeman Ulysses"
