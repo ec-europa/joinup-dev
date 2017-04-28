@@ -88,10 +88,6 @@ Feature: User profile
       | title                 | description                           | logo     | banner     | state     | affiliates         |
       | Botanic E.D.E.N.      | European Deep Earth Nurturing project | logo.png | banner.jpg | validated | E.C.O. fertilizers |
       | Ethic flower handling | Because even flowers have feelings.   | logo.png | banner.jpg | validated | SOUND project      |
-    And discussion content:
-      | title                  | author          | collection            | state     |
-      | Repopulating blue iris | Corwin Robert   | Botanic E.D.E.N.      | validated |
-      | title                  | Anise Edwardson | Ethic flower handling | validated |
     And the following contact:
       | name        | Wibo Verhoeven             |
       | email       | wibo.verhoeven@example.com |
@@ -106,6 +102,10 @@ Feature: User profile
     And the following solution user membership:
       | user          | solution      |
       | Corwin Robert | SOUND project |
+    And discussion content:
+      | title                  | author          | collection            | state     |
+      | Repopulating blue iris | Corwin Robert   | Botanic E.D.E.N.      | validated |
+      | Flowers are people too | Anise Edwardson | Ethic flower handling | validated |
 
     When I am an anonymous user
     And I go to the public profile of "Corwin Robert"
@@ -116,6 +116,7 @@ Feature: User profile
     And I should see the "Repopulating blue iris" tile
 
     But I should not see the "Ethic flower handling" tile
+    But I should not see the "Flowers are people too" tile
     And I should not see the "E.C.O. fertilizers" tile
     # Contact information and owner tiles should never be shown.
     And I should not see the "Wibo Verhoeven" tile
