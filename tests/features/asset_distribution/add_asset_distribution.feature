@@ -40,8 +40,12 @@ Feature: Add distribution through the UI
       When I fill in "Title" with "Linux x86-64 SDK"
       And I enter "<p>The full software development kit for systems based on the x86-64 architecture.</p>" in the "Description" wysiwyg editor
       Given I upload the file "test.zip" to "Access URL"
-      And I select "WTFPL" from "License"
       And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
+      And I press "Save"
+      # Regression test for required field.
+      # @see: https://webgate.ec.europa/eu/CITnet/jira/browse/ISAICP-3064
+      Then I should see the error message "License field is required."
+      When I select "WTFPL" from "License"
       And I press "Save"
       Then I should have 1 distribution
       And the "Linux x86-64 SDK" distribution should have the link of the "test.zip" in the access URL field
