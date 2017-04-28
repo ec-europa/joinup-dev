@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0e49b4c7e418d04fe0705bb2241dcae",
+    "content-hash": "abe48824e2921c7869776030954dc14e",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1711,12 +1711,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "076f41fa03bca938b4ccbed21c0289a514336863"
+                "reference": "4c6a12eb9549d357cce88ad6a352187e456068c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/076f41fa03bca938b4ccbed21c0289a514336863",
-                "reference": "076f41fa03bca938b4ccbed21c0289a514336863",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/4c6a12eb9549d357cce88ad6a352187e456068c8",
+                "reference": "4c6a12eb9549d357cce88ad6a352187e456068c8",
                 "shasum": ""
             },
             "require": {
@@ -1870,15 +1870,12 @@
             "extra": {
                 "patches_applied": {
                     "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-6_0.patch",
-                    "Contextual links button is always rendered even when no links are available (with warm client-side cache) @see https://www.drupal.org/node/2650910": "https://www.drupal.org/files/issues/2650910-42.patch",
                     "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-19.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
                     "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
                     "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-85.patch",
-                    "Explode processor is too strict @see https://www.drupal.org/node/2853823": "https://www.drupal.org/files/issues/2853823-29.patch",
-                    "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
-                    "Optionally log messages for skip_on_empty and skip_row_if_not_set @see https://www.drupal.org/node/2655154": "https://www.drupal.org/files/issues/2655154-27.patch"
+                    "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch"
                 }
             },
             "autoload": {
@@ -1902,7 +1899,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2017-03-14 16:10:18"
+            "time": "2017-04-11 21:40:17"
         },
         {
             "name": "drupal/diff",
@@ -2400,6 +2397,14 @@
             ],
             "authors": [
                 {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -2501,21 +2506,21 @@
         },
         {
             "name": "drupal/migrate_spreadsheet",
-            "version": "1.0.0-beta1",
+            "version": "1.0.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/migrate_spreadsheet",
-                "reference": "8.x-1.0-beta1"
+                "reference": "8.x-1.0-beta2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/migrate_spreadsheet-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "65d126a76403fc309f57b13177f0d15667855c48"
+                "url": "https://ftp.drupal.org/files/projects/migrate_spreadsheet-8.x-1.0-beta2.zip",
+                "reference": null,
+                "shasum": "6664530ba29fae747e293a7c8f4282e83bdcaf71"
             },
             "require": {
                 "drupal/core": "*",
-                "phpoffice/phpspreadsheet": "~0.0"
+                "phpoffice/phpspreadsheet": "dev-master"
             },
             "type": "drupal-module",
             "extra": {
@@ -2523,13 +2528,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1487973484"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PhpOffice\\PhpSpreadsheet\\": "vendor/phpoffice/phpspreadsheet/src/PhpSpreadsheet"
+                    "version": "8.x-1.0-beta2",
+                    "datestamp": "1492605543"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4064,7 +4064,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2016-04-20 05:45:29"
+            "time": "2017-01-20 06:45:09"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -4712,14 +4712,80 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "0.0",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
+                "reference": "c94539c86c9e2790656947b87d1aa1ef211a4584"
+            },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/PHPOffice/PhpSpreadsheet/archive/develop.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/c94539c86c9e2790656947b87d1aa1ef211a4584",
+                "reference": "c94539c86c9e2790656947b87d1aa1ef211a4584",
+                "shasum": ""
             },
-            "type": "library"
+            "require": {
+                "ext-iconv": "*",
+                "ext-mbstring": "*",
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": "^5.5|^7.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.11",
+                "mikey179/vfsstream": "1.5.*",
+                "phpunit/phpunit": "4.6.*",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "suggest": {
+                "dompdf/dompdf": "Option for rendering PDF with PDF Writer",
+                "ext-dom": "Option to read and write HTML files",
+                "ext-gd": "*",
+                "ext-zip": "*",
+                "jpgraph/jpgraph": "Option for rendering charts, or including charts with PDF or HTML Writers",
+                "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
+                "tecnick.com/tcpdf": "Option for rendering PDF with PDF Writer"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpOffice\\PhpSpreadsheet\\": "src/PhpSpreadsheet"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Erik Tilt"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://rootslabs.net"
+                },
+                {
+                    "name": "Mark Baker",
+                    "homepage": "http://markbakeruk.net"
+                }
+            ],
+            "description": "PHPSpreadsheet - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "https://github.com/PHPOffice/PhpSpreadsheet",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "gnumeric",
+                "ods",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "time": "2016-10-03 08:18:38"
         },
         {
             "name": "psr/http-message",

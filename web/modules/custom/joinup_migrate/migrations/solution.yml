@@ -103,3 +103,5 @@ migration_dependencies:
     - solution_logo
     - distribution
     - owner
+    - contact
+    - documentation_file

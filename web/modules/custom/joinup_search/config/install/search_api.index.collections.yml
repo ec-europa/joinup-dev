@@ -51,6 +51,25 @@ field_settings:
       fields:
         - 'entity:node/uid'
         - 'entity:rdf_entity/uid'
+  policy_domain:
+    label: 'Policy domain'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_policy_domain'
+        - 'entity:rdf_entity/field_policy_domain'
+  spatial_coverage:
+    label: 'Spatial coverage'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_news_spatial_coverage'
+        - 'entity:node/field_document_spatial_coverage'
+        - 'entity:rdf_entity/field_spatial_coverage'
   title:
     label: Title
     datasource_id: 'entity:node'

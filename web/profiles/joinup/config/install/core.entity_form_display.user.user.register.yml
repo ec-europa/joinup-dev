@@ -26,6 +26,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_user_family_name:
     weight: 2
     settings:

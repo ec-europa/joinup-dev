@@ -16,6 +16,7 @@ settings:
   index: collections
   facet_regions:
     top: 'Solution content top'
+    inline_facets: 'Inline facets'
   view_modes:
     'entity:node':
       custom_page: view_mode_tile
@@ -23,6 +24,7 @@ settings:
       document: view_mode_tile
       event: view_mode_tile
       news: view_mode_tile
+      newsletter: default
     'entity:rdf_entity':
       asset_distribution: view_mode_tile
       asset_release: view_mode_tile
