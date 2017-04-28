@@ -121,6 +121,7 @@ config_devel:
   - core.entity_view_display.user.user.view_mode_tile
   - core.entity_view_mode.node.full
   - core.entity_view_mode.user.full
+  - core.entity_view_mode.user.inline
   - core.entity_view_mode.user.view_mode_featured
   - core.entity_view_mode.user.view_mode_tile
   - ds.settings
