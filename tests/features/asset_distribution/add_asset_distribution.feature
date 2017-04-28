@@ -121,8 +121,12 @@ Feature: Add distribution through the UI
       And I should see the link "WTFPL"
       And I should see the text "The full source code."
 
+      # The solution group header is cached and the license is not updated.
+      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3198
+      When the cache has been cleared
       # The licence label should be shown also in the solution UI.
-      When I go to the homepage of the "Solution random x name" solution
+      # @todo License is not shown anymore in the solution canonical page. Change this before merge.
+      And I go to the homepage of the "Solution random x name" solution
       Then I should see the text "WTFPL"
       # Clean up the asset distribution that was created through the UI.
       Then I delete the "Source tarball" asset distribution

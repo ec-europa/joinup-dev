@@ -1,19 +1,21 @@
 langcode: en
 status: true
 dependencies: {  }
-id: solution_content_bundle
-name: Type
-url_alias: solution_content_bundle
+id: solution_spatial_coverage
+name: 'Spatial coverage'
+url_alias: solution_spatial_coverage
 weight: 0
 min_count: 1
 show_only_one_result: true
-field_identifier: entity_bundle
+field_identifier: spatial_coverage
 facet_source_id: 'search_api_field:rdf_entity.field_is_content'
 widget:
-  type: type
+  type: links_inline
   config:
     show_numbers: true
-    tabs: 3
+    all_text: everywhere
+    prefix_text: 'Located in:'
+    suffix_text: ''
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -25,38 +27,38 @@ processor_configs:
   active_widget_order:
     processor_id: active_widget_order
     weights:
-      sort: -10
+      sort: -2
     settings:
-      sort: ASC
-  aggregated_entity_bundle_label:
-    processor_id: aggregated_entity_bundle_label
+      sort: DESC
+  aggregated_entity_reference_label:
+    processor_id: aggregated_entity_reference_label
     weights:
-      build: 5
+      build: 0
     settings: {  }
   count_limit:
     processor_id: count_limit
     weights:
-      build: -10
+      build: -2
     settings:
       minimum_items: 1
       maximum_items: null
   count_widget_order:
     processor_id: count_widget_order
     weights:
-      sort: -10
+      sort: -1
     settings:
       sort: DESC
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
-      sort: -10
+      sort: 0
     settings:
       sort: ASC
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
       pre_query: -10
-      build: -10
+      build: -1
     settings: {  }
 empty_behavior:
   behavior: none
