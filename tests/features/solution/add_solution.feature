@@ -82,9 +82,6 @@ Feature: "Add solution" visibility options.
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state"
-    # Regression test for the default selected option for the status field.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3213
-    And the radio button "N/A" from field "Status" should be selected
     When I fill in the following:
       | Title            | Espresso is the solution                                               |
       | Description      | This is a test text                                                    |
