@@ -115,6 +115,9 @@ class NotificationSenderService {
    * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
    */
   public function sendStateTransitionMessage(EntityInterface $entity, $role_id, array $template_ids) {
+    if (isset($entity->skip_notification) && $entity->skip_notification === TRUE) {
+      return;
+    }
     $values = ['field_message_content' => $entity->id()];
     if ($this->groupTypeManager->isGroupContent($entity->getEntityTypeId(), $entity->bundle())) {
       $parent = $this->relationManager->getParent($entity);
