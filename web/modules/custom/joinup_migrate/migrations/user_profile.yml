@@ -28,4 +28,3 @@ destination:
 migration_dependencies:
   required:
     - user_photo
-    - user
