@@ -105,10 +105,10 @@ Feature: Global search
     And I should see the "Release Alpha" tile
     And I should see the "News omega" tile
     And I should see the "Document omega" tile
+    And I should see the "Event Omega" tile
     But I should not see the "Collection alpha" tile
     And I should not see the "Distribution alpha" tile
     And I should not see the text "Licence Alpha"
-    And I should not see the "Event Omega" tile
     And I should not see the "Discussion omega" tile
     And I should not see the "Page omega" tile
     And I should not see the text "Newsletter omega"

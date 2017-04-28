@@ -520,6 +520,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'content' => 'body',
       ],
       'document' => [
+        'keywords' => 'field_keywords',
         'licence' => 'field_licence',
         'short title' => 'field_short_title',
         'state' => 'field_state',
@@ -527,12 +528,14 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'spatial coverage' => 'field_document_spatial_coverage',
       ],
       'event' => [
+        'keywords' => 'field_keywords',
         'short title' => 'field_short_title',
         'start date' => 'field_start_date',
         'state' => 'field_state',
       ],
       'news' => [
         'headline' => 'field_news_headline',
+        'keywords' => 'field_keywords',
         'state' => 'field_state',
         'spatial coverage' => 'field_news_spatial_coverage',
       ],
