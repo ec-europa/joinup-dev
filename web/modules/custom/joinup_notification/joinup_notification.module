@@ -172,6 +172,9 @@ function joinup_notification_entity_update(EntityInterface $entity) {
   }
 
   $transition = $workflow->findTransition($original_state, $target_state);
+  if ($transition === NULL) {
+    return;
+  }
   // Replicate the event fire process by StateItem.
   $event_id = $workflow->getGroup() . '.' . $transition->getId() . '.' . 'post_transition';
   $original_state = $workflow->getState($original_state);
