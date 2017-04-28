@@ -22,7 +22,7 @@ process:
     no_stub: true
   field_keywords: keywords
   field_isr_language: language
-  field_is_modification_date: changed_time
+  field_isr_modification_date: changed_time
   field_isr_release_notes/value: version_notes
   field_isr_release_notes/format:
     plugin: default_value

@@ -57,5 +57,5 @@ destination:
   plugin: entity:node
   default_bundle: event
 migration_dependencies:
- required:
-   - event_logo
+  required:
+    - event_logo

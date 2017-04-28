@@ -47,7 +47,7 @@ class News extends NodeBase {
     $this->setKeywords($row, 'keywords', $nid, $vid);
 
     // Spatial coverage.
-    $row->setSourceProperty('country', $this->getCountries([$vid], FALSE));
+    $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     return parent::prepareRow($row);
   }

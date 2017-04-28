@@ -9,13 +9,11 @@ source:
   track_changes: true
 process:
   uid:
-    -
-      plugin: migration
+    - plugin: migration
       migration: user
       source: uid
       no_stub: true
-    -
-      plugin: default_value
+    - plugin: default_value
       default_value: 1
   source_path_encoded:
     plugin: urlencode
@@ -34,4 +32,3 @@ destination:
 migration_dependencies:
  required:
    - prepare
-   - user

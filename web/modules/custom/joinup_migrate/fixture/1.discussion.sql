@@ -1,4 +1,5 @@
 CREATE OR REPLACE VIEW d8_discussion (
+  solution,
   collection,
   type,
   nid,
@@ -11,7 +12,8 @@ CREATE OR REPLACE VIEW d8_discussion (
   status
 ) AS
 SELECT
-  p.collection,
+  i.pid,
+  s.collection,
   n.type,
   n.nid,
   n.vid,
@@ -29,6 +31,7 @@ SELECT
 FROM node n
 INNER JOIN node_revisions nr ON n.vid = nr.vid
 INNER JOIN project_issues i ON n.nid = i.nid
-INNER JOIN d8_mapping m ON i.pid = m.nid
-INNER JOIN d8_prepare p ON m.collection = p.collection
+INNER JOIN d8_solution s ON i.pid = s.nid
+INNER JOIN node pr ON i.pid = pr.nid AND pr.type = 'project_project'
 WHERE n.type = 'project_issue'
+
