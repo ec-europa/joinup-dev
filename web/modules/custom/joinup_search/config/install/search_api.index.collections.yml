@@ -335,25 +335,16 @@ processor_settings:
       preprocess_query: -46
   ignorecase:
     fields:
-      - entity_bundle
-      - entity_groups
-      - policy_domain
-      - spatial_coverage
-      - keywords
       - title
       - body
       - field_short_title
-      - field_shared_in
       - field_news_headline
       - field_event_agenda
       - field_location
       - field_event_adtl_address_info
       - field_organisation
-      - field_scope
-      - id
       - label
       - field_ar_description
-      - rid
       - field_ad_description
       - field_isr_description
       - field_ar_abstract
@@ -455,25 +446,16 @@ processor_settings:
       preprocess_query: -49
   transliteration:
     fields:
-      - entity_bundle
-      - entity_groups
-      - policy_domain
-      - spatial_coverage
-      - keywords
       - title
       - body
       - field_short_title
-      - field_shared_in
       - field_news_headline
       - field_event_agenda
       - field_location
       - field_event_adtl_address_info
       - field_organisation
-      - field_scope
-      - id
       - label
       - field_ar_description
-      - rid
       - field_ad_description
       - field_isr_description
       - field_ar_abstract
