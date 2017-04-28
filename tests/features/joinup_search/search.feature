@@ -36,7 +36,7 @@ Feature: Global search
     Then I should see the text "Spherification"
     Then I should see the text "Foam"
 
-  @terms @javascript
+  @terms
   Scenario: Content can be found with a full-text search.
     Given the following owner:
       | name              | type    |
