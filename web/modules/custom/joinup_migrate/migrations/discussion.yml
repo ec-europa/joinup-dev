@@ -32,12 +32,12 @@ process:
 
   og_audience:
     plugin: migration
-    source: collection
-    migration: collection
+    source: solution
+    migration: solution
+    no_stub: true
 destination:
   plugin: entity:node
   default_bundle: discussion
 migration_dependencies:
- required:
-   - user
-   - prepare
+  required:
+    - solution
