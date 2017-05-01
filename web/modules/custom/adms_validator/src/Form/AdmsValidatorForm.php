@@ -62,23 +62,23 @@ class AdmsValidatorForm extends FormBase {
       ],
     ];
     $form['actions']['#type'] = 'actions';
-    $form['actions']['submit'] = array(
+    $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Upload'),
       '#button_type' => 'primary',
-    );
+    ];
 
     $rows = [];
-    $header = array(
-      array('data' => t('Class name')),
-      array('data' => t('Message')),
-      array('data' => t('Object')),
-      array('data' => t('Predicate')),
-      array('data' => t('Rule description')),
-      array('data' => t('Rule ID')),
-      array('data' => t('Rule severity')),
-      array('data' => t('Subject')),
-    );
+    $header = [
+      ['data' => t('Class name')],
+      ['data' => t('Message')],
+      ['data' => t('Object')],
+      ['data' => t('Predicate')],
+      ['data' => t('Rule description')],
+      ['data' => t('Rule ID')],
+      ['data' => t('Rule severity')],
+      ['data' => t('Subject')],
+    ];
     $info = $form_state->getBuildInfo();
     if (!empty($info['result'])) {
       foreach ($info['result'] as $error) {
