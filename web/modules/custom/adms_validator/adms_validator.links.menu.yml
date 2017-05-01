@@ -1,0 +1,5 @@
+adms_validator.settings:
+  title: 'ADMS-AP Validator'
+  parent: rdf_entity.admin_index
+  description: 'Validate an RDF file for model errors.'
+  route_name: adms_validator.adms_validator_form

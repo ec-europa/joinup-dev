@@ -4,8 +4,19 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "577cae93a25e63a4ca9ee290ed267a69",
+    "content-hash": "49c7e79f9aa0fbd38bcca0943568a76e",
     "packages": [
+        {
+            "name": "SEMICeu/adms-ap_validator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:SEMICeu/adms-ap_validator.git",
+                "reference": "master"
+            },
+            "type": "library",
+            "time": "2017-03-23 16:26:10"
+        },
         {
             "name": "alchemy/zippy",
             "version": "0.4.3",
@@ -2397,14 +2408,6 @@
             ],
             "authors": [
                 {
-                    "name": "Eli-T",
-                    "homepage": "https://www.drupal.org/user/516878"
-                },
-                {
-                    "name": "benjy",
-                    "homepage": "https://www.drupal.org/user/1852732"
-                },
-                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -4064,7 +4067,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-01-20 06:45:09"
+            "time": "2016-04-20 05:45:29"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -9686,6 +9689,7 @@
         "ec-europa/infra": 20,
         "google/material-design-lite": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
+        "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_devel": 20,
         "drupal/default_content": 20,
