@@ -4,7 +4,6 @@ namespace Drupal\joinup\Traits;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
  * Helper methods to deal with workflow checks.
@@ -55,24 +54,7 @@ trait WorkflowTrait {
    *   An array of transition state labels.
    */
   protected function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $user = NULL) {
-    // Set the current user so that states available are retrieved for the
-    // specific account.
-    if ($user !== NULL) {
-      // We are going to change the current user, this is only safe in scope of
-      // doing API calls against the bootstrapped Drupal instance in a Behat
-      // test. It should never be done inside an actual Drupal request.
-      static::assertRunningInBehatScope();
-      \Drupal::currentUser()->setAccount($user);
-    }
-
-    $field = $this->getEntityStateField($entity);
-    $allowed_transitions = $field->getTransitions();
-
-    $allowed_states = array_map(function (WorkflowTransition $transition) {
-      return (string) $transition->getToState()->getLabel();
-    }, $allowed_transitions);
-
-    return $allowed_states;
+    return $this->getWorkflowHelper()->getAvailableStates($entity, $user);
   }
 
   /**
@@ -90,21 +72,7 @@ trait WorkflowTrait {
    *   An array of transition labels.
    */
   protected function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $user) {
-    // Set the current user so that states available are retrieved for the
-    // specific account.
-    if ($user !== NULL) {
-      // We are going to change the current user, this is only safe in scope of
-      // doing API calls against the bootstrapped Drupal instance in a Behat
-      // test. It should never be done inside an actual Drupal request.
-      static::assertRunningInBehatScope();
-      \Drupal::currentUser()->setAccount($user);
-    }
-
-    $field = $this->getEntityStateField($entity);
-
-    return array_map(function (WorkflowTransition $transition) {
-      return (string) $transition->getLabel();
-    }, $field->getTransitions());
+    return $this->getWorkflowHelper()->getAvailableTransitions($entity, $user);
   }
 
   /**
@@ -185,25 +153,6 @@ trait WorkflowTrait {
       $state = $aliases[$state];
     }
     return $state;
-  }
-
-  /**
-   * Checks that the current code is running in scope of a Behat test.
-   *
-   * This trait is intended for use in Behat tests and it may perform some
-   * actions (like changing the current user) which are dangerous in scope of a
-   * Drupal request.
-   *
-   * Call this method when performing a dangerous action, so that developers
-   * that unknowingly include this trait in normal Drupal code are alerted.
-   */
-  protected static function assertRunningInBehatScope() {
-    foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $trace) {
-      if (!empty($trace['class']) && $trace['class'] === 'Behat\Behat\Tester\Runtime\RuntimeStepTester') {
-        return;
-      }
-    }
-    throw new \RuntimeException('This code should only be run in scope of a Behat test');
   }
 
 }

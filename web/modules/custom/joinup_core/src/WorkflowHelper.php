@@ -5,12 +5,69 @@ namespace Drupal\joinup_core;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
+use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
  * Contains helper methods to retrieve workflow related data from entities.
  */
 class WorkflowHelper implements WorkflowHelperInterface {
+
+  /**
+   * The current user proxy.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
+   * Constructs a WorkflowHelper.
+   *
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
+   *   The service that contains the current user.
+   */
+  public function __construct(AccountProxyInterface $currentUser) {
+    $this->currentUser = $currentUser;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $user = NULL) {
+    // Set the current user so that states available are retrieved for the
+    // specific account.
+    if ($user !== NULL) {
+      \Drupal::currentUser()->setAccount($user);
+    }
+
+    $field = $this->getEntityStateField($entity);
+    $allowed_transitions = $field->getTransitions();
+
+    $allowed_states = array_map(function (WorkflowTransition $transition) {
+      return (string) $transition->getToState()->getLabel();
+    }, $allowed_transitions);
+
+    return $allowed_states;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $user) {
+    // Set the current user so that states available are retrieved for the
+    // specific account.
+    if ($user !== NULL) {
+      \Drupal::currentUser()->setAccount($user);
+    }
+
+    $field = $this->getEntityStateField($entity);
+
+    return array_map(function (WorkflowTransition $transition) {
+      return (string) $transition->getLabel();
+    }, $field->getTransitions());
+  }
 
   /**
    * {@inheritdoc}
