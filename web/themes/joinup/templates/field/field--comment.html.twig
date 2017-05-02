@@ -27,8 +27,6 @@
  * @see comment_preprocess_field()
  */
 #}
-{% set login_path = path('user.login', {'destination': entity_url }) %}
-{% set register_path = path('user.register', {'destination': entity_url }) %}
 <section{{ attributes.addClass('comments-section') }}>
   {% if comments|render %}
     {{ title_prefix }}
