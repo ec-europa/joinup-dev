@@ -47,6 +47,7 @@ dependencies:
   - password_policy_character_types
   - password_policy_characters
   - password_policy_length
+  - password_policy_types_negate
   - path
   - persistent_login
   - r4032login
