@@ -139,6 +139,10 @@ class Mapping extends Spreadsheet {
       $messages[] = "Invalid 'New Collection': '{$row['New collection']}'";
     }
 
+    if (!empty($row['Collection state']) && !in_array($row['Collection state'], ['validated', 'archived'])) {
+      $messages[] = "Invalid 'Collection state': '{$row['Collection state']}' (allowed empty or 'validated' or 'archived')";
+    }
+
     // Register inconsistencies.
     if ($messages) {
       $row_index = $row['row_index'];

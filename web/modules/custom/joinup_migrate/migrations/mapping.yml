@@ -47,7 +47,7 @@ process:
   owner: Owner
   collection_owner: 'Collection Owner'
   elibrary: 'Elibrary Creation'
-  collection_state: 'Collection state'
+  state: 'Collection state'
   content_item_state: 'Content item state'
   row_index: row_index
 destination:

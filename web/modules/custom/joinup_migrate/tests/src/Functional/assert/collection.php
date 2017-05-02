@@ -8,8 +8,8 @@
 use Drupal\file\Entity\File;
 
 // Migration counts.
-$this->assertTotalCount('collection', 4);
-$this->assertSuccessCount('collection', 4);
+$this->assertTotalCount('collection', 5);
+$this->assertSuccessCount('collection', 5);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $collection */
@@ -99,4 +99,26 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/epdp_final_logo1-01.png', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/epdp_final_logo1-01.png');
 $this->assertEquals(46068, filesize('public://collection/logo/epdp_final_logo1-01.png'));
+$this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
+
+$collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection');
+$this->assertEquals('Archived collection', $collection->label());
+$this->assertEquals('collection', $collection->bundle());
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1435974264), $collection->field_ar_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1435974264), $collection->field_ar_modification_date->value);
+$this->assertEquals('default', $collection->graph->value);
+$this->assertReferences(['Styles Layer Descriptor'], $collection->field_ar_affiliates);
+$this->assertReferences(['Thailand'], $collection->field_spatial_coverage);
+$this->assertReferences(['Open government'], $collection->field_policy_domain);
+$this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertEquals(1, $collection->field_ar_moderation->value);
+$this->assertEquals(0, $collection->field_ar_closed->value);
+$this->assertEquals('ashi', $collection->field_ar_abstract->value);
+$this->assertEquals('content_editor', $collection->field_ar_abstract->format);
+$this->assertStringEndsWith("โตเกียว แนะนำในแต่ละแห่งว่ามีที่ไหนน่าสนใจบ้าง</p>\r\n", $collection->field_ar_description->value);
+$this->assertEquals('content_editor', $collection->field_ar_description->format);
+$logo = File::load($collection->field_ar_logo->target_id);
+$this->assertEquals('public://collection/logo/girls_fans_33_resize.jpg', $logo->getFileUri());
+$this->assertFileExists('public://collection/logo/girls_fans_33_resize.jpg');
+$this->assertEquals(55543, filesize('public://collection/logo/girls_fans_33_resize.jpg'));
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
