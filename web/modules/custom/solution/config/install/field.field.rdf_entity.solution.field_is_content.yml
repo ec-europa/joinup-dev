@@ -23,10 +23,10 @@ default_value:
           region: top
         solution_policy_domain:
           weight: 1
-          region: top
+          region: inline_facets
         solution_spatial_coverage:
           weight: 2
-          region: top
+          region: inline_facets
       enabled: 1
       query_presets: ''
       limit: 12
