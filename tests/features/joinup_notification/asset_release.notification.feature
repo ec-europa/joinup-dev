@@ -55,3 +55,6 @@ Feature: Asset release notification system
       | recipient | Copernicus                                                                                                                                           |
       | subject   | Joinup: The release "v2" of your solution "My awesome solution abc" was successfully updated                                                         |
       | body      | Dear Copernicus,  Your release "v2" for the "My awesome solution abc" solution was uploaded succesfully.  Kind regards,  The Joinup Moderation Team. |
+
+    # Debug step.
+    And I delete the "My awesome release abc" release
