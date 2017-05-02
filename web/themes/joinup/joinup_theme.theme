@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -494,8 +495,9 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
  * Implements hook_preprocess_comment().
  */
 function joinup_theme_preprocess_comment(&$variables) {
-  // Create user image.
-  $photo_target = $variables['user_picture']['#user']->field_user_photo->getValue();
+  /** @var \Drupal\user\Entity\User $user */
+  $user = $variables['user_picture']['#user'];
+  $photo_target = $user->get('field_user_photo')->getValue();
 
   if ($photo_target) {
     $photo_target = $photo_target[0]['target_id'];
@@ -503,7 +505,14 @@ function joinup_theme_preprocess_comment(&$variables) {
     $file = File::load($photo_target);
     $uri = $file->getFileUri();
     $url = ImageStyle::load('profile_icon_big')->buildUrl($uri);
-    $variables['profile_icon'] = $url;
+    $variables['profile_icon'] = [
+      '#markup' => $url,
+      '#cache' => [
+        'tags' => Cache::mergeTags($user->getCacheTags(), $user->getEntityType()->getListCacheTags()),
+        'contexts' => $user->getCacheContexts(),
+        'max-age' => $user->getCacheMaxAge(),
+      ],
+    ];
   }
 }
 
