@@ -57,6 +57,17 @@ trait StateTrait {
         'validated' => 'validated',
       ],
     ],
+    'asset_release' => [
+      'asset_release' => [
+        'draft' => 'draft',
+        'proposed' => 'proposed',
+        'suspended' => 'needs_update',
+        'validated' => 'validated',
+        'in assessment' => 'needs_update',
+        'requested deletion' => 'deletion_request',
+        'blacklisted' => 'blacklisted',
+      ],
+    ],
   ];
 
 }

@@ -35,7 +35,6 @@ $expected_values = [
     'policy2' => 'eProcurement',
     'abstract' => 'Abstract for a new collection',
     'collection_owner' => 'doe@example.com',
-    'content_item_state' => 'proposed',
     'row_index' => '11',
   ],
   49860 => [
@@ -45,6 +44,7 @@ $expected_values = [
     'abstract' => 'Abstract for a new collection',
     'new_collection' => 'No',
     'collection_owner' => 'doe@example.com',
+    'content_item_state' => 'proposed',
     'row_index' => '12',
   ],
   139528 => [

@@ -16,7 +16,7 @@ $this->assertSuccessCount('solution', 3);
 $solution = $this->loadEntityByLabel('rdf_entity', 'The administrative geography and civil voting area ontology', 'solution');
 $this->assertEquals('The administrative geography and civil voting area ontology', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
-$this->assertEquals('draft', $solution->graph->value);
+$this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1270080000), $solution->field_is_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1449493447), $solution->field_is_modification_date->value);
 $this->assertReferences([
@@ -30,12 +30,12 @@ $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $owner = $this->loadEntityByLabel('rdf_entity', 'Ordnance Survey', 'owner');
 $this->assertEquals($owner->id(), $solution->field_is_owner->target_id);
 $this->assertReferences(['Completed'], $solution->get('field_status'));
-$this->assertEquals('proposed', $solution->field_is_state->value);
+$this->assertEquals('validated', $solution->field_is_state->value);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'CIPA e-Delivery', 'solution');
 $this->assertEquals('CIPA e-Delivery', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
-$this->assertEquals('default', $solution->graph->value);
+$this->assertEquals('draft', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1341505914), $solution->field_is_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1467363502), $solution->field_is_modification_date->value);
 $this->assertReferences([
@@ -57,7 +57,7 @@ $this->assertEquals('public://solution/logo/CIPA_e-Delivery_70x70.png', $logo->g
 $this->assertFileExists('public://solution/logo/CIPA_e-Delivery_70x70.png');
 $this->assertEquals(1435, filesize('public://solution/logo/CIPA_e-Delivery_70x70.png'));
 $this->assertTrue($solution->get('field_status')->isEmpty());
-$this->assertEquals('validated', $solution->field_is_state->value);
+$this->assertEquals('proposed', $solution->field_is_state->value);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'Styles Layer Descriptor', 'solution');
 $this->assertEquals('Styles Layer Descriptor', $solution->label());

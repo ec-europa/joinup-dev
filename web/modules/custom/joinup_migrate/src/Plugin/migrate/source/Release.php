@@ -16,6 +16,7 @@ class Release extends JoinupSqlBase {
   use CountryTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
+  use StateTrait;
   use StatusTrait;
 
   /**
@@ -54,6 +55,8 @@ class Release extends JoinupSqlBase {
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
       'documentation' => $this->t('Documentation'),
+      'state' => $this->t('State'),
+      'item_state' => $this->t('Item state'),
     ] + parent::fields();
   }
 
@@ -74,6 +77,8 @@ class Release extends JoinupSqlBase {
       'version_number',
       'docs_path',
       'docs_url',
+      'state',
+      'item_state',
     ]);
   }
 
@@ -122,6 +127,13 @@ class Release extends JoinupSqlBase {
 
     // Status.
     $this->setStatus($vid, $row);
+
+    // State.
+    if ($row->getSourceProperty('item_state') === 'proposed') {
+      // Releases have no 'proposed' state (why?). What if 'proposed' is piped?
+      $row->setSourceProperty('item_state', 'draft');
+    }
+    $this->setState($row);
 
     return parent::prepareRow($row);
   }

@@ -32,10 +32,7 @@ process:
     plugin: term_reference
     source: country
     vocabulary: spatial
-  # Revisit this mapping in ISAICP-3068.
-  field_isr_state:
-    plugin: default_value
-    default_value: validated
+  field_isr_state: state
   field_status: status
 destination:
   plugin: entity:rdf_entity
