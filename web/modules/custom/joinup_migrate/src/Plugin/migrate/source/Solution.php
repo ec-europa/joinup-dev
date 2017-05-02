@@ -16,6 +16,7 @@ class Solution extends SolutionBase {
   use CountryTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
+  use StateTrait;
   use StatusTrait;
 
   /**
@@ -50,6 +51,8 @@ class Solution extends SolutionBase {
       'contact' => $this->t('Contact info'),
       'distribution' => $this->t('Distribution'),
       'documentation' => $this->t('Documentation'),
+      'state' => $this->t('State'),
+      'item_state' => $this->t('Item state'),
     ] + parent::fields();
   }
 
@@ -59,17 +62,19 @@ class Solution extends SolutionBase {
   public function query() {
     return parent::query()->fields('s', [
       'vid',
+      'type',
       'title',
       'uri',
       'created_time',
       'changed_time',
       'body',
-      'sid',
       'policy2',
       'landing_page',
       'metrics_page',
       'docs_url',
       'docs_path',
+      'state',
+      'item_state',
     ]);
   }
 
@@ -115,6 +120,9 @@ class Solution extends SolutionBase {
 
     // Status.
     $this->setStatus($vid, $row);
+
+    // State.
+    $this->setState($row);
 
     return parent::prepareRow($row);
   }

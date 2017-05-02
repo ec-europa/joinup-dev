@@ -61,25 +61,7 @@ process:
     plugin: term_reference
     source: country
     vocabulary: spatial
-  field_is_state:
-    plugin: static_map
-    source: sid
-    map:
-      # asset_release
-      36: draft
-      37: proposed
-      38: needs_update
-      39: validated
-      40: needs_update
-      41: proposed
-      50: deletion_request
-      52: blacklisted
-      # project_project
-      1: draft
-      8: proposed
-      9: validated
-      10: needs_update
-    default_value: draft
+  field_is_state: state
   field_status: status
 
   # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
