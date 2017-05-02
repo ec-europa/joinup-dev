@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.event.field_organisation_type
     - field.field.node.event.field_policy_domain
     - field.field.node.event.field_scope
+    - field.field.node.event.field_shared_in
     - field.field.node.event.field_short_title
     - field.field.node.event.field_state
     - field.field.node.event.og_audience
@@ -27,7 +28,6 @@ dependencies:
     - datetime
     - ds
     - image
-    - link
     - text
     - user
 id: node.event.view_mode_tile
@@ -103,6 +103,7 @@ hidden:
   field_organisation_type: true
   field_policy_domain: true
   field_scope: true
+  field_shared_in: true
   field_state: true
   links: true
   og_audience: true
