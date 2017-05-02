@@ -131,7 +131,8 @@
                 "Disable static cache for workflow_callback. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/static_cache_disable_for_workflow_callback-2846986-2.patch"
             },
             "drupal/password_policy": {
-                "Provide a character type restriction plugin. @see https://www.drupal.org/node/2874853": "https://www.drupal.org/files/issues/types_negate_constraint_module.patch"
+                "Provide a character type restriction plugin. @see https://www.drupal.org/node/2874853": "https://www.drupal.org/files/issues/types_negate_constraint_module.patch",
+                "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
             }
         }
     },

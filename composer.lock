@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "602084e51d9cb2549bfac5f06c29a1d4",
+    "content-hash": "1fc4b05710adc544a239886f3335b002",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2785,8 +2785,7 @@
             "homepage": "https://www.drupal.org/project/password_policy",
             "support": {
                 "source": "http://cgit.drupalcode.org/password_policy"
-            },
-            "time": "2017-02-27 15:47:09"
+            }
         },
         {
             "name": "drupal/persistent_login",
