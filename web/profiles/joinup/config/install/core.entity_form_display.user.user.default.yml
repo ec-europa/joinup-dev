@@ -2,6 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_password_expiration
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
@@ -15,6 +17,7 @@ dependencies:
     - field.field.user.user.field_user_subscription_events
     - image.style.thumbnail
   module:
+    - datetime
     - image
     - search_api_field
     - text
@@ -29,6 +32,19 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_last_password_reset:
+    type: datetime_default
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_password_expiration:
+    type: boolean_checkbox
+    weight: 3
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    region: content
   field_user_business_title:
     weight: 6
     settings:

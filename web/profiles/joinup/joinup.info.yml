@@ -43,6 +43,10 @@ dependencies:
   - options
   - owner
   - page_cache
+  - password_policy
+  - password_policy_character_types
+  - password_policy_characters
+  - password_policy_length
   - path
   - persistent_login
   - r4032login
@@ -150,6 +154,7 @@ config_devel:
   - image.style.profile_icon
   - og.settings
   - og_menu.ogmenu.navigation
+  - password_policy.password_policy.generic_policy
   - system.theme
   - user.flood
   - user.mail
