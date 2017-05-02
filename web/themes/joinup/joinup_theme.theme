@@ -683,24 +683,10 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
 }
 
 /**
- * Implements hook_theme_suggestions_HOOK_alter() for textarea.html.twig.
- */
-function joinup_theme_theme_suggestions_textarea_alter(array &$suggestions, array $variables) {
-  // Check if textarea is a comment.
-  if ($variables['element']['#id'] == 'edit-field-comment-body-0-value') {
-    $suggestions[] = 'textarea__comment';
-  }
-}
-
-/**
  * Implements hook_theme_suggestions_HOOK_alter() for form-element.html.twig.
  */
 function joinup_theme_theme_suggestions_form_element_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'form_element__' . str_replace('-', '_', $variables['element']['#type']);
-  // Check if textarea is a comment.
-  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-field-comment-body-0-value') {
-    $suggestions[] = 'form_element__textarea__comment';
-  }
 }
 
 /**
@@ -854,4 +840,14 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
 function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'joinup_theme/form-components';
   $form['#attached']['drupalSettings']['widthBreakpoint'] = 100;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Add theme suggestions directly to the comment body field.
+ */
+function joinup_theme_form_comment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['field_body']['widget'][0]['value']['#theme'] = 'textarea__comment';
+  $form['field_body']['widget'][0]['value']['#theme_wrappers'] = ['form_element__textarea__comment'];
 }
