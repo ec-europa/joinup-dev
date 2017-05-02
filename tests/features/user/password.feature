@@ -25,9 +25,8 @@ Feature: Password management
       | tEsttest  |
       # Does not contain capital letters.
       | t3sttest  |
-      # Contains special characters. Will be implemented at ISAICP-3343
-      # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3343
-      #| t3sttEst! |
+      # Contains special characters.
+      | t3sttEst! |
 
   Scenario: A logged-in user can navigate to his profile and change his password.
     When I am logged in as "Charlie Change"
