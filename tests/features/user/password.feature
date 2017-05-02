@@ -2,28 +2,49 @@
 Feature: Password management
   A user must be able to change his password
 
-  Scenario: A logged-in user can navigate to his profile and change his password.
+  Background:
     Given users:
-      | name           | mail                        | pass        | field_user_first_name | field_user_family_name |
-      | Charlie Change | charlie.change@example.com  | changeme    | Charlie               | Change                 |
+      | Username       | E-mail                     | Password | First name | Family name |
+      | Charlie Change | charlie.change@example.com | changeme | Charlie    | Change      |
+
+  Scenario Outline: A logged-in user cannot set passwords that do not comply with the policy.
     When I am logged in as "Charlie Change"
     And I am on the homepage
     Then I click "My account"
     Then I click "Edit"
     Then I fill in "Current password" with "changeme"
-    Then I fill in "Password" with "NewPass"
-    Then I fill in "Confirm password" with "NewPass"
+    Then I fill in "Password" with "<password>"
+    Then I fill in "Confirm password" with "<password>"
+    And I press the "Save" button
+    Then I should see the error message "The password does not satisfy the password policies"
+    Examples:
+      | password  |
+      # Less than 8 characters.
+      | tEst1     |
+      # Does not contain numbers.
+      | tEsttest  |
+      # Does not contain capital letters.
+      | t3sttest  |
+      # Contains special characters. Will be implemented at ISAICP-3343
+      # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3343
+      #| t3sttEst! |
+
+  Scenario: A logged-in user can navigate to his profile and change his password.
+    When I am logged in as "Charlie Change"
+    And I am on the homepage
+    Then I click "My account"
+    Then I click "Edit"
+    Then I fill in "Current password" with "changeme"
+    Then I fill in "Password" with "Cr4bbyP4tties"
+    Then I fill in "Confirm password" with "Cr4bbyP4tties"
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
 
   Scenario: A user can request a one-time-login link.
-    Given users:
-      | name       | mail                    |
-      | Alz Heimer | alz.heimer@example.com  |
     When I am an anonymous user
     And I am on the homepage
     Then I click "Log in"
     And I click "Reset your password"
-    And I fill in "Username or email address" with "Alz Heimer"
+    And I fill in "Username or email address" with "Charlie Change"
     Then I press the "Submit" button
     Then I should see the success message "Further instructions have been sent to your email address."
