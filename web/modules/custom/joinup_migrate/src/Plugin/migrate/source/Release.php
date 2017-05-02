@@ -133,6 +133,7 @@ class Release extends JoinupSqlBase {
       // Releases have no 'proposed' state (why?). What if 'proposed' is piped?
       $row->setSourceProperty('item_state', 'draft');
     }
+    $row->setSourceProperty('type', 'asset_release');
     $this->setState($row);
 
     return parent::prepareRow($row);

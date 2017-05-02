@@ -68,6 +68,14 @@ trait StateTrait {
         'blacklisted' => 'blacklisted',
       ],
     ],
+    'owner' => [
+      'publisher' => [
+        'draft' => 'needs_update',
+        'proposed' => 'validated',
+        'validated' => 'validated',
+        'suspended' => 'needs_update',
+      ],
+    ],
   ];
 
 }

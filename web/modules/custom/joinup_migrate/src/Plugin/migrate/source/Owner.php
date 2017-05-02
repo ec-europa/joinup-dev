@@ -13,6 +13,8 @@ use Drupal\migrate\Row;
  */
 class Owner extends JoinupSqlBase {
 
+  use StateTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -45,6 +47,9 @@ class Owner extends JoinupSqlBase {
       'uid' => $this->t('User ID'),
       'title' => $this->t('Name'),
       'type' => $this->t('Type'),
+      'owner_type' => $this->t('Owner type'),
+      'state' => $this->t('State'),
+      'item_state' => $this->t('Item state'),
     ];
   }
 
@@ -54,7 +59,16 @@ class Owner extends JoinupSqlBase {
   public function query() {
     return $this->select('d8_owner', 'o')
       ->distinct()
-      ->fields('o', ['nid', 'vid', 'uri', 'uid', 'title']);
+      ->fields('o', [
+        'type',
+        'nid',
+        'vid',
+        'uri',
+        'uid',
+        'title',
+        'state',
+        'item_state',
+      ]);
   }
 
   /**
@@ -72,7 +86,10 @@ class Owner extends JoinupSqlBase {
       ->condition('td.vid', 72)
       ->execute()
       ->fetchCol();
-    $row->setSourceProperty('type', $type ?: NULL);
+    $row->setSourceProperty('owner_type', $type ?: NULL);
+
+    // State.
+    $this->setState($row);
 
     return parent::prepareRow($row);
   }
