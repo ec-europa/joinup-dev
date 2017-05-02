@@ -1,0 +1,164 @@
+# The array of allowed conditions for news workflow transitions.
+# Format of array:
+# @code
+# [
+#   <workflow id> => [
+#     <transition id> => [
+#       <source state> => [
+#         <role1>
+#         <role2>
+#         .
+#         .
+#       ]
+#     ]
+#   ]
+# ]
+# @endcode
+#
+# The array is a four dimensional array:
+# 1. The first level contains the workflow id which is one per moderation
+# status.
+# 2. The second level is transition id.
+# 3. Each transition is an array of allowed source states which in every check
+#    is the current state of the entity.
+# 4. Finally, the source states are arrays of roles that are allowed to perform
+#    this action.
+transitions:
+  node:news:pre_moderated:
+    save_as_draft:
+      __new__:
+        - authenticated
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+      draft:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    save_new_draft:
+      validated:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    propose:
+      __new__:
+        - authenticated
+        - rdf_entity-collection-member
+      draft:
+        - owner
+      needs_update:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    update_proposed:
+      proposed:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    validate:
+      __new__:
+        - moderator
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+      draft:
+        - moderator
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+      proposed:
+        - moderator
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+    update_validated:
+      validated:
+        - moderator
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+    needs_update:
+      proposed:
+        - moderator
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+      validated:
+        - moderator
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+    request_deletion:
+      validated:
+        - owner
+    reject_deletion:
+      deletion_request:
+        - moderator
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+  node:news:post_moderated:
+    save_as_draft:
+      __new__:
+        - authenticated
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+      draft:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    save_new_draft:
+      validated:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    propose:
+      validated:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+      needs_update:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    update_proposed:
+      proposed:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    validate:
+      __new__:
+        - authenticated
+        - rdf_entity-collection-member
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+      draft:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+      proposed:
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    update_validated:
+      validated:
+        - owner
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+    needs_update:
+      proposed:
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator
+      validated:
+        - rdf_entity-collection-facilitator
+        - rdf_entity-solution-facilitator
+        - moderator

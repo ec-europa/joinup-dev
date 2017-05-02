@@ -5,20 +5,38 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - contact_information
   - datetime
+  - ds
+  - facets
+  - field_group
   - image
+  - joinup_core
   - link
+  - og
+  - og_menu
   - options
+  - owner
   - rdf_entity
+  - search_api_field
+  - state_machine
   - text
 
 config_devel:
-  - block.block.collectioncontent
   - core.entity_form_display.rdf_entity.collection.default
+  - core.entity_view_display.rdf_entity.collection.about
+  - core.entity_view_display.rdf_entity.collection.compact
   - core.entity_view_display.rdf_entity.collection.default
+  - core.entity_view_display.rdf_entity.collection.group_header
+  - core.entity_view_display.rdf_entity.collection.view_mode_featured
+  - core.entity_view_display.rdf_entity.collection.view_mode_tile
+  - facets.facet.collection_policy_domain
+  - facets.facet.collection_type
+  - facets.facet_source.search_api_field__rdf_entity.field_collection_content
   - field.field.rdf_entity.collection.field_ar_abstract
   - field.field.rdf_entity.collection.field_ar_access_url
   - field.field.rdf_entity.collection.field_ar_affiliates
+  - field.field.rdf_entity.collection.field_ar_banner
   - field.field.rdf_entity.collection.field_ar_closed
   - field.field.rdf_entity.collection.field_ar_contact_information
   - field.field.rdf_entity.collection.field_ar_creation_date
@@ -28,12 +46,14 @@ config_devel:
   - field.field.rdf_entity.collection.field_ar_moderation
   - field.field.rdf_entity.collection.field_ar_modification_date
   - field.field.rdf_entity.collection.field_ar_owner
-  - field.field.rdf_entity.collection.field_ar_policy_domain
-  - field.field.rdf_entity.collection.field_ar_spatial_coverage
-  - field.field.rdf_entity.collection.field_ar_topic
+  - field.field.rdf_entity.collection.field_ar_state
+  - field.field.rdf_entity.collection.field_collection_content
+  - field.field.rdf_entity.collection.field_policy_domain
+  - field.field.rdf_entity.collection.field_spatial_coverage
   - field.storage.rdf_entity.field_ar_abstract
   - field.storage.rdf_entity.field_ar_access_url
   - field.storage.rdf_entity.field_ar_affiliates
+  - field.storage.rdf_entity.field_ar_banner
   - field.storage.rdf_entity.field_ar_closed
   - field.storage.rdf_entity.field_ar_contact_information
   - field.storage.rdf_entity.field_ar_creation_date
@@ -43,8 +63,6 @@ config_devel:
   - field.storage.rdf_entity.field_ar_moderation
   - field.storage.rdf_entity.field_ar_modification_date
   - field.storage.rdf_entity.field_ar_owner
-  - field.storage.rdf_entity.field_ar_policy_domain
-  - field.storage.rdf_entity.field_ar_spatial_coverage
-  - field.storage.rdf_entity.field_ar_topic
+  - field.storage.rdf_entity.field_ar_state
+  - field.storage.rdf_entity.field_collection_content
   - rdf_entity.rdfentity.collection
-

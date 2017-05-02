@@ -5,10 +5,24 @@
  * Main functions and hook implementations of the Collection module.
  */
 
-use Drupal\Core\Cache\Cache;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\joinup_core\ELibraryCreationOptions;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\og\Entity\OgMembership;
+use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
+use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og\OgRoleInterface;
+use Drupal\og_menu\Entity\OgMenuInstance;
+use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfInterface;
+use Drupal\search_api\Query\QueryInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -20,30 +34,354 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
 }
 
 /**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * Alters the RDF entity form for collections:
+ * - Changes the available options for the eLibrary creation field depending on
+ *   whether a collection is closed or open:
+ *   - Open collection: eLibrary content can be created either only by
+ *     collection members, or by all registered users.
+ *   - Closed collection: eLibrary content can be created either only by
+ *     collection facilitators, or by members of the collection.
+ *   When the collection changes between closed and open we will use AJAX to
+ *   update the eLibrary creation field to contain the correct options.
+ */
+function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Only alter collection forms.
+  if ($form_state->getFormObject()->getEntity()->bundle() !== 'collection') {
+    return;
+  }
+
+  // Retrieve the entity from the form.
+  $entity = $form_state->getFormObject()->getEntity();
+
+  // Get the current values for the 'Closed collection' and 'eLibrary creation'
+  // fields. If the form has not yet been submitted, use the defaults from the
+  // loaded or newly created entity.
+  // We are accessing directly the raw, unvalidated user input because when
+  // "#limit_validation_errors" is set on the triggering element (for example
+  // when an "add_more" button is clicked) the full form state values are not
+  // present.
+  // @see \Drupal\Core\Form\FormValidator::handleErrorsWithLimitedValidation()
+  // @todo Maybe check the triggering element and use the default values instead?
+  $closed = !$form_state->isProcessingInput() ? $entity->field_ar_closed->value : (int) $form_state->getUserInput()['field_ar_closed']['value'];
+  $elibrary = !$form_state->isProcessingInput() ? $entity->field_ar_elibrary_creation->value : (int) $form_state->getUserInput()['field_ar_elibrary_creation'];
+
+  // Define the allowed options.
+  $allowed_options = [
+    // In open collections content can be made by members (option 1) and
+    // authenticated users (option 2).
+    0 => [
+      ELibraryCreationOptions::MEMBERS => ELibraryCreationOptions::MEMBERS,
+      ELibraryCreationOptions::REGISTERED_USERS => ELibraryCreationOptions::REGISTERED_USERS,
+    ],
+    // In closed collections content can be made by facilitators (option 0) and
+    // members (option 1).
+    1 => [
+      ELibraryCreationOptions::FACILITATORS => ELibraryCreationOptions::FACILITATORS,
+      ELibraryCreationOptions::MEMBERS => ELibraryCreationOptions::MEMBERS,
+    ],
+  ];
+  // Take the options as defined in the field storage, and filter them using the
+  // allowed options.
+  $elibrary_creation_options = array_intersect_key(FieldStorageConfig::load('rdf_entity.field_ar_elibrary_creation')->getSetting('allowed_values'), $allowed_options[$closed]);
+
+  // According to specification, the 'member' option (option 1) should always
+  // appear as the first option, at the left.
+  if (array_key_exists(ELibraryCreationOptions::MEMBERS, $elibrary_creation_options)) {
+    // Since this is a numerically ordered array we cannot use array_unshift().
+    $member_options = $elibrary_creation_options[ELibraryCreationOptions::MEMBERS];
+    unset($elibrary_creation_options[ELibraryCreationOptions::MEMBERS]);
+    $elibrary_creation_options = [ELibraryCreationOptions::MEMBERS => $member_options] + $elibrary_creation_options;
+  }
+
+  // Define the option that should be taken in case the originally selected
+  // option is no longer available.
+  // This can be hardcoded as `$default = 1` but using a transition table makes
+  // it easier to maintain and understand.
+  $option_transitions = [
+    // If the option 'Only collection facilitators' was selected before, then
+    // take the option 'Only members'.
+    ELibraryCreationOptions::MEMBERS => ELibraryCreationOptions::MEMBERS,
+    // If the option 'Any registered user' was selected before, then take the
+    // option 'Only members'.
+    ELibraryCreationOptions::REGISTERED_USERS => ELibraryCreationOptions::MEMBERS,
+  ];
+
+  $elibrary_creation_default_value = array_key_exists($elibrary, $elibrary_creation_options) ? $elibrary : $option_transitions[$elibrary];
+
+  // Provide an identifier on the wrapper for the eLibrary Creation field so we
+  // can target it with AJAX.
+  $form['field_ar_elibrary_creation']['#id'] = 'field-ar-elibrary-creation-wrapper';
+  $form['field_ar_elibrary_creation']['widget']['#options'] = $elibrary_creation_options;
+  $form['field_ar_elibrary_creation']['widget']['#default_value'][0] = $elibrary_creation_default_value;
+
+  // Add an AJAX callback that refreshes the eLibrary field when the Closed
+  // collection field changes.
+  $form['field_ar_closed']['widget']['value']['#ajax'] = [
+    'callback' => 'collection_form_elibrary_creation_callback',
+    'wrapper' => 'field-ar-elibrary-creation-wrapper',
+  ];
+}
+
+/**
+ * AJAX callback that returns the eLibrary creation field.
+ *
+ * @see collection_form_rdf_entity_form_alter()
+ */
+function collection_form_elibrary_creation_callback($form, FormStateInterface $form_state) {
+  return $form['field_ar_elibrary_creation'];
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  // Make sure the collection label is unique.
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'collection' && !empty($fields['label'])) {
+    $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['collection']]);
+  }
+}
+
+/**
  * Implements hook_entity_insert().
  */
 function collection_entity_insert(EntityInterface $entity) {
+  if ($entity->bundle() !== 'collection') {
+    return;
+  }
   collection_entity_update($entity);
+
+  // Create a new navigation menu and associate it with the new collection. This
+  // menu can be used to link to custom pages for the collection.
+  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && $entity->bundle() === 'collection') {
+    $values = [
+      'type' => 'navigation',
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $entity->id(),
+    ];
+    $og_menu_instance = OgMenuInstance::create($values);
+    $og_menu_instance->save();
+
+    // Automatically add a link to the overview and about pages of the
+    // collection entity.
+    $menu_name = 'ogmenu-' . $og_menu_instance->id();
+    $link = MenuLinkContent::create([
+      'title' => t('Overview'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl()->toString()],
+      'weight' => -10,
+    ]);
+    $link->save();
+
+    $link = MenuLinkContent::create([
+      'title' => t('About'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl('about-page')->toString()],
+      'weight' => -9,
+    ]);
+    $link->save();
+  }
+
+  // When a new collection is proposed, give the user the 'group owner' role.
+  // This will not occur if the user is the anonymous, i.e. the entity was
+  // created by some batch process or some importing.
+  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && !\Drupal::currentUser()->isAnonymous()) {
+    // The group owner inherits all roles of a collection member, facilitator
+    // and administrator.
+    $roles = [
+      'rdf_entity-collection-' . OgRoleInterface::AUTHENTICATED,
+      'rdf_entity-collection-' . OgRoleInterface::ADMINISTRATOR,
+      'rdf_entity-collection-facilitator',
+    ];
+
+    /** @var \Drupal\og\OgMembershipInterface $membership */
+    $membership = OgMembership::create();
+    $membership
+      ->setUser(\Drupal::currentUser())
+      ->setGroup($entity)
+      ->setRoles(array_values(OgRole::loadMultiple($roles)))
+      ->save();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ *
+ * Interrupts the permissions for updating a collection. The permission is not
+ * granted if there are no transitions allowed for the current state of the
+ * node.
+ */
+function collection_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->bundle() != 'collection' || $account->isAnonymous() || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
+    return AccessResult::neutral();
+  }
+
+  switch ($operation) {
+    case 'view':
+      $membership = Og::getMembership($entity, $account);
+      if (empty($membership)) {
+        return AccessResult::neutral();
+      }
+      if (!$entity->isPublished() && $membership->hasPermission('view unpublished rdf entity')) {
+        return AccessResult::allowed();
+      }
+      if ($entity->isPublished() && $membership->hasPermission('view rdf entity')) {
+        return AccessResult::allowed();
+      }
+      break;
+
+    case 'edit':
+      $allowed_transitions = $entity->field_ar_state->first()->getTransitions();
+      return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
+
+    default:
+      break;
+
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Default graph is published. Draft graph is draft.
+ */
+function collection_rdf_entity_presave(RdfInterface $entity) {
+  if ($entity->bundle() !== 'collection') {
+    return;
+  }
+
+  // Provide default values for date/time fields if were missed.
+  foreach (['field_ar_creation_date', 'field_ar_modification_date'] as $field_name) {
+    if ($entity->get($field_name)->isEmpty()) {
+      if (!isset($request_time)) {
+        $request_time = gmdate('Y-m-d\TH:i:s', \Drupal::time()->getRequestTime());
+      }
+      $entity->set($field_name, $request_time);
+    }
+  }
+
+  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
+  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
+    return;
+  }
+
+  $state = $entity->field_ar_state->value;
+  if (in_array($state, ['draft', 'proposed'])) {
+    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
+  }
+  elseif (in_array($state, [
+    'validated',
+    'archival_request',
+    'deletion_request',
+    'archived',
+  ])) {
+    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
+  }
+  elseif (empty($state)) {
+    throw new \Exception("State field not found while trying to get the appropriate graph.");
+  }
+  else {
+    throw new \Exception("State field value is invalid. Current value found: " . $state);
+  }
 }
 
 /**
  * Implements hook_entity_update().
  *
- * Invalidate the og_content cache tag of the groups this entity belongs to.
+ * Performs the following actions:
+ * - Invalidates group content cache tags for the entity that is being changed.
+ * - When the entity is saved into the default graph, the draft must be deleted.
  */
 function collection_entity_update(EntityInterface $entity) {
-  // @todo Fix cache invalidating.
-  // @see ISAICP-2475.
-  if (TRUE) {
+  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
+  if (empty($enabled_bundles) || $entity->bundle() != 'collection' || !in_array($entity->bundle(), $enabled_bundles)) {
     return;
   }
-  $entity_type_id = $entity->getEntityTypeId();
-  $bundle = $entity->bundle();
-  if (Og::isGroupContent($entity_type_id, $bundle)) {
-    foreach (Og::getGroupIds($entity) as $entity_type => $ids) {
-      foreach ($ids as $id) {
-        Cache::invalidateTags(['og_group_content:' . $id]);
-      }
-    }
+
+  if ($entity->field_ar_state->value === 'validated') {
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
   }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function collection_module_implements_alter(&$implementations, $hook) {
+  if ($hook === 'entity_insert') {
+    // Make sure collection_entity_insert() runs after og_entity_insert(). The
+    // latter creates an OgMembership entry for the collection owner when a new
+    // collection is proposed, and collection_entity_insert() needs to modify
+    // this membership to add the required OG roles to it.
+    $group = $implementations['collection'];
+    unset($implementations['collection']);
+    $implementations['collection'] = $group;
+  }
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function collection_entity_extra_field_info() {
+  $fields = [];
+  $collection = RdfEntityType::load('collection');
+  // Add the join/leave collection form as field.
+  // @todo will be removed in ISAICP-2743
+  $fields['rdf_entity'][$collection->id()]['display']['join_collection'] = [
+    'label' => t('Join collection'),
+    'description' => t('Shows the join/leave collection form'),
+    'visible' => FALSE,
+  ];
+
+  return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ *
+ * Populates the extra field 'join_collection'.
+ */
+function collection_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() != 'collection') {
+    return;
+  }
+
+  if ($display->getComponent('join_collection')) {
+    $build['join_collection'] = [
+      '#lazy_builder' => [
+        'collection.lazy_builders:renderJoinCollectionForm',
+        [$entity->id()],
+      ],
+      '#create_placeholder' => TRUE,
+      // This form varies by the role a user has inside the collection. Set the
+      // applicable cache context.
+      '#cache' => ['contexts' => ['og_role']],
+    ];
+  }
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ *
+ * Alters the Search API queries for the collection content on the collection
+ * homepage:
+ * - Only show content related to the collection.
+ * - Do not show the collection itself in the search results.
+ */
+function collection_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $query->getOption('search_api_field entity');
+
+  $or = $query->createConditionGroup('OR');
+  // Show content that is related to this collection through the aggregated
+  // field. This makes sure that other related entities (such as the collection
+  // owner) do not show up as collection content tiles.
+  $or->addCondition('entity_groups', [$entity->id()], 'IN');
+  // Or show content that has been shared in this collection.
+  $or->addCondition('field_shared_in', [$entity->id()], 'IN');
+  $query->addConditionGroup($or);
+
+  // Remove the collection itself from the results.
+  $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
 }

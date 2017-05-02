@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings:
+  rdf_entity:
+    mapping:
+      rid:
+        target_id: 'http://purl.org/dc/terms/LicenseDocument'
+      label:
+        value: 'http://purl.org/dc/terms/title'
+    graph:
+      default: 'http://joinup.eu/licence/published'
+      draft: 'http://joinup.eu/licence/draft'
+name: Licence
+rid: licence
+description: ''

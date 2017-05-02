@@ -1,0 +1,36 @@
+// Unordered list
+//
+// Markup: html/unordered-list.html
+//
+// Styleguide 1.7
+
+article
+  ul
+    list-style-type: none
+    padding-left: 0
+    li
+      position: relative
+      padding-left: 15px
+      margin-bottom: 4px
+      &:before
+        position: absolute
+        top: 50%
+        left: 0
+        transform: translateY(-50%)
+        display: block
+        content: ''
+        background: $color-base
+        +border-radius(50%)
+
+    // Indent
+    li
+      &:before
+        width: 4px
+        height: 4px
+
+    ul, ol
+      padding-left: 15px
+      li
+        &:before
+          width: 2px
+          height: 2px

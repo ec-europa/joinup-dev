@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_licence_description
+    - rdf_entity.rdfentity.licence
+  module:
+    - text
+id: rdf_entity.licence.field_licence_description
+field_name: field_licence_description
+entity_type: rdf_entity
+bundle: licence
+label: Description
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings:
+  rdf_entity:
+    mapping:
+      rid:
+        target_id: 'http://www.w3.org/ns/adms#Asset'
+      label:
+        value: 'http://purl.org/dc/terms/title'
+    graph:
+      default: 'http://joinup.eu/asset_release/published'
+      draft: 'http://joinup.eu/asset_release/draft'
+name: Release
+rid: asset_release
+description: ''

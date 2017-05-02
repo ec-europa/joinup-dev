@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_keywords
+    - rdf_entity.rdfentity.solution
+id: rdf_entity.solution.field_keywords
+field_name: field_keywords
+entity_type: rdf_entity
+bundle: solution
+label: Keywords
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

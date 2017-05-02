@@ -1,0 +1,13 @@
+joinup_subscription.settings:
+  type: config_object
+  label: 'Joinup subscription settings'
+  mapping:
+    frequency:
+      type: string
+      label: 'The frequency of the notifications'
+    default_group_types:
+      type: sequence
+      label: 'The groups that the user receives notifications'
+      sequence:
+        type: string
+        label: 'The machine name of the content.'

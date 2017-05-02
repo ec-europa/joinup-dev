@@ -1,0 +1,32 @@
+id: distribution_file
+label: 'Distribution files'
+migration_tags:
+  - distribution
+  - file
+source:
+  plugin: distribution_file
+process:
+  uid:
+    - plugin: migration
+      migration: user
+      source: file_uid
+      no_stub: true
+    - plugin: default_value
+      default_value: 1
+  source_path_encoded:
+    plugin: urlencode
+    source: source_path
+  uri:
+    plugin: file_copy
+    source:
+      - '@source_path_encoded'
+      - destination_uri
+  status:
+    plugin: default_value
+    default_value: 1
+  created: created
+destination:
+  plugin: entity:file
+migration_dependencies:
+ required:
+   - prepare

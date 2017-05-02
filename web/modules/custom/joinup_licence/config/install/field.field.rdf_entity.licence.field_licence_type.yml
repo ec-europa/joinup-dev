@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_licence_type
+    - rdf_entity.rdfentity.licence
+    - taxonomy.vocabulary.licence_type
+id: rdf_entity.licence.field_licence_type
+field_name: field_licence_type
+entity_type: rdf_entity
+bundle: licence
+label: Type
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      licence_type: licence_type
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

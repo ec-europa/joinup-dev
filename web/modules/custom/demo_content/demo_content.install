@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Demo content module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Fills all mandatory fields of an entity not yet filled with random data.
+ *
+ * This method skips all entity keys except from the label.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity to edit.
+ * @param array $keys_to_skip
+ *   A list of keys to skip and not randomise.
+ *
+ * @todo Check if we still need this.
+ */
+function demo_content_entity_randomize_field(EntityInterface $entity, array $keys_to_skip) {
+  // Skip fields handled by core except label.
+  $entity_keys = $entity->getEntityType()->getKeys();
+  unset($entity_keys['label']);
+  $keys_to_skip = array_merge($keys_to_skip, $entity->getEntityType()
+    ->getKeys());
+
+  $field_definitions = $entity->getFieldDefinitions();
+  foreach ($field_definitions as $id => $field_definition) {
+    if (in_array($id, $keys_to_skip)) {
+      continue;
+    }
+
+    if ($field_definition->isRequired() && empty($entity->{$id}->getValue())) {
+      $entity->{$id}->generateSampleItems();
+    }
+  }
+}

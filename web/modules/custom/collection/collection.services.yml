@@ -1,11 +1,23 @@
 services:
-  collection.collection_route_context:
-    class: Drupal\collection\ContextProvider\CollectionRouteContext
-    arguments: ['@current_route_match']
-    tags:
-      - { name: 'context_provider' }
   cache_context.collection:
     class: Drupal\collection\Cache\CollectionCacheContext
     arguments: ['@request_stack']
     tags:
       - { name: cache.context }
+  collection.collection_route_context:
+    class: Drupal\collection\ContextProvider\CollectionRouteContext
+    arguments: ['@current_route_match', '@og.membership_manager']
+    tags:
+      - { name: 'context_provider' }
+  collection.event_subscriber:
+    class: Drupal\collection\EventSubscriber\CollectionEventSubscriber
+    tags:
+      - { name: 'event_subscriber' }
+  collection.fulfillment_guard:
+    class: Drupal\collection\Guard\CollectionFulfillmentGuard
+    arguments: ['@entity_type.manager', '@joinup_core.workflow.user_provider', '@config.factory', '@current_user']
+    tags:
+      - { name: state_machine.guard, group: collection }
+  collection.lazy_builders:
+    class: Drupal\collection\CollectionLazyBuilders
+    arguments: ['@entity_type.manager', '@form_builder', '@current_user']

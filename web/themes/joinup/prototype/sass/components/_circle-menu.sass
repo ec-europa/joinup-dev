@@ -1,0 +1,52 @@
+// Circle menu
+//
+// Markup: html/circle-menu.html
+//
+// Styleguide 2.3
+
+// Component
+// --------------------------------------------------
+.circle-menu
+
+// Elements
+// --------------------------------------------------
+.circle-menu__button
+  background-color: $color-orange !important
+  .icon
+    +centered
+
+// Modifiers
+// --------------------------------------------------
+.circle-menu--tablet
+  display: none
+  +breakpoint(mobile)
+    display: block
+
+.circle-menu--mobile
+  +breakpoint(mobile)
+    display: none
+
+.circle-menu__link
+  min-width: 130px
+
+// Dependiencies
+// --------------------------------------------------
+.circle-menu--tablet
+  .mdl-menu__container
+    margin-top: 10px
+
+.circle-menu--mobile
+  .mdl-menu__container
+    margin-bottom: 10px
+
+.circle-menu__button
+  .icon
+    color: #fff
+    +icon-size(45px)
+  .mdl-ripple
+    background-color: #fff
+
+.featured__menu-wrapper
+  .circle-menu--tablet
+    .mdl-menu__container
+      margin-top: -15px

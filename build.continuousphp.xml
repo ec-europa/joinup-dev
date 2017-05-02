@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="ContinuousPHP" default="help">
+
+    <echo msg="Loading AWS additional tasks." />
+    <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />
+    <property name="aws.profile" value="" />
+
+    <echo msg="Loading infra additional tasks." />
+    <import file="./vendor/ec-europa/infra/infra.xml" />
+
+    <!-- Run Behat tests. -->
+    <!-- Use this target to run tests with increased verbosity on ContinuousPHP to help debugging. -->
+    <target name="run-behat-tests" description="Run Behat tests.">
+        <behat
+            executable="${behat.bin}"
+            config="${behat.yml.path}"
+            strict="${behat.options.strict}"
+            verbose="${behat.options.verbosity}"
+        />
+    </target>
+
+    <target name="setup-continuousphp"
+            depends="check-continuousphp">
+        <echo message="Put the odbc configuration file in the home folder where CPHP can find it" />
+        <copy
+            file="./vendor/ec-europa/infra/continuousphp/odbc.ini"
+            tofile="${user.home}/.odbc.ini"
+            overwrite="true" />
+        <echo message="Create Solr index" />
+        <exec dir="${project.basedir}"
+              command="sudo curl -o /opt/solr/search_api_solr.tar.gz https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha4.tar.gz;
+sudo tar xvzf /opt/solr/search_api_solr.tar.gz -C /opt/solr;
+sudo /opt/solr/bin/solr create_core -c drupal;
+sudo mkdir /opt/solr/server/solr/drupal;
+sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/drupal/conf/"
+              checkreturn="true"
+              passthru="true" />
+        <echo message="Report Solr status" />
+        <exec dir="${project.basedir}"
+              command="sudo /opt/solr/bin/solr status"
+              checkreturn="true"
+              passthru="true" />
+        <echo message="Restart Solr" />
+        <exec dir="${project.basedir}"
+              command="sudo /opt/solr/bin/solr restart"
+              checkreturn="true"
+              passthru="true"
+              spawn="true" />
+    </target>
+
+    <target name="check-continuousphp">
+        <echo message="Check if we are running on ContinuousPHP" />
+        <if>
+            <not>
+                <available file="/home/cphp" type="dir" property="environment.cphp" />
+            </not>
+            <then>
+                <fail message="Only run this target on a ContinuousPHP test environment" />
+            </then>
+        </if>
+    </target>
+
+    <target name="build-continuousphp"
+            depends="check-continuousphp">
+        <echo message="Install the SASS compiler" />
+        <exec dir="${project.basedir}"
+              command="gem install sass"
+              checkreturn="true"
+              passthru="true" />
+        <echo message="Copy CPHP pipeline variables to local properties file" />
+        <echoproperties prefix="cphp." destfile="build.properties.local" />
+        <exec dir="${project.basedir}"
+              command="sed -i 's/^cphp\.//' build.properties.local"
+              checkreturn="true"
+              passthru="true" />
+    </target>
+
+    <!-- Remove all packages that are patched with cweagans/composer-patches. -->
+    <target name="remove-patched-packages">
+        <removepatchedpackages
+            composerJsonPath="${composer.json}"
+        />
+    </target>
+
+    <!-- provision new demo/test stack on AWS -->
+    <target name="provision-stack"
+            description="Provision a stack on AWS"
+            depends="setup-aws, run-stack, setup-deployment-group" />
+
+</project>

@@ -1,0 +1,202 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - field.storage.node.field_short_title
+    - field.storage.node.field_shared_in
+    - field.storage.rdf_entity.field_ar_description
+    - field.storage.rdf_entity.field_policy_domain
+    - field.storage.rdf_entity.field_spatial_coverage
+    - field.storage.rdf_entity.field_status
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_isr_description
+    - search_api.server.solr
+  module:
+    - taxonomy
+    - search_api
+    - node
+    - rdf_entity
+id: collections
+name: 'Search index'
+description: ''
+read_only: false
+field_settings:
+  entity_bundle:
+    label: Bundle
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/type'
+        - 'entity:rdf_entity/rid'
+  entity_groups:
+    label: Groups
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/og_audience'
+        - 'entity:rdf_entity/collection'
+        - 'entity:rdf_entity/og_audience'
+        - 'entity:rdf_entity/field_isr_is_version_of'
+  entity_author:
+    label: 'Aggregated field'
+    property_path: aggregated_field
+    type: integer
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/uid'
+        - 'entity:rdf_entity/uid'
+  policy_domain:
+    label: 'Policy domain'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_policy_domain'
+        - 'entity:rdf_entity/field_policy_domain'
+  spatial_coverage:
+    label: 'Spatial coverage'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_news_spatial_coverage'
+        - 'entity:node/field_document_spatial_coverage'
+        - 'entity:rdf_entity/field_spatial_coverage'
+  title:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: string
+  processed:
+    label: 'Body » Processed text'
+    datasource_id: 'entity:node'
+    property_path: 'body:processed'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.body
+  field_short_title:
+    label: 'Short title'
+    datasource_id: 'entity:node'
+    property_path: field_short_title
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_short_title
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
+  field_shared_in:
+    label: 'Shared in'
+    datasource_id: 'entity:node'
+    property_path: field_shared_in
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_shared_in
+  id:
+    label: ID
+    datasource_id: 'entity:rdf_entity'
+    property_path: id
+    type: string
+  label:
+    label: Title
+    datasource_id: 'entity:rdf_entity'
+    property_path: label
+    type: string
+  field_ar_description:
+    label: Description
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_ar_description
+    type: text
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_ar_description
+  tid:
+    label: 'Policy Domain » Taxonomy term » Term ID'
+    datasource_id: 'entity:rdf_entity'
+    property_path: 'field_policy_domain:entity:tid'
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_policy_domain
+      module:
+        - taxonomy
+  tid_1:
+    label: 'Spatial coverage » Taxonomy term » Term ID'
+    datasource_id: 'entity:rdf_entity'
+    property_path: 'field_spatial_coverage:entity:tid'
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_spatial_coverage
+      module:
+        - taxonomy
+  tid_2:
+    label: 'Status » Taxonomy term » Term ID'
+    datasource_id: 'entity:rdf_entity'
+    property_path: 'field_status:entity:tid'
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_status
+      module:
+        - taxonomy
+  rid:
+    label: 'Rdf Type'
+    datasource_id: 'entity:rdf_entity'
+    property_path: rid
+    type: string
+  label_1:
+    label: Title
+    datasource_id: 'entity:rdf_entity'
+    property_path: label
+    type: string
+  field_ad_description:
+    label: Description
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_ad_description
+    type: text
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_ad_description
+  field_isr_description:
+    label: Description
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_isr_description
+    type: text
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_isr_description
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: true
+      selected: {  }
+    languages:
+      default: true
+      selected: {  }
+  'entity:rdf_entity':
+    bundles:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  rendered_item: {  }
+tracker_settings:
+  default: {  }
+options:
+  index_directly: true
+  cron_limit: 50
+server: solr

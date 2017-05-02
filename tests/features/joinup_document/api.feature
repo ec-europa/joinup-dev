@@ -4,16 +4,18 @@ Feature: Document API
   As a backend developer
   I need to be able to use the Node API to handle the "Documents" bundle
 
-  Scenario: Programmatically create a Custom Page
-    Given the following collection:
-      | name              | Joinup document name    |
-      | owner             | Joinup Derp             |
-      | logo              | logo.png                |
-      | moderation        | 1                       |
-      | closed            | 1                       |
-      | elibrary creation | facilitators            |
-      | uri               | http://joinup.eu/jd/jde |
+  Scenario: Programmatically create a document
+    Given the following owner:
+      | name        |
+      | Joinup Derp |
+    And the following collection:
+      | title             | Joinup document name |
+      | owner             | Joinup Derp          |
+      | logo              | logo.png             |
+      | moderation        | yes                  |
+      | elibrary creation | facilitators         |
+      | state             | validated            |
     And document content:
-      | title      | field_document_short_title | body               | groups audience         |
-      | JD title   | Short                      | Dummy description. | http://joinup.eu/jd/jde |
+      | title    | type     | short title | body               | collection           |
+      | JD title | Document | Short       | Dummy description. | Joinup document name |
     Then I should have a "Document" page titled "JD title"

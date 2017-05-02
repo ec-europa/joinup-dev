@@ -1,0 +1,46 @@
+// Slider
+//
+// Slider component
+//
+// Component
+// --------------------------------------------------
+.slider
+
+// Elements
+// --------------------------------------------------
+.slider__labels
+  margin-top: 35px
+  display: flex
+  justify-content: space-between
+
+.slider__label
+  color: #9a9a9a
+  font-size: 12px
+  font-weight: 500
+  text-align: center
+
+.slider__select
+  display: none
+
+.slider__slider
+  background: $color-blue-slider
+  height: 4px
+  border: none
+  margin: 20px 0
+  cursor: pointer
+  .ui-slider-handle.ui-state-default
+    border-radius: 50%
+    border: none
+    width: 25px
+    height: 25px
+    color: $color-blue-slider
+    background: $color-blue-slider
+    top: -0.8em
+    cursor: pointer
+    &.ui-state-focus
+      outline: none
+
+// Modifiers
+// --------------------------------------------------
+.slider__label--selected
+  color: $color-blue-slider

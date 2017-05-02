@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for og_comment.
+ */
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function og_comment_entity_type_alter(array &$entity_types) {
+  /** @var Drupal\Core\Entity\ContentEntityType $comment */
+  $comment = $entity_types['comment'];
+  // Swap out access handler for comments.
+  $comment->setAccessClass('Drupal\og_comment\OgCommentAccessControlHandler');
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function og_comment_field_formatter_info_alter(array &$info) {
+  // Swap out default field formatter class.
+  $info['comment_default']['class'] = 'Drupal\og_comment\Plugin\Field\FieldFormatter\OgCommentDefaultFormatter';
+}
+
+/**
+ * Implements hook_field_info_alter().
+ */
+function og_comment_field_info_alter(&$info) {
+  $info['comment']['list_class'] = 'Drupal\og_comment\OgCommentFieldItemList';
+}

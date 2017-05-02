@@ -13,7 +13,7 @@ Feature: User API
       | First name           | Leonardo                                     |
       | Family name          | di ser Piero da Vinci                        |
       | Photo                | leonardo.jpg                                 |
-      | Professional profile | invention, painting, sculpting, architecture |
+      | Business title       | invention, painting, sculpting, architecture |
       | Organisation         | Verrocchio's workshop                        |
      # @Fixme unimplemented.
      # | Professional domain  |                                              |

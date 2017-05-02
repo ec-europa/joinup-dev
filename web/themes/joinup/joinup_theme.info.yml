@@ -1,0 +1,25 @@
+name: Joinup Theme
+description: Joinup theme based on Material design lite.
+package: Custom
+type: theme
+core: 8.x
+
+libraries:
+  - joinup_theme/icons
+  - joinup_theme/fonts
+  - joinup_theme/material-design-lite
+  - joinup_theme/global-components
+
+stylesheets-remove:
+  - core/themes/stable/css/core/vertical-tabs.css
+
+regions:
+  header: Header
+  header_central_menu: Main menu (header)
+  header_profile_menu: Profile menu (header)
+  featured: Featured
+  sidebar_left: 'Sidebar left'
+  content_top: 'Content top'
+  content: Content  # the content region is required
+  content_bottom: 'Content bottom'
+  footer: Footer

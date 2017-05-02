@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - field.field.message.rdf_entity_solution_validate.field_message_content
+    - message.template.rdf_entity_solution_validate
+id: message.rdf_entity_solution_validate.mail_body
+targetEntityType: message
+bundle: rdf_entity_solution_validate
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_message_content: true
+  partial_0: true

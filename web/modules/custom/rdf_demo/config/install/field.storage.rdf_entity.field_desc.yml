@@ -5,7 +5,8 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_value: null
+    mapping:
+      value: null
     rdf_mapping: 'http://purl.org/dc/terms/description'
 id: rdf_entity.field_desc
 field_name: field_desc

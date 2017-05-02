@@ -1,0 +1,47 @@
+{#
+/**
+ * @file
+ * Themeing for rdf entities, bundle 'asset_distribution', 'compact' view mode.
+ */
+#}
+
+{% if is_standalone %}
+<div class="timeline__release {% if is_top_of_timeline %}is-latest {% endif %}mdl-grid">
+  <div class="timeline__release-progression mdl-cell mdl-cell--3-col">
+    <div class="timeline__release-info">
+      <div class="release__info-element bold">Standalone distribution</div>
+        {% if is_top_of_timeline %}
+          <div class="release__info-element bold blue">Latest release</div>
+        {% endif %}
+    </div>
+    <div class="timeline__release-bar"></div>
+  </div>
+  <div class="timeline__release-content mdl-cell mdl-cell--9-col">
+{% endif %}
+    <div class="timeline__listing-item">
+      <div class="timeline__listing-title">
+        {{ content.field_ad_access_url }}
+      </div>
+      <div class="timeline__listing-details details">
+        <div class="details__element">
+          <div class="value gray">{{ content.field_ad_file_size }}</div>
+        </div>
+        <div class="details__element hide--phone">
+          <div class="value bold underline">{{ label }}</div>
+        </div>
+        <div class="details__element hide--phone">
+          <div class="label gray">{{ 'licence:'|t }}</div>
+          <div class="value bold underline action-link">{{ content.field_ad_licence }}</div>
+        </div>
+      </div>
+      <div class="timeline__action-links action-link__wrapper right hide--phone">
+        <a href="{{ url }}" class="action-link">{{ 'Details'|t }}</a>
+        {% if content.promoted_download %}
+          <a href="{{ content.promoted_download }}" class="action-link">{{ 'Download'|t }}</a>
+        {% endif %}
+      </div>
+    </div>
+{% if is_standalone %}
+  </div>
+</div>
+{% endif %}

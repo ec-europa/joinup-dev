@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ci_name
+    - rdf_entity.rdfentity.contact_information
+id: rdf_entity.contact_information.field_ci_name
+field_name: field_ci_name
+entity_type: rdf_entity
+bundle: contact_information
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

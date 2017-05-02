@@ -1,0 +1,60 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Contology%5Cpolicy-domain%23e-identity?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/taxonomy_term\/policy_domain\/parent": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Contology%5Cpolicy-domain%5Ccategory%23e-govenment?_format=hal_json"
+            }
+        ]
+    },
+    "tid": [
+        {
+            "value": "http:\/\/joinup.eu\/ontology\/policy-domain#e-identity"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/joinup.eu\/ontology\/policy-domain#e-identity"
+        }
+    ],
+    "vid": [
+        {
+            "target_id": "policy_domain"
+        }
+    ],
+    "name": [
+        {
+            "value": "E-identity",
+            "lang": "en"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/taxonomy_term\/policy_domain\/parent": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Contology%5Cpolicy-domain%5Ccategory%23e-govenment?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/joinup.eu\/ontology\/policy-domain\/category#e-govenment"
+                    }
+                ]
+            }
+        ]
+    },
+    "graph": [
+        {
+            "value": "default"
+        }
+    ]
+}

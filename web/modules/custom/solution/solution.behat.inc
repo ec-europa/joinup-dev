@@ -2,20 +2,38 @@
 
 /**
  * @file
- * Contains \SolutionSubContext.
+ * Contains Drupal\solution\solution.behat.inc.
  */
 
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityReferenceTrait;
+use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\NodeTrait;
+use Drupal\joinup\Traits\OgTrait;
+use Drupal\joinup\Traits\RandomGeneratorTrait;
+use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
+use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\file\Entity\File;
-use Drupal\og\OgGroupAudienceHelper;
 
 /**
  * Behat step definitions for testing solutions.
  */
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
+  use EntityReferenceTrait;
+  use FileTrait;
+  use NodeTrait;
+  use OgTrait;
+  use RandomGeneratorTrait;
+  use RdfEntityTrait;
+  use WorkflowTrait;
+  use UtilityTrait;
 
   /**
    * Test solutions.
@@ -23,13 +41,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @var \Drupal\rdf_entity\Entity\Rdf[]
    */
   protected $solutions = [];
-
-  /**
-   * Test images.
-   *
-   * @var \Drupal\file\Entity\File[]
-   */
-  protected $documents = [];
 
   /**
    * Navigates to the add solution form.
@@ -50,7 +61,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @When (I )go to (the homepage of )the :solution solution
    * @When (I )visit (the homepage of )the :solution solution
    */
-  public function visitCollection($solution) {
+  public function visitSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
     $solution = $this->getSolutionByName($solution);
     $this->visitPath($solution->url());
@@ -75,24 +86,17 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   /**
    * Creates a number of solutions with data provided in a table.
    *
-   * * @param TableNode $solution_table
-   *   The solution data.
-   *
-   * 'contact information' => 'field_is_contact_information',
-   * 'landing page' => 'field_is_landing_page',
-   * 'webdav creation' => 'field_is_webdav_creation',
-   * 'webdav url' => 'field_is_webdav_url',
-   * 'wiki' => 'field_is_wiki'
-   *
    * Table format:
-   *
    * @codingStandardsIgnoreStart
-   * uri                            | title         | description              | document | closed  | creation date     | elibrary creation  | moderation  | modification date | landing page               | webdav creation | webdav url                  | wiki
-   * http://joinup.eu/solution/foo  | Foo solution  | This is a foo solution   | text.pdf | 1       | 28-01-1995 12:05  | 0                  | 1           |                   | http://foo-url-example.com | 1               | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
-   * http://joinup.eu/solution/bar  | Bar solution  | This is a bar solution   | text.pdf | 0       | 28-01-1995 12:06  | 1                  | 0           |                   | http://bar-url-example.com | 0               |                             | http://bar-wiki-example.com
+   * title        | description            | document | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki
+   * Foo solution | This is a foo solution | text.pdf | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
+   * Bar solution | This is a bar solution | text.pdf | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
    * @codingStandardsIgnoreEnd
    *
    * Fields title, description and elibrary creation are mandatory.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $solution_table
+   *   The solution data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
@@ -113,6 +117,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
           throw new \Exception("Unknown column '$key' in solution table.");
         }
       };
+
+      $values = $this->convertValueAliases($values);
+
       $this->createSolution($values);
     }
   }
@@ -122,20 +129,19 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Table format:
    * | title             | Sample solution                         |
-   * | uri               | http://joinup.eu/solution/foobar        |
    * | description       | A sample solution                       |
    * | document          | text.pdf                                |
-   * | pre-moderation    | 0|1                                     |
-   * | closed            | 0|1                                     |
-   * | elibrary creation | 0|1|2                                   |
+   * | moderation        | no|yes                                  |
+   * | closed            | no|yes                                  |
+   * | elibrary creation | facilitators|members|registered users   |
    * | landing page      | http://example.com/foobar/landing       |
-   * | webdav creation   | 0|1                                     |
+   * | webdav creation   | no|yes                                  |
    * | webdav url        | http://joinup.eu/solution/foobar/webdav |
    * | wiki              | http://example.wiki/foobar/wiki         |
    *
    * Fields title, description and elibrary creation are required.
    *
-   * @param TableNode $solution_table
+   * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
    *
    * @throws \Exception
@@ -143,7 +149,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @Given (the following )solution:
    */
-  public function givenCollection(TableNode $solution_table) {
+  public function givenSolution(TableNode $solution_table) {
     $aliases = self::solutionFieldAliases();
 
     $values = [];
@@ -156,7 +162,71 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
         throw new \Exception("Unknown column '$key' in solution table.");
       }
     };
+
+    $values = $this->convertValueAliases($values);
+
     $this->createSolution($values);
+  }
+
+  /**
+   * Make group content part of a solution.
+   *
+   * Table format:
+   * | content                | solution          |
+   * | Content entity 1 title | Solution 1 title  |
+   * | Content entity 2 title | Solution 1 title  |
+   * | Content entity 3 title | Solution 2 title  |
+   *
+   * @param string $bundle
+   *   The bundle of the content entity.
+   * @param \Behat\Gherkin\Node\TableNode $membership_table
+   *   The membership table.
+   *
+   * @Given (the following ):bundle content belong to the corresponding solutions:
+   */
+  public function givenContentMemberships($bundle, TableNode $membership_table) {
+    // As each given step is executed in the same request
+    // we need to reset the mapping.
+    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+    $storage->getGraphHandler()->resetRequestGraphs();
+    foreach ($membership_table->getColumnsHash() as $values) {
+      $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
+      /** @var \Drupal\node\NodeInterface $content */
+      $content = $this->getNodeByTitle($values['content'], $bundle);
+      $content->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->set(0, $group->id());
+      $content->save();
+    }
+  }
+
+  /**
+   * Asserts that a user is an owner of the given solution.
+   *
+   * To be owner of a solution, a user should be an administrator and
+   * a facilitator.
+   *
+   * @param string $username
+   *   The name of the user.
+   * @param string $solution
+   *   The label of the group entity.
+   *
+   * @throws \Exception
+   *    Throws an exception when the user is not found.
+   *
+   * @Given (the user ):username should be the owner of the :solution solution
+   */
+  public function assertSolutionOwnership($username, $solution) {
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      throw new \Exception("User {$username} could not be found.");
+    }
+
+    $solution = $this->getRdfEntityByLabel($solution, 'solution');
+    $owner_roles = [
+      OgRoleInterface::ADMINISTRATOR,
+      'facilitator',
+    ];
+
+    $this->assertOgGroupOwnership($user, $solution, $owner_roles);
   }
 
   /**
@@ -166,32 +236,26 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *   An optional associative array of values, keyed by property name.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
-   *   A new collection entity.
+   *   A new solution entity.
    *
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  public function createSolution(array $values) {
-    // Add image.
-    if (!empty($values['field_is_documentation'])) {
-      $filename = $values['field_is_documentation'];
-      $files_path = $this->getMinkParameter('files_path');
-      $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
-      if (!is_file($path)) {
-        throw new \Exception("Document '$filename' was not found in file path '$files_path'.");
-      }
-      // Copy the document into the public files folder and turn it into a File
-      // entity before linking it to the collection.
-      $uri = 'public://' . $filename;
-      $destination = file_unmanaged_copy($path, $uri);
-      $document = File::create(['uri' => $destination]);
-      $document->save();
-      $values['field_is_documentation'] = [$document->id()];
+  protected function createSolution(array $values) {
+    $file_fields = [
+      'field_is_documentation',
+      'field_is_banner',
+      'field_is_logo',
+    ];
 
-      $this->documents[$document->id()] = $document;
+    foreach ($file_fields as $field_name) {
+      if (!empty($values[$field_name])) {
+        $values[$field_name] = [$this->createFile($values[$field_name])->id()];
+      }
     }
 
     $values['rid'] = 'solution';
+    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $solution = Rdf::create($values);
     $solution->save();
     $this->solutions[$solution->id()] = $solution;
@@ -217,7 +281,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * If multiple solution have the same name, the first one will be returned.
    *
-   * @param string $name
+   * @param string $title
    *   The solution name.
    *
    * @return \Drupal\rdf_entity\Entity\Rdf
@@ -226,15 +290,34 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \InvalidArgumentException
    *   Thrown when a solution with the given name does not exist.
    */
-  protected function getSolutionByName($name) {
+  protected function getSolutionByName($title) {
+    return $this->getRdfEntityByLabel($title, 'solution');
+  }
+
+  /**
+   * Returns the release with the given name.
+   *
+   * If multiple solution have the same name, the first one will be returned.
+   *
+   * @param string $title
+   *   The release name.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   The release.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when a release with the given name does not exist.
+   */
+  public static function getReleaseByName($title) {
     $query = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'solution')
-      ->condition('label', $name)
+      ->exists('field_is_is_version_of')
+      ->condition('label', $title)
       ->range(0, 1);
     $result = $query->execute();
 
     if (empty($result)) {
-      throw new \InvalidArgumentException("The solution with the name '$name' was not found.");
+      throw new \InvalidArgumentException("The release with the name '$title' was not found.");
     }
 
     return Rdf::load(reset($result));
@@ -247,55 +330,85 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *   The expected number of solutions.
    *
    * @throws \Exception
-   *   Thrown when the number of solutions does not not match the expectation.
+   *   Throws an exception when the expected number is not equal to the given.
    *
    * @Then I should have :number solution(s)
    */
   public function assertSolutionCount($number) {
+    // We cannot rely on $this->assertRdfEntityCount() because a solution shares
+    // the same bundle with a release. We need to distinguish them by the
+    // presence of the 'is_version_of' field - if this field is missing it is a
+    // solution, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'solution')
+      ->notExists('field_is_has_version')
       ->count()
       ->execute();
     if ($actual != $number) {
-      throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
+      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
     }
   }
 
   /**
-   * Checks if the given solution belongs to the given collection.
+   * Subscribes the given users to the given solution.
    *
-   * If there are multiple solutions or collections with the same name, then
-   * only the first one is checked.
+   * The role Id of organic group roles are consisting of 3 parts, the entity
+   * type ID and the bundle of the group, and the machine name of the role.
+   * Do not provide the complete ID of the Og role. The entity type ID and
+   * bundle are going to be added automatically.
    *
-   * @param string $solution
-   *   The title of the custom page to check.
-   * @param string $collection
-   *   The name of the collection to check.
+   * Table format:
+   * | solution          | user | roles                      |
+   * | Sample solution A | John | facilitator, administrator |
+   * | Sample solution B | Jack |                            |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $membership_table
+   *   The membership table.
    *
    * @throws \Exception
-   *   Thrown when a custom page with the given title doesn't exist.
+   *   Thrown when a solution is not found.
    *
-   * @Then the :collection collection has a solution named :solution
+   * @Given (the following )solution user membership(s):
    */
-  public function assertOgMembership($solution, $collection) {
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    $collection = \CollectionSubContext::getCollectionByName($collection);
-    /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = \SolutionSubContext::getSolutionByName($solution);
-    // This handles the solutions added by form submit.
-    if (!in_array($solution, $this->solutions)) {
-      $this->solutions[$solution->id()] = $solution;
-    }
+  public function givenSolutionUserMemberships(TableNode $membership_table) {
+    foreach ($membership_table->getColumnsHash() as $values) {
+      // Load group.
+      $group = $this->getSolutionByName($values['solution']);
 
-    /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-    foreach ($solution->get(OgGroupAudienceHelper::DEFAULT_FIELD) as $group) {
-      if ($group->getValue()['target_id'] == $collection->id()) {
-        // Test passes.
-        return;
+      // Load member.
+      $member = user_load_by_name($values['user']);
+      if (empty($member)) {
+        throw new \Exception('User ' . $values['user'] . ' not found.');
       }
-    }
 
-    throw new \Exception("The solution '{$solution->label()}' is not associated with collection '{$collection->label()}'.");
+      // Convert role names to role IDs.
+      $roles = [];
+      if (!empty($values['roles'])) {
+        $role_names = $this->explodeCommaSeparatedStepArgument($values['roles']);
+        // Every owner is also a facilitator. In Joinup the facilitator role is
+        // assigned to the owner when they create the solution. Since in this
+        // step the solutions are already created, mimick this behaviour by
+        // making sure every owner also has the 'facilitator' role.
+        if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
+          $role_names[] = 'facilitator';
+        }
+        $roles = $this->getOgRoles($role_names, $group);
+      }
+
+      $this->subscribeUserToGroup($member, $group, $roles);
+    }
+  }
+
+  /**
+   * Tracks solutions that are manually deleted and don't need cleaning up.
+   *
+   * @param string $solution
+   *   The name of the solution.
+   *
+   * @Given the :solution solution will be deleted manually
+   */
+  public function skipCleaningOfSolution($solution) {
+    unset($this->solutions[$this->getSolutionByName($solution)->id()]);
   }
 
   /**
@@ -303,14 +416,17 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @AfterScenario
    */
-  public function cleanSolutions() {
+  public function cleanSolutions(AfterScenarioScope $event) {
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
-      $solution->delete();
-    }
-    // Also remove the image entities that were attached to the collections.
-    foreach ($this->documents as $document) {
-      $document->delete();
+      $name = $solution->getName();
+      try {
+        $solution->delete();
+      }
+      catch (Throwable $e) {
+        // Throw a more helpful error if something goes wrong during cleanup.
+        throw new \Exception(sprintf('Error while cleaning up solution "%s" after completing scenario "%s" of feature "%s": "%s"', $name, $event->getFeature()->getTitle(), $event->getScenario()->getTitle(), $e->getMessage()));
+      }
     }
   }
 
@@ -318,42 +434,151 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *   Mapping.
    */
-  private static function solutionFieldAliases() {
+  protected static function solutionFieldAliases() {
     // Mapping alias - field name.
     return [
       'uri' => 'id',
-      'name' => 'label',
+      'title' => 'label',
       'affiliations requests' => 'field_is_affiliations_requests',
+      'banner' => 'field_is_banner',
       'contact information' => 'field_is_contact_information',
       'creation date' => 'field_is_creation_date',
       'description' => 'field_is_description',
       'documentation' => 'field_is_documentation',
       'elibrary creation' => 'field_is_elibrary_creation',
-      'included asset' => 'field_is_included_asset',
-      'issue tracker' => 'field_is_issue_tracker',
-      'keywords' => 'field_is_keywords',
+      'keywords' => 'field_keywords',
       'landing page' => 'field_is_landing_page',
       'language' => 'field_is_language',
       'latest release' => 'field_is_latest_release',
+      'logo' => 'field_is_logo',
       'metrics page' => 'field_is_metrics_page',
       'moderation' => 'field_is_moderation',
       'modification date' => 'field_is_modification_date',
       'owner' => 'field_is_owner',
+      'policy domain' => 'field_policy_domain',
       'related solutions' => 'field_is_related_solutions',
-      'solution category' => 'field_is_solution_category',
       'solution type' => 'field_is_solution_type',
       'source code repository' => 'field_is_source_code_repository',
-      'spacial coverage' => 'field_is_spacial_coverage',
-      'status' => 'field_is_status',
-      'topic' => 'field_is_topic',
+      'spatial coverage' => 'field_spatial_coverage',
+      'status' => 'field_status',
+      'topic' => 'field_topic',
       'translation' => 'field_is_translation',
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
-      'groups audience' => 'og_group_ref',
+      'state' => 'field_is_state',
+      'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
     ];
+  }
+
+  /**
+   * Converts values from user friendly to normal machine values.
+   *
+   * @param array $fields
+   *   An array of fields keyed by field name.
+   *
+   * @return mixed
+   *   The array with the values converted.
+   *
+   * @throws \Exception
+   *    Throws an exception when a mapped value is not found.
+   */
+  protected function convertValueAliases(array $fields) {
+    $mapped_values = [
+      'field_is_moderation' => ['no' => 0, 'yes' => 1],
+      'field_is_elibrary_creation' =>
+        ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
+      'field_is_webdav_creation' => ['no' => 0, 'yes' => 1],
+    ];
+
+    foreach ($fields as $field => $value) {
+      if (isset($mapped_values[$field])) {
+        if (!isset($mapped_values[$field][$value])) {
+          throw new \Exception("Value $value is not an acceptable value for field $field.");
+        }
+
+        $fields[$field] = $mapped_values[$field][$value];
+      }
+    }
+
+    // Convert any entity reference field label value with the entity id.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $fields);
+
+    return $fields;
+  }
+
+  /**
+   * Checks that a user has the available state options for the solution.
+   *
+   * The method also checks that these options are the only options available.
+   *
+   * Table format:
+   * | solution   | user | options          |
+   * | Solution A | John | Status1          |
+   * | Solution B | Jack | Status1, Status2 |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $check_table
+   *   The table with the triplets solution-user-options.
+   *
+   * @throws \Exception
+   *    Thrown when the user does not exist.
+   *
+   * @todo: Maybe there is a better definition available here like 'The
+   * following state buttons should be available for the user on the
+   * collection'.
+   *
+   * @Given for the following solution, the corresponding user should have the corresponding (available )state buttons:
+   */
+  public function verifyWorkflowStates(TableNode $check_table) {
+    foreach ($check_table->getColumnsHash() as $values) {
+      // Load entity.
+      $solution = $this->getSolutionByName($values['solution']);
+
+      // Load user.
+      $user = user_load_by_name($values['user']);
+      if (empty($user)) {
+        throw new \Exception('User ' . $values['user'] . ' not found.');
+      }
+
+      // Convert states to an array.
+      $states = empty($values['states']) ? [] : explode(',', $values['states']);
+      $states = array_map('trim', $states);
+
+      $this->assertAvailableTransitions($solution, $states, $user);
+    }
+  }
+
+  /**
+   * Applies a transition to a solution.
+   *
+   * @param string $username
+   *   The username applying the transition.
+   * @param string $entity_name
+   *   The title of the solution.
+   * @param string $to_state
+   *   The state that the solution transits to.
+   *
+   * @throws \Exception
+   *    An exception is thrown if the user is not found or the transition is not
+   *    allowed for this user.
+   *
+   * @Given the user :username changes the state of the :entity_name solution to :to_state
+   */
+  public function applySolutionWorkflowTransition($username, $entity_name, $to_state) {
+    $user = user_load_by_name($username);
+    if (empty($user)) {
+      throw new \Exception("User {$username} was not found.");
+    }
+    $solution = $this->getSolutionByName($entity_name);
+    $available_states = $this->getAvailableStates($solution, $user);
+    if (($transition_id = array_search($to_state, $available_states)) === FALSE) {
+      throw new \Exception("The given user does not have permission to apply the specific transition.");
+    }
+    $transition = $solution->get('field_is_state')->first()->getWorkflow()->getTransition($transition_id);
+    $solution->get('field_is_state')->first()->applyTransition($transition);
+    $solution->save();
   }
 
 }

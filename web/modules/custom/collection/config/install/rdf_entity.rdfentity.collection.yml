@@ -1,8 +1,16 @@
 langcode: en
 status: true
 dependencies: {  }
+third_party_settings:
+  rdf_entity:
+    mapping:
+      rid:
+        target_id: 'http://www.w3.org/ns/adms#AssetRepository'
+      label:
+        value: 'http://purl.org/dc/terms/title'
+    graph:
+      default: 'http://joinup.eu/collection/published'
+      draft: 'http://joinup.eu/collection/draft'
 name: Collection
 rid: collection
 description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
-rdftype: 'http://www.w3.org/ns/adms#AssetRepository'
-rdf_label: 'http://purl.org/dc/terms/title'

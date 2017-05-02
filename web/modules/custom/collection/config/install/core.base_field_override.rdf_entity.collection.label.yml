@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.collection
+id: rdf_entity.collection.label
+field_name: label
+entity_type: rdf_entity
+bundle: collection
+label: 'Title'
+description: ''
+required: true
+translatable: true
+default_value: { }
+default_value_callback: ''
+settings: { }
+field_type: string

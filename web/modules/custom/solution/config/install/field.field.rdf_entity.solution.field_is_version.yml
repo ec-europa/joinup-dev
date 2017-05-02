@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_version
+    - rdf_entity.rdfentity.solution
+id: rdf_entity.solution.field_is_version
+field_name: field_is_version
+entity_type: rdf_entity
+bundle: solution
+label: Version
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

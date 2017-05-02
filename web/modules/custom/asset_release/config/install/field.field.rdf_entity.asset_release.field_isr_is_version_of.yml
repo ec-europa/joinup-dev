@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_isr_is_version_of
+    - rdf_entity.rdfentity.asset_release
+  module:
+    - og
+id: rdf_entity.asset_release.field_isr_is_version_of
+field_name: field_isr_is_version_of
+entity_type: rdf_entity
+bundle: asset_release
+label: 'Is version of'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      solution: solution
+    sort:
+      field: _none
+  access_override: false
+field_type: og_standard_reference

@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_owner_type
+    - rdf_entity.rdfentity.owner
+    - taxonomy.vocabulary.owner_type
+id: rdf_entity.owner.field_owner_type
+field_name: field_owner_type
+entity_type: rdf_entity
+bundle: owner
+label: Type
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      owner_type: owner_type
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

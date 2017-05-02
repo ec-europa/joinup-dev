@@ -1,0 +1,5 @@
+name: Dashboard
+type: module
+description: Provides a dashboard for the Joinup project.
+core: 8.x
+package: Joinup

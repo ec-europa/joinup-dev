@@ -4,27 +4,85 @@ namespace Drupal\rdf_entity\Entity\Controller;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Routing\RedirectDestinationInterface;
+use Drupal\rdf_entity\Form\RdfListBuilderFilterForm;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a list controller for rdf_entity entity.
- *
- * @ingroup content_entity_example
  */
 class RdfListBuilder extends EntityListBuilder {
+
+  /**
+   * The redirect destination service.
+   *
+   * @var \Drupal\Core\Routing\RedirectDestinationInterface
+   */
+  protected $redirectDestination;
+
+  /**
+   * Constructs a new NodeListBuilder object.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
+   *   The entity type definition.
+   * @param \Drupal\Core\Entity\EntityStorageInterface $storage
+   *   The entity storage class.
+   * @param \Drupal\Core\Routing\RedirectDestinationInterface $redirect_destination
+   *   The redirect destination service.
+   */
+  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RedirectDestinationInterface $redirect_destination) {
+    parent::__construct($entity_type, $storage);
+    $this->redirectDestination = $redirect_destination;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
+    return new static(
+      $entity_type,
+      $container->get('entity.manager')->getStorage($entity_type->id()),
+      $container->get('redirect.destination')
+    );
+  }
+
+  /**
+   * The pager size.
+   *
+   * @var int
+   */
   protected $limit = 20;
 
   /**
    * {@inheritdoc}
    */
-  public function load() {
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage */
+  protected function getEntityIds() {
+    $request = \Drupal::request();
     $rdf_storage = $this->getStorage();
-    $mapping = $rdf_storage->getRdfBundleList();
-    if (!$mapping) {
-      return [];
+    /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
+    $bundle_info = \Drupal::service('entity_type.bundle.info');
+    /** @var \Drupal\rdf_entity\Entity\Query\Sparql\Query $query */
+    $query = $rdf_storage->getQuery();
+
+    // If a graph type is set in the url, validate it, and use it in the query.
+    $graph = $request->get('graph');
+    if (!empty($graph)) {
+      $definitions = $rdf_storage->getGraphDefinitions();
+      if (isset($definitions[$graph])) {
+        // Use the graph to build the list.
+        $query->setGraphType([$graph]);
+      }
     }
-    $query = $rdf_storage->getQuery()
-      ->condition('rid', NULL, 'IN');
+    else {
+      $query->setGraphType($rdf_storage->getGraphHandler()->getEntityTypeEnabledGraphs());
+    }
+
+    if ($rid = $request->get('rid') ?: NULL) {
+      $rid = in_array($rid, array_keys($bundle_info->getBundleInfo('rdf_entity'))) ? [$rid] : NULL;
+    }
+    $query->condition('rid', $rid, 'IN');
 
     // Only add the pager if a limit is specified.
     if ($this->limit) {
@@ -32,8 +90,8 @@ class RdfListBuilder extends EntityListBuilder {
     }
     $header = $this->buildHeader();
     $query->tableSort($header);
-    $rids = $query->execute();
-    return $this->storage->loadMultiple($rids);
+
+    return $query->execute();
   }
 
   /**
@@ -44,11 +102,9 @@ class RdfListBuilder extends EntityListBuilder {
    * buildHeader() and buildRow() implementations.
    */
   public function render() {
-    $build['description'] = array(
-      '#markup' => $this->t('The Rdf entities are stored in a triple store.'),
-    );
-    $build['table'] = parent::render();
-    return $build;
+    return [
+      'filter_form' => \Drupal::formBuilder()->getForm(RdfListBuilderFilterForm::class),
+    ] + parent::render();
   }
 
   /**
@@ -60,18 +116,23 @@ class RdfListBuilder extends EntityListBuilder {
    * and inserts the 'edit' and 'delete' links as defined for the entity type.
    */
   public function buildHeader() {
-    $header = array(
-      'id' => array(
+    $header = [
+      'id' => [
         'data' => $this->t('URI'),
         'field' => 'id',
         'specifier' => 'id',
-      ),
-      'rid' => array(
+      ],
+      'rid' => [
         'data' => $this->t('Bundle'),
         'field' => 'rid',
         'specifier' => 'rid',
-      ),
-    );
+      ],
+      'status' => [
+        'data' => $this->t('Status'),
+        'field' => 'status',
+        'specifier' => 'status',
+      ],
+    ];
     return $header + parent::buildHeader();
   }
 
@@ -82,7 +143,21 @@ class RdfListBuilder extends EntityListBuilder {
     /* @var $entity \Drupal\rdf_entity\Entity\Rdf */
     $row['id'] = $entity->link();
     $row['rid'] = $entity->bundle();
+    $row['status'] = $entity->isPublished() ? $this->t('Published') : $this->t('Unpublished');
     return $row + parent::buildRow($entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getDefaultOperations(EntityInterface $entity) {
+    $operations = parent::getDefaultOperations($entity);
+
+    $destination = $this->redirectDestination->getAsArray();
+    foreach ($operations as $key => $operation) {
+      $operations[$key]['query'] = $destination;
+    }
+    return $operations;
   }
 
 }

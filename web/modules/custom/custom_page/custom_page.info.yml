@@ -5,20 +5,26 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - og
-  - node
-  - field
-  - path
-  - text
+  - ds
+  - joinup_community_content
+  - joinup_core
   - menu_ui
+  - og
+  - path
+  - search_api_field
+  - user
 
 config_devel:
-- core.base_field_override.node.custom_page.promote
-- core.base_field_override.node.custom_page.status
-- core.entity_form_display.node.custom_page.default
-- core.entity_form_mode.node.collection_custom_page
-- core.entity_view_display.node.custom_page.default
-- field.field.node.custom_page.body
-- field.field.node.custom_page.og_group_ref
-- field.storage.node.og_group_ref
-- node.type.custom_page
+  - core.base_field_override.node.custom_page.promote
+  - core.base_field_override.node.custom_page.status
+  - core.entity_form_display.node.custom_page.default
+  - core.entity_view_display.node.custom_page.default
+  - core.entity_view_display.node.custom_page.view_mode_featured
+  - core.entity_view_display.node.custom_page.view_mode_tile
+  - facets.facet.field_cp_content_listing_content_type
+  - facets.facet_source.search_api_field__node.field_cp_content_listing
+  - field.field.node.custom_page.body
+  - field.field.node.custom_page.field_cp_content_listing
+  - field.field.node.custom_page.og_audience
+  - field.storage.node.field_cp_content_listing
+  - node.type.custom_page

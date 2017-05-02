@@ -5,6 +5,7 @@ dependencies:
     - field.storage.rdf_entity.field_ar_description
     - search_api.index.collections
   module:
+    - joinup_core
     - search_api
     - text
 id: collections
@@ -26,18 +27,13 @@ display:
         type: none
         options: {  }
       cache:
-        type: search_api
-        options:
-          results_lifespan: '3600'
-          results_lifespan_custom: '0'
-          output_lifespan: '3600'
-          output_lifespan_custom: '0'
+        type: search_api_tag
+        options: {  }
       query:
-        type: views_query
+        type: search_api_query
         options:
           bypass_access: false
           skip_access: false
-          parse_mode: terms
       exposed_form:
         type: basic
         options:
@@ -51,10 +47,15 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 10
+          items_per_page: 12
           offset: 0
           id: 0
           total_pages: null
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -63,16 +64,28 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          tags:
-            previous: '‹ Previous'
-            next: 'Next ›'
-            first: '« First'
-            last: 'Last »'
           quantity: 9
       style:
-        type: html_list
+        type: tiles
+        options:
+          row_class: ''
+          default_row_class: true
+          uses_fields: false
       row:
-        type: fields
+        type: search_api
+        options:
+          view_modes:
+            'entity:node':
+              custom_page: default
+              document: default
+              event: view_mode_tile
+              news: default
+            'entity:rdf_entity':
+              asset_distribution: default
+              asset_release: default
+              collection: view_mode_tile
+              licence: default
+              solution: view_mode_tile
       fields:
         search_api_language:
           table: search_api_index_collections
@@ -417,7 +430,49 @@ display:
             multi_type: separator
             multi_separator: ', '
           plugin_id: search_api_field
-      filters: {  }
+      filters:
+        rid:
+          id: rid
+          table: search_api_index_collections
+          field: rid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: collection
+          group: 1
+          exposed: false
+          expose:
+            operator_id: rid_op
+            label: 'Rdf Type'
+            description: ''
+            use_operator: false
+            operator: rid_op
+            identifier: rid
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              moderator: '0'
+              administrator: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: search_api_string
       sorts: {  }
       title: Collections
       header: {  }
@@ -426,8 +481,9 @@ display:
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      show_admin_links: false
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -443,7 +499,7 @@ display:
       display_extenders: {  }
       path: collections
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'

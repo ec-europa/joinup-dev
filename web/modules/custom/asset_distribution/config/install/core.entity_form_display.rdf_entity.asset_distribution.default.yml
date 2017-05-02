@@ -1,0 +1,89 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.asset_distribution.field_ad_access_url
+    - field.field.rdf_entity.asset_distribution.field_ad_creation_date
+    - field.field.rdf_entity.asset_distribution.field_ad_description
+    - field.field.rdf_entity.asset_distribution.field_ad_file_size
+    - field.field.rdf_entity.asset_distribution.field_ad_format
+    - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
+    - field.field.rdf_entity.asset_distribution.field_ad_licence
+    - field.field.rdf_entity.asset_distribution.field_ad_modification_date
+    - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
+    - field.field.rdf_entity.asset_distribution.field_status
+    - field.field.rdf_entity.asset_distribution.og_audience
+    - rdf_entity.rdfentity.asset_distribution
+  module:
+    - file_url
+    - link
+    - rdf_entity
+    - text
+id: rdf_entity.asset_distribution.default
+targetEntityType: rdf_entity
+bundle: asset_distribution
+mode: default
+content:
+  field_ad_access_url:
+    weight: 3
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_url_generic
+    region: content
+  field_ad_creation_date:
+    type: datetime_create_update
+    weight: 8
+    settings:
+      behaviour: create
+    third_party_settings: {  }
+  field_ad_description:
+    weight: 2
+    settings:
+      rows: 9
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_ad_format:
+    weight: 6
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_ad_gitb_compliant:
+    type: options_select
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+  field_ad_licence:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+  field_ad_modification_date:
+    type: datetime_create_update
+    weight: 9
+    settings:
+      behaviour: create
+    third_party_settings: {  }
+  field_ad_repr_technique:
+    weight: 7
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  label:
+    type: string_textfield
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  field_ad_file_size: true
+  field_status: true
+  og_audience: true

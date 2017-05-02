@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.user.subscription_settings
+    - field.field.user.user.field_user_frequency
+    - field.field.user.user.field_user_group_types
+    - field.field.user.user.field_user_subscription_events
+  module:
+    - user
+id: user.user.subscription_settings
+targetEntityType: user
+bundle: user
+mode: subscription_settings
+content:
+  field_user_frequency:
+    type: options_buttons
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+  field_user_group_types:
+    type: options_buttons
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+  field_user_subscription_events:
+    type: boolean_checkbox
+    weight: 2
+    settings:
+      display_label: false
+    third_party_settings: {  }
+hidden:
+  account: true
+  field_user_family_name: true
+  field_user_first_name: true
+  field_user_nationality: true
+  field_user_organisation: true
+  field_user_photo: true
+  field_user_professional_domain: true
+  field_user_business_title: true
+  language: true
+  timezone: true

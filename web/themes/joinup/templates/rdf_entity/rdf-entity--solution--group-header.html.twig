@@ -1,0 +1,30 @@
+{#
+/**
+ * @file
+ * Themeing for group header.
+ */
+#}
+<div class="featured__outer-wrapper" style="background-image: url('{{ content.field_is_banner }}');">
+  <div class="featured__overlay"></div>
+  <div class="featured__inner-wrapper">
+    {# @todo This is temporary, once all fields are available, it will be replaced. #}
+    <a href="{{ path('entity.rdf_entity.canonical',{'rdf_entity': rdf_entity.id()}) }}">
+      <div class="featured__logo">{{ content.field_is_logo }}</div>
+      <h1 class="featured__text">{{ label }}</h1>
+    </a>
+      <div class="featured__stats">
+        <div class="stats__column">
+          <div class="stats__wrapper">
+            {{ content.licence }}
+          </div>
+        </div>
+        <div class="stats__column is-only-placeholder">
+          <div class="stats__wrapper">
+            <span class="stats__text">Downloads:</span>
+            <span class="stats__text bold">1234</span>
+          </div>
+        </div>
+      </div>
+      {{ content.releases_overview }}
+  </div>
+</div>

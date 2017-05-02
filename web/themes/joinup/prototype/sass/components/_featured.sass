@@ -1,0 +1,170 @@
+// Featured
+//
+// Featured component
+
+// Component
+// --------------------------------------------------
+.featured
+  position: relative
+  margin: 0 auto
+
+// Elements
+// --------------------------------------------------
+.featured__outer-wrapper
+  background: url('../images/featured-bg.jpg') no-repeat center top
+  position: relative
+  margin: 0 auto
+  -webkit-background-size: cover
+  -moz-background-size: cover
+  -o-background-size: cover
+  background-size: cover
+
+.featured__inner-wrapper
+  position: relative
+  z-index: 2
+  max-width: 1200px
+  margin: 0 auto
+  text-align: center
+  a
+    text-decoration: none
+  +breakpoint(sm-mobile, mobile)
+    padding: 40px 0 80px 0
+  +breakpoint(tablet)
+    padding: 20px 0
+
+.featured__menu-wrapper
+  position: relative
+  z-index: 2
+  max-width: 1200px
+  margin: 0 auto
+  text-align: center
+
+.featured__overlay
+  position: absolute
+  z-index: 1
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  opacity: .6
+  background-color: $color-blue-default
+
+.featured__link-wrapper
+  color: inherit
+  text-decoration: none
+  position: absolute
+  z-index: 3
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+
+.featured__link-wrapper--outer
+  z-index: 2
+
+.featured__text
+  position: relative
+  margin: 0 0 30px 0
+  padding: 25px 20px
+  text-align: center
+  letter-spacing: 2px
+  text-transform: uppercase
+  color: #fff
+  +breakpoint(mobile)
+    margin-bottom: 20px
+  &:after
+    position: absolute
+    right: 0
+    bottom: 0
+    left: 0
+    display: block
+    width: 50px
+    height: 3px
+    margin: 0 auto
+    content: ''
+    background-color: $color-blue-lighter
+
+.featured__text-small
+  font-size: $font-size-xsmall
+  text-transform: none
+
+.featured__text--double
+  margin: 0 0 30px 0
+  text-transform: none
+  +breakpoint(mobile)
+    margin-bottom: 20px
+  h1
+    margin: 0
+
+.featured__text-upper
+  text-transform: uppercase
+
+.featured__stats
+  display: inline-block
+  margin-bottom: 10px
+  text-align: left
+  vertical-align: middle
+  background-color: #fff
+  padding: 0 15px
+  +border-radius(3px)
+  +breakpoint(mobile)
+    margin: 0 10px
+  .stats__column
+    float: left
+    padding: 15px
+    min-width: 0
+  .stats__icon,
+  .stats__text
+    display: inline-block
+    vertical-align: middle
+    line-height: 30px
+  .stats__icon
+    +icon-size(30px)
+
+.featured__action
+  display: inline-block
+  vertical-align: middle
+
+.featured__form-button
+  position: relative
+  display: inline-block
+  margin: 10px
+  z-index: 99
+
+// Modifiers
+// --------------------------------------------------
+.featured__stats
+  .stats__wrapper--centered
+    text-align: center
+  .stats__column--border
+    border-right: 1px solid $color-grey-light
+  +breakpoint(desktop)
+    .stats__column--wide
+      min-width: 165px
+    .stats__column--icons
+      padding-left: 30px
+    .stats__column--border
+      padding-right: 30px
+
+// Dependiencies
+// --------------------------------------------------
+.featured__menu-wrapper
+  .button--default
+    +breakpoint(sm-mobile, mobile)
+      display: block
+      margin: 0 auto
+  .circle-menu
+    position: fixed
+    right: 40px
+    bottom: 40px
+    +breakpoint(mobile)
+      position: absolute
+      bottom: -40px
+      width: 80px
+      height: 80px
+      border-radius: 50%
+      background-color: $color-grey-bg
+    +breakpoint(lg-desktop)
+      right: 0
+  .circle-menu__button
+    +centered

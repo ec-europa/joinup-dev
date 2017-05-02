@@ -2,71 +2,47 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_user_business_title
+    - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
+    - field.field.user.user.field_user_frequency
+    - field.field.user.user.field_user_group_types
     - field.field.user.user.field_user_nationality
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_professional_profile
+    - field.field.user.user.field_user_subscription_events
   module:
-    - image
-    - text
+    - search_api_field
     - user
 id: user.user.default
 targetEntityType: user
 bundle: user
 mode: default
 content:
-  field_user_family_name:
-    weight: 7
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  field_user_first_name:
-    weight: 6
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  field_user_nationality:
-    weight: 10
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_user_organisation:
-    weight: 13
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  field_user_photo:
-    weight: 8
-    label: above
-    settings:
-      image_style: ''
-      image_link: ''
-    third_party_settings: {  }
-    type: image
-  field_user_professional_domain:
-    weight: 11
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_user_professional_profile:
-    weight: 12
-    label: above
+  field_user_content:
+    weight: 1
+    label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
-  member_for:
-    weight: 5
-hidden: {  }
+    type: search_api_field
+    region: content
+  user_field_user_content_top:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_user_business_title: true
+  field_user_family_name: true
+  field_user_first_name: true
+  field_user_frequency: true
+  field_user_group_types: true
+  field_user_nationality: true
+  field_user_organisation: true
+  field_user_photo: true
+  field_user_professional_domain: true
+  field_user_subscription_events: true
+  member_for: true
+  simplenews: true

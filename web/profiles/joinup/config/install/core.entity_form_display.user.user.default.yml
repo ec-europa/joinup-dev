@@ -2,16 +2,21 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_user_business_title
+    - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
+    - field.field.user.user.field_user_frequency
+    - field.field.user.user.field_user_group_types
     - field.field.user.user.field_user_nationality
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_professional_profile
+    - field.field.user.user.field_user_subscription_events
     - image.style.thumbnail
   module:
     - image
+    - search_api_field
     - text
     - user
 id: user.user.default
@@ -21,8 +26,23 @@ mode: default
 content:
   account:
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
+  field_user_business_title:
+    weight: 6
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_user_content:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: search_api_field_default
+    region: content
   field_user_family_name:
     weight: 2
     settings:
@@ -30,6 +50,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_user_first_name:
     weight: 1
     settings:
@@ -37,6 +58,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_user_nationality:
     weight: 4
     settings:
@@ -45,6 +67,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_user_organisation:
     weight: 7
     settings:
@@ -52,6 +75,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_user_photo:
     weight: 3
     settings:
@@ -59,6 +83,7 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
+    region: content
   field_user_professional_domain:
     weight: 5
     settings:
@@ -67,14 +92,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-  field_user_professional_profile:
-    weight: 6
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
+    region: content
 hidden:
+  field_user_frequency: true
+  field_user_group_types: true
+  field_user_subscription_events: true
   language: true
-  og_group_ref: true
+  og_audience: true
+  simplenews: true
   timezone: true

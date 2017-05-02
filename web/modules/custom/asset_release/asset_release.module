@@ -1,0 +1,198 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks regarding the asset_release rdf entity bundle.
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\og\Og;
+use Drupal\rdf_entity\Entity\Rdf;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'asset_release' && !empty($fields['label'])) {
+    $fields['label']->addConstraint('UniqueSolutionTitle', []);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ *
+ * This takes care of the reverse reference.
+ * When a release is created, it has its isVersionOf pre-filled
+ * and is connected to its parent. But the parent needs to have the hasVersion
+ * field filled as well.
+ */
+function asset_release_rdf_entity_insert(EntityInterface $entity) {
+  if ($entity->bundle() == 'asset_release' && !empty($entity->get('field_isr_is_version_of')->getValue()[0]['target_id'])) {
+    /** @var \Drupal\rdf_entity\RdfInterface $parent */
+    $parent = Rdf::load($entity->get('field_isr_is_version_of')->getValue()[0]['target_id']);
+
+    $releases = $parent->get('field_is_has_version')->getValue();
+    $releases[] = ['target_id' => $entity->id()];
+    $parent->get('field_is_has_version')->setValue($releases);
+    $parent->save();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function asset_release_rdf_entity_update(EntityInterface $entity) {
+  if ($entity->bundle() !== 'solution') {
+    return;
+  }
+
+  /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $has_version */
+  $has_version = $entity->get('field_is_has_version');
+  foreach ($has_version->referencedEntities() as $release) {
+    if ($release->get('field_isr_owner')->getValue() !== $entity->get('field_is_owner')->getValue()) {
+      // Release owners are in sync with solution owners.
+      $release
+        ->set('field_isr_owner', $entity->get('field_is_owner')->getValue())
+        ->save();
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function asset_release_preprocess_rdf_entity(&$variables) {
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
+  $rdf_entity = $variables['rdf_entity'];
+  if ($rdf_entity->bundle() !== 'asset_release') {
+    return;
+  }
+  $variables['full_label'] = new TranslatableMarkup('@label @ver', ['@label' => $rdf_entity->label(), '@ver' => $rdf_entity->field_isr_release_number->value]);
+
+  // Make some alterations for the Release download page.
+  // @see \Drupal\asset_release\Controller\AssetReleaseController::overview()
+  if ($variables['view_mode'] === 'compact') {
+    // Provide a flag that indicates if this is displayed at the top of the
+    // timeline.
+    $variables['is_top_of_timeline'] = !empty($rdf_entity->top_of_timeline);
+    return;
+  }
+
+  $is_latest_release = FALSE;
+  $field_solution = $rdf_entity->get('field_isr_is_version_of');
+  if (!empty($field_solution) && ($solution = $field_solution->entity)) {
+    // @todo Find a better way of marking the latest release that doesn't
+    //   involve performing a database query in the theme layer.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
+    $latest_release = solution_get_latest_release($solution);
+    if ($latest_release && $latest_release->id() === $rdf_entity->id()) {
+      $is_latest_release = TRUE;
+    }
+  }
+  $variables['is_latest_release'] = $is_latest_release;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function asset_release_theme($existing, $type, $theme, $path) {
+  return [
+    'asset_release_releases_download' => [
+      'variables' => ['releases' => []],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ *
+ * Interrupts the permissions for updating a release. The permission is not
+ * granted if there are no transitions allowed for the current state of the
+ * node.
+ */
+function asset_release_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->bundle() != 'asset_release' || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
+    return AccessResult::neutral();
+  }
+
+  switch ($operation) {
+    case 'view':
+      $parent = \Drupal::service('asset_release.relations')->getReleaseSolution($entity);
+
+      /** @var \Drupal\Core\Entity\EntityAccessControlHandlerInterface $access_handler */
+      $access_handler = \Drupal::service('entity_type.manager')->getAccessControlHandler('rdf_entity');
+      if (!$access_handler->access($parent, 'view', $account)) {
+        return AccessResult::forbidden();
+      }
+
+      $membership = Og::getMembership($parent, $account);
+      if (empty($membership)) {
+        return AccessResult::neutral();
+      }
+      if (!$entity->isPublished() && $membership->hasPermission('view unpublished rdf entity')) {
+        return AccessResult::allowed();
+      }
+      if ($entity->isPublished() && $membership->hasPermission('view rdf entity')) {
+        return AccessResult::allowed();
+      }
+      break;
+
+    case 'edit':
+      $allowed_transitions = $entity->field_isr_state->first()->getTransitions();
+      return AccessResult::forbiddenIf(empty($allowed_transitions));
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Default graph is published. Draft graph is draft.
+ */
+function asset_release_rdf_entity_presave(EntityInterface $entity) {
+  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
+  if (empty($enabled_bundles) || $entity->bundle() != 'asset_release' || !in_array($entity->bundle(), $enabled_bundles)) {
+    return;
+  }
+
+  $state = $entity->field_isr_state->value;
+  if (in_array($state, ['draft', 'needs_update'])) {
+    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
+  }
+  elseif (in_array($state, ['validated'])) {
+    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
+  }
+  elseif (empty($state)) {
+    throw new \Exception("State field not found while trying to get the appropriate graph.");
+  }
+  else {
+    throw new \Exception("State field value is invalid. Current value found: " . $state);
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ *
+ * Performs the following actions:
+ * - When the entity is saved into the default graph, the draft must be deleted.
+ */
+function asset_release_entity_update(EntityInterface $entity) {
+  // Quick escape check to avoid unnecessary loadings.
+  if ($entity->bundle() != 'asset_release') {
+    return;
+  }
+
+  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
+  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
+    return;
+  }
+
+  if ($entity->field_isr_state->value === 'validated') {
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
+  }
+}

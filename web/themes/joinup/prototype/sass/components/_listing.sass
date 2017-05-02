@@ -1,0 +1,358 @@
+// Listing
+//
+// Listing may contains various types of tiles presented below.
+// Size of the tile can be modified thanks to mdl-cell--X-col class, where X specifies the column size for the cell.
+//
+// Styleguide 2.9
+
+// Component
+// --------------------------------------------------
+.listing
+
+// Elements
+// --------------------------------------------------
+.listing--grid
+  padding: 0
+
+.listing__item
+  position: relative
+  background: #fff
+
+.listing__card
+  position: static
+
+.listing__image
+  position: relative
+  z-index: 1
+  overflow: hidden
+  height: 140px
+  text-align: center
+  img
+    max-width: 100%
+    max-height: 140px
+    height: auto
+    +centered
+
+.listing__metadata
+  z-index: 2
+
+.listing__avatar
+  width: 60px
+  height: 60px
+  margin-top: -50px
+  padding: 5px
+  background-color: #fff
+  +border-radius(50%)
+
+  img
+    width: auto
+    max-width: 100%
+    +border-radius(50%)
+
+.listing__metadata,
+.listing__wrapper
+  padding: 20px
+
+.listing__field
+  margin-bottom: 15px
+
+.listing__title,
+.listing__title a
+  font-size: 16px
+  font-weight: 600
+  margin: 0
+  text-decoration: none
+  color: $color-blue-dark
+  word-wrap: break-word
+
+.listing__author
+  margin: 5px 0 0 0
+
+.listing__teaser
+  font-size: 14px
+  font-weight: 300
+  margin: 0
+  color: $color-grey-medium
+  p
+    margin-bottom: 0
+
+.listing__tags
+  span
+    font-size: 12px
+    margin-right: 6px
+    &:after
+      content: ','
+    &:last-of-type
+      margin-right: 0
+      &:after
+        content: none
+
+.listing__stats
+  position: absolute
+  right: 0
+  bottom: 0
+  left: 0
+  width: 100%
+  padding: 0 10px
+  text-align: right
+
+.listing__stat
+  display: inline-block
+  vertical-align: middle
+
+.listing__icon,
+.listing__text
+  display: inline-block
+  vertical-align: middle
+
+.listing__icon
+  color: lighten($color-grey-medium, 10%)
+  +icon-size(26px)
+
+.listing__text
+  font-size: $font-size-xsmall
+  font-weight: $font-weight-medium
+  position: relative
+  right: -4px
+  color: $color-blue-default
+
+.listing__header
+  margin-top: 30px
+  margin-bottom: 30px
+
+.listing__block-title
+  display: inline-block
+  margin: 0
+  vertical-align: middle
+
+.listing__pin
+  position: absolute
+  z-index: 2
+  top: 7px
+  right: 7px
+  width: 30px
+  height: 30px
+  background-color: #d4393a
+  +border-radius(50%)
+  .icon
+    color: #fff
+    +icon-size(30px)
+
+.listing__action-link__wrapper
+  padding: 0 20px
+
+// Modifiers
+// --------------------------------------------------
+.listing--separated
+  margin-top: 40px
+  border-top: 1px solid $color-grey-light
+
+.listing__image--default
+  background-color: #f0f7f7
+  .icon
+    color: #5d5e5f
+    +icon-size(90px)
+    +centered
+
+.listing__card--inline-containers
+  +breakpoint(mobile)
+    display: table
+  .listing__metadata,
+  .listing__image
+    +breakpoint(mobile)
+      display: table-cell
+      vertical-align: middle
+  .listing__image
+    +breakpoint(mobile)
+      width: 220px
+
+.listing__card--stats-container
+  .listing__metadata
+    padding-bottom: 40px
+
+.listing__fields--bottom-aligned
+  +breakpoint(mobile)
+    position: absolute
+    right: 20px
+    bottom: 20px
+    left: 20px
+  .listing__field:last-of-type
+    margin-bottom: 0
+
+.listing__title--link a
+  color: $color-orange
+
+.listing--grid
+  padding: 0
+
+// Dependiencies
+// --------------------------------------------------
+.listing__title
+  .icon
+    position: relative
+    top: 7px
+    +icon-size(32px)
+
+.listing__card--detail-container
+  .listing__metadata
+    padding-bottom: 30px
+  .listing__title
+    font-size: $font-size-small
+    a
+      display: block
+  .listing__title--underline
+    text-decoration: underline
+    color: $color-orange
+  .label,
+  .value
+    font-size: $font-size-xsmall
+    display: inline-block
+    vertical-align: middle
+  .label
+    width: 60px
+    margin-right: 10px
+    text-align: right
+
+// Listing
+//
+// Tile: default (1/2 width) pinned
+//
+// Markup: html/listing-item--default-col-6.html
+//
+// Styleguide 2.9.1
+
+// Component
+// --------------------------------------------------
+
+// Tile: default (full width)
+//
+// Markup: html/listing-item--default-col-12.html
+//
+// Styleguide 2.9.2
+
+// Component
+// --------------------------------------------------
+
+// Tile: news (1/2 width)
+//
+// Markup: html/listing-item--news-col-6.html
+//
+// Styleguide 2.9.3
+
+// Component
+// --------------------------------------------------
+
+// Tile: news (full width)
+//
+// Markup: html/listing-item--news-col-12.html
+//
+// Styleguide 2.9.4
+
+// Component
+// --------------------------------------------------
+
+// Tile: event (1/2 width)
+//
+// Markup: html/listing-item--event-col-6.html
+//
+// Styleguide 2.9.5
+
+// Component
+// --------------------------------------------------
+
+// Tile: event (full width)
+//
+// Markup: html/listing-item--event-col-12.html
+//
+// Styleguide 2.9.6
+
+// Component
+// --------------------------------------------------
+
+// Tile: distribution (1/2 width)
+//
+// Markup: html/listing-item--distribution-col-6.html
+//
+// Styleguide 2.9.7
+
+// Component
+// --------------------------------------------------
+
+// Tile: distribution (full width)
+//
+// Markup: html/listing-item--distribution-col-12.html
+//
+// Styleguide 2.9.8
+
+// Component
+// --------------------------------------------------
+
+// Tile: documentation
+//
+// Markup: html/listing-item--documentation.html
+//
+// Styleguide 2.9.9
+
+// Component
+// --------------------------------------------------
+
+// Tile: newsletter
+//
+// Markup: html/listing-item--newsletter.html
+//
+// Styleguide 2.9.10
+
+// Component
+// --------------------------------------------------
+.listing__item--newsletter
+  color: #fff
+  background-color: $color-blue-medium
+  h3
+    margin-top: 0
+  .mdl-card
+    background-color: $color-blue-medium
+  .mdl-textfield__input
+    border-bottom-color: #fff
+  .mdl-textfield__input,
+  .mdl-textfield__label
+    opacity: .5
+    color: #fff
+  .mdl-textfield--floating-label.is-focused,
+  .mdl-textfield--floating-label.is-dirty
+    .mdl-textfield__input,
+    .mdl-textfield__label
+      opacity: 1
+      color: #fff
+  .mdl-textfield__label:after
+    background-color: #fff !important
+
+// Listing
+//
+// Tile: load more
+//
+// Markup: html/listing-item--load-more.html
+//
+// Styleguide 2.9.11
+
+// Component
+// --------------------------------------------------
+.listing__item--load-more
+  position: relative
+  min-height: 200px
+  border: 5px solid #fff
+  background-color: $color-grey-bg
+  cursor: pointer
+  .load-more
+    text-decoration: none
+  .load-more__wrapper
+    margin-top: -10px
+    text-align: center
+    +centered
+  .load-more__icon
+    color: darken($color-grey-light, 10%)
+    +icon-size(60px)
+
+  .load-more__text
+    font-size: $font-size-base
+    font-weight: $font-weight-medium
+    color: $color-base

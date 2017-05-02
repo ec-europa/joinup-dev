@@ -1,0 +1,32 @@
+id: user
+label: 'User'
+migration_tags:
+  - user
+source:
+  plugin: user
+  track_changes: true
+process:
+  status: status
+  name: name
+  pass: pass
+  mail: mail
+  created: created
+  access: access
+  login: login
+  timezone:
+    plugin: user_update_7002
+    source: timezone
+  init: init
+  roles:
+    - plugin: explode
+      source: roles
+      delimiter: ','
+      strict: false
+    - plugin: static_map
+      map:
+        6: administrator
+        3: moderator
+      default_value: []
+destination:
+  plugin: entity:user
+  md5_passwords: true

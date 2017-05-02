@@ -5,49 +5,47 @@
  * Contains joinup_event.module.
  */
 
-use \Drupal\core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_entity_bundle_field_info_alter().
  */
-function joinup_event_form_node_event_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'joinup_event_form_default_validate';
+function joinup_event_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() == 'node' && $bundle == 'event') {
+    if (!empty($fields['field_short_title'])) {
+      $fields['field_short_title']->addConstraint('UniqueField');
+    }
+    if (!empty($fields['title'])) {
+      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['event']]);
+    }
+  }
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function joinup_event_form_node_event_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'joinup_event_form_default_validate';
-}
-
-/**
- * Validates the default joinup event form.
+ * Returns the appropriate workflow to use for the event entity.
  *
- * The validation includes the the short title.
- * The short title field is mandatory and it has to be unique
- * in a global scope among events.
+ * The callback ensures that even if the parent is updated and the moderation
+ * status changes, it will still use the proper workflow.
+ * The fact that both pre and post moderated workflow use the same states
+ * ensures that there are not going to be any issues as we only change
+ * transitions.
  *
- * @param array $form
- *   The form array.
- * @param \Drupal\core\Form\FormStateInterface $form_state
- *   The form state object.
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The event entity.
+ *
+ * @return string
+ *   The id of the workflow to use.
+ *
+ * @throws Exception
+ *    Thrown when the function is called for a different bundle.
  */
-function joinup_event_form_default_validate(&$form, FormStateInterface $form_state) {
-  // Check the short title.
-  // Load all document entities with this short title.
-  /** @var \Drupal\Core\Entity\EntityInterface $entity */
-  $entity = $form_state->getFormObject()->getEntity();
-
-  $query = \Drupal::entityQuery('node')
-    ->condition('type', 'event')
-    ->condition('field_event_short_title', $form_state->getValue('field_event_short_title')[0]['value']);
-  if ($entity->id()) {
-    $query->condition('nid', $entity->id(), '<>');
+function joinup_event_workflow_selector(EntityInterface $entity) {
+  if ($entity->bundle() != 'event') {
+    throw new Exception('This method can only be called for event entities.');
   }
-  $results = $query->execute();
-
-  if (!empty(reset($results))) {
-    $form_state->setErrorByName('field_event_short_title', t('There is already an event with this short title.'));
-  }
+  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
+  $relation_manager = \Drupal::service('joinup_core.relations_manager');
+  $moderation = $relation_manager->getParentModeration($entity);
+  return $moderation == 1 ? 'node:event:pre_moderated' : 'node:event:post_moderated';
 }

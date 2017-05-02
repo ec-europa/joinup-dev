@@ -2,7 +2,10 @@
 
 namespace Drupal\rdf_entity\Database\Driver\sparql;
 
-use Drupal\Core\Database\Log;
+use Drupal\Core\Database\Log as DatabaseLog;
+use Drupal\rdf_entity\Exception\SparqlQueryException;
+use EasyRdf\Http\Exception as EasyRdfException;
+use EasyRdf\Sparql\Client;
 
 /**
  * @addtogroup database
@@ -40,21 +43,27 @@ class Connection {
   /**
    * Constructs a Connection object.
    *
-   * @param \EasyRdf_Sparql_Client $connection
-   *   Object of the EasyRdf_Sparql_Client class which is a database connection.
+   * @param \EasyRdf\Sparql\Client $connection
+   *   Object of \EasyRdf\Sparql\Client which is a database connection.
    * @param array $connection_options
    *   An array of options for the connection. May include the following:
    *   - prefix
    *   - namespace
    *   - Other driver-specific options.
    */
-  public function __construct(\EasyRdf_Sparql_Client $connection, array $connection_options) {
+  public function __construct(Client $connection, array $connection_options) {
     $this->connection = $connection;
     $this->connectionOptions = $connection_options;
   }
 
   /**
    * Execute the actual query against the Sparql endpoint.
+   *
+   * @param string $query
+   *   The query to execute.
+   *
+   * @return \EasyRdf\Sparql\Result
+   *   The query result.
    */
   public function query($query) {
     if (!empty($this->logger)) {
@@ -66,7 +75,16 @@ class Connection {
       $query_start = microtime(TRUE);
     }
 
-    $results = $this->connection->query($query);
+    try {
+      $results = $this->connection->query($query);
+    }
+    catch (EasyRdfException $e) {
+      // Re-throw the exception, but with the query as message.
+      throw new SparqlQueryException('Execution of query failed: ' . $query);
+    }
+    catch (\Exception $e) {
+      throw $e;
+    }
 
     if (!empty($this->logger)) {
       $query_end = microtime(TRUE);
@@ -75,7 +93,44 @@ class Connection {
       // This will most likely break in PHP7 (incorrect type hinting).
       // Replace array($query) with the placeholder version.
       // I should probably implement the statement interface...
-      $this->logger->log($this, array($query), $query_end - $query_start);
+      $this->logger->log($this, [$query], $query_end - $query_start);
+    }
+
+    return $results;
+  }
+
+  /**
+   * Execute the actual update query against the Sparql endpoint.
+   */
+  public function update($query) {
+    if (!empty($this->logger)) {
+      // @todo Fix this. Logger should have been auto started.
+      // Probably related to the overwritten log object in $this->setLogger.
+      // Look at
+      // \Drupal\webprofiler\StackMiddleware\WebprofilerMiddleware::handle.
+      $this->logger->start('webprofiler');
+      $query_start = microtime(TRUE);
+    }
+
+    try {
+      $results = $this->connection->update($query);
+    }
+    catch (EasyRdfException $e) {
+      // Re-throw the exception, but with the query as message.
+      throw new SparqlQueryException('Execution of query failed: ' . $query);
+    }
+    catch (\Exception $e) {
+      throw $e;
+    }
+
+    if (!empty($this->logger)) {
+      $query_end = microtime(TRUE);
+      $this->query = $query;
+      // @fixme Passing in an incorrect but seemingly compatible object.
+      // This will most likely break in PHP7 (incorrect type hinting).
+      // Replace array($query) with the placeholder version.
+      // I should probably implement the statement interface...
+      $this->logger->log($this, [$query], $query_end - $query_start);
     }
 
     return $results;
@@ -101,7 +156,7 @@ class Connection {
    * @param \Drupal\Core\Database\Log $logger
    *   The logging object we want to use.
    */
-  public function setLogger(Log $logger) {
+  public function setLogger(DatabaseLog $logger) {
     // Because we're incompatible with the PDO logger,
     // we ignore this, and create our own object.
     // @todo Avoid doing this. It's not ok...
@@ -125,13 +180,13 @@ class Connection {
    * @param array $connection_options
    *   The connection options as defined in settings.php.
    *
-   * @return \EasyRdf_Sparql_Client
+   * @return \EasyRdf\Sparql\Client
    *   The EasyRdf connection.
    */
-  public static function open(array &$connection_options = array()) {
+  public static function open(array &$connection_options = []) {
     // @todo Get endpoint string from settings file.
     $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql';
-    return new \EasyRdf_Sparql_Client($connect_string);
+    return new Client($connect_string);
   }
 
   /**
@@ -197,6 +252,13 @@ class Connection {
    */
   public function getConnectionOptions() {
     return $this->connectionOptions;
+  }
+
+  /**
+   * Destroys the db connection.
+   */
+  public function destroy() {
+
   }
 
 }

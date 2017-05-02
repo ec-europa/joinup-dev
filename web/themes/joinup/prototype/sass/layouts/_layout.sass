@@ -1,0 +1,32 @@
+h1,
+h2,
+h3,
+span,
+a,
+div
+  font-family: 'Open Sans', sans-serif
+  line-height: normal
+
+div
+  box-sizing: border-box
+
+.main-container
+  box-sizing: border-box
+  width: 100%
+  max-width: $container-desktop
+  padding: 0
+
+.main-container--center
+  justify-content: center
+
+.content-container--form
+  width: 100%
+  .page__content
+    width: 100%
+    padding: 0
+    background-color: transparent
+    +breakpoint(tablet)
+      padding: 0
+    +breakpoint(desktop)
+      padding: 0
+

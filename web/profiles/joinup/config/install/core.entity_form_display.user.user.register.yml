@@ -3,13 +3,17 @@ status: true
 dependencies:
   config:
     - core.entity_form_mode.user.register
+    - field.field.user.user.field_user_business_title
+    - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
+    - field.field.user.user.field_user_frequency
+    - field.field.user.user.field_user_group_types
     - field.field.user.user.field_user_nationality
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_professional_profile
+    - field.field.user.user.field_user_subscription_events
   module:
     - user
 id: user.user.register
@@ -19,8 +23,10 @@ mode: register
 content:
   account:
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_user_family_name:
     weight: 2
     settings:
@@ -28,6 +34,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_user_first_name:
     weight: 1
     settings:
@@ -35,11 +42,21 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  simplenews:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  field_user_business_title: true
+  field_user_content: true
+  field_user_frequency: true
+  field_user_group_types: true
   field_user_nationality: true
   field_user_organisation: true
   field_user_photo: true
   field_user_professional_domain: true
-  field_user_professional_profile: true
+  field_user_subscription_events: true
   language: true
   timezone: true

@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+name: profile_icon
+label: 'Profile icon'
+effects:
+  d5edf7b7-b996-4fae-a966-9908a9adb054:
+    uuid: d5edf7b7-b996-4fae-a966-9908a9adb054
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 40
+      height: 40

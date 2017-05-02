@@ -783,7 +783,7 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: true
+          value: 'true'
           group: 1
           exposed: true
           expose:
@@ -831,7 +831,7 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: true
+          value: 'true'
           group: 1
           exposed: false
           expose:
@@ -919,7 +919,7 @@ display:
           expose:
             operator_id: created_op
             label: 'Account created between'
-            description: 'A date in the format DD-MM-YY.'
+            description: 'A date in the format DD-MM-YYYY.'
             use_operator: false
             operator: created_op
             identifier: created

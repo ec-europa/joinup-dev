@@ -1,0 +1,43 @@
+id: discussion
+label: 'Discussion'
+migration_tags:
+  - node
+  - discussion
+  - og
+source:
+  plugin: discussion
+  track_changes: true
+process:
+  title: title
+  created: created
+  changed: changed
+  body/value: body
+  body/format:
+    plugin: default_value
+    default_value: content_editor
+  uid:
+    - plugin: migration
+      migration: user
+      source: uid
+      no_stub: true
+    - plugin: default_value
+      default_value: 1
+  status: status
+
+  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
+  # Revisit this mapping in ISAICP-3068.
+  field_state:
+    plugin: default_value
+    default_value: validated
+
+  og_audience:
+    plugin: migration
+    source: solution
+    migration: solution
+    no_stub: true
+destination:
+  plugin: entity:node
+  default_bundle: discussion
+migration_dependencies:
+  required:
+    - solution

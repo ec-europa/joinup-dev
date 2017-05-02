@@ -1,0 +1,99 @@
+// Button
+//
+// Markup: html/button.html
+//
+// .button                  - #32afff
+// .button--blue            - #2875cf
+// .button--transparent     - Transparent
+// .button--full-width      - Full-width
+//
+// Styleguide 2.2
+
+// Component
+// --------------------------------------------------
+.button
+  font-weight: $font-weight-medium
+  line-height: initial
+  height: auto
+  padding: 15px 30px
+  letter-spacing: 2px
+  color: #fff
+  border-width: 3px
+  border-style: solid
+  border-color: $color-blue-lighter
+  background-color: $color-blue-lighter !important
+  +border-radius(4px)
+
+// Elements
+// --------------------------------------------------
+.button__no-bg-wrapper
+  display: inline-block
+  cursor: pointer
+  vertical-align: middle
+  height: 22px
+  position: relative
+  .icon
+    left: 0
+    z-index: 1
+    +centered($horizontal: false, $vertical: true)
+
+.button__no-bg
+  font-weight: $font-weight-bold
+  letter-spacing: 2px
+  background-color: transparent !important
+  border: none
+  text-transform: uppercase
+  cursor: pointer
+  vertical-align: middle
+  display: inline-block
+  z-index: 10
+  position: relative
+
+// Modifiers
+// --------------------------------------------------
+.button--blue
+  color: #fff
+  border-color: $color-blue-medium
+  background-color: $color-blue-medium !important
+
+.button--blue-light
+  border-color: $color-blue-lighter
+  background-color: $color-blue-lighter !important
+
+.button--transparent
+  color: $color-grey-medium !important
+  border-color: $color-grey-medium
+  background-color: transparent !important
+
+.button--full-width
+  width: 100%
+
+.button__no-bg-wrapper--circle
+  .icon
+    color: $color-blue-medium
+    +icon-size(18px)
+    border: 2px solid $color-blue-medium
+    border-radius: 18px
+  .button__no-bg
+    color: $color-blue-medium
+    padding: 0 0 0 30px
+  &:hover
+    .icon
+      color: $color-blue-lighter
+      border-color: $color-blue-lighter
+    .button__no-bg
+      color: $color-blue-lighter
+
+.button__no-bg-wrapper--grey
+  .icon
+    color: $color-grey-input
+    +icon-size(22px)
+  .button__no-bg
+    padding: 0 0 0 20px
+    color: $color-grey-input
+
+// Dependiencies
+// --------------------------------------------------
+
+// States
+// --------------------------------------------------

@@ -1,2 +1,5 @@
+'moderate entity parents':
+  title: Alter parent groups of group content
+
 permission_callbacks:
   - \Drupal\joinup\JoinupPermissions::rdfTypePermissions

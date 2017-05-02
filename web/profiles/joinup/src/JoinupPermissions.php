@@ -28,7 +28,7 @@ class JoinupPermissions {
     $perms = [];
     // Generate permissions to propose rdf entities of all types.
     foreach (RdfEntityType::loadMultiple() as $type) {
-      $perms += $this->buildRdfTypePermissions($type);
+      $perms += $this->buildProposeRdfTypePermission($type);
     }
 
     return $perms;
@@ -43,7 +43,7 @@ class JoinupPermissions {
    * @return array
    *   An associative array of permission names and descriptions.
    */
-  protected function buildRdfTypePermissions(RdfEntityType $type) {
+  protected function buildProposeRdfTypePermission(RdfEntityType $type) {
     $type_id = $type->id();
     $type_params = ['%type_name' => $type->label()];
 

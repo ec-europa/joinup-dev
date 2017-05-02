@@ -1,26 +1,23 @@
 # Drupal configuration
 # --------------------
 
+# The project name.
+project.name = myproject
+
 # The install profile to use.
-website.profile.name = joinup
+website.profile.name = standard
 
 # The site name.
-website.site.name = Joinup
+website.site.name = MyDrupalProject
 
 # Database settings.
 drupal.db.type = mysql
-drupal.db.name = db_name
-drupal.db.user = db_user
-drupal.db.password = db_pass
+drupal.db.name = ${project.name}
+drupal.db.user = root
+drupal.db.password =
 drupal.db.host = 127.0.0.1
 drupal.db.port = 3306
 drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${drupal.db.name}
-
-sparql.host = localhost
-sparql.port = 8890
-sparql.dsn = Virtuoso
-sparql.user = ${drupal.db.user}
-sparql.password = ${drupal.db.password}
 
 # Admin user.
 drupal.admin.username = admin
@@ -28,8 +25,12 @@ drupal.admin.password = admin
 drupal.admin.email = admin@example.com
 
 # Comma-separated list of demo users to create. The username and password will
-# be taken from the role.
-drupal.demo.users = administrator, moderator
+# be taken from the role. A normal authenticated user with username and password
+# 'user' will also be created.
+drupal.demo.users = administrator
+
+# The base URL. This is used for doing functional tests in Behat and PHPUnit.
+drupal.base_url = http://localhost
 
 
 # Paths
@@ -39,7 +40,6 @@ drupal.demo.users = administrator, moderator
 composer.bin = ${project.basedir}/vendor/bin/composer
 drush.bin = ${project.basedir}/vendor/bin/drush
 phing.bin = ${project.basedir}/vendor/bin/phing
-isql.bin = /usr/bin/isql
 
 # Files and directories inside the Drupal installation.
 website.drupal.dir = ${project.basedir}/web
@@ -56,9 +56,6 @@ website.files.dir = ${website.settings.dir}/files
 website.modules.dir = ${website.drupal.dir}/modules
 website.profiles.dir = ${website.drupal.dir}/profiles
 website.themes.dir = ${website.drupal.dir}/themes
-
-# Composer related paths.
-composer.json = ${project.basedir}/composer.json
 
 
 # Behat configuration
@@ -77,7 +74,16 @@ behat.yml.template = ${behat.dir}/behat.yml.dist
 behat.yml.path = ${behat.dir}/behat.yml
 
 # The base URL to use in Behat tests.
-behat.base_url = http://localhost
+behat.base_url = ${drupal.base_url}
+
+# The browser to use for testing, either 'firefox' or 'chrome'.
+behat.browser_name = chrome
+
+# The port of the webdriver host (e.g. Selenium or PhantomJS).
+behat.webdriver_port = 4444
+
+# The URL of the webdriver host (e.g. Selenium or PhantomJS).
+behat.webdriver_url = http://localhost:${behat.webdriver_port}/wd/hub
 
 # The location to search for Behat subcontexts.
 behat.subcontexts.path = ${website.modules.dir}
@@ -87,14 +93,6 @@ behat.formatter.name = progress
 
 # The location of the test files.
 behat.files.path = ${behat.dir}/fixtures/files
-
-# Enable strict mode in Behat tests. Will only pass if all tests are explicitly
-# passing.
-behat.options.strict = false
-
-# Set verbosity for Behat tests. 0 is completely silent, 1 is normal output, 2
-# shows exception backtraces, 3 shows debugging information.
-behat.options.verbosity = 2
 
 
 # PHP CodeSniffer configuration
@@ -138,6 +136,40 @@ phpcs.prepush.source = ${project.basedir}/vendor/pfrenssen/phpcs-pre-push/pre-pu
 phpcs.prepush.destination = ${project.basedir}/.git/hooks/pre-push
 
 
+# PHPUnit configuration
+# ---------------------
+
+# The path to the configuration file template.
+phpunit.dist = ${project.basedir}/phpunit.xml.dist
+
+# The path to the generated configuration file. This is typically inside the web
+# root.
+phpunit.config = ${website.drupal.dir}/phpunit.xml
+
+# The name to give to the test suite of the project.
+phpunit.testsuite.name = ${project.name}
+
+# Comma-separated list of directories containing tests to execute. These are
+# relative to the Drupal root.
+phpunit.directories = ./modules/custom,./profiles,./themes/custom
+
+# Comma-separated list of test files to execute. These are relative to the
+# Drupal root.
+phpunit.files =
+
+# The base URL to use in functional tests.
+phpunit.base_url = ${drupal.base_url}
+
+# The database URL to use in kernel tests and functional tests.
+phpunit.db_url = ${drupal.db.url}
+
+# The path to the directory where HTML output from browsertests is stored.
+phpunit.browsertest_output_dir = ${website.sites.dir}/simpletest/browser_output
+
+# The path to the file that lists HTML output from browsertests.
+phpunit.browsertest_output_file = ${phpunit.browsertest_output_dir}/outputfile.txt
+
+
 # Development options
 # -------------------
 
@@ -146,11 +178,4 @@ drupal.modules.dev = config_update field_ui menu_ui views_ui
 
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = no
-
-# AWS SDK
-# -------
-aws.region = eu-west-1
-
-# AWS CodeDeploy
-# --------------
-deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
+packer.args =

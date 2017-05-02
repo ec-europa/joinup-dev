@@ -2,7 +2,10 @@ group_manager_full_access: true
 groups:
   rdf_entity:
     - collection
-node_access_strict: true
-use_queue: null
+    - solution
+node_access_strict: false
 delete_orphans: true
 delete_orphans_plugin_id: simple
+group_resolvers:
+  - route_group
+  - route_group_content

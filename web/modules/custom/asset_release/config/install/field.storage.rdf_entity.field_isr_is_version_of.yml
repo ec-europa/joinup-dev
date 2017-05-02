@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - og
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id: 'http://purl.org/dc/terms/isVersionOf'
+id: rdf_entity.field_isr_is_version_of
+field_name: field_isr_is_version_of
+entity_type: rdf_entity
+type: og_standard_reference
+settings:
+  target_type: rdf_entity
+module: og
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

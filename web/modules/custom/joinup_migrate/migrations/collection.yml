@@ -1,0 +1,72 @@
+id: collection
+label: 'Collection'
+migration_tags:
+  - og
+  - collection
+source:
+  plugin: collection
+  track_changes: true
+process:
+  id: uri
+  label: collection
+  field_ar_abstract: abstract
+  field_ar_access_url: access_url
+  field_ar_affiliates:
+    plugin: migration
+    source: affiliates
+    migration: solution
+    no_stub: true
+  field_ar_banner:
+    plugin: migration
+    source: collection
+    migration: collection_banner
+    no_stub: true
+  field_ar_contact_information:
+    - plugin: explode
+      source: contact
+      delimiter: ','
+      strict: false
+    - plugin: migration
+      migration: contact
+      no_stub: true
+  field_ar_creation_date: created_time
+  field_ar_description/value: body
+  field_ar_description/format:
+    plugin: default_value
+    default_value: content_editor
+  field_ar_elibrary_creation: elibrary
+  field_ar_logo:
+    plugin: migration
+    source: collection
+    migration: collection_logo
+    no_stub: true
+  field_ar_moderation:
+    plugin: default_value
+    default_value: true
+  field_ar_modification_date: changed_time
+  field_ar_owner:
+    - plugin: explode
+      source: owner
+      delimiter: ','
+      strict: false
+    - plugin: migration
+      migration: owner
+      no_stub: true
+  field_policy_domain:
+    plugin: policy_domain
+    source: policy2
+  field_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
+  field_ar_state:
+    plugin: default_value
+    default_value: validated
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: collection
+migration_dependencies:
+ required:
+   - collection_logo
+   - collection_banner
+   - solution

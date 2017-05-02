@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_test_resource_type
+    - rdf_entity.rdfentity.solution
+id: rdf_entity.solution.field_is_test_resource_type
+field_name: field_is_test_resource_type
+entity_type: rdf_entity
+bundle: solution
+label: 'Test resource type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings: {  }
+field_type: entity_reference

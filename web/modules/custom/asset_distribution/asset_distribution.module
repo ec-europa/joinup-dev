@@ -1,0 +1,248 @@
+<?php
+
+/**
+ * @file
+ * Contains asset_distribution.module.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfInterface;
+use Drupal\file_url\FileUrlHandler;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Asset distributions are always created in the context of a solution or an
+ * asset release. Retrieve the solution or the asset release from the route
+ * context and save it in the form state.
+ *
+ * @see \Drupal\asset_distribution\Controller\AssetDistributionController::add()
+ */
+function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form, FormStateInterface $form_state) {
+  $rdf = \Drupal::routeMatch()->getParameter('rdf_entity');
+
+  // Bail out if the solution or asset_release is not present on the route.
+  // Since this form is only intended to be used in the context of a solution or
+  // release, there is no field provided for it. Without a solution or a release
+  // the asset distribution will be dangling and won't be reachable.
+  if (!$rdf || !$rdf instanceof RdfInterface || !in_array($rdf->bundle(), ['asset_release', 'solution'])) {
+    throw new AccessDeniedHttpException('Distributions can only be created in context of a solution or an asset release.');
+  }
+
+  $form_state->set('context_rdf_entity_id', $rdf->id());
+
+  // Add a submit handler so we can add the distribution relation to the
+  // solution.
+  $form['actions']['submit']['#submit'][] = 'asset_distribution_form_rdf_entity_asset_distribution_form_submit';
+}
+
+/**
+ * Submit handler for rdf_entity_asset_distribution_form.
+ *
+ * When creating a new asset distribution, add the relation to the solution or
+ * the asset release. Usually this relation would point in the reverse way, but
+ * this is how the data model has been designed.
+ *
+ * @see asset_distribution_form_rdf_entity_asset_distribution_form_alter()
+ */
+function asset_distribution_form_rdf_entity_asset_distribution_form_submit(&$form, FormStateInterface $form_state) {
+  $parent = Rdf::load($form_state->get('context_rdf_entity_id'));
+  /** @var \Drupal\rdf_entity\Entity\RdfInterface $distribution */
+  $distribution = $form_state->getFormObject()->getEntity();
+
+  asset_distribution_add_parent_relation($distribution, $parent);
+
+  // Redirect to the parent solution or asset release from where we started.
+  $form_state->setRedirectUrl($parent->toUrl());
+}
+
+/**
+ * Implements hook_rdf_load_bundle_alter().
+ *
+ * There is an initial check whether the bundle is empty because the method
+ * that invokes this hook is also called for taxonomies and the bundle is
+ * currently being skipped for the taxonomies.
+ */
+function asset_distribution_rdf_load_bundle_alter($entity_values, &$bundle) {
+  if (!empty($bundle) && $bundle->id() == 'solution' && isset($entity_values['http://purl.org/dc/terms/isVersionOf'])) {
+    $bundle = \Drupal::entityTypeManager()->getStorage('rdf_type')->load('asset_release');
+  }
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function asset_distribution_entity_extra_field_info() {
+  $fields = [];
+
+  // Aggregate the licences of the distributions belonging to a solution in a
+  // pseudo-field.
+  $bundle = RdfEntityType::load('solution');
+  // During installation, this bundle might not yet be available.
+  if ($bundle) {
+    $fields['rdf_entity'][$bundle->id()]['display']['licence'] = [
+      'label' => t('Licence'),
+      'description' => t('The licence type, aggregated from the related releases'),
+      'visible' => TRUE,
+    ];
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function asset_distribution_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() !== 'solution' || !$display->getComponent('licence')) {
+    return;
+  }
+
+  // Retrieve all the distributions related to this solution.
+  $relation_manager = \Drupal::service('asset_distribution.relations');
+  $distributions = $relation_manager->getSolutionDistributions($entity);
+
+  // Loop over all the distributions and fetch the related licence entity, if
+  // any.
+  $licences = [];
+  foreach ($distributions as $distribution) {
+    $licence_field = $distribution->get('field_ad_licence');
+    if (!$licence_field->isEmpty()) {
+      $licence = $licence_field->first()->get('entity')->getValue();
+      $licences[$licence->id()] = $licence;
+    }
+  }
+
+  // Add licence labels as extra element.
+  $build['licence'] = [
+    '#type' => 'container',
+    '#theme' => 'licence',
+  ];
+  foreach ($licences as $licence) {
+    $build['licence'][] = [
+      '#plain_text' => $licence->label(),
+    ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function asset_distribution_rdf_entity_presave(RdfInterface $distribution) {
+  if ($distribution->bundle() !== 'asset_distribution') {
+    return;
+  }
+
+  if (!empty($file_id = $distribution->field_ad_access_url->target_id)) {
+    /** @var \Drupal\file\FileInterface $file */
+    if ($file = FileUrlHandler::urlToFile($file_id)) {
+      if (!FileUrlHandler::isRemote($file)) {
+        // Set the file size field.
+        $distribution->get('field_ad_file_size')->setValue($file->getSize());
+
+        // Set the file format field.
+        $tid = asset_distribution_get_file_type_term_by_mime($file->getMimeType());
+        if ($tid) {
+          $distribution->get('field_ad_format')->setValue($tid);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Provides a promoted link for each distribution on the release overview page
+ * because there is only one 'Download' button displayed.
+ *
+ * @todo: The behavior of the multi value file field is recorded and will be
+ * implemented in https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2925.
+ */
+function asset_distribution_preprocess_rdf_entity(&$variables) {
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
+  $rdf_entity = $variables['rdf_entity'];
+  if ($rdf_entity->bundle() !== 'asset_distribution') {
+    return;
+  }
+
+  // Make some alterations for the Release download page.
+  // @see \Drupal\asset_release\Controller\AssetReleaseController::overview()
+  if ($variables['view_mode'] === 'compact') {
+    // There is only one available download link so we set the one available
+    // here.
+    if (!empty($rdf_entity->field_ad_access_url->first()->uri)) {
+      $variables['content']['promoted_download'] = $rdf_entity->field_ad_access_url->first()->uri;
+    }
+
+    // Provide a flag if this is a standalone distribution.
+    $variables['is_standalone'] = !empty($rdf_entity->standalone);
+
+    // Provide a flag that indicates if this is displayed at the top of the
+    // timeline.
+    $variables['is_top_of_timeline'] = !empty($rdf_entity->top_of_timeline);
+  }
+}
+
+/**
+ * Adds relation between an asset distribution and a parent solution or release.
+ *
+ * In the data model the relation is placed on the parent instead of on the
+ * child.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $distribution
+ *   The asset distribution to relate.
+ * @param \Drupal\rdf_entity\RdfInterface $parent
+ *   The parent entity, this can be either an asset release or an
+ *   interoperability solution.
+ */
+function asset_distribution_add_parent_relation(RdfInterface $distribution, RdfInterface $parent) {
+  // Only add the relation if it doesn't yet exist.
+  $field_name = $parent->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
+  $related_distributions = $parent->get($field_name)->getValue();
+  foreach ($related_distributions as $related_distribution) {
+    if ($related_distribution['target_id'] === $distribution->id()) {
+      return;
+    }
+  }
+
+  $related_distributions[]['target_id'] = $distribution->id();
+  $parent->set($field_name, $related_distributions);
+  $parent->save();
+}
+
+/**
+ * Returns the ID of the 'file_type' term given a mime type.
+ *
+ * @param string $mime_type
+ *   The mime type for which to locate the 'file_type' term.
+ *
+ * @return string|null
+ *   The term ID as URI or NULL, if the term doesn't exists.
+ */
+function asset_distribution_get_file_type_term_by_mime($mime_type) {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
+  $sparql = \Drupal::service('sparql_endpoint');
+
+  $query = <<<QUERY
+SELECT ?entity_id
+WHERE {
+  ?entity_id <http://publications.europa.eu/ontology/authority/op-mapped-code> ?op_mime_type .
+  ?op_mime_type <http://purl.org/dc/elements/1.1/source> "manifestation-type-cellar" .
+  ?op_mime_type <http://publications.europa.eu/ontology/authority/legacy-code> "$mime_type" .
+}
+QUERY;
+
+  $results = $sparql->query($query);
+  if ($results->count()) {
+    $result = &$results[0];
+    return $result->entity_id->getUri();
+  }
+
+  return NULL;
+}

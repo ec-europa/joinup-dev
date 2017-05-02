@@ -16,13 +16,13 @@ class SparqlFilter {
    *
    * @var array
    */
-  protected $filters = array();
+  protected $filters = [];
 
   /**
    * Add a filter.
    */
-  public function filter($filter) {
-    $this->filters[] = $filter;
+  public function filter($filter, $type = 'FILTER') {
+    $this->filters[] = ['filter' => $filter, 'type' => $type];
 
     return $this;
   }
@@ -32,7 +32,12 @@ class SparqlFilter {
    */
   public function compile($query) {
     foreach ($this->filters as $filter) {
-      $query->query .= 'FILTER (' . $filter . ") .\n";
+      if (in_array($filter['type'], ['FILTER EXISTS', 'FILTER NOT EXISTS'])) {
+        $query->query .= $filter['type'] . ' {' . $filter['filter'] . "} .\n";
+      }
+      else {
+        $query->query .= $filter['type'] . ' (' . $filter['filter'] . ") .\n";
+      }
     }
   }
 

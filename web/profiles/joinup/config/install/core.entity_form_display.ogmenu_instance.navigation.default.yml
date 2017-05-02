@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.ogmenu_instance.navigation.og_group_ref
+    - field.field.ogmenu_instance.navigation.og_audience
     - og_menu.ogmenu.navigation
 id: ogmenu_instance.navigation.default
 targetEntityType: ogmenu_instance
@@ -14,5 +14,6 @@ content:
     weight: 0
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden:
-  og_group_ref: true
+  og_audience: true

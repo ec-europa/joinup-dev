@@ -4,7 +4,7 @@ Feature: User role management
 
   Scenario: A moderator can assign a role to a user.
     Given users:
-      | name         | roles          | mail                       |
+      | Username     | Roles          | E-mail                     |
       | Rick Rolls   | Moderator      | rick.roles@example.com     |
       | Nibby Noob   |                | nicky.noob@example.com     |
     # Search user
@@ -15,7 +15,7 @@ Feature: User role management
     And I press the "Filter" button
     # Select user and assign role
     Then I check "Nibby Noob"
-    Then I select "Add the Moderator role to the selected users" from "With selection"
-    And I press the "Apply" button
+    Then I select "Add the Moderator role to the selected users" from "Action"
+    And I press the "Apply to selected items" button
     Then I should see the success message "Add the Moderator role to the selected users was applied to 1 item."
     Then I should see the success message "An e-mail has been send to the user to notify him on the change to his account."

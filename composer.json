@@ -4,39 +4,65 @@
     "type": "project",
     "license": "EUPL",
     "require": {
-        "composer/composer": "^1.0@alpha",
-        "composer/installers": "^1.0.20",
+        "composer/composer": "~1.0",
+        "composer/installers": "^1.2",
         "continuousphp/aws-sdk-phing": "~0.1",
-        "cweagans/composer-patches": "~1.0",
-        "drupal/console": "~0.10",
-        "drupal/core": "~8.1.0",
-        "drupal/og": "dev-delete-user-memberships",
-        "drupal/og_menu": "dev-8.x-1.x",
-        "drupal/phing-drush-task": "1.0",
-        "drupal/r4032login": "dev-8.x-1.x",
-        "drupal/search_api": "~8.1.0-alpha12",
+        "cweagans/composer-patches": "~1.6",
+        "drupal-composer/drupal-scaffold": "^2.2",
+        "drupal/console": "~1.0",
+        "drupal/core": "8.3.x-dev#4c6a12eb9549d357cce88ad6a352187e456068c8",
+        "drupal/diff": "^1.0@RC",
+        "drupal/digital_size_formatter": "~1.0-alpha1",
+        "drupal/ds": "^3.0",
+        "drupal/facets": "~1.0@alpha",
+        "drupal/field_group": "~1.0-rc6",
+        "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
+        "drupal/message": "dev-8.x-1.x#7d4c6039adae8afc09d37bc6be60709a3caa2e26 as 1.0",
+        "drupal/message_notify": "~1.0",
+        "drupal/migrate_drush": "~1.1",
+        "drupal/migrate_report": "~1.0-alpha2",
+        "drupal/migrate_run": "~1.0-alpha1",
+        "drupal/migrate_spreadsheet": "~1.0-beta2",
+        "drupal/og": "dev-ISAICP-2709 as dev-1.x",
+        "drupal/og_menu": "~1.0@alpha",
+        "drupal/persistent_login": "dev-1.x#1320f841da3c",
+        "drupal/phingdrushtask": "dev-7.x-2.x#6737f3d6c28c6c830f58d5fa09327b65acbda0a9",
+        "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
+        "drupal/search_api": "~1.0-rc2",
+        "drupal/search_api_solr": "dev-1.x#5a7e66cfaac8f9ff210204105c86eefb528aa2a3",
+        "drupal/simplenews": "~1.0-alpha3",
+        "drupal/state_machine": "~1.0-beta3",
+        "drupal/token": "~1.0",
+        "drupal/view_unpublished": "~1.0@alpha",
         "drush/drush": "~8.0",
-        "easyrdf/easyrdf": "dev-0.9.x as 0.9.1",
-        "pear/console_table": "~1.3.0",
-        "phing/phing": "~2.10",
+        "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
+        "ec-europa/infra": "dev-master",
+        "google/material-design-lite": "dev-v1.1.3",
+        "minimaxir/big-list-of-naughty-strings": "dev-master",
+        "pear/console_table": "~1.3",
+        "phing/phing": "^2.15.0",
         "php": ">=5.5.9",
-        "symfony/dependency-injection": "2.8.2",
+        "solarium/solarium": "~3.7",
         "typhonius/behattask": "1.0"
     },
     "require-dev": {
-        "behat/mink": "~1.6",
+        "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
-        "drupal/coder": "dev-8.x-2.x",
-        "drupal/config_devel": "dev-8.x-1.x",
-        "drupal/config_update": "dev-8.x-1.x",
-        "drupal/devel": "dev-8.x-1.x",
-        "drupal/drupal-extension": "dev-support-drupal-8.1",
+        "behat/mink-selenium2-driver": "dev-master#739b7570f0536bad9b07b511a62c885ee1ec029a",
+        "drupal/admin_toolbar": "~1.17",
+        "drupal/coder": "~8.2.9",
+        "drupal/config_devel": "dev-1.x#92f735cae8e9fb328edca285340a5bfbf72028cc",
+        "drupal/config_update": "~1.2",
+        "drupal/default_content": "dev-1.x#18f2408a0f74d871b076ef94d1b83f380ea797c9",
+        "drupal/devel": "~1.0@alpha",
+        "drupal/drupal-extension": "dev-master#8d2eea92396b7079f3f9ac6f67c8987aa1e911a5",
         "jcalderonzumba/gastonjs": "^1.1@dev",
-        "jcalderonzumba/mink-phantomjs-driver": "dev-master#10d7c48c9a4129463052321b52450d98983c4332",
+        "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
         "mikey179/vfsStream": "~1.2",
-        "pfrenssen/phpcs-pre-push": "1.0",
+        "pear/http_request2": "~2.3",
+        "pfrenssen/phpcs-pre-push": "1.1",
         "phpunit/phpunit": "~4.8",
-        "symfony/css-selector": "~2.8.0"
+        "symfony/css-selector": "~2.8"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -46,52 +72,81 @@
     "autoload": {
         "psr-4": {
             "Drupal\\joinup\\": "tests/src",
-            "DrupalProject\\": "src"
-        }
+            "DrupalProject\\": "src",
+            "PhpOffice\\PhpSpreadsheet\\": "vendor/phpoffice/phpspreadsheet/src/PhpSpreadsheet"
+        },
+        "classmap": [
+            "scripts/composer/ScriptHandler.php"
+        ]
     },
     "scripts": {
-        "post-install-cmd": "sh ./scripts/composer/post-install.sh"
+        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
+        "pre-install-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
+        ],
+        "pre-update-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
+        ],
+        "post-install-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+        ],
+        "post-update-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+        ]
     },
     "extra": {
         "installer-paths": {
             "web/core": ["type:drupal-core"],
+            "web/libraries/{$name}": ["type:drupal-library"],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
-            "drush/contrib/{$name}": ["type:drupal-drush"]
+            "drush/contrib/{$name}": ["type:drupal-drush"],
+            "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
         "patches": {
             "drupal/core": {
-                "Enlarge file_usage entity id length.": "https://www.drupal.org/files/issues/drupal-enlarge_file_usage_table-2675600.patch"
+                "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-6_0.patch",
+                "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
+                "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-19.patch",
+                "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
+                "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
+                "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-85.patch",
+                "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch"
+            },
+            "drupal/facets": {
+                "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
+            },
+            "drupal/inline_entity_form": {
+                "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
             },
             "drupal/search_api": {
-                "Issue #2671228: Support for non Numeric IDs": "https://www.drupal.org/files/issues/2671228.patch",
-                "Issue #2704761: Extend length of supported IDs in search API DB Backend (Patch only)": "https://www.drupal.org/files/issues/2704761_patch_only.patch"
+                "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
+                "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch"
+            },
+            "drupal/state_machine": {
+                "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
+                "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
+                "Disable static cache for workflow_callback. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/static_cache_disable_for_workflow_callback-2846986-2.patch"
             }
         }
     },
     "repositories": [
         {
-            "type": "composer",
-            "url": "https://packagist.drupal-composer.org"
+            "type": "vcs",
+            "url": "https://github.com/ec-europa/og.git"
         },
         {
             "type": "vcs",
-            "url": "https://git.drupal.org/project/coder.git"
+            "url": "https://github.com/Gizra/message.git"
         },
         {
-            "type": "package",
-            "package": {
-                "name": "drupal/phing-drush-task",
-                "version": "1.0",
-                "source": {
-                    "url": "https://git.drupal.org/project/phingdrushtask.git",
-                    "type": "git",
-                    "reference": "7.x-1.0"
-                },
-                "autoload": { "classmap": [ "DrushTask.php" ] },
-                "include-path": [ "." ]
-            }
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "vcs",
+            "url": "https://git.drupal.org/project/phingdrushtask.git"
         },
         {
             "type": "package",
@@ -111,43 +166,37 @@
             "type": "package",
             "package": {
                 "name": "pfrenssen/phpcs-pre-push",
-                "version": "1.0",
+                "version": "1.1",
                 "type": "git-hook",
                 "source": {
-                    "url": "https://gist.github.com/498fc52fea3f965f6640.git",
+                    "url": "https://gist.github.com/1ec87c25930861654cc94251da69f14b.git",
                     "type": "git",
                     "reference": "master"
                 }
             }
         },
         {
-            "_comment": "This is the development repository of the D8 port of Organic Groups. Remove this when an official alpha release is made.",
-            "type": "vcs",
-            "url": "git@github.com:amitaibu/og"
-        },
-        {
-            "_comment": "Use a fork of Behat Drupal Extension with a fix for #266.",
-            "type": "vcs",
-            "url": "https://github.com/pfrenssen/drupalextension.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:ec-europa/og_menu"
+            "type": "package",
+            "package": {
+                "name": "google/material-design-lite",
+                "version": "dev-v1.1.3",
+                "type": "drupal-theme-library",
+                "source": {
+                    "url": "git@github.com:google/material-design-lite.git",
+                    "type": "git",
+                    "reference": "v1.1.3"
+                }
+            }
         },
         {
             "type": "package",
             "package": {
-                "name": "easyrdf/easyrdf",
-                "version": "dev-0.9.x",
+                "name": "minimaxir/big-list-of-naughty-strings",
+                "version": "dev-master",
                 "source": {
-                    "url": "https://github.com/ec-europa/easyrdf.git",
+                    "url": "git@github.com:minimaxir/big-list-of-naughty-strings.git",
                     "type": "git",
-                    "reference": "0.9.x"
-                },
-                "autoload": {
-                    "psr-0": {
-                        "EasyRdf_": "lib/"
-                    }
+                    "reference": "master"
                 }
             }
         }

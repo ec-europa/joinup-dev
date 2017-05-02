@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.email_html
+    - field.field.node.newsletter.body
+    - field.field.node.newsletter.newsletter
+    - node.type.newsletter
+  module:
+    - link
+    - text
+    - user
+id: node.newsletter.email_html
+targetEntityType: node
+bundle: newsletter
+mode: email_html
+content:
+  body:
+    type: text_default
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    label: hidden
+    region: content
+hidden:
+  links: true
+  newsletter: true
+  report: true

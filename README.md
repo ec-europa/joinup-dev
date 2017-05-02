@@ -17,15 +17,18 @@ tries to follow the 'drupal-way' as much as possible.
 
 You are free to fork this project to host your own collaborative platform.
 Joinup is licensed under the
-[EUPL](https://en.wikipedia.org/wiki/European_Union_Public_Licence), which is
+[EUPL](https://joinup.ec.europa.eu/community/eupl/og_page/eupl), which is
 compatible with the GPL.
 
+## Contributing
+See our [contributors guide](.github/CONTRIBUTING.md).
 
 ## Running your own instance of Joinup
 
-### Dependencies
+### Requirements
 * A regular LAMP stack
-* Virtuoso (Triplestore database)
+* Virtuoso 7 (Triplestore database)
+* SASS compiler
 * Apache Solr
 
 ### Dependency management and builds
@@ -37,12 +40,57 @@ run the Behat test, please refer directly to the documention of
 
 ### Initial setup
 
-* Clone this repository.  Use [composer](https://getcomposer.org/) to install
-* the dependencies.  Install Virtuoso. See [setting up
+* Clone the repository.
+
+    ```
+    $ git clone https://github.com/ec-europa/joinup-dev.git
+    ```
+
+* Use [composer](https://getcomposer.org/) to install the dependencies.
+
+    ```
+    $ cd joinup-dev
+    $ composer install
+    ```
+
+* Install Solr. If you already have Solr installed you can configure it manually
+  by [following the installation
+  instructions](http://cgit.drupalcode.org/search_api_solr/plain/INSTALL.txt?h=8.x-1.x)
+  from the Search API Solr module. Or you can execute the following command to
+  download and configure a local instance of Solr. It will be installed in the
+  folder `./vendor/apache/solr`.
+
+    ```
+    $ ./vendor/bin/phing setup-apache-solr
+    ```
+
+* Install Virtuoso. For basic instructions, see [setting up
   Virtuoso](/web/modules/custom/rdf_entity/README.md).
-* Set up a Solr search server, using the configuration provided inside the
-  `search_api_solr` module. For installation instructions, refer to
-  `INSTALL.txt` inside the `search_api_solr` module.
+  Due to [a bug in Virtuoso 6](https://github.com/openlink/virtuoso-opensource/issues/303) it is recommended to use Virtuoso 7.
+  During installation some RDF based taxonomies will be imported from the `resources/fixtures` folder.
+  Make sure Virtuoso can read from this folder by adding it to the `DirsAllowed`
+  setting in your `virtuoso.ini`. For example:
+
+    ```
+    DirsAllowed = /var/www/joinup/resources/fixtures, /usr/share/virtuoso-opensource-7/vad
+    ```
+
+* Install the official [SASS compiler](https://github.com/sass/sass). This
+  depends on Ruby being installed on your system.
+
+    ```
+    $ gem install sass
+    ```
+
+* Install [Selenium](https://github.com/SeleniumHQ/docker-selenium/blob/master/README.md).
+  The simplest way of doing this is using Docker to install and run it with a
+  single command. This will download all necessary files and start the browser
+  in the background in headless mode:
+
+    ```
+    $ docker run -d -p 4444:4444 --network=host selenium/standalone-chrome
+    ```
+
 * Point the document root of your webserver to the 'web/' directory.
 
 ### Create a local build properties file
@@ -71,17 +119,29 @@ Example `build.properties.local`:
 # The location of the Composer binary.
 composer.bin = /usr/bin/composer
 
-# Database settings.
+# The location of the Virtuoso console (Debian / Ubuntu).
+isql.bin = /usr/bin/virtuoso-isql
+# The location of the Virtuoso console (Arch Linux).
+isql.bin = /usr/bin/virtuoso-isql
+# The location of the Virtuoso console (Redhat / Fedora / OSX with Homebrew).
+isql.bin = /usr/local/bin/isql
+
+# SQL database settings.
 drupal.db.name = my_database
 drupal.db.user = root
 drupal.db.password = hunter2
+
+# SPARQL database settings.
+sparql.dsn = localhost
+sparql.user = my_username
+sparql.password = qwerty123
 
 # Admin user.
 drupal.admin.username = admin
 drupal.admin.password = admin
 
-# The base URL to use in Behat tests.
-behat.base_url = http://joinup.local
+# The base URL to use in tests.
+drupal.base_url = http://joinup.local
 
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = yes
@@ -104,31 +164,41 @@ $ ./vendor/bin/phing install-dev
 Run the Behat test suite to validate your installation.
 
 ```
-$ cd tests; ./behat
+$ cd tests
+$ ./behat
+```
+
+During development you can enable Behat test screen-shots by uncomment this line in `tests/features/bootstrap/FeatureContext.php`:
+
+```php
+  // use \Drupal\joinup\Traits\ScreenShotTrait;
+```
+
+and use the `pretty` formatter instead of `progress`, in `tests/behat.yml`:
+
+```yaml
+  formatters:
+    pretty: ~
+```
+
+Also run the PHPUnit tests, from the web root.
+
+```
+$ cd web
+$ ../vendor/bin/phpunit
 ```
 
 
-## Contributing
+### Frontend development
 
-* You're thinking of setting up your own code repository using the Joinup
-  codebase?
-* You are about to develop a big feature on top of this codebase?
-* You're having trouble installing this project?
-* If you want to report an issue?
-
-Use the Github issue queue to get in touch! We'd like to hear about your plans.
+See the [readme](web/themes/joinup/README.md) in the theme folder.
 
 
-## Code quality
+### Technical details
 
-We try to keep the quality of this repository as high as possible, and
-therefore a few measures are put in place:
-* Coding standards are verified.
-* Behat tests to avoid regression.
-
-You can [check our current test scenarios here](/tests/features/).
-
-If you plan to make contributions to the Joinup codebase, we kindly ask you to
-run the coding standards checks, as well as the Behat test suite before making
-a pull request. Also make sure you add test coverage for the functionality
-covered in the pull request.
+* In [Rdf draft module](web/modules/custom/rdf_entity/rdf_draft/README.md)
+there is information on handling draft in CRUD operations for rdf entities.
+* In [Joinup notification module](web/modules/custom/joinup_notification/README.md)
+there is information on how to handle notifications in Joinup.
+* In [Joinup core module](web/modules/custom/joinup_core/README.md) there is
+information on how to handle and create workflows.

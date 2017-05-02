@@ -1,0 +1,5 @@
+name: State Machine revisions
+type: module
+description: Handles default revisions for workflow-enabled entities.
+core: 8.x
+package: Other

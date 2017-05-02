@@ -1,0 +1,18 @@
+id: newsletter_type
+label: 'Newsletter type'
+migration_tags:
+  - node
+  - newsletter
+source:
+  plugin: newsletter_type
+  track_changes: true
+process:
+  id:
+    plugin: machine_name
+    source: newsletter
+  name: newsletter
+destination:
+  plugin: entity:simplenews_newsletter
+migration_dependencies:
+  required:
+    - prepare

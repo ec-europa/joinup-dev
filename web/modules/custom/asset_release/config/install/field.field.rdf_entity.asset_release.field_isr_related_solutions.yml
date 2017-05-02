@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_isr_related_solutions
+    - rdf_entity.rdfentity.asset_release
+id: rdf_entity.asset_release.field_isr_related_solutions
+field_name: field_isr_related_solutions
+entity_type: rdf_entity
+bundle: asset_release
+label: 'Related solutions'
+description: "Related solutions (similar, same context, same application, etc.)\r\n"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      asset_release: solution
+    sort:
+      field: _none
+field_type: entity_reference

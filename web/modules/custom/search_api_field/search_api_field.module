@@ -1,0 +1,204 @@
+<?php
+
+/**
+ * @file
+ * The entity hooks needed to display facets in pseudo-fields.
+ */
+
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\search_api\Query\QueryInterface;
+
+/**
+ * Implements hook_entity_extra_field_info().
+ *
+ * Create a pseudo field for each facet region.
+ */
+function search_api_field_entity_extra_field_info() {
+  $map = \Drupal::service('entity_field.manager')->getFieldMapByFieldType('search_api_field');
+  $extra = [];
+  $ids = [];
+  $bundles_lookup = [];
+  foreach ($map as $type => $info) {
+    foreach ($info as $name => $data) {
+      $ids[] = "$type.$name";
+      foreach ($data['bundles'] as $bundle_name) {
+        $bundles_lookup["$type.$name"][] = $bundle_name;
+      }
+    }
+  }
+
+  $fs = FieldStorageConfig::loadMultiple($ids);
+  /** @var \Drupal\field\Entity\FieldStorageConfig $field_config */
+  foreach ($fs as $id => $field_config) {
+    $facet_regions = $field_config->getSetting('facet_regions');
+    foreach ($facet_regions as $region_id => $region_label) {
+      foreach ($bundles_lookup[$id] as $bundle) {
+        $name = str_replace('.', '_', "$id.$region_id");
+        $extra[$field_config->getTargetEntityTypeId()][$bundle]['display'][$name] = [
+          'label' => t('Facet region: @region', ['@region' => $region_label]),
+          'weight' => 0,
+          'visible' => FALSE,
+        ];
+      }
+    }
+  }
+
+  return $extra;
+}
+
+/**
+ * Implements hook_entity_view().
+ *
+ * Render the facets for each pseudo field enabled.
+ */
+function search_api_field_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if (!$entity instanceof FieldableEntityInterface) {
+    return;
+  }
+
+  $facet_manager = \Drupal::getContainer()->get('facets.manager');
+  /** @var \Drupal\Core\Entity\EntityStorageInterface $facet_storage */
+  $facet_storage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('facets_facet');
+  foreach ($entity->getFieldDefinitions() as $field_name => $definition) {
+    /** @var Drupal\field\FieldConfigInterface $definition */
+    if ($definition->getType() != 'search_api_field') {
+      continue;
+    }
+
+    // Load all the facets associated to this field that is acting as facet
+    // source.
+    $id = $definition->getTargetEntityTypeId() . '.' . $field_name;
+    $facets = $facet_storage->loadByProperties(['facet_source_id' => 'search_api_field:' . $id]);
+
+    // At the moment we support only single-value fields.
+    $settings_item = $entity->get($field_name)->first();
+    if (empty($settings_item)) {
+      return;
+    }
+    $settings = $settings_item->value;
+
+    // Do not render facets if the field is disabled.
+    if (empty($settings['enabled'])) {
+      return;
+    }
+
+    // The facets available for the facet source offered by this field have been
+    // organized into pseudo fields. Loop over the configuration to render them
+    // in the correct place.
+    $pseudo_fields = [];
+    foreach ($settings['fields'] as $facet_name => $facet_data) {
+      // If the facet is not found between the ones provided by the facet
+      // source, skip it.
+      if (!isset($facets[$facet_name])) {
+        continue;
+      }
+      $name = str_replace('.', '_', $id . '.' . $facet_data['region']);
+      // Render the facet only if the pseudo field is enabled for this view
+      // mode.
+      if ($display->getComponent($name)) {
+        // Let the facet_manager build the facets.
+        $build[$name][] = $facet_manager->build($facets[$facet_name]);
+        // Keep track of created pseudo-fields so we can add wrappers later on.
+        $pseudo_fields[$name] = $facet_data['region'];
+      }
+    }
+
+    foreach ($pseudo_fields as $name => $region_name) {
+      $build[$name] += [
+        '#theme_wrappers' => [
+          'container__facet_region__' . $region_name => [
+            '#attributes' => [
+              'class' => [
+                'facet-region',
+                'facet-region--' . Html::getClass($region_name),
+              ],
+            ],
+          ],
+        ],
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function search_api_field_theme() {
+  $result_item_variables = [
+    'variables' => [
+      'value' => '',
+      'show_count' => FALSE,
+      'count' => NULL,
+      'type' => NULL,
+    ],
+  ];
+
+  return [
+    'facets_type_wrapper' => [
+      'variables' => [
+        'items' => [],
+        'attributes' => [],
+      ],
+    ],
+    'facets_type_result_item' => $result_item_variables,
+    'facets_type_result_item_active' => $result_item_variables,
+    'search_api_field' => [
+      'variables' => [
+        'form' => NULL,
+        'search_title' => NULL,
+        'no_of_results' => NULL,
+        'no_results_found' => NULL,
+        'search_help' => NULL,
+        'results' => NULL,
+        'pager' => NULL,
+        'entity_type' => NULL,
+        'bundle' => NULL,
+        'field_name' => NULL,
+        'entity' => NULL,
+      ],
+    ],
+    'search_api_field_result' => [
+      'variables' => [
+        'item' => NULL,
+        'entity' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ *
+ * Adds suggestions to the search_api_field theme hook.
+ * Loosely based on the field theme suggestions.
+ *
+ * @see system_theme_suggestions_field()
+ */
+function search_api_field_theme_suggestions_search_api_field(array $variables) {
+  $suggestions = [];
+
+  $suggestions[] = 'search_api_field__' . $variables['field_name'];
+  $suggestions[] = 'search_api_field__' . $variables['entity_type'] . '__' . $variables['field_name'];
+  $suggestions[] = 'search_api_field__' . $variables['entity_type'] . '__' . $variables['field_name'] . '__' . $variables['bundle'];
+
+  return $suggestions;
+}
+
+/**
+ * Implements hook_search_api_query_alter().
+ *
+ * Adds the search_api_field facets to the facet query.
+ *
+ * @see facets_search_api_query_alter()
+ */
+function search_api_field_search_api_query_alter(QueryInterface &$query) {
+  if ($query->getIndex()->getServerInstance()->supportsFeature('search_api_facets')) {
+    $facet_manager = \Drupal::service('facets.manager');
+    $facet_source = 'search_api_field:' . $query->getSearchId();
+    $facet_manager->alterQuery($query, $facet_source);
+  }
+}

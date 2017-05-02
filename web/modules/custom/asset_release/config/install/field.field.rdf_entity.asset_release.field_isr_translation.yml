@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_isr_translation
+    - rdf_entity.rdfentity.asset_release
+id: rdf_entity.asset_release.field_isr_translation
+field_name: field_isr_translation
+entity_type: rdf_entity
+bundle: asset_release
+label: Translation
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings: {  }
+field_type: entity_reference

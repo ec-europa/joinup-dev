@@ -1,0 +1,19 @@
+services:
+  asset_release.asset_release_route_context:
+    class: Drupal\asset_release\ContextProvider\AssetReleaseRouteContext
+    arguments: ['@current_route_match']
+    tags:
+      - { name: 'context_provider' }
+  cache_context.asset_release:
+    class: Drupal\asset_release\Cache\AssetReleaseCacheContext
+    arguments: ['@request_stack']
+    tags:
+      - { name: cache.context }
+  asset_release.fulfillment_guard:
+    class: Drupal\asset_release\Guard\AssetReleaseFulfillmentGuard
+    arguments: ['@entity_type.manager', '@joinup_core.workflow.user_provider', '@asset_release.relations', '@config.factory', '@current_user']
+    tags:
+      - { name: state_machine.guard, group: asset_release }
+  asset_release.relations:
+    class: Drupal\asset_release\AssetReleaseRelations
+    arguments: ['@entity_type.manager', '@og.membership_manager']

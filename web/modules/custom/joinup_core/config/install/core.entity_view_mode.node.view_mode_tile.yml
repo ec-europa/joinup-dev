@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.view_mode_tile
+label: Tile
+targetEntityType: node
+cache: true

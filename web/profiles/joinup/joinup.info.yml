@@ -7,56 +7,80 @@ distribution:
   name: Joinup
 
 dependencies:
+  - asset_distribution
+  - asset_release
   - block
   - ckeditor
   - collection
+  - contact_form
   - contextual
   - custom_page
+  - dashboard
+  - ds
+  - diff
   - dynamic_page_cache
   - editor
+  - field_group
   - file
   - help
   - image
+  - inline_entity_form
+  - joinup_core
+  - joinup_discussion
   - joinup_document
   - joinup_event
+  - joinup_licence
   - joinup_news
+  - joinup_newsletter
+  - joinup_notification
+  - joinup_search
+  - joinup_subscription
   - joinup_user
   - menu_ui
   - node
   - og
   - og_menu
   - options
+  - owner
   - page_cache
   - path
+  - persistent_login
   - r4032login
+  - rdf_draft
   - rdf_entity
-  - solution
-  - text
-  - toolbar
+  - rdf_export
+  - rdf_taxonomy
   - search_api
   - search_api_db
+  - solution
+  - state_machine
+  - state_machine_revisions
+  - text
+  - toolbar
+  - user
+  - view_unpublished
   - views
 
 themes:
-  - bartik
   - seven
+  - joinup_theme
 
 config_devel:
-  - block.block.bartik_account_menu
-  - block.block.bartik_branding
-  - block.block.bartik_breadcrumbs
-  - block.block.bartik_content
-  - block.block.bartik_footer
-  - block.block.bartik_help
-  - block.block.bartik_local_actions
-  - block.block.bartik_local_tasks
-  - block.block.bartik_main_menu
-  - block.block.bartik_messages
-  - block.block.bartik_page_title
-  - block.block.bartik_tools
-  - block.block.joincollectionblock
+  - block.block.addcontent
+  - block.block.footer_menu
+  - block.block.groupheader
+  - block.block.userheader
   - block.block.joinup_add_content
+  - block.block.joinup_theme_account_menu
+  - block.block.joinup_theme_content
+  - block.block.joinup_theme_help
+  - block.block.joinup_theme_local_tasks
+  - block.block.joinup_theme_main_menu
+  - block.block.joinup_theme_messages
   - block.block.navigation
+  - block.block.pagetitle
+  - block.block.policydomain
+  - block.block.primaryadminactions
   - block.block.seven_breadcrumbs
   - block.block.seven_content
   - block.block.seven_help
@@ -66,62 +90,72 @@ config_devel:
   - block.block.seven_page_title
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
+  - block.block.spatialcoverage
+  - block.block.status
+  - block.block.type
+  - core.date_format.date_only
+  - core.date_format.date_only_text_month
   - core.date_format.fallback
-  - core.date_format.html_datetime
   - core.date_format.html_date
+  - core.date_format.html_datetime
   - core.date_format.html_month
   - core.date_format.html_time
   - core.date_format.html_week
-  - core.date_format.html_yearless_date
   - core.date_format.html_year
+  - core.date_format.html_yearless_date
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
   - core.entity_form_display.ogmenu_instance.navigation.default
   - core.entity_form_display.rdf_entity.collection.propose
+  - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
-  - core.entity_form_display.user.user.register
-  - core.entity_form_mode.rdf_entity.propose
+  - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_mode.user.register
   - core.entity_view_display.ogmenu_instance.navigation.default
+  - core.entity_view_display.user.user.compact
   - core.entity_view_display.user.user.default
+  - core.entity_view_display.user.user.group_header
+  - core.entity_view_display.user.user.view_mode_featured
+  - core.entity_view_display.user.user.view_mode_tile
   - core.entity_view_mode.node.full
   - core.entity_view_mode.user.full
+  - core.entity_view_mode.user.view_mode_featured
+  - core.entity_view_mode.user.view_mode_tile
+  - ds.settings
+  - editor.editor.basic_html
   - editor.editor.content_editor
-  - field.field.ogmenu_instance.navigation.og_group_ref
+  - editor.editor.restricted_html
+  - field.field.ogmenu_instance.navigation.og_audience
+  - field.field.user.user.field_user_business_title
   - field.field.user.user.field_user_family_name
   - field.field.user.user.field_user_first_name
   - field.field.user.user.field_user_nationality
   - field.field.user.user.field_user_organisation
   - field.field.user.user.field_user_photo
   - field.field.user.user.field_user_professional_domain
-  - field.field.user.user.field_user_professional_profile
   - field.storage.node.body
-  - field.storage.node.og_group_ref
-  - field.storage.ogmenu_instance.og_group_ref
+  - field.storage.ogmenu_instance.og_audience
+  - field.storage.user.field_user_business_title
   - field.storage.user.field_user_family_name
   - field.storage.user.field_user_first_name
   - field.storage.user.field_user_nationality
   - field.storage.user.field_user_organisation
   - field.storage.user.field_user_photo
   - field.storage.user.field_user_professional_domain
-  - field.storage.user.field_user_professional_profile
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
-  - og_menu.ogmenu.navigation
-  - og.og_membership_type.og_membership_type
+  - image.style.profile_icon
   - og.settings
-  - search_api.index.collections
-  - search_api.server.database_search_server
+  - og_menu.ogmenu.navigation
   - system.theme
   - user.flood
   - user.mail
-  - user.role.administrator
-  - user.role.anonymous
-  - user.role.authenticated
-  - user.role.moderator
   - user.settings
+  - views.view.collection_content
   - views.view.collections
+  - views.view.content_overview
+  - views.view.solutions
   - views.view.user_admin_people

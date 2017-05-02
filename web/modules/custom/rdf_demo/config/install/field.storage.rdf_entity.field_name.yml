@@ -6,7 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     rdf_mapping: 'http://xmlns.com/foaf/0.1/name'
-    mapping_value: 'http://xmlns.com/foaf/0.1/name'
+    mapping:
+      value: 'http://xmlns.com/foaf/0.1/name'
 id: rdf_entity.field_name
 field_name: field_name
 entity_type: rdf_entity

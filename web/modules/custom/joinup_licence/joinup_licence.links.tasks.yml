@@ -1,0 +1,4 @@
+joinup_licence.overview:
+  title: Licences
+  route_name: joinup_licence.overview
+  base_route: system.admin_structure

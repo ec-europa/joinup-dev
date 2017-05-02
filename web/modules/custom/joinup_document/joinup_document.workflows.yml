@@ -1,0 +1,118 @@
+# The workflow of the document entity for a pre moderated parent.
+node:document:pre_moderated:
+  id: pre_moderated
+  label: "Default"
+  group: document
+  states:
+    # The state used as initial.
+    __new__:
+      label: New
+    draft:
+      label: Draft
+    validated:
+      label: Validated
+      published: true
+    needs_update:
+      label: Needs update
+    proposed:
+      label: Proposed
+    deletion_request:
+      label: 'Deletion request'
+  transitions:
+    save_as_draft:
+      label: 'Save as draft'
+      from: [__new__]
+      to: draft
+    propose:
+      label: Propose
+      from: [__new__, draft]
+      to: proposed
+    validate:
+      label: Publish
+      from: [__new__, draft]
+      to: validated
+    update_published:
+      label: Update
+      from: [validated]
+      to: validated
+    request_changes:
+      label: 'Request changes'
+      from: [validated]
+      to: proposed
+    request_deletion:
+      label: 'Request deletion'
+      from: [validated]
+      to: deletion_request
+    reject_deletion:
+      label: 'Reject deletion'
+      from: [deletion_request]
+      to: validated
+    report:
+      label: Report
+      from: [validated]
+      to: needs_update
+    approve_report:
+      label: 'Approve report'
+      from: [needs_update]
+      to: proposed
+    update_proposed:
+      label: 'Update proposed'
+      from: [proposed]
+      to: proposed
+    # Approve the proposed version and publish it.
+    approve_proposed:
+      label: 'Approve proposed'
+      from: [proposed]
+      to: validated
+# The workflow of the document entity for a post moderated parent.
+node:document:post_moderated:
+  id: post_moderated
+  label: "Default"
+  group: document
+  states:
+    # The state used as initial.
+    __new__:
+      label: New
+    draft:
+      label: Draft
+    validated:
+      label: Validated
+      published: true
+    needs_update:
+      label: Needs update
+    proposed:
+      label: Proposed
+  transitions:
+    save_as_draft:
+      label: 'Save as draft'
+      from: [__new__]
+      to: draft
+    validate:
+      label: Publish
+      from: [__new__, draft]
+      to: validated
+    update_published:
+      label: Update
+      from: [validated]
+      to: validated
+    request_changes:
+      label: 'Request changes'
+      from: [validated]
+      to: proposed
+    report:
+      label: Report
+      from: [validated]
+      to: needs_update
+    approve_report:
+      label: 'Approve report'
+      from: [needs_update]
+      to: proposed
+    update_proposed:
+      label: 'Update proposed'
+      from: [proposed]
+      to: proposed
+    # Approve the proposed version and publish it.
+    approve_proposed:
+      label: 'Approve proposed'
+      from: [proposed]
+      to: validated

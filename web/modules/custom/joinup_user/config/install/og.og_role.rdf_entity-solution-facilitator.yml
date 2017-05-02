@@ -1,0 +1,44 @@
+langcode: en
+status: true
+dependencies: {  }
+id: rdf_entity-solution-facilitator
+label: 'Solution facilitator'
+weight: 2
+is_admin: null
+group_type: rdf_entity
+group_bundle: solution
+group_id: null
+permissions:
+  - 'add user'
+  - 'administer comments'
+  - 'create asset_distribution rdf_entity'
+  - 'create asset_release rdf_entity'
+  - 'create discussion content'
+  - 'create document content'
+  - 'create event content'
+  - 'create news content'
+  - 'delete asset_distribution rdf entity'
+  - 'delete any asset_distribution rdf_entity'
+  - 'delete any discussion content'
+  - 'delete any document content'
+  - 'delete any news content'
+  - 'edit any discussion content'
+  - 'edit any news content'
+  - 'edit own custom_page content'
+  - 'edit own document content'
+  - 'edit own event content'
+  - 'edit own news content'
+  - 'invite facilitators'
+  - 'manage members'
+  - 'update any asset_distribution rdf_entity'
+  - 'update any asset_release rdf_entity'
+  - 'update group'
+  - 'update own asset_distribution rdf_entity'
+  - 'update own asset_release rdf_entity'
+  - 'view all revisions'
+  - 'view any unpublished content'
+  - 'view rdf entity'
+  - 'view rdf_entity default graph'
+  - 'view rdf_entity draft graph'
+  - 'view unpublished rdf entity'
+role_type: null

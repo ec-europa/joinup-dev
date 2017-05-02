@@ -1,0 +1,153 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C4d0a6736-b28a-4cf4-aefd-d7c4f5af70bb?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_banner": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/2016-09\/generateImage_3WgmOG.jpeg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_logo": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_OkZsbG.jpg"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/4d0a6736-b28a-4cf4-aefd-d7c4f5af70bb"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "collection"
+        }
+    ],
+    "label": [
+        {
+            "value": "Open source observatory",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/4d0a6736-b28a-4cf4-aefd-d7c4f5af70bb"
+        }
+    ],
+    "field_ar_abstract": [
+        {
+            "value": "<p>Open Source Observatory<\/p>",
+            "format": "content_editor"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_banner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/2016-09\/generateImage_3WgmOG.jpeg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "3fc84db8-d523-4879-a2d0-6e6dfd2cca1a"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/2016-09\/generateImage_3WgmOG.jpeg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_logo": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_OkZsbG.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "dfa8ddcf-f718-48b4-b6d0-f4aaa3fd1124"
+                    }
+                ],
+                "uri": [
+                    {
+                        "value": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_OkZsbG.jpg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_owner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3e9231e3-14d9-430c-91f0-626d1e3381e0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/3e9231e3-14d9-430c-91f0-626d1e3381e0"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_policy_domain": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Contology%5Cpolicy-domain%23e-identity?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/joinup.eu\/ontology\/policy-domain#e-identity"
+                    }
+                ]
+            }
+        ]
+    },
+    "field_ar_closed": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_ar_description": [
+        {
+            "value": "<p>The Open Source Observatory is a community for exchanging information, experiences and best practices around <a href=\"https:\/\/en.wikipedia.org\/wiki\/Open_source\">open source<\/a> solutions for use in public administrations. We help you find open source software made available by other public administrations, and solve issues related to development. OSOR lets you share your own solutions. This is the place to learn from best practices in Europe and around the world.<\/p>\n        <h3>Join us!<\/h3>\n        <p>Join the OSOR; get access to the latest news &amp; events, learn about solutions of the month and pick up the most recent case study. Membership gives you automatic updates, and is the easiest way to contribute. Please share your own news items, events, studies and solutions. Join our community!<\/p>\n        <h3>Discover our services<\/h3>\n        <p>To learn more about the OSOR, either use the horizontal menu bar above,&nbsp;or use the honeycomb below as selective shortcuts.<\/p>\n        <img alt=\"Central Image\" data-align=\"center\" data-entity-type=\"file\" data-entity-uuid=\"d71f1530-a52d-4549-a18e-9870a3c15fba\" src=\"\/sites\/default\/files\/inline-images\/Capture.PNG\" \/>\n        <h3>Get involved - Stay informed<\/h3>\n        <p><strong>Legal coaching service:<\/strong><br \/>\n        In need of any legal councel regarding the licencing of your open source project? Consult the legal expert:<br \/>\n        <a href=\"https:\/\/joinup.ec.europa.eu\/contact\">Contact us<\/a> - select the option 'Question on legal issues'<\/p>\n        <p><strong>Resource Centres:<\/strong><\/p>\n        <p>Looking for a resource centre on open standards and open source close to you? Consult this list:<br \/>\n        <a href=\"\/community\/osor\/og_page\/competence-centres-open-source-software-oss\">Competence Centres on Open Source Software<\/a><\/p>\n        <h3>Stay up to date<\/h3>\n        <p>Follow <a href=\"https:\/\/twitter.com\/osoreu\">@osoreu<\/a> on Twitter<\/p>\n        <p>Join <a href=\"http:\/\/www.linkedin.com\/groups?home=&amp;gid=2600644&amp;trk\">OSOR<\/a> on LinkedIn<\/p>",
+            "format": "content_editor"
+        }
+    ],
+    "field_ar_elibrary_creation": [
+        {
+            "value": "1"
+        }
+    ],
+    "field_ar_moderation": [
+        {
+            "value": "0"
+        }
+    ],
+    "field_ar_state": [
+        {
+            "value": "validated"
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+# The array of allowed conditions for the asset release workflow transitions.
+# Format of array:
+# @code
+# [
+#   <transition key> => [
+#     <source state> => [
+#       <role1>
+#       <role2>
+#       .
+#       .
+#     ]
+#   ]
+# ]
+# @endcode
+#
+# The array is a three dimensions array. The first level is the
+# transition key. Each target state is an array of allowed source
+# states which in every check, is the current state of the entity.
+# Finally, the source states are arrays of roles that are allowed to
+# perform this action.
+#
+# The reverse indexing here (source states
+# keyed by the target state) is to follow the state_machines module logic
+# of indexing states.
+transitions:
+  draft:
+    draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    validated:
+      - moderator
+      - rdf_entity-solution-facilitator
+  request_changes:
+    validated:
+      - moderator
+  update_changes:
+    needs_update:
+      - moderator
+      - rdf_entity-solution-facilitator
+  validate:
+    draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    needs_update:
+      - moderator
+  update_published:
+    validated:
+      - moderator
+      - rdf_entity-solution-facilitator

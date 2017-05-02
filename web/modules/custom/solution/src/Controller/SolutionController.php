@@ -4,6 +4,7 @@ namespace Drupal\solution\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -30,13 +31,12 @@ class SolutionController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity) {
-    $solution = $this->entityTypeManager()->getStorage('rdf_entity')->create(array(
-      'rid' => 'solution',
-      'og_group_ref' => $rdf_entity->id(),
-    ));
+    $solution = $this->createNewSolution($rdf_entity);
 
-    $form = $this->entityFormBuilder()->getForm($solution);
-
+    // Pass the collection to the form state so that the parent connection is
+    // established.
+    // @see: solution_add_form_parent_submit
+    $form = $this->entityFormBuilder()->getForm($solution, 'default', ['collection' => $rdf_entity->id()]);
     return $form;
   }
 
@@ -44,22 +44,38 @@ class SolutionController extends ControllerBase {
    * Handles access to the solution add form through collection pages.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The RDF entity for which the custom page is created.
+   *   The RDF entity for which the solution is created.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
   public function createSolutionAccess(RdfInterface $rdf_entity) {
-    // Check that the passed in RDF entity is a collection, and that the user
-    // has the permission to create solutions.
-    // @todo Collection owners and facilitators should also have the right to
-    //   create solutions for the collections they manage.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2448
-    if ($rdf_entity->bundle() == 'collection' && $this->currentUser()->hasPermission('propose solution rdf entity')) {
-      return AccessResult::allowed();
+    // If the collection is archived, content creation is not allowed.
+    if ($rdf_entity->bundle() === 'collection' && $rdf_entity->field_ar_state->first()->value === 'archived') {
+      return AccessResult::forbidden();
     }
 
-    return AccessResult::forbidden();
+    $user = $this->currentUser();
+    if (empty($rdf_entity) && !$user->isAnonymous()) {
+      return AccessResult::neutral();
+    }
+    $membership = Og::getMembership($rdf_entity, $user);
+    return (!empty($membership) && $membership->hasPermission('create solution rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
+  }
+
+  /**
+   * Creates a new solution entity.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The collection with which the solution will be associated.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   The unsaved solution entity.
+   */
+  protected function createNewSolution(RdfInterface $rdf_entity) {
+    return $this->entityTypeManager()->getStorage('rdf_entity')->create([
+      'rid' => 'solution',
+    ]);
   }
 
 }

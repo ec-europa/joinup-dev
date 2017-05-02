@@ -1,0 +1,188 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C7a51fc04-e0c6-4934-bd18-a77086a75984?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/asset_release"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_isr_distribution": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C177a01da-800a-4519-84f1-f4b5ac20734e?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_isr_is_version_of": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_isr_language": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpublications.europa.eu%5Cresource%5Cauthority%5Clanguage%5CDEU?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_isr_owner": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3e9231e3-14d9-430c-91f0-626d1e3381e0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_spatial_coverage": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpublications.europa.eu%5Cresource%5Cauthority%5Ccountry%5CAUT?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpublications.europa.eu%5Cresource%5Cauthority%5Ccountry%5CDEU?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/placeHolder\/7a51fc04-e0c6-4934-bd18-a77086a75984"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "asset_release"
+        }
+    ],
+    "label": [
+        {
+            "value": "Stable",
+            "lang": "und"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/placeHolder\/7a51fc04-e0c6-4934-bd18-a77086a75984"
+        }
+    ],
+    "field_isr_creation_date": [
+        {
+            "value": "2016-09-13T17:01:37"
+        }
+    ],
+    "field_isr_description": [
+        {
+            "value": "<h3>\n<span style=\"line-height: 1.5; color: rgb(0,0,0); font-size: 12px\">The Person Core Vocabulary provides a minimum set of classes and properties for describing a natural person, i.e. the individual as opposed to any role they may play in society or the relationships they have to other people, organisations and property; all of which contribute significantly to the broader concept of identity. The vocabulary is closely integrated with the Location and Business Core Vocabularies.<\/span><\/h3>\n<p><span style=\"line-height: 1.5; color: rgb(0,0,0); font-size: 12px\"><strong><em>The latest version of the Core Vocabularies can be downloaded from<\/em><\/strong><br \/>\n<a href=\"https:\/\/joinup.ec.europa.eu\/asset\/core_vocabularies\/description\"><strong><em>https:\/\/joinup.ec.europa.eu\/asset\/core_vocabularies\/description.<\/em><\/strong><\/a><br \/>\n<strong><em>(direct link to <\/em><\/strong><a href=\"https:\/\/joinup.ec.europa.eu\/asset\/core_vocabularies\/asset_release\/core-vocabularies-v11#download\"><strong><em>version 1.1<\/em><\/strong><\/a><strong><em>)<\/em><\/strong><\/span><\/p>\n<p>&nbsp;<\/p><p><span style=\"line-height: 1.5; color: rgb(0,0,0); font-size: 12px\">\n<strong>Namespace<\/strong>:&nbsp;<\/span><a href=\"http:\/\/www.w3.org\/ns\/person#\"><span style=\"line-height: 1.5\">http:\/\/www.w3.org\/ns\/person#<\/span><span style=\"line-height: 1.5\">&nbsp;<\/span><\/a><\/p>\n<p><span style=\"line-height: 1.5\"><strong>Prefix<\/strong>: person<\/span><\/p><h3>Status<\/h3><p><strong>Final draft<\/strong>: Version 1.00 07 May 2012<\/p>\n<p>This specification was produced by the <a href=\"https:\/\/joinup.ec.europa.eu\/asset\/core_business\/document\/core-vocabularies-working-group-members\">Core Vocabularies Working Group (Person Task Force)<\/a>, following the <a href=\"https:\/\/joinup.ec.europa.eu\/node\/43160\">Process and Methodology for Developing Core Vocabularies<\/a>.&nbsp;It has been reviewed by representatives of the Member States of the European Union, <abbr title=\"Public Sector Information\">PSI<\/abbr> publishers, and by other interested parties.&nbsp;<span style=\"line-height: 1.5; font-size: 13px\">On 23 May 2012, the Member State representatives in the ISA Coordination Group have <a href=\"https:\/\/joinup.ec.europa.eu\/node\/48837\">endorsed<\/a> the Core Person vocabulary v1.00, acknowledging the work and promising to further disseminate it at national level.&nbsp;<\/span><\/p>\n<section id=\"status\"><p>&nbsp;<\/p><p><span style=\"font-size: 13px\">Copyright &copy; 2012 European Union. This vocabulary is published under the&nbsp;<\/span><span style=\"font-size: 13px\"><a href=\"https:\/\/joinup.ec.europa.eu\/category\/licence\/isa-open-metadata-licence-v11\" rel=\"license\" style=\"font-size: 13px\">ISA Open Metadata Licence v1.1<\/a><\/span><\/p>\n<\/section>",
+            "format": "content_editor"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_isr_distribution": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C177a01da-800a-4519-84f1-f4b5ac20734e?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/asset_distribution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/177a01da-800a-4519-84f1-f4b5ac20734e"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_isr_is_version_of": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/www.w3.org\/ns\/person#"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_isr_language": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpublications.europa.eu%5Cresource%5Cauthority%5Clanguage%5CDEU?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/language"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/publications.europa.eu\/resource\/authority\/language\/DEU"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_isr_owner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3e9231e3-14d9-430c-91f0-626d1e3381e0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/3e9231e3-14d9-430c-91f0-626d1e3381e0"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_spatial_coverage": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpublications.europa.eu%5Cresource%5Cauthority%5Ccountry%5CAUT?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/spatial"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/publications.europa.eu\/resource\/authority\/country\/AUT"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cpublications.europa.eu%5Cresource%5Cauthority%5Ccountry%5CDEU?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/spatial"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/publications.europa.eu\/resource\/authority\/country\/DEU"
+                    }
+                ]
+            }
+        ]
+    },
+    "field_isr_modification_date": [
+        {
+            "value": "2016-09-13T17:01:37"
+        }
+    ],
+    "field_isr_release_notes": [
+        {
+            "value": "<p>To be used on production.<\/p>\r\n",
+            "format": "content_editor"
+        }
+    ],
+    "field_isr_release_number": [
+        {
+            "value": "v2.0"
+        }
+    ]
+}

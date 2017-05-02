@@ -4,27 +4,43 @@ default:
       contexts:
         - FeatureContext
         - Drupal\joinup\Context\DrupalContext
+        - Drupal\joinup\Context\MinkContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
-        - Drupal\DrupalExtension\Context\MinkContext
       filters:
-        tags: "~@wip"
+        tags: '~@wip'
   extensions:
     Behat\MinkExtension:
       base-url: '${behat.base_url}'
       files_path: '${behat.files.path}'
       goutte: ~
       javascript_session: 'selenium2'
-      selenium2: ~
+      browser_name: '${behat.browser_name}'
+      selenium2:
+        wd_host: '${behat.webdriver_url}'
     Drupal\DrupalExtension:
       api_driver: 'drupal'
       blackbox: ~
+      region_map:
+        Comment: '.comment'
+        Entity actions: '.block-local-tasks-block'
+        Footer: '.section--footer'
+        Header: '.section--featured'
+        Left sidebar: '.section--sidebar-left'
+        Navigation menu block: '#block-navigation'
+        Navigation menu: 'div.navigation-menu ul'
+        Page title: 'div.page__title-wrapper'
+        Plus button menu: 'div.add-content-menu ul'
+        Primary menu: '.region-primary-menu'
+        Subpages menu: '.block-menu-sub-pages'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:
-        message_selector: '.messages'
-        error_message_selector: '.messages.messages--error'
-        success_message_selector: '.messages.messages--status'
+        message_selector: '.alert'
+        error_message_selector: '.alert.alert--error'
+        success_message_selector: '.alert.alert--status'
+        warning_message_selector: '.alert.alert--warning'
+        login_form_selector: '#user-login-form'
       subcontexts:
         paths:
           - '${behat.subcontexts.path}'

@@ -1,4 +1,4 @@
-# Route to create a custom page that belongs to an rdf_entity.
+# Route to create a solution that belongs to an rdf_entity.asset_distribution
 solution.collection_solution.add:
   path: 'rdf_entity/{rdf_entity}/solution/add'
   defaults:

@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ad_access_url
+    - rdf_entity.rdfentity.asset_distribution
+  module:
+    - file_url
+id: rdf_entity.asset_distribution.field_ad_access_url
+field_name: field_ad_access_url
+entity_type: rdf_entity
+bundle: asset_distribution
+label: 'Access URL'
+description: 'If the file(s) exist in an external server, you can provide the URL here directly. You can alternatively host your distribution in Joinup by using the Distribution file field below.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: 'distribution/[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'zip tar tar.gz'
+  max_filesize: ''
+  description_field: false
+  handler: 'file_url_default:file'
+  handler_settings: {  }
+field_type: file_url

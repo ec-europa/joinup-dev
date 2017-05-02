@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/html/
+    destination: /srv/project
 hooks:
   BeforeInstall:
     - location: resources/codedeploy/scripts/cleanup.sh

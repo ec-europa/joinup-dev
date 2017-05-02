@@ -1,0 +1,15 @@
+name: Licence
+type: module
+description: Licence entity for Joinup
+core: 8.x
+package: Joinup
+
+config_devel:
+  - core.base_field_override.rdf_entity.licence.label
+  - core.entity_form_display.rdf_entity.licence.default
+  - core.entity_view_display.rdf_entity.licence.default
+  - field.field.rdf_entity.licence.field_licence_description
+  - field.field.rdf_entity.licence.field_licence_type
+  - field.storage.rdf_entity.field_licence_description
+  - field.storage.rdf_entity.field_licence_type
+  - rdf_entity.rdfentity.licence

@@ -1,0 +1,6 @@
+dashboard.page:
+  title: 'Dashboard'
+  route_name: dashboard.page
+  menu_name: account
+  description: 'Dashboard'
+  weight: 0

@@ -1,0 +1,11 @@
+services:
+  joinup.uid_1_only_access:
+    class: Drupal\joinup\Access\Uid1OnlyAccess
+    arguments: ['@current_user']
+    tags:
+      - { name: access_check, applies_to: _uid_1_only }
+  joinup.route_subscriber:
+    class: Drupal\joinup\Routing\RouteSubscriber
+    arguments: ['@entity.manager']
+    tags:
+     - { name: event_subscriber }

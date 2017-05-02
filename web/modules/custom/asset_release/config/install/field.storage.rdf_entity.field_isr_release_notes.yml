@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - text
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value: 'https://www.w3.org/TR/vocab-adms/#adms-versionnotes'
+      format: ''
+id: rdf_entity.field_isr_release_notes
+field_name: field_isr_release_notes
+entity_type: rdf_entity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

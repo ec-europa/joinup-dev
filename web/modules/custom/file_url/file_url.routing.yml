@@ -1,0 +1,6 @@
+file_url.dereference:
+  path: '/file-dereference/{file}'
+  defaults:
+    _controller: '\Drupal\file_url\Controller\FileUrlRedirect::redirectToFile'
+  requirements:
+      _access: 'TRUE'
