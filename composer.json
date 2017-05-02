@@ -44,7 +44,7 @@
         "php": ">=5.5.9",
         "solarium/solarium": "~3.7",
         "typhonius/behattask": "1.0",
-        "drupal/password_policy": "^3.0@alpha"
+        "drupal/password_policy": "3.x-dev"
     },
     "require-dev": {
         "behat/mink": "~1.7",
@@ -129,6 +129,9 @@
                 "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
                 "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
                 "Disable static cache for workflow_callback. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/static_cache_disable_for_workflow_callback-2846986-2.patch"
+            },
+            "drupal/password_policy": {
+                "Provide a character type restriction plugin. @see https://www.drupal.org/node/2874853": "https://www.drupal.org/files/issues/types_negate_constraint_module.patch"
             }
         }
     },

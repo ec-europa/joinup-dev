@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "15cbb8083615f61d37275c08445b0329",
+    "content-hash": "602084e51d9cb2549bfac5f06c29a1d4",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2732,17 +2732,11 @@
         },
         {
             "name": "drupal/password_policy",
-            "version": "3.0.0-alpha3",
+            "version": "dev-3.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/password_policy",
-                "reference": "8.x-3.0-alpha3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/password_policy-8.x-3.0-alpha3.zip",
-                "reference": null,
-                "shasum": "efe3ac404276ab2274b29393e55f6a4b7fb58681"
+                "reference": "8ee51e4e58b1b9493867c43ddfecbdac20e04b0c"
             },
             "require": {
                 "drupal/core": "*",
@@ -2754,8 +2748,11 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-alpha3",
-                    "datestamp": "1488135183"
+                    "version": "8.x-3.0-alpha3+3-dev",
+                    "datestamp": "1488167584"
+                },
+                "patches_applied": {
+                    "Provide a character type restriction plugin. @see https://www.drupal.org/node/2874853": "https://www.drupal.org/files/issues/types_negate_constraint_module.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2788,7 +2785,8 @@
             "homepage": "https://www.drupal.org/project/password_policy",
             "support": {
                 "source": "http://cgit.drupalcode.org/password_policy"
-            }
+            },
+            "time": "2017-02-27 15:47:09"
         },
         {
             "name": "drupal/persistent_login",
@@ -9831,7 +9829,7 @@
         "ec-europa/infra": 20,
         "google/material-design-lite": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
-        "drupal/password_policy": 15,
+        "drupal/password_policy": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_devel": 20,
         "drupal/default_content": 20,
