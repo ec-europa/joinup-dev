@@ -41,7 +41,7 @@ interface WorkflowHelperInterface {
    * @return array
    *   An array of transition labels.
    */
-  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $account);
+  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL);
 
   /**
    * Returns the available transition states of an entity for the given user.
