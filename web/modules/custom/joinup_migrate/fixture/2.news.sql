@@ -16,7 +16,7 @@ SELECT
   n.nid,
   n.vid,
   n.title,
-  CONCAT(n.body, IF(cfc.field_city_value IS NOT NULL AND TRIM(cfc.field_city_value) <> '', CONCAT('\n<p>City/Location: ', TRIM(cfc.field_city_value), '</p>'), '')),
+  CONCAT(n.body, IF(cfc.field_city_value IS NOT NULL AND TRIM(cfc.field_city_value) <> '', CONCAT('\n<p>City/Location: ', TRIM(cfc.field_city_value), '</p>\n'), '')),
   n.created,
   n.changed,
   n.uid,

@@ -82,9 +82,6 @@ Feature: "Add solution" visibility options.
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state"
-    # Regression test for the default selected option for the status field.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3213
-    And the radio button "N/A" from field "Status" should be selected
     When I fill in the following:
       | Title            | Espresso is the solution                                               |
       | Description      | This is a test text                                                    |
@@ -105,20 +102,18 @@ Feature: "Add solution" visibility options.
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
     And I press "Propose"
+    Then I should see the heading "Espresso is the solution"
     When I am logged in as a moderator
     When I go to the "Espresso is the solution" solution edit form
     And I press "Publish"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "Espresso is the solution"
-    And I should see the text "This is a test text"
-    And I should see the link "Belgian barista's"
-    And I should see the link "Demography"
-    And I should see the link "Belgium"
-    And I should see the link "Flemish"
-    When I click "Belgian barista's"
-    Then I should see the heading "Belgian barista's"
-
-    Then I should see the link "Espresso is the solution"
+    # The solution fields will be shown in the "about" page.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3224
+    And I should not see the text "This is a test text"
+    And I should not see the link "Demography"
+    And I should not see the link "Belgium"
+    And I should not see the link "Flemish"
 
     When I am logged in as a facilitator of the "Belgian barista's" collection
     # Make sure that when another solution is added, both are affiliated.
@@ -144,9 +139,9 @@ Feature: "Add solution" visibility options.
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
     And I press "Propose"
-    # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "V60 filter coffee solution"
-    When I click "Belgian barista's"
+    # The name of the solution should exist in the block of the relative content in a collection.
+    When I go to the homepage of the "Belgian barista's" collection
     Then I should see the heading "Belgian barista's"
     Then I should see the link "Espresso is the solution"
     Then I should see the link "V60 filter coffee solution"

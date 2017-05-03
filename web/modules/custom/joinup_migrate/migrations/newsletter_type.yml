@@ -14,6 +14,5 @@ process:
 destination:
   plugin: entity:simplenews_newsletter
 migration_dependencies:
- required:
-   - prepare
-   - user
+  required:
+    - prepare
