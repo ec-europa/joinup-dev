@@ -41,6 +41,13 @@ abstract class JoinupWorkflowTestBase extends RdfWebTestBase {
   protected $entityAccess;
 
   /**
+   * The workflow helper service.
+   *
+   * @var \Drupal\joinup_core\WorkflowHelper
+   */
+  protected $workflowHelper;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() {
@@ -48,6 +55,7 @@ abstract class JoinupWorkflowTestBase extends RdfWebTestBase {
     $this->ogMembershipManager = \Drupal::service('og.membership_manager');
     $this->ogAccess = $this->container->get('og.access');
     $this->entityAccess = $this->container->get('entity_type.manager')->getAccessControlHandler($this->getEntityType());
+    $this->workflowHelper = $this->container->get('joinup_core.workflow.helper');
   }
 
   /**

@@ -28,7 +28,6 @@ trait ContextualLinksTrait {
     // contain the user from a previous API call.
     /** @var \Drupal\DrupalExtension\Context\RawDrupalContext $this */
     $account = User::load($this->getUserManager()->getCurrentUser()->uid);
-    \Drupal::currentUser()->setAccount($account);
 
     $links = [];
 
