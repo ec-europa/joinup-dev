@@ -3,12 +3,45 @@
 namespace Drupal\joinup_core;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 
 /**
  * Interface for services that provide workflow related helper methods.
  */
 interface WorkflowHelperInterface {
+
+  /**
+   * Returns the available transition states of an entity for the given user.
+   *
+   * If no user is passed, the logged in user is checked. If no user is logged
+   * in, an anonymous account is passed.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity with the states.
+   * @param \Drupal\Core\Session\AccountInterface|null $user
+   *   The account interface object. Can be left empty.
+   *
+   * @return array
+   *   An array of transition state labels.
+   */
+  public function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $user = NULL);
+
+  /**
+   * Returns the available transitions of an entity for the given user.
+   *
+   * If no user is passed, the logged in user is checked. If no user is logged
+   * in, an anonymous account is passed.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity with the states.
+   * @param \Drupal\Core\Session\AccountInterface|null $user
+   *   The account interface object. Can be left empty.
+   *
+   * @return array
+   *   An array of transition labels.
+   */
+  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $user);
 
   /**
    * Returns the state field definitions of an entity.
