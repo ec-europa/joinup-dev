@@ -12,7 +12,7 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 interface WorkflowHelperInterface {
 
   /**
-   * Returns the available transition states of an entity for the given user.
+   * Returns the available transition states labels of an entity for given user.
    *
    * If no user is passed, the logged in user is checked. If no user is logged
    * in, an anonymous account is passed.
@@ -25,10 +25,10 @@ interface WorkflowHelperInterface {
    * @return array
    *   An array of transition state labels.
    */
-  public function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $user = NULL);
+  public function getAvailableStatesLabels(FieldableEntityInterface $entity, AccountInterface $user = NULL);
 
   /**
-   * Returns the available transitions of an entity for the given user.
+   * Returns the available transitions labels of an entity for the given user.
    *
    * If no user is passed, the logged in user is checked. If no user is logged
    * in, an anonymous account is passed.
@@ -41,7 +41,20 @@ interface WorkflowHelperInterface {
    * @return array
    *   An array of transition labels.
    */
-  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $user);
+  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $user);
+
+  /**
+   * Returns teh available transition states of an entity for the given user.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity with the states.
+   * @param \Drupal\Core\Session\AccountInterface|null $user
+   *   The account interface object. Can be left empty.
+   *
+   * @return \Drupal\state_machine\Plugin\Workflow\WorkflowTransition[]
+   *   An array of transition objects.
+   */
+  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $user = NULL);
 
   /**
    * Returns the state field definitions of an entity.
