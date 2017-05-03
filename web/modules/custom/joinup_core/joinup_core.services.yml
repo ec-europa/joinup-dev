@@ -10,4 +10,4 @@ services:
     arguments: ['@og.membership_manager']
   joinup_core.workflow.helper:
     class: Drupal\joinup_core\WorkflowHelper
-    arguments: ['@current_user']
+    arguments: ['@current_user', '@account_switcher']

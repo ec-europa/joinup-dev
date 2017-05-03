@@ -7,6 +7,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
@@ -14,6 +15,13 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
  * Contains helper methods to retrieve workflow related data from entities.
  */
 class WorkflowHelper implements WorkflowHelperInterface {
+
+  /**
+   * The account switcher service.
+   *
+   * @var \Drupal\Core\Session\AccountSwitcherInterface
+   */
+  protected $accountSwitcher;
 
   /**
    * The current user proxy.
@@ -27,23 +35,19 @@ class WorkflowHelper implements WorkflowHelperInterface {
    *
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The service that contains the current user.
+   * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
+   *   The account switcher interface.
    */
-  public function __construct(AccountProxyInterface $currentUser) {
+  public function __construct(AccountProxyInterface $currentUser, AccountSwitcherInterface $accountSwitcher) {
+    $this->accountSwitcher = $accountSwitcher;
     $this->currentUser = $currentUser;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $user = NULL) {
-    // Set the current user so that states available are retrieved for the
-    // specific account.
-    if ($user !== NULL) {
-      \Drupal::currentUser()->setAccount($user);
-    }
-
-    $field = $this->getEntityStateField($entity);
-    $allowed_transitions = $field->getTransitions();
+  public function getAvailableStatesLabels(FieldableEntityInterface $entity, AccountInterface $user = NULL) {
+    $allowed_transitions = $this->getAvailableTransitions($entity, $user);
 
     $allowed_states = array_map(function (WorkflowTransition $transition) {
       return (string) $transition->getToState()->getLabel();
@@ -55,18 +59,33 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $user) {
+  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $user = NULL) {
+    return array_map(function (WorkflowTransition $transition) {
+      return (string) $transition->getLabel();
+    }, $this->getAvailableTransitions($entity, $user));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $user = NULL) {
     // Set the current user so that states available are retrieved for the
     // specific account.
-    if ($user !== NULL) {
-      \Drupal::currentUser()->setAccount($user);
+    $account_switched = FALSE;
+    if ($user !== NULL && $user->id() !== $this->currentUser->id()) {
+      $this->accountSwitcher->switchTo($user);
+      $account_switched = TRUE;
     }
 
     $field = $this->getEntityStateField($entity);
 
-    return array_map(function (WorkflowTransition $transition) {
-      return (string) $transition->getLabel();
-    }, $field->getTransitions());
+    $transitions = $field->getTransitions();
+
+    if ($account_switched) {
+      $this->accountSwitcher->switchBack();
+    }
+
+    return $transitions;
   }
 
   /**
