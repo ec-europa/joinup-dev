@@ -71,6 +71,10 @@ class WorkflowHelper implements WorkflowHelperInterface {
   public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
     // Set the current user so that states available are retrieved for the
     // specific account.
+    // The proper solution would be to pass the account to the state_machine
+    // field method, to avoid these account switch trickeries.
+    // @todo change this once the upstream issue is fixed.
+    // @see https://www.drupal.org/node/2776969
     $account_switched = FALSE;
     if ($account !== NULL && $account->id() !== $this->currentUser->id()) {
       $this->accountSwitcher->switchTo($account);
