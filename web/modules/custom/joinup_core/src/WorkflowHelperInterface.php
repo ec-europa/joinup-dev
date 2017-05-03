@@ -44,7 +44,7 @@ interface WorkflowHelperInterface {
   public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $user);
 
   /**
-   * Returns teh available transition states of an entity for the given user.
+   * Returns the available transition states of an entity for the given user.
    *
    * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
    *   The entity with the states.
