@@ -270,8 +270,8 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     // Convert any entity reference field label value with the entity id.
     $fields = $this->convertEntityReferencesValues('rdf_entity', 'asset_release', $fields);
 
-    // Conver the name of the is version of field to an id.
-    // This is handled separatelly as it is not an entity reference but an
+    // Convert the name of the is version of field to an id.
+    // This is handled separately as it is not an entity reference but an
     // og_standard_reference.
     if (isset($fields['field_isr_is_version_of'])) {
       $solution = $this->getRdfEntityByLabel($fields['field_isr_is_version_of'], 'solution');
