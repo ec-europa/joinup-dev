@@ -83,7 +83,7 @@ class ContactInformationWorkflowTest extends JoinupWorkflowTestBase {
         ]);
 
         // Override the user to be checked for the allowed transitions.
-        $actual_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->{$user_var});
+        $actual_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->$user_var);
         $actual_transitions = array_map(function ($transition) {
           return $transition->getId();
         }, $actual_transitions);
