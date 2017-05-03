@@ -22,7 +22,7 @@ bundle: discussion
 mode: default
 content:
   body:
-    weight: 2
+    weight: 1
     label: hidden
     settings: {  }
     third_party_settings: {  }
@@ -45,6 +45,25 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_shared_in:
+    type: entity_reference_entity_view
+    weight: 8
+    region: content
+    label: above
+    settings:
+      view_mode: view_mode_tile
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_state:
     weight: 5
     label: above
@@ -67,20 +86,28 @@ content:
     region: content
   report:
     label: hidden
-    weight: 50
+    weight: 7
     region: content
     settings:
       trim_length: 80
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
+      rel: '0'
+      target: '0'
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: link
   share_link:
     weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden:
-  field_shared_in: true
+hidden: {  }
