@@ -107,7 +107,10 @@ $this->assertEquals('collection', $collection->bundle());
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1435974264), $collection->field_ar_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1435974264), $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
-$this->assertReferences(['Styles Layer Descriptor'], $collection->field_ar_affiliates);
+$this->assertReferences([
+  'Styles Layer Descriptor',
+  'KASPeR - Mapping application of statistical data e-dimensions',
+], $collection->field_ar_affiliates);
 $this->assertReferences(['Thailand'], $collection->field_spatial_coverage);
 $this->assertReferences(['Open government'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);

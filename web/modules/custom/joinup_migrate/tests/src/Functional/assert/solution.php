@@ -8,8 +8,8 @@
 use Drupal\file\Entity\File;
 
 // Migration counts.
-$this->assertTotalCount('solution', 3);
-$this->assertSuccessCount('solution', 3);
+$this->assertTotalCount('solution', 4);
+$this->assertSuccessCount('solution', 4);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
@@ -69,6 +69,22 @@ $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['Styles Layer Descriptor'], $solution->field_is_distribution);
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertStringEndsWith("user-defined symbols and colors to be used in geographic information.</p>\r\n", $solution->field_is_description->value);
+$this->assertEquals('content_editor', $solution->field_is_description->format);
+$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertReferences(['Completed'], $solution->get('field_status'));
+$this->assertEquals('validated', $solution->field_is_state->value);
+
+$solution = $this->loadEntityByLabel('rdf_entity', 'KASPeR - Mapping application of statistical data e-dimensions', 'solution');
+$this->assertEquals('KASPeR - Mapping application of statistical data e-dimensions', $solution->label());
+$this->assertEquals('solution', $solution->bundle());
+$this->assertEquals('default', $solution->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1419007124), $solution->field_is_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1423650568), $solution->field_is_modification_date->value);
+$this->assertTrue($solution->get('field_is_has_version')->isEmpty());
+$this->assertReferences(['KASPeR - Mapping application of statistical data e-dimensions'], $solution->field_is_distribution);
+$this->assertReferences(['Open government'], $solution->field_policy_domain);
+$this->assertReferences(['Geodetic Institute of Slovenia'], $solution->field_is_contact_information);
+$this->assertStringEndsWith("The KASPeR application enables downloading of images and selected spatial layers with the data in vector (*. shp) format.</p>\r\n", $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences(['Completed'], $solution->get('field_status'));
