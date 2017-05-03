@@ -23,7 +23,7 @@
         ],
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/og_audience": [
             {
-                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson?_format=hal_json",
+                "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json",
                 "lang": "und"
             }
         ]
@@ -107,7 +107,7 @@
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson?_format=hal_json"
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
@@ -115,7 +115,7 @@
                 },
                 "uuid": [
                     {
-                        "value": "http:\/\/www.w3.org\/ns\/person"
+                        "value": "http:\/\/www.w3.org\/ns\/person#"
                     }
                 ],
                 "lang": "und"
