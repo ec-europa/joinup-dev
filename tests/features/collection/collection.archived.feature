@@ -29,12 +29,12 @@ Feature: Creating content and commenting on archived collection
       | The Weeping's Stars | The Willing Consort | validated |
     When I am logged in as "Lee Reeves"
     And I go to the "The Weeping's Stars" discussion
-    Then the following fields should be present "Comment"
+    Then the following fields should be present "Create comment"
     And I should see the button "Post comment"
 
     When I am not logged in
     And I go to the "The Weeping's Stars" discussion
-    Then the following fields should be present "Your name, Email, Comment"
+    Then the following fields should be present "Your name, Email, Create comment"
     And I should see the button "Post comment"
 
     When I am logged in as "Karl Fields"
@@ -46,17 +46,17 @@ Feature: Creating content and commenting on archived collection
     And I click "Edit"
     And I press "Archive"
     And I go to the "The Weeping's Stars" discussion
-    Then the following fields should not be present "Comment"
+    Then the following fields should not be present "Create comment"
     And I should not see the button "Post comment"
 
     When I am logged in as "Lee Reeves"
     And I go to the "The Weeping's Stars" discussion
-    Then the following fields should not be present "Comment"
+    Then the following fields should not be present "Create comment"
     And I should not see the button "Post comment"
 
     When I am not logged in
     And I go to the "The Weeping's Stars" discussion
-    Then the following fields should not be present "Your name, Email, Comment"
+    Then the following fields should not be present "Your name, Email, Create comment"
     And I should not see the button "Post comment"
 
   Scenario: 'Add community content' menu items should not be visible in the archived connection.

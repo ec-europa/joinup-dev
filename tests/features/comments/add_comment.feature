@@ -20,7 +20,7 @@ Feature: Add comments
     When I go to the content page of the type "<content type>" with the title "<title>"
     And I fill in "Your name" with "Mr Scandal"
     And I fill in "Email" with "mrscandal@example.com"
-    And I fill in "Comment" with "I've heard this story..."
+    And I fill in "Create comment" with "I've heard this story..."
     Then I press "Post comment"
     Then I should see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
@@ -39,7 +39,7 @@ Feature: Add comments
       | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <state> |
     Given I am logged in as "Miss tell tales"
     When I go to the content page of the type "<content type>" with the title "<title>"
-    And I fill in "Comment" with "Mr scandal was doing something weird the other day."
+    And I fill in "Create comment" with "Mr scandal was doing something weird the other day."
     Then I press "Post comment"
     Then I should not see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |

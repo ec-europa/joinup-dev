@@ -64,5 +64,5 @@ Feature: "Add discussion" visibility options.
     # Regression test: the workflow state should not be shown to the user.
     When I click "An amazing discussion"
     Then I should see the heading "An amazing discussion"
-    But I should not see the text "State"
-    And I should not see the text "Validated"
+    But I should not see the text "State" in the "Content" region
+    And I should not see the text "Validated" in the "Content" region
