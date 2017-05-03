@@ -21,12 +21,16 @@ Feature: Password management
       | password  |
       # Less than 8 characters.
       | tEst1     |
-      # Does not contain numbers.
+      # Contains only lowercase and uppercase.
       | tEsttest  |
-      # Does not contain capital letters.
+      # Contains only lowercase and uppercase.
       | t3sttest  |
-      # Contains special characters.
-      | t3sttEst! |
+      # Contains only lowercase and special characters.
+      | testtest! |
+      # Contains only numeric and special characters.
+      | 123456789! |
+      # Contains only upercase and special characters.
+      | TESTTEST! |
 
   Scenario: A logged-in user can navigate to his profile and change his password.
     When I am logged in as "Charlie Change"
@@ -45,5 +49,5 @@ Feature: Password management
     Then I click "Log in"
     And I click "Reset your password"
     And I fill in "Username or email address" with "Charlie Change"
-    Then I press the "Submit" button
+    And I press the "Submit" button
     Then I should see the success message "Further instructions have been sent to your email address."
