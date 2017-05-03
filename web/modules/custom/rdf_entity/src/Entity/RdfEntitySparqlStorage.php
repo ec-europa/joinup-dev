@@ -374,7 +374,6 @@ QUERY;
     $values_per_entity = [];
     foreach ($results as $result) {
       $entity_id = (string) $result->entity_id;
-      // $entity_id = (string) $result->entity_id;.
       $entity_graphs[$entity_id] = (string) $result->graph;
 
       $lang = LanguageInterface::LANGCODE_DEFAULT;

@@ -74,7 +74,7 @@ class SparqlArg {
    *   A string to be checked.
    *
    * @return bool
-   *   Whether it is a valid SPARQL URI or not. The URI is a valid URI whether
+   *   Whether it is a valid RDF resource or not. The URI is a valid URI whether
    *   or not it is encapsulated with '<>'.
    */
   public static function isValidResource($uri) {
@@ -88,8 +88,8 @@ class SparqlArg {
    *   An array string to be checked.
    *
    * @return bool
-   *   Whether the items in the array are valid SPARQL URI or not. The URI is a
-   *   valid URI whether or not it is encapsulated with '<>'. If at least one
+   *   Whether the items in the array are valid RDF resource or not. The URI is
+   *   a valid URI whether or not it is encapsulated with '<>'. If at least one
    *   URI is not a valid resource, FALSE will be returned.
    */
   public static function isValidResources(array $uris) {
@@ -99,40 +99,6 @@ class SparqlArg {
       }
     }
     return TRUE;
-  }
-
-  /**
-   * Literal Query argument.
-   *
-   * @param string $value
-   *   An unescaped text string to use as a Sparql query.
-   *
-   * @return string
-   *   Sparql escaped string literal.
-   *
-   * @deprecated To be replaced and include language or datatype format.
-   */
-  public static function literal($value) {
-    return self::serialize($value, 'literal');
-  }
-
-  /**
-   * Array of Literals Query argument.
-   *
-   * @param array $values
-   *   An array of strings to be escaped.
-   *
-   * @return string
-   *   Sparql escaped string literal.
-   *
-   * @deprecated To be replaced and include language or datatype format.
-   */
-  public static function literals(array $values) {
-    foreach ($values as $index => $value) {
-      // @todo: Avoid recreating the class?
-      $values[$index] = self::serialize($value, 'literal');
-    }
-    return $values;
   }
 
   /**
