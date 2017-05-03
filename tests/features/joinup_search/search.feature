@@ -63,15 +63,18 @@ Feature: Global search
       | title      | headline            | body                      | keywords | collection       | state     |
       | News omega | News headline delta | The epsilon news content. | Alphabet | Collection alpha | validated |
     And event content:
-      | title             | short title       | body                                | agenda         | location       | additional info address | organisation        | scope         | keywords | solution         | state     |
-      | Event Omega       | Event short delta | The epsilon event content.          | Event agenda.  | Some place     | Event address           | European Commission | International | Alphabet | Solution alpha   | validated |
-      | Alternative event | Alt event         | This event stays in the background. | To be planned. | Event location | Rue de events           | Event organisation  |               |          | Collection alpha | validated |
+      | title             | short title       | body                                | agenda         | location       | additional info address | organisation        | scope         | keywords | collection       | solution       | state     |
+      | Event Omega       | Event short delta | The epsilon event content.          | Event agenda.  | Some place     | Event address           | European Commission | International | Alphabet |                  | Solution alpha | validated |
+      | Alternative event | Alt event         | This event stays in the background. | To be planned. | Event location | Rue de events           | Event organisation  |               |          | Collection alpha |                | validated |
     And document content:
       | title          | type     | short title          | body                                    | keywords | collection       | state     |
       | Document omega | Document | Document short delta | A document consists of epsilon strings. | Alphabet | Collection alpha | validated |
     And discussion content:
-      | title            | body                                                              | collection     | state     |
+      | title            | body                                                              | solution       | state     |
       | Discussion omega | <p>Does anybody has idea why this <em>epsilon</em> is everywhere? | Solution alpha | validated |
+    # Currently no UI path allows the creation of newsletters. Search for migrated D6 newsletters instead.
+    # Ignore all steps related to newsletters in this test in UAT.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2256
     And newsletter content:
       | title            | body                                  |
       | Newsletter omega | Talking about these epsilon contents. |
