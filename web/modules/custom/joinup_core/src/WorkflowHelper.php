@@ -81,9 +81,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
       $account_switched = TRUE;
     }
 
-    $field = $this->getEntityStateField($entity);
-
-    $transitions = $field->getTransitions();
+    $transitions = $this->getEntityStateField($entity)->getTransitions();
 
     if ($account_switched) {
       $this->accountSwitcher->switchBack();
