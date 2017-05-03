@@ -40,8 +40,12 @@ Feature: Add distribution through the UI
       When I fill in "Title" with "Linux x86-64 SDK"
       And I enter "<p>The full software development kit for systems based on the x86-64 architecture.</p>" in the "Description" wysiwyg editor
       Given I upload the file "test.zip" to "Access URL"
-      And I select "WTFPL" from "License"
       And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
+      And I press "Save"
+      # Regression test for required field.
+      # @see: https://webgate.ec.europa/eu/CITnet/jira/browse/ISAICP-3064
+      Then I should see the error message "License field is required."
+      When I select "WTFPL" from "License"
       And I press "Save"
       Then I should have 1 distribution
       And the "Linux x86-64 SDK" distribution should have the link of the "test.zip" in the access URL field
@@ -121,8 +125,12 @@ Feature: Add distribution through the UI
       And I should see the link "WTFPL"
       And I should see the text "The full source code."
 
+      # The solution group header is cached and the license is not updated.
+      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3198
+      When the cache has been cleared
       # The licence label should be shown also in the solution UI.
-      When I go to the homepage of the "Solution random x name" solution
+      # @todo License is not shown anymore in the solution canonical page. Change this before merge.
+      And I go to the homepage of the "Solution random x name" solution
       Then I should see the text "WTFPL"
       # Clean up the asset distribution that was created through the UI.
       Then I delete the "Source tarball" asset distribution

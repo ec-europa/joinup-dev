@@ -524,6 +524,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'short title' => 'field_short_title',
         'state' => 'field_state',
         'type' => 'field_type',
+        'spatial coverage' => 'field_document_spatial_coverage',
       ],
       'event' => [
         'short title' => 'field_short_title',
@@ -533,6 +534,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       'news' => [
         'headline' => 'field_news_headline',
         'state' => 'field_state',
+        'spatial coverage' => 'field_news_spatial_coverage',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
