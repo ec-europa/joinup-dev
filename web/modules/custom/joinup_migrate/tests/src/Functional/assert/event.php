@@ -47,3 +47,4 @@ $this->assertEquals('public://event/logo/logo_euritas_rgb.jpg', $image->getFileU
 $this->assertEquals('Euritas', $event->field_organisation->value);
 $this->assertEquals('Public', $event->field_organisation_type->value);
 $this->assertEquals('http://www.euritas.eu/euritas-summit-2015', $event->field_event_web_url->uri);
+$this->assertEquals('proposed', $event->field_state->value);

@@ -45,13 +45,7 @@ process:
     map:
       'Regional (sub-national)': Regional
   field_organisation_type: organisation_type
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
-  # Revisit this mapping in ISAICP-3068.
-  field_state:
-    plugin: default_value
-    default_value: validated
-
+  field_state: state
   og_audience:
     plugin: migration
     source: collection
