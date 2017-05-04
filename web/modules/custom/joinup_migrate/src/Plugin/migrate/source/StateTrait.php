@@ -112,6 +112,28 @@ trait StateTrait {
         'validated' => 'validated',
       ],
     ],
+    'news' => [
+      'news' => [
+        'draft' => 'draft',
+        'proposed' => 'proposed',
+        'validated' => 'validated',
+        'suspended' => 'needs_update',
+        'created' => 'proposed',
+        'requested publication' => 'proposed',
+        'published' => 'validated',
+      ],
+    ],
+    'event' => [
+      'event' => [
+        'draft' => 'draft',
+        'proposed' => 'proposed',
+        'validated' => 'validated',
+        'suspended' => 'needs_update',
+        'created' => 'proposed',
+        'requested publication' => 'proposed',
+        'published' => 'validated',
+      ],
+    ],
   ];
 
 }

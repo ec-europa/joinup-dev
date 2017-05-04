@@ -23,6 +23,7 @@ $this->assertStringEndsWith("<p>City/Location: Athens</p>\n", $news->body->value
 $this->assertKeywords([], $news);
 $this->assertReferences(static::$europeCountries, $news->field_news_spatial_coverage);
 $this->assertEquals($new_collection->id(), $news->og_audience->target_id);
+$this->assertEquals('validated', $news->field_state->value);
 
 $news = $this->loadEntityByLabel('node', 'BE, NL: governments will not use ISO OOXML');
 $this->assertEquals('BE, NL: governments will not use ISO OOXML', $news->label());
@@ -40,3 +41,4 @@ $this->assertKeywords([
 ], $news);
 $this->assertReferences(['Belgium', 'Netherlands'], $news->field_news_spatial_coverage);
 $this->assertEquals($new_collection->id(), $news->og_audience->target_id);
+$this->assertEquals('validated', $news->field_state->value);
