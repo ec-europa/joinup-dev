@@ -574,7 +574,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
   protected function compileLike(array $condition) {
     $prefix = self::$filterOperatorMap[$condition['operator']]['prefix'];
     $suffix = self::$filterOperatorMap[$condition['operator']]['suffix'];
-    $value = $this->toVar($condition['field']) . ', ' . $condition['value'];
+    $value = 'str(' . $this->toVar($condition['field']) . '), str(' . $condition['value'] . ')';
     return $prefix . $value . $suffix;
   }
 
