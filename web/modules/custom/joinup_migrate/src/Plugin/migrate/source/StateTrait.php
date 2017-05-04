@@ -76,6 +76,42 @@ trait StateTrait {
         'suspended' => 'needs_update',
       ],
     ],
+    'document' => [
+      'case_epractice' => [
+        'draft' => 'draft',
+        'proposed' => 'proposed',
+        'validated' => 'validated',
+        'suspended' => 'needs_update',
+        'created' => 'proposed',
+        'requested publication' => 'proposed',
+        'published' => 'validated',
+      ],
+      'document' => [
+        'draft' => 'draft',
+        'proposed' => 'proposed',
+        'validated' => 'validated',
+        'suspended' => 'needs_update',
+        'created' => 'proposed',
+        'requested publication' => 'proposed',
+        'published' => 'validated',
+      ],
+      'presentation' => [
+        'draft' => 'draft',
+        'proposed' => 'proposed',
+        'validated' => 'validated',
+        'suspended' => 'needs_update',
+        'created' => 'proposed',
+        'requested publication' => 'proposed',
+        'published' => 'validated',
+      ],
+      'factsheet' => [
+        'validated' => 'validated',
+      ],
+      'legaldocument' => [
+        'draft' => 'draft',
+        'validated' => 'validated',
+      ],
+    ],
   ];
 
 }
