@@ -339,7 +339,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     // The id and bundle keys do not need to be compiled as they were already
     // handled in the keyCondition.
     $condition_stack = array_filter($condition_stack, function ($condition) {
-      return in_array($condition['field'], [$this->idKey, $this->bundleKey]);
+      return !in_array($condition['field'], [$this->idKey, $this->bundleKey]);
     });
 
     foreach ($condition_stack as $index => $condition) {
