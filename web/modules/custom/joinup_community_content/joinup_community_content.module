@@ -5,6 +5,7 @@
  * Main functions and hook implementations of the community content module.
  */
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Render\Markup;
@@ -48,6 +49,10 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
     '#attributes' => [
       'class' => ['use-ajax', 'action-link'],
       'data-dialog-type' => 'modal',
+      'data-dialog-options' => Json::encode([
+        'width' => 'auto',
+        'height' => 'auto',
+      ]),
     ],
     '#access' => $url->access(),
   ];

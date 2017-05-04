@@ -1,0 +1,50 @@
+{#
+/**
+ * @file
+ * Theme override for a 'form' element.
+ *
+ * Available variables
+ * - attributes: A list of HTML attributes for the wrapper element.
+ * - children: The child elements of the form.
+ *
+ * @see template_preprocess_form()
+ */
+#}
+<div class="mdl-grid share-box__container">
+  <form class="share-content-form share-content-form--social mdl-cell mdl-cell--4-col-desktop mdl-cell--8-col-tablet">
+    <fieldset class="form-wrapper">
+      <div class="fieldset-wrapper">
+        <div class="form-wrapper share-box__social">
+          <span class="share-box__social-item">
+            <span class="share-box__image icon icon--facebook"></span>
+            <span class="share-box__checkbox-label form__label is-only-placeholder">Facebook</span>
+            <label class="share-box__checkbox-input mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+              <input class="form-checkbox mdl-checkbox__input" type="checkbox">
+            </label>
+          </span>
+        </div>
+        <div class="form-wrapper share-box__social">
+          <span class="share-box__social-item">
+            <span class="share-box__image icon icon--twitter"></span>
+            <span class="share-box__checkbox-label form__label is-only-placeholder">Twitter</span>
+            <label class="share-box__checkbox-input mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+              <input class="form-checkbox mdl-checkbox__input" type="checkbox">
+            </label>
+          </span>
+        </div>
+        <div class="form-wrapper share-box__social">
+          <span class="share-box__social-item">
+            <span class="share-box__image icon icon--gplus"></span>
+            <span class="share-box__checkbox-label form__label is-only-placeholder">Google +</span>
+            <label class="share-box__checkbox-input mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+              <input class="form-checkbox mdl-checkbox__input" type="checkbox">
+            </label>
+          </span>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  <form{{ attributes.addClass('mdl-cell mdl-cell--7-col-desktop mdl-cell--1-offset-desktop mdl-cell--8-col-tablet') }}>
+    {{ children }}
+  </form>
+</div>

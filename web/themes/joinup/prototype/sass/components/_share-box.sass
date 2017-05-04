@@ -1,0 +1,74 @@
+// Share box
+//
+
+.share-box__checkbox-label, .share-box__checkbox-input
+  display: inline-block
+  width: auto
+  margin: 0
+
+.share-box__image, .share-box__checkbox
+  display: inline-block
+
+.share-box__image
+  margin-right: 10px
+
+.share-box__checkbox-label
+  padding-right: 30px
+  max-width: 300px
+
+.share-content-form
+  .fieldset-wrapper > div
+    position: relative
+    min-height: 50px
+    &:last-child, &:last-child > div
+      margin-bottom: 0
+  .form__legend
+    display: none
+
+.share-box__checkbox-input
+  position: absolute
+  top: 0
+  bottom: 0
+  right: 0
+  margin: auto
+  height: 40%
+
+.share-box__image img
+  max-width: 50px
+  max-height: 50px
+
+.share-box__image
+  width: 50px
+  height: 50px
+
+.share-box__checkbox, .share-box__image
+  vertical-align: middle
+
+.share-box__social-item
+  display: block
+  height: 50px
+  vertical-align: middle
+  .icon
+    display: inline-block
+    vertical-align: middle
+    +icon-size(50px)
+    color: $color-blue-dark
+    margin-right: 10px
+  .form__label
+    display: inline-block
+    margin-bottom: 0
+    vertical-align: middle
+
+.share-box__container
+  +breakpoint(tablet)
+    min-width: 720px
+
+.ui-dialog
+  z-index: 600
+  .ui-dialog-titlebar
+    background: none
+    border: none
+  .ui-dialog-title
+    font-size: 16px
+    font-weight: 600
+    color: $color-blue-dark

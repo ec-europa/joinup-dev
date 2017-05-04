@@ -603,6 +603,10 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
  */
 function joinup_theme_theme_suggestions_form_element_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'form_element__' . str_replace('-', '_', $variables['element']['#type']);
+
+  if (isset($variables['element']['#ajax_processed']) && $variables['element']['#ajax_processed']) {
+    $suggestions[] = 'form_element__checkbox__share';
+  }
 }
 
 /**
