@@ -1,6 +1,8 @@
 @api
 Feature: Password management
-  A user must be able to change his password
+  As a registered user of the website
+  I want to be able to manage and restore my password
+  So that I can access my account
 
   Background:
     Given users:
