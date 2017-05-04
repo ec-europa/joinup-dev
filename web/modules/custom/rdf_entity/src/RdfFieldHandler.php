@@ -564,7 +564,7 @@ class RdfFieldHandler {
     return [
       self::RESOURCE => t('Resource'),
       self::TRANSLATABLE_LITERAL => t('Translatable literal'),
-      self::NON_TYPE => t('String (No type'),
+      self::NON_TYPE => t('String (No type)'),
       'xsd:string' => t('Literal'),
       'xsd:boolean' => t('Boolean'),
       'xsd:date' => t('Date'),

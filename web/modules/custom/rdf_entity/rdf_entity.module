@@ -269,7 +269,7 @@ function rdf_entity_bundle_config($entity_type, ConfigEntityInterface $entity, a
     }
     $columns = $base_field->getColumns();
     foreach ($columns as $column_name => $column) {
-      $third_party_settings[$id][$column_name]['mapping'] = $form_state->getValue('predicate_' . $id . '_' . $column_name);
+      $third_party_settings[$id][$column_name]['predicate'] = $form_state->getValue('predicate_' . $id . '_' . $column_name);
       $third_party_settings[$id][$column_name]['format'] = $form_state->getValue('format_' . $id . '_' . $column_name);
     }
   }
