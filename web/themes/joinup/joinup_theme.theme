@@ -71,6 +71,23 @@ function joinup_theme_preprocess_page(&$variables) {
     unset($variables['page']['content']['pagetitle']);
   }
 
+  // Remove title on pages, where title is already in the header.
+  if ($route_name == 'entity.rdf_entity.canonical') {
+    $entity = $route_match->getParameter('rdf_entity');
+    if (!empty($entity)) {
+      $rdf_type = $entity->getType();
+    }
+
+    $rdfs_no_title = [
+      'collection',
+      'solution',
+    ];
+
+    if (isset($rdf_type) && in_array($rdf_type, $rdfs_no_title)) {
+      unset($variables['page']['content']['pagetitle']);
+    }
+  }
+
   $variables['title'] = $title;
 }
 

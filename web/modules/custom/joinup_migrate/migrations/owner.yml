@@ -9,8 +9,7 @@ process:
   id: uri
   field_owner_name: title
   field_owner_type:
-    -
-      plugin: static_map
+    - plugin: static_map
       source: type
       bypass: true
       map:
@@ -18,8 +17,7 @@ process:
         'Non-governmental organisation': 'Non-Governmental Organisation'
         'Non-profit organisation': 'Non-Profit Organisation'
         'Private individual(s)': 'Private Individual(s)'
-    -
-      plugin: term_reference
+    - plugin: term_reference
       vocabulary: owner_type
   uid:
     - plugin: migration

@@ -1,0 +1,11 @@
+{% if results %}
+  <div class="listing listing--grid mdl-grid">
+    {{ results }}
+  </div>
+
+  {{ pager }}
+{% else %}
+  <div class="page__content">
+    {{ 'No content found.'|t }}
+  </div>
+{% endif %}

@@ -5,6 +5,7 @@ namespace Drupal\joinup_migrate\Plugin\migrate\process;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
+use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\TermInterface;
 
 /**
@@ -47,7 +48,8 @@ class TermReference extends ProcessPluginBase {
       }
 
       if (!$terms) {
-        $migrate_executable->saveMessage("Term '$value' does not exits in destination.");
+        $vocabulary = Vocabulary::load($this->configuration['vocabulary']);
+        $migrate_executable->saveMessage("Term '$value' missed from D8 vocabulary '{$vocabulary->label()}' ({$vocabulary->id()}).");
         return NULL;
       }
       $this->cache[$this->configuration['vocabulary']][$value] = array_keys($terms)[0];

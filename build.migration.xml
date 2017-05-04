@@ -114,7 +114,7 @@
         <mkdir dir="tmp" />
         <s3dl
                 object="${phpunit.migrate.legacy_db.s3.object}"
-                target="${phpunit.migrate.legacy_db.dump}"
+                target="${phpunit.migrate.legacy_site.db_dump}"
                 bucket="${phpunit.migrate.legacy_db.s3.bucket}"
                 key=""
                 secret=""
@@ -123,7 +123,7 @@
                 url="${drupal.db.type}:host=${drupal.db.host};dbname=${phpunit.migrate.legacy_db.name}"
                 userid="${drupal.db.user}"
                 password="${drupal.db.password}">
-            <transaction src="${phpunit.migrate.legacy_db.dump}"/>
+            <transaction src="${phpunit.migrate.legacy_site.db_dump}"/>
         </pdosqlexec>
     </target>
     <target name="acceptance-migration"

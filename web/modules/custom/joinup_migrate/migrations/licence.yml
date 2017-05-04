@@ -21,5 +21,5 @@ destination:
   plugin: entity:rdf_entity
   default_bundle: licence
 migration_dependencies:
- required:
-   - prepare
+  required:
+    - prepare

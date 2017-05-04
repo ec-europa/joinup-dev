@@ -30,5 +30,5 @@ process:
 destination:
   plugin: entity:simplenews_subscriber
 migration_dependencies:
- required:
-   - newsletter_type
+  required:
+    - newsletter_type

@@ -34,14 +34,14 @@ transitions:
     validated:
       - moderator
   update_changes:
-    in_assessment:
+    needs_update:
       - moderator
       - rdf_entity-solution-facilitator
   validate:
     draft:
       - moderator
       - rdf_entity-solution-facilitator
-    in_assessment:
+    needs_update:
       - moderator
   update_published:
     validated:

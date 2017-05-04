@@ -178,3 +178,4 @@ drupal.modules.dev = config_update field_ui menu_ui views_ui
 
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = no
+packer.args =

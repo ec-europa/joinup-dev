@@ -76,7 +76,7 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
   public function testCrudAccess() {
     // Test create access.
     foreach ($this->createAccessProvider() as $user_var => $expected_result) {
-      $access = $this->entityAccess->createAccess('owner', $this->{$user_var});
+      $access = $this->entityAccess->createAccess('owner', $this->$user_var);
       $result = $expected_result ? t('have') : t('not have');
       $message = "User {$user_var} should {$result} create access for bundle 'owner'.";
       $this->assertEquals($expected_result, $access, $message);
@@ -102,13 +102,11 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
 
       foreach ($test_data as $operation => $allowed_users) {
         foreach ($available_users as $user_var) {
-          $this->userProvider->setUser($this->{$user_var});
-
           // If the current user is found in the allowed list, the expected
           // access result is true, otherwise false.
           $expected_result = in_array($user_var, $allowed_users);
 
-          $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
+          $access = $this->entityAccess->access($content, $operation, $this->$user_var);
           $result = $expected_result ? t('have') : t('not have');
           $message = "User {$user_var} should {$result} {$operation} access for entity {$content->label()} ({$entity_state}).";
           $this->assertEquals($expected_result, $access, $message);
@@ -131,8 +129,7 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
       ]);
       $parent->save();
       foreach ($available_users as $user_var) {
-        $this->userProvider->setUser($this->{$user_var});
-        $this->assertFalse($this->entityAccess->access($content, 'delete', $this->{$user_var}), "User {$user_var} should not have delete access for entity {$content->label()} ({$entity_state}).");
+        $this->assertFalse($this->entityAccess->access($content, 'delete', $this->$user_var), "User {$user_var} should not have delete access for entity {$content->label()} ({$entity_state}).");
       }
     }
   }
@@ -154,8 +151,7 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
         $content->save();
 
         // Override the user to be checked for the allowed transitions.
-        $this->userProvider->setUser($this->{$user_var});
-        $actual_transitions = $content->get('field_owner_state')->first()->getTransitions();
+        $actual_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->$user_var);
         $actual_transitions = array_map(function ($transition) {
           return $transition->getId();
         }, $actual_transitions);
@@ -210,7 +206,7 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
           'userModerator',
         ],
       ],
-      'in_assessment' => [
+      'needs_update' => [
         'view' => [
           'userAnonymous',
           'userAuthenticated',
@@ -280,7 +276,7 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
           'request_deletion',
         ],
       ],
-      'in_assessment' => [
+      'needs_update' => [
         'userAuthenticated' => [
           'update_changes',
         ],

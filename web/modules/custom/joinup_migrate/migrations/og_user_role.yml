@@ -29,5 +29,5 @@ destination:
   plugin: entity:og_membership
   default_bundle: default
 migration_dependencies:
- required:
-   - collection
+  required:
+    - collection

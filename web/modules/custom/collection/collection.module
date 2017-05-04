@@ -21,6 +21,7 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 
 /**
@@ -230,7 +231,7 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
       break;
 
     case 'edit':
-      $allowed_transitions = $entity->field_ar_state->first()->getTransitions();
+      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
       return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
 
     default:
@@ -246,9 +247,23 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
  *
  * Default graph is published. Draft graph is draft.
  */
-function collection_rdf_entity_presave(EntityInterface $entity) {
+function collection_rdf_entity_presave(RdfInterface $entity) {
+  if ($entity->bundle() !== 'collection') {
+    return;
+  }
+
+  // Provide default values for date/time fields if were missed.
+  foreach (['field_ar_creation_date', 'field_ar_modification_date'] as $field_name) {
+    if ($entity->get($field_name)->isEmpty()) {
+      if (!isset($request_time)) {
+        $request_time = gmdate('Y-m-d\TH:i:s', \Drupal::time()->getRequestTime());
+      }
+      $entity->set($field_name, $request_time);
+    }
+  }
+
   $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'collection' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
     return;
   }
 

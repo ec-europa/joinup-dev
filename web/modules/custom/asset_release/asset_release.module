@@ -142,7 +142,7 @@ function asset_release_rdf_entity_access(EntityInterface $entity, $operation, Ac
       break;
 
     case 'edit':
-      $allowed_transitions = $entity->field_isr_state->first()->getTransitions();
+      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
       return AccessResult::forbiddenIf(empty($allowed_transitions));
   }
 
@@ -161,7 +161,7 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
   }
 
   $state = $entity->field_isr_state->value;
-  if (in_array($state, ['draft', 'in_assessment'])) {
+  if (in_array($state, ['draft', 'needs_update'])) {
     \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
   }
   elseif (in_array($state, ['validated'])) {

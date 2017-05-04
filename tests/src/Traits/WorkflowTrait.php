@@ -54,7 +54,7 @@ trait WorkflowTrait {
    *   An array of transition state labels.
    */
   protected function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $user = NULL) {
-    return $this->getWorkflowHelper()->getAvailableStates($entity, $user);
+    return $this->getWorkflowHelper()->getAvailableStatesLabels($entity, $user);
   }
 
   /**
@@ -72,7 +72,7 @@ trait WorkflowTrait {
    *   An array of transition labels.
    */
   protected function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $user) {
-    return $this->getWorkflowHelper()->getAvailableTransitions($entity, $user);
+    return $this->getWorkflowHelper()->getAvailableTransitionsLabels($entity, $user);
   }
 
   /**
@@ -131,9 +131,9 @@ trait WorkflowTrait {
    */
   protected static function workflowStateAliases() {
     return [
-      'new' => '__new__',
-      'in assessment' => 'in_assessment',
       'deletion request' => 'deletion_request',
+      'needs update' => 'needs_update',
+      'new' => '__new__',
     ];
   }
 
