@@ -520,19 +520,29 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'content' => 'body',
       ],
       'document' => [
+        'keywords' => 'field_keywords',
         'licence' => 'field_licence',
         'short title' => 'field_short_title',
         'state' => 'field_state',
         'type' => 'field_type',
+        'spatial coverage' => 'field_document_spatial_coverage',
       ],
       'event' => [
+        'keywords' => 'field_keywords',
         'short title' => 'field_short_title',
         'start date' => 'field_start_date',
         'state' => 'field_state',
+        'agenda' => 'field_event_agenda',
+        'location' => 'field_location',
+        'additional info address' => 'field_event_adtl_address_info',
+        'organisation' => 'field_organisation',
+        'scope' => 'field_scope',
       ],
       'news' => [
         'headline' => 'field_news_headline',
+        'keywords' => 'field_keywords',
         'state' => 'field_state',
+        'spatial coverage' => 'field_news_spatial_coverage',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
@@ -702,6 +712,26 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Asserts that only the expected tiles are found in the page.
+   *
+   * @param string $headings
+   *   A comma-separated list of tile headings.
+   *
+   * @Then the page should show( only) the tiles :headings
+   */
+  public function assertUnorderedTilesPresent($headings) {
+    $tiles_in_page = array_map(function ($element) {
+      /** @var \Behat\Mink\Element\NodeElement $element */
+      return $element->getText();
+    }, $this->getTiles());
+    $headings = $this->explodeCommaSeparatedStepArgument($headings);
+
+    sort($headings);
+    sort($tiles_in_page);
+    \PHPUnit_Framework_Assert::assertEquals($headings, $tiles_in_page, 'The found tiles mismatch the expected ones.');
+  }
+
+  /**
    * Checks that the given tiles are found in the given block.
    *
    * The weight of the tiles are also taken into account.
@@ -719,7 +749,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       return $result->getText();
     }, $results);
     $headings_expected = $titles_table->getColumn(0);
-    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, "The expected tiles are not in the page or not in the proper order.");
+    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found in the wanted region or were not in the proper order.');
   }
 
   /**

@@ -231,7 +231,7 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
       break;
 
     case 'edit':
-      $allowed_transitions = $entity->field_ar_state->first()->getTransitions();
+      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
       return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
 
     default:

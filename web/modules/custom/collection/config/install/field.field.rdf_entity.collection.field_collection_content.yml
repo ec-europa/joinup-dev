@@ -23,7 +23,7 @@ default_value:
           region: top
         collection_policy_domain:
           weight: 1
-          region: top
+          region: inline_facets
       enabled: 1
       query_presets: ''
       limit: 12

@@ -5,6 +5,7 @@
  * Main functions and hook implementations of the Joinup core module.
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -16,6 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Template\Attribute;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
@@ -52,6 +54,24 @@ function joinup_core_theme($existing, $type, $theme, $path) {
  */
 function template_preprocess_joinup_tiles(array &$variables) {
   template_preprocess_views_view_unformatted($variables);
+}
+
+/**
+ * Prepares variables for the facet widget "links inline" template.
+ *
+ * Default template: facet-widget-links-inline.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - active: an array of active facet items.
+ *   - items: an array of inactive facet items.
+ *   - attributes: HTML attributes for the main facet wrapper.
+ */
+function template_preprocess_facet_widget_links_inline(array &$variables) {
+  $variables['button_attributes'] = new Attribute([
+    'id' => Html::getUniqueId('filter-button'),
+    'class' => ['filter__icon', 'icon', 'icon--arrow-down'],
+  ]);
 }
 
 /**
