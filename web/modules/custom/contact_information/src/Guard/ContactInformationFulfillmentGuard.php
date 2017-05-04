@@ -5,7 +5,7 @@ namespace Drupal\contact_information\Guard;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\joinup_core\WorkflowUserProvider;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -26,13 +26,11 @@ class ContactInformationFulfillmentGuard implements GuardInterface {
   protected $entityTypeManager;
 
   /**
-   * Holds the workflow user object needed for the checks.
+   * The current logged in user.
    *
-   * Will be used to override the default user used by workflows.
-   *
-   * @var \Drupal\joinup_core\WorkflowUserProvider
+   * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $workflowUserProvider;
+  protected $currentUser;
 
   /**
    * The config factory.
@@ -46,14 +44,14 @@ class ContactInformationFulfillmentGuard implements GuardInterface {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
-   * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
-   *   The workflow user provider service.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current logged in user.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider, ConfigFactoryInterface $config_factory) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountInterface $current_user, ConfigFactoryInterface $config_factory) {
     $this->entityTypeManager = $entity_type_manager;
-    $this->workflowUserProvider = $workflow_user_provider;
+    $this->currentUser = $current_user;
     $this->configFactory = $config_factory;
   }
 
@@ -61,7 +59,7 @@ class ContactInformationFulfillmentGuard implements GuardInterface {
    * {@inheritdoc}
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    if ($this->workflowUserProvider->getUser()->hasPermission('administer rdf entity')) {
+    if ($this->currentUser->hasPermission('administer rdf entity')) {
       return TRUE;
     }
 
@@ -75,8 +73,7 @@ class ContactInformationFulfillmentGuard implements GuardInterface {
 
     // Check if the user has one of the allowed system roles.
     $authorized_roles = isset($allowed_conditions[$transition->getId()][$from_state]) ? $allowed_conditions[$transition->getId()][$from_state] : [];
-    $user = $this->workflowUserProvider->getUser();
-    return (bool) array_intersect($authorized_roles, $user->getRoles());
+    return (bool) array_intersect($authorized_roles, $this->currentUser->getRoles());
   }
 
   /**
