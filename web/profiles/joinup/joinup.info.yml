@@ -43,6 +43,11 @@ dependencies:
   - options
   - owner
   - page_cache
+  - password_policy
+  - password_policy_character_types
+  - password_policy_characters
+  - password_policy_length
+  - password_policy_types_negate
   - path
   - persistent_login
   - r4032login
@@ -77,7 +82,6 @@ config_devel:
   - block.block.joinup_theme_local_tasks
   - block.block.joinup_theme_main_menu
   - block.block.joinup_theme_messages
-  - block.block.joinup_theme_solutioncontent
   - block.block.navigation
   - block.block.pagetitle
   - block.block.policydomain
@@ -128,22 +132,8 @@ config_devel:
   - editor.editor.content_editor
   - editor.editor.restricted_html
   - field.field.ogmenu_instance.navigation.og_audience
-  - field.field.user.user.field_user_business_title
-  - field.field.user.user.field_user_family_name
-  - field.field.user.user.field_user_first_name
-  - field.field.user.user.field_user_nationality
-  - field.field.user.user.field_user_organisation
-  - field.field.user.user.field_user_photo
-  - field.field.user.user.field_user_professional_domain
   - field.storage.node.body
   - field.storage.ogmenu_instance.og_audience
-  - field.storage.user.field_user_business_title
-  - field.storage.user.field_user_family_name
-  - field.storage.user.field_user_first_name
-  - field.storage.user.field_user_nationality
-  - field.storage.user.field_user_organisation
-  - field.storage.user.field_user_photo
-  - field.storage.user.field_user_professional_domain
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html
@@ -151,6 +141,7 @@ config_devel:
   - image.style.profile_icon
   - og.settings
   - og_menu.ogmenu.navigation
+  - password_policy.password_policy.generic_policy
   - system.theme
   - user.flood
   - user.mail

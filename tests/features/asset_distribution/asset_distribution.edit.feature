@@ -14,9 +14,13 @@ Feature: Asset distribution editing.
       | title      | Collection example     |
       | affiliates | Solution A, Solution B |
       | state      | validated              |
+    And the following licence:
+      | title       | LGPL                                |
+      | description | The LGPL more permisssive than GPL. |
     And the following distribution:
       | title       | Asset distribution example |
       | description | Sample description         |
+      | licence     | LGPL                       |
       | access url  | test.zip                   |
       | solution    | Solution A                 |
     And the following release:
