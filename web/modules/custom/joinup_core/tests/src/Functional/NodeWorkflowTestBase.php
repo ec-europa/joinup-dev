@@ -121,14 +121,12 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         $non_allowed_roles = array_diff($test_roles, $allowed_roles);
         $operation = 'create';
         foreach ($allowed_roles as $user_var) {
-          $this->setCurrentUser($this->{$user_var});
-          $access = $this->workflowAccess->entityAccess($content, $operation, $this->{$user_var})->isAllowed();
+          $access = $this->workflowAccess->entityAccess($content, $operation, $this->$user_var)->isAllowed();
           $message = "User {$user_var} should have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
           $this->assertEquals(TRUE, $access, $message);
         }
         foreach ($non_allowed_roles as $user_var) {
-          $this->setCurrentUser($this->{$user_var});
-          $access = $this->workflowAccess->entityAccess($content, 'create', $this->{$user_var})->isAllowed();
+          $access = $this->workflowAccess->entityAccess($content, 'create', $this->$user_var)->isAllowed();
           $message = "User {$user_var} should not have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
           $this->assertEquals(FALSE, $access, $message);
         }
@@ -153,14 +151,12 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
               $non_allowed_roles = array_diff($test_roles, $allowed_roles);
               $moderated_message = $moderation ? 'pre moderated' : 'post moderated';
               foreach ($allowed_roles as $user_var) {
-                $this->setCurrentUser($this->{$user_var});
-                $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
+                $access = $this->entityAccess->access($content, $operation, $this->$user_var);
                 $message = "User {$user_var} should have {$operation} access for the '{$content_state}' 'document' with a {$moderated_message} {$parent_bundle} parent in a {$parent_state} state.";
                 $this->assertEquals(TRUE, $access, $message);
               }
               foreach ($non_allowed_roles as $user_var) {
-                $this->setCurrentUser($this->{$user_var});
-                $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
+                $access = $this->entityAccess->access($content, $operation, $this->$user_var);
                 $message = "User {$user_var} should not have {$operation} access for the '{$content_state}' 'document' with a {$moderated_message} {$parent_bundle} parent in a {$parent_state} state.";
                 $this->assertEquals(FALSE, $access, $message);
               }
@@ -190,8 +186,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
               ]);
 
               // Override the user to be checked for the allowed transitions.
-              $this->setCurrentUser($this->{$user_var});
-              $actual_transitions = $content->get('field_state')->first()->getTransitions();
+              $actual_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->$user_var);
               $actual_transitions = array_map(function ($transition) {
                 return $transition->getId();
               }, $actual_transitions);

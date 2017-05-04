@@ -137,7 +137,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
         $user_var = $test_data[0];
         $expected_result = $test_data[1];
 
-        $access = $this->ogAccess->userAccessEntity('create', $content, $this->{$user_var})->isAllowed();
+        $access = $this->ogAccess->userAccessEntity('create', $content, $this->$user_var)->isAllowed();
         $result = $expected_result ? t('have') : t('not have');
         $message = "User {$user_var} should {$result} {$operation} access for bundle 'asset_release'.";
         $this->assertEquals($expected_result, $access, $message);
@@ -164,8 +164,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
           $user_var = $test_data_array[1];
           $expected_result = $test_data_array[2];
 
-          $this->setCurrentUser($this->{$user_var});
-          $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
+          $access = $this->entityAccess->access($content, $operation, $this->$user_var);
           $result = $expected_result ? t('have') : t('not have');
           $message = "User {$user_var} should {$result} {$operation} access for entity {$content->label()} ({$content_state}) with the parent entity in {$parent_state} state.";
           $this->assertEquals($expected_result, $access, $message);
@@ -191,8 +190,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
         $content->save();
 
         // Override the user to be checked for the allowed transitions.
-        $this->setCurrentUser($this->{$user_var});
-        $actual_transitions = $content->field_isr_state->first()->getTransitions();
+        $actual_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->$user_var);
         $actual_transitions = array_map(function ($transition) {
           return $transition->getId();
         }, $actual_transitions);

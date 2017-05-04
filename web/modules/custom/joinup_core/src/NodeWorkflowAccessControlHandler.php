@@ -133,7 +133,7 @@ class NodeWorkflowAccessControlHandler {
 
       case 'create':
       case 'update':
-        $allowed_transitions = $entity->get('field_state')->first()->getTransitions();
+        $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
         return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
 
       case 'delete':
