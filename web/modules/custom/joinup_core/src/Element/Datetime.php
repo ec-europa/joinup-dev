@@ -2,7 +2,7 @@
 
 namespace Drupal\joinup_core\Element;
 
-use Drupal\Core\Datetime\Element\Datetime;
+use Drupal\Core\Datetime\Element\Datetime as CoreDatetime;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Provides a datetime element.
  */
-class Datetime extends Datetime {
+class Datetime extends CoreDatetime {
 
   /**
    * {@inheritdoc}
