@@ -148,4 +148,26 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
     \PHPUnit_Framework_Assert::assertEquals($values, $found, "The '{$facet}' values mismatch the expected ones.");
   }
 
+  /**
+   * Launches a search.
+   *
+   * @param string $keywords
+   *   A list of words to search.
+   *
+   * @throws \Exception
+   *   Thrown when the header search bar is not found.
+   *
+   * @When I enter :keywords in the header search bar and hit enter
+   */
+  public function launchSearchFromHeader($keywords) {
+    // The header search form is not a full form, so it doesn't have a submit
+    // button.
+    // Sending keys is not supported by Behat\Mink\Driver\GoutteDriver , so we
+    // cannot fake the pressing of the Enter key.
+    // To keep speed, we provide a step that fakes the user input in the header
+    // search bar and pressing the enter key. Simple tests can be written to
+    // verify the form functionality if needed.
+    $this->getSession()->visit($this->locatePath('/search?keys=' . $keywords));
+  }
+
 }

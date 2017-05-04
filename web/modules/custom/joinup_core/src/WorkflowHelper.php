@@ -46,8 +46,8 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAvailableStatesLabels(FieldableEntityInterface $entity, AccountInterface $user = NULL) {
-    $allowed_transitions = $this->getAvailableTransitions($entity, $user);
+  public function getAvailableStatesLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
+    $allowed_transitions = $this->getAvailableTransitions($entity, $account);
 
     $allowed_states = array_map(function (WorkflowTransition $transition) {
       return (string) $transition->getToState()->getLabel();
@@ -59,27 +59,29 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $user = NULL) {
+  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
     return array_map(function (WorkflowTransition $transition) {
       return (string) $transition->getLabel();
-    }, $this->getAvailableTransitions($entity, $user));
+    }, $this->getAvailableTransitions($entity, $account));
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $user = NULL) {
+  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
     // Set the current user so that states available are retrieved for the
     // specific account.
+    // The proper solution would be to pass the account to the state_machine
+    // field method, to avoid these account switch trickeries.
+    // @todo change this once the upstream issue is fixed.
+    // @see https://www.drupal.org/node/2776969
     $account_switched = FALSE;
-    if ($user !== NULL && $user->id() !== $this->currentUser->id()) {
-      $this->accountSwitcher->switchTo($user);
+    if ($account !== NULL && $account->id() !== $this->currentUser->id()) {
+      $this->accountSwitcher->switchTo($account);
       $account_switched = TRUE;
     }
 
-    $field = $this->getEntityStateField($entity);
-
-    $transitions = $field->getTransitions();
+    $transitions = $this->getEntityStateField($entity)->getTransitions();
 
     if ($account_switched) {
       $this->accountSwitcher->switchBack();
