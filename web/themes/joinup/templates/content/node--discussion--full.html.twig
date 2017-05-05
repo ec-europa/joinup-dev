@@ -70,14 +70,13 @@
  *   in different view modes.
  */
 #}
-{% set topics = content.field_topic|render %}
-{% set spatial_coverage = content.field_spatial_coverage|render %}
+{% set domains = content.field_policy_domain|render %}
 <article{{ attributes }}>
   <div class="page__content">
     {{ content.body }}
     <div class="details__bottom">
-      {% if topics %}
-        {% trans %}This discussion is about {{ topics }}{% endtrans %}
+      {% if domains %}
+        {% trans %}This discussion is about {{ domains }}{% endtrans %}
       {% endif %}
     </div>
     <div class="action-link__wrapper right">
