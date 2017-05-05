@@ -230,6 +230,13 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
       return $this;
     }
 
+    // If the field is a nested condition, simply add it to the list of
+    // conditions.
+    if ($field instanceof ConditionInterface) {
+      $this->conditions[] = ['field' => $field];
+      return $this;
+    }
+
     if ($operator === NULL) {
       $operator = '=';
     }
