@@ -8,7 +8,6 @@ use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 /**
  * Tests Entity Query functionality of the Sparql backend.
  *
- * This is based on
  * @see \Drupal\KernelTests\Core\Entity\EntityQueryTest
  *
  * @group Entity
@@ -27,11 +26,15 @@ class SparqlEntityQueryTest extends JoinupKernelTestBase {
   ];
 
   /**
+   * A list of query results.
+   *
    * @var array
    */
   protected $queryResults;
 
   /**
+   * The query factory service.
+   *
    * @var \Drupal\Core\Entity\Query\QueryFactory
    */
   protected $factory;
@@ -50,6 +53,9 @@ class SparqlEntityQueryTest extends JoinupKernelTestBase {
    */
   protected $dummyEntities;
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
 
@@ -94,7 +100,7 @@ class SparqlEntityQueryTest extends JoinupKernelTestBase {
     // Entity 001.
     $return[] = [
       'field_text' => [
-        'value' =>'test text 1',
+        'value' => 'test text 1',
         'format' => 'plain_text',
       ],
       'field_text_multi' => [
@@ -109,7 +115,7 @@ class SparqlEntityQueryTest extends JoinupKernelTestBase {
     // Entity 002.
     $return[] = [
       'field_text' => [
-        'value' =>'<html><body><p>Hello world!</p></body></html>',
+        'value' => '<html><body><p>Hello world!</p></body></html>',
         'format' => 'full_html',
       ],
       'field_text_multi' => [
@@ -132,7 +138,7 @@ class SparqlEntityQueryTest extends JoinupKernelTestBase {
     ];
 
     // Entity 004.
-    $return[] =[
+    $return[] = [
       'field_reference' => [
         $this->dummyEntities[0]->id(),
         $this->dummyEntities[1]->id(),
@@ -241,14 +247,20 @@ class SparqlEntityQueryTest extends JoinupKernelTestBase {
 
     // Checks the '!=' operator for the bundle.
     $this->queryResults = $this->factory->get('rdf_entity')
-      ->condition('id', ['http://multifield.example.com/001', 'http://dummy.example.com/002'], 'IN')
+      ->condition('id', [
+        'http://multifield.example.com/001',
+        'http://dummy.example.com/002',
+      ], 'IN')
       ->condition('rid', 'multifield', '!=')
       ->execute();
     $this->assertResult('http://dummy.example.com/002');
 
     // Checks the IN operator for the bundle.
     $this->queryResults = $this->factory->get('rdf_entity')
-      ->condition('id', ['http://dummy.example.com/002', 'http://multifield.example.com/001'], 'IN')
+      ->condition('id', [
+        'http://dummy.example.com/002',
+        'http://multifield.example.com/001',
+      ], 'IN')
       ->condition('rid', ['dummy', 'multifield'], 'IN')
       ->sort('id')
       ->execute();
@@ -256,14 +268,21 @@ class SparqlEntityQueryTest extends JoinupKernelTestBase {
 
     // Checks the NOT IN operator for the bundle.
     $this->queryResults = $this->factory->get('rdf_entity')
-      ->condition('id', ['http://multifield.example.com/001', 'http://dummy.example.com/002'], 'IN')
+      ->condition('id', [
+        'http://multifield.example.com/001',
+        'http://dummy.example.com/002',
+      ], 'IN')
       ->condition('rid', ['multifield'], 'NOT IN')
       ->execute();
     $this->assertResult('http://dummy.example.com/002');
 
     // Checks the 'IN' operator for IDs.
     $this->queryResults = $this->factory->get('rdf_entity')
-      ->condition('id', ['http://multifield.example.com/000', 'http://multifield.example.com/001', 'http://multifield.example.com/002'], 'IN')
+      ->condition('id', [
+        'http://multifield.example.com/000',
+        'http://multifield.example.com/001',
+        'http://multifield.example.com/002',
+      ], 'IN')
       ->condition('rid', 'multifield')
       ->execute();
     $this->assertResult('http://multifield.example.com/001', 'http://multifield.example.com/002');
@@ -284,10 +303,20 @@ class SparqlEntityQueryTest extends JoinupKernelTestBase {
 
     // Checks the 'NOT IN' operator for IDs for a valid ID.
     $this->queryResults = $this->factory->get('rdf_entity')
-      ->condition('id', ['http://multifield.example.com/002', 'http://multifield.example.com/003', 'http://multifield.example.com/004', 'http://multifield.example.com/005', 'http://multifield.example.com/006', 'http://multifield.example.com/007', 'http://multifield.example.com/008', 'http://multifield.example.com/009', 'http://multifield.example.com/010'], 'NOT IN')
+      ->condition('id', [
+        'http://multifield.example.com/002',
+        'http://multifield.example.com/003',
+        'http://multifield.example.com/004',
+        'http://multifield.example.com/005',
+        'http://multifield.example.com/006',
+        'http://multifield.example.com/007',
+        'http://multifield.example.com/008',
+        'http://multifield.example.com/009',
+        'http://multifield.example.com/010',
+      ], 'NOT IN')
       ->condition('rid', 'multifield')
       ->execute();
-    $this->assertResult( 'http://multifield.example.com/001');
+    $this->assertResult('http://multifield.example.com/001');
 
     // Try to fetch a NULL ID.
     $this->setExpectedException('Exception', 'The value cannot be NULL for conditions related to the Id and bundle keys.');
@@ -325,13 +354,13 @@ class SparqlEntityQueryTest extends JoinupKernelTestBase {
    * basic conditions.
    */
   public function testBaseEntityQueryFilters() {
-    // Submit an empty query
+    // Submit an empty query.
     $this->queryResults = $this->factory->get('rdf_entity')
       ->sort('id')
       ->execute();
     $this->assertCount(20, $this->queryResults);
 
-    // Submit an empty 'OR' query
+    // Submit an empty 'OR' query.
     $this->queryResults = $this->factory->get('rdf_entity', 'OR')
       ->sort('id')
       ->execute();
@@ -430,6 +459,9 @@ class SparqlEntityQueryTest extends JoinupKernelTestBase {
     $this->assertResult('http://multifield.example.com/001', 'http://multifield.example.com/002', 'http://multifield.example.com/004', 'http://multifield.example.com/006');
   }
 
+  /**
+   * Asserts that arrays are identical.
+   */
   protected function assertResult() {
     $assert = [];
     $expected = func_get_args();

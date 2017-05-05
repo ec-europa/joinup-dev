@@ -3,16 +3,12 @@
 namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Component\Utility\Random;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 
 /**
  * Tests Entity Query functionality of the Sparql backend.
- *
- * This is based on
- * @see \Drupal\KernelTests\Core\Entity\EntityQueryTest
  *
  * @group Entity
  */
@@ -36,6 +32,9 @@ class SparqlEntityInsertTest extends JoinupKernelTestBase {
    */
   protected $dummyEntities;
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
 
@@ -58,12 +57,12 @@ class SparqlEntityInsertTest extends JoinupKernelTestBase {
    * that they can be comparable.
    *
    * @param \Drupal\rdf_entity\RdfInterface $entity
-   *    The entity object.
-   * @param $field_name
-   *    The field name.
+   *   The entity object.
+   * @param string $field_name
+   *   The field name.
    *
    * @return mixed
-   *    The retrieved value or NULL if no value exists.
+   *   The retrieved value or NULL if no value exists.
    *
    * @todo: Remove this when the deltas are supported.
    * @todo: Discuss whether we need this in the storage level.
@@ -78,6 +77,7 @@ class SparqlEntityInsertTest extends JoinupKernelTestBase {
 
   /**
    * Test entity create.
+   *
    * @dataProvider providerTestEntityInsertCallback
    */
   public function testEntityInsert($values) {
@@ -102,7 +102,15 @@ class SparqlEntityInsertTest extends JoinupKernelTestBase {
     // Load the entity.
     $loaded_entity = $this->entityManager->getStorage('rdf_entity')->loadUnchanged($entity->id());
     $this->assertTrue($loaded_entity instanceof RdfInterface);
-    foreach (['label', 'rid', 'field_reference', 'field_date', 'field_text', 'field_text_multi'] as $field_name) {
+    $field_names = [
+      'label',
+      'rid',
+      'field_reference',
+      'field_date',
+      'field_text',
+      'field_text_multi',
+    ];
+    foreach ($field_names as $field_name) {
       $this->assertEquals($this->getEntityValue($entity, $field_name), $this->getEntityValue($loaded_entity, $field_name));
     }
   }
