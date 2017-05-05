@@ -167,7 +167,7 @@ function owner_rdf_entity_access(EntityInterface $entity, $operation, AccountInt
 
   switch ($operation) {
     case 'edit':
-      $allowed_transitions = $entity->get('field_owner_state')->first()->getTransitions();
+      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
       return AccessResult::forbiddenIf(empty($allowed_transitions));
   }
 

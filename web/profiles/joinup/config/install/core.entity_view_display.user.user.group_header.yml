@@ -3,6 +3,8 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.user.group_header
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_password_expiration
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
@@ -18,6 +20,7 @@ dependencies:
   module:
     - ds
     - image
+    - joinup
     - text
     - user
 id: user.user.group_header
@@ -124,6 +127,8 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_last_password_reset: true
+  field_password_expiration: true
   field_user_content: true
   field_user_frequency: true
   field_user_group_types: true
