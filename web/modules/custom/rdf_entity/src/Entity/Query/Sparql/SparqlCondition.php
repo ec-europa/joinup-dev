@@ -386,7 +386,9 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
 
     // There are cases where not a single triple is formed. In these cases, a
     // default condition has to be added in order to retrieve distinct Ids.
-    if ($this->requiresDefaultPattern) {
+    // Also, in case the query is an OR, it should not get the default condition
+    // because it will be added in every subquery which has an 'AND' conjuncion.
+    if (($this->requiresDefaultPattern && $this->conjunction === 'AND') || empty($this->conditions())) {
       $this->addDefaultTriplePattern();
     }
 
