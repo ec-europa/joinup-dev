@@ -84,6 +84,9 @@ trait TraversingTrait {
    * @param string $region
    *   The region label as defined in the behat.yml.
    *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The region element.
+   *
    * @throws \Exception
    *    Thrown when the region is not found.
    */
@@ -157,6 +160,8 @@ trait TraversingTrait {
   protected static function getFacetIdFromAlias($alias) {
     $mappings = [
       'collection policy domain' => 'collection_policy_domain',
+      'solution policy domain' => 'solution_policy_domain',
+      'solution spatial coverage' => 'solution_spatial_coverage',
     ];
 
     if (!isset($mappings[$alias])) {

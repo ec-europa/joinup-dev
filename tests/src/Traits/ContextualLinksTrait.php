@@ -23,8 +23,12 @@ trait ContextualLinksTrait {
    *   When the region is not found in the page.
    */
   protected function findContextualLinksInRegion($region) {
+    // Since we are calling API functions that depend on the current user, we
+    // need to make sure the current user service is up to date. It might still
+    // contain the user from a previous API call.
     /** @var \Drupal\DrupalExtension\Context\RawDrupalContext $this */
     $account = User::load($this->getUserManager()->getCurrentUser()->uid);
+
     $links = [];
 
     /** @var \Drupal\Core\Menu\ContextualLinkManager $contextual_links_manager */
