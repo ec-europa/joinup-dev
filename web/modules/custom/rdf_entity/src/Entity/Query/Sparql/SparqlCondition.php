@@ -46,9 +46,11 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     'NOT IN' => ['delimiter' => ', ', 'prefix' => '', 'suffix' => ''],
     'IS NULL' => ['use_value' => FALSE],
     'IS NOT NULL' => ['use_value' => FALSE],
-    'CONTAINS' => ['prefix' => 'FILTER(regex(', 'suffix' => ', "i"))'],
-    'LIKE' => ['prefix' => 'FILTER(regex(', 'suffix' => ', "i"))'],
-    'NOT LIKE' => ['prefix' => 'FILTER(!regex(', 'suffix' => ', "i"))'],
+    'CONTAINS' => ['prefix' => 'FILTER(CONTAINS(', 'suffix' => '))'],
+    'STARTS WITH' => ['prefix' => 'FILTER(STRSTARTS(', 'suffix' => '))'],
+    'ENDS WITH' => ['prefix' => 'FILTER(STRENDS(', 'suffix' => '))'],
+    'LIKE' => ['prefix' => 'FILTER(CONTAINS(', 'suffix' => '))'],
+    'NOT LIKE' => ['prefix' => 'FILTER(!CONTAINS(', 'suffix' => '))'],
     'EXISTS' => ['prefix' => 'FILTER EXISTS {', 'suffix' => '}'],
     'NOT EXISTS' => ['prefix' => 'FILTER NOT EXISTS {', 'suffix' => '}'],
     // @todo This is not starts with but contains...
@@ -76,7 +78,8 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     'CONTAINS',
     'LIKE',
     'NOT LIKE',
-    'STARTS_WITH',
+    'STARTS WITH',
+    'ENDS WITH',
     '<',
     '>',
     '<=',
@@ -470,7 +473,8 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         case 'CONTAINS':
         case 'LIKE':
         case 'NOT LIKE':
-        case 'STARTS_WITH':
+        case 'STARTS WITH':
+        case 'ENDS WITH':
           $this->addConditionFragment($this->compileLike($condition));
           if (!empty($langcode)) {
             $this->addConditionFragment("FILTER(lang({$this->toVar($condition['field'])}) = '{$langcode}')");
