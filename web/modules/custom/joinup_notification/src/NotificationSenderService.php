@@ -118,11 +118,14 @@ class NotificationSenderService {
     if (isset($entity->skip_notification) && $entity->skip_notification === TRUE) {
       return;
     }
+
     $values = ['field_message_content' => $entity->id()];
+    // If the entity is a group content, append the group field to the values.
+    // If the message entity doesn't have the related field attached, the value
+    // will be simply skipped.
     if ($this->groupTypeManager->isGroupContent($entity->getEntityTypeId(), $entity->bundle())) {
       $parent = $this->relationManager->getParent($entity);
       if ($parent !== NULL) {
-        // If the field does not exist, the value will be simply skipped.
         $values += ['field_message_group' => $parent->id()];
       }
     }

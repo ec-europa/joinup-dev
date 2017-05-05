@@ -143,6 +143,8 @@ function joinup_notification_node_update(EntityInterface $entity) {
  * same as the source state because the current state 'is always allowed'.
  * If the original state is the same as the target entity, fire that transition
  * manually.
+ *
+ * @see https://www.drupal.org/node/2746091
  */
 function joinup_notification_entity_update(EntityInterface $entity) {
   if (!in_array($entity->getEntityTypeId(), ['rdf_entity', 'node'])) {
@@ -153,29 +155,30 @@ function joinup_notification_entity_update(EntityInterface $entity) {
   if (!$workflow_helper->hasEntityStateField($entity)) {
     return;
   }
-  $state_field = $workflow_helper->getEntityStateFieldDefinition($entity);
-  $state_field = $state_field->getName();
+  $state_field = $workflow_helper->getEntityStateFieldDefinition($entity)->getName();
 
   // Skip cases where original version is not present or the original state
   // is empty.
-  if (empty($entity->original) || empty($entity->original->{$state_field}->first()->value)) {
+  /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+  if (empty($entity->original) || empty($entity->original->get($state_field)->first()->value)) {
     return;
   }
 
   /** @var \Drupal\state_machine\Plugin\Field\FieldType\StateItem $state_field_item */
-  $state_field_item = $entity->{$state_field}->first();
-  $workflow = $state_field_item->getWorkflow();
-  $original_state = $entity->original->{$state_field}->first()->value;
+  $state_field_item = $entity->get($state_field)->first();
+  $original_state = $entity->original->get($state_field)->first()->value;
   $target_state = $state_field_item->value;
   if ($original_state !== $target_state) {
     return;
   }
 
+  $workflow = $state_field_item->getWorkflow();
   $transition = $workflow->findTransition($original_state, $target_state);
   if ($transition === NULL) {
     return;
   }
   // Replicate the event fire process by StateItem.
+  // @see \Drupal\state_machine\Plugin\Field\FieldType\StateItem
   $event_id = $workflow->getGroup() . '.' . $transition->getId() . '.' . 'post_transition';
   $original_state = $workflow->getState($original_state);
   $target_state = $workflow->getState($target_state);

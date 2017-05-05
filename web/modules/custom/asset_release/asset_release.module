@@ -38,6 +38,7 @@ function asset_release_rdf_entity_insert(EntityInterface $entity) {
     $releases = $parent->get('field_is_has_version')->getValue();
     $releases[] = ['target_id' => $entity->id()];
     $parent->get('field_is_has_version')->setValue($releases);
+    // Avoid triggering notification e-mails during this programmatic update.
     $parent->skip_notification = TRUE;
     $parent->save();
   }
