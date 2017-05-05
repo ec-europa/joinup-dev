@@ -3,7 +3,7 @@ status: true
 dependencies: {  }
 third_party_settings:
   rdf_entity:
-    rdf_type: 'http://example.com/dummy_with_owner'
+    rdf_type: 'http://example.com/multifield'
     mapping:
       rid:
         target_id:
@@ -11,12 +11,12 @@ third_party_settings:
           format: 'resource'
       uid:
         target_id:
-          predicate: 'http://example.com/dummy_with_owner/uid'
+          predicate: 'http://example.com/multifield_with_owner/uid'
           format: 'integer'
       label:
         value:
-          predicate: 'http://example.com/dummy_with_owner_label'
-          format: 'literal'
+          predicate: 'http://example.com/multifield_label'
+          format: literal
       uuid:
         value:
           predicate: ''
@@ -26,8 +26,8 @@ third_party_settings:
           predicate: ''
           format: ''
     graph:
-      default: 'http://example.com/with_owner/published'
-      draft: 'http://example.com/with_owner/draft'
-name: 'With Owner'
-rid: with_owner
+      default: 'http://example.com/multifield/published'
+      draft: 'http://example.com/multifield/draft'
+name: Multifield
+rid: multifield
 description: ''

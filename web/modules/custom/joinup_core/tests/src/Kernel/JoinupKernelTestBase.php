@@ -43,20 +43,22 @@ abstract class JoinupKernelTestBase extends RdfKernelTestBase {
    */
   public function tearDown() {
     // Delete all data produced by testing module.
-    foreach (['published', 'draft'] as $graph) {
-      $query = <<<EndOfQuery
+    foreach (['dummy', 'with_owner', 'multifield'] as $bundle) {
+      foreach (['published', 'draft'] as $graph) {
+        $query = <<<EndOfQuery
 DELETE {
-  GRAPH <http://example.com/dummy/$graph> {
+  GRAPH <http://example.com/$bundle/$graph> {
     ?entity ?field ?value
   }
 }
 WHERE {
-  GRAPH <http://example.com/dummy/$graph> {
+  GRAPH <http://example.com/$bundle/$graph> {
     ?entity ?field ?value
   }
 }
 EndOfQuery;
-      $this->sparql->query($query);
+        $this->sparql->query($query);
+      }
     }
 
     parent::tearDown();

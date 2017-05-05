@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_reference
+    - rdf_entity.rdfentity.asset_release
+    - rdf_entity.rdfentity.multifield
+id: rdf_entity.multifield.field_reference
+field_name: field_reference
+entity_type: rdf_entity
+bundle: multifield
+label: Reference
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      dummy: dummy
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: null
+field_type: entity_reference

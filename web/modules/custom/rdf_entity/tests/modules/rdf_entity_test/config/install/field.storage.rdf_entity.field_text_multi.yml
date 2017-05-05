@@ -7,20 +7,17 @@ third_party_settings:
   rdf_entity:
     mapping:
       value:
-        predicate: 'http://purl.org/dc/terms/description'
+        predicate: 'http://example.com/field_text_multi'
         format: 'literal'
-      format:
-        predicate: 'http://purl.org/dc/terms/description/format'
-        format: 'literal'
-id: rdf_entity.field_text
-field_name: field_text
+id: rdf_entity.field_text_multi
+field_name: field_text_multi
 entity_type: rdf_entity
 type: string_long
 settings:
   case_sensitive: false
 module: core
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false
