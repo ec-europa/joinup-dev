@@ -173,9 +173,11 @@ function asset_distribution_rdf_entity_update(EntityInterface $entity) {
     // change is picked up.
     $solution = AssetDistributionRelations::getDistributionSolution($entity);
 
-    /** @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator */
-    $cache_tags_invalidator = \Drupal::service('cache_tags.invalidator');
-    $cache_tags_invalidator->invalidateTags($solution->getCacheTagsToInvalidate());
+    if ($solution) {
+      /** @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator */
+      $cache_tags_invalidator = \Drupal::service('cache_tags.invalidator');
+      $cache_tags_invalidator->invalidateTags($solution->getCacheTagsToInvalidate());
+    }
   }
 }
 
