@@ -1,0 +1,36 @@
+// Component
+// --------------------------------------------------
+.load-more
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  text-decoration: none
+
+// Elements
+// --------------------------------------------------
+.load-more__wrapper
+  text-align: center
+  +centered
+
+.load-more__icon
+  color: darken($color-grey-light, 10%)
+  +icon-size(60px)
+  
+.load-more__text
+  font-size: $font-size-base
+  font-weight: $font-weight-medium
+  color: $color-base
+
+// Modifiers
+// --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.comment-item--load-more
+  .load-more__icon,
+  .load-more__text
+    display: inline-block
+    vertical-align: middle
+
