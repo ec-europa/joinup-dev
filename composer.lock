@@ -2686,8 +2686,7 @@
             },
             "require": {
                 "drupal/core": "*",
-                "drupal/og": "*",
-                "drupal/og_ui": "*"
+                "drupal/og": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -2730,71 +2729,6 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/og_menu",
                 "issues": "https://drupal.org/project/issues/og_menu"
-            }
-        },
-        {
-            "name": "drupal/og_ui",
-            "version": "dev-1.x",
-            "require": {
-                "drupal/core": "~8.0",
-                "drupal/og": "self.version"
-            },
-            "type": "metapackage",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1484311683"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Dries",
-                    "homepage": "https://www.drupal.org/user/1"
-                },
-                {
-                    "name": "Grayside",
-                    "homepage": "https://www.drupal.org/user/346868"
-                },
-                {
-                    "name": "Zen",
-                    "homepage": "https://www.drupal.org/user/21209"
-                },
-                {
-                    "name": "amitaibu",
-                    "homepage": "https://www.drupal.org/user/57511"
-                },
-                {
-                    "name": "dww",
-                    "homepage": "https://www.drupal.org/user/46549"
-                },
-                {
-                    "name": "merlinofchaos",
-                    "homepage": "https://www.drupal.org/user/26979"
-                },
-                {
-                    "name": "moshe weitzman",
-                    "homepage": "https://www.drupal.org/user/23"
-                },
-                {
-                    "name": "pfrenssen",
-                    "homepage": "https://www.drupal.org/user/382067"
-                },
-                {
-                    "name": "sethcohn",
-                    "homepage": "https://www.drupal.org/user/14944"
-                }
-            ],
-            "description": "User interface for Organic Groups.",
-            "homepage": "https://www.drupal.org/project/og",
-            "support": {
-                "source": "http://cgit.drupalcode.org/og"
             }
         },
         {
