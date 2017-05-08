@@ -221,6 +221,20 @@
         </composer>
     </target>
 
+    <target name="redirect-outgoing-email">
+        <if>
+            <equals arg1="${drupal.redirect.email}" arg2="yes" />
+            <then>
+                <append
+                    destFile="${website.settings.local.php}"
+                    text="$config['system.mail']['interface']['default'] = 'devel_mail_log';" />
+            </then>
+            <else>
+                <echo message="Skipping redirection of outgoing e-mail. Set 'drupal.redirect.email = yes' to enable." />
+            </else>
+        </if>
+    </target>
+
     <target
         name="build-dev"
         description="Build a development environment."
@@ -229,12 +243,12 @@
     <target
         name="setup-dev"
         description="Set up 'development mode' for an installed website."
-        depends="enable-dev-settings, enable-dev-modules" />
+        depends="enable-dev-settings, enable-dev-modules, redirect-outgoing-email" />
 
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users" />
+        depends="create-demo-users, redirect-outgoing-email" />
 
     <target
         name="install-dev"

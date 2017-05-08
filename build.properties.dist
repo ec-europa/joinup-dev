@@ -174,7 +174,12 @@ phpunit.browsertest_output_file = ${phpunit.browsertest_output_dir}/outputfile.t
 # -------------------
 
 # Development modules to enable.
-drupal.modules.dev = config_update field_ui menu_ui views_ui
+drupal.modules.dev = config_update devel field_ui menu_ui views_ui
 
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = no
+
+# Redirect outgoing e-mail to disk. This prevents e-mail from being
+# accidentally sent out on development machines. The mails can be found in the
+# folder temporary://devel-mails. This requires the devel module to be enabled.
+drupal.redirect.email = yes
