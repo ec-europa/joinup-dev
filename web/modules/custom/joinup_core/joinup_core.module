@@ -291,10 +291,12 @@ function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id
   if (empty($form['header'])) {
     return;
   }
-  foreach ($form['header']['og_membership_bulk_form']['action']['#options'] as $key => $option) {
-    if (strstr($key, 'rdf_entity-' . $entity->getType()) === FALSE) {
-      unset($form['header']['og_membership_bulk_form']['action']['#options'][$key]);
-    }
+  // Remove the actions to remove / add the Collection Owner role. There should
+  // always be one owner. It is still to be decided how owner transfership will
+  // work.
+  foreach (['add', 'remove'] as $action) {
+    $action = "og_membership_{$action}_role_action.administrator";
+    unset($form['header']['og_membership_bulk_form']['action']['#options'][$action]);
   }
 }
 
