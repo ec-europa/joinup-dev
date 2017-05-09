@@ -17,7 +17,7 @@ process:
   uid:
     - plugin: migration
       migration: user
-      source: file_uid
+      source: uid
       no_stub: true
     - plugin: default_value
       default_value: 1
@@ -30,5 +30,5 @@ destination:
   plugin: entity:node
   default_bundle: newsletter
 migration_dependencies:
- required:
-   - newsletter_type
+  required:
+    - newsletter_type

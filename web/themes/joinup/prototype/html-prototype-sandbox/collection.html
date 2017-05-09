@@ -1,7 +1,7 @@
 {{> partials/head }}
-  
+
   <div class="mdl-layout mdl-js-layout">
-    
+
     {{> partials/header }}
 
     <!-- Section featured start -->
@@ -15,26 +15,33 @@
     <div class="section section--content">
       <div class="main-container mdl-grid">
         <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
-            
+
           {{> partials/sidebar-menu--collections }}
 
         </div>
         <div class="section section--main mdl-cell mdl-cell--8-col">
-        
+
           {{> partials/tabs }}
 
           {{> partials/filters }}
 
-          <div class="listing listing--grid">
+          <div class="listing listing--grid listing--load-more">
             <div class="row">
               <div class="mdl-grid">
-                
+
                 {{> partials/listing-item--default }}
                 {{> partials/listing-item--default }}
                 {{> partials/listing-item--default }}
                 {{> partials/listing-item--default }}
                 {{> partials/listing-item--default }}
-                {{> partials/listing-item--default }}
+                <div class="listing__item listing__item--tile listing__item--load-more mdl-cell mdl-cell--4-col">
+                  <span class="load-more">
+                    <div class="load-more__wrapper">
+                      <div class="load-more__icon icon icon--load"></div>
+                      <div class="load-more__text">Load more</div>
+                    </div>
+                  </span>
+                </div>
 
               </div>
             </div>
@@ -43,9 +50,9 @@
       </div>
     </div>
     <!-- Section content end -->
-    
+
     {{> partials/footer }}
-    
+
   </div>
 
 {{> partials/scripts }}

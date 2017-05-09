@@ -40,18 +40,20 @@ Feature: "Add document" visibility options.
     And I am logged in as a facilitator of the "Hunter in the Swords" collection
 
     When I go to the homepage of the "Hunter in the Swords" collection
-    And I click "Add document"
+    And I click "Add document" in the plus button menu
     Then I should see the heading "Add document"
     And the following fields should be present "Title, Short title, Type, Policy domain, Keywords, Spatial coverage, Licence, Description, File"
+    # The entity is new, so the current workflow state should not be shown.
+    And the following fields should not be present "Current workflow state"
 
     # The sections about managing revisions and groups should not be visible.
     And I should not see the text "Revision information"
-    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
 
     When I fill in the following:
       | Title       | An amazing document                      |
       | Short title | Amazing document                         |
-      | Description | This is going to be an amazing document. |
+    And I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
     And I select "Document" from "Type"
     And I attach the file "test.zip" to "File"
     And I press "Save as draft"

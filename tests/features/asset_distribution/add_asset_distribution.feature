@@ -29,19 +29,19 @@ Feature: Add distribution through the UI
 
       When I click "Add distribution"
       Then I should see the heading "Add Distribution"
-      And the following fields should be present "Title, Description, License, Format, Representation technique, GITB compliant"
-      # Field labels are implemented not consistently, so we are
-      # forced to check for the widget heading.
-      # @todo to be handled in ISAICP-2655
-      And I should see the text "Access URL"
+      And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique, GITB compliant"
       # @todo: The link has to be changed to the legal contact form.
       # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
       And I should see the link "contacting us"
       When I fill in "Title" with "Linux x86-64 SDK"
       And I enter "<p>The full software development kit for systems based on the x86-64 architecture.</p>" in the "Description" wysiwyg editor
       Given I upload the file "test.zip" to "Access URL"
-      And I select "WTFPL" from "License"
       And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
+      And I press "Save"
+      # Regression test for required field.
+      # @see: https://webgate.ec.europa/eu/CITnet/jira/browse/ISAICP-3064
+      Then I should see the error message "License field is required."
+      When I select "WTFPL" from "License"
       And I press "Save"
       Then I should have 1 distribution
       And the "Linux x86-64 SDK" distribution should have the link of the "test.zip" in the access URL field
@@ -91,13 +91,9 @@ Feature: Add distribution through the UI
     Scenario: Add a distribution to a release as a facilitator.
       When I am logged in as a "facilitator" of the "Solution random x name" solution
       When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
-      And I click "Add distribution"
+      And I click "Add distribution" in the plus button menu
       Then I should see the heading "Add Distribution"
-      And the following fields should be present "Title, Description, License, Format, Representation technique, GITB compliant"
-      # Field labels are implemented not consistently, so we are
-      # forced to check for the widget heading.
-      # @todo to be handled in ISAICP-2655
-      And I should see the text "Access URL"
+      And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique, GITB compliant"
       # @todo: The link has to be changed to the legal contact form.
       # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
       And I should see the link "contacting us"
@@ -122,7 +118,7 @@ Feature: Add distribution through the UI
       And I should see the text "The full source code."
 
       # The licence label should be shown also in the solution UI.
-      When I go to the homepage of the "Solution random x name" solution
+      And I go to the homepage of the "Solution random x name" solution
       Then I should see the text "WTFPL"
       # Clean up the asset distribution that was created through the UI.
       Then I delete the "Source tarball" asset distribution

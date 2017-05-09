@@ -44,14 +44,14 @@ class SettingsForm extends ConfigFormBase {
       }
     }
 
-    $form['export_types'] = array(
+    $form['export_types'] = [
       '#type' => 'select',
       '#title' => t('Export types'),
       '#options' => $list,
       '#multiple' => TRUE,
       '#default_value' => empty($export_types) ? [] : $export_types,
       '#description' => t('Select the export types for rdf entities.'),
-    );
+    ];
 
     return parent::buildForm($form, $form_state);
   }

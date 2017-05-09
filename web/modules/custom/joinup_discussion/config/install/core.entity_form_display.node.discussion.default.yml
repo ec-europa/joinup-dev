@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.discussion.body
     - field.field.node.discussion.field_comments
     - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_state
     - field.field.node.discussion.og_audience
     - node.type.discussion
@@ -29,12 +30,21 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 5
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     region: content
-  field_comments:
+  current_workflow_state:
+    type: current_workflow_state_widget
     weight: 9
+    region: content
+    settings:
+      title: 'Current workflow state'
+      title_display: before
+      show_for_new_entities: false
+    third_party_settings: {  }
+  field_comments:
+    weight: 8
     settings: {  }
     third_party_settings: {  }
     type: comment_default
@@ -54,7 +64,7 @@ content:
     region: content
   path:
     type: path
-    weight: 8
+    weight: 7
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -62,14 +72,14 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 6
+    weight: 5
     third_party_settings: {  }
     region: content
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 7
+    weight: 6
     third_party_settings: {  }
     region: content
   title:
@@ -82,7 +92,7 @@ content:
     region: content
   uid:
     type: entity_reference_autocomplete
-    weight: 4
+    weight: 3
     settings:
       match_operator: CONTAINS
       size: 60
@@ -90,5 +100,5 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
-  current_workflow_state: true
+  field_shared_in: true
   og_audience: true

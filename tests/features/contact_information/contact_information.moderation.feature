@@ -6,7 +6,7 @@ Feature: Contact Information moderation
 
   Scenario: Publish, update, request changes, publish again and ask to delete contact information.
     Given users:
-      | name            |
+      | Username        |
       | Sæwine Cynebald |
     And owner:
       | type                          | name               |
@@ -73,7 +73,7 @@ Feature: Contact Information moderation
     And I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Contact information Ceolwulf II of Mercia"
     And the following 1 button should be present "Update"
-    And the current workflow state should be "In assessment"
+    And the current workflow state should be "Needs update"
     And I should not see the link "Delete"
     # Do the changes.
     When I fill in "Name" with "Æthelred, Lord of the Mercians"
@@ -85,7 +85,7 @@ Feature: Contact Information moderation
     And I go to the "Æthelred, Lord of the Mercians" contact information page
     And I click "Edit" in the "Entity actions" region
     And the following 2 buttons should be present "Update, Approve changes"
-    And the current workflow state should be "In assessment"
+    And the current workflow state should be "Needs update"
     And I press "Approve changes"
     Then I should see the heading "Æthelred, Lord of the Mercians"
 

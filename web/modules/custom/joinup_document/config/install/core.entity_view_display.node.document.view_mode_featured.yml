@@ -19,6 +19,7 @@ dependencies:
   module:
     - ds
     - file_url
+    - link
     - text
     - user
 id: node.document.view_mode_featured
@@ -46,8 +47,18 @@ content:
     weight: 2
     region: content
     label: hidden
-    settings: {  }
-    third_party_settings: {  }
+    settings:
+      mode: plain
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_short_title:
     weight: 0
     label: hidden
@@ -74,3 +85,5 @@ hidden:
   field_type: true
   links: true
   og_audience: true
+  report: true
+  share_link: true

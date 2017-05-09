@@ -1,0 +1,83 @@
+{{> partials/head }}
+  
+  <div class="mdl-layout mdl-js-layout">
+    
+    {{> partials/header }}
+
+    <!-- Section featured start -->
+    <div class="section section--featured">
+
+      {{> partials/featured--solutions }}
+
+    </div>
+    <!-- Section featured end -->
+    <!-- Section content start -->
+    <div class="section section--content">
+      <div class="main-container mdl-grid">  
+        <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
+            
+          {{> partials/sidebar-menu--solutions }}
+
+        </div>
+        <div class="section section--main mdl-cell mdl-cell--8-col">
+          <div class="page__title">
+            <h1>What do you think of Joinup?</h1>
+            <div class="details">
+              <div class="details__element">
+                <img class="details__avatar avatar avatar--25" src="../images/demo/user_1.png">
+                <a href="#" class="value gray">Author name</a>
+              </div>
+              <div class="details__element">
+                <div class="value gray">25 days ago</div>
+              </div>
+            </div>
+          </div>
+          <div class="page__content">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur a finibus magna. Aliquam vel eros sollicitudin, fermentum purus at, finibus mauris. Quisque id volutpat neque, a sodales urna. Sed et venenatis nulla. Suspendisse pharetra risus id porta hendrerit. Aliquam et posuere augue, et elementum nulla. Cras molestie vitae magna a luctus. Nulla pharetra felis tortor, ut blandit dolor lacinia tempus. Sed vel ligula turpis. Aliquam ornare cursus erat vitae vestibulum.</p>
+            <p>Morbi congue urna nulla, sed euismod quam rutrum non. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In lobortis egestas turpis, dignissim dapibus turpis. Etiam rutrum ipsum a magna convallis, in aliquet neque condimentum. Fusce pharetra lectus lorem, sit amet placerat dolor molestie nec. Morbi faucibus orci a justo molestie aliquam et et quam. Donec nulla nunc, tempor ut tempor ac, placerat sit amet sem.</p>
+            <p>Suspendisse in erat ac neque cursus semper sed elementum leo. Duis dignissim blandit nisl ac luctus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla imperdiet arcu et interdum facilisis. Sed in quam vitae ex molestie tincidunt. In pretium eros lobortis, posuere est ac, eleifend tortor. Morbi interdum sollicitudin tempus. Cras nibh quam, gravida vitae mattis sit amet, interdum vel tellus. Quisque pulvinar, augue quis iaculis venenatis, nunc nunc ornare arcu, vel lobortis nisl enim quis ligula.</p>
+            <div class="action-link__wrapper right">
+              <a href="/" class="action-link">
+                <span class="action-link__icon icon icon--share"></span>
+                <span class="action-link__link">Share</a>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Section content end -->
+    <div class="section section--post-content">
+      <div class="main-container mdl-grid">
+        <div class="listing listing--grid mdl-cell--8-col mdl-cell--2-offset-desktop">
+          <div class="row">
+            <div class="mdl-grid">
+              <form class="comment-form comment-form--disabled center mdl-cell mdl-cell--12-col">
+                <div class="comment">Comments are disabled for this discussion.</div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="listing listing--grid listing--separated mdl-cell--8-col mdl-cell--2-offset-desktop">
+          <div class="row">
+            <div class="mdl-grid">
+              <div class="listing__header mdl-cell mdl-cell--12-col">
+                <h3 class="listing__block-title">Shared in</h3>
+              </div>
+
+              {{> partials/listing-item--default }}
+              {{> partials/listing-item--default }}
+              {{> partials/listing-item--default }}
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Section post-content end -->
+
+    {{> partials/footer }}
+    
+  </div>
+
+{{> partials/scripts }}

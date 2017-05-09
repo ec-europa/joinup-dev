@@ -18,7 +18,7 @@ Feature: June 2016 demo
       | Fantastic four | Based on Reed Richard's tower.       | logo.png | yes        |                                                                              | validated |
 
     And users:
-      | name      | pass                 | mail                    | roles     |
+      | Username  | Password             | E-mail                  | Roles     |
       | Stan lee  | cameoineverymovie    | stan.lee@example.com    | moderator |
       | Nick Fury | ihaveasecret         | nick.fury@example.com   |           |
       | Wolverine | smellslikemetalclaws | logan.x.men@example.com |           |
@@ -29,43 +29,26 @@ Feature: June 2016 demo
       | Avengers     | Wolverine | member                     |
 
     And news content:
-      | title                       | headline                                  | body                                                                                                                                | status    |
-      | Phil Coulson is down        | Phil Coulson fell by the hands of Loki.   | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                | published |
-      | Phoenix is down             | Wolverine took down Jean Gray.            | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. | published |
-      | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.     | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                | published |
-      | Captain America not dead?   | Captain America found in the ice.         | Captain America's body was found intact and preserved in ice.                                                                       | published |
-      | Hellicarrier under attack   | The Hellicarrier was attacked by Loki.    | Loki and his servants have attacked us. Hawkeye took out one engine.                                                                | published |
-      | Captain America & Avengers  | Captain America to lead the avengers?     | It is S.H.I.E.L.D.'s opinion that someone like Captain America can be a good leader for avengers.                                   | published |
-      | Project Tahiti case 1       | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process.                                                                              | published |
-      | Who is Winter soldier?      | Captain America's child friend is alive?  | As it turns out the Hydra's agent-Winter soldier-is no other than Bucky-Captain's America childhood friend.                         | published |
-    And the following "news" content belong to the corresponding collections:
-      | content                     | collection   |
-      | Phil Coulson is down        | S.H.I.E.L.D. |
-      | Phoenix is down             | x-Men        |
-      | S.H.I.E.L.D. is infiltrated | S.H.I.E.L.D. |
-    And the following "news" content belong to the corresponding solutions:
-      | content                    | solution                  |
-      | Captain America not dead?  | Project 'Captain America' |
-      | Hellicarrier under attack  | Hellicarrier              |
-      | Captain America & Avengers | Avengers initiative       |
-      | Project Tahiti case 1      | Project Tahiti            |
-      | Who is Winter soldier?     | Project 'Captain America' |
+      | title                       | headline                                  | body                                                                                                                                | state     | collection   | solution                  |
+      | Phil Coulson is down        | Phil Coulson fell by the hands of Loki.   | Phil Coulson tried to stop Loki from escaping and was killed by him.                                                                | validated | S.H.I.E.L.D. |                           |
+      | Phoenix is down             | Wolverine took down Jean Gray.            | In an epic battle, Wolverine had to give the final blow to his great love, Jean Gray as she lost control to the Phoenix inside her. | validated | x-Men        |                           |
+      | S.H.I.E.L.D. is infiltrated | Winter soldier was spotted in action.     | As S.H.I.E.L.D. Hellicarrier is being taken down by the Winter soldier, we are also trying to spot the Hydra agents.                | validated | S.H.I.E.L.D. |                           |
+      | Captain America not dead?   | Captain America found in the ice.         | Captain America's body was found intact and preserved in ice.                                                                       | validated |              | Project 'Captain America' |
+      | Hellicarrier under attack   | The Hellicarrier was attacked by Loki.    | Loki and his servants have attacked us. Hawkeye took out one engine.                                                                | validated |              | Hellicarrier              |
+      | Captain America & Avengers  | Captain America to lead the avengers?     | It is S.H.I.E.L.D.'s opinion that someone like Captain America can be a good leader for avengers.                                   | validated |              | Avengers initiative       |
+      | Project Tahiti case 1       | Top secret: We are bringing Coulson back. | His memories must be wiped out throughout the process.                                                                              | validated |              | Project Tahiti            |
+      | Who is Winter soldier?      | Captain America's child friend is alive?  | As it turns out the Hydra's agent-Winter soldier-is no other than Bucky-Captain's America childhood friend.                         | validated |              | Project 'Captain America' |
 
     And custom_page content:
-      | title              | body                                                                                                                              |
-      | S.H.I.E.L.D. Home  | Welcome to S.H.I.E.L.D. webspace. <br />You can find anything about S.H.I.E.L.D. here.                                            |
-      | About S.H.I.E.L.D. | S.H.I.E.L.D. stands for Strategic Homeland Intervention Enforcement and Logistics Division. That's all you need to know about it. |
-      | List of members    | Here is a list of members known to the public: <br><ul><li>Nick Fury</li></ul>                                                    |
-    And the following "custom_page" content belong to the corresponding collections:
-      | content            | collection   |
-      | S.H.I.E.L.D. Home  | S.H.I.E.L.D. |
-      | About S.H.I.E.L.D. | S.H.I.E.L.D. |
-      | List of members    | S.H.I.E.L.D. |
-    And the following "custom_page" content menu items for the corresponding collections:
-      | collection   | label              | page               | weight |
-      | S.H.I.E.L.D. | S.H.I.E.L.D. Home  | S.H.I.E.L.D. Home  | 1      |
-      | S.H.I.E.L.D. | About S.H.I.E.L.D. | About S.H.I.E.L.D. | 2      |
-      | S.H.I.E.L.D. | List of members    | List of members    | 3      |
+      | title              | body                                                                                                                              | collection   |
+      | S.H.I.E.L.D. Home  | Welcome to S.H.I.E.L.D. webspace. <br />You can find anything about S.H.I.E.L.D. here.                                            | S.H.I.E.L.D. |
+      | About S.H.I.E.L.D. | S.H.I.E.L.D. stands for Strategic Homeland Intervention Enforcement and Logistics Division. That's all you need to know about it. | S.H.I.E.L.D. |
+      | List of members    | Here is a list of members known to the public: <br><ul><li>Nick Fury</li></ul>                                                    | S.H.I.E.L.D. |
+    And the following custom page menu structure:
+      | title              | weight |
+      | S.H.I.E.L.D. Home  | 1      |
+      | About S.H.I.E.L.D. | 2      |
+      | List of members    | 3      |
 
     # Scenario A. A collection owner manages his own collection.
     And I am on the homepage
@@ -106,6 +89,8 @@ Feature: June 2016 demo
     # See menu items.
     Then I should see the following collection menu items in the specified order:
       | text               |
+      | Overview           |
+      | About              |
       | S.H.I.E.L.D. Home  |
       | About S.H.I.E.L.D. |
       | List of members    |
@@ -130,6 +115,8 @@ Feature: June 2016 demo
     And I should see the text "You want to become a S.H.I.E.L.D. agent?"
     And  I should see the following collection menu items in the specified order:
       | text               |
+      | Overview           |
+      | About              |
     # @todo: When ISAICP-2369 is in, this menu item should be moved to the end of the list.
       | How to apply       |
       | S.H.I.E.L.D. Home  |
@@ -203,6 +190,8 @@ Feature: June 2016 demo
     # See menu items.
     Then I should see the following collection menu items in the specified order:
       | text               |
+      | Overview           |
+      | About              |
     # @todo: When ISAICP-2369 is in, this menu item should be moved to the end of the list.
       | How to apply       |
       | S.H.I.E.L.D. Home  |

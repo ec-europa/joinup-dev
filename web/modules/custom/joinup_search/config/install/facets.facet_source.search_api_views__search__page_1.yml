@@ -5,3 +5,4 @@ id: search_api_views__search__page_1
 name: 'search_api_views:search:page_1'
 filter_key: null
 url_processor: query_string
+breadcrumb: {  }

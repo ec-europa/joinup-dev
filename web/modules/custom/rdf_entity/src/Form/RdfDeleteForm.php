@@ -17,10 +17,12 @@ class RdfDeleteForm extends ContentEntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Are you sure you want to delete entity %name from the graph %graph?', array(
-      '%name' => $this->entity->label(),
-      '%graph' => $this->entity->graph->value,
-    ));
+    $label = $this->entity->label();
+    $graph = $this->entity->get('graph')->first()->getValue()['value'];
+    return $this->t('Are you sure you want to delete entity %name from the graph %graph?', [
+      '%name' => $label,
+      '%graph' => $graph,
+    ]);
   }
 
   /**
@@ -29,7 +31,7 @@ class RdfDeleteForm extends ContentEntityConfirmFormBase {
    * If the delete command is canceled, return to the Rdf list.
    */
   public function getCancelUrl() {
-    return new Url('entity.rdf_entity.collection');
+    return $this->getEntity()->toUrl();
   }
 
   /**
@@ -49,11 +51,11 @@ class RdfDeleteForm extends ContentEntityConfirmFormBase {
     $entity->delete();
 
     \Drupal::logger('rdf_entity')->notice('@type: deleted %title.',
-      array(
+      [
         '@type' => $this->entity->bundle(),
         '%title' => $this->entity->label(),
-      ));
-    $form_state->setRedirect('entity.rdf_entity.collection');
+      ]);
+    $form_state->setRedirectUrl(Url::fromRoute('<front>'));
   }
 
 }

@@ -23,14 +23,15 @@ config_devel:
   - field.field.node.news.body
   - field.field.node.news.field_keywords
   - field.field.node.news.field_news_headline
-  - field.field.node.news.field_news_shared_in
+  - field.field.node.news.field_news_referenced_solution
   - field.field.node.news.field_news_source_url
   - field.field.node.news.field_news_spatial_coverage
   - field.field.node.news.field_policy_domain
+  - field.field.node.news.field_shared_in
   - field.field.node.news.field_state
   - field.field.node.news.og_audience
   - field.storage.node.field_news_headline
-  - field.storage.node.field_news_shared_in
+  - field.storage.node.field_news_referenced_solution
   - field.storage.node.field_news_source_url
   - field.storage.node.field_news_spatial_coverage
   - node.type.news

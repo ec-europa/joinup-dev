@@ -5,9 +5,14 @@
  * Main functions and hook implementations of the Joinup user module.
  */
 
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Component\Render\PlainTextOutput;
+use Drupal\og\Og;
+use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\UserInterface;
 
 /**
@@ -54,10 +59,10 @@ function joinup_user_mail($key, &$message, $params) {
   $token_service = \Drupal::token();
   $language_manager = \Drupal::languageManager();
   $langcode = $message['langcode'];
-  $variables = array(
+  $variables = [
     'user' => $params['account'],
     'original' => $params['original'],
-  );
+  ];
 
   $language = \Drupal::languageManager()
     ->getLanguage($params['account']->getPreferredLangcode());
@@ -161,25 +166,25 @@ function joinup_user_form_user_admin_settings_alter(&$form, FormStateInterface $
   $form['#submit'][] = 'joinup_user_form_user_admin_settings_alter_submit';
   $mail_config = \Drupal::config('joinup_user.mail');
   $email_token_help = t('Available variables are: [site:name], [site:url], [user:display-name], [user:account-name], [user:mail], [site:login-url], [site:url-brief], [user:edit-url], [user:one-time-login-url], [user:cancel-url], [user:changes].');
-  $form['email_admin_update'] = array(
+  $form['email_admin_update'] = [
     '#type' => 'details',
     '#title' => t('Account changed by administrator'),
     '#description' => t('Edit the email messages sent to member accounts edited by an administrator.'),
     '#group' => 'email',
-  );
+  ];
   $form['email_admin_update']['#description'] .= ' ' . $email_token_help;
-  $form['email_admin_update']['user_mail_update_account_subject'] = array(
+  $form['email_admin_update']['user_mail_update_account_subject'] = [
     '#type' => 'textfield',
     '#title' => t('Subject'),
     '#default_value' => $mail_config->get('email_admin_update.subject'),
     '#maxlength' => 180,
-  );
-  $form['email_admin_update']['user_mail_update_account_body'] = array(
+  ];
+  $form['email_admin_update']['user_mail_update_account_body'] = [
     '#type' => 'textarea',
     '#title' => t('Body'),
     '#default_value' => $mail_config->get('email_admin_update.body'),
     '#rows' => 15,
-  );
+  ];
 }
 
 /**
@@ -209,4 +214,82 @@ function joinup_user_form_alter_validate(&$form, FormStateInterface $form_state)
     $active_form = \Drupal::getContainer()->get('joinup_user.active_form_submit');
     $active_form->setFormId($build_info['form_id']);
   }
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ *
+ * Alters the Search API query for the user content:
+ * - show only the content the user is author of;
+ * - do not show entities of some bundles.
+ */
+function joinup_user_search_api_query_search_api_field_field_user_content_alter(QueryInterface &$query) {
+  /** @var \Drupal\user\Entity\User $user */
+  $user = $query->getOption('search_api_field entity');
+
+  // Do not show contact information and owner entities as they are not
+  // relevant for the user content, and they are visualised in the related
+  // entity "about" page.
+  $query->addCondition('entity_bundle', ['contact_information', 'owner'], 'NOT IN');
+
+  $groups = [];
+  foreach (Og::getMemberships($user) as $membership) {
+    $groups[] = $membership->getGroupId();
+  }
+
+  if ($groups) {
+    if (count($groups) > 100) {
+      $subset = array_chunk($groups, 100);
+      $groups = reset($subset);
+      drupal_set_message(t('You are a member of high number of collections and/or solutions.<br /> The results displayed here are limited to the content of the first 100 groups.'), 'warning');
+    }
+    $or = $query->createConditionGroup('OR');
+
+    // Show all the content the user is author of.
+    $or->addCondition('id', $groups, 'IN');
+    // Or all the groups he belongs to.
+    $or->addCondition('entity_author', $user->id());
+    $query->addConditionGroup($or);
+  }
+  else {
+    // Show only content the user is author of.
+    $query->addCondition('entity_author', $user->id());
+  }
+}
+
+/**
+ * User canonical route title callback.
+ *
+ * @param \Drupal\user\UserInterface|null $user
+ *   The user account.
+ *
+ * @return string|array
+ *   The user full name as a render array or an empty string if $user is
+ *   NULL.
+ *
+ * @see \Drupal\user\Controller\UserController::userTitle()
+ */
+function joinup_user_canonical_title(UserInterface $user = NULL) {
+  return $user ? ['#markup' => $user->get('full_name')->value, '#allowed_tags' => Xss::getHtmlTagList()] : '';
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ *
+ * Adds a computed field to easily retrieve the full name of a user.
+ */
+function joinup_user_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
+  if ($entity_type->id() === 'user') {
+    $fields['full_name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Full name'))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('display', FALSE)
+      ->setComputed(TRUE)
+      ->setCardinality(1)
+      ->setClass('\Drupal\joinup_user\UserFullNameFieldItemList');
+  }
+
+  return $fields;
 }

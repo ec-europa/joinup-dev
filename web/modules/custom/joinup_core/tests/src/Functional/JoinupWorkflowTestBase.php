@@ -5,17 +5,14 @@ namespace Drupal\Tests\joinup_core\Functional;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
-use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
+use Drupal\Tests\rdf_entity\Functional\RdfWebTestBase;
 
 /**
  * Base setup for a Joinup workflow test.
  *
  * @group rdf_entity
  */
-abstract class JoinupWorkflowTestBase extends BrowserTestBase {
-
-  use RdfDatabaseConnectionTrait;
+abstract class JoinupWorkflowTestBase extends RdfWebTestBase {
 
   /**
    * {@inheritdoc}
@@ -44,30 +41,21 @@ abstract class JoinupWorkflowTestBase extends BrowserTestBase {
   protected $entityAccess;
 
   /**
-   * The user provider service for the workflow guards.
+   * The workflow helper service.
    *
-   * @var \Drupal\joinup_core\WorkflowUserProvider
+   * @var \Drupal\joinup_core\WorkflowHelper
    */
-  protected $userProvider;
+  protected $workflowHelper;
 
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
-    // The SPARQL connection has to be set up before.
-    if (!$this->setUpSparql()) {
-      $this->markTestSkipped('No Sparql connection available.');
-    }
-    // Test is not compatible with Virtuoso 6.
-    if ($this->detectVirtuoso6()) {
-      $this->markTestSkipped('Skipping: Not running on Virtuoso 6.');
-    }
-
+  protected function setUp() {
     parent::setUp();
     $this->ogMembershipManager = \Drupal::service('og.membership_manager');
     $this->ogAccess = $this->container->get('og.access');
     $this->entityAccess = $this->container->get('entity_type.manager')->getAccessControlHandler($this->getEntityType());
-    $this->userProvider = $this->container->get('joinup_core.workflow.user_provider');
+    $this->workflowHelper = $this->container->get('joinup_core.workflow.helper');
   }
 
   /**
@@ -121,29 +109,5 @@ abstract class JoinupWorkflowTestBase extends BrowserTestBase {
    *   The entity bundle machine name.
    */
   abstract protected function getEntityBundle();
-
-  /**
-   * {@inheritdoc}
-   */
-  public function tearDown() {
-    // Delete all data produced by testing module.
-    foreach (['published', 'draft'] as $graph) {
-      $query = <<<EndOfQuery
-DELETE {
-  GRAPH <http://example.com/dummy/$graph> {
-    ?entity ?field ?value
-  }
-}
-WHERE {
-  GRAPH <http://example.com/dummy/$graph> {
-    ?entity ?field ?value
-  }
-}
-EndOfQuery;
-      $this->sparql->query($query);
-    }
-
-    parent::tearDown();
-  }
 
 }

@@ -5,50 +5,60 @@ id: collection_policy_domain
 name: 'Policy Domain'
 url_alias: collection_policy_domain
 weight: 0
-show_only_one_result: false
-field_identifier: tid
-query_type_name: null
+min_count: 1
+show_only_one_result: true
+field_identifier: policy_domain
 facet_source_id: 'search_api_field:rdf_entity.field_collection_content'
 widget:
-  type: links
+  type: links_inline
   config:
     show_numbers: true
-    soft_limit: 0
+    all_text: 'all policy domains'
+    prefix_text: 'About:'
+    suffix_text: ''
 query_operator: or
+use_hierarchy: false
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+hard_limit: 0
 exclude: false
 only_visible_when_facet_source_is_visible: true
 processor_configs:
   active_widget_order:
     processor_id: active_widget_order
     weights:
-      sort: -10
+      sort: -2
     settings:
       sort: DESC
+  aggregated_entity_reference_label:
+    processor_id: aggregated_entity_reference_label
+    weights:
+      build: 0
+    settings: {  }
   count_limit:
     processor_id: count_limit
     weights:
-      build: -10
+      build: -2
     settings:
       minimum_items: 1
       maximum_items: null
   count_widget_order:
     processor_id: count_widget_order
     weights:
-      sort: -10
+      sort: -1
     settings:
       sort: DESC
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
-      sort: -10
+      sort: 0
     settings:
       sort: ASC
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
       pre_query: -10
-      build: -10
+      build: -1
     settings: {  }
 empty_behavior:
   behavior: none
-facet_configs: {  }

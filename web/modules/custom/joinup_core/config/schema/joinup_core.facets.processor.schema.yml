@@ -3,3 +3,9 @@ plugin.plugin_configuration.facets_processor.aggregated_entity_bundle_label:
   label: 'Aggregated entity label'
   sequence:
     type: string
+
+plugin.plugin_configuration.facets_processor.aggregated_entity_reference_label:
+  type: sequence
+  label: 'Aggregated entity label'
+  sequence:
+    type: string

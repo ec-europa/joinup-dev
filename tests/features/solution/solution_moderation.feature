@@ -37,7 +37,7 @@ Feature: Solution moderation
       | name  | Placide             |
       | email | Placide@example.com |
     And users:
-      | name             | roles     |
+      | Username         | Roles     |
       # Authenticated user.
       | Isabel Banks     |           |
       # Moderator.

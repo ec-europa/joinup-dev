@@ -11,11 +11,11 @@ use Drupal\Core\Render\Element;
  * Implements hook_theme().
  */
 function file_url_theme() {
-  return array(
+  return [
     'file_url_widget_multiple' => [
       'render element' => 'element',
     ],
-  );
+  ];
 }
 
 /**
@@ -65,7 +65,7 @@ function template_preprocess_file_url_widget_multiple(array &$variables) {
 
     // Delay rendering of the buttons, so that they can be rendered later in the
     // "operations" column.
-    $operations_elements = array();
+    $operations_elements = [];
     foreach (Element::children($widget) as $sub_key) {
       if (isset($widget[$sub_key]['#type']) && $widget[$sub_key]['#type'] == 'submit') {
         hide($widget[$sub_key]);
@@ -81,7 +81,7 @@ function template_preprocess_file_url_widget_multiple(array &$variables) {
     hide($widget['_weight']);
 
     // Render everything else together in a column, without the normal wrappers.
-    $widget['#theme_wrappers'] = array();
+    $widget['#theme_wrappers'] = [];
     $information = drupal_render($widget);
     $display = '';
     if ($element['#display_field']) {

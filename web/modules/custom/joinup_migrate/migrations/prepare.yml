@@ -15,6 +15,7 @@ process:
   elibrary: elibrary
   publisher: publisher
   contact: contact
+  collection_owner: collection_owner
   # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068.
   # status: status
   roles: roles
@@ -23,6 +24,7 @@ destination:
   fast_rollback: true
   fast_rollback_batch_size: 0
 migration_dependencies:
- required:
-   - user
-   - mapping
+  required:
+    - user
+    - mapping
+    - policy_domain

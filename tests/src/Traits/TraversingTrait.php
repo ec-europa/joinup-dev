@@ -84,6 +84,9 @@ trait TraversingTrait {
    * @param string $region
    *   The region label as defined in the behat.yml.
    *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The region element.
+   *
    * @throws \Exception
    *    Thrown when the region is not found.
    */
@@ -115,6 +118,57 @@ trait TraversingTrait {
       $regionObj = $this->getRegion($region);
     }
     return $regionObj->findAll('css', '.listing__item--tile .listing__title');
+  }
+
+  /**
+   * Finds a facet by alias.
+   *
+   * @param string $alias
+   *   The facet alias.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The facet node element.
+   *
+   * @throws \Exception
+   *   Thrown when the facet is not found in the page.
+   */
+  protected function findFacetByAlias($alias) {
+    $facet_id = self::getFacetIdFromAlias($alias);
+    $element = $this->getSession()->getPage()->find('xpath', "//*[@data-drupal-facet-id='{$facet_id}']");
+
+    if (!$element) {
+      throw new \Exception("The facet '$alias' was not found in the page.");
+    }
+
+    return $element;
+  }
+
+  /**
+   * Maps an alias to an actual facet id.
+   *
+   * The facet id is used as "drupal-data-facet-id" property.
+   *
+   * @param string $alias
+   *   The facet alias.
+   *
+   * @return string
+   *   The facet id.
+   *
+   * @throws \Exception
+   *   Thrown when the mapping is not found.
+   */
+  protected static function getFacetIdFromAlias($alias) {
+    $mappings = [
+      'collection policy domain' => 'collection_policy_domain',
+      'solution policy domain' => 'solution_policy_domain',
+      'solution spatial coverage' => 'solution_spatial_coverage',
+    ];
+
+    if (!isset($mappings[$alias])) {
+      throw new \Exception("No facet id mapping found for '$alias'.");
+    }
+
+    return $mappings[$alias];
   }
 
 }

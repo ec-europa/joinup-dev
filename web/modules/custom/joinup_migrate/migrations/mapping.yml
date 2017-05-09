@@ -7,10 +7,9 @@ source:
   cache_counts: true
   track_changes: true
   worksheet: '1. Content items'
-  origin: A3
-  header_row: 2
+  origin: A2
+  header_row: 1
   columns:
-    - 'Type of content item'
     - Collection_Name
     - 'Policy domain 1'
     - 'Policy domain 2'
@@ -20,67 +19,17 @@ source:
     - Logo
     - Banner
     - Owner
+    - 'Collection Owner'
     - 'Elibrary Creation'
-    - 'Collection Status'
+    - 'Collection status'
     - 'Content item status'
   row_index_column: row_index
   keys:
-    Nid:
+    nid:
       type: integer
 process:
-  nid: Nid
-  type:
-    plugin: static_map
-    source: 'Type of content item'
-    map:
-      'Advertisement': advertisement
-      'Analytical model': analytical_model
-      'asset node reference': asset_node_reference
-      'Binary poll': advpoll_binary
-      'Blog': blog
-      'CAMSS Assessment': isa_camss_assessment
-      'Case': case_epractice
-      'Checksum': checksum
-      'Community': community
-      'Contact point': contact_point
-      'Context Help': contexthelp
-      'ContextHelp FAQ': contexthelp_faq
-      'Custom Section': og_page
-      'Data Set': data_set
-      'Distribution': distribution
-      'Document': document
-      'Documentation': documentation
-      'Event': event
-      'Factsheet': factsheet
-      'Featured Catalogue': featured_catalogue
-      'Header Catalogue': catalogue_node
-      'Home Carousel': home_carousel
-      'Home Catalogue': home_catalogue
-      'Identifier': identifier
-      'Interoperability Solution': asset_release
-      'Issue': project_issue
-      'language textarea': language_textarea
-      'language textfield': language_textfield
-      'Legal Document': legaldocument
-      'Licence': licence
-      'News': news
-      'Newsletter': newsletter
-      'Page': page
-      'Presentation': presentation
-      'Profile': profile
-      'Project': project_project
-      'Project release': project_release
-      'Publisher': publisher
-      'Ranking poll': advpoll_ranking
-      'Repository': repository
-      'Software': project
-      'Software Identifier': software_identifier
-      'Software Project Agent': software_project_agent
-      'Software Release Agent': software_release_agent
-      'Story': story
-      'Topic': topic
-      'Video': video
-      'Wiki': wiki
+  nid: nid
+  type: type
   collection: Collection_Name
   policy: 'Policy domain 1'
   policy2: 'Policy domain 2'
@@ -96,8 +45,9 @@ process:
   logo: Logo
   banner: Banner
   owner: Owner
+  collection_owner: 'Collection Owner'
   elibrary: 'Elibrary Creation'
-  collection_status: 'Collection Status'
+  collection_status: 'Collection status'
   content_item_status: 'Content item status'
   row_index: row_index
 destination:
