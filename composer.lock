@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fc4b05710adc544a239886f3335b002",
+    "content-hash": "1a184805fdb651cb71bc2915940a5b9f",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1710,12 +1710,12 @@
             "version": "8.3.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/drupal-composer/drupal-core.git",
+                "url": "https://github.com/drupal/core.git",
                 "reference": "4c6a12eb9549d357cce88ad6a352187e456068c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/4c6a12eb9549d357cce88ad6a352187e456068c8",
+                "url": "https://api.github.com/repos/drupal/core/zipball/4c6a12eb9549d357cce88ad6a352187e456068c8",
                 "reference": "4c6a12eb9549d357cce88ad6a352187e456068c8",
                 "shasum": ""
             },
@@ -2482,14 +2482,6 @@
             ],
             "authors": [
                 {
-                    "name": "Eli-T",
-                    "homepage": "https://www.drupal.org/user/516878"
-                },
-                {
-                    "name": "benjy",
-                    "homepage": "https://www.drupal.org/user/1852732"
-                },
-                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -2752,7 +2744,8 @@
                     "datestamp": "1488167584"
                 },
                 "patches_applied": {
-                    "Provide a character type restriction plugin. @see https://www.drupal.org/node/2874853": "https://www.drupal.org/files/issues/types_negate_constraint_module.patch"
+                    "Provide a character type restriction plugin. @see https://www.drupal.org/node/2874853": "https://www.drupal.org/files/issues/types_negate_constraint_module.patch",
+                    "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2785,7 +2778,8 @@
             "homepage": "https://www.drupal.org/project/password_policy",
             "support": {
                 "source": "http://cgit.drupalcode.org/password_policy"
-            }
+            },
+            "time": "2017-02-27 15:47:09"
         },
         {
             "name": "drupal/persistent_login",
@@ -2926,6 +2920,58 @@
                 "source": "http://cgit.drupalcode.org/phingdrushtask"
             },
             "time": "2016-12-02 20:39:55"
+        },
+        {
+            "name": "drupal/piwik",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/piwik",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/piwik-8.x-1.1.zip",
+                "reference": null,
+                "shasum": "a2b5b77a92da5c7198b93bb264eac7ef4795089a"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "require-dev": {
+                "drupal/php": "*",
+                "drupal/token": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1470845524"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "hass",
+                    "homepage": "https://www.drupal.org/u/hass"
+                },
+                {
+                    "name": "See other contributors",
+                    "homepage": "https://www.drupal.org/node/247808/committers"
+                }
+            ],
+            "description": "Adds Piwik javascript tracking code to all your site's pages",
+            "homepage": "https://www.drupal.org/project/piwik",
+            "support": {
+                "source": "http://git.drupal.org/project/piwik.git",
+                "issues": "https://www.drupal.org/project/issues/piwik"
+            }
         },
         {
             "name": "drupal/r4032login",
@@ -4206,7 +4252,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-01-20 06:45:09"
+            "time": "2016-04-20 05:45:29"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",

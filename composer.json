@@ -44,7 +44,8 @@
         "php": ">=5.5.9",
         "solarium/solarium": "~3.7",
         "typhonius/behattask": "1.0",
-        "drupal/password_policy": "3.x-dev"
+        "drupal/password_policy": "3.x-dev",
+        "drupal/piwik": "^1.1"
     },
     "require-dev": {
         "behat/mink": "~1.7",

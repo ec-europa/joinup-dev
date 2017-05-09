@@ -1,0 +1,69 @@
+<?php
+
+/**
+ * @file
+ * Contains piwik_download_count.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\field\Entity\FieldConfig;
+
+/**
+ * Implements hook_help().
+ */
+function piwik_download_count_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the piwik_download_count module.
+    case 'help.page.piwik_download_count':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Fetches the download count of file fields from the Piwik analytics server.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function piwik_download_count_form_field_config_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\field_ui\Form\FieldConfigEditForm $field */
+  $field_form = $form_state->getFormObject();
+  $entity = $field_form->getEntity();
+  $type = $entity->getType();
+  if (!in_array($type, ['file', 'file_url'])) {
+    return;
+  }
+  $sync = $entity->getThirdPartySetting('piwik_download_count', 'sync');
+  $form['piwik_sync'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Piwik sync'),
+    '#default_value' => $sync,
+  ];
+  $form['#entity_builders'][] = 'piwik_download_count_form_alter_builder';
+}
+
+
+/**
+ * Entity builder callback: Save the setting.
+ */
+function piwik_download_count_form_alter_builder(string $entity_type, FieldConfig $entity, array &$form, FormStateInterface $form_state) {
+  $sync = $form_state->getValue('piwik_sync');
+  $entity->setThirdPartySetting('piwik_download_count', 'sync', $sync);
+}
+
+/**
+ * Implements hook_cron().
+ */
+function piwik_download_count_cron() {
+  \Drupal::getContainer()->get('');
+
+  $field_config = array_filter(FieldConfig::loadMultiple(), function (FieldConfig $field_config) {
+    return $field_config->getThirdPartySettings('piwik_download_count')['sync'];
+  });
+  $field_config;
+
+}

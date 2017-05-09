@@ -1,0 +1,14 @@
+{
+  "name": "drupal/piwik_download_count",
+  "type": "drupal-module",
+  "description": "Fetches the download count of file fields from the Piwik analytics server.",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/piwik_download_count",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/piwik_download_count",
+    "source": "http://cgit.drupalcode.org/piwik_download_count"
+  },
+  "require": { }
+}
