@@ -238,6 +238,11 @@ function joinup_user_search_api_query_search_api_field_field_user_content_alter(
   }
 
   if ($groups) {
+    if (count($groups) > 100) {
+      $subset = array_chunk($groups, 100);
+      $groups = reset($subset);
+      drupal_set_message(t('You are a member of high number of collections and/or solutions.<br /> The results displayed here are limited to the content of the first 100 groups.'), 'warning');
+    }
     $or = $query->createConditionGroup('OR');
 
     // Show all the content the user is author of.
