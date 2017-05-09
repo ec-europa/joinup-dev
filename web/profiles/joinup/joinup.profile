@@ -201,12 +201,18 @@ function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form
 /**
  * Implements hook_form_FORM_ID_alter().
  *
- * Disable access to the revision information vertical tab.
- * This prevents access to the revision log and the revision checkbox too.
+ * - Disable access to the revision information vertical tab.
+ *   This prevents access to the revision log and the revision checkbox too.
+ * - Disable access to the comment settings. These are managed on collection
+ *   level.
  */
 function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['revision_information']['#access'] = FALSE;
   $form['revision']['#access'] = FALSE;
+
+  if (!empty($form['field_comments'])) {
+    $form['field_comments']['#access'] = FALSE;
+  }
 }
 
 /**
