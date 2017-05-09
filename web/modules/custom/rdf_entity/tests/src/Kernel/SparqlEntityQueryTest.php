@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\KernelTests\Core\Entity;
+namespace Drupal\rdf_entity\Tests;
 
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
