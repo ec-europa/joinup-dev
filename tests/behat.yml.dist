@@ -22,7 +22,8 @@ default:
       api_driver: 'drupal'
       blackbox: ~
       region_map:
-        Comment: '.comment'
+        Comment: '.comments-section'
+        Content: '.section--content-middle'
         Entity actions: '.block-local-tasks-block'
         Footer: '.section--footer'
         Header: '.section--featured'
