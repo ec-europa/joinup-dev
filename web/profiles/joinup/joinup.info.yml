@@ -43,6 +43,11 @@ dependencies:
   - options
   - owner
   - page_cache
+  - password_policy
+  - password_policy_character_types
+  - password_policy_characters
+  - password_policy_length
+  - password_policy_types_negate
   - path
   - persistent_login
   - r4032login
@@ -116,10 +121,12 @@ config_devel:
   - core.entity_view_display.user.user.compact
   - core.entity_view_display.user.user.default
   - core.entity_view_display.user.user.group_header
+  - core.entity_view_display.user.user.inline
   - core.entity_view_display.user.user.view_mode_featured
   - core.entity_view_display.user.user.view_mode_tile
   - core.entity_view_mode.node.full
   - core.entity_view_mode.user.full
+  - core.entity_view_mode.user.inline
   - core.entity_view_mode.user.view_mode_featured
   - core.entity_view_mode.user.view_mode_tile
   - ds.settings
@@ -134,8 +141,10 @@ config_devel:
   - filter.format.full_html
   - filter.format.restricted_html
   - image.style.profile_icon
-  - og.settings
+  - image.style.profile_icon_big
   - og_menu.ogmenu.navigation
+  - og.settings
+  - password_policy.password_policy.generic_policy
   - system.theme
   - user.flood
   - user.mail

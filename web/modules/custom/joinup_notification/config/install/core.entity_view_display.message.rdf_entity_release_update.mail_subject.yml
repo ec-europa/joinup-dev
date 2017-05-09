@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.rdf_entity_release_update
+id: message.rdf_entity_release_update.mail_subject
+targetEntityType: message
+bundle: rdf_entity_release_update
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+hidden:
+  partial_1: true

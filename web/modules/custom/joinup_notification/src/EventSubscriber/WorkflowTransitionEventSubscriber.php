@@ -97,6 +97,8 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     $keys = [
       'solution.validate.post_transition',
       'solution.request_deletion.post_transition',
+      'asset_release.validate.post_transition',
+      'asset_release.update_published.post_transition',
     ];
 
     foreach ($keys as $key) {

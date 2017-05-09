@@ -70,6 +70,16 @@ class GroupHeaderBlock extends BlockBase implements ContainerFactoryPluginInterf
     // like collection and solution, will add more elements directly.
     $build['group'] = $view_builder->view($group, 'group_header');
 
+    // Provide contextual links.
+    $build['#contextual_links'] = [
+      // Standard link to edit the group.
+      'rdf_entity' => [
+        'route_parameters' => [
+          'rdf_entity' => $group->id(),
+        ],
+      ],
+    ];
+
     return $build;
   }
 

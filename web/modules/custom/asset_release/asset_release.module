@@ -38,6 +38,8 @@ function asset_release_rdf_entity_insert(EntityInterface $entity) {
     $releases = $parent->get('field_is_has_version')->getValue();
     $releases[] = ['target_id' => $entity->id()];
     $parent->get('field_is_has_version')->setValue($releases);
+    // Avoid triggering notification e-mails during this programmatic update.
+    $parent->skip_notification = TRUE;
     $parent->save();
   }
 }
@@ -55,7 +57,11 @@ function asset_release_rdf_entity_update(EntityInterface $entity) {
   foreach ($has_version->referencedEntities() as $release) {
     if ($release->get('field_isr_owner')->getValue() !== $entity->get('field_is_owner')->getValue()) {
       // Release owners are in sync with solution owners.
-      $release->set('field_isr_owner', $entity->get('field_is_owner')->getValue())->save();
+      $release
+        ->set('field_isr_owner', $entity->get('field_is_owner')->getValue());
+      // Do not send emails for this change.
+      $release->skip_notification = TRUE;
+      $release->save();unset($release->skip_notification);
     }
   }
 }
@@ -140,7 +146,7 @@ function asset_release_rdf_entity_access(EntityInterface $entity, $operation, Ac
       break;
 
     case 'edit':
-      $allowed_transitions = $entity->field_isr_state->first()->getTransitions();
+      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
       return AccessResult::forbiddenIf(empty($allowed_transitions));
   }
 

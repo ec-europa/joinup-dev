@@ -8,10 +8,11 @@
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\asset_distribution\AssetDistributionRelations;
+use Drupal\file_url\FileUrlHandler;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\file_url\FileUrlHandler;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -156,6 +157,31 @@ function asset_distribution_rdf_entity_presave(RdfInterface $distribution) {
           $distribution->get('field_ad_format')->setValue($tid);
         }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function asset_distribution_rdf_entity_insert(EntityInterface $entity) {
+  asset_distribution_rdf_entity_update($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function asset_distribution_rdf_entity_update(EntityInterface $entity) {
+  if ($entity->bundle() === 'asset_distribution') {
+    // Solutions show the licence of their releases in the solution header.
+    // Clear the cache of the solution this release belongs to so any licence
+    // change is picked up.
+    $solution = AssetDistributionRelations::getDistributionSolution($entity);
+
+    if ($solution) {
+      /** @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator */
+      $cache_tags_invalidator = \Drupal::service('cache_tags.invalidator');
+      $cache_tags_invalidator->invalidateTags($solution->getCacheTagsToInvalidate());
     }
   }
 }
