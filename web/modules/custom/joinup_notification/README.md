@@ -70,3 +70,8 @@ method.
 If you set the information in a correct way, the notification should be sent
 either in the event subscriber, or in the joinup_notification_entity_delete
 hook.
+
+## Skip notification
+In order for an entity to not send notifications during a transition it needs
+to have the `skip_notification` property set to true. See
+`asset_release_rdf_entity_update` for an example.
