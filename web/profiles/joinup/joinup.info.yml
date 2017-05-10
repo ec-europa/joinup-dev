@@ -71,7 +71,6 @@ themes:
   - joinup_theme
 
 config_devel:
-  - block.block.addcontent
   - block.block.footer_menu
   - block.block.groupheader
   - block.block.userheader
