@@ -26,6 +26,7 @@ abstract class JoinupKernelTestBase extends RdfKernelTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
+    'datetime',
     'rdf_entity_test',
   ];
 
