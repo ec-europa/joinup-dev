@@ -66,97 +66,23 @@ class ContentModerationOverviewForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
-    $moderatable_types = CommunityContentHelper::getBundles();
-    $moderatable_states = CommunityContentHelper::getModeratorAttentionNeededStates();
-
-    // Retrieve the number of content items that need moderation.
-    $sql = <<<SQL
-      SELECT n.type, s.field_state_value as state, COUNT(1) as count
-      FROM node n
-      LEFT JOIN node__field_state s ON n.nid = s.entity_id
-      LEFT JOIN node__og_audience o ON n.nid = o.entity_id
-      WHERE n.type in (:types[])
-      AND s.field_state_value in (:states[])
-      AND o.og_audience_target_id = :group
-      GROUP BY s.field_state_value, n.type;
-SQL;
-
-    $args = [
-      ':types[]' => $moderatable_types,
-      ':states[]' => $moderatable_states,
-      ':group' => $rdf_entity->id(),
-    ];
-
-    $query = $this->connection->query($sql, $args);
-    $result = $query->fetchAll(\PDO::FETCH_ASSOC);
-
-    // Turn the count query result into a hierarchical array, keyed by bundle.
-    $count = array_reduce($result, function ($count, $row) {
-      $count[$row['type']][$row['state']] = $row['count'];
-      return $count;
-    }, []);
-    ksort($count);
+    $result = $this->getModerationItems($rdf_entity);
+    $count = $this->getModerationItemCount($result);
 
     // Generate the filter form elements.
     $type_filter = $form_state->getValue('type');
     $state_filter = $form_state->getValue('state');
-    $form = [
-      'wrapper' => [
-        '#type' => 'container',
-        '#attributes' => ['id' => 'ajax-wrapper'],
-        'filter' => [
-          '#type' => 'container',
-          '#attributes' => ['class' => 'filter'],
-          'type' => [
-            '#type' => 'select',
-            '#title' => 'Content of type',
-            '#options' => $this->getTypeFilterOptions($count),
-            '#ajax' => [
-              'callback' => '::updateForm',
-              'wrapper' => 'ajax-wrapper',
-              'effect' => 'fade',
-            ],
-          ],
-          'state' => [
-            '#type' => 'select',
-            '#title' => 'in state',
-            '#options' => $this->getStateFilterOptions($count, $type_filter),
-            '#ajax' => [
-              'callback' => '::updateForm',
-              'wrapper' => 'ajax-wrapper',
-              'effect' => 'fade',
-            ],
-          ],
-        ],
-      ],
-    ];
+    $form = $this->buildSelectForm($count, $type_filter);
 
     // Retrieve the entities that need moderation. Only execute this query when
     // there actually are results to fetch.
     if ($this->getFilteredItemsCount($count, $type_filter, $state_filter)) {
-      $query = $this->entityTypeManager->getStorage('node')->getQuery();
-      $query->condition('og_audience', $rdf_entity->id());
-      if ($type_filter && $type_filter !== 'all') {
-        $query->condition('type', $type_filter);
-      }
-      else {
-        $query->condition('type', $moderatable_types, 'IN');
-      }
-      if ($state_filter && $state_filter !== 'all') {
-        $query->condition('field_state', $state_filter);
-      }
-      else {
-        $query->condition('field_state', $moderatable_states, 'IN');
-      }
-      $entities = Node::loadMultiple($query->execute());
-      $form['wrapper']['content'][] = $this->entityTypeManager->getViewBuilder('node')->viewMultiple($entities, 'moderation');
+      $entities = $this->loadModeratedEntities($rdf_entity, $type_filter, $state_filter);
+      $form['wrapper']['content'][] = $this->entityTypeManager->getViewBuilder('node')
+        ->viewMultiple($entities, 'moderation');
     }
     else {
-      $form['wrapper']['content'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->t('Nothing to moderate. Enjoy your day!'),
-      ];
+      $form['wrapper']['content'] = $this->buildNoResultsForm();;
     }
 
     return $form;
@@ -305,6 +231,141 @@ SQL;
     }
 
     return $count;
+  }
+
+  /**
+   * Builds the filers on content type and state.
+   *
+   * @param array $count
+   *   An associative array keyed by content type, each value an associative
+   *   array keyed by moderation state, with the number of items as value.
+   * @param string $type_filter
+   *   The active content type filter.
+   *
+   * @return array
+   *   The form array with the content type and state filters.
+   */
+  protected function buildSelectForm(array $count, $type_filter) {
+    $form = [
+      'wrapper' => [
+        '#type' => 'container',
+        '#attributes' => ['id' => 'ajax-wrapper'],
+        'filter' => [
+          '#type' => 'container',
+          '#attributes' => ['class' => 'filter'],
+          'type' => [
+            '#type' => 'select',
+            '#title' => 'Content of type',
+            '#options' => $this->getTypeFilterOptions($count),
+            '#ajax' => [
+              'callback' => '::updateForm',
+              'wrapper' => 'ajax-wrapper',
+              'effect' => 'fade',
+            ],
+          ],
+          'state' => [
+            '#type' => 'select',
+            '#title' => 'in state',
+            '#options' => $this->getStateFilterOptions($count, $type_filter),
+            '#ajax' => [
+              'callback' => '::updateForm',
+              'wrapper' => 'ajax-wrapper',
+              'effect' => 'fade',
+            ],
+          ],
+        ],
+      ],
+    ];
+    return $form;
+  }
+
+  /**
+   * Build a  list of entities that need moderation.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The collection or solution that is being moderated.
+   */
+  protected function getModerationItems(RdfInterface $rdf_entity) {
+    // Retrieve the number of content items that need moderation.
+    $sql = <<<SQL
+      SELECT n.type, s.field_state_value as state, COUNT(1) as count
+      FROM node n
+      LEFT JOIN node__field_state s ON n.nid = s.entity_id
+      LEFT JOIN node__og_audience o ON n.nid = o.entity_id
+      WHERE n.type in (:types[])
+      AND s.field_state_value in (:states[])
+      AND o.og_audience_target_id = :group
+      GROUP BY s.field_state_value, n.type;
+SQL;
+    $args = [
+      ':types[]' => CommunityContentHelper::getBundles(),
+      ':states[]' => CommunityContentHelper::getModeratorAttentionNeededStates(),
+      ':group' => $rdf_entity->id(),
+    ];
+
+    $query = $this->connection->query($sql, $args);
+    return $query->fetchAll(\PDO::FETCH_ASSOC);
+  }
+
+  /**
+   * Build the item count by content type and state.
+   *
+   * Builds an associative array keyed by content type,
+   * each value an associative array keyed by moderation state,
+   * with the number of items as value.
+   */
+  protected function getModerationItemCount($result) {
+    // Turn the count query result into a hierarchical array, keyed by bundle.
+    $count = array_reduce($result, function ($count, $row) {
+      $count[$row['type']][$row['state']] = $row['count'];
+      return $count;
+    }, []);
+    ksort($count);
+    return $count;
+  }
+
+  /**
+   * Loads the nodes that need moderation.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The collection or solution that is being moderated.
+   * @param string $type_filter
+   *   The active content type filter.
+   * @param string $state_filter
+   *   The active state filter.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]|static[]
+   *   A list of loaded nodes.
+   */
+  protected function loadModeratedEntities(RdfInterface $rdf_entity, $type_filter, $state_filter) {
+    $moderatable_types = CommunityContentHelper::getBundles();
+    $moderatable_states = CommunityContentHelper::getModeratorAttentionNeededStates();
+    $query = $this->entityTypeManager->getStorage('node')->getQuery();
+    $query->condition('og_audience', $rdf_entity->id());
+    if ($type_filter && $type_filter !== 'all') {
+      $query->condition('type', $type_filter);
+    }
+    else {
+      $query->condition('type', $moderatable_types, 'IN');
+    }
+    if ($state_filter && $state_filter !== 'all') {
+      $query->condition('field_state', $state_filter);
+    }
+    else {
+      $query->condition('field_state', $moderatable_states, 'IN');
+    }
+    return Node::loadMultiple($query->execute());
+  }
+
+  /**
+   * Builds the content of the form when no entities need moderation.
+   */
+  protected function buildNoResultsForm() {
+    return [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $this->t('Nothing to moderate. Enjoy your day!'),
+    ];
   }
 
 }
