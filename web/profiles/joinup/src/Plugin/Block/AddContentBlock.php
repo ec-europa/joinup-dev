@@ -284,10 +284,10 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // Normally cache contexts are added automatically but these links depend on
     // an optional context which we manage ourselves.
     return Cache::mergeContexts($context, [
+      'asset_release',
       // We vary by the RDF entity type that is in the current context (asset
       // release, collection or solution) because the options shown in the menu
       // are different for each of these bundles.
-      'asset_release',
       'og_group_context',
       // We vary by OG role since a non-member is not allowed to add content.
       'og_role',
