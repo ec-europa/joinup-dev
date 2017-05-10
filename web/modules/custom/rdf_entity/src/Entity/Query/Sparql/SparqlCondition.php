@@ -371,7 +371,8 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
           // the same predicate is found with a single and multiple mappings.
           // There is no filter per bundle in the query.
           $this->fieldMappingConditions[] = [
-            'field' => $field_name . '_predicate',
+            'field' => $condition['field'],
+            'column' => $condition['column'],
             'value' => array_values($mappings),
             'operator' => 'IN',
           ];
@@ -420,6 +421,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
       $field_predicate = $this->fieldMappings[$field_name];
       $this->addConditionFragment(self::ID_KEY . ' ' . $this->escapePredicate($field_predicate) . ' ' . $this->toVar($field_name));
       $condition['value'] = SparqlArg::toResourceUris($condition['value']);
+      $condition['field'] = $field_predicate;
       $this->addConditionFragment($this->compileValuesFilter($condition));
     }
   }
