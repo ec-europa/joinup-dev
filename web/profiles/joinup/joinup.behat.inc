@@ -518,6 +518,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       'discussion' => [
         'state' => 'field_state',
         'content' => 'body',
+        'shared in' => 'field_shared_in',
       ],
       'document' => [
         'keywords' => 'field_keywords',
@@ -526,6 +527,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'state' => 'field_state',
         'type' => 'field_type',
         'spatial coverage' => 'field_document_spatial_coverage',
+        'shared in' => 'field_shared_in',
       ],
       'event' => [
         'keywords' => 'field_keywords',
@@ -537,12 +539,14 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'additional info address' => 'field_event_adtl_address_info',
         'organisation' => 'field_organisation',
         'scope' => 'field_scope',
+        'shared in' => 'field_shared_in',
       ],
       'news' => [
         'headline' => 'field_news_headline',
         'keywords' => 'field_keywords',
         'state' => 'field_state',
         'spatial coverage' => 'field_news_spatial_coverage',
+        'shared in' => 'field_shared_in',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,

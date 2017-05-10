@@ -44,6 +44,7 @@ function joinup_event_workflow_selector(EntityInterface $entity) {
   if ($entity->bundle() != 'event') {
     throw new Exception('This method can only be called for event entities.');
   }
+
   /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
   $relation_manager = \Drupal::service('joinup_core.relations_manager');
   $moderation = $relation_manager->getParentModeration($entity);

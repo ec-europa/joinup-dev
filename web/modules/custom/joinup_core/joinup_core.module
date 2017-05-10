@@ -5,6 +5,7 @@
  * Main functions and hook implementations of the Joinup core module.
  */
 
+use Drupal\joinup_core\Element\Datetime;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -364,5 +365,21 @@ function joinup_core_entity_create(EntityInterface $entity) {
         $entity->setUnpublished();
       }
     }
+  }
+}
+
+/**
+ * Implements hook_element_info_alter().
+ *
+ * Override the validate handler for the datetime widget.
+ */
+function joinup_core_element_info_alter(array &$info) {
+  if (isset($info['datetime'])) {
+    $info['datetime']['#element_validate'] = [
+      [
+        Datetime::class,
+        'validateDatetime',
+      ],
+    ];
   }
 }

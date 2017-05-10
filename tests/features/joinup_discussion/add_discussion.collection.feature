@@ -60,3 +60,9 @@ Feature: "Add discussion" visibility options.
     # Check that the link to the discussion is visible on the collection page.
     When I go to the homepage of the "The World of the Waves" collection
     Then I should see the link "An amazing discussion"
+
+    # Regression test: the workflow state should not be shown to the user.
+    When I click "An amazing discussion"
+    Then I should see the heading "An amazing discussion"
+    But I should not see the text "State" in the "Content" region
+    And I should not see the text "Validated" in the "Content" region
