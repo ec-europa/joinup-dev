@@ -66,10 +66,17 @@
 .textfield--textarea.mdl-textfield.is-focused,
 .textfield--textarea.mdl-textfield.is-dirty
   textarea
-    min-height: 32px
+    -moz-box-sizing: border-box
+    box-sizing: border-box
+    height: 57px
   .mdl-textfield__label
     &:after
       top: 47px !important
 
 .textfield--textarea.mdl-textfield
   width: 100%
+
+.comment-comment-form
+  .form-wrapper.field--widget-string-textarea
+    margin-bottom: 0
+    height: 97px

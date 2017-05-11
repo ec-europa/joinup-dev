@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://purl.org/dc/terms/license'
+      target_id:
+        predicate: 'http://purl.org/dc/terms/license'
+        format: 'resource'
 id: rdf_entity.field_ad_licence
 field_name: field_ad_licence
 entity_type: rdf_entity

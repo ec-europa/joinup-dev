@@ -84,7 +84,6 @@ config_devel:
   - block.block.joinup_theme_messages
   - block.block.navigation
   - block.block.pagetitle
-  - block.block.policydomain
   - block.block.primaryadminactions
   - block.block.seven_breadcrumbs
   - block.block.seven_content
@@ -95,8 +94,6 @@ config_devel:
   - block.block.seven_page_title
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
-  - block.block.spatialcoverage
-  - block.block.status
   - block.block.type
   - core.date_format.date_only
   - core.date_format.date_only_text_month

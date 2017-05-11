@@ -8,11 +8,21 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://purl.org/dc/dcmitype/StillImage'
-      alt: ''
-      title: ''
-      width: ''
-      height: ''
+      target_id:
+        predicate: 'http://purl.org/dc/dcmitype/StillImage'
+        format: 'xsd:string'
+      alt:
+        predicate: ''
+        format: ''
+      title:
+        predicate: ''
+        format: ''
+      width:
+        predicate: ''
+        format: ''
+      height:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_ar_logo
 field_name: field_ar_logo
 entity_type: rdf_entity
