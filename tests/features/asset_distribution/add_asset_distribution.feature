@@ -29,11 +29,7 @@ Feature: Add distribution through the UI
 
       When I click "Add distribution"
       Then I should see the heading "Add Distribution"
-      And the following fields should be present "Title, Description, License, Format, Representation technique, GITB compliant"
-      # Field labels are implemented not consistently, so we are
-      # forced to check for the widget heading.
-      # @todo to be handled in ISAICP-2655
-      And I should see the text "Access URL"
+      And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique, GITB compliant"
       # @todo: The link has to be changed to the legal contact form.
       # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
       And I should see the link "contacting us"
@@ -95,13 +91,9 @@ Feature: Add distribution through the UI
     Scenario: Add a distribution to a release as a facilitator.
       When I am logged in as a "facilitator" of the "Solution random x name" solution
       When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
-      And I click "Add distribution"
+      And I click "Add distribution" in the plus button menu
       Then I should see the heading "Add Distribution"
-      And the following fields should be present "Title, Description, License, Format, Representation technique, GITB compliant"
-      # Field labels are implemented not consistently, so we are
-      # forced to check for the widget heading.
-      # @todo to be handled in ISAICP-2655
-      And I should see the text "Access URL"
+      And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique, GITB compliant"
       # @todo: The link has to be changed to the legal contact form.
       # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
       And I should see the link "contacting us"
@@ -125,11 +117,7 @@ Feature: Add distribution through the UI
       And I should see the link "WTFPL"
       And I should see the text "The full source code."
 
-      # The solution group header is cached and the license is not updated.
-      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3198
-      When the cache has been cleared
       # The licence label should be shown also in the solution UI.
-      # @todo License is not shown anymore in the solution canonical page. Change this before merge.
       And I go to the homepage of the "Solution random x name" solution
       Then I should see the text "WTFPL"
       # Clean up the asset distribution that was created through the UI.

@@ -6,12 +6,15 @@
  */
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\Component\Utility\Unicode;
+use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 
 /**
  * Implements hook_preprocess_page().
@@ -172,8 +175,14 @@ function joinup_theme_preprocess_block(&$variables) {
         // Get node type.
         $node = $route_match->getParameter('node');
         if (!empty($node)) {
+          $node_types = [
+            'news',
+            'event',
+            'discussion',
+            'custom_page',
+          ];
           $node_type = $node->getType();
-          if ($node_type == 'news' || $node_type == 'event' || $node_type == 'custom_page') {
+          if (in_array($node_type, $node_types)) {
             $is_listing = TRUE;
           }
         }
@@ -333,6 +342,31 @@ function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for field--comment.html.twig.
+ */
+function joinup_theme_preprocess_field__comment(&$variables) {
+  // Get entity url needed for login and register routes.
+  $entity = $variables['element']['#object'];
+  $variables['entity_bundle'] = Unicode::strtolower($entity->type->entity->label());
+
+  // Get comments status.
+  $comments_status = $variables['element']['#items']->status;
+  switch ($comments_status) {
+    case CommentItemInterface::OPEN:
+      $variables['comments_status'] = 'open';
+      break;
+
+    case CommentItemInterface::CLOSED:
+      $variables['comments_status'] = 'closed';
+      break;
+
+    case CommentItemInterface::HIDDEN:
+      $variables['comments_status'] = 'hidden';
+      break;
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for form-element.html.twig.
  */
 function joinup_theme_preprocess_form_element(&$variables) {
@@ -435,8 +469,61 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
   $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
   $author = $node->get('uid')->entity;
-  $author_compact = $viewBuilder->view($author, 'compact');
-  $variables['additional_content']['author'] = $author_compact;
+  $author_inline = $viewBuilder->view($author, 'inline');
+  $variables['additional_content']['author'] = $author_inline;
+}
+
+/**
+ * Implements hook_preprocess_page_title__node__discussion().
+ */
+function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['entity'];
+
+  $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
+  $variables['additional_content']['created'] = $created;
+
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
+  $author = $node->get('uid')->entity;
+  $author_inline = $viewBuilder->view($author, 'inline');
+  $variables['additional_content']['author'] = $author_inline;
+}
+
+/**
+ * Implements hook_preprocess_comment().
+ */
+function joinup_theme_preprocess_comment(&$variables) {
+  /** @var \Drupal\user\Entity\User $user */
+  $user = $variables['user_picture']['#user'];
+  $photo_target = $user->get('field_user_photo')->getValue();
+
+  if ($photo_target) {
+    $photo_target = $photo_target[0]['target_id'];
+    /** @var \Drupal\file\Entity\File $file */
+    $file = File::load($photo_target);
+    $uri = $file->getFileUri();
+    $url = ImageStyle::load('profile_icon_big')->buildUrl($uri);
+    $variables['profile_icon'] = [
+      '#markup' => $url,
+      '#cache' => [
+        'tags' => Cache::mergeTags($user->getCacheTags(), $user->getEntityType()->getListCacheTags()),
+        'contexts' => $user->getCacheContexts(),
+        'max-age' => $user->getCacheMaxAge(),
+      ],
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_image().
+ */
+function joinup_theme_preprocess_image(&$variables) {
+  if ($variables['style_name'] == 'profile_icon') {
+    $variables['attributes']['class'][] = 'details__avatar';
+    $variables['attributes']['class'][] = 'avatar';
+    $variables['attributes']['class'][] = 'avatar--25';
+  }
 }
 
 /**
@@ -761,4 +848,14 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
 function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'joinup_theme/form-components';
   $form['#attached']['drupalSettings']['widthBreakpoint'] = 100;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Add theme suggestions directly to the comment body field.
+ */
+function joinup_theme_form_comment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['field_body']['widget'][0]['value']['#theme'] = 'textarea__comment';
+  $form['field_body']['widget'][0]['value']['#theme_wrappers'] = ['form_element__textarea__comment'];
 }
