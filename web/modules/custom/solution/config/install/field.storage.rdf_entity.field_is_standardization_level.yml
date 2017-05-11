@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://joinup.eu/is/standardization_level'
+      target_id:
+        predicate: 'http://joinup.eu/is/standardization_level'
+        format: resource
 id: rdf_entity.field_is_standardization_level
 field_name: field_is_standardization_level
 entity_type: rdf_entity

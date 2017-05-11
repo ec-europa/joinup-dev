@@ -5,27 +5,48 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
+    rdf_type: 'http://purl.org/adms/publishertype/1.0'
     mapping:
       uuid:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       vid:
-        target_id: 'http://purl.org/adms/publishertype/1.0'
+        target_id:
+          predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
+          format: resource
       langcode:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       name:
-        value: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+        value:
+          predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+          format: t_literal
       description:
-        value: 'http://www.w3.org/2004/02/skos/core#definition'
+        value:
+          predicate: 'http://www.w3.org/2004/02/skos/core#definition'
+          format: t_literal
       format:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       weight:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       parent:
-        target_id: 'http://www.w3.org/2004/02/skos/core#broader'
+        target_id:
+          predicate: 'http://www.w3.org/2004/02/skos/core#broader'
+          format: resource
       changed:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       default_langcode:
-        value: ''
+        value: 
+          predicate: ''
+          format: ''
       path: {  }
     graph:
       default: 'http://adms_skos_v1.00'

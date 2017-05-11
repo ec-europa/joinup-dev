@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://joinup.eu/is/actor'
+      target_id:
+        predicate: 'http://joinup.eu/is/actor'
+        format: resource
 id: rdf_entity.field_is_actor
 field_name: field_is_actor
 entity_type: rdf_entity

@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_taxonomy
+    - rdf_entity.rdfentity.dummy
+    - taxonomy.vocabulary.taxonomy_test
+id: rdf_entity.dummy.field_taxonomy
+field_name: field_taxonomy
+entity_type: rdf_entity
+bundle: dummy
+label: 'Taxonomy test'
+description: 'Taxonomy test'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      taxonomy_test: taxonomy_test
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
