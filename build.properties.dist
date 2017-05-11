@@ -151,7 +151,7 @@ phpunit.testsuite.name = ${project.name}
 
 # Comma-separated list of directories containing tests to execute. These are
 # relative to the Drupal root.
-phpunit.directories = ./modules/custom,./profiles,./themes/custom
+phpunit.directories =
 
 # Comma-separated list of test files to execute. These are relative to the
 # Drupal root.
