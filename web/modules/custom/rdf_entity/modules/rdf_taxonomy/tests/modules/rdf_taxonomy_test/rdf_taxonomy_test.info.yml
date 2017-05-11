@@ -1,0 +1,5 @@
+name: 'Rdf entity taxonomy tests'
+type: module
+description: 'Support module for rdf taxonomy tests.'
+core: 8.x
+package: Testing

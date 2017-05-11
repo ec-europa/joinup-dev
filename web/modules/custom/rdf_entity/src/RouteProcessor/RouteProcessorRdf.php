@@ -5,6 +5,7 @@ namespace Drupal\rdf_entity\RouteProcessor;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\RouteProcessor\OutboundRouteProcessorInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use EasyRdf\Serialiser\Ntriples;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -24,6 +25,13 @@ class RouteProcessorRdf implements OutboundRouteProcessorInterface {
   protected $routeMatch;
 
   /**
+   * The Ntriples serialize class.
+   *
+   * @var \EasyRdf\Serialiser\Ntriples
+   */
+  protected $serializer;
+
+  /**
    * Constructs a new RouteProcessorRdf.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
@@ -31,6 +39,7 @@ class RouteProcessorRdf implements OutboundRouteProcessorInterface {
    */
   public function __construct(RouteMatchInterface $route_match) {
     $this->routeMatch = $route_match;
+    $this->serializer = new Ntriples();
   }
 
   /**
