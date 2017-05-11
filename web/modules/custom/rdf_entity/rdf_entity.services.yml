@@ -1,7 +1,7 @@
 services:
   entity.query.sparql:
     class: \Drupal\rdf_entity\Entity\Query\Sparql\QueryFactory
-    arguments: ['@sparql_endpoint', '@entity_type.manager', '@sparql.graph_handler', '@sparql.mapping_handler']
+    arguments: ['@sparql_endpoint', '@entity_type.manager', '@sparql.graph_handler', '@sparql.field_handler']
     tags:
       - { name: backend_overridable }
   sparql_endpoint:
@@ -27,9 +27,9 @@ services:
   sparql.graph_handler:
     class: \Drupal\rdf_entity\RdfGraphHandler
     arguments: ['@entity_type.manager', '@module_handler']
-  sparql.mapping_handler:
-    class: \Drupal\rdf_entity\RdfMappingHandler
-    arguments: ['@entity.manager']
+  sparql.field_handler:
+    class: \Drupal\rdf_entity\RdfFieldHandler
+    arguments: ['@entity_type.manager', '@entity_field.manager']
   plugin.manager.rdf_entity.id:
     class: Drupal\rdf_entity\RdfEntityIdPluginManager
     arguments: ['@container.namespaces', '@cache.discovery', '@module_handler', '@entity_type.manager']
