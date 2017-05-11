@@ -91,7 +91,7 @@ class Mapping extends Spreadsheet {
   protected function rowIsValid(array &$row) {
     $messages = [];
 
-    $nid = $row['nid'];
+    $nid = $row['Nid'];
     $row['Collection_Name'] = trim((string) $row['Collection_Name']);
 
     $title = $type = NULL;
@@ -146,7 +146,7 @@ class Mapping extends Spreadsheet {
     // Register inconsistencies.
     if ($messages) {
       $row_index = $row['row_index'];
-      $source_ids = ['nid' => $row['nid']];
+      $source_ids = ['nid' => $nid];
       foreach ($messages as $message) {
         $this->migration->getIdMap()->saveMessage($source_ids, "Row: $row_index, Nid: $nid: $message");
       }
