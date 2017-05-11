@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://purl.org/dc/terms/publisher'
+      target_id:
+        predicate: 'http://purl.org/dc/terms/publisher'
+        format: resource
 id: rdf_entity.field_is_owner
 field_name: field_is_owner
 entity_type: rdf_entity

@@ -11,9 +11,9 @@ Feature: Solution homepage
       | Information sharing protocol | Handling information sharing securely | logo.png | banner.jpg | validated |
       | Security audit tools         | Automated test of security            | logo.png | banner.jpg | validated |
     And the following releases:
-      | title             | release number | release notes                               | is version of                | state     | spatial coverage                                                       |
-      | IS protocol paper | 1              | First stable version.                       | Information sharing protocol | validated | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
-      | Fireproof         | 0.1            | First release for the firewall bypass tool. | Security audit tools         | validated |                                                                        |
+      | title             | release number | release notes                               | is version of                | state     | spatial coverage |
+      | IS protocol paper | 1              | First stable version.                       | Information sharing protocol | validated | Belgium          |
+      | Fireproof         | 0.1            | First release for the firewall bypass tool. | Security audit tools         | validated |                  |
     And the following distributions:
       | title           | description                                        | access url | solution                     | parent                       |
       | PDF version     | Pdf version of the paper.                          | text.pdf   | Information sharing protocol | IS protocol paper            |

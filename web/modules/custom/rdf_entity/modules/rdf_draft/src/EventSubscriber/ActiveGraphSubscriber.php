@@ -43,6 +43,9 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
         $storage->setRequestGraphs($event->getValue(), ['draft', 'default']);
         $entity = $storage->load($event->getValue());
+        if (empty($entity)) {
+          return;
+        }
         // When drafting is enabled for this entity type, try to load the draft
         // version on the edit form.
         if ($this->draftEnabled($entity_type_id, $entity->bundle())) {

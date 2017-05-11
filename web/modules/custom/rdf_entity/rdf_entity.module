@@ -16,6 +16,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+use Drupal\rdf_entity\RdfFieldHandler;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -28,6 +29,7 @@ function rdf_entity_entity_base_field_info_alter(&$fields, EntityTypeInterface $
 
   $fields['graph'] = BaseFieldDefinition::create('uri')
     ->setLabel(t('The graph where the entity is stored.'))
+    ->setTargetEntityTypeId('rdf_entity')
     ->setName('graph')
     ->setComputed(TRUE);
 }
@@ -75,12 +77,28 @@ function rdf_entity_form_field_storage_config_edit_form_alter(&$form, FormStateI
       }
     }
 
+    $settings = rdf_entity_get_third_party_property($entity, 'mapping', $column);
+
     $form['rdf_mapping'][$column] = [
-      '#type' => 'textfield',
+      '#type' => 'details',
       '#title' => $column,
       '#description' => $description,
+    ];
+
+    $form['rdf_mapping'][$column]['predicate_' . $column] = [
+      '#type' => 'url',
+      '#title' => t('Mapping'),
       '#weight' => 150,
-      '#default_value' => rdf_entity_get_third_party_property($entity, 'mapping', $column, FALSE),
+      '#default_value' => isset($settings['predicate']) ? $settings['predicate'] : '',
+    ];
+
+    $form['rdf_mapping'][$column]['format_' . $column] = [
+      '#type' => 'select',
+      '#title' => t('Value format'),
+      '#options' => RdfFieldHandler::getSupportedDatatypes(),
+      '#empty_value' => 'no_format',
+      '#weight' => 151,
+      '#default_value' => isset($settings['format']) ? $settings['format'] : NULL,
     ];
   }
 
@@ -105,7 +123,8 @@ function rdf_entity_form_alter_builder($entity_type, FieldStorageConfig $entity,
   $schema = $entity->getSchema();
   $data = [];
   foreach ($schema['columns'] as $column => $column_desc) {
-    $data[$column] = $form_state->getValue($column);
+    $data[$column]['predicate'] = $form_state->getValue('predicate_' . $column);
+    $data[$column]['format'] = $form_state->getValue('format_' . $column);
 
   }
   $entity->setThirdPartySetting('rdf_entity', 'mapping', $data);
@@ -205,12 +224,29 @@ function rdf_entity_form_alter(&$form, FormStateInterface $form_state) {
       if (count($columns) > 1) {
         $title .= ' (' . $column_name . ')';
       }
-      $form['rdf_entity']['rdf_mapping']['mapping_' . $id . '_' . $column_name] = [
-        '#type' => 'url',
+
+      $form['rdf_entity']['rdf_mapping'][$id] = [
+        '#type' => 'details',
         '#title' => $title,
         '#description' => $base_field->getDescription(),
+      ];
+
+      $form['rdf_entity']['rdf_mapping'][$id]['predicate_' . $id . '_' . $column_name] = [
+        '#type' => 'url',
+        '#title' => t('Mapping'),
+        '#description' => t('The rdf predicate.'),
         '#weight' => 150,
-        '#default_value' => isset($settings[$column_name]) ? $settings[$column_name] : NULL,
+        '#default_value' => isset($settings[$column_name]['predicate']) ? $settings[$column_name]['predicate'] : NULL,
+      ];
+
+      $form['rdf_entity']['rdf_mapping'][$id]['format_' . $id . '_' . $column_name] = [
+        '#type' => 'select',
+        '#title' => t('Value format'),
+        '#description' => t('The rdf format. Required if format is filled.'),
+        '#options' => RdfFieldHandler::getSupportedDatatypes(),
+        '#empty_value' => '',
+        '#weight' => 151,
+        '#default_value' => isset($settings[$column_name]['format']) ? $settings[$column_name]['format'] : NULL,
       ];
     }
   }
@@ -234,7 +270,8 @@ function rdf_entity_bundle_config($entity_type, ConfigEntityInterface $entity, a
     }
     $columns = $base_field->getColumns();
     foreach ($columns as $column_name => $column) {
-      $third_party_settings[$id][$column_name] = $form_state->getValue('mapping_' . $id . '_' . $column_name);
+      $third_party_settings[$id][$column_name]['predicate'] = $form_state->getValue('predicate_' . $id . '_' . $column_name);
+      $third_party_settings[$id][$column_name]['format'] = $form_state->getValue('format_' . $id . '_' . $column_name);
     }
   }
   $entity->setThirdPartySetting('rdf_entity', 'mapping', $third_party_settings);
