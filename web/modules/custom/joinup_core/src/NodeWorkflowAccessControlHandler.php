@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
 
@@ -35,27 +36,6 @@ class NodeWorkflowAccessControlHandler {
    * Flag for post-moderated groups.
    */
   const POST_MODERATION = 0;
-
-  /**
-   * Flag for option for the eLibrary creation field.
-   *
-   * Only facilitators are allowed to create content.
-   */
-  const ELIBRARY_ONLY_FACILITATORS = 0;
-
-  /**
-   * Flag for option for the eLibrary creation field.
-   *
-   * Only users that are subscribed to the group are allowed to create content.
-   */
-  const ELIBRARY_MEMBERS_FACILITATORS = 1;
-
-  /**
-   * Flag for option for the eLibrary creation field.
-   *
-   * All registered users can create content.
-   */
-  const ELIBRARY_REGISTERED_USERS = 2;
 
   /**
    * The machine name of the default workflow for groups.
@@ -100,11 +80,11 @@ class NodeWorkflowAccessControlHandler {
   protected $relationManager;
 
   /**
-   * The workflow user provider service.
+   * The current logged in user.
    *
-   * @var \Drupal\joinup_core\WorkflowUserProvider
+   * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $workflowUserProvider;
+  protected $currentUser;
 
   /**
    * Constructs a JoinupDocumentRelationManager object.
@@ -115,14 +95,14 @@ class NodeWorkflowAccessControlHandler {
    *   The OG membership manager service.
    * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
    *   The relation manager service.
-   * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
-   *   The workflow user provider service.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current logged in user.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupRelationManager $relation_manager, WorkflowUserProvider $workflow_user_provider) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupRelationManager $relation_manager, AccountInterface $current_user) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $og_membership_manager;
     $this->relationManager = $relation_manager;
-    $this->workflowUserProvider = $workflow_user_provider;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -140,7 +120,7 @@ class NodeWorkflowAccessControlHandler {
    */
   public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account = NULL) {
     if ($account === NULL) {
-      $account = $this->workflowUserProvider->getUser();
+      $account = $this->currentUser;
     }
 
     if ($entity->getEntityTypeId() !== 'node') {
@@ -153,12 +133,25 @@ class NodeWorkflowAccessControlHandler {
 
       case 'create':
       case 'update':
-        $allowed_transitions = $entity->get('field_state')->first()->getTransitions();
+        $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
         return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
 
       case 'delete':
         return $this->entityDeleteAccess($entity, $account);
 
+      case 'post comments':
+        $parent_state = $this->relationManager->getParentState($entity);
+        // Commenting on content of an archived group is not allowed.
+        if ($parent_state === 'archived') {
+          return AccessResult::forbidden();
+        }
+        else {
+          $parent = $this->relationManager->getParent($entity);
+          $membership = $this->membershipManager->getMembership($parent, $account);
+          if ($membership instanceof OgMembership) {
+            AccessResult::allowedIf($membership->hasPermission($operation));
+          }
+        }
     }
 
     return AccessResult::neutral();
@@ -169,10 +162,11 @@ class NodeWorkflowAccessControlHandler {
    *
    * The following checks take place with the same priority:
    * - If the parent entity is not viewable, only moderators, facilitators and
-   * the node owner can see the entity regardless of the state.
+   *   the node owner can see the entity regardless of the state.
    * - If the user has the permission in the membership to view all unpublished
-   * content, he is granted access.
+   *   content, he is granted access.
    * - Otherwise we return neutral.
+   *
    * Note that admin permissions are already checked in the entity access
    * handler class.
    * If we return neutral, the entity access handler class, will automatically
@@ -214,11 +208,12 @@ class NodeWorkflowAccessControlHandler {
    * or has not the permission.
    * The following checks take place with the given priority:
    * - If the user has global permission to delete any entity of the given
-   * bundle, he is being granted access.
+   *   bundle, he is being granted access.
    * - If the user has group permission to delete any entity of the given
-   * bundle, he is being granted access.
+   *   bundle, he is being granted access.
    * - If the user is the owner of the entity, he is allowed only if the parent
-   * is in a post moderated state.
+   *   is in a post moderated state.
+   *
    * In all other cases, we allow entity access handler to decide.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
@@ -242,6 +237,9 @@ class NodeWorkflowAccessControlHandler {
     }
 
     $moderation = $this->relationManager->getParentModeration($entity);
+    if ($moderation === NULL) {
+      return AccessResult::forbidden();
+    }
     // If the parent is in pre-moderated state, the user can only delete the
     // entity if he has the 'delete all' permission because owners are not
     // allowed to.

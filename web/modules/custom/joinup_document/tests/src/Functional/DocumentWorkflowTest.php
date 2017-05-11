@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\joinup_document\Functional;
 
+use Drupal\joinup_core\ELibraryCreationOptions;
 use Drupal\Tests\joinup_core\Functional\NodeWorkflowTestBase;
 
 /**
@@ -17,17 +18,17 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
   protected function createAccessProvider() {
     return [
       'collection' => [
-        self::ELIBRARY_ONLY_FACILITATORS => [
+        ELibraryCreationOptions::FACILITATORS => [
           'userModerator',
           'userOgFacilitator',
         ],
-        self::ELIBRARY_MEMBERS_FACILITATORS => [
+        ELibraryCreationOptions::MEMBERS => [
           'userModerator',
           'userOgMember',
           'userOgFacilitator',
           'userOgAdministrator',
         ],
-        self::ELIBRARY_REGISTERED_USERS => [
+        ELibraryCreationOptions::REGISTERED_USERS => [
           'userAuthenticated',
           'userModerator',
           'userOgMember',
@@ -36,15 +37,15 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
         ],
       ],
       'solution' => [
-        self::ELIBRARY_ONLY_FACILITATORS => [
+        ELibraryCreationOptions::FACILITATORS => [
           'userModerator',
           'userOgFacilitator',
         ],
-        self::ELIBRARY_MEMBERS_FACILITATORS => [
+        ELibraryCreationOptions::MEMBERS => [
           'userModerator',
           'userOgFacilitator',
         ],
-        self::ELIBRARY_REGISTERED_USERS => [
+        ELibraryCreationOptions::REGISTERED_USERS => [
           'userAuthenticated',
           'userModerator',
           'userOgFacilitator',
@@ -125,7 +126,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
             'userOgFacilitator',
           ],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           'view' => [
             'userOwner',
             'userModerator',
@@ -193,7 +194,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
             'userOgFacilitator',
           ],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           'view' => [
             'userOwner',
             'userModerator',
@@ -296,7 +297,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
             'request_changes',
           ],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           'userAuthenticated' => [],
           'userOwner' => [],
           'userOgMember' => [],
@@ -366,7 +367,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
             'request_changes',
           ],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           'userAuthenticated' => [],
           'userOwner' => [],
           'userOgMember' => [],
@@ -416,7 +417,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
   public function isPublishedState($state) {
     $states = [
       'validated',
-      'in_assessment',
+      'needs_update',
       'request_deletion',
     ];
 
@@ -436,7 +437,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
    */
   protected function getWorkflowElibraryCreationRoles($e_library, $moderation) {
     $allowed_roles = [
-      self::ELIBRARY_ONLY_FACILITATORS => [
+      ELibraryCreationOptions::FACILITATORS => [
         self::PRE_MODERATION => [
           'userOgFacilitator' => [
             'propose',
@@ -460,7 +461,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
           ],
         ],
       ],
-      self::ELIBRARY_MEMBERS_FACILITATORS => [
+      ELibraryCreationOptions::MEMBERS => [
         self::PRE_MODERATION => [
           'userOgMember' => [
             'save_as_draft',
@@ -492,7 +493,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
           ],
         ],
       ],
-      self::ELIBRARY_REGISTERED_USERS => [
+      ELibraryCreationOptions::REGISTERED_USERS => [
         self::PRE_MODERATION => [
           'userAuthenticated' => [
             'save_as_draft',

@@ -3,6 +3,7 @@
 namespace Drupal\Tests\joinup_core\Functional;
 
 use Drupal\Core\Session\AnonymousUserSession;
+use Drupal\joinup_core\ELibraryCreationOptions;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
@@ -18,9 +19,6 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
 
   const PRE_MODERATION = 1;
   const POST_MODERATION = 0;
-  const ELIBRARY_ONLY_FACILITATORS = 0;
-  const ELIBRARY_MEMBERS_FACILITATORS = 1;
-  const ELIBRARY_REGISTERED_USERS = 2;
 
   /**
    * A user assigned as an owner to document entities.
@@ -123,14 +121,12 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         $non_allowed_roles = array_diff($test_roles, $allowed_roles);
         $operation = 'create';
         foreach ($allowed_roles as $user_var) {
-          $this->userProvider->setUser($this->{$user_var});
-          $access = $this->workflowAccess->entityAccess($content, $operation, $this->{$user_var})->isAllowed();
+          $access = $this->workflowAccess->entityAccess($content, $operation, $this->$user_var)->isAllowed();
           $message = "User {$user_var} should have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
           $this->assertEquals(TRUE, $access, $message);
         }
         foreach ($non_allowed_roles as $user_var) {
-          $this->userProvider->setUser($this->{$user_var});
-          $access = $this->workflowAccess->entityAccess($content, 'create', $this->{$user_var})->isAllowed();
+          $access = $this->workflowAccess->entityAccess($content, 'create', $this->$user_var)->isAllowed();
           $message = "User {$user_var} should not have {$operation} access for bundle 'document' with a {$parent_bundle} parent with eLibrary: {$elibrary}.";
           $this->assertEquals(FALSE, $access, $message);
         }
@@ -155,14 +151,12 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
               $non_allowed_roles = array_diff($test_roles, $allowed_roles);
               $moderated_message = $moderation ? 'pre moderated' : 'post moderated';
               foreach ($allowed_roles as $user_var) {
-                $this->userProvider->setUser($this->{$user_var});
-                $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
+                $access = $this->entityAccess->access($content, $operation, $this->$user_var);
                 $message = "User {$user_var} should have {$operation} access for the '{$content_state}' 'document' with a {$moderated_message} {$parent_bundle} parent in a {$parent_state} state.";
                 $this->assertEquals(TRUE, $access, $message);
               }
               foreach ($non_allowed_roles as $user_var) {
-                $this->userProvider->setUser($this->{$user_var});
-                $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
+                $access = $this->entityAccess->access($content, $operation, $this->$user_var);
                 $message = "User {$user_var} should not have {$operation} access for the '{$content_state}' 'document' with a {$moderated_message} {$parent_bundle} parent in a {$parent_state} state.";
                 $this->assertEquals(FALSE, $access, $message);
               }
@@ -192,8 +186,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
               ]);
 
               // Override the user to be checked for the allowed transitions.
-              $this->userProvider->setUser($this->{$user_var});
-              $actual_transitions = $content->get('field_state')->first()->getTransitions();
+              $actual_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->$user_var);
               $actual_transitions = array_map(function ($transition) {
                 return $transition->getId();
               }, $actual_transitions);
@@ -336,6 +329,12 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    *   The created entity.
    */
   protected function createParent($bundle, $state = 'validated', $moderation = NULL, $e_library = NULL) {
+    // Make sure the current user is set to anonymous when creating solutions
+    // through the API so we can assign the administrator manually. If a user is
+    // logged in during creation of the solution they will automatically become
+    // the administrator.
+    $this->setCurrentUser($this->userAnonymous);
+
     $field_identifier = [
       'collection' => 'field_ar_',
       'solution' => 'field_is_',
@@ -376,9 +375,9 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    */
   protected function getElibraryStates() {
     return [
-      self::ELIBRARY_ONLY_FACILITATORS,
-      self::ELIBRARY_MEMBERS_FACILITATORS,
-      self::ELIBRARY_REGISTERED_USERS,
+      ELibraryCreationOptions::FACILITATORS,
+      ELibraryCreationOptions::MEMBERS,
+      ELibraryCreationOptions::REGISTERED_USERS,
     ];
   }
 

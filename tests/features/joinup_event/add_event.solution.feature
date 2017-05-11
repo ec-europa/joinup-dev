@@ -53,7 +53,7 @@ Feature: "Add event" visibility options.
 
     # The sections about managing revisions and groups should not be visible.
     And I should not see the text "Revision information"
-    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
 
     When I fill in the following:
       | Title       | An amazing event                      |
@@ -62,6 +62,13 @@ Feature: "Add event" visibility options.
       | Location    | Rue Belliard, 28                      |
     And I fill in "Start date" with the date "2018-08-29"
     And I fill in "Start date" with the time "23:59:00"
+
+    # Test that a helpful message is shown when a field is only partially filled in.
+    And I fill in "End date" with the date "2018-08-30"
+    And I press "Save as draft"
+    Then I should see the error message "The date and time should both be entered in the End date field"
+
+    When I fill in "End date" with the time "23:59:00"
     And I press "Save as draft"
     Then I should see the heading "An amazing event"
     And I should see the success message "Event An amazing event has been created."

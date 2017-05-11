@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_entity_bundle
+    - message.template.rdf_entity_solution_node_delete
+id: message.rdf_entity_solution_node_delete.field_message_entity_bundle
+field_name: field_message_entity_bundle
+entity_type: message
+bundle: rdf_entity_solution_node_delete
+label: 'Node bundle'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

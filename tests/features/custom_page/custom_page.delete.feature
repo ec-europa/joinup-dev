@@ -6,7 +6,7 @@ Feature: "Custom page" deleteing.
 
   Background:
     Given users:
-      | name         | mail                     |
+      | Username     | E-mail                   |
       | Mickey Mouse | mickey.mouse@example.com |
       | Pluto        | pluto@example.com        |
     And the following collection:

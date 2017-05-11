@@ -12,7 +12,7 @@ label: License
 # @todo: The link has to be changed to the legal contact form.
 # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
 description: 'If you cannot find the desired license in the list above, please request a new one by <a href="[site:url]">contacting us</a>.'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

@@ -22,3 +22,10 @@ function og_comment_field_formatter_info_alter(array &$info) {
   // Swap out default field formatter class.
   $info['comment_default']['class'] = 'Drupal\og_comment\Plugin\Field\FieldFormatter\OgCommentDefaultFormatter';
 }
+
+/**
+ * Implements hook_field_info_alter().
+ */
+function og_comment_field_info_alter(&$info) {
+  $info['comment']['list_class'] = 'Drupal\og_comment\OgCommentFieldItemList';
+}

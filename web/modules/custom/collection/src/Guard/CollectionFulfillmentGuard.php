@@ -5,7 +5,6 @@ namespace Drupal\collection\Guard;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\joinup_core\WorkflowUserProvider;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
@@ -33,16 +32,6 @@ class CollectionFulfillmentGuard implements GuardInterface {
   protected $entityTypeManager;
 
   /**
-   * Holds the workflow user object needed for the checks.
-   *
-   * This will almost always return the logged in users but in case a check is
-   * needed to be done on a different account, it should be possible.
-   *
-   * @var \Drupal\joinup_core\WorkflowUserProvider
-   */
-  protected $workflowUserProvider;
-
-  /**
    * The config factory.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
@@ -60,17 +49,14 @@ class CollectionFulfillmentGuard implements GuardInterface {
    * Instantiates a CollectionFulfillmentGuard service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The WorkflowUserProvider service.
-   * @param \Drupal\joinup_core\WorkflowUserProvider $workflow_user_provider
-   *   The WorkflowUserProvider service.
+   *   The entity type manager.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, WorkflowUserProvider $workflow_user_provider, ConfigFactoryInterface $config_factory, AccountInterface $current_user) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory, AccountInterface $current_user) {
     $this->entityTypeManager = $entity_type_manager;
-    $this->workflowUserProvider = $workflow_user_provider;
     $this->currentUser = $current_user;
     $this->configFactory = $config_factory;
   }
@@ -93,19 +79,18 @@ class CollectionFulfillmentGuard implements GuardInterface {
     // @see: collection.settings.yml
     $allowed_conditions = $this->configFactory->get('collection.settings')->get('transitions');
 
-    if ($this->currentUser->hasPermission('bypass node access')) {
+    if ($this->currentUser->hasPermission($entity->getEntityType()->getAdminPermission())) {
       return TRUE;
     }
 
     // Check if the user has one of the allowed system roles.
     $authorized_roles = isset($allowed_conditions[$to_state][$from_state]) ? $allowed_conditions[$to_state][$from_state] : [];
-    $user = $this->workflowUserProvider->getUser();
-    if (array_intersect($authorized_roles, $user->getRoles())) {
+    if (array_intersect($authorized_roles, $this->currentUser->getRoles())) {
       return TRUE;
     }
 
     // Check if the user has one of the allowed group roles.
-    $membership = Og::getMembership($entity, $user);
+    $membership = Og::getMembership($entity, $this->currentUser);
     return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
   }
 

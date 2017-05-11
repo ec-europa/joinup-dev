@@ -201,7 +201,7 @@ function solution_rdf_entity_access(EntityInterface $entity, $operation, Account
   }
 
   if ($operation == 'edit') {
-    $allowed_transitions = $entity->field_is_state->first()->getTransitions();
+    $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
     if (empty($allowed_transitions)) {
       return AccessResult::forbidden();
     }
@@ -275,7 +275,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
         'rdf_entity' => $entity->id(),
       ]),
-      '#attributes' => array('class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'),
+      '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
     ];
   }
 

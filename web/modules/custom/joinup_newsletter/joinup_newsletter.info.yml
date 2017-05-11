@@ -8,14 +8,13 @@ dependencies:
   - simplenews
 
 config_devel:
-  install:
-    - core.entity_form_display.node.newsletter.default
-    - core.entity_view_display.node.newsletter.default
-    - core.entity_view_display.node.newsletter.email_html
-    - core.entity_view_display.node.newsletter.email_plain
-    - core.entity_view_display.node.newsletter.email_textalt
-    - core.entity_view_display.node.newsletter.teaser
-    - field.field.node.newsletter.body
-    - field.field.node.newsletter.newsletter
-    - field.storage.node.newsletter
-    - node.type.newsletter
+  - core.entity_form_display.node.newsletter.default
+  - core.entity_view_display.node.newsletter.default
+  - core.entity_view_display.node.newsletter.email_html
+  - core.entity_view_display.node.newsletter.email_plain
+  - core.entity_view_display.node.newsletter.email_textalt
+  - core.entity_view_display.node.newsletter.teaser
+  - field.field.node.newsletter.body
+  - field.field.node.newsletter.newsletter
+  - field.storage.node.newsletter
+  - node.type.newsletter

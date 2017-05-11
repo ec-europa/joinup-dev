@@ -1,0 +1,7 @@
+contact_form.contact_page:
+  path: '/contact'
+  defaults:
+    _controller: '\Drupal\contact_form\Controller\ContactFormController::contactPage'
+    _title: 'Contact'
+  requirements:
+    _access: 'TRUE'

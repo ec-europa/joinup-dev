@@ -13,8 +13,8 @@ Feature: Proposing a collection
   # though you need to log in to do so.
   Scenario: Anonymous user needs to log in before creating a collection
     Given users:
-      | name          | pass  |
-      | Cecil Clapman | claps |
+      | Username      | Password |
+      | Cecil Clapman | claps    |
     Given I am an anonymous user
     When I am on the homepage
     And I click "Propose collection"
@@ -34,14 +34,13 @@ Feature: Proposing a collection
     When I am on the homepage
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
+    And the following fields should not be present "Current workflow state"
     And the following field widgets should be present "Contact information, Owner"
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)                               |
     When I select "HR" from "Policy domain"
-    And I attach the file "logo.png" to "Logo"
-    And I attach the file "banner.jpg" to "Banner"
     And I check "Closed collection"
     And I select "Only members can create new content." from "eLibrary creation"
     And I check "Moderated"
@@ -49,17 +48,22 @@ Feature: Proposing a collection
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Save as draft"
-    Then I should see the heading "Ancient and Classical Mythology"
-    # Check that the policy domain is shown.
-    And I should see the text "HR"
-    And I should see the text "Belgium"
+    # Regression test for setting the Logo and Banner fields as optional.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3215
+    Then I should not see the following error messages:
+      | error messages           |
+      | Field Logo is required   |
+      | Field Banner is required |
+    And I should see the heading "Ancient and Classical Mythology"
 
     # The user that proposed the collection should be auto-subscribed.
     And the "Ancient and Classical Mythology" collection should have 1 member
-    # There should not be any custom pages in the menu yet, so I should see a
-    # button to create a custom page, with accompanying help text.
-    And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
-    When I click "Add custom page"
+    # The overview and about links should be added automatically in the menu.
+    And I should see the following collection menu items in the specified order:
+      | text     |
+      | Overview |
+      | About    |
+    When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"
     When I fill in the following:
       | Title | About                                       |
@@ -117,6 +121,7 @@ Feature: Proposing a collection
     # When toggling to closed, the option 'any registered user' should disappear
     # and the option for facilitators should appear.
     When I check "Closed collection"
+    And I wait for AJAX to finish
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected
     And I should not see the text "Any registered user can create new content."
@@ -132,7 +137,9 @@ Feature: Proposing a collection
     # checkbox status open-closed-open-closed.
     # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
     When I uncheck "Closed collection"
+    And I wait for AJAX to finish
     And I check "Closed collection"
+    And I wait for AJAX to finish
     Then the option "Only members can create new content." should be selected
     And the option "Only collection facilitators can create new content." should not be selected
 

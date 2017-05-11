@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   module:
-    - facets
     - joinup
   theme:
     - joinup_theme
@@ -19,10 +18,4 @@ settings:
   label_display: '0'
   context_mapping:
     og: '@og.context:og'
-visibility:
-  other_facet:
-    id: other_facet
-    facets: ''
-    facet_value: ''
-    negate: false
-    context_mapping: {  }
+visibility: {  }

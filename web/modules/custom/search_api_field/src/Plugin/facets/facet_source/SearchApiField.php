@@ -95,8 +95,9 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    * {@inheritdoc}
    */
   public function fillFacetsWithResults(array $facets) {
+    $plugin_definition_id = $this->getPluginDefinition()['display_id'];
     // Check if there are results in the static cache.
-    $results = $this->searchApiQueryHelper->getResults($this->pluginId);
+    $results = $this->searchApiQueryHelper->getResults($plugin_definition_id);
 
     // If there are no results, execute the search page and check for results
     // again. This happens when a page or block is cached, so Search API has
@@ -113,7 +114,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
         'offset' => isset($_GET['page']) ? $_GET['page'] : 0,
       ];
       $query = $search_api_index->query($options);
-      $query->setSearchId($this->pluginId);
+      $query->setSearchId($plugin_definition_id);
 
       // Keys.
       $keys = $this->requestStack->getCurrentRequest()->get('keys');
@@ -139,11 +140,11 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
       // type.
       foreach ($facets as $facet) {
         if (isset($facet_results[$facet->getFieldIdentifier()])) {
-          $configuration = array(
+          $configuration = [
             'query' => NULL,
             'facet' => $facet,
             'results' => $facet_results[$facet->getFieldIdentifier()],
-          );
+          ];
 
           // Get the Facet Specific Query Type so we can process the results
           // using the build() function of the query type.
@@ -158,9 +159,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    * {@inheritdoc}
    */
   public function getPath() {
-    // @todo Is this always right?
-    $path = $this->currentPathStack->getPath();
-    return $path . '/?keys=' . \Drupal::request()->get('keys');
+    return $this->currentPathStack->getPath();
   }
 
   /**
@@ -176,6 +175,13 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    */
   public function getIndex() {
     return $this->index;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDisplay() {
+    return $this->getPluginDefinition()['display_id'];
   }
 
   /**

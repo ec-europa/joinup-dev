@@ -6,6 +6,7 @@ package: Joinup
 
 dependencies:
   - comment
+  - diff
   - field
   - node
   - state_machine

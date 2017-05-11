@@ -6,8 +6,8 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_core\ELibraryCreationOptions;
 use Drupal\joinup_core\JoinupRelationManager;
-use Drupal\joinup_core\WorkflowUserProvider;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -15,24 +15,9 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 use Drupal\user\RoleInterface;
 
 /**
- * Class NodeGuard.
+ * Guard class for the transitions of nodes.
  */
 abstract class NodeGuard implements GuardInterface {
-
-  /**
-   * Elibrary option defining that only facilitators can create content.
-   */
-  const ELIBRARY_ONLY_FACILITATORS = 0;
-
-  /**
-   * Elibrary option defining that members and facilitators can create content.
-   */
-  const ELIBRARY_MEMBERS_FACILITATORS = 1;
-
-  /**
-   * Elibrary option defining that any registered user can create content.
-   */
-  const ELIBRARY_REGISTERED_USERS = 2;
 
   /**
    * The config factory.
@@ -70,13 +55,6 @@ abstract class NodeGuard implements GuardInterface {
   protected $relationManager;
 
   /**
-   * The workflow user provider service.
-   *
-   * @var \Drupal\joinup_core\WorkflowUserProvider
-   */
-  protected $workflowUserProvider;
-
-  /**
    * The allowed transitions array.
    *
    * @var array
@@ -91,8 +69,6 @@ abstract class NodeGuard implements GuardInterface {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager service.
-   * @param \Drupal\joinup_core\WorkflowUserProvider $workflowUserProvider
-   *   The workflow user provider service.
    * @param \Drupal\joinup_core\JoinupRelationManager $relationManager
    *   The relation manager service.
    * @param \Drupal\og\MembershipManagerInterface $ogMembershipManager
@@ -102,9 +78,8 @@ abstract class NodeGuard implements GuardInterface {
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current logged in user.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, WorkflowUserProvider $workflowUserProvider, JoinupRelationManager $relationManager, MembershipManagerInterface $ogMembershipManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupRelationManager $relationManager, MembershipManagerInterface $ogMembershipManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser) {
     $this->entityTypeManager = $entityTypeManager;
-    $this->workflowUserProvider = $workflowUserProvider;
     $this->relationManager = $relationManager;
     $this->ogMembershipManager = $ogMembershipManager;
     $this->configFactory = $configFactory;
@@ -119,7 +94,7 @@ abstract class NodeGuard implements GuardInterface {
       return FALSE;
     }
 
-    if ($this->workflowUserProvider->getUser()->hasPermission($entity->getEntityType()->getAdminPermission())) {
+    if ($this->currentUser->hasPermission($entity->getEntityType()->getAdminPermission())) {
       return TRUE;
     }
 
@@ -139,19 +114,18 @@ abstract class NodeGuard implements GuardInterface {
 
     // If the owner is still allowed, check for ownership.
     if (in_array('owner', $authorized_roles)) {
-      if ($entity->getOwnerId() === $this->workflowUserProvider->getUser()->id()) {
+      if ($entity->getOwnerId() === $this->currentUser->id()) {
         return TRUE;
       }
     }
     $authorized_roles = array_diff($authorized_roles, ['owner']);
 
-    $user = $this->workflowUserProvider->getUser();
-    if (array_intersect($authorized_roles, $user->getRoles())) {
+    if (array_intersect($authorized_roles, $this->currentUser->getRoles())) {
       return TRUE;
     }
 
     $parent = $this->relationManager->getParent($entity);
-    $membership = $this->ogMembershipManager->getMembership($parent, $user);
+    $membership = $this->ogMembershipManager->getMembership($parent, $this->currentUser);
     return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
   }
 
@@ -181,18 +155,18 @@ abstract class NodeGuard implements GuardInterface {
    */
   protected function getElibraryAllowedRoles(EntityInterface $entity) {
     $roles_array = [
-      self::ELIBRARY_ONLY_FACILITATORS => [
+      ELibraryCreationOptions::FACILITATORS => [
         'rdf_entity-collection-facilitator',
         'rdf_entity-solution-facilitator',
         'moderator',
       ],
-      self::ELIBRARY_MEMBERS_FACILITATORS => [
+      ELibraryCreationOptions::MEMBERS => [
         'rdf_entity-collection-facilitator',
         'rdf_entity-solution-facilitator',
         'rdf_entity-collection-member',
         'moderator',
       ],
-      self::ELIBRARY_REGISTERED_USERS => [
+      ELibraryCreationOptions::REGISTERED_USERS => [
         'rdf_entity-collection-facilitator',
         'rdf_entity-solution-facilitator',
         'rdf_entity-collection-member',
@@ -205,7 +179,7 @@ abstract class NodeGuard implements GuardInterface {
     if (empty($parent)) {
       // For security reasons, if no parent is returned, return the strictest
       // option.
-      return $roles_array[self::ELIBRARY_ONLY_FACILITATORS];
+      return $roles_array[ELibraryCreationOptions::FACILITATORS];
     }
 
     $e_library_name = $this->getParentElibraryName($parent);

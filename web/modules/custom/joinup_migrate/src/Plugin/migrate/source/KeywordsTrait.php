@@ -15,7 +15,7 @@ trait KeywordsTrait {
    * @param \Drupal\migrate\Row $row
    *   The migrate row.
    * @param string $property
-   *   The source peroperty holding the keywords.
+   *   The source property holding the keywords.
    * @param int $nid
    *   The node ID.
    * @param int $vid

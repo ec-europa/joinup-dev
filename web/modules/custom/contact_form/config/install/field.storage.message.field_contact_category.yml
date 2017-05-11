@@ -1,0 +1,44 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - message
+    - options
+id: message.field_contact_category
+field_name: field_contact_category
+entity_type: message
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: bug
+      label: 'Technical problem / bug report'
+    -
+      value: usage
+      label: 'Question on usage'
+    -
+      value: feature
+      label: 'Feature request'
+    -
+      value: legal
+      label: 'Legal issue'
+    -
+      value: report
+      label: 'Inappropriate content'
+    -
+      value: eira
+      label: 'Comments on EIRA'
+    -
+      value: version
+      label: 'New version of Joinup'
+    -
+      value: other
+      label: Other
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -16,7 +16,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
-    - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
@@ -38,7 +37,6 @@ third_party_settings:
       children:
         - group_main
         - group_description
-        - group_categorisation
         - field_ar_state
       parent_name: ''
       weight: 0
@@ -93,6 +91,14 @@ targetEntityType: rdf_entity
 bundle: collection
 mode: default
 content:
+  current_workflow_state:
+    type: current_workflow_state_widget
+    weight: 2
+    region: content
+    settings:
+      title: 'Current workflow state'
+      title_display: before
+    third_party_settings: {  }
   field_ar_abstract:
     weight: 10
     settings:
@@ -214,7 +220,7 @@ content:
     third_party_settings: {  }
     region: content
   field_collection_content:
-    weight: 18
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     type: search_api_field_default
@@ -250,6 +256,4 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
-  current_workflow_state: true
-  field_ar_shared_content: true
   uid: true
