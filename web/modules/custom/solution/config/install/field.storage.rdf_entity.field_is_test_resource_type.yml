@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://purl.org/dc/terms/type'
+      target_id:
+        predicate: 'http://purl.org/dc/terms/type'
+        format: resource
 id: rdf_entity.field_is_test_resource_type
 field_name: field_is_test_resource_type
 entity_type: rdf_entity
