@@ -64,3 +64,17 @@ Feature: Solution homepage
     And I should see the "Code of conduct" tile
     But I should not see the "IS protocol paper 1" tile
     And I should not see the "Protocol draft" tile
+
+  # This is a regression test for the entities that include a hashmark on their Uri.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3225
+  Scenario: Regression test for Uris that include a '#'.
+    Given the following solution:
+      | uri         | http://solution/example1/test#        |
+      | title       | Information sharing protocols         |
+      | description | Handling information sharing securely |
+      | logo        | logo.png                              |
+      | banner      | banner.jpg                            |
+      | state       | validated                             |
+    When I go to the homepage of the "Information sharing protocols" solution
+    Then I should see the heading "Information sharing protocols"
+    And I should not see the text "Page not found"
