@@ -5,6 +5,7 @@ namespace Drupal\joinup_community_content\Form;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -14,7 +15,6 @@ use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
-use Drupal\rdf_entity\RdfEntityViewBuilder;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -47,7 +47,7 @@ class ShareContentForm extends FormBase {
   /**
    * The RDF view builder.
    *
-   * @var \Drupal\rdf_entity\RdfEntityViewBuilder
+   * @var \Drupal\Core\Entity\EntityViewBuilderInterface
    */
   protected $rdfBuilder;
 
@@ -68,7 +68,7 @@ class ShareContentForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(RdfEntitySparqlStorage $rdf_storage, RdfEntityViewBuilder $rdf_builder, JoinupRelationManager $relation_manager, MembershipManagerInterface $membership_manager, AccountInterface $current_user) {
+  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, JoinupRelationManager $relation_manager, MembershipManagerInterface $membership_manager, AccountInterface $current_user) {
     $this->rdfStorage = $rdf_storage;
     $this->rdfBuilder = $rdf_builder;
     $this->relationManager = $relation_manager;
