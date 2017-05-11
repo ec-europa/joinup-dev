@@ -85,7 +85,9 @@ class SparqlTaxonomyTest extends JoinupKernelTestBase {
     }
 
     $this->factory = \Drupal::service('entity.query');
-    $results = $this->factory->get('taxonomy_term')->execute();
+    $results = $this->factory->get('taxonomy_term')
+      ->condition('vid', 'taxonomy_test')
+      ->execute();
     $this->assertCount($i, $results, "${i} terms were loaded successfully.");
   }
 
