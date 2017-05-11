@@ -13,14 +13,5 @@
  * @see template_preprocess_textarea()
  */
 #}
-{%
-  set wrapper_classes = [
-    'mdl-textfield',
-    'mdl-js-textfield',
-    'textfield--textarea',
-  ]
-%}
-<div{{ wrapper_attributes.addClass(wrapper_classes) }}>
-  <textarea{{ attributes.addClass('mdl-textfield__input').setAttribute('id', 'edit-field-body-0-value').setAttribute('type', 'text').setAttribute('rows', '1').removeAttribute('placeholder') }}>{{ value }}</textarea>
-  <label class="mdl-textfield__label" for="edit-field-body-0-value">{{ 'Create comment' }}</label>
-</div>
+<textarea{{ attributes.addClass('mdl-textfield__input').setAttribute('id', 'edit-field-body-0-value').setAttribute('type', 'text').setAttribute('rows', '1').removeAttribute('placeholder') }}>{{ value }}</textarea>
+<label class="mdl-textfield__label" for="edit-field-body-0-value">{{ 'Create comment' }}</label>
