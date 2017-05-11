@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 
 /**
  * Contains helper methods for managing the Rdf graphs.
@@ -118,7 +119,7 @@ class RdfGraphHandler {
     }
     else {
       foreach ($entity_ids as $entity_id) {
-        unset($this->requestGraphs[$entity_id]);
+        unset($this->requestGraphs[SparqlArg::uri($entity_id)]);
       }
     }
   }
@@ -253,6 +254,7 @@ class RdfGraphHandler {
    *   The request graphs.
    */
   public function getRequestGraphs($entity_id) {
+    $entity_id = SparqlArg::uri($entity_id);
     if (empty($entity_id)) {
       return $this->requestGraphs['default'];
     }
@@ -299,7 +301,7 @@ class RdfGraphHandler {
     }
 
     // Remove duplicates as there might be occurrences after the loop above.
-    $this->requestGraphs[$entity_id] = array_unique($graphs_array);
+    $this->requestGraphs[SparqlArg::uri($entity_id)] = array_unique($graphs_array);
   }
 
   /**
