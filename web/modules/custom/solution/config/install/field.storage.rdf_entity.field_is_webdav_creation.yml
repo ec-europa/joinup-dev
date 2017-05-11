@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://joinup.eu/solution/webdav_creation'
+      value:
+        predicate: 'http://joinup.eu/solution/webdav_creation'
+        format: 'xsd:boolean'
 id: rdf_entity.field_is_webdav_creation
 field_name: field_is_webdav_creation
 entity_type: rdf_entity

@@ -3,17 +3,28 @@ status: true
 dependencies: {  }
 third_party_settings:
   rdf_entity:
+    rdf_type: 'http://example.com/dummy'
     mapping:
       rid:
-        target_id: 'http://example.com/dummy'
+        target_id:
+          predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+          format: 'resource'
       uid:
-        target_id: ''
+        target_id:
+          predicate: ''
+          format: ''
       label:
-        value: 'http://example.com/dummy_label'
+        value:
+          predicate: 'http://example.com/dummy_label'
+          format: literal
       uuid:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       graph:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
     graph:
       default: 'http://example.com/dummy/published'
       draft: 'http://example.com/dummy/draft'

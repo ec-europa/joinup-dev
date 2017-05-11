@@ -165,12 +165,14 @@ class AssetReleaseController extends ControllerBase {
       }
     }
 
-    $standalone_distribution_ids = $this->queryFactory->get('rdf_entity')
+    $query = $this->queryFactory->get('rdf_entity');
+    $query
       ->condition('rid', 'asset_distribution')
-      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $rdf_entity->id())
-      ->condition('id', $release_distribution_ids, 'NOT IN')
-      ->execute();
-
+      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $rdf_entity->id());
+    if (!empty($release_distribution_ids)) {
+      $query->condition('id', $release_distribution_ids, 'NOT IN');
+    }
+    $standalone_distribution_ids = $query->execute();
     $standalone_distributions = Rdf::loadMultiple($standalone_distribution_ids);
 
     // Put a flag on the standalone distributions so they can be identified for
