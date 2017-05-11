@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "87da00acf3bd670cbad34ba68055e1f0",
+    "content-hash": "a0f0258b4bbeddbf62158e8fe8ccf106",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -124,16 +124,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.27.0",
+            "version": "3.27.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "23fd97c5bc4aaa923b994f8876c86574ed84f27d"
+                "reference": "9fc7aa9cad2e8cff8e49582f1be19cf92631153c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/23fd97c5bc4aaa923b994f8876c86574ed84f27d",
-                "reference": "23fd97c5bc4aaa923b994f8876c86574ed84f27d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9fc7aa9cad2e8cff8e49582f1be19cf92631153c",
+                "reference": "9fc7aa9cad2e8cff8e49582f1be19cf92631153c",
                 "shasum": ""
             },
             "require": {
@@ -200,7 +200,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-05-04T22:43:46+00:00"
+            "time": "2017-05-09T17:51:04+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2641,16 +2641,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-ISAICP-2709",
+            "version": "dev-ISAICP-3258",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "9feef6556d0b67385ec459e5df03e79b6d88e97f"
+                "reference": "86b94dd2038e5ebba0aa1b1b000969ab362bcb3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/9feef6556d0b67385ec459e5df03e79b6d88e97f",
-                "reference": "9feef6556d0b67385ec459e5df03e79b6d88e97f",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/86b94dd2038e5ebba0aa1b1b000969ab362bcb3a",
+                "reference": "86b94dd2038e5ebba0aa1b1b000969ab362bcb3a",
                 "shasum": ""
             },
             "require-dev": {
@@ -2667,7 +2667,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-05-05 12:14:23"
+            "time": "2017-05-11 10:24:00"
         },
         {
             "name": "drupal/og_menu",
@@ -2685,7 +2685,8 @@
             },
             "require": {
                 "drupal/core": "*",
-                "drupal/og": "*"
+                "drupal/og": "*",
+                "drupal/og_ui": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -2728,6 +2729,71 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/og_menu",
                 "issues": "https://drupal.org/project/issues/og_menu"
+            }
+        },
+        {
+            "name": "drupal/og_ui",
+            "version": "dev-1.x",
+            "require": {
+                "drupal/core": "~8.0",
+                "drupal/og": "self.version"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1484311683"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Dries",
+                    "homepage": "https://www.drupal.org/user/1"
+                },
+                {
+                    "name": "Grayside",
+                    "homepage": "https://www.drupal.org/user/346868"
+                },
+                {
+                    "name": "Zen",
+                    "homepage": "https://www.drupal.org/user/21209"
+                },
+                {
+                    "name": "amitaibu",
+                    "homepage": "https://www.drupal.org/user/57511"
+                },
+                {
+                    "name": "dww",
+                    "homepage": "https://www.drupal.org/user/46549"
+                },
+                {
+                    "name": "merlinofchaos",
+                    "homepage": "https://www.drupal.org/user/26979"
+                },
+                {
+                    "name": "moshe weitzman",
+                    "homepage": "https://www.drupal.org/user/23"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                },
+                {
+                    "name": "sethcohn",
+                    "homepage": "https://www.drupal.org/user/14944"
+                }
+            ],
+            "description": "User interface for Organic Groups.",
+            "homepage": "https://www.drupal.org/project/og",
+            "support": {
+                "source": "http://cgit.drupalcode.org/og"
             }
         },
         {
@@ -3001,17 +3067,17 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "8.x-1.0"
+                "reference": "8.x-1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.1.zip",
                 "reference": null,
-                "shasum": "f95109c2038bdf01f144da2b97170e8a2eb2bf4d"
+                "shasum": "896d21a8b0dee0bea6e49fb0b2ac38315f4b52fe"
             },
             "require": {
                 "drupal/core": "^8.2"
@@ -3025,8 +3091,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1493201342"
+                    "version": "8.x-1.1",
+                    "datestamp": "1494413585"
                 },
                 "patches_applied": {
                     "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
@@ -8129,7 +8195,8 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            }
+            },
+            "time": "2017-03-28 23:54:52"
         },
         {
             "name": "drupal/config_update",
@@ -8241,7 +8308,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01 21:54:12"
         },
         {
             "name": "drupal/devel",
@@ -8437,7 +8505,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-15T08:54:07+00:00"
+            "time": "2017-04-15 08:54:07"
         },
         {
             "name": "fabpot/goutte",
@@ -9794,7 +9862,7 @@
         {
             "alias": "dev-1.x",
             "alias_normalized": "dev-1.x",
-            "version": "dev-ISAICP-2709",
+            "version": "dev-ISAICP-3258",
             "package": "drupal/og"
         },
         {
