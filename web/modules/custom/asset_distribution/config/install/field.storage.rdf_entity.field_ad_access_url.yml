@@ -8,9 +8,15 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://www.w3.org/ns/dcat#accessURL'
-      display: ''
-      description: ''
+      target_id:
+        predicate: 'http://www.w3.org/ns/dcat#accessURL'
+        format: 'xsd:string'
+      display:
+        predicate: ''
+        format: ''
+      description:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_ad_access_url
 field_name: field_ad_access_url
 entity_type: rdf_entity
