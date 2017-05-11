@@ -1,14 +1,14 @@
 <?php
 
-namespace Drupal\Tests\file_url;
+namespace Drupal\Tests\joinup_core\Functional;
 
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
 use Drupal\Tests\rdf_entity\Functional\RdfWebTestBase;
 use Drupal\file_url\Entity\RemoteFile;
 use Drupal\file_url\FileUrlHandler;
-use Drupal\Tests\file_url\Traits\FileUrlTrait;
 
 /**
  * Provides methods specifically for testing File module's field handling.
@@ -131,7 +131,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
 
     // Ensure the file can be downloaded.
     $this->drupalGet($this->getFileAbsoluteUri($rdf_entity_file));
-    $this->assertSession()->statusCodeEquals(200, 'Confirmed that the generated URL is correct by downloading the shipped file.');
+    $this->assertSession()->statusCodeEquals(200);
 
     // Test when the entity has a local file and we set a remote one.
     // The widget should quietly overwrite the remote one as the select input
@@ -148,7 +148,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
 
     // Ensure the file can be downloaded.
     $this->drupalGet($this->getFileAbsoluteUri($rdf_entity_file));
-    $this->assertSession()->statusCodeEquals(200, 'Confirmed that the generated URL is correct by downloading the shipped file.');
+    $this->assertSession()->statusCodeEquals(200);
   }
 
   /**
