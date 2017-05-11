@@ -8,7 +8,7 @@ third_party_settings:
     mapping:
       target_id:
         predicate: 'http://purl.org/dc/terms/relation'
-        format: 'resource'
+        format: resource
 id: rdf_entity.field_isr_related_solutions
 field_name: field_isr_related_solutions
 entity_type: rdf_entity

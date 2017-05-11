@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - file
     - file_url
     - rdf_entity
 third_party_settings:

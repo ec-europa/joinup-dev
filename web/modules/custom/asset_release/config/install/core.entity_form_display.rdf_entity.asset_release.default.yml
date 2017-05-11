@@ -44,6 +44,7 @@ content:
     settings:
       title: 'Current workflow state'
       title_display: before
+      show_for_new_entities: false
     third_party_settings: {  }
   field_isr_contact_information:
     type: inline_entity_form_complex
@@ -131,12 +132,9 @@ content:
     third_party_settings: {  }
     region: content
   field_status:
-    type: entity_reference_autocomplete
+    type: options_select
     weight: 8
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
     region: content
   label:
