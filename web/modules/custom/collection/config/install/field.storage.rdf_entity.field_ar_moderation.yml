@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://joinup.eu/collection/moderation'
+      value:
+        predicate: 'http://joinup.eu/collection/moderation'
+        format: 'xsd:boolean'
 id: rdf_entity.field_ar_moderation
 field_name: field_ar_moderation
 entity_type: rdf_entity

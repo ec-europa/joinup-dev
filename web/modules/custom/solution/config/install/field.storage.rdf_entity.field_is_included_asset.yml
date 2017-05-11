@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://www.w3.org/ns/adms#includedAsset'
+      target_id:
+        predicate: 'http://www.w3.org/ns/adms#includedAsset'
+        format: resource
 id: rdf_entity.field_is_included_asset
 field_name: field_is_included_asset
 entity_type: rdf_entity

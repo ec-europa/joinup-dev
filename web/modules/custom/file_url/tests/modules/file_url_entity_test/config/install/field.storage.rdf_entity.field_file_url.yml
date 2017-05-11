@@ -8,9 +8,15 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://xmlns.com/foaf/spec/#term_page'
-      display: ''
-      description: ''
+      target_id:
+        predicate: 'http://xmlns.com/foaf/spec/#term_page'
+        format: 'resource'
+      display:
+        predicate: ''
+        format: ''
+      description:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_file_url
 field_name: field_file_url
 entity_type: rdf_entity
