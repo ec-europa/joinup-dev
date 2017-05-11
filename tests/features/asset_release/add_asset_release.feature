@@ -81,8 +81,8 @@ Feature: "Add release" visibility options.
 
     When I am not logged in
     And I go to "/rdf_entity/http%3A%5C%5Cexample1regression/asset_release/add"
-    Then I should see the error message "Access denied. You must log in to view this page."
+    Then I should see the heading "Page not found"
 
     When I am logged in as a moderator
     And I go to "/rdf_entity/http%3A%5C%5Cexample1regression/asset_release/add"
-    Then I should get an access denied error
+    Then I should see the heading "Page not found"
