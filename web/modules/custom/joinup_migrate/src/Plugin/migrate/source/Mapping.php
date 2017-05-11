@@ -146,7 +146,7 @@ class Mapping extends Spreadsheet {
     // Register inconsistencies.
     if ($messages) {
       $row_index = $row['row_index'];
-      $source_ids = ['nid' => $nid];
+      $source_ids = ['Nid' => $row['Nid']];
       foreach ($messages as $message) {
         $this->migration->getIdMap()->saveMessage($source_ids, "Row: $row_index, Nid: $nid: $message");
       }
