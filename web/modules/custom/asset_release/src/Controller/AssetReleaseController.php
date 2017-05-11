@@ -2,6 +2,7 @@
 
 namespace Drupal\asset_release\Controller;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -111,12 +112,20 @@ class AssetReleaseController extends ControllerBase {
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the custom page is created.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The RDF entity for which the custom page is created.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createAssetReleaseAccess(RdfInterface $rdf_entity) {
-    return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $this->currentUser());
+  public function createAssetReleaseAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL) {
+    // Explicitly deny access if the parent is not a solution because users
+    // with og admin permissions will be able to bypass this.
+    if ($rdf_entity->bundle() !== 'solution') {
+      return AccessResult::forbidden();
+    }
+    $account = empty($account) ? $this->currentUser() : $account;
+    return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $account);
   }
 
   /**
