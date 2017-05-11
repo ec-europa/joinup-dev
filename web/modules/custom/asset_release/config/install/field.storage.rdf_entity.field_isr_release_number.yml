@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://www.w3.org/2002/07/owl#versionInfo'
+      value:
+        predicate: 'http://www.w3.org/2002/07/owl#versionInfo'
+        format: 'xsd:string'
 id: rdf_entity.field_isr_release_number
 field_name: field_isr_release_number
 entity_type: rdf_entity

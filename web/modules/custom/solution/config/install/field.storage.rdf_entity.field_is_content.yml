@@ -7,7 +7,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://joinup.eu/search'
+      value:
+        predicate: 'http://joinup.eu/search'
+        format: 'xsd:string'
 id: rdf_entity.field_is_content
 field_name: field_is_content
 entity_type: rdf_entity
