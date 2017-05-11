@@ -9,7 +9,7 @@ Feature: User interface for the File URL field
     Given I am logged in as an "authenticated user"
     # An example of the File URL field is the "Documentation" field in the
     # solution form.
-    And I click "Propose solution" in the plus button menu
+    And I go to the add solution form
     # The "Upload file" option should be selected by default.
     Then the "Upload file" radio button should be selected
 

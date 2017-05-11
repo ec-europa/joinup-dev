@@ -17,7 +17,7 @@ Feature: Proposing a collection
       | Cecil Clapman | claps    |
     Given I am an anonymous user
     When I am on the homepage
-    And I click "Propose collection"
+    And I click "Create collection"
     Then I should see the error message "Access denied. You must log in to view this page."
     When I fill in the following:
       | Username | Cecil Clapman |
@@ -32,7 +32,7 @@ Feature: Proposing a collection
       | Organisation example | Company |
     And I am logged in as an "authenticated user"
     When I am on the homepage
-    And I click "Propose collection"
+    And I click "Create collection"
     Then I should see the heading "Propose collection"
     And the following fields should not be present "Current workflow state"
     And the following field widgets should be present "Contact information, Owner"
@@ -80,7 +80,7 @@ Feature: Proposing a collection
       | state | validated              |
     Given I am logged in as a user with the "authenticated" role
     When I am on the homepage
-    And I click "Propose collection"
+    And I click "Create collection"
     And I fill in the following:
       | Title       | The Ratcatcher's Guild                                            |
       | Description | A guild of serious men with sacks in which things are struggling. |
