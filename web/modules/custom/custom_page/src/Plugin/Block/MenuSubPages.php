@@ -2,6 +2,7 @@
 
 namespace Drupal\custom_page\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityRepositoryInterface;
@@ -9,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\og\MembershipManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -171,9 +173,7 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
    *   An array of menu links.
    */
   protected function getChildLinks() {
-    $links = $this->menuLinkManager->loadLinksByRoute($this->currentRouteMatch->getRouteName(), $this->currentRouteMatch->getRawParameters()->all(), 'ogmenu-' . $this->getMenuInstance()->id());
-    $link = reset($links);
-    $child_ids = $this->menuLinkManager->getChildIds($link->getPluginId());
+    $child_ids = $this->menuLinkManager->getChildIds($this->getRootLink()->getPluginId());
     $links = [];
 
     foreach ($child_ids as $child_plugin_id) {
@@ -187,6 +187,27 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
     }
 
     return $links;
+  }
+
+  /**
+   * Returns the root menu link.
+   *
+   * @return \Drupal\menu_link_content\Entity\MenuLinkContent|null
+   *   The root menu link.
+   */
+  protected function getRootLink() {
+    $links = $this->menuLinkManager->loadLinksByRoute($this->currentRouteMatch->getRouteName(), $this->currentRouteMatch->getRawParameters()->all(), 'ogmenu-' . $this->getMenuInstance()->id());
+    return reset($links);
+  }
+
+  /**
+   * Returns whether the current page has a root menu link.
+   *
+   * @return bool
+   *   Whether or not it has a root menu link.
+   */
+  protected function hasRootLink() {
+    return !empty($this->getRootLink());
   }
 
   /**
@@ -221,6 +242,23 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
       return $this->entityTypeManager->getStorage('ogmenu_instance')->load($og_menu_instance_id);
     }
     return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function access(AccountInterface $account, $return_as_object = FALSE) {
+    // Do not show the block if the current page has no menu links associated
+    // with it. This might happen if the current page is the edit form of a
+    // custom page.
+    if ($this->hasRootLink()) {
+      $access = parent::access($account, TRUE);
+    }
+    else {
+      $access = AccessResult::forbidden();
+    }
+
+    return $return_as_object ? $access : $access->isAllowed();
   }
 
 }
