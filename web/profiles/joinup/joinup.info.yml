@@ -37,6 +37,7 @@ dependencies:
   - joinup_subscription
   - joinup_user
   - menu_ui
+  - moderation
   - node
   - og
   - og_menu
