@@ -42,3 +42,10 @@ Feature: Asset distribution overview on solution.
     And the "Windows" asset distribution should not have any download urls
 
     And the "The Child of the Past" release should be marked as the latest release
+
+    # Verify that the releases titles link to the release page.
+    And I should see the link "The Child of the Past 1"
+    And I should see the link "Thief in the Angels 2"
+    When I click "The Child of the Past 1"
+    Then I should see the heading "The Child of the Past 1"
+    And I should see the text "Latest release"
