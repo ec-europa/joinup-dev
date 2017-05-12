@@ -79,7 +79,7 @@ Feature: Global search
       | title            | body                                  |
       | Newsletter omega | Talking about these epsilon contents. |
     And custom_page content:
-      | title      | body                                    | collection       |
+      | title      | body                                     | collection       |
       | Page omega | This is just an epsilon but should work. | Collection alpha |
     And users:
       | Username     | E-mail                      | First name | Family name | Organisation |
