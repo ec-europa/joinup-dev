@@ -89,8 +89,8 @@ Feature: "Add solution" visibility options.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "Demography" from "Policy domain"
-    # Attach a PDF to the documentation, this has a hidden label "File".
-    And I attach the file "text.pdf" to "File"
+    # Attach a PDF to the documentation.
+    And I upload the file "text.pdf" to "Documentation"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing contact information.
@@ -126,8 +126,8 @@ Feature: "Add solution" visibility options.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "E-inclusion" from "Policy domain"
-    # Attach a PDF to the documentation, this has a hidden label "File".
-    And I attach the file "text.pdf" to "File"
+    # Attach a PDF to the documentation.
+    And I upload the file "text.pdf" to "Documentation"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing contact information.
