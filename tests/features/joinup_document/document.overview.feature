@@ -9,9 +9,9 @@ Feature: "Document" overview.
       | title | Traveller tools |
       | state | validated       |
     And document content:
-      | title                      | type     | short title           | file type | file                                                        | body                                            | collection      |
-      | VAT refund sample document | document | VAT refund fac-simile | upload    | text.pdf                                                    | Valid for people living outside the EU.         | Traveller tools |
-      | Local maps archive         | document | Local maps            | remote    | https://github.com/ec-europa/joinup-dev/archive/develop.zip | Contains maps with the top locations in the EU. | Traveller tools |
+      | title                      | type     | short title           | file type | file                                                        | body                                            | collection      | state     |
+      | VAT refund sample document | document | VAT refund fac-simile | upload    | text.pdf                                                    | Valid for people living outside the EU.         | Traveller tools | validated |
+      | Local maps archive         | document | Local maps            | remote    | https://github.com/ec-europa/joinup-dev/archive/develop.zip | Contains maps with the top locations in the EU. | Traveller tools | validated |
 
     When I go to the homepage of the "Traveller tools" collection
     Then I should see the "VAT refund sample document" tile

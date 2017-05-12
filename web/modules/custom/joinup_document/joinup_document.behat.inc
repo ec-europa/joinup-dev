@@ -55,7 +55,7 @@ class DocumentSubContext extends DrupalSubContextBase implements DrupalSubContex
       $node->field_file = $node->file;
     }
     else {
-      $node->field_file = $this->uploadFileUrl($node->file, $this->getMinkParameter('files_path'));
+      $node->field_file = $this->createFile($node->file, $this->getMinkParameter('files_path'))->id();
     }
 
     unset($node->file);
