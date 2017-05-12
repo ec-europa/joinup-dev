@@ -52,7 +52,7 @@
         "behat/mink-selenium2-driver": "dev-master#739b7570f0536bad9b07b511a62c885ee1ec029a",
         "drupal/admin_toolbar": "~1.17",
         "drupal/coder": "~8.2.9",
-        "drupal/config_devel": "dev-1.x#92f735cae8e9fb328edca285340a5bfbf72028cc",
+        "drupal/config_devel": "~1.0",
         "drupal/config_update": "~1.2",
         "drupal/default_content": "dev-1.x#18f2408a0f74d871b076ef94d1b83f380ea797c9",
         "drupal/devel": "~1.0@alpha",
